@@ -1155,11 +1155,17 @@ export function observationsFromMeetingsMaterialization(viewOrRows, opts = {}) {
 export function observationFromPeopleRow(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
   const sourceSystem = clean(opts.sourceSystem || row.source_system || "legistar");
-  const personId = clean(row.person_id || row.PersonId);
-  const personName = clean(row.person_name || row.PersonName);
+  // Live Legistar Votes: VotePersonId / VotePersonName. Normalized rows:
+  // person_id / person_name. Older fixtures: PersonId / PersonName.
+  const personId = clean(
+    row.person_id || row.VotePersonId || row.PersonId || row.PersonID || "",
+  );
+  const personName = clean(
+    row.person_name || row.VotePersonName || row.PersonName || row.PersonFullName || "",
+  );
   if (!personId || !personName) return null;
   const matterId = clean(row.matter_id || row.MatterId);
-  const eventId = clean(row.event_id || row.EventId);
+  const eventId = clean(row.event_id || row.EventId || row.VoteEventItemId);
 
   return {
     domain: "people",
@@ -1172,7 +1178,7 @@ export function observationFromPeopleRow(row, opts = {}) {
     agency_name: clean(row.agency_name) || null, // rarely present
     label: personName,
     when: clean(row.vote_date || row.event_date) || null,
-    vote: clean(row.vote || row.VoteValueName) || null,
+    vote: clean(row.vote || row.vote_value || row.VoteValueName || row.VoteValue) || null,
     subject_ref: formatSubjectRef("entity", `official:${personId}`),
     matter_id: matterId || null,
     event_id: eventId || null,

@@ -18,13 +18,15 @@ export const ENTITY_TYPE_FAMILIES = Object.freeze([
   "official",
 ]);
 
-const VOTE_AYE = /^(aye|yes|yea|y\b|in favor|approve)/i;
-const VOTE_NAY = /^(nay|no|n\b|against|reject|deny)/i;
+// NYC Legistar publishes VoteValueName as Affirmative / Negative (not Aye/Nay).
+const VOTE_AYE = /^(aye|yes|yea|y\b|in favor|approve|affirmative)/i;
+const VOTE_NAY = /^(nay|no\b|n\b|against|reject|deny|negative)/i;
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 /**
  * Bucket a publisher vote value into aye | nay | abstain.
+ * Accepts Aye/Nay-style labels and Legistar VoteValueName (Affirmative/Negative).
  * @param {string} value
  * @returns {"aye"|"nay"|"abstain"}
  */
@@ -51,9 +53,67 @@ export function officialEntityId({ personId = null, personName = null } = {}) {
 }
 
 /**
+ * Read person identity from a raw Legistar (or compatible) vote row.
+ * Live Granicus Votes use VotePersonId / VotePersonName — not PersonId / PersonName.
+ *
+ * @param {object} raw
+ * @returns {{ personId: string|null, personName: string|null }}
+ */
+export function readVotePersonIdentity(raw = {}) {
+  const personId = clean(
+    raw.VotePersonId
+      ?? raw.vote_person_id
+      ?? raw.PersonId
+      ?? raw.person_id
+      ?? raw.PersonID
+      ?? raw.personId
+      ?? "",
+  ) || null;
+  const personName = clean(
+    raw.VotePersonName
+      ?? raw.vote_person_name
+      ?? raw.PersonName
+      ?? raw.person_name
+      ?? raw.PersonFullName
+      ?? raw.name
+      ?? "",
+  ) || null;
+  return { personId, personName };
+}
+
+/**
+ * Read the publisher vote label from a raw vote row.
+ * Prefer VoteValueName (live Legistar) over the integer VoteResult field.
+ *
+ * @param {object} raw
+ * @returns {string}
+ */
+export function readVoteValueLabel(raw = {}) {
+  // Prefer human labels. VoteResult is often an integer flag on live Legistar
+  // and must not win over VoteValueName.
+  const label = clean(
+    raw.VoteValueName
+      ?? raw.VoteValue
+      ?? raw.VoteTypeName
+      ?? raw.PersonVote
+      ?? raw.vote_value
+      ?? "",
+  );
+  if (label) return label;
+  // Only fall back to VoteResult when it looks like a text label, not "1"/"0".
+  const result = clean(raw.VoteResult ?? "");
+  if (result && !/^\d+$/.test(result)) return result;
+  return "";
+}
+
+/**
  * Normalize one Legistar (or compatible) vote row into an official + vote.
  * Returns null when neither person id nor name is present — those rows still
  * contribute to aggregate counts, but cannot form an official object.
+ *
+ * Live Legistar EventItems/{id}/Votes rows carry VotePersonId / VotePersonName
+ * and VoteValueName (e.g. Affirmative). Older fixtures may use PersonId /
+ * PersonName / VoteValue — both shapes are retained.
  *
  * @param {object} raw
  * @returns {null|{
@@ -65,29 +125,8 @@ export function officialEntityId({ personId = null, personName = null } = {}) {
  * }}
  */
 export function normalizeVotePersonRow(raw = {}) {
-  const personId = clean(
-    raw.PersonId
-      ?? raw.person_id
-      ?? raw.PersonID
-      ?? raw.personId
-      ?? "",
-  ) || null;
-  const personName = clean(
-    raw.PersonName
-      ?? raw.person_name
-      ?? raw.PersonFullName
-      ?? raw.name
-      ?? "",
-  ) || null;
-  const voteValue = clean(
-    raw.VoteValue
-      ?? raw.VoteValueName
-      ?? raw.VoteTypeName
-      ?? raw.VoteResult
-      ?? raw.PersonVote
-      ?? raw.vote_value
-      ?? "",
-  );
+  const { personId, personName } = readVotePersonIdentity(raw);
+  const voteValue = readVoteValueLabel(raw);
   const officialId = officialEntityId({ personId, personName });
   if (!officialId) return null;
 
@@ -153,6 +192,21 @@ export function buildVotesOnEdges(persons = [], target = {}) {
 }
 
 /**
+ * Classify whether a vote summary retained per-person identities.
+ * - roll_call: at least one person id/name retained
+ * - tally_only: rows present but no person identity (voice vote / publisher tallies only)
+ * - empty: no rows
+ *
+ * @param {{ person_count?: number, by_person?: Array<object> }|null} summary
+ * @returns {"roll_call"|"tally_only"|"empty"}
+ */
+export function classifyVoteIdentity(summary) {
+  if (!summary || !(summary.person_count > 0)) return "empty";
+  const retained = Array.isArray(summary.by_person) ? summary.by_person.length : 0;
+  return retained > 0 ? "roll_call" : "tally_only";
+}
+
+/**
  * Summarize raw Legistar vote rows: aggregate counts + retained person rows +
  * official objects + votes_on edges.
  *
@@ -167,6 +221,7 @@ export function buildVotesOnEdges(persons = [], target = {}) {
  *   votes_on: Array<object>,
  *   person_vote_retention_rate: number,
  *   official_votes_on_edge_rate: number,
+ *   vote_identity: "roll_call"|"tally_only",
  * }}
  */
 export function summarizePersonVotes(rows = [], target = {}) {
@@ -176,15 +231,7 @@ export function summarizePersonVotes(rows = [], target = {}) {
   const counts = { aye: 0, nay: 0, abstain: 0 };
   const byPerson = [];
   for (const row of list) {
-    const value = clean(
-      row?.VoteValue
-        ?? row?.VoteValueName
-        ?? row?.VoteTypeName
-        ?? row?.VoteResult
-        ?? row?.PersonVote
-        ?? row?.vote_value
-        ?? "",
-    );
+    const value = readVoteValueLabel(row || {});
     const bucket = voteBucket(value);
     counts[bucket] += 1;
     const person = normalizeVotePersonRow(row || {});
@@ -210,7 +257,7 @@ export function summarizePersonVotes(rows = [], target = {}) {
   const retained = byPerson.length;
   const total = list.length;
   const edges = votesOn.length;
-  return {
+  const summary = {
     result,
     counts,
     person_count: total,
@@ -220,6 +267,8 @@ export function summarizePersonVotes(rows = [], target = {}) {
     person_vote_retention_rate: total ? retained / total : 0,
     official_votes_on_edge_rate: retained ? edges / retained : 0,
   };
+  summary.vote_identity = classifyVoteIdentity(summary);
+  return summary;
 }
 
 /**

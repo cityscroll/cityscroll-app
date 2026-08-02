@@ -250,7 +250,7 @@
       "source_system": "nyc_legistar_votes",
       "importer": "worker/src/lib/meeting_outcomes.mjs#collectVoteSummaries",
       "identity_entities": ["matter", "person", "vote", "official"],
-      "stable_source_key": "vote:<EventItemId>:<PersonId>",
+      "stable_source_key": "vote:<EventItemId|VoteEventItemId>:<VotePersonId|PersonId>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
       "dual_write": {
         "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE",
@@ -265,14 +265,15 @@
         "row_count": 0,
         "latest_ingested_at": null,
         "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Person-level votes retained on meeting-outcomes path; source_records has 0 rows for nyc_legistar_votes."
+        "note": "Person-level votes retained on meeting-outcomes path via VotePersonId/VotePersonName; source_records has 0 rows for nyc_legistar_votes."
       },
       "fixture": "worker/test/legistar_source_records.test.mjs",
       "replay_test": "worker/test/legistar_source_records.test.mjs",
       "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for nyc_legistar_votes (measured 2026-08-01).",
       "person_retention": {
         "metric": "person_vote_retention_rate",
-        "status": "retained_on_meeting_outcomes; source_records dual-write empty-declared-live",
+        "status": "retained_on_meeting_outcomes after VotePerson* field mapping (live audit 2026-08-02 rate=1 on event 22526); source_records dual-write empty-declared-live; public KV needs re-materialization",
+        "receipt": "site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
         "official_link_type": "votes_on",
         "primary_key_pattern": "official:{person_id}"
       }

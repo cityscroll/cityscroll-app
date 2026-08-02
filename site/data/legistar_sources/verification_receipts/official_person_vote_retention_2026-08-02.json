@@ -1,0 +1,82 @@
+{
+  "schema": "cityscroll.metric_receipt.v1",
+  "metric": "person_vote_retention_rate",
+  "related_metric": "official_votes_on_edge_rate",
+  "measured_at": "2026-08-02",
+  "subject": "Legistar roll-call person rows on meeting-outcomes materialization",
+  "audit": {
+    "source": "GET EventItems/{id}/Votes on live webapi.legistar.com/v1/nyc",
+    "sample_event_id": 22526,
+    "sample_notice_id": "20260706036",
+    "sample_event_item_id": 440494,
+    "raw_person_fields_present": [
+      "VotePersonId",
+      "VotePersonName"
+    ],
+    "raw_person_fields_absent": [
+      "PersonId",
+      "PersonName"
+    ],
+    "raw_vote_label_field": "VoteValueName",
+    "finding": "Person identity IS present on live Votes rows under VotePerson* names. Prior mapper looked only for PersonId/PersonName and dropped every identity while still counting person_count from vote rows.",
+    "honest_outcome": "retain_person_identities"
+  },
+  "before": {
+    "person_vote_retention_rate": 0,
+    "official_votes_on_edge_rate": 0,
+    "basis": "Mapper expected PersonId/PersonName; live rows only publish VotePersonId/VotePersonName. Tallies could still form from VoteValueName but by_person stayed empty."
+  },
+  "after_fixture": {
+    "person_vote_retention_rate": 1,
+    "official_votes_on_edge_rate": 1,
+    "basis": "Identified fixture rows (both PersonId and VotePersonId shapes) retain official:{person_id} and votes_on edges. Characterization: node --test test/official_entity_family.test.mjs test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs."
+  },
+  "after_live_audit_2026_08_02": {
+    "person_vote_retention_rate": 1,
+    "official_votes_on_edge_rate": 1,
+    "sample": "event 22526: 49/49 vote rows retained person identity across 7/7 items with votes; sample first person Christopher Marte",
+    "basis": "Live authenticated Votes fetch + summarizePersonVotes after VotePerson* field mapping. Production meeting-outcomes KV still needs re-materialization (daily cron or admin refresh) before public by_person is non-empty.",
+    "samples": [
+      {
+        "item_id": 440494,
+        "matter_file": "LU 0091-2026",
+        "person_count": 7,
+        "by_person_len": 7,
+        "person_vote_retention_rate": 1,
+        "vote_identity": "roll_call",
+        "first_person": "Christopher Marte",
+        "first_bucket": "aye",
+        "counts": {
+          "aye": 6,
+          "nay": 0,
+          "abstain": 1
+        }
+      },
+      {
+        "item_id": 440495,
+        "matter_file": "LU 0092-2026",
+        "person_count": 7,
+        "by_person_len": 7,
+        "person_vote_retention_rate": 1,
+        "vote_identity": "roll_call",
+        "first_person": "Christopher Marte",
+        "first_bucket": "aye",
+        "counts": {
+          "aye": 6,
+          "nay": 0,
+          "abstain": 1
+        }
+      }
+    ]
+  },
+  "entity_family": "official",
+  "primary_key_pattern": "official:{person_id}",
+  "link_type": "votes_on",
+  "product_surfaces": [
+    "entity_resolution/officials/index.mjs#normalizeVotePersonRow",
+    "worker/src/lib/legistar_client.mjs#summarizeLegistarVotes",
+    "worker/src/lib/meeting_outcomes.mjs"
+  ],
+  "reader_facing_empty_register": "meeting_outcomes_no_person_votes_html (class a not_yet_ingested) only when tallies present and by_person empty after mapping; vote_identity=tally_only when publisher omits person fields",
+  "remaining_gap": "Public meeting-outcomes KV must re-materialize with the fixed mapper before product surfaces show by_person. People domain leaves not_yet_ingested until those retained rows flow into entity-intelligence observations."
+}

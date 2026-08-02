@@ -63,14 +63,29 @@ export function legistarEventItemSourceSystemId(row) {
 /**
  * Publisher-stable identity for one person-level Legistar vote row.
  * Shape: vote:<EventItemId>:<PersonId>
+ *
+ * Live Granicus Votes use VoteEventItemId / VotePersonId; fixtures may still
+ * carry EventItemId / PersonId.
  */
 export function legistarVoteSourceSystemId(row) {
   const itemId = normPart(
-    readFirst(row, ["EventItemId", "EventItemID", "agenda_item_id", "itemId"]),
+    readFirst(row, [
+      "VoteEventItemId",
+      "EventItemId",
+      "EventItemID",
+      "agenda_item_id",
+      "itemId",
+    ]),
     "no-event-item-id",
   );
   const personId = normPart(
-    readFirst(row, ["PersonId", "PersonID", "person_id", "personId"]),
+    readFirst(row, [
+      "VotePersonId",
+      "PersonId",
+      "PersonID",
+      "person_id",
+      "personId",
+    ]),
     "no-person-id",
   );
   return `vote:${itemId}:${personId}`;

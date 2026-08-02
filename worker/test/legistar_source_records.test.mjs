@@ -51,6 +51,16 @@ const VOTES = [
   { PersonId: 103, PersonName: "Cara Councilmember", VoteValue: "Nay" },
 ];
 
+// Live Granicus field names (used for stable source-key identity).
+const LIVE_VOTE_ROW = {
+  VoteId: 1031408,
+  VoteEventItemId: 440494,
+  VotePersonId: 7801,
+  VotePersonName: "Christopher Marte",
+  VoteValueName: "Affirmative",
+  VoteResult: 1,
+};
+
 const ATTACHMENTS = [
   {
     MatterAttachmentId: 9001,
@@ -139,6 +149,11 @@ test("Legistar source keys preserve event, item, person-vote, and attachment ide
   assert.equal(
     legistarVoteSourceSystemId({ ...VOTES[0], EventItemId: 440244 }),
     "vote:440244:101",
+  );
+  // Live Granicus field names must mint the same stable key family.
+  assert.equal(
+    legistarVoteSourceSystemId(LIVE_VOTE_ROW),
+    "vote:440494:7801",
   );
   assert.equal(
     legistarAttachmentSourceSystemId({ ...ATTACHMENTS[0], EventItemId: 440244 }),
