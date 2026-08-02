@@ -731,7 +731,7 @@
     matter_phase_hide_dates: "Ocultar fechas",
     matter_phase_show_all: "Mostrar todas las fechas (cronológico)",
     matter_phase_how_summary: "Cómo funciona esta cronología",
-    matter_phase_how_html: "Las fases siguen el camino de compras de la ciudad: solicitud, selección (intención de negociar, lista de proveedores, intención de adjudicar), adjudicación y registro, luego pagos. Los avisos que comparten este PIN se agrupan por fase. Los títulos idénticos se muestran con un conteo y un rango de fechas; cada fecha individual queda bajo “Mostrar fechas”. Un enlace a City Record y uno a Checkbook aparecen en las acciones; no se repiten en cada fila.",
+    matter_phase_how_html: "Las fases siguen el camino de compras de la ciudad: solicitud, selección (intención de negociar, lista de proveedores, intención de adjudicar), adjudicación y registro, luego pagos. Los avisos que comparten este PIN se agrupan por fase. Los títulos idénticos se muestran con un conteo y un rango de fechas. cada fecha individual queda bajo “Mostrar fechas”. Un enlace a City Record y uno a Checkbook aparecen en las acciones. no se repiten en cada fila.",
     subsidy_lifecycle_heading: "Ciclo de vida del subsidio",
     subsidy_stage_application: "Solicitud",
     subsidy_stage_hearing: "Audiencia",

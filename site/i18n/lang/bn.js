@@ -731,7 +731,7 @@
     matter_phase_hide_dates: "Hide dates",
     matter_phase_show_all: "Show all dates (chronological)",
     matter_phase_how_summary: "How this timeline works",
-    matter_phase_how_html: "Phases follow the city’s procurement path: solicitation, selection (intent to negotiate, vendor list, intent to award), award and registration, then payments. Notices that share this PIN are grouped by phase. Identical titles show as a count with a date range — every individual date stays under “Show dates.” One City Record link and one Checkbook link appear in the actions; repeated portal URLs are not listed on every row.",
+    matter_phase_how_html: "Phases follow the city’s procurement path: solicitation, selection (intent to negotiate, vendor list, intent to award), award and registration, then payments. Notices that share this PIN are grouped by phase. Identical titles show as a count with a date range — every individual date stays under “Show dates.” One City Record link and one Checkbook link appear in the actions. Repeated portal URLs are not listed on every row.",
     subsidy_lifecycle_heading: "ভর্তুকির জীবনচক্র",
     subsidy_stage_application: "আবেদন",
     subsidy_stage_hearing: "শুনানি",

@@ -1076,7 +1076,7 @@ const STRINGS = {
     matter_phase_heading: "Matter timeline",
     matter_phase_solicitation: "Solicitation",
     matter_phase_selection: "Selection",
-    matter_phase_award_registration: "Award & registration",
+    matter_phase_award_registration: "Award and registration",
     matter_phase_payments: "Payments",
     matter_phase_now_label: "Where this matter is now",
     matter_phase_next_html: "<strong>What’s next:</strong> {phase}",
@@ -1098,7 +1098,7 @@ const STRINGS = {
     matter_phase_hide_dates: "Hide dates",
     matter_phase_show_all: "Show all dates (chronological)",
     matter_phase_how_summary: "How this timeline works",
-    matter_phase_how_html: "Phases follow the city’s procurement path: solicitation, selection (intent to negotiate, vendor list, intent to award), award and registration, then payments. Notices that share this PIN are grouped by phase. Identical titles show as a count with a date range — every individual date stays under “Show dates.” One City Record link and one Checkbook link appear in the actions; repeated portal URLs are not listed on every row.",
+    matter_phase_how_html: "Phases follow the city’s procurement path: solicitation, selection (intent to negotiate, vendor list, intent to award), award and registration, then payments. Notices that share this PIN are grouped by phase. Identical titles show as a count with a date range — every individual date stays under “Show dates.” One City Record link and one Checkbook link appear in the actions. Repeated portal URLs are not listed on every row.",
 
     // NYCIDA/Build NYC subsidy lifecycle on notice detail (SUB-001)
     subsidy_lifecycle_heading: "Subsidy lifecycle",

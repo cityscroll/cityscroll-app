@@ -813,7 +813,7 @@
     matter_phase_hide_dates: "Masquer les dates",
     matter_phase_show_all: "Afficher toutes les dates (chronologique)",
     matter_phase_how_summary: "Comment fonctionne cette chronologie",
-    matter_phase_how_html: "Les phases suivent le parcours d’achat de la ville : appel d’offres, sélection (intention de négocier, liste de fournisseurs, intention d’attribuer), attribution et enregistrement, puis paiements. Les avis partageant ce PIN sont regroupés par phase. Les titres identiques s’affichent avec un décompte et une plage de dates — chaque date individuelle reste sous « Afficher les dates ». Un lien City Record et un lien Checkbook figurent dans les actions ; les URL ne se répètent pas à chaque ligne.",
+    matter_phase_how_html: "Les phases suivent le parcours d’achat de la ville : appel d’offres, sélection (intention de négocier, liste de fournisseurs, intention d’attribuer), attribution et enregistrement, puis paiements. Les avis partageant ce PIN sont regroupés par phase. Les titres identiques s’affichent avec un décompte et une plage de dates — chaque date individuelle reste sous « Afficher les dates ». Un lien City Record et un lien Checkbook figurent dans les actions . les URL ne se répètent pas à chaque ligne.",
     subsidy_lifecycle_heading: "Cycle de vie de la subvention",
     subsidy_stage_application: "Demande",
     subsidy_stage_hearing: "Audience",
