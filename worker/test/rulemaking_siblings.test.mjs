@@ -69,11 +69,11 @@ test("rulemakingTitleCore strips proposal / hearing / adoption boilerplate", () 
 });
 
 test("extractRulemakingRefTokens finds RCNY and section cites", () => {
-  const tokens = extractRulemakingRefTokens(
+  const cites = extractRulemakingRefTokens(
     "Amends 28 RCNY Chapter 12 and Section 12-01 regarding detectors",
   );
-  assert.ok(tokens.some((t) => /28rcny/i.test(t) || /28\s*rcny/i.test(t)));
-  assert.ok(tokens.some((t) => /chapter\s*12/i.test(t)));
+  assert.ok(cites.some((t) => /28rcny/i.test(t) || /28\s*rcny/i.test(t)));
+  assert.ok(cites.some((t) => /chapter\s*12/i.test(t)));
 });
 
 test("classifyRulemakingRole maps proposal / hearing / adoption", () => {
