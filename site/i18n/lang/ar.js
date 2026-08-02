@@ -1343,6 +1343,8 @@
     career_area_other: "أعمال المدينة الأخرى",
     career_date_unknown: "تاريخ لم ينشر",
     career_not_published: "غير منشور — سيظهر في إشعار الامتحان إذا نُشر",
+    career_fee_salary_not_yet_ingested_html: "لم يُعرض هنا بعد — الرسوم والراتب موجودان في {source}.",
+    career_noe_source_name: "إشعار امتحان DCAS",
     career_status_open: "افتح الآن",
     career_status_upcoming: "القادمة",
     career_status_closed: "مغلق",

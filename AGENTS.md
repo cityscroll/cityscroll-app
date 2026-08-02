@@ -355,6 +355,18 @@ open-exam overlap 0%. Artifact:
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
 UI: `list_joined` outcome view when annual DCAS outcomes are absent.
 
+## Exam fee / salary (NOE path)
+
+Fee and starting salary come **only** from the open-competitive Notice of
+Examination path (`site/data/exam_sources/dcas_open_competitive.json`), not the
+annual schedule table (`4ptz-hmtc` has no fee columns). Build retains NOE fields
+when an exam drops off the open snapshot but stays on the annual table
+(`retainNoeDetailFields`). Schedule-only nulls stamp
+`fee_salary_gap.class = not_yet_ingested` (class a); class b only if a linked
+NOE omits the field. UI: `examFeeSalaryView` + `career_fee_salary_not_yet_ingested_html`.
+Non-null field case: exam `7016` Caseworker fee `$68` / salary `$48,206`.
+Verify: `node --test test/exam_fee_salary.test.mjs test/deadline_exam_cards.test.mjs`.
+
 ## Digest watermark recovery (catch-up digests)
 
 **markSeen policy (hard rule):** `markSeen` advances the delivery-adjacent seen set

@@ -901,7 +901,8 @@
       "realized_coverage": null,
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
-        "exam-outcome-aggregate"
+        "exam-outcome-aggregate",
+        "exam-salary-fee-not-published"
       ]
     },
     {
@@ -2130,11 +2131,26 @@
     {
       "id": "exam-salary-fee-not-published",
       "surface": "staffing exam card · fee or salary null",
-      "i18n_key": "career_not_published",
-      "class": "not_published",
-      "would_appear_in": "the Notice of Examination PDF / open-competitive schedule if DCAS states the amount",
-      "notices_affected_estimate": "Exams whose NOE omits fee or salary_min.",
-      "evidence": "UI already uses career_not_published when value is null."
+      "i18n_key": "career_fee_salary_not_yet_ingested_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "DCAS open-competitive exam schedule and Notices of Examination",
+        "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+        "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+        "update_cadence": "Monthly schedule posts with mid-cycle NOE amendments; re-check daily while windows are open",
+        "join_keys": [
+          "exam_number"
+        ]
+      },
+      "would_appear_in": "the Notice of Examination PDF / open-competitive schedule when DCAS publishes the amount for that exam",
+      "notices_affected_estimate": "Schedule-only exams in the annual Open Data table without a joined open-competitive NOE (measured ~143/151 on 2026-08-01). Open-competitive NOE path is 8/8 fee+salary when present.",
+      "evidence": "Annual schedule 4ptz-hmtc has no fee/salary columns. Open-competitive + NOE snapshot publishes fee and salary_min for every linked NOE (8/8). Null fee/salary is missing NOE join or NOE not yet posted for upcoming windows — not a city withhold. UI uses career_fee_salary_not_yet_ingested_html (class a) unless a linked NOE omits the field (class b career_not_published).",
+      "class_change": {
+        "from": "not_published",
+        "to": "not_yet_ingested",
+        "reason": "Open-competitive NOE path is a landed public source; schedule-only nulls are never-ingested, not withheld",
+        "observed_on": "2026-08-01"
+      }
     },
     {
       "id": "external-awards-agency-absent",

@@ -1341,6 +1341,8 @@
     career_area_other: "其他城市工作",
     career_date_unknown: "日期未公布",
     career_not_published: "未公布 — 如发布将出现在考试通知中",
+    career_fee_salary_not_yet_ingested_html: "此处尚未显示 — 费用与薪资见 {source}。",
+    career_noe_source_name: "DCAS 考试通知",
     career_status_open: "现已开放",
     career_status_upcoming: "即将推出",
     career_status_closed: "关闭",
