@@ -449,6 +449,44 @@
       }
     },
     {
+      "id": "rules-lifecycle-spine",
+      "url": "#notice/20260714029",
+      "feature": "rules-lifecycle-spine",
+      "description": "Show proposal, hearing, and comment-deadline stages on a commercial-meter parking rule notice.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#nrules .chain-h",
+            "text": "Rule lifecycle"
+          },
+          {
+            "selector": "#nrules .rule-chain .stage-name",
+            "text": "Proposal published"
+          },
+          {
+            "selector": "#nrules .rule-chain .stage-name",
+            "text": "Public hearing"
+          },
+          {
+            "selector": "#nrules .rule-chain .stage-name",
+            "text": "Comment deadline"
+          },
+          {
+            "selector": "#nrules .rule-chain .box.matched"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#nrules .empty"
+          },
+          {
+            "selector": "#nrules .loading"
+          }
+        ],
+        "focus": "#noticeview .route-item"
+      }
+    },
+    {
       "id": "property-brooklyn-sites",
       "url": "#property?boro=Brooklyn",
       "feature": "property-location-filter",

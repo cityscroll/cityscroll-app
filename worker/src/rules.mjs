@@ -234,6 +234,20 @@ function jsonResponse(body, status = 200) {
   });
 }
 
+/**
+ * Whether the cached /rules view should be rebuilt before serving.
+ * Age alone is not enough: a failed RSS materialization still stamps
+ * generated_at, so a young enrichment status of "stale" would otherwise stick
+ * until MAX_AGE even after egress is fixed (e.g. User-Agent headers).
+ */
+export function rulesViewNeedsRefresh(parsed, nowMs = Date.now()) {
+  if (!parsed || !parsed.generated_at) return true;
+  const age = nowMs - new Date(parsed.generated_at).getTime();
+  if (!Number.isFinite(age) || age > MAX_AGE_MS) return true;
+  if (parsed?.source?.enrichment?.status === "stale") return true;
+  return false;
+}
+
 export async function handleRules(request, env, ctx) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return jsonResponse(JSON.stringify({ ok: false, reason: "method" }), 405);
@@ -242,9 +256,8 @@ export async function handleRules(request, env, ctx) {
   let raw = await env.ALERT_STATE.get(RULES_KV_KEY);
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
-  const age = parsed?.generated_at ? Date.now() - new Date(parsed.generated_at).getTime() : Infinity;
 
-  if (!parsed || age > MAX_AGE_MS) {
+  if (rulesViewNeedsRefresh(parsed)) {
     try {
       const view = await buildRuleView(fetch, new Date());
       raw = JSON.stringify(view);

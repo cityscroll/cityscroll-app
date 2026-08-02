@@ -844,16 +844,22 @@ events carry alert metadata. Digests cite comment-close by `valid_at` from the s
 (`worker/src/lib/alert_temporal.mjs` → `commentCloseValidAt`), not publication or
 processing time. The `/rules` read model is `rules:materialized:v2`, and Agency Rules
 notice detail owns the public spine (same `.chain` pattern as the Money contract
-timeline).
+timeline). Public demo: `#notice/20260714029` (`rules-lifecycle-spine` in
+`site/demo/demo-links.json`).
 
 **RSS egress (hard):** `worker/src/rules.mjs` must send `RULES_RSS_HEADERS`
 (`User-Agent` + RSS Accept) on `https://rules.cityofnewyork.us/feed/`. An empty or
 missing User-Agent gets Cloudflare HTTP 403 challenge HTML ("Just a moment…"), so
 Workers subrequests with no default UA produce zero enrichment rows. Challenge HTML
-is treated as a fetch failure (`looksLikeBotChallenge`), not an empty feed. Verify:
+is treated as a fetch failure (`looksLikeBotChallenge`), not an empty feed.
+**Stale-enrichment retry:** `handleRules` rebuilds when
+`source.enrichment.status === "stale"` even if `generated_at` is younger than the
+36h age gate (`rulesViewNeedsRefresh`) — otherwise a failed materialization sticks
+until max-age after egress is fixed. Verify:
 `node --test worker/test/nyc_rules.test.mjs worker/test/rules_event_spine.test.mjs
-test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs`.
-Captures: `python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
+test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs` and
+`python3 test/standards/demo_links.py`. Captures:
+`python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
 
 ## Multi-dimension improvement flywheel
 
