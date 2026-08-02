@@ -10,6 +10,7 @@ import {
   normalizeRuleItem,
   parseRssItems,
 } from "./lib/rules.mjs";
+import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
 
 export const RULES_KV_KEY = "rules:materialized:v2";
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
@@ -89,8 +90,17 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
     byStage[u.stage] = (byStage[u.stage] || 0) + 1;
   }
 
+  const stampRuleSubjects = (record) => {
+    const subjects = linksFromRuleRecord(record);
+    return {
+      ...record,
+      subject_refs: subjects.subject_refs,
+      subject_links: subjects.subject_links,
+    };
+  };
+
   const records = [
-    ...matched.map((m) => ({
+    ...matched.map((m) => stampRuleSubjects({
       request_id: m.city_record.request_id,
       agency: m.city_record.agency_name,
       title: m.city_record.short_title || m.rule.title,
@@ -126,7 +136,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         basis: m.join.basis,
       },
     })),
-    ...unmatchedNotices.map((notice) => ({
+    ...unmatchedNotices.map((notice) => stampRuleSubjects({
       request_id: notice.request_id,
       agency: notice.agency_name,
       title: notice.short_title,
@@ -146,7 +156,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         reason: "No NYC Rules entry found for this agency and notice",
       },
     })),
-    ...unmatchedRules.map(({ rule, stage }) => ({
+    ...unmatchedRules.map(({ rule, stage }) => stampRuleSubjects({
       request_id: null,
       agency: rule.agency_name || rule.agency_full || rule.agency_abbr,
       title: rule.title,

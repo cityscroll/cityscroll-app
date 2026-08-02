@@ -32,7 +32,9 @@ Adopt a **subject registry** pure library (`worker/src/lib/subject_registry.mjs`
    names already exist (`references_contract`).
 4. **Product surface:** `assembleLifecycle` stamps `subject_refs` + `subject_links` when a
    confident registered (or pending) contract id is joined. Ambiguous multi-id registration
-   does not invent a contract subject.
+   does not invent a contract subject. Rules materialization and meeting-outcomes stamp
+   `subject_refs` + `about_notice` links for matched notice↔`rules` and
+   notice↔`legistar-event` joins only (`linksFromRuleRecord` / `linksFromMeetingRecord`).
 5. **Civic-time fixtures** may declare `subject_links` beside assertions without changing
    envelope identity fields.
 6. **Claim layer / action log** accept optional registry refs so multi-source claims and

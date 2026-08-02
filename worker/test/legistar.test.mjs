@@ -64,6 +64,16 @@ test("buildMeetingOutcomes follows notice -> event -> agenda -> matter -> vote",
   assert.equal(matter.outcome, "Approved by Subcommittee");
   assert.equal(matter.votes[0].counts.aye, 6);
   assert.equal(matter.join.matched, true);
+
+  // Subject registry: matched notice ↔ legistar-event with provenance.
+  assert.ok(record.subject_refs?.notice);
+  assert.ok(record.subject_refs?.["legistar-event"]);
+  assert.equal(record.subject_refs["legistar-event"], `legistar-event:${record.council_event.event_id}`);
+  assert.ok(record.subject_links.some((l) => (
+    l.type === "about_notice"
+    && l.from === record.subject_refs["legistar-event"]
+    && l.to === record.subject_refs.notice
+  )));
 });
 
 test("notice venue does not become affected geography", () => {
@@ -93,6 +103,10 @@ test("unmatched notice is explicit and machine-readable", () => {
   assert.equal(model.records[0].council_event, null);
   assert.equal(Array.isArray(model.records[0].agenda_items), true);
   assert.equal(model.records[0].agenda_items.length, 0);
+  // Unmatched: notice subject only — no speculative legistar-event stamp or link.
+  assert.equal(model.records[0].subject_refs.notice, "notice:CR-1002");
+  assert.equal(model.records[0].subject_refs["legistar-event"], undefined);
+  assert.equal(model.records[0].subject_links.length, 0);
 });
 
 test("attachments attach to matter documents by agenda_item_id", () => {

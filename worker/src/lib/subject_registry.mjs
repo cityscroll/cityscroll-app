@@ -6,7 +6,10 @@
  *   - parses/formats those refs without silent rewrite
  *   - defines a closed set of typed inter-subject links
  *   - extracts notice↔contract links from existing lifecycle joins
+ *   - extracts notice↔rules / notice↔legistar-event links from matched
+ *     rules and meeting-outcomes materialization joins
  *   - measures cross_subject_link_rate on PIN-bearing award cases
+ *   - measures rules_meetings_subject_link_rate on matched domain records
  *
  * Subjects stay distinct (notice:… is never rewritten to contract:…). Agreement is
  * expressed as an edge, not a collapsed id.
@@ -57,7 +60,7 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
   },
   about_notice: {
     description: "Downstream subject is about a City Record notice",
-    from_kinds: Object.freeze(["contract", "legistar-event", "project", "entity-pair"]),
+    from_kinds: Object.freeze(["contract", "legistar-event", "project", "entity-pair", "rules"]),
     to_kinds: Object.freeze(["notice"]),
   },
   published_by_agency: {
@@ -364,6 +367,205 @@ export function linksFromLifecycle(lifecycle, noticeRow = {}) {
   return {
     subject_refs,
     subject_links: dedupeSubjectLinks(links),
+  };
+}
+
+/**
+ * Stable NYC Rules subject id from a publisher guid or official URL.
+ * Never invents — returns null when neither guid nor url is present.
+ * Ids keep publisher shape (guid preferred); formatSubjectRef rejects whitespace.
+ *
+ * @param {object} nycRules - nyc_rules nested block or normalized RSS item
+ * @returns {string|null}
+ */
+export function rulesNativeId(nycRules = {}) {
+  const guid = clean(nycRules?.guid || nycRules?.Guid || nycRules?.GUID);
+  if (guid && !/\s/.test(guid)) return guid;
+  const url = clean(nycRules?.url || nycRules?.link || nycRules?.Link);
+  if (url && !/\s/.test(url)) return url;
+  return null;
+}
+
+/**
+ * Build subject_refs + typed links from a rules:materialized:v2 record.
+ * Stamps notice and/or rules subjects from real ids only. The notice↔rules
+ * about_notice edge is emitted only when join.matched and both subjects resolve.
+ *
+ * @param {object} record - public rules materialization row
+ * @returns {{ subject_refs: object, subject_links: object[] }}
+ */
+export function linksFromRuleRecord(record = {}) {
+  const r = record || {};
+  const subject_refs = {};
+  const links = [];
+  const requestId = clean(r.request_id || r.city_record?.request_id || r.city_record?.id);
+  const matched = r.join?.matched === true;
+  const nycRules = r.nyc_rules && typeof r.nyc_rules === "object" ? r.nyc_rules : null;
+
+  if (requestId) {
+    const noticeRef = formatSubjectRef("notice", requestId);
+    if (noticeRef) subject_refs.notice = noticeRef;
+  }
+
+  // Rules subject: only when a publisher guid/url exists. Matched joins use the
+  // nested nyc_rules block; unmatched RSS-only rows also carry nyc_rules.
+  if (nycRules) {
+    const rulesId = rulesNativeId(nycRules);
+    if (rulesId) {
+      const rulesRef = formatSubjectRef("rules", rulesId);
+      if (rulesRef) subject_refs.rules = rulesRef;
+    }
+  }
+
+  // Link only on a genuine City Record ↔ NYC Rules join (no speculative edges).
+  if (matched && subject_refs.notice && subject_refs.rules) {
+    const edge = makeSubjectLink({
+      type: "about_notice",
+      from: subject_refs.rules,
+      to: subject_refs.notice,
+      evidence: {
+        basis: "rules_rss_city_record_join",
+        source: "nyc-rules-rss",
+        confidence: clean(r.join?.confidence) || null,
+        join_basis: clean(r.join?.basis) || null,
+        request_id: requestId || null,
+        rules_id: rulesNativeId(nycRules),
+      },
+    });
+    if (edge) links.push(edge);
+  }
+
+  return {
+    subject_refs,
+    subject_links: dedupeSubjectLinks(links),
+  };
+}
+
+/**
+ * Build subject_refs + typed links from a meeting-outcomes:materialized:v2 record.
+ * Stamps notice when request_id exists. Stamps legistar-event only when the
+ * Council join matched and an event_id is present. about_notice edge only when
+ * both subjects resolve on a matched join — no speculative stamps.
+ *
+ * @param {object} record - public meeting-outcomes materialization row
+ * @returns {{ subject_refs: object, subject_links: object[] }}
+ */
+export function linksFromMeetingRecord(record = {}) {
+  const r = record || {};
+  const subject_refs = {};
+  const links = [];
+  const requestId = clean(r.request_id || r.notice?.request_id || r.notice?.id);
+  const matched = r.join?.matched === true;
+  const eventId = clean(
+    r.council_event?.event_id
+      || r.council_event?.EventId
+      || r.event_id
+      || r.legistar_event_id,
+  );
+
+  if (requestId) {
+    const noticeRef = formatSubjectRef("notice", requestId);
+    if (noticeRef) subject_refs.notice = noticeRef;
+  }
+
+  // Legistar event subject only when the join actually resolved to an event.
+  if (matched && eventId) {
+    const eventRef = formatSubjectRef("legistar-event", eventId);
+    if (eventRef) subject_refs["legistar-event"] = eventRef;
+  }
+
+  if (matched && subject_refs.notice && subject_refs["legistar-event"]) {
+    const edge = makeSubjectLink({
+      type: "about_notice",
+      from: subject_refs["legistar-event"],
+      to: subject_refs.notice,
+      evidence: {
+        basis: "legistar_city_record_join",
+        source: "nyc-legistar",
+        method: clean(r.join?.method) || null,
+        request_id: requestId || null,
+        event_id: eventId,
+      },
+    });
+    if (edge) links.push(edge);
+  }
+
+  return {
+    subject_refs,
+    subject_links: dedupeSubjectLinks(links),
+  };
+}
+
+/**
+ * Measure notice↔rules / notice↔legistar-event product-surface link rate.
+ * Eligible when a case has a notice ref and a domain peer (rules or
+ * legistar-event). Linked only when product subject_links connect them —
+ * builders are not re-run for the numerator.
+ *
+ * @param {Array<object>} cases - rows with subject_refs + subject_links, or
+ *   raw materialization records (builders used only to recover identity refs)
+ * @returns {{ metric: string, version: string, eligible: number, linked: number, rate: number, cases: object[] }}
+ */
+export function measureRulesMeetingsSubjectLinkRate(cases = []) {
+  const rows = Array.isArray(cases) ? cases : [];
+  const details = [];
+  let eligible = 0;
+  let linked = 0;
+
+  for (const row of rows) {
+    if (!row || typeof row !== "object") continue;
+
+    let noticeRef = row.subject_refs?.notice || null;
+    let peerRef = row.subject_refs?.rules || row.subject_refs?.["legistar-event"] || null;
+    let measureLinks = Array.isArray(row.subject_links)
+      ? dedupeSubjectLinks(row.subject_links.map((l) => makeSubjectLink(l)).filter(Boolean))
+      : [];
+
+    // Recover identity refs from materialization shape without inventing links.
+    if (!noticeRef || !peerRef) {
+      const isMeeting = !!(row.council_event || row.event_id || row.legistar_event_id
+        || (row.join && (row.agenda_items || row.spines)));
+      const identity = isMeeting ? linksFromMeetingRecord(row) : linksFromRuleRecord(row);
+      noticeRef = noticeRef || identity.subject_refs.notice || null;
+      peerRef = peerRef
+        || identity.subject_refs.rules
+        || identity.subject_refs["legistar-event"]
+        || null;
+      // Product surface only: do not fall back to identity.subject_links for rate.
+    }
+
+    if (!noticeRef || !peerRef) {
+      details.push({
+        id: row.id || row.request_id || null,
+        eligible: false,
+        linked: false,
+        reason: "missing_notice_or_domain_peer",
+      });
+      continue;
+    }
+
+    eligible += 1;
+    const ok = subjectsConnected(noticeRef, peerRef, measureLinks);
+    if (ok) linked += 1;
+    details.push({
+      id: row.id || row.request_id || `${noticeRef}|${peerRef}`,
+      eligible: true,
+      linked: ok,
+      notice_ref: noticeRef,
+      peer_ref: peerRef,
+      link_count: measureLinks.length,
+      connected: resolveConnectedSubjects(noticeRef, measureLinks),
+    });
+  }
+
+  const rate = eligible === 0 ? 0 : linked / eligible;
+  return {
+    metric: "rules_meetings_subject_link_rate",
+    version: SUBJECT_REGISTRY_VERSION,
+    eligible,
+    linked,
+    rate,
+    cases: details,
   };
 }
 

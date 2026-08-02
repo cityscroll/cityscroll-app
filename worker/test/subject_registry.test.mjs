@@ -20,11 +20,15 @@ import {
   formatSubjectRef,
   linksFromCivicFixtureDoc,
   linksFromLifecycle,
+  linksFromMeetingRecord,
   linksFromProcurementPair,
+  linksFromRuleRecord,
   makeSubjectLink,
   measureCrossSubjectLinkRate,
+  measureRulesMeetingsSubjectLinkRate,
   parseSubjectRef,
   resolveConnectedSubjects,
+  rulesNativeId,
   subjectRefFromSourceRecord,
   subjectRefsUnchanged,
   subjectsConnected,
@@ -246,4 +250,116 @@ test("ambiguous multi-id registration does not invent a confident contract subje
   assert.ok(!result.subject_links.some((l) => l.type === "registered_as"));
   // PIN edge from notice may still exist.
   assert.ok(result.subject_links.some((l) => l.type === "shares_authority_key"));
+});
+
+// ---------------------------------------------------------------------------
+// Rules + meeting-outcomes subject stamps (catchup Target 9)
+// ---------------------------------------------------------------------------
+
+const RULES_FIXTURE = JSON.parse(
+  readFileSync(join(ROOT, "worker/test/fixtures/entity-intelligence/rules_materialized_v2.json"), "utf8"),
+);
+const MEETINGS_FIXTURE = JSON.parse(
+  readFileSync(
+    join(ROOT, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+    "utf8",
+  ),
+);
+
+test("rulesNativeId prefers guid then url and never invents", () => {
+  assert.equal(
+    rulesNativeId({ guid: "https://rules.cityofnewyork.us/?p=9991", url: "https://example.com/x" }),
+    "https://rules.cityofnewyork.us/?p=9991",
+  );
+  assert.equal(rulesNativeId({ url: "https://rules.cityofnewyork.us/rule/dot/" }), "https://rules.cityofnewyork.us/rule/dot/");
+  assert.equal(rulesNativeId({}), null);
+  assert.equal(rulesNativeId({ guid: "has spaces" }), null);
+});
+
+test("linksFromRuleRecord stamps notice↔rules only on matched joins with real rules id", () => {
+  const matched = RULES_FIXTURE.rules.find((r) => r.join?.matched);
+  assert.ok(matched, "fixture must include a matched rules record");
+  const { subject_refs, subject_links } = linksFromRuleRecord(matched);
+
+  assert.equal(subject_refs.notice, "notice:20260714029");
+  assert.equal(subject_refs.rules, "rules:https://rules.cityofnewyork.us/?p=9991");
+  assert.equal(subject_links.length, 1);
+  assert.equal(subject_links[0].type, "about_notice");
+  assert.equal(subject_links[0].from, subject_refs.rules);
+  assert.equal(subject_links[0].to, subject_refs.notice);
+  assert.equal(subject_links[0].evidence.basis, "rules_rss_city_record_join");
+  assert.equal(
+    subjectsConnected(subject_refs.notice, subject_refs.rules, subject_links),
+    true,
+  );
+  const connected = resolveConnectedSubjects(subject_refs.notice, subject_links);
+  assert.ok(connected.includes(subject_refs.rules));
+
+  // Unmatched City Record notice: notice only, no speculative rules peer or link.
+  const unmatched = RULES_FIXTURE.rules.find((r) => r.join && !r.join.matched);
+  assert.ok(unmatched);
+  const bare = linksFromRuleRecord(unmatched);
+  assert.equal(bare.subject_refs.notice, "notice:20260521021");
+  assert.equal(bare.subject_refs.rules, undefined);
+  assert.equal(bare.subject_links.length, 0);
+});
+
+test("linksFromMeetingRecord stamps notice↔legistar-event only on matched joins", () => {
+  const matched = MEETINGS_FIXTURE.records.find((r) => r.join?.matched);
+  assert.ok(matched, "fixture must include a matched meeting-outcomes record");
+  const { subject_refs, subject_links } = linksFromMeetingRecord(matched);
+
+  assert.equal(subject_refs.notice, "notice:20260706036");
+  assert.equal(subject_refs["legistar-event"], "legistar-event:22526");
+  assert.equal(subject_links.length, 1);
+  assert.equal(subject_links[0].type, "about_notice");
+  assert.equal(subject_links[0].from, "legistar-event:22526");
+  assert.equal(subject_links[0].to, "notice:20260706036");
+  assert.equal(subject_links[0].evidence.basis, "legistar_city_record_join");
+  assert.equal(
+    subjectsConnected("notice:20260706036", "legistar-event:22526", subject_links),
+    true,
+  );
+
+  // Unmatched non-Council hearing: notice only — no invented legistar-event.
+  const unmatched = MEETINGS_FIXTURE.records.find((r) => r.join && !r.join.matched);
+  assert.ok(unmatched);
+  const bare = linksFromMeetingRecord(unmatched);
+  assert.equal(bare.subject_refs.notice, "notice:20260716022");
+  assert.equal(bare.subject_refs["legistar-event"], undefined);
+  assert.equal(bare.subject_links.length, 0);
+});
+
+test("rules_meetings_subject_link_rate: product stamps connect matched peers only", () => {
+  const product = [
+    (() => {
+      const row = RULES_FIXTURE.rules.find((r) => r.join?.matched);
+      return { ...row, ...linksFromRuleRecord(row) };
+    })(),
+    (() => {
+      const row = MEETINGS_FIXTURE.records.find((r) => r.join?.matched);
+      return { ...row, ...linksFromMeetingRecord(row) };
+    })(),
+    (() => {
+      const row = MEETINGS_FIXTURE.records.find((r) => r.join && !r.join.matched);
+      return { ...row, ...linksFromMeetingRecord(row) };
+    })(),
+  ];
+  const measured = measureRulesMeetingsSubjectLinkRate(product);
+  assert.equal(measured.metric, "rules_meetings_subject_link_rate");
+  assert.equal(measured.version, SUBJECT_REGISTRY_VERSION);
+  // Matched rules + matched meeting are eligible; unmatched notice alone is not.
+  assert.equal(measured.eligible, 2);
+  assert.equal(measured.linked, 2);
+  assert.equal(measured.rate, 1);
+
+  // Bare identity without product links → eligible but rate 0.
+  const bare = [
+    RULES_FIXTURE.rules.find((r) => r.join?.matched),
+    MEETINGS_FIXTURE.records.find((r) => r.join?.matched),
+  ].map((row) => ({ ...row, subject_links: [] }));
+  const before = measureRulesMeetingsSubjectLinkRate(bare);
+  assert.equal(before.eligible, 2);
+  assert.equal(before.linked, 0);
+  assert.equal(before.rate, 0);
 });
