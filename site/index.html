@@ -5001,9 +5001,11 @@ async function landSelect(i, el){
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
-  html+=`<div class="actions" style="margin-top:12px">
+  // Action rail first (what can I do now); utility controls stay secondary.
+  html+=`<div id="land-actions" class="next-action-rail-host"></div>
+  <div class="actions" style="margin-top:12px">
     ${landPermalinkActionHTML(r)}
-    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
+    <a class="act" href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
@@ -5034,6 +5036,8 @@ async function landSelect(i, el){
       })
       .catch(()=>{});
   }
+  // Immediate rail from list row (ZAP status + portal); hydrates again when outcomes load.
+  paintLandActionRail($("#land-actions"), r, null, null);
   loadZapOutcomes(r, $("#land-outcomes"), selection);
   const landURL=landLink(r.project_id);
   const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
@@ -5557,6 +5561,7 @@ async function loadZapOutcomes(r, el, selection){
     if(!document.contains(el)) return;
     el.innerHTML = landOutcomesHTML(warm.data.record, phaseTools);
     bindLandSpineUI(el);
+    paintLandActionRail($("#land-actions"), r, warm.data.record, phaseTools);
     return;
   }
   const [data, phaseTools] = await Promise.all([fetchZapOutcomesPayload(r.project_id), phaseToolsP]);
@@ -5571,6 +5576,7 @@ async function loadZapOutcomes(r, el, selection){
   }
   el.innerHTML = landOutcomesHTML(data.record, phaseTools);
   bindLandSpineUI(el);
+  paintLandActionRail($("#land-actions"), r, data.record, phaseTools);
 }
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
@@ -5894,6 +5900,84 @@ function actionRailGuideHTML(actions){
       steps.push(t("hearing_guide_contact_step_html",{who}));
     }
     if(!steps.length) steps.push(t("hearing_guide_fallback_step"));
+  }
+  else if(guide.system==="zoning_extracted"){
+    // Land / ULURP: phase context + next hearing participation (only fields the city published).
+    headingKey="land_guide_heading";
+    const when=guide.event_date||action.deadline;
+    const whereBits=[guide.venue_building,guide.venue_address].filter(Boolean);
+    const where=whereBits.map(escUiHtml).join(" · ");
+    const phaseName=guide.phase_label
+      ? escUiHtml(guide.phase_label)
+      : (guide.phase_id ? escUiHtml(landPhaseLabel(guide.phase_id)) : "");
+    facts=[
+      phaseName?`<dt>${t("land_guide_phase_label")}</dt><dd>${phaseName}</dd>`:"",
+      guide.public_status?`<dt>${t("land_guide_status_label")}</dt><dd><b>${escUiHtml(guide.public_status)}</b></dd>`:"",
+      when?`<dt>${t("land_guide_hearing_label")}</dt><dd>${fdt(when)}${guide.next_hearing&&guide.next_hearing.agency?` · ${escUiHtml(guide.next_hearing.agency)}`:""}</dd>`:"",
+      where?`<dt>${t("venue_label")}</dt><dd>${where}</dd>`:"",
+      guide.testimony_email?`<dt>${t("land_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`:"",
+      (()=>{
+        const bits=[];
+        if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
+        if(guide.email && (!guide.testimony_email || String(guide.email).toLowerCase()!==String(guide.testimony_email).toLowerCase())){
+          bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
+        }
+        if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
+        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+      })(),
+    ].join("");
+    if(guide.mode==="closed"){
+      steps.push(t("land_guide_closed_step"));
+    }else if(guide.mode==="pre_review"){
+      steps.push(phaseName
+        ? t("land_guide_pre_review_phase_step",{phase:phaseName})
+        : t("land_guide_pre_review_step"));
+    }else if(phaseName){
+      steps.push(t("land_guide_phase_step",{phase:phaseName}));
+    }
+    if(when && where) steps.push(t("land_guide_attend_step",{date:fdt(when),where}));
+    else if(when) steps.push(t("land_guide_attend_date_step",{date:fdt(when)}));
+    else if(where) steps.push(t("land_guide_attend_where_step",{where}));
+    if(guide.participation_url){
+      const host=escUiHtml(hostOf(guide.participation_url));
+      steps.push(guide.join_kind==="join"
+        ? t("land_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
+        : t("land_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}));
+    }
+    if(guide.testimony_email){
+      const email=escUiHtml(guide.testimony_email);
+      if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
+        steps.push(t("land_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}));
+      }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
+        steps.push(t("land_guide_testimony_until_close_step_html",{email}));
+      }else{
+        steps.push(t("land_guide_testimony_step_html",{email}));
+      }
+    }
+    if(guide.contact_name || guide.email || guide.contact_phone){
+      const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
+      steps.push(t("land_guide_contact_step_html",{who}));
+    }
+    if(guide.project_url && guide.mode==="public_review"){
+      const host=escUiHtml(hostOf(guide.project_url));
+      steps.push(t("land_guide_zap_comment_step_html",{url:escUiHtml(guide.project_url),host}));
+    }else if(guide.project_url && guide.mode!=="closed"){
+      const host=escUiHtml(hostOf(guide.project_url));
+      steps.push(t("land_guide_zap_project_step_html",{url:escUiHtml(guide.project_url),host}));
+    }
+    if(guide.official_notice_url && !guide.participation_url){
+      const host=escUiHtml(hostOf(guide.official_notice_url));
+      steps.push(t("land_guide_notice_step_html",{url:escUiHtml(guide.official_notice_url),host}));
+    }
+    // Additional upcoming hearings (CB/BP/CPC/Council) beyond the primary.
+    (guide.hearings||[]).slice(0,4).forEach(h=>{
+      if(!h||!h.event_date||h.past) return;
+      if(guide.next_hearing&&h.request_id&&guide.next_hearing.request_id===h.request_id) return;
+      if(guide.next_hearing&&!h.request_id&&h.event_date===guide.next_hearing.event_date) return;
+      const body=h.body_kind?landPhaseLabel(h.body_kind):escUiHtml(h.agency||h.title||"");
+      if(body) steps.push(t("land_guide_other_hearing_step",{body:escUiHtml(body),date:fdt(h.event_date)}));
+    });
+    if(!steps.length) steps.push(t("land_guide_fallback_step"));
   }else if(guide.system==="parcel_lookup"){
     if(guide.bbl) steps.push(t("property_guide_bbl_step",{bbl:escUiHtml(guide.bbl)}));
     if(guide.zola_url) steps.push(t("property_guide_zola_step_html",{url:escUiHtml(guide.zola_url)}));
@@ -6002,6 +6086,142 @@ async function mountNoticeActionRail(el,r){
   const view=await loadRulesView();
   if(!document.contains(el)) return;
   paintNoticeActionRail(el,r,buildRulesStageMap(view).get(r.request_id)||null);
+}
+
+/** Build hearings for land action rail from zap-outcomes city_record_notices (+ hearing_location). */
+function landActionHearingsFromRecord(record){
+  const notices=Array.isArray(record&&record.city_record_notices)?record.city_record_notices:[];
+  if(notices.length){
+    return notices.map(row=>{
+      const body=[
+        row.additional_description_1,row.additional_description_2,row.additional_description_3,
+        row.other_info_1,row.other_info_2,row.other_info_3,
+        row.printout_1,row.printout_2,row.printout_3,
+      ].filter(Boolean).join(" ");
+      let venue=null, participation=null;
+      try{
+        if(typeof normalizeHearingRow==="function"){
+          const rec=normalizeHearingRow(row);
+          venue=rec&&rec.venue||null;
+          participation=rec&&rec.participation||null;
+        }
+      }catch(_e){}
+      if(!participation && typeof hearingParticipationFromBody==="function"){
+        try{
+          participation=hearingParticipationFromBody(body, REQ_URL(row.request_id));
+        }catch(_e){}
+      }
+      return {
+        request_id:row.request_id,
+        event_date:row.event_date||null,
+        agency:row.agency_name||null,
+        title:row.short_title||null,
+        notice_text:body,
+        venue,
+        participation,
+        participation_url:participation&&participation.links&&participation.links[0]
+          ? participation.links[0].url : null,
+        street_address_1:row.street_address_1||null,
+        street_address_2:row.street_address_2||null,
+        city:row.city||null,
+        state:row.state||null,
+        zip_code:row.zip_code||null,
+        building_name:row.building_name||null,
+        email:row.email||null,
+        contact_name:row.contact_name||null,
+        contact_phone:row.contact_phone||null,
+        source_url:row.request_id?REQ_URL(row.request_id):null,
+      };
+    });
+  }
+  // Fallback: spine city_record_hearing events only (title/date/agency — no body).
+  const events=((record&&record.spine&&record.spine.events)||[]).filter(e=>e&&e.kind==="city_record_hearing");
+  return events.map(e=>({
+    request_id:null,
+    event_date:e.time&&e.time.value||null,
+    agency:e.detail||null,
+    title:e.title||null,
+    notice_text:"",
+    source_url:e.source&&e.source.url||null,
+  }));
+}
+function landActionMatter(projectRow, outcomeRecord, phaseTools){
+  const r=projectRow||{};
+  const rec=outcomeRecord||null;
+  const projectId=r.project_id||(rec&&rec.project_id)||null;
+  const portal=rec&&rec.portal_url
+    || (projectId?`https://zap.planning.nyc.gov/projects/${encodeURIComponent(projectId)}`:null);
+  const publicStatus=r.public_status||(rec&&rec.public_status)||(rec&&rec.open_data&&rec.open_data.public_status)||null;
+  let phaseId=null, phaseLabel=null;
+  if(rec&&rec.spine&&phaseTools&&typeof phaseTools.buildLandPhaseView==="function"){
+    try{
+      const view=phaseTools.buildLandPhaseView(rec.spine,{
+        open_data:rec.open_data||null,
+        portal_url:portal,
+        public_status:publicStatus,
+        project_id:projectId,
+      });
+      phaseId=view&&view.current&&view.current.phase_id||null;
+      if(view&&view.current&&view.current.label_key) phaseLabel=t(view.current.label_key);
+    }catch(_e){}
+  }
+  const hearings=rec?landActionHearingsFromRecord(rec):[];
+  // Prefer nearest upcoming hearing date as deadline when present.
+  const upcoming=hearings
+    .map(h=>h.event_date)
+    .filter(Boolean)
+    .map(d=>String(d).slice(0,10))
+    .filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&d>=todayISO())
+    .sort();
+  return {
+    kind:"zoning",
+    project_id:projectId,
+    project_name:r.project_name||(rec&&rec.project_name)||null,
+    title:r.project_name||(rec&&rec.project_name)||null,
+    public_status:publicStatus,
+    lifecycle_stage:null, // zoningStage derives from public_status / phase_id
+    phase_id:phaseId,
+    phase_label:phaseLabel,
+    project_url:portal,
+    deadline:upcoming[0]||null,
+    hearings,
+    official_notice_url:hearings[0]&&hearings[0].source_url||null,
+  };
+}
+function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
+  if(!el||!window.CrolActions) return;
+  const matter=landActionMatter(projectRow, outcomeRecord, phaseTools);
+  const actions=CrolActions.compileActionRail(matter,{today:todayISO()});
+  el.innerHTML=actionRailHTML(actions);
+  const calendar=el.querySelector("[data-next-calendar]");
+  if(calendar) calendar.addEventListener("click",()=>{
+    // Hearing-shaped ICS when a next hearing date is known; else skip silently.
+    const guide=(actions.find(a=>a.guide)||{}).guide;
+    const when=guide&&(guide.event_date||guide.deadline)||matter.deadline;
+    if(!when) return;
+    const synthetic={
+      request_id:guide&&guide.next_hearing&&guide.next_hearing.request_id||projectRow.project_id||"land",
+      short_title:projectRow.project_name||t("unnamed_rezoning"),
+      event_date:when,
+      agency_name:guide&&guide.next_hearing&&guide.next_hearing.agency||"",
+      section_name:"Public Hearings and Meetings",
+      type_of_notice_description:"Public Hearings",
+    };
+    try{ downloadEventICS(synthetic); }catch(_e){}
+  });
+  el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
+  // Watch CTA: prefill rezone alert from the selected project area.
+  el.querySelectorAll('a[href="#alerts"]').forEach(a=>{
+    a.addEventListener("click",(ev)=>{
+      const area=(projectRow.project_name||projectRow.borough||"")
+        .replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"")
+        .trim().split(/\s+/).slice(0,3).join(" ")||projectRow.borough||"";
+      if(area){
+        ev.preventDefault();
+        landToAlert(area);
+      }
+    });
+  });
 }
 function hearingAreaText(record){
   const area=record.affected_area||{};
@@ -7184,12 +7404,12 @@ function digItemHTML(kind, r, keywords){
     const when = rolling ? t("rolling_deadline_tag") : t("due_on",{date:fdt(r.due_date)})+(dl!=null?t("days_paren",{n:dl}):"");
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
     <div class="dm">${r.agency_name} · ${when}</div>${digEvidenceHTML(ev)}${dc}</div>`; }
-  // Scope decision: rezoning (ZAP) match evidence is out of scope for this pass -- ZAP rows
-  // have their own shape (project_name/project_brief, not short_title/description) and the
-  // reported failure was a City Record procurement notice, not a rezoning.
-  return `<div class="digitem"><div class="dt">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</div>
+  // Rezoning dig: deep-link into Land detail (action rail + ULURP timeline), not only ZAP.
+  // Scope decision: match evidence highlighting is out of scope for ZAP rows (different shape).
+  const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
+  return `<div class="digitem"><div class="dt"><a href="${landHref}">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</a></div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
-    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("hearing_notice_cr")}${extSR()}</a></div></div>`;
+    <div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
 }
 
 function feedURLs(){
