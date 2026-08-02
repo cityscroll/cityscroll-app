@@ -490,6 +490,7 @@
       "id": "property-bbl-fallback",
       "url": "#notice/20241112003",
       "feature": "property-bbl-fallback",
+      "localOnly": true,
       "description": "Show a Property notice whose site BBL comes from body tax-lot text, not a street-address geocode.",
       "expectations": {
         "visible": [
