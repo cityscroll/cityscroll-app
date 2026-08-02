@@ -1291,6 +1291,7 @@
     notice_not_found_html: "City Record Open Data에서 공고 <code>{id}</code>를 찾을 수 없습니다 — 최근에 게시되었거나 ID가 잘못 입력되었을 수 있습니다.",
     back_browse: "← CityScroll 둘러보기",
     back_previous_view: "← 이전 화면으로 돌아가기",
+    back_to_view: "← {view}(으)로 돌아가기",
     vendor_name_too_short: "“{name}”은(는) 공급업체를 식별하기에 너무 짧습니다.",
     try_city_record: "시정 기록부에서 확인해 보세요",
     notice_email_btn: "이메일",

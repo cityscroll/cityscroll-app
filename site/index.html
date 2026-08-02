@@ -4588,6 +4588,7 @@ function showExam(examNumber){
   loadCareerGuide().then(()=>{
     renderCareerGuide();
     focusItemRouteTarget($("#career-exam-"+CSS.escape(examNumber)));
+    applyActiveHistoryRouteScroll();
   });
 }
 function scrollStaffingView(view){
@@ -5166,6 +5167,7 @@ async function showLandEntry(id){
   if(row){
     const selection=landSelect(0,row);
     focusItemRouteTarget($("#land-item-card"));
+    applyActiveHistoryRouteScroll();
     await selection;
   }
 }
@@ -10530,6 +10532,7 @@ async function showAgency(name, initialTab){
   ]);
   if(!(stats && +stats.n) && !sections.length){
     box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. ${routeBackHTML("#money")}</div>`;
+    applyActiveHistoryRouteScroll();
     return;
   }
   const link = location.origin + location.pathname + agencyHref(nm);
@@ -10637,6 +10640,7 @@ async function showAgency(name, initialTab){
 
   announce(t("meta_agency_profile_announce",{name:nm}));
   focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 function vendorProfileFromVariants(variants){
@@ -11133,6 +11137,7 @@ async function showVendorLive(name, initialTab, box){
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   await hydrateVendorProfile(profile, initialTab, box, true);
   focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 async function showVendor(name, initialTab){
@@ -11140,7 +11145,7 @@ async function showVendor(name, initialTab){
   const box = $("#entityview");
   delete box.dataset.vendorStem;
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
-  if(stem.length < 3){ box.innerHTML = `<div class="empty">${t("vendor_name_too_short",{name:safe})} ${routeBackHTML("#money")}</div>`; return; }
+  if(stem.length < 3){ box.innerHTML = `<div class="empty">${t("vendor_name_too_short",{name:safe})} ${routeBackHTML("#money")}</div>`; applyActiveHistoryRouteScroll(); return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
   const profile = await loadVendorProfileRecord(name);
   if(!profile) return showVendorLive(name, initialTab, box);
@@ -11151,6 +11156,7 @@ async function showVendor(name, initialTab){
   }, initialTab, false);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
@@ -11384,6 +11390,7 @@ async function showSharedInv(id){
     invSave(s); location.hash="#investigation";
   });
   focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 /* ===================== MATTER TIMELINE (#matter/<pin>) =====================
@@ -11721,6 +11728,7 @@ async function showMatter(pin){
   }
   if(!rows.length){
     box.innerHTML = `<div class="empty">${t("matter_empty",{pin:safe})} ${routeBackHTML("#money")}</div>`;
+    applyActiveHistoryRouteScroll();
     return;
   }
   rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
@@ -11779,6 +11787,7 @@ async function showMatter(pin){
   bindMatterPhaseUI(box.querySelector(".matter-phase-timeline") || box);
   announce(t("meta_matter_timeline_announce",{n:eventCount}));
   focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 /* ===================== PERMALINKS & URL STATE =====================
@@ -11793,15 +11802,19 @@ let focusedItemRouteHash = "";
 
 // Hash navigation changes both the visual viewport and the assistive-technology reading point.
 // The active-pane guard prevents a slow route from reclaiming focus after navigation moved on.
+// When history is restoring a prior scroll point, focus without scrollIntoView so we do not
+// yank the reader to the item top and erase "where you came from."
 function focusItemRouteTarget(target){
   if(!target) return;
   const routeHash=location.hash;
   requestAnimationFrame(()=>{
     if(location.hash!==routeHash || focusedItemRouteHash===routeHash ||
        !target.isConnected || !target.closest(".tabpane.active")) return;
-    target.scrollIntoView({block:"start"});
+    const restoring=isRestoringHistoryRouteScroll();
+    if(!restoring) target.scrollIntoView({block:"start"});
     target.focus({preventScroll:true});
     focusedItemRouteHash=routeHash;
+    if(restoring) applyActiveHistoryRouteScroll();
   });
 }
 
@@ -11891,12 +11904,21 @@ function updateHash(){ // filter changes rewrite the current entry
   if(hashLock) return;
   const h = serializeState();
   if(!location.hash && h === "#money") return; // don't decorate a fresh default load
-  if(location.hash !== h) history.replaceState(null, "", h);
+  if(location.hash !== h){
+    // Preserve cityscrollRoute (referrer/back + scroll entry). replaceState(null) used to
+    // wipe it, so native Back after a filter tweak could not restore place.
+    const entry={hash:h,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)};
+    history.replaceState(routeHistoryState({entry}), "", h);
+  }
 }
 function pushHash(){ // tab changes create a history entry (back returns to the prior tab)
   if(hashLock) return;
   const h = serializeState();
-  if(location.hash !== h) history.pushState(null, "", h);
+  if(location.hash !== h){
+    const entry={hash:h,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)};
+    // New tab entries do not inherit an item-route back target.
+    history.pushState(routeHistoryState({entry, back:null}), "", h);
+  }
 }
 
 // ===== Digest deep-links (w12-12) =====
@@ -12077,7 +12099,10 @@ function routeReturnContext(state){
 function routeHistoryState(patch){
   const current=history.state&&typeof history.state==="object"&&!Array.isArray(history.state)?history.state:{};
   const prior=current.cityscrollRoute&&typeof current.cityscrollRoute==="object"?current.cityscrollRoute:{};
-  return {...current,cityscrollRoute:{...prior,...patch}};
+  const next={...prior,...patch};
+  // Explicit null clears a prior back target (tab push) without leaving a stale referrer.
+  if(Object.prototype.hasOwnProperty.call(patch,"back") && patch.back==null) delete next.back;
+  return {...current,cityscrollRoute:next};
 }
 function currentRouteSnapshot(){
   const hasActiveLens=!!document.querySelector(".tabbtn.active");
@@ -12088,10 +12113,33 @@ function currentRouteSnapshot(){
   history.replaceState(routeHistoryState({entry}),"",hash);
   return entry;
 }
+// Name the referring view for the back control: lens tab label, or a short item-route kind.
+// Cold deep links keep the collection fallback label (back_browse / caller override).
+function routeBackViewName(hash){
+  const safe=safeHistoryHash(hash);
+  if(!safe) return null;
+  const path=safe.slice(1).split("?",1)[0];
+  if(path.startsWith("agency/")) return t("meta_agency_profile");
+  if(path.startsWith("vendor/")) return t("meta_vendor_profile");
+  if(path.startsWith("notice/")) return t("notice_fallback");
+  if(path.startsWith("matter/")) return t("money_trail_heading");
+  if(path.startsWith("land/")) return t("tab_land");
+  if(path.startsWith("exam/")) return t("tab_people");
+  if(path==="investigation" || path.startsWith("investigation/")) return t("inv_default_name");
+  const tab=path.split("/")[0];
+  const tabKey={money:"tab_money",people:"tab_people",land:"tab_land",property:"tab_property",
+    rules:"tab_rules",meetings:"tab_meetings",alerts:"tab_alerts"}[tab];
+  return tabKey?t(tabKey):null;
+}
+function routeBackLabel(context, fallbackLabel){
+  if(!context) return fallbackLabel||t("back_browse");
+  const view=routeBackViewName(context.hash);
+  return view?t("back_to_view",{view}):t("back_previous_view");
+}
 function routeBackHTML(fallbackHash,fallbackLabel,className){
   const context=routeReturnContext(history.state);
   const href=context?context.hash:(safeHistoryHash(fallbackHash)||"#money");
-  const label=context?t("back_previous_view"):(fallbackLabel||t("back_browse"));
+  const label=routeBackLabel(context, fallbackLabel);
   const classAttr=className?' class="'+escUiHtml(className)+'"':"";
   const styleAttr=className?"":' style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none"';
   return '<a'+classAttr+styleAttr+' href="'+escUiHtml(href)+'" data-route-back="'+(context?"history":"fallback")+'">'+label+'</a>';
@@ -12099,6 +12147,9 @@ function routeBackHTML(fallbackHash,fallbackLabel,className){
 
 let pendingItemRouteContext=null;
 let pendingHistoryRouteScroll=null;
+// Active restore target survives async detail re-paints (agency/vendor/notice fetches) that
+// would otherwise leave the reader at the top after history.back().
+let activeHistoryRouteScroll=null;
 function rememberItemRouteContext(event){
   if(event.defaultPrevented || event.button!==0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   const target=event.target instanceof Element?event.target.closest("a[href]"):null;
@@ -12118,6 +12169,7 @@ function rememberItemRouteContext(event){
   }
 
   if(!itemRouteFallbackHash(destination.hash) || destination.hash===location.hash) return;
+  activeHistoryRouteScroll=null;
   pendingItemRouteContext={destination:destination.hash,back:currentRouteSnapshot()};
   setTimeout(()=>{
     if(pendingItemRouteContext&&pendingItemRouteContext.destination===destination.hash&&location.hash!==destination.hash) pendingItemRouteContext=null;
@@ -12130,16 +12182,34 @@ function commitPendingItemRouteContext(){
   history.replaceState(routeHistoryState({back:pending.back}),"",location.href);
 }
 function prepareHistoryRouteScroll(state){ pendingHistoryRouteScroll=routeHistoryEntry(state); }
+function isRestoringHistoryRouteScroll(){
+  const entry=activeHistoryRouteScroll||pendingHistoryRouteScroll;
+  if(!entry) return false;
+  return (safeHistoryHash(location.hash)||"#money")===entry.hash;
+}
+function applyActiveHistoryRouteScroll(){
+  const entry=activeHistoryRouteScroll;
+  if(!entry || (safeHistoryHash(location.hash)||"#money")!==entry.hash) return false;
+  scrollTo(entry.x,entry.y);
+  return Math.abs(scrollY-entry.y)<=2;
+}
 function restoreHistoryRouteScroll(){
   const entry=pendingHistoryRouteScroll;
   pendingHistoryRouteScroll=null;
-  if(!entry || (safeHistoryHash(location.hash)||"#money")!==entry.hash) return;
+  if(!entry || (safeHistoryHash(location.hash)||"#money")!==entry.hash){
+    // Forward/cold navigations are not restores — drop any stale active target.
+    if(!entry) activeHistoryRouteScroll=null;
+    return;
+  }
+  activeHistoryRouteScroll=entry;
   let attempts=0;
   const restore=()=>{
+    if(activeHistoryRouteScroll!==entry) return;
     if((safeHistoryHash(location.hash)||"#money")!==entry.hash) return;
     scrollTo(entry.x,entry.y);
     attempts++;
-    if(Math.abs(scrollY-entry.y)>2&&attempts<20) setTimeout(restore,50);
+    // Item routes re-fetch after popstate; keep trying longer than a list re-paint.
+    if(Math.abs(scrollY-entry.y)>2&&attempts<40) setTimeout(restore,50);
   };
   requestAnimationFrame(restore);
 }
@@ -12295,6 +12365,7 @@ async function showTaskFirst(task, id){
       <div class="task-first-list">${taskCardHTML(presentation, true)}</div>
     </div>`;
     focusItemRouteTarget(box.querySelector(".route-item"));
+    applyActiveHistoryRouteScroll();
     return;
   }
   const cards = (group.examples || []).map(ex => taskCardHTML(TaskFirst.presentExample(ex), false)).join("");
@@ -12314,7 +12385,7 @@ function applyHash(){
   if(!raw) return false;
   const collectionHash=bareCollectionHash(raw);
   if(collectionHash&&location.hash!==collectionHash){
-    history.replaceState(null,"",collectionHash);
+    history.replaceState(routeHistoryState({}),"",collectionHash);
     return applyHash();
   }
   if(raw.startsWith("notice/")){
@@ -12343,7 +12414,7 @@ function applyHash(){
   if(raw.startsWith("task/") || raw === "task"){
     const parsed = window.TaskFirst ? TaskFirst.parseTaskHash(raw) : null;
     if(!parsed || !parsed.task){
-      history.replaceState(null,"","#money");
+      history.replaceState(routeHistoryState({entry:{hash:"#money",x:0,y:0}}),"","#money");
       return applyHash();
     }
     showTaskFirst(parsed.task, parsed.id);
@@ -12463,6 +12534,7 @@ async function showNotice(id, watch){
   }catch(e){}
   if(!r){
     box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")} · <a href="${REQ_URL(id)}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a></div>`;
+    applyActiveHistoryRouteScroll();
     return;
   }
   const link = noticeLink(r.request_id);
@@ -12525,6 +12597,7 @@ async function showNotice(id, watch){
   mountUnofficialTranslation($("#nxlate"), r);
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) paintPaperTrail($("#nchain"), r, chain); }).catch(()=>{}); }
   focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 /* ===================== INIT =====================
