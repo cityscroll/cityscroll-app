@@ -2,8 +2,13 @@
 //
 // Parses Checkbook NYC XML for pending contracts, registered contracts, and spending
 // transactions, then assembles a bounded procurement timeline joining City Record
-// solicitation/award to Checkbook pending → registered → payment, with explicit
+// stages (solicitation → intent-to-negotiate → vendor list → intent-to-award → award)
+// to Checkbook pending → registered → payment, with explicit
 // unmatched/ambiguous/unknown states.
+//
+// Intermediate City Record notice types (Intent to Award, Vendor List, Intent to
+// Negotiate) are first-class timeline stages when the notice itself or a PIN-sibling
+// related notice carries that type — they are no longer collapsed into solicitation.
 //
 // This is a pure module (no fetch, no env) so test/contract tests exercise the join
 // logic directly. The worker module (worker/src/checkbook_lifecycle.mjs) wraps these
@@ -181,12 +186,142 @@ export function aggregateContractsById(records) {
 // ---------------------------------------------------------------------------
 
 export const STAGE_SOLICITATION = "solicitation";
+/** City Record intermediate: Intent to Negotiate (between solicitation and award). */
+export const STAGE_INTENT_TO_NEGOTIATE = "intent_to_negotiate";
+/** City Record intermediate: Vendor List (between solicitation and award). */
+export const STAGE_VENDOR_LIST = "vendor_list";
+/** City Record intermediate: Intent to Award (high-volume ~700 modern notices). */
+export const STAGE_INTENT_TO_AWARD = "intent_to_award";
 export const STAGE_AWARD = "award";
 export const STAGE_PENDING = "pending";
 export const STAGE_REGISTERED = "registered";
 export const STAGE_PAYMENT = "payment";
 
-export const STAGES = [STAGE_SOLICITATION, STAGE_AWARD, STAGE_PENDING, STAGE_REGISTERED, STAGE_PAYMENT];
+/**
+ * Full money-chain succession order.
+ * Intermediate City Record stages appear on the timeline only when matched
+ * (this notice or a PIN-related notice); Checkbook stages always appear.
+ */
+export const STAGES = [
+  STAGE_SOLICITATION,
+  STAGE_INTENT_TO_NEGOTIATE,
+  STAGE_VENDOR_LIST,
+  STAGE_INTENT_TO_AWARD,
+  STAGE_AWARD,
+  STAGE_PENDING,
+  STAGE_REGISTERED,
+  STAGE_PAYMENT,
+];
+
+/**
+ * Map City Record type_of_notice_description → money-chain stage key.
+ * Unknown / non-procurement types return null (do not invent a stage).
+ */
+export const CITY_RECORD_TYPE_TO_STAGE = Object.freeze({
+  Solicitation: STAGE_SOLICITATION,
+  "Intent to Negotiate": STAGE_INTENT_TO_NEGOTIATE,
+  "Vendor List": STAGE_VENDOR_LIST,
+  "Intent to Award": STAGE_INTENT_TO_AWARD,
+  Award: STAGE_AWARD,
+});
+
+/** Ordered City Record intermediate stages (between solicitation and award). */
+export const INTERMEDIATE_CITY_RECORD_STAGES = Object.freeze([
+  STAGE_INTENT_TO_NEGOTIATE,
+  STAGE_VENDOR_LIST,
+  STAGE_INTENT_TO_AWARD,
+]);
+
+/**
+ * Resolve a City Record notice row to a money-chain stage key, or null.
+ * @param {object} row
+ * @returns {string|null}
+ */
+export function cityRecordStageForNotice(row) {
+  const type = String(row?.type_of_notice_description || row?.type_of_notice || "").trim();
+  return CITY_RECORD_TYPE_TO_STAGE[type] || null;
+}
+
+/**
+ * Build a matched City Record stage entry from a notice row.
+ * @param {string} stage
+ * @param {object} row
+ * @param {object} [extra] extra fields (documents_status, detail overrides)
+ */
+function cityRecordStageEntry(stage, row, extra = {}) {
+  const r = row || {};
+  const detail = {
+    request_id: r.request_id || null,
+    agency: r.agency_name || r.agency || null,
+    title: r.short_title || null,
+    pin: r.pin || null,
+  };
+  // Vendor + amount ride on Intent to Award and Award notices when published.
+  if (stage === STAGE_AWARD || stage === STAGE_INTENT_TO_AWARD) {
+    detail.vendor = r.vendor_name || null;
+    detail.amount = r.contract_amount != null && r.contract_amount !== ""
+      ? Number(r.contract_amount) || 0
+      : null;
+  }
+  if (extra.detail && typeof extra.detail === "object") {
+    Object.assign(detail, extra.detail);
+  }
+  const { detail: _d, ...rest } = extra;
+  return stageEntry(stage, "matched", "city-record", {
+    date: r.start_date || null,
+    source_timestamp: r.start_date || null,
+    detail,
+    ...rest,
+  });
+}
+
+/**
+ * Pick the best notice for each City Record stage from the current notice + related
+ * PIN-siblings. Prefer the focal notice when it owns the stage; otherwise earliest
+ * start_date among related rows of that type.
+ *
+ * @param {object} noticeRow - focal City Record notice
+ * @param {object[]} relatedNotices - other notices sharing the PIN (optional)
+ * @returns {Map<string, object>} stage → notice row
+ */
+export function pickCityRecordStageNotices(noticeRow, relatedNotices = []) {
+  const byStage = new Map();
+  const candidates = [];
+  if (noticeRow && (noticeRow.request_id || noticeRow.type_of_notice_description || noticeRow.type_of_notice)) {
+    candidates.push(noticeRow);
+  }
+  for (const row of Array.isArray(relatedNotices) ? relatedNotices : []) {
+    if (!row) continue;
+    // Skip exact duplicate of the focal notice.
+    if (noticeRow?.request_id && row.request_id && String(row.request_id) === String(noticeRow.request_id)) {
+      continue;
+    }
+    candidates.push(row);
+  }
+
+  const focalId = noticeRow?.request_id != null ? String(noticeRow.request_id) : null;
+
+  for (const row of candidates) {
+    const stage = cityRecordStageForNotice(row);
+    if (!stage) continue;
+    const existing = byStage.get(stage);
+    if (!existing) {
+      byStage.set(stage, row);
+      continue;
+    }
+    // Prefer the focal notice when it owns this stage.
+    if (focalId && String(row.request_id) === focalId) {
+      byStage.set(stage, row);
+      continue;
+    }
+    if (focalId && String(existing.request_id) === focalId) continue;
+    // Otherwise earliest publication date (stable chain order).
+    const a = String(existing.start_date || "");
+    const b = String(row.start_date || "");
+    if (b && (!a || b < a)) byStage.set(stage, row);
+  }
+  return byStage;
+}
 
 // matched = exactly one record found
 // unmatched = confirmed lookup, nothing found
@@ -245,7 +380,7 @@ function stageEntry(stage, status, source, opts = {}) {
 }
 
 // Assemble the full procurement lifecycle from City Record notice + Checkbook data
-// + optional Current Solicitations (3khw-qi8f) package enrichment.
+// + optional Current Solicitations (3khw-qi8f) package enrichment + related PIN notices.
 //
 // noticeRow: the City Record notice (request_id, agency_name, type_of_notice_description,
 //            pin, start_date, short_title, contract_amount, vendor_name)
@@ -255,6 +390,7 @@ function stageEntry(stage, status, source, opts = {}) {
 // opts.pinStrategy: "exact" | "legacy-base" | "none"
 // opts.lookupStatus: { pending/registered/spending: "ok"|"error"|"skip" }
 // opts.currentSolicitation: { status: "ok"|"error", rows: raw Socrata rows[] }
+// opts.relatedNotices: City Record PIN-siblings (Solicitation / Intent* / Vendor List / Award)
 // opts.ocpAward: optional pre-joined OCP Recent Contract Awards side-car
 //   (from worker/src/lib/ocp_awards.mjs). When omitted the side-car is absent until the
 //   worker attaches it — cached lifecycles without ocp_award are treated as a miss.
@@ -285,34 +421,32 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   }
   const docsStatus = documentsStatusFor(enrichment);
 
-  // --- City Record stages (solicitation + award) ---
-  // The notice itself is the solicitation; an award notice carries the vendor + amount.
-  // When an award joins a Current Solicitations row by PIN, prepend that solicitation stage
-  // so readers see package metadata that City Record award rows omit.
-  const isAward = r.type_of_notice_description === "Award";
-  const isSolicitation = r.type_of_notice_description === "Solicitation" || !isAward;
-
+  // --- City Record stages (solicitation + intermediates + award) ---
+  // Reconstruct the publisher's notice typology as distinct timeline stages.
+  // Related PIN-siblings (opts.relatedNotices) fill intermediate stages so a
+  // solicitation notice can show a later Intent to Award on the same chain.
+  // Matched-only: do not invent empty intermediate chips for every notice.
+  const stageNotices = pickCityRecordStageNotices(r, opts.relatedNotices || []);
   const timeline = [];
 
-  if (isSolicitation) {
+  // Solicitation: prefer a City Record Solicitation row; else Current Solicitations
+  // package join on non-solicitation notices (award / intent) — never invent empty.
+  if (stageNotices.has(STAGE_SOLICITATION)) {
+    const solRow = stageNotices.get(STAGE_SOLICITATION);
     const detail = applySolicitationDetail({
-      request_id: r.request_id,
-      agency: r.agency_name,
-      title: r.short_title || null,
-      pin: r.pin || null,
+      request_id: solRow.request_id,
+      agency: solRow.agency_name || solRow.agency,
+      title: solRow.short_title || null,
+      pin: solRow.pin || r.pin || null,
     }, enrichment);
-    // Prefer the City Record notice as the stage source; flag enrichment source in detail.
-    // When package documents joined, source still names city-record for the notice itself;
-    // documents_status + enrichment_source drive the documents sub-slot.
     timeline.push(stageEntry(STAGE_SOLICITATION, "matched", "city-record", {
-      date: r.start_date || null,
-      source_timestamp: r.start_date || null,
+      date: solRow.start_date || null,
+      source_timestamp: solRow.start_date || null,
       documents_status: docsStatus,
       detail,
     }));
-  } else if (isAward && enrichment.status === "matched" && enrichment.match) {
-    // Award notice with a linked solicitation package from Current Solicitations.
-    // Only prepend on a positive join — do not invent an empty solicitation stage for every award.
+  } else if (enrichment.status === "matched" && enrichment.match) {
+    // Non-solicitation notice with a linked solicitation package from Current Solicitations.
     const m = enrichment.match;
     const detail = applySolicitationDetail({
       request_id: m.request_id,
@@ -328,19 +462,15 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     }));
   }
 
-  if (isAward) {
-    timeline.push(stageEntry(STAGE_AWARD, "matched", "city-record", {
-      date: r.start_date || null,
-      source_timestamp: r.start_date || null,
-      detail: {
-        request_id: r.request_id,
-        agency: r.agency_name,
-        title: r.short_title || null,
-        pin: r.pin || null,
-        vendor: r.vendor_name || null,
-        amount: r.contract_amount ? Number(r.contract_amount) || 0 : null,
-      },
-    }));
+  // Intermediate City Record stages (Intent to Negotiate → Vendor List → Intent to Award).
+  for (const stage of INTERMEDIATE_CITY_RECORD_STAGES) {
+    if (!stageNotices.has(stage)) continue;
+    timeline.push(cityRecordStageEntry(stage, stageNotices.get(stage)));
+  }
+
+  // Award stage when an Award notice is on the chain.
+  if (stageNotices.has(STAGE_AWARD)) {
+    timeline.push(cityRecordStageEntry(STAGE_AWARD, stageNotices.get(STAGE_AWARD)));
   }
 
   // No PIN → Checkbook stages cannot be joined. Mark not_applicable (not "unknown"/

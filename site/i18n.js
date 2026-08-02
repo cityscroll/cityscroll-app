@@ -968,6 +968,9 @@ const STRINGS = {
     // specific statements, never blank.
     lifecycle_heading: "Contract lifecycle",
     lifecycle_stage_solicitation: "Solicitation",
+    lifecycle_stage_intent_to_negotiate: "Intent to negotiate",
+    lifecycle_stage_vendor_list: "Vendor list",
+    lifecycle_stage_intent_to_award: "Intent to award",
     lifecycle_stage_award: "Award",
     lifecycle_stage_pending: "Pending contract",
     lifecycle_stage_registered: "Registered contract",

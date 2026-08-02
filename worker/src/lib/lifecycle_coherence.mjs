@@ -18,12 +18,18 @@ export const LIFECYCLE_COHERENCE_VERSION = "lifecycle_coherence_v1";
 
 /** Same succession order as checkbook_lifecycle.STAGES. */
 export const STAGE_SOLICITATION = "solicitation";
+export const STAGE_INTENT_TO_NEGOTIATE = "intent_to_negotiate";
+export const STAGE_VENDOR_LIST = "vendor_list";
+export const STAGE_INTENT_TO_AWARD = "intent_to_award";
 export const STAGE_AWARD = "award";
 export const STAGE_PENDING = "pending";
 export const STAGE_REGISTERED = "registered";
 export const STAGE_PAYMENT = "payment";
 export const STAGES = Object.freeze([
   STAGE_SOLICITATION,
+  STAGE_INTENT_TO_NEGOTIATE,
+  STAGE_VENDOR_LIST,
+  STAGE_INTENT_TO_AWARD,
   STAGE_AWARD,
   STAGE_PENDING,
   STAGE_REGISTERED,
