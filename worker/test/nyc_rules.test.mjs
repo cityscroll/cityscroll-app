@@ -332,17 +332,32 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   ]);
   assert.equal(matched.events.find((event) => event.event_type === "comment_close").alert.eligible, true);
   assert.equal(matched.stage, "comment-open");
+  // Subject registry: matched notice ↔ NYC Rules item (about_notice), no invent.
+  assert.equal(matched.subject_refs.notice, "notice:CR-100");
+  assert.equal(matched.subject_refs.rules, "rules:https://rules.cityofnewyork.us/rule/taxi-parking/");
+  assert.ok(matched.subject_links.some((l) => (
+    l.type === "about_notice"
+    && l.from === matched.subject_refs.rules
+    && l.to === matched.subject_refs.notice
+  )));
 
   const unmatchedNotice = view.rules.find((r) => r.city_record && !r.join.matched);
   assert.ok(unmatchedNotice);
   assert.ok(unmatchedNotice.join.reason);
   assert.equal(unmatchedNotice.nyc_rules, null);
   assert.deepEqual(unmatchedNotice.events, []);
+  assert.equal(unmatchedNotice.subject_refs.notice, "notice:CR-200");
+  assert.equal(unmatchedNotice.subject_refs.rules, undefined);
+  assert.equal(unmatchedNotice.subject_links.length, 0);
 
   const unmatchedRule = view.rules.find((r) => !r.city_record);
   assert.ok(unmatchedRule);
   assert.ok(unmatchedRule.join.reason);
   assert.ok(unmatchedRule.nyc_rules.url);
+  // RSS-only row: rules subject present; no notice peer or speculative link.
+  assert.equal(unmatchedRule.subject_refs.notice, undefined);
+  assert.equal(unmatchedRule.subject_refs.rules, "rules:https://rules.cityofnewyork.us/rule/energy-code/");
+  assert.equal(unmatchedRule.subject_links.length, 0);
 });
 
 // ---------------------------------------------------------------------------

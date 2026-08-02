@@ -716,12 +716,16 @@ Digest delivery identity remains `docs/digest-time-ontology.md` (separate concer
 Shared `kind:id` subject vocabulary + typed links so civic-time, lifecycle, ER source
 records, claim layer, and ops action objects resolve the **same** real-world object
 without silently rewriting `notice:` into `contract:`. Pure lib:
-`worker/src/lib/subject_registry.mjs`. Product surface: `assembleLifecycle` stamps
-`subject_refs` + `subject_links` on confident notice↔contract joins. Metric:
+`worker/src/lib/subject_registry.mjs`. Product surfaces:
+`assembleLifecycle` stamps notice↔contract; `linksFromRuleRecord` /
+`linksFromMeetingRecord` stamp rules materialization (`rules:materialized:v2`) and
+meeting-outcomes (`meeting-outcomes:materialized:v2`) with notice↔`rules` /
+notice↔`legistar-event` only when the join matched (no speculative stamps). Metrics:
 `cross_subject_link_rate` on PIN-bearing awards
-(`worker/test/fixtures/subject-registry/pin_bearing_awards.json`). ADR:
+(`worker/test/fixtures/subject-registry/pin_bearing_awards.json`);
+`rules_meetings_subject_link_rate` on matched rules/meetings records. ADR:
 `docs/adr/subject-registry.md`. Verify:
-`node --test worker/test/subject_registry.test.mjs`.
+`node --test worker/test/subject_registry.test.mjs worker/test/nyc_rules.test.mjs worker/test/legistar.test.mjs`.
 
 ## Ops contract (desk ↔ worker)
 

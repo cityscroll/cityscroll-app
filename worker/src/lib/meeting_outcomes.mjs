@@ -29,6 +29,7 @@ import {
   MAX_TOTAL_ATTACHMENT_PROBES,
 } from "./legistar_client.mjs";
 import { dualWriteLegistarObservations } from "./legistar_source_records.mjs";
+import { linksFromMeetingRecord } from "./subject_registry.mjs";
 
 export const MEETING_OUTCOMES_VIEW_VERSION = 2;
 export const MEETING_OUTCOMES_KV_KEY = "meeting-outcomes:materialized:v2";
@@ -469,7 +470,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
       byDate,
     );
     if (!hit) {
-      unmatchedNotices.push({
+      const unmatched = {
         request_id: notice.request_id,
         join: {
           matched: false,
@@ -480,19 +481,27 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
         council_event: null,
         agenda_items: [],
         spines: [],
-      });
+      };
+      const subjects = linksFromMeetingRecord(unmatched);
+      unmatched.subject_refs = subjects.subject_refs;
+      unmatched.subject_links = subjects.subject_links;
+      unmatchedNotices.push(unmatched);
       continue;
     }
     const event = eventsById.get(String(hit.event_id));
     if (!event) {
-      unmatchedNotices.push({
+      const unmatched = {
         request_id: notice.request_id,
         join: { matched: false, method: null, reason: "Joined event id not present in the event set." },
         notice: { ...notice },
         council_event: null,
         agenda_items: [],
         spines: [],
-      });
+      };
+      const subjects = linksFromMeetingRecord(unmatched);
+      unmatched.subject_refs = subjects.subject_refs;
+      unmatched.subject_links = subjects.subject_links;
+      unmatchedNotices.push(unmatched);
       continue;
     }
     const docs = eventDocuments(event);
@@ -548,6 +557,10 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
     };
     // Matter-centric legislative path: agenda → matter → action → vote → attachment.
     matchedRecord.spines = buildMeetingVoteSpines(matchedRecord);
+    // Subject registry: notice ↔ legistar-event only when join resolved (no invent).
+    const matchedSubjects = linksFromMeetingRecord(matchedRecord);
+    matchedRecord.subject_refs = matchedSubjects.subject_refs;
+    matchedRecord.subject_links = matchedSubjects.subject_links;
     matchedRecords.push(matchedRecord);
   }
 
