@@ -18,80 +18,108 @@ these threads. CityScroll does.
 
 ## Best of the best — cross-domain and actionable
 
-These are the capabilities that are hardest for the source sites alone, and that let you
-**do something real**: respond, follow money, track a process, or get alerted. Each example
-URL was verified live on [cityscroll.org](https://cityscroll.org/) at README refresh time.
+CityScroll’s edge is not a longer list of datasets. It is **connecting the same real-world
+objects across domains** and turning that graph into **something you can do now**: respond,
+testify, follow money, track a process, or get alerted. The capabilities below score highest
+on that axis — cross-domain × real actionability. Examples point at shipping product URLs on
+[cityscroll.org](https://cityscroll.org/).
 
-### 1. Respond to an open solicitation — next steps extracted
+### 1. Cross-domain civic intelligence — one agency across money, land, rules, and meetings
 
-Solicitation pages lead with a **“What can I do now?”** action rail: due dates, method,
-contacts, and a deep link into PASSPort RFx when the EPIN joins — not a vague “see the
-notice.” City Record, OCP, and PASSPort stay named sources on one compact timeline.
+Agency profiles are more than a City Record notice list. A linked-object panel groups
+**contracts and awards, rezonings and tax-lot projects, rulemakings, and hearings** for the
+same agency — each object named, dated when known, and stamped with source provenance so you
+can see *why* it is linked. Person-level vote rows stay honest when the city has not yet
+published joinable person data on the matched path.
 
-**Live example:** [Bus transportation for DHS shelter clients](https://cityscroll.org/#notice/20260629024)
-(solicitation stage matched; PASSPort RFx joined with due date and portal deep link).
+This is the product’s clearest “one real-world organization, every domain it touches”
+surface — the scatter of Open Data portals does not offer it.
 
-Browse more open RFPs: [Money · open solicitations closing this week](https://cityscroll.org/#money?mode=open&closing=week)
+**Live example:** [Parks and Recreation](https://cityscroll.org/#agency/Parks%20and%20Recreation)
+(agency profile with multi-domain linked objects when the materialization covers that agency).
 
-### 2. Follow the money across systems that don’t link to each other
+Related: pivot from any notice to the [vendor](https://cityscroll.org/#vendor/Community%20Mediation%20Services%2C%20Inc.)
+or agency named on it; notice pages also treat notice ↔ PIN ↔ registered contract as linked
+objects so the procurement story stays one object, not four browser tabs.
 
-A single notice page joins the City Record announcement, Checkbook NYC registration and
-paid-to-date, PASSPort contract detail when present, and OCP award corroboration — on one
-phase-grouped timeline, with every source named. When sources disagree, both values stay
-visible. Deep-link straight to payments with `?focus=follow-the-dollars`.
+### 2. Next steps extracted — not “see the official notice”
+
+When something is actionable, CityScroll leads with **what to do**, parsed from the ingested
+notice and joined portals:
+
+*   **Open solicitations** open with a **“What can I do now?”** rail: due date, method,
+    contacts, package/submit URL when the body publishes one, and a PASSPort RFx deep link
+    when the EPIN joins — never a vague “use the response instructions in the notice.”
+*   **Public hearings** open with **how to participate**: venue, online join when published,
+    testimony email and cutoff when the body states them, and contact lines — not an empty
+    “no online link” dead end when the notice already printed the steps.
 
 **Live examples:**
 
-*   [Award with registration + payments joined](https://cityscroll.org/#notice/20240723114)
-    (paid-to-date from Checkbook Spending on a registered contract)
+*   [Bus transportation for DHS shelter clients](https://cityscroll.org/#notice/20260629024)
+    (solicitation rail + PASSPort RFx when joined)
+*   [Parks concession hearing with participation steps](https://cityscroll.org/#notice/20260716022)
+
+Browse more open RFPs: [Money · open solicitations closing this week](https://cityscroll.org/#money?mode=open&closing=week)
+
+### 3. Phase-grouped timelines — dense civic histories that still read clearly
+
+Long paper trails collapse onto **canonical phase walls** instead of a flat milestone dump:
+
+*   **Money:** Solicitation → Selection → Award and registration → Payments, with repeated
+    links deduped and verbatim-repeated milestones aggregated. Action-first on the current
+    phase; earlier phases under disclosure.
+*   **Land (ULURP-oriented):** pre-application through community board, Borough President,
+    City Planning Commission, Council, and mayoral/appeals — over a ZAP + City Record event spine.
+*   **PIN matter pages:** every City Record stage that shares the identifier, plus Checkbook
+    registration and paid-to-date, under the same procurement phases so multi-year renewals
+    read as one contract story.
+
+**Live examples:**
+
+*   [Award paper trail with payments](https://cityscroll.org/#notice/20240723114)
+    (`?focus=follow-the-dollars` jumps to paid-to-date)
 *   [Recent award side-car + vendor links](https://cityscroll.org/#notice/20260724018)
+*   [21st Avenue bridge engineering · PIN `84124P0003001`](https://cityscroll.org/#matter/84124P0003001)
+*   [Timbale Terrace rezoning (`2022M0258`)](https://cityscroll.org/#land/2022M0258)
 
 [![A procurement lifecycle timeline joining City Record, Checkbook NYC, and PASSPort on one notice page](docs/readme/procurement-lifecycle.png)](https://cityscroll.org/#notice/20260724018)
 
-### 3. One contract matter as a single timeline
+### 4. Follow the money across systems that don’t link to each other
 
-PIN-keyed **matter** pages stitch every City Record stage that shares the identifier, then
-append Checkbook registration and paid-to-date on the same spine — so a multi-year renewal
-history reads as one object, not a pile of disconnected notices.
+A single notice joins the **City Record** announcement, **Checkbook NYC** registration and
+paid-to-date, **PASSPort** contract detail when present, and **OCP** award corroboration —
+every source named. When publishers disagree on amount or date, **both values stay visible**
+as labeled assertions, not a silently chosen “winner.”
 
-**Live example:** [21st Avenue bridge engineering · PIN `84124P0003001`](https://cityscroll.org/#matter/84124P0003001)
+**Live example:** [Award with registration + payments joined](https://cityscroll.org/#notice/20240723114)
 
-### 4. Entity-linked civic data — one vendor across every agency
+### 5. Entity-linked vendors — one firm across every agency that names it
 
 Vendor profiles resolve name variants (punctuation, casing, legal suffixes), total awards
-across agencies, list every notice that names them, and attach Doing Business Search
-identity when the organization stem matches. The same notice page pivots among the notice, registered contract, PIN, and vendor as linked objects so the story stays coherent.
+across agencies, list every notice that names the firm, and attach **Doing Business Search**
+identity when the organization stem matches. That is the money-side counterpart to
+cross-domain agency intelligence: identity first, then every published trail.
 
 **Live example:** [Community Mediation Services](https://cityscroll.org/#vendor/Community%20Mediation%20Services%2C%20Inc.)
 (~$184M across 50 awards and six agencies; four published name variants).
 
 [![Vendor profile resolving four name variants, $184M across 50 awards and six agencies](docs/readme/vendor-profile.png)](https://cityscroll.org/#vendor/Community%20Mediation%20Services%2C%20Inc.)
 
-### 5. Track a rezoning through its phases
+### 6. Hearings that answer “what was decided?”
 
-Land detail pages join ZAP milestones and dispositions with related City Record notices into
-one event spine — each event dated, source-linked, and honest about gaps. Decision documents
-and votes go beyond the status chips on the planning portal.
-
-**Live example:** [Timbale Terrace (`2022M0258`)](https://cityscroll.org/#land/2022M0258)
-(completed project with a multi-event ZAP spine).
-
-Explore the lens: [Land use](https://cityscroll.org/#land)
-
-### 6. See what a public hearing actually decided
-
-Council hearing notices join Legistar agenda trees: matters, actions, votes, and attachments
-on a matter-centric outcomes view. Non-Council hearings show the process spine the city
-publishes (notice → hearing) and name where outcomes live when no citywide machine feed
-exists.
+Council hearing notices join **Legistar** agenda trees: matters, actions, votes, and
+attachments on a matter-centric outcomes view. Non-Council hearings keep the process spine
+the city actually publishes (notice → hearing) and name real landings for outcomes when no
+citywide machine feed exists — never a fake vote.
 
 **Live example:** [Council hearing with matched agenda → matter → vote spine](https://cityscroll.org/#notice/20260706036)
 
-### 7. Catch a rules comment window while it is open
+### 7. Rules comment windows while they are still open
 
-Agency Rules notices carry a lifecycle spine enriched from the NYC Rules feed: proposal,
-hearing, comment close, adoption, and effective dates — with official comment links when
-the feed joins.
+Agency Rules notices carry a lifecycle spine enriched from the **NYC Rules** feed: proposal,
+hearing, comment close, adoption, and effective dates — with official comment links when the
+feed joins. Same “do something while the window is open” posture as solicitations and hearings.
 
 **Live example:** [FHV / taxi parking rules · comment window](https://cityscroll.org/#notice/20260714029)
 
@@ -99,7 +127,7 @@ the feed joins.
 
 Describe a watch in plain English (or build one on the Alerts tab), confirm via double
 opt-in, and receive a morning email when new matches appear — in your chosen language.
-Accounts with multiple watches get one consolidated rollup; preference-center edits take
+Accounts with multiple watches get **one consolidated rollup**; preference-center edits take
 effect on the next daily run.
 
 *   [Build an alert](https://cityscroll.org/#alerts)
@@ -126,15 +154,17 @@ intent to award) on one timeline with Checkbook registration and payments, PASSP
 contracts, and OCP award corroboration. Export any view as CSV or Excel.
 
 ### Land use
-Rezonings and land-use actions in plain English, linked to ZAP, tax-lot geometry, and a
-phase event spine (milestones, dispositions, related notices).
+Rezonings and land-use actions in plain English, linked to ZAP, tax-lot geometry, related
+City Record notices, and a ULURP-oriented phase wall over the event spine (milestones,
+dispositions, decision documents).
 
 ### Rules
 Regulatory proposals and comment windows, enriched with official NYC Rules dates and links.
 
 ### Meetings
 This week’s public hearings by borough or neighborhood. Council notices join Legistar
-outcomes; other bodies keep an honest process spine and real landing links.
+outcomes; participation steps are extracted from the notice when published. Other bodies
+keep an honest process spine and real landing links.
 
 ### Property
 Municipal asset auctions and disposition process spines joined by tax lot (BBL), with
@@ -148,8 +178,10 @@ exam such as [Caseworker `7016`](https://cityscroll.org/#exam/7016).
 
 ### Vendors and agencies
 Deep-linkable profiles for vendors and agencies — name-variant resolution, award totals,
-and notice lists. When Checkbook term dates are available, profiles and digests may show a
-**renewal outlook** row, clearly tagged as outlook rather than an open solicitation.
+and notice lists. Agency profiles can surface **cross-domain linked objects** (money, land,
+rules, meetings) with source provenance. When Checkbook term dates are available, profiles
+and digests may show a **renewal outlook** row, clearly tagged as outlook rather than an
+open solicitation.
 
 ---
 
@@ -232,8 +264,10 @@ official plan forecasts until a source passes the executable contract.
 This repository holds the complete system: a static client (`site/`) and a serverless
 Cloudflare Worker backend (`worker/`) that handles email alerts, feeds, public metrics,
 edge materializations (procurement lifecycles, PASSPort, meeting outcomes, ZAP outcomes,
-vendor profiles), and the plain-English search assistant. Hot paths prefer CityScroll-owned
-materializations first and fall back to live Open Data when a row is not yet cached.
+vendor profiles, cross-domain entity intelligence), and the plain-English search assistant.
+Hot paths prefer CityScroll-owned materializations first and fall back to live Open Data
+when a row is not yet cached — including prebuilt award, ZAP project, and tax-lot (BBL)
+lookups so joined detail pages stay fast without multi-source fan-out on every click.
 Civil-service exam sources are normalized at build time into `site/data/staffing_exams.json`,
 so career exploration needs one small static file and no runtime API fan-out. Source
 provenance and refresh rules live in
