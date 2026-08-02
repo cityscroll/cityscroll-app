@@ -148,8 +148,8 @@ exam such as [Caseworker `7016`](https://cityscroll.org/#exam/7016).
 
 ### Vendors and agencies
 Deep-linkable profiles for vendors and agencies — name-variant resolution, award totals,
-and notice lists. Optional Checkbook-based renewal estimates appear on profiles and in
-digests when the edge materialization has them (labeled estimates, not active solicitations).
+and notice lists. When Checkbook term dates are available, profiles and digests may show a
+**renewal outlook** row, clearly tagged as outlook rather than an open solicitation.
 
 ---
 
@@ -162,8 +162,8 @@ digests when the edge materialization has them (labeled estimates, not active so
     [What will change near me?](https://cityscroll.org/#task/what-will-change) route first-time
     visitors into the right lens.
 *   **Email digests:** Plain-English watches, double opt-in, morning delivery, multi-watch
-    rollup, and a preference center. You can also write
-    `subscribe@crol-list.org` describing a watch.
+    rollup, and a preference center. Subscribe-by-email is documented on the
+    [API and feeds](https://cityscroll.org/api.html) page.
 *   **Feeds:** Any saved search as **Atom** (`/feed.xml`), **JSON Feed** (`/feed.json`), or
     **calendar** (`/feed.ics`) on `api.cityscroll.org` — so you can wire CityScroll into your
     own tools.
