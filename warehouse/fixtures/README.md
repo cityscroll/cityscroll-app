@@ -12,6 +12,11 @@
   the ER batch can show cross-table vendor_stem hits without packing
   `72mk-a8z7`. Synthetic only; phone column is unformatted `55501xx` placeholders
   (not real contacts; not measured from Socrata `72mk-a8z7`).
+- `zap-projects/sample.csv` — synthetic + demo rows for offline WH-05 fixture
+  ingest (`hgx4-8ukb` shape).
+- `zap-projects/product_seed.csv` — public ZAP field-case rows (includes demo
+  `2022M0258` + sell-facing samples) so WH-05 materialization ships demos
+  offline without bulk download. Not a full corpus export.
 - `bulk_sample.csv` (local only, gitignored) — optional slice from `--write-sample`
   after a bulk run; not committed. Full bulk stays under `warehouse/raw/` /
   `CITYSCROLL_WAREHOUSE_ROOT`; checksums live in

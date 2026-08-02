@@ -83,7 +83,7 @@
       "required_fields": [
         "project_id"
       ],
-      "notes": "WH-03 prewarm input. Next after OCP when headroom green."
+      "notes": "WH-05 second bulk pack + fetchOpenDataRow materialization. ~33k rows."
     },
     "zap-bbl": {
       "id": "zap-bbl",
@@ -99,7 +99,7 @@
       "required_fields": [
         "project_id"
       ],
-      "notes": "BBL join companion to zap-projects. Pack after projects."
+      "notes": "BBL join companion to zap-projects. Next after projects when headroom green."
     },
     "doing-business-entities": {
       "id": "doing-business-entities",

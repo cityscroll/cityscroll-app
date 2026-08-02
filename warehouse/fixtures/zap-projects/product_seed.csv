@@ -1,0 +1,11 @@
+project_id,project_name,public_status,project_status,approval_date,completed_date,ulurp_numbers,borough,community_district,actions,current_milestone,current_milestone_date,ulurp_non,primary_applicant,app_filed_date,noticed_date,certified_referred,mih_flag
+2022M0258,Timbale Terrace,Completed,Complete,2024-03-07T00:00:00.000,,240046HAM; 240047PQM,Manhattan,M11,HA; PQ,HA - Project Completed,2024-03-13T00:00:00.000,ULURP,HPD - NYC Dept of Housing Preservation & Development,2023-07-26T00:00:00.000,2023-07-21T00:00:00.000,2023-08-21T00:00:00.000,false
+2026Y0360,Affordable Housing Fast Track Methodology Rule,In Public Review,Active,,,,Citywide,,,,,,DCP Department of City Planning,,,,false
+2026X0362,351 Powers Avenue (HPD ELURP),In Public Review,Active,,,,Bronx,X01,PP,PP - City Council Review,2026-04-22T00:00:00.000,ELURP,HPD - NYC Dept of Housing Preservation & Development,2026-02-20T00:00:00.000,,,false
+2024K0240,289 Kent Avenue Rezoning,In Public Review,Active,,,260087ZMK; 260088ZRK,Brooklyn,K01,ZM; ZR,EAS - Community Board Referral,2026-04-22T00:00:00.000,ULURP,Jeremy Kozin,2025-10-17T00:00:00.000,2026-02-27T00:00:00.000,2026-04-13T00:00:00.000,false
+2024M0193,Studio 54 Rehabilitation and Text Amendment,Noticed,Active,,,,Manhattan,M05,ZR; ZS; LD,ZR - Review Filed Land Use Application,2026-04-24T00:00:00.000,ULURP,Christopher N,2025-12-16T00:00:00.000,2026-02-27T00:00:00.000,,false
+2024Q0219,135-27 Sapphire Street Rezoning,Noticed,Active,,,250329ZMQ; N250330ZRQ,Queens,Q10,ZM; ZR,EAS - Project Readiness,2026-04-22T00:00:00.000,ULURP,135 Sapphire LLC,2025-06-23T00:00:00.000,2025-12-05T00:00:00.000,,false
+2025Q0247,69-67 108th Street Rezoning,Noticed,Active,,,260186ZMQ; 260187ZRQ,Queens,Q06,ZM; ZR,ZM - Review Filed Land Use Application,2026-04-21T00:00:00.000,ULURP,"108 ST ., LLC",2025-11-25T00:00:00.000,2026-03-27T00:00:00.000,,false
+P2012Q0076,ALMEDA AVE II,Filed,On-Hold,,,I100100MMQ,Queens,Q14,MM,,,ULURP,DDC/DOT,,,,
+2020M0429,570 Fifth Avenue (Extell),Filed,Record Closed,,,,Manhattan,M05,,,,ULURP,Extell Development,,,,false
+P2012Q0110,60TH PLACE DEMAPPING,Filed,On-Hold,,,I110032MMQ,Queens,Q05,MM,,,ULURP,TOMASZ FIDZIUKIEWICZ,,,,

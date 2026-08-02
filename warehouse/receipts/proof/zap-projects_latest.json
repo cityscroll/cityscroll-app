@@ -1,0 +1,93 @@
+{
+  "bulk": false,
+  "cpu_discipline": {
+    "duckdb_threads": 1,
+    "headroom_gated": true,
+    "sequential_one_dataset": true,
+    "single_job_lock": true,
+    "taskpolicy_or_nice_wrap": true
+  },
+  "dataset_id": "zap-projects",
+  "headroom": {
+    "constrained": false,
+    "ok": true,
+    "problems": [],
+    "returncode": 0,
+    "status": "ok"
+  },
+  "limit": 5,
+  "observed_at": "2026-08-02T10:16:52Z",
+  "parquet": {
+    "bytes": 4567,
+    "column_map_applied": false,
+    "column_map_size": 0,
+    "columns": [
+      "project_id",
+      "project_name",
+      "public_status",
+      "project_status",
+      "approval_date",
+      "completed_date",
+      "ulurp_numbers",
+      "borough",
+      "community_district",
+      "actions",
+      "current_milestone",
+      "current_milestone_date",
+      "ulurp_non",
+      "primary_applicant",
+      "app_filed_date",
+      "noticed_date",
+      "certified_referred",
+      "project_brief",
+      "mih_flag",
+      "snapshot_date"
+    ],
+    "parquet_path": "warehouse/parquet/zap-projects/snapshot_date=fixture/part-000.parquet",
+    "row_count": 3,
+    "threads": 1
+  },
+  "phase": "WH-01",
+  "raw": {
+    "bytes": 1439,
+    "mode": "fixture",
+    "path": "warehouse/raw/zap-projects/snapshot_date=fixture/sample.csv",
+    "row_count": 3,
+    "sha256": "d3f1aabad628ece19fb075674e49bfec655c26b93d21b598dcf36e90a04aec4f",
+    "source": "warehouse/fixtures/zap-projects/sample.csv"
+  },
+  "register": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "columns": [
+      "project_id",
+      "project_name",
+      "public_status",
+      "project_status",
+      "approval_date",
+      "completed_date",
+      "ulurp_numbers",
+      "borough",
+      "community_district",
+      "actions",
+      "current_milestone",
+      "current_milestone_date",
+      "ulurp_non",
+      "primary_applicant",
+      "app_filed_date",
+      "noticed_date",
+      "certified_referred",
+      "project_brief",
+      "mih_flag",
+      "snapshot_date"
+    ],
+    "parquet_glob": "warehouse/parquet/zap-projects/snapshot_date=fixture/*.parquet",
+    "row_count": 3,
+    "table": "zap_projects"
+  },
+  "schema_version": 1,
+  "snapshot_date": "fixture",
+  "socrata_dataset_id": "hgx4-8ukb",
+  "source_contract_id": "zap-projects",
+  "table_name": "zap_projects",
+  "warehouse_root": "warehouse"
+}
