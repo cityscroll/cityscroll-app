@@ -1,4 +1,4 @@
-# CityScroll data warehouse (WH-01…WH-05)
+# CityScroll data warehouse (WH-01…WH-06)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
@@ -108,7 +108,7 @@ and the load manifest (sha256 + row counts + remaining queue). Re-run the
 commands above on Mini or a green MacBook to materialize bulk data.
 
 **Do not** start the next dataset until headroom is still green after the
-previous pack. Loaded: OCP + `zap-projects`. Next: `zap-bbl` → `city-record`.
+previous pack. Loaded: OCP + `zap-projects` + `zap-bbl`. Next: `city-record`.
 
 ## CPU discipline (baked into the runner)
 
@@ -142,6 +142,7 @@ the MacBook.
 - **Node:** `warehouse/lib/query.mjs` → `queryWarehouse(sql)` / `exampleOcpAwardCount()`
 - **OCP lookup:** `warehouse/lib/ocp_lookup.mjs` → `lookupOcpAwardRowsFromWarehouse`
 - **ZAP lookup:** `warehouse/lib/zap_lookup.mjs` → `lookupZapProjectFromWarehouse`
+- **ZAP BBL lookup:** `warehouse/lib/zap_bbl_lookup.mjs` → `lookupZapBblsFromWarehouse`
 - **SQL examples:** `warehouse/sql/examples/`
 
 This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
@@ -209,6 +210,44 @@ node tools/build_zap_warehouse_lookup.mjs --fixture --check
 
 Speed receipt: `warehouse/receipts/proof/wh05_zap_lookup_speed.json`.
 Product seed: `warehouse/fixtures/zap-projects/product_seed.csv`.
+
+## WH-06: third bulk + serve ZAP BBL (tax-lot join)
+
+**Bulk pack:** `zap-bbl` (`2iga-a6mk`, ~132k rows) via the same capped runner
+(`--bulk --ack-large`). Proof + checksums:
+`warehouse/receipts/proof/zap-bbl_bulk_latest.json` and
+`warehouse/manifests/wh02_load_manifest.json`.
+
+**Replaced live fetch:** `fetchBbls` in `worker/src/zap_outcomes.mjs` — every
+cold `/zap-outcomes` DOB tax-lot side-car previously hit SODA `2iga-a6mk` by
+`project_id`.
+
+**Path now:** same WH-03/WH-05 shape:
+
+1. **Build/ops** queries DuckDB sell-facing projects' BBLs (+ demos) →
+   materializes `site/data/zap_bbl_warehouse_lookup.json` + Worker twin.
+2. **Edge** looks up the materialization **first** (in-process, sub-ms).
+3. **Live SODA** only on miss.
+
+**Entity links:** land objects in the cross-domain layer gain `sited_on_parcel`
+edges (`project:` → `parcel:` + 10-digit BBL) when ZAP BBL join keys exist.
+Rebuild entity intelligence after BBL materialization.
+
+```bash
+python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset zap-bbl --bulk --ack-large --write-sample 25
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql
+warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py
+
+node tools/build_zap_bbl_warehouse_lookup.mjs --bench
+node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --check
+node tools/build_entity_intelligence.mjs
+```
+
+Speed receipt: `warehouse/receipts/proof/wh06_zap_bbl_lookup_speed.json`.
+Product seed: `warehouse/fixtures/zap-bbl/product_seed.csv`.
 
 ## entity_resolution/ (WH-04 batch)
 

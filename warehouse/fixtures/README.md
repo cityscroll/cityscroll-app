@@ -17,6 +17,11 @@
 - `zap-projects/product_seed.csv` — public ZAP field-case rows (includes demo
   `2022M0258` + sell-facing samples) so WH-05 materialization ships demos
   offline without bulk download. Not a full corpus export.
+- `zap-bbl/sample.csv` — synthetic + demo BBL rows for offline WH-06 fixture
+  ingest (`2iga-a6mk` shape).
+- `zap-bbl/product_seed.csv` — public ZAP BBL rows for product seed project_ids
+  (includes demo `2022M0258`) so WH-06 materialization ships demos offline
+  without bulk download. Not a full corpus export.
 - `bulk_sample.csv` (local only, gitignored) — optional slice from `--write-sample`
   after a bulk run; not committed. Full bulk stays under `warehouse/raw/` /
   `CITYSCROLL_WAREHOUSE_ROOT`; checksums live in

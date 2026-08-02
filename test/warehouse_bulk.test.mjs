@@ -53,16 +53,22 @@ describe("WH-02 registry + pack plan", () => {
     assert.ok(ids.includes("doing-business-entities"));
   });
 
-  it("ships verify SQL and bulk sample slot for OCP + ZAP", () => {
+  it("ships verify SQL and bulk sample slot for OCP + ZAP + BBL", () => {
     assert.ok(
       existsSync(join(WAREHOUSE_DIR, "sql", "examples", "ocp_bulk_verify.sql"))
     );
     assert.ok(
       existsSync(join(WAREHOUSE_DIR, "sql", "examples", "zap_bulk_verify.sql"))
     );
+    assert.ok(
+      existsSync(join(WAREHOUSE_DIR, "sql", "examples", "zap_bbl_bulk_verify.sql"))
+    );
     assert.ok(existsSync(join(WAREHOUSE_DIR, "scripts", "write_load_manifest.py")));
     assert.ok(
       existsSync(join(WAREHOUSE_DIR, "fixtures", "zap-projects", "sample.csv"))
+    );
+    assert.ok(
+      existsSync(join(WAREHOUSE_DIR, "fixtures", "zap-bbl", "sample.csv"))
     );
   });
 });

@@ -1,0 +1,66 @@
+{
+  "phase": "WH-06",
+  "measured_at": "2026-08-02T11:47:21.587Z",
+  "replaced_fetch": {
+    "function": "fetchBbls",
+    "file": "worker/src/zap_outcomes.mjs",
+    "soda_dataset": "2iga-a6mk",
+    "product": "ZAP BBL tax lots on GET /zap-outcomes DOB side-car"
+  },
+  "warehouse_duckdb_build_path": {
+    "samples_ms": [
+      77.51,
+      80.29,
+      86.09,
+      86.18,
+      79.17
+    ],
+    "p50_ms": 80.29,
+    "mean_ms": 81.84,
+    "n": 5,
+    "path": "warehouse",
+    "hit": false,
+    "project_id": "FIXZAP001",
+    "bbl_count": 0,
+    "note": "Python DuckDB CLI spawn per query — build/ops only, not Worker request path"
+  },
+  "materialized_index_edge_path": {
+    "samples_ms": [
+      0.0014,
+      0.0007,
+      0.0006,
+      0.0006,
+      0.0005
+    ],
+    "p50_ms": 0.0002,
+    "mean_ms": 0.0003,
+    "n": 200,
+    "path": "materialized_index",
+    "hit": true,
+    "project_id": "2022M0258",
+    "bbl_count": 11,
+    "note": "Worker hot path after warehouse materialization import"
+  },
+  "soda_live_previous_path": {
+    "samples_ms": [
+      245.2,
+      190.28,
+      114.47
+    ],
+    "p50_ms": 190.28,
+    "mean_ms": 183.32,
+    "n": 3,
+    "path": "soda_live",
+    "rows": 11,
+    "url_class": "socrata_2iga-a6mk_project_id",
+    "project_id": "2022M0258",
+    "note": "Previous live path in fetchBbls"
+  },
+  "speedup": {
+    "soda_p50_ms": 190.28,
+    "warehouse_materialized_p50_ms": 0.0002,
+    "ratio_vs_0_01ms_floor": 19028,
+    "summary": "ZAP BBL lookup p50: live SODA 190.28ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)",
+    "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
+  }
+}
