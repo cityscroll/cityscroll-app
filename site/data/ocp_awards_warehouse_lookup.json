@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "phase": "WH-03",
+  "source": "warehouse",
+  "dataset_id": "qyyg-4tf5",
+  "table_name": "ocp_recent_contract_awards",
+  "mode": "fixture_warehouse",
+  "materialized_at": "2026-08-02T05:02:26.328Z",
+  "row_count": 8,
+  "replaces_live_fetch": {
+    "worker": "worker/src/checkbook_lifecycle.mjs#fetchOcpAwardRows",
+    "soda_dataset": "qyyg-4tf5",
+    "description": "OCP Recent Contract Awards side-car on /contract-lifecycle — warehouse materialization first, live SODA on miss"
+  },
+  "rows": [
+    {
+      "request_id": "20260723031",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "short_title": "Catering Services",
+      "pin": "81626W0043001",
+      "contract_amount": "250000",
+      "vendor_name": "Make it Zesty LLC"
+    },
+    {
+      "request_id": "20260724010",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Heat Pump Water Heaters",
+      "pin": "85726B0027001",
+      "contract_amount": "7977500",
+      "vendor_name": "Samuel17"
+    },
+    {
+      "request_id": "20260724015",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "short_title": "Summer Youth Employment Program NAQ: Career Ready",
+      "pin": "26026N0011014",
+      "contract_amount": "2540261",
+      "vendor_name": "Child Development Center - Mosholu Montefiore Community Center"
+    },
+    {
+      "request_id": "FIX001",
+      "start_date": "2024-07-01 00:00:00",
+      "agency_name": "Department of Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "short_title": "Synthetic fixture row one",
+      "pin": "PIN-FIXTURE-1",
+      "contract_amount": "100",
+      "vendor_name": "FIXTURE VENDOR A"
+    },
+    {
+      "request_id": "FIX002",
+      "start_date": "2024-07-02 00:00:00",
+      "agency_name": "Department of Transportation",
+      "type_of_notice_description": "Award",
+      "short_title": "Synthetic fixture row two",
+      "pin": "PIN-FIXTURE-2",
+      "contract_amount": "200",
+      "vendor_name": "FIXTURE VENDOR B"
+    },
+    {
+      "request_id": "FIX003",
+      "start_date": "2024-07-03 00:00:00",
+      "agency_name": "Department of Environmental Protection",
+      "type_of_notice_description": "Award",
+      "short_title": "Synthetic fixture row three",
+      "pin": "PIN-FIXTURE-3",
+      "contract_amount": "300",
+      "vendor_name": "FIXTURE VENDOR C"
+    },
+    {
+      "request_id": "FIX004",
+      "start_date": "2024-07-04 00:00:00",
+      "agency_name": "Department of Education",
+      "type_of_notice_description": "Award",
+      "short_title": "Synthetic fixture row four",
+      "pin": "PIN-FIXTURE-4",
+      "contract_amount": "400",
+      "vendor_name": "FIXTURE VENDOR D"
+    },
+    {
+      "request_id": "FIX005",
+      "start_date": "2024-07-05 00:00:00",
+      "agency_name": "Department of Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "short_title": "Synthetic fixture row five",
+      "pin": "PIN-FIXTURE-5",
+      "contract_amount": "500",
+      "vendor_name": "FIXTURE VENDOR E"
+    }
+  ]
+}
