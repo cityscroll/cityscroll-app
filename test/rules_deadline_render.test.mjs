@@ -40,7 +40,8 @@ test("public demo contract includes a Rules lifecycle spine notice", async () =>
   assert.equal(entry.feature, "rules-lifecycle-spine");
   assert.match(entry.url, /^#notice\//);
   assert.ok(entry.expectations.visible.some((loc) => /rule-chain|chain-h/.test(loc.selector)));
-  assert.ok(entry.expectations.visible.some((loc) => /Proposal published|Comment deadline|Public hearing|Rule lifecycle/.test(loc.text || "")));
+  assert.ok(entry.expectations.visible.some((loc) => /Proposal published|Comment deadline|Public process|Public hearing|Rule lifecycle|Propose/.test(loc.text || "")));
+  assert.ok(entry.expectations.visible.some((loc) => /rule-phase-stepper|rule-spine-lead|chain-h/.test(loc.selector || "")));
 });
 
 test("digest temporal path cites comment-close by valid_at from the event spine", async () => {
