@@ -1,25 +1,26 @@
-# CityScroll data warehouse (WH-01 scaffold)
+# CityScroll data warehouse (WH-01 scaffold + WH-02 first bulk pack)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
 warehouse is the factory; the Worker is the shop window.
 
 Design authority: estate vision report
-`cityscroll-data-warehouse-vision` (cards WH-01…WH-04). Captain constraints for
-this phase:
+`cityscroll-data-warehouse-vision` (cards WH-01…WH-04). Captain constraints:
 
 1. **Inside crol-list** — `warehouse/` (not a sibling repo).
-2. **Incremental** — scaffold + skeleton only; full bulk is **WH-02**.
+2. **Incremental** — WH-01 scaffold; WH-02 packs **one** full Socrata export at
+   a time (never parallel City Record + payroll + ZAP).
 3. **CPU-disciplined** — never repeat the OpenL3 full-blast CPU hog. Ingest is
-   single-job, headroom-gated, `taskpolicy -b` / `nice` wrapped, tiny limits by
-   default.
+   single-job, headroom-gated, `taskpolicy -b` / `nice` wrapped. Tiny `$limit`
+   by default; full `rows.csv` only via `--bulk --ack-large`.
 
 ## Layout
 
 ```
 warehouse/
-  datasets.v0.json     # parameterized dataset registry
-  fixtures/            # tiny committed samples (offline proof)
+  datasets.v0.json     # parameterized dataset registry + wh02_pack plan
+  manifests/           # committed load manifests (checksums, queue status)
+  fixtures/            # tiny samples (fixture + bulk_sample slices)
   raw/                 # downloaded source files   (gitignored bulk)
   parquet/             # columnar tables           (gitignored)
   duckdb/              # cityscroll.duckdb catalog (gitignored)
@@ -79,16 +80,47 @@ warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --limit 50
 ```
 
+## WH-02 first bulk pack (full export, still capped)
+
+**One dataset at a time.** Primary queue (smallest/most-valuable first among the
+card sources): OCP awards `qyyg-4tf5` → ZAP projects `hgx4-8ukb` → ZAP BBL
+`2iga-a6mk` → City Record `dg92-zbpx` (largest last). Committed plan + checksums:
+`warehouse/manifests/wh02_load_manifest.json`.
+
+```bash
+python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
+
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset ocp-recent-contract-awards \
+  --bulk --ack-large \
+  --write-sample 25
+
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/ocp_bulk_verify.sql
+
+warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py \
+  --headroom-line "$(python3 \"$HEADROOM_BIN\" 2>&1 | tail -1)"
+```
+
+Raw CSV / parquet / DuckDB stay **gitignored**. Git gets: registry, runner,
+proof receipt (`receipts/proof/*_bulk_latest.json`), small `bulk_sample.csv`,
+and the load manifest (sha256 + row counts + remaining queue). Re-run the
+commands above on Mini or a green MacBook to materialize bulk data.
+
+**Do not** start the next dataset until headroom is still green after the
+previous pack. Next after OCP: `zap-projects` (WH-03 prewarm input).
+
 ## CPU discipline (baked into the runner)
 
 | Guard | Behavior |
 |---|---|
 | **Single-job lock** | `warehouse/.ingest.lock` — second concurrent ingest exits |
 | **Headroom gate** | Calls estate `headroom.py --json`; CONSTRAINED refuses (override only with `--force-headroom` for tiny proof) |
-| **Row caps** | Default ≤50; soft ack above 1000 (`--ack-large`); hard cap 10k without deliberate WH-02 tooling |
-| **taskpolicy / nice** | Live convert path runs under `headroom.py wrap` → `taskpolicy -b` |
+| **Row caps** | Default ≤50; soft ack above 1000 (`--ack-large`); hard cap 10k on SODA `$limit` without ack |
+| **Bulk export** | `--bulk --ack-large` → full `rows.csv?accessType=DOWNLOAD` (still one job + headroom + wrap) |
+| **taskpolicy / nice** | Live/bulk convert path runs under `headroom.py wrap` → `taskpolicy -b` |
 | **DuckDB threads** | `PRAGMA threads=1` on convert + catalog |
-| **One dataset per invocation** | No fan-out multi-source hoover in this CLI |
+| **One dataset per invocation** | No fan-out multi-source bulk download in this CLI |
 
 Heavy work should prefer the **Mac Mini** overnight, or a capped local batch when
 headroom is OK. Never launch parallel full City Record + payroll downloads on
@@ -98,11 +130,11 @@ the MacBook.
 
 - Snapshots are **immutable**: `raw/<dataset>/snapshot_date=YYYY-MM-DD/…` and
   matching `parquet/…`.
-- Receipts record sha256, row counts, source mode (`fixture` | `soda_limit`),
-  and catalog registration.
+- Receipts record sha256, row counts, source mode (`fixture` | `soda_limit` |
+  `soda_bulk`), headroom snapshots, and catalog registration.
 - `--resume` skips stages whose outputs already exist for that snapshot.
-- WH-02 will add full `rows.csv?accessType=DOWNLOAD` behind the same lock +
-  caps, plus dated re-exports / `$where` cursors for deltas.
+- Full `rows.csv?accessType=DOWNLOAD` is the WH-02 path (`--bulk --ack-large`).
+  Dated re-exports / `$where` cursors for deltas remain follow-up work.
 
 ## Query seam (app later)
 
@@ -125,16 +157,17 @@ ids aligned with `source_contracts.json`).
 
 | Card | Scope |
 |---|---|
-| **WH-01** (this) | Scaffold, CPU-capped skeleton, tiny OCP proof |
-| **WH-02** | Full BULK pack (City Record, ZAP OD, OCP, Doing Business, PASSPort, ABO) — still capped, Mini-first |
+| **WH-01** | Scaffold, CPU-capped skeleton, tiny OCP proof |
+| **WH-02** (this pack) | First bulk export(s) via capped runner — OCP first; ZAP / City Record sequential next |
 | **WH-03** | ZAP outcomes prewarm → Worker read-model cache (kill 12s cold path) |
 | **WH-04** | Batch ER over warehouse → `entity_link` parquet |
 
 ## Characterization
 
 ```bash
-node --test test/warehouse_scaffold.test.mjs
+node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs
 ```
 
 Optional: re-run the fixture ingest before the query assertions if the local
-catalog was wiped.
+catalog was wiped. Bulk verification needs a prior `--bulk` run (local/Mini only;
+CI does not download multi-MB packs).
