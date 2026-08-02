@@ -371,18 +371,19 @@ Verify: `node --test test/meeting_vote_spine.test.mjs
 test/contract/meeting_outcomes.test.mjs test/procurement_lifecycle_stitch.test.mjs`.
 Capture: `python3 tools/capture_meeting_event_spine.py`.
 
-**Official entity family (person-level votes):** Code path retains
-`PersonId`/`PersonName` as `official:{person_id}` objects with typed `votes_on`
-edges (official → matter|agenda_item) when Legistar returns person rows. Pure
-helpers: `entity_resolution/officials/`. Named metrics:
-`person_vote_retention_rate` and `official_votes_on_edge_rate` (fixture receipt
-under `site/data/legistar_sources/verification_receipts/` — **fixture retention
-is not a production rate**). **Production measured 2026-08-01:** demo event
-22526 and 0/15 recent matched Council hearings had non-empty `by_person` on the
-meeting-outcomes KV read model (tallies only). Meeting UI renders person roll
-call **only when** `by_person` is non-empty; otherwise class-(a) copy
-`meeting_outcomes_no_person_votes_html` (“Not yet shown here — person-level…”).
-Do not market person-level “who voted” as live until production retention > 0.
+**Official entity family (person-level votes):** Live Legistar Votes rows carry
+`VotePersonId`/`VotePersonName` (+ `VoteValueName` Affirmative/Negative) — not
+`PersonId`/`PersonName`. Mapper retains both shapes as `official:{person_id}`
+with typed `votes_on` edges (official → matter|agenda_item). Pure helpers:
+`entity_resolution/officials/`. Named metrics: `person_vote_retention_rate` and
+`official_votes_on_edge_rate`. **Live audit 2026-08-02 (event 22526):** 49/49
+vote rows retained after VotePerson* mapping (`person_vote_retention_rate=1`);
+receipt `official_person_vote_retention_2026-08-02.json`. Public meeting-outcomes
+KV still needs re-materialization before readers see non-empty `by_person`.
+`vote_identity` is `roll_call` when persons retained, `tally_only` when rows
+exist without identity (no fabrication). Meeting UI renders person roll call
+**only when** `by_person` is non-empty; otherwise class-(a) copy
+`meeting_outcomes_no_person_votes_html`.
 Immutable `source_records` dual-write for Legistar Events/EventItems/Votes/
 Attachments is live under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
 (`worker/src/lib/legistar_source_records.mjs`).
