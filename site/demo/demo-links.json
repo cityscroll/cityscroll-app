@@ -648,6 +648,45 @@
       }
     },
     {
+      "id": "alerts-rollup-prefs",
+      "url": "#alerts?view=rollup",
+      "feature": "alerts-rollup-prefs",
+      "localOnly": true,
+      "description": "Show multi-watch digest rollup grouped by topic plus the preference-center manage path.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#alerts-rollup-prefs",
+            "text": "multi-watch digests"
+          },
+          {
+            "selector": "#rollupgroupby"
+          },
+          {
+            "selector": "#alerts-rollup-emailmock",
+            "text": "watches"
+          },
+          {
+            "selector": "#alertsPrefsManage"
+          },
+          {
+            "selector": "#alerts-rollup-prefs-box",
+            "text": "9am Eastern"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#tab-alerts .loading"
+          },
+          {
+            "selector": "#alerts-rollup-emailmock",
+            "text": "Could not reach"
+          }
+        ],
+        "focus": "#alerts-rollup-prefs"
+      }
+    },
+    {
       "id": "task-can-i-bid",
       "url": "#task/can-i-bid",
       "feature": "task-first-entry",

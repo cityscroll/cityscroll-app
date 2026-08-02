@@ -661,6 +661,21 @@ Pure builder: `site/non_council_hearing_spine.mjs` (re-export
 - Verify: `node --test test/non_council_hearing_spine.test.mjs
   test/meeting_view_readability.test.mjs test/gap_taxonomy.test.mjs`.
 
+## Alerts multi-watch rollup surface (#alerts)
+
+Public demonstration of account-level digest rollup + preference-center path on
+the Alerts tab. Delivery remains worker rollup (`worker/src/lib/rollup.mjs` +
+`alerts.mjs`): one email when an account has more than one active watch, sections
+per watch. The UI groups related watches by **topic / agency / geography** for
+review (empty agency/geo = unscoped, never a false “city withheld” label) and
+shows a fixture-backed consolidated digest mock plus the prefs cutover copy.
+
+- Pure helpers: `site/alerts_rollup_prefs.mjs`
+- Deep link: `#alerts?view=rollup` (demo id `alerts-rollup-prefs`)
+- Manage watches uses session `prefsUrl` when recognized, else `/prefs`
+- Verify: `node --test test/alerts_rollup_prefs.test.mjs` and existing
+  `cd worker && node --test test/rollup.test.mjs test/prefs_lib.test.mjs test/prefs.test.mjs test/digest_rollup.test.mjs`
+
 ## Digest rollup + preference center
 
 Account-level digest: when an email has **>1 active watch**, one consolidated
