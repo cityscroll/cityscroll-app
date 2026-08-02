@@ -5,10 +5,12 @@ export const DATA_PAGE_DATASET = "dg92-zbpx";
 export const LAND_DEFAULT_DATASET = "hgx4-8ukb";
 export const SODA_BASE = "https://data.cityofnewyork.us/resource";
 
-export const LAND_DEFAULT_SELECT = [
+// List-card fields only for the committed snapshot. project_brief stays off the
+// static artifact (publisher text is large and not required to paint the default list);
+// landSelect hydrates the brief from live SODA when missing.
+export const LAND_DEFAULT_LIST_FIELDS = Object.freeze([
   "project_id",
   "project_name",
-  "project_brief",
   "primary_applicant",
   "public_status",
   "project_status",
@@ -19,7 +21,11 @@ export const LAND_DEFAULT_SELECT = [
   "current_milestone",
   "current_milestone_date",
   "ulurp_numbers",
-].join(",");
+]);
+
+export const LAND_DEFAULT_SELECT = LAND_DEFAULT_LIST_FIELDS.join(",");
+/** Full detail select (list fields + brief) for live SODA paths. */
+export const LAND_DEFAULT_DETAIL_SELECT = [...LAND_DEFAULT_LIST_FIELDS, "project_brief"].join(",");
 
 export const LAND_DEFAULT_WHERE = "ulurp_non='ULURP' AND project_status='Active'";
 export const LAND_DEFAULT_LIMIT = 40;
@@ -138,8 +144,19 @@ export function isDefaultLandSearch({ status, boro, kw, communityDistrict, locat
   );
 }
 
+export function projectToLandListRow(project) {
+  if (!project || typeof project !== "object") return project;
+  const row = {};
+  for (const key of LAND_DEFAULT_LIST_FIELDS) {
+    if (project[key] !== undefined) row[key] = project[key];
+  }
+  return row;
+}
+
 export function buildLandDefaultSnapshot(projects, { now = new Date() } = {}) {
-  const rows = Array.isArray(projects) ? projects.slice(0, LAND_DEFAULT_LIMIT) : [];
+  const rows = Array.isArray(projects)
+    ? projects.slice(0, LAND_DEFAULT_LIMIT).map(projectToLandListRow)
+    : [];
   return {
     schema_version: 1,
     delivery_tier: "inline-at-build",
@@ -151,7 +168,7 @@ export function buildLandDefaultSnapshot(projects, { now = new Date() } = {}) {
     },
     query: {
       ...landDefaultQuery(),
-      note: "Default Land tab: Active ULURP, all boroughs, no keyword/geo.",
+      note: "Default Land tab: Active ULURP, all boroughs, no keyword/geo. List fields only; brief hydrates on select.",
     },
     count: rows.length,
     projects: rows,

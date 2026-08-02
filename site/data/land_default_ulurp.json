@@ -1,25 +1,24 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-08-02T03:00:33.927Z",
+  "generated_at": "2026-08-02T03:05:54.109Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
     "url": "https://data.cityofnewyork.us/d/hgx4-8ukb"
   },
   "query": {
-    "$select": "project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers",
+    "$select": "project_id,project_name,primary_applicant,public_status,project_status,borough,community_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers",
     "$where": "ulurp_non='ULURP' AND project_status='Active'",
     "$order": "current_milestone_date DESC",
     "$limit": "40",
-    "note": "Default Land tab: Active ULURP, all boroughs, no keyword/geo."
+    "note": "Default Land tab: Active ULURP, all boroughs, no keyword/geo. List fields only; brief hydrates on select."
   },
   "count": 40,
   "projects": [
     {
       "project_id": "2024Q0135",
       "project_name": "Willets Point Phase II Mapping Actions",
-      "project_brief": "An amendment to the City Map, in conjunction with related actions (record number 2023Q0251), to facilitate a new 25,000 seat soccer-specific stadium, four predominantly residential buildings and a hotel is being sought by EDC, New York City Football Club, Related, and Sterling Equities for a site located in Willets Point, Community District 7, Queens.",
       "primary_applicant": "EDC - Economic Development Corporation for NYC",
       "public_status": "Completed",
       "project_status": "Active",
@@ -33,7 +32,6 @@
     {
       "project_id": "2020M0385",
       "project_name": "1325 Ave of the Americas-Text Amendment/Cert",
-      "project_brief": "The applicant, Le Grande Boucherie, seeks a zoning text amendment, a modification to a previously approved CPC Certification (M 880194 B ZCM), and a Chairperson's certification pursuant to ZR 81-231(b). These actions will facilitate private cafe use within the Through Block Galleria (POPS) at 1325 Avenue of The Americas.",
       "primary_applicant": "Neil Weisbard",
       "public_status": "Completed",
       "project_status": "Active",
@@ -46,7 +44,6 @@
     {
       "project_id": "P2012X0048",
       "project_name": "GRANT PARK MAPPING",
-      "project_brief": "DEMAP A PORTION OF GRANT AVE BETWEEN E169TH ST & E170TH ST TO ESTABLISH A PARK.",
       "primary_applicant": "Antonios Michelakis",
       "public_status": "Completed",
       "project_status": "Active",
@@ -57,7 +54,6 @@
     {
       "project_id": "2023M0452",
       "project_name": "Allen Street Mall Demapping",
-      "project_brief": "An application by the New York City Department of Parks and Recreation (DPR) to demap as street and map as parkland a portion of Allen Street between Delancey Street and Rivington Street, and for a text amendment to preserve wide street regulations for lots fronting Allen Street, to facilitate a future concession and the reactivation of a shuttered restroom in Community District 3, Manhattan.",
       "primary_applicant": "DPR - Department of Parks & Recreation NYC",
       "public_status": "Completed",
       "project_status": "Active",
@@ -71,7 +67,6 @@
     {
       "project_id": "2026M0218",
       "project_name": "343 Madison Ave Non-ULURP Modification",
-      "project_brief": "A non-ULURP Modification of the 2021 special permits (C 210370 ZSM and C 210369 ZSM) in order to update the design note on the approved drawing sheets and apply a lower streetwall height exclusively to the 44th Street frontage, is being sought by BP 347 Madison Associates LLC, at 343 Madison Avenue in Central Midtown Manhattan, CD5",
       "primary_applicant": "BP 347 Madison Associates, LLC .",
       "public_status": "Completed",
       "project_status": "Active",
@@ -85,7 +80,6 @@
     {
       "project_id": "2020K0444",
       "project_name": "20 Berry Street",
-      "project_brief": "A zoning map amendment from M1-1 to M1-2, a zoning text amendment pursuant to ZR 74-94, and zoning special permits pursuant to Section 74-962 and 74-963 to facilitate a new 192,000 sf commercial and industrial building with publicly accessible open space at 20 Berry Street sought by private application by Mihata Corp. in the Williamsburg neighborhood of Brooklyn, Community District 1.",
       "primary_applicant": "hadi Hajjar",
       "public_status": "Completed",
       "project_status": "Active",
@@ -99,7 +93,6 @@
     {
       "project_id": "2020Q0317",
       "project_name": "23-10 Queens Plaza South",
-      "project_brief": "The applicant, AAGS Holdings LLC (also known as Dynamic Star), requests a series of land use actions, including a zoning map amendment, zoning text amendment and special permit to facilitate the 22-story enlargement of an existing four-story commercial building, including approximately 216,640 additional commercial square feet (sf) at 23-10 Queens Plaza South (Block 425, Lot 5) in the Long Island City neighborhood, Queens Community District 2.",
       "primary_applicant": "Dynamic Star",
       "public_status": "Completed",
       "project_status": "Active",
@@ -113,7 +106,6 @@
     {
       "project_id": "2024M0193",
       "project_name": "Studio 54 Rehabilitation and Text Amendment",
-      "project_brief": "A special permit as modified by a zoning text amendment to facilitate the rehabilitation of a listed theater in the Theater Subdistrict of Midtown Manhattan, Community District 5.",
       "primary_applicant": "Christopher N",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -127,7 +119,6 @@
     {
       "project_id": "2025M0395",
       "project_name": "Herald Center Signage Text Amendment and SP",
-      "project_brief": "A private application by JEMB Realty for a zoning text amendment and a zoning special permit to facilitate new advertising signage for a property located at 1293 Broadway in the Herald Square area of Midtown, Manhattan Community District 5.",
       "primary_applicant": "Louis Jerome",
       "public_status": "Filed",
       "project_status": "Active",
@@ -141,7 +132,6 @@
     {
       "project_id": "2026M0366",
       "project_name": "301 E 71st Street Transit Easement Certification",
-      "project_brief": "Standalone ZR 95-041 Transit Easement Certification. Transportation Division assigned as Lead Planner per Transit Easement Certification SOP. Project initiated via Applicant Portal; UK Action added to generate milestones. Next step is Informational Interest Meeting to confirm scope (no additional land use actions) and discuss PAS requirements and MTA coordination.",
       "primary_applicant": "301 East 71 Investors LLC",
       "public_status": "Filed",
       "project_status": "Active",
@@ -156,7 +146,6 @@
     {
       "project_id": "2024Q0219",
       "project_name": "135-27 Sapphire Street Rezoning",
-      "project_brief": "A zoning map amendment from R4 to R6A and a zoning text amendment to Appendix F to establish an MIH area to facilitate a new 6-story, 186,380 sf residential development (268 DUs, 67 income-restricted DUs) is being sought by 135 Sapphire LLC, at 135-27 Sapphire Street in Lindenwood, Community District 10, Queens.",
       "primary_applicant": "135 Sapphire LLC",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -171,7 +160,6 @@
     {
       "project_id": "2024K0240",
       "project_name": "289 Kent Avenue Rezoning",
-      "project_brief": "A zoning map amendment from a M3-1 to M1-3A/R7X, M1-2A districts zoning text amendment to appendix F to facilitate a new 18-story mixed-use building including 30,000 sf of ground floor commercial space, is being sought by Web Holdings LLC at 289 Kent Avenue in Williamsburg, Community District 1, Brooklyn.",
       "primary_applicant": "Jeremy Kozin",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -186,7 +174,6 @@
     {
       "project_id": "2025Q0247",
       "project_name": "69-67 108th Street Rezoning",
-      "project_brief": "A zoning map amendment from an R1-2A to R7D/C2-4 and zoning text amendment to map MIH to facilitate a new 11-story mixed-use development, with approximately 52,024 sq of residential space (59 dwelling units) and 3,902 sf of commercial space is being sought by 108 ST ., LLC at 69-67 108th Street in Forest Hills, Community District 6, Queens.",
       "primary_applicant": "108 ST ., LLC",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -201,7 +188,6 @@
     {
       "project_id": "2022K0419",
       "project_name": "7502 New Utrecht Avenue Rezoning",
-      "project_brief": "A Zoning Map amendment from R5/C2-2 to C4-4D and R5 and a Zoning Text Amendment to Appendix F to map an MIH area to facilitate a new 12-story, mixed-use development with approximately 51,600 square feet of residential space (54 housing units, 14-17 MIH) and approximately 14,921 square-feet of non-residential space is being sought by private applicant at 7502 New Utrecht Avenue in Bensonhurst, Community District 11, Brooklyn.",
       "primary_applicant": "Great City Plumbing Inc",
       "public_status": "Filed",
       "project_status": "Active",
@@ -215,7 +201,6 @@
     {
       "project_id": "2024R0332",
       "project_name": "5801 Amboy Road Commercial Overlay",
-      "project_brief": "This is a private application seeking a Zoning Map Amendment to establish a new C2-2 commercial overlay on two lots in an R3X district within the Special South Richmond Development District (SRD) to facilitate the expansion of an existing Starbucks drive-through (Use Group VI). The proposed project area (Block 6896, Lots 50 & 53) is 22,055 square feet and within the Prince’s Bay neighborhood of Staten Island’s Community District 3.",
       "primary_applicant": "Ed Rice",
       "public_status": "Filed",
       "project_status": "Active",
@@ -229,7 +214,6 @@
     {
       "project_id": "2023X0347",
       "project_name": "Norton Avenue Demapping",
-      "project_brief": "A demapping of a portion of Norton Avenue by 300 Zer LLC and 410 Zeraga Roko 9 LLC to facilitate the construction of a parking lot in the Zerega neighborhood of Bronx, Community District 9.",
       "primary_applicant": "410 Zeraga Roko 9 LLC",
       "public_status": "Filed",
       "project_status": "Active",
@@ -243,7 +227,6 @@
     {
       "project_id": "2023X0149",
       "project_name": "Sojourner Truth - Mapes Rezoning",
-      "project_brief": "A zoning map amendment from R7-1 and R7-1/C1-4 to R8 and R8/C2-4 and a zoning text amendment to designate an MIH area (ZR Appendix F) to facilitate two new residential buildings (387,386 total zoning square feet), providing a total of 457 affordable housing units and 8,782 square feet of amenity space, located on Block 3111 (“Mapes Court Redevelopment Site”) and Block 3119 (“Sojourner Truth Redevelopment Site”) in the Crotona neighborhood, Community District 6, the Bronx.",
       "primary_applicant": "Phipps Houses",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -258,7 +241,6 @@
     {
       "project_id": "2025K0232",
       "project_name": "900 60th Street Rezoning",
-      "project_brief": "A zoning map amendment from M1-1 to C4-5X and a zoning text amendment to Appendix F to map the project area as a Mandatory Inclusionary Housing (MIH) area to facilitate a new 13-story mixed-use development with 102,500 sf of residential (150 units), 5,500 sf of commercial floor area, and 50 parking spaces is being sought by a private applicant at 900 60th Street in Borough Park, Community District 12, Brooklyn.",
       "primary_applicant": "Jay Segal",
       "public_status": "Filed",
       "project_status": "Active",
@@ -272,7 +254,6 @@
     {
       "project_id": "2020M0383",
       "project_name": "58-62 East 125th Street Rezoning",
-      "project_brief": "An application by AbcNY Inc. for a zoning map amendment to rezone the existing C4-4D zoning district to a C4-7 district; a zoning special permit pursuant to ZR 74-533 (Reduction of parking spaces to facilitate affordable housing), a zoning text amendment to designate the area under MIH to facilitate the development of a 21-story, mixed-use building with approximately 121,101 sqft and a total of 139 units, at 58-62 East 125th Street (Block 1749, Lots 46, 48, and 49) East Harlem, CD 11 Manhattan",
       "primary_applicant": "abcNY inc.",
       "public_status": "Filed",
       "project_status": "Active",
@@ -287,7 +268,6 @@
     {
       "project_id": "2022X0393",
       "project_name": "110 East 138th Street/63 Exterior Street",
-      "project_brief": "A UDAAP, disposition of city-owned block, special permit (ZR 62-837), 2 authorizations (ZR 62-822a) to reduce width of screening buffers and allow a screen panel and (ZA 62-822c) to phase the WPAA, and waterfront certifications to facilitate development of two buildings with 28 and 14 stories with 537 DU’s in approx. 386,000 ZSF of mixed use dev. with senior housing, community fac., commercial space and a WPAA, by HPD and Phipps Houses at 110 E 138th/63 Exterior St in Mott Haven, CD1, The Bronx.",
       "primary_applicant": "Phipps Houses",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -301,7 +281,6 @@
     {
       "project_id": "2022K0302",
       "project_name": "1381 Atlantic Avenue Rezoning",
-      "project_brief": "A Zoning Map Amendment from M1-1 to C4-4D, and a Zoning Text Amendment to Appendix F to facilitate a new 13-story, 139,533 zsf , 144-unit, residential development, including 6221 zsf of commercial, is being sought by a private applicant at 1381 Atlantic Avenue in Bedford Stuyvesant, Community District 3, Brooklyn.",
       "primary_applicant": "Remica Group",
       "public_status": "Filed",
       "project_status": "Active",
@@ -315,7 +294,6 @@
     {
       "project_id": "2024Q0292",
       "project_name": "108-05 68th Road Rezoning",
-      "project_brief": "A zoning map amendment from R1-2A to R7A and a zoning text amendment to facilitate MIH in a new seven-story mixed-use development, including approximately 41,239 sf of residential space (29 DUs) and approximately 11,519 sf of community facility space, is being sought by All My Children Daycare and Nursery School at 108-05 68th Road in Forest Hills, Community District 6, Queens.",
       "primary_applicant": "All My Children Daycare and Nursery School",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -330,7 +308,6 @@
     {
       "project_id": "2023Q0351",
       "project_name": "Bud Place Rezoning",
-      "project_brief": "A zoning map amendment from M1-1 to C4-4A and a zoning text amendment to Appendix F to map MIH to facilitate two new mixed-use buildings containing 245 dwelling units is being sought by Kingsland Group LLC at 36-04 Bud Place in Flushing, Community District 7, Queens.",
       "primary_applicant": "Kingsland Group LLC",
       "public_status": "Filed",
       "project_status": "Active",
@@ -344,7 +321,6 @@
     {
       "project_id": "2026R0127",
       "project_name": "FDNY Cont' Use of WTC Unit 1688 Victory Blvd",
-      "project_brief": "An acquisition by the City (PQ) to facilitate the continued use of 1688 Victory Boulevard. Staten Island NY Block 708 Lot 7501 by FDNY for the Bureau of Health Services World Trade Center Unit. The space consists of 23,462 sqft  over two stories. The proposed site is in Staten Island Community District 1.",
       "primary_applicant": "FDNY - Fire Department of NYC",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -358,7 +334,6 @@
     {
       "project_id": "2023M0316",
       "project_name": "1097 First Avenue Rezoning",
-      "project_brief": "This is a private application by First Sigma De LLC requesting a zoning map change for a site located at the northwest corner of First Avenue and East 60th Street from a C8-4 district to a M1-8A/R12 district and a zoning text amendment to map an MIH area and create a new MX designation to facilitate a new 39-story, ~316,000 SF, 354-unit building in the Lenox Hill neighborhood of Manhattan, Community District 8.",
       "primary_applicant": "First Sigma De LLC",
       "public_status": "Filed",
       "project_status": "Active",
@@ -372,7 +347,6 @@
     {
       "project_id": "2020Q0129",
       "project_name": "147-14 Northern Boulevard Rezoning",
-      "project_brief": "A zoning map amendment from an R5/C1-2 district to R5 and R7X/C2-3 zoning districts and a zoning text amendment to Appendix F to facilitate two new 11-story mixed use buildings, containing 389 dwelling units (97 income-restricted), approx. 36,000 sq. ft. of commercial retail space and appx 10,500 sq. ft of community facility space is being sought by Northern 147-149 LLC at 147-14 Northern Blvd in Flushing, Community District 7, Queens.",
       "primary_applicant": "Northern 147-149 LLC",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -387,7 +361,6 @@
     {
       "project_id": "2023Q0315",
       "project_name": "St. Mary's Hospital Demapping",
-      "project_brief": "An amendment to the City Map involving the elimination of two privately owned and unbuilt City streets - a portion of 29th Avenue between 216th Street and Little Neck Boulevard and a portion of Little Neck Boulevard between 28th Road and 29th Avenue and the Discontinuance and Closing of a portion of 29th Avenue East of 216th Street in Bayside, Community District 11, Queens.",
       "primary_applicant": "St. Mary's Healthcare for Children St. Mary's Healthcare for Children",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -402,7 +375,6 @@
     {
       "project_id": "2024K0280",
       "project_name": "46 Nelson Street Rezoning II",
-      "project_brief": "This is an application by 46 Nelson LLC for a zoning map amendment from M1-1 to M1-2A/R7A (MX-5) and M1-1 to M1-2A/R6A (MX-5) along with a zoning text amendment to map MIH (Appendix F) to facilitate the development of a new 125k SF 7-story plus cellar mixed-use residential and commercial building containing 108 dwelling units at 46 Nelson St in Red Hook, Brooklyn, Community District 6.",
       "primary_applicant": "46 Nelson LLC",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -417,7 +389,6 @@
     {
       "project_id": "2024R0300",
       "project_name": "198-208 Richmond Terrace",
-      "project_brief": "A Zoning Map Amendment and Text Amendment, to rezone Block 13, Lots 60, 68, 71, 73, and portion of Lot 8 from R6/C2-2 (SHPD) to R7-3/C2-4 (SSGD), and enable MIH to facilitate a new 14-story residential and community facility building of 97,201 sf, 6.28 FAR, and 117 dwelling units, including 87,088-sf residential, 10,113-sf community-facility, is being sought by Yevgeniy Lvovskiy, Economic Development Opportunity Zone Fund 1, LLC at 198-208 Richmond Terrace, in St. George, CD1, Staten Island.",
       "primary_applicant": "Eric Palatnik",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -432,7 +403,6 @@
     {
       "project_id": "2023R0199",
       "project_name": "Veterans Road West- DOT Site Selection/Acq",
-      "project_brief": "A  ZR 107-68 authorization and combination site selection and acquisition action is being sought by NYC Dept. of Transportation and the Department of Citywide Administrative Services to support DOT’s Sidewalk Inspections Management construction crews through the storage of vehicles, trucks, equipment, materials, and muster space for staff at 2730 Arthur Kill Road in Rossville, Community District 3, Staten Island.",
       "primary_applicant": "NYC DOT New York City Dept. of Transportation  - Bridges",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -447,7 +417,6 @@
     {
       "project_id": "2024K0286",
       "project_name": "200 Kent Avenue Rezoning",
-      "project_brief": "A zoning map amendment from M1-4 to M1-4A/R7X and zoning text amendment to map MIH (Appendix F) to facilitate the conversion and expansion of an existing non-residential 5-story building to a mixed-use 14-story, approximately 135,840 sf (143 DUs, 36 MIH) development, including116,780 sf of residential floor area and 19,060 sf of commercial floor area, is being sought by 206 Kent LLC and 206 Kent Investor LLC at 200 Kent Avenue in Williamsburg, Community District 1, Brooklyn.",
       "primary_applicant": "206 Kent LLC & 206 Kent Investor LLC",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -462,7 +431,6 @@
     {
       "project_id": "2025K0229",
       "project_name": "6418 8th Avenue Rezoning",
-      "project_brief": "A zoning map amendment from a M1-1 to C7-4 to facilitate a new, nine-story, 39,633 square foot commercial development is being sought by Basic Group Corp. Architectural & Engineering Services at 6418 8th Avenue in Sunset Park, Community District 10, Brooklyn.",
       "primary_applicant": "Basic Group Corp. Architectural & Engineering Services",
       "public_status": "Filed",
       "project_status": "Active",
@@ -476,7 +444,6 @@
     {
       "project_id": "2023Q0328",
       "project_name": "35-20 College Point Blvd SFWD Expansion",
-      "project_brief": "A zoning map amendment from M3-1 to M1-2/R7-1 and a zoning text amendment to Appendix F to map MIH to facilitate a new 14-story mixed-use development with new WPAA as an extension and completion of the Special Flushing Waterfront District is being sought by 35-20 CPB Realty, LLC at 35-20 College Point Blvd in Flushing, Community District 7, Queens.",
       "primary_applicant": "35-20 CPB Realty, LLC",
       "public_status": "Noticed",
       "project_status": "Active",
@@ -490,7 +457,6 @@
     {
       "project_id": "2025Q0142",
       "project_name": "47-03 108th Street Rezoning",
-      "project_brief": "A zoning map amendment from R6B to R7X/C2-4 and zoning text amendment to map MIH to facilitate a new 13-story, 120,000 sf, 119 dwelling unit, mixed-use development, including 90,000 sf of residential space, 8,700 sf of commercial space, and 17,700 sf of community facility space is being sought by 108 Realty Group Inc. at 47-03 108th Street in Corona, Community District 4, Queens.",
       "primary_applicant": "108 Realty Group Inc.",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -505,7 +471,6 @@
     {
       "project_id": "2025M0252",
       "project_name": "Flatiron NoMad Major Concessions",
-      "project_brief": "This is an application by the NYC Department of Transportation for a Major Concession to allow the DOT to contract with the Flatiron/NoMad Partnership to allow for revenue-generating concession and sub-concessions within an approximately 142,000 square foot area along Broadway from East 19th to West 31st Street that would fund maintenance of public space in the Flatiron District, Manhattan, Community District 5.",
       "primary_applicant": "NYC DOT Department of Transportation",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -520,7 +485,6 @@
     {
       "project_id": "2025Q0304",
       "project_name": "50-01 Queens Boulevard Rezoning",
-      "project_brief": "A zoning map amendment from R7X/C2-3 and R6/C2-3 to R8A/C2-4 and a zoning text amendment to Appendix F to map MIH to facilitate the development of a new 16-story mixed-use building, 117,750 zoning sq ft (154 DUs), including community facility and commercial space on the ground floor, is being sought by ZDJ QUEENS 50 LLC at 50-01 Queens Boulevard in Woodside, Community District 2, Queens.",
       "primary_applicant": "ZDJ QUEENS 50 LLC",
       "public_status": "Filed",
       "project_status": "Active",
@@ -534,7 +498,6 @@
     {
       "project_id": "2025Q0316",
       "project_name": "Queens CD 2 Walk to Park Site Selection/Acq.",
-      "project_brief": "The Department of Parks and Recreation (DPR), along with co-applicant the Department of Citywide Administrative Services (DCAS), seeks approval for the acquisition and site selection (PC) of privately-owned properties for future park development to close the walk to park gap in Community District 2, Queens.",
       "primary_applicant": "DPR - Department of Parks & Recreation NYC",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -549,7 +512,6 @@
     {
       "project_id": "2024Q0164",
       "project_name": "164th Street Rezoning",
-      "project_brief": "A zoning map amendment from R3-2 to R6A/C2-4 and a zoning text amendment to Appendix F to map MIH to facilitate a six-story mixed-use development, including residential and community facility space is being sought by 88-66 Myrtle LLC at 75-41 164th Street in Hillcrest, Community District 8, Queens.",
       "primary_applicant": "boris Yakubov",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -564,7 +526,6 @@
     {
       "project_id": "2025K0219",
       "project_name": "9201 4th Ave Rezoning",
-      "project_brief": "A zoning map amendment from C8-2 (BR) to C4-4D (BR) and zoning text amendment pursuant to Appendix F to facilitate a new eleven story, 129,222 sf, mixed use development, including 18,547 sf of commercial space and 97 dwelling units (with approximately 24 units being permanently income restricted) is being sought by private applicant, 9201 LLC at 9201 4th Avenue in Bay Ridge, CD 10, Brooklyn.",
       "primary_applicant": "9201 LLC",
       "public_status": "In Public Review",
       "project_status": "Active",
@@ -579,7 +540,6 @@
     {
       "project_id": "2025M0261",
       "project_name": "509 Madison Special Permit",
-      "project_brief": "This is an application by 509 Madison Avenue LLC (the “Applicant”) for a special permit pursuant to Section 74-152 of the Zoning Resolution of the City of New York (the “Zoning Resolution” or “ZR”) to permit Use Group V hotel use at 509 Madison Avenue (Manhattan Block 1288, Lot 51) (the “Development Site”), Action is being sought by 509 Madison Avenue LLC [private applicant], CD5 [Community District], Manhattan [Borough].",
       "primary_applicant": "Nicholas Williams",
       "public_status": "In Public Review",
       "project_status": "Active",

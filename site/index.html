@@ -4406,7 +4406,8 @@ async function landSelect(i, el){
       <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">${t("applicant_lbl")}</div></div>
       <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
-  if(r.project_brief) html+=`<div class="scope"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
+  if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
+  else html+=`<div class="scope" id="land-brief" hidden></div>`;
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
@@ -4425,6 +4426,23 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
+  // List snapshots omit project_brief; hydrate once from Open Data when detail opens.
+  if(!r.project_brief && r.project_id){
+    api(ZAP,{"$select":ZAP_SELECT,"$where":`project_id='${String(r.project_id).replace(/'/g,"''")}'`,"$limit":"1"})
+      .then(rows=>{
+        if(selection!==landSelectionSeq) return;
+        const full=rows&&rows[0];
+        if(!full||!full.project_brief) return;
+        r.project_brief=full.project_brief;
+        if(full.actions!=null) r.actions=full.actions;
+        const brief=$("#land-brief");
+        if(brief){
+          brief.hidden=false;
+          brief.innerHTML=`<span class="lbl">${t("in_plain_english")}</span>${excerptHtml(full.project_brief,900)}`;
+        }
+      })
+      .catch(()=>{});
+  }
   loadZapOutcomes(r, $("#land-outcomes"), selection);
   const landURL=landLink(r.project_id);
   const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
