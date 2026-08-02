@@ -56,6 +56,7 @@ export {
   joinKeyLinksForObservation,
   indexObservationsByRoot,
   dedupeObjectLinks,
+  pickDiversePeopleObjects,
   buildEntityIntelligence,
   buildEntityIntelligenceFromBucket,
   buildIntelligenceCorpus,
