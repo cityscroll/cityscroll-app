@@ -58,6 +58,7 @@ const sandbox = new Function(
   extractConst("CURRENT_SOLICITATIONS_URL") +
   extractConst("CITY_RECORD_GETFILE_URL") +
   extractConst("OCP_AWARDS_URL") +
+  extractFn("checkbookDocumentCode") +
   extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +

@@ -77,6 +77,7 @@ const sandbox = new Function(
   extractConst("CURRENT_SOLICITATIONS_URL") + "\n" +
   extractConst("CITY_RECORD_GETFILE_URL") + "\n" +
   extractConst("OCP_AWARDS_URL") + "\n" +
+  extractFn("checkbookDocumentCode") +
   extractFn("checkbookSearchUrl") + "\n" +
   extractFn("lifecycleStageLabel") + "\n" +
   extractFn("lifecycleAmount") + "\n" +
@@ -160,7 +161,8 @@ try {
     const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
     function pivotA(href, text){ return '<a href="'+href+'">'+text+'</a>'; }
     ` +
-    extractFn("checkbookSearchUrl") +
+    extractFn("checkbookDocumentCode") +
+  extractFn("checkbookSearchUrl") +
     extractFn("lifecycleStageLabel") +
     extractFn("lifecycleAmount") +
     extractFn("lifecycleMoney") +

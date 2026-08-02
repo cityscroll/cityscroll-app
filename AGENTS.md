@@ -132,8 +132,9 @@ payloads so observation coverage is not stuck at zero. Staleness helper:
 
 Solicitation response handoffs are evidence records, not generic bid links:
 `site/action_registry.js` → `solicitationHandoff`. Notice-named agency systems take
-precedence; PASSPort matches hydrate the guide from `rfx_detail`; unmatched EPIN-shaped
-notices get a search recipe because PASSPort Public has no stable per-RFx URL. Keep the
+precedence; PASSPort matches with numeric `rfp_id` deep-link to
+`passport.cityofnewyork.us/.../process_manage_extranet/{rfp_id}` (same path public rfx.js
+uses); without `rfp_id`, unmatched EPIN-shaped notices get a public browse search recipe. Keep the
 field cases in `test/action-rail.test.mjs` and visual evidence in
 `tools/capture_passport_bid_guide.py`.
 

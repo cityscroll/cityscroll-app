@@ -3918,8 +3918,14 @@ function careerCardHTML(exam){
   const notice=exam.notice_url
     ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
     : `<a class="act" href="${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
-  const apply=status==="open" && exam.notice_url
-    ? `<a class="act primary" href="${escUiHtml(CrolStaffing.OASY_APPLY_URL)}" ${EXT_ATTRS}>${t("career_apply_oasys")}${extSR()}</a>`:"";
+  // OASys has no public per-exam apply URL; use exam-specific official_application_url when
+  // present, else the stable examsforjobs landing. Open window is enough to show Apply —
+  // do not require an NOE PDF for the kinetic handoff.
+  const applyUrl=(window.CrolActions && CrolActions.examApplyUrl)
+    ? CrolActions.examApplyUrl(exam)
+    : (exam.official_application_url || CrolStaffing.OASY_APPLY_URL);
+  const apply=status==="open"
+    ? `<a class="act primary" href="${escUiHtml(applyUrl)}" ${EXT_ATTRS}>${t("career_apply_oasys")}${extSR()}</a>`:"";
   const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || exam.qualifications || exam.test_method);
   const gapClass=feeSalary.class || (feeSalary.kind==="not_published"?"not_published":"not_yet_ingested");
   const details=hasNoeDetail ? `
@@ -5153,8 +5159,13 @@ function actionRailGuideHTML(actions){
   if(!guide) return "";
   const copyFact=(label,value)=>value?`<dt>${label}</dt><dd><code>${escUiHtml(value)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(value)}">${t("copy_value")}</button></dd>`:"";
   const plainFact=(label,value)=>value?`<dt>${label}</dt><dd>${value}</dd>`:"";
+  // When an identifier has an outbound URL (City Record notice, public RFx browse, …),
+  // wrap the code value — copy button still works on the raw id.
+  const idValue=guide.identifier?(guide.identifier_url
+    ?`<a href="${escUiHtml(guide.identifier_url)}" ${EXT_ATTRS}><code>${escUiHtml(guide.identifier)}</code>${extSR()}</a>`
+    :`<code>${escUiHtml(guide.identifier)}</code>`):"";
   const facts=[
-    copyFact(t("bid_guide_id_label"),guide.identifier),
+    guide.identifier?`<dt>${t("bid_guide_id_label")}</dt><dd>${idValue}<button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.identifier)}">${t("copy_value")}</button></dd>`:"",
     copyFact(t("bid_guide_name_label"),guide.procurement_name),
     guide.status?`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`:"",
     action.deadline?`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`:"",
@@ -6575,10 +6586,30 @@ const CHECKBOOK_SPENDING_URL = "https://www.checkbooknyc.com/spending_search";
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const OCP_AWARDS_URL = "https://data.cityofnewyork.us/d/qyyg-4tf5";
 
-// Prefer a contract / PIN / vendor search term when we already have it — never send the
-// reader to a bare Checkbook landing page when a scoped query is constructible.
+// Infer Checkbook document_code (CT1, DO1, …) from a prime_contract_id when the API
+// did not stamp doctype. Citywide detail URLs need both agid + doctype.
+function checkbookDocumentCode(contractId, explicit){
+  if(explicit) return String(explicit).trim().toUpperCase() || null;
+  const m = String(contractId || "").trim().match(/^([A-Za-z]+)(\d)/);
+  return m ? (m[1] + m[2]).toUpperCase() : null;
+}
+
+// Prefer a verified contract-detail URL when Checkbook agid is known; else scoped
+// smart_search by contract id / PIN / vendor; never a bare landing when a term exists.
+// Citywide detail paths use /contract_details/agid/{id}/doctype/{code} (not the CT id alone).
 function checkbookSearchUrl(opts){
   opts = opts || {};
+  if(opts.detailUrl){
+    try{
+      const u = new URL(String(opts.detailUrl));
+      if(u.protocol === "https:" && u.hostname.includes("checkbooknyc.com")) return u.toString();
+    }catch(_e){ /* fall through */ }
+  }
+  const agid = opts.agid != null ? String(opts.agid).trim() : "";
+  if(/^\d+$/.test(agid)){
+    const code = checkbookDocumentCode(opts.contractId, opts.documentCode || opts.doctype) || "CT1";
+    return `https://www.checkbooknyc.com/contract_details/agid/${encodeURIComponent(agid)}/doctype/${encodeURIComponent(code)}`;
+  }
   const term = opts.contractId || opts.pin || opts.vendor || opts.searchTerm;
   if(term) return `${CHECKBOOK_SMART_SEARCH}?search_term=${encodeURIComponent(String(term))}`;
   if(opts.kind === "spending") return CHECKBOOK_SPENDING_URL;
@@ -6697,12 +6728,22 @@ function lifecycleSourceLink(entry, ctx){
     return `<a class="view" href="${CURRENT_SOLICITATIONS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_current_solicitations")}${extSR()}</a>`;
   }
   if(entry.source === "checkbook-contracts"){
-    const id = (entry.detail && entry.detail.contract_id) || ctx.contractId;
-    return `<a class="view" href="${checkbookSearchUrl({contractId:id, pin:ctx.pin, vendor:ctx.vendor})}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    const d = entry.detail || {};
+    const id = d.contract_id || ctx.contractId;
+    return `<a class="view" href="${checkbookSearchUrl({
+      contractId:id, pin:ctx.pin, vendor:ctx.vendor,
+      agid:d.agid || d.checkbook_agid, documentCode:d.document_code || d.doctype,
+      detailUrl:d.checkbook_detail_url,
+    })}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
   }
   if(entry.source === "checkbook-spending"){
-    const id = (entry.detail && entry.detail.contract_id) || ctx.contractId;
-    return `<a class="view" href="${checkbookSearchUrl({contractId:id, pin:ctx.pin, vendor:ctx.vendor, kind:"spending"})}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    const d = entry.detail || {};
+    const id = d.contract_id || ctx.contractId;
+    return `<a class="view" href="${checkbookSearchUrl({
+      contractId:id, pin:ctx.pin, vendor:ctx.vendor, kind:"spending",
+      agid:d.agid || d.checkbook_agid, documentCode:d.document_code || d.doctype,
+      detailUrl:d.checkbook_detail_url,
+    })}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
   }
   if(entry.source === "passport-public-contracts"){
     return `<a class="view" href="${entry.portal || PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`;
@@ -7223,7 +7264,13 @@ function lifecycleDollarsHTML(data, notice){
       contractId: d.contract_id,
       pin: data.pin || notice.pin,
       vendor: d.vendor || notice.vendor_name,
+      agid: d.agid || d.checkbook_agid,
+      documentCode: d.document_code || d.doctype,
+      detailUrl: d.checkbook_detail_url,
     });
+    const contractIdHtml = d.contract_id
+      ? `<a href="${contractLink}" ${EXT_ATTRS}><code>${escUiHtml(d.contract_id)}</code>${extSR()}</a>`
+      : `<code>—</code>`;
     const vendorNote = vendorMismatch
       ? `<div class="note warn" style="margin-top:10px">${t("lifecycle_dollars_vendor_mismatch_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
       : displayDiffers
@@ -7240,7 +7287,7 @@ function lifecycleDollarsHTML(data, notice){
       : "";
     return `<div class="apply" id="${LIFECYCLE_DOLLARS_ANCHOR}" style="margin-top:14px" tabindex="-1"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
       <dl>
-        <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
+        <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd>${contractIdHtml} · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
         <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${lifecycleMoney(current)}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:lifecycleMoney(original)})}</span>`:""}</dd>
         <dt>${t("lifecycle_dollars_paid_lbl")}</dt>${paidDd}
         <dt>${t("lifecycle_dollars_term_lbl")}</dt><dd>${fdate(d.start_date)||"—"} → ${fdate(d.end_date)||"—"}</dd>
@@ -8793,7 +8840,12 @@ async function showMatter(pin){
     // Matter spine: paid-to-date is a joined Checkbook fact — never gap copy in parallel.
     const spent = regDetail.spent_to_date != null ? regDetail.spent_to_date : 0;
     const current = regDetail.current_amount != null ? regDetail.current_amount : 0;
-    const payExtra = `term ${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(regDetail.contract_id||"")}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    const payExtra = `term ${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"} · <a href="${checkbookSearchUrl({
+      contractId:regDetail.contract_id,
+      agid:regDetail.agid || regDetail.checkbook_agid,
+      documentCode:regDetail.document_code || regDetail.doctype,
+      detailUrl:regDetail.checkbook_detail_url,
+    })}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
     items.push({
       date: null,
       label: `<b>${t("lifecycle_dollars_paid_lbl")}: ${money(spent)||"$0"}</b> of ${money(current)||"—"}`,

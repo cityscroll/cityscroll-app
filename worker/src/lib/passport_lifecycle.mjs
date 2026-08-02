@@ -12,7 +12,7 @@ import {
   isPassportRegisteredStatus,
   normId,
 } from "./passport_join.mjs";
-import { CONTRACTS_PORTAL, RFX_PORTAL } from "./passport_parse.mjs";
+import { CONTRACTS_PORTAL, RFX_PORTAL, passportRfxHandoffUrl } from "./passport_parse.mjs";
 import { recoverPaymentFromRegisteredJoin } from "./checkbook_lifecycle.mjs";
 
 export { buildEpinIndex, joinPinToEpin, normId };
@@ -129,7 +129,7 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
       rfx: {
         status: "matched",
         source: "passport-public-rfx",
-        portal: RFX_PORTAL,
+        portal: passportRfxHandoffUrl(r.rfp_id),
         join_method: join?.method || null,
         detail: slimRfx(r),
       },
@@ -312,7 +312,8 @@ function rfxDetailFrom(r, join) {
   return {
     status: "matched",
     source: "passport-public-rfx",
-    portal: RFX_PORTAL,
+    // Prefer the publisher extranet deep link when rfp_id is present; browse is fallback.
+    portal: passportRfxHandoffUrl(r?.rfp_id),
     join_method: join?.method || null,
     detail: slimRfx(r),
   };

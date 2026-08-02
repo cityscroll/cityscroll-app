@@ -71,6 +71,7 @@ const helpers = new Function(
   const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
   const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
   ` +
+  extractFn("checkbookDocumentCode") +
   extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +

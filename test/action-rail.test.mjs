@@ -28,6 +28,9 @@ test("NYCHA iSupplier field case never becomes a PASSPort bid", () => {
   assert.equal(handoff.system, "nycha_isupplier");
   assert.equal(handoff.identifier, "517992");
   assert.match(handoff.destination, /nycha\/business\/isupplier-vendor-registration/);
+  // RFQ identity + package point at City Record when no public per-RFQ iSupplier URL exists.
+  assert.equal(handoff.identifier_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050");
+  assert.equal(handoff.package_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050");
 
   const [action] = compileActionRail(matter, {today: "2026-08-01"});
   assert.equal(action.label_key, "open_nycha_isupplier");
@@ -35,7 +38,37 @@ test("NYCHA iSupplier field case never becomes a PASSPort bid", () => {
   assert.doesNotMatch(action.destination, /passport/i);
 });
 
-test("matched Released PASSPort RFx carries searchable identity and status into the guide", () => {
+test("matched Released PASSPort RFx with rfp_id deep-links to process_manage_extranet", () => {
+  const matter = {
+    kind: "solicitation",
+    pin: "81026B0003",
+    title: "Records Remediation Project",
+    deadline: "2026-08-18T13:00:00.000",
+    rfx_detail: {
+      status: "matched",
+      portal: "https://a0333-passportpublic.nyc.gov/rfx.html",
+      detail: {
+        epin: "81026B0003",
+        procurement_name: "81026B0003-Records remediation project",
+        rfx_status: "Released",
+        rfp_id: "36426",
+      },
+    },
+  };
+  const [action] = compileActionRail(matter, {today: "2026-08-01"});
+  assert.equal(action.label_key, "search_passport_rfx");
+  assert.equal(
+    action.destination,
+    "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/36426",
+  );
+  assert.deepEqual(
+    {system: action.guide.system, mode: action.guide.mode, identifier: action.guide.identifier, status: action.guide.status},
+    {system: "passport", mode: "matched", identifier: "81026B0003", status: "Released"},
+  );
+  assert.equal(action.guide.rfp_id, "36426");
+});
+
+test("matched PASSPort RFx without rfp_id stays on public browse search recipe", () => {
   const matter = {
     kind: "solicitation",
     pin: "81026B0003",
@@ -52,12 +85,8 @@ test("matched Released PASSPort RFx carries searchable identity and status into 
     },
   };
   const [action] = compileActionRail(matter, {today: "2026-08-01"});
-  assert.equal(action.label_key, "search_passport_rfx");
   assert.equal(action.destination, "https://a0333-passportpublic.nyc.gov/rfx.html");
-  assert.deepEqual(
-    {system: action.guide.system, mode: action.guide.mode, identifier: action.guide.identifier, status: action.guide.status},
-    {system: "passport", mode: "matched", identifier: "81026B0003", status: "Released"},
-  );
+  assert.equal(action.guide.mode, "matched");
 });
 
 test("unmatched citywide EPIN gets a search recipe instead of a fake deep link", () => {
@@ -175,11 +204,27 @@ test("missing hearing participation stays visible without inventing a destinatio
 test("exam action windows reuse the official OASys handoff", () => {
   const actions = compileActionRail({
     kind: "exam", lifecycle_stage: "open", deadline: "2026-08-20",
+    exam_number: "7016",
     official_application_url: "https://www.nyc.gov/examsforjobs",
     official_notice_url: "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
   }, {today: "2026-08-01"});
   assert.equal(actions[0].type, "official_application");
   assert.equal(actions[0].destination, "https://www.nyc.gov/examsforjobs");
+  assert.equal(actions[0].guide?.system, "oasys");
+  assert.equal(actions[0].guide?.mode, "landing");
+  assert.equal(actions[0].guide?.identifier, "7016");
+});
+
+test("exam apply prefers a non-landing official_application_url when published", () => {
+  const actions = compileActionRail({
+    kind: "exam",
+    lifecycle_stage: "open",
+    deadline: "2026-08-20",
+    exam_number: "7016",
+    official_application_url: "https://a856-exams.nyc.gov/oasysweb/apply/7016",
+  }, {today: "2026-08-01"});
+  assert.equal(actions[0].destination, "https://a856-exams.nyc.gov/oasysweb/apply/7016");
+  assert.equal(actions[0].guide?.mode, "deep");
 });
 
 test("all compiled rails stay at three actions or fewer and validate", () => {

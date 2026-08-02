@@ -73,10 +73,20 @@ export function classifyDestinationUrl(url, hints = {}) {
     const mode = String(guide.mode || "");
     const system = String(guide.system || "");
     if (system === "passport" || mode === "search_only" || mode === "matched") {
-      // PASSPort Public has no stable per-RFx URL — always a search recipe.
+      // Matched RFx with rfp_id uses process_manage_extranet (publisher deep path).
+      if (
+        host.includes("passport.cityofnewyork.us")
+        && /process_manage_extranet\/\d+/i.test(path)
+      ) {
+        return "deep";
+      }
+      // Public browse remains a search recipe when no rfp_id is available.
       if (host.includes("passport")) return "search_page";
     }
     if (system === "nycha_isupplier") return "landing";
+    if (system === "oasys") {
+      return mode === "deep" ? "deep" : "landing";
+    }
     if (system === "notice_portal" || mode === "notice_named") {
       // Allowlisted OpenGov/Bonfire/BidNet item URLs are deep when host evidence exists.
       if (
@@ -101,18 +111,20 @@ export function classifyDestinationUrl(url, hints = {}) {
     return "landing";
   }
 
-  // PASSPort Public + legacy PASSport browse
+  // PASSPort: authenticated extranet item is deep; public browse is search-page.
   if (
     host.includes("passportpublic.nyc.gov")
     || host.includes("passport.cityofnewyork.us")
     || host.includes("passport.nyc.gov")
   ) {
+    if (/process_manage_extranet\/\d+/i.test(path)) return "deep";
     return "search_page";
   }
 
   // Checkbook NYC
   if (host.includes("checkbooknyc.com")) {
     if (/\/nycha_contract_details\//i.test(path) && /\/contract\//i.test(path)) return "deep";
+    if (/\/contract_details\/agid\/\d+/i.test(path)) return "deep";
     if (/\/smart_search\//i.test(path)) {
       return /[?&]search_term=/i.test(search) ? "scoped_search" : "search_page";
     }
