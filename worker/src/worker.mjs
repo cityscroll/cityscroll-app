@@ -48,6 +48,7 @@ import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, refreshHearings } from "./hearings.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
+import { handleFranchiseConcessions, refreshFranchiseConcessions } from "./franchise_concession.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
 import { handleMeetingOutcomes, handleAdminMeetingOutcomesRefresh, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
@@ -98,6 +99,7 @@ export default {
     if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
+    if (pathname === "/franchise-concessions") return handleFranchiseConcessions(request, env, ctx);
     if (pathname === "/meeting-outcomes") return handleMeetingOutcomes(request, env, ctx);
     if (pathname === "/zap-outcomes") return handleZapOutcomes(request, env, ctx);
     if (pathname === "/rules") return handleRules(request, env, ctx);

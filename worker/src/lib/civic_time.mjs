@@ -210,6 +210,23 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "people",
     description: "Civil-service appointment / hire aggregate",
   },
+  // Franchise / concession review (FCRC) process spine
+  "franchise.solicitation": {
+    lens: "meetings",
+    description: "Franchise or concession solicitation / RFP filed for FCRC review",
+  },
+  "franchise.public_hearing": {
+    lens: "meetings",
+    description: "FCRC public hearing on a proposed franchise or concession",
+  },
+  "franchise.committee_meeting": {
+    lens: "meetings",
+    description: "FCRC public meeting (committee action / disposition)",
+  },
+  "franchise.award": {
+    lens: "meetings",
+    description: "Franchise or concession award, registration, or FCRC rules adoption",
+  },
 });
 
 /** Map product spine event_type / kind → registry id. Unknown kinds fail closed. */
@@ -239,6 +256,11 @@ export const SPINE_KIND_ALIASES = Object.freeze({
   exam_list_establishment: "staffing.list_established",
   exam_certification: "staffing.certification",
   exam_appointment: "staffing.appointment",
+  // Franchise / concession review spine
+  franchise_solicitation: "franchise.solicitation",
+  franchise_public_hearing: "franchise.public_hearing",
+  franchise_committee_meeting: "franchise.committee_meeting",
+  franchise_award: "franchise.award",
 });
 
 /** Event kinds emitted from matched PASSPort RFx detail (solicitation production spine). */
@@ -709,6 +731,45 @@ export function mapExamProcessSpineToCivic(spine, meta = {}) {
         source_field: ev.time?.basis || null,
         valid_at: isPublication ? null : valid_at,
         valid_to: isPublication ? null : valid_to,
+        published_at: isPublication ? valid_at : null,
+        observed_at,
+        processed_at,
+        status: ev.status ?? null,
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    );
+  });
+}
+
+/**
+ * Map `buildFranchiseConcessionSpine` events into civic-time envelopes (library-only).
+ *
+ * @param {object} spine - franchise/concession process spine
+ * @param {object} [meta] - observed_at, processed_at, run_id
+ */
+export function mapFranchiseConcessionSpineToCivic(spine, meta = {}) {
+  const subject_ref = spine?.subject_ref || "franchise:unknown";
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "franchise-concession-spine";
+
+  return (spine?.events || []).map((ev) => {
+    const event_kind = SPINE_KIND_ALIASES[ev.kind];
+    if (!event_kind) {
+      throw new TypeError(`unknown franchise concession spine kind: ${ev.kind}`);
+    }
+    const valid_at = dayStamp(ev.time?.value);
+    const isPublication = ev.time?.basis === "publication_date";
+    const requestId = ev.request_id || "unknown";
+    return mapCivicEvent(
+      {
+        event_kind,
+        subject_ref,
+        source_record_ref: `${ev.source?.id || "city-record"}:${ev.id || ev.kind}`,
+        source_revision: `franchise:${requestId}:${ev.kind}:${valid_at || "none"}`,
+        source_field: ev.time?.basis || null,
+        valid_at: isPublication ? null : valid_at,
         published_at: isPublication ? valid_at : null,
         observed_at,
         processed_at,

@@ -668,6 +668,42 @@
         "civic_time",
         "exam_process_spine"
       ]
+    },
+    {
+      "id": "franchise.solicitation",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time",
+        "franchise_concession_spine"
+      ]
+    },
+    {
+      "id": "franchise.public_hearing",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time",
+        "franchise_concession_spine"
+      ]
+    },
+    {
+      "id": "franchise.committee_meeting",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time",
+        "franchise_concession_spine"
+      ]
+    },
+    {
+      "id": "franchise.award",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time",
+        "franchise_concession_spine"
+      ]
     }
   ],
   "assertion_classifications": [
