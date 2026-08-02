@@ -27,21 +27,35 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
 
-## DuckDB + parquet warehouse (WH-01 scaffold)
+## DuckDB + parquet warehouse (WH-01 + WH-02 first bulk)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
-ingest skeleton: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny
-row defaults. Setup + proof:
+ingest: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny row
+defaults; full Socrata export only via `--bulk --ack-large` (one dataset at a
+time). Setup + fixture proof:
 
 ```bash
 python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5
-node --test test/warehouse_scaffold.test.mjs
+node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs
 ```
 
-Full bulk pack is **WH-02** (still capped; Mini-first). Query seam:
-`warehouse/lib/query.mjs` / `warehouse/scripts/query.py`. Details:
-`warehouse/README.md`.
+**WH-02 first pack:** OCP awards `qyyg-4tf5` full `rows.csv` through the capped
+runner. Manifest + checksums (no multi-MB bulk in git):
+`warehouse/manifests/wh02_load_manifest.json`. Reproduce bulk:
+
+```bash
+python3 ~/dev/agentic-engineering-principles/bin/headroom.py   # CONSTRAINED → defer
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/ocp_bulk_verify.sql
+```
+
+**Remaining (sequential, only if headroom green):** `zap-projects` (`hgx4-8ukb`)
+→ `zap-bbl` (`2iga-a6mk`) → `city-record` (`dg92-zbpx`). Optional later:
+`doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
+`warehouse/scripts/query.py`. Details: `warehouse/README.md`.
 
 ## Global item-route navigation
 
