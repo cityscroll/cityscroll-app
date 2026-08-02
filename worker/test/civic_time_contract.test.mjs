@@ -58,6 +58,8 @@ test("event-kind registry is bounded and covers money/rules/land/meetings/people
   assert.deepEqual([...lenses].sort(), ["land", "meetings", "money", "people", "rules"]);
   assert.equal(isRegisteredEventKind("rules.comment_close"), true);
   assert.equal(isRegisteredEventKind("staffing.list_established"), true);
+  assert.equal(isRegisteredEventKind("meetings.non_council_notice"), true);
+  assert.equal(isRegisteredEventKind("meetings.non_council_hearing"), true);
   assert.equal(isRegisteredEventKind("procurement.award_and_amendment"), false);
   assert.ok(listEventKinds("rules").every((k) => k.lens === "rules"));
   assert.ok(listEventKinds("people").every((k) => k.lens === "people"));

@@ -118,6 +118,8 @@ const sandbox = new Function(
   extractFn("matterDetailUrl") + "\n" +
   extractFn("nonCouncilBodyLinks") + "\n" +
   extractFn("nonCouncilWhereHTML") + "\n" +
+  extractFn("nonCouncilStageLabel") + "\n" +
+  extractFn("nonCouncilHearingOutcomesHTML") + "\n" +
   extractFn("meetingOutcomeBucket") + "\n" +
   extractFn("meetingMatterShortTitle") + "\n" +
   extractFn("collapseMeetingAgenda") + "\n" +
@@ -199,6 +201,8 @@ try {
     extractFn("matterDetailUrl") +
     extractFn("nonCouncilBodyLinks") +
     extractFn("nonCouncilWhereHTML") +
+    extractFn("nonCouncilStageLabel") +
+    extractFn("nonCouncilHearingOutcomesHTML") +
     extractFn("meetingOutcomeBucket") +
     extractFn("meetingMatterShortTitle") +
     extractFn("collapseMeetingAgenda") +
