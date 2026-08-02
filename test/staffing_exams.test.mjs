@@ -17,7 +17,7 @@ test("precomputed staffing artifact is reproducible from committed source snapsh
 });
 
 test("every exam has a unique shareable identity and official provenance", () => {
-  assert.equal(artifact.schema_version, 1);
+  assert.equal(artifact.schema_version, 2);
   // Current FY schedule (~151) plus closed list-depth exams with Civil Service List joins.
   assert.ok(artifact.exams.length >= 151, `expected full schedule, got ${artifact.exams.length}`);
   const listDepth = artifact.exams.filter((exam) => exam.list_depth || exam.sources?.includes("dcas-annual-closed-list-depth"));
@@ -33,10 +33,17 @@ test("every exam has a unique shareable identity and official provenance", () =>
 
 test("the current DCAS page contributes eight actionable NOEs without inventing City Record exams", () => {
   const today = "2026-07-28";
+  // Open-competitive snapshot NOEs (live DCAS page) plus densify-only NOE URLs
+  // for body-parsed fee/salary on annual-schedule exams (Police Officer multi-exam, etc.).
+  const openCompetitiveNoe = artifact.exams.filter(
+    (exam) => exam.notice_url && (exam.sources || []).includes("dcas-open-competitive"),
+  );
+  assert.equal(openCompetitiveNoe.length, 8);
+  assert.ok(openCompetitiveNoe.every(exam => Staffing.statusFor(exam, today) === "open"));
+  assert.ok(openCompetitiveNoe.every(exam => exam.fee != null && exam.salary_min && exam.qualifications));
   const withNoe = artifact.exams.filter(exam => exam.notice_url);
-  assert.equal(withNoe.length, 8);
-  assert.ok(withNoe.every(exam => Staffing.statusFor(exam, today) === "open"));
-  assert.ok(withNoe.every(exam => exam.fee != null && exam.salary_min && exam.qualifications));
+  assert.ok(withNoe.length >= 8, "densify may attach additional NOE URLs");
+  assert.ok(withNoe.every(exam => exam.fee != null && exam.salary_min != null));
   assert.equal(artifact.source_checks.city_record.accepted_exam_announcements, 0);
   assert.ok(Number(artifact.source_checks.city_record.candidate_rows) > 0);
 });

@@ -10,6 +10,7 @@ import {
   toMoneyAmount,
   parseNoeFeeSalaryFromBody,
   applyNoeFeeSalaryFromBody,
+  extractNoeExamNumbers,
 } from "../worker/src/lib/noe_fee_salary.mjs";
 
 // Verbatim shapes from pdftotext of live DCAS NOE PDFs (2026-08).
@@ -136,4 +137,35 @@ test("empty body is a no-op", () => {
   const exam = { exam_number: "1", fee: null };
   assert.equal(applyNoeFeeSalaryFromBody(exam, ""), exam);
   assert.equal(applyNoeFeeSalaryFromBody(exam), exam);
+});
+
+test("extractNoeExamNumbers handles multi-exam Police Officer header", () => {
+  const body = `
+POLICE OFFICER
+Exam No. 7311, 7312, 7313, 7314, 7315, 7316, 7317, 7318, 7319, 7320, 7321, and 7322
+APPLICATION FEE: $0.00
+THE SALARY:
+  The current minimum salary is $55,942 per annum. Incumbents will receive salary increments reaching
+  $109,352 per annum at the completion of five and one-half years employment.
+`;
+  assert.deepEqual(extractNoeExamNumbers(body), [
+    "7311", "7312", "7313", "7314", "7315", "7316",
+    "7317", "7318", "7319", "7320", "7321", "7322",
+  ]);
+  const parsed = parseNoeFeeSalaryFromBody(body);
+  assert.equal(parsed.fee, 0);
+  assert.equal(parsed.salary_min, 55942);
+  assert.equal(parsed.salary_max, 109352);
+});
+
+test("assignment-level salary phrasing still densifies (Traffic Enforcement 7331)", () => {
+  const body = `
+APPLICATION FEE: $0.00
+THE SALARY:
+  Candidates will be eligible for appointment to Assignment Level II for which the current minimum salary is
+  $48,719 per annum. There are two additional Assignment Levels with higher salary steps based on the
+`;
+  const parsed = parseNoeFeeSalaryFromBody(body);
+  assert.equal(parsed.fee, 0);
+  assert.equal(parsed.salary_min, 48719);
 });
