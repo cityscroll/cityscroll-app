@@ -1043,10 +1043,10 @@ const STRINGS = {
     lifecycle_ocp_unknown_html: "Could not reach {source} to check this award.",
     lifecycle_ocp_ambiguous_html: "Multiple OCP award rows matched — cannot auto-pick one.",
     lifecycle_how_summary: "How this timeline works",
-    // Phase-grouped procurement timeline (Solicitation → Selection → Award & registration → Payments)
+    // Phase-grouped procurement timeline (Solicitation → Selection → Award and registration → Payments)
     lifecycle_phase_solicitation: "Solicitation",
     lifecycle_phase_selection: "Selection",
-    lifecycle_phase_award_registration: "Award & registration",
+    lifecycle_phase_award_registration: "Award and registration",
     lifecycle_phase_payments: "Payments",
     lifecycle_phase_now_label: "Now",
     lifecycle_phase_next_html: "Next: <strong>{phase}</strong>",
