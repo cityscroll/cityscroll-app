@@ -18,6 +18,7 @@ const CITY_RECORD_ID = "dg92-zbpx";
 const CURRENT_ID = "dcas-open-competitive";
 const NOE_ID = "dcas-noe";
 const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
+const LIST_DEPTH_CLOSED_FILE = "list_depth_closed_exams.json";
 
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
@@ -289,16 +290,20 @@ export function outcomesByExamNumber(outcomeRecords) {
   return map;
 }
 
-/** Attach a per-exam outcome object (or null) so cards never live-fetch the outcomes table. */
+/**
+ * Attach a per-exam outcome object (or null) so cards never live-fetch the outcomes table.
+ * Gap class is decided only after the list-aggregate join (see joinOutcomesAndListOntoExam):
+ * public annual + list sources exist, so a miss is not automatically "city does not publish".
+ */
 export function joinOutcomeOntoExam(exam, outcomeMap) {
   const matched = outcomeMap.get(exam.exam_number) || null;
   if (!matched) {
     return {
       ...exam,
       outcome: null,
+      // Placeholder until list join runs; joinOutcomesAndListOntoExam rewrites this.
       outcome_gap: {
-        class: "not_published",
-        // Real-world pending: DCAS has not released aggregates for this exam_number yet.
+        class: "not_yet_ingested",
         pending_stage: "list_establishment",
       },
     };
@@ -336,9 +341,56 @@ export function joinListAggregateOntoExam(exam, listIndex) {
   };
 }
 
-/** Prefer annual outcome gap clearance; list presence still attaches for depth. */
+/**
+ * Prefer full annual outcome counts; else list-size depth; else class-(a) gap.
+ *
+ * Public sources (DCAS annual outcomes publication + Civil Service List Open Data)
+ * exist for aggregate post-cycle depth. An empty slot is incomplete join / cycle
+ * pending — never a false class-(b) "city does not publish" withhold. Individual
+ * scores stay class-(b) elsewhere (exam-outcome-individual).
+ */
 export function joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex) {
-  return joinListAggregateOntoExam(joinOutcomeOntoExam(exam, outcomeMap), listIndex);
+  const withOutcome = joinOutcomeOntoExam(exam, outcomeMap);
+  const withList = joinListAggregateOntoExam(withOutcome, listIndex);
+  if (withList.outcome) {
+    return { ...withList, outcome_gap: null };
+  }
+  if (withList.list_aggregate && Number(withList.list_aggregate.list_count) > 0) {
+    // list_joined UI path — no gap claim that the city withheld aggregates.
+    return { ...withList, outcome_gap: null };
+  }
+  return {
+    ...withList,
+    outcome_gap: {
+      class: "not_yet_ingested",
+      pending_stage: "list_establishment",
+      public_sources: [
+        "dcas-annual-exam-outcomes",
+        "dcas-active-civil-service-list",
+      ],
+    },
+  };
+}
+
+/** Closed annual rows retained so list_aggregate joins survive FY snapshot roll-forward. */
+export function normalizeListDepthClosed(row) {
+  const raw = String(row.exam_number || "").trim();
+  const examNumber = /^\d+$/.test(raw) ? raw.padStart(4, "0") : raw;
+  assert(/^\d{4}$/.test(examNumber), `invalid list-depth exam number: ${row.exam_number}`);
+  const title = String(row.title || row.exam_title || "").trim();
+  assert(title, `list-depth exam ${examNumber} missing title`);
+  return {
+    exam_number: examNumber,
+    title_code: String(row.title_code || "").trim() || null,
+    title,
+    application_start: isoDate(row.application_start || row.application_period_start),
+    application_end: isoDate(row.application_end || row.application_period_end_date),
+    eligibility: row.eligibility || eligibilityFor(row),
+    schedule_status: "scheduled",
+    interest_area: classifyInterest(title),
+    sources: ["dcas-annual-closed-list-depth", "dcas-active-civil-service-list"],
+    list_depth: true,
+  };
 }
 
 function normalizeOutcomeSourceOutdatedCheck(source) {
@@ -353,6 +405,7 @@ export function buildArtifact({
   cityRecord,
   outcomes,
   listAggregates,
+  listDepthClosed,
   priorArtifact,
   today,
 }) {
@@ -366,6 +419,7 @@ export function buildArtifact({
     outcomes.source.verified_at,
     outcomes.source.data_publication_date,
     listAggregates?.source?.fetched_at,
+    listDepthClosed?.source?.fetched_at,
   ]
     .filter(Boolean).sort().at(-1);
 
@@ -387,6 +441,14 @@ export function buildArtifact({
     exams.set(normalized.exam_number, merged);
   }
 
+  // Closed annual exams with list presence: keep post-list depth after the current
+  // FY snapshot rolls forward (open 7xxx series has 0% list join by design).
+  for (const row of listDepthClosed?.records || []) {
+    const normalized = normalizeListDepthClosed(row);
+    if (exams.has(normalized.exam_number)) continue;
+    exams.set(normalized.exam_number, normalized);
+  }
+
   // Snapshot priors before the mutation loop so retain can see original NOE fields.
   const priorByNumber = new Map((priorArtifact?.exams || []).map((exam) => [exam.exam_number, exam]));
 
@@ -398,6 +460,8 @@ export function buildArtifact({
     } else if (
       priorRow.schedule_status !== "canceled"
       && examStatusFor(priorRow, generatedAt) !== "closed"
+      // Do not re-withdraw list-depth closed rows when prior still carries them.
+      && !priorRow.list_depth
     ) {
       exams.set(examNumber, markWithdrawnPrior(priorRow, generatedAt));
     }
@@ -424,6 +488,7 @@ export function buildArtifact({
   normalizeOutcomeSourceOutdatedCheck(outcomes.source);
 
   const listSource = listAggregates?.source || activeList.source;
+  const listJoinedCount = records.filter((e) => e.list_aggregate && Number(e.list_aggregate.list_count) > 0).length;
   return {
     schema_version: 1,
     generated_at: latestSourceAt,
@@ -439,6 +504,10 @@ export function buildArtifact({
       list_aggregates: listAggregates?.summary || {
         distinct_exams: listIndex.size ? new Set([...listIndex.values()].map((r) => r.exam_number)).size : 0,
       },
+      list_depth_closed: {
+        count: (listDepthClosed?.records || []).length,
+        list_joined: listJoinedCount,
+      },
     },
     outcomes: buildOutcomes({ outcomes }),
     list_aggregates: {
@@ -450,7 +519,10 @@ export function buildArtifact({
         fetched_at: listSource.fetched_at || activeList.source.fetched_at,
         privacy: "Only exam-level counts and list dates are retained; candidate records and names are not copied.",
       },
-      summary: listAggregates?.summary || { distinct_exams: 0 },
+      summary: {
+        ...(listAggregates?.summary || { distinct_exams: 0 }),
+        exams_with_list_aggregate: listJoinedCount,
+      },
     },
     exams: records,
   };
@@ -584,13 +656,14 @@ function validateSources(today, sources) {
 async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, listDepthClosed, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
     readJson("city_record_check.json"),
     readJson("dcas_exam_outcomes.json"),
     readJsonOptional(LIST_AGGREGATES_FILE),
+    readJsonOptional(LIST_DEPTH_CLOSED_FILE),
     (async () => {
       try {
         return JSON.parse(await readFile(OUTPUT, "utf8"));
@@ -615,6 +688,12 @@ async function main() {
       stale_after_days: listAggregates.source.stale_after_days ?? activeList.source.stale_after_days ?? 3,
     }, today);
   }
+  if (listDepthClosed?.source) {
+    assertSourceFresh({
+      ...listDepthClosed.source,
+      stale_after_days: listDepthClosed.source.stale_after_days ?? annual.source.stale_after_days ?? 95,
+    }, today);
+  }
   const rendered = stableJson(buildArtifact({
     annual,
     current,
@@ -622,6 +701,7 @@ async function main() {
     cityRecord,
     outcomes,
     listAggregates,
+    listDepthClosed,
     priorArtifact,
     today,
   }));

@@ -627,7 +627,9 @@ const STRINGS = {
     career_outcome_stage_list: "eligible-list establishment",
     career_outcome_stage_certification: "agency certification",
     career_outcome_stage_appointment: "appointment",
+    // Class-(b) retained for individual scores / legacy; aggregate empty slots use class-(a).
     career_outcomes_not_published_html: "The city does not publish post-cycle outcomes for this exam yet — they would appear in {source} after {stage}.",
+    career_outcomes_not_yet_ingested_html: "Not yet shown here — post-cycle aggregates live in {source} (and Civil Service List open data) after {stage}.",
 
     // Land panel
     recent_rezonings_heading: "Recent rezonings",
@@ -1083,6 +1085,8 @@ const STRINGS = {
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Outcome: {outcome}",
     meeting_outcomes_no_votes_html: "Not yet shown here — roll-call votes for matter “{matter}” live in NYC Council Legistar.",
+    // Class-(a): tallies may be present while person-level rows are not yet in the read model.
+    meeting_outcomes_no_person_votes_html: "Not yet shown here — person-level roll-call votes live in NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Not yet shown here — agenda items and matters live in NYC Council Legistar.",
     meeting_outcomes_no_action_html: "Not yet shown here — the committee action for this matter lives in NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Not yet shown here — supporting attachments live in NYC Council Legistar.",

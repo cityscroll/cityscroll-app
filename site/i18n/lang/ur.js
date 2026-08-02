@@ -736,6 +736,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "نتیجہ: {outcome}",
     meeting_outcomes_no_votes_html: "ابھی یہاں نہیں دکھایا گیا — معاملہ “{matter}” کی رول کال ووٹیں NYC Council Legistar میں ہیں۔",
+    meeting_outcomes_no_person_votes_html: "ابھی یہاں نہیں دکھایا گیا — فرد کی سطح کی رول کال ووٹ NYC Council Legistar میں ہیں۔",
     meeting_outcomes_no_matters_html: "ابھی یہاں نہیں دکھایا گیا — ایجنڈا آئٹمز اور معاملات NYC Council Legistar میں ہیں۔",
     meeting_outcomes_no_action_html: "ابھی یہاں نہیں دکھایا گیا — اس معاملے پر کمیٹی کی کارروائی NYC Council Legistar میں ہے۔",
     meeting_outcomes_no_attachments_html: "ابھی یہاں نہیں دکھایا گیا — معاون منسلکات NYC Council Legistar میں ہیں۔",
@@ -1408,6 +1409,7 @@
     career_outcome_stage_certification: "ایجنسی تصدیق",
     career_outcome_stage_appointment: "تقرری",
     career_outcomes_not_published_html: "شہر ابھی اس امتحان کے سائیکل کے بعد کے نتائج شائع نہیں کرتا — وہ {stage} کے بعد {source} میں ظاہر ہوں گے۔",
+    career_outcomes_not_yet_ingested_html: "ابھی یہاں نہیں دکھایا گیا — سائیکل کے بعد کے مجموعی نتائج {stage} کے بعد {source} میں (اور Civil Service List اوپن ڈیٹا میں) موجود ہیں۔",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

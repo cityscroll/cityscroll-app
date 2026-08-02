@@ -12,6 +12,14 @@ import {
 const DOSSIER_CACHE = "public, max-age=300";
 export const DOSSIER_RECORD_LIMIT = 250;
 
+/** Public-facing status when no canonical entity is published for this id. */
+export const DOSSIER_NOT_YET_PUBLIC = {
+  error: "not-found",
+  public_status: "not_yet_public",
+  message:
+    "No public entity dossier is available for this id. Subject-registry links on notice lifecycles are live; this dossier surface only returns linked assertions for canonical entity ids published from the resolution store. Do not treat name-shaped or contract ids as live dossier keys until a resolved entity returns linked records.",
+};
+
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -19,6 +27,32 @@ function json(body, status = 200) {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": status === 200 ? DOSSIER_CACHE : "no-store",
       "Access-Control-Allow-Origin": "*",
+    },
+  });
+}
+
+function notYetPublicResponse(request) {
+  const url = new URL(request.url);
+  const wantsJson = url.searchParams.get("format") === "json"
+    || (request.headers.get("accept") || "").includes("application/json");
+  if (wantsJson || !request.headers.get("accept")?.includes("text/html")) {
+    // Default API clients (and bare GETs) get the structured not-yet-public body.
+    return json(DOSSIER_NOT_YET_PUBLIC, 404);
+  }
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entity dossier not yet public · CityScroll</title>
+    <style>body{margin:0;background:#f7f2e8;color:#17202a;font:16px/1.5 system-ui,sans-serif}main{width:min(720px,calc(100% - 32px));margin:48px auto}h1{font:700 2rem Georgia,serif}.note{color:#5e6a73;max-width:60ch}</style>
+    </head><body><main>
+      <p style="text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;font-weight:800;color:#9c3f32">CityScroll · not yet public</p>
+      <h1>Entity dossier not yet public</h1>
+      <p class="note">${escapeHtml(DOSSIER_NOT_YET_PUBLIC.message)}</p>
+      <p class="note">Subject-registry fields on contract lifecycles remain the live cross-spine identifiers.</p>
+    </main></body></html>`;
+  return new Response(html, {
+    status: 404,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
     },
   });
 }
@@ -181,7 +215,7 @@ export async function handleEntityDossier(request, env) {
   } catch {
     return json({ error: "dossier-unavailable" }, 503);
   }
-  if (!dossier) return json({ error: "not-found" }, 404);
+  if (!dossier) return notYetPublicResponse(request);
   if (url.searchParams.get("format") === "json"
       || (request.headers.get("accept") || "").includes("application/json")) {
     return json(dossier);

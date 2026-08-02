@@ -243,3 +243,24 @@ test("graph route serves JSON and an accessible typed-edge table", async () => {
     sqlite.close();
   }
 });
+
+test("graph unknown id returns not_yet_public — not a live empty product surface", async () => {
+  const { sqlite, env } = fixture();
+  try {
+    for (const id of [
+      "vendor:name:camba inc",
+      "contract:CT126020278800692",
+    ]) {
+      const response = await handlePublicRelationshipGraph(new Request(
+        `https://api.cityscroll.org/entity-relationships?id=${encodeURIComponent(id)}&format=json`,
+      ), env);
+      assert.equal(response.status, 404, id);
+      const body = await response.json();
+      assert.equal(body.error, "not-found");
+      assert.equal(body.public_status, "not_yet_public");
+      assert.match(body.message || "", /not yet public|subject-registry|canonical/i);
+    }
+  } finally {
+    sqlite.close();
+  }
+});

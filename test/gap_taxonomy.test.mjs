@@ -424,6 +424,7 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "career_not_published",
     "career_outcomes_list_joined_note",
     "career_outcomes_list_source_name",
+    "career_outcomes_not_yet_ingested_html",
   ];
   const langs = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"];
   for (const lang of langs) {

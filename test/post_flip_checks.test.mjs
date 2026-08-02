@@ -17,6 +17,19 @@ const baseline = JSON.parse(
   readFileSync(new URL("../docs/evidence/hosting-migration-baseline.json", import.meta.url), "utf8"),
 );
 
+/** Fresh last_run receipt within the classifier's 2-day window (wall-clock independent). */
+function freshLastRun(overrides = {}) {
+  const day = new Date().toISOString().slice(0, 10);
+  return {
+    ranAt: `${day}T13:00:00.000Z`,
+    day,
+    sent: 0,
+    skipped_reason: "all_quiet",
+    matched: 0,
+    ...overrides,
+  };
+}
+
 test("named post-flip checks cover the four incident-encoded gates", () => {
   assert.deepEqual([...POST_FLIP_NAMED_CHECK_IDS].sort(), [
     "email-health",
@@ -34,21 +47,16 @@ test("named post-flip checks cover the four incident-encoded gates", () => {
 });
 
 test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with receipt + motion", () => {
-  // Fixed "now" so absolute day comparisons stay inside the 2-day receipt window.
-  const now = new Date("2026-08-01T15:00:00.000Z");
-  const day = "2026-08-01";
-  const ranAt = "2026-08-01T13:00:00.000Z";
-
   assert.equal(
     classifyEmailHealth({
       digests: { sent_today: 0, sent_last7d: 6, sent_all_time: 27, last_run: null },
-    }, { now }).ok,
+    }).ok,
     false,
   );
   assert.match(
     classifyEmailHealth({
       digests: { sent_today: 0, sent_last7d: 6, last_run: null },
-    }, { now }).reason,
+    }).reason,
     /silent-five-day-alert|last_run is null/,
   );
 
@@ -58,9 +66,20 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
       digests: {
         sent_today: 0,
         sent_last7d: 6,
-        last_run: { ranAt, day, sent: 0 },
+        last_run: freshLastRun({ sent: 0, skipped_reason: undefined }),
       },
-    }, { now }).ok,
+    }).ok,
+    false,
+  );
+  // Explicit empty skipped_reason (key present) still fails unexplained zero.
+  assert.equal(
+    classifyEmailHealth({
+      digests: {
+        sent_today: 0,
+        sent_last7d: 6,
+        last_run: freshLastRun({ sent: 0, skipped_reason: null }),
+      },
+    }).ok,
     false,
   );
 
@@ -70,15 +89,9 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
         sent_today: 0,
         sent_last7d: 6,
         sent_all_time: 27,
-        last_run: {
-          ranAt,
-          day,
-          sent: 0,
-          skipped_reason: "all_quiet",
-          matched: 0,
-        },
+        last_run: freshLastRun(),
       },
-    }, { now }).ok,
+    }).ok,
     true,
   );
 
@@ -87,14 +100,9 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
       digests: {
         sent_today: 2,
         sent_last7d: 8,
-        last_run: {
-          ranAt,
-          day,
-          sent: 2,
-          skipped_reason: null,
-        },
+        last_run: freshLastRun({ sent: 2, skipped_reason: null }),
       },
-    }, { now }).ok,
+    }).ok,
     true,
   );
 });
@@ -123,7 +131,7 @@ test("STATS SANITY rejects frozen gauges and unexplained sent_today zero", () =>
     classifyStatsSanity({
       digests: {
         sent_today: 0,
-        last_run: { ranAt: "2026-07-30T13:00:00.000Z", sent: 0, skipped_reason: "all_quiet" },
+        last_run: freshLastRun({ sent: 0, skipped_reason: "all_quiet" }),
       },
       usage: {
         available: true,
@@ -207,20 +215,12 @@ test("HUMAN-PATH JOURNEY requires home/search/notice/deeplink/subscribe steps", 
 });
 
 test("runPostFlipNamedChecks aggregates classifiers with incident annotations", async () => {
-  // Keep receipt day inside classifyEmailHealth's 2-day freshness window relative to now.
-  const now = new Date("2026-08-01T15:00:00.000Z");
   const statsBody = {
     digests: {
       sent_today: 0,
       sent_last7d: 6,
       sent_all_time: 27,
-      last_run: {
-        ranAt: "2026-08-01T13:00:00.000Z",
-        day: "2026-08-01",
-        sent: 0,
-        skipped_reason: "all_quiet",
-        matched: 0,
-      },
+      last_run: freshLastRun(),
     },
     usage: {
       available: true,
@@ -266,7 +266,6 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
 
   const result = await runPostFlipNamedChecks({
     fetchImpl,
-    now,
     runJourney: true,
     journeyRunner: async () => ({
       steps: [

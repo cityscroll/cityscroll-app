@@ -40,8 +40,8 @@ Sources and refresh rules:
   snapshot from NYC DCAS publications. This is **not** an applicant-level feed:
   only counts are kept (applicants, eligible-list size, certifications, hires).
   `tools/build_staffing_exams.mjs` joins each row onto exam cards by `exam_number`
-  at build time; exams without a published row carry an explicit not-published
-  gap (real-world pending after eligible-list establishment), not a silent blank.
+  at build time; exams without annual or list depth carry an explicit class-(a)
+  not-yet-ingested gap (public sources exist — not a false city-withhold).
 
 Run `node tools/build_staffing_exams.mjs --refresh` to refresh the Open Data
 snapshots and rebuild the client artifact. The DCAS current-page snapshot remains
@@ -57,3 +57,8 @@ drift check.
   `verification_receipts/civil_service_list_closed_exams_2026-07-30.json`.
   `tools/build_staffing_exams.mjs` joins aggregates onto exam cards as post-list
   depth when annual DCAS outcomes are not yet published for that exam_number.
+- `list_depth_closed_exams.json` — closed annual exams (outside the current FY
+  snapshot) that join `vx8i-nprf` exam-level aggregates. The current-year schedule
+  is mostly open 7xxx exams with **0%** list presence; without this supplement the
+  build stamps empty aggregate slots as if no public list data existed. Each row
+  is re-joined at build time from `civil_service_list_aggregates.json` (counts only).
