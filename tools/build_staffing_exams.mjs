@@ -845,7 +845,9 @@ async function main() {
       }
     })(),
   ]);
-  const today = new Date().toISOString().slice(0, 10);
+  const todayArg = process.argv.find((arg) => arg.startsWith("--today="));
+  const today = todayArg ? todayArg.slice("--today=".length) : new Date().toISOString().slice(0, 10);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(today), "--today must be an ISO calendar date (YYYY-MM-DD)");
   validateSources(today, [
     annual.source,
     { ...current.source, stale_after_days: current.source.stale_after_days ?? 35 },
