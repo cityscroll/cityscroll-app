@@ -138,10 +138,36 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/capture_qr_share.py --verify-only
   run_and_fail python3 test/functional/19_hash_route_focus.py
   run_and_fail python3 test/functional/21_module_dom_equivalence.py
-  python3 -m http.server 8000 --directory site &
+  # Functional gates hardcode http://localhost:8000 — free a stale listener first,
+  # then wait until the server actually accepts connections (sleep 1 alone races).
+  if command -v lsof >/dev/null 2>&1; then
+    stale_pids="$(lsof -tiTCP:8000 -sTCP:LISTEN 2>/dev/null || true)"
+    if [[ -n "${stale_pids}" ]]; then
+      echo "preflight: freeing port 8000 (stale pids: ${stale_pids})"
+      # shellcheck disable=SC2086
+      kill ${stale_pids} 2>/dev/null || true
+      sleep 0.5
+    fi
+  fi
+  python3 -m http.server 8000 --directory site --bind 127.0.0.1 &
   SERVER_PID=$!
   trap 'kill "${SERVER_PID}" 2>/dev/null || true' EXIT
-  sleep 1
+  server_up=0
+  for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+    if curl -sf -o /dev/null "http://127.0.0.1:8000/"; then
+      server_up=1
+      break
+    fi
+    if ! kill -0 "${SERVER_PID}" 2>/dev/null; then
+      echo "preflight: http.server on :8000 exited before becoming ready" >&2
+      exit 1
+    fi
+    sleep 0.25
+  done
+  if [[ "${server_up}" != "1" ]]; then
+    echo "preflight: timed out waiting for http://127.0.0.1:8000/" >&2
+    exit 1
+  fi
   run_and_fail python3 test/functional/11_accessibility.py
   run_and_fail python3 test/functional/12_language.py
   run_and_fail python3 test/functional/14_focus_visible.py
