@@ -90,6 +90,9 @@ test("classifyDestinationUrl: Checkbook smart_search is scoped_search; agid deta
 test("classifyDestinationUrl: OASys exams landing and iSupplier guide are landing", () => {
   assert.equal(classifyDestinationUrl("https://www.nyc.gov/examsforjobs"), "landing");
   assert.equal(
+    classifyDestinationUrl("https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"),
+    "deep",
+  );  assert.equal(
     classifyDestinationUrl(
       "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page",
     ),

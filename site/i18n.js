@@ -803,6 +803,7 @@ const STRINGS = {
     career_read_noe: "Read the official NOE",
     career_official_schedule: "Check the official schedule",
     career_apply_oasys: "Apply in OASys",
+    career_apply_oasys_browse: "Browse OASys exams",
     career_back_all: "Back to all exams",
     career_show_more: "Show {n} more exams",
     career_exam_not_found: "That exam is not in the current DCAS schedule.",

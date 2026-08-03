@@ -2015,6 +2015,8 @@
     career_read_noe: "Прочтите официальный NOE",
     career_official_schedule: "Проверьте официальное расписание",
     career_apply_oasys: "Подать заявку в OASys",
+
+    career_apply_oasys_browse: "Просмотреть экзамены OASys",
     career_back_all: "Назад ко всем экзаменам",
     career_show_more: "Показать больше экзаменов {n}",
     career_exam_not_found: "Этот экзамен не включен в текущее расписание DCAS.",

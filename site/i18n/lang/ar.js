@@ -1997,6 +1997,8 @@
     career_read_noe: "اقرأ NOE الرسمي",
     career_official_schedule: "تحقق من الجدول الزمني الرسمي",
     career_apply_oasys: "تنطبق في OASys",
+
+    career_apply_oasys_browse: "تصفح امتحانات OASys",
     career_back_all: "العودة إلى جميع الامتحانات",
     career_show_more: "عرض {n} المزيد من الاختبارات",
     career_exam_not_found: "هذا الاختبار ليس مدرجًا في جدول DCAS الحالي.",
