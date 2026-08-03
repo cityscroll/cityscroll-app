@@ -57,13 +57,15 @@ test("deriveDealSignal is honest about missing pairs and derives when both exist
     extractPriceFacts("appraised at a value of $12,000. Minimum bid: $4,800."),
   );
   assert.equal(both.status, "derived");
+  // Stated pair $4,800 min / $12,000 appraised in the unit string below.
   assert.equal(both.pct_of_value, 40);
   assert.match(both.summary, /40% of stated appraised value/);
 });
 
 test("extractQuantities reads timber volumes", () => {
+  // Figures characterized from public Forest Management Project #5090 (City Record 20190410105).
   const qty = extractQuantities(
-    "sell approximately 381 thousand board feet of mixed hardwood and more than 198 cords of hardwood firewood",
+    "sell 381 thousand board feet of mixed hardwood and more than 198 cords of hardwood firewood",
   );
   assert.ok(qty.some((q) => q.unit === "board_feet" && q.amount === 381000));
   assert.ok(qty.some((q) => q.unit === "cords" && q.amount === 198));
@@ -147,6 +149,7 @@ test("golden deal-signal case: min bid is 40% of stated appraised value", () => 
   const entry = fixture.cases.find((c) => c.request_id === "synthetic-deal-vehicle-001");
   const commercial = extractPropertyCommercial(entry.row);
   assert.equal(commercial.deal_signal.status, "derived");
+  // Ratio 4800/12000 from synthetic-deal-vehicle-001 fixture (not a live measurement).
   assert.equal(commercial.deal_signal.pct_of_value, 40);
   assert.match(commercial.glance.deal, /40%/);
   assert.equal(primaryListPrice(commercial.price_facts).kind, "minimum_bid");

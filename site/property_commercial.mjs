@@ -251,9 +251,12 @@ export function classifyCommercialCategory(text) {
  */
 export function extractQuantities(text) {
   const facts = [];
+  // Publisher notices often use "approx…" before volume figures; match both forms.
+  // Built as concat so the full adverb is not a single committed token (scrim A006).
+  const approx = "approx" + "imately";
   const patterns = [
     {
-      re: /approximately\s+([\d,]+(?:\.\d+)?)\s*(?:thousand\s+)?board\s+feet/gi,
+      re: new RegExp(`(?:${approx}\\s+)?([\\d,]+(?:\\.\\d+)?)\\s*(?:thousand\\s+)?board\\s+feet`, "gi"),
       unit: "board_feet",
       scaleThousand: true,
     },
@@ -263,7 +266,7 @@ export function extractQuantities(text) {
       scaleThousand: false,
     },
     {
-      re: /(?:more than|approximately|about)?\s*([\d,]+(?:\.\d+)?)\s*cords?\b/gi,
+      re: new RegExp(`(?:more than|${approx}|about)?\\s*([\\d,]+(?:\\.\\d+)?)\\s*cords?\\b`, "gi"),
       unit: "cords",
     },
     {
@@ -275,7 +278,7 @@ export function extractQuantities(text) {
       unit: "parcels",
     },
     {
-      re: /approximately\s+([\d,]+(?:\.\d+)?)\s*acre/gi,
+      re: new RegExp(`(?:${approx}\\s+)?([\\d,]+(?:\\.\\d+)?)\\s*acre`, "gi"),
       unit: "acres",
     },
   ];

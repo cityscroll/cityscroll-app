@@ -1,11 +1,11 @@
 {
-  "source": "NYC City Record Online dataset dg92-zbpx; bodies fetched by request_id for characterization",
+  "source": "NYC City Record Online dataset dg92-zbpx; bodies characterized from public notices by request_id (contacts redacted to RFC 2606 / 555-01xx for the committed fixture)",
   "observed_at": "2026-08-03",
   "persona": "surplus-goods buyer (primary); real-property developer and community land-reuse (secondary)",
   "cases": [
     {
       "request_id": "20251106024",
-      "note": "Golden vehicle auction — item, sale method, bid marketplace steps; no on-notice dollar price.",
+      "note": "Golden vehicle auction — item, sale method, bid marketplace steps; no on-notice dollar price. Body shape from public AUTO AUCTION notice; support contact redacted.",
       "row": {
         "request_id": "20251106024",
         "section_name": "Property Disposition",
@@ -14,7 +14,7 @@
         "short_title": "AUTO AUCTION",
         "start_date": "2025-11-14T00:00:00.000",
         "event_date": null,
-        "additional_description_1": "<p>The City of New York in partnership with GovDeals.com</p><p>posts vehicle and heavy machinery auctions online every week at:</p><p><strong>https://www.govdeals.com/en/nyc-dcas-fleet</strong></p><p>All auctions are open to the public and registration is free.</p><p>For help with registration or for general questions, please contact the GovDeals customer support team at 844-704-0367 or osr@govdeals.com.</p>"
+        "additional_description_1": "<p>The City of New York in partnership with GovDeals.com</p><p>posts vehicle and heavy machinery auctions online every week at:</p><p><strong>https://www.govdeals.com/en/nyc-dcas-fleet</strong></p><p>All auctions are open to the public and registration is free.</p><p>For help with registration or for general questions, please contact the marketplace support team at 555-0102 or support@example.com.</p>"
       },
       "attachments": [],
       "expect": {
@@ -28,16 +28,16 @@
     },
     {
       "request_id": "20190410105",
-      "note": "Timber sale with stated volume (board feet + cords) and sealed-bid participation.",
+      "note": "Timber sale with stated volume (board feet + cords) and sealed-bid participation. Volume figures from public Forest Management Project #5090 notice; phone/email redacted.",
       "row": {
         "request_id": "20190410105",
         "section_name": "Property Disposition",
         "type_of_notice_description": "Sale",
         "agency_name": "Environmental Protection",
-        "short_title": "The City of New York will sell approximately 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project",
+        "short_title": "The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project",
         "start_date": "2019-04-16T00:00:00.000",
         "event_date": "2019-05-16T15:00:00.000",
-        "additional_description_1": "<p><strong>Description: </strong>The City of New York will sell approximately 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project <strong>#5090. </strong>Bid Solicitation information is available by contacting NYCDEP Regional Forester, Todd Baldwin, at 845-340-7854, or requesting via e-mail at <a href='mailto:tbaldwin@dep.nyc.gov'>tbaldwin@dep.nyc.gov</a>.</p><p><strong>Show Dates</strong>: Prospective bidders are required to attend one of the two public showings. Bidding: All bid proposals must be received NO LATER THAN Thursday, May 16, 2019 at 3:00 PM. Sealed bids will be publicly opened on Friday May 17, 2019.</p>"
+        "additional_description_1": "<p><strong>Description: </strong>The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project <strong>#5090. </strong>Bid Solicitation information is available by contacting the regional forester at 555-0103, or requesting via e-mail at <a href='mailto:forester@example.com'>forester@example.com</a>.</p><p><strong>Show Dates</strong>: Prospective bidders are required to attend one of the two public showings. Bidding: All bid proposals must be received NO LATER THAN Thursday, May 16, 2019 at 3:00 PM. Sealed bids will be publicly opened on Friday May 17, 2019.</p>"
       },
       "attachments": [],
       "expect": {
@@ -51,7 +51,7 @@
     },
     {
       "request_id": "20240515016",
-      "note": "Cannonsville-class timber notice: attachment title names the volume report inventory.",
+      "note": "Cannonsville-class timber notice: attachment title names the volume report inventory (public GetFile document title).",
       "row": {
         "request_id": "20240515016",
         "section_name": "Property Disposition",
@@ -79,7 +79,7 @@
     },
     {
       "request_id": "20140224112",
-      "note": "Medallion upset / minimum bid dollars with sealed-bid receiving windows.",
+      "note": "Medallion upset / minimum bid dollars with bid-receiving windows (public TLC upset notice figures).",
       "row": {
         "request_id": "20140224112",
         "section_name": "Property Disposition",
@@ -101,7 +101,7 @@
     },
     {
       "request_id": "20150915102",
-      "note": "Real-property public auction with tabulated upset prices.",
+      "note": "Real-property public auction with tabulated upset prices (public DCAS auction notice figures).",
       "row": {
         "request_id": "20150915102",
         "section_name": "Property Disposition",
@@ -123,7 +123,7 @@
     },
     {
       "request_id": "synthetic-deal-vehicle-001",
-      "note": "Characterized deal-signal pair: notice states both appraised value and minimum bid (pattern used when City publishes both; rare on modern fleet notices).",
+      "note": "Characterized deal-signal pair: notice states both appraised value and minimum bid (pattern used when City publishes both; rare on modern fleet notices). Dollar pair is fixture-constructed for the 40% ratio case.",
       "row": {
         "request_id": "synthetic-deal-vehicle-001",
         "section_name": "Property Disposition",
@@ -132,7 +132,7 @@
         "short_title": "AUTO AUCTION — surplus fleet sedan",
         "start_date": "2024-06-01T00:00:00.000",
         "event_date": "2024-06-20T15:00:00.000",
-        "additional_description_1": "<p>The City will sell one surplus sedan by sealed bid at public auction. The vehicle is appraised at a value of $12,000. Minimum bid: $4,800. Bids will be received no later than June 20, 2024 at 3:00 PM. Registration is free. Contact fleet@example.nyc.gov or 212-555-0100.</p>"
+        "additional_description_1": "<p>The City will sell one surplus sedan by sealed bid at public auction. The vehicle is appraised at a value of $12,000. Minimum bid: $4,800. Bids will be received no later than June 20, 2024 at 3:00 PM. Registration is free. Contact fleet@example.com or 555-0100.</p>"
       },
       "attachments": [],
       "expect": {
