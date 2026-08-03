@@ -1154,7 +1154,7 @@
     land_spine_statutory_deadline_html: "Statutory deadline: {stage} must conclude within {n} days (City Charter §197-c) — by {date}.",
     land_spine_statutory_due_summary: "Statutory deadline {date}",
     land_spine_statutory_testify_hint: "The hearing before this deadline is usually the last chance to testify.",
-    land_spine_statutory_withdrawn_note: "This project was withdrawn; open statutory deadlines are closed.",
+    land_spine_statutory_withdrawn_note: "This project was withdrawn — open statutory deadlines are closed.",
     land_phase_pre_application: "Pre-application and filing",
     land_phase_environmental: "Environmental review (CEQR)",
     land_phase_pre_certification: "Pre-certification notice",
