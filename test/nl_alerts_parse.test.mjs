@@ -95,6 +95,21 @@ test("parseNL: a bare amount or deadline alone still works (no regression)", () 
   assert.deepEqual(parseNL("awards over $1M").keywords, []);
 });
 
+test("parseNL: closing this week is a deadline chip, not a months window", () => {
+  const f = parseNL("contracts closing this week");
+  assert.equal(f.closingWeek, true);
+  assert.equal(f.months, null);
+  assert.equal(f.noticeType, "solicitation");
+});
+
+test("parseNL: agency forecast intent keeps entity route fields", () => {
+  const f = parseNL("Parks contract forecast");
+  assert.equal(f.agency, "Parks and Recreation");
+  assert.equal(f.route, "agency");
+  assert.equal(f.name, "Parks and Recreation");
+  assert.equal(f.tab, "forecast");
+});
+
 test("parseNL: no signal at all -> every field stays null/empty", () => {
   const f = parseNL("rezonings near 79 Rivington");
   assert.equal(f.minAmount, null);

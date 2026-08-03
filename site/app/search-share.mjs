@@ -94,13 +94,29 @@ async function nlTranslate(){
   const text=$("#nlq").value.trim(); if(!text) return;
   const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
   const p=await nlResolve(text, "money");
+  // Entity/forecast intents leave the list surface for the agency (or vendor) profile.
+  if(p.route==="agency" && p.name){
+    if(btn) btn.disabled=false;
+    $("#nltrans").innerHTML="";
+    location.hash=agencyHref(p.name, p.tab||null);
+    return;
+  }
+  if(p.route==="vendor" && p.name){
+    if(btn) btn.disabled=false;
+    $("#nltrans").innerHTML="";
+    location.hash=vendorHref(p.name, p.tab||null);
+    return;
+  }
   const deepLink=buildMoneyDeepLink(p);
-  const wantsAward = p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount));
+  const wantsAward = !p.closingWeek && (p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount)));
   moneyNlResolved={category:p.category||null, maxAmount:p.maxAmount||null, months:p.months||null,
     noticeType:p.noticeType||null, excludeSpecial:!!p.excludeSpecial};
   $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline";
   $("#agency").value=""; forceSelect("#agency", p.agency);
-  $("#kw").value=p.keywords.join(" "); forceAmountSelect(p.minAmount);
+  $("#kw").value=(p.keywords||[]).join(" "); forceAmountSelect(p.minAmount);
+  closingWeek=!!p.closingWeek && !wantsAward;
+  $("#closingweek").classList.toggle("on", closingWeek);
+  $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
   await search();
   if(btn) btn.disabled=false;
   $("#nltrans").innerHTML=nlqResolvedActionsHTML(deepLink);
@@ -241,15 +257,41 @@ function deviceParse(text, lens){
   if(lens==="land"){
     const boros=["Manhattan","Brooklyn","Queens","Bronx","Staten Island"];
     out.boro=boros.find(b=>low.includes(" "+b.toLowerCase()+" "))||null;
+    out.councilDistrict=extractCouncilDistrict(low);
+    out.communityDistrict=communityDistrictWithBoro(low, out.boro)||extractCommunityDistrict(low);
+    out.nearMe=extractNearMe(low);
+    if(/\b(all|closed|approved|completed)\b/.test(low) && /\b(status|including|incl)\b/.test(low)) out.status="all";
   }
   if(lens==="people"){
+    if(extractStaffingGuide(low)){ out.view="guide"; out.lookupType="role"; return out; }
     const personish=/\b(person|people|someone|somebody|individual|named|name of|mr|ms|mrs)\b/.test(low);
     const roleish=/\b(role|roles|title|titles|position|job|jobs)\b/.test(low);
     const nm=personName(text);
     if((personish || nm) && !roleish){ out.lookupType="person"; if(nm) out.keywords=[nm]; return out; }
     out.lookupType="role";
   }
-  const stop=new Set("the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this".split(" "));
+  if(lens==="rules"){
+    out.process=extractRulesProcess(low);
+    out.agency=extractAgency(low);
+  }
+  if(lens==="property"){
+    out.process=extractPropertyProcess(low);
+    out.agency=extractAgency(low);
+    out.nearMe=extractNearMe(low);
+    const boros=["Manhattan","Brooklyn","Queens","Bronx","Staten Island"];
+    out.borough=boros.find(b=>low.includes(" "+b.toLowerCase()+" "))||null;
+  }
+  if(lens==="meetings"){
+    out.when=extractMeetingWhen(low);
+    out.process=extractMeetingsProcess(low);
+    out.nearMe=extractNearMe(low);
+    out.agency=extractAgency(low);
+    const boros=["Manhattan","Brooklyn","Queens","Bronx","Staten Island"];
+    out.borough=boros.find(b=>low.includes(" "+b.toLowerCase()+" "))||null;
+    // Action phrasing ("what can I comment on this week") → this week's hearings.
+    if(/\bcomment on\b|\btestify\b|\battend\b/.test(low) && !out.when) out.when="week";
+  }
+  const stop=new Set("the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this week month what can comment open competitive exams exam guide council district community board process stage hearing hearings auction disposition forecast contracts closing".split(" "));
   out.keywords=[...new Set(text.toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>3&&!stop.has(w)))].slice(0,4);
   // A borough already has its own structured field. Do not also send its words through ZAP's
   // full-text query: "rezonings in Queens" is canonically #land?boro=Queens, not the same
@@ -258,6 +300,10 @@ function deviceParse(text, lens){
     const boroWords=new Set(out.boro.toLowerCase().split(/\s+/));
     out.keywords=out.keywords.filter(word=>!boroWords.has(word));
   }
+  // Strip district numbers and process stopwords already captured as structured fields.
+  if(out.councilDistrict) out.keywords=out.keywords.filter(w=>w!==out.councilDistrict && w!=="district" && w!=="council");
+  if(out.process) out.keywords=out.keywords.filter(w=>!["public","process","comment","hearing","hearings","auction","proposal","adoption","effective","scheduled","agenda","outcomes"].includes(w));
+  if(out.when) out.keywords=out.keywords.filter(w=>!["week","month","upcoming","recent","past"].includes(w));
   return out;
 }
 
@@ -279,14 +325,22 @@ function stripImpliedKeywords(lens, keywords){
 
 const NL = {
   people: {
-    placeholder:"for example, paramedic roles, or look up someone named Rodriguez",
-    chips:f=>[ f.lookupType?`<span class="qchip">a <b>${f.lookupType==='person'?'person':'role'}</b></span>`:"",
+    placeholder:"for example, paramedic roles, open competitive exams, or look up someone named Rodriguez",
+    chips:f=>[
+               f.view==="guide"?`<span class="qchip"><b>${t("nl_chip_exam_guide")}</b></span>`:"",
+               f.lookupType?`<span class="qchip">a <b>${f.lookupType==='person'?'person':'role'}</b></span>`:"",
                (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"" ],
-    apply:f=>{ if(f.lookupType){ $("#pmode").value=f.lookupType; $("#pmode").dispatchEvent(new Event("change")); }
-               $("#pkw").value=(f.keywords||[]).join(" "); return pSearch(); }
+    apply:f=>{
+      if(f.view==="guide"){
+        location.hash="#people?view=guide";
+        return;
+      }
+      if(f.lookupType){ $("#pmode").value=f.lookupType; $("#pmode").dispatchEvent(new Event("change")); }
+      $("#pkw").value=(f.keywords||[]).join(" "); return pSearch();
+    }
   },
   land: {
-    placeholder:"for example, rezonings in Brooklyn, or 79 Rivington",
+    placeholder:"for example, rezonings in Brooklyn, council district 33, or 79 Rivington",
     // The Land tab is *always* rezonings -- there's no field for it in the filter schema
     // (nothing else the ZAP dataset returns), so a query that names no keyword/borough of its
     // own (e.g. "rezonings in Queens" -- boro consumes "Queens", "rezonings" has nowhere to
@@ -298,18 +352,34 @@ const NL = {
     chips:f=>{
       const kw=stripImpliedKeywords("land", f.keywords);
       return [ `<span class="qchip">${t("nl_chip_land_kind")}</span>`,
+               f.nearMe?`<span class="qchip">${t("near_you_area",{area:"…"})}</span>`:"",
                f.boro?`<span class="qchip">in <b>${f.boro}</b></span>`:"",
+               f.communityDistrict?`<span class="qchip">CD <b>${Number(f.communityDistrict.slice(1))}</b></span>`:"",
+               f.councilDistrict?`<span class="qchip">${t("council_district_short",{n:f.councilDistrict})}</span>`:"",
                kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
                // Plain language, not filter jargon ("all · incl. closed") -- every echoed
                // filter must be readable as a sentence fragment on its own.
                f.status==='all'?`<span class="qchip">${t("nl_chip_land_status_all")}</span>`:"" ];
     },
-    apply:f=>{ if(f.boro) $("#lboro").value=f.boro; if(f.status) $("#lstatus").value=f.status;
-               $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" "); return landSearch(); }
+    apply:f=>{
+      landResolvedArea=null;
+      if(f.boro) $("#lboro").value=f.boro;
+      if(f.status) $("#lstatus").value=f.status;
+      landCommunityDistrict=f.communityDistrict||"";
+      landCouncilDistrict=f.councilDistrict||"";
+      $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" ");
+      if(f.nearMe){
+        const btn=$("#landlocation");
+        if(btn && !btn.disabled) btn.click();
+        else return landSearch();
+        return;
+      }
+      return landSearch();
+    }
   },
-  property: nlFeed("property","for example, HPD property sales, DEP land"),
-  rules:    nlFeed("rules","for example, buildings rules, sanitation rules"),
-  meetings: nlFeed("meetings","for example, recent landmarks hearings, city council"),
+  property: nlFeed("property","for example, HPD property sales, disposition hearings, DEP land"),
+  rules:    nlFeed("rules","for example, buildings rules, rules open for comment"),
+  meetings: nlFeed("meetings","for example, hearings this week, landmarks, city council"),
   alerts: {
     placeholder:"for example, education contracts over $200K due in 3 months, or awards over $1M",
     // Reuses parseNL()'s general filter shape — not a single-payload watchType classifier —
@@ -321,6 +391,7 @@ const NL = {
     // but still flow into the stored filter and the live preview query.
     chips:f=>{
       if(f.watchType==="rezone") return [`<span class="qchip">rezonings near <b>${f.place||"…"}</b></span>`];
+      if(f.route==="agency" && f.name) return [`<span class="qchip">agency <b>${f.name}</b>${f.tab==="forecast"?" · forecast":""}</span>`];
       const chips=[];
       if(f.noticeType) chips.push(`<span class="qchip">${f.noticeType==="award"?"awards":"open RFPs"}</span>`);
       if(f.agency) chips.push(`<span class="qchip">agency <b>${f.agency}</b></span>`);
@@ -328,11 +399,13 @@ const NL = {
       if(f.category) chips.push(`<span class="qchip">category <b>${f.category}</b></span>`);
       if(f.minAmount) chips.push(`<span class="qchip">amount ≥ <b>${money(f.minAmount)}</b></span>`);
       if(f.maxAmount) chips.push(`<span class="qchip">amount ≤ <b>${money(f.maxAmount)}</b></span>`);
+      if(f.closingWeek) chips.push(`<span class="qchip"><b>${t("nl_chip_closing_this_week")}</b></span>`);
       if(f.months) chips.push(`<span class="qchip">due within <b>${f.months} mo</b></span>`);
       return chips;
     },
     apply:f=>{
       if(f.watchType==="rezone"){ applySuggestion("rezone", f.place||""); return; }
+      if(f.route==="agency" && f.name){ location.hash=agencyHref(f.name, f.tab||null); return; }
       $("#awatch").value="moneynl"; aWatchChange();
       $("#amoneykw").value=(f.keywords||[]).join(" ");
       $("#amoneymin").value=f.minAmount||"";
@@ -386,19 +459,53 @@ function nlFeed(key, placeholder){
     // chip above already says plainly.
     chips:f=>{
       const kw=stripImpliedKeywords(key, f.keywords);
+      const processChip = f.process
+        ? `<span class="qchip">${t("nl_filter_about_label")} <b>${f.process.replace(/_/g," ")}</b></span>`
+        : "";
       return [ `<span class="qchip">${tSection(SECTIONS[key].section)}</span>`,
                f.agency?`<span class="qchip">agency <b>${f.agency}</b></span>`:"",
                kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
+               processChip,
+               f.nearMe?`<span class="qchip">${t("near_you_area",{area:"…"})}</span>`:"",
                (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"",
                (key==='meetings'&&f.borough)?`<span class="qchip">${t("affected_area_label")} <b>${f.borough}</b></span>`:"",
-               (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"" ];
+               (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
+               (key==='property'&&f.borough)?`<span class="qchip">${t("borough_label")} <b>${f.borough}</b></span>`:"" ];
     },
-    apply:f=>{ if(key==='meetings'&&f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
-               if(key==='meetings'&&f.borough) $("#meetingsboro").value=f.borough;
-               if(key==='meetings'&&f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
-               forceSelect("#"+key+"agency", f.agency);
-               $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
-               return loadSection(key); }
+    apply:f=>{
+      if(key==='meetings'){
+        if(f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
+        if(f.borough) $("#meetingsboro").value=f.borough;
+        if(f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
+        if(f.process && ["scheduled","agenda","held","outcomes","unstaged"].includes(f.process)){
+          meetingsProcessSel=f.process;
+        }
+        if(f.nearMe){
+          const btn=$("#meetingslocation");
+          if(btn && !btn.disabled){ btn.click(); }
+        }
+      }
+      if(key==='property'){
+        if(f.borough) $("#propertyboro").value=f.borough;
+        if(f.process && ["hearing","auction_or_rfp","award_or_conveyance","unstaged"].includes(f.process)){
+          propProcessSel=f.process;
+        }
+        if(f.stage) propStageSel=f.stage;
+        if(f.asset) propAsset=f.asset;
+        if(f.nearMe){
+          const btn=$("#propertylocation");
+          if(btn && !btn.disabled){ btn.click(); }
+        }
+      }
+      if(key==='rules'){
+        if(f.process && ["proposal","public_process","adoption","effective","unstaged"].includes(f.process)){
+          rulesProcessSel=f.process;
+        }
+      }
+      forceSelect("#"+key+"agency", f.agency);
+      $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
+      return loadSection(key);
+    }
   };
 }
 
@@ -576,12 +683,12 @@ async function nlTranslateLens(lens, opts){
 // so a fallback chip never gets an indicator (currentSuggestionMeta() returns empty sets when
 // there's no validated entry for a lens).
 const NL_SUGGESTIONS_FALLBACK = {
-  money: [0, 1, 2, 3, 4, 5],
-  people: [0, 2],
-  land: [0, 1, 2, 3],
-  property: [1],
-  rules: [0, 1, 2],
-  meetings: [0, 3],
+  money: [0, 1, 2, 3, 4, 5, 6, 7],
+  people: [1, 3],
+  land: [0, 1, 2, 3, 4],
+  property: [0, 1, 2, 4],
+  rules: [0, 1, 2, 3, 4],
+  meetings: [0, 1, 2, 3, 4, 5],
   alerts: [0, 1, 2, 3],
 };
 let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
