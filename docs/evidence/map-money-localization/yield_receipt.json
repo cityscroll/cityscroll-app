@@ -1,0 +1,122 @@
+{
+  "feature": "map-money-localization",
+  "measured_at": "2026-08-03T22:22:00Z",
+  "source": {
+    "dataset": "ocp-recent-contract-awards",
+    "socrata_id": "qyyg-4tf5",
+    "plus": "money_default_open solicitations",
+    "sample_n": 340
+  },
+  "source_fields_inventory": {
+    "has_service_borough_column": false,
+    "has_vendor_address": true,
+    "has_title_body": true,
+    "pin_encodes_borough": false,
+    "pin_note": "PIN first digits are agency codes (e.g. 816=DOHMH), not boroughs — never used as location."
+  },
+  "method_yield": {
+    "matter_title_place": 74,
+    "citywide_phrase": 42,
+    "vendor_address": 7,
+    "vendor_place": 4,
+    "matter_body_borough": 5,
+    "community_board": 3,
+    "matter_address": 6,
+    "unlocated_no_place_signal": 211
+  },
+  "scope_totals": {
+    "local": 87,
+    "citywide": 42,
+    "unlocated": 211,
+    "located_rate": 0.379
+  },
+  "map_borough_after": {
+    "Bronx": 27,
+    "Brooklyn": 14,
+    "Manhattan": 27,
+    "Queens": 21,
+    "Staten Island": 5,
+    "Citywide": 42
+  },
+  "hand_verified_samples": [
+    {
+      "request_id": "20260727015",
+      "title": "Q099-424M: Al Oerter Recreation Center Gym Floor Reconstruction, Queens",
+      "method": "matter_title_place",
+      "expected": "Queens",
+      "verdict": "pass",
+      "note": "Borough word in title is the project site."
+    },
+    {
+      "request_id": "20260727006",
+      "title": "Arches Program, South Bronx",
+      "method": "matter_title_place",
+      "expected": "Bronx",
+      "verdict": "pass",
+      "note": "Program site named in title."
+    },
+    {
+      "request_id": "20260721026",
+      "title": "FIRE EXTINGUISHER MAINTENANCE, INSTALLATION AND REPAIRS, CITYWIDE",
+      "method": "citywide_phrase",
+      "expected": "citywide",
+      "verdict": "pass",
+      "note": "Explicit citywide service class."
+    },
+    {
+      "request_id": "20260724015",
+      "title": "Summer Youth Employment Program NAQ: Career Ready",
+      "method": "citywide_phrase",
+      "expected": "citywide",
+      "verdict": "pass",
+      "note": "Body phrase 'throughout New York City'; vendor org HQ is not the service geography."
+    },
+    {
+      "title": "Immediate Emergency Demolition - 2592 3rd Ave, BX",
+      "method": "borough_abbrev",
+      "expected": "Bronx",
+      "verdict": "pass",
+      "note": "Publisher shorthand BX in title."
+    },
+    {
+      "title": "South Hollis Library Renovation RFQ",
+      "method": "neighborhood_place",
+      "expected": "Queens",
+      "verdict": "pass",
+      "note": "Single-borough neighborhood gazetteer."
+    },
+    {
+      "title": "Floor tile … Manhattan Neighborhood (MN04)",
+      "method": "community_board",
+      "expected": "Manhattan / M04",
+      "verdict": "pass",
+      "note": "Compact CD token in procurement title."
+    },
+    {
+      "title": "VERTIV UPS Replacement for Data Center",
+      "method": null,
+      "expected": "unlocated",
+      "verdict": "pass",
+      "note": "Genuine non-spatial IT award — correctly stays unlocated, not forced into a district."
+    },
+    {
+      "title": "Catering Services / vendor 1880 Valentine Avenue",
+      "method": "vendor_address",
+      "expected": "Bronx (weak)",
+      "verdict": "pass_with_caveat",
+      "note": "Vendor HQ only; confidence_tier=derived. Prefer matter signals when present."
+    }
+  ],
+  "ui": {
+    "money_framing": "Most contracts are citywide service classes or lack a published place — N citywide, M with a borough pin, K without a place signal",
+    "unlocated_bag": "No place signal (distinct from district zeros)",
+    "citywide_bag": "Citywide row always first when n>0 for the active lens",
+    "activity_fetch_cache": "no-cache (was force-cache — stale zeros for returning browsers)"
+  },
+  "screenshots": [
+    "docs/screenshots/map-money-localization/after-money-390.png",
+    "docs/screenshots/map-money-localization/after-money-1440.png",
+    "docs/screenshots/map-money-localization/after-rules-390.png",
+    "docs/screenshots/map-money-localization/after-rules-1440.png"
+  ]
+}

@@ -12,9 +12,13 @@ function mapExplorationTools(){
 }
 async function loadMapData(){
   if(mapBoundaries && mapActivity) return { boundaries:mapBoundaries, activity:mapActivity };
+  // Boundaries change rarely — force-cache is fine. Activity is rebuilt on every
+  // site deploy (district counts, citywide bags); use default revalidation so
+  // returning browsers pick up the new payload (origin sends max-age=0, must-revalidate).
+  // force-cache here previously left owners looking at a grid of stale zeros.
   const [bRes, aRes]=await Promise.all([
     fetch("data/district_boundaries.json",{cache:"force-cache"}),
-    fetch("data/district_activity.json",{cache:"force-cache"}),
+    fetch("data/district_activity.json",{cache:"no-cache"}),
   ]);
   mapBoundaries=bRes.ok?await bRes.json():null;
   mapActivity=aRes.ok?await aRes.json():null;
@@ -127,16 +131,38 @@ async function paintMapExploration(){
       });
     });
   }
-  // Sorted area list (a11y + no-map fallback) + first-class citywide / virtual bags.
+  // Sorted area list (a11y + no-map fallback) + first-class citywide / virtual / unlocated bags.
   const sorted=[...features].sort((a,b)=>b.total-a.total || String(a.label).localeCompare(String(b.label)));
+  const bucketLabel=(kind)=>{
+    if(kind==="citywide") return t("map_bucket_citywide");
+    if(kind==="virtual") return t("map_bucket_virtual");
+    if(kind==="unlocated") return t("map_bucket_unlocated");
+    return kind;
+  };
   const bucketHtml=buckets.map(b=>{
     const n=mapState.lens==="all"?b.total:(Number(b.counts?.[mapState.lens])||0);
     if(mapState.lens!=="all" && n<=0) return "";
-    return `<li class="map-bucket map-bucket-${mapEsc(b.kind)}"><button type="button" data-map-bucket="${mapEsc(b.id)}" aria-current="${mapState.id===b.id?"true":"false"}"><span>${mapEsc(b.kind==="citywide"?t("map_bucket_citywide"):t("map_bucket_virtual"))}</span><span class="map-count">${n}</span></button></li>`;
+    return `<li class="map-bucket map-bucket-${mapEsc(b.kind)}"><button type="button" data-map-bucket="${mapEsc(b.id)}" aria-current="${mapState.id===b.id?"true":"false"}"><span>${mapEsc(bucketLabel(b.kind))}</span><span class="map-count">${n}</span></button></li>`;
   }).filter(Boolean).join("");
-  list.innerHTML=(bucketHtml||"")+sorted.map(f=>
-    `<li><button type="button" data-map-id="${mapEsc(f.id)}" data-map-level="${mapEsc(f.level)}" ${mapState.id===f.id?'aria-current="true"':""}><span>${mapEsc(f.label)}</span><span class="map-count">${f.total}</span></button></li>`
-  ).join("") || (bucketHtml?"":`<li class="empty" style="padding:12px">${t("map_no_areas")}</li>`);
+  // Money framing: zeros on borough polygons often mean "no place signal", not
+  // "no contracts". Surface coverage before the polygon list so the lens does not
+  // read as broken when most awards are citywide / unlocated.
+  let framingHtml="";
+  if(mapState.lens==="money" && typeof tools.moneyCoverageFraming==="function"){
+    const frame=tools.moneyCoverageFraming(activity);
+    if(frame && frame.counted>0){
+      framingHtml=`<li class="map-framing map-framing-money" role="note"><p>${mapEsc(t("map_money_framing",{
+        counted:String(frame.counted),
+        local:String(frame.local),
+        citywide:String(frame.citywide),
+        unlocated:String(frame.unlocated),
+      }))}</p></li>`;
+    }
+  }
+  const zeroClass=(total)=>Number(total)>0?"":" map-count-zero";
+  list.innerHTML=(framingHtml||"")+(bucketHtml||"")+sorted.map(f=>
+    `<li class="${Number(f.total)>0?"":"map-area-empty"}"><button type="button" data-map-id="${mapEsc(f.id)}" data-map-level="${mapEsc(f.level)}" ${mapState.id===f.id?'aria-current="true"':""}><span>${mapEsc(f.label)}</span><span class="map-count${zeroClass(f.total)}">${f.total}</span></button></li>`
+  ).join("") || (bucketHtml||framingHtml?"":`<li class="empty" style="padding:12px">${t("map_no_areas")}</li>`);
   list.querySelectorAll("[data-map-id]").forEach(btn=>{
     btn.addEventListener("click",()=>selectMapFeature(btn.dataset.mapId, btn.dataset.mapLevel, tools, features));
   });
@@ -187,8 +213,17 @@ async function paintMapExploration(){
       detail.hidden=false;
       const counts=bucketSel.counts||{};
       const total=mapState.lens==="all"?bucketSel.total:(Number(counts[mapState.lens])||0);
-      const leadKey=bucketSel.kind==="citywide"?"map_citywide_detail_lead":"map_virtual_detail_lead";
-      detail.innerHTML=`<h3>${mapEsc(bucketSel.kind==="citywide"?t("map_bucket_citywide"):t("map_bucket_virtual"))}</h3>
+      const leadKey=bucketSel.kind==="citywide"
+        ?"map_citywide_detail_lead"
+        :bucketSel.kind==="unlocated"
+          ?"map_unlocated_detail_lead"
+          :"map_virtual_detail_lead";
+      const title=bucketSel.kind==="citywide"
+        ?t("map_bucket_citywide")
+        :bucketSel.kind==="unlocated"
+          ?t("map_bucket_unlocated")
+          :t("map_bucket_virtual");
+      detail.innerHTML=`<h3>${mapEsc(title)}</h3>
         <p class="map-fallback-note">${t(leadKey,{n:String(total), lens:mapEsc(mapLensLabel(mapState.lens))})}</p>
         <div class="map-detail-counts">
           ${mapCountChip("land", counts.land)}
@@ -198,8 +233,9 @@ async function paintMapExploration(){
           ${mapCountChip("money", counts.money)}
         </div>
         <div class="map-detail-links">
-          ${bucketSel.kind==="citywide"?`<a class="act" href="#rules">${mapEsc(t("tab_rules"))}</a>`:""}
+          ${bucketSel.kind==="citywide"?`<a class="act" href="#rules">${mapEsc(t("tab_rules"))}</a><a class="act" href="#money">${mapEsc(t("tab_money"))}</a>`:""}
           ${bucketSel.kind==="virtual"?`<a class="act" href="#meetings">${mapEsc(t("tab_meetings"))}</a>`:""}
+          ${bucketSel.kind==="unlocated"?`<a class="act" href="#money">${mapEsc(t("tab_money"))}</a>`:""}
         </div>`;
     } else {
       detail.hidden=false;

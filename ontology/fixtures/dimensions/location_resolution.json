@@ -57,7 +57,7 @@
         "located_rate": 1
       },
       "money": {
-        "corpus": "ocp_awards_warehouse_lookup",
+        "corpus": "money_domain_observations",
         "counted": 8,
         "located": 0,
         "located_rate": 0

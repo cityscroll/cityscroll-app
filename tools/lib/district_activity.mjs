@@ -663,15 +663,19 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
     }
   }
 
-  // Title/agency/vendor place words (honest borough-only when present).
-  // Skip bare "Citywide Administrative Services" agency — not a service geography.
+  // Title / description place words (honest borough-only when present).
+  // Do NOT use vendor_name alone — "Queens Community House" is an org HQ, not
+  // the service geography. Vendor address is handled earlier as a weaker path.
   const haystack = plainText([
     row?.short_title,
-    row?.vendor_name,
     row?.additional_description_1,
-    row?.vendor_address,
+    row?.other_info_1,
   ].filter(Boolean).join(" "));
-  const boros = boroughsIn(haystack);
+  const boros = boroughsIn(haystack).filter((b) => {
+    // Skip false "citywide" agency titles that only name DCAS.
+    if (b === "Citywide") return false;
+    return true;
+  });
   if (boros.length) {
     return annotate(
       boros.map((b) => ({ borough: b, community: null, council: null })),
@@ -737,7 +741,7 @@ export function buildDistrictActivity(opts = {}) {
     property: { corpus: "property_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
     meetings: { corpus: "meetings_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
     rules: { corpus: "rules_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
-    money: { corpus: "ocp_awards_warehouse_lookup", counted: 0, located: 0, by_method: Object.create(null) },
+    money: { corpus: "money_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
   };
 
   function bumpMethod(lens, method) {
