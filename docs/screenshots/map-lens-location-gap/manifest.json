@@ -1,0 +1,73 @@
+{
+  "feature": "map-lens-location-gap",
+  "hashes": [
+    "#map?lens=meetings",
+    "#map?lens=rules",
+    "#map?lens=all",
+    "#map?lens=money"
+  ],
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "before_sources": {
+    "land": {
+      "corpus": "zap_projects_warehouse_lookup",
+      "counted": 236,
+      "located": 236
+    },
+    "property": {
+      "corpus": "property_domain_observations",
+      "counted": 133,
+      "located": 133
+    },
+    "meetings": {
+      "corpus": "meetings_domain_observations",
+      "counted": 119,
+      "located": 0
+    },
+    "rules": {
+      "corpus": "rules_domain_observations",
+      "counted": 100,
+      "located": 0
+    },
+    "money": {
+      "corpus": "ocp_awards_warehouse_lookup",
+      "counted": 8,
+      "located": 0
+    }
+  },
+  "after_sources": {
+    "land": {
+      "corpus": "zap_projects_warehouse_lookup",
+      "counted": 236,
+      "located": 236
+    },
+    "property": {
+      "corpus": "property_domain_observations",
+      "counted": 133,
+      "located": 133
+    },
+    "meetings": {
+      "corpus": "meetings_domain_observations",
+      "counted": 119,
+      "located": 14
+    },
+    "rules": {
+      "corpus": "rules_domain_observations",
+      "counted": 100,
+      "located": 100
+    },
+    "money": {
+      "corpus": "ocp_awards_warehouse_lookup",
+      "counted": 8,
+      "located": 0
+    }
+  }
+}

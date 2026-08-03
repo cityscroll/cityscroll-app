@@ -1,0 +1,87 @@
+{
+  "measured_at": "2026-08-03T14:45:32.537Z",
+  "note": "Golden-corpus located rates were already 1.0 for meetings-hearings and property, so the dimension did not flag the map surface. Map aggregates (district_activity.sources) were not an input until this change.",
+  "golden_only_cards": [],
+  "before_map_cards": [
+    {
+      "id": "crol-list/mf-location-resolution-map-zero-located-rules",
+      "lens": "rules",
+      "counted": 100,
+      "located": 0
+    },
+    {
+      "id": "crol-list/mf-location-resolution-map-zero-located-meetings",
+      "lens": "meetings",
+      "counted": 119,
+      "located": 0
+    },
+    {
+      "id": "crol-list/mf-location-resolution-map-zero-located-money",
+      "lens": "money",
+      "counted": 8,
+      "located": 0
+    }
+  ],
+  "after_map_cards": [
+    {
+      "id": "crol-list/mf-location-resolution-map-zero-located-money",
+      "lens": "money",
+      "counted": 8,
+      "located": 0
+    }
+  ],
+  "before_sources": {
+    "land": {
+      "corpus": "zap_projects_warehouse_lookup",
+      "counted": 236,
+      "located": 236
+    },
+    "property": {
+      "corpus": "property_domain_observations",
+      "counted": 133,
+      "located": 133
+    },
+    "meetings": {
+      "corpus": "meetings_domain_observations",
+      "counted": 119,
+      "located": 0
+    },
+    "rules": {
+      "corpus": "rules_domain_observations",
+      "counted": 100,
+      "located": 0
+    },
+    "money": {
+      "corpus": "ocp_awards_warehouse_lookup",
+      "counted": 8,
+      "located": 0
+    }
+  },
+  "after_sources": {
+    "land": {
+      "corpus": "zap_projects_warehouse_lookup",
+      "counted": 236,
+      "located": 236
+    },
+    "property": {
+      "corpus": "property_domain_observations",
+      "counted": 133,
+      "located": 133
+    },
+    "meetings": {
+      "corpus": "meetings_domain_observations",
+      "counted": 119,
+      "located": 14
+    },
+    "rules": {
+      "corpus": "rules_domain_observations",
+      "counted": 100,
+      "located": 100
+    },
+    "money": {
+      "corpus": "ocp_awards_warehouse_lookup",
+      "counted": 8,
+      "located": 0
+    }
+  }
+}

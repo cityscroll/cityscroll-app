@@ -47,6 +47,9 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
   const views = readJson("ontology/fixtures/dimensions/readability_views.json");
   const disagreements = readJson("ontology/fixtures/dimensions/cross_source_disagreements.json");
   const location_resolution = readJson("ontology/fixtures/dimensions/location_resolution.json");
+  // Prefer live map artifact when present so zero-located lenses are detected even
+  // if the inventory stamp is stale (missed-detection path for map density).
+  const district_activity = readJson("site/data/district_activity.json");
   const temporal_scorecard = readJson(
     "worker/test/fixtures/civic-time/expected_temporal_completeness.json",
   );
@@ -108,6 +111,7 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
     disagreements: disagreements?.disagreements || disagreements || [],
     claim_labeled_disagree_families: disagreements?.claim_labeled_disagree_families || [],
     location_resolution,
+    district_activity,
     temporal_scorecard,
     lifecycle_coherence_scorecard,
     source_coverage,
