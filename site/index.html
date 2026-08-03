@@ -929,9 +929,16 @@
   .fcard .ftitle a:hover{color:var(--oxblood);text-decoration:underline}
   .fcard .faddr{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .fcard .fscope{font-size:13.5px;line-height:1.5;color:#4a4338}
-  .fcard .factions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:4px}
+  .fcard .factions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:4px;align-items:flex-start}
   .fcard .factions .act{padding:7px 11px;font-size:12.5px}
-  .fcard .demoresult{cursor:default;border-style:dashed;white-space:normal}
+  .fcard .factions-overflow{position:relative;width:auto}
+  .fcard .fcard-compact-actions{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap}
+  .fcard .fcard-compact-actions summary{list-style:none;cursor:pointer}
+  .fcard .factions-overflow summary.act{padding:7px 11px;line-height:1.35}
+  .fcard .fcard-compact-actions .factions-overflow::-webkit-details-marker{display:none}
+  .fcard .fcard-compact-actions::-webkit-details-marker{display:none}
+  .fcard .fcard-actions-menu{display:flex;flex-wrap:wrap;gap:7px;padding-top:7px}
+.fcard .demoresult{cursor:default;border-style:dashed;white-space:normal}
   .hearingintro{background:#faf6ee;border:1px solid var(--rule);border-inline-start:3px solid var(--blue);border-radius:8px;padding:11px 14px;margin-top:14px;font:13px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .hearingintro b{color:var(--ink)}
   /* Rules domain explorer (process ontology on the list — same shape as property disposition). */
@@ -7050,6 +7057,19 @@ function hearingCardHTML(record){
     sibling_notices:[],
   });
 }
+function compactCardActions(primaryAction, secondaryActions){
+  const overflow = (secondaryActions || []).filter(Boolean);
+  const menuLabel = t("actions_lbl").replace(/:\s*$/, "");
+  if(!primaryAction && !overflow.length) return "";
+  if(!overflow.length) return `<div class="fcard-compact-actions">${primaryAction || ""}</div>`;
+  return `<div class="fcard-compact-actions">
+      ${primaryAction || ""}
+      <details class="factions-overflow">
+        <summary class="act">${escUiHtml(menuLabel)}</summary>
+        <div class="fcard-actions-menu">${overflow.join("")}</div>
+      </details>
+    </div>`;
+}
 function meetingsExplorerCardHTML(entry){
   const record=entry&&entry.primary;
   if(!record) return "";
@@ -7089,20 +7109,21 @@ function meetingsExplorerCardHTML(entry){
   // Primary kinetic destination: notice detail (outcomes + action rail live there);
   // participation join/materials stay as secondary classified EXT links.
   const participation=entry.participation||record.participation||{};
-  let acts=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
-  acts+=`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
+  const primaryAction=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
+  const secondaryActions=[];
   // City Record official notice — REQ_URL only so link_targets classifies as external
   // (mixed source_url||REQ_URL expressions are unclassified by that gate).
-  acts+=`<a class="act" href="${REQ_URL(record.request_id)}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`;
-  if(agency) acts+=`<a class="act" href="${agencyHref(agency)}">${t("meetings_action_agency_profile")}</a>`;
-  acts+=participationLinksHTML({ participation });
+  secondaryActions.push(`<a class="act" href="${REQ_URL(record.request_id)}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`);
+  if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("meetings_action_agency_profile")}</a>`);
+  const participationAction=participationLinksHTML({ participation });
+  if(participationAction) secondaryActions.push(participationAction);
   (participation.emails||[]).slice(0,1).forEach(email=>{
-    acts+=`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`;
+    secondaryActions.push(`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`);
   });
-  acts+=`<button class="act" type="button" data-link="${record.request_id}">${t("copy_link_btn")}</button>`;
-  if(record.event_date) acts+=`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("add_date_btn",{date:fdt(record.event_date)})}</button>`;
+  secondaryActions.push(`<button class="act" type="button" data-link="${record.request_id}">${t("copy_link_btn")}</button>`);
+  if(record.event_date) secondaryActions.push(`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("add_date_btn",{date:fdt(record.event_date)})}</button>`);
   const venue=record.venue||{};
-  if(venue.address) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`;
+  if(venue.address) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`);
   // Sibling notices for multi-notice event / matter chains (entity links across rows).
   let siblingsHtml="";
   if((entry.kind==="event"||entry.kind==="matter") && (entry.sibling_notices||[]).length>1){
@@ -7127,10 +7148,10 @@ function meetingsExplorerCardHTML(entry){
       <div class="hfacts">
         <div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(hearingAreaText(record))}</span></div>
         <div class="hfact"><b>${t("venue_label")}</b><span>${escUiHtml(hearingVenueText(record))}</span></div>
-        <div class="hfact"><b>${t("who_affected_label")}</b><span>${record.affects&&record.affects.length?escUiHtml(record.affects.map(value=>t(value)).join(" · ")):t("who_affected_not_stated")}</span></div>
+      <div class="hfact"><b>${t("who_affected_label")}</b><span>${record.affects&&record.affects.length?escUiHtml(record.affects.map(value=>t(value)).join(" · ")):t("who_affected_not_stated")}</span></div>
       </div>
       ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
-      <div class="factions">${acts}</div>
+      <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </article>`;
 }
 function renderHearingGroup(scope, entries){
@@ -7963,24 +7984,23 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const processLine=`<div class="property-process-line">
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
-    ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:`<span class="tag place">${escUiHtml(t("property_list_no_bbl"))}</span>`}
+    ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:``}
   </div>`;
   // Next-action first (process lead), then open notice, then parcel entity links when BBL known.
-  let acts=`<a class="act primary" href="${noticeHref}">${t(actionKey)}</a>`;
-  acts+=`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
-  acts+=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
+  const primaryAction=`<a class="act primary" href="${noticeHref}">${t(actionKey)}</a>`;
+  const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
-    if(links?.zola_url) acts+=`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`;
+    if(links?.zola_url) secondaryActions.push(`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`);
   }
-  acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
-  if(ev) acts+=`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
+  secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
+  if(ev) secondaryActions.push(`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
   const geometry=r._location?.geometry;
   const taxLot=r._location?.tax_lots?.[0];
   const blockLotQuery=geometry?"":(taxLot&&r._location?.boroughs?.length?`${taxLot.label}, ${r._location.boroughs[0]}, New York NY`:"");
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
-  if(mapQuery) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
-  if(addr) acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
+  if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
+  if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
   const pbadges = (r._asset || r._badge)
     ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
   return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
@@ -7994,7 +8014,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
       ${propertyPlaceChips(r._location)}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
       ${digEvidenceHTML(mev)}
-      <div class="factions">${acts}</div>
+      <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
 async function renderPropExplorer(){
@@ -8180,7 +8200,9 @@ async function loadTaxLienForNotice(r,el){
 }
 
 function propertyPlaceChips(location){
-  if(!location||location.scope!=="local") return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
+  if(!location) return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
+  if(location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
+  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
   const values=[
     ...(location.addresses||[]).slice(0,3).map(address=>address.label),
     ...(location.boroughs||[]),
@@ -8192,7 +8214,7 @@ function propertyPlaceChips(location){
 
 function rulePlaceChips(location){
   if(!location||location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
-  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("affected_not_stated")}</span></div>`;
+  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("rule_stage_unstaged")}</span></div>`;
   const values=[
     ...(location.districts||[]),
     ...(location.neighborhoods||[]),
@@ -8285,16 +8307,16 @@ function rulesExplorerCardHTML(entry, terms){
   } else {
     acts=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   }
-  acts+=`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
-  acts+=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
-  if(agency) acts+=`<a class="act" href="${agencyHref(agency)}">${t("rules_action_agency_profile")}</a>`;
+  const primaryAction=acts;
+  const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
+  if(agency) secondaryActions.push(`<a class="act" href="${agencyHref(agency)}">${t("rules_action_agency_profile")}</a>`);
   // Secondary official rule page when primary was the comment portal (not already the rule URL).
   if(entry.rule_url && !(wantRulePrimary || (wantCommentPrimary && !entry.comment_url))){
-    acts+=`<a class="act" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`;
+    secondaryActions.push(`<a class="act" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`);
   }
-  acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
+  secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
   const ev=r.event_date;
-  if(ev) acts+=`<button class="act" type="button" data-ev="rules:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
+  if(ev) secondaryActions.push(`<button class="act" type="button" data-ev="rules:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
   // Sibling notices for multi-notice rulemakings (entity links across City Record rows).
   let siblingsHtml="";
   if(entry.kind==="rulemaking" && (entry.sibling_notices||[]).length>1){
@@ -8321,7 +8343,7 @@ function rulesExplorerCardHTML(entry, terms){
       ${rulePlaceChips(r._ruleLocation)}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
       ${digEvidenceHTML(mev)}
-      <div class="factions">${acts}</div>
+      <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
 async function renderRulesExplorer(){
