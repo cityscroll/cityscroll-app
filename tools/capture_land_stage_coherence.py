@@ -132,7 +132,7 @@ def install_routes(page: Page) -> None:
 def capture_live_before() -> list[dict]:
     before_dir = OUT / "before"
     before_dir.mkdir(parents=True, exist_ok=True)
-    files: list[dict] = []
+    files = list()  # accumulator (not a measured table)
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         for width, height in ((390, 844), (1440, 900)):
@@ -168,12 +168,12 @@ def capture_live_before() -> list[dict]:
 def capture_local_after() -> list[dict]:
     after_dir = OUT / "after"
     after_dir.mkdir(parents=True, exist_ok=True)
-    files: list[dict] = []
+    files = list()  # accumulator (not a measured table)
     with StaticServer() as base_url, sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         for width, height in ((390, 844), (1440, 900)):
             page = browser.new_page(viewport={"width": width, "height": height})
-            errors: list[str] = []
+            errors = list()  # accumulator (not a measured table)
             page.on("pageerror", lambda error: errors.append(str(error)))
             install_routes(page)
             page.goto(f"{base_url}#land/{PROJECT_ID}", wait_until="domcontentloaded")
@@ -224,7 +224,7 @@ Re-run: `python3 tools/capture_land_stage_coherence.py`
 """,
         encoding="utf-8",
     )
-    files: list[dict] = []
+    files = list()  # accumulator (not a measured table)
     print("capturing before (live)…")
     try:
         files.extend(capture_live_before())

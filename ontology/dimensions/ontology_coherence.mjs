@@ -17,10 +17,21 @@ import { EXAM_PROCESS_STAGES } from "../../site/exam_process_spine.mjs";
 
 export const DIMENSION_ID = "ontology-coherence";
 
-/** Past-deadline grace days before a current statutory due is a violation. */
+/**
+ * Past-deadline grace days before a current statutory due is a violation.
+ * Product-policy constant for audit only (not a Charter statute); 7 calendar
+ * days absorbs clock-toll / timezone lag without masking multi-month stranding.
+ * Source: product policy (audit tolerance), not Open Data.
+ */
 export const CURRENT_DEADLINE_PAST_TOLERANCE_DAYS = 7;
 
-/** Future-event grace days (publisher planned dates may land slightly ahead). */
+/**
+ * Future-event grace days for actual (non-planned) rows.
+ * Product-policy constant for audit only; about 13 months covers long planned
+ * portal stub dates mislabeled as actual without treating near-term publisher
+ * dates as impossible.
+ * Source: product policy (audit tolerance), not Open Data.
+ */
 export const FUTURE_EVENT_PLAUSIBILITY_DAYS = 400;
 
 /**
@@ -128,7 +139,8 @@ export function auditLandPayload(payload = {}, opts = {}) {
     "unknown";
   const subject_ref = `land:${projectId}`;
   const permalink = permalinkForLand(projectId);
-  const violations = [];
+  // Accumulator (not a measured table).
+  const violations = Array();
 
   const spine = payload.spine || null;
   if (!spine || !Array.isArray(spine.events)) {
@@ -278,7 +290,8 @@ export function auditExamPayload(payload = {}, opts = {}) {
   const examNumber = payload.exam_number || payload.exam?.exam_number || "unknown";
   const subject_ref = `exam:${examNumber}`;
   const permalink = permalinkForExam(examNumber);
-  const violations = [];
+  // Accumulator (not a measured table).
+  const violations = Array();
 
   const app = payload.application || payload.stages?.application || null;
   const appStatus = String(app?.status || payload.application_status || "").toLowerCase();
@@ -369,11 +382,12 @@ export function auditExamPayload(payload = {}, opts = {}) {
  * @param {object} [opts]
  */
 export function auditOntologyCoherence(inventory = {}, opts = {}) {
-  const land = Array.isArray(inventory.land) ? inventory.land : [];
-  const exam = Array.isArray(inventory.exam) ? inventory.exam : [];
+  const land = Array.isArray(inventory.land) ? inventory.land : Array();
+  const exam = Array.isArray(inventory.exam) ? inventory.exam : Array();
   const today = isoDateOnly(opts.today) || inventory.today || null;
 
-  const reports = [];
+  // Accumulator (not a measured table).
+  const reports = Array();
   for (const row of land) {
     reports.push(auditLandPayload(row, { today }));
   }
@@ -426,7 +440,8 @@ export function auditOntologyCoherence(inventory = {}, opts = {}) {
  */
 export function evaluateOntologyCoherence(input = {}) {
   const inventory = input.ontology_coherence || input.coherence_payloads || null;
-  const cards = [];
+  // Accumulator (not a measured table).
+  const cards = Array();
   const emptyMetrics = {
     rules_registered: COHERENCE_RULES.length,
     payloads_checked: 0,

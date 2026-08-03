@@ -115,6 +115,7 @@ test("hand-built stranded CB payload still flags current_while_later_completed",
     statutory_clock: {
       status: "open",
       phases: [
+        // Charter §197-c cumulative windows from cert 2026-03-02 (D+60 / D+200).
         {
           phase_id: "community_board",
           days: 60,
@@ -166,6 +167,7 @@ test("hand-built stranded CB payload still flags current_while_later_completed",
     },
     statutory_clock: {
       status: "open",
+      // days/due from NYC Charter §197-c CB window on cert 2026-03-02 (fixture case).
       phases: [{ phase_id: "community_board", days: 60, due_date: "2026-05-01" }],
     },
   };

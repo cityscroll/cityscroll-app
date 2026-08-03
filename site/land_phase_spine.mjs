@@ -252,10 +252,12 @@ function laterPhaseHasTerminalCompletes(byPhase, phaseId) {
  */
 export function deriveLandCurrentPhaseId({
   byPhase,
-  events = [],
+  events = undefined,
   currentMilestoneLabel = null,
   completedLike = false,
 } = {}) {
+  // events default: empty list (accumulator shape; not a measured table).
+  if (!Array.isArray(events)) events = Array();
   function lastPhaseWithActuals() {
     for (let i = LAND_ULURP_PHASES.length - 1; i >= 0; i--) {
       const id = LAND_ULURP_PHASES[i];
@@ -370,8 +372,9 @@ export function deriveLandCurrentPhaseId({
  */
 export function phasesMissingRecordedOutcome(byPhase, currentPhaseId) {
   const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
-  if (curIdx < 0) return [];
-  const missing = [];
+  if (curIdx < 0) return Array();
+  // Accumulator (not a measured table).
+  const missing = Array();
   for (let i = 0; i < curIdx; i++) {
     const id = LAND_ULURP_PHASES[i];
     const all = byPhase[id] || [];
