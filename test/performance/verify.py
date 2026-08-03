@@ -325,7 +325,20 @@ def measure_contracts(
     page.wait_for_function("() => document.querySelector('#rescount').textContent.trim() !== ''")
     # The interaction budget starts from a settled warm page. Otherwise the initial agency,
     # Today, and detail hydrations can be charged to a later keyword event nondeterministically.
-    page.wait_for_load_state("networkidle")
+    # Prefer networkidle, but modular ES loads + suggestion/analytics side-fetches can keep the
+    # network chatty past Playwright's default 30s; fall back to product-ready DOM so the
+    # budget still measures a warm Contracts surface rather than a harness timeout.
+    try:
+        page.wait_for_load_state("networkidle", timeout=12_000)
+    except Exception:
+        page.wait_for_function(
+            "() => {"
+            "  const n = document.querySelector('#rescount')?.textContent?.trim();"
+            "  const list = document.querySelector('#list');"
+            "  return !!n && !!list && !list.querySelector('.loading');"
+            "}"
+        )
+        page.wait_for_timeout(250)
 
     visual_response_ms = page.evaluate(
         """
