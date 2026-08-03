@@ -77,12 +77,20 @@
   /* Homepage email CTA — primary conversion, quiet card under the tagline */
   .home-cta{max-width:520px;margin:2px auto 12px;padding:14px 16px 12px;background:var(--card);border:1px solid var(--rule);border-radius:10px;text-align:center}
   .home-cta-prompt{font:700 17px/1.3 var(--font-body);margin:0 0 10px;color:var(--ink)}
+  .home-cta-compact{display:none;margin:0;font:700 17px/1.3 var(--font-body)}
+  .home-cta-compact a{color:var(--ink);text-decoration-color:color-mix(in srgb,var(--ink),transparent 65%);text-underline-offset:2px}
   .home-cta-form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch}
   .home-cta-form input[type=email]{flex:1 1 220px;max-width:280px;min-height:44px}
   .home-cta-form button{min-height:44px;flex:0 0 auto}
   .home-cta-alt{margin:10px 0 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .home-cta-alt a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
   .home-cta-msg{margin-top:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .home-cta.compact{max-width:none;margin:2px 0 12px;padding:10px 12px 8px;text-align:left}
+  .home-cta.compact .home-cta-prompt,
+  .home-cta.compact .home-cta-form,
+  .home-cta.compact .home-cta-alt,
+  .home-cta.compact .home-cta-msg{display:none}
+  .home-cta.compact .home-cta-compact{display:block}
   @media(max-width:680px){
     .home-cta{margin-inline:0;padding:12px}
     .lang-switcher{top:8px;inset-inline-end:10px}
@@ -1127,6 +1135,7 @@
         <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Sign up</button>
       </form>
       <p class="home-cta-alt"><a href="#alerts" id="homeCtaTopics" data-i18n="home_cta_topics">or pick topics</a></p>
+      <p class="home-cta-compact" id="homeCtaCompact"><a href="#alerts"><span data-i18n="home_cta_prompt">Want email updates?</span> <span aria-hidden="true">→</span></a></p>
       <div id="homeCtaMsg" class="home-cta-msg" role="status" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
@@ -14172,7 +14181,11 @@ async function showTaskFirst(task, id){
 }
 
 function applyHash(){
-  const raw = location.hash.slice(1);
+  setNoticeCompactCta(false);
+  const incoming = location.hash.slice(1);
+  const slashPos = incoming.indexOf("/");
+  const raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
+  if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", "#"+raw); }
   if(!raw) return false;
   const collectionHash=bareCollectionHash(raw);
   if(collectionHash&&location.hash!==collectionHash){
@@ -14180,6 +14193,7 @@ function applyHash(){
     return applyHash();
   }
   if(raw.startsWith("notice/")){
+    setNoticeCompactCta(true);
     const { id, watch, focus } = parseNoticeHashSegment(raw.slice(7));
     pendingNoticeFocus = focus;
     showNotice(id, watch);
@@ -14325,6 +14339,12 @@ function applyHash(){
     }
   } finally { hashLock = false; }
   return true;
+}
+
+function setNoticeCompactCta(isNoticeRoute){
+  const homeCta = $("#homeCta");
+  if(!homeCta) return;
+  homeCta.classList.toggle("compact", !!isNoticeRoute);
 }
 
 // Extra description/printout fields so participation URL extraction matches the meetings list.
