@@ -17,6 +17,10 @@ import {
   DIMENSION_ID as LOCATION_RESOLUTION,
 } from "./location_resolution.mjs";
 import { evaluateSurfaceLoad, DIMENSION_ID as SURFACE_LOAD } from "./surface_load.mjs";
+import {
+  evaluateOntologyCoherence,
+  DIMENSION_ID as ONTOLOGY_COHERENCE,
+} from "./ontology_coherence.mjs";
 
 export { DIMENSION_IDS, MULTI_FLYWHEEL_POLICY_VERSION, MULTI_CARD_SCHEMA, makeDimensionCard, rankCards } from "./shared.mjs";
 
@@ -28,6 +32,7 @@ export const DIMENSION_EVALUATORS = Object.freeze({
   [CROSS_SOURCE]: evaluateCrossSourceConsistency,
   [LOCATION_RESOLUTION]: evaluateLocationResolution,
   [SURFACE_LOAD]: evaluateSurfaceLoad,
+  [ONTOLOGY_COHERENCE]: evaluateOntologyCoherence,
 });
 
 export function getEvaluator(dimensionId) {

@@ -14,6 +14,7 @@ import {
   aggregatePhaseEvents,
   buildLandPhaseView,
   countDuplicatePortalLinks,
+  deriveLandCurrentPhaseId,
   isProjectPortalUrl,
   mapMilestoneToPhase,
 } from "../site/land_phase_spine.mjs";
@@ -24,6 +25,9 @@ const fixture2019 = JSON.parse(
 );
 const fixture2022 = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/land_phase_spine/2022M0258.json"), "utf8"),
+);
+const fixture2019K0190 = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/land_phase_spine/2019K0190.json"), "utf8"),
 );
 
 test("LAND_ULURP_PHASES follows pre-review then statutory public review", () => {
@@ -137,6 +141,56 @@ test("2022M0258: mid public-review maps current to City Council phase", () => {
   assert.ok(view.phases.find((p) => p.id === "community_board")?.state === "passed");
   assert.ok(view.phases.find((p) => p.id === "cpc")?.state === "passed");
   assert.equal(view.event_count, fixture2022.spine.events.length);
+});
+
+test("2019K0190: stranded CB In Progress does not stay current after BP/CPC completed", () => {
+  // Field case (site owner report 2026-08-03): Community Board Review remains
+  // "In Progress" with no outcome row while Borough President and CPC votes
+  // already completed. Pipeline position must advance; CB is not "current".
+  const view = buildLandPhaseView(fixture2019K0190.spine, {
+    open_data: fixture2019K0190.open_data,
+    portal_url: fixture2019K0190.portal_url,
+    public_status: fixture2019K0190.public_status,
+    project_id: fixture2019K0190.project_id,
+  });
+
+  assert.notEqual(view.current.phase_id, "community_board");
+  assert.equal(view.current.phase_id, "city_council");
+  assert.match(String(view.current.derivation || ""), /advanced_past_terminal|last_actual|in_progress/);
+
+  const cb = view.phases.find((p) => p.id === "community_board");
+  assert.equal(cb.state, "passed");
+  assert.equal(cb.outcome_status, "no_recorded_outcome");
+
+  const bp = view.phases.find((p) => p.id === "borough_president");
+  const cpc = view.phases.find((p) => p.id === "cpc");
+  assert.equal(bp.state, "passed");
+  assert.equal(cpc.state, "passed");
+  assert.ok(cpc.last === "2026-07-15" || (cpc.events || []).some((e) => /Vote/i.test(e.title || "")));
+
+  // Lead milestone must not keep the lagging Open Data "Community Board Referral" label.
+  assert.ok(
+    !/community board referral/i.test(String(view.current.milestone_label || "")),
+    `stale open-data label leaked: ${view.current.milestone_label}`,
+  );
+
+  // deriveLandCurrentPhaseId is the pure pointer used by audits.
+  const byPhase = Object.fromEntries(LAND_ULURP_PHASES.map((id) => [id, []]));
+  for (const event of fixture2019K0190.spine.events) {
+    const phaseId = mapMilestoneToPhase(event.title, {
+      kind: event.kind,
+      representing: event.detail,
+      detail: event.detail,
+    });
+    (byPhase[phaseId] || byPhase.pre_application).push(event);
+  }
+  const pointer = deriveLandCurrentPhaseId({
+    byPhase,
+    events: fixture2019K0190.spine.events,
+    currentMilestoneLabel: fixture2019K0190.open_data?.current_milestone,
+    completedLike: false,
+  });
+  assert.equal(pointer.phase_id, "city_council");
 });
 
 test("public Land detail template uses phase spine surface", () => {
