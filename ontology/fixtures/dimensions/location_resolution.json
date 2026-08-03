@@ -1,0 +1,103 @@
+{
+  "schema": "cityscroll.location_resolution_inventory.v0",
+  "measured_at": "2026-08-02",
+  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Missing boundary vintages remain explicit until authoritative boundary sources are contracted.",
+  "lenses": [
+    {
+      "lens": "meetings-hearings",
+      "label": "Meetings and hearings",
+      "corpus": "test/contract/fixtures/affected_area_golden.json",
+      "corpus_total": 112,
+      "expected_located": 68,
+      "located": 68,
+      "located_rate": 1,
+      "missed_ids": [],
+      "false_positive_ids": []
+    },
+    {
+      "lens": "property",
+      "label": "Property",
+      "corpus": "test/contract/fixtures/property_location_golden.json",
+      "corpus_total": 66,
+      "expected_located": 53,
+      "located": 53,
+      "located_rate": 1,
+      "missed_ids": [],
+      "false_positive_ids": []
+    }
+  ],
+  "geocoded_pins": [
+    {
+      "id": "113 Franklin Street|Brooklyn",
+      "latitude": 40.71839,
+      "longitude": -74.006082,
+      "bbl": "1001770024",
+      "community_district": "101",
+      "council_district": "1"
+    },
+    {
+      "id": "131 Grand St|Brooklyn",
+      "latitude": 40.72034,
+      "longitude": -74.000167,
+      "bbl": "1002327501",
+      "community_district": "102",
+      "council_district": "1"
+    },
+    {
+      "id": "1716 2nd Avenue|Manhattan",
+      "latitude": 40.779819,
+      "longitude": -73.949985,
+      "bbl": "1015520001",
+      "community_district": "108",
+      "council_district": "5"
+    },
+    {
+      "id": "217 East 86th Street|Manhattan",
+      "latitude": 40.778632,
+      "longitude": -73.952883,
+      "bbl": "1015320010",
+      "community_district": "108",
+      "council_district": "5"
+    },
+    {
+      "id": "30-94 35 Ave|Queens",
+      "latitude": 40.763147,
+      "longitude": -73.92037,
+      "bbl": "4006260001",
+      "community_district": "401",
+      "council_district": "22"
+    },
+    {
+      "id": "96 Avenue A|Manhattan",
+      "latitude": 40.725485,
+      "longitude": -73.983681,
+      "bbl": "1004020001",
+      "community_district": "103",
+      "council_district": "2"
+    },
+    {
+      "id": "964 Lexington Av|Manhattan",
+      "latitude": 40.76944,
+      "longitude": -73.96319,
+      "bbl": "1014050016",
+      "community_district": "108",
+      "council_district": "4"
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "community-district-boundaries",
+      "dataset_id": "5crt-au7u",
+      "vintage_at": null,
+      "max_stale_days": 730,
+      "status": "vintage-not-contracted"
+    },
+    {
+      "id": "city-council-district-boundaries",
+      "dataset_id": "872g-cjhh",
+      "vintage_at": null,
+      "max_stale_days": 730,
+      "status": "vintage-not-contracted"
+    }
+  ]
+}
