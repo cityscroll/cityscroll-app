@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "program": "cs-pred-08",
+  "observed_at": "2026-08-03T05:26:17Z",
+  "source_snapshot": {
+    "dataset_id": "hgx4-8ukb",
+    "snapshot_date": "2026-08-03",
+    "row_count": 32931,
+    "raw_sha256": "93014bddd92b28b239f9a1639aaf2b25eb907f076fc30a12432aa9c7cbce851c",
+    "milestone_date_min": "2014-04-23",
+    "milestone_date_max": "2026-04-24",
+    "status_date_min": "1970-04-21",
+    "status_date_max": "2026-04-24",
+    "certification_to_final_date_pairs": 29589
+  },
+  "action_outcome_enrichment": {
+    "cached_project_details": 1711,
+    "projects_with_action_statuses": 1710,
+    "source": "Zoning Application Portal project detail API"
+  },
+  "model": {
+    "model_name": "zap_disposition_duration",
+    "model_version": "1.0.0",
+    "source_row_count": 1641,
+    "cohort_count": 28,
+    "minimum_cohort_n": 20,
+    "train_from": "2016-08-08",
+    "train_to": "2026-04-24",
+    "conditioned_on_applicant": false,
+    "formulas": {
+      "cohort_backoff": "action type + borough when n>=20; otherwise action type citywide, borough all-actions, then citywide",
+      "duration": "calendar days from certified_referred to approval_date (or the project completion/milestone date for a modified or disapproved action set); spans over 730 days are excluded",
+      "typical_range": "nearest-rank empirical p25-p75 duration, divided by 30.4375 days per month",
+      "timing_window": "nearest-rank empirical p10/p50/p90 duration added to the project's certification date",
+      "outcome_rate": "outcome count divided by approved + modified + disapproved projects in the selected cohort"
+    }
+  },
+  "backtest": {
+    "metric": "prediction_calibration",
+    "version": "prediction_calibration_v1",
+    "domain": "land",
+    "model_name": "zap_disposition_duration",
+    "model_version": "1.0.0",
+    "split_date": "2024-01-01",
+    "grace_days": 0,
+    "train_window": {
+      "from": "2016-08-08",
+      "to": "2023-12-31"
+    },
+    "prediction_count": 63,
+    "resolved_backtest_predictions": 63,
+    "resolution_rate": 1,
+    "resolution_counts": {
+      "resolved_hit": 49,
+      "resolved_miss": 14,
+      "open": 0
+    },
+    "timing_prediction_count": 63,
+    "timing_realized_count": 63,
+    "timing_resolution_hits": 49,
+    "interval_nominal": 0.8,
+    "interval_coverage": 0.7778,
+    "interval_coverage_hits": 49,
+    "interval_coverage_count": 63,
+    "median_absolute_error_p50_days": 35,
+    "occurrence_prediction_count": 0,
+    "occurrence_resolved_count": 0,
+    "occurrence_calibration": [
+      {
+        "quintile": 1,
+        "probability_min": 0,
+        "probability_max": 0.2,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 2,
+        "probability_min": 0.2,
+        "probability_max": 0.4,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 3,
+        "probability_min": 0.4,
+        "probability_max": 0.6,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 4,
+        "probability_min": 0.6,
+        "probability_max": 0.8,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 5,
+        "probability_min": 0.8,
+        "probability_max": 1,
+        "upper_inclusive": true,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      }
+    ],
+    "occurrence_quintiles_monotone": false,
+    "ship_bar": {
+      "status": "pass",
+      "checks": {
+        "minimum_resolved": true,
+        "interval_coverage": true,
+        "occurrence_quintiles_monotone": true
+      },
+      "thresholds": {
+        "minimum_resolved": 50,
+        "interval_nominal": 0.8,
+        "interval_tolerance": 0.1,
+        "occurrence_quintiles_monotone": true
+      }
+    }
+  }
+}

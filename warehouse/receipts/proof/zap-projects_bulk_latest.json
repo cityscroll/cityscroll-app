@@ -7,12 +7,6 @@
     "single_job_lock": true,
     "taskpolicy_or_nice_wrap": true
   },
-  "data_provenance": {
-    "export_url": "https://data.cityofnewyork.us/api/views/hgx4-8ukb/rows.csv?accessType=DOWNLOAD",
-    "raw_sha256_basis": "sha256 of full rows.csv download",
-    "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-02)",
-    "source": "NYC Open Data Socrata dataset hgx4-8ukb (ZAP Project Data)"
-  },
   "dataset_id": "zap-projects",
   "headroom": {
     "constrained": false,
@@ -36,7 +30,7 @@
     "status": "ok"
   },
   "limit": null,
-  "observed_at": "2026-08-02T10:16:58Z",
+  "observed_at": "2026-08-03T05:05:03Z",
   "parquet": {
     "bytes": 1884056,
     "column_map_applied": true,
@@ -79,7 +73,7 @@
       "dcp_visibility",
       "snapshot_date"
     ],
-    "parquet_path": "warehouse/parquet/zap-projects/snapshot_date=2026-08-02/part-000.parquet",
+    "parquet_path": "warehouse/parquet/zap-projects/snapshot_date=2026-08-03/part-000.parquet",
     "row_count": 32931,
     "threads": 1
   },
@@ -87,15 +81,76 @@
   "raw": {
     "bytes": 9182677,
     "column_map_entries": 35,
-    "column_map_path": "warehouse/raw/zap-projects/snapshot_date=2026-08-02/column_map.json",
+    "column_map_path": "warehouse/raw/zap-projects/snapshot_date=2026-08-03/column_map.json",
     "content_type": "text/csv; charset=utf-8",
-    "elapsed_s": 3.91,
+    "elapsed_s": 2.51,
     "http_status": 200,
     "last_modified": "Tue, 26 May 2026 16:35:56 GMT",
     "mode": "soda_bulk",
-    "path": "warehouse/raw/zap-projects/snapshot_date=2026-08-02/hgx4-8ukb_bulk.csv",
-    "row_count": 32972,
+    "path": "warehouse/raw/zap-projects/snapshot_date=2026-08-03/hgx4-8ukb_bulk.csv",
+    "row_count": 32931,
     "sha256": "93014bddd92b28b239f9a1639aaf2b25eb907f076fc30a12432aa9c7cbce851c",
+    "snapshot_profile": {
+      "certification_to_final_date_pairs": 29589,
+      "date_fields": {
+        "app_filed_date": {
+          "count": 1409,
+          "max": "2026-04-20",
+          "min": "2017-08-01"
+        },
+        "approval_date": {
+          "count": 929,
+          "max": "2026-04-16",
+          "min": "2018-02-23"
+        },
+        "certified_referred": {
+          "count": 32017,
+          "max": "2026-04-20",
+          "min": "1970-04-21"
+        },
+        "completed_date": {
+          "count": 29882,
+          "max": "2026-04-22",
+          "min": "1976-07-19"
+        },
+        "current_envmilestone_date": {
+          "count": 483,
+          "max": "2026-04-24",
+          "min": "2017-04-08"
+        },
+        "current_milestone_date": {
+          "count": 2069,
+          "max": "2026-04-24",
+          "min": "2014-04-23"
+        },
+        "noticed_date": {
+          "count": 456,
+          "max": "2026-04-10",
+          "min": "2020-08-14"
+        }
+      },
+      "milestone_date_max": "2026-04-24",
+      "milestone_date_min": "2014-04-23",
+      "profile": "zap_milestone_status_dates_v1",
+      "project_status_counts": {
+        "Active": 263,
+        "Complete": 28342,
+        "On-Hold": 71,
+        "Record Closed": 3,
+        "Terminated": 1677,
+        "Terminated-Applicant Unresponsive": 59,
+        "Withdrawn-Other": 2516
+      },
+      "public_status_counts": {
+        "Completed": 32700,
+        "Filed": 137,
+        "In Public Review": 55,
+        "Noticed": 38
+      },
+      "row_count": 32931,
+      "status_date_max": "2026-04-24",
+      "status_date_min": "1970-04-21"
+    },
     "url": "https://data.cityofnewyork.us/api/views/hgx4-8ukb/rows.csv?accessType=DOWNLOAD"
   },
   "register": {
@@ -138,15 +193,75 @@
       "dcp_visibility",
       "snapshot_date"
     ],
-    "parquet_glob": "warehouse/parquet/zap-projects/snapshot_date=2026-08-02/*.parquet",
+    "parquet_glob": "warehouse/parquet/zap-projects/snapshot_date=2026-08-03/*.parquet",
     "row_count": 32931,
     "table": "zap_projects"
   },
   "schema_version": 1,
-  "snapshot_date": "2026-08-02",
+  "snapshot_date": "2026-08-03",
+  "snapshot_profile": {
+    "certification_to_final_date_pairs": 29589,
+    "date_fields": {
+      "app_filed_date": {
+        "count": 1409,
+        "max": "2026-04-20",
+        "min": "2017-08-01"
+      },
+      "approval_date": {
+        "count": 929,
+        "max": "2026-04-16",
+        "min": "2018-02-23"
+      },
+      "certified_referred": {
+        "count": 32017,
+        "max": "2026-04-20",
+        "min": "1970-04-21"
+      },
+      "completed_date": {
+        "count": 29882,
+        "max": "2026-04-22",
+        "min": "1976-07-19"
+      },
+      "current_envmilestone_date": {
+        "count": 483,
+        "max": "2026-04-24",
+        "min": "2017-04-08"
+      },
+      "current_milestone_date": {
+        "count": 2069,
+        "max": "2026-04-24",
+        "min": "2014-04-23"
+      },
+      "noticed_date": {
+        "count": 456,
+        "max": "2026-04-10",
+        "min": "2020-08-14"
+      }
+    },
+    "milestone_date_max": "2026-04-24",
+    "milestone_date_min": "2014-04-23",
+    "profile": "zap_milestone_status_dates_v1",
+    "project_status_counts": {
+      "Active": 263,
+      "Complete": 28342,
+      "On-Hold": 71,
+      "Record Closed": 3,
+      "Terminated": 1677,
+      "Terminated-Applicant Unresponsive": 59,
+      "Withdrawn-Other": 2516
+    },
+    "public_status_counts": {
+      "Completed": 32700,
+      "Filed": 137,
+      "In Public Review": 55,
+      "Noticed": 38
+    },
+    "row_count": 32931,
+    "status_date_max": "2026-04-24",
+    "status_date_min": "1970-04-21"
+  },
   "socrata_dataset_id": "hgx4-8ukb",
   "source_contract_id": "zap-projects",
   "table_name": "zap_projects",
-  "verify_query": "warehouse/sql/examples/zap_bulk_verify.sql",
   "warehouse_root": "warehouse"
 }
