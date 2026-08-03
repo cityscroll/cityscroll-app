@@ -186,6 +186,8 @@
     export_csv:       "Exporter en CSV",
     export_xlsx:      "Exporter vers Excel (.xlsx)",
     print_save_pdf:   "Imprimer / Enregistrer en PDF",
+    share_export_btn: "Share / export",
+
     print_header:     "CityScroll · {link} · Au {date}",
     csv_address: "Adresse",
     csv_applicant: "Demandeur",

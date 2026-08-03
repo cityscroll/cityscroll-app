@@ -179,6 +179,8 @@
     export_csv: "Экспорт в CSV",
     export_xlsx: "Экспорт в Excel (.xlsx)",
     print_save_pdf: "Печать / Сохранить как PDF",
+    share_export_btn: "Share / export",
+
     print_header: "CityScroll · {link} · По состоянию на {date}",
     csv_address: "Адрес",
     csv_applicant: "Заявитель",

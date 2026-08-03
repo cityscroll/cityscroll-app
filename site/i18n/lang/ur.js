@@ -181,6 +181,8 @@
     export_csv: "CSV ایکسپورٹ کریں",
     export_xlsx: "Excel (.xlsx) ایکسپورٹ کریں",
     print_save_pdf: "پرنٹ / PDF کے طور پر محفوظ کریں",
+    share_export_btn: "Share / export",
+
     print_header: "CityScroll · {link} · {date} تک",
     csv_address: "پتہ",
     csv_applicant: "درخواست دہندہ",

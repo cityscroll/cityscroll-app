@@ -1308,7 +1308,7 @@
               <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
             </span>
             <details class="utility-overflow export-overflow" id="money-export-overflow">
-              <summary class="act mini" data-i18n="share_export_btn">${t("share_export_btn")}</summary>
+              <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
               <div class="utility-overflow-content">
                 <button class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
                 <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -1503,7 +1503,7 @@
               <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
             </span>
             <details class="utility-overflow export-overflow" id="land-export-overflow">
-              <summary class="act mini" data-i18n="share_export_btn">${t("share_export_btn")}</summary>
+              <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
               <div class="utility-overflow-content">
                 <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
                 <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -1559,7 +1559,7 @@
         <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
       </span>
       <details class="utility-overflow export-overflow" id="property-export-overflow">
-        <summary class="act mini" data-i18n="share_export_btn">${t("share_export_btn")}</summary>
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
           <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -1598,7 +1598,7 @@
         <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
       </span>
       <details class="utility-overflow export-overflow" id="rules-export-overflow" hidden>
-        <summary class="act mini" data-i18n="share_export_btn">${t("share_export_btn")}</summary>
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
           <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -1644,7 +1644,7 @@
         <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
       </span>
       <details class="utility-overflow export-overflow" id="meetings-export-overflow">
-        <summary class="act mini" data-i18n="share_export_btn">${t("share_export_btn")}</summary>
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
           <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -14619,10 +14619,8 @@ async function showNotice(id, watch){
       <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
-        ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
         <details class="utility-overflow">
-          <summary class="act" data-i18n="share_export_btn">${t("share_export_btn")}</summary>
+          <summary class="act">${t("share_export_btn")}</summary>
           <div class="utility-overflow-content">
             ${qrButtonHTML("nqr","act")}
             <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — The City Record, searchable.")}">${t("notice_email_btn")}</a>
@@ -14630,6 +14628,8 @@ async function showNotice(id, watch){
             <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
           </div>
         </details>
+        ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
+        <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>
       ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div class="xlate" id="nxlate"></div>

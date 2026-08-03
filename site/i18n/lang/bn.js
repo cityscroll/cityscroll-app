@@ -179,6 +179,8 @@
     export_csv: "CSV রপ্তানি করুন",
     export_xlsx: "Excel (.xlsx) রপ্তানি করুন",
     print_save_pdf: "প্রিন্ট / PDF হিসেবে সংরক্ষণ করুন",
+    share_export_btn: "Share / export",
+
     print_header: "CityScroll · {link} · {date} তারিখ অনুযায়ী",
     csv_address: "ঠিকানা",
     csv_applicant: "আবেদনকারী",
