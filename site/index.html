@@ -689,6 +689,11 @@
   .land-phase-dates{margin:6px 0 0;padding:0;list-style:none;display:none;font:12px/1.55 ui-monospace,SFMono-Regular,monospace;color:var(--muted);columns:2;gap:0 16px}
   .land-phase-dates.show{display:block}
   .land-phase-toggle{margin-top:6px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .land-base-rate-register{border:1px dashed color-mix(in srgb,var(--blue) 55%,var(--rule));border-radius:10px;background:color-mix(in srgb,#fff 82%,#e9f0f4);padding:12px 14px;margin:12px 0}
+  .land-base-rate-register .base-rate-kicker{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:0 0 6px}
+  .land-base-rate-register p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:0}
+  .land-base-rate-register .base-rate-outcomes,.land-base-rate-register .base-rate-authority{font-size:12px;color:var(--muted);margin-top:6px}
+  .land-base-rate-register a{font-weight:600}
   .land-spine-how{display:block;margin-top:10px}
   .land-spine-how > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
   .land-spine-how-body{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:8px}
@@ -5669,6 +5674,31 @@ function landStatutoryDeadlineHTML(phaseId, clock, phaseState){
     : "";
   return `<div class="note land-statutory-deadline" data-land-statutory-phase="${escUiHtml(phaseId)}" data-land-statutory-due="${escUiHtml(row.due_date)}" data-land-statutory-status="${escUiHtml(clock.status||"open")}">${deadline}${actionHint}${withdrawn} <span class="tag renewal">${t("cadence_estimate_tag")}</span></div>`;
 }
+function landZoningStatisticsHTML(record){
+  const stats=record?.zoning_statistics;
+  if(!stats || !stats.n || stats.outcome_rates?.approved==null) return "";
+  const code=String(stats.action_type||"").toLowerCase();
+  const actionKey=code?`zapact_${code}`:"";
+  const translated=actionKey?t(actionKey):"";
+  const actionLabel=translated&&translated!==actionKey?translated:t("land_zoning_base_rate_generic_type");
+  const year=String(stats.train_from||"").slice(0,4)||"—";
+  const approved=Math.round(Number(stats.outcome_rates.approved||0)*100);
+  const modified=Math.round(Number(stats.outcome_rates.modified||0)*100);
+  const disapproved=Math.round(Number(stats.outcome_rates.disapproved||0)*100);
+  return `<aside class="land-base-rate-register" data-zoning-base-rate="1" aria-label="${escUiHtml(t("land_zoning_base_rate_heading"))}">
+    <div class="base-rate-kicker">${t("land_zoning_base_rate_heading")}</div>
+    <p>${t("land_zoning_base_rate_html",{
+      n:String(stats.n),type:escUiHtml(actionLabel),year,approved:String(approved),
+      low:String(stats.typical_months?.low??"—"),high:String(stats.typical_months?.high??"—")
+    })}</p>
+    <p class="base-rate-outcomes">${t("land_zoning_base_rate_outcomes",{
+      approved:String(approved),modified:String(modified),disapproved:String(disapproved)
+    })}</p>
+    <p class="base-rate-authority">${t("land_zoning_base_rate_authority_html",{
+      link:`<a href="${escUiHtml(stats.formula_url||t("land_zoning_base_rate_formula_url"))}">${t("land_zoning_base_rate_formula_link")}</a>`
+    })}</p>
+  </aside>`;
+}
 function landPhaseSpineHTML(view, tools, record){
   if(!view) return "";
   const isPortalUrl=tools?.isProjectPortalUrl;
@@ -5748,7 +5778,8 @@ function landPhaseSpineHTML(view, tools, record){
   </details>`;
   const lagHTML=landSpineLagHTML(view.lag?.open_data_vs_portal || {});
   const gaps=landSpineGapsHTML(view.gaps);
-  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${panels}${how}${lagHTML}${gaps}`;
+  const baseRate=landZoningStatisticsHTML(record);
+  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${panels}${baseRate}${how}${lagHTML}${gaps}`;
 }
 /** Flat fallback if phase module fails to load — still dedupes project portal links. */
 function landSpineHTMLFlat(spine, record){

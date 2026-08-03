@@ -207,6 +207,18 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <h3 id="tax-lien-sale-predictions" data-i18n="about_h_tax_lien_formula">Tax lien sale progression</h3>
 <p class="src" data-i18n-html="about_p_tax_lien_formula_html">Method: <b>borough base rate plus the announced sale date</b>. For each 90-, 60-, 30-, or 10-day stage, the rate is the number of distinct cycle-and-BBL pairs that also appear on that cycle's final sale list, divided by all distinct cycle-and-BBL pairs at that stage. Training requires at least three earlier cycles. A cycle-based holdout runs through the public prediction scorecard. Below the bar, CityScroll shows cohort statistics and observed BBL status, not a property-specific probability. False-positive modes include payment, payment plans, exemptions, corrections, and cancellation of an entire sale cycle. The dataset cannot identify which reason removed a BBL. A final-list match means the <b>lien</b> appeared on the sale list. It does not mean the property was sold, foreclosed, or transferred.</p>
 
+<h2 id="zoning-base-rates">Zoning base rates</h2>
+<p class="src">The historical base rate on a land timeline uses the rematerialized
+<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener noreferrer">ZAP Project Data<span class="sr-only"> (opens in new tab)</span></a>
+and public ZAP project-action outcomes. It is an unconditioned base rate: applicant identity is never a cohort field.</p>
+<ul class="src" style="margin:8px 0;padding-left:20px">
+  <li><b>Cohort.</b> Start with action type + borough when at least 20 completed projects have both an outcome and usable duration. Otherwise back off to action type citywide, then all action types in the borough, then citywide.</li>
+  <li><b>Duration.</b> Calendar days from certification to final action. The displayed “typically” range is the nearest-rank empirical 25th–75th percentile divided by 30.4375 days per month. The prediction assertion uses the 10th/50th/90th percentiles. Spans over 730 days are excluded as stale date joins.</li>
+  <li><b>Outcome.</b> All approved project actions = approved. A mix of approved and non-approved terminal actions = modified. All disapproved actions = disapproved. Withdrawals and administrative terminations are excluded. Each percentage is its count divided by approved + modified + disapproved projects in the selected cohort.</li>
+  <li><b>Backtest.</b> Train on final actions before January 1, 2024, then score projects certified before that date whose final action came later. The current score is 63 resolved projects, 77.78% inside the nominal 80% interval, with a 35-day median absolute error. The published ship bar is at least 50 resolved predictions and interval coverage within 10 percentage points of 80%.</li>
+</ul>
+<p class="src"><b>Authority:</b> NYC Charter §197-c deadlines remain the act-by dates. The statistical line adds historical context. It never moves or replaces a statutory deadline.</p>
+
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
 <p class="src" data-i18n-html="about_email_us_html">Or email us: <a href="mailto:feedback@cityscroll.org">feedback@cityscroll.org</a></p>

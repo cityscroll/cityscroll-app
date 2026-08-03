@@ -145,6 +145,29 @@ Heavy work should prefer the **Mac Mini** overnight, or a capped local batch whe
 headroom is OK. Never launch parallel full City Record + payroll downloads on
 the MacBook.
 
+## ZAP milestone and disposition statistics
+
+The ZAP bulk receipt profiles milestone/status-date coverage used by the land
+prediction models. The full re-materialization must retain non-null min/max
+milestone dates and certification-to-final-action pair counts:
+
+```bash
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset zap-projects --bulk --ack-large --write-sample 25
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/zap_bulk_verify.sql
+node warehouse/scripts/fetch_zap_action_outcomes.mjs
+node tools/build_zoning_statistics.mjs
+node tools/build_zoning_statistics.mjs --check
+```
+
+The bounded action-outcome pass is resumable under the gitignored
+`warehouse/raw/zap-action-outcomes/` cache. Committed outputs are the site and
+Worker cohort twins plus
+`warehouse/receipts/proof/zap-zoning-statistics_latest.json`. The model uses an
+unconditioned action-type/borough cohort with an n>=20 back-off; applicant
+conditioning belongs in a separate model.
+
 ## Incremental / resumable pattern
 
 - Snapshots are **immutable**: `raw/<dataset>/snapshot_date=YYYY-MM-DD/…` and

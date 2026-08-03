@@ -113,10 +113,22 @@
       "bulk_class": "BULK",
       "default_limit": 50,
       "wh02_full_export": true,
+      "receipt_profile": "zap_milestone_status_dates_v1",
       "required_fields": [
-        "project_id"
+        "project_id",
+        "project_status",
+        "public_status",
+        "actions",
+        "borough",
+        "current_milestone_date",
+        "current_envmilestone_date",
+        "app_filed_date",
+        "noticed_date",
+        "certified_referred",
+        "approval_date",
+        "completed_date"
       ],
-      "notes": "WH-05 second bulk pack + fetchOpenDataRow materialization. ~33k rows."
+      "notes": "WH-05 second bulk pack + fetchOpenDataRow materialization. The bulk receipt profiles milestone/status-date coverage for zoning duration statistics. ~33k rows."
     },
     "zap-bbl": {
       "id": "zap-bbl",

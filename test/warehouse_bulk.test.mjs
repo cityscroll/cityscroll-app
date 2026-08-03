@@ -216,6 +216,69 @@ print("OK")
   });
 });
 
+describe("cs-pred-08 ZAP milestone receipt profile", () => {
+  it("profiles bulk display headers and status-date coverage", () => {
+    const r = spawnSync(
+      pyBin(),
+      [
+        "-c",
+        `
+import json
+import sys
+from pathlib import Path
+sys.path.insert(0, "warehouse/scripts")
+from socrata_fetch import _profile_date, zap_milestone_profile
+assert _profile_date("12/30/2025") == "2025-12-30"
+assert _profile_date("2026-04-24T00:00:00.000") == "2026-04-24"
+p = zap_milestone_profile(Path("warehouse/fixtures/zap-projects/sample.csv"))
+assert p["profile"] == "zap_milestone_status_dates_v1"
+assert p["row_count"] == 3
+assert p["milestone_date_min"]
+assert p["milestone_date_max"]
+assert p["date_fields"]["certified_referred"]["count"] == 2
+assert p["certification_to_final_date_pairs"] >= 1
+print(json.dumps(p, sort_keys=True))
+`,
+      ],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+    assert.equal(r.status, 0, r.stderr || r.stdout);
+    assert.match(r.stdout, /zap_milestone_status_dates_v1/);
+  });
+
+  it("requires the source columns used by duration and status models", () => {
+    const zap = getDataset("zap-projects");
+    assert.equal(zap.receipt_profile, "zap_milestone_status_dates_v1");
+    for (const field of [
+      "project_status",
+      "public_status",
+      "actions",
+      "borough",
+      "current_milestone_date",
+      "certified_referred",
+      "approval_date",
+      "completed_date",
+    ]) {
+      assert.ok(zap.required_fields.includes(field), field);
+    }
+  });
+
+  it("commits the full rematerialization receipt with milestone min/max dates", () => {
+    const proof = JSON.parse(readFileSync(
+      join(WAREHOUSE_DIR, "receipts", "proof", "zap-projects_bulk_latest.json"),
+      "utf8",
+    ));
+    assert.equal(proof.raw.mode, "soda_bulk");
+    assert.equal(proof.register.row_count, 32_931);
+    assert.equal(proof.snapshot_profile.profile, "zap_milestone_status_dates_v1");
+    assert.equal(proof.snapshot_profile.row_count, 32_931);
+    assert.match(proof.snapshot_profile.milestone_date_min, /^\d{4}-\d{2}-\d{2}$/);
+    assert.match(proof.snapshot_profile.milestone_date_max, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(proof.snapshot_profile.certification_to_final_date_pairs > 20_000);
+    assert.ok(proof.snapshot_profile.date_fields.certified_referred.count > 30_000);
+  });
+});
+
 describe("WH-02 load manifest shape (when present)", () => {
   it("manifest documents loaded vs remaining without embedding bulk bytes", () => {
     const path = join(WAREHOUSE_DIR, "manifests", "wh02_load_manifest.json");
@@ -248,6 +311,9 @@ describe("WH-02 load manifest shape (when present)", () => {
       assert.ok(zap, "manifest should list zap-projects after bulk proof exists");
       assert.equal(zap.socrata_dataset_id, "hgx4-8ukb");
       assert.ok(Number(zap.row_count) > 1000);
+      assert.equal(zap.snapshot_profile.profile, "zap_milestone_status_dates_v1");
+      assert.ok(zap.snapshot_profile.milestone_date_min);
+      assert.ok(zap.snapshot_profile.milestone_date_max);
       assert.ok(!m.remaining_primary_queue.includes("zap-projects"));
     }
   });

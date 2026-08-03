@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "feature": "zoning-duration-outcome-base-rates",
+  "project_id": "FIXTURED0001",
+  "cohort_id": "action-type-citywide:zm:citywide",
+  "files": [
+    {
+      "name": "land-timeline-before-1440.png",
+      "bytes": 174104,
+      "sha256": "607b493b1e1d705bf2d8a51a0b2abed6349855f10401c7776f358a63f0f525c9"
+    },
+    {
+      "name": "land-timeline-after-1440.png",
+      "bytes": 205166,
+      "sha256": "ea4715d30bb813c7dfc6d20c3a7061134dbaf548682a4a8debb3b48bec3b9cb2"
+    },
+    {
+      "name": "land-timeline-before-390.png",
+      "bytes": 169307,
+      "sha256": "525357657711cdb9537189bf40090c19f9b23ebf4265863e5d8ed69fa857f338"
+    },
+    {
+      "name": "land-timeline-after-390.png",
+      "bytes": 196352,
+      "sha256": "a722f6599be28d3abb6b111f30dba7417f4bb269d4178cd4674ace5153c19830"
+    }
+  ]
+}

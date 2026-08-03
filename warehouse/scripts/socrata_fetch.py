@@ -16,6 +16,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+import re
+from datetime import datetime
 
 USER_AGENT = "CityScrollWarehouse/0.2 (+https://cityscroll.org; WH-02 bulk pack)"
 
@@ -113,6 +115,111 @@ def _page_profile(path: Path) -> dict:
         "start_date_min": min_date,
         "start_date_max": max_date,
         "section_counts": section_counts,
+    }
+
+
+ZAP_STATUS_DATE_FIELDS = (
+    "current_milestone_date",
+    "current_envmilestone_date",
+    "app_filed_date",
+    "noticed_date",
+    "certified_referred",
+    "approval_date",
+    "completed_date",
+)
+
+
+def _normalized_header(value: str) -> str:
+    """Normalize bulk display headers and SODA field names to one key."""
+    return re.sub(r"[^a-z0-9]+", "_", str(value or "").strip().lower()).strip("_")
+
+
+def _profile_date(value: str) -> str | None:
+    """Normalize Socrata bulk display dates (MM/DD/YYYY) and SODA ISO dates."""
+    raw = str(value or "").strip()
+    if not raw:
+        return None
+    iso = re.match(r"^(\d{4}-\d{2}-\d{2})", raw)
+    if iso:
+        try:
+            return datetime.strptime(iso.group(1), "%Y-%m-%d").date().isoformat()
+        except ValueError:
+            return None
+    for pattern in ("%m/%d/%Y", "%m/%d/%Y %I:%M:%S %p"):
+        try:
+            return datetime.strptime(raw, pattern).date().isoformat()
+        except ValueError:
+            continue
+    return None
+
+
+def zap_milestone_profile(path: Path) -> dict:
+    """Measure ZAP milestone/status-date coverage for the committed bulk receipt."""
+    field_coverage = {
+        field: {"count": 0, "min": None, "max": None}
+        for field in ZAP_STATUS_DATE_FIELDS
+    }
+    public_status_counts: dict[str, int] = dict()
+    project_status_counts: dict[str, int] = dict()
+    row_count = 0
+    duration_pair_count = 0
+
+    with path.open("r", encoding="utf-8", errors="replace", newline="") as f:
+        reader = csv.DictReader(f)
+        headers = {
+            _normalized_header(header): header
+            for header in (reader.fieldnames or [])
+        }
+        for row in reader:
+            row_count += 1
+            values: dict[str, str] = dict()
+            for field in ZAP_STATUS_DATE_FIELDS:
+                raw = (row.get(headers.get(field, "")) or "").strip()
+                normalized = _profile_date(raw)
+                values[field] = normalized or ""
+                if not normalized:
+                    continue
+                profile = field_coverage[field]
+                profile["count"] += 1
+                profile["min"] = normalized if profile["min"] is None or normalized < profile["min"] else profile["min"]
+                profile["max"] = normalized if profile["max"] is None or normalized > profile["max"] else profile["max"]
+
+            if values["certified_referred"] and (
+                values["approval_date"] or values["completed_date"]
+            ):
+                duration_pair_count += 1
+
+            for field, counts in (
+                ("public_status", public_status_counts),
+                ("project_status", project_status_counts),
+            ):
+                value = (row.get(headers.get(field, "")) or "").strip()
+                if value:
+                    counts[value] = counts.get(value, 0) + 1
+
+    milestone_values = [
+        field_coverage[field][bound]
+        for field in ("current_milestone_date", "current_envmilestone_date")
+        for bound in ("min", "max")
+        if field_coverage[field][bound]
+    ]
+    all_date_values = [
+        field_coverage[field][bound]
+        for field in ZAP_STATUS_DATE_FIELDS
+        for bound in ("min", "max")
+        if field_coverage[field][bound]
+    ]
+    return {
+        "profile": "zap_milestone_status_dates_v1",
+        "row_count": row_count,
+        "milestone_date_min": min(milestone_values) if milestone_values else None,
+        "milestone_date_max": max(milestone_values) if milestone_values else None,
+        "status_date_min": min(all_date_values) if all_date_values else None,
+        "status_date_max": max(all_date_values) if all_date_values else None,
+        "certification_to_final_date_pairs": duration_pair_count,
+        "date_fields": field_coverage,
+        "public_status_counts": dict(sorted(public_status_counts.items())),
+        "project_status_counts": dict(sorted(project_status_counts.items())),
     }
 
 
