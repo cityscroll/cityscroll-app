@@ -64,6 +64,7 @@ const SELECT = "request_id,start_date,agency_name,type_of_notice_description,cat
 // query needs it, instead of a repeated literal (test/contract/money_honesty_cap.test.mjs pins
 // both this file's uses and about.html's/i18n.js's copy against it).
 const MONEY_HONESTY_CAP = 10000000000;
+const EXPORT_BAND_THRESHOLD = 25;
 
 const $ = s => document.querySelector(s);
 const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
@@ -114,6 +115,14 @@ function listSkeleton(n){
   let s = '<div class="empty skel" aria-hidden="true"><span class="loading"></span>';
   for(let i=0;i<(n||4);i++) s += '<span class="skl"><i></i><i></i></span>';
   return s + '</div>';
+}
+function setExportBandVisibility(count, bandId, overflowId){
+  const band = $("#" + bandId);
+  const overflow = $("#" + overflowId);
+  if(!band || !overflow) return;
+  const value = Number(count);
+  band.hidden = Number.isFinite(value) && value <= EXPORT_BAND_THRESHOLD;
+  overflow.hidden = !Number.isFinite(value) || value === 0;
 }
 function busyList(sel, n){
   const el = $(sel); if(!el) return;
@@ -323,6 +332,7 @@ globalThis.PAYFY = PAYFY;
 globalThis.RECENT_DAYS = RECENT_DAYS;
 globalThis.REQ_URL = REQ_URL;
 globalThis.ROLLING_DUE_YEAR = ROLLING_DUE_YEAR;
+globalThis.EXPORT_BAND_THRESHOLD = EXPORT_BAND_THRESHOLD;
 globalThis.SELECT = SELECT;
 globalThis.SEQ = SEQ;
 globalThis.SLOW_MS = SLOW_MS;
@@ -356,5 +366,6 @@ globalThis.syncTabAria = syncTabAria;
 globalThis.todayISO = todayISO;
 globalThis.unbusy = unbusy;
 globalThis.usablePin = usablePin;
+globalThis.setExportBandVisibility = setExportBandVisibility;
 globalThis.workerFetch = workerFetch;
 Object.defineProperty(globalThis, "apiBase", { configurable: true, get: () => apiBase, set: value => { apiBase = value; } });

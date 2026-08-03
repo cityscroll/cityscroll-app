@@ -851,6 +851,7 @@ async function pSearchRoles(kw, stale){
   if(stale && stale()) return;
   competitiveSet = new Set(comp.map(c=>(c.list_title_desc||"").toUpperCase().trim()));
   pRows = pay;
+  setExportBandVisibility(pRows.length, "people-export-band", "people-export-overflow");
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
   announce(t("matching_roles_announce",{n: pay.length===40 ? "40+" : pay.length}));
   if(!pay.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_titles_match") + '</div>'; return; }
@@ -929,6 +930,7 @@ async function pSearchPeople(kw, stale){
     people.get(key).actions.push({date:r.start_date, reason:p.reason||cleanText(r.short_title), salary:p.salary, code:p.code, req:r.request_id, text:cleanText(r.short_title)+" "+matchText(r)});
   });
   pRows = [...people.values()].sort((a,b)=>b.actions.length-a.actions.length);
+  setExportBandVisibility(pRows.length, "people-export-band", "people-export-overflow");
   $("#prescount").textContent = pRows.length;
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   const terms = [kw];
