@@ -358,13 +358,17 @@ BATCHABLE / hybrid-default surfaces paint from prebuilt payloads; parameterized 
 
 | Surface | Replaces | Payload / path | Hybrid |
 |---|---|---|---|
-| Data page charts | 5 live SODA aggregates on `data.html` | `site/data/data_page_charts.json` | Snapshot first, then live SODA refresh |
+| Data page charts | 5 live SODA aggregates on legacy `data.html` | `site/data/data_page_charts.json` | Snapshot first, then live SODA refresh (`data.html` now redirects; artifact retained for rebuild/CI) |
 | Land default list | SODA `hgx4-8ukb` Active ULURP 40 on `#land` open | `site/data/land_default_ulurp.json` | Snapshot first; filter/keyword/geo still SODA; live refresh without re-autoSelect |
 | Property first paint | Full 1.2MB `/property-locations` body dumps | Slim list default; `?full=1` keeps complete KV view | Already daily edge materialization |
+| Money default open RFPs | Live SODA open solicitations 40 on `#` / Money open | `site/data/money_default_open.json` | Snapshot first (drop past-due rows client-side); filter/keyword/method/award stay live |
+| Money agency dropdown | Live SODA agency group-by (~2s cold) | `site/data/money_procurement_agencies.json` | Snapshot first; hybrid SODA refresh |
+| Staffing default hires | Live SODA last-80 APPOINTED | `site/data/staffing_default_hires.json` | Snapshot first; live SODA refresh; keyword/payroll stay live |
+| Public `/stats` | Cold multi-KV fan-out on `stats.html` | Daily cron `prewarmStats` → edge cache | Not build-time city data — product counters; warm path only |
 
 Rebuild snapshots: `node tools/build_batch_precompute_snapshots.mjs` (pure lib:
 `tools/lib/batch_precompute_snapshots.mjs`). Property slim: `worker/src/lib/property_list.mjs`.
-Verify: `node --test test/batch_precompute_snapshots.test.mjs worker/test/property.test.mjs`.
+Verify: `node --test test/batch_precompute_snapshots.test.mjs worker/test/property.test.mjs worker/test/stats.test.mjs`.
 Do **not** batch GENUINELY-LIVE paths (session/pins, NL, arbitrary money filters, geocode).
 
 ## PASSPort Public machine path

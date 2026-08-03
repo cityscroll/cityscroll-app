@@ -101,23 +101,54 @@ function renderStaffingFeed(){
     ? items.map(staffingHireRowHTML).join("")
     : `<div class="career-empty">${t("staffing_no_results")}</div>`;
 }
+// Commit-time default APPOINTED strip (wave-2 batch precompute). Keyword search / payroll stay live.
+const STAFFING_HIRES_SNAPSHOT_URL="data/staffing_default_hires.json";
+let staffingHiresSnapshotPromise=null;
+function loadStaffingHiresSnapshot(){
+  if(!staffingHiresSnapshotPromise){
+    staffingHiresSnapshotPromise=fetch(STAFFING_HIRES_SNAPSHOT_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return staffingHiresSnapshotPromise;
+}
 async function loadStaffingFeed(){
   if(staffingLoaded){ renderStaffingFeed(); return staffingNotices; }
   if(staffingLoadPromise) return staffingLoadPromise;
-  staffingLoadPromise=Promise.all([
-    soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
-      "$where":"section_name='Changes in Personnel' AND short_title='APPOINTED'",
-      "$order":"start_date DESC, request_id DESC","$limit":"80"}),
-    fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
-  ]).then(([rows,crosswalk])=>{
-    staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
-    staffingLoaded=true;
-    renderStaffingFeed();
-    return staffingNotices;
-  }).catch(()=>{
-    $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
-    return [];
-  });
+  staffingLoadPromise=(async()=>{
+    let paintedFromSnapshot=false;
+    try{
+      const [snap, crosswalk]=await Promise.all([
+        loadStaffingHiresSnapshot(),
+        fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
+      ]);
+      const notices=snap&&Array.isArray(snap.notices)?snap.notices:[];
+      if(notices.length){
+        staffingNotices=CrolStaffing.hireNotices(notices,crosswalk);
+        staffingLoaded=true;
+        renderStaffingFeed();
+        paintedFromSnapshot=true;
+      }
+    }catch(e){}
+    try{
+      const [rows, crosswalk]=await Promise.all([
+        soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
+          "$where":"section_name='Changes in Personnel' AND short_title='APPOINTED'",
+          "$order":"start_date DESC, request_id DESC","$limit":"80"}),
+        fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
+      ]);
+      staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
+      staffingLoaded=true;
+      renderStaffingFeed();
+      return staffingNotices;
+    }catch(e){
+      if(!paintedFromSnapshot){
+        $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
+        return [];
+      }
+      return staffingNotices;
+    }
+  })();
   return staffingLoadPromise;
 }
 function careerToday(){ return new Date().toISOString().slice(0,10); }
@@ -1013,6 +1044,7 @@ globalThis.examStageLabel = examStageLabel;
 globalThis.examStageSourceLabel = examStageSourceLabel;
 globalThis.loadCareerGuide = loadCareerGuide;
 globalThis.loadStaffingFeed = loadStaffingFeed;
+globalThis.loadStaffingHiresSnapshot = loadStaffingHiresSnapshot;
 globalThis.pExample = pExample;
 globalThis.pSearch = pSearch;
 globalThis.pSearchPeople = pSearchPeople;

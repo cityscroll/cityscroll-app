@@ -11,7 +11,12 @@ import { test } from "node:test";
 import {
   buildDataPageSnapshot,
   buildLandDefaultSnapshot,
+  buildMoneyAgenciesSnapshot,
+  buildMoneyDefaultOpenSnapshot,
+  buildStaffingHiresSnapshot,
+  filterStillOpenNotices,
   isDefaultLandSearch,
+  isDefaultMoneySearch,
   normalizeDataPageRows,
   yearAgoISO,
 } from "../tools/lib/batch_precompute_snapshots.mjs";
@@ -101,6 +106,69 @@ test("committed data page and land default snapshots exist and parse", () => {
   assert.ok(land.projects[0].project_id);
 });
 
+test("buildMoneyDefaultOpenSnapshot keeps notice order and due_date floor", () => {
+  const rows = JSON.parse(readFileSync(join(FIXTURE, "money_default_open_raw.json"), "utf8"));
+  const snap = buildMoneyDefaultOpenSnapshot(rows, { now: new Date("2026-08-03T12:00:00Z") });
+  assert.equal(snap.delivery_tier, "inline-at-build");
+  assert.equal(snap.open_as_of, "2026-08-03");
+  assert.equal(snap.count, rows.length);
+  assert.equal(snap.notices[0].request_id, rows[0].request_id);
+  assert.match(snap.query.$where, /Solicitation/);
+  assert.match(snap.query.$where, /due_date/);
+});
+
+test("isDefaultMoneySearch is only the unfiltered open-RFP tab", () => {
+  assert.equal(isDefaultMoneySearch({ mode: "open" }), true);
+  assert.equal(isDefaultMoneySearch({ mode: "open", sort: "deadline" }), true);
+  assert.equal(isDefaultMoneySearch({ mode: "award" }), false);
+  assert.equal(isDefaultMoneySearch({ mode: "open", agency: "Parks" }), false);
+  assert.equal(isDefaultMoneySearch({ mode: "open", kw: "pest" }), false);
+  assert.equal(isDefaultMoneySearch({ mode: "open", methodSel: "Competitive Sealed Bid" }), false);
+  assert.equal(isDefaultMoneySearch({ mode: "open", closingWeek: true }), false);
+  assert.equal(isDefaultMoneySearch({ mode: "open", sort: "amount" }), false);
+  assert.equal(isDefaultMoneySearch({ mode: "open", nlResolved: { category: "Services" } }), false);
+});
+
+test("filterStillOpenNotices drops past-due snapshot rows", () => {
+  const rows = [
+    { request_id: "a", due_date: "2026-08-01T12:00:00.000" },
+    { request_id: "b", due_date: "2026-08-10T12:00:00.000" },
+  ];
+  const open = filterStillOpenNotices(rows, new Date("2026-08-03T12:00:00Z"));
+  assert.deepEqual(open.map((r) => r.request_id), ["b"]);
+});
+
+test("buildMoneyAgenciesSnapshot unique-sorts agency names", () => {
+  const rows = JSON.parse(readFileSync(join(FIXTURE, "money_procurement_agencies_raw.json"), "utf8"));
+  const snap = buildMoneyAgenciesSnapshot(rows, { now: new Date("2026-08-03T12:00:00Z") });
+  assert.equal(snap.delivery_tier, "inline-at-build");
+  assert.ok(snap.agencies.length >= 1);
+  assert.equal(snap.count, snap.agencies.length);
+  const sorted = [...snap.agencies].sort((a, b) => a.localeCompare(b));
+  assert.deepEqual(snap.agencies, sorted);
+});
+
+test("buildStaffingHiresSnapshot caps APPOINTED rows", () => {
+  const rows = JSON.parse(readFileSync(join(FIXTURE, "staffing_default_hires_raw.json"), "utf8"));
+  const snap = buildStaffingHiresSnapshot(rows, { now: new Date("2026-08-03T12:00:00Z") });
+  assert.equal(snap.delivery_tier, "inline-at-build");
+  assert.equal(snap.count, rows.length);
+  assert.equal(snap.notices[0].short_title, "APPOINTED");
+  assert.match(snap.query.$where, /Changes in Personnel/);
+});
+
+test("committed money and staffing default snapshots exist and parse", () => {
+  const money = JSON.parse(readFileSync(join(ROOT, "site/data/money_default_open.json"), "utf8"));
+  const agencies = JSON.parse(readFileSync(join(ROOT, "site/data/money_procurement_agencies.json"), "utf8"));
+  const hires = JSON.parse(readFileSync(join(ROOT, "site/data/staffing_default_hires.json"), "utf8"));
+  assert.ok(money.notices.length >= 1);
+  assert.ok(money.notices[0].request_id);
+  assert.ok(money.notices[0].due_date);
+  assert.ok(agencies.agencies.length >= 1);
+  assert.ok(hires.notices.length >= 1);
+  assert.equal(hires.notices[0].short_title, "APPOINTED");
+});
+
 test("data.html forwards to public successor paths", () => {
   const src = readFileSync(join(ROOT, "site/data.html"), "utf8");
   assert.match(src, /data has moved/i);
@@ -114,4 +182,14 @@ test("index.html uses land default snapshot on Active ULURP first paint", () => 
   assert.match(src, /data\/land_default_ulurp\.json/);
   assert.match(src, /loadLandDefaultSnapshot/);
   assert.match(src, /isDefaultLandSearchState/);
+});
+
+test("index modules use money and staffing default snapshots on first paint", () => {
+  const src = SITE_SOURCE;
+  assert.match(src, /data\/money_default_open\.json/);
+  assert.match(src, /loadMoneyDefaultSnapshot/);
+  assert.match(src, /isDefaultMoneySearchState/);
+  assert.match(src, /data\/money_procurement_agencies\.json/);
+  assert.match(src, /data\/staffing_default_hires\.json/);
+  assert.match(src, /loadStaffingHiresSnapshot/);
 });

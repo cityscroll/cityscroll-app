@@ -116,18 +116,46 @@ function growthFromHistories(nlHist = {}, digestHist = {}, pageViewHist = {}) {
   return byDay;
 }
 
+/** Cache key for the public /stats edge snapshot (shared by handleStats + cron prewarm). */
+export function statsEdgeCacheKey(baseUrl = "https://api.cityscroll.org") {
+  // Version the cache key when the usage reconciliation shape changes so a deploy cannot
+  // keep serving a pre-flip empty usage block for the full max-age window.
+  return new Request(new URL("/stats?edge=watch-account-v1", baseUrl).toString(), {
+    method: "GET",
+  });
+}
+
+/**
+ * Write-ahead prewarm for public /stats. Cold assembly fans out across many KV keys and can
+ * take multi-second TTFB; warm edge cache hits are sub-second. Called from daily cron.
+ * Fail-soft: returns { warmed:false, reason } on missing caches API.
+ */
+export async function prewarmStats(env, options = {}) {
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (!cache) return { warmed: false, reason: "no_cache_api" };
+  const baseUrl = options.baseUrl || "https://api.cityscroll.org";
+  const req = new Request(new URL("/stats", baseUrl).toString(), { method: "GET" });
+  // Force rebuild (skip cache hit) so cron always refreshes the snapshot.
+  const res = await handleStats(req, env, null, {
+    ...options,
+    skipCacheRead: true,
+  });
+  if (!res || !res.ok) {
+    return { warmed: false, status: res?.status || 0 };
+  }
+  const cacheKey = statsEdgeCacheKey(baseUrl);
+  await cache.put(cacheKey, res.clone()).catch(() => {});
+  return { warmed: true, status: res.status, bytes: Number(res.headers.get("content-length") || 0) };
+}
+
 export async function handleStats(req, env, ctx, options = {}) {
   if (req.method !== "GET") {
     return new Response("Method not allowed", { status: 405 });
   }
 
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  // Version the cache key when the usage reconciliation shape changes so a deploy cannot
-  // keep serving a pre-flip empty usage block for the full max-age window.
-  const cacheKey = new Request(new URL("/stats?edge=watch-account-v1", req.url).toString(), {
-    method: "GET",
-  });
-  if (cache) {
+  const cacheKey = statsEdgeCacheKey(req.url);
+  if (cache && !options.skipCacheRead) {
     const hit = await cache.match(cacheKey).catch(() => null);
     if (hit) return hit;
   }
