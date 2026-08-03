@@ -27,30 +27,16 @@
 // universe → no edge materialization. Ship measured recon + source contracts
 // only; keep the class-(a) land-outcome pointer.
 
-/** Optional type letter + 6-digit body + 1–4 letter suffix (spaces optional). */
-const ULURP_TOKEN_RE = /(?:(?<type>[A-Z])\s*)?(?<num>\d{6})\s*(?<suf>[A-Z]{1,4})/gi;
+// Shared with site notice-land join — isolated 6-digit body + whole-word
+// action-code suffix (rejects Zoom "…302621 Meeting" → 302621MEET).
+export {
+  extractUlurpKeys,
+  isPlausibleUlurpKey,
+  isPlausibleUlurpSuffix,
+  filterPlausibleUlurpKeys,
+} from "../../../site/ulurp_tokens.mjs";
 
-/**
- * Extract strict ULURP join keys from a free-text field that may list several
- * application numbers (semicolon/comma separated, with or without type letters).
- * @param {string|null|undefined} value
- * @returns {Set<string>} uppercased tokens: `${num}${suf}` and optional `${type}${num}${suf}`
- */
-export function extractUlurpKeys(value) {
-  const keys = new Set();
-  if (value == null) return keys;
-  const text = String(value).toUpperCase();
-  for (const m of text.matchAll(ULURP_TOKEN_RE)) {
-    const typ = (m.groups?.type || "").toUpperCase();
-    const num = m.groups?.num;
-    const suf = (m.groups?.suf || "").toUpperCase();
-    if (!num || !suf) continue;
-    const core = `${num}${suf}`;
-    keys.add(core);
-    if (typ) keys.add(`${typ}${core}`);
-  }
-  return keys;
-}
+import { extractUlurpKeys } from "../../../site/ulurp_tokens.mjs";
 
 /**
  * Build a recommendation index keyed by every strict ULURP token found on a row.

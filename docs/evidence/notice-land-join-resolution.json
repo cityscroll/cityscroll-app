@@ -1,0 +1,112 @@
+{
+  "window": "Public Hearings and Meetings start_date > 2025-12-01, limit 120",
+  "soda_rows": 120,
+  "before": {
+    "eligible_with_any_old_token": 25,
+    "matched": 3,
+    "unmatched_plausible_or_ambiguous": 11,
+    "unmatched_malformed_only": 11,
+    "join_resolution_rate": 0.12
+  },
+  "after": {
+    "eligible_with_plausible_token": 14,
+    "matched": 4,
+    "unmatched_plausible_or_ambiguous": 10,
+    "unmatched_malformed_only": 0,
+    "join_resolution_rate": 0.2857
+  },
+  "malformed_examples_before": [
+    {
+      "id": "20260716009",
+      "keys": [
+        "302621MEET"
+      ],
+      "title": "Dining Out NYC Public Hearing"
+    },
+    {
+      "id": "20260624036",
+      "keys": [
+        "302621MEET"
+      ],
+      "title": "Dining Out NYC Public Hearing"
+    },
+    {
+      "id": "20260618050",
+      "keys": [
+        "502498BDA"
+      ],
+      "title": "Brooklyn Borough President ULURP Public Hearing"
+    },
+    {
+      "id": "20260610003",
+      "keys": [
+        "978928PHON",
+        "978928INTE"
+      ],
+      "title": "June 17, 2026 Public Hearing"
+    },
+    {
+      "id": "20260605007",
+      "keys": [
+        "302621MEET",
+        "302621TO"
+      ],
+      "title": "DINING OUT NYC PUBLIC HEARING"
+    },
+    {
+      "id": "20260605006",
+      "keys": [
+        "302621MEET",
+        "302621TO"
+      ],
+      "title": "DINING OUT NYC PUBLIC HEARING"
+    },
+    {
+      "id": "20260601042",
+      "keys": [
+        "914623BB",
+        "449510C"
+      ],
+      "title": "Brooklyn Borough President ULURP Hearing"
+    },
+    {
+      "id": "20260512036",
+      "keys": [
+        "302621MEET",
+        "302621TO"
+      ],
+      "title": "Dining Out NYC Public Hearing"
+    },
+    {
+      "id": "20260512014",
+      "keys": [
+        "367046PHON"
+      ],
+      "title": "CUNY Public Hearing"
+    },
+    {
+      "id": "20260507005",
+      "keys": [
+        "302621MEET",
+        "302621TO"
+      ],
+      "title": "Dining Out NYC Public Hearing"
+    },
+    {
+      "id": "20260512046",
+      "keys": [
+        "099245PHON",
+        "099245INTE"
+      ],
+      "title": "May 20, 2026 PUBLIC HEARING"
+    }
+  ],
+  "owner_exemplar": {
+    "request_id": "20260716009",
+    "old_keys": [
+      "302621MEET"
+    ],
+    "new_keys": [],
+    "eligible_after": false
+  }
+}

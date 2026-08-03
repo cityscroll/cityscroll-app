@@ -17,8 +17,11 @@ import {
   buildZapProjectJoinIndex,
   resolveZapProjectForNotice,
   noticeLandJoinReceipt,
+  measureNoticeLandJoinResolution,
+  classifyUlurpKeySet,
   NOTICE_LAND_SPINE_SCHEMA_VERSION,
 } from "../site/notice_land_spine.mjs";
+import { isPlausibleUlurpKey } from "../site/ulurp_tokens.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -45,6 +48,62 @@ test("extractUlurpKeys matches worker strict token rules", () => {
   assert.ok(extractUlurpKeys("C 240046 HAM").has("240046HAM"));
   assert.ok(extractUlurpKeys("C 240046 HAM").has("C240046HAM"));
   assert.equal(extractUlurpKeys("bare 240046").size, 0);
+});
+
+// Owner report 2026-08-03 (#notice/20260716009): Zoom meeting id + "Meeting"
+// must never become a fake ULURP (302621MEET) or mount a land-spine gap card.
+const DINING_OUT_ZOOM_NOTICE = {
+  request_id: "20260716009",
+  start_date: "2026-07-22T00:00:00.000",
+  event_date: "2026-08-06T11:00:00.000",
+  section_name: "Public Hearings and Meetings",
+  agency_name: "Transportation",
+  type_of_notice_description: "Public Hearings",
+  short_title: "Dining Out NYC Public Hearing",
+  additional_description_1:
+    "NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent "
+    + "has been scheduled for a public hearing by the New York City Department of Transportation. "
+    + "The public hearing will be held remotely via Zoom. "
+    + "To join the hearing enter the following URL link into your browser's address bar: "
+    + "zoom.us/j/91467302621 Meeting ID: 914 6730 2621. "
+    + "To join the hearing only by phone, use the following information to connect: "
+    + "Phone: +1-929-205-6099 Meeting ID: 914 6730 2621",
+};
+
+test("owner exemplar Dining Out Zoom ID does not extract as ULURP 302621MEET", () => {
+  const body = DINING_OUT_ZOOM_NOTICE.additional_description_1;
+  const keys = extractUlurpKeys(body);
+  assert.equal(keys.size, 0, `expected no ULURP keys, got ${[...keys].join(",")}`);
+  assert.equal(keys.has("302621MEET"), false);
+  assert.equal(isNoticeLandSpineEligible(DINING_OUT_ZOOM_NOTICE), false);
+  const refs = extractNoticeLandRefs(DINING_OUT_ZOOM_NOTICE);
+  assert.deepEqual(refs.ulurp_keys, []);
+  // Stale snapshot stamps must also be filtered.
+  const stamped = extractNoticeLandRefs({
+    ...DINING_OUT_ZOOM_NOTICE,
+    ulurp_keys: ["302621MEET", "302621TO"],
+  });
+  assert.deepEqual(stamped.ulurp_keys, []);
+  assert.equal(
+    isNoticeLandSpineEligible({
+      ...DINING_OUT_ZOOM_NOTICE,
+      ulurp_keys: ["302621MEET"],
+    }),
+    false,
+  );
+});
+
+test("extractUlurpKeys rejects phone/Webex false positives while keeping real action codes", () => {
+  assert.equal(extractUlurpKeys("Phone: +1-929-205-6099 Meeting ID: 914 6730 2621").size, 0);
+  assert.equal(
+    extractUlurpKeys(
+      "https://nycbp.webex.com/weblink/register/radabe59502498bda55ab8f61815d7891",
+    ).size,
+    0,
+  );
+  assert.ok(extractUlurpKeys("C 210221 PCR").has("210221PCR"));
+  assert.ok(extractUlurpKeys("N000611PXQ").has("000611PXQ"));
+  assert.ok(extractUlurpKeys("M790651GZSM").has("790651GZSM"));
 });
 
 test("extractZapProjectIds accepts portal URLs and product ids", () => {
@@ -160,18 +219,54 @@ test("notice page mounts #nland and loadNoticeLandSpine", () => {
   assert.match(index, /landZoningStatisticsHTML|landStatutoryDeadlineHTML/);
 });
 
-test("i18n ships notice-land spine strings", () => {
+test("i18n ships notice-land spine strings without internal vocabulary", () => {
   const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
   for (const key of [
     "notice_land_spine_heading",
     "notice_land_join_matched_html",
     "notice_land_open_land_detail",
     "notice_land_no_match_html",
+    "notice_land_no_match_with_keys_html",
     "notice_land_ambiguous_html",
     "notice_land_provenance_html",
   ]) {
     assert.match(i18n, new RegExp(`${key}:`));
   }
+  // Reader-facing land-spine copy must not leak internal join machinery.
+  assert.doesNotMatch(i18n, /warehouse join resolves/i);
+  assert.doesNotMatch(i18n, /notice_land_no_match_html:[^,]{0,200}warehouse/i);
+  assert.doesNotMatch(i18n, /notice_land_provenance_html:[^,]{0,300}warehouse/i);
+  assert.doesNotMatch(i18n, /notice_land_unavailable_html:[^,]{0,200}edge cache/i);
+});
+
+test("measureNoticeLandJoinResolution separates malformed from genuine misses", () => {
+  const lookup = JSON.parse(
+    readFileSync(join(ROOT, "site/data/zap_projects_warehouse_lookup.json"), "utf8"),
+  );
+  const index = buildZapProjectJoinIndex(lookup);
+  const score = measureNoticeLandJoinResolution(
+    [
+      TIMBALE_NOTICE,
+      DINING_OUT_ZOOM_NOTICE,
+      { ...DINING_OUT_ZOOM_NOTICE, request_id: "stale", ulurp_keys: ["302621MEET"] },
+      {
+        request_id: "no-portal-yet",
+        section_name: "Public Hearings and Meetings",
+        additional_description_1: "ULURP Nos. C 299999 ZMK hearing.",
+      },
+    ],
+    index,
+  );
+  assert.equal(score.metric, "notice_land_join_resolution_rate");
+  assert.ok(score.matched >= 1, "Timbale should match warehouse demo project");
+  assert.ok(score.unmatched_malformed_only >= 1, "stale 302621MEET stamp counted");
+  assert.equal(classifyUlurpKeySet(["302621MEET"]).has_malformed, true);
+  assert.equal(isPlausibleUlurpKey("302621MEET"), false);
+  assert.equal(isPlausibleUlurpKey("240046HAM"), true);
+  assert.ok(
+    existsSync(join(ROOT, "docs/evidence/notice-land-join-resolution.json")),
+    "class measurement receipt",
+  );
 });
 
 test("demo link and capture evidence are pinned when present", () => {

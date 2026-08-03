@@ -1128,11 +1128,16 @@ async function loadNoticeLandSpine(r, el){
   }
 
   if(!resolution || !resolution.matched || !resolution.project_id){
-    // Class-(a): notice has ULURP/ZAP refs but warehouse has no unique project yet.
+    // Class-(a): plausible ULURP/ZAP refs but no unique portal project yet.
+    // Invalid extractions never reach here (extractor + eligibility filter them out).
     const portalHint=`<a href="https://zap.planning.nyc.gov/" ${EXT_ATTRS}>Zoning Application Portal${extSR()}</a>`;
+    const hasKeys=keysLabel && keysLabel!=="—";
+    const note=hasKeys
+      ? t("notice_land_no_match_with_keys_html",{keys:keysLabel, portal:portalHint})
+      : t("notice_land_no_match_html",{portal:portalHint});
     el.innerHTML=`<section class="notice-land-spine" data-notice-land-spine="1" data-notice-land-state="unmatched" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
       <div class="chain-h">${t("notice_land_spine_heading")}</div>
-      <div class="note">${t("notice_land_no_match_html",{keys:keysLabel, portal:portalHint})}</div>
+      <div class="note">${note}</div>
     </section>`;
     return;
   }

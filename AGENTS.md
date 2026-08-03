@@ -470,7 +470,12 @@ join resolves. Pure join: `site/notice_land_spine.mjs` (ULURP / project-id →
 `zap_projects_warehouse_lookup.json`); spine + statutory clocks + zoning stats
 from edge `GET /zap-outcomes` via existing `landSpineHTML` / `land_phase_spine.mjs`
 (no live ZAP API from the browser). Property Disposition is the wrong universe —
-never eligible. Demo: `#notice/20230912001` → project `2022M0258`. Verify:
+never eligible. Demo: `#notice/20230912001` → project `2022M0258`. **ULURP
+tokens** live in `site/ulurp_tokens.mjs` (re-exported by notice-land + worker):
+isolated 6-digit body + whole-word 2–4 letter action code — never swallow Zoom
+meeting ids (`91467302621 Meeting` → false `302621MEET`) or phone/Webex hex.
+Join scorecard: `docs/evidence/notice-land-join-resolution.json`; public copy
+lint: `python3 test/standards/public_surface_vocab.py --gate`. Verify:
 `node --test test/notice_land_spine.test.mjs`. Capture:
 `python3 tools/capture_notice_land_zap_spine.py`.
 
