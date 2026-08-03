@@ -1,0 +1,217 @@
+{
+  "metric": "prediction_calibration_scorecard",
+  "version": "prediction_calibration_v1",
+  "cases": [
+    {
+      "id": "well_calibrated",
+      "expected_ship_bar": "pass",
+      "scorecard": {
+        "metric": "prediction_calibration",
+        "version": "prediction_calibration_v1",
+        "domain": "meetings",
+        "model_name": "well-calibrated_meeting_vote",
+        "model_version": "1.0.0",
+        "split_date": "2025-01-01",
+        "grace_days": 0,
+        "train_window": {
+          "from": "2020-01-01",
+          "to": "2024-12-30"
+        },
+        "prediction_count": 100,
+        "resolved_backtest_predictions": 100,
+        "resolution_rate": 1,
+        "resolution_counts": {
+          "resolved_hit": 65,
+          "resolved_miss": 35,
+          "open": 0
+        },
+        "timing_prediction_count": 50,
+        "timing_realized_count": 50,
+        "timing_resolution_hits": 40,
+        "interval_nominal": 0.8,
+        "interval_coverage": 0.8,
+        "interval_coverage_hits": 40,
+        "interval_coverage_count": 50,
+        "median_absolute_error_p50_days": 3,
+        "occurrence_prediction_count": 50,
+        "occurrence_resolved_count": 50,
+        "occurrence_calibration": [
+          {
+            "quintile": 1,
+            "probability_min": 0,
+            "probability_max": 0.2,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.1,
+            "realized": 1,
+            "realized_frequency": 0.1
+          },
+          {
+            "quintile": 2,
+            "probability_min": 0.2,
+            "probability_max": 0.4,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.3,
+            "realized": 3,
+            "realized_frequency": 0.3
+          },
+          {
+            "quintile": 3,
+            "probability_min": 0.4,
+            "probability_max": 0.6,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.5,
+            "realized": 5,
+            "realized_frequency": 0.5
+          },
+          {
+            "quintile": 4,
+            "probability_min": 0.6,
+            "probability_max": 0.8,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.7,
+            "realized": 7,
+            "realized_frequency": 0.7
+          },
+          {
+            "quintile": 5,
+            "probability_min": 0.8,
+            "probability_max": 1,
+            "upper_inclusive": true,
+            "count": 10,
+            "predicted_probability_mean": 0.9,
+            "realized": 9,
+            "realized_frequency": 0.9
+          }
+        ],
+        "occurrence_quintiles_monotone": true,
+        "ship_bar": {
+          "status": "pass",
+          "checks": {
+            "minimum_resolved": true,
+            "interval_coverage": true,
+            "occurrence_quintiles_monotone": true
+          },
+          "thresholds": {
+            "minimum_resolved": 50,
+            "interval_nominal": 0.8,
+            "interval_tolerance": 0.1,
+            "occurrence_quintiles_monotone": true
+          }
+        },
+        "public_projection": "per_matter_projection"
+      }
+    },
+    {
+      "id": "miscalibrated",
+      "expected_ship_bar": "fail",
+      "scorecard": {
+        "metric": "prediction_calibration",
+        "version": "prediction_calibration_v1",
+        "domain": "meetings",
+        "model_name": "miscalibrated_meeting_vote",
+        "model_version": "1.0.0",
+        "split_date": "2025-01-01",
+        "grace_days": 0,
+        "train_window": {
+          "from": "2020-01-01",
+          "to": "2024-12-30"
+        },
+        "prediction_count": 100,
+        "resolved_backtest_predictions": 100,
+        "resolution_rate": 1,
+        "resolution_counts": {
+          "resolved_hit": 50,
+          "resolved_miss": 50,
+          "open": 0
+        },
+        "timing_prediction_count": 50,
+        "timing_realized_count": 50,
+        "timing_resolution_hits": 25,
+        "interval_nominal": 0.8,
+        "interval_coverage": 0.5,
+        "interval_coverage_hits": 25,
+        "interval_coverage_count": 50,
+        "median_absolute_error_p50_days": 17.5,
+        "occurrence_prediction_count": 50,
+        "occurrence_resolved_count": 50,
+        "occurrence_calibration": [
+          {
+            "quintile": 1,
+            "probability_min": 0,
+            "probability_max": 0.2,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.1,
+            "realized": 9,
+            "realized_frequency": 0.9
+          },
+          {
+            "quintile": 2,
+            "probability_min": 0.2,
+            "probability_max": 0.4,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.3,
+            "realized": 7,
+            "realized_frequency": 0.7
+          },
+          {
+            "quintile": 3,
+            "probability_min": 0.4,
+            "probability_max": 0.6,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.5,
+            "realized": 5,
+            "realized_frequency": 0.5
+          },
+          {
+            "quintile": 4,
+            "probability_min": 0.6,
+            "probability_max": 0.8,
+            "upper_inclusive": false,
+            "count": 10,
+            "predicted_probability_mean": 0.7,
+            "realized": 3,
+            "realized_frequency": 0.3
+          },
+          {
+            "quintile": 5,
+            "probability_min": 0.8,
+            "probability_max": 1,
+            "upper_inclusive": true,
+            "count": 10,
+            "predicted_probability_mean": 0.9,
+            "realized": 1,
+            "realized_frequency": 0.1
+          }
+        ],
+        "occurrence_quintiles_monotone": false,
+        "ship_bar": {
+          "status": "fail",
+          "checks": {
+            "minimum_resolved": true,
+            "interval_coverage": false,
+            "occurrence_quintiles_monotone": false
+          },
+          "thresholds": {
+            "minimum_resolved": 50,
+            "interval_nominal": 0.8,
+            "interval_tolerance": 0.1,
+            "occurrence_quintiles_monotone": true
+          }
+        },
+        "public_projection": "cohort_statistic_only"
+      }
+    }
+  ],
+  "fixture_gate": {
+    "calibrated_model_passes": true,
+    "miscalibrated_model_fails": true,
+    "expectations_match": true
+  }
+}
