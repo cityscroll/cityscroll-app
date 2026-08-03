@@ -60,7 +60,9 @@ def iso_date(days: int, hour: int = 10) -> str:
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from i18n_fixtures import (  # noqa: E402
     CHAIN_ROWS,
+    LAND_PIPELINE_ZAP_OUTCOMES,
     NOTICE_LAND_ZAP_OUTCOMES,
+    ZAP_ROWS,
     install_routes,
 )
 
@@ -161,6 +163,13 @@ def install_demo_routes(page) -> None:
                     body=json.dumps(NOTICE_LAND_ZAP_OUTCOMES),
                 )
                 return
+            if project_id == "2024Q0292":
+                route.fulfill(
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps(LAND_PIPELINE_ZAP_OUTCOMES),
+                )
+                return
             # Land detail always requests this. Abort-or-hang races the 12s workerFetch
             # budget (and a fallback host) and keeps the outcomes spinner up past the
             # old 15s assert. Fulfill a fast unmatched shell so the spinner clears;
@@ -196,10 +205,32 @@ def install_demo_routes(page) -> None:
         else:
             route.fallback()
 
+    def zap_projects(route) -> None:
+        """Honor exact project_id SoQL so #land/<id> deep links select the right row."""
+        query = parse_qs(urlparse(route.request.url).query)
+        where = " ".join(query.get("$where", []))
+        match = re.search(r"project_id='([^']+)'", where)
+        if match:
+            project_id = match.group(1)
+            rows = [row for row in ZAP_ROWS if row.get("project_id") == project_id]
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(rows),
+            )
+            return
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body=json.dumps(ZAP_ROWS),
+        )
+
     page.route("https://api.cityscroll.org/**", worker)
     page.route("https://api.crol-list.org/**", worker)
     page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", city_data)
+    # Newest route wins over install_routes' unfiltered ZAP_ROWS fixture.
+    page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", zap_projects)
 
 
 def visible_locator(page, expected: dict):
@@ -219,9 +250,11 @@ DEFAULT_GOTO_MS = 30_000
 SLOW_LAND_GOTO_MS = 45_000
 SLOW_LAND_ENTRY_IDS = frozenset({
     "scenario-neighborhood",
+    "land-pipeline-hearing-logistics",
 })
 SLOW_LAND_FEATURES = frozenset({
     "scenario-neighborhood",
+    "land-pipeline-hearing-logistics",
 })
 
 
