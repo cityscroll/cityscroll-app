@@ -1,12 +1,68 @@
 /* ===================== MONEY ===================== */
+// Commit-time default open-RFP list + procurement agencies (wave-2 batch precompute).
+// Parameterized search stays live SODA; snapshot paints first, then hybrid-refreshes.
+const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
+const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
+let moneyDefaultSnapshotPromise=null;
+let moneyAgenciesSnapshotPromise=null;
+function loadMoneyDefaultSnapshot(){
+  if(!moneyDefaultSnapshotPromise){
+    moneyDefaultSnapshotPromise=fetch(MONEY_DEFAULT_SNAPSHOT_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return moneyDefaultSnapshotPromise;
+}
+function loadMoneyAgenciesSnapshot(){
+  if(!moneyAgenciesSnapshotPromise){
+    moneyAgenciesSnapshotPromise=fetch(MONEY_AGENCIES_SNAPSHOT_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return moneyAgenciesSnapshotPromise;
+}
+function isDefaultMoneySearchState({mode, agency, kw, methodSel, closingWeek, minAmount, sort, nlResolved}={}){
+  const nl=nlResolved&&typeof nlResolved==="object"?nlResolved:{};
+  const hasNl=Boolean(nl.category)||nl.maxAmount!=null||nl.months!=null||Boolean(nl.excludeSpecial);
+  return (mode||"open")==="open"
+    && !agency
+    && !String(kw||"").trim()
+    && !methodSel
+    && !closingWeek
+    && !minAmount
+    && !hasNl
+    && (!sort || sort==="deadline");
+}
+function filterStillOpenMoneyNotices(rows, today){
+  const floor=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
+  return (rows||[]).filter(r=>{
+    const due=String(r&&r.due_date||"").slice(0,10);
+    return due && due>floor;
+  });
+}
+function paintMoneyAgencyOptions(names){
+  const cur=$("#agency")?$("#agency").value:"";
+  const list=(names||[]).filter(Boolean);
+  $("#agency").innerHTML=`<option value="">${t("all_agencies")}</option>`+list.map(name=>`<option>${name}</option>`).join("");
+  if(cur) forceSelect("#agency", cur);
+}
 async function loadAgencies(){
+  let paintedFromSnapshot=false;
+  try{
+    const snap=await loadMoneyAgenciesSnapshot();
+    const names=snap&&Array.isArray(snap.agencies)?snap.agencies:[];
+    if(names.length){
+      paintMoneyAgencyOptions(names);
+      paintedFromSnapshot=true;
+    }
+  }catch(e){}
   try{
     const rows = await soda({"$select":"agency_name","$where":"section_name='Procurement' AND agency_name IS NOT NULL",
       "$group":"agency_name","$order":"agency_name","$limit":"600"});
-    const cur = $("#agency").value; // a permalink may have selected an agency before this resolved
-    $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>` + rows.map(r=>`<option>${r.agency_name}</option>`).join("");
-    if(cur) forceSelect("#agency", cur);
-  }catch(e){ $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>`; }
+    paintMoneyAgencyOptions(rows.map(r=>r.agency_name));
+  }catch(e){
+    if(!paintedFromSnapshot) $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>`;
+  }
 }
 
 let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
@@ -85,6 +141,22 @@ async function search(){
   $("#rescount").textContent = "";
   busyList("#list");
   const stale = staleGuard("money");
+  // Default Money tab: paint prebuilt open-solicitation snapshot first (no SODA wait), then hybrid-refresh.
+  const useDefaultSnapshot=isDefaultMoneySearchState({
+    mode, agency, kw, methodSel, closingWeek, minAmount:minamt, sort, nlResolved:moneyNlResolved,
+  });
+  let paintedFromSnapshot=false;
+  if(useDefaultSnapshot){
+    try{
+      const snap=await loadMoneyDefaultSnapshot();
+      if(stale()) return;
+      const notices=filterStillOpenMoneyNotices(snap&&Array.isArray(snap.notices)?snap.notices:[], todayISO());
+      if(notices.length){
+        paintMoneyRows(notices, {autoSelect:true, narrowed:false});
+        paintedFromSnapshot=true;
+      }
+    }catch(e){}
+  }
   const p = {"$select":SELECT,"$where":where,"$order":order,"$limit":"40"};
   if(kw) p["$q"] = kw;
   let narrowed = false, rows;
@@ -99,16 +171,23 @@ async function search(){
     }
   }catch(e){
     if(stale()) return;
-    unbusy("#list");
-    $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>'; return;
+    if(!paintedFromSnapshot){
+      unbusy("#list");
+      $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>';
+    }
+    return;
   }
   if(stale()) return; // a newer search superseded this one
+  // Hybrid refresh after a snapshot paint must not re-autoSelect (would wipe a chosen row).
+  paintMoneyRows(rows, {autoSelect:!paintedFromSnapshot, narrowed});
+}
+function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   currentRows = rows;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
   unbusy("#list");
   $("#rescount").textContent = currentRows.length === 40 ? "40+" : currentRows.length;
   announce(t(currentRows.length===40?"or_more_results":"results_count",{n:currentRows.length}) + ` — ${$("#reshead").textContent}`);
-  renderList();
+  renderList(autoSelect);
   if(narrowed) $("#list").insertAdjacentHTML("afterbegin",
     `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
 }
@@ -172,12 +251,23 @@ function moneyRowHTML(r, i, terms){
       ${digEvidenceHTML(ev)}
     </div>`;
 }
-function renderList(){
+function renderList(autoSelect){
   if(!currentRows.length){ $("#list").innerHTML = '<div class="empty">' + t("nothing_found") + '</div>'; return; }
   const kw = ($("#kw").value||"").trim(), terms = kw ? [kw] : [];
+  // Preserve selection across hybrid refresh (snapshot → live) when the notice is still present.
+  const keepId=autoSelect===false&&selectedRFP?selectedRFP.request_id:null;
   $("#list").innerHTML = currentRows.map((r,i)=>moneyRowHTML(r,i,terms)).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
-  document.querySelector("#list .row")?.click(); // auto-open the first result — don't make the user click the obvious
+  if(autoSelect===false&&keepId){
+    const idx=currentRows.findIndex(r=>r&&r.request_id===keepId);
+    if(idx>=0){
+      const el=document.querySelector(`#list .row[data-i="${idx}"]`);
+      if(el){ el.classList.add("sel"); selectedRFP=currentRows[idx]; }
+      loadLineageBadges();
+      return;
+    }
+  }
+  if(autoSelect!==false) document.querySelector("#list .row")?.click(); // auto-open the first result — don't make the user click the obvious
   loadLineageBadges(); // fire-and-forget; badges splice into the .lineage-slot markers once the batch lookup lands
 }
 
@@ -338,8 +428,13 @@ globalThis.loadAgencies = loadAgencies;
 globalThis.loadChain = loadChain;
 globalThis.loadLineageBadges = loadLineageBadges;
 globalThis.loadMethodFacet = loadMethodFacet;
+globalThis.loadMoneyDefaultSnapshot = loadMoneyDefaultSnapshot;
+globalThis.loadMoneyAgenciesSnapshot = loadMoneyAgenciesSnapshot;
+globalThis.isDefaultMoneySearchState = isDefaultMoneySearchState;
+globalThis.filterStillOpenMoneyNotices = filterStillOpenMoneyNotices;
 globalThis.moneyActiveFilterChip = moneyActiveFilterChip;
 globalThis.moneyRowHTML = moneyRowHTML;
+globalThis.paintMoneyRows = paintMoneyRows;
 globalThis.pinBase = pinBase;
 globalThis.renderList = renderList;
 globalThis.renderMoneyActiveFilters = renderMoneyActiveFilters;

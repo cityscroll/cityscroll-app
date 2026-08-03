@@ -2,7 +2,7 @@
 // Build BATCHABLE first-paint snapshots for wave-2 perceived speed.
 //
 // Usage:
-//   node tools/build_batch_precompute_snapshots.mjs            # write both
+//   node tools/build_batch_precompute_snapshots.mjs            # write all
 //   node tools/build_batch_precompute_snapshots.mjs --check     # fail if stale (CI)
 //   node tools/build_batch_precompute_snapshots.mjs --fixture   # use offline fixtures
 //
@@ -17,14 +17,23 @@ import { fileURLToPath } from "node:url";
 import {
   buildDataPageSnapshot,
   buildLandDefaultSnapshot,
+  buildMoneyAgenciesSnapshot,
+  buildMoneyDefaultOpenSnapshot,
+  buildStaffingHiresSnapshot,
   fetchDataPageCharts,
   fetchLandDefaultProjects,
+  fetchMoneyAgencies,
+  fetchMoneyDefaultOpen,
+  fetchStaffingHires,
 } from "./lib/batch_precompute_snapshots.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_DIR = path.join(ROOT, "site", "data");
 const DATA_PAGE_OUT = path.join(DATA_DIR, "data_page_charts.json");
 const LAND_OUT = path.join(DATA_DIR, "land_default_ulurp.json");
+const MONEY_OPEN_OUT = path.join(DATA_DIR, "money_default_open.json");
+const MONEY_AGENCIES_OUT = path.join(DATA_DIR, "money_procurement_agencies.json");
+const STAFFING_HIRES_OUT = path.join(DATA_DIR, "staffing_default_hires.json");
 const FIXTURE_DIR = path.join(ROOT, "test", "fixtures", "batch-precompute");
 
 function parseArgs(argv) {
@@ -33,6 +42,8 @@ function parseArgs(argv) {
     fixture: argv.includes("--fixture"),
     dataOnly: argv.includes("--data-only"),
     landOnly: argv.includes("--land-only"),
+    moneyOnly: argv.includes("--money-only"),
+    staffingOnly: argv.includes("--staffing-only"),
   };
 }
 
@@ -65,9 +76,29 @@ async function writeOrCheck(filePath, payload, check) {
   return { path: filePath, status: "wrote", bytes: Buffer.byteLength(rendered) };
 }
 
-export async function buildAll({ fetchImpl = fetch, now = new Date(), fixture = false, dataOnly = false, landOnly = false } = {}) {
+function wants(args, key) {
+  const only =
+    args.dataOnly || args.landOnly || args.moneyOnly || args.staffingOnly;
+  if (!only) return true;
+  if (key === "data") return args.dataOnly;
+  if (key === "land") return args.landOnly;
+  if (key === "money") return args.moneyOnly;
+  if (key === "staffing") return args.staffingOnly;
+  return false;
+}
+
+export async function buildAll({
+  fetchImpl = fetch,
+  now = new Date(),
+  fixture = false,
+  dataOnly = false,
+  landOnly = false,
+  moneyOnly = false,
+  staffingOnly = false,
+} = {}) {
+  const args = { dataOnly, landOnly, moneyOnly, staffingOnly };
   const results = {};
-  if (!landOnly) {
+  if (wants(args, "data")) {
     let raw;
     if (fixture) {
       raw = await loadFixture("data_page_charts_raw.json");
@@ -76,7 +107,7 @@ export async function buildAll({ fetchImpl = fetch, now = new Date(), fixture = 
     }
     results.data_page = buildDataPageSnapshot(raw, { now });
   }
-  if (!dataOnly) {
+  if (wants(args, "land")) {
     let projects;
     if (fixture) {
       projects = await loadFixture("land_default_projects.json");
@@ -84,6 +115,30 @@ export async function buildAll({ fetchImpl = fetch, now = new Date(), fixture = 
       projects = await fetchLandDefaultProjects(fetchImpl);
     }
     results.land_default = buildLandDefaultSnapshot(projects, { now });
+  }
+  if (wants(args, "money")) {
+    let openRows;
+    let agencyRows;
+    if (fixture) {
+      openRows = await loadFixture("money_default_open_raw.json");
+      agencyRows = await loadFixture("money_procurement_agencies_raw.json");
+    } else {
+      [openRows, agencyRows] = await Promise.all([
+        fetchMoneyDefaultOpen(fetchImpl, now),
+        fetchMoneyAgencies(fetchImpl),
+      ]);
+    }
+    results.money_default_open = buildMoneyDefaultOpenSnapshot(openRows, { now });
+    results.money_agencies = buildMoneyAgenciesSnapshot(agencyRows, { now });
+  }
+  if (wants(args, "staffing")) {
+    let hires;
+    if (fixture) {
+      hires = await loadFixture("staffing_default_hires_raw.json");
+    } else {
+      hires = await fetchStaffingHires(fetchImpl);
+    }
+    results.staffing_hires = buildStaffingHiresSnapshot(hires, { now });
   }
   return results;
 }
@@ -96,6 +151,8 @@ async function main() {
     fixture: args.fixture,
     dataOnly: args.dataOnly,
     landOnly: args.landOnly,
+    moneyOnly: args.moneyOnly,
+    staffingOnly: args.staffingOnly,
   });
   const out = [];
   if (built.data_page) {
@@ -103,6 +160,15 @@ async function main() {
   }
   if (built.land_default) {
     out.push(await writeOrCheck(LAND_OUT, built.land_default, args.check));
+  }
+  if (built.money_default_open) {
+    out.push(await writeOrCheck(MONEY_OPEN_OUT, built.money_default_open, args.check));
+  }
+  if (built.money_agencies) {
+    out.push(await writeOrCheck(MONEY_AGENCIES_OUT, built.money_agencies, args.check));
+  }
+  if (built.staffing_hires) {
+    out.push(await writeOrCheck(STAFFING_HIRES_OUT, built.staffing_hires, args.check));
   }
   for (const row of out) {
     console.log(
