@@ -104,6 +104,7 @@ async function search(){
   }
   if(stale()) return; // a newer search superseded this one
   currentRows = rows;
+  setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
   unbusy("#list");
   $("#rescount").textContent = currentRows.length === 40 ? "40+" : currentRows.length;
   announce(t(currentRows.length===40?"or_more_results":"results_count",{n:currentRows.length}) + ` — ${$("#reshead").textContent}`);
