@@ -1190,7 +1190,7 @@
     // Meetings domain explorer (list ontology — process rail + place groups + next-action)
     meetings_domain_kicker: "Public hearings and meetings",
     meetings_domain_heading: "Scheduled, agenda, held, outcomes",
-    meetings_domain_deck: "City Record hearing notices follow a meeting arc — scheduled, agenda materials, held, then outcomes — with next steps when the notice publishes how to attend or testify. Same-board same-day notices collapse into one card. Affected place still drives near-me; venue is shown separately.",
+    meetings_domain_deck: "City Record hearing notices follow a meeting arc — scheduled, agenda materials, held, then outcomes — with next steps when the notice publishes how to attend or testify. Same-board same-day notices collapse into one card. Affected place still drives near-me. Venue is shown separately.",
     meetings_process_rail_label: "Meeting stage",
     meetings_process_label: "Stage",
     meetings_process_stepper_aria: "Meeting process stages",
