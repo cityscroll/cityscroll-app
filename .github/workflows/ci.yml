@@ -234,25 +234,25 @@ jobs:
       - name: Public demo-link manifest schema
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/demo_links.py
+      - name: Worker dependencies
+        if: needs.changes.outputs.unit_full == 'true'
+        # Site tests exercise selected Worker render helpers, so their package imports
+        # must resolve before either suite starts in a clean runner.
+        run: npm ci
+        working-directory: worker
       - name: Site unit tests
         if: needs.changes.outputs.unit_full == 'true'
-        # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
-        # which needs worker/node_modules (installed in the next step).
+        # Scoped to test/ so Worker tests retain their own reporting boundary below.
         run: node --test test/*.test.mjs
       - name: Preset shortcuts and rotating suggestions resolve to live results
         if: needs.changes.outputs.unit_full == 'true'
         run: node tools/validate_presets.mjs --check
       - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
         if: needs.changes.outputs.unit_full == 'true'
-        # test/contract/*.test.mjs imports worker/src/lib/*.mjs modules directly (all
-        # dependency-free — no worker/node_modules needed) alongside functions extracted from
-        # index.html, and runs one shared fixture set through both. A change that makes either
-        # side disagree with the other on the same input fails here, not in production.
+        # test/contract/*.test.mjs imports worker/src/lib/*.mjs modules directly alongside
+        # functions extracted from index.html, and runs one shared fixture set through both.
+        # A change that makes either side disagree on the same input fails here, not in production.
         run: node --test test/contract/*.test.mjs
-      - name: Worker dependencies
-        if: needs.changes.outputs.unit_full == 'true'
-        run: npm ci
-        working-directory: worker
       - name: Worker unit tests
         if: needs.changes.outputs.unit_full == 'true'
         run: node --test
