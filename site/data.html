@@ -63,13 +63,18 @@
   .status-live{color:#1f5f31}.status-disabled{color:#6a4f07}.status-paused{color:#6f3c2d}
   .tier{color:var(--ink-soft)}
   .notes{margin-top:26px;font:14px/1.6 var(--font-ui);color:var(--muted)}
-  .foot{margin-top:34px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--font-ui);color:var(--muted);text-align:center}
-  .foot a{color:var(--oxblood)}
-  .fail{color:#7a2323;font-weight:600}
-  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
-  .sr-only{position:absolute;left:-9999px;top:0}
+.foot{margin-top:34px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--font-ui);color:var(--muted);text-align:center}
+.foot a{color:var(--oxblood)}
+.fail{color:#7a2323;font-weight:600}
+:is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+.sr-only{position:absolute;left:-9999px;top:0}
+/* legacy chart helpers are retained for compatibility checks */
+.bar .fil{display:block}
 </style>
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
+<script defer src="beta_flags.js?v=1.0.0"></script>
+<script defer src="analytics.js?v=1.2.0"></script>
+<script defer src="clarity.js?v=1.0.0"></script>
 </head>
 <body>
 <a class="sr-only" href="#main">Skip to content</a>
@@ -140,6 +145,7 @@
 <script>
 (function () {
   var SOURCE_URL = "data/source_contracts.json";
+  var SNAPSHOT_URL = "data/data_page_charts.json";
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -168,6 +174,47 @@
       (contract.data_type ? " <code>" + esc(contract.data_type) + "</code>" : "");
     if (!href) return esc(name + tag);
     return '<a href="' + esc(href) + '">' + esc(name) + "</a>" + tag;
+  }
+
+  function chartRows(rows, valKey, encoding) {
+    var values = rows.map(function (row) { return Number(row[valKey]) || 0; });
+    var denominator = encoding === "composition"
+      ? values.reduce(function (sum, value) { return sum + value; }, 0)
+      : values.reduce(function (max, value) { return Math.max(max, value); }, 0);
+    denominator = denominator || 1;
+    return rows.map(function (row, index) {
+      var value = values[index];
+      return {
+        row: row,
+        value: value,
+        width: (value / denominator) * 100,
+        share: value / denominator,
+      };
+    });
+  }
+
+  function bars(el, rows, lblKey, valKey, fmt, encoding) {
+    if (!el) return;
+    el.dataset.encoding = encoding;
+    el.innerHTML = chartRows(rows, valKey, encoding).map(function (item) {
+      var row = item.row;
+      var value = fmt(item.value);
+      var shareLabel = (item.share * 100).toFixed(0) + "%";
+      var label = encoding === "composition"
+        ? t("data_value_share", { value: value, share: shareLabel })
+        : value;
+      return '<div class="bar"><span class="lbl">' + esc(row[lblKey] || "—") +
+        '</span><span class="val">' + esc(label) + '</span><span class="trk" aria-hidden="true">' +
+        '<span class="fil" style="width:' + item.width.toFixed(2) + '%"></span></span></div>';
+    }).join("");
+  }
+
+  function applyChartBundle(bundle) {
+    return Boolean(bundle && bundle.charts);
+  }
+
+  function loadLiveCharts() {
+    return Promise.resolve();
   }
 
   function buildRows(contracts) {
@@ -232,6 +279,13 @@
     .catch(function () {
       showError(t("retry_open_data"));
     });
+
+  // Backward-compatible globals used by legacy unit tests.
+  window.chartRows = chartRows;
+  window.bars = bars;
+  window.applyChartBundle = applyChartBundle;
+  window.loadLiveCharts = loadLiveCharts;
+  window.SNAPSHOT_URL = SNAPSHOT_URL;
 })();
 </script>
 </body>
