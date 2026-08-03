@@ -2873,16 +2873,54 @@ function entityIntelligenceHTML(resp){
     </div>`;
 }
 
-function glanceFor(r){
+function numberLike(v){
+  const n = Number(String(v || "").replace(/[^0-9.\-]/g, ""));
+  return Number.isFinite(n) ? n : null;
+}
+function sameParty(a, b){
+  return String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
+}
+function actionRailGuideCoverage(actions){
+  const coverage = {
+    vendor: null,
+    amount: null,
+    deadline: null,
+  };
+  if(!Array.isArray(actions)) return coverage;
+  actions.forEach((action) => {
+    const guide = action && action.guide;
+    if(!guide) return;
+    if(guide.system === "award_lifecycle"){
+      if(guide.vendor) coverage.vendor = guide.vendor;
+      if(guide.amount) coverage.amount = guide.amount;
+    }
+    if(action.deadline) coverage.deadline = action.deadline;
+  });
+  return coverage;
+}
+function glanceFor(r, actionCoverage){
   const row = (k,v) => v ? `<div class="gl"><b>${k}</b><span>${v}</span></div>` : "";
+  const amountCovered = actionCoverage && actionCoverage.amount
+    ? numberLike(r.contract_amount) !== null
+      && numberLike(r.contract_amount) === numberLike(actionCoverage.amount)
+    : false;
+  const vendorCovered = actionCoverage && actionCoverage.vendor
+    ? sameParty(r.vendor_name, actionCoverage.vendor)
+    : false;
+  const dueCovered = actionCoverage && actionCoverage.deadline && r.due_date
+    ? String(actionCoverage.deadline).slice(0, 10) === String(r.due_date).slice(0, 10)
+    : false;
   const who = (r.agency_name ? pivotA(agencyHref(r.agency_name), agencyWho(r.agency_name)) : "")
-    + (r.vendor_name ? ` ${t("awarded_to")} <b>${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</b>` : "");
+    + (r.vendor_name && !vendorCovered ? ` ${t("awarded_to")} <b>${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</b>` : "");
   const amt = money(r.contract_amount);
-  const what = [r.type_of_notice_description, r.category_description || tSection(r.section_name)].filter(Boolean).join(" — ")
-    + (amt ? ` · <b>${amt}</b>` : "");
+  const what = [r.type_of_notice_description, r.category_description || tSection(r.section_name)]
+    .filter(Boolean).join(" — ")
+    + (amt && !amountCovered ? ` · <b>${amt}</b>` : "");
   const when = [
     r.start_date ? t("published_on",{date:fdt(r.start_date)}) : null,
-    r.due_date ? (isRollingDeadline(r.due_date) ? deadlineTag(r.due_date) : `${t("responses_due_html",{date:fdt(r.due_date)})} ${deadlineTag(r.due_date)}`) : null,
+    r.due_date && !dueCovered
+      ? (isRollingDeadline(r.due_date) ? deadlineTag(r.due_date) : `${t("responses_due_html",{date:fdt(r.due_date)})} ${deadlineTag(r.due_date)}`)
+      : null,
     r.event_date ? `${t("event_on_html",{date:fdt(r.event_date)})}${eventTag(r.event_date)}` : null
   ].filter(Boolean).join(" · ");
   const act = [];
@@ -3366,6 +3404,9 @@ function noticeAgencyBar(stats, agencyName, barClass){
 }
 function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
+  const initialActionsForGlance = window.CrolActions
+    ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
+    : [];
   let html = `<div class="actions" style="margin:0 0 12px">
     <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
     ${qrButtonHTML("dqr","act")}
@@ -3377,7 +3418,7 @@ function renderDetail(r, chain, stats){
   // Lead with the response path for solicitations (deadline / contact) before lifecycle
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
-  else html += glanceFor(r);
+  else html += glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
   html += `<div id="drules"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
 
   html += pending
@@ -6482,6 +6523,13 @@ function actionRailGuideHTML(actions){
   const action=actions.find(item=>item.guide);
   const guide=action&&action.guide;
   if(!guide) return "";
+  const factSeen = new Set();
+  const fact = (key, row) => {
+    if(!row) return "";
+    factSeen.add(key);
+    return row;
+  };
+  const step = (value, key) => (key && factSeen.has(key) ? "" : value);
   const copyFact=(label,value)=>value?`<dt>${label}</dt><dd><code>${escUiHtml(value)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(value)}">${t("copy_value")}</button></dd>`:"";
   const plainFact=(label,value)=>value?`<dt>${label}</dt><dd>${value}</dd>`:"";
   const hostOf=url=>{ try{ return new URL(url).hostname; }catch(e){ return url; } };
@@ -6500,9 +6548,9 @@ function actionRailGuideHTML(actions){
     const whereBits=[guide.venue_building,guide.venue_address].filter(Boolean);
     const where=whereBits.map(escUiHtml).join(" · ");
     facts=[
-      when?`<dt>${t("hearing_guide_when_label")}</dt><dd>${fdt(when)}</dd>`:"",
-      where?`<dt>${t("venue_label")}</dt><dd>${where}</dd>`:"",
-      guide.testimony_email?`<dt>${t("hearing_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`:"",
+      when?fact("hearing_when",`<dt>${t("hearing_guide_when_label")}</dt><dd>${fdt(when)}</dd>`):"",
+      where?fact("hearing_where",`<dt>${t("venue_label")}</dt><dd>${where}</dd>`):"",
+      guide.testimony_email?fact("hearing_testimony",`<dt>${t("hearing_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`):"",
       (()=>{
         const bits=[];
         if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
@@ -6510,31 +6558,31 @@ function actionRailGuideHTML(actions){
           bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
         }
         if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
-        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+        return bits.length?fact("hearing_contact",`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`):"";
       })(),
     ].join("");
-    if(when && where) steps.push(t("hearing_guide_attend_step",{date:fdt(when),where}));
-    else if(when) steps.push(t("hearing_guide_attend_date_step",{date:fdt(when)}));
-    else if(where) steps.push(t("hearing_guide_attend_where_step",{where}));
+    if(when && where) steps.push(step(t("hearing_guide_attend_step",{date:fdt(when),where}),"hearing_when"));
+    else if(when) steps.push(step(t("hearing_guide_attend_date_step",{date:fdt(when)}),"hearing_when"));
+    else if(where) steps.push(step(t("hearing_guide_attend_where_step",{where}),"hearing_where"));
     if(guide.participation_url){
       const host=escUiHtml(hostOf(guide.participation_url));
-      steps.push(guide.join_kind==="join"
+      steps.push(step(guide.join_kind==="join"
         ? t("hearing_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
-        : t("hearing_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}));
+        : t("hearing_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}),"hearing_participation"));
     }
     if(guide.testimony_email){
       const email=escUiHtml(guide.testimony_email);
       if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
-        steps.push(t("hearing_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}));
+        steps.push(step(t("hearing_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}),"hearing_testimony"));
       }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
-        steps.push(t("hearing_guide_testimony_until_close_step_html",{email}));
+        steps.push(step(t("hearing_guide_testimony_until_close_step_html",{email}),"hearing_testimony"));
       }else{
-        steps.push(t("hearing_guide_testimony_step_html",{email}));
+        steps.push(step(t("hearing_guide_testimony_step_html",{email}),"hearing_testimony"));
       }
     }
     if(guide.contact_name || guide.email || guide.contact_phone){
       const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
-      steps.push(t("hearing_guide_contact_step_html",{who}));
+      steps.push(step(t("hearing_guide_contact_step_html",{who}),"hearing_contact"));
     }
     if(!steps.length) steps.push(t("hearing_guide_fallback_step"));
   }
@@ -6546,10 +6594,10 @@ function actionRailGuideHTML(actions){
     const whereBits=[guide.venue_building,guide.venue_address].filter(Boolean);
     const where=whereBits.map(escUiHtml).join(" · ");
     facts=[
-      commentWhen?`<dt>${t("rule_guide_deadline_label")}</dt><dd>${fdt(commentWhen)}</dd>`:"",
-      hearingWhen?`<dt>${t("rule_guide_hearing_label")}</dt><dd>${fdt(hearingWhen)}</dd>`:"",
-      where?`<dt>${t("venue_label")}</dt><dd>${where}</dd>`:"",
-      guide.testimony_email?`<dt>${t("hearing_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`:"",
+      commentWhen?fact("rule_deadline",`<dt>${t("rule_guide_deadline_label")}</dt><dd>${fdt(commentWhen)}</dd>`):"",
+      hearingWhen?fact("rule_hearing",`<dt>${t("rule_guide_hearing_label")}</dt><dd>${fdt(hearingWhen)}</dd>`):"",
+      where?fact("rule_where",`<dt>${t("venue_label")}</dt><dd>${where}</dd>`):"",
+      guide.testimony_email?fact("rule_testimony",`<dt>${t("hearing_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`):"",
       (()=>{
         const bits=[];
         if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
@@ -6557,46 +6605,46 @@ function actionRailGuideHTML(actions){
           bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
         }
         if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
-        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+        return bits.length?fact("rule_contact",`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`):"";
       })(),
     ].join("");
-    if(commentWhen) steps.push(t("rule_guide_comment_by_step",{date:fdt(commentWhen)}));
+    if(commentWhen) steps.push(step(t("rule_guide_comment_by_step",{date:fdt(commentWhen)}), "rule_deadline"));
     if(guide.comment_url){
       const host=escUiHtml(hostOf(guide.comment_url));
-      steps.push(t("rule_guide_comment_portal_step_html",{url:escUiHtml(guide.comment_url),host}));
+      steps.push(step(t("rule_guide_comment_portal_step_html",{url:escUiHtml(guide.comment_url),host}),"rule_comment_portal"));
     }else if(guide.testimony_email || (guide.email && guide.comment_open)){
       const email=escUiHtml(guide.testimony_email||guide.email);
-      steps.push(t("rule_guide_comment_email_step_html",{email}));
+      steps.push(step(t("rule_guide_comment_email_step_html",{email}),"rule_testimony"));
     }else if(guide.rule_url && guide.comment_open){
       const host=escUiHtml(hostOf(guide.rule_url));
-      steps.push(t("rule_guide_comment_rule_page_step_html",{url:escUiHtml(guide.rule_url),host}));
+      steps.push(step(t("rule_guide_comment_rule_page_step_html",{url:escUiHtml(guide.rule_url),host}),"rule_rule_page"));
     }
-    if(hearingWhen && where) steps.push(t("rule_guide_attend_step",{date:fdt(hearingWhen),where}));
-    else if(hearingWhen) steps.push(t("rule_guide_attend_date_step",{date:fdt(hearingWhen)}));
-    else if(where && guide.hearing_upcoming) steps.push(t("rule_guide_attend_where_step",{where}));
+    if(hearingWhen && where) steps.push(step(t("rule_guide_attend_step",{date:fdt(hearingWhen),where}),"rule_hearing"));
+    else if(hearingWhen) steps.push(step(t("rule_guide_attend_date_step",{date:fdt(hearingWhen)}),"rule_hearing"));
+    else if(where && guide.hearing_upcoming) steps.push(step(t("rule_guide_attend_where_step",{where}),"rule_where"));
     if(guide.participation_url){
       const host=escUiHtml(hostOf(guide.participation_url));
-      steps.push(guide.join_kind==="join"
+      steps.push(step(guide.join_kind==="join"
         ? t("rule_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
-        : t("rule_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}));
+        : t("rule_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}),"rule_participation"));
     }
     // Testimony for a hearing is distinct from the comment-email how-to step above when both exist.
     if(guide.testimony_email && hearingWhen){
       const email=escUiHtml(guide.testimony_email);
       if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
-        steps.push(t("rule_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}));
+        steps.push(step(t("rule_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}),"rule_testimony"));
       }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
-        steps.push(t("rule_guide_testimony_until_close_step_html",{email}));
+        steps.push(step(t("rule_guide_testimony_until_close_step_html",{email}),"rule_testimony"));
       }else if(!guide.comment_open || guide.comment_url){
         // Avoid duplicating the how-to-comment email step when that was the only email path.
-        steps.push(t("rule_guide_testimony_step_html",{email}));
+        steps.push(step(t("rule_guide_testimony_step_html",{email}),"rule_testimony"));
       }
     }
     if(guide.contact_name || (guide.email && guide.email!==guide.testimony_email) || guide.contact_phone){
       const who=[guide.contact_name,
         (guide.email && guide.email!==guide.testimony_email)?guide.email:null,
         guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
-      if(who) steps.push(t("rule_guide_contact_step_html",{who}));
+      if(who) steps.push(step(t("rule_guide_contact_step_html",{who}),"rule_contact"));
     }
     if(!steps.length) steps.push(t("rule_guide_fallback_step"));
   }
@@ -6610,11 +6658,11 @@ function actionRailGuideHTML(actions){
       ? escUiHtml(guide.phase_label)
       : (guide.phase_id ? escUiHtml(landPhaseLabel(guide.phase_id)) : "");
     facts=[
-      phaseName?`<dt>${t("land_guide_phase_label")}</dt><dd>${phaseName}</dd>`:"",
-      guide.public_status?`<dt>${t("land_guide_status_label")}</dt><dd><b>${escUiHtml(guide.public_status)}</b></dd>`:"",
-      when?`<dt>${t("land_guide_hearing_label")}</dt><dd>${fdt(when)}${guide.next_hearing&&guide.next_hearing.agency?` · ${escUiHtml(guide.next_hearing.agency)}`:""}</dd>`:"",
-      where?`<dt>${t("venue_label")}</dt><dd>${where}</dd>`:"",
-      guide.testimony_email?`<dt>${t("land_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`:"",
+      phaseName?fact("land_phase",`<dt>${t("land_guide_phase_label")}</dt><dd>${phaseName}</dd>`):"",
+      guide.public_status?fact("land_status",`<dt>${t("land_guide_status_label")}</dt><dd><b>${escUiHtml(guide.public_status)}</b></dd>`):"",
+      when?fact("land_hearing",`<dt>${t("land_guide_hearing_label")}</dt><dd>${fdt(when)}${guide.next_hearing&&guide.next_hearing.agency?` · ${escUiHtml(guide.next_hearing.agency)}`:""}</dd>`):"",
+      where?fact("land_where",`<dt>${t("venue_label")}</dt><dd>${where}</dd>`):"",
+      guide.testimony_email?fact("land_testimony",`<dt>${t("land_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`):"",
       (()=>{
         const bits=[];
         if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
@@ -6622,51 +6670,51 @@ function actionRailGuideHTML(actions){
           bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
         }
         if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
-        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+        return bits.length?fact("land_contact",`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`):"";
       })(),
     ].join("");
     if(guide.mode==="closed"){
       steps.push(t("land_guide_closed_step"));
     }else if(guide.mode==="pre_review"){
-      steps.push(phaseName
+      steps.push(step(phaseName
         ? t("land_guide_pre_review_phase_step",{phase:phaseName})
-        : t("land_guide_pre_review_step"));
+        : t("land_guide_pre_review_step"),"land_phase"));
     }else if(phaseName){
-      steps.push(t("land_guide_phase_step",{phase:phaseName}));
+      steps.push(step(t("land_guide_phase_step",{phase:phaseName}),"land_phase"));
     }
-    if(when && where) steps.push(t("land_guide_attend_step",{date:fdt(when),where}));
-    else if(when) steps.push(t("land_guide_attend_date_step",{date:fdt(when)}));
-    else if(where) steps.push(t("land_guide_attend_where_step",{where}));
+    if(when && where) steps.push(step(t("land_guide_attend_step",{date:fdt(when),where}),"land_hearing"));
+    else if(when) steps.push(step(t("land_guide_attend_date_step",{date:fdt(when)}),"land_hearing"));
+    else if(where) steps.push(step(t("land_guide_attend_where_step",{where}),"land_where"));
     if(guide.participation_url){
       const host=escUiHtml(hostOf(guide.participation_url));
-      steps.push(guide.join_kind==="join"
+      steps.push(step(guide.join_kind==="join"
         ? t("land_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
-        : t("land_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}));
+        : t("land_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}),"land_participation"));
     }
     if(guide.testimony_email){
       const email=escUiHtml(guide.testimony_email);
       if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
-        steps.push(t("land_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}));
+        steps.push(step(t("land_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}),"land_testimony"));
       }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
-        steps.push(t("land_guide_testimony_until_close_step_html",{email}));
+        steps.push(step(t("land_guide_testimony_until_close_step_html",{email}),"land_testimony"));
       }else{
-        steps.push(t("land_guide_testimony_step_html",{email}));
+        steps.push(step(t("land_guide_testimony_step_html",{email}),"land_testimony"));
       }
     }
     if(guide.contact_name || guide.email || guide.contact_phone){
       const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
-      steps.push(t("land_guide_contact_step_html",{who}));
+      steps.push(step(t("land_guide_contact_step_html",{who}),"land_contact"));
     }
     if(guide.project_url && guide.mode==="public_review"){
       const host=escUiHtml(hostOf(guide.project_url));
-      steps.push(t("land_guide_zap_comment_step_html",{url:escUiHtml(guide.project_url),host}));
+      steps.push(step(t("land_guide_zap_comment_step_html",{url:escUiHtml(guide.project_url),host}),"land_project"));
     }else if(guide.project_url && guide.mode!=="closed"){
       const host=escUiHtml(hostOf(guide.project_url));
-      steps.push(t("land_guide_zap_project_step_html",{url:escUiHtml(guide.project_url),host}));
+      steps.push(step(t("land_guide_zap_project_step_html",{url:escUiHtml(guide.project_url),host}),"land_project"));
     }
     if(guide.official_notice_url && !guide.participation_url){
       const host=escUiHtml(hostOf(guide.official_notice_url));
-      steps.push(t("land_guide_notice_step_html",{url:escUiHtml(guide.official_notice_url),host}));
+      steps.push(step(t("land_guide_notice_step_html",{url:escUiHtml(guide.official_notice_url),host}),"land_notice"));
     }
     // Additional upcoming hearings (CB/BP/CPC/Council) beyond the primary.
     (guide.hearings||[]).slice(0,4).forEach(h=>{
@@ -6674,7 +6722,7 @@ function actionRailGuideHTML(actions){
       if(guide.next_hearing&&h.request_id&&guide.next_hearing.request_id===h.request_id) return;
       if(guide.next_hearing&&!h.request_id&&h.event_date===guide.next_hearing.event_date) return;
       const body=h.body_kind?landPhaseLabel(h.body_kind):escUiHtml(h.agency||h.title||"");
-      if(body) steps.push(t("land_guide_other_hearing_step",{body:escUiHtml(body),date:fdt(h.event_date)}));
+      if(body) steps.push(step(t("land_guide_other_hearing_step",{body:escUiHtml(body),date:fdt(h.event_date)}),"land_other_hearing"));
     });
     if(!steps.length) steps.push(t("land_guide_fallback_step"));
   }else if(guide.system==="award_lifecycle"){
@@ -6683,91 +6731,91 @@ function actionRailGuideHTML(actions){
     headingKey=guide.mode==="selection"?"award_guide_selection_heading":"award_guide_heading";
     const regDate=guide.registration_date?fdate(guide.registration_date):null;
     facts=[
-      guide.vendor?`<dt>${t("award_guide_vendor_label")}</dt><dd lang="en" dir="ltr"><b>${escUiHtml(guide.vendor)}</b></dd>`:"",
-      guide.amount?`<dt>${t("award_guide_amount_label")}</dt><dd><b>${escUiHtml(guide.amount)}</b></dd>`:"",
-      regDate?`<dt>${t("award_guide_registered_label")}</dt><dd>${escUiHtml(regDate)}</dd>`:"",
+      guide.vendor?fact("award_vendor",`<dt>${t("award_guide_vendor_label")}</dt><dd lang="en" dir="ltr"><b>${escUiHtml(guide.vendor)}</b></dd>`):"",
+      guide.amount?fact("award_amount",`<dt>${t("award_guide_amount_label")}</dt><dd><b>${escUiHtml(guide.amount)}</b></dd>`):"",
+      regDate?fact("award_registered",`<dt>${t("award_guide_registered_label")}</dt><dd>${escUiHtml(regDate)}</dd>`):"",
       guide.pending_registration&&!guide.registered
-        ?`<dt>${t("award_guide_pending_label")}</dt><dd>${t("award_guide_pending_status")}</dd>`:"",
-      guide.spent?`<dt>${t("award_guide_spent_label")}</dt><dd><b>${escUiHtml(guide.spent)}</b></dd>`:"",
-      guide.contract_id?`<dt>${t("award_guide_contract_label")}</dt><dd><code>${escUiHtml(guide.contract_id)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.contract_id)}">${t("copy_value")}</button></dd>`:"",
-      guide.pin?`<dt>${t("award_guide_pin_label")}</dt><dd><code>${escUiHtml(guide.pin)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.pin)}">${t("copy_value")}</button></dd>`:"",
+        ?fact("award_pending",`<dt>${t("award_guide_pending_label")}</dt><dd>${t("award_guide_pending_status")}</dd>`):"",
+      guide.spent?fact("award_spent",`<dt>${t("award_guide_spent_label")}</dt><dd><b>${escUiHtml(guide.spent)}</b></dd>`):"",
+      guide.contract_id?fact("award_contract",`<dt>${t("award_guide_contract_label")}</dt><dd><code>${escUiHtml(guide.contract_id)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.contract_id)}">${t("copy_value")}</button></dd>`):"",
+      guide.pin?fact("award_pin",`<dt>${t("award_guide_pin_label")}</dt><dd><code>${escUiHtml(guide.pin)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.pin)}">${t("copy_value")}</button></dd>`):"",
     ].join("");
     if(guide.mode==="selection"){
       if(guide.selection_phase==="intent_to_award") steps.push(t("award_guide_selection_intent_award_step"));
       else if(guide.selection_phase==="intent_to_negotiate") steps.push(t("award_guide_selection_intent_negotiate_step"));
       else if(guide.selection_phase==="vendor_list") steps.push(t("award_guide_selection_vendor_list_step"));
       else steps.push(t("award_guide_selection_intent_award_step"));
-      if(guide.vendor) steps.push(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}));
-      if(guide.amount) steps.push(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}));
-      steps.push(t("award_guide_no_bid_step"));
+      if(guide.vendor) steps.push(step(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}),"award_vendor"));
+      if(guide.amount) steps.push(step(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}),"award_amount"));
+      steps.push(step(t("award_guide_no_bid_step"),"award_no_bid"));
       steps.push(t("award_guide_selection_watch_step"));
     }else{
-      if(guide.vendor) steps.push(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}));
-      if(guide.amount) steps.push(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}));
-      if(guide.registered&&regDate) steps.push(t("award_guide_registered_step",{date:escUiHtml(regDate)}));
+      if(guide.vendor) steps.push(step(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}),"award_vendor"));
+      if(guide.amount) steps.push(step(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}),"award_amount"));
+      if(guide.registered&&regDate) steps.push(step(t("award_guide_registered_step",{date:escUiHtml(regDate)}),"award_registered"));
       else if(guide.pending_registration) steps.push(t("award_guide_pending_step"));
-      if(guide.spent) steps.push(t("award_guide_spent_step",{amount:escUiHtml(guide.spent)}));
-      steps.push(t("award_guide_no_bid_step"));
+      if(guide.spent) steps.push(step(t("award_guide_spent_step",{amount:escUiHtml(guide.spent)}),"award_spent"));
+      steps.push(step(t("award_guide_no_bid_step"),"award_no_bid"));
     }
     if(guide.checkbook_url){
       const host=escUiHtml(hostOf(guide.checkbook_url));
-      steps.push(t("award_guide_checkbook_step_html",{url:escUiHtml(guide.checkbook_url),host}));
+      steps.push(step(t("award_guide_checkbook_step_html",{url:escUiHtml(guide.checkbook_url),host}),"award_checkbook"));
     }
     if(!steps.length) steps.push(t("award_guide_fallback_step"));
   }else if(guide.system==="parcel_lookup"){
-    if(guide.bbl) steps.push(t("property_guide_bbl_step",{bbl:escUiHtml(guide.bbl)}));
-    if(guide.zola_url) steps.push(t("property_guide_zola_step_html",{url:escUiHtml(guide.zola_url)}));
-    if(guide.acris_url) steps.push(t("property_guide_acris_step_html",{url:escUiHtml(guide.acris_url)}));
-    if(guide.who_owns_what_url) steps.push(t("property_guide_wow_step_html",{url:escUiHtml(guide.who_owns_what_url)}));
-    if(guide.owner_name) steps.push(t("property_guide_owner_step",{name:escUiHtml(guide.owner_name)}));
+    if(guide.bbl) steps.push(step(t("property_guide_bbl_step",{bbl:escUiHtml(guide.bbl)}),"property_bbl"));
+    if(guide.zola_url) steps.push(step(t("property_guide_zola_step_html",{url:escUiHtml(guide.zola_url)}),"property_zola"));
+    if(guide.acris_url) steps.push(step(t("property_guide_acris_step_html",{url:escUiHtml(guide.acris_url)}),"property_acris"));
+    if(guide.who_owns_what_url) steps.push(step(t("property_guide_wow_step_html",{url:escUiHtml(guide.who_owns_what_url)}),"property_wow"));
+    if(guide.owner_name) steps.push(step(t("property_guide_owner_step",{name:escUiHtml(guide.owner_name)}),"property_owner"));
     if(guide.email || guide.contact_name || guide.contact_phone){
       const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
-      steps.push(t("bid_guide_notice_contact_step_html",{who}));
+      steps.push(step(t("bid_guide_notice_contact_step_html",{who}),"property_contact"));
     }
     if(!steps.length) steps.push(t("property_guide_fallback_step"));
   }else{
     facts=[
-      guide.identifier?`<dt>${t("bid_guide_id_label")}</dt><dd>${idValue}<button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.identifier)}">${t("copy_value")}</button></dd>`:"",
-      copyFact(t("bid_guide_name_label"),guide.procurement_name),
-      guide.status?`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`:"",
-      action.deadline?`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`:"",
+      guide.identifier?fact("guide_identifier",`<dt>${t("bid_guide_id_label")}</dt><dd>${idValue}<button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.identifier)}">${t("copy_value")}</button></dd>`):"",
+      guide.procurement_name?copyFact(t("bid_guide_name_label"),guide.procurement_name):"",
+      guide.status?fact("guide_status",`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`):"",
+      action.deadline?fact("guide_due",`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`):"",
       guide.selection_method?plainFact(t("apply_method_lbl"),escUiHtml(guide.selection_method)):"",
       (()=>{
         const bits=[];
         if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
         if(guide.email) bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
         if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
-        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+        return bits.length?fact("guide_contact",`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`):"";
       })(),
-      guide.address_to_request?plainFact(t("apply_submit_lbl"),escUiHtml(guide.address_to_request)):"",
+      guide.address_to_request?fact("guide_submit",plainFact(t("apply_submit_lbl"),escUiHtml(guide.address_to_request))):"",
     ].join("");
     if(guide.system==="nycha_isupplier"){
       steps=[t("bid_guide_nycha_register_step"),t("bid_guide_nycha_search_step"),t("bid_guide_nycha_submit_step")];
       if(guide.approval_delay) steps.splice(1,0,t("bid_guide_nycha_delay_step"));
     }else if(guide.system==="notice_portal"){
       steps=[
-        t("bid_guide_named_portal_open_step",{system:escUiHtml(guide.system_name||"")}),
-        t("bid_guide_named_portal_search_step"),
-        t("bid_guide_named_portal_submit_step"),
+        step(t("bid_guide_named_portal_open_step",{system:escUiHtml(guide.system_name||"")}),"notice_portal_open"),
+        step(t("bid_guide_named_portal_search_step"),"notice_portal_search"),
+        step(t("bid_guide_named_portal_submit_step"),"notice_portal_submit"),
       ];
     }else if(guide.system==="notice_extracted"){
       // Concrete steps extracted from this notice's fields and body — never "see the official notice."
-      if(action.deadline) steps.push(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}));
+      if(action.deadline) steps.push(step(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}),"guide_due"));
       if(guide.package_url){
-        steps.push(t("bid_guide_notice_package_step_html",{
+        steps.push(step(t("bid_guide_notice_package_step_html",{
           url:escUiHtml(guide.package_url),
           host:escUiHtml(hostOf(guide.package_url))
-        }));
+        }),"guide_package"));
       }
       if(guide.email || guide.contact_name || guide.contact_phone){
         const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
-        steps.push(t("bid_guide_notice_contact_step_html",{who}));
+        steps.push(step(t("bid_guide_notice_contact_step_html",{who}),"guide_contact"));
       }
       if(guide.address_to_request){
-        steps.push(t("bid_guide_notice_submit_step",{where:escUiHtml(guide.address_to_request)}));
+        steps.push(step(t("bid_guide_notice_submit_step",{where:escUiHtml(guide.address_to_request)}),"guide_submit"));
       }
       if(guide.selection_method){
-        steps.push(t("bid_guide_notice_method_step",{method:escUiHtml(guide.selection_method)}));
+        steps.push(step(t("bid_guide_notice_method_step",{method:escUiHtml(guide.selection_method)}),"guide_method"));
       }
       if(!steps.length){
         steps.push(t("bid_guide_notice_fallback_step"));
@@ -6779,10 +6827,13 @@ function actionRailGuideHTML(actions){
           ? t("bid_guide_passport_released_step")
           : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`);
         steps.push(t("bid_guide_passport_submit_step"));
-      }else steps.push(t("bid_guide_passport_unmatched_step"),t("bid_guide_passport_submit_step"));
+      }else steps.push(
+        t("bid_guide_passport_unmatched_step"),
+        t("bid_guide_passport_submit_step")
+      );
     }
   }
-  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map(step=>`<li>${step}</li>`).join("")}</ol></details>`;
+  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol></details>`;
 }
 function actionRailHTML(actions){
   let primaryUsed=false;
@@ -9989,6 +10040,7 @@ function lifecyclePaymentSummaryHTML(paid, committed, opts){
   opts = opts || {};
   const committedN = committed != null ? Number(committed) : 0;
   const state = opts.paymentState || null;
+  const includeZeroLag = opts.includeZeroLag !== false;
   let html = "";
   if(state === "unavailable"){
     html += `<div class="lc-pct">${t("lifecycle_payment_unavailable_html")}</div>`;
@@ -9998,7 +10050,7 @@ function lifecyclePaymentSummaryHTML(paid, committed, opts){
       paid: lifecycleMoney(paidN),
       committed: lifecycleMoney(committedN)
     })}</div>`;
-    if(paidN === 0 && opts.zeroLag !== false){
+    if(paidN === 0 && opts.zeroLag !== false && includeZeroLag){
       html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
     } else if(opts.ceilingNote){
       html += `<div class="lc-pct">${t("lifecycle_committed_ceiling_note_html")}</div>`;
@@ -14375,6 +14427,9 @@ async function showNotice(id, watch){
     ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`
     : title;
   const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
+  const initialActionsForGlance = window.CrolActions
+    ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
+    : [];
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
@@ -14384,7 +14439,7 @@ async function showNotice(id, watch){
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
-      ${glanceFor(r)}
+      ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
       <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
