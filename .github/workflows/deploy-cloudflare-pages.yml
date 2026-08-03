@@ -75,6 +75,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: ./.github/actions/setup-playwright
       - name: Smoke cityscroll.pages.dev
         run: >-
           node tools/live_url_smoke.mjs
@@ -89,6 +90,11 @@ jobs:
           --timeout-ms 720000
           --interval-ms 20000
           --out docs/evidence/cloudflare-pages-route-parity.md
+      - name: Render the live civil-service exam guide
+        env:
+          CROL_BASE: https://cityscroll.pages.dev/
+          CROL_DEMO_LINK_IDS: exam-guide
+        run: python3 test/functional/20_demo_links.py
       - name: Upload parity report
         if: always()
         uses: actions/upload-artifact@v4
