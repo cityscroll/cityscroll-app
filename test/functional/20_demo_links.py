@@ -244,10 +244,18 @@ def visible_locator(page, expected: dict):
 # measured at ~12–17s ("Loading decision documents and outcomes…"), so a flat 15s
 # wait_for races that spinner and flakes every merge-group candidate. Wait out the
 # known-slow load rather than weakening the assertions.
+#
+# Property list hydrates GET /property-locations (client workerFetch budget 12s) then
+# paints #assettabs + #propertyfeed. On production CI runners a cold edge miss or
+# shared-session re-fetch can exceed a flat 15s and time out waiting for asset chips
+# (property-honest-location-fallback / scenario-legal-compliance) even when the live
+# contract is healthy — measured 2026-08-03 against cityscroll.org.
 DEFAULT_WAIT_MS = 15_000
 SLOW_LAND_WAIT_MS = 30_000
+SLOW_PROPERTY_WAIT_MS = 30_000
 DEFAULT_GOTO_MS = 30_000
 SLOW_LAND_GOTO_MS = 45_000
+SLOW_PROPERTY_GOTO_MS = 45_000
 SLOW_LAND_ENTRY_IDS = frozenset({
     "scenario-neighborhood",
     "land-pipeline-hearing-logistics",
@@ -256,6 +264,15 @@ SLOW_LAND_FEATURES = frozenset({
     "scenario-neighborhood",
     "land-pipeline-hearing-logistics",
 })
+SLOW_PROPERTY_ENTRY_IDS = frozenset({
+    "property-honest-location-fallback",
+    "property-brooklyn-sites",
+    "scenario-legal-compliance",
+})
+SLOW_PROPERTY_FEATURES = frozenset({
+    "property-location-fallback",
+    "scenario-legal-compliance",
+})
 
 
 def is_slow_land_entry(entry: dict) -> bool:
@@ -263,12 +280,29 @@ def is_slow_land_entry(entry: dict) -> bool:
     return entry.get("id") in SLOW_LAND_ENTRY_IDS or entry.get("feature") in SLOW_LAND_FEATURES
 
 
+def is_slow_property_entry(entry: dict) -> bool:
+    """True for Property list routes that wait on /property-locations + asset tab paint."""
+    return (
+        entry.get("id") in SLOW_PROPERTY_ENTRY_IDS
+        or entry.get("feature") in SLOW_PROPERTY_FEATURES
+        or str(entry.get("url") or "").startswith("#property")
+    )
+
+
 def entry_wait_ms(entry: dict) -> int:
-    return SLOW_LAND_WAIT_MS if is_slow_land_entry(entry) else DEFAULT_WAIT_MS
+    if is_slow_land_entry(entry):
+        return SLOW_LAND_WAIT_MS
+    if is_slow_property_entry(entry):
+        return SLOW_PROPERTY_WAIT_MS
+    return DEFAULT_WAIT_MS
 
 
 def entry_goto_ms(entry: dict) -> int:
-    return SLOW_LAND_GOTO_MS if is_slow_land_entry(entry) else DEFAULT_GOTO_MS
+    if is_slow_land_entry(entry):
+        return SLOW_LAND_GOTO_MS
+    if is_slow_property_entry(entry):
+        return SLOW_PROPERTY_GOTO_MS
+    return DEFAULT_GOTO_MS
 
 
 def wait_land_detail_ready(page, timeout_ms: int) -> None:
@@ -292,6 +326,27 @@ def wait_land_detail_ready(page, timeout_ms: int) -> None:
             if (outcomes.querySelector('.loading')) return false;
             const note = outcomes.querySelector('.note');
             if (note && /loading/i.test(note.textContent || '')) return false;
+            return true;
+        }""",
+        timeout=timeout_ms,
+    )
+
+
+def wait_property_explorer_ready(page, timeout_ms: int) -> None:
+    """Wait for Property list cold path before asserting demo targets.
+
+    /property-locations must return and renderPropExplorer must paint asset chips
+    and feed cards (not the busyList skeleton). Asset tabs are empty until that
+    paint, so chip state asserts race the fetch without this gate.
+    """
+    page.wait_for_function(
+        """() => {
+            const tabs = document.querySelector('#assettabs');
+            const feed = document.querySelector('#propertyfeed');
+            if (!tabs || !feed) return false;
+            if (!tabs.querySelector('[data-a]')) return false;
+            if (feed.querySelector('.empty.skel, .loading, .skl')) return false;
+            if (!feed.querySelector('.fcard') && !feed.querySelector('.empty')) return false;
             return true;
         }""",
         timeout=timeout_ms,
@@ -336,6 +391,8 @@ class DemoLinkContract(unittest.TestCase):
 
         if is_slow_land_entry(entry):
             wait_land_detail_ready(page, wait_ms)
+        if is_slow_property_entry(entry):
+            wait_property_explorer_ready(page, wait_ms)
 
         for expected in expectations["visible"]:
             locator = visible_locator(page, expected)
@@ -358,12 +415,41 @@ class DemoLinkContract(unittest.TestCase):
         for state in expectations.get("states", []):
             locator = page.locator(state["selector"]).first
             locator.wait_for(state="attached", timeout=wait_ms)
-            actual = (
-                locator.get_attribute(state["attribute"])
-                if "attribute" in state
-                else locator.evaluate("(element, property) => element[property]", state["property"])
-            )
-            self.assertEqual(actual, state["equals"], f"{entry['id']}: state mismatch for {state['selector']}")
+            if "attribute" in state:
+                actual = locator.get_attribute(state["attribute"])
+                expected_value = state["equals"]
+                # Chip chrome is `class="chip on"` today; accept token membership so a
+                # future extra class token does not flake exact-string equality.
+                if state["attribute"] == "class" and isinstance(expected_value, str):
+                    # Token membership on the class attribute (product CSS chrome).
+                    actual_class = f" {actual or ''} "
+                    missing = [
+                        token
+                        for token in expected_value.split()
+                        if token and f" {token} " not in actual_class
+                    ]
+                    self.assertEqual(
+                        missing,
+                        [],
+                        f"{entry['id']}: state mismatch for {state['selector']}: "
+                        f"missing class token(s) {missing} in {actual!r}",
+                    )
+                else:
+                    self.assertEqual(
+                        actual,
+                        expected_value,
+                        f"{entry['id']}: state mismatch for {state['selector']}",
+                    )
+            else:
+                actual = locator.evaluate(
+                    "(element, property) => element[property]",
+                    state["property"],
+                )
+                self.assertEqual(
+                    actual,
+                    state["equals"],
+                    f"{entry['id']}: state mismatch for {state['selector']}",
+                )
 
         if "banner" in expectations:
             banner = expectations["banner"]

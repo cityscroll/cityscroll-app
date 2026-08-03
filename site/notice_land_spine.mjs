@@ -16,11 +16,20 @@
  * Wrong universe: Property Disposition notices are not ZAP ULURP projects.
  */
 
-export const NOTICE_LAND_SPINE_SCHEMA_VERSION = 1;
+export {
+  extractUlurpKeys,
+  isPlausibleUlurpKey,
+  isPlausibleUlurpSuffix,
+  filterPlausibleUlurpKeys,
+} from "./ulurp_tokens.mjs";
 
-/** Optional type letter + 6-digit body + 1–4 letter suffix (spaces optional).
- *  Pattern aligned with worker/src/lib/ulurp_recommendations_join.mjs extractUlurpKeys. */
-const ULURP_KEY_RE = /(?:(?<type>[A-Z])\s*)?(?<num>\d{6})\s*(?<suf>[A-Z]{1,4})/gi;
+import {
+  extractUlurpKeys,
+  isPlausibleUlurpKey,
+  filterPlausibleUlurpKeys,
+} from "./ulurp_tokens.mjs";
+
+export const NOTICE_LAND_SPINE_SCHEMA_VERSION = 1;
 
 /** ZAP portal / API project ids: 2022M0258 or P2018X0210. */
 const ZAP_PROJECT_ID_RE = /\b(P?\d{4}[A-Z]\d{3,6})\b/gi;
@@ -30,27 +39,6 @@ function clean(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
   return s || null;
-}
-
-/**
- * Extract strict ULURP join keys from free text (same rules as worker extractUlurpKeys).
- * @param {string|null|undefined} value
- * @returns {Set<string>}
- */
-export function extractUlurpKeys(value) {
-  const keys = new Set();
-  if (value == null) return keys;
-  const text = String(value).toUpperCase();
-  for (const m of text.matchAll(ULURP_KEY_RE)) {
-    const typ = (m.groups?.type || "").toUpperCase();
-    const num = m.groups?.num;
-    const suf = (m.groups?.suf || "").toUpperCase();
-    if (!num || !suf) continue;
-    const core = `${num}${suf}`;
-    keys.add(core);
-    if (typ) keys.add(`${typ}${core}`);
-  }
-  return keys;
 }
 
 /**
@@ -103,9 +91,10 @@ export function extractNoticeLandRefs(notice) {
   const ulurp = extractUlurpKeys(body_blob);
   const zap = extractZapProjectIds(body_blob);
   if (notice && typeof notice === "object") {
-    for (const k of Array.isArray(notice.ulurp_keys) ? notice.ulurp_keys : []) {
-      const key = clean(k);
-      if (key) ulurp.add(key.toUpperCase());
+    // Pre-stamped keys must still pass the token rules (stale snapshots may
+    // carry Zoom/phone false positives like 302621MEET).
+    for (const k of filterPlausibleUlurpKeys(notice.ulurp_keys)) {
+      ulurp.add(k);
     }
     for (const id of Array.isArray(notice.zap_project_ids) ? notice.zap_project_ids : []) {
       const cleanId = clean(id);
@@ -308,3 +297,109 @@ export function noticeLandJoinReceipt(resolution) {
     reason: resolution.reason,
   };
 }
+
+/**
+ * Classify extracted ULURP tokens as plausible vs malformed (for class measurement).
+ * @param {Iterable<string>|null|undefined} keys
+ */
+export function classifyUlurpKeySet(keys) {
+  const all = [...(keys || [])].map((k) => String(k || "").toUpperCase()).filter(Boolean);
+  const plausible = [];
+  const malformed = [];
+  for (const k of all) {
+    if (isPlausibleUlurpKey(k)) plausible.push(k);
+    else malformed.push(k);
+  }
+  return {
+    keys: all.sort(),
+    plausible: plausible.sort(),
+    malformed: malformed.sort(),
+    has_malformed: malformed.length > 0,
+    has_plausible: plausible.length > 0,
+  };
+}
+
+/**
+ * Named join-resolution scorecard over a notice corpus + ZAP reverse index.
+ * Separates malformed extracted ids (extractor bug class) from genuine
+ * portal-misses (plausible ULURP, no unique warehouse row).
+ *
+ * @param {Iterable<object>} notices
+ * @param {{ byUlurp: Map, byProjectId: Map }|null|undefined} index
+ * @returns {object}
+ */
+export function measureNoticeLandJoinResolution(notices, index) {
+  let eligible = 0;
+  let matched = 0;
+  let unmatched_plausible = 0;
+  let unmatched_malformed_only = 0;
+  let ambiguous = 0;
+  let no_index = 0;
+  let not_eligible = 0;
+  const malformed_examples = [];
+
+  for (const notice of notices || []) {
+    const stamped = Array.isArray(notice?.ulurp_keys) ? notice.ulurp_keys : [];
+    const stampedClass = classifyUlurpKeySet(stamped);
+    // Inspect raw stamps even when the strict extractor drops them from eligibility
+    // so Zoom/phone false positives remain a measurable class.
+    if (!isNoticeLandSpineEligible(notice)) {
+      if (stampedClass.has_malformed && !stampedClass.has_plausible) {
+        unmatched_malformed_only += 1;
+        if (malformed_examples.length < 12) {
+          malformed_examples.push({
+            request_id: notice?.request_id || null,
+            keys: stampedClass.malformed,
+          });
+        }
+      } else {
+        not_eligible += 1;
+      }
+      continue;
+    }
+
+    eligible += 1;
+    const resolution = resolveZapProjectForNotice(notice, index);
+    if (resolution?.reason === "no_index") {
+      no_index += 1;
+      continue;
+    }
+    if (resolution?.matched) {
+      matched += 1;
+      continue;
+    }
+    if (resolution?.reason === "ambiguous_project") {
+      ambiguous += 1;
+      continue;
+    }
+    unmatched_plausible += 1;
+  }
+
+  const join_resolution_rate = eligible
+    ? Number((matched / eligible).toFixed(4))
+    : null;
+  const malformed_share_of_unresolved = (unmatched_plausible + unmatched_malformed_only + ambiguous) > 0
+    ? Number(
+      (
+        unmatched_malformed_only
+        / (unmatched_plausible + unmatched_malformed_only + ambiguous)
+      ).toFixed(4),
+    )
+    : 0;
+
+  return {
+    metric: "notice_land_join_resolution_rate",
+    eligible,
+    matched,
+    unmatched_plausible,
+    unmatched_malformed_only,
+    ambiguous,
+    no_index,
+    not_eligible,
+    join_resolution_rate,
+    malformed_share_of_unresolved,
+    malformed_examples,
+  };
+}
+
+
