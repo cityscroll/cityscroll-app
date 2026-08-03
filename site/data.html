@@ -4,26 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Data · CityScroll</title>
-<meta name="description" content="The City Record dataset at a glance: what gets published, by whom, for how much — live aggregates straight from NYC Open Data, honestly labeled.">
-<meta name="robots" content="noindex,follow">
-<link rel="canonical" href="https://cityscroll.org/about.html#data">
+<meta name="description" content="The current source-contract registry for CityScroll: each live and disabled source, its freshness tier, and how it is used.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cityscroll.org/data.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CityScroll">
 <meta property="og:title" content="The Data · CityScroll">
-<meta property="og:description" content="Explore live, honestly labeled City Record totals and procurement patterns from NYC Open Data.">
-<meta property="og:url" content="https://cityscroll.org/about.html#data">
+<meta property="og:description" content="Current source-contract registry and materialization tiers for CityScroll sources.">
+<meta property="og:url" content="https://cityscroll.org/data.html">
 <meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
-<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta property="og:image:alt" content="CityScroll source registry overview">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#173f55">
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="site.webmanifest">
-<script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
-<script defer src="beta_flags.js?v=1.0.0"></script>
-<script defer src="analytics.js?v=1.2.0"></script>
-<script defer src="clarity.js?v=1.0.0"></script>
+<link rel="stylesheet" href="brand.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -34,268 +31,205 @@
     --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
     --green:#2f4a32; --oxblood:#7a1f1f;
     --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
-    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+    --font-ui:ui-sans-serif,system-ui,sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
-  .wrap{position:relative;max-width:760px;margin:0 auto;padding:0 22px 80px}
-  a{color:var(--oxblood)}
-  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px 100px}
+  .rule{border-top:3px solid var(--ink)} .rule--bottom{border-top:3px double var(--ink)}
   header{padding-top:18px;text-align:center}
   .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
   .home:hover .cr-title{color:var(--oxblood)}
-  .cr-seal{width:34px;height:34px;color:var(--ink)}
   .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
-  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
-  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
-  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  .kicker{font-family:var(--font-ui);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .32em}
+  .backhome{display:inline-block;margin-top:8px;font:600 13px/1 var(--font-ui);text-decoration:none;color:var(--oxblood)}
   .backhome:hover{text-decoration:underline}
-  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 8px}
-  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:30px 0 8px;border-top:1px solid var(--rule);padding-top:16px}
-  p{margin:10px 0}
-  .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
-  .note{font:13px/1.6 var(--ui);color:var(--muted)}
-  .bars{margin:12px 0}
-  .bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:end;margin:10px 0;font:14px/1.35 var(--ui)}
-  .bar .lbl{color:var(--ink-soft);text-align:start;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bar .trk{grid-column:1/-1;background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;height:13px;position:relative;overflow:hidden}
-  .bar .fil{display:block;background:var(--green);height:100%;border-radius:2px}
-  .bar .val{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:end}
-  @media(max-width:520px){.bar .lbl{white-space:normal;line-height:1.25}}
-  .loading{font:14px/1.6 var(--ui);color:var(--muted);padding:8px 0}
-  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  .lede{font-size:16px;color:var(--ink-soft);margin:18px 0 10px;text-wrap:pretty}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0 8px}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:11px;padding:14px 15px;box-shadow:var(--shadow)}
+  .card strong{display:block;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--oxblood);margin-bottom:4px}
+  .card span{font:20px/1.2 var(--font-ui);font-variant-numeric:tabular-nums}
+  p{margin:11px 0}
+  .hint{font:13px/1.55 var(--font-ui);color:var(--muted);margin-top:0}
+  .panel{margin-top:24px}
+  h2{font-family:var(--font-ui);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:28px 0 10px;border-top:1px solid var(--rule);padding-top:16px}
+  .src-table-wrap{overflow:auto;border:1px solid var(--rule);background:#fff}
+  table{width:100%;min-width:780px;border-collapse:collapse;font:14px/1.45 var(--font-ui)}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+  th{background:var(--paper-2);font-weight:700;white-space:nowrap}
+  tbody tr:nth-child(odd){background:#fff8ec22}
+  .status{font:13px var(--font-ui);font-weight:700}
+  .status-live{color:#1f5f31}.status-disabled{color:#6a4f07}.status-paused{color:#6f3c2d}
+  .tier{color:var(--ink-soft)}
+  .notes{margin-top:26px;font:14px/1.6 var(--font-ui);color:var(--muted)}
+  .foot{margin-top:34px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--font-ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
-  /* language switcher — matches index.html */
-  .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}.lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}.lang-select:focus-visible{outline:2px solid var(--blue,#1f3a5f);outline-offset:2px}
-  .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
-  :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
-  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
-  .skip:focus{left:0}
+  .fail{color:#7a2323;font-weight:600}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  .sr-only{position:absolute;left:-9999px;top:0}
 </style>
-<link rel="stylesheet" href="brand.css">
 </head>
 <body>
-<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
+<a class="sr-only" href="#main">Skip to content</a>
 <div class="wrap">
 <header>
-  <div class="cr-rule"></div>
-  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
+  <div class="rule"></div>
+  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home">
     <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
       <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
       <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <span class="cr-title">CityScroll</span>
   </a>
-  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
-  <h1 data-i18n="data_page_h1">The Data</h1>
-      <div class="lang-switcher" id="langSwitcher">
-      <select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language">
-        <option value="en" lang="en">English</option>
-        <option value="es" lang="es">Español</option>
-        <option value="zh-Hans" lang="zh-Hans">中文（简体）</option>
-        <option value="ru" lang="ru">Русский</option>
-        <option value="bn" lang="bn">বাংলা</option>
-        <option value="ht" lang="ht">Kreyòl ayisyen</option>
-        <option value="ko" lang="ko">한국어</option>
-        <option value="fr" lang="fr">Français</option>
-        <option value="pl" lang="pl">Polski</option>
-        <option value="ar" lang="ar" dir="rtl">العربية</option>
-        <option value="ur" lang="ur" dir="rtl">اردو</option>
-      </select>
-    </div>
-  <div id="langNotice" class="lang-notice" hidden></div>
-  <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
+  <div class="kicker">The City Record, searchable</div>
+  <h1>The Data</h1>
+  <a class="backhome" href="index.html">← Back to CityScroll</a>
 </header>
 
-<main id="main" tabindex="-1">
-<p class="lede" data-i18n-html="data_p_lede_html">The City Record dataset at a glance. Your browser pulls live totals from
-<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>.
-Nothing is saved on the server. The numbers follow the
-<a href="about.html#data">honesty rules</a>. Stats stay in their own section. We exclude
-likely data-entry errors: amounts of $10 billion or more. Placeholder deadlines
-aren't real.</p>
+<main id="main">
+  <p class="lede" id="data-description">This surface is a source-first inventory for the current product. It is replaced as sources are updated through the source-contract registry, and it is checked by live and deterministic verification checks.</p>
 
-<h2 data-i18n-html="data_h_sections_html">What the record really shows <span class="note">(all time, by section)</span></h2>
-<p class="note" data-i18n="data_note_sections_body">Most of the City Record is paperwork about civil-service jobs. The notices that matter to the public are only a small part of it. That is why every number on this site is shown per section.</p>
-<div class="bars" id="sections"><div class="loading" data-i18n="data_loading_counting">Counting 1M+ notices…</div></div>
+  <section class="stats" aria-label="Source inventory counts">
+    <div class="card"><strong>Total sources</strong><span id="total-sources">—</span></div>
+    <div class="card"><strong>Live</strong><span id="live-sources">—</span></div>
+    <div class="card"><strong>Build-time</strong><span id="build-sources">—</span></div>
+    <div class="card"><strong>Disabled</strong><span id="disabled-sources">—</span></div>
+  </section>
 
-<h2 data-i18n-html="data_h_volume_html">How many were published <span class="note">(last 12 months)</span></h2>
-<div class="bars" id="volume"><div class="loading" data-i18n="loading_data">Loading…</div></div>
+  <p class="hint">Read the live registry JSON directly: <a href="data/source_contracts.json">site/data/source_contracts.json</a>. The generated ledger lives in the repository at <a href="https://github.com/cityscroll/crol-list/blob/main/docs/data-sources.md">docs/data-sources.md</a>.</p>
 
-<h2 data-i18n-html="data_h_procmix_html">Procurement mix <span class="note">(last 12 months, by notice type)</span></h2>
-<div class="bars" id="procmix"><div class="loading" data-i18n="loading_data">Loading…</div></div>
+  <div class="panel" id="source-table-panel">
+    <p id="load-state" class="fail">Loading source registry…</p>
+    <div class="src-table-wrap" hidden>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:110px">Status</th>
+            <th style="width:140px">Delivery tier</th>
+            <th>Source</th>
+            <th>Product use</th>
+            <th>Freshness</th>
+          </tr>
+        </thead>
+        <tbody id="source-body"></tbody>
+      </table>
+    </div>
+  </div>
 
-<h2 data-i18n-html="data_h_agencies_html">Top agencies by awarded dollars <span class="note">(last 12 months, cleaned)</span></h2>
-<p class="note" data-i18n-html="data_note_agencies_html">"Cleaned" means we took out amounts over $10 billion. We think those are data-entry errors. See
-<a href="about.html#data">the underlying data</a>.</p>
-<div class="bars" id="agencies"><div class="loading" data-i18n="loading_data">Loading…</div></div>
-
-<h2 data-i18n-html="data_h_vendors_html">Top vendors by awarded dollars <span class="note">(last 12 months, cleaned)</span></h2>
-<p class="note" data-i18n="data_note_vendors">Vendor names are not standardized in the source. Small spelling differences show up as separate rows here.</p>
-<div class="bars" id="vendors"><div class="loading" data-i18n="loading_data">Loading…</div></div>
-
+  <section class="panel" id="method">
+    <h2>How this is kept current</h2>
+    <p>Source contracts are validated against the executable registry and a live probe contract. The checks enforce required fields, freshness rules, and drift behavior for each source entry. Product reads are driven from the stated materialization tier for each source.</p>
+    <p class="notes">The verification workflow is documented with the source-contract registry and source-drift checks. Use the generated ledger for current freshness, fields, and live probe status.</p>
+    <ul>
+      <li><a href="api.html">API and feed surfaces</a> for external integrations</li>
+      <li><a href="standards.html">Standards</a> for gap classes and validation expectations</li>
+      <li><a href="https://github.com/cityscroll/crol-list/blob/main/docs/architecture.md">Architecture page</a> for the service seams and data flow</li>
+      <li><a href="https://github.com/cityscroll/crol-list/blob/main/docs/civic-lifecycle-coverage.md">Lifecycle coverage matrix</a> for what fields are intentionally missing by class</li>
+    </ul>
+  </section>
 </main>
-<footer class="foot" data-i18n-html="data_foot_html">
-  Every number is worked out live in your browser from the public dataset. Reload the page for new data.
-  Methodology: <a href="about.html#data">about → the underlying data</a> ·
-  <a href="stats.html">site usage stats</a>
+
+<footer class="foot">
+  This page is a public-source index. The registry remains the source of truth for which feeds are used where.
 </footer>
 </div>
 
 <script>
 (function () {
-  var SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
-  var esc = function (s) { return String(s == null ? "" : s).replace(/[<>&]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]; }); };
-  var locale = function () {
-    var meta = window.LANG_META && LANG_META[window.LANG || "en"];
-    return meta ? meta.intlDate : "en-US";
-  };
-  var fmtN = function (n) { return new Intl.NumberFormat(locale()).format(Number(n)); };
-  var fmtMoney = function (n) {
-    n = Number(n);
-    return new Intl.NumberFormat(locale(), {
-      style: "currency",
-      currency: "USD",
-      notation: n >= 1e6 ? "compact" : "standard",
-      maximumFractionDigits: n >= 1e9 ? 2 : (n >= 1e6 ? 1 : 0)
-    }).format(n);
-  };
-  var fmtPercent = function (share) {
-    return new Intl.NumberFormat(locale(), {
-      style: "percent",
-      maximumFractionDigits: share > 0 && share < 0.01 ? 1 : 0
-    }).format(share);
-  };
-  var yearAgo = new Date(Date.now() - 365 * 86400000).toISOString().slice(0, 10);
+  var SOURCE_URL = "data/source_contracts.json";
 
-  function soda(params) {
-    return fetch(SODA + "?" + new URLSearchParams(params).toString()).then(function (r) {
-      if (!r.ok) throw new Error("open-data " + r.status);
-      return r.json();
-    });
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/[&<>"']/g, function (c) {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;",
+        }[c];
+      });
   }
 
-  function chartRows(rows, valKey, encoding) {
-    var values = rows.map(function (r) { return Number(r[valKey]) || 0; });
-    var denominator = encoding === "composition"
-      ? values.reduce(function (sum, v) { return sum + v; }, 0)
-      : values.reduce(function (max, v) { return Math.max(max, v); }, 0);
-    denominator = denominator || 1;
-    return rows.map(function (row, index) {
-      var value = values[index];
-      return { row: row, value: value, width: (value / denominator) * 100, share: value / denominator };
-    });
+  function statusClass(status) {
+    if (status === "live") return "status-live";
+    if (status === "disabled") return "status-disabled";
+    if (status === "paused") return "status-paused";
+    return "";
   }
 
-  function bars(el, rows, lblKey, valKey, fmt, encoding) {
-    el.dataset.encoding = encoding;
-    el.innerHTML = chartRows(rows, valKey, encoding).map(function (item) {
-      var r = item.row;
-      var value = fmt(item.value);
-      var label = encoding === "composition"
-        ? t("data_value_share", { value: value, share: fmtPercent(item.share) })
-        : value;
-      return '<div class="bar"><span class="lbl" title="' + esc(r[lblKey]) + '">' + esc(r[lblKey] || "—") +
-        '</span><span class="val">' + esc(label) + '</span><span class="trk" aria-hidden="true">' +
-        '<span class="fil" style="width:' + item.width.toFixed(2) + '%"></span></span></div>';
-    }).join("");
+  function formatSource(contract) {
+    var name = contract.name || "Unnamed source";
+    var href = contract.landing_page || "";
+    var tag = contract.dataset_id ? " <code>" + esc(contract.dataset_id) + "</code>" :
+      (contract.data_type ? " <code>" + esc(contract.data_type) + "</code>" : "");
+    if (!href) return esc(name + tag);
+    return '<a href="' + esc(href) + '">' + esc(name) + "</a>" + tag;
   }
 
-  function fail(el) { el.innerHTML = '<div class="loading">' + t("data_fail") + '</div>'; }
+  function buildRows(contracts) {
+    return contracts
+      .slice()
+      .sort(function (a, b) {
+        return (a.status || "").localeCompare(b.status || "") ||
+          (a.delivery_tier || "").localeCompare(b.delivery_tier || "") ||
+          (a.name || "").localeCompare(b.name || "");
+      })
+      .map(function (contract) {
+        return '<tr>' +
+          '<td><span class="status ' + esc(statusClass(contract.status)) + '">' + esc(contract.status || "unknown") + "</span></td>" +
+          '<td><span class="tier">' + esc(contract.delivery_tier || "live-only") + "</span></td>" +
+          '<td>' + formatSource(contract) + "</td>" +
+          '<td>' + esc(contract.used_for || "") + "</td>" +
+          '<td>' + esc((contract.publisher_cadence || "") + (contract.publisher_cadence ? ". " : "") + (contract.product_freshness || "")) + "</td>" +
+          "</tr>";
+      })
+      .join("");
+  }
 
-  // Cache all charts so a language switch can repaint number, currency, percentage, and
-  // section-name formats without another Open Data request.
-  var charts = {};
-  function rememberChart(id, rows, lblKey, valKey, fmt, encoding, transform) {
-    charts[id] = { rows: rows, lblKey: lblKey, valKey: valKey, fmt: fmt, encoding: encoding, transform: transform };
-    renderChart(id);
-  }
-  function renderChart(id) {
-    var chart = charts[id];
-    if (!chart) return;
-    var rows = chart.transform ? chart.transform(chart.rows) : chart.rows;
-    bars(document.getElementById(id), rows, chart.lblKey, chart.valKey, chart.fmt, chart.encoding);
-  }
-  function renderCharts() {
-    Object.keys(charts).forEach(renderChart);
+  function setCounts(contracts) {
+    var total = contracts.length;
+    var live = contracts.filter(function (c) { return c.status === "live"; }).length;
+    var build = contracts.filter(function (c) {
+      return c.delivery_tier === "inline-at-build" || c.delivery_tier === "build-time";
+    }).length;
+    var disabled = contracts.filter(function (c) { return c.status === "disabled"; }).length;
+
+    document.getElementById("total-sources").textContent = String(total);
+    document.getElementById("live-sources").textContent = String(live);
+    document.getElementById("build-sources").textContent = String(build);
+    document.getElementById("disabled-sources").textContent = String(disabled);
   }
 
-  // Precompute-first: paint from the commit-time snapshot (no multi-SODA spinner),
-  // then hybrid-refresh live Open Data in the background when the page is open.
-  var SNAPSHOT_URL = "data/data_page_charts.json";
-  var sectionTransform = function (source) {
-    return source.map(function (r) {
-      return { section_name: (window.tSection ? tSection(r.section_name) : r.section_name), n: r.n };
-    });
-  };
-  function applyChartBundle(bundle, opts) {
-    opts = opts || {};
-    var c = (bundle && bundle.charts) || {};
-    if (c.sections && c.sections.length) {
-      rememberChart("sections", c.sections, "section_name", "n", fmtN, "composition", sectionTransform);
-    } else if (opts.failMissing) {
-      fail(document.getElementById("sections"));
+  function showError(message) {
+    var state = document.getElementById("load-state");
+    state.textContent = message;
+    state.className = "fail";
+  }
+
+  function render(registry) {
+    var contracts = (registry && Array.isArray(registry.contracts)) ? registry.contracts : [];
+    if (!contracts.length) {
+      showError("Could not read source contracts from site/data/source_contracts.json");
+      return;
     }
-    if (c.volume && c.volume.length) rememberChart("volume", c.volume, "m", "n", fmtN, "ranking");
-    else if (opts.failMissing) fail(document.getElementById("volume"));
-    if (c.procmix && c.procmix.length) rememberChart("procmix", c.procmix, "t", "n", fmtN, "composition");
-    else if (opts.failMissing) fail(document.getElementById("procmix"));
-    if (c.agencies && c.agencies.length) rememberChart("agencies", c.agencies, "agency_name", "total", fmtMoney, "ranking");
-    else if (opts.failMissing) fail(document.getElementById("agencies"));
-    if (c.vendors && c.vendors.length) rememberChart("vendors", c.vendors, "vendor_name", "total", fmtMoney, "ranking");
-    else if (opts.failMissing) fail(document.getElementById("vendors"));
-  }
-  function loadLiveCharts() {
-    var CLEAN = "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '" + yearAgo + "T00:00:00'";
-    return Promise.all([
-      soda({ "$select": "section_name,count(request_id) AS n", "$group": "section_name", "$order": "n DESC" })
-        .then(function (rows) { return rows.filter(function (r) { return r.section_name; }); }),
-      soda({ "$select": "date_trunc_ym(start_date) AS m,count(request_id) AS n", "$where": "start_date >= '" + yearAgo + "T00:00:00'", "$group": "m", "$order": "m ASC" })
-        .then(function (rows) {
-          return rows.filter(function (r) { return r.m; }).map(function (r) { return { m: String(r.m).slice(0, 7), n: r.n }; });
-        }),
-      soda({ "$select": "type_of_notice_description AS t,count(request_id) AS n", "$where": "section_name='Procurement' AND start_date >= '" + yearAgo + "T00:00:00'", "$group": "t", "$order": "n DESC" })
-        .then(function (rows) { return rows.filter(function (r) { return r.t; }); }),
-      soda({ "$select": "agency_name,sum(contract_amount) AS total", "$where": CLEAN, "$group": "agency_name", "$order": "total DESC", "$limit": "10" })
-        .then(function (rows) { return rows.filter(function (r) { return r.agency_name; }); }),
-      soda({ "$select": "vendor_name,sum(contract_amount) AS total", "$where": CLEAN + " AND vendor_name IS NOT NULL", "$group": "vendor_name", "$order": "total DESC", "$limit": "10" }),
-    ]).then(function (parts) {
-      applyChartBundle({
-        charts: {
-          sections: parts[0],
-          volume: parts[1],
-          procmix: parts[2],
-          agencies: parts[3],
-          vendors: parts[4],
-        },
-      });
-    });
+    setCounts(contracts);
+    document.getElementById("source-body").innerHTML = buildRows(contracts);
+    document.getElementById("load-state").hidden = true;
+    var tableWrap = document.querySelector(".src-table-wrap");
+    if (tableWrap) tableWrap.hidden = false;
   }
 
-  fetch(SNAPSHOT_URL)
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (snap) {
-      var painted = !!(snap && snap.charts && snap.charts.sections && snap.charts.sections.length);
-      if (painted) applyChartBundle(snap);
-      return loadLiveCharts().catch(function () {
-        if (!painted) {
-          ["sections", "volume", "procmix", "agencies", "vendors"].forEach(function (id) {
-            fail(document.getElementById(id));
-          });
-        }
-      });
+  fetch(SOURCE_URL)
+    .then(function (response) {
+      if (!response.ok) throw new Error("Unable to load source registry");
+      return response.json();
     })
+    .then(render)
     .catch(function () {
-      return loadLiveCharts().catch(function () {
-        ["sections", "volume", "procmix", "agencies", "vendors"].forEach(function (id) {
-          fail(document.getElementById(id));
-        });
-      });
+      showError("Unable to load source-contract registry. Use the links above for the current source list.");
     });
-
-  initSubpageLangSwitcher(renderCharts);
 })();
 </script>
 </body>
