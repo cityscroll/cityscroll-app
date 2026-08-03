@@ -577,7 +577,7 @@ test("e2e continuity: upgraded subDigestHtml still renders under continuity keys
     "continuity — money",
     "rfp",
     [SOLICITATION],
-    "https://api.cityscroll.org/unsubscribe?token=continuity",
+    "https://api.cityscroll.org/unsubscribe?token=your-token-here",
     "2026-07-31",
     "https://api.cityscroll.org",
     [],
