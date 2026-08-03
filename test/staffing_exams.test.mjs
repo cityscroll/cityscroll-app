@@ -117,6 +117,19 @@ test("the Staffing lens ranks actionable exams without runtime data fan-out", ()
   assert.match(html, /id="staffing-feed"/);
 });
 
+test("the exam guide paints core rows independently of optional spine enrichment", () => {
+  const loader = html.slice(html.indexOf("async function loadCareerGuide()"), html.indexOf("function paintExamDetailShell"));
+  assert.match(loader, /data=await fetchCareerData\(\)/);
+  assert.match(loader, /await paintCareerData\(data\)/);
+  assert.match(loader, /await hydrateCareerSpineTools\(data\)/);
+  assert.ok(
+    loader.indexOf("await paintCareerData(data)") < loader.indexOf("await hydrateCareerSpineTools(data)"),
+    "real exam rows must paint before optional process-spine modules hydrate",
+  );
+  assert.match(html, /const CAREER_LOAD_ATTEMPTS = 2/);
+  assert.match(loader, /careerLoadPromise=null/);
+});
+
 test("the Staffing landing leads with exams and keeps the appointment ledger reachable", () => {
   const feed = html.indexOf('id="staffing-feed"');
   const guide = html.indexOf('id="career-guide"');

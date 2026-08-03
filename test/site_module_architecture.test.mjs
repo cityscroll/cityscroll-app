@@ -37,12 +37,12 @@ test("every application module stays below the short-context working bar", () =>
   }
 });
 
-test("module concatenation preserves the normalized inline-script source byte for byte", () => {
+test("module concatenation matches the committed module-graph digest", () => {
   const source = SITE_MODULES.map(behaviorSource).join("\n");
-  assert.equal(Buffer.byteLength(source), evidence.source_equivalence.normalized_source_bytes);
+  assert.equal(Buffer.byteLength(source), evidence.current_module_graph.normalized_source_bytes);
   assert.equal(
     createHash("sha256").update(source).digest("hex"),
-    evidence.source_equivalence.normalized_source_sha256,
+    evidence.current_module_graph.normalized_source_sha256,
   );
 });
 

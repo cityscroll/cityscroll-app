@@ -50,6 +50,16 @@ test("Pages hostname smoke and public route parity run after deploy", () => {
   );
 });
 
+test("post-deploy smoke renders real civil-service exam rows", () => {
+  const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  const smoke = workflow.slice(workflow.indexOf("smoke:"));
+  assert.match(smoke, /uses: \.\/\.github\/actions\/setup-playwright/);
+  assert.match(smoke, /CROL_BASE: https:\/\/cityscroll\.pages\.dev\//);
+  assert.match(smoke, /CROL_DEMO_LINK_IDS: exam-guide/);
+  assert.match(smoke, /python3 test\/functional\/20_demo_links\.py/);
+  assert.doesNotMatch(smoke, /continue-on-error:\s*true/);
+});
+
 test("deploy uses the shared verified build action", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /uses: \.\/\.github\/actions\/build-site/);
