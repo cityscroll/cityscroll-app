@@ -1211,7 +1211,7 @@
     notice_land_ambiguous_html: "Más de un proyecto ZAP comparte estos números ULURP ({keys}). Abra un proyecto abajo — no inventamos una sola cronología.",
     notice_land_unavailable_html: "No se pudo cargar la cronología del proyecto desde la caché perimetral. Pruebe la página del proyecto de zonificación cuando esté disponible.",
     notice_land_this_notice_html: "Este aviso del City Record forma parte del expediente de audiencia pública del proyecto.",
-    notice_land_provenance_html: "Los tokens ULURP se leen del texto del aviso; las filas del proyecto vienen del índice ZAP preconstruido; los hitos, plazos legales y estadísticas de resultados vienen de la caché materializada /zap-outcomes (no es una llamada en vivo al portal desde su navegador).",
+    notice_land_provenance_html: "Los números ULURP se leen del texto del aviso. Las filas del proyecto vienen del índice ZAP preconstruido. Los hitos, plazos legales y estadísticas de resultados vienen de la caché materializada /zap-outcomes (no es una llamada en vivo al portal desde su navegador).",
 
     disposition_spine_heading: "Cronología de disposición",
     disposition_stage_hearing: "Audiencia",

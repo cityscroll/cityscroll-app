@@ -1293,7 +1293,7 @@
     notice_land_ambiguous_html: "Plusieurs projets ZAP partagent ces numéros ULURP ({keys}). Ouvrez un projet ci-dessous — nous n’inventons pas une seule chronologie.",
     notice_land_unavailable_html: "Impossible de charger la chronologie du projet depuis le cache périphérique. Essayez la page du projet de zonage lorsqu’elle est disponible.",
     notice_land_this_notice_html: "Cet avis du City Record fait partie du dossier d’audience publique du projet.",
-    notice_land_provenance_html: "Les jetons ULURP sont lus dans le texte de l’avis ; les lignes de projet viennent de l’index ZAP préconstruit ; les jalons, délais statutaires et statistiques de résultats viennent du cache matérialisé /zap-outcomes (pas d’appel live au portail depuis le navigateur).",
+    notice_land_provenance_html: "Les numéros ULURP sont lus dans le texte de l’avis. Les lignes de projet viennent de l’index ZAP préconstruit. Les jalons, délais statutaires et statistiques de résultats viennent du cache matérialisé /zap-outcomes (pas d’appel live au portail depuis le navigateur).",
     disposition_spine_heading: "Disposition timeline",
     disposition_stage_hearing: "Hearing",
     disposition_stage_auction_or_rfp: "Auction / RFP",

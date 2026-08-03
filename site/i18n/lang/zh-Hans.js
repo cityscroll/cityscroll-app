@@ -1211,7 +1211,7 @@
     notice_land_ambiguous_html: "多个 ZAP 项目共享这些 ULURP 编号（{keys}）。请在下方打开一个项目 — 我们不会编造单一时间线。",
     notice_land_unavailable_html: "无法从边缘缓存加载项目时间线。可用时请尝试区划项目页面。",
     notice_land_this_notice_html: "本 City Record 通知属于该项目的公开听证记录。",
-    notice_land_provenance_html: "ULURP 标记从通知正文读取；项目行来自预构建的 ZAP 仓库索引；里程碑、法定期限和结果统计来自边缘物化的 /zap-outcomes 缓存（浏览器不会直接调用实时门户）。",
+    notice_land_provenance_html: "ULURP 编号从通知正文读取。项目行来自预构建的 ZAP 仓库索引。里程碑、法定期限和结果统计来自边缘物化的 /zap-outcomes 缓存（浏览器不会直接调用实时门户）。",
     disposition_spine_heading: "Disposition timeline",
     disposition_stage_hearing: "Hearing",
     disposition_stage_auction_or_rfp: "Auction / RFP",

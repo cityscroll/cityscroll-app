@@ -1614,7 +1614,7 @@ const STRINGS = {
     notice_land_ambiguous_html: "More than one ZAP project shares these ULURP numbers ({keys}). Open a project below — we do not invent a single timeline.",
     notice_land_unavailable_html: "Could not load the project timeline from the edge cache. Try the Zoning project page when available.",
     notice_land_this_notice_html: "This City Record notice is part of the project’s public hearing record.",
-    notice_land_provenance_html: "ULURP tokens are read from the notice text; project rows come from the prebuilt ZAP warehouse lookup; milestones, statutory clocks, and outcome stats come from the edge-materialized /zap-outcomes cache (not a live portal call from your browser).",
+    notice_land_provenance_html: "ULURP numbers come from the notice text. Project rows come from the prebuilt ZAP warehouse lookup. Milestones, statutory clocks, and outcome stats come from the edge-materialized /zap-outcomes cache (not a live portal call from your browser).",
 
     // Property disposition process spine (multi-notice by parcel — not the temporal list filter rail)
     disposition_spine_heading: "Disposition timeline",
