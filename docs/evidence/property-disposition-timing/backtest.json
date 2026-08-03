@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "domain": "property",
+  "model_name": "property_disposition_timing",
+  "model_version": "1.0.0",
+  "generated_at": "2026-08-03T12:00:00Z",
+  "corpus": {
+    "notice_count": 243,
+    "spine_count": 217,
+    "multi_stage_hearing_auction_pairs": 0,
+    "auction_schedule_pairs": 34,
+    "primary_pair_kind": "auction_notice_to_event",
+    "primary_pair_count": 34,
+    "since_year": "2013",
+    "note": "No parcel-joined hearing→auction pairs in this corpus; citywide cohort uses auction-notice publication→scheduled-event lags. Per-matter dates are withheld (ship bar)."
+  },
+  "citywide": {
+    "n": 34,
+    "since_year": "2013",
+    "p10_days": 8,
+    "p25_days": 11,
+    "p50_days": 17,
+    "p75_days": 30,
+    "p90_days": 43,
+    "p10_weeks": 1,
+    "p50_weeks": 2,
+    "p90_weeks": 6,
+    "middle_half_low_weeks": 2,
+    "middle_half_high_weeks": 4,
+    "train_from": "2013-07-22",
+    "train_to": "2026-07-23",
+    "pair_kind": "auction_notice_to_event"
+  },
+  "backtest": {
+    "training_pairs": 0,
+    "scoring_pairs": 0,
+    "scorecard": {
+      "metric": "prediction_calibration",
+      "domain": "property",
+      "model_name": "property_disposition_timing",
+      "model_version": "1.0.0",
+      "split_date": "2025-01-01",
+      "resolved_backtest_predictions": 0,
+      "interval_coverage": null,
+      "occurrence_quintiles_monotone": null,
+      "ship_bar": {
+        "status": "fail",
+        "checks": {
+          "minimum_resolved": false,
+          "interval_coverage": false,
+          "occurrence_quintiles_monotone": true
+        },
+        "thresholds": {
+          "minimum_resolved": 50,
+          "interval_nominal": 0.8,
+          "interval_tolerance": 0.1,
+          "occurrence_quintiles_monotone": true
+        }
+      },
+      "public_projection": "cohort_statistic_only",
+      "note": "Property Disposition multi-stage hearing→auction pairs are too few for a resolved backtest (parcel joins across stages are rare in this section)."
+    }
+  },
+  "public_projection": "cohort_statistic_only"
+}

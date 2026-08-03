@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-08-03",
+  "notice_count": 243,
+  "multi_stage_pairs": 0,
+  "auction_schedule_pairs": 34,
+  "primary_pair_kind": "auction_notice_to_event",
+  "public_projection": "cohort_statistic_only",
+  "ship_bar": "fail",
+  "citywide_n": 34,
+  "weeks": {
+    "low": 2,
+    "high": 4,
+    "p50": 2
+  }
+}

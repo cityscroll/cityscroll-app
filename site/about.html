@@ -185,6 +185,17 @@ really happen. Some markets are specialized and have few bidders. Name matching 
 when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract
 registration and real payment. Nothing here says anyone did wrong. It just saves you the math.</p>
 
+<h2 id="property-disposition-timing-formula">Property disposition timing estimate</h2>
+<p class="src">On a Property Disposition chain that already has a hearing but no published auction or sale date, the timeline may show a citywide pattern line (Estimate chip). It is <b>not a deadline</b> and not a claim that an auction will follow every hearing.</p>
+<ul class="src" style="margin:8px 0;padding-left:20px">
+  <li><b>Source</b> — City Record Online notices in the Property Disposition section (a small public archive; on the order of a few hundred rows back to 2013).</li>
+  <li><b>Intended multi-stage lag</b> — hearing → auction or RFP on the same parcel (exact BBL or borough + block/lot, same agency). That join is almost never available in this section: auction notices rarely carry tax-lot keys that match earlier hearings.</li>
+  <li><b>What ships today</b> — a citywide cohort from auction notices that do publish a scheduled date: how many weeks after the auction notice the sale is typically set (middle half of the historical gaps). Method name in the model store: phase-duration ECDF.</li>
+  <li><b>Ship bar</b> — the shared prediction calibration scorecard requires enough resolved out-of-time backtests before any per-matter date is shown. This corpus fails that bar, so the product shows the “typically” line only — no dated projection on a specific parcel.</li>
+  <li><b>Scheduled dates still win</b> — when City Record publishes an auction date, the existing soon/urgency rail owns it. The estimate only fills the gap before a date exists.</li>
+</ul>
+<p class="src">Rebuild and evidence live with the site model file <code>data/property_disposition_timing_model.json</code> and the scorecard receipt under the property sources verification folder.</p>
+
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
 <p class="src" data-i18n-html="about_email_us_html">Or email us: <a href="mailto:feedback@cityscroll.org">feedback@cityscroll.org</a></p>
