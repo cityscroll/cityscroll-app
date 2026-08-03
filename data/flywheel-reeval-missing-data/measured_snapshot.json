@@ -1,0 +1,304 @@
+{
+  "measured_at": "2026-08-03T23:04:12.466786+00:00",
+  "district_activity_built_at": "2026-08-03T21:44:18.934Z",
+  "boundary_vintage": "2026-05-26",
+  "live_lens_rates": {
+    "land": {
+      "counted": 236,
+      "located": 236,
+      "located_rate": 1.0,
+      "unlocated": 0,
+      "unlocated_reasons": {},
+      "citywide": 3,
+      "virtual": 0,
+      "by_method": {
+        "cd_centroid_council": 231
+      },
+      "corpus": "zap_projects_warehouse_lookup"
+    },
+    "property": {
+      "counted": 133,
+      "located": 133,
+      "located_rate": 1.0,
+      "unlocated": 0,
+      "unlocated_reasons": {},
+      "citywide": 0,
+      "virtual": 0,
+      "by_method": {
+        "coordinates_pip": 125
+      },
+      "corpus": "property_domain_observations"
+    },
+    "meetings": {
+      "counted": 119,
+      "located": 85,
+      "located_rate": 0.7142857142857143,
+      "unlocated": 34,
+      "unlocated_reasons": {
+        "no_place_signal": 34
+      },
+      "citywide": 3,
+      "virtual": 3,
+      "by_method": {
+        "matter_body_borough": 14,
+        "civic_address_pip": 34,
+        "cd_centroid_council": 15,
+        "matter_title_place": 7,
+        "citywide_phrase": 1,
+        "venue_column": 6,
+        "citywide": 2,
+        "classic_affected_area": 2,
+        "virtual_only": 3,
+        "agency_hq": 1
+      },
+      "corpus": "meetings_domain_observations"
+    },
+    "rules": {
+      "counted": 100,
+      "located": 100,
+      "located_rate": 1.0,
+      "unlocated": 0,
+      "unlocated_reasons": {},
+      "citywide": 97,
+      "virtual": 0,
+      "by_method": {
+        "citywide": 97,
+        "matter_title_place": 3
+      },
+      "corpus": "rules_domain_observations"
+    },
+    "money": {
+      "counted": 8,
+      "located": 2,
+      "located_rate": 0.25,
+      "unlocated": 6,
+      "unlocated_reasons": {
+        "no_place_signal": 6
+      },
+      "citywide": 1,
+      "virtual": 0,
+      "by_method": {
+        "civic_address_pip": 1,
+        "citywide_phrase": 1
+      },
+      "corpus": "ocp_awards_warehouse_lookup"
+    }
+  },
+  "baseline_pre_human_derivation": {
+    "built_at": "2026-08-03T13:03:41.018Z",
+    "sources": {
+      "land": {
+        "corpus": "zap_projects_warehouse_lookup",
+        "counted": 236,
+        "located": 236
+      },
+      "property": {
+        "corpus": "property_domain_observations",
+        "counted": 133,
+        "located": 133
+      },
+      "meetings": {
+        "corpus": "meetings_domain_observations",
+        "counted": 119,
+        "located": 0
+      },
+      "rules": {
+        "corpus": "rules_domain_observations",
+        "counted": 100,
+        "located": 0
+      },
+      "money": {
+        "corpus": "ocp_awards_warehouse_lookup",
+        "counted": 8,
+        "located": 0
+      }
+    },
+    "unlocated": {
+      "land": 0,
+      "property": 0,
+      "rules": 100,
+      "meetings": 119,
+      "money": 8
+    }
+  },
+  "baseline_post_human_derivation": {
+    "built_at": "2026-08-03T16:37:08.064Z",
+    "sources": {
+      "land": {
+        "counted": 236,
+        "located": 236
+      },
+      "property": {
+        "counted": 133,
+        "located": 133
+      },
+      "meetings": {
+        "counted": 119,
+        "located": 81
+      },
+      "rules": {
+        "counted": 100,
+        "located": 100
+      },
+      "money": {
+        "counted": 8,
+        "located": 2
+      }
+    },
+    "unlocated": {
+      "land": 0,
+      "property": 0,
+      "rules": 0,
+      "meetings": 38,
+      "money": 6
+    },
+    "unlocated_reasons": {
+      "land": {},
+      "property": {},
+      "meetings": {
+        "no_place_signal": 35,
+        "virtual_only": 3
+      },
+      "rules": {},
+      "money": {
+        "no_place_signal": 6
+      }
+    }
+  },
+  "inventory_stale_map_aggregates": {
+    "schema": "cityscroll.district_activity.v1",
+    "boundary_vintage": "2026-05-26",
+    "built_at": "2026-08-03T14:43:50.426Z",
+    "path": "site/data/district_activity.json",
+    "sources": {
+      "land": {
+        "corpus": "zap_projects_warehouse_lookup",
+        "counted": 236,
+        "located": 236,
+        "located_rate": 1
+      },
+      "property": {
+        "corpus": "property_domain_observations",
+        "counted": 133,
+        "located": 133,
+        "located_rate": 1
+      },
+      "meetings": {
+        "corpus": "meetings_domain_observations",
+        "counted": 119,
+        "located": 14,
+        "located_rate": 0.11764705882352941
+      },
+      "rules": {
+        "corpus": "rules_domain_observations",
+        "counted": 100,
+        "located": 100,
+        "located_rate": 1
+      },
+      "money": {
+        "corpus": "ocp_awards_warehouse_lookup",
+        "counted": 8,
+        "located": 0,
+        "located_rate": 0
+      }
+    }
+  },
+  "inventory_measured_at": "2026-08-02",
+  "sources": {
+    "city_record_bulk": {
+      "row_count": 1098698,
+      "observed_at": "2026-08-03T03:42:27Z",
+      "section_counts": {
+        "Agency Rules": 3061,
+        "Changes in Personnel": 961586,
+        "Contract Award Hearings": 10506,
+        "Court Notices": 155,
+        "Procurement": 105119,
+        "Property Disposition": 243,
+        "Public Comment on Contract Awards": 947,
+        "Public Hearings and Meetings": 8936,
+        "Special Materials": 8145
+      }
+    },
+    "ocp_map_lookup": {
+      "mode": "fixture_warehouse",
+      "row_count": 8,
+      "materialized_at": "2026-08-02T05:02:26.328Z",
+      "request_ids": [
+        "20260723031",
+        "20260724010",
+        "20260724015",
+        "FIX001",
+        "FIX002",
+        "FIX003",
+        "FIX004",
+        "FIX005"
+      ],
+      "synthetic_fix_ids": [
+        "FIX001",
+        "FIX002",
+        "FIX003",
+        "FIX004",
+        "FIX005"
+      ],
+      "real_ids": [
+        "20260723031",
+        "20260724010",
+        "20260724015"
+      ]
+    },
+    "ocp_warehouse_bulk": {
+      "row_count": 53216,
+      "observed_at": "2026-08-02T03:11:59Z"
+    },
+    "zap_projects_lookup": {
+      "mode": "bulk_warehouse",
+      "row_count": 231,
+      "materialized_at": "2026-08-02T10:22:34.003Z"
+    },
+    "zap_bbl_lookup": {
+      "mode": "fixture_warehouse",
+      "project_count": 11,
+      "bbl_row_count": 89
+    },
+    "property_domain": {
+      "property_count": 133,
+      "bbl_count": 320
+    },
+    "rules_domain": {
+      "row_count": 100,
+      "retrieved_at": "2026-08-03T16:37:07.180Z"
+    },
+    "meetings_domain": {
+      "row_count": 119,
+      "retrieved_at": "2026-08-02T13:38:55.781Z"
+    },
+    "person_votes": {
+      "person_count": 15,
+      "row_count": 194
+    },
+    "staffing_exams": {
+      "exam_count": 228,
+      "generated_at": "2026-08-03"
+    },
+    "attachment_public_lookup": {
+      "tier": "t1_inline_text",
+      "notices": 1,
+      "built_at": "2026-08-03T00:00:00Z"
+    },
+    "attachment_t0_receipt": {
+      "mode": "fixture",
+      "finished_at": "2026-08-03T15:09:02.230Z",
+      "attachments_found": 2
+    },
+    "attachment_t1_receipt": {
+      "mode": "fixture",
+      "finished_at": "2026-08-03T20:28:34.891Z",
+      "docs_extracted": 1,
+      "later_tiers": {
+        "t2": "att-t2-structured",
+        "t3": "att-t3-embeddings"
+      }
+    }
+  }
+}
