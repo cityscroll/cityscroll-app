@@ -95,6 +95,8 @@ OWN_HREF_EXPRS = (
     "${backHref}",
     # Official event-scoped skim (#official/{id}?notice=&event=) from roll-call names.
     "${escUiHtml(officialLink)}",
+    # Zoning base-rate methodology lives on the same-origin About page.
+    "${escUiHtml(stats.formula_url||t(",
 )
 # JS-templated hrefs known to resolve to an external host — must carry ${EXT_ATTRS}/${extSR()}.
 EXTERNAL_HREF_EXPRS = (

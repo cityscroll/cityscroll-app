@@ -45,6 +45,7 @@ from socrata_fetch import (
     fetch_paged_csv_to_file,
     fetch_to_file,
     soda_csv_url,
+    zap_milestone_profile,
     write_json,
 )
 
@@ -154,6 +155,8 @@ def stage_raw_from_bulk(ds: dict, snap: str, reg_defaults: dict, *, resume: bool
     meta["mode"] = "soda_bulk"
     meta["column_map_path"] = str(col_map_path)
     meta["column_map_entries"] = len(column_map)
+    if ds.get("receipt_profile") == "zap_milestone_status_dates_v1":
+        meta["snapshot_profile"] = zap_milestone_profile(dest)
     if "sha256" not in meta:
         meta["sha256"] = sha256_file(dest)
     return meta
