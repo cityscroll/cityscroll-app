@@ -33,7 +33,7 @@ function rotr(n, x) {
 }
 
 /** @param {string} text @returns {string} lowercase hex SHA-256 */
-function sha256Hex(text) {
+export function sha256Hex(text) {
   const bytes = new TextEncoder().encode(text);
   const bitLen = bytes.length * 8;
   // padded length: message + 0x80 + zeros + 8-byte length, multiple of 64
