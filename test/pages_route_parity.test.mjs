@@ -105,10 +105,10 @@ test("formatParityReport records both origins and PASS/FAIL", () => {
   assert.match(report, /PASS/);
   assert.match(report, /cityscroll\.org/);
   assert.match(report, /cityscroll\.pages\.dev/);
-  assert.match(report, /DNS is unchanged/);
+  assert.match(report, /direct Cloudflare Pages hostname/);
 });
 
-test("live_url_smoke CLI can target a single parallel host", () => {
+test("live_url_smoke CLI can target the direct Pages hostname", () => {
   const fromBase = targetsFromCli({ baseUrl: "https://cityscroll.pages.dev" });
   assert.deepEqual(
     fromBase.map((t) => t.url),
