@@ -1,0 +1,63 @@
+# Daily materialization of Land → Upcoming hearings from ZAP dispositions.
+# Lists sell-facing Open Data project statuses, polite-fetches each project from
+# the ZAP API, extracts venue/livestream/datetime, and fails if the product
+# snapshot would contain synthetic rows.
+name: Land upcoming hearings
+
+on:
+  schedule:
+    # Daily 08:17 UTC — offset from attachment-metadata and digest windows
+    - cron: "17 8 * * *"
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: Optional project cap (default all sell-facing, max 500)
+        required: false
+      polite_delay_ms:
+        description: Polite delay between ZAP API requests (min 300)
+        required: false
+        default: "350"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: land-upcoming-hearings
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    name: Sweep ZAP hearing logistics
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Live materialization
+        env:
+          INPUT_LIMIT: ${{ inputs.limit }}
+          INPUT_DELAY: ${{ inputs.polite_delay_ms }}
+        run: |
+          set -euo pipefail
+          args=(--live)
+          if [[ -n "${INPUT_LIMIT:-}" ]]; then
+            args+=(--limit "$INPUT_LIMIT")
+          fi
+          delay="${INPUT_DELAY:-350}"
+          args+=(--polite-delay-ms "$delay")
+          node tools/build_land_upcoming_hearings.mjs "${args[@]}"
+          node tools/build_land_upcoming_hearings.mjs --check
+      - name: Preserve product + receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: land-upcoming-hearings
+          path: |
+            site/data/land_upcoming_hearings.json
+            warehouse/receipts/proof/land_upcoming_hearings_latest.json
+          if-no-files-found: error
+          retention-days: 30

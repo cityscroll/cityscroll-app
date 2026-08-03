@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "land_upcoming_hearings_materialization",
+  "observed_at": "2026-08-03T20:11:32.855Z",
+  "method": "zap_disposition_sweep_v1",
+  "mode": "live",
+  "projects_listed": 230,
+  "projects_fetched": 228,
+  "projects_failed": 2,
+  "hearings_extracted": 88,
+  "upcoming_count": 0,
+  "statuses": [
+    "In Public Review",
+    "Noticed",
+    "Active",
+    "Filed"
+  ],
+  "detector_ok": true,
+  "detector_findings": [],
+  "sample_project_ids": [],
+  "out": "site/data/land_upcoming_hearings.json",
+  "fixture_scoped": false
+}
