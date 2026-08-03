@@ -40,6 +40,7 @@ test("classifyCommercialCategory routes distinctive vocabularies", () => {
 });
 
 test("extractPriceFacts keeps only labeled figures", () => {
+  // Dollar figures from public TLC medallion upset notice 20140224112; $5,000,000 is an unlabeled control.
   const facts = extractPriceFacts(
     "minimum bid of $1,700,000; minimum upset price $850,000; the project costs $5,000,000 in total",
   );

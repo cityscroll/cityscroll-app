@@ -44,11 +44,14 @@ def commercial_for(case: dict) -> dict:
     price = None
     deal = None
     if case["request_id"] == "synthetic-deal-vehicle-001":
+        # Fixture-constructed pair (min $4,800 / appraised $12,000) — not a live measurement.
         price = {"kind": "minimum_bid", "display": "$4,800", "amount": 4800}
         deal = "Minimum bid is 40% of stated appraised value"
     elif case["request_id"] == "20140224112":
+        # Source: City Record Online request_id 20140224112 (TLC medallion upset notice).
         price = {"kind": "upset_price", "display": "$850,000", "amount": 850000}
     elif case["request_id"] == "20150915102":
+        # Source: City Record Online request_id 20150915102 (DCAS public auction upset table).
         price = {"kind": "upset_price", "display": "$11,000,000", "amount": 11000000}
     package = None
     if exp.get("has_package_url"):
@@ -62,6 +65,7 @@ def commercial_for(case: dict) -> dict:
         "request_id": case["request_id"],
         "item": {"category": category, "label": labels.get(category), "confidence": "high", "evidence": "fixture", "source": "notice_body"},
         "quantities": [],
+        # Synthetic amounts only for synthetic-deal-vehicle-001 (fixture-constructed, not measured).
         "price_facts": (
             [
                 {"kind": "appraised", "amount": 12000, "display": "$12,000", "source": "notice_body", "evidence": "appraised at a value of $12,000", "confidence": "high"},

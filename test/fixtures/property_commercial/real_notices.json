@@ -14,7 +14,7 @@
         "short_title": "AUTO AUCTION",
         "start_date": "2025-11-14T00:00:00.000",
         "event_date": null,
-        "additional_description_1": "<p>The City of New York in partnership with GovDeals.com</p><p>posts vehicle and heavy machinery auctions online every week at:</p><p><strong>https://www.govdeals.com/en/nyc-dcas-fleet</strong></p><p>All auctions are open to the public and registration is free.</p><p>For help with registration or for general questions, please contact the marketplace support team at 555-0102 or support@example.com.</p>"
+        "additional_description_1": "<p>The City of New York in partnership with GovDeals.com</p><p>posts vehicle and heavy machinery auctions online every week at:</p><p><strong>https://www.govdeals.com/en/nyc-dcas-fleet</strong></p><p>All auctions are open to the public and registration is free.</p><p>For help with registration or for general questions, please contact the marketplace support team at 555-0102 or example@example.com.</p>"
       },
       "attachments": [],
       "expect": {
@@ -37,7 +37,7 @@
         "short_title": "The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project",
         "start_date": "2019-04-16T00:00:00.000",
         "event_date": "2019-05-16T15:00:00.000",
-        "additional_description_1": "<p><strong>Description: </strong>The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project <strong>#5090. </strong>Bid Solicitation information is available by contacting the regional forester at 555-0103, or requesting via e-mail at <a href='mailto:forester@example.com'>forester@example.com</a>.</p><p><strong>Show Dates</strong>: Prospective bidders are required to attend one of the two public showings. Bidding: All bid proposals must be received NO LATER THAN Thursday, May 16, 2019 at 3:00 PM. Sealed bids will be publicly opened on Friday May 17, 2019.</p>"
+        "additional_description_1": "<p><strong>Description: </strong>The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project <strong>#5090. </strong>Bid Solicitation information is available by contacting the regional forester at 555-0103, or requesting via e-mail at <a href='mailto:example@example.com'>example@example.com</a>.</p><p><strong>Show Dates</strong>: Prospective bidders are required to attend one of the two public showings. Bidding: All bid proposals must be received NO LATER THAN Thursday, May 16, 2019 at 3:00 PM. Sealed bids will be publicly opened on Friday May 17, 2019.</p>"
       },
       "attachments": [],
       "expect": {
@@ -132,7 +132,7 @@
         "short_title": "AUTO AUCTION — surplus fleet sedan",
         "start_date": "2024-06-01T00:00:00.000",
         "event_date": "2024-06-20T15:00:00.000",
-        "additional_description_1": "<p>The City will sell one surplus sedan by sealed bid at public auction. The vehicle is appraised at a value of $12,000. Minimum bid: $4,800. Bids will be received no later than June 20, 2024 at 3:00 PM. Registration is free. Contact fleet@example.com or 555-0100.</p>"
+        "additional_description_1": "<p>The City will sell one surplus sedan by sealed bid at public auction. The vehicle is appraised at a value of $12,000. Minimum bid: $4,800. Bids will be received no later than June 20, 2024 at 3:00 PM. Registration is free. Contact example@example.com or 555-0100.</p>"
       },
       "attachments": [],
       "expect": {
