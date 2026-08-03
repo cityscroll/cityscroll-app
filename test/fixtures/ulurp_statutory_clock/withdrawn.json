@@ -1,0 +1,83 @@
+{
+  "project_id": "WITHDRAWN001",
+  "project_name": "Withdrawn statutory clock fixture",
+  "public_status": "Withdrawn",
+  "certified_referred": "2023-06-01",
+  "portal_url": "https://zap.planning.nyc.gov/projects/WITHDRAWN001",
+  "join": { "matched": true, "method": "exact_project_id" },
+  "filled": true,
+  "open_data": {
+    "project_id": "WITHDRAWN001",
+    "public_status": "Withdrawn",
+    "project_status": "Withdrawn",
+    "current_milestone": "HA - Project Withdrawn"
+  },
+  "milestones": [
+    {
+      "id": "cert-w",
+      "title": "Application Reviewed at City Planning Commission Review Session",
+      "status": "Certified",
+      "outcome": "Certified",
+      "time": {
+        "value": "2023-06-01",
+        "precision": "day",
+        "basis": "actual_end",
+        "certainty": "actual"
+      }
+    },
+    {
+      "id": "wd-1",
+      "title": "HA - Project Withdrawn",
+      "status": "Withdrawn",
+      "outcome": "Withdrawn",
+      "time": {
+        "value": "2023-08-15",
+        "precision": "day",
+        "basis": "actual_end",
+        "certainty": "actual"
+      }
+    }
+  ],
+  "spine": {
+    "schema_version": 1,
+    "project_id": "WITHDRAWN001",
+    "events": [
+      {
+        "id": "cert-w",
+        "kind": "zap_milestone",
+        "title": "Application Reviewed at City Planning Commission Review Session",
+        "detail": "Certified",
+        "status": "Certified",
+        "time": {
+          "value": "2023-06-01",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal"
+        }
+      },
+      {
+        "id": "wd-1",
+        "kind": "zap_milestone",
+        "title": "HA - Project Withdrawn",
+        "detail": "Withdrawn",
+        "status": "Withdrawn",
+        "time": {
+          "value": "2023-08-15",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal"
+        }
+      }
+    ],
+    "gaps": [],
+    "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+  }
+}

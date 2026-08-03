@@ -1,0 +1,55 @@
+{
+  "project_id": "FIXTURED0001",
+  "project_name": "Statutory clock certify fixture",
+  "public_status": "In Public Review",
+  "certified_referred": "2024-01-15",
+  "portal_url": "https://zap.planning.nyc.gov/projects/FIXTURED0001",
+  "join": { "matched": true, "method": "exact_project_id" },
+  "filled": true,
+  "open_data": {
+    "project_id": "FIXTURED0001",
+    "public_status": "In Public Review",
+    "current_milestone": "Community Board Review",
+    "current_milestone_date": "2024-01-20"
+  },
+  "milestones": [
+    {
+      "id": "cert-1",
+      "title": "Application Reviewed at City Planning Commission Review Session",
+      "status": "Certified",
+      "outcome": "Certified",
+      "time": {
+        "value": "2024-01-15",
+        "precision": "day",
+        "basis": "actual_end",
+        "certainty": "actual"
+      }
+    }
+  ],
+  "spine": {
+    "schema_version": 1,
+    "project_id": "FIXTURED0001",
+    "events": [
+      {
+        "id": "cert-1",
+        "kind": "zap_milestone",
+        "title": "Application Reviewed at City Planning Commission Review Session",
+        "detail": "Certified",
+        "status": "Certified",
+        "time": {
+          "value": "2024-01-15",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/FIXTURED0001"
+        }
+      }
+    ],
+    "gaps": [],
+    "lag": { "open_data_vs_portal": { "status": "unknown", "days": null } }
+  }
+}

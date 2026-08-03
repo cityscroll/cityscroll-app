@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "feature": "ulurp-statutory-clock",
+  "project_id": "FIXTURED0001",
+  "certified_date": "2024-01-15",
+  "files": [
+    {
+      "name": "land-timeline-before.png",
+      "bytes": 154544,
+      "sha256": "21263c4ddf8ee5a32c2d39ebf4d549c700c467d8723bfb65649c4bb97ef0a50e"
+    },
+    {
+      "name": "land-timeline-after.png",
+      "bytes": 174104,
+      "sha256": "607b493b1e1d705bf2d8a51a0b2abed6349855f10401c7776f358a63f0f525c9"
+    },
+    {
+      "name": "land-timeline-after-390.png",
+      "bytes": 169307,
+      "sha256": "525357657711cdb9537189bf40090c19f9b23ebf4265863e5d8ed69fa857f338"
+    }
+  ]
+}
