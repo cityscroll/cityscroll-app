@@ -9,7 +9,9 @@ import { test } from "node:test";
 
 import {
   PROPERTY_DISPOSITION_PHASES,
+  aggregatePhaseEvents,
   buildPropertyPhaseView,
+  dedupePhaseSourceLinks,
   dispositionStageToPhase,
 } from "../site/property_phase_spine.mjs";
 import {
@@ -46,6 +48,25 @@ test("buildPropertyPhaseView marks current as last matched and next as first unm
   if (view.metrics.matched_count > 0) {
     assert.equal(view.current.matched, true);
   }
+});
+
+test("buildPropertyPhaseView aggregates and dedupes source URLs per phase", () => {
+  const spines = groupDispositionSpines(fixture.notices);
+  const multi = spines.find((s) => (s.join?.notice_count || 0) > 1) || spines[0];
+  const view = buildPropertyPhaseView(multi);
+  const matched = view.phases.filter((p) => p.matched);
+  assert.ok(matched.length >= 1);
+  for (const p of matched) {
+    assert.ok(Array.isArray(p.aggregates));
+    assert.ok("source_url" in p);
+  }
+  const events = [
+    { title: "PUBLIC HEARING", request_id: "1", time: { value: "2020-01-01" }, source: { url: "https://example.test/a" } },
+    { title: "PUBLIC HEARING", request_id: "2", time: { value: "2020-02-01" }, source: { url: "https://example.test/a" } },
+  ];
+  assert.equal(aggregatePhaseEvents(events).length, 1);
+  assert.equal(aggregatePhaseEvents(events)[0].count, 2);
+  assert.equal(dedupePhaseSourceLinks(events).count, 1);
 });
 
 test("singleton award spine still produces phase view with action lead", () => {
