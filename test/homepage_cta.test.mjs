@@ -72,9 +72,9 @@ test("about feedback form has no Turnstile and exposes public feedback inbox", (
   assert.doesNotMatch(about, /challenges\.cloudflare\.com\/turnstile/);
   assert.doesNotMatch(about, /turnstileToken/);
   assert.doesNotMatch(about, /turnstile\.(getResponse|reset)/);
-  assert.match(about, /mailto:feedback@cityscroll\.org/);
+  assert.match(about, /mailto:feedback%40cityscroll\.org/);
   assert.match(about, /workerFetch\("\/feedback"/);
-  assert.match(index, /mailto:feedback@cityscroll\.org/);
+  assert.match(index, /mailto:feedback%40cityscroll\.org/);
   assert.match(index, /data-i18n="footer_feedback"/);
 });
 

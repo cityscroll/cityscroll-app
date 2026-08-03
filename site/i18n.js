@@ -2044,7 +2044,7 @@ const STRINGS = {
     about_reason_badcategory: "Pick a category — Bug, Feature idea, or General.",
     about_reason_notconfigured: "Feedback isn't switched on yet.",
     about_reason_sendfailed: "Couldn't record that just now — try again in a moment.",
-    about_foot_html: "CityScroll · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"changelog.html\">Changelog</a> · <a href=\"stats.html\">Stats</a> · <a href=\"mailto:feedback@cityscroll.org\">Feedback</a> · <a href=\"index.html\">Home</a>",
+    about_foot_html: "CityScroll · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"stats.html\">Stats</a> · <a href=\"mailto:feedback%40cityscroll.org\">Feedback</a> · <a href=\"index.html\">Home</a>",
     about_h_privacy: "Privacy",
     about_p_privacy_intro: "CityScroll has no password accounts and no ad tech. It does not track you across other sites.",
     about_li_privacy_html: "<li><b>Searches and filters</b> use NYC Open Data.</li><li><b>The \"Ask\" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Email links, pins, and watches</b> — clicking a link from your alert email signs you in on that device. The banner names the signed-in email and lets you manage its watches, sync pinned items, or sign out (\"Not you?\"). You do not need a second email link to manage watches while signed in.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li><li><b>Click and scroll maps</b> (Microsoft Clarity, when turned on) show where people tap or scroll so we can fix hard-to-use spots. Typed text and form fields — including email — are masked and never sent as plain text. Clarity does not load if your browser signals Do Not Track or Global Privacy Control. It is not used for ads or personal profiles.</li>",
@@ -2066,7 +2066,7 @@ const STRINGS = {
     data_value_share: "{value} · {share} of total",
     data_loading_counting: "Counting 1M+ notices…",
     data_fail: "Couldn't reach NYC Open Data just now — reload to retry.",
-    data_foot_html: "Every number is worked out live in your browser from the public dataset. Reload the page for new data. Methodology: <a href=\"about.html#data\">about → the underlying data</a> · <a href=\"stats.html\">site usage stats</a> · <a href=\"changelog.html\">changelog</a>",
+    data_foot_html: "Every number is worked out live in your browser from the public dataset. Reload the page for new data. Methodology: <a href=\"about.html#data\">about → the underlying data</a> · <a href=\"stats.html\">site usage stats</a>",
 
     // stats.html
     stats_loading: "Loading live counters…",
@@ -2078,7 +2078,7 @@ const STRINGS = {
     stats_lbl_digests: "Digests sent · 7 days",
     stats_desc_digests_html: "<span id=\"s-digests-today\">–</span> today. Only when something new matched (plus honest \"still watching\" check-ins).",
     stats_lbl_clicks: "Digest links followed · 7 days",
-    stats_desc_clicks_html: "Daily counts from the notice-link redirect — <a href=\"changelog.html#2026-07-02b\">how this works</a>.",
+    stats_desc_clicks_html: "Daily counts from the notice-link redirect — <a href=\"about.html#privacy\">how this works</a>.",
     stats_lbl_feeds: "Feed fetches · 7 days",
     stats_desc_feeds: "RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).",
     stats_lbl_batch: "Saved-search checks via the API · 7 days",
@@ -2117,7 +2117,7 @@ const STRINGS = {
     stats_history_empty: "No day-by-day history yet.",
     stats_h_technical: "Technical details",
     stats_p_technical: "How the numbers above are put together. You don't need to know this to use CityScroll.",
-    stats_foot_html: "Raw JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (cached ~15 min) · <a href=\"changelog.html\">Changelog</a> · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",
+    stats_foot_html: "Raw JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (cached ~15 min) · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",
     stats_asof: "As of {date} (refreshes every 15 minutes).",
     stats_unreachable: "Live counters are unreachable right now — the raw JSON lives at api.cityscroll.org/stats.",
     stats_h_usage: "How people use CityScroll",
@@ -2315,7 +2315,7 @@ const STRINGS = {
     std_timeline_entry_html: "As of {date}: {matched} of {total} Local Law 30 languages were in the switcher. Accessibility target: {city} today, moving to {next} by {nextdate} for New York State entities.",
     std_timeline_loading: "Loading snapshots…",
     std_timeline_fail: "Couldn't load the snapshot history just now — reload to retry.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">About</a> · <a href=\"data.html\">The Data</a> · <a href=\"changelog.html\">Changelog</a> · <a href=\"index.html\">Home</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">About</a> · <a href=\"data.html\">The Data</a> · <a href=\"index.html\">Home</a>",
   },
 
   // Shipping languages: full dictionaries live in i18n/lang/<lang>.js (loaded on

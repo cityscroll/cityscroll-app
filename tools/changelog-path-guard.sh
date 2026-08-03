@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
-# Hard guard for the changelog bot's self-merge arming (see update-changelog.yml). Exits 0
-# only when every changed path supplied — one per line on stdin, or as arguments — is one the
-# bot regeneration script actually owns. Anything else fails the guard, so the calling workflow
-# leaves the PR for a human instead of arming auto-merge. Keep this list in sync with the files
-# tools/gen_changelog.mjs writes (DATA_PATH, HTML_PATH).
+# Hard guard for the machine changelog publisher. Exits 0 only when every changed path
+# supplied is the data contract owned by tools/gen_changelog.mjs.
 set -euo pipefail
 
 ALLOWED_PATHS=(
   "site/changelog-data.json"
-  "site/changelog.html"
 )
 
 is_allowed() {

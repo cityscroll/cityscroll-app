@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// tools/gen_changelog.mjs — regenerates changelog.html's "Recent updates" list from
-// changelog-data.json, and (given --number/--url/--merged-at/--body-file/--labels) first
-// tries to add a new entry extracted from a merged PR's body.
+// tools/gen_changelog.mjs — maintains the machine-readable changelog-data.json contract.
+// Given --number/--url/--merged-at/--body-file/--labels, it tries to add a new entry
+// extracted from a merged PR's body.
 //
 // Two call shapes:
 //   node tools/gen_changelog.mjs --number 34 --url <html_url> --merged-at 2026-07-15 \
@@ -11,18 +11,9 @@
 //     header comment for why the marker section alone stopped being a significance signal).
 //     No label, or a label but no marker section -> prints a message and exits 0 (this is
 //     the expected, common case, not a failure). Already-recorded PR number -> no-op
-//     (idempotent, safe to re-run). Otherwise prepends the entry to changelog-data.json and
-//     rewrites the HTML block.
+//     (idempotent, safe to re-run). Otherwise prepends the entry to changelog-data.json.
 //   node tools/gen_changelog.mjs --rebuild
-//     Rewrites changelog.html's HTML block from the current changelog-data.json only —
-//     useful after a hand-edit to the data file, or to verify the two files agree.
-//
-// changelog-data.json is the source of truth; the HTML block is a full rebuild every time
-// (never hand-patched), so the two can never drift out of sync with each other.
-//
-// Every rebuild also normalizes changelog.html's i18n.js URL to the merge-stable build
-// token. The Pages deployment replaces that token with a content-derived stamp in its
-// private artifact; the changelog bot must never put a generated hash back into source.
+//     Validates and normalizes changelog-data.json without generating a public page.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -325,10 +316,11 @@ function main() {
     data.entries = result.entries;
     saveData(data);
     console.log(`PR #${args.number} added: ${result.text}`);
+  } else {
+    validateEntries(data.entries);
+    saveData(data);
   }
-
-  rewriteHtml(data.entries);
-  console.log(`changelog.html regenerated — ${data.entries.length} entr${data.entries.length === 1 ? "y" : "ies"}.`);
+  console.log(`changelog data ready — ${data.entries.length} entr${data.entries.length === 1 ? "y" : "ies"}.`);
 }
 
 // Only run as a CLI when invoked directly (`node tools/gen_changelog.mjs ...`) — importing
