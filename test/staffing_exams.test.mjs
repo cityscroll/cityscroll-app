@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { STAFFING_EXAMS_SCHEMA_VERSION } from "../tools/build_staffing_exams.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
@@ -18,7 +19,7 @@ test("precomputed staffing artifact is reproducible from committed source snapsh
 });
 
 test("every exam has a unique shareable identity and official provenance", () => {
-  assert.equal(artifact.schema_version, 2);
+  assert.equal(artifact.schema_version, STAFFING_EXAMS_SCHEMA_VERSION);
   // Current FY schedule (~151) plus closed list-depth exams with Civil Service List joins.
   assert.ok(artifact.exams.length >= 151, `expected full schedule, got ${artifact.exams.length}`);
   const listDepth = artifact.exams.filter((exam) => exam.list_depth || exam.sources?.includes("dcas-annual-closed-list-depth"));

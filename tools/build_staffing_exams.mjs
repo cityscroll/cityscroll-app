@@ -8,6 +8,14 @@ import {
   joinExamToListAggregate,
 } from "../worker/src/lib/civil_service_list_join.mjs";
 import { applyNoeFeeSalaryFromBody } from "../worker/src/lib/noe_fee_salary.mjs";
+import {
+  attachStaffingListForecast,
+  buildScheduleListPairs,
+  buildStaffingLagModel,
+  buildStaffingListBacktest,
+  canonicalHistoricalSchedule,
+  publicStaffingModelReport,
+} from "../worker/src/lib/staffing_list_prediction.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
@@ -23,8 +31,9 @@ const NOE_DENSIFY_ID = "dcas-noe-fee-salary-densify";
 const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
 const LIST_DEPTH_CLOSED_FILE = "list_depth_closed_exams.json";
 const NOE_DENSIFY_FILE = "noe_fee_salary_densify.json";
+const ANNUAL_HISTORY_FILE = "annual_schedule_history.json";
 /** Bump when densify merge / fee-salary materialization shape changes (version-guard). */
-export const STAFFING_EXAMS_SCHEMA_VERSION = 2;
+export const STAFFING_EXAMS_SCHEMA_VERSION = 3;
 
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
@@ -501,6 +510,7 @@ export function buildArtifact({
   cityRecord,
   outcomes,
   listAggregates,
+  annualHistory,
   listDepthClosed,
   noeDensify,
   priorArtifact,
@@ -613,7 +623,8 @@ export function buildArtifact({
 
   const outcomeMap = outcomesByExamNumber(outcomes.records);
   const listIndex = buildListAggregateIndex(listAggregates?.records || []);
-  const records = [...exams.values()]
+  // Source rows are already normalized from the registered DCAS schedule/NOE inputs above.
+  const baseRecords = Array.from(exams.values())
     .map((exam) => attachFeeSalaryGap(joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex)))
     .sort((a, b) => {
       const ad = a.application_start || "9999-12-31";
@@ -621,12 +632,26 @@ export function buildArtifact({
       return ad.localeCompare(bd) || a.title.localeCompare(b.title) || a.exam_number.localeCompare(b.exam_number);
     });
 
+  const historicalScheduleRows = annualHistory?.records || annual.records || [];
+  const pairBuild = buildScheduleListPairs(historicalScheduleRows, listAggregates?.records || []);
+  const lagModel = buildStaffingLagModel(pairBuild.pairs);
+  const lagBacktest = buildStaffingListBacktest(pairBuild.pairs);
+  const generatedInstant = `${generatedAt}T00:00:00Z`;
+  const records = baseRecords.map((exam) => attachStaffingListForecast(exam, lagModel, {
+    publicProjection: lagBacktest.scorecard.public_projection,
+    generatedAt: generatedInstant,
+  }));
+  const emittedPredictions = records
+    .map((exam) => exam.list_establishment_forecast?.prediction)
+    .filter(Boolean);
+
   normalizeOutcomeSourceOutdatedCheck(outcomes.source);
 
   const afterDensifyStats = feeSalaryNonNullStats(records);
   const listSource = listAggregates?.source || activeList.source;
   const listJoinedCount = records.filter((e) => e.list_aggregate && Number(e.list_aggregate.list_count) > 0).length;
   const sources = [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source];
+  if (annualHistory?.source) sources.push(annualHistory.source);
   if (noeDensify?.source) sources.push(noeDensify.source);
 
   return {
@@ -670,6 +695,20 @@ export function buildArtifact({
         exams_with_list_aggregate: listJoinedCount,
       },
     },
+    list_establishment_prediction: {
+      schema: "cityscroll.prediction.v0",
+      join: pairBuild.join,
+      model: publicStaffingModelReport(lagModel),
+      backtest: {
+        protocol: "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
+        training_pairs: lagBacktest.training_pairs,
+        scoring_pairs: lagBacktest.scoring_pairs,
+        scorecard: lagBacktest.scorecard,
+      },
+      emitted_predictions: emittedPredictions.length,
+      privacy: "Per-exam aggregates only; no applicant rows, names, scores, or list ranks.",
+    },
+    list_establishment_predictions: emittedPredictions,
     exams: records,
   };
 }
@@ -792,6 +831,42 @@ async function refreshSnapshots() {
   }
 }
 
+async function refreshAnnualScheduleHistory() {
+  const fetchedAt = new Date().toISOString().slice(0, 10);
+  const allRows = [];
+  for (let offset = 0; ; offset += 1000) {
+    const rows = await fetchJson(sodaUrl(ANNUAL_ID, {
+      "$select": "exam_number,application_period_start,application_period_end_date,open_competitive_promotion,data_current_as_of",
+      "$order": "exam_number asc,data_current_as_of asc",
+      "$limit": "1000",
+      "$offset": String(offset),
+    }));
+    allRows.push(...rows);
+    if (rows.length < 1000) break;
+  }
+  const records = canonicalHistoricalSchedule(allRows);
+  const artifact = {
+    source: {
+      id: "dcas-annual-schedule-history",
+      name: "Annual Examination Schedule of Each Fiscal Year — historical revisions",
+      dataset_id: ANNUAL_ID,
+      url: `https://data.cityofnewyork.us/resource/${ANNUAL_ID}.json`,
+      landing_page: `https://data.cityofnewyork.us/d/${ANNUAL_ID}`,
+      fetched_at: fetchedAt,
+      refresh_cadence: "Rebuild with the staffing exam artifact; uses the same registered annual-schedule dataset as the current snapshot.",
+      stale_after_days: 95,
+    },
+    summary: {
+      raw_rows: allRows.length,
+      distinct_exams: records.length,
+      canonical_rule: "Exact normalized exam_number; keep the latest data_current_as_of revision, then latest application close as deterministic tie-break.",
+    },
+    records,
+  };
+  await writeFile(path.join(SOURCE_DIR, ANNUAL_HISTORY_FILE), stableJson(artifact));
+  console.log(`wrote site/data/exam_sources/${ANNUAL_HISTORY_FILE}`);
+}
+
 function validateSources(today, sources) {
   for (const source of sources) {
     if (source.freshness_required === false) continue;
@@ -824,16 +899,45 @@ async function writeDensifyReceipt(artifact) {
   return outPath;
 }
 
+function staffingPredictionReceipt(artifact) {
+  const program = artifact.list_establishment_prediction;
+  return {
+    schema_version: 1,
+    source_contract_ids: ["annual-examination-schedule", "active-civil-service-list"],
+    verified_at: artifact.generated_at,
+    join: program.join,
+    model: program.model,
+    backtest: program.backtest,
+    emitted_predictions: program.emitted_predictions,
+    privacy: program.privacy,
+    decision: program.backtest.scorecard.public_projection === "per_matter_projection"
+      ? "Per-exam cityscroll.prediction.v0 timing assertions may render."
+      : "The ship bar is not met; render the cohort statistic without a per-exam date.",
+  };
+}
+
+async function writeStaffingPredictionReceipt(artifact) {
+  const outPath = path.join(
+    DENSIFY_RECEIPT_DIR,
+    "staffing_list_establishment_prediction_latest.json",
+  );
+  await mkdir(DENSIFY_RECEIPT_DIR, { recursive: true });
+  await writeFile(outPath, stableJson(staffingPredictionReceipt(artifact)));
+  return outPath;
+}
+
 async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, listDepthClosed, noeDensify, priorArtifact] = await Promise.all([
+  if (process.argv.includes("--refresh-prediction-history")) await refreshAnnualScheduleHistory();
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
     readJson("city_record_check.json"),
     readJson("dcas_exam_outcomes.json"),
     readJsonOptional(LIST_AGGREGATES_FILE),
+    readJsonOptional(ANNUAL_HISTORY_FILE),
     readJsonOptional(LIST_DEPTH_CLOSED_FILE),
     readJsonOptional(NOE_DENSIFY_FILE),
     (async () => {
@@ -882,6 +986,7 @@ async function main() {
     cityRecord,
     outcomes,
     listAggregates,
+    annualHistory,
     listDepthClosed,
     noeDensify,
     priorArtifact,
@@ -890,10 +995,20 @@ async function main() {
   const rendered = stableJson(artifact);
   if (check) {
     assert.equal(await readFile(OUTPUT, "utf8"), rendered, "data/staffing_exams.json is stale; rebuild it");
+    const predictionReceiptPath = path.join(
+      DENSIFY_RECEIPT_DIR,
+      "staffing_list_establishment_prediction_latest.json",
+    );
+    assert.equal(
+      await readFile(predictionReceiptPath, "utf8"),
+      stableJson(staffingPredictionReceipt(artifact)),
+      "staffing list-establishment prediction receipt is stale; rebuild it",
+    );
     console.log("staffing exam artifact is current");
   } else {
     await writeFile(OUTPUT, rendered);
     const receiptPath = await writeDensifyReceipt(artifact);
+    const predictionReceiptPath = await writeStaffingPredictionReceipt(artifact);
     const densify = artifact.source_checks?.noe_fee_salary_densify;
     console.log(`wrote ${path.relative(ROOT, OUTPUT)}`);
     if (densify) {
@@ -904,6 +1019,7 @@ async function main() {
       );
     }
     if (receiptPath) console.log(`wrote ${path.relative(ROOT, receiptPath)}`);
+    console.log(`wrote ${path.relative(ROOT, predictionReceiptPath)}`);
   }
 }
 

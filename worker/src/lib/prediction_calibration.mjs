@@ -271,7 +271,10 @@ export function evaluatePredictionBacktest(backtest) {
     realized: Boolean(row.exact),
   }));
   const calibration = occurrenceCalibration(occurrenceRows);
-  const monotone = quintilesAreMonotone(calibration);
+  // Timing-only domains have no occurrence calibration to order. Treat that
+  // check as not applicable (passing) instead of making every timing model
+  // fail a probability metric it does not emit.
+  const monotone = occurrence.length ? quintilesAreMonotone(calibration) : null;
   const intervalCoverage = realizedTiming.length
     ? strictIntervalHits.length / realizedTiming.length
     : null;
@@ -280,7 +283,7 @@ export function evaluatePredictionBacktest(backtest) {
     minimum_resolved: resolved.length >= MINIMUM_RESOLVED,
     interval_coverage: intervalCoverage != null
       && Math.abs(intervalCoverage - INTERVAL_NOMINAL) <= INTERVAL_TOLERANCE + Number.EPSILON,
-    occurrence_quintiles_monotone: monotone,
+    occurrence_quintiles_monotone: occurrence.length ? monotone : true,
   };
   const passed = Object.values(checks).every(Boolean);
 
