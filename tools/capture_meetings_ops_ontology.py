@@ -273,11 +273,23 @@ def wait_meetings_list(page: Page) -> None:
     page.wait_for_timeout(400)
 
 
-def capture_list(page: Page, out: Path, label: str, width: int, height: int) -> None:
+def capture_list(
+    page: Page,
+    out: Path,
+    label: str,
+    width: int,
+    height: int,
+    *,
+    group: str | None = None,
+) -> None:
     page.set_viewport_size({"width": width, "height": height})
     base = page._base  # type: ignore[attr-defined]
     # Date window: all upcoming so past + future fixtures paint.
-    page.goto(f"{base}/#meetings?when=upcoming", wait_until="domcontentloaded")
+    # Default list is flat; group=place is the opt-in place-section layout.
+    qs = "when=upcoming"
+    if group == "place":
+        qs += "&group=place"
+    page.goto(f"{base}/#meetings?{qs}", wait_until="domcontentloaded")
     wait_meetings_list(page)
     page.evaluate("window.scrollTo(0, 0)")
     suffix = "mobile" if width < 800 else "desktop"
@@ -320,7 +332,7 @@ def main() -> int:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            # AFTER (full ontology)
+            # AFTER (flat list default + process ontology; place groups demoted)
             context = browser.new_context()
             page = context.new_page()
             page._base = base  # type: ignore[attr-defined]
@@ -335,29 +347,28 @@ def main() -> int:
             feed = page.locator("#meetingsfeed")
             if feed.count():
                 feed.screenshot(path=str(out / "after-meetings-list-cards.png"))
+            # Opt-in place grouping still available.
+            page.goto(f"{base}/#meetings?when=upcoming&group=place", wait_until="domcontentloaded")
+            wait_meetings_list(page)
+            page.screenshot(path=str(out / "after-meetings-list-group-place.png"), full_page=False)
             page.goto(f"{base}/#notice/20260812011", wait_until="domcontentloaded")
             page.wait_for_selector("#noticeview .rolename, #noticeview .panel, #nactions", timeout=20000)
             page.wait_for_timeout(400)
             page.screenshot(path=str(out / "after-meetings-notice.png"), full_page=False)
             context.close()
 
-            # BEFORE: abort explorer module + hide domain chrome.
+            # BEFORE: always-on place grouping (prior default wall).
             context = browser.new_context()
             page = context.new_page()
             page._base = base  # type: ignore[attr-defined]
             install_routes(page)
-            page.route("**/meetings_explorer.mjs", lambda route: route.abort())
-            page.add_init_script(
-                f"""
-                const style = document.createElement('style');
-                style.textContent = {json.dumps(BEFORE_CSS)};
-                document.documentElement.appendChild(style);
-                """
-            )
             page.set_viewport_size({"width": 1440, "height": 900})
-            page.goto(f"{base}/#meetings?when=upcoming", wait_until="domcontentloaded")
+            page.goto(f"{base}/#meetings?when=upcoming&group=place", wait_until="domcontentloaded")
             wait_meetings_list(page)
             page.screenshot(path=str(out / "before-meetings-list.png"), full_page=False)
+            feed = page.locator("#meetingsfeed")
+            if feed.count():
+                feed.screenshot(path=str(out / "before-meetings-list-cards.png"))
             page.goto(f"{base}/#notice/20260812011", wait_until="domcontentloaded")
             page.wait_for_selector("#noticeview .rolename, #noticeview .panel, #nactions", timeout=20000)
             page.wait_for_timeout(400)

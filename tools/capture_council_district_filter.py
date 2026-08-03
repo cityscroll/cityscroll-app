@@ -58,27 +58,44 @@ GEOSEARCH_RESPONSE = {
         },
     }],
 }
-COUNCIL_LAYER = {
-    "schema": "cityscroll.district_boundaries.v0",
-    "layer": "council_district",
-    "dataset_id": "872g-cjhh",
+FIXTURE_RING = [
+    [-73.89, 40.74],
+    [-73.87, 40.74],
+    [-73.87, 40.755],
+    [-73.89, 40.755],
+    [-73.89, 40.74],
+]
+UNIFIED_LAYER = {
+    "schema": "cityscroll.district_boundaries.v1",
     "boundary_vintage": "2026-05-26",
-    "district_count": 1,
-    "districts": [{
+    "sources": {
+        "community_district": {
+            "dataset_id": "5crt-au7u",
+            "boundary_vintage": "2026-05-26",
+        },
+        "council_district": {
+            "dataset_id": "872g-cjhh",
+            "boundary_vintage": "2026-05-26",
+        },
+    },
+    "community_district_count": 1,
+    "council_district_count": 1,
+    "community_districts": [{
+        "id": "Q04",
+        "boro_cd": "404",
+        "label": "Queens Community District 4",
+        "bbox": [-73.89, 40.74, -73.87, 40.755],
+        "polygons": [{"rings": [FIXTURE_RING]}],
+    }],
+    "council_districts": [{
         "id": "25",
         "label": "City Council District 25",
         "bbox": [-73.89, 40.74, -73.87, 40.755],
-        "polygons": [{
-            "rings": [[
-                [-73.89, 40.74],
-                [-73.87, 40.74],
-                [-73.87, 40.755],
-                [-73.89, 40.755],
-                [-73.89, 40.74],
-            ]],
-        }],
+        "polygons": [{"rings": [FIXTURE_RING]}],
     }],
 }
+# Compat name used by older capture paths.
+COUNCIL_LAYER = UNIFIED_LAYER
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -154,8 +171,9 @@ def install_routes(page: Page) -> None:
     page.route("https://data.cityofnewyork.us/**", city_data)
 
     def boundaries(route: Route) -> None:
-        json_response(route, COUNCIL_LAYER)
+        json_response(route, UNIFIED_LAYER)
 
+    page.route("**/district_boundaries.json", boundaries)
     page.route("**/council_district_boundaries.json", boundaries)
 
 

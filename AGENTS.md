@@ -190,21 +190,28 @@ Materialized views: `er_entity_link`, `er_canonical_entity`, `er_resolution_run`
 `warehouse/receipts/proof/wh04_er_batch_latest.json`. Verify:
 `node --test test/warehouse_er_batch.test.mjs`.
 
-## Council district resolution (cs-geo-01)
+## District boundary layer (cs-geo-01 + cs-geo-02)
 
-City Council districts resolve from a **committed boundary layer**, not live GIS.
-Source contract `city-council-district-boundaries` (`872g-cjhh`); build:
+Community districts and City Council districts resolve from **one committed
+boundary layer**, not live GIS. Source contracts
+`community-district-boundaries` (`5crt-au7u`) and
+`city-council-district-boundaries` (`872g-cjhh`); build:
 
 ```bash
-node tools/build_council_district_boundaries.mjs
+node tools/build_district_boundaries.mjs
+node tools/build_district_boundaries.mjs --check
+# compat alias:
 node tools/build_council_district_boundaries.mjs --check
 ```
 
-Artifact: `site/data/council_district_boundaries.json` (+ worker twin) with
-`boundary_vintage`, simplified polygons, ids `"1"`…`"51"`. Pure lookup:
-`site/council_district_lookup.mjs`. Location awareness fills `councilDistrict`
-beside MapPLUTO community district; Land share links use `#land?council=25`
-(ZAP filter on `cc_district`). Unresolved points stay null — never invent.
+Artifact: `site/data/district_boundaries.json` (+ worker twin) with labeled
+`boundary_vintage` (top-level and per-source), simplified polygons, community
+ids `M01`…`R18` (+ JIAs), council ids `"1"`…`"51"`. Council-only twin
+`council_district_boundaries.json` remains for older paths. Pure lookup:
+`site/council_district_lookup.mjs` (`resolveCommunityDistrict` /
+`resolveCouncilDistrict` / `resolveDistricts`). Location awareness resolves
+both from the layer (MapPLUTO CD is fallback only); Land share links use
+`#land?cd=Q04&council=25`. Unresolved points stay null — never invent.
 
 Verify: `node --test test/council_district_lookup.test.mjs test/location_awareness.test.mjs`
 Capture: `python3 tools/capture_council_district_filter.py --before HEAD^`.
@@ -596,10 +603,11 @@ one outbound affordance per notice. NYCIDA board URL labels as **IDA meetings pa
 **Meetings domain explorer (list):** pure `site/meetings_explorer.mjs` elevates
 the Meetings lens on process stage (scheduled → agenda → held → outcomes),
 next-action keys (attend / join / testimony when the notice publishes them),
-and agency entity links — while **keeping place-based navigation** (local /
-citywide / unlocated groups + affected-area filters). Same-agency same-day
-notices collapse to one event card; same-agency same-matter decides text can
-collapse a multi-notice journey. Detail vote spine stays
+and agency entity links. Place-based local / citywide / unlocated **grouping is
+opt-in** (`group=place`; default is a single chronological list) — near-me and
+affected-area filters are the primary place path (cs-geo-02 retirement).
+Same-agency same-day notices collapse to one event card; same-agency same-matter
+decides text can collapse a multi-notice journey. Detail vote spine stays
 `site/meeting_phase_spine.mjs`; non-Council process spine stays
 `site/non_council_hearing_spine.mjs`. Verify:
 `node --test test/meetings_explorer.test.mjs test/meeting_phase_spine.test.mjs

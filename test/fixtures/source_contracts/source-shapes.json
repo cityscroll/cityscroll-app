@@ -250,6 +250,19 @@
       ]
     },
     {
+      "id": "community-district-boundaries",
+      "kind": "socrata",
+      "identifier": "5crt-au7u",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "boro_cd",
+        "the_geom",
+        "shape_leng",
+        "shape_area"
+      ]
+    },
+    {
       "id": "city-council-district-boundaries",
       "kind": "socrata",
       "identifier": "872g-cjhh",
