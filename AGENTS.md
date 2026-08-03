@@ -31,6 +31,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   modules stay below 100 KB. Source-extraction tests read modules through
   `test/helpers/site_source.mjs`; rendered split parity is
   `python3 test/functional/21_module_dom_equivalence.py`.
+- **Module-graph digest (Unit CI, post-push trap):** changing `site/app/*.mjs` body, loader
+  order (`main.mjs` / `SITE_MODULES`), or `site/index.html` size invalidates the pinned
+  digest in `docs/evidence/index-module-split.json`. Before push, run
+  `node --test test/site_module_architecture.test.mjs` — if it fails, refresh
+  `current_module_graph` (bytes + sha256), `after.index_html_bytes`, and any
+  representative-task `after_bytes` that include the touched modules. Pure libs loaded only
+  via dynamic `import()` (not listed in `SITE_MODULES`) do not need graph registration; still
+  re-run the test when an *app* module that imports them changes. Fixing this only after CI
+  red is a recurring multi-PR tax.
 
 ## Digest cron deploy safety
 
