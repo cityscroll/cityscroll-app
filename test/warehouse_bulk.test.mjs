@@ -52,6 +52,12 @@ describe("WH-02 registry + pack plan", () => {
     assert.equal(cr.bulk_paging.page_size, 50000);
     assert.match(cr.bulk_paging.order, /request_id/);
 
+    const liens = getDataset("dof-tax-lien-sale-lists");
+    assert.equal(liens.dataset_id, "9rz4-mjek");
+    assert.equal(liens.table_name, "dof_tax_lien_sale_lists");
+    assert.equal(liens.bulk_phase, "CS-PRED-10");
+    assert.equal(liens.bulk_paging.page_size, 50000);
+
     const ids = listDatasets().map((d) => d.id);
     assert.ok(ids.includes("doing-business-entities"));
   });
@@ -177,6 +183,15 @@ print("OK")
     assert.match(sql, /MIN\(start_date\)/);
     assert.match(sql, /Agency Rules/);
     assert.match(sql, /Property Disposition/);
+  });
+
+  it("ships the tax-lien progression verification query", () => {
+    const sql = readFileSync(
+      join(WAREHOUSE_DIR, "sql", "examples", "tax_lien_sale_bulk_verify.sql"),
+      "utf8"
+    );
+    assert.match(sql, /COUNT\(DISTINCT CASE WHEN lower\(cycle\)/);
+    assert.match(sql, /final_sale_count/);
   });
 
   it("commits the historical snapshot proof with prediction-program sections", () => {

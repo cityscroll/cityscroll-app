@@ -110,6 +110,25 @@ commands above on Mini or a green MacBook to materialize bulk data.
 **Do not** start the next dataset until headroom is still green after the
 previous pack. Loaded: OCP + `zap-projects` + `zap-bbl`. Next: `city-record`.
 
+## DOF Tax Lien Sale Lists
+
+Dataset `dof-tax-lien-sale-lists` (`9rz4-mjek`) uses the resumable 50,000-row
+SODA paging path because the publisher exposes notice-stage rows rather than a
+single downloadable snapshot. Materialize and verify it one dataset at a time:
+
+```bash
+python3 "$HEADROOM_BIN"
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset dof-tax-lien-sale-lists --bulk --ack-large --resume
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/tax_lien_sale_bulk_verify.sql
+```
+
+The raw CSV, parquet, and DuckDB table remain gitignored. The committed proof
+receipt records the full row count and checksum. Prediction snapshots are built
+from this table by `tools/build_tax_lien_sale_predictions.mjs`; the builder
+requires at least three completed historical cycles before the held-out cycle.
+
 ## CPU discipline (baked into the runner)
 
 | Guard | Behavior |

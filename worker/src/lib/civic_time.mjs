@@ -180,6 +180,33 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "land",
     description: "ZAP land-use disposition / vote outcome",
   },
+  // Property / DOF tax-lien sale progression. Full property-disposition event
+  // registration belongs to the property ontology program; keep this bounded
+  // to the lien-sale vocabulary used by the prediction and backtest paths.
+  "property.tax_lien_notice_90": {
+    lens: "property",
+    description: "DOF 90-day tax-lien sale list publication for a BBL",
+  },
+  "property.tax_lien_notice_60": {
+    lens: "property",
+    description: "DOF 60-day tax-lien sale list publication for a BBL",
+  },
+  "property.tax_lien_notice_30": {
+    lens: "property",
+    description: "DOF 30-day tax-lien sale list publication for a BBL",
+  },
+  "property.tax_lien_notice_10": {
+    lens: "property",
+    description: "DOF 10-day tax-lien sale list publication for a BBL",
+  },
+  "property.tax_lien_sale_deadline": {
+    lens: "property",
+    description: "Announced DOF tax-lien sale date for a listed BBL",
+  },
+  "property.tax_lien_sold": {
+    lens: "property",
+    description: "BBL appears on the DOF final tax-lien sale list",
+  },
   // Meetings
   "meetings.council_event": {
     lens: "meetings",

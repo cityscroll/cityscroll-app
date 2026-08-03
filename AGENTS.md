@@ -1368,6 +1368,18 @@ Artifacts: `site/data/rules_adoption_lag_model.json`,
 comment_close (`site/rules_adoption_lag_view.mjs`); digest line on band
 transitions only (`adoptionLagDigestItem`).
 
+## Tax-lien sale progression predictions
+
+DOF Tax Lien Sale Lists (`9rz4-mjek`) drive a BBL-exact 90 → 60 → 30 → 10 →
+final-sale phase spine. `tools/build_tax_lien_sale_predictions.mjs` requires at
+least three historical cycles, holds out the latest cycle for the shared
+prediction scorecard, and emits `site/data/tax_lien_sale_{summary,bbl}.json`.
+When the scorecard is below the per-property ship bar, property pages must show
+only the BBL's published stage/outcome plus borough cohort statistics. A final
+sale means the lien was sold; later foreclosure is outside this dataset and is
+never predicted. Verify:
+`node --test test/tax_lien_sale_prediction.test.mjs test/ontology_registry.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
