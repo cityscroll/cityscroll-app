@@ -7926,7 +7926,7 @@ function taxLienPanelHTML(summary){
     <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
     <div class="tax-lien-lookup"><label for="tax-lien-bbl">${t("tax_lien_lookup_label")}</label><input id="tax-lien-bbl" type="text" inputmode="numeric" maxlength="10" placeholder="${escUiHtml(t("tax_lien_lookup_placeholder"))}"><button type="button" id="tax-lien-bbl-go">${t("tax_lien_lookup_button")}</button><div class="tax-lien-result" id="tax-lien-bbl-result"></div></div>
     <div class="field" style="max-width:260px"><label for="tax-lien-cycle">${t("tax_lien_cycle_label")}</label><select id="tax-lien-cycle">${options}</select></div>
-    <div class="tax-lien-areas"><div class="tax-lien-area"><h3>${t("tax_lien_borough_heading")}</h3>${taxLienAreaTable(cycle.boroughs,t("borough_label"))}</div><div class="tax-lien-area"><h3>${t("tax_lien_nta_heading")}</h3><div class="tax-lien-nta-scroll">${taxLienAreaTable(cycle.ntas,"NTA")}</div></div></div>`;
+    <div class="tax-lien-areas"><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_borough_heading")}</h3>${taxLienAreaTable(cycle.boroughs,t("borough_label"))}</div><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_nta_heading")}</h3><div class="tax-lien-nta-scroll" role="region" tabindex="0" aria-label="${escUiHtml(t("tax_lien_nta_heading"))}">${taxLienAreaTable(cycle.ntas,"NTA")}</div></div></div>`;
 }
 async function paintTaxLienSalePanel(){
   const el=$("#tax-lien-sale-panel"); if(!el) return;
