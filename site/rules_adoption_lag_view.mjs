@@ -51,9 +51,26 @@ export function agencyAbbrLight(name) {
   return null;
 }
 
+/** Agency timing cohorts need realized adoptions, not only censored rows. */
+export function agencyCohortIsEligible(cohort, minEvents = EARLY_SAMPLE) {
+  if (!cohort || !cohort.quantiles_complete) return false;
+  const nEvents = Number(cohort.n_events);
+  if (Number.isFinite(nEvents) && nEvents < minEvents) return false;
+  if (
+    Number.isFinite(cohort.p25_days)
+    && Number.isFinite(cohort.p75_days)
+    && cohort.p25_days === cohort.p75_days
+    && Number.isFinite(cohort.p50_days)
+    && cohort.p50_days === cohort.p25_days
+  ) {
+    return false;
+  }
+  return true;
+}
+
 export function selectCohort(model, agency) {
   const abbr = agencyAbbrLight(agency);
-  if (abbr && model?.agencies?.[abbr]?.quantiles_complete) {
+  if (abbr && agencyCohortIsEligible(model?.agencies?.[abbr])) {
     return { cohort: model.agencies[abbr], source: "agency" };
   }
   return { cohort: model?.citywide || null, source: "citywide" };
@@ -67,15 +84,20 @@ export function adoptionLagPatternLine(pattern, opts = {}) {
   const median = pattern.median_days;
   const lo = pattern.middle_half_low;
   const hi = pattern.middle_half_high;
+  const halfUseful = lo != null && hi != null && lo !== hi;
+  const halfPhrase = halfUseful ? ` middle half ${lo}–${hi} days` : "";
   const closed = date ? `Comment period closed ${date}. ` : "";
   if (pattern.projection === "cohort_statistic_only" || median == null) {
-    const half = (lo != null && hi != null) ? ` middle half ${lo}–${hi} days.` : ".";
+    const half = halfUseful ? `${halfPhrase}.` : ".";
     const med = median != null ? ` typically ${median} days to adoption,` : "";
     return `${closed}Predicted based on ${n} similar rule adoptions since ${year} —${med}${half}`
       .replace(/\s+/g, " ")
       .trim();
   }
-  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — median ${median} days to adoption, middle half ${lo}–${hi}.`;
+  const tail = halfUseful
+    ? `median ${median} days to adoption,${halfPhrase}.`
+    : `median ${median} days to adoption.`;
+  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — ${tail}`;
 }
 
 /**

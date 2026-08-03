@@ -16,6 +16,7 @@ import {
   ULURP_STATUTORY_TOTAL_DAYS,
   addCalendarDays,
   buildUlurpStatutoryClockView,
+  detectStaleOpenStatutoryClock,
   projectStatutoryDeadlines,
   resolveCertificationDate,
 } from "../site/ulurp_statutory_clock.mjs";
@@ -182,4 +183,85 @@ test("zap outcome materialization attaches statutory predictions batch-side", ()
   const src = readFileSync(join(ROOT, "worker/src/zap_outcomes.mjs"), "utf8");
   assert.match(src, /attachUlurpStatutoryPredictions/);
   assert.match(src, /ulurp_statutory_predictions/);
+});
+
+test("completed project closes statutory phases and resolves predictions", () => {
+  const record = JSON.parse(
+    readFileSync(join(ROOT, "test/fixtures/ulurp_statutory_clock/completed_project.json"), "utf8"),
+  );
+
+  const clock = buildUlurpStatutoryClockView(record, {
+    generatedAt: "2026-08-03T12:00:00Z",
+  });
+  assert.equal(clock.status, "completed");
+  assert.ok(clock.phases.length >= 5);
+  assert.ok(clock.phases.every((p) => p.status === "completed"));
+  assert.equal(clock.disposition.status, "completed");
+  assert.ok(clock.phases.some((p) => p.phase_id === "community_board" && p.completed_at === "2023-10-26"));
+
+  const predictions = emitUlurpStatutoryPredictions(record, {
+    generatedAt: "2026-08-03T12:00:00Z",
+  });
+  assert.ok(predictions.length >= 5);
+  const open = predictions.filter((p) => p.status === "open");
+  assert.equal(open.length, 0, "completed project must not leave open statutory predictions");
+  for (const p of predictions) {
+    validatePrediction(p);
+    assert.ok(
+      p.status === "resolved_hit" || p.status === "resolved_miss",
+      `unexpected status ${p.status} for ${p.model_name}`,
+    );
+    assert.ok(p.resolved_by_event_id);
+  }
+
+  // Detector: a hand-stale clock with all-open phases on this record must flag.
+  const staleClock = {
+    status: "open",
+    phases: clock.phases.map((p) => ({ ...p, status: "open", completed_at: null })),
+  };
+  const finding = detectStaleOpenStatutoryClock(record, staleClock);
+  assert.ok(finding);
+  assert.equal(finding.rule_id, "statutory_clock_stale_open");
+  // Fixed clock on the same record must not flag.
+  assert.equal(detectStaleOpenStatutoryClock(record, clock), null);
+});
+
+test("in-progress project closes only completed statutory phases", () => {
+  const record = {
+    project_id: "2024Q0292",
+    public_status: "In Public Review",
+    certified_referred: "2026-05-11",
+    milestones: [
+      { id: "cb", title: "Community Board Review", status: "Completed", date: "2026-06-25" },
+      { id: "bp", title: "Borough President Review", status: "In Progress", date: null },
+    ],
+    spine: {
+      events: [
+        {
+          id: "zap-milestone:cb",
+          title: "Community Board Review",
+          status: "Completed",
+          detail: "Completed",
+          time: { value: "2026-06-25", precision: "day", certainty: "actual" },
+        },
+      ],
+    },
+  };
+  const clock = buildUlurpStatutoryClockView(record, {
+    generatedAt: "2026-08-03T12:00:00Z",
+  });
+  assert.equal(clock.status, "open");
+  const byId = Object.fromEntries(clock.phases.map((p) => [p.phase_id, p]));
+  assert.equal(byId.community_board.status, "completed");
+  assert.equal(byId.borough_president.status, "open");
+  assert.equal(byId.cpc.status, "open");
+
+  const predictions = emitUlurpStatutoryPredictions(record, {
+    generatedAt: "2026-08-03T12:00:00Z",
+  });
+  const cbPred = predictions.find((p) => p.model_name === stageModelName("community_board"));
+  assert.ok(cbPred);
+  assert.ok(cbPred.status === "resolved_hit" || cbPred.status === "resolved_miss");
+  const bpPred = predictions.find((p) => p.model_name === stageModelName("borough_president"));
+  assert.equal(bpPred.status, "open");
 });
