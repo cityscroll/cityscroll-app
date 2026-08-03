@@ -38,8 +38,8 @@ def main():
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"
     cache_bust = str(time.time_ns())
-    failures = []
-    captures = []
+    failures = []  # Runtime assertions collected by this capture; no sourced data.
+    captures = []  # Repository-relative generated paths; no sourced data.
 
     try:
         with sync_playwright() as playwright:
