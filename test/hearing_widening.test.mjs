@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
@@ -5,7 +6,7 @@ import { readFileSync } from "node:fs";
 
 const require = createRequire(import.meta.url);
 const { chooseHearingScope } = require("../site/hearing_location.js");
-const indexSource = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const indexSource = SITE_SOURCE;
 const i18nSource = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const TODAY = "2026-07-29";
 

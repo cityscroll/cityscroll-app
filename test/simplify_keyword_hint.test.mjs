@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // A zero-result alert preview should help distinguish "quiet day" from "this filter can never
 // match" — long, sentence-like search terms get a hint to simplify to one or two words.
 //
@@ -9,7 +10,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

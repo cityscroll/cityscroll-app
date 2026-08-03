@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins chainHTML()'s renewal-linking behavior: a chain entry pulled in by the
 // pinBase() renewal-suffix prefix widening carries a DIFFERENT literal PIN than the notice the
 // reader opened, so it must render distinguishably from a same-PIN duplicate stage.
@@ -16,7 +17,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

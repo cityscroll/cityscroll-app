@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
@@ -114,7 +115,7 @@ test("public read models stay action-first and degrade to cohort statistics", ()
     "../warehouse/receipts/proof/tax_lien_sale_calibration_latest.json",
     import.meta.url,
   )));
-  const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+  const index = SITE_SOURCE;
   const copy = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
 

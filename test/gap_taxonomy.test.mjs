@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization tests for the two-register lifecycle gap taxonomy:
 //   class (a) not_yet_ingested — "Not yet shown here — … live in <source>."
 //   class (b) not_published    — "The city does not publish this — it would appear in <where> if released."
@@ -15,7 +16,7 @@ import { dirname, join } from "node:path";
 import { assembleSubsidyLifecycle } from "../worker/src/lib/subsidy_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 const registry = JSON.parse(
   readFileSync(join(ROOT, "site", "data", "gap_taxonomy.json"), "utf8"),

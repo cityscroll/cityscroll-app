@@ -1,8 +1,9 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
-const source = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const source = SITE_SOURCE;
 
 function extractFunction(name) {
   const start = source.indexOf(`function ${name}(`);

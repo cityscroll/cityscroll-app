@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pure subsidy phase spine: stage-as-phase group, current/next, future collapse.
 //
 //   node --test test/subsidy_phase_spine.test.mjs
@@ -141,7 +142,7 @@ test("buildSubsidyPhaseView: ontology-complete when timeline only has hearing", 
 });
 
 test("public Land/Money surface files exist for subsidy phase module", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /subsidy_phase_spine|buildSubsidyPhaseView|subsidyPhaseTimelineHTML/);
   assert.match(index, /subsidy_phase_not_yet_reached|future_empty/);
   assert.match(index, /subsidyMatchedFactsHTML|data-subsidy-matched-facts/);

@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pure vendor profile phase spine: award → registration → payments.
 //
 //   node --test test/vendor_phase_spine.test.mjs
@@ -155,7 +156,7 @@ test("buildVendorPhaseView: empty rows still returns three-phase shell", () => {
 });
 
 test("index.html wires vendor phase spine module and timeline render", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /vendor_phase_spine\.mjs/);
   assert.match(index, /buildVendorPhaseView|vendorPhaseTimelineHTML/);
   // Flat-only rowItems dump for "On the record" must not be the sole path.

@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Characterization: property civic-time registration + disposition-timing ECDFs.
  *
@@ -44,7 +45,7 @@ const model = JSON.parse(
 const multiFixture = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/property_disposition/multi_notice_bbl.json"), "utf8"),
 );
-const indexHtml = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const indexHtml = SITE_SOURCE;
 const aboutHtml = readFileSync(join(ROOT, "site/about.html"), "utf8");
 const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
 

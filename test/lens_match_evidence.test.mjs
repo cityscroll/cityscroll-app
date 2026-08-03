@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins the extension of matchEvidence()/digTitleHTML()/digEvidenceHTML() -- the Alerts-page ask
 // preview's "why did this match" rendering (see test/match_evidence.test.mjs) -- into every other
 // lens result list: Money/Contracts (moneyRowHTML), Land (landRowHTML), Property/Rules/Meetings
@@ -26,7 +27,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

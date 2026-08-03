@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // SODA's count(1) aggregate returns the STRING "0" (not the number 0) when an agency has no
 // matching awards. A bare `stats.n` truthiness check treats "0" as present, so the notice-detail
 // and agency-profile aggregate blocks rendered a dash-and-zero scoreboard ("— total awarded / 0
@@ -12,7 +13,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

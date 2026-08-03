@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Precompute-first: notice detail no longer calls Checkbook NYC from the browser.
 // Legacy apt_pin fallback used to live in client-side checkbookByPin(); registration
 // and payment now come from GET /contract-lifecycle (worker pinMatchStrategy + assembly).
@@ -15,7 +16,7 @@ import { dirname, join } from "node:path";
 import { pinMatchStrategy, usablePin } from "../worker/src/lib/checkbook_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 test("client notice detail has no live Checkbook proxy (precompute-first)", () => {
   assert.doesNotMatch(src, /async function checkbookByPin\(/);

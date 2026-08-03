@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization: Money notice paper trail phase-group / aggregate / City Record dedupe.
 //
 //   node --test test/paper_trail_phase.test.mjs
@@ -18,7 +19,7 @@ import {
 } from "../site/paper_trail_phase.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSrc = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const indexSrc = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 // Real Sanitation blanket-code chain — same-day multi-vendor awards under one PIN.

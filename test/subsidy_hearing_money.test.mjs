@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Build NYC money integrity: parse Total Project / Development Cost from City Record
 // hearing bodies, and never claim "city does not publish" when the structured feed
 // was simply not joined (city-record-hearing fallback / feed unavailable).
@@ -28,7 +29,7 @@ const DEMO = JSON.parse(
   ),
 );
 
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

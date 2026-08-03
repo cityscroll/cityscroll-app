@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Characterization: franchise / concession review process spine
  * (solicitation → public_hearing → committee_meeting → award).
@@ -260,7 +261,7 @@ test("attachFranchiseConcessionSpines stamps the view without inventing counterp
 });
 
 test("public notice detail mounts the franchise spine UI chrome", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function franchiseConcessionSpineHTML/);
   assert.match(index, /loadFranchiseConcessionSpine/);
   assert.match(index, /franchise_spines/);

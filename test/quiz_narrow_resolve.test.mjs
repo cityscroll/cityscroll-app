@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // One query brain (w12-01): a real user typed "education contracts over 200k due in the
 // next 3 months" into the Alerts quiz's "Narrow by keyword (optional)" field and pressed
 // "Preview my digest →" — zero results, because the rfpkw watch type sent the whole
@@ -22,7 +23,7 @@ import { dirname, join } from "node:path";
 import { isLiteralKeyword, parseNL } from "../site/nl_parse.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

@@ -1,0 +1,867 @@
+async function nlResolve(text, lens){
+  lens = lens || "money";
+  // Prefer the model-backed worker when API is set; fall back to the on-device heuristic.
+  if(API){
+    try{
+      const r=await workerFetch("/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})}, 12000);
+      if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return {source:"model",...withPersonName(text, lens, j.filter)};}
+    }catch(e){}
+  }
+  return {source:"device",...deviceParse(text, lens)};
+}
+
+const NLQ_PRESET_KEY = "crd_nlq_presets_v1";
+function nlqPresetStore(){
+  try{ return parsePresetStore(localStorage.getItem(NLQ_PRESET_KEY)); }catch(e){ return []; }
+}
+function nlqPresetSet(list){
+  try{ localStorage.setItem(NLQ_PRESET_KEY, JSON.stringify(list)); }catch(e){}
+}
+function nlqEscape(value){
+  return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+}
+function renderNLQPresets(){
+  const list=nlqPresetStore();
+  document.querySelectorAll("[data-search-presets]").forEach(box=>{
+    box.innerHTML = list.length
+      ? `<div class="nlqpresets"><div class="nlqpresets-title">${t("saved_searches_heading")}</div><div class="nlqpreset-list">` +
+        list.map((preset,i)=>{
+          const lens=presetLens(preset);
+          const lensLabel=t("tab_"+lens);
+          return `<span class="nlqpreset"><button type="button" class="nlqpreset-run" data-i="${i}"><span class="nlqpreset-lens">${nlqEscape(lensLabel)}</span><span>${nlqEscape(preset.label)}</span></button><button type="button" class="nlqpreset-remove" data-i="${i}" aria-label="${nlqEscape(t("remove_saved_search_aria",{label:lensLabel+" — "+preset.label}))}">×</button></span>`;
+        }).join("") +
+        `</div></div>`
+      : "";
+    box.querySelectorAll(".nlqpreset-run").forEach(btn=>btn.addEventListener("click",()=>{
+      const preset=nlqPresetStore()[+btn.dataset.i]; if(!preset) return;
+      if(location.hash===preset.hash) applyHash(); else location.hash=preset.hash;
+    }));
+    box.querySelectorAll(".nlqpreset-remove").forEach(btn=>btn.addEventListener("click",()=>{
+      const next=removePreset(nlqPresetStore(), +btn.dataset.i); nlqPresetSet(next); renderNLQPresets();
+    }));
+  });
+}
+function qrButtonHTML(id, className){
+  return `<button type="button" class="${className||"mini"}"${id?` id="${id}"`:""} data-qr-share data-i18n="qr_share_btn">${t("qr_share_btn")}</button>`;
+}
+function qrLabels(){
+  return {
+    title:t("qr_dialog_title"),
+    alt:t("qr_image_alt"),
+    destination:t("qr_destination_label"),
+    download:t("qr_download_png"),
+    close:t("qr_close")
+  };
+}
+function bindQRShare(button, url){
+  if(button && window.QRShare) QRShare.bind(button, url, qrLabels);
+}
+function renderLandingShareActions(){
+  const root=$("#landing-share-actions"); if(!root) return;
+  const url=location.origin+location.pathname;
+  root.innerHTML=`<div class="nlqactions"><button type="button" class="mini" data-landing-copy data-i18n="copy_link">${t("copy_link")}</button>${qrButtonHTML()}</div>`;
+  const copy=root.querySelector("[data-landing-copy]");
+  copy.addEventListener("click",()=>copyText(url, copy));
+  bindQRShare(root.querySelector("[data-qr-share]"), url);
+}
+function searchActionsHTML(lens, hash){
+  if(!hash) return "";
+  const moneyIds=lens==="money";
+  return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+}
+function bindSearchActions(root, label, hash){
+  if(!root || !hash) return;
+  const url=canonicalSearchURL(location, hash);
+  const share=root.querySelector("[data-search-share]"); if(share) share.href=canonicalSearchURL(location, hash);
+  const copy=root.querySelector("[data-search-copy]");
+  if(copy) copy.addEventListener("click",()=>copyText(url, copy));
+  bindQRShare(root.querySelector("[data-qr-share]"), url);
+  const save=root.querySelector("[data-search-save]");
+  if(save) save.addEventListener("click",()=>{
+    nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
+    renderNLQPresets();
+    save.dataset.i18n="saved_check";
+    save.textContent=t("saved_check");
+  });
+}
+function nlqResolvedActionsHTML(hash){
+  return searchActionsHTML("money", hash);
+}
+function bindNLQResolvedActions(label, hash){
+  bindSearchActions($("#nltrans"), label, hash);
+}
+async function nlTranslate(){
+  const text=$("#nlq").value.trim(); if(!text) return;
+  const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
+  const p=await nlResolve(text, "money");
+  const deepLink=buildMoneyDeepLink(p);
+  const wantsAward = p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount));
+  moneyNlResolved={category:p.category||null, maxAmount:p.maxAmount||null, months:p.months||null,
+    noticeType:p.noticeType||null, excludeSpecial:!!p.excludeSpecial};
+  $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline";
+  $("#agency").value=""; forceSelect("#agency", p.agency);
+  $("#kw").value=p.keywords.join(" "); forceAmountSelect(p.minAmount);
+  await search();
+  if(btn) btn.disabled=false;
+  $("#nltrans").innerHTML=nlqResolvedActionsHTML(deepLink);
+  bindNLQResolvedActions(text, deepLink);
+  if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
+}
+
+function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
+
+// Informal notice translation — original English always stays primary above this mount.
+// On-demand only (button); worker caches per (notice, lang) so a second open is a cache hit
+// with no upstream model call. Invariant failures return ok:false → we show the short
+// unavailable line, never a partial translation.
+function mountUnofficialTranslation(el, r){
+  if(!el || !r || !r.request_id) return;
+  const lang = window.LANG || "en";
+  const shipping = (window.SHIPPING_LANGS || []).includes(lang);
+  if(!shipping || lang === "en" || !API){ el.innerHTML = ""; return; }
+  el.innerHTML = `<button type="button" class="act" data-xlate-btn>${t("unofficial_translation_show")}</button>`
+    + `<div class="xlate-pane" data-xlate-pane hidden></div>`;
+  const btn = el.querySelector("[data-xlate-btn]");
+  const pane = el.querySelector("[data-xlate-pane]");
+  if(!btn || !pane) return;
+  let state = "idle"; // idle | loading | open | unavailable
+  btn.addEventListener("click", async ()=>{
+    if(state === "open"){
+      pane.hidden = true;
+      btn.textContent = t("unofficial_translation_show");
+      state = "idle";
+      return;
+    }
+    if(state === "unavailable") return;
+    if(state === "loading") return;
+    if(pane.dataset.loaded === "1"){
+      pane.hidden = false;
+      btn.textContent = t("unofficial_translation_hide");
+      state = "open";
+      return;
+    }
+    state = "loading";
+    btn.disabled = true;
+    btn.textContent = t("unofficial_translation_loading");
+    try{
+      const resp = await workerFetch(
+        "/translate/" + encodeURIComponent(r.request_id) + "?lang=" + encodeURIComponent(lang),
+        null,
+        20000,
+      );
+      const j = resp && resp.ok ? await resp.json() : null;
+      if(!j || !j.ok || !j.title && !j.description){
+        pane.hidden = false;
+        pane.dataset.loaded = "0";
+        pane.innerHTML = `<span class="lbl">${t("unofficial_translation")}</span>`
+          + `<p class="xlate-body">${t("unofficial_translation_unavailable")}</p>`;
+        btn.textContent = t("unofficial_translation");
+        btn.disabled = true;
+        state = "unavailable";
+        return;
+      }
+      const title = cleanText(j.title || "");
+      const body = cleanText(j.description || "");
+      // lang on the pane matches the active UI language; original English stays above with lang=en.
+      pane.setAttribute("lang", lang);
+      pane.innerHTML = `<span class="lbl">${t("unofficial_translation")}</span>`
+        + (title ? `<div class="xlate-title">${title}</div>` : "")
+        + (body ? `<p class="xlate-body">${body.slice(0,6000)}${body.length>6000?"…":""}</p>` : "");
+      pane.dataset.loaded = "1";
+      pane.hidden = false;
+      btn.disabled = false;
+      btn.textContent = t("unofficial_translation_hide");
+      state = "open";
+    }catch(e){
+      pane.hidden = false;
+      pane.innerHTML = `<span class="lbl">${t("unofficial_translation")}</span>`
+        + `<p class="xlate-body">${t("unofficial_translation_unavailable")}</p>`;
+      btn.textContent = t("unofficial_translation");
+      btn.disabled = true;
+      state = "unavailable";
+    }
+  });
+}
+
+// The chips summarizing what was understood are inert status text (role="status"), not the
+// clickable sample queries above them (.trychip) — an explicit label keeps the two from
+// reading as the same kind of thing; the "Edit search" button is a real, separately-styled
+// control (.mini), a sibling of the status line rather than nested inside it. `forSel` is the
+// input it should refocus (delegated at the bottom of this file — see the "#nlgo" click
+// listener), so one handler covers every render across every lens instead of rewiring a
+// listener each time. `weak` (little/nothing understood, or zero matches) wraps both in a
+// visible callout instead of leaving them to blend into quiet status text (w12-02: never a
+// bare empty result — field evidence 2026-07-14).
+function nlTransHTML(chips, forSel, weak){
+  if(!chips.length) return "";
+  // A plain space, not "" -- adjacent .qchip spans read fine visually (CSS margin separates
+  // the pills either way), but joining with no text node between them at all left the DOM/
+  // accessible text of consecutive chips mashed together with no boundary -- a real "rezonings
+  // in the Bronx" query echoed as the single run-on word "Bronxall" to anything reading
+  // textContent (a screen reader's accessible-name computation, copy/paste, a test assertion),
+  // not just visually.
+  const status = `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join(" ")}</div>`;
+  const edit = `<button type="button" class="mini nledit" data-nlfor="${forSel}">${t("nl_edit_btn")}</button>`;
+  return weak ? `<div class="nlunderstood-weak">${status}${edit}</div>` : `${status}${edit}`;
+}
+
+// "look up someone named X" → the model sets lookupType:"person" but often omits the name
+// (it reads a surname as not a "topic keyword"), so #pkw ends up empty and the search bails.
+// Recover the name from the raw text. Used by both the model path and the device fallback.
+function personName(text){
+  const t=(text||"").trim();
+  let m=t.match(/(?:named|name of|called)\s+([A-Za-z][A-Za-z'’.\-]+)/i);
+  if(!m) m=t.match(/(?:look\s*up|find|search for|about)\s+(?:someone|somebody|a person|the person|person|mr\.?|ms\.?|mrs\.?)?\s*([A-Za-z][A-Za-z'’.\-]+)/i);
+  if(m) return m[1];
+  const stop=new Set("look up lookup someone somebody person people named name find search for a an the of about mr ms mrs role title".split(" "));
+  const cand=t.replace(/[^A-Za-z'’.\- ]/g," ").split(/\s+/).filter(w=>w.length>2 && !stop.has(w.toLowerCase()));
+  return cand.length ? cand[cand.length-1] : null;
+}
+function withPersonName(text, lens, f){
+  if(lens==="people" && f && f.lookupType==="person" && (!f.keywords || !f.keywords.length)){
+    const nm=personName(text); if(nm) return {...f, keywords:[nm]};
+  }
+  return f;
+}
+function deviceParse(text, lens){
+  if(lens==="money") return parseNL(text);
+  const out={keywords:[]};
+  const low=" "+text.toLowerCase()+" ";
+  if(lens==="alerts"){
+    // Rezonings are a different lens (land/ZAP) with no dollar amount, agency, or due date,
+    // so they stay their own shape; everything else (contracts, RFPs, awards) reuses
+    // parseNL()'s general field extraction — the same function the Money tab's own search
+    // box calls, so a new field added there benefits both without any alerts-specific code.
+    if(/\brezon\w*\b|\bzoning\b/.test(low)){
+      const place=(text.match(/(?:near|by|around)\s+(.+)$/i)||[])[1];
+      return {watchType:"rezone", place: place ? place.trim() : null};
+    }
+    return parseNL(text);
+  }
+  if(lens==="land"){
+    const boros=["Manhattan","Brooklyn","Queens","Bronx","Staten Island"];
+    out.boro=boros.find(b=>low.includes(" "+b.toLowerCase()+" "))||null;
+  }
+  if(lens==="people"){
+    const personish=/\b(person|people|someone|somebody|individual|named|name of|mr|ms|mrs)\b/.test(low);
+    const roleish=/\b(role|roles|title|titles|position|job|jobs)\b/.test(low);
+    const nm=personName(text);
+    if((personish || nm) && !roleish){ out.lookupType="person"; if(nm) out.keywords=[nm]; return out; }
+    out.lookupType="role";
+  }
+  const stop=new Set("the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this".split(" "));
+  out.keywords=[...new Set(text.toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>3&&!stop.has(w)))].slice(0,4);
+  // A borough already has its own structured field. Do not also send its words through ZAP's
+  // full-text query: "rezonings in Queens" is canonically #land?boro=Queens, not the same
+  // borough twice as both boro=Queens and q=queens.
+  if(lens==="land" && out.boro){
+    const boroWords=new Set(out.boro.toLowerCase().split(/\s+/));
+    out.keywords=out.keywords.filter(word=>!boroWords.has(word));
+  }
+  return out;
+}
+
+// Keywords that just restate a lens's own implied type read as redundant "keyword soup" once
+// the lens-implied chip (below) already states that type distinctly -- e.g. "environmental
+// protection land" used to echo "about environmental protection / land", with "land" doing
+// nothing but repeating what the Property tab already is. Stripped from both the echo AND the
+// applied search filter (not just hidden from view), so what's shown is always what's searched.
+const LENS_IMPLIED_WORDS = {
+  land: ["rezoning","rezonings","rezone","rezones","zoning","land use","landuse"],
+  property: ["property","properties","land","disposition","dispositions","property disposition"],
+  rules: ["rule","rules","regulation","regulations","agency rule","agency rules"],
+  meetings: ["meeting","meetings","hearing","hearings","public hearing","public hearings"],
+};
+function stripImpliedKeywords(lens, keywords){
+  const stop=new Set((LENS_IMPLIED_WORDS[lens]||[]).map(w=>w.toLowerCase()));
+  return (keywords||[]).filter(k=>!stop.has(String(k||"").trim().toLowerCase()));
+}
+
+const NL = {
+  people: {
+    placeholder:"for example, paramedic roles, or look up someone named Rodriguez",
+    chips:f=>[ f.lookupType?`<span class="qchip">a <b>${f.lookupType==='person'?'person':'role'}</b></span>`:"",
+               (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"" ],
+    apply:f=>{ if(f.lookupType){ $("#pmode").value=f.lookupType; $("#pmode").dispatchEvent(new Event("change")); }
+               $("#pkw").value=(f.keywords||[]).join(" "); return pSearch(); }
+  },
+  land: {
+    placeholder:"for example, rezonings in Brooklyn, or 79 Rivington",
+    // The Land tab is *always* rezonings -- there's no field for it in the filter schema
+    // (nothing else the ZAP dataset returns), so a query that names no keyword/borough of its
+    // own (e.g. "rezonings in Queens" -- boro consumes "Queens", "rezonings" has nowhere to
+    // go) used to echo as just "in Queens", dropping the very thing the user asked about. The
+    // leading chip is unconditional, not read off any extracted field. stripImpliedKeywords()
+    // keeps "rezoning"/"zoning" out of the "about" chip too -- it's occasionally extracted as
+    // a keyword (the device-parser fallback does this), which used to double up on the leading
+    // chip ("rezonings · about rezoning").
+    chips:f=>{
+      const kw=stripImpliedKeywords("land", f.keywords);
+      return [ `<span class="qchip">${t("nl_chip_land_kind")}</span>`,
+               f.boro?`<span class="qchip">in <b>${f.boro}</b></span>`:"",
+               kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
+               // Plain language, not filter jargon ("all · incl. closed") -- every echoed
+               // filter must be readable as a sentence fragment on its own.
+               f.status==='all'?`<span class="qchip">${t("nl_chip_land_status_all")}</span>`:"" ];
+    },
+    apply:f=>{ if(f.boro) $("#lboro").value=f.boro; if(f.status) $("#lstatus").value=f.status;
+               $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" "); return landSearch(); }
+  },
+  property: nlFeed("property","for example, HPD property sales, DEP land"),
+  rules:    nlFeed("rules","for example, buildings rules, sanitation rules"),
+  meetings: nlFeed("meetings","for example, recent landmarks hearings, city council"),
+  alerts: {
+    placeholder:"for example, education contracts over $200K due in 3 months, or awards over $1M",
+    // Reuses parseNL()'s general filter shape — not a single-payload watchType classifier —
+    // so ANY combination of category/agency/amount/notice-type/deadline it recognizes
+    // survives together, instead of the query collapsing onto whichever one field a fixed
+    // enum picked. Rezonings alone stay their own shape (no amount/deadline/agency exists
+    // for that lens). The visible "Build an alert" fields cover keywords/amount/months —
+    // agency/category/noticeType/maxAmount have no dedicated input (moneynlExtra, below)
+    // but still flow into the stored filter and the live preview query.
+    chips:f=>{
+      if(f.watchType==="rezone") return [`<span class="qchip">rezonings near <b>${f.place||"…"}</b></span>`];
+      const chips=[];
+      if(f.noticeType) chips.push(`<span class="qchip">${f.noticeType==="award"?"awards":"open RFPs"}</span>`);
+      if(f.agency) chips.push(`<span class="qchip">agency <b>${f.agency}</b></span>`);
+      if(f.keywords && f.keywords.length) chips.push(`<span class="qchip">about <b>${f.keywords.join(" / ")}</b></span>`);
+      if(f.category) chips.push(`<span class="qchip">category <b>${f.category}</b></span>`);
+      if(f.minAmount) chips.push(`<span class="qchip">amount ≥ <b>${money(f.minAmount)}</b></span>`);
+      if(f.maxAmount) chips.push(`<span class="qchip">amount ≤ <b>${money(f.maxAmount)}</b></span>`);
+      if(f.months) chips.push(`<span class="qchip">due within <b>${f.months} mo</b></span>`);
+      return chips;
+    },
+    apply:f=>{
+      if(f.watchType==="rezone"){ applySuggestion("rezone", f.place||""); return; }
+      $("#awatch").value="moneynl"; aWatchChange();
+      $("#amoneykw").value=(f.keywords||[]).join(" ");
+      $("#amoneymin").value=f.minAmount||"";
+      $("#amoneymonths").value=f.months||"";
+      moneynlExtra={agency:f.agency||null, category:f.category||null, maxAmount:f.maxAmount||null, noticeType:f.noticeType||null};
+      aPreview();
+    }
+  }
+};
+
+// One query brain: "rfpkw"'s free-text field (#aparam, reached either directly via "Build
+// an alert" or prefilled by the 60-second quiz's "Narrow by keyword") is the one Alerts
+// control that's money-shaped enough to carry a full sentence. Before this, a query typed
+// there went to SODA as one literal $q phrase -- "education contracts over 200k due in the
+// next 3 months" matched nothing that way -- while the SAME text in the Ask box (which
+// already calls nlResolve()) worked, because only the Ask box ran it through parseNL(). This
+// is the one place both paths now resolve a non-literal query: promote the watch to the
+// fuller "moneynl" shape via NL.alerts.apply(), the SAME function the Ask box's apply step
+// calls, so Preview and a saved alert are built from ONE interpreted filter, never the raw
+// string re-matched literally. A literal single word or quoted phrase is left alone (returns
+// false) so the caller runs its own preview unchanged -- no worker round-trip for that case.
+async function resolveMoneyNarrow(){
+  if($("#awatch").value !== "rfpkw") return false;
+  const text = $("#aparam").value.trim();
+  if(!text || isLiteralKeyword(text)) return false;
+  const buttons=[$("#quizgo"), $("#apreview")].filter(Boolean);
+  buttons.forEach(b=>b.disabled=true);
+  const parsed = await nlResolve(text, "alerts");
+  buttons.forEach(b=>b.disabled=false);
+  const trans=$("#nltrans-alerts");
+  const narrowChips=(NL.alerts.chips(parsed)||[]).filter(Boolean);
+  if(trans) trans.innerHTML = nlTransHTML(narrowChips, "#aparam", narrowChips.length===0);
+  NL.alerts.apply(parsed); // sets #awatch/moneynl fields + moneynlExtra, and calls aPreview()
+  return true;
+}
+
+function nlFeed(key, placeholder){
+  return {
+    placeholder,
+    // Same class of gap as Land (see NL.land.chips above): Property/Rules/Meetings are each
+    // pinned to one City Record section_name, with no field in the filter schema for it -- a
+    // query like "HPD property sales" that resolves to agency-only (the model treats "property
+    // sales" as lens-implicit, the same way it treats "rezonings") used to echo just the agency,
+    // dropping what the results actually are. SECTIONS[key].section is the exact section_name
+    // this feed already queries by, and tSection() is the translated label already used
+    // everywhere else that name is shown (Today strip, agency profiles) -- reused here rather
+    // than a new set of per-language strings.
+    // stripImpliedKeywords() (see NL.land.chips above) keeps the lens's own type-word out of
+    // the "about" chip and the applied search -- e.g. "environmental protection land" used to
+    // echo "about environmental protection / land", with "land" repeating what the lens-implied
+    // chip above already says plainly.
+    chips:f=>{
+      const kw=stripImpliedKeywords(key, f.keywords);
+      return [ `<span class="qchip">${tSection(SECTIONS[key].section)}</span>`,
+               f.agency?`<span class="qchip">agency <b>${f.agency}</b></span>`:"",
+               kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
+               (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"",
+               (key==='meetings'&&f.borough)?`<span class="qchip">${t("affected_area_label")} <b>${f.borough}</b></span>`:"",
+               (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"" ];
+    },
+    apply:f=>{ if(key==='meetings'&&f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
+               if(key==='meetings'&&f.borough) $("#meetingsboro").value=f.borough;
+               if(key==='meetings'&&f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
+               forceSelect("#"+key+"agency", f.agency);
+               $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
+               return loadSection(key); }
+  };
+}
+
+function searchFilterFromHash(lens, hash){
+  const qi=(hash||"").indexOf("?");
+  if(qi<0 || !hash.startsWith("#"+lens+"?")) return null;
+  const q=new URLSearchParams(hash.slice(qi+1));
+  const keywords=q.get("q")?[q.get("q")]:[];
+  if(lens==="people") return {lookupType:q.get("mode")==="person"?"person":"role", keywords};
+  if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), councilDistrict:q.get("council"), keywords, status:q.get("status")==="all"?"all":"active"};
+  const filter={agency:q.get("agency"), keywords};
+  if(lens==="meetings"){
+    filter.when=["week","month","upcoming","past"].includes(q.get("when"))?q.get("when"):"week";
+    filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
+    filter.neighborhood=q.get("neighborhood")||null;
+    filter.locationScope=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":null;
+    filter.process=q.get("process")||"all";
+  }
+  if(lens==="property"){
+    filter.asset=q.get("asset")||"all";
+    filter.process=q.get("process")||"all";
+    filter.stage=q.get("stage")||"all";
+    filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
+    filter.neighborhood=q.get("neighborhood")||null;
+  }
+  return filter;
+}
+
+function searchFilterChips(lens, filter){
+  if(lens==="money") return moneyActiveFilterItems(filter).map(moneyActiveFilterChip);
+  const keywords=(filter.keywords||[]).filter(Boolean);
+  let chips=[];
+  if(lens==="people"){
+    chips.push(`<span class="qchip">${t("look_up_label")} <b>${t(filter.lookupType==="person"?"pmode_person":"pmode_role")}</b></span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+  } else if(lens==="land"){
+    chips.push(`<span class="qchip">${t("nl_chip_land_kind")}</span>`);
+    if(filter.locationArea) chips.push(`<span class="qchip">${t("near_you_area",{area:filter.locationArea})}</span>`);
+    else if(filter.boro) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.boro}</b></span>`);
+    if(filter.communityDistrict && !filter.locationArea) chips.push(`<span class="qchip">CD <b>${Number(filter.communityDistrict.slice(1))}</b></span>`);
+    if(filter.councilDistrict && !filter.locationArea) chips.push(`<span class="qchip">${t("council_district_short",{n:filter.councilDistrict})}</span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+    if(filter.status==="all") chips.push(`<span class="qchip">${t("nl_chip_land_status_all")}</span>`);
+  } else {
+    chips.push(`<span class="qchip">${tSection(SECTIONS[lens].section)}</span>`);
+    if(filter.agency) chips.push(`<span class="qchip">${t("agency_label")} <b>${enTitle(filter.agency)}</b></span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+    if(lens==="meetings"){
+      const whenKey=filter.when==="week"?"this_week":filter.when==="month"?"next_30_days":filter.when==="past"?"recent_past":"all_upcoming";
+      chips.push(`<span class="qchip"><b>${t(whenKey)}</b></span>`);
+      if(filter.borough) chips.push(`<span class="qchip">${t("affected_area_label")} <b>${filter.borough}</b></span>`);
+      if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
+      if(filter.locationScope) chips.push(`<span class="qchip">${t("citywide_unlocated")}</span>`);
+      if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("meetings_process_label")} <b>${t(([["scheduled","meeting_stage_scheduled"],["agenda","meeting_stage_agenda"],["held","meeting_stage_held"],["outcomes","meeting_stage_outcomes"],["unstaged","meeting_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
+    }
+  }
+  if(lens==="property"){
+    if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
+    if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
+    if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
+    if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("property_process_label")} <b>${t(([["hearing","disposition_stage_hearing"],["auction_or_rfp","disposition_stage_auction_or_rfp"],["award_or_conveyance","disposition_stage_award_or_conveyance"],["unstaged","disposition_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
+    if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
+  }
+  return chips;
+}
+
+// One interpreted-row component for every arrival path: Ask, hand-set controls, or a cold
+// shared link. Lens-specific code supplies only the filter-to-chip conversion.
+function interpretedSearchRowHTML(lens, filter, suppliedChips){
+  const chips=suppliedChips||searchFilterChips(lens, filter);
+  if(!chips.length) return "";
+  const clearId=lens==="money"?' id="moneyactiveclear"':"";
+  return `<div class="nlunderstood searchactive${lens==="money"?" moneyactive":""}"><span role="status">${t("nl_understood_label")} ${chips.join(" ")}</span><button type="button" class="mini"${clearId} data-search-clear="${lens}">${t("clear_filters_btn")}</button></div>`;
+}
+
+function bindClearSearchState(lens, root){
+  const clear=root?.querySelector("[data-search-clear]"); if(!clear) return;
+  clear.addEventListener("click",()=>{
+    if(lens==="money"){
+      moneyNlResolved={};
+      $("#mode").value="open"; $("#agency").value=""; $("#kw").value=""; $("#sort").value="deadline";
+      forceAmountSelect(null); closingWeek=false; methodSel="";
+      $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false");
+      $("#nltrans").innerHTML=""; search(); return;
+    }
+    if(lens==="people"){
+      $("#pmode").value="role"; $("#pmode").dispatchEvent(new Event("change")); $("#pkw").value="";
+      $("#nltrans-people").innerHTML=""; pSearch(); return;
+    }
+    if(lens==="land"){
+      landResolvedArea=null;
+      landCommunityDistrict="";
+      landCouncilDistrict="";
+      $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="active";
+      $("#nltrans-land").innerHTML=""; landSearch(); return;
+    }
+    forceSelect("#"+lens+"agency", "");
+    $("#"+lens+"agency").value="";
+    $("#"+lens+"kw").value="";
+    const when=$("#"+lens+"when"); if(when) when.value="upcoming";
+    if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; meetingsProcessSel="all"; meetingsPlaceGroupSel="flat"; }
+    if(lens==="property"){ propAsset="all"; propStageSel="all"; propProcessSel="all"; $("#propertyboro").value=""; $("#propertyneighborhood").value=""; }
+    if(lens==="rules"){ rulesProcessSel="all"; }
+    $("#nltrans-"+lens).innerHTML="";
+    loadSection(lens);
+  });
+}
+
+function searchLabelFromHash(lens, hash){
+  const q=new URLSearchParams((hash.split("?")[1]||""));
+  const parts=["q","agency","boro","neighborhood","scope","cd","mode","status","when","asset","stage"].map(key=>q.get(key)).filter(Boolean);
+  return parts.join(" · ") || t("tab_"+lens);
+}
+
+function renderSearchComponents(lens, options){
+  if(!["people","land","property","rules","meetings"].includes(lens)) return;
+  const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():null;
+  const hash=(options&&options.hash)||serialized;
+  const safeHash=hash&&hash.startsWith("#"+lens+"?")?hash:null;
+  const filter=(options&&options.filter)||searchFilterFromHash(lens, safeHash);
+  const state=document.querySelector(`[data-search-state="${lens}"]`);
+  const actions=document.querySelector(`[data-search-actions="${lens}"]`);
+  if(state){
+    state.innerHTML=filter?interpretedSearchRowHTML(lens, filter):"";
+    bindClearSearchState(lens, state);
+  }
+  if(actions){
+    actions.innerHTML=searchActionsHTML(lens, safeHash);
+    bindSearchActions(actions, (options&&options.label)||searchLabelFromHash(lens, safeHash||""), safeHash);
+  }
+  renderNLQPresets();
+}
+
+// opts lets a second entry point (the 60-second quiz's own keyword field, below) reuse this
+// exact resolve→echo→apply sequence against its own input instead of the injected Ask box's
+// "#nlq-<lens>" — same interpretation, same echo container, no duplicated logic.
+async function nlTranslateLens(lens, opts){
+  const inpSel=(opts&&opts.inputSel)||("#nlq-"+lens);
+  const text=(opts&&opts.text!=null)?opts.text:($(inpSel)?.value.trim()||"");
+  if(!text) return;
+  const btn=$("#nlgo-"+lens); if(btn) btn.disabled=true;
+  $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
+  const f=await nlResolve(text, lens);
+  const chips=(NL[lens].chips(f)||[]).filter(Boolean);
+  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, inpSel, chips.length===0);
+  if(btn) btn.disabled=false;
+  const linkFilter={...f};
+  if(["land","property","rules","meetings"].includes(lens)) linkFilter.keywords=stripImpliedKeywords(lens, f.keywords);
+  const deepLink=buildSearchDeepLink(lens, linkFilter);
+  await NL[lens].apply(f);
+  if(chips.length) $("#nltrans-"+lens).innerHTML="";
+  renderSearchComponents(lens, {hash:deepLink, label:text});
+}
+
+// Suggestion-chip candidate pool + validated-set rotation (w12-08). Field evidence (site
+// owner, live production): the money lens's "IT consulting RFPs"/"shelter services contracts"
+// chips returned ZERO results while "construction contracts over $500k" worked — a suggestion
+// that leads nowhere reads as a broken site. The daily 13:00 UTC cron (worker/src/suggest.mjs)
+// verifies every candidate in worker/src/lib/suggestions.mjs's SUGGESTION_POOL against fresh
+// data and publishes the currently-fruitful set at GET /suggestions;
+// NL_SUGGESTIONS_VALIDATED holds that set once fetched (keyed by lens, each entry {idx,count}).
+// NL_SUGGESTIONS_FALLBACK is the build-validated subset shown when the worker is unreachable.
+// tools/validate_presets.mjs resolves every candidate, counts the identical destination query,
+// and generates this list plus the worker copy from data/preset-validation.json. A build fails
+// if a selected candidate drifts to zero; `--write` rotates the dead candidate out.
+//
+// w12-17: owner directive — the suggestions themselves should make the lineage (paper-trail
+// history) and forecast (predictive) features "much more discoverable". A validated entry now
+// also carries lineageRich/forecastBearing booleans, computed once daily by the cron
+// (worker/src/suggest.mjs's enrichCandidate(), worker/src/lib/lineage.mjs) against the
+// candidate's OWN live results — no extra client request. currentSuggestionMeta() exposes them
+// as idx sets per lens; renderNLSamples()/trychipHTML() add a subtle border-tint class + an
+// accessible hint to a qualifying chip. NL_SUGGESTIONS_FALLBACK carries no such data by
+// construction — unvalidated is exactly the "uncertain" case this feature must never guess at,
+// so a fallback chip never gets an indicator (currentSuggestionMeta() returns empty sets when
+// there's no validated entry for a lens).
+const NL_SUGGESTIONS_FALLBACK = {
+  money: [0, 1, 2, 3, 4, 5],
+  people: [0, 2],
+  land: [0, 1, 2, 3],
+  property: [1],
+  rules: [0, 1, 2],
+  meetings: [0, 3],
+  alerts: [0, 1, 2, 3],
+};
+let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
+
+// Pure: which idx values are currently eligible to display for a lens — the daily-validated
+// set if we have one for this lens, else the static fallback.
+function currentSuggestionIndices(lens){
+  const validated = NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens];
+  if(validated && validated.length) return validated.map(c=>c.idx);
+  return NL_SUGGESTIONS_FALLBACK[lens] || [];
+}
+
+// Pure: idx values in the validated set flagged lineage-rich / forecast-bearing for a lens.
+// Empty sets for the static fallback or a lens with no validated data yet — never a guess.
+function currentSuggestionMeta(lens){
+  const validated = (NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens]) || [];
+  const lineage = new Set(), forecast = new Set();
+  validated.forEach(c=>{
+    if(c.lineageRich) lineage.add(c.idx);
+    if(c.forecastBearing) forecast.add(c.idx);
+  });
+  return { lineage, forecast };
+}
+
+// Pure: deterministic day-seeded rotation over a pool of idx values — stable within a day
+// (every visitor that day sees the same rotation), different across days. seed is whole days
+// since the epoch (daySeed(), below); kept as a parameter so it's testable without Date.
+function pickSuggestions(indices, displayCount, seed){
+  if(!indices || !indices.length) return [];
+  const n = indices.length;
+  const start = ((seed % n) + n) % n;
+  const count = Math.min(displayCount, n);
+  const out = [];
+  for(let i=0;i<count;i++) out.push(indices[(start+i)%n]);
+  return out;
+}
+
+// Money-lens-only guarantee (w12-17 acceptance criterion): when lineage-rich candidates exist,
+// at least LINEAGE_GUARANTEE_MIN of the displayed chips come from that subset — representation,
+// not exclusivity, so the general pool still fills the remaining slots via the same day-seeded
+// rotation as before. Which lineage-rich idx get pinned in also rotates day to day (they're
+// picked with the same seed), not just which non-lineage chips fill the rest.
+const LINEAGE_GUARANTEE_MIN = 2;
+function pickSuggestionsGuaranteed(indices, lineageIndices, displayCount, seed, guarantee){
+  if(!lineageIndices || !lineageIndices.length || !guarantee) return pickSuggestions(indices, displayCount, seed);
+  const need = Math.min(guarantee, lineageIndices.length, displayCount);
+  const lineagePicked = pickSuggestions(lineageIndices, need, seed);
+  const rest = indices.filter(idx=>!lineagePicked.includes(idx));
+  const restPicked = pickSuggestions(rest, displayCount - lineagePicked.length, seed);
+  return [...lineagePicked, ...restPicked].slice(0, displayCount);
+}
+function daySeed(){ return Math.floor(Date.now()/86400000); }
+
+// One chip's markup: the .trychip button, plus — when the candidate carries a w12-17 signal —
+// a subtle border-tint class and a visually-hidden SIBLING hint the button's aria-describedby
+// points at. The hint deliberately lives OUTSIDE the button (not nested inside it) so
+// applyStrings()'s zero-children data-i18n guard still retranslates the button's own visible
+// label on a language switch (see AGENTS.md's static-fallback-drift sharp edge — a nested child
+// would silently freeze the label in whatever language was active at render time).
+function trychipHTML(lens, idx, meta){
+  const isLineage = meta.lineage.has(idx), isForecast = meta.forecast.has(idx);
+  const cls = ["trychip"];
+  if(isLineage) cls.push("has-lineage");
+  if(isForecast) cls.push("has-forecast");
+  const describedBy = [], hints = [];
+  if(isLineage){
+    const id = `sugghint-lineage-${lens}-${idx}`;
+    describedBy.push(id);
+    hints.push(`<span id="${id}" class="sr-only" data-i18n="sugg_lineage_hint">${t("sugg_lineage_hint")}</span>`);
+  }
+  if(isForecast){
+    const id = `sugghint-forecast-${lens}-${idx}`;
+    describedBy.push(id);
+    hints.push(`<span id="${id}" class="sr-only" data-i18n="sugg_forecast_hint">${t("sugg_forecast_hint")}</span>`);
+  }
+  const describedAttr = describedBy.length ? ` aria-describedby="${describedBy.join(" ")}"` : "";
+  return `<button type="button" class="${cls.join(" ")}" data-i="${idx}" data-i18n="sugg_${lens}_${idx}"${describedAttr}>${t("sugg_"+lens+"_"+idx)}</button>${hints.join("")}`;
+}
+
+function renderNLSamples(lens, el){
+  if(!el) return;
+  const meta = currentSuggestionMeta(lens);
+  const indices = currentSuggestionIndices(lens);
+  const picked = lens==="money"
+    ? pickSuggestionsGuaranteed(indices, [...meta.lineage], 3, daySeed(), LINEAGE_GUARANTEE_MIN)
+    : pickSuggestions(indices, 3, daySeed());
+  el.innerHTML = picked.map(idx=>trychipHTML(lens, idx, meta)).join("");
+  el.querySelectorAll(".trychip").forEach(b=>b.addEventListener("click",()=>{
+    const inp = lens==="money" ? $("#nlq") : $("#nlq-"+lens);
+    if(inp) inp.value = b.textContent;
+    lens==="money" ? nlTranslate() : nlTranslateLens(lens);
+  }));
+}
+
+function rerenderAllSuggestions(){
+  renderNLSamples("money", $("#nltry"));
+  ["people","land","property","rules","meetings","alerts"].forEach(lens=>renderNLSamples(lens, $("#nltry-"+lens)));
+}
+
+// Fetches the daily-validated set; on any failure (worker unreachable, or the cron hasn't
+// populated it yet — GET /suggestions 404s until the first successful run) this just leaves
+// chips already rendered from NL_SUGGESTIONS_FALLBACK in place, so a suggestion is never
+// blank while waiting.
+async function loadValidatedSuggestions(){
+  try{
+    const r = await workerFetch("/suggestions", null, 6000);
+    if(r && r.ok){
+      const data = await r.json();
+      if(data && data.byLens){ NL_SUGGESTIONS_VALIDATED = data.byLens; rerenderAllSuggestions(); }
+    }
+  }catch(e){ /* stays on the static fallback */ }
+}
+
+function injectNLBoxes(){
+  const tabs={people:["#tab-people",".controls"],land:["#tab-land",".controls"],property:["#tab-property",".controls"],rules:["#tab-rules",".controls"],meetings:["#tab-meetings",".controls"],alerts:["#tab-alerts",".grid"]};
+  Object.entries(tabs).forEach(([lens,[sel,anchorSel]])=>{
+    const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
+    const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
+    const box=document.createElement("div"); box.className="nlbox";
+    const searchTools=lens==="alerts"?"":'<div id="searchstate-'+lens+'" data-search-state="'+lens+'"></div>'+
+      '<div id="searchactions-'+lens+'" data-search-actions="'+lens+'"></div>'+
+      '<div id="nlpresets-'+lens+'" data-search-presets></div>';
+    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" aria-label="'+t("nl_aria")+'" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
+      '<button id="nlgo-'+lens+'" data-i18n="ask_btn">Ask</button></div>'+
+      '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>'+searchTools;
+    anchor.parentNode.insertBefore(box, anchor);
+    $("#nlgo-"+lens).addEventListener("click",()=>nlTranslateLens(lens));
+    $("#nlq-"+lens).addEventListener("keydown",e=>{ if(e.key==="Enter") nlTranslateLens(lens); });
+    renderNLSamples(lens, $("#nltry-"+lens));
+  });
+}
+
+function exportSpec(lens){
+  const searchLink=()=>location.href;
+  if(lens==="money") return {rows:currentRows, columns:[
+    {label:"Type",value:r=>r.type_of_notice_description,width:22},
+    {label:"Agency",value:r=>r.agency_name,width:32},
+    {label:"Title",value:r=>cleanText(r.short_title),width:48},
+    ["Category",r=>r.category_description],
+    {label:"Posted",value:r=>fdate(r.start_date),xlsxValue:r=>r.start_date,type:"date",width:13},
+    {label:"Due",value:r=>isRollingDeadline(r.due_date)?"no fixed deadline (rolling)":fdate(r.due_date),xlsxValue:r=>isRollingDeadline(r.due_date)?"":r.due_date,type:"date",width:13},
+    {label:"Days left",value:r=>{if(isRollingDeadline(r.due_date)) return "";const d=daysLeft(r.due_date);return d==null?"":d;},type:"number",width:12},
+    ["Method",r=>cleanText(r.selection_method_description)],["Contact",r=>cleanText(r.contact_name)],
+    ["Email",r=>r.email||""],["Phone",r=>cleanText(r.contact_phone)],
+    ["Submit to",r=>cleanText(r.address_to_request)],["PIN",r=>r.pin||""],
+    {label:"Amount",value:r=>r.contract_amount||"",type:"number",width:16},
+    ["Request ID",r=>r.request_id||""],
+    ["Permalink",r=>noticeLink(r.request_id)],["City Record URL",r=>REQ_URL(r.request_id)]
+  ]};
+  if(lens==="people") return {rows:staffingVisibleItems(), columns:[
+    ["Type",r=>r.kind==="exam"?t("staffing_filter_exams"):t("staffing_new_hire_tag")],
+    [t("csv_role"),r=>r.role||""],[t("person_name_label"),r=>r.person||""],["Agency",r=>r.agency||""],
+    {label:"Posted / application start",value:r=>r.published_at||"",type:"date",width:22},
+    ["Effective / application end",r=>r.kind==="exam"?(r.exam.application_end||""):(r.effective_date||"")],
+    {label:t("staffing_salary",{amount:""}).trim(),value:r=>r.salary||"",type:"number",width:16},
+    [t("staffing_title_code",{code:""}).trim()+" / "+t("career_exam_number",{number:""}).trim(),r=>r.kind==="exam"?r.request_id:(r.title_code||"")],
+    ["Request ID",r=>r.kind==="hire"?r.request_id:""],
+    ["City Record URL",r=>r.kind==="hire"?REQ_URL(r.request_id):location.origin+location.pathname+"#exam/"+encodeURIComponent(r.request_id)],
+    [t("csv_search_permalink"),searchLink]
+  ]};
+  if(lens==="land") return {rows:lRows, columns:[
+    {label:t("csv_project"),value:r=>r.project_name,width:40},
+    ["Borough",r=>r.borough],["Community district",r=>r.community_district],
+    [t("csv_status"),r=>r.public_status||r.project_status],["Milestone",r=>cleanText(r.current_milestone)],
+    {label:"Milestone date",value:r=>fdate(r.current_milestone_date),xlsxValue:r=>r.current_milestone_date,type:"date",width:15},
+    [t("csv_applicant"),r=>r.primary_applicant],
+    [t("csv_project_id"),r=>r.project_id],["Permalink",r=>landLink(r.project_id)]
+  ]};
+  const rows=feedVisible[lens]||[];
+  const columns=[
+    {label:"Type",value:r=>r.type_of_notice_description,width:22},
+    {label:"Agency",value:r=>r.agency_name,width:32},
+    {label:"Title",value:r=>cleanText(r.short_title),width:48},
+    {label:"Posted",value:r=>fdate(r.start_date),xlsxValue:r=>r.start_date,type:"date",width:13},
+    {label:"Event date",value:r=>fdate(r.event_date),xlsxValue:r=>r.event_date,type:"date",width:13},
+    [t("csv_address"),r=>cleanText(r.street_address_1)],
+    ["Request ID",r=>r.request_id],["Permalink",r=>noticeLink(r.request_id)],
+    ["City Record URL",r=>REQ_URL(r.request_id)]
+  ];
+  if(lens==="property") columns.splice(3,0,[t("csv_asset_type"),r=>r._asset||""],[t("property_process_label"),r=>r.disposition_stage||""],["Lifecycle",r=>r._stage||""]);
+  return {rows,columns};
+}
+function exportLensCsv(lens){
+  const spec=exportSpec(lens);
+  if(!spec||!spec.rows.length) return;
+  CrolExports.downloadFile(
+    `crol-${lens}-${new Date().toISOString().slice(0,10)}.csv`,
+    CrolExports.excelSafeCsv(spec.columns,spec.rows),
+    "text/csv;charset=utf-8"
+  );
+}
+function exportLensXlsx(lens){
+  const spec=exportSpec(lens);
+  if(!spec||!spec.rows.length) return;
+  const bytes=CrolExports.buildListWorkbook(
+    lens.charAt(0).toUpperCase()+lens.slice(1),
+    spec.columns,
+    spec.rows
+  );
+  CrolExports.downloadFile(
+    `crol-${lens}-${new Date().toISOString().slice(0,10)}.xlsx`,
+    new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+  );
+}
+function exportNoticeXlsx(notice, chain){
+  const bytes=CrolExports.buildNoticeWorkbook(notice,chain,record=>noticeLink(record.request_id));
+  CrolExports.downloadFile(
+    `crol-notice-${String(notice.request_id||"export").replace(/[^a-z0-9_-]/gi,"-")}.xlsx`,
+    new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+  );
+}
+function preparePrintView(kind, permalink){
+  const meta=t("print_header",{
+    link:permalink||location.href,
+    date:new Date().toLocaleDateString((window.LANG_META[window.LANG||"en"]||{}).intlDate||"en-US",{year:"numeric",month:"long",day:"numeric"})
+  });
+  document.body.setAttribute("data-print-meta",meta);
+  document.body.classList.toggle("printing-list",kind!=="notice");
+  document.body.classList.toggle("printing-notice",kind==="notice");
+}
+function clearPrintView(){
+  document.body.classList.remove("printing-list","printing-notice");
+}
+function printCurrentView(kind, permalink){
+  preparePrintView(kind,permalink);
+  window.print();
+}
+window.addEventListener("afterprint",clearPrintView);
+
+// Publish live bindings for neighboring modules and legacy inline handlers.
+globalThis.LENS_IMPLIED_WORDS = LENS_IMPLIED_WORDS;
+globalThis.LINEAGE_GUARANTEE_MIN = LINEAGE_GUARANTEE_MIN;
+globalThis.NL = NL;
+globalThis.NLQ_PRESET_KEY = NLQ_PRESET_KEY;
+globalThis.NL_SUGGESTIONS_FALLBACK = NL_SUGGESTIONS_FALLBACK;
+globalThis.bindClearSearchState = bindClearSearchState;
+globalThis.bindNLQResolvedActions = bindNLQResolvedActions;
+globalThis.bindQRShare = bindQRShare;
+globalThis.bindSearchActions = bindSearchActions;
+globalThis.clearPrintView = clearPrintView;
+globalThis.currentSuggestionIndices = currentSuggestionIndices;
+globalThis.currentSuggestionMeta = currentSuggestionMeta;
+globalThis.daySeed = daySeed;
+globalThis.deviceParse = deviceParse;
+globalThis.exportLensCsv = exportLensCsv;
+globalThis.exportLensXlsx = exportLensXlsx;
+globalThis.exportNoticeXlsx = exportNoticeXlsx;
+globalThis.exportSpec = exportSpec;
+globalThis.injectNLBoxes = injectNLBoxes;
+globalThis.interpretedSearchRowHTML = interpretedSearchRowHTML;
+globalThis.loadValidatedSuggestions = loadValidatedSuggestions;
+globalThis.mountUnofficialTranslation = mountUnofficialTranslation;
+globalThis.nlFeed = nlFeed;
+globalThis.nlResolve = nlResolve;
+globalThis.nlTransHTML = nlTransHTML;
+globalThis.nlTranslate = nlTranslate;
+globalThis.nlTranslateLens = nlTranslateLens;
+globalThis.nlWorkingHTML = nlWorkingHTML;
+globalThis.nlqEscape = nlqEscape;
+globalThis.nlqPresetSet = nlqPresetSet;
+globalThis.nlqPresetStore = nlqPresetStore;
+globalThis.nlqResolvedActionsHTML = nlqResolvedActionsHTML;
+globalThis.personName = personName;
+globalThis.pickSuggestions = pickSuggestions;
+globalThis.pickSuggestionsGuaranteed = pickSuggestionsGuaranteed;
+globalThis.preparePrintView = preparePrintView;
+globalThis.printCurrentView = printCurrentView;
+globalThis.qrButtonHTML = qrButtonHTML;
+globalThis.qrLabels = qrLabels;
+globalThis.renderLandingShareActions = renderLandingShareActions;
+globalThis.renderNLQPresets = renderNLQPresets;
+globalThis.renderNLSamples = renderNLSamples;
+globalThis.renderSearchComponents = renderSearchComponents;
+globalThis.rerenderAllSuggestions = rerenderAllSuggestions;
+globalThis.resolveMoneyNarrow = resolveMoneyNarrow;
+globalThis.searchActionsHTML = searchActionsHTML;
+globalThis.searchFilterChips = searchFilterChips;
+globalThis.searchFilterFromHash = searchFilterFromHash;
+globalThis.searchLabelFromHash = searchLabelFromHash;
+globalThis.stripImpliedKeywords = stripImpliedKeywords;
+globalThis.trychipHTML = trychipHTML;
+globalThis.withPersonName = withPersonName;
+Object.defineProperty(globalThis, "NL_SUGGESTIONS_VALIDATED", { configurable: true, get: () => NL_SUGGESTIONS_VALIDATED, set: value => { NL_SUGGESTIONS_VALIDATED = value; } });

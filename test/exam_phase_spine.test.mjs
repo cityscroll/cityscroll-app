@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Exam process phase presentation (compact stepper + current/next).
  *
@@ -96,7 +97,7 @@ test("dedupePhaseSourceLinks collapses identical URLs", () => {
 });
 
 test("public exam detail uses exam phase spine surface", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /buildExamPhaseView|exam_phase_spine/);
   assert.match(index, /exam-phase-stepper|exam_phase_now_html/);
   assert.match(index, /function examProcessSpineHTML/);

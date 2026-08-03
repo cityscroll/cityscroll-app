@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "../helpers/site_source.mjs";
 // Contract test for the rule-lifecycle status chips on the Rules lens (rules-status-chips).
 // Asserts the wiring that links the precomputed /rules read model to the live City Record
 // rows and renders a stage chip + comment CTA — a drift guard in the shape of
@@ -6,7 +7,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-const html = await readFile(new URL("../../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 
 test("Rules lens consumes the /rules read model and joins it by request_id (precompute-first)", () => {
   // The lifecycle enrichment comes from the materialized read model, not a live upstream

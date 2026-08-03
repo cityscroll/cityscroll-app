@@ -3,7 +3,7 @@
 
 PRIMARY CI gate for the 2026-07-13 regression class ("36 notices from 16 agencies" + raw
 section names in es mode). Catches the source pattern: an English-looking string literal
-inside the inline <script> of index.html (or a builder in i18n.js) that is emitted into the
+inside a site/app module (or a builder in i18n.js) that is emitted into the
 DOM without passing through the i18n layer. The runtime walk (test/functional/13_stray_english.py)
 is a narrow smoke in CI (es + index) for re-render-on-language-switch only — not a second
 full matrix of the same source bugs.
@@ -221,6 +221,8 @@ def main():
         src = (SITE_ROOT / page).read_text(encoding="utf-8")
         start, end = src.find("<script>"), src.rfind("</script>")
         findings += scan_js(src[start + 8:end] if start != -1 and end != -1 else "")
+    for module in sorted((SITE_ROOT / "app").glob("*.mjs")):
+        findings += scan_js(module.read_text(encoding="utf-8"))
     # i18n.js: only the code AFTER the dictionaries (builders/helpers) is linted —
     # the STRINGS/SECTION_I18N tables *are* the i18n layer.
     i18n_src = (SITE_ROOT / "i18n.js").read_text(encoding="utf-8")

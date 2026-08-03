@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const root = new URL("../", import.meta.url);
 const siteRoot = new URL("../site/", import.meta.url);
@@ -46,7 +47,7 @@ test("fixture-only Wave 4 surfaces stay out of the public site", () => {
 });
 
 test("the shipped notice surface keeps real joins and item-specific missing states", () => {
-  const html = readFileSync(new URL("index.html", siteRoot), "utf8");
+  const html = SITE_SOURCE;
   const strings = readFileSync(new URL("i18n.js", siteRoot), "utf8");
   // Precompute-first: notice detail consumes GET /contract-lifecycle, not a live
   // Checkbook proxy (checkbookByPin / checkbookQueryByField are gone from the client).

@@ -10,6 +10,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   before opening a pull request. CI still runs the full accessibility and runtime
   stray-English work after Unit checks.
 
+## Main site module boundaries
+
+- Start JavaScript tasks at `docs/module-map.md`; do not load all of `site/app/` by default.
+  `site/index.html` owns markup/CSS, `site/app/main.mjs` owns ordered loading, and application
+  modules stay below 100 KB. Source-extraction tests read modules through
+  `test/helpers/site_source.mjs`; rendered split parity is
+  `python3 test/functional/21_module_dom_equivalence.py`.
+
 ## CI path fast paths and merge queue
 
 - Required checks always report a conclusion (never stay missing). Fast paths:

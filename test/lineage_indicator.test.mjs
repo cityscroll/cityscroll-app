@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins the lineage-discoverability indicator (crol-list/w12-10): a compact "N cycles" badge
 // on a Money/Contracts result row, computed from ONE batched SODA lookup per renderList() call
 // (not one request per row), so a reader can see which notices have prior award cycles before
@@ -33,7 +34,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

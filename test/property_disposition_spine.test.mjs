@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Characterization: property disposition process spine
  * (hearing → auction_or_rfp → award_or_conveyance) by BBL / borough+block-lot.
@@ -229,7 +230,7 @@ test("attachDispositionSpines stamps the property view without inventing locatio
 });
 
 test("public Property Disposition notice detail mounts the spine; temporal filter rail stays filter-only", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function propertyDispositionSpineHTML/);
   assert.match(index, /loadPropertyDispositionSpine/);
   assert.match(index, /disposition_spines/);

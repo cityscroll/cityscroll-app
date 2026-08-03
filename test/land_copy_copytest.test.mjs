@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -6,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const i18nSrc = readFileSync(join(ROOT, "..", "site", "i18n.js"), "utf8");
-const indexSrc = readFileSync(join(ROOT, "..", "site", "index.html"), "utf8");
+const indexSrc = SITE_SOURCE;
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const en = new Function(
   "window",

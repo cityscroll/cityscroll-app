@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Alert preview digItemHTML must surface the same time + next-action awareness
 // as the outbound digest email (site/digest_item_awareness.mjs).
 
@@ -10,14 +11,14 @@ import {
   itemAwarenessHtml,
 } from "../site/digest_item_awareness.mjs";
 
-const INDEX = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const INDEX = SITE_SOURCE;
 const TODAY = "2026-08-02";
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;",
 }[c]));
 
 test("index.html wires dig awareness into aPreview and digItemHTML", () => {
-  assert.match(INDEX, /import\("\.\/digest_item_awareness\.mjs"\)/);
+  assert.match(INDEX, /import\("\.\.\/digest_item_awareness\.mjs"\)/);
   assert.match(INDEX, /ensureDigAwarenessTools/);
   assert.match(INDEX, /digAwarenessHTML/);
   assert.match(INDEX, /function digItemHTML\(kind, r, keywords, awarenessTools\)/);

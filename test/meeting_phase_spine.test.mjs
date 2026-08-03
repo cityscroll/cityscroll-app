@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pure Council matter phase spine: phase-group, aggregate, voice-vote honesty.
 //
 //   node --test test/meeting_phase_spine.test.mjs
@@ -227,7 +228,7 @@ test("indexSpinesByMatter keys by id and file", () => {
 });
 
 test("public Council meeting template uses phase spine surface", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function meetingOutcomesHTML\(/);
   assert.match(index, /buildPhaseViewForMatter|meeting_phase_spine/);
   assert.match(index, /meeting-phase-stepper|meeting-spine-lead/);

@@ -1,8 +1,9 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-const html = await readFile(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 const worker = await readFile(new URL("../worker/src/rules.mjs", import.meta.url), "utf8");
 
 test("rules materialization carries the distinct event spine to the public read model", () => {
