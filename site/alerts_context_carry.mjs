@@ -148,7 +148,26 @@ export function alertScopeFromNotice(row) {
     };
   }
 
-  // property / rules (and similar section watches)
+  // property: prefer commercial organize fields when stamped on the notice.
+  if (lens === "property") {
+    const filter = { keywords: [], agency };
+    const commercial = r.commercial || null;
+    const category = commercial?.item?.category || null;
+    if (category && category !== "other") filter.asset = category;
+    const method = commercial?.sale_method?.method || commercial?.glance?.sale_method || null;
+    if (method) filter.saleMethod = method;
+    const boro = r.borough || r.boro || (r._location?.boroughs && r._location.boroughs[0]) || null;
+    if (boro) filter.borough = boro;
+    return {
+      lens: "property",
+      filter,
+      digKind: "property",
+      noticeId,
+      projectId: null,
+    };
+  }
+
+  // rules (and similar section watches)
   return {
     lens,
     filter: { keywords: [], agency },
@@ -224,14 +243,43 @@ export function alertScopeFromLensState(lens, state) {
     }
     return { lens: "meetings", filter, digKind: "meetings", noticeId: null, projectId: null };
   }
-  if (L === "property" || L === "rules") {
+  if (L === "property") {
+    const filter = {
+      keywords: s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []),
+      agency: cleanAgency(s.agency),
+    };
+    // Commercial organize fields (asset / method / price / sort / stage / place).
+    const asset = s.asset && s.asset !== "all" ? String(s.asset) : null;
+    if (asset) filter.asset = asset;
+    const saleMethod = (s.saleMethod || s.method) && (s.saleMethod || s.method) !== "all"
+      ? String(s.saleMethod || s.method)
+      : null;
+    if (saleMethod) filter.saleMethod = saleMethod;
+    const priceBand = (s.priceBand || s.price) && (s.priceBand || s.price) !== "all"
+      ? String(s.priceBand || s.price)
+      : null;
+    if (priceBand) filter.priceBand = priceBand;
+    if (s.sort && s.sort !== "closing_soon") filter.sort = String(s.sort);
+    if (s.process && s.process !== "all") filter.process = String(s.process);
+    if (s.stage && s.stage !== "all") filter.stage = String(s.stage);
+    if (s.borough) filter.borough = s.borough;
+    if (s.neighborhood) filter.neighborhood = String(s.neighborhood).trim().slice(0, 80);
     return {
-      lens: L,
+      lens: "property",
+      filter,
+      digKind: "property",
+      noticeId: null,
+      projectId: null,
+    };
+  }
+  if (L === "rules") {
+    return {
+      lens: "rules",
       filter: {
         keywords: s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []),
         agency: cleanAgency(s.agency),
       },
-      digKind: L,
+      digKind: "rules",
       noticeId: null,
       projectId: null,
     };
@@ -309,7 +357,7 @@ export function alertScopeDescriptor(scope, seed) {
   const lens = s.lens || "money";
   const agency = filter.agency || filter.name || null;
   const keywords = Array.isArray(filter.keywords) ? filter.keywords.filter(Boolean) : [];
-  const place = keywords[0] || filter.boro || null;
+  const place = keywords[0] || filter.boro || filter.borough || null;
   const seedTitle = seed && (seed.short_title || seed.project_name || seed.title) || null;
   return {
     lens,
@@ -317,6 +365,9 @@ export function alertScopeDescriptor(scope, seed) {
     keywords,
     place,
     noticeType: filter.noticeType || null,
+    asset: filter.asset || null,
+    saleMethod: filter.saleMethod || null,
+    priceBand: filter.priceBand || null,
     seedTitle: seedTitle ? String(seedTitle).trim().slice(0, 160) : null,
     digKind: s.digKind || (seed ? digKindForNotice(seed) : null),
   };

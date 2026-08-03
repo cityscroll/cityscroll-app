@@ -302,6 +302,19 @@ function currentLensFilterState(tab){
         state.dateWindow = $("#meetingswhen").value;
       }
     }
+    if(tab === "property"){
+      if(typeof propAsset !== "undefined" && propAsset && propAsset !== "all") state.asset = propAsset;
+      if(typeof propSaleMethod !== "undefined" && propSaleMethod && propSaleMethod !== "all") state.saleMethod = propSaleMethod;
+      if(typeof propPriceBand !== "undefined" && propPriceBand && propPriceBand !== "all") state.priceBand = propPriceBand;
+      if(typeof propSort !== "undefined" && propSort && propSort !== "closing_soon") state.sort = propSort;
+      if(typeof propProcessSel !== "undefined" && propProcessSel && propProcessSel !== "all") state.process = propProcessSel;
+      if(typeof propStageSel !== "undefined" && propStageSel && propStageSel !== "all") state.stage = propStageSel;
+      const boro = $("#propertyboro") && $("#propertyboro").value || "";
+      if(boro) state.borough = boro;
+      if($("#propertyneighborhood") && $("#propertyneighborhood").value.trim()){
+        state.neighborhood = $("#propertyneighborhood").value.trim();
+      }
+    }
     return state;
   }
   return null;
@@ -338,7 +351,8 @@ async function currentAlertsEntryHref(){
       const f = scope.filter || {};
       const hasBits = !!(f.agency || f.name || (f.keywords && f.keywords.length)
         || f.minAmount || f.borough || f.boro || f.neighborhood || f.noticeType
-        || f.locationScope || (tab === "land" && f.status === "all" && f.boro));
+        || f.locationScope || f.asset || f.saleMethod || f.priceBand || f.process || f.stage
+        || (tab === "land" && f.status === "all" && f.boro));
       if(hasBits) return carry.alertsHref(scope);
     }
   }

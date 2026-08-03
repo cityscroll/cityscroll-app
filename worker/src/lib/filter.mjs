@@ -29,7 +29,7 @@ export const LENSES = {
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
   people:   ["keywords", "lookupType", "view"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
-  property: ["keywords", "agency", "process", "stage", "asset", "borough", "nearMe"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   entity:   ["name", "kind", "tab"],
@@ -137,6 +137,21 @@ function clampField(name, v) {
     case "asset": {
       const s = typeof v === "string" ? v.trim() : "";
       return s && s !== "all" ? s.slice(0, 40) : null;
+    }
+    case "saleMethod": {
+      const s = typeof v === "string" ? v.trim().toLowerCase().replace(/-/g, "_") : "";
+      const allowed = ["online_auction", "public_auction", "sealed_bid", "rfp", "lease_auction"];
+      return allowed.includes(s) ? s : null;
+    }
+    case "priceBand": {
+      const s = typeof v === "string" ? v.trim().toLowerCase().replace(/-/g, "_") : "";
+      const allowed = ["priced", "under_10k", "10k_100k", "100k_plus"];
+      return allowed.includes(s) ? s : null;
+    }
+    case "sort": {
+      const s = typeof v === "string" ? v.trim().toLowerCase().replace(/-/g, "_") : "";
+      const allowed = ["closing_soon", "newest", "price_desc", "price_asc"];
+      return allowed.includes(s) ? s : null;
     }
     default:
       return null;

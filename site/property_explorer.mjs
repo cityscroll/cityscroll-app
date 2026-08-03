@@ -14,6 +14,12 @@ import {
   PROPERTY_PHASE_META,
   dispositionStageToPhase,
 } from "./property_phase_spine.mjs";
+import {
+  commercialCloseDate,
+  commercialMatchesFilters,
+  commercialPriceAmount,
+  normalizePropertySort,
+} from "./property_commercial.mjs";
 
 export const PROPERTY_EXPLORER_SCHEMA_VERSION = 1;
 
@@ -246,27 +252,38 @@ export function buildPropertyExplorerEntries(properties, spines) {
 }
 
 /**
- * Filter explorer entries by process stage, asset type, and optional temporal key.
+ * Filter explorer entries by process stage, asset type, commercial fields, and temporal key.
  * Temporal classifier is injected so this module stays free of DOM date helpers.
+ * Commercial filter matching is pure (commercialMatchesFilters) — non-sales drop out
+ * of commercial-filtered views but remain on the unfiltered general list.
  *
  * @param {object[]} entries
  * @param {object} opts
  * @param {string} [opts.process="all"]
  * @param {string} [opts.asset="all"]
+ * @param {string} [opts.saleMethod="all"]
+ * @param {string} [opts.priceBand="all"]
  * @param {string} [opts.temporal="all"]
  * @param {(row: object) => string|null} [opts.temporalOf]
  * @param {(row: object) => string|null} [opts.assetOf]
+ * @param {(row: object) => object|null} [opts.commercialOf]
  * @param {string|null} [opts.borough]
  * @param {string|null} [opts.neighborhood]
  */
 export function filterPropertyExplorerEntries(entries, opts = {}) {
   const process = opts.process || "all";
   const asset = opts.asset || "all";
+  const saleMethod = opts.saleMethod || "all";
+  const priceBand = opts.priceBand || "all";
   const temporal = opts.temporal || "all";
   const temporalOf = typeof opts.temporalOf === "function" ? opts.temporalOf : null;
   const assetOf = typeof opts.assetOf === "function" ? opts.assetOf : null;
+  const commercialOf = typeof opts.commercialOf === "function"
+    ? opts.commercialOf
+    : (row) => row?.commercial || null;
   const borough = clean(opts.borough);
   const neighborhood = clean(opts.neighborhood)?.toLowerCase() || null;
+  const commercialActive = asset !== "all" || saleMethod !== "all" || priceBand !== "all";
 
   return (entries || []).filter((entry) => {
     if (!entry || !entry.primary) return false;
@@ -286,6 +303,21 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
     if (asset !== "all" && assetOf) {
       // Keep disposition group if any member matches asset bucket.
       const hit = (entry.members || [entry.primary]).some((m) => assetOf(m) === asset);
+      if (!hit) return false;
+    }
+
+    // Commercial organize filters (method / price / sale gate when any commercial filter on).
+    if (commercialActive) {
+      const hit = (entry.members || [entry.primary]).some((m) => {
+        const commercial = commercialOf(m);
+        // Asset already gated above via assetOf; re-check sale_method/price/sale_eligible.
+        return commercialMatchesFilters(commercial, {
+          asset: "all", // already applied
+          saleMethod,
+          priceBand,
+          commercialOnly: true,
+        });
+      });
       if (!hit) return false;
     }
 
@@ -319,6 +351,52 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
 
     return true;
   });
+}
+
+/**
+ * Sort explorer entries for commercial scan (closing soon / price / newest).
+ * @param {object[]} entries
+ * @param {string} [sort="closing_soon"]
+ * @param {(row: object) => object|null} [commercialOf]
+ */
+export function sortPropertyExplorerEntries(entries, sort = "closing_soon", commercialOf) {
+  const key = normalizePropertySort(sort);
+  const getCommercial = typeof commercialOf === "function"
+    ? commercialOf
+    : (row) => row?.commercial || null;
+  const list = Array.isArray(entries) ? [...entries] : [];
+
+  const closeKey = (entry) => {
+    const row = entry?.primary;
+    return commercialCloseDate(row, getCommercial(row)) || "9999-12-31";
+  };
+  const priceKey = (entry) => {
+    const amount = commercialPriceAmount(getCommercial(entry?.primary));
+    return amount == null ? null : amount;
+  };
+  const postedKey = (entry) => {
+    const s = String(entry?.primary?.start_date || "");
+    const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    return m ? m[1] : "0000-01-01";
+  };
+
+  list.sort((a, b) => {
+    if (key === "newest") {
+      return postedKey(b).localeCompare(postedKey(a));
+    }
+    if (key === "price_desc" || key === "price_asc") {
+      const pa = priceKey(a);
+      const pb = priceKey(b);
+      // Unpriced sink to the end for both directions.
+      if (pa == null && pb == null) return closeKey(a).localeCompare(closeKey(b));
+      if (pa == null) return 1;
+      if (pb == null) return -1;
+      return key === "price_desc" ? pb - pa : pa - pb;
+    }
+    // closing_soon (default): soonest future/known close first.
+    return closeKey(a).localeCompare(closeKey(b));
+  });
+  return list;
 }
 
 /**

@@ -807,6 +807,7 @@ function ensurePropertyCommercial(r, tools){
   return null;
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
+let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
 let propertyExplorerToolsPromise=null;
 function propertyExplorerTools(){
   if(!propertyExplorerToolsPromise){
@@ -835,15 +836,28 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
   const actionKey=entry.action_key||"property_action_open_notice";
-  // Surplus-buyer prime position: ITEM + $ + close-date (replaces weaker type-line lead).
+  // Surplus-buyer prime position: ITEM + $ + method + close-date (lens organize fields).
   const itemLabel=glance && glance.item
     ? glance.item
     : (ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):"");
   const priceLabel=r._badge || (glance && glance.price ? priceKindBadge(glance.price.kind, String(glance.price.display||"").replace(/^\$/,"")) : null);
+  const methodKey=glance && glance.sale_method
+    ? glance.sale_method
+    : (commercial && commercial.sale_method && commercial.sale_method.method) || null;
+  const methodLabel=methodKey
+    ? t(({
+        online_auction:"sale_method_online_auction",
+        public_auction:"sale_method_public_auction",
+        sealed_bid:"sale_method_sealed_bid",
+        rfp:"sale_method_rfp",
+        lease_auction:"sale_method_lease_auction",
+      })[methodKey]||"sale_method_unknown")
+    : "";
   const closeLabel=closeDate ? fdt(closeDate) : "";
   const commercialLead=`<div class="property-commercial-lead" data-commercial-glance="1">
     ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
     ${priceLabel?`<span class="tag amt">${priceLabel}</span>`:""}
+    ${methodLabel?`<span class="tag method">${escUiHtml(methodLabel)}</span>`:""}
     ${closeLabel?`<span class="tag open">${escUiHtml(t("property_commercial_close",{date:closeLabel}))}${eventTag(closeDate)}</span>`:""}
   </div>`;
   const dealLine=(glance && glance.deal)
@@ -871,7 +885,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
-  return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}">
+  return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}">
       ${commercialLead}
       ${dealLine}
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
@@ -883,8 +897,64 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
+const SALE_METHOD_BUCKETS=[
+  ["online_auction","sale_method_online_auction"],
+  ["public_auction","sale_method_public_auction"],
+  ["sealed_bid","sale_method_sealed_bid"],
+  ["rfp","sale_method_rfp"],
+  ["lease_auction","sale_method_lease_auction"],
+];
+const PRICE_BAND_BUCKETS=[
+  ["all","price_band_all"],
+  ["priced","price_band_priced"],
+  ["under_10k","price_band_under_10k"],
+  ["10k_100k","price_band_10k_100k"],
+  ["100k_plus","price_band_100k_plus"],
+];
+function normalizePropSaleMethod(raw){
+  if(raw==null||raw===""||raw==="all") return "all";
+  const key=String(raw).trim().toLowerCase().replace(/-/g,"_");
+  return SALE_METHOD_BUCKETS.some(([k])=>k===key) ? key : "all";
+}
+function normalizePropPriceBand(raw){
+  if(raw==null||raw===""||raw==="all") return "all";
+  const key=String(raw).trim().toLowerCase().replace(/-/g,"_");
+  return PRICE_BAND_BUCKETS.some(([k])=>k===key) ? key : "all";
+}
+function normalizePropSort(raw){
+  const key=String(raw||"").trim().toLowerCase().replace(/-/g,"_");
+  return ["closing_soon","newest","price_desc","price_asc"].includes(key) ? key : "closing_soon";
+}
+function propPriceBandOf(r){
+  const commercial=r && r.commercial;
+  const amount=commercial && commercial.primary_price && Number.isFinite(Number(commercial.primary_price.amount))
+    ? Number(commercial.primary_price.amount)
+    : (commercial && commercial.glance && commercial.glance.price && Number.isFinite(Number(commercial.glance.price.amount))
+      ? Number(commercial.glance.price.amount) : null);
+  if(amount==null) return null;
+  if(amount<10000) return "under_10k";
+  if(amount<100000) return "10k_100k";
+  return "100k_plus";
+}
+function propSaleMethodOf(r){
+  return (r && r.commercial && r.commercial.sale_method && r.commercial.sale_method.method) || null;
+}
 async function renderPropExplorer(){
   propAsset=normalizePropAsset(propAsset);
+  propSaleMethod=normalizePropSaleMethod(propSaleMethod);
+  propPriceBand=normalizePropPriceBand(propPriceBand);
+  propSort=normalizePropSort(propSort);
+  const sortEl=$("#propsort");
+  if(sortEl && sortEl.value!==propSort) sortEl.value=propSort;
+  if(sortEl && !sortEl.dataset.bound){
+    sortEl.dataset.bound="1";
+    sortEl.addEventListener("change",()=>{
+      propSort=normalizePropSort(sortEl.value);
+      renderPropExplorer();
+      updateHash();
+      renderSearchComponents("property");
+    });
+  }
   const commercialTools=await propertyCommercialTools();
   propAll.forEach(r=>{
     ensurePropertyCommercial(r, commercialTools);
@@ -899,12 +969,36 @@ async function renderPropExplorer(){
     }
   });
   const ac={all:propAll.length}, sc={all:propAll.length};
-  propAll.forEach(r=>{ ac[r._asset]=(ac[r._asset]||0)+1; sc[r._stage]=(sc[r._stage]||0)+1; });
+  const mc={all:propAll.length};
+  const pcBands={all:propAll.length, priced:0, under_10k:0, "10k_100k":0, "100k_plus":0};
+  propAll.forEach(r=>{
+    ac[r._asset]=(ac[r._asset]||0)+1;
+    sc[r._stage]=(sc[r._stage]||0)+1;
+    const method=propSaleMethodOf(r);
+    if(method) mc[method]=(mc[method]||0)+1;
+    const band=propPriceBandOf(r);
+    if(band){
+      pcBands.priced=(pcBands.priced||0)+1;
+      pcBands[band]=(pcBands[band]||0)+1;
+    }
+  });
   const assetEl=$("#assettabs");
   if(assetEl){
     assetEl.innerHTML=[["all","all_types"],...ASSET_BUCKETS].map(([k,l])=>
       `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
     assetEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=normalizePropAsset(b.dataset.a); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+  }
+  const saleEl=$("#salerail");
+  if(saleEl){
+    saleEl.innerHTML=[["all","sale_method_all"],...SALE_METHOD_BUCKETS].map(([k,l])=>
+      `<button type="button" class="chip ${propSaleMethod===k?'on':''}" data-m="${k}">${t(l)}<span class="ct">${mc[k]||0}</span></button>`).join("");
+    saleEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propSaleMethod=normalizePropSaleMethod(b.dataset.m); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+  }
+  const priceEl=$("#pricerail");
+  if(priceEl){
+    priceEl.innerHTML=PRICE_BAND_BUCKETS.map(([k,l])=>
+      `<button type="button" class="chip ${propPriceBand===k?'on':''}" data-p="${k}">${t(l)}<span class="ct">${pcBands[k]||0}</span></button>`).join("");
+    priceEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propPriceBand=normalizePropPriceBand(b.dataset.p); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
   }
   const lifeEl=$("#liferail");
   if(lifeEl){
@@ -922,12 +1016,18 @@ async function renderPropExplorer(){
     entries=tools.filterPropertyExplorerEntries(entries,{
       process: propProcessSel,
       asset: propAsset,
+      saleMethod: propSaleMethod,
+      priceBand: propPriceBand,
       temporal: propStageSel,
       temporalOf: propStage,
       assetOf: (r)=>r._asset||classifyAsset(r),
+      commercialOf: (r)=>r.commercial||null,
       borough: borough||null,
       neighborhood: neighborhood||null,
     });
+    if(tools.sortPropertyExplorerEntries){
+      entries=tools.sortPropertyExplorerEntries(entries, propSort, (r)=>r.commercial||null);
+    }
     const pc=tools.countPropertyProcessStages(tools.buildPropertyExplorerEntries(propAll, propSpines));
     if(processRail){
       const stages=tools.PROP_PROCESS_STAGES||[["all","stage_all"]];
@@ -940,13 +1040,25 @@ async function renderPropExplorer(){
     // Fallback: flat notice list if the explorer module fails to load.
     if(processRail) processRail.innerHTML="";
     entries=propAll
-      .filter(r=>(propAsset==="all"||r._asset===propAsset)
-        && (propStageSel==="all"||r._stage===propStageSel)
-        && (!borough||(r._location?.boroughs||[]).includes(borough))
-        && (!neighborhood||[
+      .filter(r=>{
+        if(propAsset!=="all" && r._asset!==propAsset) return false;
+        if(propStageSel!=="all" && r._stage!==propStageSel) return false;
+        if(propSaleMethod!=="all" && propSaleMethodOf(r)!==propSaleMethod) return false;
+        if(propPriceBand!=="all"){
+          const band=propPriceBandOf(r);
+          if(propPriceBand==="priced"){ if(!band) return false; }
+          else if(band!==propPriceBand) return false;
+        }
+        // Commercial filters drop non-sales when any commercial organize filter is on.
+        if((propAsset!=="all"||propSaleMethod!=="all"||propPriceBand!=="all")
+          && r.commercial && r.commercial.sale_eligible===false) return false;
+        if(borough && !(r._location?.boroughs||[]).includes(borough)) return false;
+        if(neighborhood && ![
           ...(r._location?.neighborhoods||[]),
           ...(r._location?.addresses||[]).map(address=>address.label),
-        ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())))
+        ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())) return false;
+        return true;
+      })
       .map(r=>({
         kind:"notice",
         primary:r,
@@ -1149,8 +1261,14 @@ Object.defineProperty(globalThis, "franchisePhaseSpineToolsPromise", { configura
 Object.defineProperty(globalThis, "propAll", { configurable: true, get: () => propAll, set: value => { propAll = value; } });
 Object.defineProperty(globalThis, "propAsset", { configurable: true, get: () => propAsset, set: value => { propAsset = value; } });
 Object.defineProperty(globalThis, "propProcessSel", { configurable: true, get: () => propProcessSel, set: value => { propProcessSel = value; } });
+Object.defineProperty(globalThis, "propSaleMethod", { configurable: true, get: () => propSaleMethod, set: value => { propSaleMethod = value; } });
+Object.defineProperty(globalThis, "propPriceBand", { configurable: true, get: () => propPriceBand, set: value => { propPriceBand = value; } });
+Object.defineProperty(globalThis, "propSort", { configurable: true, get: () => propSort, set: value => { propSort = value; } });
 Object.defineProperty(globalThis, "propSpines", { configurable: true, get: () => propSpines, set: value => { propSpines = value; } });
 Object.defineProperty(globalThis, "propStageSel", { configurable: true, get: () => propStageSel, set: value => { propStageSel = value; } });
+globalThis.normalizePropSaleMethod = normalizePropSaleMethod;
+globalThis.normalizePropPriceBand = normalizePropPriceBand;
+globalThis.normalizePropSort = normalizePropSort;
 Object.defineProperty(globalThis, "propertyExplorerToolsPromise", { configurable: true, get: () => propertyExplorerToolsPromise, set: value => { propertyExplorerToolsPromise = value; } });
 Object.defineProperty(globalThis, "propertyPhaseSpineToolsPromise", { configurable: true, get: () => propertyPhaseSpineToolsPromise, set: value => { propertyPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "taxLienLookupPromise", { configurable: true, get: () => taxLienLookupPromise, set: value => { taxLienLookupPromise = value; } });
