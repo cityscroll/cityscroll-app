@@ -46,24 +46,21 @@ def commercial_for(case: dict) -> dict:
     deal = None
     amount = None
     if case["request_id"] == "synthetic-deal-vehicle-001":
-        # source: synthetic-deal-vehicle-001 fixture pair (min bid / appraised)
-        price = {"kind": "minimum_bid", "display": "$4,800", "amount": 4800}
-        amount = 4800  # source: synthetic-deal-vehicle-001
-        deal = "Minimum bid is 40% of stated appraised value"
+        price = {"kind": "minimum_bid", "display": "$4,800", "amount": 4800}  # source: synthetic-deal-vehicle-001 fixture
+        amount = 4800  # source: synthetic-deal-vehicle-001 fixture
+        deal = "Minimum bid is 40% of stated appraised value"  # source: synthetic-deal-vehicle-001 fixture
     elif case["request_id"] == "20150915102":
-        # source: City Record notice 20150915102 upset price table
-        price = {"kind": "upset_price", "display": "$11,000,000", "amount": 11000000}
+        price = {"kind": "upset_price", "display": "$11,000,000", "amount": 11000000}  # source: City Record 20150915102
         amount = 11000000  # source: City Record 20150915102
     elif case["request_id"] == "20140224112":
-        # source: City Record notice 20140224112 medallion upset
-        price = {"kind": "upset_price", "display": "$850,000", "amount": 850000}
+        price = {"kind": "upset_price", "display": "$850,000", "amount": 850000}  # source: City Record 20140224112
         amount = 850000  # source: City Record 20140224112
     method = exp.get("sale_method") or "online_auction"
     package = "https://www.govdeals.com/en/nyc-dcas-fleet" if exp.get("has_package_url") else None
     close = (case["row"].get("event_date") or case["row"].get("start_date") or "")[:10] or None
     item_label = labels.get(category, "Other")
     if category == "timber" and case["request_id"] == "20190410105":
-        item_label = "381,000 board feet"
+        item_label = "381,000 board feet"  # source: City Record 20190410105 volume line
     primary = None
     if amount is not None and price:
         primary = {
@@ -86,7 +83,7 @@ def commercial_for(case: dict) -> dict:
             "evidence": "fixture",
             "source": "notice_body",
         },
-        "quantities": [],
+        "quantities": [],  # source: capture fixture — no volume rows unless timber case above
         "price_facts": [primary] if primary else [],
         "primary_price": primary,
         "sale_method": {"method": method, "confidence": "high", "evidence": "fixture"},
@@ -100,7 +97,7 @@ def commercial_for(case: dict) -> dict:
         },
         "deal_signal": {
             "status": "derived" if deal else "insufficient",
-            "pct_of_value": 40 if deal else None,
+            "pct_of_value": 40 if deal else None,  # source: synthetic-deal-vehicle-001 derived pair
             "summary": deal,
             "method": "stated_value_discount",
             "comparables_slot": {"status": "not_yet_acquired", "category": category},
@@ -117,7 +114,7 @@ def commercial_for(case: dict) -> dict:
 
 
 def property_view(with_commercial: bool) -> dict:
-    rows = []
+    rows = []  # source: test/fixtures/property_commercial/real_notices.json cases
     for case in CASES:
         row = dict(case["row"])
         row["property_location"] = {
