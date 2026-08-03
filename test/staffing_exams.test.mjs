@@ -65,6 +65,18 @@ test("interest, eligibility, and application-window filters are deterministic", 
   assert.deepEqual(exact.map(exam => exam.exam_number), ["7016"]);
 });
 
+test("continuous and walk-in exams follow open and upcoming windows", () => {
+  const fixture = [
+    { exam_number: "1", title: "Open", application_start: "2026-08-01", application_end: "2026-08-10" },
+    { exam_number: "2", title: "Upcoming", application_start: "2026-09-01", application_end: "2026-09-10" },
+    { exam_number: "3", title: "Walk-in", application_mode: "walk-in" },
+    { exam_number: "4", title: "Continuous", filing_method: "continuous" },
+  ];
+  const rows = Staffing.filterExams(fixture, { window: "actionable" }, "2026-08-03");
+  assert.deepEqual(rows.map(exam => exam.exam_number), ["1", "2", "4", "3"]);
+  assert.equal(Staffing.isContinuousExam(fixture[2]), true);
+});
+
 test("new-hire notices parse, sort newest-first, and refine without a gatekeeping search", () => {
   const rows = [
     {
@@ -93,30 +105,28 @@ test("new-hire notices parse, sort newest-first, and refine without a gatekeepin
   assert.deepEqual(Staffing.topValues(notices, "agency", 1), ["Health"]);
 });
 
-test("the Staffing lens features the next actionable exams without runtime data fan-out", () => {
+test("the Staffing lens ranks actionable exams without runtime data fan-out", () => {
   const today = "2026-07-28";
   const featured = Staffing.featuredExams(artifact.exams, today, 4);
   assert.deepEqual(featured.map(exam => exam.exam_number), ["6125", "6126", "7006", "7013"]);
   assert.ok(featured.every(exam => exam.eligibility === "open_competitive"));
   assert.ok(featured.every(exam => ["open", "upcoming"].includes(Staffing.statusFor(exam, today))));
-  assert.match(html, /id="staffing-upcoming-list"/);
-  assert.match(html, /href="#people\?view=guide"/);
+  assert.match(html, /id="career-results"/);
+  assert.match(html, /function careerResultsHTML\(exams\)/);
   assert.match(html, /id="staffing-feed"/);
 });
 
-test("the Staffing landing is a notice feed, with search and filters refining visible postings", () => {
+test("the Staffing landing leads with exams and keeps the appointment ledger reachable", () => {
   const feed = html.indexOf('id="staffing-feed"');
   const guide = html.indexOf('id="career-guide"');
-  assert.ok(feed >= 0, "Staffing needs a first-class newest-notices feed");
-  assert.ok(guide > feed, "the exam guide must follow the live notice feed");
+  assert.ok(guide >= 0, "Staffing needs a first-class exam guide");
+  assert.ok(feed > guide, "the appointment ledger must follow the exam guide");
   assert.match(html, /id="staffing-query"/);
-  assert.match(html, /data-staffing-type="hire"/);
-  assert.match(html, /data-staffing-type="exam"/);
   assert.match(html, /id="staffing-role-filters"/);
   assert.match(html, /id="staffing-agency-filters"/);
   assert.match(html, /id="staffing-notice-list"/);
-  assert.match(html, /id="staffing-exam-help"/);
-  assert.match(html, /<div class="career-guide" id="career-guide" hidden>/);
+  assert.match(html, /<details class="staffing-ledger" id="staffing-ledger">/);
+  assert.match(html, /<div class="career-guide" id="career-guide">/);
 });
 
 test("actionable exam titles connect Staffing role rows to exact exam details", () => {
@@ -128,26 +138,7 @@ test("actionable exam titles connect Staffing role rows to exact exam details", 
   assert.match(html, /staffing_view_exam_detail/);
 });
 
-test("exam mode renders staffingExamCardHTML when items exist (not a redirect-only panel)", () => {
-  // Role chips + staffingVisibleItems() can yield N exams while export still shipped N rows;
-  // the list must map those items to exam cards, never staffing-exam-redirect when N>0.
-  assert.match(html, /function staffingExamCardHTML\s*\(/);
-  assert.match(
-    html,
-    /items\.map\(item=>item\.kind==="exam"\?staffingExamCardHTML\(item\):staffingHireRowHTML\(item\)\)/,
-  );
-  assert.match(html, /staffing-notice-card" data-kind="exam"/);
-  assert.match(html, /#exam\/\$\{encodeURIComponent\(exam\.exam_number\)\}/);
-  // Non-empty results must never take the redirect-only path.
-  assert.doesNotMatch(
-    html,
-    /staffing-notice-list"\)\.innerHTML=`<div class="staffing-exam-redirect"/,
-  );
-  assert.doesNotMatch(
-    html,
-    /if\(isExam\)\{\s*const items=staffingVisibleItems\(\);\s*\$\("#staffing-result-count"\)\.textContent=t\("staffing_exam_count"/,
-  );
-
+test("repeated actionable titles retain distinct exam deep links", () => {
   const today = "2026-07-28";
   const title = "Police Communications Technician";
   const featured = Staffing.featuredExams(artifact.exams, today, artifact.exams.length);

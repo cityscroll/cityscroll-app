@@ -45,7 +45,7 @@ def land_opens_on_a_populated_example(pw):
 
 
 def people_opens_on_a_populated_example(pw):
-    """A bare Staffing tab renders the newest appointment without a search."""
+    """A bare Staffing tab renders actionable exams and keeps appointments collapsed."""
     failures = []
     browser = pw.chromium.launch()
     page = browser.new_context().new_page()
@@ -54,17 +54,19 @@ def people_opens_on_a_populated_example(pw):
     page.goto(f"{BASE}#people", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
-    first = page.locator("#staffing-notice-list .staffing-hire-row").first
+    first = page.locator("#career-results .career-card").first
     first.wait_for(state="visible")
     first_text = first.inner_text().strip()
-    if "RIVERA,ANA M." not in first_text:
-        failures.append(f"bare #people did not put the newest fixture first — got: {first_text!r}")
+    if "APPLY BY" not in first_text.upper():
+        failures.append(f"bare #people did not lead with an exam deadline — got: {first_text!r}")
+    if page.locator("#staffing-ledger").get_attribute("open") is not None:
+        failures.append("bare #people opened the appointments ledger above the action path")
     if page.locator("#staffing-notice-list .staffing-hire-row").count() != 4:
-        failures.append("bare #people did not render all four recent appointment fixtures")
+        failures.append("bare #people did not retain all four appointment fixtures in the ledger")
     if page.evaluate("location.hash") != "#people":
         failures.append("bare #people's default feed decorated the address bar")
-    if page.locator("#staffing-query").input_value():
-        failures.append("bare #people unexpectedly requires or injects a search")
+    if page.locator("#career-query").input_value():
+        failures.append("bare #people unexpectedly requires or injects an exam search")
     browser.close()
     return failures
 

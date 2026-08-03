@@ -359,19 +359,16 @@
     },
     {
       "id": "scenario-city-career",
-      "url": "#people",
+      "url": "#people?view=guide",
       "feature": "scenario-city-career",
-      "description": "Start the city-career path with the newest staffing notices already visible.",
+      "description": "Start the city-career path with exams that are open for applications.",
       "expectations": {
         "visible": [
           {
-            "selector": "#staffing-notice-list .staffing-hire-row[data-kind=\"hire\"] .staffing-hire-person:not(:empty)"
+            "selector": "#career-results .career-card[data-status]"
           }
         ],
         "notVisible": [
-          {
-            "selector": "#staffing-notice-list .career-empty"
-          },
           {
             "selector": "#staffing-notice-list .loading"
           }
