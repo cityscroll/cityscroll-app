@@ -8,9 +8,10 @@ const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
 const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const FIXTURE_TODAY = "2026-08-02";
 
 test("precomputed staffing artifact is reproducible from committed source snapshots", () => {
-  execFileSync(process.execPath, ["tools/build_staffing_exams.mjs", "--check"], {
+  execFileSync(process.execPath, ["tools/build_staffing_exams.mjs", "--check", `--today=${FIXTURE_TODAY}`], {
     cwd: new URL("..", import.meta.url),
     stdio: "pipe",
   });

@@ -288,13 +288,14 @@ async function recordQueueJobOutcome(env, day, jobResult) {
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 
-export async function runAlerts(env, watches = cfg.watches || []) {
+export async function runAlerts(env, watches = cfg.watches || [], options = {}) {
   const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
   const LIVE = env.ALERTS_LIVE === "true";
   const maxPerRun = Number(env.MAX_PER_RUN) || 25;            // most emails one cron firing may send
   const maxPerDay = Number(env.MAX_SENDS_PER_DAY) || 50;      // daily ceiling, kept below Resend's free 100/day
   const heartbeatDays = Number(env.HEARTBEAT_DAYS) || 14;     // quiet days before a daily sub gets a liveness ping
-  const day = new Date().toISOString().slice(0, 10);
+  const now = options.now == null ? new Date() : new Date(options.now);
+  const day = now.toISOString().slice(0, 10);
   let sentToday = await getSendCount(env, day);
   let sentThisRun = 0;
   const results = [];
@@ -331,7 +332,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
           sentThisRun++; sentToday++;
           await setSendCount(env, day, sentToday);
           await bumpStatAllTime(env.ALERT_STATE, "digest");
-          await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+          await bumpHistDay(env.ALERT_STATE, "digest", now);
           await bumpDigestCategories(env, fresh, w.type);
           emitUsageEvent(env, { event: "digest_sent", lens: w.type, surface: "email" });
         } else {
@@ -375,7 +376,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   //   queue  (QUEUE_DIGESTS="true" + DIGEST_QUEUE bound): one job per account
   //   (type rollup | sub); the DAILY cap remains the hard spend ceiling.
   const today = day;
-  const isMonday = new Date().getUTCDay() === 1;
+  const isMonday = now.getUTCDay() === 1;
   const ctx = {
     FROM, LIVE, heartbeatDays, today, isMonday,
     counts: () => ({ "per-run": sentThisRun, daily: sentToday }),
@@ -408,7 +409,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
 
   const deferred = results.filter((r) => r.capped).length;
   if (deferred) console.warn(`alerts: ${deferred} watch(es) deferred by send caps (perRun=${maxPerRun}, perDay=${maxPerDay})`);
-  const ranAt = new Date().toISOString();
+  const ranAt = now.toISOString();
   const receipt = summarizeDigestRun({
     ranAt, day, live: LIVE, mode, sentThisRun, sentToday, results, enqueued,
   });
@@ -980,19 +981,20 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", session
 // Reads the daily send count fresh per job (consumer max_concurrency=1 keeps the counter honest).
 // Errors that prevented a real send are re-thrown so the queue retries (and eventually
 // DLQs) instead of acking a silent failure.
-export async function consumeDigestJob(env, jobOrKey) {
+export async function consumeDigestJob(env, jobOrKey, options = {}) {
   // Back-compat: tests and old queue messages may pass a bare key string.
   const job = typeof jobOrKey === "string"
     ? { type: "sub", key: jobOrKey }
     : (jobOrKey && typeof jobOrKey === "object" ? jobOrKey : {});
-  const day = new Date().toISOString().slice(0, 10);
+  const now = options.now == null ? new Date() : new Date(options.now);
+  const day = now.toISOString().slice(0, 10);
   let daily = await getSendCount(env, day);
   const ctx = {
     FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
     LIVE: env.ALERTS_LIVE === "true",
     heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
     today: day,
-    isMonday: new Date().getUTCDay() === 1,
+    isMonday: now.getUTCDay() === 1,
     // Per-run pacing is the queue's job now; the DAILY ceiling stays hard.
     counts: () => ({ "per-run": 0, daily }),
     caps: { "per-run": Number(env.MAX_PER_RUN) || 25, daily: Number(env.MAX_SENDS_PER_DAY) || 50 },

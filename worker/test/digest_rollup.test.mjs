@@ -5,6 +5,9 @@ import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestFo
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
 import { buildDigestJobs } from "../src/lib/rollup.mjs";
 
+const FIXTURE_NOW = new Date("2026-08-04T12:00:00Z");
+const FIXTURE_TODAY = FIXTURE_NOW.toISOString().slice(0, 10);
+
 function kv(map = {}) {
   return {
     get: async (k) => (Object.prototype.hasOwnProperty.call(map, k) ? map[k] : null),
@@ -89,7 +92,7 @@ async function withMockFetch(sentEmails, rowForUrl, fn) {
 }
 
 test("multi-watch same email: one rollup email, one send unit", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:rollup-a": JSON.stringify({
       email: "multi@example.com",
@@ -113,7 +116,7 @@ test("multi-watch same email: one rollup email, one send unit", async () => {
   const { env, sentEmails, ALERT_STATE } = makeEnv(subsStore, { live: true });
 
   await withMockFetch(sentEmails, null, async () => {
-    const summary = await runAlerts(env, []);
+    const summary = await runAlerts(env, [], { now: FIXTURE_NOW });
     assert.equal(sentEmails.length, 1, "exactly one consolidated email");
     assert.equal(summary.sentThisRun, 1, "one send unit");
     const html = sentEmails[0].html;
@@ -121,7 +124,7 @@ test("multi-watch same email: one rollup email, one send unit", async () => {
     assert.match(html, /Manage watches|manage/i);
     assert.match(html, /Unsubscribe from all|unsubscribe/i);
     // Day log marks rollup
-    const day = new Date().toISOString().slice(0, 10);
+    const day = FIXTURE_TODAY;
     const dayLog = JSON.parse(await ALERT_STATE.get(`digest:daylog:${day}`));
     const rollups = dayLog.entries.filter((e) => e.kind === "rollup");
     assert.equal(rollups.length, 1, "daylog has one rollup entry");
@@ -130,7 +133,7 @@ test("multi-watch same email: one rollup email, one send unit", async () => {
 });
 
 test("single watch same email: still one single-path email (not rollup shell)", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:single-1": JSON.stringify({
       email: "solo@example.com",
@@ -144,7 +147,7 @@ test("single watch same email: still one single-path email (not rollup shell)", 
   };
   const { env, sentEmails } = makeEnv(subsStore, { live: true });
   await withMockFetch(sentEmails, null, async () => {
-    await runAlerts(env, []);
+    await runAlerts(env, [], { now: FIXTURE_NOW });
     assert.equal(sentEmails.length, 1);
     // Single path uses per-watch title, not "your daily digest"
     assert.doesNotMatch(sentEmails[0].html, /your daily digest/i);
@@ -152,7 +155,7 @@ test("single watch same email: still one single-path email (not rollup shell)", 
 });
 
 test("paused watch excluded from rollup active set → single path when only one remains", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:p1": JSON.stringify({
       email: "pause@example.com",
@@ -174,14 +177,14 @@ test("paused watch excluded from rollup active set → single path when only one
   };
   const { env, sentEmails } = makeEnv(subsStore, { live: true });
   await withMockFetch(sentEmails, null, async () => {
-    await runAlerts(env, []);
+    await runAlerts(env, [], { now: FIXTURE_NOW });
     assert.equal(sentEmails.length, 1);
     assert.doesNotMatch(sentEmails[0].html, /your daily digest/i);
   });
 });
 
 test("dryRunRollupForEmail: no Resend, returns rollup preview", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:d1": JSON.stringify({
       email: "dry@example.com",
@@ -213,7 +216,7 @@ test("dryRunRollupForEmail: no Resend, returns rollup preview", async () => {
 });
 
 test("digestSendTestForEmail: live sends one rollup without advancing state by default", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:test-a": JSON.stringify({ email: "example@example.com", lens: "money", filter: { keywords: ["construction"] }, freq: "daily", createdAt: today }),
     "sub:test-b": JSON.stringify({ email: "example@example.com", lens: "money", filter: { keywords: ["education"] }, freq: "daily", createdAt: today }),
@@ -263,7 +266,7 @@ test("buildDayLog: rollup kind preserved", () => {
 });
 
 test("multi-watch with only one matching section: subject names N watches, body lists all sections", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:one-hit": JSON.stringify({
       email: "partial@example.com",
@@ -297,7 +300,7 @@ test("multi-watch with only one matching section: subject names N watches, body 
   const { env, sentEmails } = makeEnv(subsStore, { live: true });
   // Seed seen empty so construction matches; force non-Monday weekly skip via process path.
   await withMockFetch(sentEmails, null, async () => {
-    const summary = await runAlerts(env, []);
+    const summary = await runAlerts(env, [], { now: FIXTURE_NOW });
     assert.equal(sentEmails.length, 1, "one rollup email");
     assert.equal(summary.sentThisRun, 1);
     const mail = sentEmails[0];
@@ -308,19 +311,13 @@ test("multi-watch with only one matching section: subject names N watches, body 
     assert.match(mail.html, /of 3 watches with updates/i);
     // Quiet + weekly sections stay in the body (not collapsed to a single-watch email).
     assert.match(mail.html, /zzzznonexistentterm|Nothing new for this watch/i);
-    // Weekly watch: non-Monday → skip note; Monday → may check in or stay quiet without inventing matches.
-    const isMonday = new Date().getUTCDay() === 1;
-    if (isMonday) {
-      assert.match(mail.html, /public meetings|brooklyn|Nothing new for this watch|weekly|Monday/i);
-    } else {
-      assert.match(mail.html, /weekly|Monday/i);
-    }
+    assert.match(mail.html, /weekly|Monday/i);
     assert.match(mail.html, /Unsubscribe from all|unsubscribe/i);
   });
 });
 
 test("queue path: multi-watch account enqueues one rollup job and consumeDigestJob sends rollup chrome", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:q-a": JSON.stringify({
       email: "queue-multi@example.com",
@@ -360,14 +357,14 @@ test("queue path: multi-watch account enqueues one rollup job and consumeDigestJ
   };
 
   await withMockFetch(sentEmails, null, async () => {
-    const summary = await runAlerts(env, []);
+    const summary = await runAlerts(env, [], { now: FIXTURE_NOW });
     assert.equal(summary.mode || summary.receipt?.mode, "queue");
     assert.equal(queueJobs.length, 1, "one account job");
     assert.equal(queueJobs[0].type, "rollup");
     assert.equal(queueJobs[0].keys.length, 2);
 
     // Fan-out → consumer (production scheduled path with QUEUE_DIGESTS=true).
-    const result = await consumeDigestJob(env, queueJobs[0]);
+    const result = await consumeDigestJob(env, queueJobs[0], { now: FIXTURE_NOW });
     assert.equal(result.kind, "rollup");
     assert.equal(sentEmails.length, 1);
     assert.match(sentEmails[0].subject, /watches/);
@@ -377,7 +374,7 @@ test("queue path: multi-watch account enqueues one rollup job and consumeDigestJ
 });
 
 test("queue path: type=rollup with only one key still uses rollup path (no single-watch fallback)", async () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = FIXTURE_TODAY;
   const subsStore = {
     "sub:only-one": JSON.stringify({
       email: "fallback@example.com",
@@ -409,7 +406,7 @@ test("queue path: type=rollup with only one key still uses rollup path (no singl
       type: "rollup",
       email: "fallback@example.com",
       keys: ["sub:only-one", "sub:gone-sibling"],
-    });
+    }, { now: FIXTURE_NOW });
     assert.equal(result.kind, "rollup");
     assert.equal(sentEmails.length, 1);
     assert.match(sentEmails[0].html, /your daily digest/i);
