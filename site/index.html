@@ -4487,6 +4487,31 @@ function examStageCountHTML(stageOrPhase){
   if(kind==="appointment") return t("exam_stage_hired_count",{n:fmtNumber(count)});
   return "";
 }
+function examListForecastHTML(exam){
+  const forecast=exam?.list_establishment_forecast;
+  if(!forecast) return "";
+  const statistic=t("exam_list_prediction_cohort_html",{
+    n:fmtNumber(forecast.n),
+    year:escUiHtml(forecast.since_year||2018),
+    months:fmtNumber(forecast.median_months)
+  });
+  const prediction=forecast.prediction;
+  const window=prediction?.predicted_window
+    ?`<div class="lc-pct">${t("exam_list_prediction_window",{
+      first:fdate(prediction.predicted_window.p10),
+      median:fdate(prediction.predicted_window.p50),
+      last:fdate(prediction.predicted_window.p90)
+    })}</div>`:"";
+  return `<div class="note" data-staffing-list-prediction="1">${statistic} ${window}
+    <a href="about.html#staffing-list-establishment-formula">${t("exam_list_prediction_method")}</a></div>`;
+}
+function examListStatutoryContextHTML(exam){
+  const extension=exam?.list_aggregate?.extension_date;
+  if(!extension) return "";
+  return `<div class="note" data-staffing-list-law-context="1">${t("exam_list_extension_observed",{
+    date:fdate(extension)
+  })} ${t("exam_list_duration_context")} <a href="https://www.nysenate.gov/legislation/laws/CVS/56" ${EXT_ATTRS}>${t("exam_list_law_source")}${extSR()}</a></div>`;
+}
 function examPhaseWhenHTML(phase, exam){
   if(phase?.primary?.when && phase.primary.when_to){
     return `${fdate(phase.primary.when)} – ${fdate(phase.primary.when_to)}`;
@@ -4523,13 +4548,16 @@ function examProcessSpineHTML(spine, exam, phaseView){
       }).join("")
     }</ol>`;
     // Detail only for matched phases + current (collapse pure-future empties to stepper chips).
-    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)).map(p=>{
+    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)
+      ||(p.id==="list_establishment"&&exam?.list_establishment_forecast)).map(p=>{
       if(!p.matched){
         return `<div class="stage"><div class="box">
           <div class="stage-name">${examStageLabel(p.id)}</div>
-          <div class="lc-norecord">${t("exam_stage_not_yet_ingested_html",{
+          ${p.id==="list_establishment"&&exam?.list_establishment_forecast
+            ?examListForecastHTML(exam)
+            :`<div class="lc-norecord">${t("exam_stage_not_yet_ingested_html",{
             source:`<span lang="en" dir="ltr">${examStageSourceLabel(p.id)}</span>`
-          })}</div>
+          })}</div>`}
         </div></div>`;
       }
       const when=examPhaseWhenHTML(p, exam);
@@ -4543,6 +4571,7 @@ function examProcessSpineHTML(spine, exam, phaseView){
         <div class="when">${escUiHtml(when)}</div>
         ${countLine?`<div class="lc-pct">${escUiHtml(countLine)}</div>`:""}
         ${sourceLink}
+        ${p.id==="list_establishment"?examListStatutoryContextHTML(exam):""}
       </div></div>`;
     }).join('<div class="connector" aria-hidden="true">→</div>');
     return `<section class="career-exam-spine" data-exam-spine="1" data-exam-phase="1" aria-label="${escUiHtml(t("exam_spine_heading"))}">
@@ -4578,13 +4607,16 @@ function examProcessSpineHTML(spine, exam, phaseView){
         <div class="stage-name">${examStageLabel(stage.kind)}</div>
         <div class="when">${escUiHtml(when)}</div>
         ${countLine?`<div class="lc-pct">${escUiHtml(countLine)}</div>`:""}
+        ${stage.kind==="list_establishment"?examListStatutoryContextHTML(exam):""}
       </div></div>`;
     } else {
       chain+=`<div class="stage"><div class="box">
         <div class="stage-name">${examStageLabel(stage.kind)}</div>
-        <div class="lc-norecord">${t("exam_stage_not_yet_ingested_html",{
+        ${stage.kind==="list_establishment"&&exam?.list_establishment_forecast
+          ?examListForecastHTML(exam)
+          :`<div class="lc-norecord">${t("exam_stage_not_yet_ingested_html",{
           source:`<span lang="en" dir="ltr">${examStageSourceLabel(stage.kind)}</span>`
-        })}</div>
+        })}</div>`}
       </div></div>`;
     }
     if(idx < stages.length - 1) chain+='<div class="connector" aria-hidden="true">→</div>';
