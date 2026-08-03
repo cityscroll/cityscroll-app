@@ -24,8 +24,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: ./.github/actions/setup-playwright
       - name: Verify public hosting architecture
         run: >-
           node tools/cutover_regression.mjs
           --timeout-ms 180000
           --interval-ms 10000
+      - name: Render real civil-service exam rows
+        env:
+          CROL_BASE: https://cityscroll.org/
+          CROL_DEMO_LINK_IDS: exam-guide
+        run: python3 test/functional/20_demo_links.py
