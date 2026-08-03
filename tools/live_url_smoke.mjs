@@ -44,7 +44,7 @@ export const ERROR_BODY_PATTERNS = [
 export const UNSUBSTITUTED_PLACEHOLDER_RE = /__[A-Z][A-Z0-9_]{2,}__/;
 
 /**
- * Default post-deploy smoke (current GitHub Pages + Worker mirror serving).
+ * Default post-deploy smoke for the Pages-primary public hostnames.
  * Includes www so a split-brain apex/www outage cannot go green.
  * Does not change what hosts serve production traffic.
  */
@@ -72,7 +72,7 @@ export const DEFAULT_TARGETS = Object.freeze([
 ]);
 
 /**
- * Parallel Cloudflare Pages host only. Safe to run any time; does not flip DNS.
+ * Direct Cloudflare Pages hostname only. Safe to run any time; does not change DNS.
  * Select with --set pages-dev (workflows already pass --base-url for the same host).
  */
 export const PAGES_DEV_TARGETS = Object.freeze([
@@ -89,8 +89,9 @@ export const PAGES_DEV_TARGETS = Object.freeze([
 ]);
 
 /**
- * Post-flip verification matrix. Dormant until an operator deliberately selects
- * --set post-flip after a site-owner-authorized cutover — never the deploy default.
+ * Pages-primary operational matrix. It remains opt-in because it adds the named
+ * Worker and human-path checks below; the scheduled hosting monitor has its own
+ * focused production matrix in tools/cutover_regression.mjs.
  *
  * URL probes below plus named operational checks in tools/post_flip_checks.mjs
  * (EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY), each annotated
@@ -571,8 +572,8 @@ export async function runSmoke({
 /**
  * Build smoke targets from CLI options.
  * Precedence: --url (repeatable) > --base-url > --set > default set.
- * Named sets (pages-dev, post-flip) stay opt-in so deploy defaults are unchanged
- * aside from the additive www host on the default set.
+ * Named sets (pages-dev, post-flip) stay opt-in; the default set is the compact
+ * Pages-primary post-deploy gate.
  */
 export function targetsFromCli(opts) {
   if (opts.urls?.length) {

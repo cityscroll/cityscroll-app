@@ -1,0 +1,31 @@
+name: Hosting cutover regression
+
+on:
+  schedule:
+    - cron: "17 1,9,17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hosting-cutover-regression
+  cancel-in-progress: true
+
+jobs:
+  monitor:
+    name: Pages-primary production monitor
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify public hosting architecture
+        run: >-
+          node tools/cutover_regression.mjs
+          --timeout-ms 180000
+          --interval-ms 10000

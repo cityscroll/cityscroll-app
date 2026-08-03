@@ -4,7 +4,7 @@ import test from "node:test";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("Cloudflare Pages deploy runs alongside GitHub Pages and does not replace it", () => {
+test("Cloudflare Pages serves publicly while GitHub Pages remains deployed as fallback", () => {
   const cf = read(".github/workflows/deploy-cloudflare-pages.yml");
   const gh = read(".github/workflows/deploy-pages.yml");
 
@@ -24,18 +24,18 @@ test("Cloudflare Pages workflow provisions the project before first deploy", () 
   assert.ok(ensure >= 0 && ensure < deploy, "Pages project must exist before deploy");
 });
 
-test("Cloudflare Pages workflow never attaches apex hostnames", () => {
+test("Cloudflare Pages workflow preserves custom-domain configuration", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.doesNotMatch(workflow, /ensure_stable_pages\.mjs domain/);
   assert.doesNotMatch(workflow, /--domain=/);
   assert.doesNotMatch(workflow, /pages domain add/i);
-  // Parallel deploy may reference cityscroll.org for parity checks; it must not
-  // provision or attach custom domains on the Pages project.
+  // Deploys may reference cityscroll.org for parity checks; custom-domain
+  // attachment remains an explicit hosting configuration action.
   assert.doesNotMatch(workflow, /pages domains? (add|create)/i);
   assert.doesNotMatch(workflow, /Custom domains/i);
 });
 
-test("parallel host smoke and route parity run after Cloudflare Pages deploy", () => {
+test("Pages hostname smoke and public route parity run after deploy", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /live_url_smoke\.mjs/);
   assert.match(workflow, /--base-url https:\/\/cityscroll\.pages\.dev/);
@@ -56,7 +56,7 @@ test("deploy uses the shared verified build action", () => {
   assert.match(workflow, /secrets\.CLOUDFLARE_API_TOKEN/);
 });
 
-test("same-repository pull requests may deploy the parallel host for validation", () => {
+test("same-repository pull requests may deploy the Pages host for validation", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /pull_request:/);
   assert.match(workflow, /head\.repo\.full_name == github\.repository/);
