@@ -257,6 +257,187 @@ RULES_LIFECYCLE_NOTICE = {
     ),
 }
 
+# Production-stable land hearing used by notice-land-zap-spine demo.
+# Body carries ULURP C 240046 HAM / C 240047 PQM → warehouse project 2022M0258 (Timbale Terrace).
+# source: City Record Online dg92-zbpx request_id 20230912001; ZAP Open Data hgx4-8ukb 2022M0258
+NOTICE_LAND_ZAP_SPINE_NOTICE = {
+    "request_id": "20230912001",
+    "start_date": "2023-09-12T00:00:00.000",
+    "event_date": "2023-09-26T18:30:00.000",
+    "section_name": "Public Hearings and Meetings",
+    "agency_name": "City Planning",
+    "type_of_notice_description": "Public Hearings",
+    "short_title": "Timbale Terrace",
+    "additional_description_1": (
+        "Public hearing for ULURP Nos. C 240046 HAM and C 240047 PQM — Timbale Terrace "
+        "affordable housing project in East Harlem."
+    ),
+    "additional_description_2": "",
+    "additional_description_3": "",
+    "other_info_1": "",
+    "other_info_2": "",
+    "other_info_3": "",
+    "printout_1": "",
+    "printout_2": "",
+    "printout_3": "",
+    "street_address_1": "",
+    "building_name": "",
+    "city": "New York",
+    "state": "NY",
+    "zip_code": "10029",
+    "pin": "",
+}
+
+# Edge /zap-outcomes payload for 2022M0258 (phase-grouped spine on #nland).
+# source: same demo shape as tools/capture_notice_land_zap_spine.py / land-event-spine
+_NOTICE_LAND_PORTAL = "https://zap.planning.nyc.gov/projects/2022M0258"
+_NOTICE_LAND_CR = "https://a856-cityrecord.nyc.gov/RequestDetail/20230912001"
+NOTICE_LAND_ZAP_OUTCOMES = {
+    "ok": True,
+    "cached": True,
+    "record": {
+        "project_id": "2022M0258",
+        "project_name": "Timbale Terrace",
+        "public_status": "Completed",
+        "portal_url": _NOTICE_LAND_PORTAL,
+        "join": {"matched": True, "method": "exact_project_id"},
+        "filled": True,
+        "n_documents": 1,
+        "approved_actions": [
+            {"action": "HA", "ulurp_number": "C240046HAM", "status": "Approved"}
+        ],
+        "dispositions": [],
+        "documents": [],
+        "dob": {"matched": False, "reason": "Screenshot fixture — no DOB side-car."},
+        "open_data": {
+            "project_id": "2022M0258",
+            "project_name": "Timbale Terrace",
+            "public_status": "Completed",
+            "ulurp_numbers": "240046HAM; 240047PQM",
+            "current_milestone": "HA - Project Completed",
+            "current_milestone_date": "2024-03-13",
+            "certified_referred": "2023-08-21",
+        },
+        "spine": {
+            "schema_version": 1,
+            "project_id": "2022M0258",
+            "events": [
+                {
+                    "id": "m1",
+                    "kind": "zap_milestone",
+                    "title": "Land Use Application Filed",
+                    "detail": "Completed",
+                    "time": {
+                        "value": "2023-07-26",
+                        "precision": "day",
+                        "basis": "actual_end",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _NOTICE_LAND_PORTAL,
+                    },
+                },
+                {
+                    "id": "m2",
+                    "kind": "zap_milestone",
+                    "title": "Application Reviewed at City Planning Commission Review Session",
+                    "detail": "Certified",
+                    "time": {
+                        "value": "2023-08-21",
+                        "precision": "day",
+                        "basis": "review_meeting",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _NOTICE_LAND_PORTAL,
+                    },
+                },
+                {
+                    "id": "n1",
+                    "kind": "city_record_notice_published",
+                    "title": "Timbale Terrace public hearing",
+                    "detail": "City Planning",
+                    "time": {
+                        "value": "2023-09-12",
+                        "precision": "day",
+                        "basis": "publication_date",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "city-record",
+                        "label": "City Record",
+                        "url": _NOTICE_LAND_CR,
+                    },
+                },
+                {
+                    "id": "n2",
+                    "kind": "city_record_hearing",
+                    "title": "Timbale Terrace public hearing",
+                    "detail": "City Planning",
+                    "time": {
+                        "value": "2023-09-26",
+                        "precision": "day",
+                        "basis": "event_date",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "city-record",
+                        "label": "City Record",
+                        "url": _NOTICE_LAND_CR,
+                    },
+                },
+                {
+                    "id": "d1",
+                    "kind": "zap_disposition",
+                    "title": "Community Board",
+                    "detail": "Conditional Favorable",
+                    "time": {
+                        "value": "2023-10-24",
+                        "precision": "day",
+                        "basis": "vote_date",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _NOTICE_LAND_PORTAL,
+                    },
+                },
+                {
+                    "id": "m3",
+                    "kind": "zap_milestone",
+                    "title": "City Council Review",
+                    "detail": "Approved",
+                    "time": {
+                        "value": "2024-03-13",
+                        "precision": "day",
+                        "basis": "actual_end",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _NOTICE_LAND_PORTAL,
+                    },
+                },
+            ],
+            "gaps": [],
+            "lag": {
+                "open_data_vs_portal": {
+                    "status": "behind",
+                    "days": 41,
+                    "open_data_date": "2024-02-01",
+                    "portal_date": "2024-03-13",
+                }
+            },
+        },
+    },
+}
+
 RULES_ROWS = [
     {"request_id": "20260701009", "start_date": _iso(-1), "agency_name": "Buildings",
      "type_of_notice_description": "Notice of Adoption",
@@ -480,6 +661,7 @@ def _soda_response(url):
             NOTICE_PERMALINK_ROW,
             RULES_LIFECYCLE_NOTICE,
             PROPERTY_BBL_FALLBACK_NOTICE,
+            NOTICE_LAND_ZAP_SPINE_NOTICE,
         ):
             if row.get("request_id") == rid:
                 return [row]
