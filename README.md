@@ -176,6 +176,10 @@ published them, list-establishment depth, and an application → list → appoin
 spine on exam detail. Start at [Staffing](https://cityscroll.org/#people) or a concrete
 exam such as [Caseworker `7016`](https://cityscroll.org/#exam/7016).
 
+See the [civic lifecycle coverage inventory](docs/civic-lifecycle-coverage.md) for the
+source, test, and live evidence behind the property, staffing, procurement, franchise,
+and non-Council hearing timelines.
+
 ### Vendors and agencies
 Deep-linkable profiles for vendors and agencies — name-variant resolution, award totals,
 and notice lists. Agency profiles can surface **cross-domain linked objects** (money, land,
