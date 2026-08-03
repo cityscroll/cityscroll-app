@@ -102,13 +102,27 @@ PYTHONPATH=civic-content-gates python3 -m civic_content_gates run \
   --allowlist test/standards/nyc_copy_lint_allowlist.txt \
   --baseline site/reading-level-baseline.json
 
-Before you open a PR, run:
+Before you open a PR (or push), run the local preflight that mirrors CI's required unit gates:
 
 ```bash
-./tools/preflight-required-checks.sh
+make prepush
+# equivalent: ./tools/preflight-required-checks.sh
+# browser gates too: PREPUSH_FULL=1 make prepush
 ```
 
-This runs the local unit gates mirrored by CI's required checks.
+Install the versioned pre-push hook once per clone so pushes that would fail digest/i18n/test-clock gates are rejected before they reach CI:
+
+```bash
+make install-hooks   # git config core.hooksPath tools/git-hooks
+```
+
+The hook runs the fast preflight by default and adds `--full` when the push range touches `site/**`. Intentional bypass (CI must still pass): `git push --no-verify`.
+
+After intentional edits under `site/app/`, refresh the module-graph fingerprint with:
+
+```bash
+node tools/site_module_architecture.mjs --update
+# or: make module-graph-digest
 ```
 
 ```bash

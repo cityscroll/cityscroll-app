@@ -1,16 +1,18 @@
-// Guard: PR / merge-group gate jobs must not sample live production.
-// Live production demo-link and hosting checks belong to scheduled monitors
-// (cutover-regression), not required merge checks.
+// Recurrence guard: PR / merge-group required-check jobs must not sample live
+// production. Live production demo-link and hosting checks belong to scheduled
+// monitors (cutover-regression), not PR-blocking gates. Keeps the hermetic-CI
+// decoupling durable so a production CROL_BASE cannot reappear in gate jobs.
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
-/** Production site origins that must not appear as gate fetch targets in ci.yml. */
-const PROD_SITE_ORIGINS = [
+/** Production site / API origins that must not appear as gate fetch targets in PR jobs. */
+const PROD_ORIGINS = [
   "https://cityscroll.org",
   "https://www.cityscroll.org",
+  "https://api.cityscroll.org",
   "https://cityscroll.pages.dev",
 ];
 
@@ -24,22 +26,31 @@ function extractJob(workflow, jobId) {
   return m ? m[1] : null;
 }
 
-test("ci.yml PR-gate jobs never set CROL_BASE to a production origin", () => {
+/** Jobs that participate in PR / merge-group required checks (or feed them). */
+const PR_GATE_JOBS = ["unit", "a11y-pr", "reading-level", "performance", "functional"];
+
+test("ci.yml PR-gate jobs never set CROL_BASE (or equivalent) to a production origin", () => {
   const ci = read(".github/workflows/ci.yml");
-  // Required merge checks + the jobs they compose (see tools/merge_queue_policy.json).
-  const gateJobs = ["unit", "a11y-pr", "reading-level", "performance", "functional"];
-  for (const jobId of gateJobs) {
+  for (const jobId of PR_GATE_JOBS) {
     const body = extractJob(ci, jobId);
     assert.ok(body, `expected job ${jobId} in ci.yml`);
-    for (const origin of PROD_SITE_ORIGINS) {
+    for (const origin of PROD_ORIGINS) {
+      const escaped = origin.replace(/\./g, "\\.");
       // CROL_BASE: https://cityscroll.org/  (or bare host)
-      const crolBase = new RegExp(
-        String.raw`CROL_BASE:\s*${origin.replace(/\./g, "\\.")}`,
-      );
+      const crolBase = new RegExp(String.raw`CROL_BASE:\s*${escaped}`);
       assert.doesNotMatch(
         body,
         crolBase,
         `${jobId} must not set CROL_BASE to ${origin} (use local server or PR preview)`,
+      );
+      // Bare env assignment forms sometimes omit the trailing slash.
+      const bareHost = new RegExp(
+        String.raw`(?:CROL_BASE|BASE_URL|SITE_URL):\s*['"]?${escaped}`,
+      );
+      assert.doesNotMatch(
+        body,
+        bareHost,
+        `${jobId} must not point BASE_URL-class env at ${origin}`,
       );
     }
     // Hard-fail the old step title if someone reintroduces it.
