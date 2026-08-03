@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-02",
+  "generated_at": "2026-08-03",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -28,7 +28,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-08-01",
+      "fetched_at": "2026-08-03",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 95
@@ -38,7 +38,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-08-01",
+      "fetched_at": "2026-08-03",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -49,7 +49,7 @@
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "fetched_at": "2026-08-01",
+      "fetched_at": "2026-08-03",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -88,8 +88,8 @@
       "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
     },
     "list_aggregates": {
-      "distinct_exams": 853,
-      "total_list_rows_sum": 408068
+      "distinct_exams": 854,
+      "total_list_rows_sum": 408276
     },
     "list_depth_closed": {
       "count": 77,
@@ -152,12 +152,12 @@
       "name": "Civil Service List (Active) — exam-level aggregates only",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "fetched_at": "2026-07-30",
+      "fetched_at": "2026-08-03",
       "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
     },
     "summary": {
-      "distinct_exams": 853,
-      "total_list_rows_sum": 408068,
+      "distinct_exams": 854,
+      "total_list_rows_sum": 408276,
       "exams_with_list_aggregate": 77
     }
   },
