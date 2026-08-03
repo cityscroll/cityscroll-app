@@ -119,6 +119,9 @@ function serializeState(){
       if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propAsset !== "all") q.set("asset", propAsset);
+      if(typeof propSaleMethod !== "undefined" && propSaleMethod !== "all") q.set("method", propSaleMethod);
+      if(typeof propPriceBand !== "undefined" && propPriceBand !== "all") q.set("price", propPriceBand);
+      if(typeof propSort !== "undefined" && propSort && propSort !== "closing_soon") q.set("sort", propSort);
       if(propProcessSel !== "all") q.set("process", propProcessSel);
       if(propStageSel !== "all") q.set("stage", propStageSel);
     }
@@ -179,7 +182,7 @@ const DEEPLINK_LENSES = {
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
   people:   ["keywords", "lookupType", "view"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
-  property: ["keywords", "agency", "process", "stage", "asset", "borough", "nearMe"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   entity:   ["name", "kind", "tab"],
@@ -225,6 +228,18 @@ function deeplinkClampField(name, v){
     }
     case "stage": { const s=typeof v==="string"?v.trim():""; return s&&s!=="all"?s.slice(0,40):null; }
     case "asset": { const s=typeof v==="string"?v.trim():""; return s&&s!=="all"?s.slice(0,40):null; }
+    case "saleMethod": {
+      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
+      return ["online_auction","public_auction","sealed_bid","rfp","lease_auction"].includes(s)?s:null;
+    }
+    case "priceBand": {
+      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
+      return ["priced","under_10k","10k_100k","100k_plus"].includes(s)?s:null;
+    }
+    case "sort": {
+      const s=typeof v==="string"?v.trim().toLowerCase().replace(/-/g,"_"):"";
+      return ["closing_soon","newest","price_desc","price_asc"].includes(s)?s:null;
+    }
     default: return null;
   }
 }
@@ -793,6 +808,10 @@ function applyHash(){
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
         propAsset = (typeof normalizePropAsset === "function" ? normalizePropAsset(q.get("asset")) : (q.get("asset") || "all"));
+        propSaleMethod = (typeof normalizePropSaleMethod === "function" ? normalizePropSaleMethod(q.get("method")) : (q.get("method") || "all"));
+        propPriceBand = (typeof normalizePropPriceBand === "function" ? normalizePropPriceBand(q.get("price")) : (q.get("price") || "all"));
+        propSort = (typeof normalizePropSort === "function" ? normalizePropSort(q.get("sort")) : (q.get("sort") || "closing_soon"));
+        const sortEl=$("#propsort"); if(sortEl) sortEl.value=propSort;
         propProcessSel = q.get("process") || "all";
         propStageSel = q.get("stage") || "all";
         const taxPanel=$("#tax-lien-sale-panel");
