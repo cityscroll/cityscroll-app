@@ -275,6 +275,16 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "community-district-boundaries",
+      "name": "Community Districts",
+      "source_contract_id": "community-district-boundaries",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/5crt-au7u",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "current-solicitations-ocp",
       "name": "Current Solicitations (OCP)",
       "source_contract_id": null,
@@ -2322,7 +2332,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-03",
-    "source_contracts_fingerprint": "57d4a4ed3b7bd414d756bdf834216e84fd108e5bde41d4434b5815b3a7732a50",
+    "source_contracts_fingerprint": "5f995bdcb030d30686a8767e193917067ec9b74f007e08b0fa9a7c21b8982a1b",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 43,
     "class_changes": 0,

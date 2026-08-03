@@ -398,6 +398,10 @@ const STRINGS = {
     parcel_via_notice_tax_lot: "lot {bbl} from this notice's tax-lot text — verify the match",
     community_district_short: "Community District {n}",
     council_district_short: "Council District {n}",
+    districts_as_of: "Districts as of {vintage}",
+    meetings_place_group_rail_label: "List layout",
+    meetings_place_group_flat: "Single list",
+    meetings_place_group_place: "Group by place",
     venue_virtual: "Online or by phone",
     venue_in_person: "In person",
     venue_hybrid: "In person and online",
@@ -608,6 +612,7 @@ const STRINGS = {
     unlocated_hearings_group: "No affected area identified in this notice",
     unlocated_hearings_note: "Kept visible instead of guessed or dropped",
     hearing_results_summary: "{n} hearings · {local} place-specific · {citywide} citywide · {unlocated} unlocated",
+    // Flat default keeps place counts in the status line without section headers.
     no_hearings_window: "Try the next 30 days or Citywide / unlocated. This exact date and area have no matching meetings.",
     desc_affecting_area: " affecting {area}",
     near_you_area:       "near you → {area}",

@@ -260,7 +260,7 @@ test("filterMeetingsExplorerEntries and counts support the process rail", () => 
     || (e.members || []).some((m) => meetingProcessStage(m, { now: NOW }) === "scheduled")));
 });
 
-test("groupMeetingsByPlace preserves local / citywide / unlocated sections", () => {
+test("groupMeetingsByPlace preserves local / citywide / unlocated sections (opt-in)", () => {
   const entries = buildMeetingsExplorerEntries(
     [
       hearing({
@@ -291,6 +291,25 @@ test("groupMeetingsByPlace preserves local / citywide / unlocated sections", () 
   assert.equal(groups.local.length, 1);
   assert.equal(groups.citywide.length, 1);
   assert.equal(groups.unlocated.length, 1);
+});
+
+test("meetings place grouping is opt-in (default flat)", async () => {
+  const { meetingsPlaceGroupEnabled, MEETINGS_PLACE_GROUP_MODES } = await import(
+    "../site/meetings_explorer.mjs"
+  );
+  assert.equal(meetingsPlaceGroupEnabled("flat"), false);
+  assert.equal(meetingsPlaceGroupEnabled(undefined), false);
+  assert.equal(meetingsPlaceGroupEnabled("place"), true);
+  assert.ok(MEETINGS_PLACE_GROUP_MODES.some(([k]) => k === "flat"));
+  assert.ok(MEETINGS_PLACE_GROUP_MODES.some(([k]) => k === "place"));
+  // Default list path is flat — group=place is the opt-in share link.
+  const indexSource = (await import("node:fs")).readFileSync(
+    new URL("../site/index.html", import.meta.url),
+    "utf8",
+  );
+  assert.match(indexSource, /meetingsPlaceGroupSel="flat"/);
+  assert.match(indexSource, /q\.set\("group", "place"\)/);
+  assert.match(indexSource, /meetingsplacegrouprail/);
 });
 
 test("pickPrimaryHearing prefers local scope; meetingsAgencyName cleans agency", () => {

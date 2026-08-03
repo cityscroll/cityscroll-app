@@ -1,8 +1,9 @@
 /**
  * Meetings domain explorer — list ontology over the public hearing arc.
  *
- * Elevates the Meetings lens on three axes without flattening its place-based
- * strength (local / citywide / unlocated groups stay the primary navigation):
+ * Elevates the Meetings lens on process stage, next-action keys, and entity
+ * links. Place-based local / citywide / unlocated grouping is opt-in (not the
+ * default wall): near-me and affected-area filters are the primary place path.
  *   1. Lifecycle timeline — process stages scheduled → agenda → held → outcomes
  *   2. Next-action keys — attend / testify / join when notice text publishes them
  *   3. Cross-domain entity links — agency + place + optional matter refs
@@ -574,8 +575,10 @@ export function countMeetingsProcessStages(entries) {
 }
 
 /**
- * Group entries by place scope for the place-based feed sections.
- * Preserves meetings' existing local → citywide → unlocated ordering strength.
+ * Group entries by place scope for the opt-in place-based feed sections.
+ * Default list render is flat chronological; grouping is demoted to an
+ * explicit filter state (not the always-on wall). Order when enabled:
+ * local → citywide → unlocated.
  * @param {object[]} entries
  */
 export function groupMeetingsByPlace(entries) {
@@ -587,6 +590,21 @@ export function groupMeetingsByPlace(entries) {
     else groups.unlocated.push(entry);
   }
   return groups;
+}
+
+/** Place-group mode keys for the Meetings list (opt-in grouping). */
+export const MEETINGS_PLACE_GROUP_MODES = Object.freeze([
+  ["flat", "meetings_place_group_flat"],
+  ["place", "meetings_place_group_place"],
+]);
+
+/**
+ * Whether the meetings list should render place-scope sections.
+ * Default is flat (false). Only explicit "place" enables grouping.
+ * @param {string|null|undefined} mode
+ */
+export function meetingsPlaceGroupEnabled(mode) {
+  return String(mode || "flat").toLowerCase() === "place";
 }
 
 export {

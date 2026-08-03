@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.location_resolution_inventory.v0",
   "measured_at": "2026-08-02",
-  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Missing boundary vintages remain explicit until authoritative boundary sources are contracted.",
+  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer.",
   "lenses": [
     {
       "lens": "meetings-hearings",
@@ -88,16 +88,18 @@
     {
       "id": "community-district-boundaries",
       "dataset_id": "5crt-au7u",
-      "vintage_at": null,
+      "vintage_at": "2026-05-26",
       "max_stale_days": 730,
-      "status": "vintage-not-contracted"
+      "status": "contracted",
+      "layer_path": "site/data/district_boundaries.json"
     },
     {
       "id": "city-council-district-boundaries",
       "dataset_id": "872g-cjhh",
-      "vintage_at": null,
+      "vintage_at": "2026-05-26",
       "max_stale_days": 730,
-      "status": "vintage-not-contracted"
+      "status": "contracted",
+      "layer_path": "site/data/district_boundaries.json"
     }
   ]
 }
