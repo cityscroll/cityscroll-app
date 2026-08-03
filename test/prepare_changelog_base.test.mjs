@@ -43,8 +43,28 @@ const CURRENT_HTML_NO_DISCLAIMER = `<!doctype html>
 </body></html>
 `;
 
+function cleanGitEnv() {
+  // Worktree / parallel suite sessions must not leak GIT_DIR into sandbox clones.
+  const env = { ...process.env };
+  for (const key of [
+    "GIT_DIR",
+    "GIT_WORK_TREE",
+    "GIT_COMMON_DIR",
+    "GIT_INDEX_FILE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  ]) {
+    delete env[key];
+  }
+  return env;
+}
+
 function git(cwd, ...args) {
-  return execFileSync("git", args, { cwd, encoding: "utf8" }).trim();
+  return execFileSync("git", args, {
+    cwd,
+    encoding: "utf8",
+    env: cleanGitEnv(),
+  }).trim();
 }
 
 function initRepo(dir) {
@@ -52,6 +72,12 @@ function initRepo(dir) {
   git(dir, "config", "user.email", "test@example.invalid");
   git(dir, "config", "user.name", "Test");
   fs.mkdirSync(path.join(dir, "site"), { recursive: true });
+}
+
+function initBare(dir) {
+  fs.mkdirSync(dir, { recursive: true });
+  git(dir, "init", "-q", "--bare");
+  git(dir, "symbolic-ref", "HEAD", "refs/heads/main");
 }
 
 function commitAll(dir, message) {
@@ -65,8 +91,7 @@ test("bot branch's stale changelog.html never overwrites the current tree's copy
   const workDir = path.join(tmp, "work");
   try {
     // Bare "origin" remote, standing in for the real GitHub repo.
-    fs.mkdirSync(bareDir);
-    git(bareDir, "init", "-q", "--bare", "-b", "main");
+    initBare(bareDir);
 
     // A throwaway clone used to seed both branches on "origin".
     const seedDir = path.join(tmp, "seed");
@@ -106,7 +131,11 @@ test("bot branch's stale changelog.html never overwrites the current tree's copy
     // the bare repo — exactly what actions/checkout leaves behind.
     git(tmp, "clone", "-q", bareDir, workDir);
 
-    execFileSync("bash", [SCRIPT, "bot/changelog-update"], { cwd: workDir, encoding: "utf8" });
+    execFileSync("bash", [SCRIPT, "bot/changelog-update"], {
+      cwd: workDir,
+      encoding: "utf8",
+      env: cleanGitEnv(),
+    });
 
     const html = fs.readFileSync(path.join(workDir, "site", "changelog.html"), "utf8");
     const data = JSON.parse(fs.readFileSync(path.join(workDir, "site", "changelog-data.json"), "utf8"));
@@ -130,8 +159,7 @@ test("no bot branch yet: changelog-data.json is left as the tree's own committed
   const bareDir = path.join(tmp, "origin.git");
   const workDir = path.join(tmp, "work");
   try {
-    fs.mkdirSync(bareDir);
-    git(bareDir, "init", "-q", "--bare", "-b", "main");
+    initBare(bareDir);
 
     const seedDir = path.join(tmp, "seed");
     git(tmp, "clone", "-q", bareDir, seedDir);
@@ -147,7 +175,11 @@ test("no bot branch yet: changelog-data.json is left as the tree's own committed
     git(tmp, "clone", "-q", bareDir, workDir);
     const before = fs.readFileSync(path.join(workDir, "site", "changelog-data.json"), "utf8");
 
-    execFileSync("bash", [SCRIPT, "bot/changelog-update"], { cwd: workDir, encoding: "utf8" });
+    execFileSync("bash", [SCRIPT, "bot/changelog-update"], {
+      cwd: workDir,
+      encoding: "utf8",
+      env: cleanGitEnv(),
+    });
 
     const after = fs.readFileSync(path.join(workDir, "site", "changelog-data.json"), "utf8");
     const html = fs.readFileSync(path.join(workDir, "site", "changelog.html"), "utf8");

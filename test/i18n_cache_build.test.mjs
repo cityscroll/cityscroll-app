@@ -18,8 +18,29 @@ const PAGES = [
   "standards.html",
 ];
 
+function cleanGitEnv() {
+  // Parallel suite / worktree sessions can leak GIT_DIR and friends into child
+  // processes; sandbox tests must not inherit them or they mutate the host repo.
+  const env = { ...process.env };
+  for (const key of [
+    "GIT_DIR",
+    "GIT_WORK_TREE",
+    "GIT_COMMON_DIR",
+    "GIT_INDEX_FILE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+  ]) {
+    delete env[key];
+  }
+  return env;
+}
+
 function run(command, args, cwd, expectSuccess = true) {
-  const result = spawnSync(command, args, { cwd, encoding: "utf8" });
+  const result = spawnSync(command, args, {
+    cwd,
+    encoding: "utf8",
+    env: cleanGitEnv(),
+  });
   if (expectSuccess && result.status !== 0) {
     assert.fail(`${command} ${args.join(" ")} failed:\n${result.stdout}\n${result.stderr}`);
   }
@@ -63,7 +84,9 @@ test("two independently built language branches merge without shared generated e
     run("git", ["add", "."], repo);
     run("git", ["commit", "-m", "base"], repo);
 
-    run("git", ["checkout", "-b", "spanish-update"], repo);
+    const spanishBranch = `spanish-update-${process.pid}-${Date.now()}`;
+    const frenchBranch = `french-update-${process.pid}-${Date.now()}`;
+    run("git", ["checkout", "-b", spanishBranch], repo);
     fs.appendFileSync(path.join(repo, "i18n", "lang", "es.js"), "\n// independent Spanish update\n");
     buildIgnoredArtifact(repo);
     assert.equal(run("git", ["status", "--porcelain"], repo).stdout.trim(), "M i18n/lang/es.js");
@@ -71,14 +94,14 @@ test("two independently built language branches merge without shared generated e
     run("git", ["commit", "-m", "Update Spanish"], repo);
 
     run("git", ["checkout", "main"], repo);
-    run("git", ["checkout", "-b", "french-update"], repo);
+    run("git", ["checkout", "-b", frenchBranch], repo);
     fs.appendFileSync(path.join(repo, "i18n", "lang", "fr.js"), "\n// independent French update\n");
     buildIgnoredArtifact(repo);
     assert.equal(run("git", ["status", "--porcelain"], repo).stdout.trim(), "M i18n/lang/fr.js");
     run("git", ["add", "i18n/lang/fr.js"], repo);
     run("git", ["commit", "-m", "Update French"], repo);
 
-    run("git", ["merge", "--no-edit", "spanish-update"], repo);
+    run("git", ["merge", "--no-edit", spanishBranch], repo);
     assert.equal(run("git", ["diff", "--name-only", "--diff-filter=U"], repo).stdout, "");
     assert.match(fs.readFileSync(path.join(repo, "i18n", "lang", "es.js"), "utf8"), /Spanish update/);
     assert.match(fs.readFileSync(path.join(repo, "i18n", "lang", "fr.js"), "utf8"), /French update/);
