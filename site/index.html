@@ -8186,7 +8186,9 @@ async function loadTaxLienForNotice(r,el){
 }
 
 function propertyPlaceChips(location){
-  if(!location||location.scope!=="local") return `<div class="faddr"><span class="tag place">${t("disposition_stage_unstaged")}</span></div>`;
+  if(!location) return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
+  if(location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
+  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
   const values=[
     ...(location.addresses||[]).slice(0,3).map(address=>address.label),
     ...(location.boroughs||[]),
