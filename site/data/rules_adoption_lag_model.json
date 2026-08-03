@@ -184,7 +184,7 @@
   "source": {
     "path": "warehouse/fixtures/city-record-agency-rules/agency_rules_history.json",
     "row_count": 3061,
-    "observed_at": "2026-08-03T04:28:33.805Z"
+    "observed_at": "2026-08-03T04:33:40.469Z"
   },
   "backtest": {
     "split_date": "2025-01-01",

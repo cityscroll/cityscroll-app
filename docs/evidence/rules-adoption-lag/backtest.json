@@ -2,7 +2,7 @@
   "metric": "rules_adoption_lag_backtest",
   "model_name": "rules_adoption_lag",
   "model_version": "1.0.0",
-  "generated_at": "2026-08-03T04:28:33.805Z",
+  "generated_at": "2026-08-03T04:33:40.469Z",
   "source_row_count": 3061,
   "protocol": "expanding_window_walk_forward",
   "train_observations": 784,
@@ -16,7 +16,8 @@
   "score_end": "2026-07-31",
   "local_scorecard": {
     "metric": "prediction_calibration",
-    "version": "prediction_calibration_v1_local",
+    "version": "prediction_calibration_v1",
+    "protocol": "expanding_window_walk_forward",
     "domain": "rules",
     "model_name": "rules_adoption_lag",
     "model_version": "1.0.0",
@@ -84,7 +85,8 @@
     "predictions_emitted": 22,
     "local_scorecard": {
       "metric": "prediction_calibration",
-      "version": "prediction_calibration_v1_local",
+      "version": "prediction_calibration_v1",
+      "protocol": "expanding_window_walk_forward",
       "domain": "rules",
       "model_name": "rules_adoption_lag",
       "model_version": "1.0.0",
@@ -144,11 +146,110 @@
         }
       },
       "public_projection": "cohort_statistic_only"
+    },
+    "scorecard": {
+      "metric": "prediction_calibration",
+      "version": "prediction_calibration_v1",
+      "domain": "rules",
+      "model_name": "rules_adoption_lag",
+      "model_version": "1.0.0",
+      "split_date": "2025-01-01",
+      "grace_days": 0,
+      "train_window": {
+        "from": "2013-08-28",
+        "to": "2024-12-31"
+      },
+      "prediction_count": 677,
+      "resolved_backtest_predictions": 1,
+      "resolution_rate": 0.0015,
+      "resolution_counts": {
+        "resolved_hit": 1,
+        "resolved_miss": 0,
+        "open": 676
+      },
+      "timing_prediction_count": 677,
+      "timing_realized_count": 1,
+      "timing_resolution_hits": 1,
+      "interval_nominal": 0.8,
+      "interval_coverage": 1,
+      "interval_coverage_hits": 1,
+      "interval_coverage_count": 1,
+      "median_absolute_error_p50_days": 47,
+      "occurrence_prediction_count": 0,
+      "occurrence_resolved_count": 0,
+      "occurrence_calibration": [
+        {
+          "quintile": 1,
+          "probability_min": 0,
+          "probability_max": 0.2,
+          "upper_inclusive": false,
+          "count": 0,
+          "predicted_probability_mean": null,
+          "realized": 0,
+          "realized_frequency": null
+        },
+        {
+          "quintile": 2,
+          "probability_min": 0.2,
+          "probability_max": 0.4,
+          "upper_inclusive": false,
+          "count": 0,
+          "predicted_probability_mean": null,
+          "realized": 0,
+          "realized_frequency": null
+        },
+        {
+          "quintile": 3,
+          "probability_min": 0.4,
+          "probability_max": 0.6,
+          "upper_inclusive": false,
+          "count": 0,
+          "predicted_probability_mean": null,
+          "realized": 0,
+          "realized_frequency": null
+        },
+        {
+          "quintile": 4,
+          "probability_min": 0.6,
+          "probability_max": 0.8,
+          "upper_inclusive": false,
+          "count": 0,
+          "predicted_probability_mean": null,
+          "realized": 0,
+          "realized_frequency": null
+        },
+        {
+          "quintile": 5,
+          "probability_min": 0.8,
+          "probability_max": 1,
+          "upper_inclusive": true,
+          "count": 0,
+          "predicted_probability_mean": null,
+          "realized": 0,
+          "realized_frequency": null
+        }
+      ],
+      "occurrence_quintiles_monotone": false,
+      "ship_bar": {
+        "status": "fail",
+        "checks": {
+          "minimum_resolved": false,
+          "interval_coverage": false,
+          "occurrence_quintiles_monotone": false
+        },
+        "thresholds": {
+          "minimum_resolved": 50,
+          "interval_nominal": 0.8,
+          "interval_tolerance": 0.1,
+          "occurrence_quintiles_monotone": true
+        }
+      },
+      "public_projection": "cohort_statistic_only"
     }
   },
   "ship_bar_passed": true,
   "public_projection": "per_matter_projection",
-  "note": "Ship-bar numbers computed locally (same thresholds as the planned prediction_calibration scorecard: ≥50 resolved, interval coverage 80±10, monotone occurrence quintiles). Primary protocol: expanding-window walk-forward over realized adoptions (train only on earlier comment closes, right-censored). Headline fixed split train-pre-2025 / score-2025–26 is reported under headline_split. When cs-pred-02 lands, feed `backtest` to the shared evaluator or re-check with its fixtures.",
+  "note": "Ship-bar thresholds imported from prediction_calibration.mjs (MINIMUM_RESOLVED=50, interval 0.8±0.1). Primary protocol: expanding-window walk-forward over realized adoptions (train only on earlier comment closes, right-censored) — short phase durations make a single open-at-T New Year split too thin. Headline fixed split train-pre-2025 / score-2025–26 is under headline_split; when open-at-T predictions exist they are also scored with evaluatePredictionBacktest.",
   "backtest_summary": {
     "domain": "rules",
     "split_date": "2018-01-01",
