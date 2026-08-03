@@ -66,7 +66,13 @@ if [[ -n "${PREPUSH_EXTRA_ARGS:-}" ]]; then
   extra=( ${PREPUSH_EXTRA_ARGS} )
   args+=("${extra[@]}")
 fi
-if ! "$PREFLIGHT" "${args[@]}"; then
+# "${args[@]}" is unbound under set -u when the array is empty (bash 3.2+/set -u).
+if ((${#args[@]})); then
+  preflight_cmd=("$PREFLIGHT" "${args[@]}")
+else
+  preflight_cmd=("$PREFLIGHT")
+fi
+if ! "${preflight_cmd[@]}"; then
   echo "" >&2
   echo "pre-push: preflight failed — push rejected." >&2
   echo "  Fix locally, or re-run: make prepush" >&2
