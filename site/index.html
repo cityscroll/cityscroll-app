@@ -8764,11 +8764,46 @@ function digContact(r){
   if(tel.length>=7) parts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
   return parts.length?`<div class="dc">${parts.join(" · ")}</div>`:"";
 }
-function digItemHTML(kind, r, keywords){
+// Shared with worker email HTML: phase / open|closing-soon|closed + next-action rail.
+// Loaded once via dynamic import (same pattern as alerts_rollup_prefs.mjs).
+let digAwarenessToolsPromise = null;
+function ensureDigAwarenessTools(){
+  if(!digAwarenessToolsPromise){
+    digAwarenessToolsPromise = import("./digest_item_awareness.mjs").catch(()=>null);
+  }
+  return digAwarenessToolsPromise;
+}
+/** Map aFetch preview kind → awareness digest kind (rules/meetings arrive as "notice"). */
+function digAwarenessKind(kind, r){
+  if(kind==="rfp"||kind==="award"||kind==="rezone"||kind==="rules"||kind==="meetings"||kind==="property") return kind;
+  if(kind==="notice"){
+    const section=String(r.section_name||"");
+    const type=String(r.type_of_notice_description||"");
+    if(section==="Agency Rules") return "rules";
+    if(section==="Property Disposition") return "property";
+    if(section==="Public Hearings and Meetings"||/hearing|meeting/i.test(type)) return "meetings";
+    if(type==="Solicitation") return "rfp";
+    if(/Award|Intent to Negotiate|Vendor List/i.test(type)) return "award";
+  }
+  return kind||null;
+}
+function digAwarenessHTML(kind, r, tools){
+  if(!tools||typeof tools.itemAwarenessHtml!=="function") return "";
+  const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
+  const lang=(typeof window!=="undefined"&&window.LANG)||"en";
+  const html=tools.itemAwarenessHtml(r, esc, lang, {
+    kind: digAwarenessKind(kind, r),
+    today: todayISO(),
+  });
+  return html?`<div class="dig-awareness">${html}</div>`:"";
+}
+function digItemHTML(kind, r, keywords, awarenessTools){
+  const aw=digAwarenessHTML(kind, r, awarenessTools);
   if(kind==="award"){
     const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
     <div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name? " · "+escUiHtml(cleanText(r.vendor_name)):""}</div>
+    ${aw}
     ${digEvidenceHTML(ev)}
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
@@ -8777,6 +8812,7 @@ function digItemHTML(kind, r, keywords){
     const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
     return `<div class="digitem"><div class="dt">${digTitleHTML(title, ev)}</div>
     <div class="dm">${meta}</div>
+    ${aw}
     ${digEvidenceHTML(ev)}
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
@@ -8789,12 +8825,13 @@ function digItemHTML(kind, r, keywords){
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
     const when = rolling ? t("rolling_deadline_tag") : t("due_on",{date:fdt(r.due_date)})+(dl!=null?t("days_paren",{n:dl}):"");
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
-    <div class="dm">${r.agency_name} · ${when}</div>${digEvidenceHTML(ev)}${dc}</div>`; }
+    <div class="dm">${r.agency_name} · ${when}</div>${aw}${digEvidenceHTML(ev)}${dc}</div>`; }
   // Rezoning dig: deep-link into Land detail (action rail + ULURP timeline), not only ZAP.
   // Scope decision: match evidence highlighting is out of scope for ZAP rows (different shape).
   const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
   return `<div class="digitem"><div class="dt"><a href="${landHref}">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</a></div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
+    ${aw}
     <div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
 }
 
@@ -8844,7 +8881,9 @@ async function aPreview(){
   // same fix as the Money tab's own ask flow (field evidence 2026-07-14: a silent empty
   // result read as "the ask button is broken").
   const nlChips = (!rows.length && $("#awatch").value === "moneynl") ? NL.alerts.chips(aLensFilter().filter).filter(Boolean) : [];
-  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords)).join("")
+  // Same time + next-action chrome as the outbound email (digest_item_awareness.mjs).
+  const awarenessTools = await ensureDigAwarenessTools();
+  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords,awarenessTools)).join("")
     : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}${nlChips.length ? nlTransHTML(nlChips, "#nlq-alerts", true) : ""}</div>`;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
@@ -8883,7 +8922,7 @@ function usdRollup(n){
   const v = Number(n);
   return Number.isFinite(v) ? "$" + v.toLocaleString("en-US") : "";
 }
-function alertsRollupSectionHTML(sec){
+function alertsRollupSectionHTML(sec, awarenessTools){
   const label = escUiHtml(sec.label || sec.lens || t("alerts_rollup_watch_fallback"));
   if(sec.quiet || !(sec.rows && sec.rows.length)){
     return `<div class="rollup-sec"><h3>${label}</h3><p class="rollup-quiet">${t("alerts_rollup_section_quiet")}</p></div>`;
@@ -8891,10 +8930,14 @@ function alertsRollupSectionHTML(sec){
   const items = sec.rows.map((r)=>{
     if(r.project_name || r.project_id){
       const meta = [r.borough, r.public_status].filter(Boolean).map(escUiHtml).join(" · ");
-      return `<div class="digitem"><div class="dt">${escUiHtml(r.project_name || r.project_id)}</div><div class="dm">${meta}</div></div>`;
+      const aw = digAwarenessHTML("rezone", r, awarenessTools);
+      return `<div class="digitem"><div class="dt">${escUiHtml(r.project_name || r.project_id)}</div><div class="dm">${meta}</div>${aw}</div>`;
     }
     const meta = [r.agency_name, usdRollup(r.contract_amount)].filter(Boolean).map(escUiHtml).join(" · ");
-    return `<div class="digitem"><div class="dt">${escUiHtml(r.short_title || r.request_id || "Notice")}</div><div class="dm">${meta}</div></div>`;
+    // Demo fixtures are money-shaped; awareness picks solicitation vs award from type fields.
+    const kind = /Award/i.test(String(r.type_of_notice_description || "")) ? "award" : "rfp";
+    const aw = digAwarenessHTML(kind, r, awarenessTools);
+    return `<div class="digitem"><div class="dt">${escUiHtml(r.short_title || r.request_id || "Notice")}</div><div class="dm">${meta}</div>${aw}</div>`;
   }).join("");
   return `<div class="rollup-sec"><h3>${label}</h3>${items}</div>`;
 }
@@ -8910,12 +8953,12 @@ function alertsRollupGroupsHTML(groups){
     return `<div class="rollup-group"><h3>${escUiHtml(g.label)} <span class="freq">(${(g.watches||[]).length})</span></h3><ul>${items}</ul></div>`;
   }).join("");
 }
-function alertsRollupEmailMockHTML(model){
+function alertsRollupEmailMockHTML(model, awarenessTools){
   if(!model) return `<div class="empty">${t("empty_preview")}</div>`;
   // Recipient is a display label for the mock (not a live address). Product digests
   // still use the real From identity on the worker send path.
   const dest = escUiHtml(model.dest || t("email_placeholder") || "reader");
-  const body = (model.sections || []).map(alertsRollupSectionHTML).join("");
+  const body = (model.sections || []).map((sec)=>alertsRollupSectionHTML(sec, awarenessTools)).join("");
   const summary = escUiHtml(model.summaryLine || "");
   const footer = t("alerts_rollup_digest_footer");
   // Reuse the single-watch preview's From chrome when present so this surface does not
@@ -8951,8 +8994,9 @@ async function renderAlertsRollupPrefs(){
     return;
   }
   const model = tools.demoRollupPreviewModel({ groupBy: alertsRollupGroupBy });
+  const awarenessTools = await ensureDigAwarenessTools();
   groupsEl.innerHTML = alertsRollupGroupsHTML(model.groups);
-  mockEl.innerHTML = alertsRollupEmailMockHTML(model);
+  mockEl.innerHTML = alertsRollupEmailMockHTML(model, awarenessTools);
   syncAlertsPrefsManageLink();
   const chips = document.getElementById("rollupgroupby");
   if(chips){
