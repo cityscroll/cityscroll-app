@@ -1,0 +1,194 @@
+{
+  "schema": "noe_differentiators_receipt.v1",
+  "generated_at": "2026-08-03T20:08:51.989Z",
+  "source": {
+    "id": "dcas-noe-differentiators",
+    "name": "OASys NOE differentiators densify",
+    "role": "Structured filter facets and card leads from OASys GetActiveExams + NOE HTML body parse. Open Data has no NOE body dataset.",
+    "oasys_api": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+    "open_data_checked": [
+      {
+        "id": "4ptz-hmtc",
+        "name": "Annual Examination Schedule",
+        "noe_body": false
+      },
+      {
+        "id": "vx8i-nprf",
+        "name": "Civil Service List (Active)",
+        "noe_body": false
+      }
+    ],
+    "interface_choice": "bulk Open Data (schedule/list only) < OASys GetActiveExams JSON < polite NOE HTML parse",
+    "fetched_at": "2026-08-03",
+    "verified_at": "2026-08-03",
+    "stale_after_days": 45,
+    "mode": "live_noe_html",
+    "min_request_interval_ms": 1200
+  },
+  "summary": {
+    "oasys_rows": 9,
+    "records": 9,
+    "bodies_parsed": 9,
+    "api_only": 0
+  },
+  "corpus": {
+    "field_stats": {
+      "exam_format": {
+        "present": 9,
+        "distinct_values": 2,
+        "top_value": "education_experience",
+        "top_share": 0.667,
+        "is_boilerplate": true
+      },
+      "fee_level": {
+        "present": 9,
+        "distinct_values": 4,
+        "top_value": "mid",
+        "top_share": 0.444,
+        "is_boilerplate": false
+      },
+      "salary_band": {
+        "present": 9,
+        "distinct_values": 3,
+        "top_value": "under_45k",
+        "top_share": 0.444,
+        "is_boilerplate": false
+      },
+      "no_experience_required": {
+        "present": 6,
+        "distinct_values": 2,
+        "top_value": "true",
+        "top_share": 0.667,
+        "is_boilerplate": true
+      },
+      "residency_required": {
+        "present": 5,
+        "distinct_values": 2,
+        "top_value": "false",
+        "top_share": 0.8,
+        "is_boilerplate": true
+      },
+      "fee_waiver_is_boilerplate": {
+        "present": 9,
+        "distinct_values": 1,
+        "top_value": "false",
+        "top_share": 1,
+        "is_boilerplate": true
+      },
+      "has_selective_certification": {
+        "present": 9,
+        "distinct_values": 2,
+        "top_value": "true",
+        "top_share": 0.778,
+        "is_boilerplate": true
+      },
+      "education_level": {
+        "present": 6,
+        "distinct_values": 2,
+        "top_value": "bachelors",
+        "top_share": 0.5,
+        "is_boilerplate": false
+      }
+    },
+    "boilerplate_fields": [
+      "exam_format",
+      "no_experience_required",
+      "residency_required",
+      "fee_waiver_is_boilerplate",
+      "has_selective_certification"
+    ],
+    "distinctive_fields": [
+      "fee_level",
+      "salary_band",
+      "education_level"
+    ]
+  },
+  "exemplars": {
+    "7013": {
+      "title": "Automotive Service Worker",
+      "fee": 61,
+      "salary_min": 42387,
+      "salary_max": null,
+      "exam_format": "education_experience",
+      "no_experience_required": false,
+      "qualifications": "Two years of full-time satisfactory experience, performing automotive maintenance services, such as inspection, lubrication and oil changing acquired in a garage or gasoline service station; or Graduation from an approved trade school, vocational high school or technical school with a course of study in automotive m…",
+      "residency_required": null,
+      "test_method": "Education and experience exam",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 42387
+        },
+        {
+          "key": "experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "Two years of full-time satisfactory experience, performing automotive maintenance services, such as inspection, lubrication and oil changing acquired in a garage or gasoline service station; or Graduation from an approved trade school, vocational high school or technical school with a course of study in automotive m…"
+        }
+      ],
+      "matched_title": "Automotive Service Worker"
+    },
+    "7016": {
+      "title": "Caseworker",
+      "fee": 68,
+      "salary_min": 48206,
+      "salary_max": null,
+      "exam_format": "education_experience",
+      "no_experience_required": true,
+      "qualifications": "A baccalaureate degree from an accredited college or university accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educated outside the United States, you…",
+      "residency_required": false,
+      "test_method": "Education and experience exam",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 48206
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree from an accredited college or university accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educated outside the United States, you…"
+        }
+      ],
+      "matched_title": "Caseworker"
+    },
+    "7312": {
+      "title": "Police Officer",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "exam_format": "multiple_choice",
+      "no_experience_required": true,
+      "qualifications": "By the date of appointment, you must have a four-year high school diploma or its educational equivalent, and successfully completed 24 college semester credits at an accredited college or university with at least a 2.0 cumulative index or its equivalent, or have completed two years of honorable full-time U.S. milita…",
+      "residency_required": true,
+      "test_method": "Multiple-choice test",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "residency_required",
+          "value": true
+        }
+      ],
+      "matched_title": "Police Officer"
+    }
+  }
+}
