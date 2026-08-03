@@ -13,6 +13,7 @@ export const DIMENSION_IDS = Object.freeze([
   "coverage",
   "cross-source-consistency",
   "location-resolution",
+  "surface-load",
 ]);
 
 export function clean(value) {

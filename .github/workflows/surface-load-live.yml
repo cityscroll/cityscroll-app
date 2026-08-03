@@ -1,0 +1,53 @@
+name: Live surface-load sampling
+
+on:
+  schedule:
+    - cron: "7 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-surface-load
+  cancel-in-progress: false
+
+jobs:
+  sample:
+    name: Sample principal interface surfaces
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: ./.github/actions/setup-playwright
+      - name: Walk live surfaces and inventory rendered load
+        id: sampler
+        continue-on-error: true
+        run: |
+          python3 tools/sample_surface_load.py \
+            --live \
+            --out artifacts/surface-load/sample.json
+      - name: Emit surface-load flywheel queue
+        if: always()
+        run: |
+          node tools/flywheel-run.mjs \
+            --live \
+            --surface-load artifacts/surface-load/sample.json \
+            --dimensions surface-load \
+            --emit artifacts/surface-load/flywheel \
+            --generated-at "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+      - name: Upload sampling evidence and queue
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-load-sample
+          path: artifacts/surface-load/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Mark incomplete capture walk failed
+        if: always() && steps.sampler.outcome == 'failure'
+        run: exit 1

@@ -33,7 +33,7 @@ const require = createRequire(import.meta.url);
 /**
  * Load default fixture inventories from a repo root.
  */
-export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
+export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = null } = {}) {
   const readJson = (rel) => {
     const path = join(root, rel);
     if (!existsSync(path)) return null;
@@ -47,6 +47,9 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
   const views = readJson("ontology/fixtures/dimensions/readability_views.json");
   const disagreements = readJson("ontology/fixtures/dimensions/cross_source_disagreements.json");
   const location_resolution = readJson("ontology/fixtures/dimensions/location_resolution.json");
+  const surface_load = surfaceLoadPath
+    ? JSON.parse(readFileSync(surfaceLoadPath, "utf8"))
+    : readJson("ontology/fixtures/dimensions/surface_load.json");
   // Prefer live map artifact when present so zero-located lenses are detected even
   // if the inventory stamp is stale (missed-detection path for map density).
   const district_activity = readJson("site/data/district_activity.json");
@@ -111,6 +114,7 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
     disagreements: disagreements?.disagreements || disagreements || [],
     claim_labeled_disagree_families: disagreements?.claim_labeled_disagree_families || [],
     location_resolution,
+    surface_load,
     district_activity,
     temporal_scorecard,
     lifecycle_coherence_scorecard,
