@@ -4,6 +4,7 @@
 // same NYC GeoSearch service used by the Land lens.
 
 import { applyGeocode, normalizeHearing } from "./lib/hearings.mjs";
+import { withCouncilDistrict } from "./lib/council_district.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -45,13 +46,13 @@ async function geocodeAddress(fetchImpl, address) {
     const pad = properties?.addendum?.pad || {};
     const coordinates = feature?.geometry?.coordinates || [];
     if (!feature) return null;
-    return {
+    return withCouncilDistrict({
       borough: properties.borough || null,
       neighborhood: properties.neighbourhood || null,
       latitude: Number.isFinite(coordinates[1]) ? coordinates[1] : null,
       longitude: Number.isFinite(coordinates[0]) ? coordinates[0] : null,
       bbl: /^\d{10}$/.test(pad.bbl || "") ? pad.bbl : null,
-    };
+    });
   } catch {
     return null;
   }
