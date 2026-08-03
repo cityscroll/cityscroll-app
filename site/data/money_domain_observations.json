@@ -1,0 +1,5512 @@
+{
+  "schema_version": 1,
+  "domain": "money",
+  "title": "Money domain observations (map densify)",
+  "description": "Recent OCP awards (+ open RFPs) with compact place stamps for the map money lens. Place is derived from title/body/agency signals; most contracts are genuinely non-spatial or citywide service classes.",
+  "retrieved_at": "2026-08-03T22:31:10.617Z",
+  "window_days": null,
+  "source": "ocp-recent-contract-awards+money_default_open",
+  "row_count": 340,
+  "agency_count": 39,
+  "summary": {
+    "by_scope": {
+      "local": 87,
+      "citywide": 42,
+      "unlocated": 211
+    },
+    "by_method": {
+      "unlocated:no_place_signal": 211,
+      "matter_title_place": 74,
+      "matter_address": 6,
+      "citywide_phrase": 42,
+      "vendor_address": 7,
+      "vendor_place": 4,
+      "matter_body_borough": 5,
+      "community_board": 3
+    }
+  },
+  "place_stamp_note": "place is a compact derivation stamp (scope/boroughs/methods). Raw award body is not committed.",
+  "rows": [
+    {
+      "request_id": "20260728018",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728007",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Award",
+      "pin": "80626E0043001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place",
+            "matter_address"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260728020",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0015001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728012",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07125P0010007",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260728015",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926P0008012",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728008",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011068",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727027",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Financial Information Services Agency",
+      "type_of_notice_description": "Award",
+      "pin": "127FY2600048",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728002",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0039003",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728019",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06820P8200KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727023",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926W0028001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728003",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0039001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728006",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626P0009001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728016",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001016",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728014",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07121P0122001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728017",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926P0008008",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728010",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011095",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260728013",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07122P8045KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728004",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626O0009001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728005",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82625P0015002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728011",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07125P0010040",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260728009",
+      "start_date": "2026-08-03T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030019",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727012",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001015",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727010",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011100",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727009",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011091",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727011",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011005",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727013",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001008",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727005",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Consumer and Worker Protection",
+      "type_of_notice_description": "Award",
+      "pin": "86623M0001001R002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727007",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004075",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727015",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626W0040001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727008",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011082",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260727017",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126W0076001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727006",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "pin": "78123P0001006R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260724026",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "pin": "07225W0036001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727014",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Office of the Mayor",
+      "type_of_notice_description": "Award",
+      "pin": "00225N8001KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260727016",
+      "start_date": "2026-07-31T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0067001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723031",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626W0043001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260724010",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0027001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724015",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011014",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260724016",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011044",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260724017",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011064",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260724019",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001012",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place",
+            "matter_address"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260724022",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82726W0034001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724020",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826N0026001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724011",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626B0033001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724021",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Emergency Management",
+      "type_of_notice_description": "Award",
+      "pin": "01726B0002001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724014",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011043",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260724018",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07125P0010010",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724012",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84125B0005001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260724013",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011060",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260723004",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Financial Information Services Agency",
+      "type_of_notice_description": "Award",
+      "pin": "127FY2700016",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723012",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004079",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260723013",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07125P0010027",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723010",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0003012",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723006",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Consumer and Worker Protection",
+      "type_of_notice_description": "Award",
+      "pin": "86620P8178KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723008",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "pin": "78123P0001003R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260723011",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0003111",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_place"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260723015",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05727W0002001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723009",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030005",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723014",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Award",
+      "pin": "85826W0143001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723007",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82721B8001KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722014",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0003150",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722018",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07125P0010021",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722020",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06820P8173KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722016",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0003059",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722010",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Buildings",
+      "type_of_notice_description": "Award",
+      "pin": "81026U0007001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722015",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004070",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260722021",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05726W0064001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721026",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626W0038001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260722019",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07124N0007001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721027",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0015002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722012",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011107",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260722007",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Consumer and Worker Protection",
+      "type_of_notice_description": "Award",
+      "pin": "86620P8181KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722017",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004071",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260722013",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011015",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260722011",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0011035",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260722009",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626U0016001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260722008",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82718P8218KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260720018",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926W0045001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn",
+          "Staten Island"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721015",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06924P0022034",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721014",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001014",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721018",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626W0036001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721011",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030007",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721008",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0016016",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_place"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260721005",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Consumer and Worker Protection",
+      "type_of_notice_description": "Award",
+      "pin": "86620P8180KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721007",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "pin": "78123P0001007R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721010",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0031023",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720017",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926W0041001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721013",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001011",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place",
+            "matter_address"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721017",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926N0005001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721016",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001007",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260721009",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004080",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721006",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126B0023001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn",
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260721012",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001009",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720007",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004008",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260720010",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0005039",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720008",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030029",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720011",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001005",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260717024",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926W0046001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720006",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004030",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260717019",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626L0054001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720005",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0029009",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720009",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030014",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720003",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85626U0020001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260720004",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "pin": "85026B0022001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260717008",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Consumer and Worker Protection",
+      "type_of_notice_description": "Award",
+      "pin": "86620P8176KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260717013",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05727W0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260717010",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07126N0018001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715030",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "pin": "26SBS33602",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260717001",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "pin": "PR-26SBS33669",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260717014",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84124P0015001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260717009",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82623I0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260717005",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004051",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260717006",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84623S0004001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough"
+          ],
+          "confidence": 0.9,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260717007",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84124P0015002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260717011",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07122B0007001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260717012",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001013",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260716011",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85622B0007001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260716013",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004017",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "community_districts": [
+          "K03"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place",
+            "community_board"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260716012",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85626U0021001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260716010",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84124P0015003",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260716002",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "B73-O-SB",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715042",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126W0067001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260716014",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004058",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260716016",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06924P0022022",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715043",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06820P8202KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260716017",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926R0001003",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260716015",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004060",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260716019",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05727W0003001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715031",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Office of the Mayor",
+      "type_of_notice_description": "Award",
+      "pin": "00226W0016001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260716018",
+      "start_date": "2026-07-22T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06923P0015001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715016",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004039",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715007",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004016",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715021",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0053002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715017",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004061",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715023",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82726W0033001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714019",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82726W0036001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715019",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07122P8046KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715009",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626B0029001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715011",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626P0017001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715006",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "pin": "83626U0004001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715013",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004042",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715022",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "pin": "07226W0052001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715012",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Chief Medical Examiner",
+      "type_of_notice_description": "Award",
+      "pin": "81626U0017001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715014",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004044",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715010",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626P0004002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715015",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004059",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260715018",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004055",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260714028",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Chief Medical Examiner",
+      "type_of_notice_description": "Award",
+      "pin": "81626W0054001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260715008",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85626U0019001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714005",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85626T0003001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714012",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06925P0011001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713036",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626W0039001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714006",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126B0023003",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Staten Island"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260714014",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "pin": "07226W0054001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714010",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004024",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713034",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Buildings",
+      "type_of_notice_description": "Award",
+      "pin": "81026U0006001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714008",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82719P8193KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714011",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0005001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714007",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126B0008001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714013",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626W0042001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713035",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Administrative Trials and Hearings",
+      "type_of_notice_description": "Award",
+      "pin": "82026W0013001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714009",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626P0012001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713024",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926G0050001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713017",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004092",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713011",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81625N0034005",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713019",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004054",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260710030",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Administrative Trials and Hearings",
+      "type_of_notice_description": "Award",
+      "pin": "82026W0010001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713018",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Staten Island"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713021",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004087",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713013",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "pin": "78123P0001005R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713014",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0022001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713023",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06923P0016001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713010",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626S0008001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713012",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "pin": "78123P0001004R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713008",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0069001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713009",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "pin": "85023P0003001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713020",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004057",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713022",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06922P0025001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_place"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260713003",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Financial Information Services Agency",
+      "type_of_notice_description": "Award",
+      "pin": "127FY2700013",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713016",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004035",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260713026",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Aging",
+      "type_of_notice_description": "Award",
+      "pin": "12521P0019036R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713025",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05726O0006001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260713015",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0015003",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710017",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Civilian Complaint Review Board",
+      "type_of_notice_description": "Award",
+      "pin": "05426M0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710018",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "pin": "80126W0013001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710004",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85626U0023001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710013",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Award",
+      "pin": "80626E0033001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place",
+            "matter_address"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260710007",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126B0023002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260710010",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626P0006002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710014",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26025N8157KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_place"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260710008",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626P0011001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710005",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "pin": "85026B0086001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "matter_title_place"
+          ],
+          "confidence": 0.9,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709003",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0063001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709031",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "pin": "80126W0011001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710011",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626P0010007",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710012",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626M0009014",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710016",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0005023",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710009",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626P0005001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710015",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004005",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260710006",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84618B8408KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709022",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82726W0032001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709015",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07122P8027KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709012",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004013",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709004",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "pin": "85026B0058001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709009",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004063",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx",
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709007",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26024N0499013R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709005",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84624B0105001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709006",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Finance",
+      "type_of_notice_description": "Award",
+      "pin": "83626N0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709014",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004019",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709017",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84126W0073001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709016",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07122P8043KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260708025",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "X39-SB-R",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709010",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004094",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709013",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004078",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709018",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Investigation",
+      "type_of_notice_description": "Award",
+      "pin": "03226W0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260709011",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004067",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260709008",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004028",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260708013",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026W0033001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708014",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05726W0062001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708012",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0053001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707027",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0064001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708004",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "pin": "80123P0010001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260708007",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004049",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260708009",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004069",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260708005",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Probation",
+      "type_of_notice_description": "Award",
+      "pin": "78123P0001010R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Staten Island"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260708011",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06821X8013KXLR002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708010",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "pin": "07223N0007001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708008",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004076",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260708006",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0023004",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707028",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Award",
+      "pin": "05726W0063001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706035",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0040001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707019",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Aging",
+      "type_of_notice_description": "Award",
+      "pin": "12521P0019083R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707020",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Cultural Affairs",
+      "type_of_notice_description": "Award",
+      "pin": "12626S0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707017",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07122X8003KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707014",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004046",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260707010",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626G0003001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707013",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26025N0125001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707016",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "pin": "07222B0008003R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707018",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06923P0034001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707012",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004050",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706045",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "X211-MT/C",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706039",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82624B0038001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260707011",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626B0004001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706046",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "X232-MT-C",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706049",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82624B0040001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Staten Island"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260707007",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84124B0010001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260707006",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626B0032001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260707015",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004084",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706050",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82624B0039001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260707009",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626U0018001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707005",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85721B0077001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260707008",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82626R0001001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706025",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0066001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706008",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "pin": "85023P0003002R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706033",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82624B0042001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706012",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81625N0031001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706016",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26025N0125007R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706032",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Award",
+      "pin": "05622R0001001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706024",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0029005",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706011",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82624B0043001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706017",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26025N8138KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706022",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06926N0004003",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260706002",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Employees' Retirement System",
+      "type_of_notice_description": "Award",
+      "pin": "LEXI06292026A03",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706030",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626N0016001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706020",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0016001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260702013",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0047001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706010",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82624B0041001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706029",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82622B0035001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260702011",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07118P8320KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706018",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004033",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706031",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26025N0125006R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706019",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026P0004095",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706007",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Award",
+      "pin": "85026B0033001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260702015",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Award",
+      "pin": "PR-26SBS33489",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706013",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626N0012010",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260702012",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85726B0049002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706014",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030027",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706023",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06821P0330016R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706004",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Employees' Retirement System",
+      "type_of_notice_description": "Award",
+      "pin": "INFO06292026NEW",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260706005",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Employees' Retirement System",
+      "type_of_notice_description": "Award",
+      "pin": "INFO06182026NEW",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor"
+        },
+        "confidence_tier": "derived"
+      }
+    },
+    {
+      "request_id": "20260706015",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026N0030044",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260618009",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626N0015014",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260702014",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Award",
+      "pin": "84124W0120001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706009",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Award",
+      "pin": "82621B0107001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260604012",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626M0009020",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260605014",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "pin": "81626M0009017",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706021",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07121P0109001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260702005",
+      "start_date": "2026-07-09T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06820P8236KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260702004",
+      "start_date": "2026-07-09T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06821X8013KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701023",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Youth and Community Development",
+      "type_of_notice_description": "Award",
+      "pin": "26026W0027001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701020",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Award",
+      "pin": "04022L1215001R002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701017",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07121P0096001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701018",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07121P8128KXLR001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701016",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Award",
+      "pin": "07121P0105001R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701003",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Award",
+      "pin": "85724P0001006R001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260701021",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Administration for Children's Services",
+      "type_of_notice_description": "Award",
+      "pin": "06826W0056001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701024",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Sanitation",
+      "type_of_notice_description": "Award",
+      "pin": "82726W0031001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701004",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Award",
+      "pin": "04021B0003016R002",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260630016",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Award",
+      "pin": "84626W0031001",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260701019",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+      "type_of_notice_description": "Award",
+      "pin": "06924P0022035",
+      "source_system": "ocp-recent-contract-awards",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260624038",
+      "start_date": "2026-07-01T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85726B0061",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260629024",
+      "start_date": "2026-07-06T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "07126B0003",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260625058",
+      "start_date": "2026-07-06T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "pin": "2926",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260723025",
+      "start_date": "2026-07-27T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "pin": "NCB-24202204-A-OTxHU",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260618029",
+      "start_date": "2026-06-29T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85026I0004",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260617041",
+      "start_date": "2026-06-25T00:00:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85826P0003",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260624023",
+      "start_date": "2026-06-30T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85726B0060",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260617050",
+      "start_date": "2026-06-30T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "517992",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260629002",
+      "start_date": "2026-07-07T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "523212",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708023",
+      "start_date": "2026-07-15T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "pin": "BBP Pier 1 LED Insta",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260714017",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "523233",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260616061",
+      "start_date": "2026-06-24T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "pin": "10872",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260601047",
+      "start_date": "2026-06-09T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "pin": "000348",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714021",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "523232",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260708001",
+      "start_date": "2026-07-17T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "pin": "80626B0060",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260603042",
+      "start_date": "2026-06-10T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": null,
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260529026",
+      "start_date": "2026-06-05T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": null,
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "matter_title_place"
+          ],
+          "confidence": 0.9,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260716020",
+      "start_date": "2026-07-23T00:00:00.000",
+      "agency_name": "Public Library - Queens",
+      "type_of_notice_description": "Solicitation",
+      "pin": "0726-2",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260610061",
+      "start_date": "2026-06-17T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "pin": "11281",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "derivation": {
+          "methods": [
+            "matter_address"
+          ],
+          "confidence": 0.85,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260702007",
+      "start_date": "2026-07-09T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "pin": "TGI-OPS-GutterMainte",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260629043",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85026B0103",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260626002",
+      "start_date": "2026-07-07T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "517907",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260521015",
+      "start_date": "2026-05-29T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "pin": "82626B0018",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260603051",
+      "start_date": "2026-06-22T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "pin": "HAR-13202301",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260421016",
+      "start_date": "2026-04-28T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85624B0012",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place",
+            "matter_address"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260707024",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "pin": "82626B0045",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260706047",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85726B0066",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260701039",
+      "start_date": "2026-07-09T00:00:00.000",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Solicitation",
+      "pin": "ES#056-14-2026",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260629032",
+      "start_date": "2026-07-08T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": null,
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "community_districts": [
+          "M04",
+          "M05"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "matter_title_place",
+            "community_board"
+          ],
+          "confidence": 0.9,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260601039",
+      "start_date": "2026-06-04T00:00:00.000",
+      "agency_name": "Design and Construction",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85026Q0001",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260319023",
+      "start_date": "2026-07-14T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "PROP/TERR26-27",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260626030",
+      "start_date": "2026-07-07T00:00:00.000",
+      "agency_name": "Environmental Protection",
+      "type_of_notice_description": "Solicitation",
+      "pin": "4932",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260514019",
+      "start_date": "2026-05-20T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "85624B0007",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260702003",
+      "start_date": "2026-07-16T00:00:00.000",
+      "agency_name": "Homeless Services",
+      "type_of_notice_description": "Solicitation",
+      "pin": "07125B0006",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260710034",
+      "start_date": "2026-07-20T00:00:00.000",
+      "agency_name": "Fire Department",
+      "type_of_notice_description": "Solicitation",
+      "pin": "05726B0008",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260623056",
+      "start_date": "2026-06-30T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "522185",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    },
+    {
+      "request_id": "20260706028",
+      "start_date": "2026-07-13T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": "523221",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260226026",
+      "start_date": "2026-03-05T00:00:00.000",
+      "agency_name": "Education",
+      "type_of_notice_description": "Solicitation",
+      "pin": "B5700040",
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260714018",
+      "start_date": "2026-07-21T00:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "pin": null,
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "unlocated",
+        "unlocated_reason": "no_place_signal",
+        "virtual_only": false
+      }
+    },
+    {
+      "request_id": "20260615060",
+      "start_date": "2026-06-22T00:00:00.000",
+      "agency_name": "Housing Authority",
+      "type_of_notice_description": "Solicitation",
+      "pin": null,
+      "source_system": "money_default_open",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "community_districts": [
+          "X03",
+          "X04"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_body_borough",
+            "matter_title_place",
+            "community_board"
+          ],
+          "confidence": 0.9,
+          "role": "matter"
+        },
+        "confidence_tier": "strong"
+      }
+    }
+  ]
+}

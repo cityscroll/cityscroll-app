@@ -299,7 +299,7 @@ first missing structured geo field. Pure lib `site/location_derivation.mjs`
 | **Meetings** | Matter place in title/body ("Borough of X", tax block, park name); hearing **venue** line / `street_address_1`; sponsor agency HQ last | `matter_body_borough` → `matter_title_place` → `venue_column` / `venue_line` → `civic_address_pip` → `agency_hq` |
 | **Land** | ZAP `community_district` (+ publisher council when present) | `cd_centroid_council` when council field absent |
 | **Rules** | Affected-geography phrases and titled borough/district scope — **not** the comment-drop venue | `rule-scope` / `matter_title_place`; default **citywide** when no local pin |
-| **Money** | Performance/body place, OCP `vendor_address`, vendor place names, "throughout New York City" | `publisher_district` / coords → `civic_address_pip` / `vendor_address` → `citywide_phrase` → title borough |
+| **Money** | Title/body place phrases, citywide wording, borough-scoped agencies (BP/CB), neighborhood gazetteer, CD tokens (`MN04`); OCP has **no** service-borough column. Vendor address is weak fallback only (org HQ ≠ service geography) | `matter_title_place` / `citywide_phrase` / `agency_service_area` / `community_board` → `civic_address_pip` / weak `vendor_address` |
 
 Confidence tiers ride on the stamp (`strong` / `derived` / `weak`); agency-HQ
 and vendor-address pins are weaker than a venue line or matter borough phrase.
@@ -307,14 +307,22 @@ Only after every human-visible derivation fails is a row **unlocated**, and the
 payload records `unlocated_reason` (e.g. `virtual_only`, `no_place_signal`).
 Venue is not matter for rules; for meetings map density, venue is a legitimate
 "where is this happening" pin when the matter has no place. Virtual-only with no
-matter pin goes to the `virtual` bag (not silent unlocated).
+matter pin goes to the `virtual` bag (not silent unlocated). Unlocated is a
+first-class map bag (distinct from district zeros). Money lens shows coverage
+framing when most awards are citywide / unlocated.
 
 Densify stamps (no raw body on the public surface):
 `tools/build_rules_meetings_domain_observations.mjs` → `affected_area` /
 `rule_location` on domain observations (addresses kept for offline geocode);
-money place stamps may sit on `ocp_awards_warehouse_lookup` rows. Verify:
+money densify: `tools/build_money_domain_observations.mjs` →
+`site/data/money_domain_observations.json` (OCP awards + open RFPs with compact
+`place` stamps; map corpus — separate from the OCP pin warehouse lookup used for
+lifecycle side-cars). Map client loads `district_activity.json` with
+`cache: "no-cache"` so deploy rebuilds reach returning browsers (origin already
+sends `max-age=0, must-revalidate`). Verify:
 
 ```bash
+node tools/build_money_domain_observations.mjs --check
 node tools/build_rules_meetings_domain_observations.mjs --check
 node tools/build_district_activity.mjs
 node tools/build_district_activity.mjs --check

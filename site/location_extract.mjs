@@ -14,6 +14,15 @@ export const BOROUGHS = [
   ["Staten Island", /\b(?:staten island|richmond county)\b/i],
 ];
 
+/** Publisher / notice shorthand (titles often end ", BX" or embed "MN04"). Case-sensitive for 2-letter codes so "si" units do not trip. */
+export const BOROUGH_ABBREVS = [
+  ["Bronx", /\bBX\b/],
+  ["Brooklyn", /\bBK\b/],
+  ["Manhattan", /\bMN\b/],
+  ["Queens", /\bQN\b/],
+  ["Staten Island", /\bSI\b/],
+];
+
 export const ADDRESS_RE = /\b\d{1,5}(?:-\d{1,5})?(?!\s*(?:feet|foot|ft\.?|square|sf)\b)\s+[A-Z0-9][A-Z0-9.'’ -]{1,60}?\b(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway)\b/gi;
 
 const APPLICATION_BOROUGHS = {
@@ -53,7 +62,10 @@ export function normalizeAddress(value) {
 }
 
 export function boroughsIn(text) {
-  return BOROUGHS.filter(([, pattern]) => pattern.test(text)).map(([name]) => name);
+  const raw = String(text || "");
+  const named = BOROUGHS.filter(([, pattern]) => pattern.test(raw)).map(([name]) => name);
+  const abbrev = BOROUGH_ABBREVS.filter(([, pattern]) => pattern.test(raw)).map(([name]) => name);
+  return unique([...named, ...abbrev]);
 }
 
 export function canonicalBorough(value) {

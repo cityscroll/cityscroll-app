@@ -15,6 +15,7 @@ import {
   loadDistrictActivity,
   mapFeatures,
   nonPolygonBuckets,
+  moneyCoverageFraming,
   parseMapHashQuery,
   polygonsToSvgPath,
   projectLonLat,
@@ -22,6 +23,7 @@ import {
   totalForLens,
   zoomViewBox,
   panViewBox,
+  BOROUGH_META,
 } from "../site/map_exploration.mjs";
 import {
   buildDistrictActivity,
@@ -479,6 +481,65 @@ test("money vendor address geocodes to CD + council when gazetteer matches", () 
   assert.ok((activity.by_level.community_district.X05?.money || 0) >= 1);
   assert.ok((activity.by_level.council_district["15"]?.money || 0) >= 1);
   assert.ok((activity.citywide?.money || 0) >= 1);
+});
+
+test("nonPolygonBuckets expose unlocated; moneyCoverageFraming reports mix", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    moneyRows: [
+      {
+        request_id: "m-local",
+        agency_name: "Parks",
+        short_title: "Al Oerter Recreation Center Gym Floor Reconstruction, Queens",
+      },
+      {
+        request_id: "m-cw",
+        agency_name: "DCAS",
+        short_title: "Pest management services, CITYWIDE",
+      },
+      {
+        request_id: "m-none",
+        agency_name: "FISA",
+        short_title: "VERTIV UPS Replacement for Data Center",
+      },
+    ],
+  });
+  assert.ok((activity.by_level.borough.Queens?.money || 0) >= 1);
+  assert.ok((activity.citywide?.money || 0) >= 1);
+  assert.ok((activity.unlocated?.money || 0) >= 1);
+  const bags = nonPolygonBuckets(activity);
+  assert.ok(bags.some((b) => b.kind === "citywide"));
+  assert.ok(bags.some((b) => b.kind === "unlocated" && b.counts.money >= 1));
+  const frame = moneyCoverageFraming(activity);
+  assert.ok(frame);
+  assert.equal(frame.counted, 3);
+  assert.ok(frame.citywide >= 1);
+  assert.ok(frame.unlocated >= 1);
+  assert.ok(frame.local >= 1);
+});
+
+test("committed district_activity money densify has multi-borough density and framing bags", () => {
+  const path = new URL("../site/data/district_activity.json", import.meta.url);
+  assert.ok(existsSync(path), "run: node tools/build_district_activity.mjs");
+  const doc = JSON.parse(readFileSync(path, "utf8"));
+  assert.ok((doc.sources?.money?.counted || 0) >= 100,
+    `money densify corpus expected ≥100 rows, got ${doc.sources?.money?.counted}`);
+  assert.ok((doc.sources?.money?.located || 0) >= 50,
+    `money located expected ≥50 after densify, got ${doc.sources?.money?.located}`);
+  assert.ok((doc.citywide?.money || 0) >= 10,
+    `money citywide bag expected ≥10, got ${doc.citywide?.money}`);
+  assert.ok((doc.unlocated?.money || 0) >= 50,
+    `money unlocated expected ≥50 (honest non-spatial share), got ${doc.unlocated?.money}`);
+  // Multiple boroughs must show density — not a single Bronx pin + zeros.
+  const boroMoney = doc.by_level?.borough || {};
+  const localBoros = Object.keys(BOROUGH_META).filter((b) => (boroMoney[b]?.money || 0) > 0);
+  assert.ok(localBoros.length >= 3,
+    `expected ≥3 boroughs with money density, got ${localBoros.join(",")}`);
+  const bags = nonPolygonBuckets(doc);
+  assert.ok(bags.some((b) => b.kind === "citywide" && b.counts.rules >= 1));
+  assert.ok(bags.some((b) => b.kind === "citywide" && b.counts.money >= 1));
+  const frame = moneyCoverageFraming(doc);
+  assert.ok(frame && frame.counted >= 100);
 });
 
 test("granularityCollapseFindings flags council zero-collapse and clears on healthy payload", () => {
