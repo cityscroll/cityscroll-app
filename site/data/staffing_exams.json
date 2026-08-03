@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "generated_at": "2026-08-03",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
@@ -62,6 +62,16 @@
       "data_publication_date": "2026-07-28",
       "refresh_cadence": "Annual outcomes publication with rolling corrections during each fiscal-year outcomes cycle.",
       "stale_after_days": 365
+    },
+    {
+      "id": "dcas-annual-schedule-history",
+      "name": "Annual Examination Schedule of Each Fiscal Year — historical revisions",
+      "dataset_id": "4ptz-hmtc",
+      "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
+      "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
+      "fetched_at": "2026-08-03",
+      "refresh_cadence": "Rebuild with the staffing exam artifact; uses the same registered annual-schedule dataset as the current snapshot.",
+      "stale_after_days": 95
     },
     {
       "id": "dcas-noe-fee-salary-densify",
@@ -161,6 +171,173 @@
       "exams_with_list_aggregate": 77
     }
   },
+  "list_establishment_prediction": {
+    "schema": "cityscroll.prediction.v0",
+    "join": {
+      "method": "exact_exam_number_zero_pad",
+      "schedule_rows": 1271,
+      "distinct_schedule_exams": 1271,
+      "distinct_list_aggregate_exams": 854,
+      "matched_pairs": 442,
+      "misses": {
+        "no_list_aggregate": 774,
+        "missing_application_close": 5,
+        "missing_established_date": 50,
+        "established_before_application_close": 0
+      },
+      "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
+    },
+    "model": {
+      "method": "phase_duration_ecdf",
+      "target_event_kind": "staffing.list_established",
+      "cohort_floor": 20,
+      "cohorts": {
+        "citywide": {
+          "key": "citywide",
+          "label": "citywide",
+          "n": 442,
+          "eligible": true,
+          "p10_days": 99,
+          "p50_days": 281,
+          "p90_days": 736,
+          "median_months": 9,
+          "train_from": "2021-05-05",
+          "train_to": "2026-07-22"
+        },
+        "open_competitive": {
+          "key": "open_competitive",
+          "label": "open competitive",
+          "n": 307,
+          "eligible": true,
+          "p10_days": 92,
+          "p50_days": 246,
+          "p90_days": 757,
+          "median_months": 8,
+          "train_from": "2021-05-05",
+          "train_to": "2026-07-22"
+        },
+        "promotion": {
+          "key": "promotion",
+          "label": "promotion",
+          "n": 135,
+          "eligible": true,
+          "p10_days": 127,
+          "p50_days": 358,
+          "p90_days": 617,
+          "median_months": 12,
+          "train_from": "2021-05-26",
+          "train_to": "2026-07-15"
+        }
+      }
+    },
+    "backtest": {
+      "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
+      "training_pairs": 290,
+      "scoring_pairs": 86,
+      "scorecard": {
+        "metric": "prediction_calibration",
+        "version": "prediction_calibration_v1",
+        "domain": "staffing",
+        "model_name": "staffing_list_establishment_lag",
+        "model_version": "1.0.0",
+        "split_date": "2025-01-01",
+        "grace_days": 0,
+        "train_window": {
+          "from": "2021-05-05",
+          "to": "2024-12-18"
+        },
+        "prediction_count": 86,
+        "resolved_backtest_predictions": 86,
+        "resolution_rate": 1,
+        "resolution_counts": {
+          "resolved_hit": 53,
+          "resolved_miss": 33,
+          "open": 0
+        },
+        "timing_prediction_count": 86,
+        "timing_realized_count": 86,
+        "timing_resolution_hits": 53,
+        "interval_nominal": 0.8,
+        "interval_coverage": 0.6163,
+        "interval_coverage_hits": 53,
+        "interval_coverage_count": 86,
+        "median_absolute_error_p50_days": 230.5,
+        "occurrence_prediction_count": 0,
+        "occurrence_resolved_count": 0,
+        "occurrence_calibration": [
+          {
+            "quintile": 1,
+            "probability_min": 0,
+            "probability_max": 0.2,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 2,
+            "probability_min": 0.2,
+            "probability_max": 0.4,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 3,
+            "probability_min": 0.4,
+            "probability_max": 0.6,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 4,
+            "probability_min": 0.6,
+            "probability_max": 0.8,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 5,
+            "probability_min": 0.8,
+            "probability_max": 1,
+            "upper_inclusive": true,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          }
+        ],
+        "occurrence_quintiles_monotone": null,
+        "ship_bar": {
+          "status": "fail",
+          "checks": {
+            "minimum_resolved": true,
+            "interval_coverage": false,
+            "occurrence_quintiles_monotone": true
+          },
+          "thresholds": {
+            "minimum_resolved": 50,
+            "interval_nominal": 0.8,
+            "interval_tolerance": 0.1,
+            "occurrence_quintiles_monotone": true
+          }
+        },
+        "public_projection": "cohort_statistic_only"
+      }
+    },
+    "emitted_predictions": 0,
+    "privacy": "Per-exam aggregates only; no applicant rows, names, scores, or list ranks."
+  },
+  "list_establishment_predictions": [],
   "exams": [
     {
       "exam_number": "6311",
@@ -196,7 +373,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6028",
@@ -232,7 +410,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6029",
@@ -268,7 +447,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6532",
@@ -304,7 +484,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6066",
@@ -340,7 +521,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6533",
@@ -376,7 +558,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6073",
@@ -412,7 +595,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6074",
@@ -448,7 +632,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6537",
@@ -484,7 +669,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6306",
@@ -520,7 +706,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6089",
@@ -556,7 +743,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6330",
@@ -592,7 +780,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6312",
@@ -628,7 +817,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6002",
@@ -664,7 +854,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6512",
@@ -700,7 +891,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6022",
@@ -736,7 +928,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6530",
@@ -772,7 +965,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6101",
@@ -808,7 +1002,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6549",
@@ -844,7 +1039,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6550",
@@ -880,7 +1076,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6551",
@@ -916,7 +1113,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6313",
@@ -952,7 +1150,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6001",
@@ -988,7 +1187,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6501",
@@ -1024,7 +1224,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6011",
@@ -1060,7 +1261,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6018",
@@ -1096,7 +1298,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6301",
@@ -1132,7 +1335,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6043",
@@ -1168,7 +1372,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6058",
@@ -1204,7 +1409,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6531",
@@ -1240,7 +1446,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6086",
@@ -1276,7 +1483,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6324",
@@ -1312,7 +1520,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6113",
@@ -1348,7 +1557,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6015",
@@ -1384,7 +1594,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6053",
@@ -1420,7 +1631,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6054",
@@ -1456,7 +1668,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6079",
@@ -1492,7 +1705,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6081",
@@ -1528,7 +1742,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6314",
@@ -1564,7 +1779,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6090",
@@ -1600,7 +1816,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6092",
@@ -1636,7 +1853,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6315",
@@ -1672,7 +1890,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6012",
@@ -1708,7 +1927,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6037",
@@ -1744,7 +1964,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6519",
@@ -1780,7 +2001,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6076",
@@ -1816,7 +2038,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6088",
@@ -1852,7 +2075,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6091",
@@ -1888,7 +2112,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6105",
@@ -1924,7 +2149,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6310",
@@ -1960,7 +2186,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6316",
@@ -1996,7 +2223,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6014",
@@ -2032,7 +2260,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6023",
@@ -2068,7 +2297,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6304",
@@ -2104,7 +2334,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6064",
@@ -2140,7 +2371,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6094",
@@ -2176,7 +2408,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6323",
@@ -2212,7 +2445,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6021",
@@ -2248,7 +2482,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6046",
@@ -2284,7 +2519,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6522",
@@ -2320,7 +2556,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6063",
@@ -2356,7 +2593,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6068",
@@ -2392,7 +2630,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6078",
@@ -2428,7 +2667,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6325",
@@ -2464,7 +2704,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6115",
@@ -2500,7 +2741,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6539",
@@ -2536,7 +2778,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6318",
@@ -2572,7 +2815,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6034",
@@ -2608,7 +2852,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6517",
@@ -2644,7 +2889,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6035",
@@ -2680,7 +2926,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6080",
@@ -2716,7 +2963,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6082",
@@ -2752,7 +3000,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6502",
@@ -2788,7 +3037,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6013",
@@ -2824,7 +3074,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6016",
@@ -2860,7 +3111,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6067",
@@ -2896,7 +3148,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6024",
@@ -2932,7 +3185,8 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
-      }
+      },
+      "list_establishment_forecast": null
     },
     {
       "exam_number": "6125",
@@ -2966,7 +3220,20 @@
       },
       "outcome_gap": null,
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "6126",
@@ -2999,7 +3266,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7006",
@@ -3035,7 +3315,20 @@
       },
       "outcome_gap": null,
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7007",
@@ -3067,7 +3360,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7013",
@@ -3102,7 +3408,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7016",
@@ -3136,7 +3455,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7018",
@@ -3170,7 +3502,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7514",
@@ -3205,6 +3550,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3240,6 +3598,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3272,7 +3643,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7323",
@@ -3306,7 +3690,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7331",
@@ -3340,7 +3737,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7312",
@@ -3372,7 +3782,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7508",
@@ -3407,6 +3830,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3442,6 +3878,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3477,6 +3926,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3512,6 +3974,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3547,6 +4022,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3582,6 +4070,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3617,6 +4118,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3652,6 +4166,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3687,6 +4214,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3722,6 +4262,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3754,7 +4307,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7002",
@@ -3789,6 +4355,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3824,6 +4403,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3859,6 +4451,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3894,6 +4499,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3929,6 +4547,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3964,6 +4595,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -3999,6 +4643,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4034,6 +4691,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4069,6 +4739,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4104,6 +4787,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4139,6 +4835,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4174,6 +4883,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4209,6 +4931,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4244,6 +4979,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4279,6 +5027,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4311,7 +5072,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7010",
@@ -4346,6 +5120,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4381,6 +5168,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4416,6 +5216,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4451,6 +5264,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4486,6 +5312,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4521,6 +5360,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4556,6 +5408,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4591,6 +5456,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4626,6 +5504,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4661,6 +5552,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4696,6 +5600,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4731,6 +5648,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4766,6 +5696,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4801,6 +5744,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4833,7 +5789,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7000",
@@ -4868,6 +5837,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4903,6 +5885,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4938,6 +5933,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -4973,6 +5981,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5008,6 +6029,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5043,6 +6077,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5078,6 +6125,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5113,6 +6173,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5148,6 +6221,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5183,6 +6269,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5218,6 +6317,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5253,6 +6365,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5288,6 +6413,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5320,7 +6458,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7019",
@@ -5355,6 +6506,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5390,6 +6554,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5425,6 +6602,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5460,6 +6650,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5495,6 +6698,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5530,6 +6746,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5565,6 +6794,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5600,6 +6842,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5635,6 +6890,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5670,6 +6938,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5705,6 +6986,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5740,6 +7034,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5772,7 +7079,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7021",
@@ -5807,6 +7127,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5842,6 +7175,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5877,6 +7223,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5912,6 +7271,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5947,6 +7319,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -5982,6 +7367,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6017,6 +7415,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6052,6 +7463,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6087,6 +7511,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6122,6 +7559,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6157,6 +7607,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6192,6 +7655,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6224,7 +7700,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7008",
@@ -6259,6 +7748,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6294,6 +7796,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6329,6 +7844,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6364,6 +7892,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6399,6 +7940,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6434,6 +7988,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6469,6 +8036,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6504,6 +8084,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6539,6 +8132,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6574,6 +8180,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6609,6 +8228,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6641,7 +8273,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7005",
@@ -6676,6 +8321,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6711,6 +8369,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6746,6 +8417,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6781,6 +8465,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6816,6 +8513,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6851,6 +8561,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6886,6 +8609,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6921,6 +8657,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6956,6 +8705,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -6991,6 +8753,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7026,6 +8801,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7058,7 +8846,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7004",
@@ -7093,6 +8894,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7128,6 +8942,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7163,6 +8990,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7198,6 +9038,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7233,6 +9086,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7268,6 +9134,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7303,6 +9182,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7338,6 +9230,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7373,6 +9278,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7408,6 +9326,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7443,6 +9374,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7478,6 +9422,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7510,7 +9467,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7505",
@@ -7545,6 +9515,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7580,6 +9563,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7615,6 +9611,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7650,6 +9659,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7685,6 +9707,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7720,6 +9755,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7755,6 +9803,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7787,7 +9848,20 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": null
+      "fee_salary_gap": null,
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
+      }
     },
     {
       "exam_number": "7071",
@@ -7822,6 +9896,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7857,6 +9944,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7892,6 +9992,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7927,6 +10040,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7962,6 +10088,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -7997,6 +10136,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -8032,6 +10184,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -8067,6 +10232,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -8102,6 +10280,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -8137,6 +10328,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "open_competitive",
+        "n": 307,
+        "since_year": 2018,
+        "p10_days": 92,
+        "p50_days": 246,
+        "p90_days": 757,
+        "median_months": 8,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     },
     {
@@ -8172,6 +10376,19 @@
           "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
+      },
+      "list_establishment_forecast": {
+        "method": "phase_duration_ecdf",
+        "target_event_kind": "staffing.list_established",
+        "cohort": "promotion",
+        "n": 135,
+        "since_year": 2018,
+        "p10_days": 127,
+        "p50_days": 358,
+        "p90_days": 617,
+        "median_months": 12,
+        "public_projection": "cohort_statistic_only",
+        "prediction": null
       }
     }
   ]

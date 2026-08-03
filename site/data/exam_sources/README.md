@@ -24,6 +24,11 @@ Sources and refresh rules:
 - `annual_schedule.json` — DCAS/NYC Open Data dataset `4ptz-hmtc`. DCAS says the
   public schedule is updated monthly; the dataset metadata currently says annual
   updates and quarterly data changes. Refresh monthly and record both claims.
+- `annual_schedule_history.json` — one canonical row per exam from historical
+  revisions in that same `4ptz-hmtc` dataset. Exact normalized `exam_number` is
+  the join key; the latest `data_current_as_of` revision wins, with application
+  close as a deterministic tie-break. Rebuild it with
+  `node tools/build_staffing_exams.mjs --refresh-prediction-history`.
 - `dcas_open_competitive.json` — the current DCAS open-exam table and its linked
   Notices of Examination (NOEs). Check daily while applications are open because
   an amended NOE can extend or cancel a window before the structured dataset
@@ -68,3 +73,16 @@ drift check.
   is mostly open 7xxx exams with **0%** list presence; without this supplement the
   build stamps empty aggregate slots as if no public list data existed. Each row
   is re-joined at build time from `civil_service_list_aggregates.json` (counts only).
+
+## List-establishment timing model
+
+The build exact-joins `annual_schedule_history.json` to
+`civil_service_list_aggregates.json` and models application-close →
+list-established duration with a nearest-rank ECDF. Open-competitive and
+promotion cohorts require at least 20 pairs; smaller cohorts use the citywide
+distribution. Join counts, miss reasons, p10/p50/p90, and the time-split
+calibration scorecard are recorded in
+`verification_receipts/staffing_list_establishment_prediction_latest.json`.
+If the scorecard misses its ship bar, exam pages show only the cohort median and
+the committed artifact emits no per-exam prediction date. The privacy floor is
+unchanged: only exam-level aggregates are used or exposed.
