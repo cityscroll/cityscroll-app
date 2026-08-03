@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "../helpers/site_source.mjs";
 // Contract test: the Money-lens "honesty cap" — Award notices with contract_amount >= $10B are
 // EDA-confirmed data-entry errors (worker/src/ingest.mjs: "3 rows >= $10B are data-entry errors,
 // max legit ~= $6.68B") and must be excluded from every Award query on both sides, everywhere.
@@ -28,14 +29,14 @@ function capsFoundIn(text) {
 }
 
 test("index.html: MONEY_HONESTY_CAP constant matches the canonical $10B cap", () => {
-  const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+  const src = SITE_SOURCE;
   const m = src.match(/const MONEY_HONESTY_CAP\s*=\s*(\d+)/);
   assert.ok(m, "MONEY_HONESTY_CAP constant not found in index.html");
   assert.equal(Number(m[1]), CANONICAL_CAP);
 });
 
 test("index.html: no query site uses a hardcoded number instead of MONEY_HONESTY_CAP", () => {
-  const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+  const src = SITE_SOURCE;
   // Every real call site now reads `contract_amount < ${MONEY_HONESTY_CAP}` — a literal digit
   // here would mean a query site regressed back to a hand-copied number (exactly how the
   // original $5B/$10B split happened in the first place).
@@ -67,7 +68,7 @@ test("worker/src/ingest.mjs: D1 ingest's AMOUNT_CAP matches the canonical $10B c
 const STALE_CAP_PATTERN = /\b5000000000\b|\b5e9\b/;
 
 test("index.html: no stale $5B literal in any form (decimal or scientific notation)", () => {
-  const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+  const src = SITE_SOURCE;
   assert.doesNotMatch(src, STALE_CAP_PATTERN);
 });
 

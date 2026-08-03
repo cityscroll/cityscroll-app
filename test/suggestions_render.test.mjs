@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins index.html's client-side half of w12-08 (verified, rotating suggestion chips) and its
 // w12-17 extension (lineage/forecast discoverability indicators).
 //
@@ -29,7 +30,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const receipt = JSON.parse(readFileSync(join(ROOT, "site", "data", "preset-validation.json"), "utf8"));
 
 function extractFn(name) {

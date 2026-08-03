@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization tests for lifecycle rendering coherence — named after the
 // public symptoms on two live field cases:
 //   #notice/20260623008 (HNTB award) and #notice/20260617040 (IDA hearing, no PIN).
@@ -18,7 +19,7 @@ import { dirname, join } from "node:path";
 import { assembleLifecycle } from "../worker/src/lib/checkbook_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

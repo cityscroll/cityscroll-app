@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Franchise / concession phase presentation (compact stepper + current/next).
  *
@@ -103,7 +104,7 @@ test("group spines still feed a phase view", () => {
 });
 
 test("public notice detail uses franchise phase spine surface", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /buildFranchisePhaseView|franchise_phase_spine/);
   assert.match(index, /franchise-phase-stepper|franchise_phase_now_html/);
   assert.match(index, /function franchiseConcessionSpineHTML/);

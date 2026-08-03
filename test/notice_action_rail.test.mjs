@@ -1,8 +1,9 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 
 test("notice detail loads and mounts the shared action registry", () => {
   assert.match(html, /<script src="action_registry\.js"><\/script>/);

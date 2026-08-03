@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
@@ -8,7 +9,7 @@ import { STAFFING_EXAMS_SCHEMA_VERSION } from "../tools/build_staffing_exams.mjs
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
-const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 const FIXTURE_TODAY = "2026-08-02";
 
 test("precomputed staffing artifact is reproducible from committed source snapshots", () => {

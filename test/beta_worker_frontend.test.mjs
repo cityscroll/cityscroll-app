@@ -9,12 +9,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const read = (path) => readFileSync(new URL(`../site/${path}`, import.meta.url), "utf8");
 
 test("interactive pages honor the deploy-time beta API origin without production fallback", () => {
   for (const page of ["index.html", "about.html", "api.html"]) {
-    const source = read(page);
+    const source = page === "index.html" ? SITE_SOURCE : read(page);
     assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.cityscroll\.org"/, page);
     assert.match(
       source,

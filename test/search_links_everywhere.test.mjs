@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
@@ -7,7 +8,7 @@ import { dirname, join } from "node:path";
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSource = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const indexSource = SITE_SOURCE;
 const {
   buildSearchDeepLink,
   canonicalSearchURL,

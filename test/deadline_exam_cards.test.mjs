@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
@@ -10,7 +11,7 @@ const receipt = JSON.parse(
   readFileSync(new URL("../site/data/exam_sources/verification_receipts/dcas_open_competitive_2026-07-29.json", import.meta.url)),
 );
 const contracts = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
-const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 const examSourceReadme = readFileSync(new URL("../site/data/exam_sources/README.md", import.meta.url), "utf8");
 
 /** Five current open exams used as the acceptance set for deadline-first cards. */

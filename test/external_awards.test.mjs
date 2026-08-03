@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Awards published outside the City Record. The registry (external_awards.js) drives the sweep,
 // the join precision, and the coverage claim; the award DATA is precomputed server-side and served
 // by GET /externalaward, so the client no longer fires a live SODA/Checkbook call per view. These
@@ -34,7 +35,7 @@ import {
 } from "../site/external_awards.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSrc = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const indexSrc = SITE_SOURCE;
 
 function extractFn(name) {
   const asyncStart = indexSrc.indexOf("async function " + name + "(");

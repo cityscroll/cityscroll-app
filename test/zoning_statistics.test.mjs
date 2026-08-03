@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * cs-pred-08: transparent ZAP phase-duration and outcome base rates.
  * cs-pred-11: applicant-conditioned outcome rates on the same cohort engine.
@@ -172,7 +173,7 @@ test("committed materialization passes the ship bar and attaches an unconditione
 });
 
 test("land timeline renders the base-rate register and formula page publishes every equation", () => {
-  const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+  const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   const worker = readFileSync(new URL("../worker/src/zap_outcomes.mjs", import.meta.url), "utf8");
   assert.match(index, /function landZoningStatisticsHTML/);
@@ -379,7 +380,7 @@ test("committed materialization ships applicant conditioning with n>=20 and fals
 });
 
 test("formula page and land UI name applicant conditioning constraints", () => {
-  const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+  const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
   assert.match(index, /function landApplicantConditionedHTML/);

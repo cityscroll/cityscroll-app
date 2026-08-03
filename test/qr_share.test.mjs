@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -11,7 +12,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
 const { coarseLandFilter } = require("../site/location_awareness.js");
 const { buildSearchDeepLink, canonicalSearchURL } = require("../site/nl_deeplink.js");
-const indexSource = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const indexSource = SITE_SOURCE;
 const qrSource = readFileSync(join(ROOT, "site", "qr_share.js"), "utf8");
 const browserHarnessAvailable = spawnSync(
   "python3",

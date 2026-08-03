@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization: ZAP land outcomes (decision docs + disposition votes + DOB BBL).
 //
 // Real field cases from 2026-07-30 ZAP API / Open Data samples
@@ -203,7 +204,7 @@ test("annotated outcome screenshots are present and sha-pinned when captured", (
 });
 
 test("index land detail loads outcomes from worker path only", () => {
-  const src = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const src = SITE_SOURCE;
   assert.match(src, /\/zap-outcomes\?id=/);
   assert.doesNotMatch(src, /zap-api-production\.herokuapp\.com\/projects/);
   assert.match(src, /landOutcomesHTML|loadZapOutcomes/);

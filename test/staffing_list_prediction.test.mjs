@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -24,7 +25,7 @@ const aggregates = JSON.parse(readFileSync(
   "utf8",
 ));
 const artifact = JSON.parse(readFileSync(join(ROOT, "site/data/staffing_exams.json"), "utf8"));
-const indexHtml = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const indexHtml = SITE_SOURCE;
 const aboutHtml = readFileSync(join(ROOT, "site/about.html"), "utf8");
 
 const built = buildScheduleListPairs(history.records, aggregates.records);

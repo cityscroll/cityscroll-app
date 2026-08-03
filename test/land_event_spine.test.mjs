@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -145,7 +146,7 @@ test("edge read model materializes the strict City Record join into record.spine
 });
 
 test("public Land detail renders the phase-grouped spine and captured evidence is pinned", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function landSpineHTML/);
   assert.match(index, /land_phase_spine\.mjs|buildLandPhaseView/);
   assert.match(index, /land-phase-stepper|land-spine-lead/);

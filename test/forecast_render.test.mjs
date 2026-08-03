@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins forecastItemHTML()'s output shape (badge/title/subtitle/subscribe-button structure,
 // data-watch-* attributes, escaping) so the wave-10 move — deduplicating the two hand-copied
 // showAgency()/showVendor() forecast blocks into one shared builder, and routing every string
@@ -12,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

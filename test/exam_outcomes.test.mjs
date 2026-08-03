@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
@@ -12,7 +13,7 @@ import {
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
-const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const contracts = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
 
@@ -213,7 +214,7 @@ test("source contract documents the exam_number join and card surfaces", () => {
   assert.match(contract.used_for, /exam cards/i);
   assert.equal(contract.delivery_tier, "inline-at-build");
   assert.ok(contract.code_references.some((ref) => ref.path === "staffing.js"));
-  assert.ok(contract.code_references.some((ref) => ref.path === "index.html"));
+  assert.ok(contract.code_references.some((ref) => ref.path === "site/app/people.mjs"));
 });
 
 test("contracted outcome source freshness must fail after staleness window", () => {

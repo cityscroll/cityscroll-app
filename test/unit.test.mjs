@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Unit tests for the pure functions inside index.html (both feature rounds).
 // Same approach as fallback.test.mjs: pull the real functions out of the source by
 // brace-matching so the tests can't drift from what ships.
@@ -10,7 +11,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

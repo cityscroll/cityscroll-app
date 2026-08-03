@@ -6,13 +6,10 @@
 // both implementations run against it" (see docs/drift-inventory.md). It does not itself
 // duplicate any site logic; it just slices index.html's source text.
 
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
 import assert from "node:assert/strict";
+import { SITE_SOURCE } from "../helpers/site_source.mjs";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-export const INDEX_HTML = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+export const INDEX_HTML = SITE_SOURCE;
 
 // Extracts one function declaration's full source, brace-balanced, starting from wherever
 // `function name(` or `async function name(` first appears.

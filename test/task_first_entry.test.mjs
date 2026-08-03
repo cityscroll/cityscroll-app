@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization tests for the bounded task-first entry experiment:
 // five real procurement notices ("Can I bid?") and five real ZAP projects
 // ("What will change here?"). Official fields must stay intact; payment-lag
@@ -13,7 +14,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
 const TaskFirst = require(join(ROOT, "site/task_first.js"));
 const bundle = JSON.parse(readFileSync(join(ROOT, "site/data/task_first_examples.json"), "utf8"));
-const html = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const html = SITE_SOURCE;
 const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
 
 // Verbatim field cases captured 2026-07-29 from NYC Open Data (dg92-zbpx / hgx4-8ukb).
