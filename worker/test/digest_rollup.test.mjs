@@ -70,14 +70,13 @@ async function withMockFetch(sentEmails, rowForUrl, fn) {
       return { ok: true, json: async () => ({ id: "re-1" }) };
     }
     // SODA / open data: return different rows based on $q keyword when present.
+    // Unknown keywords must return [] so "quiet" watches stay empty (not a full dump).
     if (u.includes("data.cityofnewyork.us") || u.includes("resource/")) {
-      let rows = [rowA, rowB];
-      if (u.includes("construction") || (options == null && u.includes("construction"))) {
-        rows = [rowA];
-      }
-      // URLSearchParams in query string
+      let rows = [];
       if (u.includes("construction")) rows = [rowA];
       else if (u.includes("education")) rows = [rowB];
+      else if (u.includes("brooklyn")) rows = [rowA]; // meetings fixture when intentionally matched
+      // else: empty (zzzznonexistentterm, bare scans, etc.)
       return { ok: true, json: async () => rows };
     }
     return { ok: true, json: async () => [] };
@@ -309,7 +308,13 @@ test("multi-watch with only one matching section: subject names N watches, body 
     assert.match(mail.html, /of 3 watches with updates/i);
     // Quiet + weekly sections stay in the body (not collapsed to a single-watch email).
     assert.match(mail.html, /zzzznonexistentterm|Nothing new for this watch/i);
-    assert.match(mail.html, /weekly|Monday/i);
+    // Weekly watch: non-Monday → skip note; Monday → may check in or stay quiet without inventing matches.
+    const isMonday = new Date().getUTCDay() === 1;
+    if (isMonday) {
+      assert.match(mail.html, /public meetings|brooklyn|Nothing new for this watch|weekly|Monday/i);
+    } else {
+      assert.match(mail.html, /weekly|Monday/i);
+    }
     assert.match(mail.html, /Unsubscribe from all|unsubscribe/i);
   });
 });
