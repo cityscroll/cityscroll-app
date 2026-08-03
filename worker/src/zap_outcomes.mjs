@@ -19,6 +19,7 @@ import {
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
 import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
+import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -531,7 +532,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
     candidateResult.rows,
     openData?.ulurp_numbers,
   );
-  return {
+  const assembled = {
     ...withDob,
     // Slim public notice rows for land-detail action rail (participation extraction).
     // Same SODA fields already used for the ULURP spine join — not a new publisher.
@@ -541,6 +542,11 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
       noticeLookupStatus: candidateResult.status,
     }),
   };
+  // Batch-side ULURP statutory clocks (cityscroll.prediction.v0) — precompute-first;
+  // the browser only renders the stamped view (no per-request day math).
+  return attachUlurpStatutoryPredictions(assembled, {
+    generatedAt: assembled.generated_at,
+  });
 }
 
 /** Cap notice payload size while keeping body + venue fields for participation steps. */
