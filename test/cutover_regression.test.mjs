@@ -124,3 +124,15 @@ test("scheduled monitor is dispatchable but never a pull-request or merge-queue 
   assert.match(workflow, /node tools\/cutover_regression\.mjs/);
   assert.doesNotMatch(workflow, /pull_request:|merge_group:|push:/);
 });
+
+test("scheduled monitor renders real civil-service exam rows on production", () => {
+  const workflow = readFileSync(
+    new URL("../.github/workflows/cutover-regression.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(workflow, /uses: \.\/\.github\/actions\/setup-playwright/);
+  assert.match(workflow, /CROL_BASE: https:\/\/cityscroll\.org\//);
+  assert.match(workflow, /CROL_DEMO_LINK_IDS: exam-guide/);
+  assert.match(workflow, /python3 test\/functional\/20_demo_links\.py/);
+  assert.doesNotMatch(workflow, /continue-on-error:\s*true/);
+});
