@@ -756,7 +756,7 @@ function applyHash(){
       if(tab === "property"){
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
-        propAsset = q.get("asset") || "all";
+        propAsset = (typeof normalizePropAsset === "function" ? normalizePropAsset(q.get("asset")) : (q.get("asset") || "all"));
         propProcessSel = q.get("process") || "all";
         propStageSel = q.get("stage") || "all";
         const taxPanel=$("#tax-lien-sale-panel");
@@ -869,7 +869,7 @@ async function showNotice(id, watch){
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
-      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -896,11 +896,14 @@ async function showNotice(id, watch){
   loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
   Promise.all([
+    typeof loadPropertyCommercialDetail === "function"
+      ? loadPropertyCommercialDetail(r, $("#ncommercial"))
+      : Promise.resolve(),
     loadPropertyDispositionSpine(r, $("#ndisposition")),
     fillAddressLinks(r, $("#naddr")),
     loadPropertyCrossDomain(r, $("#npropertyxd")),
   ]).then(()=>{
-    // Re-mount action rail once BBL / disposition stage are stamped (property affordances).
+    // Re-mount action rail once BBL / disposition stage / commercial bid steps are stamped.
     if(isPropertyDispositionEligible(r) && $("#nactions")) mountNoticeActionRail($("#nactions"), r);
     loadTaxLienForNotice(r,$("#ntaxlien"));
   }).catch(()=>{});

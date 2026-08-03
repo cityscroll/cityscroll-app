@@ -1,0 +1,148 @@
+{
+  "source": "NYC City Record Online dataset dg92-zbpx; bodies characterized from public notices by request_id (contacts redacted to RFC 2606 / 555-01xx for the committed fixture)",
+  "observed_at": "2026-08-03",
+  "persona": "surplus-goods buyer (primary); real-property developer and community land-reuse (secondary)",
+  "cases": [
+    {
+      "request_id": "20251106024",
+      "note": "Golden vehicle auction — item, sale method, bid marketplace steps; no on-notice dollar price. Body shape from public AUTO AUCTION notice; support contact redacted.",
+      "row": {
+        "request_id": "20251106024",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "agency_name": "Citywide Administrative Services",
+        "short_title": "AUTO AUCTION",
+        "start_date": "2025-11-14T00:00:00.000",
+        "event_date": null,
+        "additional_description_1": "<p>The City of New York in partnership with GovDeals.com</p><p>posts vehicle and heavy machinery auctions online every week at:</p><p><strong>https://www.govdeals.com/en/nyc-dcas-fleet</strong></p><p>All auctions are open to the public and registration is free.</p><p>For help with registration or for general questions, please contact the marketplace support team</p>"
+      },
+      "attachments": [],
+      "expect": {
+        "category": "vehicle",
+        "sale_method": "online_auction",
+        "has_package_url": true,
+        "package_host": "govdeals.com",
+        "has_price": false,
+        "deal_status": "insufficient"
+      }
+    },
+    {
+      "request_id": "20190410105",
+      "note": "Timber sale with stated volume (board feet + cords) and sealed-bid participation. Volume figures from public Forest Management Project #5090 notice; phone/email redacted.",
+      "row": {
+        "request_id": "20190410105",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "agency_name": "Environmental Protection",
+        "short_title": "The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project",
+        "start_date": "2019-04-16T00:00:00.000",
+        "event_date": "2019-05-16T15:00:00.000",
+        "additional_description_1": "<p><strong>Description: </strong>The City of New York will sell 381 thousand board feet of mixed hardwood and softwood sawtimber and more than 198 cords of hardwood firewood through Forest Management Project <strong>#5090. </strong>Bid Solicitation information is available by contacting the regional forester (contact details redacted in fixture).</p><p><strong>Show Dates</strong>: Prospective bidders are required to attend one of the two public showings. Bidding: All bid proposals must be received NO LATER THAN Thursday, May 16, 2019 at 3:00 PM. Sealed bids will be publicly opened on Friday May 17, 2019.</p>"
+      },
+      "attachments": [],
+      "expect": {
+        "category": "timber",
+        "sale_method": "sealed_bid",
+        "quantity_units": ["board_feet", "cords"],
+        "has_price": false,
+        "deal_status": "insufficient",
+        "has_show_step": true
+      }
+    },
+    {
+      "request_id": "20240515016",
+      "note": "Cannonsville-class timber notice: attachment title names the volume report inventory (public GetFile document title).",
+      "row": {
+        "request_id": "20240515016",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "agency_name": "Environmental Protection",
+        "short_title": "FOREST MANAGEMENT PROJECT NOTICE OF AVAILABILITY - Carpenters Eddy East",
+        "start_date": "2024-05-22T00:00:00.000",
+        "event_date": "2024-06-18T09:00:00.000",
+        "additional_description_1": "FOREST MANAGEMENT PROJECT NOTICE OF AVAILABILITY - Carpenters Eddy East"
+      },
+      "attachments": [
+        {
+          "request_id": "20240515016",
+          "document_id": "37470",
+          "title": "Description, maps, and volume report for timber and roundwood products from forest management project in the Cannonsville watershed basin.",
+          "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+          "source": "portal"
+        }
+      ],
+      "expect": {
+        "category": "timber",
+        "item_mentions_attachment": true,
+        "deal_status": "insufficient"
+      }
+    },
+    {
+      "request_id": "20140224112",
+      "note": "Medallion upset / minimum bid dollars with bid-receiving windows (public TLC upset notice figures).",
+      "row": {
+        "request_id": "20140224112",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "agency_name": "Taxi and Limousine Commission",
+        "short_title": "Upset Price Notice",
+        "start_date": "2014-03-10T00:00:00.000",
+        "event_date": "2014-03-25T01:00:00.000",
+        "additional_description_1": "<h1>Notice of Medallion Sale Upset Price</h1><p>The New York City Taxi and Limousine Commission wishes to announce that the minimum upset price for 32 Accessible Minifleet Medallions will be <strong>$850,000</strong> per medallion. These Accessible Minifleet Medallions will be offered for sale in lots of two for a minimum bid of <strong>$1,700,000.</strong> The TLC will receive bids in person on March 19, 20, 21 and 24, 2014, from 9:00 A.M. through 12:00 Noon at its offices at 33 Beaver Street, 19th Floor, New York, NY 10004. Bid packages are available online at http://www.nyc.gov/taxi.</p>"
+      },
+      "attachments": [],
+      "expect": {
+        "category": "other",
+        "has_price": true,
+        "price_kinds": ["upset_price", "minimum_bid"],
+        "deal_status": "insufficient",
+        "quantity_units": ["medallions"]
+      }
+    },
+    {
+      "request_id": "20150915102",
+      "note": "Real-property public auction with tabulated upset prices (public DCAS auction notice figures).",
+      "row": {
+        "request_id": "20150915102",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "agency_name": "Citywide Administrative Services",
+        "short_title": "Notice of Public Auction on 10/28/15",
+        "start_date": "2015-09-18T00:00:00.000",
+        "event_date": "2015-10-28T00:00:00.000",
+        "additional_description_1": "<p>PROPOSED SALE OF CERTAIN NEW YORK CITY REAL PROPERTY PARCELS BY PUBLIC AUCTION. These properties will be offered at public auction on October 28, 2015. The brochure for this sale is available on the DCAS website at nyc.gov/auctions. 7 Parcels Borough of The Bronx Block Lot(s) Upset Price *2586 26 $11,000,000 3055 8 $285,000 Borough of Brooklyn Block Lot(s) Upset Price 7932 998 $577,500</p>"
+      },
+      "attachments": [],
+      "expect": {
+        "category": "real_property",
+        "sale_method": "public_auction",
+        "has_price": true,
+        "price_kinds": ["upset_price"],
+        "deal_status": "insufficient"
+      }
+    },
+    {
+      "request_id": "synthetic-deal-vehicle-001",
+      "note": "Characterized deal-signal pair: notice states both appraised value and minimum bid (pattern used when City publishes both; rare on modern fleet notices). Dollar pair is fixture-constructed for the 40% ratio case.",
+      "row": {
+        "request_id": "synthetic-deal-vehicle-001",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "agency_name": "Citywide Administrative Services",
+        "short_title": "AUTO AUCTION — surplus fleet sedan",
+        "start_date": "2024-06-01T00:00:00.000",
+        "event_date": "2024-06-20T15:00:00.000",
+        "additional_description_1": "<p>The City will sell one surplus sedan by sealed bid at public auction. The vehicle is appraised at a value of $12,000. Minimum bid: $4,800. Bids will be received no later than June 20, 2024 at 3:00 PM. Registration is free.</p>"
+      },
+      "attachments": [],
+      "expect": {
+        "category": "vehicle",
+        "has_price": true,
+        "price_kinds": ["appraised", "minimum_bid"],
+        "deal_status": "derived",
+        "deal_pct": 40,
+        "sale_method": "sealed_bid"
+      }
+    }
+  ]
+}

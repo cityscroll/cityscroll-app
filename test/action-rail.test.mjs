@@ -508,6 +508,34 @@ test("property award/conveyance with BBL opens ZoLa as primary parcel action", (
   actions.forEach(validateAction);
 });
 
+test("property surplus auction commercial payload leads with marketplace bid handoff", () => {
+  const actions = compileActionRail({
+    kind: "property",
+    disposition_stage: "auction_or_rfp",
+    section_name: "Property Disposition",
+    type_of_notice_description: "Sale",
+    title: "AUTO AUCTION",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20251106024",
+    notice_text: "The City posts vehicle and heavy machinery auctions online at https://www.govdeals.com/en/nyc-dcas-fleet. Registration is free.",
+    commercial: {
+      item: { category: "vehicle", label: "Vehicles" },
+      sale_method: { method: "online_auction" },
+      participation: {
+        package_url: "https://www.govdeals.com/en/nyc-dcas-fleet",
+        has_fields: true,
+        steps: [{ kind: "registration", text: "Registration is free" }],
+      },
+    },
+  }, {today: "2026-08-01"});
+  actions.forEach(validateAction);
+  const bid = actions[0];
+  assert.equal(bid.label_key, "property_action_open_rfp");
+  assert.match(bid.destination, /govdeals\.com/);
+  assert.equal(bid.guide?.system, "notice_extracted");
+  assert.equal(bid.guide?.commercial_item, "vehicle");
+  assert.ok(Array.isArray(bid.guide?.commercial_steps));
+});
+
 // --- Franchise / FCRC stage-tied action rail (phase spine + notice fields) ---
 
 test("franchise public_hearing extracts venue/testimony as guide, not a link-only punt", () => {

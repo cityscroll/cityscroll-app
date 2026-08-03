@@ -1615,9 +1615,28 @@
           ), calendar, notice()]
         : [unavailable("official_application", stage === "closed" ? "next_action_exam_closed" : "next_action_exam_not_open", stage === "closed" ? "The application window has closed." : "Applications are not open yet.", deadline), notice()];
     } else if (kind === "property") {
-      // Disposition process next-step from stage + real parcel affordances (no punt).
+      // Disposition process next-step from stage + commercial bid steps + parcel affordances (no punt).
       const disp = String(matter.disposition_stage || stage || "").toLowerCase();
       const fields = noticeFieldGuidance(matter);
+      // Commercial participation (GovDeals / sealed-bid / show dates) extracted from the body.
+      const commercial = matter.commercial || null;
+      const commercialUrl = commercial && commercial.participation
+        ? (commercial.participation.package_url || null)
+        : null;
+      const packageUrl = fields.package_url || commercialUrl || httpsUrl(matter.package_url) || null;
+      const commercialSteps = commercial && commercial.participation && Array.isArray(commercial.participation.steps)
+        ? commercial.participation.steps
+        : [];
+      const commercialGuide = {
+        system: "notice_extracted",
+        mode: "commercial_participation",
+        ...fields,
+        package_url: packageUrl,
+        sale_method: commercial && commercial.sale_method ? commercial.sale_method.method : fields.selection_method,
+        commercial_item: commercial && commercial.item ? commercial.item.category : null,
+        commercial_steps: commercialSteps.map((s) => s.text || s.kind).filter(Boolean).slice(0, 6),
+        bbl: matter.bbl || null,
+      };
       const parcelActs = parcelLookupActions(matter, deadline);
       const past = isPast(deadline, today);
       if (disp === "hearing" || (!disp && /hearing|meeting/i.test(String(matter.type_of_notice_description || "")))) {
@@ -1631,11 +1650,9 @@
         else actions.push(notice());
         if (!past) actions.push(watch);
       } else if (disp === "auction_or_rfp" || /sale/i.test(String(matter.type_of_notice_description || ""))) {
-        if (fields.package_url) {
-          actions = [official("official_application", "property_action_open_rfp", "Open the sale / RFP package", fields.package_url, deadline, { guide: { system: "notice_extracted", mode: "notice_fields", ...fields, bbl: matter.bbl || null } })];
-        } else if (parcelActs.length) {
-          actions = [...parcelActs];
-        } else if (fields.has_fields) {
+        if (packageUrl) {
+          actions = [official("official_application", "property_action_open_rfp", "Open the sale / RFP package", packageUrl, deadline, { guide: commercialGuide })];
+        } else if (commercialSteps.length || fields.has_fields) {
           actions = [validateAction({
             type: "bid_checklist",
             label_key: "disposition_phase_action_bid",
@@ -1644,8 +1661,10 @@
             destination: null,
             deadline,
             confirmation_required: false,
-            guide: { system: "notice_extracted", mode: "notice_fields", ...fields, bbl: matter.bbl || null },
+            guide: commercialGuide,
           })];
+        } else if (parcelActs.length) {
+          actions = [...parcelActs];
         } else {
           actions = [notice()];
         }
@@ -1659,10 +1678,25 @@
           ? [...parcelActs, notice(), watch]
           : [notice(), watch];
       } else {
-        // Generic disposition notice: parcel lookup first when BBL is known.
-        actions = parcelActs.length
-          ? [...parcelActs, notice(), watch]
-          : [notice(), watch];
+        // Generic disposition notice: bid marketplace / commercial steps when present, else parcel.
+        if (packageUrl) {
+          actions = [official("official_application", "property_action_open_rfp", "Open the sale / RFP package", packageUrl, deadline, { guide: commercialGuide }), watch];
+        } else if (commercialSteps.length) {
+          actions = [validateAction({
+            type: "bid_checklist",
+            label_key: "disposition_phase_action_bid",
+            label: "Follow the sale response steps below",
+            delivery: "local",
+            destination: null,
+            deadline,
+            confirmation_required: false,
+            guide: commercialGuide,
+          }), watch];
+        } else {
+          actions = parcelActs.length
+            ? [...parcelActs, notice(), watch]
+            : [notice(), watch];
+        }
       }
     } else if (kind === "award") {
       // Money award / selection rail: use lifecycle vendor, amount, registration, spending.
