@@ -1118,6 +1118,7 @@ const STRINGS = {
     cadence_years_apart_other: "about {years} years apart",
     cadence_next_expected: "Next solicitation expected around {date}.",
     cadence_estimate_tag: "Estimate",
+    rule_adoption_estimate_window: "Estimated adoption window {p10} – {p90} (median {p50})",
     // Lineage indicator (w12-10): a compact result-row badge pointing at the same chain data
     // pastWinnersHTML()/cadenceHTML() already render on the detail view — see
     // computeLineageBadgeCounts()/loadLineageBadges() in index.html.
