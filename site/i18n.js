@@ -255,9 +255,12 @@ const STRINGS = {
     map_crumb_council: "Council districts",
     map_bucket_citywide: "Citywide",
     map_bucket_virtual: "Virtual / online only",
+    map_bucket_unlocated: "No place signal",
     map_citywide_detail_lead: "{n} citywide events in the current lens ({lens}). These apply across every district — not pinned to one place.",
     map_virtual_detail_lead: "{n} virtual-only meetings in the current lens ({lens}). No in-person venue was published.",
+    map_unlocated_detail_lead: "{n} items in the current lens ({lens}) have no published place. That is missing location text, not zero activity in a district.",
     map_citywide_also_applies: "city-scale items also apply here (not counted inside this district's polygons).",
+    map_money_framing: "Most contracts are citywide service classes or lack a published place — {citywide} citywide, {local} with a borough pin, {unlocated} without a place signal (of {counted} recent awards).",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
 
