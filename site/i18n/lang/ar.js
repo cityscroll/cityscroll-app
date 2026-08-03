@@ -181,6 +181,8 @@
     export_csv: "تصدير CSV",
     export_xlsx: "تصدير Excel ‏(.xlsx)",
     print_save_pdf: "طباعة / حفظ بصيغة PDF",
+    share_export_btn: "مشاركة / تصدير",
+
     print_header: "CityScroll · {link} · اعتبارًا من {date}",
     csv_address: "العنوان",
     csv_applicant: "مقدم الطلب",

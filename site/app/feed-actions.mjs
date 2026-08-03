@@ -1041,6 +1041,7 @@ async function renderHearingExplorer(){
   }
 
   // Export/print still want notice rows (primaries + members of visible entries).
+  setExportBandVisibility(entries.length, "meetings-export-band", "meetings-export-overflow");
   const visibleRows=[];
   feedRows.meetings={};
   for(const e of entries){

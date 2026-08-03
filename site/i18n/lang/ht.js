@@ -178,6 +178,8 @@
     export_csv: "Ekspòte CSV",
     export_xlsx: "Ekspòte Excel (.xlsx)",
     print_save_pdf: "Enprime / Sove kòm PDF",
+    share_export_btn: "Pataje / ekspòte",
+
     print_header: "CityScroll · {link} · Apati {date}",
     csv_address: "Adrès",
     csv_applicant: "Aplikan",

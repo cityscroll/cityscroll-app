@@ -95,6 +95,7 @@ function renderStaffingFeed(){
   bindStaffingFacets();
   syncStaffingModeUI();
   const items=staffingVisibleItems();
+  setExportBandVisibility(items.length, "people-export-band", "people-export-overflow");
   $("#staffing-result-count").textContent=t("staffing_results_count",{n:fmtNumber(items.length)});
   $("#staffing-notice-list").innerHTML=items.length
     ? items.map(staffingHireRowHTML).join("")

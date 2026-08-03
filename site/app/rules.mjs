@@ -164,6 +164,7 @@ async function renderRulesExplorer(){
   }
 
   announce(t("rules_entries_announce",{n:entries.length}));
+  setExportBandVisibility(entries.length, "rules-export-band", "rules-export-overflow");
   const feedEl=$("#rulesfeed");
   if(!feedEl) return;
   const terms=kw?[kw]:[];
