@@ -252,22 +252,37 @@ test("extractZapHearingLogistics dedupes ZM/ZR disposition pairs", () => {
   assert.equal(representingToPhaseId("Borough President"), "borough_president");
 });
 
-test("land upcoming hearings snapshot is present and filterable", () => {
+test("land upcoming hearings snapshot is present and free of synthetic rows", () => {
   const snap = JSON.parse(
     readFileSync(join(ROOT, "site/data/land_upcoming_hearings.json"), "utf8"),
   );
   assert.ok(Array.isArray(snap.hearings));
-  assert.ok(snap.hearings.length >= 1);
+  // Empty is allowed when no future ZAP hearing dates are published; padding is not.
   for (const h of snap.hearings) {
     assert.ok(h.project_id);
     assert.ok(h.hearing_date || h.hearing_at);
+    assert.notEqual(h.project_name, "Fixture Street Rezoning");
+    assert.notEqual(h.project_name, "Example Avenue Special Permit");
+    const derived = h.provenance?.derived || [];
+    assert.ok(
+      !derived.some((d) => d.field === "fixture" || /fixture|synthetic/i.test(String(d.method || ""))),
+      "production row must not carry fixture provenance",
+    );
   }
-  const bk = filterHearingLogistics(snap.hearings, {
-    today: "2026-08-03",
-    borough: "Brooklyn",
-    mode: "in_person",
+  // Filter still works on fixture-derived rows at a day inside the 2024Q0292 window.
+  const payload = JSON.parse(readFileSync(FIX, "utf8"));
+  const record = parseZapApiProject(payload);
+  const logistics = extractZapHearingLogistics(record, {
+    project_id: record.project_id,
+    portal_url: record.portal_url,
+    borough: "Queens",
   });
-  assert.ok(bk.length >= 1);
+  const qn = filterHearingLogistics(logistics, {
+    today: "2026-06-01",
+    borough: "Queens",
+    mode: "livestream",
+  });
+  assert.ok(qn.length >= 1);
 });
 
 test("site modules reference pipeline position and hearing logistics", () => {

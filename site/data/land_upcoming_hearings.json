@@ -1,61 +1,24 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-03T12:00:00.000Z",
+  "generated_at": "2026-08-03T20:11:32.855Z",
   "source": "zap-api-dispositions",
-  "note": "Precomputed land-use hearing logistics for the Upcoming hearings land filter. Rows keep publisher provenance; free-text that cannot be parsed stays on hearing_location_raw.",
-  "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2024K0240",
-      "project_name": "Fixture Street Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0240",
-      "borough": "Brooklyn",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-09-15",
-      "hearing_at": "2026-09-15T18:30:00.000Z",
-      "hearing_location_raw": "In person at 211 Ainslie Street or livestreamed at www.youtube.com/@bkcb1",
-      "venue_address": "211 Ainslie Street",
-      "livestream_url": "https://www.youtube.com/@bkcb1",
-      "attendance_modes": [
-        "in_person",
-        "livestream"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=211%20Ainslie%20Street%2C%20New%20York%2C%20NY",
-      "parse_status": "parsed",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2025M0100",
-      "project_name": "Example Avenue Special Permit",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0100",
-      "borough": "Manhattan",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-10-01",
-      "hearing_at": "2026-10-01T14:00:00.000Z",
-      "hearing_location_raw": "Spector Hall, 22 Reade Street",
-      "venue_address": "Spector Hall, 22 Reade Street",
-      "livestream_url": null,
-      "attendance_modes": [
-        "in_person"
-      ],
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=Spector%20Hall%2C%2022%20Reade%20Street%2C%20New%20York%2C%20NY",
-      "parse_status": "partial",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": []
-      }
-    }
-  ]
+  "note": "Precomputed land-use hearing logistics for the Land → Upcoming hearings filter. Derived from ZAP disposition dcp-publichearinglocation + dcp-dateofpublichearing across sell-facing Open Data project statuses. Synthetic rows are forbidden; an empty list means no future hearing dates were published at materialization time. Unparsed free text stays on hearing_location_raw.",
+  "materialization": {
+    "method": "zap_disposition_sweep_v1",
+    "mode": "live",
+    "today": "2026-08-03",
+    "projects_listed": 230,
+    "projects_fetched": 228,
+    "projects_failed": 2,
+    "hearings_extracted": 88,
+    "upcoming_count": 0,
+    "statuses": [
+      "In Public Review",
+      "Noticed",
+      "Active",
+      "Filed"
+    ],
+    "polite_delay_ms": 350
+  },
+  "hearings": []
 }

@@ -517,10 +517,24 @@ ZAP disposition `dcp-publichearinglocation` (+ `dcp-dateofpublichearing` with
 clock time) — parse in `worker/src/lib/zap_hearing_logistics.mjs`, stamp
 `hearing_logistics` on `/zap-outcomes`, and feed the land action rail (maps
 attend + watch live). Land filter `status=hearings` reads
-`site/data/land_upcoming_hearings.json` (rebuild:
-`node tools/build_land_upcoming_hearings.mjs`). Field case: `#land/2024Q0292`.
-Verify: `node --test test/zap_hearing_logistics.test.mjs`. Capture:
-`python3 tools/capture_zap_hearing_logistics.py`.
+`site/data/land_upcoming_hearings.json`, materialized by a polite ZAP sweep of
+**all** sell-facing Open Data projects (`In Public Review` / `Noticed` /
+`Active` / `Filed`): list ids from SODA `hgx4-8ukb`, fetch each project from
+the ZAP API, extract logistics, keep only future dates. Synthetic/demo pad rows
+are forbidden (detector: `detectSyntheticUpcomingHearings` in
+`tools/lib/land_upcoming_hearings.mjs`; `--check` on deploy via build-site).
+Fixtures stay under `test/fixtures/zap_hearing_logistics/` only.
+
+```bash
+node tools/build_land_upcoming_hearings.mjs --live          # production refresh
+node tools/build_land_upcoming_hearings.mjs --fixture       # test fixtures only
+node tools/build_land_upcoming_hearings.mjs --check         # synthetic-row gate
+node --test test/zap_hearing_logistics.test.mjs test/land_upcoming_hearings.test.mjs
+```
+
+Scheduled: `.github/workflows/land-upcoming-hearings.yml` (daily). Receipt:
+`warehouse/receipts/proof/land_upcoming_hearings_latest.json`. Field case:
+`#land/2024Q0292`. Capture: `python3 tools/capture_zap_hearing_logistics.py`.
 
 **Contract renewal forecasts (cs-pred-09):** Checkbook `fc:*` rows keep product
 fields for `/forecast`, vendor profiles, and digests, and also carry
