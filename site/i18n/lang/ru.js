@@ -1888,7 +1888,7 @@
     std_timeline_entry_html: "По состоянию на {date}: {matched} из {total} языков Локального закона 30 были в переключателе. Цель доступности: {city} сегодня, переход к {next} к {nextdate} для структур штата Нью-Йорк.",
     std_timeline_loading: "Загрузка снимков…",
     std_timeline_fail: "Не удалось загрузить историю снимков сейчас — перезагрузите, чтобы повторить.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">О проекте</a> · <a href=\"data.html\">Данные</a> · <a href=\"index.html\">Главная</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">О проекте</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">Журнал изменений</a> · <a href=\"index.html\">Главная</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "Карьера в городских службах",
     staffing_pathways_heading: "Выберите следующий шаг",

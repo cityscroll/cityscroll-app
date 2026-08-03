@@ -1974,7 +1974,7 @@
     std_timeline_entry_html: "Au {date} : {matched} langues de la Loi locale 30 sur {total} étaient dans le sélecteur. Objectif d'accessibilité : {city} aujourd'hui, passant à {next} d'ici {nextdate} pour les entités de l'État de New York.",
     std_timeline_loading: "Chargement des instantanés…",
     std_timeline_fail: "Impossible de charger l'historique des instantanés pour le moment — rechargez pour réessayer.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">À propos</a> · <a href=\"data.html\">Les données</a> · <a href=\"index.html\">Accueil</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">À propos</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">Journal des modifications</a> · <a href=\"index.html\">Accueil</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "Carrières municipales",
     staffing_pathways_heading: "Choisissez votre prochaine étape",
