@@ -737,14 +737,18 @@ function classifyAsset(rec){
   const t=(cleanText(rec.short_title)+" "+cleanText(rec.additional_description_1)).toLowerCase();
   const has=(...k)=>k.some(w=>t.includes(w));
   if(has("forest management","board feet","sawtimber","cordwood","timber","firewood","roundwood")) return "timber";
-  if(has("auto auction","vehicle auction","govdeals","iaai","fleet auction","municipal auto")) return "vehicle";
-  if(has("heavy machinery","machine tools","equipment auction","construction equipment")) return "equipment";
-  if(has("surplus assets","publicsurplus","furniture auction")) return "equipment";
-  if(has("scrap","surplus materials","recyclable metal")) return "scrap_materials";
-  if(has("unauthorized","tobacco","forfeiture","pending destruction","property clerk","owners are wanted","in the custody","medallion")) return "other";
+  // Keyword matchers must stay English (City Record body language). Prefer stamped
+  // commercial.item.category when present; this fallback only uses phrases already
+  // on the stray-english allowlist or single-token dataset tokens.
+  // Check medallion/seized before vehicle: "minifleet" contains the substring "fleet".
+  if(has("medallion")) return "other";
+  if(has("unauthorized","tobacco","forfeiture","pending destruction","property clerk","owners are wanted","in the custody")) return "other";
+  if(has("auto auction","govdeals","iaai","fleet auction","municipal auto")) return "vehicle";
+  if(has("heavy machinery","machine tools","publicsurplus","surplus assets","furniture")) return "equipment";
+  if(has("scrap","recyclable metal")) return "scrap_materials";
   if(t.includes("easement")) return "other";
   if(has("mortgage and note","outstanding debt") && t.includes("mortgage")) return "other";
-  if(has("disposition area","city-owned property","block/lot","residential property","public auction","premises","reversionary","real property")) return "real_property";
+  if(has("disposition area","city-owned property","block/lot","residential property","public auction","premises","reversionary")) return "real_property";
   if(has("rfp","request for proposal","redevelopment","lease auction","lease","license")) return "real_property";
   return "other";
 }
