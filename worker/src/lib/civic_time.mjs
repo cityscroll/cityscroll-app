@@ -236,6 +236,20 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "meetings",
     description: "Franchise or concession award, registration, or FCRC rules adoption",
   },
+  // Property disposition process spine (hearing → auction/RFP → award/conveyance)
+  // Distinct from tax-lien-sale stages (not registered here — separate domain).
+  "property.disposition_hearing": {
+    lens: "property",
+    description: "City Record Property Disposition public hearing on city-owned asset disposition",
+  },
+  "property.auction_or_rfp": {
+    lens: "property",
+    description: "Property disposition auction, public sale, or RFP solicitation",
+  },
+  "property.award_or_conveyance": {
+    lens: "property",
+    description: "Property disposition award, conveyance, or winning-bidder notice",
+  },
 });
 
 /** Map product spine event_type / kind → registry id. Unknown kinds fail closed. */
@@ -273,6 +287,10 @@ export const SPINE_KIND_ALIASES = Object.freeze({
   // Non-Council hearing process spine (matched stages only; never invent votes)
   non_council_notice_published: "meetings.non_council_notice",
   non_council_hearing: "meetings.non_council_hearing",
+  // Property disposition process spine
+  disposition_hearing: "property.disposition_hearing",
+  disposition_auction_or_rfp: "property.auction_or_rfp",
+  disposition_award_or_conveyance: "property.award_or_conveyance",
 });
 
 /** Event kinds emitted from matched PASSPort RFx detail (solicitation production spine). */
@@ -780,6 +798,47 @@ export function mapFranchiseConcessionSpineToCivic(spine, meta = {}) {
         subject_ref,
         source_record_ref: `${ev.source?.id || "city-record"}:${ev.id || ev.kind}`,
         source_revision: `franchise:${requestId}:${ev.kind}:${valid_at || "none"}`,
+        source_field: ev.time?.basis || null,
+        valid_at: isPublication ? null : valid_at,
+        published_at: isPublication ? valid_at : null,
+        observed_at,
+        processed_at,
+        status: ev.status ?? null,
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    );
+  });
+}
+
+/**
+ * Map `buildPropertyDispositionSpine` events into civic-time envelopes.
+ * Emits only matched stages (hearing → auction_or_rfp → award_or_conveyance).
+ * Never invents empty-stage events. Fail-closed on unknown spine kinds.
+ *
+ * @param {object} spine - property disposition process spine
+ * @param {object} [meta] - observed_at, processed_at, run_id
+ */
+export function mapPropertyDispositionSpineToCivic(spine, meta = {}) {
+  const subject_ref = spine?.subject_ref || "disposition:unknown";
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "property-disposition-spine";
+
+  return (spine?.events || []).map((ev) => {
+    const event_kind = SPINE_KIND_ALIASES[ev.kind];
+    if (!event_kind) {
+      throw new TypeError(`unknown property disposition spine kind: ${ev.kind}`);
+    }
+    const valid_at = dayStamp(ev.time?.value);
+    const isPublication = ev.time?.basis === "publication_date";
+    const requestId = ev.request_id || "unknown";
+    return mapCivicEvent(
+      {
+        event_kind,
+        subject_ref,
+        source_record_ref: `${ev.source?.id || "city-record"}:${ev.id || ev.kind}`,
+        source_revision: `property:${requestId}:${ev.kind}:${valid_at || "none"}`,
         source_field: ev.time?.basis || null,
         valid_at: isPublication ? null : valid_at,
         published_at: isPublication ? valid_at : null,

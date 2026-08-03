@@ -1159,6 +1159,28 @@ via `attachDispositionSpines` in `buildPropertyView`. Notice detail mounts
 with phase presentation from `site/property_phase_spine.mjs` (aggregate
 verbatim-repeated titles + dedupe source URLs per phase).
 
+**Civic-time registration (cs-pred-07):** registered kinds
+`property.disposition_hearing` / `property.auction_or_rfp` /
+`property.award_or_conveyance` (lens `property`); adapter
+`mapPropertyDispositionSpineToCivic` in `worker/src/lib/civic_time.mjs`. Fail-closed
+aliases `disposition_*` on spine events. `property_site` is registered in
+`ontology/registry.v0.json`. Distinct from any future tax-lien-sale kinds — do
+not reuse these names for lien stages.
+
+**Disposition-timing predictions:** method `phase_duration_ecdf` over the small
+Property Disposition history (`site/data/property_sources/property_disposition_history.json`,
+~243 notices). Parcel-joined hearing→auction pairs are rare (often 0); the
+shipped citywide cohort is auction-notice publication→scheduled `event_date`
+(n≈34). Shared calibration scorecard fails the ≥50-resolved ship bar →
+**cohort_statistic_only** (no per-matter dates). Pure model:
+`worker/src/lib/property_disposition_timing.mjs`; client attach:
+`site/property_disposition_timing.mjs`; artifact:
+`site/data/property_disposition_timing_model.json`. Rebuild:
+`node tools/build_property_disposition_timing.mjs`. Formula:
+`docs/formulas/property-disposition-timing.md`. Verify:
+`node --test test/property_disposition_timing.test.mjs`. Capture:
+`python3 tools/capture_property_disposition_timing.py`.
+
 **Property domain explorer (list):** pure `site/property_explorer.mjs` groups
 multi-notice disposition subjects into one list entry, filters by process stage
 (`#processrail`), and stamps next-action keys + BBL entity links (ZoLa when a

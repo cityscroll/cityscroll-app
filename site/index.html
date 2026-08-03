@@ -7332,6 +7332,16 @@ function propertyPhaseSpineTools(){
   }
   return propertyPhaseSpineToolsPromise;
 }
+function propertyDispositionTimingHTML(estimate){
+  if(!estimate || !estimate.pattern_line) return "";
+  const line=escUiHtml(estimate.pattern_line);
+  const tag=escUiHtml(t("cadence_estimate_tag"));
+  const cohortNote=estimate.public_projection==="cohort_statistic_only"
+    ?`<div class="note disposition-timing-cohort-note">${t("disposition_timing_cohort_note_html")}</div>`
+    :"";
+  const formula=`<div class="lc-pct"><a href="about.html#property-disposition-timing-formula">${t("disposition_timing_formula_link")}</a></div>`;
+  return `<div class="note disposition-timing-estimate" data-property-disposition-timing="1" data-disposition-timing-projection="${escUiHtml(estimate.public_projection||"cohort_statistic_only")}">${t("disposition_timing_estimate_html",{line,tag})}${cohortNote}${formula}</div>`;
+}
 function propertyDispositionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
   const join = spine.join || {};
@@ -7344,6 +7354,9 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     : t("disposition_join_singleton_html",{
         title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
       });
+  const timingEstimate=phaseView && phaseView.disposition_timing_estimate
+    ? propertyDispositionTimingHTML(phaseView.disposition_timing_estimate)
+    : "";
 
   // Phase-grouped compact stepper (same pattern as land / money) when the pure module loads.
   if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
@@ -7398,6 +7411,7 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
       <div class="note">${keyNote}</div>
       ${actionLead}
       ${stepper}
+      ${timingEstimate}
       <div class="chain disposition-phase-cards">${cards}</div>
       <div class="note">${t("disposition_provenance_html")}</div>`;
   }
@@ -7505,9 +7519,20 @@ async function loadPropertyDispositionSpine(r, el){
     return;
   }
   const phaseTools = await propertyPhaseSpineTools();
-  const phaseView = phaseTools && phaseTools.buildPropertyPhaseView
+  let phaseView = phaseTools && phaseTools.buildPropertyPhaseView
     ? phaseTools.buildPropertyPhaseView(spine)
     : null;
+  // Cohort timing estimate (precomputed model) — only when hearing matched & auction not yet published.
+  if(phaseView){
+    try{
+      const timingMod = await import("./property_disposition_timing.mjs");
+      const modelRes = await fetch("data/property_disposition_timing_model.json", { credentials: "omit" });
+      if(modelRes && modelRes.ok){
+        const model = await modelRes.json();
+        phaseView = timingMod.attachDispositionTimingEstimate(phaseView, model) || phaseView;
+      }
+    }catch(_e){}
+  }
   el.innerHTML = propertyDispositionSpineHTML(spine, r, phaseView);
   // Stamp BBL for action rail re-render when location tools resolve it.
   try{

@@ -187,6 +187,17 @@ really happen. Some markets are specialized and have few bidders. Name matching 
 when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract
 registration and real payment. Nothing here says anyone did wrong. It just saves you the math.</p>
 
+<h2 id="property-disposition-timing-formula">Property sale timing pattern</h2>
+<p class="src">Some City property notices have a hearing but no sale date yet. On those pages you may see a short pattern line with an Estimate label. It is <b>not a due date</b>. It does not say a sale will happen.</p>
+<ul class="src" style="margin:8px 0;padding-left:20px">
+  <li><b>Where the numbers come from</b> — City Record Online Property Disposition notices. The public set is small (a few hundred rows, back to 2013).</li>
+  <li><b>What we wanted to measure</b> — time from hearing to auction on the same tax lot and agency. That link is rare here. Auction notices almost never share lot keys with earlier hearings.</li>
+  <li><b>What we show instead</b> — for auction notices that do name a sale date, how many weeks after the notice the sale usually falls (middle half of past cases). Citywide only.</li>
+  <li><b>Why there is no date on one lot</b> — we only show a dated range when enough past cases clear a fixed check. This set does not. You get the “typically” line only.</li>
+  <li><b>When a real sale date exists</b> — the normal soon/urgent chips own it. The pattern line only appears before that date is published.</li>
+</ul>
+<p class="src">The site file <code>data/property_disposition_timing_model.json</code> holds the current numbers.</p>
+
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
 <p class="src" data-i18n-html="about_email_us_html">Or email us: <a href="mailto:feedback@cityscroll.org">feedback@cityscroll.org</a></p>

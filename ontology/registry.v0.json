@@ -318,15 +318,24 @@
     },
     {
       "id": "property_site",
-      "status": "unregistered",
+      "status": "registered",
       "layer": "semantic",
-      "reason": "Property location extraction is product geography, not yet a cataloged graph node.",
-      "primary_key_pattern": "property:{bbl|notice_id}",
+      "reason": "Property disposition process identity (agency + BBL/tax-lot) via disposition spines; location extraction supplies geography.",
+      "primary_key_pattern": "disposition:{agency}:{bbl|taxlot}|notice:{notice_id}",
       "families": [
         "er:location"
       ],
-      "backing": [],
-      "properties_ref": []
+      "backing": [
+        "property_disposition_spine",
+        "property_location"
+      ],
+      "properties_ref": [
+        "bbl",
+        "borough",
+        "block",
+        "lot",
+        "agency_name"
+      ]
     },
     {
       "id": "exam",
@@ -721,6 +730,33 @@
       "backing": [
         "civic_time",
         "franchise_concession_spine"
+      ]
+    },
+    {
+      "id": "property.disposition_hearing",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "property_disposition_spine"
+      ]
+    },
+    {
+      "id": "property.auction_or_rfp",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "property_disposition_spine"
+      ]
+    },
+    {
+      "id": "property.award_or_conveyance",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "property_disposition_spine"
       ]
     }
   ],
