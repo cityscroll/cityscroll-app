@@ -868,9 +868,9 @@
     },
     {
       "id": "alerts-context-carry-notice",
-      "url": "#alerts?lens=money&filter=%7B%22agency%22%3A%22Housing+Preservation+and+Development%22%2C%22noticeType%22%3A%22solicitation%22%7D&notice=20260701001",
+      "url": "#alerts?lens=meetings&filter=%7B%22agency%22%3A%22Transportation%22%7D&notice=20260716009",
       "feature": "alerts-context-carry",
-      "description": "Pre-scoped alert setup from a notice (HPD solicitation fixture): natural money lens + agency, context lead, and real digItemHTML email-template preview.",
+      "description": "Pre-scoped alert setup for the Dining Out NYC public hearing notice, with natural meetings/Transportation scope and a real digItemHTML email-template preview.",
       "expectations": {
         "visible": [
           {
@@ -892,7 +892,8 @@
           }
         ],
         "focus": "#adest"
-      }
+      },
+      "postDeployOnly": true
     }
   ]
 }
