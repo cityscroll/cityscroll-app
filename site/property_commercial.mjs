@@ -54,11 +54,123 @@ export const SALE_METHODS = Object.freeze([
   "lease_auction",
 ]);
 
+/**
+ * Disposition-but-not-sale classes on Property Disposition notices.
+ * These are still dispositions; they do not offer goods for purchase.
+ */
+export const NON_SALE_DISPOSITION_CLASSES = Object.freeze([
+  "destruction",
+  "transfer",
+  "abandonment",
+]);
+
+/** Categories that are sale-shaped when confidence is high. */
+export const SALE_ITEM_CATEGORIES = Object.freeze([
+  "vehicle",
+  "timber",
+  "equipment",
+  "real_property",
+  "scrap_materials",
+]);
+
+/** Participation step kinds that indicate bidding, not mere inquiry contact. */
+export const BID_PARTICIPATION_KINDS = Object.freeze([
+  "registration",
+  "bid_deadline",
+  "show_or_inspection",
+  "deposit_or_fee",
+]);
+
 const MAX_FACTS = 24;
 const MAX_EVIDENCE = 280;
 
-function evidence(value) {
-  return plainText(value).replace(/\s+/g, " ").trim().slice(0, MAX_EVIDENCE);
+/**
+ * Public evidence excerpt: snap to word boundaries and mark clipping with ellipses.
+ * Never ships mid-word fragments ("e Unauthorized… New Y").
+ * @param {string} value
+ * @param {{ max?: number }} [opts]
+ */
+export function evidence(value, opts = {}) {
+  const max = Number.isFinite(opts.max) ? opts.max : MAX_EVIDENCE;
+  let s = plainText(value).replace(/\s+/g, " ").trim();
+  if (!s) return "";
+
+  let leadClip = false;
+  let tailClip = false;
+
+  // Drop a leading 1–2 letter token (classic mid-word cut from .{0,N} windows).
+  if (/^[A-Za-z]{1,2}\s+\S/.test(s)) {
+    s = s.replace(/^[A-Za-z]{1,2}\s+/, "");
+    leadClip = true;
+  }
+  // Drop a leading fragment that does not start a word (lowercase continuation).
+  if (/^[a-z]{3,}\b/.test(s) && !/^(?:and|or|the|for|with|from|into|upon|under|over|that|this|these|those|will|were|was|are|is|of|in|on|to|by|at|as)\b/.test(s)) {
+    const sp = s.indexOf(" ");
+    if (sp > 0 && sp < 24) {
+      s = s.slice(sp + 1);
+      leadClip = true;
+    }
+  }
+
+  // Hard length cap, then snap back to the last whitespace.
+  if (s.length > max) {
+    s = s.slice(0, max);
+    const lastSpace = s.lastIndexOf(" ");
+    if (lastSpace > Math.floor(max * 0.55)) s = s.slice(0, lastSpace);
+    tailClip = true;
+  }
+
+  // Drop a trailing incomplete short word ("New Y", "pursuan").
+  if (/\s[A-Za-z]{1,3}$/.test(s)) {
+    s = s.replace(/\s[A-Za-z]{1,3}$/, "");
+    tailClip = true;
+  }
+
+  s = s.replace(/^[\s,;:.-]+|[\s,;:.-]+$/g, "").trim();
+  if (!s) return "";
+  if (leadClip) s = `…${s}`;
+  if (tailClip) s = `${s}…`;
+  return s;
+}
+
+/**
+ * Context window around a regex hit, word-boundary snapped with ellipses.
+ * @param {string} text
+ * @param {RegExp} re
+ * @param {number} [pad]
+ */
+export function evidenceAround(text, re, pad = 40) {
+  const body = plainText(text).replace(/\s+/g, " ").trim();
+  if (!body) return null;
+  const flags = re.flags.includes("g") ? re.flags : `${re.flags}g`;
+  const global = new RegExp(re.source, flags);
+  const match = global.exec(body);
+  if (!match) return null;
+  const idx = match.index;
+  const len = match[0].length;
+  let start = Math.max(0, idx - pad);
+  let end = Math.min(body.length, idx + len + pad);
+  let leadClip = start > 0;
+  let tailClip = end < body.length;
+  if (start > 0) {
+    const nextSpace = body.indexOf(" ", start);
+    if (nextSpace !== -1 && nextSpace < idx) start = nextSpace + 1;
+    else {
+      const prev = body.lastIndexOf(" ", start);
+      if (prev !== -1) start = prev + 1;
+    }
+  }
+  if (end < body.length) {
+    const prevSpace = body.lastIndexOf(" ", end);
+    if (prevSpace > idx + len) end = prevSpace;
+  }
+  let snippet = body.slice(start, end).trim();
+  // Re-run length/boundary polish.
+  snippet = evidence(snippet, { max: MAX_EVIDENCE });
+  // evidence() may have added its own ellipses; ensure clip markers when window was padded.
+  if (leadClip && !snippet.startsWith("…")) snippet = `…${snippet}`;
+  if (tailClip && !snippet.endsWith("…")) snippet = `${snippet}…`;
+  return snippet || evidence(match[0]);
 }
 
 function noticeBody(row = {}) {
@@ -136,13 +248,14 @@ export function normalizeAssetFilter(raw) {
 export function classifyCommercialCategory(text) {
   const t = String(text || "").toLowerCase();
   const hit = (...words) => words.some((w) => t.includes(w));
+  const around = (re, fallback) => evidenceAround(text, re) || evidence(fallback);
 
   if (hit("forest management", "board feet", "sawtimber", "cordwood", "timber", "firewood", "roundwood")) {
     return {
       category: "timber",
       label: "Timber / firewood",
       confidence: "high",
-      evidence: evidence(text.match(/.{0,40}(?:board feet|sawtimber|timber|firewood|cordwood).{0,40}/i)?.[0] || "timber"),
+      evidence: around(/(?:board feet|sawtimber|timber|firewood|cordwood)/i, "timber"),
     };
   }
   if (hit("auto auction", "vehicle auction", "govdeals", "iaai", "municipal auto", "nyc-dcas-fleet", "fleet auction")) {
@@ -150,7 +263,7 @@ export function classifyCommercialCategory(text) {
       category: "vehicle",
       label: "Vehicles",
       confidence: "high",
-      evidence: evidence(text.match(/.{0,40}(?:auto auction|vehicle|govdeals|iaai|fleet).{0,40}/i)?.[0] || "vehicle"),
+      evidence: around(/(?:auto auction|vehicle|govdeals|iaai|fleet)/i, "vehicle"),
     };
   }
   if (hit("heavy machinery", "machine tools", "equipment auction", "construction equipment")) {
@@ -158,7 +271,7 @@ export function classifyCommercialCategory(text) {
       category: "equipment",
       label: "Equipment / machinery",
       confidence: "high",
-      evidence: evidence(text.match(/.{0,40}(?:heavy machinery|machine tools|equipment).{0,40}/i)?.[0] || "equipment"),
+      evidence: around(/(?:heavy machinery|machine tools|equipment)/i, "equipment"),
     };
   }
   // Vehicle + heavy machinery together (DCAS weekly auctions).
@@ -175,7 +288,7 @@ export function classifyCommercialCategory(text) {
       category: "scrap_materials",
       label: "Scrap / materials",
       confidence: "medium",
-      evidence: evidence(text.match(/.{0,40}(?:scrap|surplus materials|recyclable).{0,40}/i)?.[0] || "scrap"),
+      evidence: around(/(?:scrap|surplus materials|recyclable)/i, "scrap"),
     };
   }
   if (hit("surplus assets", "publicsurplus", "office furniture", "furniture auction")) {
@@ -184,7 +297,7 @@ export function classifyCommercialCategory(text) {
       category: "equipment",
       label: "Surplus assets",
       confidence: "medium",
-      evidence: evidence(text.match(/.{0,40}(?:surplus assets|publicsurplus|furniture).{0,40}/i)?.[0] || "surplus"),
+      evidence: around(/(?:surplus assets|publicsurplus|furniture)/i, "surplus"),
     };
   }
   if (hit("medallion")) {
@@ -192,7 +305,7 @@ export function classifyCommercialCategory(text) {
       category: "other",
       label: "Taxi medallions",
       confidence: "high",
-      evidence: evidence(text.match(/.{0,40}medallion.{0,40}/i)?.[0] || "medallion"),
+      evidence: around(/medallion/i, "medallion"),
     };
   }
   if (hit("property clerk", "forfeiture", "pending destruction", "unauthorized tobacco", "owners are wanted")) {
@@ -200,7 +313,7 @@ export function classifyCommercialCategory(text) {
       category: "other",
       label: "Seized / unclaimed property",
       confidence: "medium",
-      evidence: evidence(text.match(/.{0,40}(?:property clerk|forfeiture|unclaimed).{0,40}/i)?.[0] || "seized"),
+      evidence: around(/(?:property clerk|forfeiture|pending destruction|unclaimed)/i, "seized"),
     };
   }
   if (
@@ -226,7 +339,7 @@ export function classifyCommercialCategory(text) {
       category: "real_property",
       label: "Real property",
       confidence: "high",
-      evidence: evidence(text.match(/.{0,50}(?:disposition|city-owned|real property|lease auction|block).{0,40}/i)?.[0] || "real property"),
+      evidence: around(/(?:disposition|city-owned|real property|lease auction|block)/i, "real property"),
     };
   }
   if (hit("easement", "mortgage and note", "outstanding debt")) {
@@ -243,6 +356,166 @@ export function classifyCommercialCategory(text) {
     confidence: "low",
     evidence: null,
   };
+}
+
+/**
+ * Classify a Property Disposition notice as sale vs disposition-but-not-sale.
+ * Non-sale classes still belong on the Property lens (process/legal notice);
+ * they must not mount the commercial "what is for sale" panel.
+ *
+ * @param {string} text
+ * @returns {"destruction"|"transfer"|"abandonment"|"sale"|"unknown"}
+ */
+export function classifyDispositionSaleClass(text) {
+  const t = String(text || "").toLowerCase();
+  const hit = (...words) => words.some((w) => t.includes(w));
+
+  // Destruction / forfeiture of seized goods (NYPD tobacco field case, Property Clerk).
+  if (
+    hit(
+      "pending destruction",
+      "will be destroyed",
+      "to be destroyed",
+      "subject to forfeiture",
+      "forfeiture and will be destroyed",
+      "unauthorized product",
+      "unauthorized tobacco",
+      "seized during",
+      "owners are wanted",
+      "property clerk division",
+      "unclaimed property",
+      "destroyed pursuant",
+    )
+  ) {
+    return "destruction";
+  }
+
+  // Inter-agency transfer / conveyance without a public sale.
+  if (
+    hit(
+      "transfer of jurisdiction",
+      "transfer of city property",
+      "interagency transfer",
+      "inter-agency transfer",
+      "transfer between",
+      "transferred to the department",
+      "transfer to the department",
+      "transfer of property from",
+    )
+  ) {
+    return "transfer";
+  }
+
+  // Abandonment declarations.
+  if (hit("declaration of abandonment", "abandoned property", "notice of abandonment")) {
+    return "abandonment";
+  }
+
+  // Explicit sale / auction / bid language.
+  if (
+    hit(
+      "auto auction",
+      "public auction",
+      "online auction",
+      "lease auction",
+      "sealed bid",
+      "govdeals",
+      "iaai.com",
+      "publicsurplus",
+      "for sale",
+      "will sell",
+      "minimum bid",
+      "upset price",
+      "request for proposal",
+      "request for proposals",
+      "sale of city-owned",
+      "sale of city owned",
+      "offered for sale",
+      "offer for sale",
+    )
+    || /\bsell\b/.test(t)
+  ) {
+    return "sale";
+  }
+
+  // Hearing notices that name a disposition sale/lease of property.
+  if (
+    hit("public hearing")
+    && hit("disposition", "sale of", "lease of", "license of", "offer to purchase")
+  ) {
+    return "sale";
+  }
+
+  return "unknown";
+}
+
+/**
+ * Whether the commercial "what is for sale" panel should mount.
+ * Requires actual sale signals — not merely a Property Disposition section or
+ * an inquiry contact on a destruction notice.
+ *
+ * Sale signals (any one is enough, unless disposition class is non-sale with
+ * zero bid/price/method signals):
+ *   - sale method
+ *   - labeled price facts
+ *   - bid participation steps or marketplace package URL
+ *   - confidently sale-shaped item category (vehicle/timber/… high confidence)
+ *
+ * @param {object|null|undefined} commercial
+ * @returns {boolean}
+ */
+export function hasCommercialSaleSignals(commercial) {
+  if (!commercial || typeof commercial !== "object") return false;
+
+  const dispositionClass = commercial.disposition_class
+    || classifyDispositionSaleClass([
+      commercial.item?.label,
+      commercial.item?.evidence,
+      commercial.glance?.item,
+    ].filter(Boolean).join(" "));
+
+  const saleMethod = commercial.sale_method && commercial.sale_method.method;
+  const priceFacts = Array.isArray(commercial.price_facts) ? commercial.price_facts : [];
+  const participation = commercial.participation || {};
+  const steps = Array.isArray(participation.steps) ? participation.steps : [];
+  const bidSteps = steps.filter((s) => s && BID_PARTICIPATION_KINDS.includes(s.kind));
+  const packageUrl = participation.package_url || null;
+  // Marketplace hosts only — bare city record or agency emails are not sale signals.
+  const marketplaceUrl = packageUrl && /govdeals\.com|iaai\.com|publicsurplus|nyc\.gov\/auctions/i.test(packageUrl)
+    ? packageUrl
+    : null;
+
+  const hardSaleSignals = Boolean(
+    saleMethod
+    || priceFacts.length > 0
+    || bidSteps.length > 0
+    || marketplaceUrl,
+  );
+
+  if (NON_SALE_DISPOSITION_CLASSES.includes(dispositionClass)) {
+    // Destruction/transfer/abandonment mount only if a hard bid/price signal is present
+    // (defensive: never treat seized-goods inquiry contacts as a sale).
+    return hardSaleSignals;
+  }
+
+  if (hardSaleSignals) return true;
+
+  const category = commercial.item?.category;
+  const confidence = commercial.item?.confidence;
+  if (
+    SALE_ITEM_CATEGORIES.includes(category)
+    && (confidence === "high" || confidence === "medium")
+  ) {
+    // Medium/high sale-shaped categories count, except pure "other" seizure labels.
+    return true;
+  }
+
+  // Taxi medallions labeled under category other with high confidence + sale language.
+  if (category === "other" && confidence === "high" && /medallion/i.test(String(commercial.item?.label || ""))) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -659,6 +932,7 @@ export function extractPropertyCommercial(row = {}, options = {}) {
     return emptyCommercial(row);
   }
 
+  const disposition_class = classifyDispositionSaleClass(text);
   const categoryInfo = classifyCommercialCategory(text);
   // Attachment titles that name item lists / volume reports boost item detail.
   let itemLabel = categoryInfo.label;
@@ -687,15 +961,16 @@ export function extractPropertyCommercial(row = {}, options = {}) {
   const primary = primaryListPrice(price_facts);
   const close_date = isoDate(row.event_date) || isoDate(row.end_date) || isoDate(row.start_date);
 
-  return {
+  const commercial = {
     schema: PROPERTY_COMMERCIAL_SCHEMA,
     request_id: row.request_id ? String(row.request_id) : null,
+    disposition_class,
     item: {
       category: categoryInfo.category,
       label: itemLabel,
       confidence: itemConfidence,
       evidence: itemEvidence,
-      source: attach && itemEvidence && attach.includes(String(itemEvidence).slice(0, 20))
+      source: attach && itemEvidence && attach.includes(String(itemEvidence).replace(/^…/, "").slice(0, 20))
         ? "attachment_metadata"
         : "notice_body",
     },
@@ -722,6 +997,8 @@ export function extractPropertyCommercial(row = {}, options = {}) {
       deal: deal_signal.status === "derived" ? deal_signal.summary : null,
     },
   };
+  commercial.sale_eligible = hasCommercialSaleSignals(commercial);
+  return commercial;
 }
 
 function categoryLabelFallback(category) {
@@ -747,9 +1024,12 @@ function isoDate(value) {
 }
 
 function emptyCommercial(row = {}) {
-  return {
+  const text = noticeBody(row);
+  const disposition_class = text ? classifyDispositionSaleClass(text) : "unknown";
+  const commercial = {
     schema: PROPERTY_COMMERCIAL_SCHEMA,
     request_id: row.request_id ? String(row.request_id) : null,
+    disposition_class,
     item: {
       category: "other",
       label: null,
@@ -792,6 +1072,8 @@ function emptyCommercial(row = {}) {
       deal: null,
     },
   };
+  commercial.sale_eligible = hasCommercialSaleSignals(commercial);
+  return commercial;
 }
 
 /**
@@ -818,10 +1100,21 @@ export function attachPropertyCommercial(view, options = {}) {
 
   const withPrice = properties.filter((r) => r.commercial?.primary_price).length;
   const withDeal = properties.filter((r) => r.commercial?.deal_signal?.status === "derived").length;
+  const saleEligible = properties.filter((r) => r.commercial?.sale_eligible).length;
   const byCategory = Object.fromEntries(COMMERCIAL_CATEGORIES.map((c) => [c, 0]));
+  const byDispositionClass = {
+    sale: 0,
+    destruction: 0,
+    transfer: 0,
+    abandonment: 0,
+    unknown: 0,
+  };
   for (const row of properties) {
     const c = row.commercial?.item?.category;
     if (c && byCategory[c] != null) byCategory[c] += 1;
+    const dc = row.commercial?.disposition_class || "unknown";
+    if (byDispositionClass[dc] != null) byDispositionClass[dc] += 1;
+    else byDispositionClass.unknown += 1;
   }
 
   return {
@@ -831,9 +1124,46 @@ export function attachPropertyCommercial(view, options = {}) {
       metric: "property_commercial_price_coverage",
       price_fact_rate: properties.length ? withPrice / properties.length : 0,
       deal_signal_rate: properties.length ? withDeal / properties.length : 0,
+      sale_eligible_rate: properties.length ? saleEligible / properties.length : 0,
       by_category: byCategory,
+      by_disposition_class: byDispositionClass,
       n: properties.length,
     },
+  };
+}
+
+/**
+ * Measure disposition sale-class split over a notice corpus (title + body text).
+ * Used for corpus audit receipts; pure, no network.
+ *
+ * @param {Array<object>} rows - notice-like rows with short_title / description fields
+ * @returns {{ n: number, by_class: Record<string, number>, sale_eligible: number, non_sale: number }}
+ */
+export function measureDispositionSaleClassSplit(rows = []) {
+  const by_class = {
+    sale: 0,
+    destruction: 0,
+    transfer: 0,
+    abandonment: 0,
+    unknown: 0,
+  };
+  let sale_eligible = 0;
+  let non_sale = 0;
+  for (const row of rows) {
+    const commercial = extractPropertyCommercial(row);
+    const dc = commercial.disposition_class || "unknown";
+    if (by_class[dc] != null) by_class[dc] += 1;
+    else by_class.unknown += 1;
+    if (commercial.sale_eligible) sale_eligible += 1;
+    if (NON_SALE_DISPOSITION_CLASSES.includes(dc)) non_sale += 1;
+  }
+  return {
+    n: rows.length,
+    by_class,
+    sale_eligible,
+    non_sale,
+    sale_eligible_rate: rows.length ? sale_eligible / rows.length : 0,
+    non_sale_rate: rows.length ? non_sale / rows.length : 0,
   };
 }
 

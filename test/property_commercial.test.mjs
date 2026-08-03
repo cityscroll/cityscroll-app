@@ -6,16 +6,23 @@ import {
   ASSET_FILTER_ALIASES,
   attachPropertyCommercial,
   classifyCommercialCategory,
+  classifyDispositionSaleClass,
   commercialCategoryI18nKey,
   deriveDealSignal,
+  evidence,
+  evidenceAround,
   extractPriceFacts,
   extractPropertyCommercial,
   extractQuantities,
   extractSaleMethod,
+  hasCommercialSaleSignals,
+  measureDispositionSaleClassSplit,
+  NON_SALE_DISPOSITION_CLASSES,
   normalizeAssetFilter,
   primaryListPrice,
   PROPERTY_COMMERCIAL_SCHEMA,
 } from "../site/property_commercial.mjs";
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const fixture = JSON.parse(
   readFileSync(new URL("./fixtures/property_commercial/real_notices.json", import.meta.url)),
@@ -170,4 +177,94 @@ test("attachPropertyCommercial stamps rows and coverage metrics", () => {
   assert.ok(stamped.properties.every((r) => r.commercial?.schema === PROPERTY_COMMERCIAL_SCHEMA));
   assert.equal(stamped.commercial_metrics.metric, "property_commercial_price_coverage");
   assert.ok(stamped.commercial_metrics.n === fixture.cases.length);
+  assert.ok(stamped.commercial_metrics.by_disposition_class);
+  assert.ok(typeof stamped.commercial_metrics.sale_eligible_rate === "number");
+});
+
+test("destruction notice is disposition-not-sale and not sale-eligible", () => {
+  // Field case: NYPD pending destruction of seized tobacco (request_id 20260526003).
+  const golden = JSON.parse(
+    readFileSync(new URL("./contract/fixtures/property_location_golden.json", import.meta.url)),
+  );
+  const row = golden.notices.find((n) => n.row?.request_id === "20260526003")?.row;
+  assert.ok(row, "destruction golden notice present");
+  assert.equal(classifyDispositionSaleClass([
+    row.short_title,
+    row.additional_description_1,
+  ].join(" ")), "destruction");
+  const commercial = extractPropertyCommercial(row);
+  assert.equal(commercial.disposition_class, "destruction");
+  assert.equal(commercial.sale_eligible, false);
+  assert.equal(hasCommercialSaleSignals(commercial), false);
+  assert.ok(NON_SALE_DISPOSITION_CLASSES.includes("destruction"));
+  // Evidence snaps to word boundaries — no mid-word "e Unauthorized… New Y".
+  if (commercial.item.evidence) {
+    assert.doesNotMatch(commercial.item.evidence, /^[a-z]\s/);
+    assert.doesNotMatch(commercial.item.evidence, /\s[A-Z][a-z]?$/);
+    assert.doesNotMatch(commercial.item.evidence, /New Y$/);
+  }
+});
+
+test("golden vehicle sale remains sale-eligible with full commercial signals", () => {
+  const entry = fixture.cases.find((c) => c.request_id === "20251106024");
+  const commercial = extractPropertyCommercial(entry.row);
+  assert.equal(commercial.disposition_class, "sale");
+  assert.equal(commercial.sale_eligible, true);
+  assert.equal(hasCommercialSaleSignals(commercial), true);
+  assert.equal(commercial.sale_method?.method, "online_auction");
+});
+
+test("evidence spans snap to word boundaries with ellipses", () => {
+  // Mimic a mid-word .{0,40} window around "forfeiture".
+  const raw = "e Unauthorized Products were subject to forfeiture and will be destroyed pursuant to New Y";
+  const fixed = evidence(raw);
+  assert.ok(fixed.startsWith("…") || !/^[a-z]\s/.test(fixed));
+  assert.doesNotMatch(fixed, /^[a-z]\s/);
+  assert.doesNotMatch(fixed, /\sNew Y$/);
+  assert.match(fixed, /forfeiture/i);
+
+  const body = "One or more categories of Unauthorized Products were subject to forfeiture and will be destroyed pursuant to New York City Administrative Code.";
+  const around = evidenceAround(body, /forfeiture/i, 40);
+  assert.ok(around);
+  assert.match(around, /forfeiture/i);
+  assert.doesNotMatch(around, /^[a-z]\s/);
+  assert.doesNotMatch(around, /New Y$/);
+});
+
+test("measureDispositionSaleClassSplit reports non-sale vs sale classes", () => {
+  const golden = JSON.parse(
+    readFileSync(new URL("./contract/fixtures/property_location_golden.json", import.meta.url)),
+  );
+  const rows = golden.notices.map((n) => n.row).filter(Boolean);
+  const split = measureDispositionSaleClassSplit(rows);
+  assert.equal(split.n, rows.length);
+  assert.ok(split.by_class.destruction >= 1, "corpus includes destruction notices");
+  assert.ok(split.by_class.sale >= 1, "corpus includes sale notices");
+  assert.ok(split.non_sale >= 1);
+  assert.ok(split.sale_eligible >= 1);
+});
+
+// Direct characterization of render gate via source contracts (avoids full index sandbox).
+test("property commercial detail source gates on sale_eligible and omits apology boxes", () => {
+  const src = SITE_SOURCE;
+  const start = src.indexOf("function propertyCommercialDetailHTML");
+  const end = src.indexOf("function commercialSaleSignalsFallback", start);
+  assert.ok(start >= 0 && end > start);
+  const detailSrc = src.slice(start, end);
+  assert.match(detailSrc, /sale_eligible/);
+  assert.match(src, /function commercialSaleSignalsFallback/);
+  // Absent-means-absent: price none / deal insufficient / bid none / comparables / persona not inline.
+  assert.doesNotMatch(detailSrc, /property_commercial_price_none_html/);
+  assert.doesNotMatch(detailSrc, /property_commercial_deal_insufficient_html/);
+  assert.doesNotMatch(detailSrc, /property_commercial_comparables_slot_html/);
+  assert.doesNotMatch(detailSrc, /property_commercial_bid_none_html/);
+  assert.doesNotMatch(detailSrc, /property_commercial_persona_html/);
+  // Provenance lives in one collapsed how-toggle.
+  assert.match(detailSrc, /inline-disclose/);
+  // Disposition spine no longer emits empty-stage not-yet-ingested cards in the detail path.
+  const spineSrc = src.slice(
+    src.indexOf("function propertyDispositionSpineHTML"),
+    src.indexOf("function propertyCommercialDetailHTML"),
+  );
+  assert.doesNotMatch(spineSrc, /disposition_stage_not_yet_ingested_html/);
 });
