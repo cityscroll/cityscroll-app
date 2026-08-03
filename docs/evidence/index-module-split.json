@@ -34,7 +34,7 @@
       "before_tokens": 238223,
       "after_bytes": 88765,
       "after_tokens": 23818,
-      "token_reduction_ratio": 10.0
+      "token_reduction_ratio": 10
     },
     {
       "task": "single-lens view change (Rules)",
@@ -68,7 +68,8 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 741994,
-    "normalized_source_sha256": "9a8af2d570fd9368f250f41b9eb55b0737c4750bc10fd80e84b2cef98fcf440f"
+    "normalized_source_bytes": 748486,
+    "normalized_source_sha256": "dbc7ca08d560a4c634b379549cee61a0a733dea4965ca9d00cab602e81fc2d80",
+    "note": "Discovery-parity NL routing in search-share.mjs + routing.mjs after modular split, map module, and exam-guide hotfix."
   }
 }

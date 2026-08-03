@@ -88,12 +88,12 @@ nnVia CityScroll — The City Record, searchable.
 <span class="qchip">about <b>
 <span class="qchip">due within <b>
 <span class="qchip">in <b>
-for example, HPD property sales, DEP land
-for example, buildings rules, sanitation rules
+for example, HPD property sales, disposition hearings, DEP land
+for example, buildings rules, rules open for comment
 for example, education contracts over $200K due in 3 months, or awards over $1M
-for example, paramedic roles, or look up someone named Rodriguez
-for example, recent landmarks hearings, city council
-for example, rezonings in Brooklyn, or 79 Rivington
+for example, paramedic roles, open competitive exams, or look up someone named Rodriguez
+for example, hearings this week, landmarks, city council
+for example, rezonings in Brooklyn, council district 33, or 79 Rivington
 open RFPs
 <span class="qchip">rezonings near <b>
 
@@ -143,7 +143,7 @@ public auction
 request for proposal
 residential property
 text/calendar;charset=utf-8
-the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this
+the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this week month what can comment open competitive exams exam guide council district community board process stage hearing hearings auction disposition forecast contracts closing
 the procurement officer
 this vendor holds <b>
 vendor_name in(

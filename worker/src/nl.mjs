@@ -29,13 +29,24 @@ const FIELD_DEFS = {
   excludeSpecial: { type: "boolean", description: "true only if they want to avoid special/restricted selection methods ('standard requirements only')." },
   boro: { type: ["string", "null"], description: "NYC borough if named or clearly implied by a neighborhood: Manhattan, Brooklyn, Queens, Bronx, or Staten Island; else null." },
   status: { type: ["string", "null"], description: "'active' for in-review/active items; 'all' if they want everything incl. closed/approved; else null." },
-  when: { type: ["string", "null"], description: "'upcoming' for future meetings; 'all' for recent and all; else null." },
+  when: { type: ["string", "null"], description: "'week' for this week, 'month' for ~30 days, 'upcoming' for future meetings, 'past' for already-held, 'all' for everything; else null." },
   lookupType: { type: ["string", "null"], description: "'role' if searching a job title/role; 'person' if looking up a named individual; else null." },
+  view: { type: ["string", "null"], description: "For people/staffing: 'guide' when they want the exam/career guide (open competitive exams, actionable windows), else null." },
   // "alerts" reuses money's general schema (below) so any combination of category/agency/
   // amount/notice-type/deadline survives together — watchType only ever marks the one
   // genuinely different shape (rezone), which has no dollar amount or due date at all.
   watchType: { type: ["string", "null"], description: "'rezone' if this is a request to watch rezonings/land-use near a specific place (fill place too, leave the other fields null); else null — the general case of watching contracts, RFPs, or awards, where any of keywords/agency/minAmount/maxAmount/category/months/noticeType should be filled instead." },
   place: { type: ["string", "null"], description: "For a 'rezone' watchType, the neighborhood or address to watch (e.g. '79 Rivington', 'Gowanus'); else null." },
+  closingWeek: { type: "boolean", description: "true only when they want open solicitations due/closing THIS WEEK (Money's closing-this-week chip). Do not set for multi-month windows — use months instead." },
+  route: { type: ["string", "null"], description: "'agency' or 'vendor' when the query is asking for an entity profile or forecast page rather than a list search; else null." },
+  name: { type: ["string", "null"], description: "Entity display name for route=agency|vendor (e.g. 'Parks and Recreation'); else null." },
+  tab: { type: ["string", "null"], description: "For an agency route: 'forecast' for procurement forecast / expirations; 'overview' or null for the profile home." },
+  communityDistrict: { type: ["string", "null"], description: "NYC community district id when named with a borough prefix: M01–M12, X01–X12, K01–K18, Q01–Q14, R01–R03; else null." },
+  councilDistrict: { type: ["string", "null"], description: "City Council district number 1–51 as a string when named (e.g. 'council district 33' → '33'); else null." },
+  nearMe: { type: "boolean", description: "true when they ask for results near me / in my area (triggers the location control); else false." },
+  process: { type: ["string", "null"], description: "Lifecycle stage filter when clearly asked: rules = proposal|public_process|adoption|effective; property = hearing|auction_or_rfp|award_or_conveyance; meetings = scheduled|agenda|held|outcomes; else null. 'open for comment' / 'public comment' → public_process." },
+  stage: { type: ["string", "null"], description: "Property temporal stage key when named; else null." },
+  asset: { type: ["string", "null"], description: "Property asset class when named (realty, medallion, …); else null." },
 };
 
 const LENS_HINT = {

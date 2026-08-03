@@ -15,6 +15,14 @@ function positiveAmount(value) {
 
 function buildMoneyDeepLink(filter) {
   var f = filter && typeof filter === "object" ? filter : {};
+  // Agency/vendor forecast and profile routes leave the money list for entity pages.
+  if (f.route === "agency" && compactText(f.name, 160)) {
+    var agencyName = compactText(f.name, 160);
+    return "#agency/" + encodeURIComponent(agencyName) + (f.tab === "forecast" ? "?tab=forecast" : "");
+  }
+  if (f.route === "vendor" && compactText(f.name, 160)) {
+    return "#vendor/" + encodeURIComponent(compactText(f.name, 160));
+  }
   var keywords = Array.isArray(f.keywords)
     ? f.keywords.map(function (word) { return compactText(word, 80).toLowerCase(); }).filter(Boolean).slice(0, 4)
     : [];
@@ -27,13 +35,14 @@ function buildMoneyDeepLink(filter) {
     : null;
   var noticeType = f.noticeType === "award" || f.noticeType === "solicitation" ? f.noticeType : null;
   var excludeSpecial = f.excludeSpecial === true;
+  var closingWeek = f.closingWeek === true;
 
-  if (!keywords.length && !agency && !minAmount && !maxAmount && !category && !months && !noticeType && !excludeSpecial) {
+  if (!keywords.length && !agency && !minAmount && !maxAmount && !category && !months && !noticeType && !excludeSpecial && !closingWeek) {
     return null;
   }
 
   var params = new URLSearchParams();
-  var wantsAward = noticeType === "award" || (!noticeType && (minAmount || maxAmount));
+  var wantsAward = !closingWeek && (noticeType === "award" || (!noticeType && (minAmount || maxAmount)));
   params.set("mode", wantsAward ? "award" : "open");
   if (agency) params.set("agency", agency);
   if (keywords.length) params.set("q", keywords.join(" "));
@@ -42,6 +51,7 @@ function buildMoneyDeepLink(filter) {
   if (category) params.set("category", category);
   if (months) params.set("months", String(months));
   if (excludeSpecial) params.set("standard", "1");
+  if (closingWeek && !wantsAward) params.set("closing", "week");
   return "#money?" + params.toString();
 }
 
@@ -65,6 +75,7 @@ function buildSearchDeepLink(lens, filter) {
   var params = new URLSearchParams();
 
   if (lens === "people") {
+    if (f.view === "guide") params.set("view", "guide");
     if (f.lookupType === "person") params.set("mode", "person");
     if (keywords.length) params.set("q", keywords.join(" "));
   } else if (lens === "land") {
@@ -87,7 +98,7 @@ function buildSearchDeepLink(lens, filter) {
     if (agency) params.set("agency", agency);
     if (keywords.length) params.set("q", keywords.join(" "));
     if (lens === "meetings") {
-      if (["week", "month", "upcoming"].indexOf(f.when) >= 0) params.set("when", f.when);
+      if (["week", "month", "upcoming", "past"].indexOf(f.when) >= 0) params.set("when", f.when);
       var hearingBoros = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
       var hearingBoro = hearingBoros.find(function (name) {
         return name.toLowerCase() === compactText(f.borough, 40).toLowerCase();
@@ -96,12 +107,31 @@ function buildSearchDeepLink(lens, filter) {
       var neighborhood = compactText(f.neighborhood, 80);
       if (neighborhood) params.set("neighborhood", neighborhood);
       if (f.locationScope === "citywide-unlocated") params.set("scope", "citywide-unlocated");
+      var meetProcess = compactText(f.process, 40);
+      if (["scheduled", "agenda", "held", "outcomes", "unstaged"].indexOf(meetProcess) >= 0) {
+        params.set("process", meetProcess);
+      }
     }
     if (lens === "property") {
       var asset = compactText(f.asset, 40);
       var stage = compactText(f.stage, 40);
+      var propProcess = compactText(f.process, 40);
+      var propBoros = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+      var propBoro = propBoros.find(function (name) {
+        return name.toLowerCase() === compactText(f.borough, 40).toLowerCase();
+      });
+      if (propBoro) params.set("boro", propBoro);
       if (asset && asset !== "all") params.set("asset", asset);
       if (stage && stage !== "all") params.set("stage", stage);
+      if (["hearing", "auction_or_rfp", "award_or_conveyance", "unstaged"].indexOf(propProcess) >= 0) {
+        params.set("process", propProcess);
+      }
+    }
+    if (lens === "rules") {
+      var rulesProcess = compactText(f.process, 40);
+      if (["proposal", "public_process", "adoption", "effective", "unstaged"].indexOf(rulesProcess) >= 0) {
+        params.set("process", rulesProcess);
+      }
     }
   }
 

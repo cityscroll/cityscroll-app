@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-29T10:42:16.856Z",
-  "dataDate": "2026-07-29",
+  "generatedAt": "2026-08-03T13:27:20.935Z",
+  "dataDate": "2026-08-03",
   "scenarios": {
     "city-work-closing": {
       "id": "week",
@@ -149,29 +149,41 @@
         2,
         3,
         4,
-        5
+        5,
+        6,
+        7
       ],
       "people": [
-        0,
-        2
+        1,
+        3
       ],
       "land": [
         0,
         1,
         2,
-        3
+        3,
+        4
       ],
       "property": [
-        1
+        0,
+        1,
+        2,
+        4
       ],
       "rules": [
         0,
         1,
-        2
+        2,
+        3,
+        4
       ],
       "meetings": [
         0,
-        3
+        1,
+        2,
+        3,
+        4,
+        5
       ],
       "alerts": [
         0,
@@ -194,10 +206,14 @@
           "maxAmount": null,
           "category": "Construction/Construction Services",
           "months": null,
-          "noticeType": "award",
-          "excludeSpecial": false
+          "noticeType": null,
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 3369
+        "count": 3370
       },
       {
         "lens": "money",
@@ -205,7 +221,6 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it",
             "consulting"
           ],
           "agency": null,
@@ -214,9 +229,13 @@
           "category": null,
           "months": null,
           "noticeType": "solicitation",
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 5
+        "count": 4
       },
       {
         "lens": "money",
@@ -224,18 +243,21 @@
         "text": "shelter services contracts",
         "filter": {
           "keywords": [
-            "shelter",
-            "services"
+            "shelter"
           ],
           "agency": null,
           "minAmount": null,
           "maxAmount": null,
-          "category": "Human Services/Client Services",
+          "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 18
+        "count": 20
       },
       {
         "lens": "money",
@@ -243,7 +265,6 @@
         "text": "park maintenance contracts",
         "filter": {
           "keywords": [
-            "park",
             "maintenance"
           ],
           "agency": null,
@@ -252,9 +273,13 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 1
+        "count": 16
       },
       {
         "lens": "money",
@@ -262,8 +287,7 @@
         "text": "school food service contracts",
         "filter": {
           "keywords": [
-            "school",
-            "food service"
+            "food"
           ],
           "agency": null,
           "minAmount": null,
@@ -271,27 +295,75 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 2
+        "count": 6
       },
       {
         "lens": "money",
         "idx": 5,
         "text": "senior center contracts",
         "filter": {
-          "keywords": [
-            "senior center"
-          ],
+          "keywords": [],
           "agency": null,
           "minAmount": null,
           "maxAmount": null,
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 1
+        "count": 199
+      },
+      {
+        "lens": "money",
+        "idx": 6,
+        "text": "contracts closing this week",
+        "filter": {
+          "keywords": [],
+          "agency": null,
+          "minAmount": null,
+          "maxAmount": null,
+          "category": null,
+          "months": null,
+          "noticeType": "solicitation",
+          "excludeSpecial": false,
+          "closingWeek": true,
+          "route": null,
+          "name": null,
+          "tab": null
+        },
+        "count": 20
+      },
+      {
+        "lens": "money",
+        "idx": 7,
+        "text": "Parks contract forecast",
+        "filter": {
+          "keywords": [
+            "parks"
+          ],
+          "agency": "Parks and Recreation",
+          "minAmount": null,
+          "maxAmount": null,
+          "category": null,
+          "months": null,
+          "noticeType": null,
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": "agency",
+          "name": "Parks and Recreation",
+          "tab": "forecast"
+        },
+        "count": 8033
       },
       {
         "lens": "people",
@@ -299,21 +371,24 @@
         "text": "paramedic roles",
         "filter": {
           "keywords": [
-            "paramedic"
+            "paramedic",
+            "roles"
           ],
           "lookupType": "role"
         },
-        "count": 1017
+        "count": 0
       },
       {
         "lens": "people",
         "idx": 1,
         "text": "look up someone named Rodriguez",
         "filter": {
-          "keywords": [],
+          "keywords": [
+            "Rodriguez"
+          ],
           "lookupType": "person"
         },
-        "count": 0
+        "count": 6076
       },
       {
         "lens": "people",
@@ -321,44 +396,68 @@
         "text": "attorney titles",
         "filter": {
           "keywords": [
-            "attorney"
+            "attorney",
+            "titles"
           ],
           "lookupType": "role"
         },
-        "count": 3837
+        "count": 0
+      },
+      {
+        "lens": "people",
+        "idx": 3,
+        "text": "open competitive exams",
+        "filter": {
+          "keywords": [],
+          "view": "guide",
+          "lookupType": "role"
+        },
+        "count": 550219
       },
       {
         "lens": "land",
         "idx": 0,
         "text": "rezonings in Brooklyn",
         "filter": {
-          "keywords": [],
+          "keywords": [
+            "rezonings"
+          ],
           "boro": "Brooklyn",
-          "status": "active"
+          "councilDistrict": null,
+          "communityDistrict": null,
+          "nearMe": false
         },
-        "count": 12257
+        "count": 30
       },
       {
         "lens": "land",
         "idx": 1,
         "text": "rezonings in Queens",
         "filter": {
-          "keywords": [],
+          "keywords": [
+            "rezonings"
+          ],
           "boro": "Queens",
-          "status": "all"
+          "councilDistrict": null,
+          "communityDistrict": null,
+          "nearMe": false
         },
-        "count": 12257
+        "count": 27
       },
       {
         "lens": "land",
         "idx": 2,
         "text": "79 Rivington",
         "filter": {
-          "keywords": [],
-          "boro": "Manhattan",
-          "status": null
+          "keywords": [
+            "rivington"
+          ],
+          "boro": null,
+          "councilDistrict": null,
+          "communityDistrict": null,
+          "nearMe": false
         },
-        "count": 12257
+        "count": 1
       },
       {
         "lens": "land",
@@ -366,22 +465,44 @@
         "text": "rezonings in the Bronx",
         "filter": {
           "keywords": [
-            "rezoning"
+            "rezonings"
           ],
           "boro": "Bronx",
-          "status": "all"
+          "councilDistrict": null,
+          "communityDistrict": null,
+          "nearMe": false
         },
-        "count": 1084
+        "count": 11
+      },
+      {
+        "lens": "land",
+        "idx": 4,
+        "text": "rezonings in council district 33",
+        "filter": {
+          "keywords": [
+            "rezonings"
+          ],
+          "boro": null,
+          "councilDistrict": "33",
+          "communityDistrict": null,
+          "nearMe": false
+        },
+        "count": 4
       },
       {
         "lens": "property",
         "idx": 0,
         "text": "HPD property sales",
         "filter": {
-          "keywords": [],
-          "agency": "Department of Housing Preservation and Development"
+          "keywords": [
+            "property",
+            "sales"
+          ],
+          "process": null,
+          "agency": "Housing Preservation and Development",
+          "nearMe": false
         },
-        "count": 0
+        "count": 132
       },
       {
         "lens": "property",
@@ -393,7 +514,9 @@
             "protection",
             "land"
           ],
-          "agency": null
+          "process": null,
+          "agency": null,
+          "nearMe": false
         },
         "count": 15
       },
@@ -402,10 +525,16 @@
         "idx": 2,
         "text": "police department property",
         "filter": {
-          "keywords": [],
-          "agency": "New York City Police Department"
+          "keywords": [
+            "police",
+            "department",
+            "property"
+          ],
+          "process": null,
+          "agency": "Police Department",
+          "nearMe": false
         },
-        "count": 0
+        "count": 17
       },
       {
         "lens": "property",
@@ -413,11 +542,29 @@
         "text": "parks department property",
         "filter": {
           "keywords": [
-            "parks"
+            "parks",
+            "department",
+            "property"
           ],
-          "agency": "Department of Parks and Recreation"
+          "process": null,
+          "agency": "Parks and Recreation",
+          "nearMe": false
         },
         "count": 0
+      },
+      {
+        "lens": "property",
+        "idx": 4,
+        "text": "property disposition hearings",
+        "filter": {
+          "keywords": [
+            "property"
+          ],
+          "process": "hearing",
+          "agency": null,
+          "nearMe": false
+        },
+        "count": 243
       },
       {
         "lens": "rules",
@@ -425,8 +572,10 @@
         "text": "buildings rules",
         "filter": {
           "keywords": [
-            "buildings"
+            "buildings",
+            "rules"
           ],
+          "process": null,
           "agency": null
         },
         "count": 428
@@ -437,11 +586,13 @@
         "text": "sanitation rules",
         "filter": {
           "keywords": [
-            "sanitation"
+            "sanitation",
+            "rules"
           ],
-          "agency": null
+          "process": null,
+          "agency": "Sanitation"
         },
-        "count": 140
+        "count": 117
       },
       {
         "lens": "rules",
@@ -449,8 +600,10 @@
         "text": "taxi rules",
         "filter": {
           "keywords": [
-            "taxi"
+            "taxi",
+            "rules"
           ],
+          "process": null,
           "agency": null
         },
         "count": 230
@@ -461,11 +614,27 @@
         "text": "health department rules",
         "filter": {
           "keywords": [
-            "health"
+            "health",
+            "department",
+            "rules"
           ],
-          "agency": "Department of Health and Mental Hygiene"
+          "process": null,
+          "agency": null
         },
-        "count": 0
+        "count": 27
+      },
+      {
+        "lens": "rules",
+        "idx": 4,
+        "text": "rules open for comment",
+        "filter": {
+          "keywords": [
+            "rules"
+          ],
+          "process": "public_process",
+          "agency": null
+        },
+        "count": 3061
       },
       {
         "lens": "meetings",
@@ -473,14 +642,12 @@
         "text": "recent landmarks hearings",
         "filter": {
           "keywords": [
-            "landmark"
+            "landmarks"
           ],
-          "agency": null,
-          "when": "all",
-          "borough": null,
-          "neighborhood": null,
-          "locationScope": null,
-          "dateWindow": null
+          "when": "past",
+          "process": null,
+          "nearMe": false,
+          "agency": null
         },
         "count": 1
       },
@@ -490,29 +657,27 @@
         "text": "recent city council hearings",
         "filter": {
           "keywords": [],
-          "agency": "City Council",
-          "when": "all",
-          "borough": null,
-          "neighborhood": null,
-          "locationScope": null,
-          "dateWindow": null
+          "when": "past",
+          "process": null,
+          "nearMe": false,
+          "agency": null
         },
-        "count": 0
+        "count": 21
       },
       {
         "lens": "meetings",
         "idx": 2,
         "text": "recent community board meetings",
         "filter": {
-          "keywords": [],
-          "agency": "Community Board",
-          "when": "all",
-          "borough": null,
-          "neighborhood": null,
-          "locationScope": null,
-          "dateWindow": null
+          "keywords": [
+            "meetings"
+          ],
+          "when": "past",
+          "process": null,
+          "nearMe": false,
+          "agency": null
         },
-        "count": 0
+        "count": 12
       },
       {
         "lens": "meetings",
@@ -523,22 +688,44 @@
             "taxi",
             "limousine"
           ],
-          "agency": null,
-          "when": "all",
-          "borough": null,
-          "neighborhood": null,
-          "locationScope": null,
-          "dateWindow": null
+          "when": "past",
+          "process": null,
+          "nearMe": false,
+          "agency": null
         },
         "count": 1
+      },
+      {
+        "lens": "meetings",
+        "idx": 4,
+        "text": "hearings this week",
+        "filter": {
+          "keywords": [],
+          "when": "week",
+          "process": null,
+          "nearMe": false,
+          "agency": null
+        },
+        "count": 9
+      },
+      {
+        "lens": "meetings",
+        "idx": 5,
+        "text": "what can I comment on this week",
+        "filter": {
+          "keywords": [],
+          "when": "week",
+          "process": null,
+          "nearMe": false,
+          "agency": null
+        },
+        "count": 9
       },
       {
         "lens": "alerts",
         "idx": 0,
         "text": "awards over $1M",
         "filter": {
-          "watchType": null,
-          "place": null,
           "keywords": [],
           "agency": null,
           "minAmount": 1000000,
@@ -546,17 +733,19 @@
           "category": null,
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 21970
+        "count": 22010
       },
       {
         "lens": "alerts",
         "idx": 1,
         "text": "education contracts over $200K due in 3 months",
         "filter": {
-          "watchType": null,
-          "place": null,
           "keywords": [
             "education"
           ],
@@ -566,9 +755,13 @@
           "category": null,
           "months": 3,
           "noticeType": null,
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 1195
+        "count": 1212
       },
       {
         "lens": "alerts",
@@ -576,37 +769,31 @@
         "text": "rezonings near 79 Rivington",
         "filter": {
           "watchType": "rezone",
-          "place": "79 Rivington",
-          "keywords": [],
-          "agency": null,
-          "minAmount": null,
-          "maxAmount": null,
-          "category": null,
-          "months": null,
-          "noticeType": null,
-          "excludeSpecial": false
+          "place": "79 Rivington"
         },
-        "count": 4
+        "count": 3
       },
       {
         "lens": "alerts",
         "idx": 3,
         "text": "sanitation contract awards",
         "filter": {
-          "watchType": null,
-          "place": null,
           "keywords": [
             "sanitation"
           ],
-          "agency": null,
+          "agency": "Sanitation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": false
+          "excludeSpecial": false,
+          "closingWeek": false,
+          "route": null,
+          "name": null,
+          "tab": null
         },
-        "count": 700
+        "count": 654
       }
     ]
   }
