@@ -574,7 +574,7 @@
           },
           {
             "selector": "#propertyfeed .tag.place",
-            "text": "No location identified in this notice"
+            "text": "Unstaged"
           }
         ],
         "notVisible": [
