@@ -544,6 +544,15 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
       noticeLookupStatus: candidateResult.status,
     }),
   };
+  // Borough on logistics rows (Open Data is the product borough label for filters).
+  if (Array.isArray(assembled.hearing_logistics) && assembled.hearing_logistics.length) {
+    const boro = openData?.borough || null;
+    assembled.hearing_logistics = assembled.hearing_logistics.map((h) => ({
+      ...h,
+      borough: h.borough || boro,
+      project_name: assembled.project_name || openData?.project_name || null,
+    }));
+  }
   // Batch-side ULURP statutory clocks (cityscroll.prediction.v0) — precompute-first;
   // the browser only renders the stamped view (no per-request day math).
   const withStatutoryClock = attachUlurpStatutoryPredictions(assembled, {

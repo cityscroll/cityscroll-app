@@ -840,6 +840,30 @@
           }
         ]
       }
+    },
+    {
+      "id": "land-pipeline-hearing-logistics",
+      "url": "#land/2024Q0292",
+      "feature": "land-pipeline-hearing-logistics",
+      "description": "ULURP public-review pipeline position and ZAP hearing attendance logistics on a Queens rezoning in Borough President review.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#ldetail .rolename"
+          },
+          {
+            "selector": ".land-pipeline-position"
+          },
+          {
+            "selector": "#land-actions"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#ldetail > .empty"
+          }
+        ]
+      }
     }
   ]
 }

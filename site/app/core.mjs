@@ -195,7 +195,20 @@ function money(v){
   return "$" + n.toLocaleString("en-US",{maximumFractionDigits:0});
 }
 function fdate(s){ return s ? String(s).slice(0,10) : ""; }
-function fdt(s){ if(!s) return ""; const d = new Date(s); const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric"}); }
+function fdt(s){
+  if(!s) return "";
+  const d = new Date(s);
+  if(Number.isNaN(d.getTime())) return String(s).slice(0,10);
+  const _lm=(window.LANG_META||{})[window.LANG||"en"];
+  const _loc=_lm?_lm.intlDate:"en-US";
+  // Full ISO with a non-midnight clock → include local time (ULURP hearing logistics).
+  const raw=String(s);
+  const hasClock=/T\d{2}:\d{2}/.test(raw) && !/T00:00:00/.test(raw);
+  if(hasClock){
+    return d.toLocaleString(_loc,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"});
+  }
+  return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric"});
+}
 function daysLeft(s){ if(!s) return null; return Math.ceil((new Date(s) - new Date())/86400000); }
 // Honest deadline label: due dates in year >= 2090 are rolling placeholders (pre-qualified-list
 // entries), not real deadlines — mirrors worker/src/ingest.mjs's ROLLING_YEAR /
