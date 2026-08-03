@@ -332,6 +332,18 @@ compute-on-miss. Verify:
 test/land_event_spine.test.mjs`. UI capture:
 `python3 tools/capture_land_event_spine.py`.
 
+**ULURP statutory clocks (cs-pred-03):** after certification, Charter §197-c
+windows (CB 60 → BP +30 → CPC +60 → Council +50 → Mayor +5, ≤205 days) are
+batch-stamped on `/zap-outcomes` as `statutory_clock` + `cityscroll.prediction.v0`
+assertions (`method: statutory_clock`). Pure table:
+`site/ulurp_statutory_clock.mjs`; emission:
+`worker/src/lib/ulurp_statutory_predictions.mjs` via
+`attachUlurpStatutoryPredictions` in `buildZapOutcomeRecord`. UI uses the
+precomputed view only (Estimate chip). Withdrawn projects close open predictions
+as `withdrawn`. Verify:
+`node --test test/ulurp_statutory_clock.test.mjs`. Capture:
+`python3 tools/capture_ulurp_statutory_clock.py`.
+
 ## Legistar agenda/vote depth
 
 Ranked class-(a) meeting-outcomes depth. **Edge materialization is live** (daily

@@ -5542,9 +5542,32 @@ function landPhaseAggregateHTML(agg, phaseId, idx){
     </ul>
   </div>`;
 }
-function landPhaseSpineHTML(view, tools){
+/** Statutory deadline note for one ULURP phase (precomputed on the outcome record). */
+function landStatutoryDeadlineHTML(phaseId, clock, phaseState){
+  if(!clock || clock.status==="ineligible") return "";
+  const row=(clock.phases||[]).find(p=>p.phase_id===phaseId);
+  if(!row || !row.due_date) return "";
+  const stageName=landPhaseLabel({label_key:row.label_key, id:phaseId});
+  const deadline=t("land_spine_statutory_deadline_html",{
+    stage:escUiHtml(stageName),
+    n:String(row.days),
+    date:fdate(row.due_date)
+  });
+  // Action frame: before a board/commission concludes, the hearing is the last chance to testify.
+  const actionHint=(phaseId==="community_board"||phaseId==="city_council"||phaseId==="cpc")
+    && phaseState!=="passed"
+    && clock.status!=="withdrawn"
+    ? ` ${t("land_spine_statutory_testify_hint")}`
+    : "";
+  const withdrawn=clock.status==="withdrawn"
+    ? ` ${t("land_spine_statutory_withdrawn_note")}`
+    : "";
+  return `<div class="note land-statutory-deadline" data-land-statutory-phase="${escUiHtml(phaseId)}" data-land-statutory-due="${escUiHtml(row.due_date)}" data-land-statutory-status="${escUiHtml(clock.status||"open")}">${deadline}${actionHint}${withdrawn} <span class="tag renewal">${t("cadence_estimate_tag")}</span></div>`;
+}
+function landPhaseSpineHTML(view, tools, record){
   if(!view) return "";
   const isPortalUrl=tools?.isProjectPortalUrl;
+  const clock=record?.statutory_clock || null;
   const portal=view.portal_url
     ? `<a class="view land-spine-portal" href="${escUiHtml(view.portal_url)}" ${EXT_ATTRS}>${t("land_spine_portal_link")}${extSR()}</a>`
     : "";
@@ -5573,12 +5596,17 @@ function landPhaseSpineHTML(view, tools){
   const panels=(view.phases||[]).map(p=>{
     const open=p.state==="current"?" open":"";
     const stateWord=p.state==="current"?t("land_spine_phase_current"):p.state==="passed"?t("land_spine_phase_done"):t("land_spine_phase_future");
+    const statutoryRow=(clock&&clock.status!=="ineligible")
+      ? (clock.phases||[]).find(s=>s.phase_id===p.id)
+      : null;
     let summary="";
     if(p.state==="future"){
       if(p.first){
         summary=p.last&&p.last!==p.first
           ? t("land_spine_planned_window",{first:fdate(p.first),last:fdate(p.last)})
           : t("land_spine_planned_window_one",{date:fdate(p.first)});
+      }else if(statutoryRow?.due_date){
+        summary=t("land_spine_statutory_due_summary",{date:fdate(statutoryRow.due_date)});
       }else summary=t("land_spine_phase_empty");
     }else{
       const notes=(p.aggregates||[]).filter(a=>a.count>=2).map(a=>`${a.title} ×${a.count}`).join(" · ");
@@ -5587,8 +5615,12 @@ function landPhaseSpineHTML(view, tools){
         p.first&&p.last?t("land_spine_aggregate_range",{first:fdate(p.first),last:fdate(p.last)}):(p.first?fdate(p.first):""),
         notes
       ].filter(Boolean);
+      if(statutoryRow?.due_date && p.state==="current"){
+        parts.push(t("land_spine_statutory_due_summary",{date:fdate(statutoryRow.due_date)}));
+      }
       summary=parts.join(" · ") || t("land_spine_phase_empty");
     }
+    const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
     return `<details class="land-phase${p.state==="current"?" current-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}">
@@ -5597,7 +5629,7 @@ function landPhaseSpineHTML(view, tools){
         <span class="land-phase-state">${escUiHtml(stateWord)}</span>
         <span class="land-phase-summary" lang="en" dir="ltr">${escUiHtml(summary)}</span>
       </summary>
-      <div class="land-phase-body">${body}</div>
+      <div class="land-phase-body">${statutory}${body}</div>
     </details>`;
   }).join("");
   const chrono=(view.chronological||[]).map(e=>landSpineEventRowHTML(e, view.portal_url, isPortalUrl)).join("");
@@ -5633,7 +5665,7 @@ function landSpineHTML(spine, record, phaseTools){
       public_status: record?.public_status || record?.open_data?.public_status || null,
       project_id: record?.project_id || spine.project_id || null
     });
-    return landPhaseSpineHTML(view, phaseTools);
+    return landPhaseSpineHTML(view, phaseTools, record);
   }
   return landSpineHTMLFlat(spine, record);
 }
