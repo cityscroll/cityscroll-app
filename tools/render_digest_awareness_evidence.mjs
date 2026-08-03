@@ -32,7 +32,7 @@ const fixtures = [
       agency_name: "Department of Transportation",
       type_of_notice_description: "Solicitation",
       due_date: "2026-08-10",
-      email: "procure@example.com",
+      email: "example@example.com",
       contact_name: "Testy McTestface",
       contact_phone: "555-0100",
       pin: "DOT-RFQ-2026-01",
@@ -85,11 +85,11 @@ const fixtures = [
       section_name: "Public Hearings and Meetings",
       type_of_notice_description: "Public Hearing",
       event_date: "2026-08-05",
-      email: "hearing@example.com",
+      email: "example@example.com",
       street_address_1: "1 Example Plaza",
       building_name: "Fixture Hall",
       additional_description_1:
-        "Written testimony may be submitted electronically to hearing@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
+        "Written testimony may be submitted electronically to example@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
     },
   },
   {
@@ -123,8 +123,8 @@ function dueLabel(dueDate) {
 function beforeItemHtml(kind, r) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   if (kind === "rezone") {
-    const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
-      .filter(Boolean).map(esc).join(" · ");
+    const cd = r.community_district ? `CD ${r.community_district}` : "";
+    const meta = [r.borough, cd, r.public_status].filter(Boolean).map(esc).join(" · ");
     return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
       <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;

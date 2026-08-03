@@ -62,7 +62,7 @@ const solicitation = {
   agency_name: "Department of Transportation",
   type_of_notice_description: "Solicitation",
   due_date: "2026-08-10",
-  email: "procure@example.com",
+  email: "example@example.com",
   contact_name: "Testy McTestface",
   contact_phone: "555-0100",
   // Non-PASSPort-shaped pin so handoff stays notice-extracted / package URL.
@@ -84,7 +84,7 @@ test("solicitation awareness: closing-soon + package URL + contact steps", () =>
   const packageStep = a.steps.find((s) => /package/i.test(s.label));
   assert.ok(packageStep, "package URL from notice body");
   assert.match(packageStep.value, /example\.com\/rfps/);
-  assert.ok(a.steps.some((s) => s.label === "Email" && s.value.includes("procure@example.com")));
+  assert.ok(a.steps.some((s) => s.label === "Email" && s.value.includes("example@example.com")));
 });
 
 test("solicitation email HTML includes time state and next-step CTA", () => {
@@ -161,11 +161,11 @@ const hearing = {
   section_name: "Public Hearings and Meetings",
   type_of_notice_description: "Public Hearing",
   event_date: "2026-08-05",
-  email: "hearing@example.com",
+  email: "example@example.com",
   street_address_1: "1 Example Plaza",
   building_name: "Fixture Hall",
   additional_description_1:
-    "Written testimony may be submitted electronically to hearing@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
+    "Written testimony may be submitted electronically to example@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
 };
 
 test("hearing awareness: closing-soon event + join / testimony steps", () => {
@@ -177,7 +177,7 @@ test("hearing awareness: closing-soon event + join / testimony steps", () => {
   assert.ok(a.action);
   const html = itemAwarenessHtml(hearing, esc, "en", { kind: "meetings", today: TODAY });
   assert.match(html, /Hearing|meeting/i);
-  assert.match(html, /Next step:|Join|testimony|hearing@example\.com/i);
+  assert.match(html, /Next step:|Join|testimony|example@example\.com/i);
 });
 
 // ---- land / rezone: ZAP public status + project handoff -------------------
