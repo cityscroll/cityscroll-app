@@ -474,15 +474,151 @@ export function loadDistrictActivity(doc) {
 }
 
 /**
- * Citywide totals across all lenses from an activity doc.
+ * Totals across all geographic borough bags (city-scale sum of local density).
+ * Does not replace the first-class `activity.citywide` bag (city-scale items);
+ * use `nonPolygonBuckets` / `activity.citywide` for that.
  */
 export function citywideTotals(activity) {
   const totals = emptyLensCounts();
   const boroughs = activity?.by_level?.borough || {};
-  for (const counts of Object.values(boroughs)) {
+  for (const [id, counts] of Object.entries(boroughs)) {
+    if (id === "Virtual") continue; // virtual is a non-place bucket
     for (const lens of Object.keys(totals)) {
       totals[lens] += Number(counts?.[lens]) || 0;
     }
   }
   return totals;
+}
+
+/** Counts from the first-class citywide bag (rules that apply everywhere, etc.). */
+export function citywideBucketCounts(activity) {
+  const bag = activity?.citywide || activity?.by_level?.borough?.Citywide || null;
+  const totals = emptyLensCounts();
+  if (!bag) return totals;
+  for (const lens of Object.keys(totals)) {
+    totals[lens] = Number(bag[lens]) || 0;
+  }
+  return totals;
+}
+
+/**
+ * First-class non-polygon map bags (citywide rules, virtual-only meetings).
+ * Shown as labeled list rows / detail chips — never painted onto district polygons.
+ */
+export function nonPolygonBuckets(activity) {
+  const bags = [];
+  const citywide = activity?.citywide || activity?.by_level?.borough?.Citywide || null;
+  const virtual = activity?.virtual || activity?.by_level?.borough?.Virtual || null;
+  if (citywide && totalForLens(citywide, "all") > 0) {
+    bags.push({
+      id: "Citywide",
+      label: "Citywide",
+      kind: "citywide",
+      counts: { ...emptyLensCounts(), ...citywide },
+      total: totalForLens(citywide, "all"),
+    });
+  }
+  if (virtual && totalForLens(virtual, "all") > 0) {
+    bags.push({
+      id: "Virtual",
+      label: "Virtual / online only",
+      kind: "virtual",
+      counts: { ...emptyLensCounts(), ...virtual },
+      total: totalForLens(virtual, "all"),
+    });
+  }
+  return bags;
+}
+
+/**
+ * Granularity regression: for each place-based lens, detect zero-collapse
+ * (borough located > 0 but a finer level is entirely zero). Returns findings.
+ *
+ * Lenses that are expected to stay city-scale (rules default citywide) skip
+ * the community/council collapse check when citywide bag holds them.
+ */
+export function granularityCollapseFindings(activity, opts = {}) {
+  const findings = [];
+  if (!activity?.by_level) return findings;
+  const lenses = opts.lenses || ["land", "property", "meetings", "money", "rules"];
+  const levels = ["borough", "community_district", "council_district"];
+
+  function levelTotal(level, lens) {
+    const bag = activity.by_level[level] || {};
+    let sum = 0;
+    for (const [id, counts] of Object.entries(bag)) {
+      // Skip non-polygon borough keys when summing geographic density.
+      if (level === "borough" && (id === "Citywide" || id === "Virtual")) continue;
+      sum += Number(counts?.[lens]) || 0;
+    }
+    return sum;
+  }
+
+  for (const lens of lenses) {
+    const boroughN = levelTotal("borough", lens);
+    const cdN = levelTotal("community_district", lens);
+    const councilN = levelTotal("council_district", lens);
+    const citywideN = Number(activity.citywide?.[lens]) || 0;
+    const virtualN = Number(activity.virtual?.[lens]) || 0;
+    const located = Number(activity.sources?.[lens]?.located) || 0;
+    const counted = Number(activity.sources?.[lens]?.counted) || 0;
+
+    // Land / property / meetings: if borough has density, finer levels must not be all-zero
+    // when the corpus is non-empty. Rules may legitimately be almost entirely citywide.
+    if (lens === "rules") {
+      if (counted > 0 && located > 0 && citywideN === 0 && boroughN === 0 && cdN === 0) {
+        findings.push({
+          kind: "granularity-zero-collapse",
+          lens,
+          level: "all",
+          message: "rules located but no borough/citywide/CD bag holds them",
+          borough: boroughN,
+          community_district: cdN,
+          council_district: councilN,
+          citywide: citywideN,
+        });
+      }
+      continue;
+    }
+
+    if (boroughN > 0 && cdN === 0 && lens !== "money") {
+      // Money often lacks CD-grade signals; still flag land/meetings/property.
+      findings.push({
+        kind: "granularity-zero-collapse",
+        lens,
+        level: "community_district",
+        message: `${lens} has borough density (${boroughN}) but community_district is all-zero`,
+        borough: boroughN,
+        community_district: cdN,
+        council_district: councilN,
+      });
+    }
+    if ((boroughN > 0 || cdN > 0) && councilN === 0 && (lens === "land" || lens === "meetings" || lens === "property")) {
+      findings.push({
+        kind: "granularity-zero-collapse",
+        lens,
+        level: "council_district",
+        message: `${lens} has coarser density but council_district is all-zero`,
+        borough: boroughN,
+        community_district: cdN,
+        council_district: councilN,
+      });
+    }
+    // Silence virtual-only as unlocated without a virtual bag when any virtual_only reasons exist.
+    const virtReason = Number(activity.unlocated_reasons?.[lens]?.virtual_only) || 0;
+    if (virtReason > 0 && virtualN === 0 && lens === "meetings") {
+      findings.push({
+        kind: "virtual-bucket-missing",
+        lens,
+        level: "virtual",
+        message: `meetings has virtual_only reasons (${virtReason}) but virtual bag is empty`,
+        virtual_reasons: virtReason,
+        virtual_bag: virtualN,
+      });
+    }
+  }
+
+  // Unused levels param kept for future multi-level thresholds.
+  void levels;
+  return findings;
 }

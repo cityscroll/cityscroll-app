@@ -38,6 +38,10 @@ import {
   placeFromDerivations,
   compactDerivationStamp,
 } from "../../site/location_derivation.mjs";
+import {
+  geocodeFromPlaceOrRow,
+  buildCommunityToCouncilIndex,
+} from "../../site/civic_address_geocode.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
 
@@ -182,11 +186,13 @@ export function parseZapCommunityDistricts(value) {
 
 /**
  * Build placement slots from an affected-area / rule-location shaped object.
- * Returns one or more { borough, community, council } slots (multi-place honest).
+ * Returns one or more { borough, community, council, method? } slots
+ * (multi-place honest). Optional address geocode upgrades borough-only venue
+ * stamps to CD + council via the committed boundary layer.
  *
  * @param {object|null} area
  * @param {object} boundaries
- * @param {{ coords?: {lat:number, lon:number}|null }} [opts]
+ * @param {{ coords?: {lat:number, lon:number}|null, row?: object|null, cdCouncilIndex?: object|null }} [opts]
  */
 export function placementsFromLocatedArea(area, boundaries, opts = {}) {
   if (!area || typeof area !== "object") return [];
@@ -194,30 +200,75 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
   const seen = new Set();
   const push = (slot) => {
     const community = slot.community ? normalizeCommunityDistrictId(slot.community) : null;
-    const council = slot.council ? normalizeCouncilDistrictId(slot.council) : null;
+    let council = slot.council ? normalizeCouncilDistrictId(slot.council) : null;
     let borough = canonBorough(slot.borough)
       || (community ? boroughFromCommunityId(community) : null);
+    // When CD is known but council is not, join via CD centroid index (land density).
+    if (community && !council && opts.cdCouncilIndex) {
+      const fromCd = opts.cdCouncilIndex[community];
+      if (fromCd) {
+        council = normalizeCouncilDistrictId(fromCd);
+        if (council && !slot.method) slot = { ...slot, method: "cd_centroid_council" };
+      }
+    }
     if (!community && !council && !borough) return;
     const key = `${borough || ""}|${community || ""}|${council || ""}`;
     if (seen.has(key)) return;
     seen.add(key);
-    slots.push({ borough, community, council });
+    slots.push({
+      borough,
+      community,
+      council,
+      ...(slot.method ? { method: slot.method } : {}),
+    });
   };
 
   // Coordinates → shared boundary layer PIP (both district kinds).
-  const coords = opts.coords
+  let coords = opts.coords
     || (area.geometry
       && Number.isFinite(Number(area.geometry.latitude))
       && Number.isFinite(Number(area.geometry.longitude))
       ? { lat: Number(area.geometry.latitude), lon: Number(area.geometry.longitude) }
       : null);
+
+  // Offline civic gazetteer: venue (and explicit address lists) → point → PIP.
+  // Do not geocode free-form matter evidence alone — a street in a title may not
+  // be the matter's borough, and fabricating a pin is worse than borough-only.
+  // Provenance-labeled only; unknown streets stay unresolved.
+  let geocodeHit = null;
+  if (!coords && boundaries) {
+    const role = area.derivation?.role || null;
+    const methods = area.derivation?.methods || [];
+    // Venue columns, vendor/facility addresses, and explicit address lists may geocode.
+    // Matter-role free-text evidence alone does not (avoids false street pins).
+    const geocodeable = role === "venue"
+      || role === "vendor"
+      || methods.some((m) => /^(?:venue|vendor_address|civic_address)/.test(String(m)))
+      || (Array.isArray(area.addresses) && area.addresses.length > 0)
+      || opts.forceGeocode
+      || opts.row?.street_address_1
+      || opts.row?.vendor_address;
+    if (geocodeable) {
+      geocodeHit = geocodeFromPlaceOrRow(area, opts.row || null);
+      if (geocodeHit) {
+        coords = { lat: geocodeHit.lat, lon: geocodeHit.lon };
+      }
+    }
+  }
+
   if (coords && boundaries) {
     const community = resolveCommunityDistrict(coords.lat, coords.lon, boundaries);
     const council = resolveCouncilDistrict(coords.lat, coords.lon, boundaries);
     const borough = community
       ? boroughFromCommunityId(community)
-      : (Array.isArray(area.boroughs) ? canonBorough(area.boroughs[0]) : null);
-    push({ borough, community, council });
+      : (geocodeHit?.borough
+        || (Array.isArray(area.boroughs) ? canonBorough(area.boroughs[0]) : null));
+    push({
+      borough,
+      community,
+      council,
+      method: geocodeHit ? "civic_address_pip" : "coordinates_pip",
+    });
   }
 
   // Community board labels → product CD ids.
@@ -274,9 +325,9 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
     for (const b of boroughs) push({ borough: b, community: null, council: null });
   }
 
-  // Citywide scope with no local pins → Citywide borough bag (not invented districts).
+  // Citywide scope with no local pins → Citywide first-class bucket (not invented districts).
   if (!slots.length && area.scope === "citywide") {
-    push({ borough: "Citywide", community: null, council: null });
+    push({ borough: "Citywide", community: null, council: null, method: "citywide" });
   }
 
   return slots;
@@ -284,24 +335,60 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
 
 /**
  * Resolve meetings placement from stamped affected_area or the human-derivation chain
- * (matter → venue → agency HQ). Slots carry method + confidence when known.
+ * (matter → venue → agency HQ). Venue addresses geocode offline to CD + council.
+ * Slots carry method + confidence when known. Virtual-only → explicit virtual bucket.
+ *
+ * @param {object} row
+ * @param {object} boundaries
+ * @param {{ cdCouncilIndex?: object|null }} [opts]
  */
-export function meetingPlacementsFromRow(row, boundaries) {
+export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
   const stamped = row?.affected_area || row?.place || row?._location || null;
   let area;
-  let meta = { method: null, confidence: null, confidence_tier: null, unlocated_reason: null };
+  let meta = {
+    method: null,
+    confidence: null,
+    confidence_tier: null,
+    unlocated_reason: null,
+    virtual_only: false,
+  };
 
-  if (stamped && typeof stamped === "object" && (stamped.scope || stamped.boroughs?.length)) {
+  if (stamped && typeof stamped === "object" && (
+    stamped.scope
+    || stamped.boroughs?.length
+    || stamped.unlocated_reason
+    || stamped.virtual_only
+  )) {
     area = stamped;
     meta.method = stamped.derivation?.methods?.[0] || stamped.source || "stamped";
     meta.confidence = stamped.derivation?.confidence ?? null;
     meta.confidence_tier = stamped.confidence_tier || null;
+    meta.unlocated_reason = stamped.unlocated_reason || null;
+    meta.virtual_only = !!(stamped.virtual_only || stamped.unlocated_reason === "virtual_only");
   } else {
     area = meetingPlaceFromRow(row || {});
     meta.method = area.derivation?.methods?.[0] || area.source || null;
     meta.confidence = area.derivation?.confidence ?? null;
     meta.confidence_tier = area.confidence_tier || null;
     meta.unlocated_reason = area.unlocated_reason || null;
+    meta.virtual_only = !!(area.virtual_only || area.unlocated_reason === "virtual_only");
+  }
+
+  // Virtual-only with no matter/place pin → explicit Virtual bucket (not silent unlocated).
+  // Hybrid / matter-located + remote venue still use the matter geography.
+  const unlocatedVirtual = area?.scope === "unlocated"
+    && (area?.unlocated_reason === "virtual_only" || area?.virtual_only || meta.virtual_only);
+  if (unlocatedVirtual) {
+    const slots = [{
+      borough: "Virtual",
+      community: null,
+      council: null,
+      method: "virtual_only",
+      confidence: 0.9,
+      confidence_tier: "strong",
+      bucket: "virtual",
+    }];
+    return slots;
   }
 
   // Agency-level borough / CD signals supplement title/body extraction.
@@ -328,13 +415,18 @@ export function meetingPlacementsFromRow(row, boundaries) {
   }
 
   const coords = coordsFromPropertyRow(row);
-  let slots = placementsFromLocatedArea(merged, boundaries, { coords });
+  let slots = placementsFromLocatedArea(merged, boundaries, {
+    coords,
+    row,
+    cdCouncilIndex: opts.cdCouncilIndex || null,
+  });
   // Agency CD alone (no extractor hit).
   if (!slots.length && agencyCd) {
     slots = [{
       borough: boroughFromCommunityId(agencyCd),
       community: agencyCd,
-      council: null,
+      council: opts.cdCouncilIndex?.[agencyCd] || null,
+      method: "agency_community_board",
     }];
     meta.method = meta.method || "agency_community_board";
     meta.confidence = meta.confidence ?? 0.85;
@@ -348,15 +440,17 @@ export function meetingPlacementsFromRow(row, boundaries) {
   }
 
   // Annotate slots with derivation meta for density payload accounting.
+  // Prefer point-PIP / geocode method when the slot already carries one.
   slots = slots.map((s) => ({
     ...s,
-    method: meta.method,
-    confidence: meta.confidence,
-    confidence_tier: meta.confidence_tier || (
+    method: s.method || meta.method,
+    confidence: s.confidence ?? meta.confidence,
+    confidence_tier: s.confidence_tier || meta.confidence_tier || (
       meta.confidence == null ? null
         : meta.confidence >= 0.8 ? "strong"
           : meta.confidence >= 0.55 ? "derived" : "weak"
     ),
+    ...(s.borough === "Citywide" || s.method === "citywide" ? { bucket: "citywide" } : {}),
   }));
   if (!slots.length) {
     slots.unlocated_reason = meta.unlocated_reason
@@ -368,8 +462,13 @@ export function meetingPlacementsFromRow(row, boundaries) {
 
 /**
  * Resolve rules placement from stamped location or rule-scope extractor.
+ * Citywide rules land in the Citywide bucket (visible at every map level).
+ *
+ * @param {object} row
+ * @param {object} boundaries
+ * @param {{ cdCouncilIndex?: object|null }} [opts]
  */
-export function rulePlacementsFromRow(row, boundaries) {
+export function rulePlacementsFromRow(row, boundaries, opts = {}) {
   const stamped = row?.rule_location || row?.affected_area || row?.place || null;
   let area;
   let method = "rule-scope";
@@ -409,12 +508,16 @@ export function rulePlacementsFromRow(row, boundaries) {
     ];
   }
   const coords = coordsFromPropertyRow(row);
-  let slots = placementsFromLocatedArea(merged, boundaries, { coords });
+  let slots = placementsFromLocatedArea(merged, boundaries, {
+    coords,
+    row,
+    cdCouncilIndex: opts.cdCouncilIndex || null,
+  });
   if (!slots.length && agencyCd) {
     slots = [{
       borough: boroughFromCommunityId(agencyCd),
       community: agencyCd,
-      council: null,
+      council: opts.cdCouncilIndex?.[agencyCd] || null,
     }];
     method = "agency_community_board";
     confidence = 0.85;
@@ -428,15 +531,26 @@ export function rulePlacementsFromRow(row, boundaries) {
     ...s,
     method: s.method || method,
     confidence: s.confidence ?? confidence,
-    confidence_tier: confidence >= 0.8 ? "strong" : confidence >= 0.55 ? "derived" : "weak",
+    confidence_tier: (s.confidence ?? confidence) >= 0.8
+      ? "strong"
+      : (s.confidence ?? confidence) >= 0.55 ? "derived" : "weak",
+    ...(s.borough === "Citywide" || s.method === "citywide" || area?.scope === "citywide"
+      ? { bucket: "citywide" }
+      : {}),
   }));
 }
 
 /**
  * Resolve money / contracts placement from publisher geo fields, coords, place stamp,
  * or human-derivation (performance place phrases, vendor place names, citywide body).
+ * Vendor / facility addresses geocode offline when present; genuine citywide awards
+ * land in the Citywide bucket. Never invents a district from agency name alone.
+ *
+ * @param {object} row
+ * @param {object} boundaries
+ * @param {{ cdCouncilIndex?: object|null }} [opts]
  */
-export function moneyPlacementsFromRow(row, boundaries) {
+export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
   const annotate = (slots, method, confidence) => slots.map((s) => ({
     ...s,
     method: s.method || method,
@@ -444,12 +558,25 @@ export function moneyPlacementsFromRow(row, boundaries) {
     confidence_tier: s.confidence_tier || (
       confidence >= 0.8 ? "strong" : confidence >= 0.55 ? "derived" : "weak"
     ),
+    ...(s.borough === "Citywide" || s.method === "citywide" || method === "citywide"
+      ? { bucket: "citywide" }
+      : {}),
   }));
 
   const stamped = row?.place || row?.location || row?.affected_area || null;
   if (stamped && typeof stamped === "object") {
+    // Citywide stamps first-class (not only borough bag).
+    if (stamped.scope === "citywide" && !stamped.boroughs?.length) {
+      return annotate(
+        [{ borough: "Citywide", community: null, council: null, bucket: "citywide" }],
+        stamped.derivation?.methods?.[0] || "citywide",
+        stamped.derivation?.confidence ?? 0.8,
+      );
+    }
     const slots = placementsFromLocatedArea(stamped, boundaries, {
       coords: coordsFromPropertyRow(row),
+      row,
+      cdCouncilIndex: opts.cdCouncilIndex || null,
     });
     if (slots.length) {
       return annotate(
@@ -472,6 +599,23 @@ export function moneyPlacementsFromRow(row, boundaries) {
     }
   }
 
+  // Offline geocode of vendor / facility address columns.
+  const geo = geocodeFromPlaceOrRow(stamped, row);
+  if (geo && boundaries) {
+    const community = resolveCommunityDistrict(geo.lat, geo.lon, boundaries);
+    const council = resolveCouncilDistrict(geo.lat, geo.lon, boundaries);
+    const borough = community
+      ? boroughFromCommunityId(community)
+      : (geo.borough || null);
+    if (community || council || borough) {
+      return annotate(
+        [{ borough, community, council }],
+        "civic_address_pip",
+        0.7,
+      );
+    }
+  }
+
   // Publisher district columns (warehouse / hand-stamped).
   const cds = parseZapCommunityDistricts(row?.community_district);
   const council = normalizeCouncilDistrictId(row?.council_district || row?.cc_district);
@@ -482,7 +626,7 @@ export function moneyPlacementsFromRow(row, boundaries) {
       cds.map((cd) => ({
         borough: borough || boroughFromCommunityId(cd),
         community: cd,
-        council: council || null,
+        council: council || opts.cdCouncilIndex?.[cd] || null,
       })),
       "publisher_district",
       0.95,
@@ -498,8 +642,18 @@ export function moneyPlacementsFromRow(row, boundaries) {
 
   // Human derivation: title/body place phrases, vendor gazetteer, citywide awards.
   const derived = placeFromDerivations(row || {}, { forLens: "money" });
+  if (derived.scope === "citywide" && !derived.boroughs?.length) {
+    return annotate(
+      [{ borough: "Citywide", community: null, council: null, bucket: "citywide" }],
+      derived.derivation?.methods?.[0] || "citywide",
+      derived.derivation?.confidence ?? 0.8,
+    );
+  }
   if (derived.scope !== "unlocated") {
-    const slots = placementsFromLocatedArea(derived, boundaries, {});
+    const slots = placementsFromLocatedArea(derived, boundaries, {
+      row,
+      cdCouncilIndex: opts.cdCouncilIndex || null,
+    });
     if (slots.length) {
       return annotate(
         slots,
@@ -509,12 +663,13 @@ export function moneyPlacementsFromRow(row, boundaries) {
     }
   }
 
-  // Title/agency place words (honest borough-only when present).
+  // Title/agency/vendor place words (honest borough-only when present).
+  // Skip bare "Citywide Administrative Services" agency — not a service geography.
   const haystack = plainText([
     row?.short_title,
-    row?.agency_name,
     row?.vendor_name,
     row?.additional_description_1,
+    row?.vendor_address,
   ].filter(Boolean).join(" "));
   const boros = boroughsIn(haystack);
   if (boros.length) {
@@ -524,6 +679,19 @@ export function moneyPlacementsFromRow(row, boundaries) {
       0.88,
     );
   }
+
+  // Service-borough / performance fields when warehouse columns exist.
+  const serviceBoro = canonBorough(
+    row?.service_borough || row?.borough_of_performance || row?.work_borough,
+  );
+  if (serviceBoro) {
+    return annotate(
+      [{ borough: serviceBoro, community: null, council: null }],
+      "service_borough",
+      0.85,
+    );
+  }
+
   const empty = [];
   empty.unlocated_reason = derived.unlocated_reason || "no_place_signal";
   return empty;
@@ -547,9 +715,15 @@ export function buildDistrictActivity(opts = {}) {
     throw new Error("buildDistrictActivity requires a labeled boundary layer");
   }
 
+  // CD → council via centroid PIP (land density join; labeled when used).
+  const cdCouncilIndex = opts.cdCouncilIndex
+    || buildCommunityToCouncilIndex(boundaries, resolveCouncilDistrict);
+
   const byBorough = Object.create(null);
   const byCommunity = Object.create(null);
   const byCouncil = Object.create(null);
+  const citywideBag = emptyLensCounts();
+  const virtualBag = emptyLensCounts();
   const unlocated = emptyLensCounts();
   const unlocatedReasons = {
     land: Object.create(null),
@@ -576,38 +750,67 @@ export function buildDistrictActivity(opts = {}) {
     unlocatedReasons[lens][key] = (unlocatedReasons[lens][key] || 0) + 1;
   }
 
-  function place(lens, { borough, community, council }) {
+  function isCitywideSlot(slot) {
+    return slot?.bucket === "citywide"
+      || slot?.borough === "Citywide"
+      || slot?.method === "citywide"
+      || slot?.method === "citywide_phrase"
+      || slot?.method === "rule_default_citywide";
+  }
+
+  function isVirtualSlot(slot) {
+    return slot?.bucket === "virtual"
+      || slot?.borough === "Virtual"
+      || slot?.method === "virtual_only";
+  }
+
+  function place(lens, { borough, community, council, method }) {
     sources[lens].counted += 1;
     let placed = false;
+    let resolvedCouncil = council ? normalizeCouncilDistrictId(council) : null;
     if (community) {
       const cd = normalizeCommunityDistrictId(community);
       if (cd) {
         bump(byCommunity, cd, lens);
         const b = borough || boroughFromCommunityId(cd);
-        if (b) bump(byBorough, b, lens);
+        if (b && b !== "Citywide" && b !== "Virtual") bump(byBorough, b, lens);
+        // Council join when publisher field missing: CD centroid → council polygon.
+        if (!resolvedCouncil && cdCouncilIndex[cd]) {
+          resolvedCouncil = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
+          if (!method) method = "cd_centroid_council";
+        }
         placed = true;
       }
     }
-    if (council) {
-      const id = normalizeCouncilDistrictId(council);
-      if (id) {
-        bump(byCouncil, id, lens);
-        placed = true;
-      }
+    if (resolvedCouncil) {
+      bump(byCouncil, resolvedCouncil, lens);
+      placed = true;
     }
-    if (!placed && borough) {
+    if (borough === "Citywide" || method === "citywide") {
+      citywideBag[lens] = (citywideBag[lens] || 0) + 1;
+      bump(byBorough, "Citywide", lens);
+      placed = true;
+    } else if (borough === "Virtual" || method === "virtual_only") {
+      virtualBag[lens] = (virtualBag[lens] || 0) + 1;
+      bump(byBorough, "Virtual", lens);
+      placed = true;
+    } else if (!placed && borough) {
       bump(byBorough, borough, lens);
       placed = true;
     }
-    if (placed) sources[lens].located += 1;
-    else unlocated[lens] += 1;
+    if (placed) {
+      sources[lens].located += 1;
+      if (method) bumpMethod(lens, method);
+    } else {
+      unlocated[lens] += 1;
+    }
   }
 
   /**
    * Count one source row once in sources.counted, fan out to districts, and
    * mark located if any slot placed. Multi-place rows bump district bags once
    * each without inflating sources.counted (unlike multi-CD ZAP, which is
-   * multi-row intentional).
+   * multi-row intentional). Citywide / virtual slots go to first-class bags.
    */
   function placeSlots(lens, slots) {
     sources[lens].counted += 1;
@@ -618,15 +821,36 @@ export function buildDistrictActivity(opts = {}) {
     }
     let placed = false;
     let method = null;
+    let sawCitywide = false;
+    let sawVirtual = false;
     for (const slot of slots) {
       let slotPlaced = false;
       if (slot.method) method = slot.method;
+      if (isVirtualSlot(slot)) {
+        sawVirtual = true;
+        slotPlaced = true;
+        continue;
+      }
+      if (isCitywideSlot(slot)) {
+        sawCitywide = true;
+        slotPlaced = true;
+        // Still also record in borough Citywide bag below.
+        continue;
+      }
       if (slot.community) {
         const cd = normalizeCommunityDistrictId(slot.community);
         if (cd) {
           bump(byCommunity, cd, lens);
           const b = slot.borough || boroughFromCommunityId(cd);
-          if (b) bump(byBorough, b, lens);
+          if (b && b !== "Citywide" && b !== "Virtual") bump(byBorough, b, lens);
+          // Supplement council from CD centroid when the slot has CD but no council.
+          if (!slot.council && cdCouncilIndex[cd]) {
+            const fromCd = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
+            if (fromCd) {
+              bump(byCouncil, fromCd, lens);
+              if (!method || method === slot.method) method = method || "cd_centroid_council";
+            }
+          }
           slotPlaced = true;
         }
       }
@@ -637,11 +861,23 @@ export function buildDistrictActivity(opts = {}) {
           slotPlaced = true;
         }
       }
-      if (!slotPlaced && slot.borough) {
+      if (!slotPlaced && slot.borough && slot.borough !== "Citywide" && slot.borough !== "Virtual") {
         bump(byBorough, slot.borough, lens);
         slotPlaced = true;
       }
       if (slotPlaced) placed = true;
+    }
+    if (sawCitywide) {
+      citywideBag[lens] = (citywideBag[lens] || 0) + 1;
+      bump(byBorough, "Citywide", lens);
+      placed = true;
+      method = method || "citywide";
+    }
+    if (sawVirtual) {
+      virtualBag[lens] = (virtualBag[lens] || 0) + 1;
+      bump(byBorough, "Virtual", lens);
+      placed = true;
+      method = method || "virtual_only";
     }
     if (placed) {
       sources[lens].located += 1;
@@ -652,17 +888,30 @@ export function buildDistrictActivity(opts = {}) {
     }
   }
 
-  // Land — publisher community_district on ZAP; resolve council via CD centroid when possible.
+  // Land — publisher community_district on ZAP; council via ZAP field or CD centroid.
   for (const row of opts.zapRows || []) {
     const cds = parseZapCommunityDistricts(row.community_district);
     const boro = canonBorough(row.borough) || (cds[0] ? boroughFromCommunityId(cds[0]) : null);
+    const publisherCouncil = normalizeCouncilDistrictId(
+      row.cc_district || row.council_district || row.city_council_district,
+    );
     if (cds.length) {
       for (const cd of cds) {
         // Multi-CD projects count once per listed district (honest multi-place).
-        place("land", { borough: boro, community: cd, council: row.cc_district });
+        place("land", {
+          borough: boro,
+          community: cd,
+          council: publisherCouncil,
+          method: publisherCouncil ? "publisher_council" : "cd_centroid_council",
+        });
       }
     } else {
-      place("land", { borough: boro, community: null, council: row.cc_district });
+      place("land", {
+        borough: boro,
+        community: null,
+        council: publisherCouncil,
+        method: publisherCouncil ? "publisher_council" : null,
+      });
     }
   }
 
@@ -677,27 +926,36 @@ export function buildDistrictActivity(opts = {}) {
       council = resolveCouncilDistrict(coords.lat, coords.lon, boundaries);
       if (!borough && community) borough = boroughFromCommunityId(community);
     }
-    place("property", { borough, community, council });
+    place("property", { borough, community, council, method: coords ? "coordinates_pip" : null });
   }
 
-  // Meetings — per-lens affected-area extractor + boundary layer PIP / CD resolve.
+  const placeOpts = { cdCouncilIndex };
+
+  // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
   for (const row of opts.meetingsRows || []) {
-    placeSlots("meetings", meetingPlacementsFromRow(row, boundaries));
+    placeSlots("meetings", meetingPlacementsFromRow(row, boundaries, placeOpts));
   }
 
-  // Rules — rule-scope / hearing affected-area extractors.
+  // Rules — rule-scope / hearing extractors; citywide → Citywide bag.
   for (const row of opts.rulesRows || []) {
-    placeSlots("rules", rulePlacementsFromRow(row, boundaries));
+    placeSlots("rules", rulePlacementsFromRow(row, boundaries, placeOpts));
   }
 
-  // Money — publisher geo, coords → PIP, title borough words when present.
+  // Money — publisher geo, coords/gazetteer PIP, citywide phrase, service borough.
   for (const row of opts.moneyRows || []) {
-    placeSlots("money", moneyPlacementsFromRow(row, boundaries));
+    placeSlots("money", moneyPlacementsFromRow(row, boundaries, placeOpts));
   }
 
   // Ensure every borough / regular CD / council id has a counts bag (zeros OK).
   for (const b of ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"]) {
     if (!byBorough[b]) byBorough[b] = emptyLensCounts();
+  }
+  // First-class non-polygon bags when any lens used them.
+  if (Object.values(citywideBag).some((n) => n > 0) && !byBorough.Citywide) {
+    byBorough.Citywide = emptyLensCounts();
+  }
+  if (Object.values(virtualBag).some((n) => n > 0) && !byBorough.Virtual) {
+    byBorough.Virtual = emptyLensCounts();
   }
   for (const d of boundaries.community_districts || []) {
     const id = d?.id;
@@ -723,10 +981,14 @@ export function buildDistrictActivity(opts = {}) {
       community_district: byCommunity,
       council_district: byCouncil,
     },
+    // First-class non-district bags — shown on the map surface at every level
+    // so city-scale rules and virtual meetings do not leave districts looking dead.
+    citywide: { ...citywideBag },
+    virtual: { ...virtualBag },
     unlocated: { ...unlocated },
     unlocated_reasons: unlocatedReasons,
     sources,
-    note: "Precomputed per-district per-lens activity for the map exploration surface. Counts are from committed corpora + human-derivation location extractors (matter place, venue line, agency/vendor place, citywide phrase — with method + confidence). Unlocated items stay in unlocated with a reason — never invented into a district.",
+    note: "Precomputed per-district per-lens activity for the map exploration surface. Counts use committed corpora + human-derivation extractors + offline civic-address gazetteer PIP against the boundary layer (method + confidence). Citywide and virtual are first-class buckets, not invented district pins. Unlocated items stay in unlocated with a reason.",
   };
 }
 

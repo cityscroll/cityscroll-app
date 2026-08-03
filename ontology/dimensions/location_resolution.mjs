@@ -112,6 +112,106 @@ export function evaluateLocationResolution(input = {}) {
     }));
   }
 
+  // Granularity regression: borough (or CD) density with all-zero finer level = finding.
+  // Pure helper lives next to the map model so tests can call it without the flywheel.
+  const granularity_findings = [];
+  if (mapActivity?.by_level) {
+    const levelTotal = (level, lens) => {
+      const bag = mapActivity.by_level[level] || {};
+      let sum = 0;
+      for (const [id, counts] of Object.entries(bag)) {
+        if (level === "borough" && (id === "Citywide" || id === "Virtual")) continue;
+        sum += Number(counts?.[lens]) || 0;
+      }
+      return sum;
+    };
+    for (const lensId of ["land", "property", "meetings"]) {
+      const boroughN = levelTotal("borough", lensId);
+      const cdN = levelTotal("community_district", lensId);
+      const councilN = levelTotal("council_district", lensId);
+      if (boroughN > 0 && cdN === 0) {
+        const finding = {
+          kind: "granularity-zero-collapse",
+          lens: lensId,
+          level: "community_district",
+          borough: boroughN,
+          community_district: cdN,
+          council_district: councilN,
+        };
+        granularity_findings.push(finding);
+        cards.push(makeDimensionCard({
+          dimension: DIMENSION_ID,
+          slug: `map-granularity-cd-${lensId}`,
+          title: `Map ${lensId} density collapses to zero at community-district level`,
+          rank_score: 94,
+          evidence: { ...finding, surface: "district_activity" },
+          verify: "node tools/build_district_activity.mjs --check",
+          demo_win: `${lensId} events that resolve to a borough also resolve to community districts when the publisher or venue supports it.`,
+          context: [
+            "site/data/district_activity.json",
+            "tools/lib/district_activity.mjs",
+            "site/civic_address_geocode.mjs",
+          ],
+          lesson_class: "spatial-map-granularity",
+        }));
+      }
+      if ((boroughN > 0 || cdN > 0) && councilN === 0) {
+        const finding = {
+          kind: "granularity-zero-collapse",
+          lens: lensId,
+          level: "council_district",
+          borough: boroughN,
+          community_district: cdN,
+          council_district: councilN,
+        };
+        granularity_findings.push(finding);
+        cards.push(makeDimensionCard({
+          dimension: DIMENSION_ID,
+          slug: `map-granularity-council-${lensId}`,
+          title: `Map ${lensId} density collapses to zero at council-district level`,
+          rank_score: 94,
+          evidence: { ...finding, surface: "district_activity" },
+          verify: "node tools/build_district_activity.mjs --check",
+          demo_win: `${lensId} events that resolve to a community district also join a City Council district via publisher field or geometry.`,
+          context: [
+            "site/data/district_activity.json",
+            "tools/lib/district_activity.mjs",
+            "site/civic_address_geocode.mjs",
+          ],
+          lesson_class: "spatial-map-granularity",
+        }));
+      }
+    }
+    // Virtual-only meetings must surface as a virtual bag, not silent unlocated.
+    const virtReason = Number(mapActivity.unlocated_reasons?.meetings?.virtual_only) || 0;
+    const virtBag = Number(mapActivity.virtual?.meetings) || 0;
+    if (virtReason > 0 && virtBag === 0) {
+      granularity_findings.push({
+        kind: "virtual-bucket-missing",
+        lens: "meetings",
+        virtual_reasons: virtReason,
+        virtual_bag: virtBag,
+      });
+      cards.push(makeDimensionCard({
+        dimension: DIMENSION_ID,
+        slug: "map-virtual-bucket-missing",
+        title: "Virtual-only meetings are unlocated without a virtual map bucket",
+        rank_score: 90,
+        evidence: {
+          kind: "virtual-bucket-missing",
+          lens: "meetings",
+          virtual_reasons: virtReason,
+          virtual_bag: virtBag,
+          surface: "district_activity",
+        },
+        verify: "node tools/build_district_activity.mjs --check",
+        demo_win: "Virtual-only meetings appear in a labeled Virtual bucket on the map surface.",
+        context: ["site/data/district_activity.json", "tools/lib/district_activity.mjs"],
+        lesson_class: "spatial-map-granularity",
+      }));
+    }
+  }
+
   const geocoded = pins.filter((pin) => hasCoordinates(pin));
   const communityResolved = geocoded.filter((pin) => clean(pin.community_district)).length;
   const councilResolved = geocoded.filter((pin) => clean(pin.council_district)).length;
@@ -181,7 +281,13 @@ export function evaluateLocationResolution(input = {}) {
 
   return {
     dimension: DIMENSION_ID,
-    metrics: { lens_rates, map_lens_rates, district_rates, boundary_metrics },
+    metrics: {
+      lens_rates,
+      map_lens_rates,
+      district_rates,
+      boundary_metrics,
+      granularity_findings,
+    },
     cards,
   };
 }

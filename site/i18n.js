@@ -253,6 +253,11 @@ const STRINGS = {
     map_areas_announce: "Showing {n} areas. Peak density {max}.",
     map_crumb_city: "New York City",
     map_crumb_council: "Council districts",
+    map_bucket_citywide: "Citywide",
+    map_bucket_virtual: "Virtual / online only",
+    map_citywide_detail_lead: "{n} citywide events in the current lens ({lens}). These apply across every district — not pinned to one place.",
+    map_virtual_detail_lead: "{n} virtual-only meetings in the current lens ({lens}). No in-person venue was published.",
+    map_citywide_also_applies: "city-scale items also apply here (not counted inside this district's polygons).",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
 
