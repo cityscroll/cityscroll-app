@@ -1,0 +1,1919 @@
+{
+  "schema": "cityscroll.ontology_coherence_payloads.v0",
+  "today": "2026-08-03",
+  "note": "Characterization inventory for ontology-coherence dimension. Land rows are ZAP spine fixtures; exam rows encode the open-window vs post-list rule shape.",
+  "land": [
+    {
+      "project_id": "2019K0147",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2019K0147",
+      "public_status": "Noticed",
+      "open_data": {
+        "project_id": "2019K0147",
+        "project_name": "2959 Avenue Y Rezoning",
+        "public_status": "Noticed",
+        "project_status": "Active",
+        "ulurp_numbers": "220026ZMK; N220027ZRK",
+        "borough": "Brooklyn",
+        "community_district": "K15",
+        "actions": "ZM; ZR",
+        "current_milestone": "EAS - Project Readiness",
+        "current_milestone_date": "2026-04-06T00:00:00.000",
+        "noticed_date": "2025-12-19T00:00:00.000"
+      },
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2019K0147",
+        "join": {
+          "zap": {
+            "matched": true,
+            "method": "exact_project_id",
+            "reason": null
+          },
+          "city_record": {
+            "matched": false,
+            "method": "exact_ulurp_token",
+            "count": 0
+          }
+        },
+        "events": [
+          {
+            "id": "zap-milestone:6b8bbc8a-61d8-e811-814d-1458d04d95c0",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2021-07-19",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:7b8bbc8a-61d8-e811-814d-1458d04d95c0",
+            "kind": "zap_milestone",
+            "title": "Land Use Fee Paid",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2021-08-17",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:838bbc8a-61d8-e811-814d-1458d04d95c0",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2021-12-27",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:876a9b33-3c67-ec11-8f8e-001dd8050c99",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-01-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:e529a939-3c67-ec11-8f8e-001dd8050c99",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-02-21",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:539ce34b-33b2-ed11-9885-001dd806aec1",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-06-02",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:e886e9a0-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-06-29",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:a886e9a0-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "CEQR Fee Paid",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-08-04",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:b886e9a0-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-10-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:779ce34b-33b2-ed11-9885-001dd806aec1",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-05",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:0526df25-24db-ee11-9079-001dd804e781",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-11",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:a826df25-24db-ee11-9079-001dd804e781",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-14",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:705f784f-36e2-ee11-904d-001dd804e106",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-15",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:e95f784f-36e2-ee11-904d-001dd804e106",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:dac56897-5ee5-ee11-904d-001dd804e106",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-28",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:9c9421f7-036a-ee11-9ae6-001dd804e341",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-04-22",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:ec9421f7-036a-ee11-9ae6-001dd804e341",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-06-28",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:8ac66897-5ee5-ee11-904d-001dd804e106",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-12-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:75d3c685-7abd-ef11-b8e9-001dd804e197",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-03-24",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:b7d3c685-7abd-ef11-b8e9-001dd804e197",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-04-14",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:8d9ca9ab-6519-f011-998b-001dd80822c1",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-04-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:c1cddb6b-8135-ef11-8409-001dd804efb7",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-05-02",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:fa9ca9ab-6519-f011-998b-001dd80822c1",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-05-19",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:d6cddb6b-8135-ef11-8409-001dd804efb7",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-11-19",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:f6cd2081-5ac5-f011-bbd3-001dd8006bc2",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-11-19",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:12db7fa7-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-31",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:42fd00be-87f0-f011-8407-001dd80d9613",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-01-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:5a921987-5ac5-f011-bbd3-001dd8006bc2",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-01-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:1adb7fa7-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-05",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:ddb0058b-fc0f-eb11-a812-001dd8309ba3",
+            "kind": "zap_milestone",
+            "title": "Review Session - Pre-Hearing Review / Post Referral",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-17",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:dfb0058b-fc0f-eb11-a812-001dd8309ba3",
+            "kind": "zap_milestone",
+            "title": "Post Hearing Follow-Up / Future Votes",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-17",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:42db7fa7-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-18",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:5adb7fa7-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Vote",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-02-18",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:8afd00be-87f0-f011-8407-001dd80d9613",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-04-23",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:3a538d37-9a3d-f111-88b3-001dd803ffab",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-04-28",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:92538d37-9a3d-f111-88b3-001dd803ffab",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "In Progress",
+            "status": "In Progress",
+            "outcome": null,
+            "time": {
+              "value": "2026-04-30",
+              "precision": "day",
+              "basis": "actual_start",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:62db7fa7-c324-e911-814f-1458d04d06c8",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-06-17",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:755ba318-a00f-f111-8407-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Request for Appeals Board Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-09-08",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:dbb0058b-fc0f-eb11-a812-001dd8309ba3",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-09-08",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          },
+          {
+            "id": "zap-milestone:00e7b024-a00f-f111-8407-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Appeals Board Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-09-23",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0147"
+            }
+          }
+        ],
+        "gaps": [
+          {
+            "slot": "city_record_notices",
+            "class": "source_unavailable",
+            "taxonomy": false,
+            "source": "City Record Online"
+          }
+        ],
+        "lag": {
+          "open_data_vs_portal": {
+            "status": "behind",
+            "days": 22,
+            "open_data_date": "2026-04-06",
+            "portal_date": "2026-04-28"
+          }
+        }
+      }
+    },
+    {
+      "project_id": "2022M0258",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2022M0258",
+      "public_status": "In Public Review",
+      "open_data": {
+        "project_id": "2022M0258",
+        "ulurp_numbers": "240046HAM; 240047PQM",
+        "current_milestone": "City Council Review",
+        "current_milestone_date": "2024-02-01T00:00:00.000",
+        "public_status": "In Public Review",
+        "project_status": "Active"
+      },
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2022M0258",
+        "join": {
+          "zap": {
+            "matched": true,
+            "method": "exact_project_id",
+            "reason": null
+          },
+          "city_record": {
+            "matched": false,
+            "method": "exact_ulurp_token",
+            "count": 0
+          }
+        },
+        "events": [
+          {
+            "id": "zap-milestone:f168e262-4c5d-ec11-8f8e-001dd8050708",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-07-26",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          },
+          {
+            "id": "zap-milestone:0b69e262-4c5d-ec11-8f8e-001dd8050708",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2023-08-02",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          },
+          {
+            "id": "zap-milestone:2b69e262-4c5d-ec11-8f8e-001dd8050708",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "detail": "Certified",
+            "status": "Completed",
+            "outcome": "Certified",
+            "time": {
+              "value": "2023-08-21",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          },
+          {
+            "id": "zap-disposition:b8550318-9a2c-ee11-9965-001dd8305eae+cc550318-9a2c-ee11-9965-001dd8305eae",
+            "kind": "zap_disposition",
+            "title": "Community Board",
+            "detail": "Conditional Favorable",
+            "status": "Submitted",
+            "outcome": "Conditional Favorable",
+            "time": {
+              "value": "2023-10-24",
+              "precision": "day",
+              "basis": "vote_date",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          },
+          {
+            "id": "zap-milestone:90b1da68-4c5d-ec11-8f8e-001dd8050708",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "detail": "Approved with Conditions",
+            "status": "Completed",
+            "outcome": "Approved with Conditions",
+            "time": {
+              "value": "2023-10-26",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          },
+          {
+            "id": "zap-milestone:a0b1da68-4c5d-ec11-8f8e-001dd8050708",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "detail": "Multiple Borough President Recommendations",
+            "status": "Completed",
+            "outcome": "Multiple Borough President Recommendations",
+            "time": {
+              "value": "2023-11-24",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          },
+          {
+            "id": "zap-milestone:c5b1da68-4c5d-ec11-8f8e-001dd8050708",
+            "kind": "zap_milestone",
+            "title": "Review Session - Pre-Hearing Review / Post Referral",
+            "detail": "To Public Hearing",
+            "status": "Completed",
+            "outcome": "To Public Hearing",
+            "time": {
+              "value": "2023-11-27",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+            }
+          }
+        ],
+        "gaps": [
+          {
+            "slot": "city_record_notices",
+            "class": "not_published",
+            "taxonomy": true,
+            "source": "City Record Online"
+          }
+        ],
+        "lag": {
+          "open_data_vs_portal": {
+            "status": "behind",
+            "days": 41,
+            "open_data_date": "2024-02-01",
+            "portal_date": "2024-03-13"
+          }
+        }
+      }
+    },
+    {
+      "project_id": "2019K0190",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2019K0190",
+      "open_data": {
+        "project_id": "2019K0190",
+        "public_status": "In Public Review",
+        "current_milestone": "EAS - Community Board Referral",
+        "current_milestone_date": "2026-03-11",
+        "noticed_date": "2025-08-15",
+        "certified_referred": "2026-03-02"
+      },
+      "spine": {
+        "schema_version": 1,
+        "project_id": "2019K0190",
+        "join": {
+          "zap": {
+            "matched": true,
+            "method": "exact_project_id",
+            "reason": null
+          },
+          "city_record": {
+            "matched": false,
+            "method": "exact_ulurp_token",
+            "count": 0
+          }
+        },
+        "events": [
+          {
+            "id": "zap-milestone:bd0a7b56-ac8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-02-22",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:c30a7b56-ac8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Land Use Fee Paid",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-03-12",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:41fc9f65-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-06-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:2cfc9f65-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "CEQR Fee Paid",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-06-20",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:d50a7b56-ac8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-06-27",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:6e29986b-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-09-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:f5fb4907-ba75-ef11-a670-001dd804e106",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-10-23",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:f90c8492-9e34-ef11-8409-001dd804efb7",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-11-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:7a0e8492-9e34-ef11-8409-001dd804efb7",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2024-12-30",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:ae88241f-d9c6-ef11-b8e9-001dd804e2db",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-02-13",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:1cfc4907-ba75-ef11-a670-001dd804e106",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-02-20",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:9689241f-d9c6-ef11-b8e9-001dd804e2db",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-05-19",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:75559529-dc34-f011-8c4e-001dd80821af",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-06-20",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:7e4f38dd-98ef-ef11-be20-001dd80a66b8",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-06-26",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:78569529-dc34-f011-8c4e-001dd80821af",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-06-30",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:854695d0-ce55-f011-877a-001dd806079d",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-06-30",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:194795d0-ce55-f011-877a-001dd806079d",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-08-28",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:e04f38dd-98ef-ef11-be20-001dd80a66b8",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-09-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:a513cd07-4184-f011-b4cb-001dd802e9e7",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-10-29",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:37bde738-a994-f011-b4cb-001dd80f9249",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-11-03",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:241f903e-08b5-f011-bbd2-001dd80f7338",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-11-24",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:4d07e03e-a994-f011-b4cb-001dd80f9249",
+            "kind": "zap_milestone",
+            "title": "CEQR Fee Paid",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-12",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:c707e03e-a994-f011-b4cb-001dd80f9249",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-12",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:821f903e-08b5-f011-bbd2-001dd80f7338",
+            "kind": "zap_milestone",
+            "title": "Land Use Application Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-17",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:b88485e9-a6d7-f011-8544-001dd8089923",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-18",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:508585e9-a6d7-f011-8544-001dd8089923",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-22",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:70169a5f-82df-f011-8543-001dd808e646",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2025-12-29",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:a8169a5f-82df-f011-8543-001dd808e646",
+            "kind": "zap_milestone",
+            "title": "Environmental Assessment Statement Filed",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-01-15",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:b7b0058b-fc0f-eb11-a812-001dd8309ba3",
+            "kind": "zap_milestone",
+            "title": "Application Reviewed at City Planning Commission Review Session",
+            "detail": "Certified",
+            "status": "Completed",
+            "outcome": "Certified",
+            "time": {
+              "value": "2026-03-02",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:f929986b-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Community Board Review",
+            "detail": "In Progress",
+            "status": "In Progress",
+            "outcome": null,
+            "time": {
+              "value": "2026-03-11",
+              "precision": "day",
+              "basis": "actual_start",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-disposition:bf013b8a-551d-f111-8343-001dd80f20e8+c7013b8a-551d-f111-8343-001dd80f20e8",
+            "kind": "zap_disposition",
+            "title": "Borough President",
+            "detail": "Conditional Favorable",
+            "status": "Submitted",
+            "outcome": "Conditional Favorable",
+            "time": {
+              "value": "2026-05-13",
+              "precision": "day",
+              "basis": "hearing_date",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:022a986b-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "Borough President Review",
+            "detail": "Conditional Favorable",
+            "status": "Completed",
+            "outcome": "Conditional Favorable",
+            "time": {
+              "value": "2026-06-10",
+              "precision": "day",
+              "basis": "actual_end",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:b9b0058b-fc0f-eb11-a812-001dd8309ba3",
+            "kind": "zap_milestone",
+            "title": "Review Session - Pre-Hearing Review / Post Referral",
+            "detail": "To Public Hearing",
+            "status": "Completed",
+            "outcome": "To Public Hearing",
+            "time": {
+              "value": "2026-06-15",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:292a986b-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Review",
+            "detail": "Hearing Closed",
+            "status": "Completed",
+            "outcome": "Hearing Closed",
+            "time": {
+              "value": "2026-06-17",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:bbb0058b-fc0f-eb11-a812-001dd8309ba3",
+            "kind": "zap_milestone",
+            "title": "Post Hearing Follow-Up / Future Votes",
+            "detail": "Completed",
+            "status": "Completed",
+            "outcome": null,
+            "time": {
+              "value": "2026-07-13",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:3d2a986b-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "City Planning Commission Vote",
+            "detail": "Approval",
+            "status": "Completed",
+            "outcome": "Approval",
+            "time": {
+              "value": "2026-07-15",
+              "precision": "day",
+              "basis": "review_meeting",
+              "certainty": "actual"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:67d9eed0-ee6f-f111-ab0d-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Request for Appeals Board Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-10-19",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:4429f0e2-ee6f-f111-ab0d-001dd803dca7",
+            "kind": "zap_milestone",
+            "title": "Appeals Board Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-11-04",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          },
+          {
+            "id": "zap-milestone:432a986b-ad8b-e911-a98b-001dd8308025",
+            "kind": "zap_milestone",
+            "title": "City Council Review",
+            "detail": "Not Started",
+            "status": "Not Started",
+            "outcome": null,
+            "time": {
+              "value": "2026-11-16",
+              "precision": "day",
+              "basis": "planned_completion",
+              "certainty": "planned"
+            },
+            "source": {
+              "id": "zap-project-api",
+              "label": "Zoning Application Portal",
+              "url": "https://zap.planning.nyc.gov/projects/2019K0190"
+            }
+          }
+        ],
+        "gaps": [
+          {
+            "slot": "city_record_notices",
+            "class": "not_published",
+            "taxonomy": true,
+            "source": "City Record Online"
+          }
+        ],
+        "lag": {
+          "open_data_vs_portal": {
+            "status": "behind",
+            "days": 141,
+            "open_data_date": "2026-03-11",
+            "portal_date": "2026-07-30"
+          }
+        }
+      },
+      "statutory_clock": {
+        "schema_version": 1,
+        "statute_ref": "NYC Charter §197-c",
+        "model_name": "ulurp_statutory_clock",
+        "model_version": "1.0.0",
+        "status": "open",
+        "reason": null,
+        "certified_date": "2026-03-02",
+        "total_days": 205,
+        "phases": [
+          {
+            "phase_id": "community_board",
+            "short": "CB",
+            "label_key": "land_phase_community_board",
+            "days": 60,
+            "cumulative_days": 60,
+            "model_stage": "community_board",
+            "due_date": "2026-05-01",
+            "statute_ref": "NYC Charter §197-c",
+            "status": "open"
+          },
+          {
+            "phase_id": "borough_president",
+            "short": "BP",
+            "label_key": "land_phase_borough_president",
+            "days": 30,
+            "cumulative_days": 90,
+            "model_stage": "borough_president",
+            "due_date": "2026-05-31",
+            "statute_ref": "NYC Charter §197-c",
+            "status": "open"
+          },
+          {
+            "phase_id": "cpc",
+            "short": "CPC",
+            "label_key": "land_phase_cpc",
+            "days": 60,
+            "cumulative_days": 150,
+            "model_stage": "cpc",
+            "due_date": "2026-07-30",
+            "statute_ref": "NYC Charter §197-c",
+            "status": "open"
+          },
+          {
+            "phase_id": "city_council",
+            "short": "Council",
+            "label_key": "land_phase_city_council",
+            "days": 50,
+            "cumulative_days": 200,
+            "model_stage": "city_council",
+            "due_date": "2026-09-18",
+            "statute_ref": "NYC Charter §197-c",
+            "status": "open"
+          },
+          {
+            "phase_id": "mayoral_appeals",
+            "short": "Mayor",
+            "label_key": "land_phase_mayoral_appeals",
+            "days": 5,
+            "cumulative_days": 205,
+            "model_stage": "mayoral_appeals",
+            "due_date": "2026-09-23",
+            "statute_ref": "NYC Charter §197-c",
+            "status": "open"
+          }
+        ],
+        "disposition": {
+          "phase_id": "disposition",
+          "predicted_event_kind": "land.zap_disposition",
+          "due_date": "2026-09-23",
+          "cumulative_days": 205,
+          "statute_ref": "NYC Charter §197-c",
+          "status": "open"
+        },
+        "evidence_event_ids": [
+          "zap-certified-referred:2019K0190:2026-03-02",
+          "zap-milestone:b7b0058b-fc0f-eb11-a812-001dd8309ba3"
+        ],
+        "generated_at": "2026-08-03T07:55:42.953Z"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "exam_number": "7016",
+      "application": {
+        "status": "open",
+        "from": "2026-07-01",
+        "to": "2026-08-15"
+      },
+      "stages": {
+        "application": {
+          "status": "matched",
+          "from": "2026-07-01",
+          "to": "2026-08-15"
+        },
+        "list_establishment": {
+          "status": "unmatched"
+        },
+        "certification": {
+          "status": "unmatched"
+        },
+        "appointment": {
+          "status": "unmatched"
+        }
+      }
+    },
+    {
+      "exam_number": "9999-coherence-sample",
+      "application": {
+        "status": "open",
+        "from": "2026-07-01",
+        "to": "2026-09-01"
+      },
+      "stages": {
+        "application": {
+          "status": "matched",
+          "from": "2026-07-01",
+          "to": "2026-09-01"
+        },
+        "list_establishment": {
+          "status": "matched",
+          "established_date": "2026-07-20",
+          "list_count": 12
+        },
+        "certification": {
+          "status": "unmatched"
+        },
+        "appointment": {
+          "status": "unmatched"
+        }
+      }
+    }
+  ]
+}
