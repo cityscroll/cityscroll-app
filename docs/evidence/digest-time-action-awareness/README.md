@@ -28,11 +28,11 @@ Where data has no actionable steps, the email keeps a concise honest pointer
 
 ## Fixture kinds
 
-- **rfp**: money — construction solicitations (`20260701001`)
-- **award**: money — awards ≥ $100k (`20260702002`)
-- **rules**: rules — Department of Transportation (`20260715001`)
-- **meetings**: meetings — FCRC hearings (`20260716022`)
-- **rezone**: land — ULURP in public review (`2022M0258`)
+- **rfp**: money — construction solicitations (`FIX-SOL-0001`)
+- **award**: money — awards ≥ $100k (`FIX-AWD-0002`)
+- **rules**: rules — Department of Transportation (`FIX-RULE-0001`)
+- **meetings**: meetings — public hearings (`FIX-MTG-0001`)
+- **rezone**: land — ULURP in public review (`FIX-ZAP-0001`)
 
 ## Idempotency
 
@@ -48,27 +48,27 @@ exercise send timing.
     {
       "kind": "rfp",
       "label": "money — construction solicitations",
-      "request_or_project_id": "20260701001"
+      "request_or_project_id": "FIX-SOL-0001"
     },
     {
       "kind": "award",
       "label": "money — awards ≥ $100k",
-      "request_or_project_id": "20260702002"
+      "request_or_project_id": "FIX-AWD-0002"
     },
     {
       "kind": "rules",
       "label": "rules — Department of Transportation",
-      "request_or_project_id": "20260715001"
+      "request_or_project_id": "FIX-RULE-0001"
     },
     {
       "kind": "meetings",
-      "label": "meetings — FCRC hearings",
-      "request_or_project_id": "20260716022"
+      "label": "meetings — public hearings",
+      "request_or_project_id": "FIX-MTG-0001"
     },
     {
       "kind": "rezone",
       "label": "land — ULURP in public review",
-      "request_or_project_id": "2022M0258"
+      "request_or_project_id": "FIX-ZAP-0001"
     }
   ],
   "files": [

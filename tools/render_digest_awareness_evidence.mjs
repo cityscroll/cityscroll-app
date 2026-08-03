@@ -20,37 +20,39 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(__dirname, "../docs/evidence/digest-time-action-awareness");
 const TODAY = "2026-08-02";
 
+// Synthetic fixtures only (RFC 2606 example domains / 555 numbers / FIX-* ids).
+// Not live City Record or ZAP rows.
 const fixtures = [
   {
     kind: "rfp",
     label: "money — construction solicitations",
     row: {
-      request_id: "20260701001",
+      request_id: "FIX-SOL-0001",
       short_title: "Street resurfacing materials",
       agency_name: "Department of Transportation",
       type_of_notice_description: "Solicitation",
       due_date: "2026-08-10",
-      email: "procure@dot.nyc.gov",
-      contact_name: "Jane Doe",
-      contact_phone: "212-555-0100",
+      email: "procure@example.com",
+      contact_name: "Testy McTestface",
+      contact_phone: "555-0100",
       pin: "DOT-RFQ-2026-01",
-      address_to_request: "55 Water Street, NY",
+      address_to_request: "1 Example Street, NY",
       selection_method_description: "Competitive Sealed Bid",
       additional_description_1:
-        "Vendors must download the solicitation documents at https://edc.nyc/rfps before submitting a proposal.",
+        "Vendors must download the solicitation documents at https://example.com/rfps before submitting a proposal.",
     },
   },
   {
     kind: "award",
     label: "money — awards ≥ $100k",
     row: {
-      request_id: "20260702002",
+      request_id: "FIX-AWD-0002",
       short_title: "Snow removal equipment maintenance",
       agency_name: "Department of Sanitation",
       type_of_notice_description: "Award",
       vendor_name: "Acme Snow & Ice LLC",
       contract_amount: 250000,
-      pin: "85024B0001",
+      pin: "PIN-FIXTURE-0001",
       start_date: "2026-07-02",
     },
   },
@@ -58,7 +60,7 @@ const fixtures = [
     kind: "rules",
     label: "rules — Department of Transportation",
     row: {
-      request_id: "20260715001",
+      request_id: "FIX-RULE-0001",
       start_date: "2026-07-15T00:00:00.000",
       agency_name: "Department of Transportation",
       short_title: "Commercial curb-use rule",
@@ -69,32 +71,32 @@ const fixtures = [
         event_at: "2026-09-15",
         publication_at: "2026-08-01T12:30:00.000Z",
         recorded_at: "2026-08-01T12:55:00.000Z",
-        url: "https://rules.cityofnewyork.us/rule/commercial-curb-use/",
+        url: "https://example.com/rules/fixture-curb-use/",
       },
     },
   },
   {
     kind: "meetings",
-    label: "meetings — FCRC hearings",
+    label: "meetings — public hearings",
     row: {
-      request_id: "20260716022",
+      request_id: "FIX-MTG-0001",
       short_title: "Franchise and Concession Review Committee public hearing",
       agency_name: "Mayor's Office of Contract Services",
       section_name: "Public Hearings and Meetings",
       type_of_notice_description: "Public Hearing",
       event_date: "2026-08-05",
-      email: "fcrc@mocs.nyc.gov",
-      street_address_1: "22 Reade Street",
-      building_name: "Spector Hall",
+      email: "hearing@example.com",
+      street_address_1: "1 Example Plaza",
+      building_name: "Fixture Hall",
       additional_description_1:
-        "Written testimony may be submitted electronically to fcrc@mocs.nyc.gov until the close of the public hearing. Join via Zoom at https://zoom.us/j/123456789.",
+        "Written testimony may be submitted electronically to hearing@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
     },
   },
   {
     kind: "rezone",
     label: "land — ULURP in public review",
     row: {
-      project_id: "2022M0258",
+      project_id: "FIX-ZAP-0001",
       project_name: "Harbor rezoning",
       public_status: "In Public Review",
       borough: "Manhattan",

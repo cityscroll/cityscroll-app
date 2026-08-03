@@ -55,21 +55,22 @@ test("daysUntilEvent is pure date arithmetic (no clock skew from TZ)", () => {
 
 // ---- solicitation: package + contact + closing-soon ----------------------
 
+// Synthetic fixtures only (RFC 2606 / 555 numbers) — not live City Record rows.
 const solicitation = {
-  request_id: "20260701001",
+  request_id: "FIX-SOL-0001",
   short_title: "Street resurfacing materials",
   agency_name: "Department of Transportation",
   type_of_notice_description: "Solicitation",
   due_date: "2026-08-10",
-  email: "procure@dot.nyc.gov",
-  contact_name: "Jane Doe",
-  contact_phone: "212-555-0100",
+  email: "procure@example.com",
+  contact_name: "Testy McTestface",
+  contact_phone: "555-0100",
   // Non-PASSPort-shaped pin so handoff stays notice-extracted / package URL.
   pin: "DOT-RFQ-2026-01",
-  address_to_request: "55 Water Street, NY",
+  address_to_request: "1 Example Street, NY",
   selection_method_description: "Competitive Sealed Bid",
   additional_description_1:
-    "Vendors must download the solicitation documents at https://edc.nyc/rfps before submitting.",
+    "Vendors must download the solicitation documents at https://example.com/rfps before submitting.",
 };
 
 test("solicitation awareness: closing-soon + package URL + contact steps", () => {
@@ -82,8 +83,8 @@ test("solicitation awareness: closing-soon + package URL + contact steps", () =>
   assert.notEqual(a.action.label_key, "read_official_notice");
   const packageStep = a.steps.find((s) => /package/i.test(s.label));
   assert.ok(packageStep, "package URL from notice body");
-  assert.match(packageStep.value, /edc\.nyc\/rfps/);
-  assert.ok(a.steps.some((s) => s.label === "Email" && s.value.includes("procure@dot")));
+  assert.match(packageStep.value, /example\.com\/rfps/);
+  assert.ok(a.steps.some((s) => s.label === "Email" && s.value.includes("procure@example.com")));
 });
 
 test("solicitation email HTML includes time state and next-step CTA", () => {
@@ -91,20 +92,20 @@ test("solicitation email HTML includes time state and next-step CTA", () => {
   assert.match(html, /Solicitation/);
   assert.match(html, /Closing soon|due Aug 10/i);
   assert.match(html, /Next step:/);
-  assert.match(html, /edc\.nyc\/rfps/);
+  assert.match(html, /example\.com\/rfps/);
   assert.doesNotMatch(html, /use the response instructions in the official notice/i);
 });
 
 // ---- award: vendor/amount, never a bid CTA --------------------------------
 
 const award = {
-  request_id: "20260702002",
+  request_id: "FIX-AWD-0002",
   short_title: "Snow removal equipment maintenance",
   agency_name: "Department of Sanitation",
   type_of_notice_description: "Award",
   vendor_name: "Acme Snow & Ice LLC",
   contract_amount: 250000,
-  pin: "85024B0001",
+  pin: "PIN-FIXTURE-0001",
 };
 
 test("award awareness: phase Award + awarded-to action (no bid CTA)", () => {
@@ -120,7 +121,7 @@ test("award awareness: phase Award + awarded-to action (no bid CTA)", () => {
 // ---- rules: comment-open temporal + event clock ---------------------------
 
 const rulesRow = {
-  request_id: "20260715001",
+  request_id: "FIX-RULE-0001",
   start_date: "2026-07-15T00:00:00.000",
   agency_name: "Department of Transportation",
   short_title: "Commercial curb-use rule",
@@ -129,7 +130,7 @@ const rulesRow = {
   temporal_action: {
     kind: "rules-comment-open",
     event_at: "2026-09-15",
-    url: "https://rules.cityofnewyork.us/rule/commercial-curb-use/",
+    url: "https://example.com/rules/fixture-curb-use/",
   },
 };
 
@@ -141,7 +142,7 @@ test("rules awareness: open through comment-close event time + NYC Rules CTA", (
   const html = itemAwarenessHtml(rulesRow, esc, "en", { kind: "rules", today: TODAY });
   assert.match(html, /Comments open through Sep 15/);
   assert.match(html, /Comment on NYC Rules/);
-  assert.match(html, /rules\.cityofnewyork\.us\/rule\/commercial-curb-use/);
+  assert.match(html, /example\.com\/rules\/fixture-curb-use/);
 });
 
 test("rules Spanish copy stays localized for the classic comment-open line", () => {
@@ -154,17 +155,17 @@ test("rules Spanish copy stays localized for the classic comment-open line", () 
 // ---- hearing: event date status + participation fields --------------------
 
 const hearing = {
-  request_id: "20260716022",
+  request_id: "FIX-MTG-0001",
   short_title: "Franchise and Concession Review Committee public hearing",
   agency_name: "Mayor's Office of Contract Services",
   section_name: "Public Hearings and Meetings",
   type_of_notice_description: "Public Hearing",
   event_date: "2026-08-05",
-  email: "fcrc@mocs.nyc.gov",
-  street_address_1: "22 Reade Street",
-  building_name: "Spector Hall",
+  email: "hearing@example.com",
+  street_address_1: "1 Example Plaza",
+  building_name: "Fixture Hall",
   additional_description_1:
-    "Written testimony may be submitted electronically to fcrc@mocs.nyc.gov until the close of the public hearing. Join via Zoom at https://zoom.us/j/123456789.",
+    "Written testimony may be submitted electronically to hearing@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
 };
 
 test("hearing awareness: closing-soon event + join / testimony steps", () => {
@@ -176,13 +177,13 @@ test("hearing awareness: closing-soon event + join / testimony steps", () => {
   assert.ok(a.action);
   const html = itemAwarenessHtml(hearing, esc, "en", { kind: "meetings", today: TODAY });
   assert.match(html, /Hearing|meeting/i);
-  assert.match(html, /Next step:|Join|testimony|fcrc@mocs/i);
+  assert.match(html, /Next step:|Join|testimony|hearing@example\.com/i);
 });
 
 // ---- land / rezone: ZAP public status + project handoff -------------------
 
 const rezone = {
-  project_id: "2022M0258",
+  project_id: "FIX-ZAP-0001",
   project_name: "Harbor rezoning",
   public_status: "In Public Review",
   borough: "Manhattan",
@@ -197,7 +198,7 @@ test("rezone awareness: phase from public_status + ZAP comment destination", () 
   assert.match(a.phase || "", /In Public Review|Land use/i);
   assert.equal(a.pointer_only, false);
   assert.ok(a.action?.destination);
-  assert.match(a.action.destination, /zap\.planning\.nyc\.gov\/projects\/2022M0258/);
+  assert.match(a.action.destination, /zap\.planning\.nyc\.gov\/projects\/FIX-ZAP-0001/);
   // project_brief must not invent a hearing CTA — label is View/comment on ZAP.
   assert.match(a.action.label || "", /ZAP|comment/i);
   assert.doesNotMatch(a.action.label || "", /hearing notice/i);
@@ -234,7 +235,7 @@ test("subDigestHtml embeds awareness for solicitation and award items", () => {
   );
   assert.match(html, /Closing soon|Open through|Solicitation/i);
   assert.match(html, /Next step:/);
-  assert.match(html, /edc\.nyc\/rfps/);
+  assert.match(html, /example\.com\/rfps/);
 
   const awardHtml = subDigestHtml(
     "big awards",
@@ -250,12 +251,12 @@ test("subDigestHtml embeds awareness for solicitation and award items", () => {
 // ---- idempotent reconciliation contract intact ----------------------------
 
 test("awareness render does not change temporal delivery keys", () => {
-  const NOTICE_ID = "20260715001";
+  const NOTICE_ID = "FIX-RULE-0001";
   const record = {
     request_id: NOTICE_ID,
     stage: "comment-open",
     nyc_rules: {
-      url: "https://rules.cityofnewyork.us/rule/commercial-curb-use/",
+      url: "https://example.com/rules/fixture-curb-use/",
       comment_by_date: "2026-09-15",
       pub_date: "2026-07-15T12:00:00.000Z",
     },
@@ -313,5 +314,5 @@ test("matterFromDigestRow maps digest kind rfp → solicitation", () => {
   const m = matterFromDigestRow(solicitation, { kind: "rfp", today: TODAY });
   assert.equal(m.kind, "solicitation");
   assert.equal(m.deadline, "2026-08-10");
-  assert.ok(m.notice_text.includes("edc.nyc"));
+  assert.ok(m.notice_text.includes("example.com/rfps"));
 });
