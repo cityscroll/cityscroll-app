@@ -43,7 +43,7 @@ def validate_state(state: object, path: str) -> None:
 def validate_entry(entry: object, index: int) -> None:
     path = f"entries[{index}]"
     require(isinstance(entry, dict), f"{path} must be an object")
-    allowed_fields = {"id", "url", "feature", "description", "expectations", "localOnly", "postDeployOnly"}
+    allowed_fields = {"id", "url", "feature", "description", "expectations", "localOnly", "postDeployOnly"}  # source: site/demo/demo-links.schema.json
     require(set(entry) <= allowed_fields, f"{path} has unknown fields")
     require(
         {"id", "url", "feature", "description", "expectations"} <= set(entry),
