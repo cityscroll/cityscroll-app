@@ -46,6 +46,13 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
   );
   const views = readJson("ontology/fixtures/dimensions/readability_views.json");
   const disagreements = readJson("ontology/fixtures/dimensions/cross_source_disagreements.json");
+  const location_resolution = readJson("ontology/fixtures/dimensions/location_resolution.json");
+  const temporal_scorecard = readJson(
+    "worker/test/fixtures/civic-time/expected_temporal_completeness.json",
+  );
+  const lifecycle_coherence_scorecard = readJson(
+    "worker/test/fixtures/lifecycle-coherence/expected_coherence.json",
+  );
   const source_coverage = readJson("entity_resolution/source_coverage.json");
   const gap_taxonomy = readJson("site/data/gap_taxonomy.json");
   const source_contracts = readJson("site/data/source_contracts.json");
@@ -99,6 +106,10 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
     gap_taxonomy,
     views: views?.views || views || [],
     disagreements: disagreements?.disagreements || disagreements || [],
+    claim_labeled_disagree_families: disagreements?.claim_labeled_disagree_families || [],
+    location_resolution,
+    temporal_scorecard,
+    lifecycle_coherence_scorecard,
     source_coverage,
     source_contracts,
     registry_sync,

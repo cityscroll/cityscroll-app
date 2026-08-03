@@ -12,6 +12,10 @@ import {
   evaluateCrossSourceConsistency,
   DIMENSION_ID as CROSS_SOURCE,
 } from "./cross_source_consistency.mjs";
+import {
+  evaluateLocationResolution,
+  DIMENSION_ID as LOCATION_RESOLUTION,
+} from "./location_resolution.mjs";
 
 export { DIMENSION_IDS, MULTI_FLYWHEEL_POLICY_VERSION, MULTI_CARD_SCHEMA, makeDimensionCard, rankCards } from "./shared.mjs";
 
@@ -21,6 +25,7 @@ export const DIMENSION_EVALUATORS = Object.freeze({
   [ONTOLOGY_ENRICHMENT]: evaluateOntologyEnrichment,
   [COVERAGE]: evaluateCoverage,
   [CROSS_SOURCE]: evaluateCrossSourceConsistency,
+  [LOCATION_RESOLUTION]: evaluateLocationResolution,
 });
 
 export function getEvaluator(dimensionId) {

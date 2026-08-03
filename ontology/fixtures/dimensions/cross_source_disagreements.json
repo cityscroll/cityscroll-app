@@ -1,6 +1,27 @@
 {
   "schema": "cityscroll.cross_source_disagreements.v0",
-  "note": "Subjects where two public sources disagree on a field. Reconciliation cards retain both assertions; they never pick a silent winner.",
+  "note": "Subjects where two public sources disagree on a field. Reconciliation cards retain both assertions; they never pick a silent winner. Join-family rates measure whether every eligible public disagreement carries a complete claim layer.",
+  "claim_labeled_disagree_families": [
+    {
+      "id": "city-record-x-ocp-awards",
+      "label": "City Record × OCP awards",
+      "sources": ["city-record", "ocp-recent-contract-awards"],
+      "eligible": 2,
+      "labeled": 2,
+      "rate": 1,
+      "fixture": "worker/test/fixtures/claim-layer/ocp_joined_awards.json"
+    },
+    {
+      "id": "passport-contracts-x-checkbook-contracts",
+      "label": "PASSPort contracts × Checkbook contracts",
+      "sources": ["passport-public-contracts", "checkbook-contracts"],
+      "eligible": 1,
+      "labeled": 0,
+      "rate": 0,
+      "subject_refs": ["contract:CT107120248803393"],
+      "verify": "node -e \"const x=require('./ontology/fixtures/dimensions/cross_source_disagreements.json'); const r=x.claim_labeled_disagree_families.find((v)=>v.id==='passport-contracts-x-checkbook-contracts'); process.exit(r && r.eligible > 0 && r.labeled === r.eligible ? 0 : 1)\""
+    }
+  ],
   "disagreements": [
     {
       "id": "ocp-vs-city-record-award-amount",

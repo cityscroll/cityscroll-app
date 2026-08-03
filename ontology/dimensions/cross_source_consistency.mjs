@@ -10,18 +10,24 @@ export const DIMENSION_ID = "cross-source-consistency";
 /**
  * @param {object} input
  * @param {Array<object>} [input.disagreements] — explicit subject disagreements
+ * @param {Array<object>} [input.claim_labeled_disagree_families] — per-join-family claim coverage
  * @param {Array<object>} [input.cross_spine_bundles] — bundles to validate
  * @param {object} [input.cross_spine_summary] — { checked, contradictions }
  */
 export function evaluateCrossSourceConsistency(input = {}) {
   const disagreements = Array.isArray(input.disagreements) ? input.disagreements : [];
   const bundles = Array.isArray(input.cross_spine_bundles) ? input.cross_spine_bundles : [];
+  const claimFamilies = Array.isArray(input.claim_labeled_disagree_families)
+    ? input.claim_labeled_disagree_families
+    : [];
   const cards = [];
   const metrics = {
     disagreements_checked: disagreements.length,
     open_disagreements: 0,
     cross_spine_checked: 0,
     cross_spine_contradictions: 0,
+    claim_families_checked: claimFamilies.length,
+    claim_families_below_full_coverage: 0,
   };
 
   for (const row of disagreements) {
@@ -55,6 +61,39 @@ export function evaluateCrossSourceConsistency(input = {}) {
       ].filter(Boolean),
       lesson_class: "cross-source-disagreement",
       needs_human: row.needs_human || "reconciliation_policy",
+    }));
+  }
+
+  for (const family of claimFamilies) {
+    const familyId = String(family.id || family.join_family || "").trim();
+    if (!familyId) continue;
+    const eligible = Number(family.eligible) || 0;
+    const labeled = Number(family.labeled) || 0;
+    const coverage = eligible > 0 ? labeled / eligible : 1;
+    if (coverage >= 1) continue;
+    metrics.claim_families_below_full_coverage += 1;
+    cards.push(makeDimensionCard({
+      dimension: DIMENSION_ID,
+      slug: `claim-labels-${slugify(familyId)}`,
+      title: `Label every public disagreement in ${family.label || familyId}`,
+      rank_score: 90,
+      evidence: {
+        kind: "claim-labeled-disagree-rate",
+        join_family: familyId,
+        eligible,
+        labeled,
+        public_claim_labeled_disagree_rate: coverage,
+        sources: family.sources || [],
+      },
+      verify: family.verify
+        || "node --test worker/test/claim_layer.test.mjs test/multi_flywheel_dimensions.test.mjs",
+      demo_win: family.demo_win
+        || `Conflicting values in ${family.label || familyId} retain both source assertions without a silent winner.`,
+      context: [
+        "worker/src/lib/claim_layer.mjs",
+        "ontology/fixtures/dimensions/cross_source_disagreements.json",
+      ],
+      lesson_class: "cross-source-claim-label-coverage",
     }));
   }
 
