@@ -31,7 +31,7 @@ function loadJson(rel) {
   return JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 }
 
-test("dimension catalog lists seven evaluators", () => {
+test("dimension catalog lists eight evaluators", () => {
   assert.deepEqual(DIMENSION_IDS, [
     "data-integrity",
     "readability",
@@ -40,6 +40,7 @@ test("dimension catalog lists seven evaluators", () => {
     "cross-source-consistency",
     "location-resolution",
     "surface-load",
+    "ontology-coherence",
   ]);
   for (const id of DIMENSION_IDS) {
     assert.equal(typeof DIMENSION_EVALUATORS[id], "function");

@@ -50,6 +50,9 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
   const surface_load = surfaceLoadPath
     ? JSON.parse(readFileSync(surfaceLoadPath, "utf8"))
     : readJson("ontology/fixtures/dimensions/surface_load.json");
+  const ontology_coherence = readJson(
+    "ontology/fixtures/dimensions/ontology_coherence_payloads.json",
+  );
   // Prefer live map artifact when present so zero-located lenses are detected even
   // if the inventory stamp is stale (missed-detection path for map density).
   const district_activity = readJson("site/data/district_activity.json");
@@ -115,6 +118,7 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
     claim_labeled_disagree_families: disagreements?.claim_labeled_disagree_families || [],
     location_resolution,
     surface_load,
+    ontology_coherence,
     district_activity,
     temporal_scorecard,
     lifecycle_coherence_scorecard,

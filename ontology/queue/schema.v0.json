@@ -39,7 +39,8 @@
               "coverage",
               "cross-source-consistency",
               "location-resolution",
-              "surface-load"
+              "surface-load",
+              "ontology-coherence"
             ]
           },
           "title": { "type": "string" },

@@ -19,6 +19,7 @@ Public vocabulary is neutral. This is an object–link–action **catalog** plus
 | `cross-source-consistency` | Disagreement inventory + cross-spine fail fixtures | Unreconciled source disagreements |
 | `location-resolution` | Golden-corpus located rates, **map** `district_activity` per-lens located rates, community + council district resolution on geocoded pins, boundary vintage | Stated places remain unlocated, a map lens is zero-located with a non-empty corpus (`map-zero-located-*`), either district is missing, or a boundary source is stale/unlabeled |
 | `surface-load` | Scheduled 1440×900 Chromium walk of the principal list, detail, profile, Staffing, exam, and Alerts surfaces | A completed sample exceeds its word/link/button budget, repeats a six-word-or-longer string past its surface budget, or has no resident-serving action in the opening viewport |
+| `ontology-coherence` | Generated lifecycle payloads (land phase spines + statutory clocks, exam process spines) | Logical contradictions: current stage past its statutory deadline, current stage while a later stage already completed, completion timestamps out of pipeline order, implausibly future-dated actual events, or post-list exam events while the application window is still open |
 
 ### Data-integrity core: not-published-rate credibility audit
 

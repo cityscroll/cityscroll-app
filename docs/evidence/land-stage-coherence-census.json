@@ -1,0 +1,364 @@
+{
+  "today": "2026-08-03",
+  "fixture_inventory": {
+    "before_legacy_pointer": {
+      "past_deadline_current": 1,
+      "later_completed_while_current": 1,
+      "cards_checked": 3,
+      "rows": [
+        {
+          "id": "2019K0147",
+          "legacy_current": "environmental",
+          "past_deadline": false,
+          "later_completed": false,
+          "due": null
+        },
+        {
+          "id": "2022M0258",
+          "legacy_current": "city_council",
+          "past_deadline": false,
+          "later_completed": false,
+          "due": null
+        },
+        {
+          "id": "2019K0190",
+          "legacy_current": "community_board",
+          "past_deadline": true,
+          "later_completed": true,
+          "due": "2026-05-01"
+        }
+      ]
+    },
+    "after_fixed_pointer": {
+      "past_deadline_current": 0,
+      "later_completed_while_current": 0,
+      "cards_checked": 3,
+      "by_rule": {
+        "current_stage_past_deadline": 0,
+        "current_while_later_completed": 0,
+        "completion_order_violation": 0,
+        "future_dated_event": 0,
+        "exam_post_list_during_open_application": 1
+      },
+      "violation_count": 1
+    }
+  },
+  "field_case_2019K0190": {
+    "before": {
+      "id": "2019K0190",
+      "legacy_current": "community_board",
+      "past_deadline": true,
+      "later_completed": true,
+      "due": "2026-05-01"
+    },
+    "after": {
+      "current_phase": "city_council",
+      "violations": []
+    }
+  },
+  "live_land_default_sample": {
+    "live_sample_n": 40,
+    "before_legacy_pointer": {
+      "past_deadline_current": 1,
+      "later_completed_while_current": 18,
+      "hits": [
+        {
+          "id": "2019K0190",
+          "cur": "community_board",
+          "pastDue": true,
+          "hasLater": true,
+          "due": "2026-05-01"
+        },
+        {
+          "id": "2024Q0135",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2020M0385",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "P2012X0048",
+          "cur": null,
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2023M0452",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2026M0218",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2020K0444",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2020Q0317",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2022K0419",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2020M0383",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2022K0302",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2020Q0129",
+          "cur": "environmental",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2023Q0315",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2024K0280",
+          "cur": "environmental",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2024R0300",
+          "cur": "environmental",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2025K0229",
+          "cur": "pre_application",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2024Q0164",
+          "cur": "environmental",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        },
+        {
+          "id": "2025K0219",
+          "cur": "environmental",
+          "pastDue": false,
+          "hasLater": true,
+          "due": null
+        }
+      ]
+    },
+    "after_fixed_pointer": {
+      "past_deadline_current": 7,
+      "later_completed_while_current": 0,
+      "by_rule": {
+        "current_stage_past_deadline": 7,
+        "current_while_later_completed": 0,
+        "completion_order_violation": 11,
+        "future_dated_event": 0,
+        "exam_post_list_during_open_application": 0
+      },
+      "violation_count": 18,
+      "sample_violations": [
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2020M0385",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-03-21",
+            "later_phase": "environmental",
+            "later_first_complete": "2022-08-08"
+          }
+        },
+        {
+          "rule": "current_stage_past_deadline",
+          "permalink": "#land/P2012X0048",
+          "detail": {
+            "current_phase": "city_council",
+            "due_date": "2014-09-19",
+            "today": "2026-08-03",
+            "days_past": 4336,
+            "tolerance_days": 7
+          }
+        },
+        {
+          "rule": "current_stage_past_deadline",
+          "permalink": "#land/2023M0452",
+          "detail": {
+            "current_phase": "city_council",
+            "due_date": "2026-06-19",
+            "today": "2026-08-03",
+            "days_past": 45,
+            "tolerance_days": 7
+          }
+        },
+        {
+          "rule": "current_stage_past_deadline",
+          "permalink": "#land/2026M0218",
+          "detail": {
+            "current_phase": "cpc",
+            "due_date": "2026-05-21",
+            "today": "2026-08-03",
+            "days_past": 74,
+            "tolerance_days": 7
+          }
+        },
+        {
+          "rule": "current_stage_past_deadline",
+          "permalink": "#land/2020K0444",
+          "detail": {
+            "current_phase": "city_council",
+            "due_date": "2026-04-03",
+            "today": "2026-08-03",
+            "days_past": 122,
+            "tolerance_days": 7
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2020K0444",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-02-08",
+            "later_phase": "environmental",
+            "later_first_complete": "2023-08-29"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2022K0419",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2026-04-17",
+            "later_phase": "environmental",
+            "later_first_complete": "2026-02-13"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024R0332",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2026-04-17",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-12-17"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2023X0347",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2025-10-06",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-09-19"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2022K0302",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-04-30",
+            "later_phase": "environmental",
+            "later_first_complete": "2023-08-09"
+          }
+        },
+        {
+          "rule": "current_stage_past_deadline",
+          "permalink": "#land/2023Q0315",
+          "detail": {
+            "current_phase": "city_council",
+            "due_date": "2026-06-19",
+            "today": "2026-08-03",
+            "days_past": 45,
+            "tolerance_days": 7
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2023Q0315",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-08-09",
+            "later_phase": "environmental",
+            "later_first_complete": "2024-06-12"
+          }
+        },
+        {
+          "rule": "current_stage_past_deadline",
+          "permalink": "#land/2024K0280",
+          "detail": {
+            "current_phase": "mayoral_appeals",
+            "due_date": "2026-06-10",
+            "today": "2026-08-03",
+            "days_past": 54,
+            "tolerance_days": 7
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024K0286",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2025-10-17",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-10-16"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024K0286",
+          "detail": {
+            "earlier_phase": "community_board",
+            "earlier_first_complete": "2026-04-14",
+            "later_phase": "borough_president",
+            "later_first_complete": "2026-04-13"
+          }
+        }
+      ]
+    }
+  }
+}
