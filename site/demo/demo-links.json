@@ -359,19 +359,16 @@
     },
     {
       "id": "scenario-city-career",
-      "url": "#people",
+      "url": "#people?view=guide",
       "feature": "scenario-city-career",
       "description": "Start the city-career path with exams that are open for applications.",
       "expectations": {
         "visible": [
           {
-            "selector": "#career-results .career-card .career-action-facts"
+            "selector": "#career-results .career-card[data-status]"
           }
         ],
         "notVisible": [
-          {
-            "selector": "#staffing-feed-heading"
-          },
           {
             "selector": "#staffing-notice-list .loading"
           }
