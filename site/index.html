@@ -572,6 +572,27 @@
   .property-fcard .property-action-lead{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);margin:0 0 6px}
   .property-fcard .property-mini-stepper{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px;padding:0;list-style:none}
   .property-fcard .property-mini-stepper .lc-step{font-size:11px;padding:2px 7px}
+  .tax-lien-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--oxblood);border-radius:10px;box-shadow:var(--shadow)}
+  .tax-lien-panel h2{font:800 21px/1.15 var(--font-display);margin:0 0 7px}
+  .tax-lien-deck,.tax-lien-lead,.tax-lien-meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px;color:var(--ink-soft)}
+  .tax-lien-lead{font-weight:750;color:var(--ink);font-size:15px}
+  .tax-lien-meta{font-size:12px;color:var(--muted)}
+  .tax-lien-actions{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+  .tax-lien-stepper{margin:10px 0;padding:0;display:flex;flex-wrap:wrap;gap:4px;list-style:none}
+  .tax-lien-stepper .lc-step{font-size:11px;padding:3px 8px}
+  .tax-lien-lookup{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end;margin:14px 0}
+  .tax-lien-lookup label{grid-column:1/-1;font:700 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .tax-lien-result{grid-column:1/-1;min-width:0}
+  .tax-lien-result-card{padding:12px;border:1px solid var(--rule);border-radius:8px;background:#fffdf8;font:13px/1.5 ui-sans-serif,system-ui,sans-serif}
+  .tax-lien-areas{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:14px;margin-top:14px}
+  .tax-lien-area{min-width:0;overflow-x:auto}
+  .tax-lien-nta-scroll{max-height:430px;overflow:auto}
+  .tax-lien-area h3{font:750 15px/1.2 var(--font-display);margin:0 0 7px}
+  .tax-lien-table{width:100%;border-collapse:collapse;font:12px/1.35 ui-sans-serif,system-ui,sans-serif}
+  .tax-lien-table th,.tax-lien-table td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:start;white-space:nowrap}
+  .tax-lien-table th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+  .tax-lien-card-note{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);border-inline-start:3px solid var(--amber);padding:6px 0 6px 9px;margin:7px 0}
+  @media(max-width:760px){.tax-lien-areas{grid-template-columns:minmax(0,1fr)}.tax-lien-lookup{grid-template-columns:minmax(0,1fr)}.tax-lien-lookup button{width:100%}}
   /* Meetings domain explorer — process ontology on the list; place groups stay primary. */
   .meetings-domain-intro{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
   .meetings-domain-heading{font:800 22px/1.15 var(--font-display);margin:0 0 8px}
@@ -1427,6 +1448,9 @@
         <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
       </ol>
     </div>
+    <section class="tax-lien-panel" id="tax-lien-sale-panel" aria-live="polite">
+      <div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div>
+    </section>
     <div class="controls">
       <div class="field"><label for="propertyboro" data-i18n="borough_label">Borough</label><select id="propertyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
       <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
@@ -1941,6 +1965,7 @@ function showTab(name, push){
     if(push) $("#career-guide").hidden=true;
     loadCareerGuide(); loadStaffingFeed();
   }
+  if(name==="property") paintTaxLienSalePanel();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
@@ -7746,6 +7771,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
       ${processLine}
       ${miniStepper}
       ${actionLead}
+      ${entry.bbl?`<div class="tax-lien-card-slot" data-tax-lien-bbl="${escUiHtml(entry.bbl)}"></div>`:""}
       <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
       ${propertyPlaceChips(r._location)}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
@@ -7837,6 +7863,102 @@ async function renderPropExplorer(){
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
   feedEl.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));
+  const hydrate=()=>hydrateTaxLienBblSlots(feedEl).catch(()=>{});
+  if("requestIdleCallback" in window) requestIdleCallback(hydrate,{timeout:2500}); else setTimeout(hydrate,250);
+}
+
+/* ===== Tax-lien sale progression: historical BBL status + cohort statistics.
+   The generic calibration gate currently selects cohort_statistic_only, so no
+   property-specific probability is rendered. The final-sale stage means the
+   lien was sold; it never claims the property itself was sold or foreclosed. ===== */
+let taxLienSummaryPromise=null, taxLienLookupPromise=null, taxLienSelectedCycle=null;
+function loadTaxLienSummary(){
+  if(!taxLienSummaryPromise) taxLienSummaryPromise=fetch("data/tax_lien_sale_summary.json",{cache:"force-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  return taxLienSummaryPromise;
+}
+function loadTaxLienLookup(){
+  if(!taxLienLookupPromise) taxLienLookupPromise=fetch("data/tax_lien_sale_bbl.json",{cache:"force-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  return taxLienLookupPromise;
+}
+function taxLienPct(rate){ return rate==null?"—":`${Math.round(Number(rate)*100)}%`; }
+// Date-only source values are civic dates, not UTC instants. Anchor at local
+// noon so US time zones never display the prior calendar day.
+function taxLienDate(value){ const day=String(value||"").slice(0,10); return /^\d{4}-\d{2}-\d{2}$/.test(day)?fdt(`${day}T12:00:00`):fdt(value); }
+function taxLienStageLabel(stage){
+  return t({notice_90:"tax_lien_stage_90",notice_60:"tax_lien_stage_60",notice_30:"tax_lien_stage_30",notice_10:"tax_lien_stage_10",sold:"tax_lien_stage_sold"}[stage]||"tax_lien_stage_90");
+}
+function taxLienOutcomeLabel(outcome){ return t(outcome==="sold_lien"?"tax_lien_outcome_sold":"tax_lien_outcome_left"); }
+function taxLienDecode(lookup,bbl){
+  const raw=lookup?.rows?.[bbl]; if(!raw) return null;
+  const keys=lookup.field_order||[]; return Object.fromEntries(keys.map((key,index)=>[key,raw[index]]));
+}
+function taxLienBblResultHTML(summary,lookup,bbl){
+  const row=taxLienDecode(lookup,bbl);
+  if(!row) return `<div class="tax-lien-result-card">${t("tax_lien_bbl_not_found",{bbl:escUiHtml(bbl),date:taxLienDate(summary.latest_cycle.data_vintage)})}</div>`;
+  const cohort=summary.training.boroughs?.[row.borough_code]?.notice_90||summary.training.citywide.notice_90;
+  return `<div class="tax-lien-result-card">
+    <strong>BBL ${escUiHtml(bbl)}</strong> · ${escUiHtml(row.nta_name||row.nta_code||t("tax_lien_nta_unmapped"))}<br>
+    ${t("tax_lien_bbl_observed_html",{stage:`<b>${escUiHtml(taxLienStageLabel(row.stage))}</b>`,outcome:`<b>${escUiHtml(taxLienOutcomeLabel(row.outcome))}</b>`})}
+    <div class="tax-lien-meta">${t("tax_lien_attribution",{n:String(summary.training.cycle_count)})} · ${t("tax_lien_borough_pattern",{p:taxLienPct(cohort.probability_leave_before_sale)})}</div>
+  </div>`;
+}
+function taxLienAreaTable(rows,areaLabel){
+  return `<table class="tax-lien-table"><thead><tr><th>${escUiHtml(areaLabel)}</th><th>${t("tax_lien_table_listed")}</th><th>${t("tax_lien_table_sold")}</th><th>${t("tax_lien_table_left")}</th></tr></thead><tbody>${rows.map(row=>`<tr><td>${escUiHtml(row.name)}</td><td>${Number(row.listed_90).toLocaleString()}</td><td>${Number(row.sold_lien).toLocaleString()}</td><td>${taxLienPct(row.left_before_sale_share)}</td></tr>`).join("")}</tbody></table>`;
+}
+function taxLienPanelHTML(summary){
+  const rate=summary.training.citywide.notice_90.probability_leave_before_sale;
+  const cycle=summary.cycles.find(row=>row.cycle_id===(taxLienSelectedCycle||summary.latest_cycle.cycle_id))||summary.cycles.at(-1);
+  taxLienSelectedCycle=cycle.cycle_id;
+  const options=summary.cycles.map(row=>`<option value="${escUiHtml(row.cycle_id)}"${row.cycle_id===cycle.cycle_id?" selected":""}>${taxLienDate(row.cycle_id)}</option>`).join("");
+  const steps=["notice_90","notice_60","notice_30","notice_10","sold"];
+  return `<h2>${t("tax_lien_heading")}</h2>
+    <p class="tax-lien-deck">${t("tax_lien_deck_html")}</p>
+    <p class="tax-lien-lead">${t("tax_lien_action_lead_html",{p:taxLienPct(rate)})}</p>
+    <p class="tax-lien-meta">${t("tax_lien_attribution",{n:String(summary.training.cycle_count)})} · ${t("tax_lien_vintage",{date:taxLienDate(summary.latest_cycle.data_vintage)})} · ${t("tax_lien_expired",{date:taxLienDate(summary.schedule.sale_date)})}</p>
+    <p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p>
+    <ol class="tax-lien-stepper">${steps.map((stage,index)=>`<li><span class="lc-step ${index<4?"done":"current"}">${escUiHtml(taxLienStageLabel(stage))}</span>${index<4?'<span class="lc-step-arrow" aria-hidden="true">→</span>':""}</li>`).join("")}</ol>
+    <div class="tax-lien-actions">
+      <a class="act primary" href="${escUiHtml(summary.action_channels.exemption_url)}" ${EXT_ATTRS}>${t("tax_lien_exemptions")}${extSR()}</a>
+      <a class="act" href="${escUiHtml(summary.action_channels.payment_plan_url)}" ${EXT_ATTRS}>${t("tax_lien_payment_plans")}${extSR()}</a>
+      <a class="act" href="${escUiHtml(summary.action_channels.lien_sale_help_url)}" ${EXT_ATTRS}>${t("tax_lien_help")}${extSR()}</a>
+      <a class="act" href="tel:311">${t("tax_lien_call_311")}</a>
+    </div>
+    <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
+    <div class="tax-lien-lookup"><label for="tax-lien-bbl">${t("tax_lien_lookup_label")}</label><input id="tax-lien-bbl" type="text" inputmode="numeric" maxlength="10" placeholder="${escUiHtml(t("tax_lien_lookup_placeholder"))}"><button type="button" id="tax-lien-bbl-go">${t("tax_lien_lookup_button")}</button><div class="tax-lien-result" id="tax-lien-bbl-result"></div></div>
+    <div class="field" style="max-width:260px"><label for="tax-lien-cycle">${t("tax_lien_cycle_label")}</label><select id="tax-lien-cycle">${options}</select></div>
+    <div class="tax-lien-areas"><div class="tax-lien-area"><h3>${t("tax_lien_borough_heading")}</h3>${taxLienAreaTable(cycle.boroughs,t("borough_label"))}</div><div class="tax-lien-area"><h3>${t("tax_lien_nta_heading")}</h3><div class="tax-lien-nta-scroll">${taxLienAreaTable(cycle.ntas,"NTA")}</div></div></div>`;
+}
+async function paintTaxLienSalePanel(){
+  const el=$("#tax-lien-sale-panel"); if(!el) return;
+  const summary=await loadTaxLienSummary();
+  if(!summary){ el.innerHTML=`<div class="empty">${t("could_not_reach")}</div>`; return; }
+  el.innerHTML=taxLienPanelHTML(summary);
+  $("#tax-lien-cycle")?.addEventListener("change",event=>{taxLienSelectedCycle=event.target.value;paintTaxLienSalePanel();});
+  $("#tax-lien-bbl-go")?.addEventListener("click",async()=>{
+    const input=$("#tax-lien-bbl"), result=$("#tax-lien-bbl-result");
+    const bbl=String(input?.value||"").replace(/\D/g,"");
+    if(!/^\d{10}$/.test(bbl)){ result.innerHTML=`<div class="tax-lien-result-card">${t("tax_lien_lookup_invalid")}</div>`; return; }
+    result.innerHTML=`<span class="loading"></span>`;
+    const lookup=await loadTaxLienLookup();
+    result.innerHTML=lookup?taxLienBblResultHTML(summary,lookup,bbl):`<div class="empty">${t("could_not_reach")}</div>`;
+  });
+}
+async function hydrateTaxLienBblSlots(root=document){
+  const slots=[...root.querySelectorAll("[data-tax-lien-bbl]")]; if(!slots.length) return;
+  const [summary,lookup]=await Promise.all([loadTaxLienSummary(),loadTaxLienLookup()]); if(!summary||!lookup) return;
+  slots.forEach(slot=>{
+    const row=taxLienDecode(lookup,slot.dataset.taxLienBbl); if(!row) return;
+    slot.innerHTML=`<div class="tax-lien-card-note">${t("tax_lien_card_html",{stage:escUiHtml(taxLienStageLabel(row.stage)),outcome:escUiHtml(taxLienOutcomeLabel(row.outcome)),date:taxLienDate(summary.latest_cycle.data_vintage)})}</div>`;
+  });
+}
+async function loadTaxLienForNotice(r,el){
+  if(!el) return;
+  let bbl=r?._property_bbl||null;
+  if(!bbl){ try{const tools=await propertyLocationTools();bbl=tools.primaryPropertyBbl(tools.propertyLocationFromRow(r));}catch(_e){} }
+  if(!bbl){el.innerHTML="";return;}
+  const [summary,lookup]=await Promise.all([loadTaxLienSummary(),loadTaxLienLookup()]);
+  const row=taxLienDecode(lookup,bbl); if(!summary||!row){el.innerHTML="";return;}
+  el.innerHTML=`<section class="tax-lien-panel"><h2>${t("tax_lien_heading")}</h2>${taxLienBblResultHTML(summary,lookup,bbl)}<p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p><div class="tax-lien-actions"><a class="act primary" href="${escUiHtml(summary.action_channels.exemption_url)}" ${EXT_ATTRS}>${t("tax_lien_exemptions")}${extSR()}</a><a class="act" href="${escUiHtml(summary.action_channels.payment_plan_url)}" ${EXT_ATTRS}>${t("tax_lien_payment_plans")}${extSR()}</a></div><p class="tax-lien-meta">${t("tax_lien_deck_html")}</p></section>`;
 }
 
 function propertyPlaceChips(location){
@@ -14081,7 +14203,7 @@ async function showNotice(id, watch){
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="nfranchise"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -14114,6 +14236,7 @@ async function showNotice(id, watch){
   ]).then(()=>{
     // Re-mount action rail once BBL / disposition stage are stamped (property affordances).
     if(isPropertyDispositionEligible(r) && $("#nactions")) mountNoticeActionRail($("#nactions"), r);
+    loadTaxLienForNotice(r,$("#ntaxlien"));
   }).catch(()=>{});
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
   loadMeetingOutcomes(r, $("#nmeet"));

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_on": "2026-07-31",
+  "observed_on": "2026-08-03",
   "sources": [
     {
       "id": "city-record",
@@ -14,6 +14,23 @@
         "agency_name",
         "type_of_notice_description",
         "section_name"
+      ]
+    },
+    {
+      "id": "dof-tax-lien-sale-lists",
+      "kind": "socrata",
+      "identifier": "9rz4-mjek",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "month",
+        "cycle",
+        "borough",
+        "block",
+        "lot",
+        "community_board",
+        "tax_class_code",
+        "water_debt_only"
       ]
     },
     {

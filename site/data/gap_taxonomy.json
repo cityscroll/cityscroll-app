@@ -322,6 +322,16 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "dof-tax-lien-sale-lists",
+      "name": "DOF Tax Lien Sale Lists",
+      "source_contract_id": "dof-tax-lien-sale-lists",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/9rz4-mjek",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "doing-business-entities",
       "name": "Doing Business Search - Entities",
       "source_contract_id": "doing-business-entities",
@@ -2301,8 +2311,8 @@
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-02",
-    "source_contracts_fingerprint": "d19b9db65045c6447ef34d780c989c3e07c72dd1add6bffe9e6697b6dd4cd9c3",
+    "observed_on": "2026-08-03",
+    "source_contracts_fingerprint": "d4f1d5b1a9e155fd49b827ef5667f2fd2831e88acd62336ee0cce79638e9b6f2",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 43,
     "class_changes": 0,

@@ -36,6 +36,42 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "dof-tax-lien-sale-lists",
+      "name": "DOF Tax Lien Sale Lists",
+      "owner": "NYC Department of Finance",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "9rz4-mjek",
+      "landing_page": "https://data.cityofnewyork.us/d/9rz4-mjek",
+      "required_fields": [
+        "month",
+        "cycle",
+        "borough",
+        "block",
+        "lot",
+        "community_board",
+        "tax_class_code",
+        "water_debt_only"
+      ],
+      "max_stale_days": 550,
+      "publisher_cadence": "Irregular lien-sale cycles; dataset metadata says every six months",
+      "product_freshness": "The warehouse records the latest publication date. Public estimates expire after an announced cycle date passes and always show the data vintage.",
+      "used_for": "Per-BBL tax-lien notice progression, borough and NTA cycle counts, and historical stage-to-sale base rates.",
+      "code_references": [
+        {
+          "path": "worker/src/lib/tax_lien_sale_model.mjs",
+          "contains": "Tax Lien Sale Lists"
+        },
+        {
+          "path": "warehouse/datasets.v0.json",
+          "contains": "9rz4-mjek"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "nycida-build-nyc-projects",
       "name": "NYCIDA/Build NYC subsidy project records",
       "owner": "NYC Economic Development Corporation",
