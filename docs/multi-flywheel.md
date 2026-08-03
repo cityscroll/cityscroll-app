@@ -17,6 +17,7 @@ Public vocabulary is neutral. This is an object–link–action **catalog** plus
 | `ontology-enrichment` | Registry sync, class-(a) gaps, dual-write, cross-spine | Metric-driven enrichment (legacy intelligence flywheel) |
 | `coverage` | Declared `source_contracts` vs observation coverage | Declared-not-ingested or dual-write gap |
 | `cross-source-consistency` | Disagreement inventory + cross-spine fail fixtures | Unreconciled source disagreements |
+| `location-resolution` | Golden-corpus located rates, community + council district resolution on geocoded pins, boundary vintage | Stated places remain unlocated, either district is missing, or a boundary source is stale/unlabeled |
 
 ### Data-integrity core: not-published-rate credibility audit
 
@@ -30,7 +31,23 @@ The continuous test (pure, re-run every flywheel schedule):
 5. **Do not** emit join-bug cards for verified genuine withholds (e.g. package documents, individual exam results).
 
 Implementation: `ontology/dimensions/not_published_rate.mjs` + samples in
-`ontology/fixtures/dimensions/not_published_claim_samples.json`.
+`ontology/fixtures/dimensions/not_published_claim_samples.json`. Cross-source
+claim coverage is measured per join family in
+`ontology/fixtures/dimensions/cross_source_disagreements.json`; each family below
+full coverage emits one card.
+
+Location inputs are deterministically exported from the two pinned golden
+corpora plus the geocoded civic-scope fixture:
+
+```bash
+node tools/build_location_resolution_inventory.mjs
+node tools/build_location_resolution_inventory.mjs --check
+```
+
+The existing `ontology-enrichment` evaluator also consumes the temporal
+completeness and procurement lifecycle-coherence scorecards. This keeps civic
+time and lifecycle regressions in the established enrichment loop rather than
+creating a parallel process dimension.
 
 Each dimension is an evaluator under `ontology/dimensions/`. New dimensions
 register in `ontology/dimensions/index.mjs` and `DIMENSION_IDS`.
@@ -70,7 +87,7 @@ Schema: `ontology/queue/schema.v0.json` (`cityscroll.multi_flywheel_queue.v0`).
 Every emitted card includes:
 
 - `id` — stable (`crol-list/mf-{dimension}-{slug}`)
-- `dimension` — one of the five ids above
+- `dimension` — one of the six ids above
 - `title`, `rank`, `rank_score`
 - `verify` — machine-checkable predicate (usually a `node --test` / tool command)
 - `demo_win` — what a fixed card unlocks for a reader

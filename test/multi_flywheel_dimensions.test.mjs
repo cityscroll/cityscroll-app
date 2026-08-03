@@ -20,6 +20,7 @@ import { evaluateReadability, scoreView } from "../ontology/dimensions/readabili
 import { evaluateOntologyEnrichment } from "../ontology/dimensions/ontology_enrichment.mjs";
 import { evaluateCoverage } from "../ontology/dimensions/coverage.mjs";
 import { evaluateCrossSourceConsistency } from "../ontology/dimensions/cross_source_consistency.mjs";
+import { evaluateLocationResolution } from "../ontology/dimensions/location_resolution.mjs";
 import { DIMENSION_IDS, DIMENSION_EVALUATORS } from "../ontology/dimensions/index.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
 
@@ -29,13 +30,14 @@ function loadJson(rel) {
   return JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 }
 
-test("dimension catalog lists five evaluators", () => {
+test("dimension catalog lists six evaluators", () => {
   assert.deepEqual(DIMENSION_IDS, [
     "data-integrity",
     "readability",
     "ontology-enrichment",
     "coverage",
     "cross-source-consistency",
+    "location-resolution",
   ]);
   for (const id of DIMENSION_IDS) {
     assert.equal(typeof DIMENSION_EVALUATORS[id], "function");
@@ -184,6 +186,12 @@ test("ontology-enrichment wraps legacy planner with dimension cards", () => {
     registry_sync: checkOntologyRegistrySync(),
     cross_spine: { checked: 1, contradictions: 0 },
     actionability: { rate: 1, sample_size: 1 },
+    temporal_scorecard: loadJson(
+      "worker/test/fixtures/civic-time/expected_temporal_completeness.json",
+    ),
+    lifecycle_coherence_scorecard: loadJson(
+      "worker/test/fixtures/lifecycle-coherence/expected_coherence.json",
+    ),
     generated_at: "1970-01-01T00:00:00.000Z",
   });
   assert.equal(result.dimension, "ontology-enrichment");
@@ -191,10 +199,17 @@ test("ontology-enrichment wraps legacy planner with dimension cards", () => {
   for (const card of result.cards) {
     assert.equal(card.dimension, "ontology-enrichment");
     assert.equal(card.emitted_by, "multi_flywheel");
-    assert.ok(card.evidence.legacy_class);
+    if (!String(card.evidence?.kind || "").includes("scorecard")) {
+      assert.ok(card.evidence.legacy_class);
+    }
     assert.ok(card.verify);
     assert.ok(card.demo_win);
   }
+  assert.equal(result.metrics.temporal_completeness_rate, 0.9091);
+  assert.equal(result.metrics.procurement_lifecycle_coherence_rate, 0.5);
+  assert.equal(result.metrics.award_solicitation_recovery_rate, 0.8);
+  assert.ok(result.cards.some((c) => c.id.includes("temporal-completeness")));
+  assert.ok(result.cards.some((c) => c.id.includes("procurement-lifecycle-coherence")));
 });
 
 test("coverage emits for dual-write gaps and declared-not-ingested sources", () => {
@@ -218,6 +233,7 @@ test("cross-source-consistency emits open disagreements and spine failures", () 
   const failPin = loadJson("ontology/fixtures/cross_spine/fail_pin_mismatch.json");
   const result = evaluateCrossSourceConsistency({
     disagreements: inventory.disagreements,
+    claim_labeled_disagree_families: inventory.claim_labeled_disagree_families,
     cross_spine_bundles: [failPin],
   });
   assert.equal(result.dimension, "cross-source-consistency");
@@ -226,8 +242,33 @@ test("cross-source-consistency emits open disagreements and spine failures", () 
   assert.ok(!result.cards.some((c) => c.id.includes("demo-reconciled")));
   assert.ok(result.cards.some((c) => c.evidence?.field === "contract_amount"));
   assert.ok(result.cards.some((c) => c.evidence?.kind === "cross-spine-contradiction"));
+  assert.equal(result.metrics.claim_families_checked, 2);
+  assert.equal(result.metrics.claim_families_below_full_coverage, 1);
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.join_family === "passport-contracts-x-checkbook-contracts"
+    && c.evidence?.public_claim_labeled_disagree_rate === 0));
+  assert.ok(!result.cards.some((c) =>
+    c.evidence?.join_family === "city-record-x-ocp-awards"));
   for (const card of result.cards) {
     assert.ok(card.verify);
     assert.ok(card.demo_win);
   }
+});
+
+test("location-resolution measures corpora, districts, and boundary vintage without card flood", () => {
+  const inventory = loadJson("ontology/fixtures/dimensions/location_resolution.json");
+  const result = evaluateLocationResolution({ location_resolution: inventory });
+  assert.equal(result.dimension, "location-resolution");
+  assert.equal(result.metrics.lens_rates["meetings-hearings"].located_rate, 1);
+  assert.equal(result.metrics.lens_rates.property.located_rate, 1);
+  assert.equal(result.metrics.district_rates.community_resolution_rate, 1);
+  assert.equal(result.metrics.district_rates.council_resolution_rate, 1);
+  assert.equal(result.metrics.district_rates.district_resolution_rate, 1);
+  assert.equal(result.metrics.boundary_metrics.checked, 2);
+  assert.equal(result.metrics.boundary_metrics.stale, 2);
+  assert.deepEqual(result.cards.map((card) => card.id), [
+    "crol-list/mf-location-resolution-boundary-vintage",
+  ]);
+  assert.equal(result.cards[0].evidence.kind, "boundary-vintage-staleness");
+  assert.match(result.cards[0].verify, /boundary-vintage/);
 });

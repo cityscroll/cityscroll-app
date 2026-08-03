@@ -44,7 +44,7 @@ test("runMultiFlywheel emits ranked multi-dimension queue with verify+demo_win",
     generated_at: "1970-01-01T00:00:00.000Z",
   });
   assert.equal(queue.schema, QUEUE_SCHEMA);
-  assert.equal(dimensions_run.length, 5);
+  assert.equal(dimensions_run.length, 6);
   assert.ok(raw_card_count >= queue.stats.card_count);
   assert.ok(queue.stats.card_count >= 1);
   assert.ok(queue.content_hash);

@@ -8,6 +8,7 @@ echo "== ontology registry + intelligence flywheel =="
 node --test test/ontology_registry.test.mjs test/intelligence_flywheel.test.mjs
 
 echo "== multi-dimension flywheel characterization =="
+node tools/build_location_resolution_inventory.mjs --check
 node --test test/multi_flywheel.test.mjs test/multi_flywheel_dimensions.test.mjs
 
 echo "== cross-spine fixture suite =="
