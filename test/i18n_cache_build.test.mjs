@@ -84,8 +84,9 @@ test("two independently built language branches merge without shared generated e
     run("git", ["add", "."], repo);
     run("git", ["commit", "-m", "base"], repo);
 
-    const spanishBranch = `spanish-update-${process.pid}-${Date.now()}`;
-    const frenchBranch = `french-update-${process.pid}-${Date.now()}`;
+    // Unique per process for parallel suite isolation.
+    const spanishBranch = `spanish-update-${process.pid}`;
+    const frenchBranch = `french-update-${process.pid}`;
     run("git", ["checkout", "-b", spanishBranch], repo);
     fs.appendFileSync(path.join(repo, "i18n", "lang", "es.js"), "\n// independent Spanish update\n");
     buildIgnoredArtifact(repo);
