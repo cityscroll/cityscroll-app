@@ -68,13 +68,8 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-<<<<<<< HEAD
-    "normalized_source_bytes": 821896,
-    "normalized_source_sha256": "5e8b580416a24635d8f383cce4fda75123be05714a1758242ebef4d6037b7f29",
-=======
-    "normalized_source_bytes": 809195,
-    "normalized_source_sha256": "392b5cb073f77138ab46a8e7c31a5332884173e5101fcabc71a5bdc558dd2963",
->>>>>>> 86dbd4d2 (Locate map money awards from densified OCP corpus and frame citywide gaps)
+    "normalized_source_bytes": 823681,
+    "normalized_source_sha256": "f6b0e0d53ccb79d360ed5ae42fec4055adbf9fcdb03e6c4a8749bf51960dd388",
     "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata), ULURP pipeline position, and ZAP hearing logistics on land detail.",
     "updated_at": "2026-08-03"
   }
