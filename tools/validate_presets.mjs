@@ -25,6 +25,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const INDEX = join(ROOT, "site", "index.html");
+const SITE_SUGGESTIONS = join(ROOT, "site", "app", "search-share.mjs");
 const RECEIPT = join(ROOT, "site", "data", "preset-validation.json");
 const WORKER_SUGGESTIONS = join(ROOT, "worker", "src", "lib", "suggestions.mjs");
 const WRITE = process.argv.includes("--write");
@@ -282,10 +283,10 @@ function workerFallbackBlock(byLens) {
   return `export const FALLBACK_INDICES = {\n${Object.entries(byLens).map(([lens, indices]) => `  ${lens}: [${indices.join(", ")}],`).join("\n")}\n};`;
 }
 
-function replaceFallbackBlock(html, byLens) {
+function replaceSiteFallback(source, byLens) {
   const pattern = /const NL_SUGGESTIONS_FALLBACK = \{[\s\S]*?\n\};/;
-  if (!pattern.test(html)) throw new Error("index.html is missing NL_SUGGESTIONS_FALLBACK");
-  return html.replace(pattern, fallbackBlock(byLens));
+  if (!pattern.test(source)) throw new Error("search-share.mjs is missing NL_SUGGESTIONS_FALLBACK");
+  return source.replace(pattern, fallbackBlock(byLens));
 }
 
 function replaceWorkerFallback(source, byLens) {
@@ -294,9 +295,9 @@ function replaceWorkerFallback(source, byLens) {
   return source.replace(pattern, workerFallbackBlock(byLens));
 }
 
-function fallbackFromHTML(html) {
-  const match = html.match(/const NL_SUGGESTIONS_FALLBACK = \{([\s\S]*?)\n\};/);
-  if (!match) throw new Error("index.html is missing NL_SUGGESTIONS_FALLBACK");
+function fallbackFromSiteSource(source) {
+  const match = source.match(/const NL_SUGGESTIONS_FALLBACK = \{([\s\S]*?)\n\};/);
+  if (!match) throw new Error("search-share.mjs is missing NL_SUGGESTIONS_FALLBACK");
   const byLens = {};
   for (const item of match[1].matchAll(/^\s*([a-z]+):\s*\[([^\]]*)\]/gm)) {
     byLens[item[1]] = item[2].split(",").map((value) => Number(value.trim())).filter(Number.isFinite);
@@ -311,6 +312,7 @@ const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => nu
 const scenarios = await validateScenarios();
 const suggestions = await validateSuggestions(previous?.suggestions);
 let html = await readFile(INDEX, "utf8");
+let siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
 let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
 
 if (CHECK) {
@@ -323,7 +325,7 @@ if (CHECK) {
       throw new Error(`${id} is stale: expected ${selected.href} (${selected.labelKey})`);
     }
   }
-  const actualFallback = fallbackFromHTML(html);
+  const actualFallback = fallbackFromSiteSource(siteSuggestions);
   if (JSON.stringify(actualFallback) !== JSON.stringify(suggestions.byLens)) {
     throw new Error("rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
   }
@@ -333,9 +335,10 @@ if (CHECK) {
   console.log(`preset validation green for ${Object.keys(scenarios).length} shortcuts and ${suggestions.candidates.length} suggestions (${TODAY})`);
 } else {
   for (const [id, selected] of Object.entries(scenarios)) html = replaceRoute(html, id, selected);
-  html = replaceFallbackBlock(html, suggestions.byLens);
+  siteSuggestions = replaceSiteFallback(siteSuggestions, suggestions.byLens);
   workerSource = replaceWorkerFallback(workerSource, suggestions.byLens);
   await writeFile(INDEX, html);
+  await writeFile(SITE_SUGGESTIONS, siteSuggestions);
   await writeFile(WORKER_SUGGESTIONS, workerSource);
   const receipt = {
     schemaVersion: 1,

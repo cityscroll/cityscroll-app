@@ -1,11 +1,21 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 
 import {
   deadSelectedSuggestions,
   firstNonEmptyVariant,
   fruitfulSuggestionIndices,
 } from "../site/preset_validation.mjs";
+
+const validatorSource = readFileSync(new URL("../tools/validate_presets.mjs", import.meta.url), "utf8");
+
+test("preset validation reads and rewrites the modular site suggestion source", () => {
+  assert.match(validatorSource, /site[^\n]+app[^\n]+search-share\.mjs/);
+  assert.match(validatorSource, /fallbackFromSiteSource\(siteSuggestions\)/);
+  assert.match(validatorSource, /writeFile\(SITE_SUGGESTIONS, siteSuggestions\)/);
+  assert.doesNotMatch(validatorSource, /fallbackFromHTML\(html\)/);
+});
 
 test("a zero-result week preset widens only to the first non-empty scope", () => {
   const variants = [
