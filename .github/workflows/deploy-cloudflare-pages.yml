@@ -1,5 +1,5 @@
-# Deploys the verified static site to Cloudflare Pages in parallel with GitHub Pages.
-# Apex/www hostnames stay on the current production path; this workflow does not attach them.
+# Deploys the verified static site to the public Cloudflare Pages origin.
+# GitHub Pages remains deployed as the fallback origin.
 name: Deploy Cloudflare Pages
 
 on:
@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy parallel Cloudflare Pages host
+    name: Deploy public Cloudflare Pages origin
     if: >-
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
@@ -45,7 +45,7 @@ jobs:
             --project-name=cityscroll
             --branch=main
             --commit-hash=${{ github.sha }}
-            --commit-message="Parallel static deploy"
+            --commit-message="Static site deploy"
             --commit-dirty=false
       - name: Publish deployment receipt
         env:
@@ -54,17 +54,17 @@ jobs:
         shell: bash
         run: |
           {
-            echo "## Cloudflare Pages (parallel host)"
+            echo "## Cloudflare Pages (public origin)"
             echo
             echo "Production alias: [$PAGES_URL]($PAGES_URL)"
             echo
             echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
             echo
-            echo "GitHub Pages remains the public production origin; this workflow deploys the parallel host only."
+            echo "cityscroll.org and www.cityscroll.org use this Pages project. GitHub Pages remains deployed as the fallback origin."
           } >> "$GITHUB_STEP_SUMMARY"
 
   smoke:
-    name: Parallel host live URL smoke
+    name: Pages host live URL smoke
     needs: deploy
     runs-on: ubuntu-latest
     timeout-minutes: 15

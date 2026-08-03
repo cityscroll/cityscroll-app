@@ -4,8 +4,8 @@
  *
  * Compares HTTP status and a content marker for every path in the site's
  * public route inventory (sitemap pages plus robots/sitemap). Used to prove
- * a parallel Cloudflare Pages host matches the live production site before
- * DNS changes. Never prints credentials.
+ * the direct Cloudflare Pages hostname matches the public custom domain.
+ * Never prints credentials.
  */
 
 import { pathToFileURL } from "node:url";
@@ -145,9 +145,8 @@ export function formatParityReport({
   const lines = [
     "# Cloudflare Pages route parity report",
     "",
-    "Parallel-serving evidence: the Cloudflare Pages host is compared against",
-    "the live production site for every path in the public route inventory.",
-    "DNS is unchanged in this phase; GitHub Pages remains the production origin.",
+    "The direct Cloudflare Pages hostname is compared against the public site",
+    "for every path in the public route inventory.",
     "",
     `- Compared at: ${comparedAt}`,
     `- Reference (live): ${referenceOrigin}`,
