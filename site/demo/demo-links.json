@@ -231,7 +231,7 @@
         "banner": {
           "selector": "#meetingswidening .widening-note",
           "visible": true,
-          "text": "Showing recent past meetings for \u201cIDA\u201d (none upcoming)."
+          "text": "Showing recent past meetings for “IDA” (none upcoming)."
         }
       }
     },
@@ -452,7 +452,7 @@
       "id": "rules-lifecycle-spine",
       "url": "#notice/20260714029",
       "feature": "rules-lifecycle-spine",
-      "description": "Show the phase-grouped rule lifecycle (proposal \u2192 public process \u2192 adoption \u2192 effective) on a commercial-meter parking rule notice.",
+      "description": "Show the phase-grouped rule lifecycle (proposal → public process → adoption → effective) on a commercial-meter parking rule notice.",
       "expectations": {
         "visible": [
           {
@@ -738,6 +738,39 @@
           }
         ],
         "hash": "#task/what-will-change"
+      }
+    },
+    {
+      "id": "notice-land-zap-spine",
+      "url": "#notice/20230912001",
+      "feature": "notice-land-zap-spine",
+      "description": "City Record land notice mounts the phase-grouped ZAP / ULURP project timeline from the edge outcomes cache.",
+      "localOnly": true,
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#nland [data-notice-land-spine=\"1\"]"
+          },
+          {
+            "selector": "#nland .chain-h",
+            "text": "Related land-use project timeline"
+          },
+          {
+            "selector": "#nland .land-phase-stepper"
+          },
+          {
+            "selector": "#nland .notice-land-join"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#nland .empty"
+          },
+          {
+            "selector": "#nland .loading"
+          }
+        ],
+        "focus": "#noticeview .route-item"
       }
     }
   ]

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "feature": "notice-land-zap-spine",
+  "notice_id": "20230912001",
+  "project_id": "2022M0258",
+  "files": [
+    {
+      "name": "before-390.png",
+      "bytes": 137754,
+      "sha256": "6568a76aefca06b71f9c44e93ee79a4c62093fb0294ba8aec8517583447bdd1b",
+      "viewport": [
+        390,
+        844
+      ],
+      "mode": "before"
+    },
+    {
+      "name": "before-1440.png",
+      "bytes": 133306,
+      "sha256": "4e0a0e384be668702f60fd653da36c5ba621bb376987bcf5739dbe3708f5d590",
+      "viewport": [
+        1440,
+        900
+      ],
+      "mode": "before"
+    },
+    {
+      "name": "after-390.png",
+      "bytes": 315142,
+      "sha256": "e8a7d51d460b510fcd0d673b1702840dc225251286f6547bb415880885561da8",
+      "viewport": [
+        390,
+        844
+      ],
+      "mode": "after"
+    },
+    {
+      "name": "after-1440.png",
+      "bytes": 315453,
+      "sha256": "9fc777b777d20bfcef91737e4f2deef37ea4c1491eafb7f6cce90ea68dc98ec7",
+      "viewport": [
+        1440,
+        900
+      ],
+      "mode": "after"
+    }
+  ],
+  "notes": "before = notice page without notice_land_spine module (residual gap); after = warehouse ULURP join + phase-grouped /zap-outcomes spine on #nland."
+}
