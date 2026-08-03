@@ -767,6 +767,7 @@
     cadence_years_apart_other: "w odstępie około {years} lat",
     cadence_next_expected: "Kolejne zapytanie ofertowe oczekiwane około {date}.",
     cadence_estimate_tag: "Szacunek",
+    rule_adoption_estimate_window: "Szacowane okno przyjęcia {p10} – {p90} (mediana {p50})",
     history_cycles_tag_one: "{n} cykl",
     history_cycles_tag_few: "{n} cykle",
     history_cycles_tag_many: "{n} cykli",

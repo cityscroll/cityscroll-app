@@ -752,6 +752,7 @@
     cadence_years_apart_other: "anviwon {years} ane apa",
     cadence_next_expected: "Nou espere pwochen apèl dof la anviwon {date}.",
     cadence_estimate_tag: "Estimasyon",
+    rule_adoption_estimate_window: "Fenèt adopsyon estime {p10} – {p90} (medyàn {p50})",
     history_cycles_tag_one: "{n} sik",
     history_cycles_tag_other: "{n} sik",
     prior_cycle_heading: "Sanble se yon bagay ki repete — akòdman sik anvan yo",

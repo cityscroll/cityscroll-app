@@ -753,6 +753,7 @@
     cadence_years_apart_other: "প্রায় {years} বছর ব্যবধানে",
     cadence_next_expected: "পরবর্তী দরপত্র প্রায় {date} নাগাদ প্রত্যাশিত।",
     cadence_estimate_tag: "আনুমানিক",
+    rule_adoption_estimate_window: "আনুমানিক গৃহীত হওয়ার সময় {p10} – {p90} (মধ্যমা {p50})",
     history_cycles_tag_one: "{n}টি চক্র",
     history_cycles_tag_other: "{n}টি চক্র",
     prior_cycle_heading: "পুনরাবৃত্ত মনে হচ্ছে — পূর্ববর্তী প্রদান চক্র",

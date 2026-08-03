@@ -760,6 +760,7 @@
     cadence_years_apart_other: "تقریباً {years} سالوں کے فرق سے",
     cadence_next_expected: "اگلی بولی کا امکان تقریباً {date} کے آس پاس ہے۔",
     cadence_estimate_tag: "تخمینہ",
+    rule_adoption_estimate_window: "تخمینی منظوری کی مدت {p10} – {p90} (وسط {p50})",
     history_cycles_tag_one: "{n} پچھلا دور",
     history_cycles_tag_other: "{n} پچھلے ادوار",
     prior_cycle_heading: "بار بار ہونے والا لگتا ہے — پچھلے ایوارڈ کے ادوار",

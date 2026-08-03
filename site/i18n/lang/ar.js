@@ -760,6 +760,7 @@
     cadence_years_apart_other: "بفارق {years} سنوات تقريبًا",
     cadence_next_expected: "من المتوقع طرح العطاء التالي في حوالي {date}.",
     cadence_estimate_tag: "تقدير",
+    rule_adoption_estimate_window: "نافذة الاعتماد المقدّرة {p10} – {p90} (الوسيط {p50})",
     history_cycles_tag_one: "دورة واحدة",
     history_cycles_tag_other: "{n} دورة",
     prior_cycle_heading: "يبدو متكررًا — ترسيات من دورات سابقة",

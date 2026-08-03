@@ -753,6 +753,7 @@
     cadence_years_apart_other: "平均相隔约 {years} 年",
     cadence_next_expected: "预计下次招标约在 {date}。",
     cadence_estimate_tag: "估计",
+    rule_adoption_estimate_window: "预计通过窗口 {p10} – {p90}（中位 {p50}）",
     history_cycles_tag_one: "{n} 轮历史",
     history_cycles_tag_other: "{n} 轮历史",
     prior_cycle_heading: "疑似定期项目 — 以往中标周期",

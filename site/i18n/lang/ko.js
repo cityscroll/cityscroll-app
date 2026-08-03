@@ -753,6 +753,7 @@
     cadence_years_apart_other: "약 {years}년 간격",
     cadence_next_expected: "다음 입찰 공고는 약 {date}경으로 예상됩니다.",
     cadence_estimate_tag: "예상치",
+    rule_adoption_estimate_window: "예상 채택 기간 {p10} – {p90} (중앙값 {p50})",
     history_cycles_tag_one: "이력 {n}건",
     history_cycles_tag_other: "이력 {n}건",
     prior_cycle_heading: "반복되는 것으로 보임 — 이전 낙찰 주기",

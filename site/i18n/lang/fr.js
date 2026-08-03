@@ -835,6 +835,7 @@
     cadence_years_apart_other: "environ {years} ans d'écart",
     cadence_next_expected: "Prochain appel d'offres attendu vers {date}.",
     cadence_estimate_tag: "Estimation",
+    rule_adoption_estimate_window: "Fenêtre d'adoption estimée {p10} – {p90} (médiane {p50})",
     history_cycles_tag_one: "{n} cycle",
     history_cycles_tag_other: "{n} cycles",
     prior_cycle_heading: "Semble récurrent — attributions de cycles antérieurs",

@@ -753,6 +753,7 @@
     cadence_years_apart_other: "aproximadamente {years} años de diferencia",
     cadence_next_expected: "Se espera la próxima licitación alrededor de {date}.",
     cadence_estimate_tag: "Estimación",
+    rule_adoption_estimate_window: "Ventana estimada de adopción {p10} – {p90} (mediana {p50})",
     history_cycles_tag_one: "{n} ciclo",
     history_cycles_tag_other: "{n} ciclos",
     prior_cycle_heading: "Parece recurrente — adjudicaciones de ciclos anteriores",

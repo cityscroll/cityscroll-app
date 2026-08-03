@@ -759,6 +759,7 @@
     cadence_years_apart_other: "с интервалом около {years} лет",
     cadence_next_expected: "Следующий запрос предложений ожидается примерно в {date}.",
     cadence_estimate_tag: "Оценка",
+    rule_adoption_estimate_window: "Оценка окна принятия {p10} – {p90} (медиана {p50})",
     history_cycles_tag_one: "{n} цикл",
     history_cycles_tag_few: "{n} цикла",
     history_cycles_tag_many: "{n} циклов",
