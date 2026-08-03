@@ -15,9 +15,11 @@ import {
   dispositionStageToPhase,
 } from "./property_phase_spine.mjs";
 import {
+  civicTodayIso,
   commercialCloseDate,
   commercialMatchesFilters,
   commercialPriceAmount,
+  isCloseDatePast,
   normalizePropertySort,
 } from "./property_commercial.mjs";
 
@@ -354,21 +356,85 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
 }
 
 /**
+ * Close ISO day for an explorer entry (or null).
+ * @param {object} entry
+ * @param {(row: object) => object|null} getCommercial
+ */
+export function entryCloseDate(entry, getCommercial) {
+  const row = entry?.primary;
+  return commercialCloseDate(row, typeof getCommercial === "function" ? getCommercial(row) : row?.commercial);
+}
+
+/**
+ * Stamp open/closed temporal status + honesty action key on explorer entries.
+ * Closed = published close/event day strictly before today. No live bid/attend
+ * action on a decade-closed sale.
+ *
+ * @param {object[]} entries
+ * @param {{
+ *   today?: string|Date,
+ *   commercialOf?: (row: object) => object|null,
+ * }} [opts]
+ * @returns {object[]}
+ */
+export function stampPropertyExplorerTemporal(entries, opts = {}) {
+  const today = opts.today instanceof Date || typeof opts.today === "number"
+    ? civicTodayIso(opts.today)
+    : (opts.today ? String(opts.today).slice(0, 10) : civicTodayIso());
+  const getCommercial = typeof opts.commercialOf === "function"
+    ? opts.commercialOf
+    : (row) => row?.commercial || null;
+  return (Array.isArray(entries) ? entries : []).map((entry) => {
+    if (!entry || typeof entry !== "object") return entry;
+    const close = entryCloseDate(entry, getCommercial);
+    const closed = isCloseDatePast(close, today);
+    const openAction = entry.action_key && entry.action_key !== "property_action_closed"
+      ? entry.action_key
+      : propertyProcessActionKey(entry.process_stage);
+    return {
+      ...entry,
+      close_date: close,
+      temporal_status: closed ? "closed" : (close ? "open" : "undated"),
+      // Honesty: closed sales never keep a live bid/attend CTA.
+      action_key: closed ? "property_action_closed" : openAction,
+    };
+  });
+}
+
+/**
  * Sort explorer entries for commercial scan (closing soon / price / newest).
+ * Default `closing_soon`: upcoming/open closes first (soonest first), undated
+ * next, past-dated closed sales last (most recently closed first) — never the
+ * front page of the default Property list.
+ *
  * @param {object[]} entries
  * @param {string} [sort="closing_soon"]
  * @param {(row: object) => object|null} [commercialOf]
+ * @param {{ today?: string|Date }} [opts]
  */
-export function sortPropertyExplorerEntries(entries, sort = "closing_soon", commercialOf) {
+export function sortPropertyExplorerEntries(entries, sort = "closing_soon", commercialOf, opts = {}) {
   const key = normalizePropertySort(sort);
   const getCommercial = typeof commercialOf === "function"
     ? commercialOf
     : (row) => row?.commercial || null;
+  const today = opts.today instanceof Date || typeof opts.today === "number"
+    ? civicTodayIso(opts.today)
+    : (opts.today ? String(opts.today).slice(0, 10) : civicTodayIso());
   const list = Array.isArray(entries) ? [...entries] : [];
 
-  const closeKey = (entry) => {
+  const closeDay = (entry) => {
     const row = entry?.primary;
-    return commercialCloseDate(row, getCommercial(row)) || "9999-12-31";
+    return commercialCloseDate(row, getCommercial(row));
+  };
+  const closeKey = (entry) => closeDay(entry) || "9999-12-31";
+  const closedRank = (entry) => {
+    // Prefer stamped temporal_status; fall back to date compare.
+    if (entry?.temporal_status === "closed") return 2;
+    if (entry?.temporal_status === "undated") return 1;
+    if (entry?.temporal_status === "open") return 0;
+    const day = closeDay(entry);
+    if (!day) return 1;
+    return isCloseDatePast(day, today) ? 2 : 0;
   };
   const priceKey = (entry) => {
     const amount = commercialPriceAmount(getCommercial(entry?.primary));
@@ -382,9 +448,14 @@ export function sortPropertyExplorerEntries(entries, sort = "closing_soon", comm
 
   list.sort((a, b) => {
     if (key === "newest") {
+      // Even on newest, keep closed sales after open ones when mixed (default all).
+      const cr = closedRank(a) - closedRank(b);
+      if (cr !== 0) return cr;
       return postedKey(b).localeCompare(postedKey(a));
     }
     if (key === "price_desc" || key === "price_asc") {
+      const cr = closedRank(a) - closedRank(b);
+      if (cr !== 0) return cr;
       const pa = priceKey(a);
       const pb = priceKey(b);
       // Unpriced sink to the end for both directions.
@@ -393,7 +464,13 @@ export function sortPropertyExplorerEntries(entries, sort = "closing_soon", comm
       if (pb == null) return -1;
       return key === "price_desc" ? pb - pa : pa - pb;
     }
-    // closing_soon (default): soonest future/known close first.
+    // closing_soon (default): open soonest → undated → closed (most recent first).
+    const cr = closedRank(a) - closedRank(b);
+    if (cr !== 0) return cr;
+    if (closedRank(a) === 2) {
+      // Closed bucket: reverse chrono (2014 before 2013 in the archive, not front page).
+      return closeKey(b).localeCompare(closeKey(a));
+    }
     return closeKey(a).localeCompare(closeKey(b));
   });
   return list;

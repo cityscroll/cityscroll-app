@@ -10,10 +10,12 @@ import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
 import {
+  commercialCloseDate,
   commercialMatchesFilters,
   commercialPriceAmount,
   extractPropertyCommercial,
   hasCommercialSaleSignals,
+  isCloseDatePast,
   isCommercialSaleEligible,
   normalizePriceBandFilter,
   normalizePropertySort,
@@ -23,7 +25,14 @@ import {
 import {
   filterPropertyExplorerEntries,
   sortPropertyExplorerEntries,
+  stampPropertyExplorerTemporal,
 } from "../site/property_explorer.mjs";
+import {
+  defaultViewCardsFromEntries,
+  findCurrencyLeakedDateChips,
+  findCurrencyLeakedDateI18n,
+  findPastDeadlinesInDefaultView,
+} from "../site/property_list_sanity.mjs";
 import {
   alertScopeFromLensState,
   alertScopeFromNotice,
@@ -172,8 +181,113 @@ test("explorer filter + sort: closing soon and price order", () => {
     assert.ok(amounts[i - 1] >= amounts[i], "price_desc is non-increasing among priced rows");
   }
 
-  const byClose = sortPropertyExplorerEntries(entries, "closing_soon", (r) => r.commercial);
+  const byClose = sortPropertyExplorerEntries(entries, "closing_soon", (r) => r.commercial, {
+    today: "2026-08-03",
+  });
   assert.equal(byClose.length, entries.length);
+});
+
+test("closing_soon puts open closes first; past-dated sales sink to archive tail", () => {
+  const today = "2026-08-03";
+  const mk = (id, close, stage = "auction_or_rfp") => ({
+    kind: "notice",
+    primary: {
+      request_id: id,
+      event_date: close,
+      start_date: close,
+      commercial: {
+        close_date: close,
+        glance: { close_date: close },
+        sale_eligible: true,
+      },
+    },
+    members: [],
+    notice_count: 1,
+    process_stage: stage,
+    process_filter: stage,
+    action_key: "disposition_phase_action_bid",
+  });
+  const raw = [
+    mk("past-2013", "2013-09-16"),
+    mk("past-2014", "2014-01-01"),
+    mk("soon", "2026-08-20"),
+    mk("later", "2026-12-01"),
+    mk("undated", null),
+  ];
+  raw[4].primary.event_date = null;
+  raw[4].primary.start_date = null;
+  raw[4].primary.end_date = null;
+  raw[4].primary.commercial = { sale_eligible: true, glance: {} };
+
+  const stamped = stampPropertyExplorerTemporal(raw, {
+    today,
+    commercialOf: (r) => r.commercial,
+  });
+  assert.equal(stamped.find((e) => e.primary.request_id === "past-2013").temporal_status, "closed");
+  assert.equal(stamped.find((e) => e.primary.request_id === "soon").temporal_status, "open");
+  assert.equal(
+    stamped.find((e) => e.primary.request_id === "past-2013").action_key,
+    "property_action_closed",
+    "closed sales never keep a live bid CTA",
+  );
+  assert.equal(
+    stamped.find((e) => e.primary.request_id === "soon").action_key,
+    "disposition_phase_action_bid",
+  );
+
+  const sorted = sortPropertyExplorerEntries(stamped, "closing_soon", (r) => r.commercial, { today });
+  const ids = sorted.map((e) => e.primary.request_id);
+  // Open soonest first, then undated, then closed (most recent closed first).
+  assert.deepEqual(ids.slice(0, 2), ["soon", "later"]);
+  assert.ok(ids.indexOf("undated") < ids.indexOf("past-2014"));
+  assert.ok(ids.indexOf("past-2014") < ids.indexOf("past-2013"));
+  assert.equal(ids[ids.length - 1], "past-2013");
+
+  // Default open head must not include past closes.
+  const cards = defaultViewCardsFromEntries(sorted);
+  const sanity = findPastDeadlinesInDefaultView(cards, { today, topN: 5 });
+  assert.equal(sanity.ok, true, JSON.stringify(sanity.findings));
+  assert.ok(sanity.open_head.every((c) => c.temporal_status !== "closed"));
+});
+
+test("chip-format lint catches currency-before-month date chips", () => {
+  const bad = findCurrencyLeakedDateChips([
+    "closes $September 16, 2013",
+    "closes $January 1, 2014",
+    "min bid $4,800",
+  ]);
+  assert.equal(bad.ok, false);
+  assert.equal(bad.findings.length, 2);
+
+  const good = findCurrencyLeakedDateChips([
+    "closes September 16, 2026",
+    "closed January 1, 2014",
+    "min bid $4,800",
+    "upset price $850,000",
+  ]);
+  assert.equal(good.ok, true, JSON.stringify(good.findings));
+
+  // Catalog: date keys must not use ${date} price-prefix form.
+  const leak = findCurrencyLeakedDateI18n({
+    property_commercial_close: "closes ${date}",
+    property_commercial_closed: "closed {date}",
+  });
+  assert.equal(leak.ok, false);
+  assert.equal(leak.findings[0].key, "property_commercial_close");
+
+  const enSrc = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
+  const closeLine = enSrc.match(/property_commercial_close:\s*"([^"]+)"/);
+  assert.ok(closeLine, "en close key present");
+  assert.equal(closeLine[1], "closes {date}", "en close key has no $ price prefix");
+  assert.doesNotMatch(closeLine[1], /\$\{date\}/);
+});
+
+test("isCloseDatePast treats missing dates as not closed", () => {
+  assert.equal(isCloseDatePast("2013-09-16", "2026-08-03"), true);
+  assert.equal(isCloseDatePast("2026-08-03", "2026-08-03"), false);
+  assert.equal(isCloseDatePast("2026-08-20", "2026-08-03"), false);
+  assert.equal(isCloseDatePast(null, "2026-08-03"), false);
+  assert.equal(commercialCloseDate({ event_date: "2014-01-01T00:00:00.000" }, null), "2014-01-01");
 });
 
 test("alert scope from commercial lens state carries asset + method + borough", () => {
