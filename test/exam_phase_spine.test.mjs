@@ -34,7 +34,7 @@ test("EXAM_PHASES matches process stage order 1:1", () => {
 });
 
 test("buildExamPhaseView marks current as last matched and next as first unmatched after", () => {
-  const exam = fixture.exams.find((e) => e.exam_number === "6125");
+  const exam = fixture.exams.find((e) => e.exam_number === "6311");
   const spine = buildExamProcessSpine(exam);
   const view = buildExamPhaseView(spine);
   assert.ok(view);
@@ -49,17 +49,15 @@ test("buildExamPhaseView marks current as last matched and next as first unmatch
   assert.equal(view.metrics.matched_count, 4);
 });
 
-test("partial spine: list matched, later stages future chips not gap cards", () => {
-  const exam = fixture.exams.find((e) => e.exam_number === "6311");
+test("open exam 6125: current is application (no mid-window post-list)", () => {
+  const exam = fixture.exams.find((e) => e.exam_number === "6125");
   const spine = buildExamProcessSpine(exam);
   const view = buildExamPhaseView(spine);
-  assert.equal(view.current.id, "list_establishment");
-  assert.equal(view.action.action_key, "exam_phase_action_list_establishment");
-  assert.equal(view.phases.find((p) => p.id === "application").matched, true);
-  assert.equal(view.next?.id, "certification");
-  // Unmatched future phases are present for the stepper; HTML collapses them to chips.
-  assert.ok(view.phases.every((p) => p.id));
+  assert.equal(view.current.id, "application");
+  assert.equal(view.action.action_key, "exam_phase_action_application");
+  assert.equal(view.next?.id, "list_establishment");
   assert.equal(view.phases.find((p) => p.id === "appointment").matched, false);
+  assert.equal(view.metrics.matched_count, 1);
 });
 
 test("schedule-only pending exam: current is application", () => {

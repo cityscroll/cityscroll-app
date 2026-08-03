@@ -50,41 +50,62 @@ def main():
                 install_routes(page)
                 page.add_init_script("localStorage.setItem('crol_exam_how_seen_v1', '1')")
 
-                # Joined outcomes on EMT (6125).
-                page.goto(base + "#exam/6125", wait_until="load")
-                card = page.locator("#career-exam-6125")
+                # Joined outcomes on a cycle-coherent closed exam (6311 Police Officer).
+                page.goto(base + "#exam/6311", wait_until="load")
+                card = page.locator("#career-exam-6311")
                 card.wait_for(state="visible", timeout=15000)
                 joined = card.locator('.career-outcomes[data-outcome="joined"]')
                 if joined.count() != 1:
-                    failures.append(f"{width}px: exam 6125 missing joined outcomes block")
+                    failures.append(f"{width}px: exam 6311 missing joined outcomes block")
                 else:
                     text = joined.inner_text()
                     # text-transform:uppercase on the heading; match case-insensitively.
                     lower = text.lower()
                     for needle in ("1,010", "74", "68", "1,280", "post-cycle outcomes", "eligible list", "hiring pool"):
                         if needle not in lower and needle not in text:
-                            failures.append(f"{width}px: 6125 outcomes missing {needle!r}")
+                            failures.append(f"{width}px: 6311 outcomes missing {needle!r}")
 
                 if not args.verify_only:
                     OUTPUT.mkdir(parents=True, exist_ok=True)
-                    path = OUTPUT / f"joined-6125-{width}.png"
+                    path = OUTPUT / f"joined-6311-{width}.png"
                     card.screenshot(path=path, animations="disabled")
                     captures.append(str(path.relative_to(ROOT)))
 
-                # Class-(a) not-yet-ingested gap on Automotive Service Worker (7013).
+                # Open EMT (6125): application open; process spine owns empty post-list stages
+                # (careerOutcomeHTML skips the redundant gap when the spine is mounted).
+                page.evaluate("location.hash='#exam/6125'")
+                open_card = page.locator("#career-exam-6125")
+                open_card.wait_for(state="visible", timeout=10000)
+                spine = open_card.locator("[data-exam-spine='1']")
+                if spine.count() != 1:
+                    failures.append(f"{width}px: exam 6125 missing process spine")
+                spine_text = open_card.inner_text().lower()
+                if "open now" not in spine_text and "apply by" not in spine_text:
+                    failures.append(f"{width}px: 6125 missing open application lead")
+                # Must not claim mid-window list / hire counts.
+                if "68 hired" in spine_text or "1,010 on list" in spine_text:
+                    failures.append(f"{width}px: 6125 timeline still shows mid-window post-list events")
+                if open_card.locator('.career-outcomes[data-outcome="joined"]').count() != 0:
+                    failures.append(f"{width}px: 6125 must not show joined annual outcomes mid-window")
+                if "does not publish" in spine_text:
+                    failures.append(f"{width}px: 6125 still uses false class-(b) city-withhold copy")
+
+                if not args.verify_only:
+                    path = OUTPUT / f"open-coherent-6125-{width}.png"
+                    open_card.screenshot(path=path, animations="disabled")
+                    captures.append(str(path.relative_to(ROOT)))
+
+                # Open pending exam 7013: application spine + no joined hire counts.
                 page.evaluate("location.hash='#exam/7013'")
                 pending = page.locator("#career-exam-7013")
                 pending.wait_for(state="visible", timeout=10000)
-                gap = pending.locator('.career-outcomes[data-outcome="not_yet_ingested"]')
-                if gap.count() != 1:
-                    failures.append(f"{width}px: exam 7013 missing not-yet-ingested outcomes block")
-                else:
-                    gap_text = gap.inner_text()
-                    lower = gap_text.lower()
-                    if "not yet shown" not in lower and "eligible-list" not in lower:
-                        failures.append(f"{width}px: 7013 gap missing class-(a) register")
-                    if "does not publish" in lower:
-                        failures.append(f"{width}px: 7013 still uses false class-(b) city-withhold copy")
+                pending_text = pending.inner_text().lower()
+                if pending.locator("[data-exam-spine='1']").count() != 1:
+                    failures.append(f"{width}px: exam 7013 missing process spine")
+                if pending.locator('.career-outcomes[data-outcome="joined"]').count() != 0:
+                    failures.append(f"{width}px: 7013 must not show joined annual outcomes")
+                if "does not publish" in pending_text:
+                    failures.append(f"{width}px: 7013 still uses false class-(b) city-withhold copy")
 
                 if not args.verify_only:
                     path = OUTPUT / f"pending-7013-{width}.png"
@@ -108,14 +129,14 @@ def main():
                     list_card.screenshot(path=path, animations="disabled")
                     captures.append(str(path.relative_to(ROOT)))
 
-                # Open list with joined + class-(a) gap states visible.
+                # Guide list browse (collapsed cards — outcomes mount only on expanded detail).
                 page.evaluate("location.hash='#people?view=guide&window=open'")
                 page.locator("#career-results .career-card").first.wait_for(state="visible")
                 page.wait_for_timeout(200)
-                if page.locator('.career-outcomes[data-outcome="joined"]').count() < 1:
-                    failures.append(f"{width}px: open list has no joined outcome cards")
-                if page.locator('.career-outcomes[data-outcome="not_yet_ingested"]').count() < 1:
-                    failures.append(f"{width}px: open list has no not-yet-ingested outcome cards")
+                # Collapsed open list must not embed joined outcome metrics in card chrome.
+                open_list_text = page.locator("#career-results").inner_text().lower()
+                if "68 hired" in open_list_text or "post-cycle outcomes" in open_list_text:
+                    failures.append(f"{width}px: open guide list still paints post-cycle outcomes mid-window")
 
                 if not args.verify_only:
                     path = OUTPUT / f"open-list-{width}.png"

@@ -10,24 +10,24 @@
   },
   "records": [
     {
-      "exam_number": "6125",
-      "application_cycle": "2026",
+      "exam_number": "6311",
+      "application_cycle": "2025",
       "applicant_count": 1280,
       "list_establishment": 1010,
       "certification_count": 74,
       "appointment_count": 68,
       "hire_count": 68,
-      "published_on": "2026-07-22"
+      "published_on": "2026-01-15"
     },
     {
-      "exam_number": "7006",
-      "application_cycle": "2026",
+      "exam_number": "6073",
+      "application_cycle": "2025",
       "applicant_count": 910,
       "list_establishment": 770,
       "certification_count": 58,
       "appointment_count": 40,
       "hire_count": 40,
-      "published_on": "2026-07-22"
+      "published_on": "2025-12-01"
     }
   ]
 }

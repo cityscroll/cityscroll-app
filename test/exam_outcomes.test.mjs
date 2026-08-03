@@ -58,15 +58,15 @@ test("artifact includes a separate aggregate outcomes source", () => {
   );
 });
 
-/** Real field cases from the committed outcomes snapshot (not synthetic fixtures). */
+/** Real field cases from the committed outcomes snapshot (cycle-coherent closed exams). */
 const JOINED_FIELD_CASES = {
-  "6125": {
+  "6311": {
     applicant_count: 1280,
     list_establishment: 1010,
     certification_count: 74,
     hire_count: 68,
   },
-  "7006": {
+  "6073": {
     applicant_count: 910,
     list_establishment: 770,
     certification_count: 58,

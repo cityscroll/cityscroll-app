@@ -871,7 +871,17 @@ metrics grid stays for joined counts. Civic-time kinds (library-only):
 `staffing.application_window` / `list_established` / `certification` /
 `appointment` via `mapExamProcessSpineToCivic`. Metric:
 `exam_process_spine_completeness_rate`. Verify:
-`node --test test/exam_process_spine.test.mjs`.
+`node --test test/exam_process_spine.test.mjs test/exam_cycle_coherence.test.mjs`.
+
+**Cycle coherence (hard):** DCAS exam numbers name one filing cycle. Build join
+(`tools/build_staffing_exams.mjs`) and spine drop annual outcomes / list rows
+when `published_on` / `established_date` is on or before `application_end`
+unless the exam is explicitly continuous / walk-in (`filing_mode` etc.). Bare
+`exam_number` matches that land list/cert/hire events inside an open application
+window are the mis-join class (field case: open `#exam/6125` must not paint
+mid-window hires). Metric `exam_cycle_temporal_incoherence_count` is stamped on
+the staffing artifact and sampled by the data-integrity flywheel dimension.
+Continuous filing may keep post-list during an open window only when labeled.
 
 ## Exam fee / salary (NOE path)
 

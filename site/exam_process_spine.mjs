@@ -12,6 +12,13 @@
  * - Aggregate empty stages use class-(a) `not_yet_ingested` naming public sources.
  * - Never re-label aggregate empties as class-(b) "city does not publish".
  * - Individual scores remain class-(b) elsewhere (exam-outcome-individual); not on this spine.
+ *
+ * Cycle coherence (hard):
+ * - DCAS exam numbers identify one filing cycle; post-list events (list / cert / hire)
+ *   must post-date the application window for that cycle unless the exam is
+ *   explicitly continuous / walk-in filing.
+ * - Joining annual outcomes by bare exam_number onto an open window is a mis-join
+ *   class (sibling to loose-key extractions) — refuse it here and at build join.
  */
 
 export const EXAM_PROCESS_SPINE_SCHEMA_VERSION = 1;
@@ -101,9 +108,149 @@ function gapForStage(stage, sourceLabel) {
 }
 
 /**
+ * Continuous / walk-in / rolling filing — post-list events may honestly overlap
+ * an open application window. Only honor explicit source labels; never invent.
+ */
+export function isContinuousFilingExam(exam = {}) {
+  const mode = [
+    exam?.filing_mode,
+    exam?.application_mode,
+    exam?.filing_method,
+    exam?.schedule_status,
+    exam?.outcome?.filing_mode,
+  ]
+    .map((v) => clean(v).toLowerCase())
+    .filter(Boolean)
+    .join(" ");
+  return /continuous|walk[- ]?in|rolling|until\s+expended|open[-\s]?ended/.test(mode);
+}
+
+/**
+ * Whether an annual-outcome row may join this exam's application cycle.
+ * Standard exams: outcome publication must be strictly after application_end.
+ * Continuous filing: always allowed (timeline copy explains the cycle relationship).
+ */
+export function outcomeBelongsToExamCycle(exam = {}, outcome = null) {
+  if (!outcome || typeof outcome !== "object") return false;
+  if (isContinuousFilingExam(exam) || isContinuousFilingExam({ ...exam, ...outcome })) {
+    return true;
+  }
+  const appEnd = isoDate(exam?.application_end);
+  const published = isoDate(outcome.published_on);
+  // Without an application end we cannot prove cycle membership — allow.
+  if (!appEnd) return true;
+  // Dated outcomes must post-date the filing window for this exam number.
+  if (published) return published > appEnd;
+  // Undated outcome with a known application window: refuse (fail closed).
+  return false;
+}
+
+/**
+ * Whether a Civil Service List aggregate may join this exam's cycle.
+ * When established_date is present it must post-date application_end (non-continuous).
+ */
+export function listAggregateBelongsToExamCycle(exam = {}, list = null) {
+  if (!list || typeof list !== "object") return false;
+  if (!(positiveCount(list.list_count) > 0)) return false;
+  if (isContinuousFilingExam(exam)) return true;
+  const appEnd = isoDate(exam?.application_end);
+  const established = isoDate(list.established_date);
+  if (!appEnd) return true;
+  if (!established) return true; // undated list row — date cannot prove mis-join
+  return established > appEnd;
+}
+
+/**
+ * Detect post-list observations that fall inside (or before the close of) the
+ * application window on a non-continuous exam — the owner-facing incoherence class.
+ *
+ * @param {object} exam
+ * @returns {object|null} finding or null when coherent / continuous / no post-list
+ */
+export function examTemporalIncoherence(exam = {}) {
+  if (!exam || typeof exam !== "object") return null;
+  if (isContinuousFilingExam(exam)) return null;
+  const examNumber = clean(exam.exam_number) || null;
+  const appStart = isoDate(exam.application_start);
+  const appEnd = isoDate(exam.application_end);
+  if (!appEnd) return null;
+
+  const flags = [];
+  const outcome = exam.outcome && typeof exam.outcome === "object" ? exam.outcome : null;
+  if (outcome) {
+    const published = isoDate(outcome.published_on);
+    const hasPostListCounts =
+      positiveCount(outcome.list_establishment)
+      || positiveCount(outcome.certification_count)
+      || positiveCount(outcome.appointment_count)
+      || positiveCount(outcome.hire_count);
+    if (hasPostListCounts && (!published || published <= appEnd)) {
+      flags.push({
+        source: "dcas-annual-exam-outcomes",
+        field: "published_on",
+        value: published,
+        reason: published
+          ? "post_list_on_or_before_application_end"
+          : "post_list_undated_with_application_window",
+      });
+    }
+  }
+  const list =
+    exam.list_aggregate && typeof exam.list_aggregate === "object"
+      ? exam.list_aggregate
+      : null;
+  if (list && positiveCount(list.list_count) > 0) {
+    const established = isoDate(list.established_date);
+    if (established && established <= appEnd) {
+      flags.push({
+        source: "dcas-active-civil-service-list",
+        field: "established_date",
+        value: established,
+        reason: "list_established_on_or_before_application_end",
+      });
+    }
+  }
+  if (!flags.length) return null;
+  return {
+    exam_number: examNumber,
+    title: clean(exam.title) || null,
+    application_start: appStart,
+    application_end: appEnd,
+    continuous: false,
+    class: "exam_cycle_temporal_incoherence",
+    flags,
+  };
+}
+
+/**
+ * Named class measurement: exams with post-list events dated inside / before
+ * the close of an open application window without continuous-filing modeling.
+ *
+ * @param {object[]} exams
+ */
+export function measureExamTemporalIncoherence(exams = []) {
+  const list = Array.isArray(exams) ? exams : [];
+  const findings = [];
+  for (const exam of list) {
+    const hit = examTemporalIncoherence(exam);
+    if (hit) findings.push(hit);
+  }
+  return {
+    metric: "exam_cycle_temporal_incoherence_count",
+    exam_cycle_temporal_incoherence_count: findings.length,
+    exam_count: list.length,
+    rate: list.length ? findings.length / list.length : 0,
+    findings,
+  };
+}
+
+/**
  * Build one exam→list→appointment spine from a staffing exam row.
  * Empty post-cycle stages stay class-(a) not_yet_ingested — never invent events
  * and never claim the city withheld aggregate sources that exist publicly.
+ *
+ * Cycle gate: drop outcome / list payload that fails outcomeBelongsToExamCycle /
+ * listAggregateBelongsToExamCycle so stale artifacts cannot paint incoherent spines.
  *
  * @param {object} exam - row from site/data/staffing_exams.json
  * @param {object} [options]
@@ -112,11 +259,18 @@ function gapForStage(stage, sourceLabel) {
 export function buildExamProcessSpine(exam = {}, options = {}) {
   const examNumber = clean(exam?.exam_number);
   const title = clean(exam?.title) || null;
-  const outcome = exam?.outcome && typeof exam.outcome === "object" ? exam.outcome : null;
-  const list =
+  const rawOutcome = exam?.outcome && typeof exam.outcome === "object" ? exam.outcome : null;
+  const rawList =
     exam?.list_aggregate && typeof exam.list_aggregate === "object"
       ? exam.list_aggregate
       : null;
+  const outcome = rawOutcome && outcomeBelongsToExamCycle(exam, rawOutcome) ? rawOutcome : null;
+  const list =
+    rawList && listAggregateBelongsToExamCycle(exam, rawList) ? rawList : null;
+  const cycleRejected = {
+    outcome: Boolean(rawOutcome) && !outcome,
+    list_aggregate: Boolean(rawList && positiveCount(rawList.list_count) > 0) && !list,
+  };
 
   const events = [];
   const stagePayload = Object.fromEntries(
@@ -290,17 +444,42 @@ export function buildExamProcessSpine(exam = {}, options = {}) {
         ? "exam_number_schedule"
         : null;
 
+  // When cycle gate dropped post-list payload, surface class-(a) for later stages
+  // unless the exam already carries an explicit gap.
+  let outcomeGap = exam?.outcome_gap
+    ? {
+        ...exam.outcome_gap,
+        class:
+          exam.outcome_gap.class === "not_published"
+            ? "not_yet_ingested"
+            : exam.outcome_gap.class || "not_yet_ingested",
+      }
+    : null;
+  if (!outcome && !listCountFromList && (cycleRejected.outcome || cycleRejected.list_aggregate)) {
+    outcomeGap = {
+      class: "not_yet_ingested",
+      pending_stage: STAGE_LIST_ESTABLISHMENT,
+      reason: "cycle_mismatch",
+      public_sources: [
+        "dcas-annual-exam-outcomes",
+        "dcas-active-civil-service-list",
+      ],
+    };
+  }
+
   return {
     schema_version: EXAM_PROCESS_SPINE_SCHEMA_VERSION,
     subject_ref: examNumber ? `exam:${examNumber}` : null,
     exam_number: examNumber || null,
     title,
+    continuous_filing: isContinuousFilingExam(exam),
     join: {
       matched: Boolean(examNumber),
       method: joinMethod,
       exam_number: examNumber || null,
       has_outcome: Boolean(outcome),
       has_list_aggregate: listCountFromList > 0,
+      cycle_rejected: cycleRejected,
     },
     stages,
     events,
@@ -310,15 +489,7 @@ export function buildExamProcessSpine(exam = {}, options = {}) {
     total_stages: stages.length,
     full: matchedCount === stages.length,
     // Carry through for UI: never treat outcome_gap class b as spine truth.
-    outcome_gap: exam?.outcome_gap
-      ? {
-          ...exam.outcome_gap,
-          class:
-            exam.outcome_gap.class === "not_published"
-              ? "not_yet_ingested"
-              : exam.outcome_gap.class || "not_yet_ingested",
-        }
-      : null,
+    outcome_gap: outcomeGap,
     today: options.today || null,
   };
 }

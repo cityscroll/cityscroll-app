@@ -44,11 +44,11 @@ test("EXAM_PROCESS_STAGES is application → list → certification → appointm
 });
 
 test("field case: full annual-outcome exam is a four-stage full spine", () => {
-  const exam = fixture.exams.find((e) => e.exam_number === "6125");
+  const exam = fixture.exams.find((e) => e.exam_number === "6311");
   const spine = buildExamProcessSpine(exam);
 
   assert.equal(spine.schema_version, 1);
-  assert.equal(spine.subject_ref, "exam:6125");
+  assert.equal(spine.subject_ref, "exam:6311");
   assert.equal(spine.join.method, "exam_number_outcomes");
   assert.equal(spine.full, true);
   assert.equal(spine.stage_fill, 1);
@@ -64,34 +64,38 @@ test("field case: full annual-outcome exam is a four-stage full spine", () => {
   assert.equal(spine.gaps.length, 0);
   assert.ok(spine.events.every((e) => e.source?.id && e.stage));
   const app = spine.stages.find((s) => s.kind === STAGE_APPLICATION);
-  assert.equal(app.events[0].time.value, "2026-06-15");
-  assert.equal(app.events[0].time.value_to, "2026-08-07");
+  assert.equal(app.events[0].time.value, "2025-07-01");
+  assert.equal(app.events[0].time.value_to, "2025-07-14");
 });
 
-test("field case: list_joined exam matches application + list only (honest empties)", () => {
-  const exam = fixture.exams.find((e) => e.exam_number === "6311");
+test("field case: open exam 6125 is application-only (cycle-coherent)", () => {
+  const exam = fixture.exams.find((e) => e.exam_number === "6125");
   const spine = buildExamProcessSpine(exam);
 
-  assert.equal(spine.join.method, "exam_number_list_aggregate");
+  assert.equal(spine.join.method, "exam_number_schedule");
   assert.equal(spine.full, false);
-  assert.equal(spine.matched_stages, 2);
-  assert.equal(spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, true);
-  assert.equal(spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).count, 1983);
-  assert.equal(
-    spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).events[0].time.value,
-    "2025-12-03",
-  );
-  assert.equal(spine.stages.find((s) => s.kind === STAGE_CERTIFICATION).matched, false);
+  assert.equal(spine.matched_stages, 1);
+  assert.equal(spine.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, false);
   assert.equal(spine.stages.find((s) => s.kind === STAGE_APPOINTMENT).matched, false);
-  assert.ok(
-    spine.gaps.every((g) => g.class === "not_yet_ingested"),
-    "empty post-list stages must be class-(a), not class-(b)",
-  );
-  assert.deepEqual(
-    spine.gaps.map((g) => g.slot),
-    [STAGE_CERTIFICATION, STAGE_APPOINTMENT],
-  );
-  assert.ok(spine.gaps.every((g) => /outcomes|DCAS/i.test(g.source)));
+  assert.ok(spine.gaps.every((g) => g.class === "not_yet_ingested"));
+});
+
+test("field case: mid-window outcome payload is cycle-rejected (mis-join class)", () => {
+  const exam = fixture.exams.find((e) => e.exam_number === "6125-misjoin");
+  const spine = buildExamProcessSpine(exam);
+  assert.equal(spine.join.has_outcome, false);
+  assert.equal(spine.join.cycle_rejected.outcome, true);
+  assert.equal(spine.matched_stages, 1);
+  assert.equal(spine.stages.find((s) => s.kind === STAGE_APPOINTMENT).matched, false);
+});
+
+test("field case: continuous filing may keep post-list during open window", () => {
+  const exam = fixture.exams.find((e) => e.exam_number === "cont-1");
+  const spine = buildExamProcessSpine(exam);
+  assert.equal(spine.continuous_filing, true);
+  assert.equal(spine.join.has_outcome, true);
+  assert.equal(spine.stages.find((s) => s.kind === STAGE_APPOINTMENT).matched, true);
+  assert.equal(spine.stages.find((s) => s.kind === STAGE_APPOINTMENT).count, 5);
 });
 
 test("field case: schedule-only pending exam keeps application and class-(a) later stages", () => {
@@ -122,7 +126,7 @@ test("never reintroduce false not_published labels on aggregate spine gaps", () 
 test("buildExamProcessSpines + spineForExam index by exam_number", () => {
   const spines = buildExamProcessSpines(fixture.exams);
   assert.equal(spines.length, fixture.exams.length);
-  const full = spineForExam(spines, "6125");
+  const full = spineForExam(spines, "6311");
   assert.ok(full);
   assert.equal(full.full, true);
   assert.equal(spineForExam(spines, "missing"), null);
@@ -164,11 +168,13 @@ test("live staffing artifact: every exam builds a spine; no class-(b) aggregate 
   }
 
   // Known field cases from the committed artifact.
-  const full = spineForExam(spines, "6125");
-  assert.ok(full?.full, "exam 6125 should be a full outcome spine when present");
-  const listJoined = spineForExam(spines, "6311");
-  if (listJoined) {
-    assert.equal(listJoined.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, true);
+  const openEmt = spineForExam(spines, "6125");
+  assert.ok(openEmt, "exam 6125 present");
+  assert.equal(openEmt.full, false, "open 6125 must not paint a full post-list spine");
+  assert.equal(openEmt.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, false);
+  const full = spineForExam(spines, "6311");
+  if (full) {
+    assert.equal(full.stages.find((s) => s.kind === STAGE_LIST_ESTABLISHMENT).matched, true);
   }
 
   const metrics = measureExamProcessSpineCompleteness(spines);
@@ -196,11 +202,11 @@ test("civic-time adapter maps exam spine events without inventing clocks", async
   const { mapExamProcessSpineToCivic, SPINE_KIND_ALIASES } = await import(
     "../worker/src/lib/civic_time.mjs"
   );
-  const exam = fixture.exams.find((e) => e.exam_number === "6125");
+  const exam = fixture.exams.find((e) => e.exam_number === "6311");
   const spine = buildExamProcessSpine(exam);
   const civic = mapExamProcessSpineToCivic(spine, { run_id: "test" });
   assert.equal(civic.length, spine.events.length);
-  assert.ok(civic.every((ev) => ev.subject_ref === "exam:6125"));
+  assert.ok(civic.every((ev) => ev.subject_ref === "exam:6311"));
   const knownKinds = new Set(Object.values(SPINE_KIND_ALIASES));
   assert.ok(civic.every((ev) => knownKinds.has(ev.event_kind)));
   assert.ok(civic.some((ev) => ev.event_kind === "staffing.application_window"));
