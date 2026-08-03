@@ -909,7 +909,7 @@
       }
     }
   ],
-  "generated_at": "2026-08-03T07:14:32Z",
+  "generated_at": "2026-08-03T07:19:31Z",
   "source": {
     "dataset": "NYC Open Data ZAP Project Data",
     "dataset_id": "hgx4-8ukb",
@@ -931,8 +931,8 @@
         "small-cohort noise at the n=20 floor",
         "era effects (practice or policy shifts between the training window and a live application)"
       ],
-      "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, public_projection is descriptive_history",
-      "public_projection": "descriptive_history",
+      "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, render_mode is descriptive_history",
+      "render_mode": "descriptive_history",
       "beats_base_rate": false
     }
   },
@@ -1660,8 +1660,8 @@
         "small-cohort noise at the n=20 floor",
         "era effects (practice or policy shifts between the training window and a live application)"
       ],
-      "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, public_projection is descriptive_history",
-      "public_projection": "descriptive_history",
+      "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, render_mode is descriptive_history",
+      "render_mode": "descriptive_history",
       "beats_base_rate": false
     },
     "backtest": {
@@ -1671,10 +1671,10 @@
       "conditioned_brier": null,
       "unconditioned_brier": null,
       "beats_base_rate": false,
-      "public_projection": "descriptive_history",
+      "render_mode": "descriptive_history",
       "contract_backtest": null,
       "note": "Applicant-conditioned rates do not beat the unconditioned base rate out of sample; public surfaces show them as descriptive history only."
     },
-    "public_projection": "descriptive_history"
+    "render_mode": "descriptive_history"
   }
 }

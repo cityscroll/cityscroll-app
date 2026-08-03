@@ -39,7 +39,7 @@ Withdrawals and administrative terminations are excluded from the denominator.
 
 Time-split Brier comparison of conditioned P(approved) versus the unconditioned
 base rate on holdout dispositions. If conditioning does not beat the base rate
-out of sample, `public_projection` is `descriptive_history` (history only; no
+out of sample, `render_mode` is `descriptive_history` (history only; no
 predictive occurrence emission).
 
 ## False-positive modes

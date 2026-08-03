@@ -235,8 +235,8 @@ function applicantFormulaBlock(score) {
       "small-cohort noise at the n=20 floor",
       "era effects (practice or policy shifts between the training window and a live application)",
     ],
-    backtest: "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, public_projection is descriptive_history",
-    public_projection: score?.public_projection || "descriptive_history",
+    backtest: "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, render_mode is descriptive_history",
+    render_mode: score?.render_mode || "descriptive_history",
     beats_base_rate: Boolean(score?.beats_base_rate),
   };
 }
@@ -251,7 +251,7 @@ function buildApplicantBlock(enriched, trainTo) {
     ...applicantModel,
     formula: applicantFormulaBlock(score),
     backtest: score,
-    public_projection: score.public_projection,
+    render_mode: score.render_mode,
   };
 }
 
@@ -283,13 +283,13 @@ function checkMaterialization() {
   if (!applicant.formula?.false_positive_modes?.length) {
     throw new Error("applicant formula must name false-positive modes");
   }
-  if (!["per_matter_projection", "descriptive_history"].includes(applicant.public_projection)) {
-    throw new Error("applicant public_projection must be set from the backtest");
+  if (!["per_matter", "descriptive_history"].includes(applicant.render_mode)) {
+    throw new Error("applicant render_mode must be set from the backtest");
   }
   console.log(
     `zoning-statistics --check OK cohorts=${site.cohorts.length} `
     + `applicant_cohorts=${applicant.cohorts.length} `
-    + `applicant_projection=${applicant.public_projection} `
+    + `applicant_render_mode=${applicant.render_mode} `
     + `backtest=${site.backtest.ship_bar.status}`,
   );
 }
@@ -320,7 +320,7 @@ function writeMaterialization(materialized, receiptExtras = {}) {
       applicant_conditioning: {
         cohort_count: materialized.applicant_conditioning?.cohorts?.length || 0,
         minimum_cohort_n: materialized.applicant_conditioning?.minimum_cohort_n || 20,
-        public_projection: materialized.applicant_conditioning?.public_projection || null,
+        render_mode: materialized.applicant_conditioning?.render_mode || null,
         beats_base_rate: Boolean(materialized.applicant_conditioning?.backtest?.beats_base_rate),
         conditioned_brier: materialized.applicant_conditioning?.backtest?.conditioned_brier ?? null,
         unconditioned_brier: materialized.applicant_conditioning?.backtest?.unconditioned_brier ?? null,
@@ -368,7 +368,7 @@ async function main() {
     });
     console.log(
       `wrote applicant conditioning cohorts=${applicant_conditioning.cohorts.length} `
-      + `projection=${applicant_conditioning.public_projection} source=${source}`,
+      + `render_mode=${applicant_conditioning.render_mode} source=${source}`,
     );
     return;
   }
@@ -431,7 +431,7 @@ async function main() {
     `wrote zoning statistics cohorts=${materialized.cohorts.length} `
     + `applicant_cohorts=${applicant_conditioning.cohorts.length} `
     + `timing=${backtest.ship_bar.status} `
-    + `applicant=${applicant_conditioning.public_projection} source=${source}`,
+    + `applicant=${applicant_conditioning.render_mode} source=${source}`,
   );
 }
 

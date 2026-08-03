@@ -4,7 +4,7 @@
   "project_id": "FIXTURED0001",
   "applicant_entity_key": "vendor:CALVANICO ASSOC",
   "applicant_display_name": "Calvanico Associates",
-  "public_projection": "descriptive_history",
+  "render_mode": "descriptive_history",
   "files": [
     {
       "name": "applicant-entity-before-1440.png",

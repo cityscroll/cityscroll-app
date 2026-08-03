@@ -50,11 +50,11 @@ def applicant_conditioned(base: dict) -> dict:
         raise SystemExit("no applicant_conditioning cohorts in zoning_statistics.json")
     approved = preferred["outcome_rates"]["approved"]
     base_approved = base["outcome_rates"]["approved"]
-    projection = MODEL["applicant_conditioning"].get("public_projection") or "descriptive_history"
+    render_mode = MODEL["applicant_conditioning"].get("render_mode") or "descriptive_history"
     year = str(preferred.get("train_from") or "")[:4]
     p = round(approved * 100)
     p0 = round(base_approved * 100)
-    lead = "Predicted based on" if projection == "per_matter_projection" else "Based on"
+    lead = "Predicted based on" if render_mode == "per_matter" else "Based on"
     copy = (
         f"{lead} {preferred['n']} applications by this applicant since {year}: "
         f"{p}% approved, vs {p0}% overall."
@@ -70,11 +70,11 @@ def applicant_conditioned(base: dict) -> dict:
             "level": base["level"],
         },
         "copy": copy,
-        "public_projection": projection,
+        "render_mode": render_mode,
         "formula_url": "about.html#applicant-conditioned-ulurp",
         "display_mode": (
             "conditioned_with_base_rate"
-            if projection == "per_matter_projection"
+            if render_mode == "per_matter"
             else "descriptive_history_with_base_rate"
         ),
     }
@@ -84,7 +84,7 @@ def record(*, with_applicant: bool) -> dict:
     value = fixture.base_record(with_clock=True)
     stats = base_rate()
     if with_applicant:
-        stats = {**stats, "applicant_conditioned": applicant_conditioned(stats)}
+        stats = {**stats, "applicant_conditioned": applicant_conditioned(stats)}  # source: site/data/zoning_statistics.json
         # Applicant label on the open-data card for the entity framing.
         if value.get("open_data"):
             value["open_data"] = {
@@ -148,7 +148,7 @@ def main() -> None:
         "project_id": fixture.PROJECT_ID,
         "applicant_entity_key": ac["applicant_entity_key"],
         "applicant_display_name": ac["applicant_display_name"],
-        "public_projection": ac["public_projection"],
+        "render_mode": ac["render_mode"],
         "files": files,
     }, indent=2) + "\n")
     print(f"captured {len(files)} applicant-conditioned screenshots -> {OUT}")

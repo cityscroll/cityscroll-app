@@ -263,14 +263,14 @@ test("conditioned copy always names the unconditioned base rate alongside", () =
   });
   const base = chooseZoningCohort(baseModel, { actions: "ZM", borough: "Queens" });
   const copy = applicantConditionedCopy(conditioned, base, {
-    publicProjection: "descriptive_history",
+    renderMode: "descriptive_history",
   });
   assert.match(copy, /Based on 25 applications by this applicant since 2019/);
   assert.match(copy, /% approved, vs \d+% overall/);
   assert.doesNotMatch(copy, /^Predicted based on/);
 });
 
-test("occurrence emission requires n>=20, base rate, and predictive projection", () => {
+test("occurrence emission requires n>=20, base rate, and predictive render mode", () => {
   const rows = applicantTrainingRows("Repeat Applicant LLC", 25);
   const conditionedModel = buildApplicantConditionedCohorts(rows);
   const baseModel = buildZoningCohortModel(rows);
@@ -288,14 +288,14 @@ test("occurrence emission requires n>=20, base rate, and predictive projection",
 
   assert.equal(
     emitApplicantOutcomePrediction(record, conditioned, base, {
-      publicProjection: "descriptive_history",
+      renderMode: "descriptive_history",
       generatedAt: "2025-04-01T00:00:00Z",
     }),
     null,
   );
 
   const prediction = emitApplicantOutcomePrediction(record, conditioned, base, {
-    publicProjection: "per_matter_projection",
+    renderMode: "per_matter",
     generatedAt: "2025-04-01T00:00:00Z",
   });
   validatePrediction(prediction);
@@ -315,8 +315,8 @@ test("attach surfaces conditioned rates with base rate and blocks thin cohorts",
     backtest: { ship_bar: { status: "pass" } },
     applicant_conditioning: {
       ...applicantModel,
-      public_projection: "descriptive_history",
-      backtest: { public_projection: "descriptive_history", beats_base_rate: false },
+      render_mode: "descriptive_history",
+      backtest: { render_mode: "descriptive_history", beats_base_rate: false },
     },
   };
   const attached = attachZoningStatistics({
@@ -351,9 +351,9 @@ test("backtest labels descriptive history when conditioning does not beat the ba
   ];
   const score = scoreApplicantConditioning(rows, { splitDate: "2022-01-01" });
   assert.equal(typeof score.beats_base_rate, "boolean");
-  assert.ok(["descriptive_history", "per_matter_projection"].includes(score.public_projection));
+  assert.ok(["descriptive_history", "per_matter"].includes(score.render_mode));
   if (!score.beats_base_rate) {
-    assert.equal(score.public_projection, "descriptive_history");
+    assert.equal(score.render_mode, "descriptive_history");
   }
 });
 
@@ -375,7 +375,7 @@ test("committed materialization ships applicant conditioning with n>=20 and fals
   );
   assert.match(applicant.formula.false_positive_modes.join(" "), /small-cohort|noise/i);
   assert.match(applicant.formula.false_positive_modes.join(" "), /era effect/i);
-  assert.ok(["descriptive_history", "per_matter_projection"].includes(applicant.public_projection));
+  assert.ok(["descriptive_history", "per_matter"].includes(applicant.render_mode));
 });
 
 test("formula page and land UI name applicant conditioning constraints", () => {

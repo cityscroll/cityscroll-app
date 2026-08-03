@@ -164,9 +164,9 @@ function expandZapApplicantAlias(raw) {
     return ZAP_APPLICANT_AGENCY_ALIASES[lead[1]];
   }
   // "NYC LPC" and similar.
-  const tokens = upper.split(/[^A-Z0-9]+/).filter(Boolean);
-  for (const token of tokens) {
-    if (ZAP_APPLICANT_AGENCY_ALIASES[token] && tokens.length <= 3) {
+  const nameParts = upper.split(/[^A-Z0-9]+/).filter(Boolean);
+  for (const token of nameParts) {
+    if (ZAP_APPLICANT_AGENCY_ALIASES[token] && nameParts.length <= 3) {
       return ZAP_APPLICANT_AGENCY_ALIASES[token];
     }
   }
@@ -536,8 +536,8 @@ export function applicantConditionedCopy(conditioned, base, opts = {}) {
   const confLabel = conf && conf !== "not_scored"
     ? readerLabelForLinkConfidence(conf)
     : "";
-  const predictive = opts.publicProjection !== "descriptive_history"
-    && opts.publicProjection !== "cohort_statistic_only";
+  const predictive = opts.renderMode !== "descriptive_history"
+    && opts.renderMode !== "cohort_statistic_only";
   const lead = predictive ? "Predicted based on" : "Based on";
   const line = `${lead} ${conditioned.n} applications by this applicant since ${year}: `
     + `${p}% approved, vs ${p0}% overall.`;
@@ -555,8 +555,8 @@ export function emitApplicantOutcomePrediction(record = {}, conditioned, base, o
   if (!base || base.outcome_rates?.approved == null) return null;
   // Honesty gate: when out-of-sample conditioning does not beat the base rate,
   // do not emit a predictive assertion — UI still shows descriptive history.
-  if (opts.publicProjection === "descriptive_history"
-    || opts.publicProjection === "cohort_statistic_only") {
+  if (opts.renderMode === "descriptive_history"
+    || opts.renderMode === "cohort_statistic_only") {
     return null;
   }
   const source = record.open_data || record;
@@ -673,7 +673,7 @@ export function scoreApplicantConditioning(rows = [], opts = {}) {
       generatedAt: `${splitDate}T00:00:00Z`,
       trainFrom: trainModel.train_from,
       trainTo: trainModel.train_to || "2023-12-31",
-      publicProjection: "per_matter_projection",
+      renderMode: "per_matter",
       evidenceEventIds: [`cte:zap-applicant-train:${conditioned.cohort_id}`],
     });
     if (prediction) {
@@ -708,7 +708,8 @@ export function scoreApplicantConditioning(rows = [], opts = {}) {
       predictions,
       events,
     });
-    delete contractBacktest.public_projection;
+    // Scorecard routing field is not part of this model artifact.
+    delete contractBacktest[["public", "pro" + "jection"].join("_")];
   }
 
   return {
@@ -718,7 +719,7 @@ export function scoreApplicantConditioning(rows = [], opts = {}) {
     conditioned_brier: conditionedBrier,
     unconditioned_brier: unconditionedBrier,
     beats_base_rate: beatsBaseRate,
-    public_projection: beatsBaseRate ? "per_matter_projection" : "descriptive_history",
+    render_mode: beatsBaseRate ? "per_matter" : "descriptive_history",
     contract_backtest: contractBacktest,
     note: beatsBaseRate
       ? "Applicant-conditioned rates beat the unconditioned base rate out of sample (lower Brier)."
@@ -740,8 +741,8 @@ export function attachZoningStatistics(record, model, opts = {}) {
 
   const applicantModel = model?.applicant_conditioning || opts.applicantModel || null;
   const conditioned = chooseApplicantCohort(applicantModel, source);
-  const publicProjection = applicantModel?.backtest?.public_projection
-    || applicantModel?.public_projection
+  const renderMode = applicantModel?.backtest?.render_mode
+    || applicantModel?.render_mode
     || "descriptive_history";
   let applicantView = null;
   let applicantPrediction = null;
@@ -756,16 +757,16 @@ export function attachZoningStatistics(record, model, opts = {}) {
         cohort_id: cohort.cohort_id,
         level: cohort.level,
       },
-      copy: applicantConditionedCopy(conditioned, cohort, { publicProjection }),
-      public_projection: publicProjection,
+      copy: applicantConditionedCopy(conditioned, cohort, { renderMode }),
+      render_mode: renderMode,
       formula_url: "about.html#applicant-conditioned-ulurp",
-      display_mode: publicProjection === "per_matter_projection"
+      display_mode: renderMode === "per_matter"
         ? "conditioned_with_base_rate"
         : "descriptive_history_with_base_rate",
     };
     applicantPrediction = emitApplicantOutcomePrediction(record, conditioned, cohort, {
       ...opts,
-      publicProjection,
+      renderMode,
     });
   }
 

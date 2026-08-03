@@ -696,7 +696,7 @@
   .land-base-rate-register a{font-weight:600}
   .land-base-rate-register .applicant-conditioned{margin-top:10px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--blue) 25%,var(--rule))}
   .land-base-rate-register .applicant-conf{display:inline-block;margin-left:6px;font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--muted);letter-spacing:.02em}
-  .land-base-rate-register[data-applicant-projection="descriptive_history"] .applicant-conditioned{border-top-style:dashed}
+  .land-base-rate-register[data-applicant-render-mode="descriptive_history"] .applicant-conditioned{border-top-style:dashed}
   .land-spine-how{display:block;margin-top:10px}
   .land-spine-how > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
   .land-spine-how-body{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:8px}
@@ -5686,7 +5686,7 @@ function landApplicantConditionedHTML(stats){
   if(baseApproved==null) return ""; // never show conditioned without the base rate
   const year=String(ac.train_from||"").slice(0,4)||"—";
   const approved=Math.round(Number(ac.outcome_rates.approved||0)*100);
-  const projection=ac.public_projection||"descriptive_history";
+  const mode=ac.render_mode||"descriptive_history";
   const conf=ac.link_confidence?.status;
   const confLabel=conf==="strong"
     ? t("land_applicant_link_strong")
@@ -5696,10 +5696,10 @@ function landApplicantConditionedHTML(stats){
   const confChip=confLabel
     ? `<span class="applicant-conf" data-link-confidence="${escUiHtml(conf)}">${escUiHtml(confLabel)}</span>`
     : "";
-  const lineKey=projection==="per_matter_projection"
+  const lineKey=mode==="per_matter"
     ? "land_applicant_conditioned_predict_html"
     : "land_applicant_conditioned_history_html";
-  return `<div class="applicant-conditioned" data-applicant-conditioned="1" data-applicant-n="${escUiHtml(String(ac.n))}" data-applicant-projection="${escUiHtml(projection)}">
+  return `<div class="applicant-conditioned" data-applicant-conditioned="1" data-applicant-n="${escUiHtml(String(ac.n))}" data-applicant-render-mode="${escUiHtml(mode)}">
     <p>${t(lineKey,{
       n:String(ac.n),
       year,
@@ -5723,8 +5723,8 @@ function landZoningStatisticsHTML(record){
   const modified=Math.round(Number(stats.outcome_rates.modified||0)*100);
   const disapproved=Math.round(Number(stats.outcome_rates.disapproved||0)*100);
   const applicantBlock=landApplicantConditionedHTML(stats);
-  const projection=stats.applicant_conditioned?.public_projection||"";
-  return `<aside class="land-base-rate-register" data-zoning-base-rate="1" data-applicant-projection="${escUiHtml(projection)}" aria-label="${escUiHtml(t("land_zoning_base_rate_heading"))}">
+  const applicantMode=stats.applicant_conditioned?.render_mode||"";
+  return `<aside class="land-base-rate-register" data-zoning-base-rate="1" data-applicant-render-mode="${escUiHtml(applicantMode)}" aria-label="${escUiHtml(t("land_zoning_base_rate_heading"))}">
     <div class="base-rate-kicker">${t("land_zoning_base_rate_heading")}</div>
     <p>${t("land_zoning_base_rate_html",{
       n:String(stats.n),type:escUiHtml(actionLabel),year,approved:String(approved),

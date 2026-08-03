@@ -1393,7 +1393,7 @@ under `applicant_conditioning` — same cohort summarizer, entity-resolution joi
 on `primary_applicant` (agency preferred alias + ZAP acronyms, else vendor
 stem), n>=20 floor. Public UI always shows the unconditioned base rate beside
 any conditioned rate; when the time-split Brier backtest does not beat the base
-rate, `public_projection` is `descriptive_history` (no occurrence emission).
+rate, `render_mode` is `descriptive_history` (no occurrence emission).
 Formula + false-positive modes: `about.html#applicant-conditioned-ulurp`,
 `docs/formulas/applicant-conditioned-ulurp-outcomes.md`.
 
