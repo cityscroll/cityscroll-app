@@ -162,6 +162,11 @@
     map_areas_announce: "Affichage de {n} zones. Densité max {max}.",
     map_crumb_city: "New York",
     map_crumb_council: "Districts du conseil",
+    map_bucket_citywide: "À l'échelle de la ville",
+    map_bucket_virtual: "Virtuel / en ligne seulement",
+    map_citywide_detail_lead: "{n} événements à l'échelle de la ville dans la lentille actuelle ({lens}). Ils s'appliquent à tous les districts — non rattachés à un seul lieu.",
+    map_virtual_detail_lead: "{n} réunions uniquement virtuelles dans la lentille actuelle ({lens}). Aucun lieu en personne n'a été publié.",
+    map_citywide_also_applies: "des éléments à l'échelle de la ville s'appliquent aussi ici (non comptés dans les polygones de ce district).",
     property_tax_lien_link: "Statistiques de vente de privilèges fiscaux",
     property_explore_map_link: "Explorer la propriété sur la carte",
     // Money lens controls

@@ -657,6 +657,17 @@ export function compactDerivationStamp(place) {
   if (place.community_districts?.length) stamp.community_districts = place.community_districts.slice();
   if (place.neighborhoods?.length) stamp.neighborhoods = place.neighborhoods.slice();
   if (place.districts?.length) stamp.districts = place.districts.slice();
+  // Normalized address labels only (no body prose) — enables offline civic geocode → CD/council PIP.
+  if (Array.isArray(place.addresses) && place.addresses.length) {
+    stamp.addresses = place.addresses
+      .map((a) => {
+        if (typeof a === "string") return plainText(a).slice(0, 160);
+        if (a && typeof a === "object") return plainText(a.label || a.address || a.value || "").slice(0, 160);
+        return "";
+      })
+      .filter(Boolean)
+      .slice(0, 4);
+  }
   if (place.derivation) {
     stamp.derivation = {
       methods: place.derivation.methods || [],

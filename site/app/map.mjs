@@ -93,12 +93,13 @@ async function paintMapExploration(){
       });
     });
   }
-  // Features for current level
+  // Features for current level + first-class citywide / virtual bags
   const { features, max }=tools.mapFeatures(boundaries, activity, {
     level: mapState.level,
     parent: mapState.parent,
     lens: mapState.lens,
   });
+  const buckets=typeof tools.nonPolygonBuckets==="function"?tools.nonPolygonBuckets(activity):[];
   // ViewBox
   if(!mapViewBox){
     if(mapState.parent && mapState.level==="community_district" && tools.BOROUGH_HULLS[mapState.parent]){
@@ -126,13 +127,27 @@ async function paintMapExploration(){
       });
     });
   }
-  // Sorted area list (a11y + no-map fallback)
+  // Sorted area list (a11y + no-map fallback) + first-class citywide / virtual bags.
   const sorted=[...features].sort((a,b)=>b.total-a.total || String(a.label).localeCompare(String(b.label)));
-  list.innerHTML=sorted.map(f=>
+  const bucketHtml=buckets.map(b=>{
+    const n=mapState.lens==="all"?b.total:(Number(b.counts?.[mapState.lens])||0);
+    if(mapState.lens!=="all" && n<=0) return "";
+    return `<li class="map-bucket map-bucket-${mapEsc(b.kind)}"><button type="button" data-map-bucket="${mapEsc(b.id)}" aria-current="${mapState.id===b.id?"true":"false"}"><span>${mapEsc(b.kind==="citywide"?t("map_bucket_citywide"):t("map_bucket_virtual"))}</span><span class="map-count">${n}</span></button></li>`;
+  }).filter(Boolean).join("");
+  list.innerHTML=(bucketHtml||"")+sorted.map(f=>
     `<li><button type="button" data-map-id="${mapEsc(f.id)}" data-map-level="${mapEsc(f.level)}" ${mapState.id===f.id?'aria-current="true"':""}><span>${mapEsc(f.label)}</span><span class="map-count">${f.total}</span></button></li>`
-  ).join("") || `<li class="empty" style="padding:12px">${t("map_no_areas")}</li>`;
+  ).join("") || (bucketHtml?"":`<li class="empty" style="padding:12px">${t("map_no_areas")}</li>`);
   list.querySelectorAll("[data-map-id]").forEach(btn=>{
     btn.addEventListener("click",()=>selectMapFeature(btn.dataset.mapId, btn.dataset.mapLevel, tools, features));
+  });
+  list.querySelectorAll("[data-map-bucket]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const bag=buckets.find(b=>b.id===btn.dataset.mapBucket);
+      if(!bag) return;
+      mapState={ ...mapState, id: bag.id, parent: null };
+      // Re-paint detail for the non-polygon bag without changing polygon selection geometry.
+      paintMapExploration(); updateHash();
+    });
   });
   // Breadcrumb
   if(crumb){
@@ -159,14 +174,43 @@ async function paintMapExploration(){
     const v=activity.boundary_vintage || boundaries.boundary_vintage || "";
     vintage.textContent=v?t("map_boundary_vintage",{date:v}):"";
   }
-  // Detail panel for selected district
+  // Detail panel for selected district OR first-class citywide / virtual bag.
   if(detail){
-    const sel=mapState.id?features.find(f=>f.id===mapState.id):null;
-    if(!sel){ detail.hidden=true; detail.innerHTML=""; }
-    else{
+    const bucketSel=mapState.id && buckets
+      ? buckets.find(b=>b.id===mapState.id)
+      : (mapState.id && typeof tools.nonPolygonBuckets==="function"
+        ? tools.nonPolygonBuckets(activity).find(b=>b.id===mapState.id)
+        : null);
+    const sel=bucketSel?null:(mapState.id?features.find(f=>f.id===mapState.id):null);
+    if(!sel && !bucketSel){ detail.hidden=true; detail.innerHTML=""; }
+    else if(bucketSel){
+      detail.hidden=false;
+      const counts=bucketSel.counts||{};
+      const total=mapState.lens==="all"?bucketSel.total:(Number(counts[mapState.lens])||0);
+      const leadKey=bucketSel.kind==="citywide"?"map_citywide_detail_lead":"map_virtual_detail_lead";
+      detail.innerHTML=`<h3>${mapEsc(bucketSel.kind==="citywide"?t("map_bucket_citywide"):t("map_bucket_virtual"))}</h3>
+        <p class="map-fallback-note">${t(leadKey,{n:String(total), lens:mapEsc(mapLensLabel(mapState.lens))})}</p>
+        <div class="map-detail-counts">
+          ${mapCountChip("land", counts.land)}
+          ${mapCountChip("property", counts.property)}
+          ${mapCountChip("rules", counts.rules)}
+          ${mapCountChip("meetings", counts.meetings)}
+          ${mapCountChip("money", counts.money)}
+        </div>
+        <div class="map-detail-links">
+          ${bucketSel.kind==="citywide"?`<a class="act" href="#rules">${mapEsc(t("tab_rules"))}</a>`:""}
+          ${bucketSel.kind==="virtual"?`<a class="act" href="#meetings">${mapEsc(t("tab_meetings"))}</a>`:""}
+        </div>`;
+    } else {
       detail.hidden=false;
       const links=tools.areaFeedLinks(sel.level, sel.id);
       const counts=sel.counts||{};
+      // When viewing a district, also surface citywide bag chips so city-scale
+      // rules/meetings remain visible (labeled citywide — never fabricated into the polygon).
+      const cw=typeof tools.citywideBucketCounts==="function"
+        ? tools.citywideBucketCounts(activity)
+        : (activity.citywide||null);
+      const cwTotal=cw?tools.totalForLens(cw, mapState.lens==="all"?"all":mapState.lens):0;
       detail.innerHTML=`<h3>${mapEsc(sel.label)}</h3>
         <p class="map-fallback-note">${t("map_detail_lead",{n:String(sel.total), lens:mapEsc(mapLensLabel(mapState.lens))})}</p>
         <div class="map-detail-counts">
@@ -176,6 +220,7 @@ async function paintMapExploration(){
           ${mapCountChip("meetings", counts.meetings)}
           ${mapCountChip("money", counts.money)}
         </div>
+        ${cwTotal>0?`<p class="map-citywide-note"><span class="tag place">${mapEsc(t("map_bucket_citywide"))} <b>${cwTotal}</b></span> ${mapEsc(t("map_citywide_also_applies"))}</p>`:""}
         <div class="map-detail-links">
           ${links.map(l=>`<a class="act" href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}</a>`).join("")}
           ${sel.level==="borough"?`<button type="button" class="act primary" data-map-drill="${mapEsc(sel.id)}">${t("map_drill_community")}</button>`:""}
