@@ -547,6 +547,60 @@
       ]
     },
     {
+      "id": "property.tax_lien_notice_90",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "dof_tax_lien_sale_lists"
+      ]
+    },
+    {
+      "id": "property.tax_lien_notice_60",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "dof_tax_lien_sale_lists"
+      ]
+    },
+    {
+      "id": "property.tax_lien_notice_30",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "dof_tax_lien_sale_lists"
+      ]
+    },
+    {
+      "id": "property.tax_lien_notice_10",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "dof_tax_lien_sale_lists"
+      ]
+    },
+    {
+      "id": "property.tax_lien_sale_deadline",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "dof_tax_lien_sale_lists"
+      ]
+    },
+    {
+      "id": "property.tax_lien_sold",
+      "status": "registered",
+      "lens": "property",
+      "backing": [
+        "civic_time",
+        "dof_tax_lien_sale_lists"
+      ]
+    },
+    {
       "id": "rules.proposal_published",
       "status": "registered",
       "lens": "rules",

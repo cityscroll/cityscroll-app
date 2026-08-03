@@ -53,7 +53,7 @@ const LENS_FIXTURES = {
   meetings: "meetings_council.json",
 };
 
-test("event-kind registry is bounded and covers money/rules/land/meetings/people/property", () => {
+test("event-kind registry is bounded and covers each registered civic lens", () => {
   const lenses = new Set(Object.values(EVENT_KIND_REGISTRY).map((m) => m.lens));
   assert.deepEqual([...lenses].sort(), ["land", "meetings", "money", "people", "property", "rules"]);
   assert.equal(isRegisteredEventKind("rules.comment_close"), true);
@@ -63,8 +63,7 @@ test("event-kind registry is bounded and covers money/rules/land/meetings/people
   assert.equal(isRegisteredEventKind("property.disposition_hearing"), true);
   assert.equal(isRegisteredEventKind("property.auction_or_rfp"), true);
   assert.equal(isRegisteredEventKind("property.award_or_conveyance"), true);
-  // Tax-lien-sale kinds stay out of this registry until that domain lands separately.
-  assert.equal(isRegisteredEventKind("property.lien_sale"), false);
+  assert.equal(isRegisteredEventKind("property.tax_lien_sold"), true);
   assert.equal(isRegisteredEventKind("procurement.award_and_amendment"), false);
   assert.ok(listEventKinds("rules").every((k) => k.lens === "rules"));
   assert.ok(listEventKinds("people").every((k) => k.lens === "people"));

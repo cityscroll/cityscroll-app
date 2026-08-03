@@ -145,6 +145,7 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(links.zola_url)}",           # property parcel: ZoLa tax-lot page
     "${escUiHtml(links.acris_url)}",          # property parcel: ACRIS deeds search
     "${escUiHtml(links.who_owns_what_url)}",  # property parcel: Who Owns What portfolio
+    "${escUiHtml(summary.action_channels.",   # DOF tax-lien exemptions, payment plans, and help
     "${RULES_PUBLIC_URL}",        # rules event spine: NYC Rules landing page for unmatched joins
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.

@@ -1,0 +1,118 @@
+{
+  "bulk": true,
+  "cpu_discipline": {
+    "duckdb_threads": 1,
+    "headroom_gated": true,
+    "sequential_one_dataset": true,
+    "single_job_lock": true,
+    "taskpolicy_or_nice_wrap": true
+  },
+  "dataset_id": "dof-tax-lien-sale-lists",
+  "headroom": {
+    "constrained": false,
+    "ok": true,
+    "post_ingest": {
+      "constrained": false,
+      "ok": true,
+      "problems": [],
+      "returncode": 0,
+      "status": "ok"
+    },
+    "pre_convert": {
+      "constrained": false,
+      "ok": true,
+      "problems": [],
+      "returncode": 0,
+      "status": "ok"
+    },
+    "problems": [],
+    "returncode": 0,
+    "status": "ok"
+  },
+  "limit": null,
+  "observed_at": "2026-08-03T04:27:32Z",
+  "parquet": {
+    "bytes": 1918558,
+    "column_map_applied": true,
+    "column_map_size": 26,
+    "columns": [
+      "month",
+      "cycle",
+      "borough",
+      "block",
+      "lot",
+      "tax_class_code",
+      "building_class",
+      "community_board",
+      "council_district",
+      "house_number",
+      "street_name",
+      "zip_code",
+      "water_debt_only",
+      "snapshot_date"
+    ],
+    "parquet_path": "warehouse/parquet/dof-tax-lien-sale-lists/snapshot_date=2026-08-03/part-000.parquet",
+    "row_count": 264142,
+    "threads": 1
+  },
+  "phase": "CS-PRED-10",
+  "raw": {
+    "bytes": 30068971,
+    "column_map_entries": 26,
+    "column_map_path": "warehouse/raw/dof-tax-lien-sale-lists/snapshot_date=2026-08-03/column_map.json",
+    "elapsed_s": 36.75,
+    "http_status": 200,
+    "mode": "soda_bulk",
+    "paging": {
+      "checkpoint_path": "warehouse/raw/dof-tax-lien-sale-lists/snapshot_date=2026-08-03/9rz4-mjek_bulk.checkpoint.json",
+      "order": "month ASC, cycle ASC, borough ASC, block ASC, lot ASC",
+      "page_count": 6,
+      "page_size": 50000,
+      "polite_delay_s": 0.5,
+      "resumable": true,
+      "strategy": "soda_offset"
+    },
+    "path": "warehouse/raw/dof-tax-lien-sale-lists/snapshot_date=2026-08-03/9rz4-mjek_bulk.csv",
+    "row_count": 264142,
+    "sha256": "1deb309fe45558c5b679627a1d0a7e8121914caf764eb766c39ce069e54df469",
+    "snapshot_profile": {
+      "section_counts": {},
+      "start_date_max": null,
+      "start_date_min": null
+    },
+    "url": "https://data.cityofnewyork.us/resource/9rz4-mjek.csv"
+  },
+  "register": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "columns": [
+      "month",
+      "cycle",
+      "borough",
+      "block",
+      "lot",
+      "tax_class_code",
+      "building_class",
+      "community_board",
+      "council_district",
+      "house_number",
+      "street_name",
+      "zip_code",
+      "water_debt_only",
+      "snapshot_date"
+    ],
+    "parquet_glob": "warehouse/parquet/dof-tax-lien-sale-lists/snapshot_date=2026-08-03/*.parquet",
+    "row_count": 264142,
+    "table": "dof_tax_lien_sale_lists"
+  },
+  "schema_version": 1,
+  "snapshot_date": "2026-08-03",
+  "snapshot_profile": {
+    "section_counts": {},
+    "start_date_max": null,
+    "start_date_min": null
+  },
+  "socrata_dataset_id": "9rz4-mjek",
+  "source_contract_id": "dof-tax-lien-sale-lists",
+  "table_name": "dof_tax_lien_sale_lists",
+  "warehouse_root": "warehouse"
+}

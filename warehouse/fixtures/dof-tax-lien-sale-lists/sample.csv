@@ -1,0 +1,6 @@
+month,cycle,borough,block,lot,tax_class_code,building_class,community_board,council_district,house_number,street_name,zip_code,water_debt_only
+2019-04-17T00:00:00.000,90 Day Notice,1,100,1,1,A1,101,1,1,FIXTURE STREET,10001,NO
+2019-05-20T00:00:00.000,60 Day Notice,1,100,1,1,A1,101,1,1,FIXTURE STREET,10001,NO
+2019-06-19T00:00:00.000,30 Day Notice,1,100,1,1,A1,101,1,1,FIXTURE STREET,10001,NO
+2019-07-01T00:00:00.000,10 Day Notice,1,100,1,1,A1,101,1,1,FIXTURE STREET,10001,NO
+2019-10-01T00:00:00.000,Final Sale,1,100,1,1,A1,101,1,1,FIXTURE STREET,10001,NO
