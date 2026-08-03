@@ -14,6 +14,7 @@ await import("./subsidy.mjs");
 await import("./meetings.mjs");
 await import("./entities.mjs");
 await import("./workspace.mjs");
+await import("./map.mjs");
 await import("./routing.mjs");
 await import("./boot.mjs");
 

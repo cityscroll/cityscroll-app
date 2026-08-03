@@ -231,7 +231,7 @@
         "banner": {
           "selector": "#meetingswidening .widening-note",
           "visible": true,
-          "text": "Showing recent past meetings for “IDA” (none upcoming)."
+          "text": "Showing recent past meetings for \u201cIDA\u201d (none upcoming)."
         }
       }
     },
@@ -449,7 +449,7 @@
       "id": "rules-lifecycle-spine",
       "url": "#notice/20260714029",
       "feature": "rules-lifecycle-spine",
-      "description": "Show the phase-grouped rule lifecycle (proposal → public process → adoption → effective) on a commercial-meter parking rule notice.",
+      "description": "Show the phase-grouped rule lifecycle (proposal \u2192 public process \u2192 adoption \u2192 effective) on a commercial-meter parking rule notice.",
       "expectations": {
         "visible": [
           {
@@ -768,6 +768,56 @@
           }
         ],
         "focus": "#noticeview .route-item"
+      }
+    },
+    {
+      "id": "map-exploration-boroughs",
+      "url": "#map",
+      "feature": "map-exploration",
+      "description": "Open the city map to browse civic activity density by borough, then drill into districts.",
+      "localOnly": true,
+      "expectations": {
+        "hash": "#map",
+        "visible": [
+          {
+            "selector": "#tab-map",
+            "text": "Explore civic activity by district"
+          },
+          {
+            "selector": "#mapAreaList"
+          },
+          {
+            "selector": "#mapSvg"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#tab-map .empty.skel"
+          }
+        ]
+      }
+    },
+    {
+      "id": "map-exploration-queens-cd",
+      "url": "#map?level=community_district&parent=Queens&lens=land",
+      "feature": "map-exploration",
+      "description": "Zoom the map to Queens community districts with the land lens, then open a filtered Zoning feed.",
+      "localOnly": true,
+      "expectations": {
+        "hash": "#map?level=community_district&parent=Queens&lens=land",
+        "visible": [
+          {
+            "selector": "#tab-map"
+          },
+          {
+            "selector": "#mapAreaList"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#tab-map .empty.skel"
+          }
+        ]
       }
     }
   ]

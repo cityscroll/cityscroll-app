@@ -99,6 +99,8 @@ OWN_HREF_EXPRS = (
     "${escUiHtml(stats.formula_url||t(",
     # Applicant-conditioned ULURP rates: same-origin About formula page.
     "${escUiHtml(ac.formula_url||t(",
+    # Map exploration feed links — in-app hash routes (#land?…, #property?…, etc.).
+    "${mapEsc(l.hash)}",
 )
 # JS-templated hrefs known to resolve to an external host — must carry ${EXT_ATTRS}/${extSR()}.
 EXTERNAL_HREF_EXPRS = (

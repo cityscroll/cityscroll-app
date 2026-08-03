@@ -150,3 +150,6 @@ vendor_name in(
 you@example.com
 © OpenStreetMap © CARTO · lots © NYC MapPLUTO
 ⚑ non-competitive method:
+
+# ── Map exploration (cs-geo-04) — route token; never rendered chrome
+view=tax-lien
