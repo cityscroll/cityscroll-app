@@ -88,6 +88,43 @@ function parseDisplayDate(s) {
   return `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
 }
 
+const RSS_FORMAT_VALUES = new Set(["", "atom", "feed", "rdf", "rss", "rss2", "xml"]);
+
+/**
+ * Convert NYC Rules syndication endpoints into the resident-facing rule page.
+ * WordPress publishes `wfw:commentRss` as `/feed/`; that URL is feed metadata,
+ * not a place where a resident can comment. Keep normalization at the RSS
+ * boundary so action rails, timelines, and digest payloads share one safe URL.
+ */
+export function normalizeRuleActionUrl(value) {
+  const raw = unescape(String(value || "").trim());
+  if (!raw) return null;
+
+  let url;
+  try {
+    url = new URL(raw);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "https:") return null;
+
+  if (url.hostname.toLowerCase() === "rules.cityofnewyork.us") {
+    url.pathname = url.pathname.replace(
+      /\/(?:comments\/)?feed(?:\/(?:atom|rdf|rss2?))?\/?$/i,
+      "/",
+    );
+    for (const key of [...url.searchParams.keys()]) {
+      const lowerKey = key.toLowerCase();
+      const lowerValue = String(url.searchParams.get(key) || "").toLowerCase();
+      if (["feed", "format"].includes(lowerKey) && RSS_FORMAT_VALUES.has(lowerValue)) {
+        url.searchParams.delete(key);
+      }
+    }
+  }
+
+  return url.toString();
+}
+
 function extractFromContent(html) {
   const result = {};
   if (!html) return result;
@@ -158,9 +195,12 @@ export function normalizeRuleItem(raw) {
     if (Number.isFinite(parsed)) pubDate = new Date(parsed).toISOString();
   }
 
+  const ruleUrl = normalizeRuleActionUrl(raw.link);
+  const commentUrl = normalizeRuleActionUrl(raw.commentRss) || ruleUrl;
+
   return {
     title: raw.title || "",
-    url: raw.link || null,
+    url: ruleUrl,
     pub_date: pubDate,
     agency_name: raw.agency_name || fallback.agency_full || null,
     agency_full: fallback.agency_full || null,
@@ -172,7 +212,7 @@ export function normalizeRuleItem(raw) {
     comment_by_date: commentDate,
     hearing_date: hearingDate,
     summary,
-    comment_url: raw.commentRss || null,
+    comment_url: commentUrl,
     comment_count: raw.commentCount ? Number(raw.commentCount) : 0,
     notice_type: fallback.notice_type || null,
     guid: raw.guid || null,
