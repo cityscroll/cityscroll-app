@@ -1767,6 +1767,20 @@ stamps `official_application_url` =
 `node --test test/oasys_exam_map.test.mjs test/deadline_exam_cards.test.mjs
 test/action-rail.test.mjs test/action_link_integrity.test.mjs`.
 
+
+## Property list close chips + closing soon (regression bar)
+
+- Close-date i18n uses `{date}` only (`property_commercial_close` / `_closed`). The
+  intentional `$` before `{amt}` is for **price** badges (`badge_min_bid` etc.) —
+  never copy that pattern onto date chips or you get `closes $September…`.
+- Default `closing_soon` sorts **open soonest first**, undated next, **closed last**
+  under a labeled Closed / archive section; closed cards use `property_action_closed`
+  (no live bid/RFP rail). Pure helpers: `stampPropertyExplorerTemporal`,
+  `sortPropertyExplorerEntries` in `site/property_explorer.mjs`.
+- Detectors: `site/property_list_sanity.mjs` (currency-before-month chip lint +
+  default-view past-deadline check), wired into surface-load sampling. Capture:
+  `python3 tools/capture_property_date_chip_hotfix.py`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
