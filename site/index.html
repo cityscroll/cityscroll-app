@@ -6645,7 +6645,7 @@ function actionRailGuideHTML(actions){
         return bits.length?fact("rule_contact",`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`):"";
       })(),
     ].join("");
-    if(commentWhen) steps.push(step(t("rule_guide_comment_by_step",{date:fdt(commentWhen}),"rule_deadline"));
+    if(commentWhen) steps.push(step(t("rule_guide_comment_by_step",{date:fdt(commentWhen)}), "rule_deadline"));
     if(guide.comment_url){
       const host=escUiHtml(hostOf(guide.comment_url));
       steps.push(step(t("rule_guide_comment_portal_step_html",{url:escUiHtml(guide.comment_url),host}),"rule_comment_portal"));
@@ -6837,7 +6837,7 @@ function actionRailGuideHTML(actions){
       ];
     }else if(guide.system==="notice_extracted"){
       // Concrete steps extracted from this notice's fields and body — never "see the official notice."
-      if(action.deadline) steps.push(step(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}),"guide_due");
+      if(action.deadline) steps.push(step(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}),"guide_due"));
       if(guide.package_url){
         steps.push(step(t("bid_guide_notice_package_step_html",{
           url:escUiHtml(guide.package_url),
