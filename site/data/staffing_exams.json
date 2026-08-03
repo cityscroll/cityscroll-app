@@ -149,29 +149,36 @@
     },
     "records": [
       {
-        "exam_number": "6125",
-        "application_cycle": "2026",
+        "exam_number": "6311",
+        "application_cycle": "2025",
         "applicant_count": 1280,
         "list_establishment": 1010,
         "certification_count": 74,
         "appointment_count": 68,
         "hire_count": 68,
-        "published_on": "2026-07-22"
+        "published_on": "2026-01-15"
       },
       {
-        "exam_number": "7006",
-        "application_cycle": "2026",
+        "exam_number": "6073",
+        "application_cycle": "2025",
         "applicant_count": 910,
         "list_establishment": 770,
         "certification_count": 58,
         "appointment_count": 40,
         "hire_count": 40,
-        "published_on": "2026-07-22"
+        "published_on": "2025-12-01"
       }
     ],
     "summary": {
       "count": 2
     }
+  },
+  "exam_cycle_coherence": {
+    "metric": "exam_cycle_temporal_incoherence_count",
+    "exam_cycle_temporal_incoherence_count": 0,
+    "exam_count": 228,
+    "rate": 0,
+    "incoherent_exam_numbers": []
   },
   "list_aggregates": {
     "source": {
@@ -370,7 +377,15 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
-      "outcome": null,
+      "outcome": {
+        "application_cycle": "2025",
+        "applicant_count": 1280,
+        "list_establishment": 1010,
+        "certification_count": 74,
+        "appointment_count": 68,
+        "hire_count": 68,
+        "published_on": "2026-01-15"
+      },
       "outcome_gap": null,
       "list_aggregate": {
         "list_count": 1983,
@@ -604,7 +619,15 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
-      "outcome": null,
+      "outcome": {
+        "application_cycle": "2025",
+        "applicant_count": 910,
+        "list_establishment": 770,
+        "certification_count": 58,
+        "appointment_count": 40,
+        "hire_count": 40,
+        "published_on": "2025-12-01"
+      },
       "outcome_gap": null,
       "list_aggregate": {
         "list_count": 257,
@@ -3381,16 +3404,15 @@
         "dcas-noe",
         "oasys-active-exams"
       ],
-      "outcome": {
-        "application_cycle": "2026",
-        "applicant_count": 1280,
-        "list_establishment": 1010,
-        "certification_count": 74,
-        "appointment_count": 68,
-        "hire_count": 68,
-        "published_on": "2026-07-22"
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
-      "outcome_gap": null,
       "list_aggregate": null,
       "fee_salary_gap": null,
       "oasys_exam_id": "9619",
@@ -3486,16 +3508,15 @@
       "qualifications": "The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
       "test_method": "Education and experience exam",
       "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
-      "outcome": {
-        "application_cycle": "2026",
-        "applicant_count": 910,
-        "list_establishment": 770,
-        "certification_count": 58,
-        "appointment_count": 40,
-        "hire_count": 40,
-        "published_on": "2026-07-22"
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
-      "outcome_gap": null,
       "list_aggregate": null,
       "fee_salary_gap": null,
       "oasys_exam_id": "9625",
