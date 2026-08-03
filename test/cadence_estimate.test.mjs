@@ -142,6 +142,11 @@ test("cadenceEstimate: real 3-cycle chain (DOC Inmate Phone System) — count, a
   // days, rounded to 267 -> 2023-04-20 + 267 days
   assert.equal(est.avgMonths, 9);
   assert.equal(est.nextDate.toISOString().slice(0, 10), "2024-01-12");
+  // Prediction-contract provenance fields (not rendered by cadenceHTML).
+  assert.equal(est.basis.method, "cadence");
+  assert.equal(est.model_name, "award_cadence");
+  assert.equal(est.model_version, "1.0.0");
+  assert.equal(est.basis.n, 3);
 });
 
 test("cadenceHTML: states the cadence plainly, with its basis, labeled as an estimate", () => {

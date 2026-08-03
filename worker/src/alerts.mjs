@@ -55,6 +55,10 @@ import {
 import { prefsLink } from "./prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
+import {
+  forecastSentIdentity,
+  forecastIsDeliverableOn,
+} from "./lib/contract_forecast_predictions.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -1955,8 +1959,10 @@ export async function matchForecasts(env, s, today) {
     if (fcRaw) {
       const list = JSON.parse(fcRaw);
       for (const fx of list) {
-        if (fx.warning_date === today) {
-          const forecastId = `fc:${fx.contract_id}:${s.key}`;
+        // warning_date single-fire maps to the approaching band in the prediction
+        // ontology; delivery identity stays the historical sent:fc:… key.
+        if (forecastIsDeliverableOn(fx, today)) {
+          const forecastId = forecastSentIdentity(fx.contract_id, s.key);
           const sent = await env.ALERT_STATE.get(`sent:${forecastId}`);
           if (!sent) {
             matched.push(fx);

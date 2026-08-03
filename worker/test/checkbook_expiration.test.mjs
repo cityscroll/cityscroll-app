@@ -107,4 +107,9 @@ test("runCheckbookPipeline fetches, parses, and puts to KV", async () => {
   assert.equal(forecasts[0].vendor_name, "SINERGIA INC");
   assert.equal(forecasts[0].expiration_date, "2029-07-01");
   assert.equal(forecasts[0].warning_date, "2029-01-02");
+  // Prediction-contract retrofit provenance (product fields above unchanged).
+  assert.equal(forecasts[0].basis.method, "term_arithmetic");
+  assert.equal(forecasts[0].model_name, "contract_renewal_term");
+  assert.match(forecasts[0].prediction_id, /^pred:[a-f0-9]{24}$/);
+  assert.equal(forecasts[0].status, "open");
 });
