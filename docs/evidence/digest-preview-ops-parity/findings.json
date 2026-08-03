@@ -1,0 +1,143 @@
+{
+  "alert_preview": {
+    "verdict": "fixed",
+    "note": "digItemHTML now loads site/digest_item_awareness.mjs and renders phase/deadline/next-step under each dig item (parity with email).",
+    "models": {
+      "solicitation": {
+        "phase": "Solicitation",
+        "deadline": {
+          "state": "closing-soon",
+          "event_at": "2026-08-10",
+          "days_left": 8
+        },
+        "action": {
+          "type": "official_application",
+          "label_key": "open_rfp_package",
+          "label": "Get the RFP package",
+          "delivery": "official_handoff",
+          "destination": "https://example.com/rfps",
+          "destination_label": "example.com",
+          "deadline": "2026-08-10",
+          "confirmation_required": true,
+          "guide": {
+            "system": "notice_extracted",
+            "mode": "notice_fields",
+            "destination": "https://example.com/rfps",
+            "label_key": "open_rfp_package",
+            "label": "Get the RFP package",
+            "identifier": null,
+            "procurement_name": "Street resurfacing materials",
+            "status": null,
+            "package_url": "https://example.com/rfps",
+            "email": null,
+            "contact_name": null,
+            "contact_phone": null,
+            "address_to_request": null,
+            "selection_method": null,
+            "has_fields": true
+          }
+        },
+        "steps": [
+          {
+            "label": "Package / submit",
+            "value": "https://example.com/rfps"
+          }
+        ],
+        "pointer_only": false,
+        "matter_kind": "solicitation"
+      },
+      "award": {
+        "phase": "Award",
+        "deadline": {
+          "state": "none",
+          "event_at": null,
+          "days_left": null
+        },
+        "action": {
+          "type": "document",
+          "label_key": "next_action_award_to",
+          "label": "Awarded to Acme Snow & Ice LLC · $250,000",
+          "delivery": "official_handoff",
+          "destination": "https://www.checkbooknyc.com/smart_search/citywide?search_term=PIN-PREV-1",
+          "destination_label": "www.checkbooknyc.com",
+          "deadline": null,
+          "confirmation_required": false,
+          "guide": {
+            "system": "award_lifecycle",
+            "mode": "award",
+            "selection_phase": null,
+            "destination": "https://www.checkbooknyc.com/smart_search/citywide?search_term=PIN-PREV-1",
+            "label_key": "next_action_award_to",
+            "label": "Awarded to Acme Snow & Ice LLC · $250,000",
+            "label_vars": {
+              "vendor": "Acme Snow & Ice LLC",
+              "amount": "$250,000"
+            },
+            "vendor": "Acme Snow & Ice LLC",
+            "amount": "$250,000",
+            "spent": null,
+            "pin": "PIN-PREV-1",
+            "contract_id": null,
+            "registration_date": null,
+            "registered": false,
+            "pending_registration": null,
+            "checkbook_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=PIN-PREV-1",
+            "has_fields": true,
+            "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/FIX-PREV-AWD-1"
+          },
+          "label_vars": {
+            "vendor": "Acme Snow & Ice LLC",
+            "amount": "$250,000"
+          }
+        },
+        "steps": [
+          {
+            "label": "Vendor",
+            "value": "Acme Snow & Ice LLC"
+          },
+          {
+            "label": "Amount",
+            "value": "$250,000"
+          }
+        ],
+        "pointer_only": false,
+        "matter_kind": "award"
+      }
+    }
+  },
+  "desk_daylog": {
+    "verdict": "ok_send_level",
+    "note": "Operator daylog is send-level: noticeIds + noticeLinks + outcome labels. It does not re-render email item HTML. After the email upgrade, notice deep links and counts remain intact.",
+    "entry": {
+      "day": "2026-08-02",
+      "kind": "subscription",
+      "id": "sub:ops-demo",
+      "lens": "money",
+      "query": "contract money — construction",
+      "email": "u***@example.com",
+      "found": 2,
+      "noticeCount": 2,
+      "noticeIds": [
+        "FIX-PREV-SOL-1",
+        "FIX-PREV-AWD-1"
+      ],
+      "noticeLinks": [
+        "https://cityscroll.org/#notice/FIX-PREV-SOL-1",
+        "https://cityscroll.org/#notice/FIX-PREV-AWD-1"
+      ],
+      "action": "match",
+      "traffic_class": null,
+      "sent": true,
+      "dryRun": false,
+      "capped": false,
+      "zeroMatch": false,
+      "error": null,
+      "forecasts": 0,
+      "sendUnits": 1
+    },
+    "noticeLinks": [
+      "https://cityscroll.org/#notice/FIX-PREV-SOL-1",
+      "https://cityscroll.org/#notice/FIX-PREV-AWD-1"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Desk daylog — send-level receipt</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;padding:32px;background:#111;color:#eee}
+.card{background:#1c1c1c;border:1px solid #333;border-radius:8px;padding:20px;max-width:720px}
+.badge{display:inline-block;font:600 11px/1 system-ui;text-transform:uppercase;letter-spacing:.04em;background:#333;color:#9fd;padding:4px 8px;border-radius:4px;margin-bottom:12px}
+a{color:#8cf}
+pre{background:#0a0a0a;padding:12px;overflow:auto;font-size:12px;border-radius:6px}
+.note{color:#aaa;font-size:13px;max-width:720px}
+</style></head><body>
+<span class="badge">desk / ops</span>
+<h1 style="font-size:20px">Daylog send row (digest_ops)</h1>
+<p class="note">Operators see <strong>counts + deep links</strong>, not the subscriber email body. That is intentional: the desk is for send continuity, not re-reading digests. Notice links remain after the awareness upgrade.</p>
+<div class="card">
+  <p><strong>contract money — construction</strong> · u***@example.com · action=match</p>
+  <p>2 new · found 2 · sent=true</p>
+  <p>Deep links:</p>
+  <ul><li><a href="https://cityscroll.org/#notice/FIX-PREV-SOL-1">https://cityscroll.org/#notice/FIX-PREV-SOL-1</a></li><li><a href="https://cityscroll.org/#notice/FIX-PREV-AWD-1">https://cityscroll.org/#notice/FIX-PREV-AWD-1</a></li></ul>
+  <pre>{
+  "day": "2026-08-02",
+  "kind": "subscription",
+  "id": "sub:ops-demo",
+  "lens": "money",
+  "query": "contract money — construction",
+  "email": "u***@example.com",
+  "found": 2,
+  "noticeCount": 2,
+  "noticeIds": [
+    "FIX-PREV-SOL-1",
+    "FIX-PREV-AWD-1"
+  ],
+  "noticeLinks": [
+    "https://cityscroll.org/#notice/FIX-PREV-SOL-1",
+    "https://cityscroll.org/#notice/FIX-PREV-AWD-1"
+  ],
+  "action": "match",
+  "traffic_class": null,
+  "sent": true,
+  "dryRun": false,
+  "capped": false,
+  "zeroMatch": false,
+  "error": null,
+  "forecasts": 0,
+  "sendUnits": 1
+}</pre>
+</div>
+</body></html>
