@@ -7620,26 +7620,33 @@ function rulesExplorerCardHTML(entry, terms){
   }
   const actionLead=`<div class="rules-action-lead">${escUiHtml(actionLeadText)}</div>`;
   // Primary kinetic destination: comment portal while open; else official rule page; else notice.
-  let primaryHref=noticeHref;
-  let primaryExternal=false;
-  if(fineStage==="comment-open" && (entry.comment_url||entry.rule_url)){
-    primaryHref=entry.comment_url||entry.rule_url;
-    primaryExternal=true;
-  } else if((fineStage==="hearing"||processStage==="public_process") && entry.rule_url){
-    primaryHref=entry.rule_url;
-    primaryExternal=true;
-  } else if((fineStage==="adopted"||fineStage==="effective"||processStage==="adoption"||processStage==="effective") && entry.rule_url){
-    primaryHref=entry.rule_url;
-    primaryExternal=true;
-  } else if(entry.rule_url && processStage==="proposal"){
-    primaryHref=entry.rule_url;
-    primaryExternal=true;
+  // Separate template branches so link_targets can classify each href expression (never mix
+  // in-app #notice with external NYC Rules into one ${escUiHtml(primaryHref)} slot).
+  const wantCommentPrimary=fineStage==="comment-open" && !!(entry.comment_url||entry.rule_url);
+  const wantRulePrimary=!wantCommentPrimary && !!entry.rule_url && (
+    fineStage==="hearing"
+    || processStage==="public_process"
+    || fineStage==="adopted"
+    || fineStage==="effective"
+    || processStage==="adoption"
+    || processStage==="effective"
+    || processStage==="proposal"
+  );
+  let acts="";
+  if(wantCommentPrimary && entry.comment_url){
+    acts=`<a class="act primary" href="${escUiHtml(entry.comment_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+  } else if(wantCommentPrimary && entry.rule_url){
+    acts=`<a class="act primary" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+  } else if(wantRulePrimary){
+    acts=`<a class="act primary" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+  } else {
+    acts=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   }
-  let acts=`<a class="act primary" href="${escUiHtml(primaryHref)}"${primaryExternal?` ${EXT_ATTRS}`:""}>${escUiHtml(actionLeadText)}${primaryExternal?extSR():""}</a>`;
   acts+=`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
   acts+=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
   if(agency) acts+=`<a class="act" href="${agencyHref(agency)}">${t("rules_action_agency_profile")}</a>`;
-  if(entry.rule_url && primaryHref!==entry.rule_url){
+  // Secondary official rule page when primary was the comment portal (not already the rule URL).
+  if(entry.rule_url && !(wantRulePrimary || (wantCommentPrimary && !entry.comment_url))){
     acts+=`<a class="act" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`;
   }
   acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
