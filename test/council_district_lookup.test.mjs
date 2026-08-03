@@ -65,8 +65,8 @@ test("attachCouncilDistrict never invents a district without coordinates", () =>
 });
 
 test("zapCouncilDistrictWhere uses exact single and padded multi-token match", () => {
-  assert.equal(zapCouncilDistrictWhere("36"), " AND (cc_district='36' OR cc_district like '%36%')");
-  assert.equal(zapCouncilDistrictWhere("5"), " AND (cc_district='5' OR cc_district like '%05%')");
+  assert.equal(zapCouncilDistrictWhere("36"), " AND (cc_district='36' OR cc_district LIKE '%36%')");
+  assert.equal(zapCouncilDistrictWhere("5"), " AND (cc_district='5' OR cc_district LIKE '%05%')");
   assert.equal(zapCouncilDistrictWhere("99"), "");
   assert.equal(zapCouncilDistrictWhere(""), "");
 });

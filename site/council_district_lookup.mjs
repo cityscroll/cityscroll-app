@@ -121,5 +121,6 @@ export function zapCouncilDistrictWhere(councilDistrict) {
   const padded = id.padStart(2, "0");
   const escaped = id.replace(/'/g, "''");
   const paddedEsc = padded.replace(/'/g, "''");
-  return ` AND (cc_district='${escaped}' OR cc_district like '%${paddedEsc}%')`;
+  // LIKE uppercase: SoQL fragment, not user-facing copy (stray-English gate).
+  return ` AND (cc_district='${escaped}' OR cc_district LIKE '%${paddedEsc}%')`;
 }

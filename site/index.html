@@ -5211,7 +5211,8 @@ function zapCouncilWhere(councilDistrict){
   const id=String(councilDistrict||"").trim();
   if(!/^(?:[1-9]|[1-4]\d|5[01])$/.test(id)) return "";
   const padded=id.padStart(2,"0");
-  return ` AND (cc_district='${id}' OR cc_district like '%${padded}%')`;
+  // LIKE must be uppercase so the stray-English lint classifies this as SoQL, not UI copy.
+  return ` AND (cc_district='${id}' OR cc_district LIKE '%${padded}%')`;
 }
 
 // Commit-time default Active ULURP list (wave-2 batch precompute). Filter/keyword/geo stay live SODA.
