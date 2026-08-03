@@ -97,6 +97,8 @@ OWN_HREF_EXPRS = (
     "${escUiHtml(officialLink)}",
     # Zoning base-rate methodology lives on the same-origin About page.
     "${escUiHtml(stats.formula_url||t(",
+    # Applicant-conditioned ULURP rates: same-origin About formula page.
+    "${escUiHtml(ac.formula_url||t(",
 )
 # JS-templated hrefs known to resolve to an external host — must carry ${EXT_ATTRS}/${extSR()}.
 EXTERNAL_HREF_EXPRS = (
