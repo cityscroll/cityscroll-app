@@ -38,7 +38,8 @@
               "ontology-enrichment",
               "coverage",
               "cross-source-consistency",
-              "location-resolution"
+              "location-resolution",
+              "surface-load"
             ]
           },
           "title": { "type": "string" },

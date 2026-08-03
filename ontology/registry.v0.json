@@ -1225,7 +1225,8 @@
       "ontology-enrichment",
       "coverage",
       "cross-source-consistency",
-      "location-resolution"
+      "location-resolution",
+      "surface-load"
     ],
     "legacy_intelligence_receipt": "cityscroll.intelligence_receipt.v0",
     "legacy_card_classes": [
@@ -1236,6 +1237,6 @@
       "actionability",
       "registry"
     ],
-    "note": "Multi-dimension cards are emitted by tools/flywheel-run.mjs; ontology-enrichment reuses tools/intelligence_flywheel.mjs. Do not hand-author parallel metric-driven roadmaps."
+    "note": "Multi-dimension cards are emitted by tools/flywheel-run.mjs; ontology-enrichment reuses tools/intelligence_flywheel.mjs. The surface-load dimension consumes deterministic fixtures locally and a scheduled live Chromium sample. Do not hand-author parallel metric-driven roadmaps."
   }
 }

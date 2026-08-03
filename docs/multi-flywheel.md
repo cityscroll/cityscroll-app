@@ -18,6 +18,7 @@ Public vocabulary is neutral. This is an object–link–action **catalog** plus
 | `coverage` | Declared `source_contracts` vs observation coverage | Declared-not-ingested or dual-write gap |
 | `cross-source-consistency` | Disagreement inventory + cross-spine fail fixtures | Unreconciled source disagreements |
 | `location-resolution` | Golden-corpus located rates, **map** `district_activity` per-lens located rates, community + council district resolution on geocoded pins, boundary vintage | Stated places remain unlocated, a map lens is zero-located with a non-empty corpus (`map-zero-located-*`), either district is missing, or a boundary source is stale/unlabeled |
+| `surface-load` | Scheduled 1440×900 Chromium walk of the principal list, detail, profile, Staffing, exam, and Alerts surfaces | A completed sample exceeds its word/link/button budget, repeats a six-word-or-longer string past its surface budget, or has no resident-serving action in the opening viewport |
 
 ### Data-integrity core: not-published-rate credibility audit
 
@@ -48,6 +49,33 @@ The existing `ontology-enrichment` evaluator also consumes the temporal
 completeness and procurement lifecycle-coherence scorecards. This keeps civic
 time and lifecycle regressions in the established enrichment loop rather than
 creating a parallel process dimension.
+
+### Surface-load sampling
+
+The interface sampler implements the cognitive-load study's capture walk and
+DOM inventory as a recurring measurement, not a required merge check. It waits
+for a content-bearing selector and for visible skeletons to clear, then records
+visible words, links, buttons, exact normalized string repetitions, document
+height, and the position of the first configured resident-serving action relative
+to the surface root. Long explorer lists use the study's explicit `<500` links, `<100`
+buttons, and `<150` identical long-string budgets; details require one render
+per six-word-or-longer string. The action budget is the 900px opening viewport.
+
+```bash
+# Deterministic, browser-free characterization
+python3 tools/sample_surface_load.py --fixture --out /tmp/surface-load.json
+node tools/flywheel-run.mjs --fixture --dimensions surface-load --emit /tmp/mf-surface-load
+
+# Scheduled/live shape (Playwright + Chromium required)
+python3 tools/sample_surface_load.py --live --out /tmp/surface-load-live.json
+node tools/flywheel-run.mjs --live --surface-load /tmp/surface-load-live.json \
+  --dimensions surface-load --emit /tmp/mf-surface-load-live
+```
+
+Incomplete captures fail the sampler and do not mint cards. Completed samples
+mint at most one evidence-rich card per surface, combining all breached budgets
+to avoid card floods. `.github/workflows/surface-load-live.yml` runs the live
+walk daily and uploads both the inventory and reconciled queue for dispatch.
 
 Each dimension is an evaluator under `ontology/dimensions/`. New dimensions
 register in `ontology/dimensions/index.mjs` and `DIMENSION_IDS`.
@@ -87,7 +115,7 @@ Schema: `ontology/queue/schema.v0.json` (`cityscroll.multi_flywheel_queue.v0`).
 Every emitted card includes:
 
 - `id` — stable (`crol-list/mf-{dimension}-{slug}`)
-- `dimension` — one of the six ids above
+- `dimension` — one of the seven ids above
 - `title`, `rank`, `rank_score`
 - `verify` — machine-checkable predicate (usually a `node --test` / tool command)
 - `demo_win` — what a fixed card unlocks for a reader

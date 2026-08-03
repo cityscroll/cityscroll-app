@@ -1,0 +1,35 @@
+{
+  "schema": "cityscroll.surface_load_inventory.v0",
+  "methodology": {
+    "source": "UI cognitive-load study, 2026-08-03",
+    "viewport": "1440x900",
+    "scope": "visible rendered DOM after content readiness and skeleton clearance",
+    "duplication": "exact normalized visible strings of six or more words",
+    "action_position": "first configured resident-serving action relative to the visible surface root"
+  },
+  "viewport": { "width": 1440, "height": 900 },
+  "definitions": [
+    { "id": "money-list", "label": "Money list", "route": "#money", "root_selector": "#tab-money", "ready_selector": "#list .row", "action_selector": "#tab-money .next-action-rail, #tab-money .apply, #tab-money .watchbtn", "budgets": { "words": 2500, "links": 100, "buttons": 60, "max_verbatim_repeat": 25, "max_first_action_y": 900 } },
+    { "id": "notice-award", "label": "Award notice", "route": "#notice/20260724018", "root_selector": "#noticeview", "ready_selector": "#noticeview .next-action-rail", "action_selector": "#noticeview .next-action-rail", "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 } },
+    { "id": "notice-rules", "label": "Rules notice", "route": "#notice/20260714029", "root_selector": "#noticeview", "ready_selector": "#noticeview .next-action-rail", "action_selector": "#noticeview .next-action-rail", "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 } },
+    { "id": "notice-meeting", "label": "Meeting notice", "route": "#notice/20260706036", "root_selector": "#noticeview", "ready_selector": "#noticeview .next-action-rail", "action_selector": "#noticeview .next-action-rail", "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 } },
+    { "id": "notice-property", "label": "Property notice", "route": "#notice/20241112003", "root_selector": "#noticeview", "ready_selector": "#noticeview .next-action-rail", "action_selector": "#noticeview .next-action-rail", "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 } },
+    { "id": "land-list", "label": "Land list", "route": "#land", "root_selector": "#tab-land", "ready_selector": "#llist > :not(.empty)", "action_selector": "#tab-land .watchbtn, #llist .primary", "budgets": { "words": 2500, "links": 500, "buttons": 100, "max_verbatim_repeat": 149, "max_first_action_y": 900 } },
+    { "id": "land-detail", "label": "Land project detail", "route": "#land/2022M0258", "root_selector": "#tab-land", "ready_selector": "#tab-land .next-action-rail, #ldetail .panel", "action_selector": "#tab-land .next-action-rail", "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 } },
+    { "id": "rules-list", "label": "Rules list", "route": "#rules", "root_selector": "#tab-rules", "ready_selector": "#rulesfeed > :not(.empty)", "action_selector": "#tab-rules .watchbtn, #rulesfeed .primary", "budgets": { "words": 5000, "links": 500, "buttons": 100, "max_verbatim_repeat": 149, "max_first_action_y": 900 } },
+    { "id": "meetings-list", "label": "Meetings list", "route": "#meetings", "root_selector": "#tab-meetings", "ready_selector": "#meetingsfeed > :not(.empty)", "action_selector": "#tab-meetings .watchbtn, #meetingsfeed .primary", "budgets": { "words": 2500, "links": 500, "buttons": 100, "max_verbatim_repeat": 149, "max_first_action_y": 900 } },
+    { "id": "property-list", "label": "Property list", "route": "#property", "root_selector": "#tab-property", "ready_selector": "#propertyfeed > :not(.empty)", "action_selector": "#tab-property .watchbtn, #propertyfeed .primary", "budgets": { "words": 5000, "links": 500, "buttons": 100, "max_verbatim_repeat": 149, "max_first_action_y": 900 } },
+    { "id": "staffing", "label": "Staffing", "route": "#people", "root_selector": "#tab-people", "ready_selector": "#career-results .career-card", "action_selector": "#career-browser, #career-results .primary", "budgets": { "words": 2500, "links": 150, "buttons": 80, "max_verbatim_repeat": 25, "max_first_action_y": 900 } },
+    { "id": "exam-detail", "label": "Exam detail", "route": "#exam/7016", "root_selector": "#tab-people", "ready_selector": "#career-exam-7016", "action_selector": "#career-exam-7016 .primary, #career-exam-7016 a[href*='nyc.gov']", "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 } },
+    { "id": "vendor-profile", "label": "Vendor profile", "route": "#vendor/Camba%20Inc.", "root_selector": "#entityview", "ready_selector": "#entityview .vendor-variant-item", "action_selector": "#entityview .next-action-rail, #entityview a.act", "budgets": { "words": 1500, "links": 100, "buttons": 60, "max_verbatim_repeat": 2, "max_first_action_y": 900 } },
+    { "id": "agency-profile", "label": "Agency profile", "route": "#agency/City%20Council", "root_selector": "#entityview", "ready_selector": "#entityview .panel, #entityview .entity-dossier", "action_selector": "#entityview .next-action-rail, #entityview a.act", "budgets": { "words": 1500, "links": 100, "buttons": 60, "max_verbatim_repeat": 2, "max_first_action_y": 900 } },
+    { "id": "alerts", "label": "Alerts builder", "route": "#alerts", "root_selector": "#tab-alerts", "ready_selector": "#quizpanel", "action_selector": "#quizgo", "budgets": { "words": 1200, "links": 80, "buttons": 60, "max_verbatim_repeat": 2, "max_first_action_y": 900 } }
+  ],
+  "fixture": true,
+  "measured_at": "1970-01-01T00:00:00.000Z",
+  "surfaces": [
+    { "id": "exam-detail", "label": "Exam detail", "route": "#exam/7016", "status": "ok", "action_required": true, "budgets": { "words": 1200, "links": 80, "buttons": 50, "max_verbatim_repeat": 1, "max_first_action_y": 900 }, "measured": { "words": 589, "links": 15, "buttons": 9, "max_verbatim_repeat": 1, "verbatim_duplicates": [], "first_action_y": 510 } },
+    { "id": "agency-profile", "label": "Agency profile", "route": "#agency/City%20Council", "status": "ok", "action_required": true, "budgets": { "words": 1500, "links": 100, "buttons": 60, "max_verbatim_repeat": 2, "max_first_action_y": 900 }, "measured": { "words": 504, "links": 33, "buttons": 14, "max_verbatim_repeat": 1, "verbatim_duplicates": [], "first_action_y": 620 } },
+    { "id": "alerts", "label": "Alerts builder", "route": "#alerts", "status": "ok", "action_required": true, "budgets": { "words": 1200, "links": 80, "buttons": 60, "max_verbatim_repeat": 2, "max_first_action_y": 900 }, "measured": { "words": 524, "links": 10, "buttons": 29, "max_verbatim_repeat": 1, "verbatim_duplicates": [], "first_action_y": 480 } }
+  ]
+}
