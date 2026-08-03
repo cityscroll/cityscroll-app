@@ -22,8 +22,11 @@ on:
 permissions:
   contents: read
 
+# Per-ref group: a global group cancelled in-progress runs across unrelated
+# branches, which left PRs with a red cancelled "Run multi-dimension flywheel"
+# check even when the job itself is green. Same-branch supersession still works.
 concurrency:
-  group: multi-dimension-flywheel
+  group: multi-dimension-flywheel-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
