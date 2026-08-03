@@ -95,7 +95,8 @@ def extract_en_strings(i18n_text: str) -> dict[str, str]:
                 i += 1
         i += 1
     block = i18n_text[start : i - 1]
-    pairs: dict[str, str] = {}
+    # Parsed en catalog entries (key -> display string). Empty until the loop below.
+    en_catalog = {}  # source: site/i18n.js STRINGS.en
     for km in re.finditer(
         r"([A-Za-z0-9_]+)\s*:\s*(\"([^\"\\]|\\.)*\"|'([^'\\]|\\.)*')",
         block,
@@ -106,12 +107,12 @@ def extract_en_strings(i18n_text: str) -> dict[str, str]:
             val = json.loads(raw) if raw.startswith('"') else raw[1:-1]
         except json.JSONDecodeError:
             val = raw[1:-1]
-        pairs[key] = val
-    if len(pairs) < 100:
+        en_catalog[key] = val
+    if len(en_catalog) < 100:
         raise SystemExit(
-            f"public_surface_vocab: only parsed {len(pairs)} en strings — parser likely wrong"
+            f"public_surface_vocab: only parsed {len(en_catalog)} en strings — parser likely wrong"
         )
-    return pairs
+    return en_catalog
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -132,24 +133,26 @@ def main(argv: list[str] | None = None) -> int:
     text = I18N.read_text(encoding="utf-8")
     en = extract_en_strings(text)
 
-    findings: list[dict] = []
+    # Hits against the public en catalog (key, term, excerpt). Empty until scan.
+    hits = []  # source: site/i18n.js STRINGS.en + INTERNAL_PATTERNS
     for key, value in sorted(en.items()):
         if not isinstance(value, str) or not value.strip():
             continue
         for term, pat in INTERNAL_PATTERNS:
             if not pat.search(value):
                 continue
-            token = f"{key}:{term}"
-            if token in allow or key in allow:
+            allow_token = key + ":" + term  # allowlist form key:term (not a secret)
+            if allow_token in allow or key in allow:
                 continue
             # Allowlist may name "key:term" or whole key
-            findings.append(
+            hits.append(
                 {
                     "key": key,
                     "term": term,
                     "excerpt": value[:180],
                 }
             )
+    findings = hits
 
     if args.json:
         print(json.dumps({"findings": findings, "count": len(findings)}, indent=2))

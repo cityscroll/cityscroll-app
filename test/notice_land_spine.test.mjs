@@ -60,6 +60,8 @@ const DINING_OUT_ZOOM_NOTICE = {
   agency_name: "Transportation",
   type_of_notice_description: "Public Hearings",
   short_title: "Dining Out NYC Public Hearing",
+  // Body shape from City Record Online notice 20260716009 (dg92-zbpx): Zoom
+  // join URL ends in an 11-digit meeting id immediately before the word Meeting.
   additional_description_1:
     "NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent "
     + "has been scheduled for a public hearing by the New York City Department of Transportation. "
@@ -67,7 +69,7 @@ const DINING_OUT_ZOOM_NOTICE = {
     + "To join the hearing enter the following URL link into your browser's address bar: "
     + "zoom.us/j/91467302621 Meeting ID: 914 6730 2621. "
     + "To join the hearing only by phone, use the following information to connect: "
-    + "Phone: +1-929-205-6099 Meeting ID: 914 6730 2621",
+    + "Dial-in available. Meeting ID: 914 6730 2621",
 };
 
 test("owner exemplar Dining Out Zoom ID does not extract as ULURP 302621MEET", () => {
@@ -94,11 +96,11 @@ test("owner exemplar Dining Out Zoom ID does not extract as ULURP 302621MEET", (
 });
 
 test("extractUlurpKeys rejects phone/Webex false positives while keeping real action codes", () => {
-  assert.equal(extractUlurpKeys("Phone: +1-929-205-6099 Meeting ID: 914 6730 2621").size, 0);
+  // Synthetic dial-in + meeting-id text (no live phone number).
+  assert.equal(extractUlurpKeys("Dial-in: +1-555-0100 Meeting ID: 914 6730 2621").size, 0);
+  // Hex-ish registration id substring (shape of a Webex weblink token; not a live URL).
   assert.equal(
-    extractUlurpKeys(
-      "https://nycbp.webex.com/weblink/register/radabe59502498bda55ab8f61815d7891",
-    ).size,
+    extractUlurpKeys("register token radabe59502498bda55ab8f61815d7891 for hearing").size,
     0,
   );
   assert.ok(extractUlurpKeys("C 210221 PCR").has("210221PCR"));
