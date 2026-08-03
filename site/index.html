@@ -420,17 +420,27 @@
   .meeting-actions li{margin:2px 0}
   .meeting-matter-docs{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:4px}
   .meeting-roll-call{margin-top:4px}
-  .meeting-roll-call-person a,.meeting-roll-call a.meeting-official-link{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
-  .meeting-roll-call-person a:hover,.meeting-roll-call a.meeting-official-link:hover{color:var(--ink)}
+  .meeting-roll-call-person a,.meeting-roll-call a.meeting-official-link,.meeting-roll-call-table a.meeting-official-link{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
+  .meeting-roll-call-person a:hover,.meeting-roll-call a.meeting-official-link:hover,.meeting-roll-call-table a.meeting-official-link:hover{color:var(--ink)}
   /* One-line roll-call chip on the matter card (not only inside collapsed Decision). */
   .meeting-roll-call-chip{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:6px 0 0;padding:6px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2,#f7f1e4);font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .meeting-roll-call-chip .meeting-roll-call-chip-lbl{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .meeting-roll-call-chip .meeting-roll-call-names{min-width:0;overflow-wrap:anywhere}
+  /* Full named roll call (decision panel) — real table for a11y. */
+  .meeting-roll-call-table{width:100%;border-collapse:collapse;margin:6px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .meeting-roll-call-table caption.meeting-roll-call-caption{caption-side:top;text-align:start;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+  .meeting-roll-call-table th,.meeting-roll-call-table td{padding:6px 8px;border-bottom:1px solid var(--rule);text-align:start;vertical-align:top}
+  .meeting-roll-call-table thead th{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule-strong,#c9c0ae)}
+  .meeting-roll-call-table th[scope="row"]{font-weight:600}
   .official-vote-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
   .official-vote-list li{padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2,#f7f1e4)}
+  .official-vote-table{width:100%;border-collapse:collapse;margin:4px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .official-vote-table th,.official-vote-table td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:start;vertical-align:top}
+  .official-vote-table thead th{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule-strong,#c9c0ae)}
+  .official-vote-table th[scope="row"]{font-weight:600}
   .official-vote-file{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif}
   .official-vote-title{margin:4px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
-  .official-vote-bucket{display:inline-block;margin-top:6px;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood)}
+  .official-vote-bucket{display:inline-block;margin-top:0;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood)}
   /* Council matter phase-group (agenda → matter → decision → record) over server spines[].
      Same lead → stepper → panels shape as rules/land; future chips solid muted for axe. */
   .meeting-matter-phase{margin-top:10px}

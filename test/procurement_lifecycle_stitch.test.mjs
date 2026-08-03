@@ -141,6 +141,7 @@ const sandbox = new Function(
   extractFn("officialHref") + "\n" +
   extractFn("collectRollCallPeople") + "\n" +
   extractFn("meetingRollCallChipHTML") + "\n" +
+  extractFn("meetingRollCallTableHTML") + "\n" +
   extractFn("meetingVotesHTML") + "\n" +
   extractFn("meetingOutcomesHTML") + "\n" +
   extractFn("priorCycleHTML") + "\n" +
@@ -244,6 +245,7 @@ try {
     extractFn("officialHref") +
     extractFn("collectRollCallPeople") +
     extractFn("meetingRollCallChipHTML") +
+    extractFn("meetingRollCallTableHTML") +
     extractFn("meetingVotesHTML") +
     extractFn("meetingOutcomesHTML") +
     `
