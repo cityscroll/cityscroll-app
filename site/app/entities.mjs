@@ -7,10 +7,76 @@
 const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(String(name||"").trim()) + (tab ? "?tab="+tab : "");
 const vendorHref = (name, tab) => "#vendor/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
 
+/** Cached person_votes_lookup.json (precomputed by_person densify). */
+let personVotesLookupPromise = null;
+function loadPersonVotesLookup(){
+  if(!personVotesLookupPromise){
+    personVotesLookupPromise = fetch("data/person_votes_lookup.json", { cache: "force-cache", credentials: "omit" })
+      .then(r => (r && r.ok ? r.json() : null))
+      .catch(() => null);
+  }
+  return personVotesLookupPromise;
+}
+
 /**
- * Event-scoped official skim: how this member voted on this hearing's matters.
- * Cross-event career history waits for multi-event materialization.
- * Loads meeting-outcomes for noticeId when provided; never invents votes.
+ * Accessible table of one official's votes (matter · hearing · vote).
+ * Pure HTML helper for the #official surface — never invents rows.
+ */
+function officialVotesTableHTML(votes, opts){
+  const list = Array.isArray(votes) ? votes : [];
+  if(!list.length) return "";
+  const showHearing = !(opts && opts.hideHearing);
+  const headHearing = showHearing
+    ? `<th scope="col">${t("official_vote_hearing_col")}</th>`
+    : "";
+  const rows = list.map(v => {
+    const file = v.matter_file || v.matter_id || "—";
+    const matterUrl = v.matter_url
+      || (typeof matterDetailUrl === "function" ? matterDetailUrl(v.matter_id) : "")
+      || "";
+    const fileHTML = matterUrl
+      ? `<a class="official-vote-file" href="${escUiHtml(matterUrl)}" ${EXT_ATTRS} lang="en" dir="ltr">${escUiHtml(file)}${extSR()}</a>`
+      : `<span class="official-vote-file" lang="en" dir="ltr">${escUiHtml(file)}</span>`;
+    const title = v.matter_title
+      ? `<div class="official-vote-title" lang="en" dir="ltr">${escUiHtml(v.matter_title)}</div>`
+      : "";
+    const bucket = v.vote_bucket || v.vote_value || v.vote || "—";
+    const voteExtra = v.vote_value && v.vote_bucket && v.vote_value !== v.vote_bucket
+      ? ` · ${escUiHtml(String(v.vote_value))}`
+      : (v.vote && v.vote_bucket && v.vote !== v.vote_bucket ? ` · ${escUiHtml(String(v.vote))}` : "");
+    const hearingCell = showHearing
+      ? (() => {
+          const date = v.event_date ? fdate(String(v.event_date).slice(0, 10)) : "—";
+          const notice = v.request_id
+            ? `<a class="view" href="#notice/${encodeURIComponent(v.request_id)}">${escUiHtml(date)}</a>`
+            : escUiHtml(date);
+          return `<td lang="en" dir="ltr">${notice}</td>`;
+        })()
+      : "";
+    return `<tr data-matter-id="${escUiHtml(v.matter_id || "")}" data-event-id="${escUiHtml(v.event_id || "")}" data-notice-id="${escUiHtml(v.request_id || "")}">
+      <th scope="row">${fileHTML}${title}</th>
+      ${hearingCell}
+      <td lang="en" dir="ltr"><span class="official-vote-bucket">${escUiHtml(String(bucket))}${voteExtra}</span></td>
+    </tr>`;
+  }).join("");
+  return `<table class="official-vote-table" data-official-vote-count="${list.length}">
+    <caption class="sr-only">${t("official_votes_table_caption")}</caption>
+    <thead>
+      <tr>
+        <th scope="col">${t("official_vote_matter_col")}</th>
+        ${headHearing}
+        <th scope="col">${t("official_vote_vote_col")}</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+/**
+ * Official person page: recent roll-call votes across matters (precompute-first)
+ * plus optional event-scoped hearing slice when ?notice= / ?event= is present.
+ * Loads person_votes_lookup.json; may enrich one hearing from /meeting-outcomes.
+ * Never invents votes.
  */
 async function showOfficial(personId, opts){
   showTab("entity");
@@ -21,12 +87,28 @@ async function showOfficial(personId, opts){
   const eventId = opts && opts.eventId ? String(opts.eventId).trim() : "";
   const safeId = escUiHtml(id || "—");
   if(!id){
-    box.innerHTML = `<div class="empty">${t("official_missing_id_html")} ${routeBackHTML("#money")}</div>`;
+    box.innerHTML = `<div class="empty">${t("official_missing_id_html")} ${routeBackHTML("#meetings")}</div>`;
     applyActiveHistoryRouteScroll();
     return;
   }
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("official_loading")}</div>`;
 
+  // Precompute-first: person → votes across densified roll-call hearings.
+  let lookupBag = null;
+  let preVotes = [];
+  let displayName = "";
+  try{
+    const lookup = await loadPersonVotesLookup();
+    if(lookup && lookup.by_person_id){
+      lookupBag = lookup.by_person_id[id] || null;
+      if(lookupBag){
+        displayName = lookupBag.person_name || "";
+        preVotes = Array.isArray(lookupBag.votes) ? lookupBag.votes.slice() : [];
+      }
+    }
+  }catch(e){ /* force-cache miss is fine */ }
+
+  // Optional live enrich for the linked hearing (when precompute is thin on that notice).
   let record = null;
   let loadError = false;
   if(noticeId){
@@ -44,28 +126,32 @@ async function showOfficial(personId, opts){
   }
   if(!document.contains(box)) return;
 
-  // Walk agenda matters for this person's by_person rows only.
-  const votes = [];
-  let displayName = "";
+  // Merge event-scoped live rows for this hearing (prefer live matter titles when present).
+  const hearingVotes = [];
   if(record && Array.isArray(record.agenda_items)){
     for(const item of record.agenda_items){
       for(const matter of (item.matters || [])){
         for(const vote of (matter.votes || [])){
           if(vote && vote.vote_identity === "tally_only") continue;
           for(const p of (vote.by_person || [])){
-            const pid = officialIdFromPerson(p);
+            const pid = typeof officialIdFromPerson === "function"
+              ? officialIdFromPerson(p)
+              : String((p.official && p.official.id) || p.person_id || "").replace(/^official:/, "");
             if(pid !== id) continue;
             if(!displayName){
               displayName = (p.official && p.official.display_name) || p.person_name || "";
             }
-            votes.push({
+            hearingVotes.push({
               matter_id: matter.matter_id || null,
               matter_file: matter.matter_file || null,
               matter_title: matter.title || null,
-              matter_url: matter.matter_url || matterDetailUrl(matter.matter_id) || "",
+              matter_url: matter.matter_url || (typeof matterDetailUrl === "function" ? matterDetailUrl(matter.matter_id) : "") || "",
               vote_value: p.vote_value || p.vote || null,
               vote_bucket: p.vote_bucket || null,
               result: vote.result || null,
+              event_id: (record.council_event && record.council_event.event_id) || eventId || null,
+              request_id: noticeId || null,
+              event_date: (record.council_event && (record.council_event.event_date || record.council_event.start_time)) || null,
             });
           }
         }
@@ -73,58 +159,71 @@ async function showOfficial(personId, opts){
     }
   }
 
+  // Hearing slice from precompute when live miss but densify has the notice.
+  const preHearing = preVotes.filter(v =>
+    (noticeId && String(v.request_id || "") === noticeId)
+    || (eventId && String(v.event_id || "") === eventId)
+  );
+  const scopedVotes = hearingVotes.length ? hearingVotes : preHearing;
+
+  // Recent across matters: full precompute list (newest first already in lookup).
+  const recentVotes = preVotes.slice(0, 40);
   const name = displayName || id;
   const event = (record && record.council_event) || {};
-  const resolvedEventId = eventId || event.event_id || "";
-  const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#money";
+  const resolvedEventId = eventId || event.event_id || (scopedVotes[0] && scopedVotes[0].event_id) || "";
+  const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#meetings";
   const noticeLink = noticeId
     ? `<a class="view" href="#notice/${encodeURIComponent(noticeId)}">${t("official_open_hearing")}</a>`
     : "";
-  const eventLine = resolvedEventId || (event.title || event.body_name)
-    ? `<p class="ei-lead" lang="en" dir="ltr">${t("official_event_line_html",{
-        event: escUiHtml(event.title || event.body_name || t("official_event_fallback")),
-        id: escUiHtml(String(resolvedEventId || "—")),
-        date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date ? fdate(String(event.event_date).slice(0,10)) : "—")
-      })}</p>`
-    : (noticeId
-      ? `<p class="ei-lead">${t("official_event_scoped_note")}</p>`
-      : `<p class="ei-lead">${t("official_need_notice_html")}</p>`);
+  const hasScoped = Boolean(noticeId || eventId);
+  const eventLine = hasScoped
+    ? (resolvedEventId || (event.title || event.body_name)
+      ? `<p class="ei-lead" lang="en" dir="ltr">${t("official_event_line_html",{
+          event: escUiHtml(event.title || event.body_name || t("official_event_fallback")),
+          id: escUiHtml(String(resolvedEventId || "—")),
+          date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date ? fdate(String(event.event_date).slice(0,10)) : (scopedVotes[0]?.event_date ? fdate(String(scopedVotes[0].event_date).slice(0,10)) : "—"))
+        })}</p>`
+      : `<p class="ei-lead">${t("official_event_scoped_note")}</p>`)
+    : `<p class="ei-lead">${t("official_recent_lead_html",{
+        n: String(recentVotes.length || 0)
+      })}</p>`;
 
   let body = "";
-  if(!noticeId){
-    body = `<div class="note">${t("official_need_notice_html")}</div>`;
-  } else if(loadError && !record){
-    body = `<div class="note">${t("official_load_error_html")}</div>`;
-  } else if(!votes.length){
-    body = `<div class="note" data-person-votes-gap="empty">${t("official_no_votes_html",{
-      name: escUiHtml(name)
-    })}</div>`;
-  } else {
-    const items = votes.map(v => {
-      const file = v.matter_file || v.matter_id || "—";
-      const fileHTML = v.matter_url
-        ? `<a class="official-vote-file" href="${escUiHtml(v.matter_url)}" ${EXT_ATTRS} lang="en" dir="ltr">${escUiHtml(file)}${extSR()}</a>`
-        : `<span class="official-vote-file" lang="en" dir="ltr">${escUiHtml(file)}</span>`;
-      const title = v.matter_title
-        ? `<p class="official-vote-title" lang="en" dir="ltr">${escUiHtml(v.matter_title)}</p>`
-        : "";
-      const bucket = v.vote_bucket || v.vote_value || "—";
-      return `<li data-matter-id="${escUiHtml(v.matter_id || "")}">
-        ${fileHTML}
-        ${title}
-        <span class="official-vote-bucket" lang="en" dir="ltr">${escUiHtml(String(bucket))}${v.vote_value && v.vote_bucket && v.vote_value !== v.vote_bucket ? ` · ${escUiHtml(String(v.vote_value))}` : ""}</span>
-      </li>`;
-    }).join("");
-    body = `<ol class="official-vote-list" data-official-vote-count="${votes.length}">${items}</ol>`;
+  // Section A: this hearing (when scoped)
+  if(hasScoped){
+    let scopedBody = "";
+    if(loadError && !record && !preHearing.length){
+      scopedBody = `<div class="note">${t("official_load_error_html")}</div>`;
+    } else if(!scopedVotes.length){
+      scopedBody = `<div class="note" data-person-votes-gap="empty">${t("official_no_votes_html",{
+        name: escUiHtml(name)
+      })}</div>`;
+    } else {
+      scopedBody = officialVotesTableHTML(scopedVotes, { hideHearing: true });
+    }
+    body += `<div class="chain-h">${t("official_votes_heading")}</div>${scopedBody}`;
   }
 
+  // Section B: recent votes across matters (precompute)
+  if(recentVotes.length){
+    const recentHeading = hasScoped
+      ? t("official_recent_votes_heading")
+      : t("official_all_votes_heading");
+    body += `<div class="chain-h" style="margin-top:${hasScoped ? "18" : "0"}px">${recentHeading}</div>`;
+    body += officialVotesTableHTML(recentVotes, { hideHearing: false });
+  } else if(!hasScoped){
+    body = `<div class="note" data-person-votes-gap="empty">${t("official_no_recent_html",{
+      name: escUiHtml(name)
+    })}</div>`;
+  }
+
+  const kicker = hasScoped ? t("official_skim_kicker") : t("official_page_kicker");
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML(backHref)}</p>
-    <div class="panel route-item" tabindex="-1" style="padding:22px 24px" id="official-skim" data-official-id="${safeId}" data-event-id="${escUiHtml(String(resolvedEventId || ""))}" data-notice-id="${escUiHtml(noticeId || "")}">
-      <div class="ftype" style="margin-bottom:6px">${t("official_skim_kicker")}</div>
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px" id="official-skim" data-official-id="${safeId}" data-event-id="${escUiHtml(String(resolvedEventId || ""))}" data-notice-id="${escUiHtml(noticeId || "")}" data-precompute-votes="${recentVotes.length}">
+      <div class="ftype" style="margin-bottom:6px">${kicker}</div>
       <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(name)}</h2>
       ${eventLine}
-      <div class="chain-h">${t("official_votes_heading")}</div>
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
         ${noticeLink}
@@ -133,6 +232,7 @@ async function showOfficial(personId, opts){
       <p class="aidprov" style="margin-top:14px">${t("official_provenance_html")}</p>
     </div>
   </div>`;
+  focusItemRouteTarget(box.querySelector(".route-item"));
   applyActiveHistoryRouteScroll();
 }
 const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));

@@ -68,9 +68,9 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 792162,
-    "normalized_source_sha256": "e688d671f7a26ead438f52302e1edc6b9805ad05ac0687a37e7906f8ae873ac6",
-    "updated_at": "2026-08-03",
-    "note": "Wave-2 remaining batch-precompute first paint (money open RFPs, agency dropdown, staffing hires); rebased onto main with notice/lens alert-signup context."
+    "normalized_source_bytes": 797435,
+    "normalized_source_sha256": "80ec5cd3c9f24ba54627af186297b87c89c8c9a6d534006bc18262711a746ad1",
+    "note": "Wave-2 remaining batch-precompute first paint (money open RFPs, agency dropdown, staffing hires); rebased onto main with notice/lens alert-signup context.",
+    "updated_at": "2026-08-03"
   }
 }

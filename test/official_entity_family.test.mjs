@@ -246,3 +246,17 @@ test("people domain densifies beyond a single seed notice from roll_call only", 
     assert.ok(row.request_id, "request_id ties the vote to a meeting-outcomes notice");
   }
 });
+
+test("person_votes_lookup indexes densify for official person page", () => {
+  const lookupPath = join(root, "../site/data/person_votes_lookup.json");
+  const lookup = JSON.parse(readFileSync(lookupPath, "utf8"));
+  assert.ok(lookup.by_person_id);
+  assert.ok(Number(lookup.person_count) >= 2);
+  const marte = lookup.by_person_id["7801"];
+  assert.ok(marte, "Christopher Marte in person_votes_lookup");
+  assert.ok(Array.isArray(marte.votes) && marte.votes.length >= 1);
+  assert.ok(marte.votes.some((v) => String(v.request_id) === "20260706036"));
+  // Multi-notice densify surfaces more than one hearing when available
+  const notices = new Set(marte.votes.map((v) => String(v.request_id || "")).filter(Boolean));
+  assert.ok(notices.size >= 1);
+});

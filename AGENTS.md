@@ -605,11 +605,15 @@ receipt `official_person_vote_retention_2026-08-02.json`. Public meeting-outcome
 `vote_identity` is `roll_call` when persons retained, `tally_only` when rows
 exist without identity (no fabrication). Meeting UI surfaces a one-line roll-call
 chip on the matter card when `by_person` is non-empty (not only inside collapsed
-Decision) and deep-links names to `#official/{id}?notice=&event=` (event-scoped
-skim). Entity intelligence loads people from
-`site/data/people_domain_observations.json` (built via
-`tools/build_rules_meetings_domain_observations.mjs` from meeting-outcomes
-`by_person`). Never invent roll call for `tally_only`.
+Decision), an accessible full roll-call **table** in the decision panel
+(`meetingRollCallTableHTML`), and deep-links names to `#official/{id}` (optional
+`?notice=&event=` hearing scope). **Person page (precompute-first):**
+`site/data/person_votes_lookup.json` indexes densified by_person rows by
+official id — rebuild with `node tools/build_person_votes_lookup.mjs` (also
+written when people densify runs). Pure lib: `site/person_votes.mjs`. Entity
+intelligence loads people from `site/data/people_domain_observations.json`
+(built via `tools/build_rules_meetings_domain_observations.mjs` from
+meeting-outcomes `by_person`). Never invent roll call for `tally_only`.
 Immutable `source_records` dual-write for Legistar Events/EventItems/Votes/
 Attachments is live under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
 (`worker/src/lib/legistar_source_records.mjs`).
@@ -619,8 +623,11 @@ trigger: `POST /admin/meeting-outcomes-refresh` (`ADMIN_KEY`). Nested
 Attachments can honestly be empty when product documents are only event
 Agenda/Minutes on Events (those fields ride on `nyc_legistar_events` snapshots).
 Verify: `node --test test/official_entity_family.test.mjs
+test/person_votes.test.mjs test/meeting_view_readability.test.mjs
 test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs
 worker/test/legistar_source_records.test.mjs`.
+Demo: `#official/7801` (recent votes) · `#official/7801?notice=20260706036&event=22526`
+(hearing scope) · notice `20260706036` full roll call.
 
 ## Content and testing — lifecycle gap taxonomy
 

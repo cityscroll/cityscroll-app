@@ -132,6 +132,7 @@ const helpers = new Function(
   extractFn("officialHref") +
   extractFn("collectRollCallPeople") +
   extractFn("meetingRollCallChipHTML") +
+  extractFn("meetingRollCallTableHTML") +
   extractFn("meetingVotesHTML") +
   extractFn("meetingOutcomesHTML") +
   `
