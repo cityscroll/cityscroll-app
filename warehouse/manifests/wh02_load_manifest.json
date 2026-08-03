@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "WH-02",
   "title": "First bulk pack into the warehouse (CPU-capped, incremental)",
-  "updated_at": "2026-08-03T03:44:16Z",
+  "updated_at": "2026-08-03T05:17:17Z",
   "strategy": "smallest_or_most_valuable_first_sequential",
   "first_pick": "ocp-recent-contract-awards",
   "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
@@ -24,7 +24,7 @@
     "commit_small_samples": false,
     "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT; bulk_sample.csv is local-only"
   },
-  "headroom_evidence_line": "headroom OK \u00b7 load 6.4/4c \u00b7 cpu 35% \u00b7 runq 3 \u00b7 mem 28% \u00b7 mem_fit 1 \u00b7 agents 14 \u00b7 disk 37.0GB \u00b7 local=2 api=1",
+  "headroom_evidence_line": "GREEN on 2026-08-03; capped ZAP re-materialization completed with one DuckDB thread",
   "loaded": [
     {
       "dataset_id": "ocp-recent-contract-awards",
@@ -55,8 +55,8 @@
       "dataset_id": "zap-projects",
       "socrata_dataset_id": "hgx4-8ukb",
       "table_name": "zap_projects",
-      "snapshot_date": "2026-08-02",
-      "observed_at": "2026-08-02T10:16:58Z",
+      "snapshot_date": "2026-08-03",
+      "observed_at": "2026-08-03T05:05:03Z",
       "mode": "soda_bulk",
       "row_count": 32931,
       "raw_bytes": 9182677,
@@ -85,7 +85,68 @@
         "status": "ok"
       },
       "proof_receipt": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
-      "verify_sql": "warehouse/sql/examples/zap_bulk_verify.sql"
+      "verify_sql": "warehouse/sql/examples/zap_bulk_verify.sql",
+      "snapshot_profile": {
+        "certification_to_final_date_pairs": 29589,
+        "date_fields": {
+          "app_filed_date": {
+            "count": 1409,
+            "max": "2026-04-20",
+            "min": "2017-08-01"
+          },
+          "approval_date": {
+            "count": 929,
+            "max": "2026-04-16",
+            "min": "2018-02-23"
+          },
+          "certified_referred": {
+            "count": 32017,
+            "max": "2026-04-20",
+            "min": "1970-04-21"
+          },
+          "completed_date": {
+            "count": 29882,
+            "max": "2026-04-22",
+            "min": "1976-07-19"
+          },
+          "current_envmilestone_date": {
+            "count": 483,
+            "max": "2026-04-24",
+            "min": "2017-04-08"
+          },
+          "current_milestone_date": {
+            "count": 2069,
+            "max": "2026-04-24",
+            "min": "2014-04-23"
+          },
+          "noticed_date": {
+            "count": 456,
+            "max": "2026-04-10",
+            "min": "2020-08-14"
+          }
+        },
+        "milestone_date_max": "2026-04-24",
+        "milestone_date_min": "2014-04-23",
+        "profile": "zap_milestone_status_dates_v1",
+        "project_status_counts": {
+          "Active": 263,
+          "Complete": 28342,
+          "On-Hold": 71,
+          "Record Closed": 3,
+          "Terminated": 1677,
+          "Terminated-Applicant Unresponsive": 59,
+          "Withdrawn-Other": 2516
+        },
+        "public_status_counts": {
+          "Completed": 32700,
+          "Filed": 137,
+          "In Public Review": 55,
+          "Noticed": 38
+        },
+        "row_count": 32931,
+        "status_date_max": "2026-04-24",
+        "status_date_min": "1970-04-21"
+      }
     },
     {
       "dataset_id": "zap-bbl",

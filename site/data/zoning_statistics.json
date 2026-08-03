@@ -1,0 +1,1024 @@
+{
+  "schema_version": 1,
+  "model_name": "zap_disposition_duration",
+  "model_version": "1.0.0",
+  "minimum_cohort_n": 20,
+  "train_from": "2016-08-08",
+  "train_to": "2026-04-24",
+  "source_row_count": 1641,
+  "dimensions": [
+    "action_type",
+    "borough"
+  ],
+  "conditioned_on_applicant": false,
+  "cohorts": [
+    {
+      "cohort_id": "action-type-borough:hi:manhattan",
+      "level": "action_type_borough",
+      "action_type": "HI",
+      "action_label": "HI",
+      "borough": "Manhattan",
+      "n": 20,
+      "duration_n": 20,
+      "train_from": "2021-06-21",
+      "train_to": "2025-11-25",
+      "outcome_counts": {
+        "approved": 20,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 1,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 45,
+        "p25": 59,
+        "p50": 71,
+        "p75": 73,
+        "p90": 80
+      },
+      "typical_months": {
+        "low": 1.9,
+        "high": 2.4
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:rc:staten-island",
+      "level": "action_type_borough",
+      "action_type": "RC",
+      "action_label": "RC",
+      "borough": "Staten Island",
+      "n": 168,
+      "duration_n": 140,
+      "train_from": "2018-07-18",
+      "train_to": "2023-09-14",
+      "outcome_counts": {
+        "approved": 166,
+        "modified": 2,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9881,
+        "modified": 0.0119,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 2,
+        "p25": 12,
+        "p50": 27,
+        "p75": 36,
+        "p90": 55
+      },
+      "typical_months": {
+        "low": 0.4,
+        "high": 1.2
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:za:staten-island",
+      "level": "action_type_borough",
+      "action_type": "ZA",
+      "action_label": "zoning authorization",
+      "borough": "Staten Island",
+      "n": 82,
+      "duration_n": 62,
+      "train_from": "2018-10-24",
+      "train_to": "2026-04-16",
+      "outcome_counts": {
+        "approved": 81,
+        "modified": 1,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9878,
+        "modified": 0.0122,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 72,
+        "p25": 91,
+        "p50": 130,
+        "p75": 156,
+        "p90": 199
+      },
+      "typical_months": {
+        "low": 3,
+        "high": 5.1
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:zc:brooklyn",
+      "level": "action_type_borough",
+      "action_type": "ZC",
+      "action_label": "zoning certification",
+      "borough": "Brooklyn",
+      "n": 46,
+      "duration_n": 34,
+      "train_from": "2020-08-12",
+      "train_to": "2025-12-11",
+      "outcome_counts": {
+        "approved": 46,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 1,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 12,
+        "p25": 15,
+        "p50": 77,
+        "p75": 140,
+        "p90": 254
+      },
+      "typical_months": {
+        "low": 0.5,
+        "high": 4.6
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:zc:manhattan",
+      "level": "action_type_borough",
+      "action_type": "ZC",
+      "action_label": "zoning certification",
+      "borough": "Manhattan",
+      "n": 92,
+      "duration_n": 71,
+      "train_from": "2018-08-28",
+      "train_to": "2026-03-25",
+      "outcome_counts": {
+        "approved": 91,
+        "modified": 1,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9891,
+        "modified": 0.0109,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 29,
+        "p25": 42,
+        "p50": 78,
+        "p75": 138,
+        "p90": 225
+      },
+      "typical_months": {
+        "low": 1.4,
+        "high": 4.5
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:zc:staten-island",
+      "level": "action_type_borough",
+      "action_type": "ZC",
+      "action_label": "zoning certification",
+      "borough": "Staten Island",
+      "n": 50,
+      "duration_n": 25,
+      "train_from": "2018-07-18",
+      "train_to": "2026-01-29",
+      "outcome_counts": {
+        "approved": 48,
+        "modified": 2,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.96,
+        "modified": 0.04,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 26,
+        "p25": 29,
+        "p50": 35,
+        "p75": 86,
+        "p90": 113
+      },
+      "typical_months": {
+        "low": 1,
+        "high": 2.8
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:zm:brooklyn",
+      "level": "action_type_borough",
+      "action_type": "ZM",
+      "action_label": "zoning map amendment",
+      "borough": "Brooklyn",
+      "n": 85,
+      "duration_n": 78,
+      "train_from": "2019-09-23",
+      "train_to": "2026-03-26",
+      "outcome_counts": {
+        "approved": 79,
+        "modified": 6,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9294,
+        "modified": 0.0706,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 157,
+        "p25": 177,
+        "p50": 192,
+        "p75": 205,
+        "p90": 219
+      },
+      "typical_months": {
+        "low": 5.8,
+        "high": 6.7
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:zm:queens",
+      "level": "action_type_borough",
+      "action_type": "ZM",
+      "action_label": "zoning map amendment",
+      "borough": "Queens",
+      "n": 68,
+      "duration_n": 59,
+      "train_from": "2018-04-09",
+      "train_to": "2026-03-10",
+      "outcome_counts": {
+        "approved": 63,
+        "modified": 5,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9265,
+        "modified": 0.0735,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 149,
+        "p25": 170,
+        "p50": 185,
+        "p75": 211,
+        "p90": 220
+      },
+      "typical_months": {
+        "low": 5.6,
+        "high": 6.9
+      }
+    },
+    {
+      "cohort_id": "action-type-borough:zs:manhattan",
+      "level": "action_type_borough",
+      "action_type": "ZS",
+      "action_label": "zoning special permit",
+      "borough": "Manhattan",
+      "n": 30,
+      "duration_n": 24,
+      "train_from": "2018-04-23",
+      "train_to": "2025-11-25",
+      "outcome_counts": {
+        "approved": 27,
+        "modified": 3,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9,
+        "modified": 0.1,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 77,
+        "p25": 122,
+        "p50": 150,
+        "p75": 192,
+        "p90": 212
+      },
+      "typical_months": {
+        "low": 4,
+        "high": 6.3
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:all:citywide",
+      "level": "action_type_citywide",
+      "action_type": "ALL",
+      "action_label": "ALL",
+      "borough": null,
+      "n": 571,
+      "duration_n": 60,
+      "train_from": "2017-04-24",
+      "train_to": "2025-06-10",
+      "outcome_counts": {
+        "approved": 539,
+        "modified": 20,
+        "disapproved": 12
+      },
+      "outcome_rates": {
+        "approved": 0.944,
+        "modified": 0.035,
+        "disapproved": 0.021
+      },
+      "duration_days": {
+        "p10": 29,
+        "p25": 89,
+        "p50": 185,
+        "p75": 246,
+        "p90": 490
+      },
+      "typical_months": {
+        "low": 2.9,
+        "high": 8.1
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:cm:citywide",
+      "level": "action_type_citywide",
+      "action_type": "CM",
+      "action_label": "CM",
+      "borough": null,
+      "n": 29,
+      "duration_n": 26,
+      "train_from": "2018-10-29",
+      "train_to": "2026-02-05",
+      "outcome_counts": {
+        "approved": 29,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 1,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 58,
+        "p25": 72,
+        "p50": 89,
+        "p75": 110,
+        "p90": 149
+      },
+      "typical_months": {
+        "low": 2.4,
+        "high": 3.6
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:ha:citywide",
+      "level": "action_type_citywide",
+      "action_type": "HA",
+      "action_label": "urban development action area",
+      "borough": null,
+      "n": 31,
+      "duration_n": 23,
+      "train_from": "2018-06-25",
+      "train_to": "2026-03-26",
+      "outcome_counts": {
+        "approved": 30,
+        "modified": 1,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9677,
+        "modified": 0.0323,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 143,
+        "p25": 157,
+        "p50": 185,
+        "p75": 211,
+        "p90": 211
+      },
+      "typical_months": {
+        "low": 5.2,
+        "high": 6.9
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:hi:citywide",
+      "level": "action_type_citywide",
+      "action_type": "HI",
+      "action_label": "HI",
+      "borough": null,
+      "n": 34,
+      "duration_n": 31,
+      "train_from": "2020-11-02",
+      "train_to": "2025-11-25",
+      "outcome_counts": {
+        "approved": 34,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 1,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 45,
+        "p25": 59,
+        "p50": 71,
+        "p75": 73,
+        "p90": 87
+      },
+      "typical_months": {
+        "low": 1.9,
+        "high": 2.4
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:ld:citywide",
+      "level": "action_type_citywide",
+      "action_type": "LD",
+      "action_label": "LD",
+      "borough": null,
+      "n": 28,
+      "duration_n": 23,
+      "train_from": "2019-09-04",
+      "train_to": "2026-03-23",
+      "outcome_counts": {
+        "approved": 27,
+        "modified": 1,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9643,
+        "modified": 0.0357,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 6,
+        "p25": 16,
+        "p50": 64,
+        "p75": 150,
+        "p90": 200
+      },
+      "typical_months": {
+        "low": 0.5,
+        "high": 4.9
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:mm:citywide",
+      "level": "action_type_citywide",
+      "action_type": "MM",
+      "action_label": "city map change",
+      "borough": null,
+      "n": 39,
+      "duration_n": 38,
+      "train_from": "2019-12-04",
+      "train_to": "2026-03-26",
+      "outcome_counts": {
+        "approved": 39,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 1,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 136,
+        "p25": 157,
+        "p50": 184,
+        "p75": 202,
+        "p90": 206
+      },
+      "typical_months": {
+        "low": 5.2,
+        "high": 6.6
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:px:citywide",
+      "level": "action_type_citywide",
+      "action_type": "PX",
+      "action_label": "PX",
+      "borough": null,
+      "n": 39,
+      "duration_n": 33,
+      "train_from": "2018-01-16",
+      "train_to": "2026-01-08",
+      "outcome_counts": {
+        "approved": 39,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 1,
+        "modified": 0,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 37,
+        "p25": 38,
+        "p50": 38,
+        "p75": 38,
+        "p90": 45
+      },
+      "typical_months": {
+        "low": 1.2,
+        "high": 1.2
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:rc:citywide",
+      "level": "action_type_citywide",
+      "action_type": "RC",
+      "action_label": "RC",
+      "borough": null,
+      "n": 168,
+      "duration_n": 140,
+      "train_from": "2018-07-18",
+      "train_to": "2023-09-14",
+      "outcome_counts": {
+        "approved": 166,
+        "modified": 2,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9881,
+        "modified": 0.0119,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 2,
+        "p25": 12,
+        "p50": 27,
+        "p75": 36,
+        "p90": 55
+      },
+      "typical_months": {
+        "low": 0.4,
+        "high": 1.2
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:za:citywide",
+      "level": "action_type_citywide",
+      "action_type": "ZA",
+      "action_label": "zoning authorization",
+      "borough": null,
+      "n": 122,
+      "duration_n": 96,
+      "train_from": "2018-08-06",
+      "train_to": "2026-04-16",
+      "outcome_counts": {
+        "approved": 120,
+        "modified": 2,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9836,
+        "modified": 0.0164,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 73,
+        "p25": 92,
+        "p50": 119,
+        "p75": 148,
+        "p90": 211
+      },
+      "typical_months": {
+        "low": 3,
+        "high": 4.9
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:zc:citywide",
+      "level": "action_type_citywide",
+      "action_type": "ZC",
+      "action_label": "zoning certification",
+      "borough": null,
+      "n": 224,
+      "duration_n": 159,
+      "train_from": "2018-07-18",
+      "train_to": "2026-03-25",
+      "outcome_counts": {
+        "approved": 221,
+        "modified": 3,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9866,
+        "modified": 0.0134,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 13,
+        "p25": 30,
+        "p50": 63,
+        "p75": 118,
+        "p90": 205
+      },
+      "typical_months": {
+        "low": 1,
+        "high": 3.9
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:zm:citywide",
+      "level": "action_type_citywide",
+      "action_type": "ZM",
+      "action_label": "zoning map amendment",
+      "borough": null,
+      "n": 189,
+      "duration_n": 168,
+      "train_from": "2018-04-09",
+      "train_to": "2026-04-16",
+      "outcome_counts": {
+        "approved": 178,
+        "modified": 11,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9418,
+        "modified": 0.0582,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 157,
+        "p25": 171,
+        "p50": 192,
+        "p75": 206,
+        "p90": 220
+      },
+      "typical_months": {
+        "low": 5.6,
+        "high": 6.8
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:zr:citywide",
+      "level": "action_type_citywide",
+      "action_type": "ZR",
+      "action_label": "zoning text amendment",
+      "borough": null,
+      "n": 35,
+      "duration_n": 30,
+      "train_from": "2018-11-13",
+      "train_to": "2026-03-26",
+      "outcome_counts": {
+        "approved": 31,
+        "modified": 4,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.8857,
+        "modified": 0.1143,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 143,
+        "p25": 161,
+        "p50": 204,
+        "p75": 220,
+        "p90": 220
+      },
+      "typical_months": {
+        "low": 5.3,
+        "high": 7.2
+      }
+    },
+    {
+      "cohort_id": "action-type-citywide:zs:citywide",
+      "level": "action_type_citywide",
+      "action_type": "ZS",
+      "action_label": "zoning special permit",
+      "borough": null,
+      "n": 57,
+      "duration_n": 41,
+      "train_from": "2018-04-23",
+      "train_to": "2026-02-24",
+      "outcome_counts": {
+        "approved": 52,
+        "modified": 5,
+        "disapproved": 0
+      },
+      "outcome_rates": {
+        "approved": 0.9123,
+        "modified": 0.0877,
+        "disapproved": 0
+      },
+      "duration_days": {
+        "p10": 76,
+        "p25": 122,
+        "p50": 163,
+        "p75": 197,
+        "p90": 213
+      },
+      "typical_months": {
+        "low": 4,
+        "high": 6.5
+      }
+    },
+    {
+      "cohort_id": "all-actions-borough:all:bronx",
+      "level": "all_actions_borough",
+      "action_type": null,
+      "action_label": "land-use",
+      "borough": "Bronx",
+      "n": 150,
+      "duration_n": 95,
+      "train_from": "2018-01-02",
+      "train_to": "2026-03-23",
+      "outcome_counts": {
+        "approved": 146,
+        "modified": 2,
+        "disapproved": 2
+      },
+      "outcome_rates": {
+        "approved": 0.9733,
+        "modified": 0.0133,
+        "disapproved": 0.0133
+      },
+      "duration_days": {
+        "p10": 38,
+        "p25": 77,
+        "p50": 150,
+        "p75": 197,
+        "p90": 240
+      },
+      "typical_months": {
+        "low": 2.5,
+        "high": 6.5
+      }
+    },
+    {
+      "cohort_id": "all-actions-borough:all:brooklyn",
+      "level": "all_actions_borough",
+      "action_type": null,
+      "action_label": "land-use",
+      "borough": "Brooklyn",
+      "n": 331,
+      "duration_n": 191,
+      "train_from": "2017-04-24",
+      "train_to": "2026-03-26",
+      "outcome_counts": {
+        "approved": 317,
+        "modified": 10,
+        "disapproved": 4
+      },
+      "outcome_rates": {
+        "approved": 0.9577,
+        "modified": 0.0302,
+        "disapproved": 0.0121
+      },
+      "duration_days": {
+        "p10": 38,
+        "p25": 115,
+        "p50": 183,
+        "p75": 203,
+        "p90": 219
+      },
+      "typical_months": {
+        "low": 3.8,
+        "high": 6.7
+      }
+    },
+    {
+      "cohort_id": "all-actions-borough:all:manhattan",
+      "level": "all_actions_borough",
+      "action_type": null,
+      "action_label": "land-use",
+      "borough": "Manhattan",
+      "n": 376,
+      "duration_n": 208,
+      "train_from": "2018-01-16",
+      "train_to": "2026-03-26",
+      "outcome_counts": {
+        "approved": 361,
+        "modified": 13,
+        "disapproved": 2
+      },
+      "outcome_rates": {
+        "approved": 0.9601,
+        "modified": 0.0346,
+        "disapproved": 0.0053
+      },
+      "duration_days": {
+        "p10": 37,
+        "p25": 58,
+        "p50": 105,
+        "p75": 184,
+        "p90": 220
+      },
+      "typical_months": {
+        "low": 1.9,
+        "high": 6
+      }
+    },
+    {
+      "cohort_id": "all-actions-borough:all:queens",
+      "level": "all_actions_borough",
+      "action_type": null,
+      "action_label": "land-use",
+      "borough": "Queens",
+      "n": 211,
+      "duration_n": 136,
+      "train_from": "2018-01-16",
+      "train_to": "2026-03-10",
+      "outcome_counts": {
+        "approved": 199,
+        "modified": 9,
+        "disapproved": 3
+      },
+      "outcome_rates": {
+        "approved": 0.9431,
+        "modified": 0.0427,
+        "disapproved": 0.0142
+      },
+      "duration_days": {
+        "p10": 35,
+        "p25": 94,
+        "p50": 171,
+        "p75": 197,
+        "p90": 219
+      },
+      "typical_months": {
+        "low": 3.1,
+        "high": 6.5
+      }
+    },
+    {
+      "cohort_id": "all-actions-borough:all:staten-island",
+      "level": "all_actions_borough",
+      "action_type": null,
+      "action_label": "land-use",
+      "borough": "Staten Island",
+      "n": 557,
+      "duration_n": 282,
+      "train_from": "2016-08-08",
+      "train_to": "2026-04-16",
+      "outcome_counts": {
+        "approved": 542,
+        "modified": 14,
+        "disapproved": 1
+      },
+      "outcome_rates": {
+        "approved": 0.9731,
+        "modified": 0.0251,
+        "disapproved": 0.0018
+      },
+      "duration_days": {
+        "p10": 9,
+        "p25": 26,
+        "p50": 43,
+        "p75": 114,
+        "p90": 164
+      },
+      "typical_months": {
+        "low": 0.9,
+        "high": 3.7
+      }
+    },
+    {
+      "cohort_id": "citywide:all:citywide",
+      "level": "citywide",
+      "action_type": null,
+      "action_label": "land-use",
+      "borough": null,
+      "n": 1641,
+      "duration_n": 925,
+      "train_from": "2016-08-08",
+      "train_to": "2026-04-16",
+      "outcome_counts": {
+        "approved": 1579,
+        "modified": 50,
+        "disapproved": 12
+      },
+      "outcome_rates": {
+        "approved": 0.9622,
+        "modified": 0.0305,
+        "disapproved": 0.0073
+      },
+      "duration_days": {
+        "p10": 22,
+        "p25": 44,
+        "p50": 125,
+        "p75": 189,
+        "p90": 213
+      },
+      "typical_months": {
+        "low": 1.4,
+        "high": 6.2
+      }
+    }
+  ],
+  "generated_at": "2026-08-03T05:26:17Z",
+  "source": {
+    "dataset": "NYC Open Data ZAP Project Data",
+    "dataset_id": "hgx4-8ukb",
+    "outcome_source": "Zoning Application Portal project actions",
+    "outcome_classification": "all approved actions = approved; mixed approved and non-approved terminal actions = modified; all disapproved actions = disapproved; withdrawals and administrative terminations excluded"
+  },
+  "formula": {
+    "cohort_backoff": "action type + borough when n>=20; otherwise action type citywide, borough all-actions, then citywide",
+    "duration": "calendar days from certified_referred to approval_date (or the project completion/milestone date for a modified or disapproved action set); spans over 730 days are excluded",
+    "typical_range": "nearest-rank empirical p25-p75 duration, divided by 30.4375 days per month",
+    "timing_window": "nearest-rank empirical p10/p50/p90 duration added to the project's certification date",
+    "outcome_rate": "outcome count divided by approved + modified + disapproved projects in the selected cohort"
+  },
+  "backtest": {
+    "metric": "prediction_calibration",
+    "version": "prediction_calibration_v1",
+    "domain": "land",
+    "model_name": "zap_disposition_duration",
+    "model_version": "1.0.0",
+    "split_date": "2024-01-01",
+    "grace_days": 0,
+    "train_window": {
+      "from": "2016-08-08",
+      "to": "2023-12-31"
+    },
+    "prediction_count": 63,
+    "resolved_backtest_predictions": 63,
+    "resolution_rate": 1,
+    "resolution_counts": {
+      "resolved_hit": 49,
+      "resolved_miss": 14,
+      "open": 0
+    },
+    "timing_prediction_count": 63,
+    "timing_realized_count": 63,
+    "timing_resolution_hits": 49,
+    "interval_nominal": 0.8,
+    "interval_coverage": 0.7778,
+    "interval_coverage_hits": 49,
+    "interval_coverage_count": 63,
+    "median_absolute_error_p50_days": 35,
+    "occurrence_prediction_count": 0,
+    "occurrence_resolved_count": 0,
+    "occurrence_calibration": [
+      {
+        "quintile": 1,
+        "probability_min": 0,
+        "probability_max": 0.2,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 2,
+        "probability_min": 0.2,
+        "probability_max": 0.4,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 3,
+        "probability_min": 0.4,
+        "probability_max": 0.6,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 4,
+        "probability_min": 0.6,
+        "probability_max": 0.8,
+        "upper_inclusive": false,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      },
+      {
+        "quintile": 5,
+        "probability_min": 0.8,
+        "probability_max": 1,
+        "upper_inclusive": true,
+        "count": 0,
+        "predicted_probability_mean": null,
+        "realized": 0,
+        "realized_frequency": null
+      }
+    ],
+    "occurrence_quintiles_monotone": false,
+    "ship_bar": {
+      "status": "pass",
+      "checks": {
+        "minimum_resolved": true,
+        "interval_coverage": true,
+        "occurrence_quintiles_monotone": true
+      },
+      "thresholds": {
+        "minimum_resolved": 50,
+        "interval_nominal": 0.8,
+        "interval_tolerance": 0.1,
+        "occurrence_quintiles_monotone": true
+      }
+    }
+  }
+}

@@ -20,6 +20,8 @@ import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
 import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
+import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
+import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -544,7 +546,12 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
   };
   // Batch-side ULURP statutory clocks (cityscroll.prediction.v0) — precompute-first;
   // the browser only renders the stamped view (no per-request day math).
-  return attachUlurpStatutoryPredictions(assembled, {
+  const withStatutoryClock = attachUlurpStatutoryPredictions(assembled, {
+    generatedAt: assembled.generated_at,
+  });
+  // Charter deadlines remain authoritative; this warehouse layer adds
+  // historical context only after its out-of-time scorecard clears the bar.
+  return attachZoningStatistics(withStatutoryClock, zoningStatistics, {
     generatedAt: assembled.generated_at,
   });
 }

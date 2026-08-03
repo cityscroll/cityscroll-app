@@ -1380,6 +1380,17 @@ sale means the lien was sold; later foreclosure is outside this dataset and is
 never predicted. Verify:
 `node --test test/tax_lien_sale_prediction.test.mjs test/ontology_registry.test.mjs`.
 
+## ZAP duration and outcome base rates
+
+The unconditioned land model is materialized by
+`tools/build_zoning_statistics.mjs` from the capped ZAP warehouse plus the
+resumable public action-status cache. Cohorts use action type + borough with an
+n>=20 back-off; statutory clocks remain authoritative for act-by dates. Verify
+the receipt, cohort twins, and ship bar with
+`node tools/build_zoning_statistics.mjs --check` and
+`node --test test/zoning_statistics.test.mjs test/warehouse_bulk.test.mjs`.
+Applicant-conditioned rates are outside this model.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
