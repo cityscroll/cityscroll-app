@@ -200,6 +200,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "city-council-district-boundaries",
+      "name": "City Council Districts",
+      "source_contract_id": "city-council-district-boundaries",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/872g-cjhh",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "city-council-meetings-open-data",
       "name": "City Council Meetings (Open Data)",
       "source_contract_id": "city-council-meetings-open-data",
@@ -2312,7 +2322,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-03",
-    "source_contracts_fingerprint": "d4f1d5b1a9e155fd49b827ef5667f2fd2831e88acd62336ee0cce79638e9b6f2",
+    "source_contracts_fingerprint": "57d4a4ed3b7bd414d756bdf834216e84fd108e5bde41d4434b5815b3a7732a50",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 43,
     "class_changes": 0,

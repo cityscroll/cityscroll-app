@@ -65,6 +65,7 @@ test("isDefaultLandSearch is only the unfiltered Active ULURP tab", () => {
   assert.equal(isDefaultLandSearch({ status: "active", kw: "Gowanus" }), false);
   assert.equal(isDefaultLandSearch({ status: "active", located: true }), false);
   assert.equal(isDefaultLandSearch({ status: "active", communityDistrict: "K02" }), false);
+  assert.equal(isDefaultLandSearch({ status: "active", councilDistrict: "36" }), false);
 });
 
 test("slimPropertyListView drops body dumps and keeps list fields", () => {

@@ -77,6 +77,10 @@ function buildSearchDeepLink(lens, filter) {
     if (/^(?:M|X|K|Q|R)\d{2}$/.test(communityDistrict)) {
       params.set("cd", communityDistrict);
     }
+    var councilDistrict = compactText(f.councilDistrict, 4);
+    if (/^(?:[1-9]|[1-4]\d|5[01])$/.test(councilDistrict)) {
+      params.set("council", councilDistrict);
+    }
     if (keywords.length) params.set("q", keywords.join(" "));
     if (f.status === "all") params.set("status", "all");
   } else {

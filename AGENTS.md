@@ -190,6 +190,25 @@ Materialized views: `er_entity_link`, `er_canonical_entity`, `er_resolution_run`
 `warehouse/receipts/proof/wh04_er_batch_latest.json`. Verify:
 `node --test test/warehouse_er_batch.test.mjs`.
 
+## Council district resolution (cs-geo-01)
+
+City Council districts resolve from a **committed boundary layer**, not live GIS.
+Source contract `city-council-district-boundaries` (`872g-cjhh`); build:
+
+```bash
+node tools/build_council_district_boundaries.mjs
+node tools/build_council_district_boundaries.mjs --check
+```
+
+Artifact: `site/data/council_district_boundaries.json` (+ worker twin) with
+`boundary_vintage`, simplified polygons, ids `"1"`…`"51"`. Pure lookup:
+`site/council_district_lookup.mjs`. Location awareness fills `councilDistrict`
+beside MapPLUTO community district; Land share links use `#land?council=25`
+(ZAP filter on `cc_district`). Unresolved points stay null — never invent.
+
+Verify: `node --test test/council_district_lookup.test.mjs test/location_awareness.test.mjs`
+Capture: `python3 tools/capture_council_district_filter.py --before HEAD^`.
+
 ## Global item-route navigation
 
 Detail-route Back controls use the session-history sidecar in `site/index.html`

@@ -3829,7 +3829,7 @@ function searchFilterFromHash(lens, hash){
   const q=new URLSearchParams(hash.slice(qi+1));
   const keywords=q.get("q")?[q.get("q")]:[];
   if(lens==="people") return {lookupType:q.get("mode")==="person"?"person":"role", keywords};
-  if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), keywords, status:q.get("status")==="all"?"all":"active"};
+  if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), councilDistrict:q.get("council"), keywords, status:q.get("status")==="all"?"all":"active"};
   const filter={agency:q.get("agency"), keywords};
   if(lens==="meetings"){
     filter.when=["week","month","upcoming","past"].includes(q.get("when"))?q.get("when"):"week";
@@ -3860,6 +3860,7 @@ function searchFilterChips(lens, filter){
     if(filter.locationArea) chips.push(`<span class="qchip">${t("near_you_area",{area:filter.locationArea})}</span>`);
     else if(filter.boro) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.boro}</b></span>`);
     if(filter.communityDistrict && !filter.locationArea) chips.push(`<span class="qchip">CD <b>${Number(filter.communityDistrict.slice(1))}</b></span>`);
+    if(filter.councilDistrict && !filter.locationArea) chips.push(`<span class="qchip">${t("council_district_short",{n:filter.councilDistrict})}</span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     if(filter.status==="all") chips.push(`<span class="qchip">${t("nl_chip_land_status_all")}</span>`);
   } else {
@@ -3911,6 +3912,7 @@ function bindClearSearchState(lens, root){
     if(lens==="land"){
       landResolvedArea=null;
       landCommunityDistrict="";
+      landCouncilDistrict="";
       $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="active";
       $("#nltrans-land").innerHTML=""; landSearch(); return;
     }
@@ -5191,17 +5193,25 @@ const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:
 let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
 let landResolvedArea=null;
 let landCommunityDistrict="";
+let landCouncilDistrict="";
 let landAutoLocationChecked=false;
 const mihOn = v => v===true || v==="true";
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
-const ZAP_SELECT="project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers";
+const ZAP_SELECT="project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,cc_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers";
 let landBanner="";
 function zapWhere(status){ return "ulurp_non='ULURP'"+(status==="active"?" AND project_status='Active'":""); }
 function zapDistrictWhere(communityDistrict){
   return /^(?:M|X|K|Q|R)\d{2}$/.test(communityDistrict||"")
     ? ` AND community_district like '%${communityDistrict}%'`
     : "";
+}
+// ZAP multi-district cells concatenate zero-padded pairs (e.g. 213025 = 21,30,25).
+function zapCouncilWhere(councilDistrict){
+  const id=String(councilDistrict||"").trim();
+  if(!/^(?:[1-9]|[1-4]\d|5[01])$/.test(id)) return "";
+  const padded=id.padStart(2,"0");
+  return ` AND (cc_district='${id}' OR cc_district like '%${padded}%')`;
 }
 
 // Commit-time default Active ULURP list (wave-2 batch precompute). Filter/keyword/geo stay live SODA.
@@ -5216,7 +5226,7 @@ function loadLandDefaultSnapshot(){
   return landDefaultSnapshotPromise;
 }
 function isDefaultLandSearchState(status, boro, kw, located){
-  return status==="active" && !boro && !kw && !landCommunityDistrict && !located;
+  return status==="active" && !boro && !kw && !landCommunityDistrict && !landCouncilDistrict && !located;
 }
 function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   if(stale()) return;
@@ -5247,9 +5257,12 @@ async function landSearch(){
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
   updateHash();
   if(located){
+    const areaBits=[landResolvedArea.borough];
+    if(landResolvedArea.communityDistrict) areaBits.push(`CD ${Number(landResolvedArea.communityDistrict.slice(1))}`);
+    if(landResolvedArea.councilDistrict) areaBits.push(t("council_district_short",{n:landResolvedArea.councilDistrict}));
     renderSearchComponents("land", {filter: {
       ...coarseLandFilter(landResolvedArea, status),
-      locationArea: landResolvedArea.borough+(landResolvedArea.communityDistrict?` CD ${Number(landResolvedArea.communityDistrict.slice(1))}`:""),
+      locationArea: areaBits.filter(Boolean).join(" · "),
     }});
   } else {
     renderSearchComponents("land");
@@ -5288,6 +5301,7 @@ async function landSearch(){
     } else {
       let w=zapWhere(status); if(boro) w+=` AND borough='${boro.replace(/'/g,"''")}'`;
       w+=zapDistrictWhere(landCommunityDistrict);
+      w+=zapCouncilWhere(landCouncilDistrict);
       const p={"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"}; if(kw) p["$q"]=kw;
       rows=await api(ZAP,p);
     }
@@ -5304,6 +5318,7 @@ async function landSearch(){
 async function landNearby(geo,status){
   let w=zapWhere(status); if(geo&&geo.borough) w+=` AND borough='${geo.borough.replace(/'/g,"''")}'`;
   w+=zapDistrictWhere(geo&&geo.communityDistrict);
+  w+=zapCouncilWhere(geo&&geo.councilDistrict);
   return api(ZAP,{"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"});
 }
 
@@ -5315,7 +5330,7 @@ function landRowHTML(r, i, terms, contextTerms){
   const title = r.project_name || "", ev = matchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
   return `<div class="row" data-i="${i}" tabindex="0" role="button">
     <p class="rtitle">${title ? digTitleHTML(title, ev) : t("unnamed_project")}</p>
-    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
+    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
     ${digEvidenceHTML(ev)}
   </div>`;
@@ -5369,7 +5384,7 @@ async function landSelect(i, el){
     </div>
     <div class="agencybar">
       <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">${t("applicant_lbl")}</div></div>
-      <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</div><div class="lbl">${t("where_lbl")}</div></div>
+      <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
@@ -13710,6 +13725,7 @@ function serializeState(){
   } else if(tab === "land"){
     if($("#lboro").value) q.set("boro", $("#lboro").value);
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
+    if(landCouncilDistrict) q.set("council", landCouncilDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
     if($("#lstatus").value !== "active") q.set("status", $("#lstatus").value);
   } else if(SECTIONS[tab]){
@@ -14324,6 +14340,7 @@ function applyHash(){
       landResolvedArea=null;
       $("#lboro").value = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
       landCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
+      landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
       $("#lstatus").value = q.get("status")==="all"?"all":"active";
       const was = landLoaded; showTab("land"); if(was) landSearch();
@@ -14700,8 +14717,8 @@ $("#quizgo").addEventListener("click", async ()=>{
 
 $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
 const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — a touch lazier
-$("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; debouncedLandSearch(); });
-$("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landSearch(); });
+$("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; debouncedLandSearch(); });
+$("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; landSearch(); });
 $("#lstatus").addEventListener("change", landSearch);
 const landLocationOptions={
   permissions:navigator.permissions,
@@ -14710,6 +14727,7 @@ const landLocationOptions={
   onResolved:area=>{
     landResolvedArea=area;
     landCommunityDistrict=area.communityDistrict||"";
+    landCouncilDistrict=area.councilDistrict||"";
     $("#lboro").value=area.borough;
     $("#lkw").value="";
     landSearch();
