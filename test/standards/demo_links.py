@@ -43,7 +43,7 @@ def validate_state(state: object, path: str) -> None:
 def validate_entry(entry: object, index: int) -> None:
     path = f"entries[{index}]"
     require(isinstance(entry, dict), f"{path} must be an object")
-    allowed_fields = {"id", "url", "feature", "description", "expectations", "localOnly"}
+    allowed_fields = {"id", "url", "feature", "description", "expectations", "localOnly", "postDeployOnly"}  # source: site/demo/demo-links.schema.json
     require(set(entry) <= allowed_fields, f"{path} has unknown fields")
     require(
         {"id", "url", "feature", "description", "expectations"} <= set(entry),
@@ -51,6 +51,8 @@ def validate_entry(entry: object, index: int) -> None:
     )
     if "localOnly" in entry:
         require(isinstance(entry["localOnly"], bool), f"{path}.localOnly must be a boolean")
+    if "postDeployOnly" in entry:
+        require(isinstance(entry["postDeployOnly"], bool), f"{path}.postDeployOnly must be a boolean")
     require(isinstance(entry["id"], str) and ID_PATTERN.fullmatch(entry["id"]), f"{path}.id is invalid")
     require(
         isinstance(entry["feature"], str) and ID_PATTERN.fullmatch(entry["feature"]),

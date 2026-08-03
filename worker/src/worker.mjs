@@ -64,6 +64,7 @@ import { handleTranslate } from "./translate.mjs";
 import { handleEntityDossier } from "./entity_dossier.mjs";
 import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
+import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -94,6 +95,7 @@ export default {
     if (pathname === "/entity-dossier") return handleEntityDossier(request, env);
     if (pathname === "/entity-relationships") return handlePublicRelationshipGraph(request, env);
     if (pathname === "/entity-intelligence") return handleEntityIntelligence(request, env, ctx);
+    if (pathname === "/attachment-metadata" || pathname === "/attachment-metadata/receipt") return handleAttachmentMetadata(request, env);
     if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
@@ -124,6 +126,7 @@ export default {
     if (pathname === "/admin/zap-outcomes-refresh") return handleAdminZapOutcomesRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
     if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
+    if (pathname === "/admin/attachment-metadata") return handleAdminAttachmentMetadata(request, env);
     if (pathname === "/" || pathname === "/health") {
       return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });
     }

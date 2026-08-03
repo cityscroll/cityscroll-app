@@ -17,12 +17,13 @@
         "start_date",
         "agency_name",
         "type_of_notice_description",
-        "section_name"
+        "section_name",
+        "document_links"
       ],
       "max_stale_days": 7,
       "publisher_cadence": "Daily",
-      "product_freshness": "Live browser queries use a five-minute cache; Worker mirrors and materialized views refresh daily.",
-      "used_for": "Core notices, feeds, alerts, profiles, hearings, property records, prior-cycle matches, and aggregates.",
+      "product_freshness": "Live browser queries use a five-minute cache; Worker mirrors and materialized views refresh daily. Attachment metadata uses document_links before 2025 and a polite host-side RequestDetail delta from 2025 onward because the exported column is empty in the modern era.",
+      "used_for": "Core notices, feeds, alerts, profiles, hearings, property records, prior-cycle matches, attachment metadata, and aggregates.",
       "code_references": [
         {
           "path": "site/app/core.mjs",
@@ -31,9 +32,31 @@
         {
           "path": "worker/src/ingest.mjs",
           "contains": "dg92-zbpx"
+        },
+        {
+          "path": "warehouse/scripts/attachment_metadata.mjs",
+          "contains": "dataset_pre_2025_portal_2025_plus"
+        },
+        {
+          "path": "worker/src/attachment_metadata.mjs",
+          "contains": "notice_attachments"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "live-only",
+      "attachment_metadata": {
+        "schema": "cityscroll.attachment_metadata.v1",
+        "archive_source": "Socrata document_links before 2025",
+        "modern_source": "City Record Online RequestDetail pages from 2025 onward",
+        "excluded_section": "Changes in Personnel",
+        "portal_min_delay_seconds": 1.2,
+        "binary_retention": "linked-not-stored",
+        "export_cliff": {
+          "observed_on": "2026-08-03",
+          "document_links_2025_plus": "effectively empty",
+          "portal_attachment_rate_range": "20%-93% by non-personnel section",
+          "interpretation": "Socrata export defect, except modern Procurement where portal sampling also found no files"
+        }
+      }
     },
     {
       "id": "dof-tax-lien-sale-lists",

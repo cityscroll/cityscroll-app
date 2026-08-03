@@ -1,0 +1,26 @@
+{
+  "rows": [
+    {
+      "request_id": "20240515016",
+      "start_date": "2024-05-15T00:00:00.000",
+      "section_name": "Property Disposition",
+      "document_links": "https://a856-cityrecord.nyc.gov/Search/GetFile?SectionID=3&RequestStatus=Archived&RequestID=20240515016&DocumentID=37470"
+    },
+    {
+      "request_id": "20260102001",
+      "start_date": "2026-01-02T00:00:00.000",
+      "section_name": "Agency Rules",
+      "document_links": null
+    },
+    {
+      "request_id": "20260102002",
+      "start_date": "2026-01-02T00:00:00.000",
+      "section_name": "Changes in Personnel",
+      "document_links": null
+    }
+  ],
+  "portal_html": {
+    "20240515016": "<section><span>Attachments</span><a href=\"/Search/GetFile?sectionId=3&amp;requestId=20240515016&amp;requestStatus=Archived&amp;documentId=37470\">Description, maps, and volume report for timber and roundwood products from forest management project in the Cannonsville watershed basin.</a></section>",
+    "20260102001": "<section><span>Attachments</span><a href=\"/Search/GetFile?sectionId=2&amp;requestId=20260102001&amp;requestStatus=Published&amp;documentId=50001\">Proposed rule and impact statement</a></section>"
+  }
+}

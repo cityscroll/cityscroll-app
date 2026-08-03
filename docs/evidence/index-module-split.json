@@ -56,9 +56,9 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 70768,
-      "after_tokens": 19033,
-      "token_reduction_ratio": 12.52
+      "after_bytes": 71633,
+      "after_tokens": 19329,
+      "token_reduction_ratio": 12.32
     }
   ],
   "source_equivalence": {
@@ -68,8 +68,8 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 748486,
-    "normalized_source_sha256": "dbc7ca08d560a4c634b379549cee61a0a733dea4965ca9d00cab602e81fc2d80",
-    "note": "Discovery-parity NL routing in search-share.mjs + routing.mjs after modular split, map module, and exam-guide hotfix."
+    "normalized_source_bytes": 750451,
+    "normalized_source_sha256": "f5683f3cfb36e64a1b924ce5c384ccb7c6a596d17dba259634226f9ab2e59e17",
+    "note": "Discovery-parity NL routing in search-share.mjs + routing.mjs after modular split, map module, exam-guide hotfix, and notice attachment metadata."
   }
 }

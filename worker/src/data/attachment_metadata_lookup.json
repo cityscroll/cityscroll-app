@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.attachment_metadata.v1",
+  "built_at": "2026-08-03T00:00:00Z",
+  "notices": {
+    "20240515016": [
+      {
+        "request_id": "20240515016",
+        "document_id": "37470",
+        "title": "Description, maps, and volume report for timber and roundwood products from forest management project in the Cannonsville watershed basin.",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
+      }
+    ]
+  }
+}

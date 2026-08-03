@@ -9,6 +9,7 @@
 // Pure query-building is exported separately so it unit-tests without a D1 handle.
 
 import { excerptPlain } from "../../../site/text_clean.mjs";
+import { loadAttachmentMetadata, mergeAttachments } from "../attachment_metadata.mjs";
 
 const ROLLING_YEAR = 2090;
 
@@ -90,7 +91,7 @@ export function buildNoticesQuery(opts = {}) {
 }
 
 // Row → display record, honest fields applied.
-export function toRecord(r) {
+export function toRecord(r, attachmentMetadata = []) {
   const amt = r.contract_amount_valid ? r.contract_amount : null;
   const rolling = r.due_year != null && r.due_year >= ROLLING_YEAR;
   let docs = [];
@@ -102,6 +103,7 @@ export function toRecord(r) {
   const eventLoc = [r.event_building, r.event_addr1, r.event_city, r.event_state, r.event_zip]
     .filter(Boolean)
     .join(" ");
+  const attachments = mergeAttachments(r.request_id, docs, attachmentMetadata);
   return {
     request_id: r.request_id,
     date: r.start_date || null,
@@ -120,8 +122,9 @@ export function toRecord(r) {
     deadline_note: rolling ? "rolling / no fixed deadline (e.g. pre-qualified list)" : null,
     event_date: r.event_date || null,
     event_location: eventLoc || null,
-    n_documents: r.n_documents || 0,
-    documents: docs.slice(0, 8),
+    n_documents: Math.max(r.n_documents || 0, attachments.length),
+    documents: attachments.length ? attachments.map((item) => item.url) : docs.slice(0, 8),
+    attachments,
     structured_facts: structuredFacts,
   };
 }
@@ -130,5 +133,10 @@ export async function searchNotices(db, opts = {}) {
   const { sql, params, terms } = buildNoticesQuery(opts);
   const { results } = await db.prepare(sql).bind(...params).all();
   const rows = results ?? [];
-  return { terms_used: terms, total_matches: rows.length, results: rows.map(toRecord) };
+  const attachments = await loadAttachmentMetadata(db, rows.map((row) => row.request_id));
+  return {
+    terms_used: terms,
+    total_matches: rows.length,
+    results: rows.map((row) => toRecord(row, attachments.get(String(row.request_id)) || [])),
+  };
 }

@@ -806,6 +806,23 @@ function setNoticeCompactCta(isNoticeRoute){
 
 // Extra description/printout fields so participation URL extraction matches the meetings list.
 const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name,additional_description_2,additional_description_3,other_info_2,other_info_3,printout_1,printout_2,printout_3,building_name,city,state,zip_code";
+let attachmentLookupPromise=null;
+async function noticeAttachmentMetadata(id){
+  try{
+    const response=await workerFetch("/attachment-metadata?id="+encodeURIComponent(id),null,4000);
+    if(response.ok){
+      const data=await response.json();
+      if(Array.isArray(data.attachments) && data.attachments.length) return data;
+    }
+  }catch(e){}
+  if(!attachmentLookupPromise){
+    attachmentLookupPromise=fetch("data/attachment_metadata_lookup.json")
+      .then(response=>response.ok?response.json():null).catch(()=>null);
+  }
+  const lookup=await attachmentLookupPromise;
+  const attachments=lookup && Array.isArray(lookup.notices?.[String(id)])?lookup.notices[String(id)]:[];
+  return {request_id:String(id),n_attachments:attachments.length,attachments};
+}
 // watch: the {lens, filter} parseWatchParam() extracted from this link's own "?w=" (w12-12) --
 // null for a plain "#notice/<id>" link (unchanged behavior). When present, the title/evidence/
 // echo below render exactly as they would if the reader had run the watch themselves.
@@ -816,8 +833,15 @@ async function showNotice(id, watch){
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
   try{
-    const rows = await soda({"$select":NOTICE_SELECT, "$where":`request_id='${String(id).replace(/'/g,"''")}'`, "$limit":"1"});
+    const [rows, attachmentData] = await Promise.all([
+      soda({"$select":NOTICE_SELECT, "$where":`request_id='${String(id).replace(/'/g,"''")}'`, "$limit":"1"}),
+      noticeAttachmentMetadata(id),
+    ]);
     r = rows[0];
+    if(r && attachmentData && Array.isArray(attachmentData.attachments) && attachmentData.attachments.length){
+      r.attachments=attachmentData.attachments;
+      r.n_documents=Math.max(Number(r.n_documents||0),attachmentData.attachments.length);
+    }
   }catch(e){}
   if(!r){
     box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")} · <a href="${REQ_URL(id)}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a></div>`;

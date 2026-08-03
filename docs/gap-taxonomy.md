@@ -19,6 +19,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 
 | Gap | Class | Public home or “would appear in” |
 |---|---|---|
+| notice detail · attachment metadata | a | City Record Online file attachments |
 | contract lifecycle · pending stage | a | Checkbook NYC Contracts |
 | contract lifecycle · registered stage | a | Checkbook NYC Contracts |
 | contract lifecycle · payment stage | a | Checkbook NYC Spending |
@@ -57,7 +58,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
-| `city-record` | live-only | PIN, request_id, agency | — | — |
+| `city-record` | live-only | PIN, request_id, agency, document_id | — | — |
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `dcas-annual-exam-outcomes` | landed | exam_number, exam_no | medium | — |
 | `dcas-exam-notices` | landed | exam_number | — | — |
@@ -112,12 +113,12 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 3 |
 | `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 3 |
 | `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 3 |
+| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 2 |
+| `city-record-x-recent-contract-awards-ocp-via-PIN+request_id` | `city-record` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 2 |
 | `current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id` | `current-solicitations-ocp` × `nycida-build-nyc-projects` | request_id | maybe | 2 |
 | `passport-public-contracts-x-recent-contract-awards-ocp-via-PIN` | `passport-public-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 2 |
 | `abo-local-authorities-x-doing-business-entities-via-vendor_name` | `abo-local-authorities` × `doing-business-entities` | vendor_name | maybe | 1 |
 | `active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no` | `active-civil-service-list` × `dcas-annual-exam-outcomes` | exam_no | maybe | 1 |
-| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 1 |
-| `city-record-x-recent-contract-awards-ocp-via-PIN+request_id` | `city-record` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 1 |
 
 ## Graph view
 
