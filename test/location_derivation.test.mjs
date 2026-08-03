@@ -50,7 +50,7 @@ test("venue held-at spans extract street addresses with evidence", () => {
 
 test("virtual-only detection for conference-call hearings", () => {
   assert.equal(
-    isVirtualOnlyText("The public hearing will be held via conference call. Call in #1-646-992-2010"),
+    isVirtualOnlyText("The public hearing will be held via conference call. Call in #1-555-0100"),
     true,
   );
   assert.equal(
@@ -112,7 +112,7 @@ test("golden: Staten Island tax block acquisition", () => {
     additional_description_1:
       "IN THE MATTER of the acquisition of the Staten Island Tax Block 5308, Lot 50 "
       + "to facilitate expansion of Crescent Beach Park, in Staten Island, Community District 3. "
-      + "Hearing via Conference Call No. 1-646-992-2010.",
+      + "Hearing via Conference Call No. 1-555-0199.",
   };
   const place = meetingPlaceFromRow(row);
   assert.equal(place.scope, "local");
