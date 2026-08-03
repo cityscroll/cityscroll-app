@@ -1,5 +1,8 @@
 name: Hosting cutover regression
 
+# Scheduled live-production monitor (not a PR / merge-group gate).
+# Demo-link and hosting architecture checks sample cityscroll.org here so
+# merge gates stay decoupled from pre-merge production state.
 on:
   schedule:
     - cron: "17 1,9,17 * * *"
@@ -16,7 +19,7 @@ jobs:
   monitor:
     name: Pages-primary production monitor
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,10 +33,9 @@ jobs:
           node tools/cutover_regression.mjs
           --timeout-ms 180000
           --interval-ms 10000
-      - name: Render real civil-service exam rows
+      - name: Full public demo-link contract on production
         env:
           CROL_BASE: https://cityscroll.org/
-          CROL_DEMO_LINK_IDS: exam-guide
         run: python3 test/functional/20_demo_links.py
       - name: Require an attachment metadata batch receipt
         run: >-

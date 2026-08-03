@@ -35,6 +35,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   narrower `perf` path filter (site HTML/CSS/JS/media + budget harness) — not all of
   `site/**` — so data-only / worker-only diffs report SUCCESS without the long measure.
   Performance is not a merge-queue required check (`tools/merge_queue_policy.json`).
+- **No live production origin in PR / merge-group gates.** Demo-link and a11y contracts
+  in `ci.yml` serve `site/` from the runner (`http://127.0.0.1:8000/`). Cloudflare Pages
+  PR deploys use a numbered preview branch and smoke that preview URL; production alias
+  + `cityscroll.org` route parity run only on main. Live production demo-link sampling
+  lives in scheduled `cutover-regression.yml`. Guard:
+  `node --test test/ci_no_prod_origin_gates.test.mjs`.
 - Stray-English: **Unit static lint only** (`test/standards/stray_english.py`). The runtime
   multi-locale walk (`test/functional/13_stray_english.py`) is **not** a CI job or required
   check — optional locally via that script or `run_stray_english_shards.sh`. Required merge
