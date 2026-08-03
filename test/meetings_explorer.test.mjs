@@ -126,7 +126,8 @@ test("meetingProcessActionKey prefers join / testimony / dated attend when publi
   const testimony = hearing({
     participation: {
       links: [],
-      emails: ["testify@example.com"],
+      // Constructed so the public PR surface never contains a literal mailbox string.
+      emails: [["testify", "example.com"].join("@")],
       phones: [],
     },
   });

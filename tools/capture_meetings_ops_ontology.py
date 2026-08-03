@@ -63,7 +63,7 @@ HEARINGS = [
                     "url": "https://zoom.example.com/j/landmarks",
                 }
             ],
-            "emails": ["testimony@example.com"],
+            "emails": [],
             "phones": [],
             "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260812011",
         },
@@ -103,7 +103,7 @@ HEARINGS = [
         },
         "participation": {
             "links": [],
-            "emails": ["testimony@example.com"],
+            "emails": [],
             "phones": [],
             "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260812012",
         },
