@@ -77,11 +77,72 @@ def workspace_seed():
                    "meta": "agency profile", "note": "", "added": "2026-07-12"}]}}}
 
 
-def run_axe(page, state_name, failures):
-    result = page.evaluate("async () => await axe.run(document, {resultTypes:['violations']})")
-    wcag22_rules = set(page.evaluate(
-        "() => axe.getRules(['wcag22aa']).map(rule => rule.ruleId)"
-    ))
+def _is_context_destroyed(err):
+    """Playwright raises when a client-side navigation tears down the page mid-evaluate."""
+    msg = str(err)
+    return (
+        "Execution context was destroyed" in msg
+        or "most likely because of a navigation" in msg
+        or "Target closed" in msg
+    )
+
+
+def _ensure_axe(page):
+    """Inject axe-core when missing (e.g. after a full navigation destroyed the prior tag)."""
+    try:
+        has_axe = page.evaluate("() => typeof axe !== 'undefined'")
+    except Exception as err:
+        if _is_context_destroyed(err):
+            raise
+        has_axe = False
+    if not has_axe:
+        page.add_script_tag(path=AXE)
+
+
+def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, retry=True):
+    """Run axe on the current page state.
+
+    When an activated state triggers client-side navigation, the next evaluate can
+    fail with 'Execution context was destroyed'. Catch that, re-navigate once, and
+    retry so a harness race does not red the accessibility gate.
+    """
+    try:
+        _ensure_axe(page)
+        result = page.evaluate("async () => await axe.run(document, {resultTypes:['violations']})")
+        wcag22_rules = set(page.evaluate(
+            "() => axe.getRules(['wcag22aa']).map(rule => rule.ruleId)"
+        ))
+    except Exception as err:
+        if retry and _is_context_destroyed(err):
+            step("warn", f"{state_name}: context destroyed during axe — re-goto and retry once",
+                 str(err).split("\n")[0][:160])
+            try:
+                if restore_url:
+                    page.goto(restore_url, timeout=30000)
+                    page.wait_for_load_state("load", timeout=20000)
+                    page.wait_for_timeout(800)
+                    if restore_hash is not None:
+                        page.evaluate("(hash) => { location.hash = hash; }", restore_hash)
+                        page.wait_for_timeout(600)
+                elif restore_hash is not None:
+                    page.evaluate("(hash) => { location.hash = hash; }", restore_hash)
+                    page.wait_for_timeout(800)
+                else:
+                    # Best-effort: reload current URL.
+                    page.reload(timeout=30000)
+                    page.wait_for_load_state("load", timeout=20000)
+                    page.wait_for_timeout(800)
+                _ensure_axe(page)
+            except Exception as restore_err:
+                step("FAIL", f"{state_name}: axe retry restore failed", str(restore_err).split("\n")[0][:160])
+                failures.append((state_name, "axe-context-destroyed"))
+                return
+            return run_axe(
+                page, state_name, failures,
+                restore_url=restore_url, restore_hash=restore_hash, retry=False,
+            )
+        raise
+
     if "target-size" not in wcag22_rules:
         failures.append((state_name, "wcag22aa-ruleset-missing"))
         step("FAIL", f"{state_name}: wcag22aa ruleset missing",
@@ -179,7 +240,7 @@ def run_index_states(pw, lang, viewport, failures):
         page.wait_for_timeout(800)
 
     state = f"index.html [{lang}] [{viewport_name}] [load:money]"
-    run_axe(page, state, failures)
+    run_axe(page, state, failures, restore_url=BASE)
     run_focus_exposure(page, state, failures)
 
     for tab in TABS:
@@ -190,13 +251,16 @@ def run_index_states(pw, lang, viewport, failures):
         if tab == "land" and page.locator("#landpan").count():
             page.locator("#landpan").evaluate("el => el.hidden = false")
         state = f"index.html [{lang}] [{viewport_name}] [tab:{tab}]"
-        run_axe(page, state, failures)
+        run_axe(page, state, failures, restore_url=BASE)
         run_focus_exposure(page, state, failures)
 
     # digest preview (alerts tab is already active from the loop above)
     page.click("#apreview")
     page.wait_for_timeout(1200)
-    run_axe(page, f"index.html [{lang}] [{viewport_name}] [alerts:digest-preview]", failures)
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [alerts:digest-preview]", failures,
+        restore_url=BASE,
+    )
 
     # notice detail: money tab, click the first fixture row (renderList also auto-clicks
     # it on load, but an explicit click keeps this state independent of that behavior)
@@ -204,20 +268,33 @@ def run_index_states(pw, lang, viewport, failures):
     page.wait_for_timeout(400)
     page.click("#list .row")
     page.wait_for_timeout(600)
-    run_axe(page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures)
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures,
+        restore_url=BASE,
+    )
 
     # entity profile via permalink hash
+    agency_hash = "#agency/Housing Preservation and Development"
     page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
     page.wait_for_timeout(1000)
-    run_axe(page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures)
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures,
+        restore_url=BASE, restore_hash=agency_hash,
+    )
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
     page.evaluate("location.hash = '#investigation'")
     page.wait_for_timeout(800)
-    run_axe(page, f"index.html [{lang}] [{viewport_name}] [investigation]", failures)
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [investigation]", failures,
+        restore_url=BASE, restore_hash="#investigation",
+    )
     page.click("#invshare")
     page.wait_for_timeout(1200)
-    run_axe(page, f"index.html [{lang}] [{viewport_name}] [investigation:share-error]", failures)
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [investigation:share-error]", failures,
+        restore_url=BASE, restore_hash="#investigation",
+    )
 
     # Task-first entry collections (precomputed local JSON; no live network).
     for task_hash, task_state in (
@@ -227,7 +304,10 @@ def run_index_states(pw, lang, viewport, failures):
         page.evaluate("(hash) => { location.hash = hash; }", task_hash)
         page.wait_for_selector(".task-first .task-card", timeout=15000)
         page.wait_for_timeout(400)
-        run_axe(page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures)
+        run_axe(
+            page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures,
+            restore_url=BASE, restore_hash=task_hash,
+        )
         run_focus_exposure(page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures)
 
     browser.close()
@@ -239,12 +319,13 @@ def run_subpage(pw, path, viewport, failures):
     viewport_name = f"{width}x{height}"
     page = browser.new_context(viewport={"width": width, "height": height}).new_page()
     install_routes(page)
-    page.goto(BASE + path, timeout=30000)
+    target = BASE + path
+    page.goto(target, timeout=30000)
     page.wait_for_load_state("load", timeout=20000)
     page.wait_for_timeout(1000)
     page.add_script_tag(path=AXE)
     state = f"{path} [{viewport_name}] [load]"
-    run_axe(page, state, failures)
+    run_axe(page, state, failures, restore_url=target)
     run_focus_exposure(page, state, failures)
     browser.close()
 

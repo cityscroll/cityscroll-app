@@ -1,0 +1,134 @@
+# When a gate-fixing merge lands on main, re-run open PRs whose latest check
+# suite failed before that merge. Removes manual "re-run failed jobs" for the
+# cascade of stale reds left behind a base fix.
+#
+# Scope: repository Actions only (open PRs targeting main). Does not merge.
+name: Rerun stale PR checks after main merge
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "List eligible PRs without re-running checks"
+        required: false
+        default: "false"
+
+permissions:
+  contents: read
+  actions: write
+  checks: read
+  pull-requests: read
+
+concurrency:
+  group: rerun-stale-pr-checks
+  cancel-in-progress: false
+
+jobs:
+  rerun:
+    name: Rerun open PRs with stale failing checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Identify open PRs with failing checks older than this push
+        uses: actions/github-script@v7
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const headSha = context.sha;
+            const dryRun = String(process.env.DRY_RUN || "false").toLowerCase() === "true";
+
+            // Commit time of the push that may have fixed a gate.
+            const commit = await github.rest.repos.getCommit({ owner, repo, ref: headSha });
+            const fixAt = new Date(commit.data.commit.committer.date).getTime();
+            core.info(`Base fix commit ${headSha.slice(0, 7)} at ${commit.data.commit.committer.date}`);
+
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner,
+              repo,
+              state: "open",
+              base: "main",
+              per_page: 50,
+              sort: "updated",
+              direction: "desc",
+            });
+
+            let rerunCount = 0;
+            for (const pr of prs) {
+              if (pr.draft) {
+                core.info(`skip #${pr.number} (draft)`);
+                continue;
+              }
+              // Latest check runs on the PR head.
+              const suites = await github.rest.checks.listSuitesForRef({
+                owner,
+                repo,
+                ref: pr.head.sha,
+              });
+              const failedSuites = (suites.data.check_suites || []).filter(
+                (s) => s.conclusion === "failure" || s.conclusion === "timed_out" || s.conclusion === "cancelled",
+              );
+              if (!failedSuites.length) {
+                core.info(`skip #${pr.number} (no failing check suite on head)`);
+                continue;
+              }
+              // Stale = latest failing suite finished before the gate-fixing merge.
+              const latestFail = failedSuites
+                .map((s) => new Date(s.updated_at || s.completed_at || 0).getTime())
+                .reduce((a, b) => Math.max(a, b), 0);
+              if (!latestFail || latestFail >= fixAt) {
+                core.info(`skip #${pr.number} (failure is not older than this main push)`);
+                continue;
+              }
+
+              // Prefer re-running the failed CI workflow runs for this head SHA.
+              const runs = await github.rest.actions.listWorkflowRunsForRepo({
+                owner,
+                repo,
+                event: "pull_request",
+                status: "completed",
+                per_page: 30,
+              });
+              const headRuns = (runs.data.workflow_runs || []).filter(
+                (r) =>
+                  r.head_sha === pr.head.sha &&
+                  (r.conclusion === "failure" || r.conclusion === "timed_out" || r.conclusion === "cancelled") &&
+                  r.name === "CI",
+              );
+              if (!headRuns.length) {
+                core.info(`skip #${pr.number} (no completed failing CI workflow run for head)`);
+                continue;
+              }
+
+              // Re-run only the most recent failed CI run for this head.
+              headRuns.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+              const run = headRuns[0];
+              const runFinished = new Date(run.updated_at).getTime();
+              if (runFinished >= fixAt) {
+                core.info(`skip #${pr.number} (CI run finished after fix)`);
+                continue;
+              }
+
+              if (dryRun) {
+                core.info(`dry-run: would re-run CI run ${run.id} for PR #${pr.number} (${pr.title})`);
+                rerunCount += 1;
+                continue;
+              }
+              try {
+                await github.rest.actions.reRunWorkflowFailedJobs({
+                  owner,
+                  repo,
+                  run_id: run.id,
+                });
+                core.info(`re-ran failed jobs for PR #${pr.number} (run ${run.id})`);
+                rerunCount += 1;
+              } catch (err) {
+                // reRunWorkflowFailedJobs fails if the run is too old or already green.
+                core.warning(`could not re-run PR #${pr.number} run ${run.id}: ${err.message}`);
+              }
+            }
+            core.info(`done: ${rerunCount} PR(s) ${dryRun ? "eligible" : "re-queued"}`);

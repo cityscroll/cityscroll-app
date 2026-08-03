@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { SITE_MODULES } from "./helpers/site_source.mjs";
+import { computeModuleGraphDigest } from "../tools/site_module_architecture.mjs";
 
 const evidence = JSON.parse(
   readFileSync(new URL("../docs/evidence/index-module-split.json", import.meta.url), "utf8"),
@@ -39,21 +40,18 @@ test("every application module stays below the short-context working bar", () =>
 
 test("module concatenation matches the committed module-graph digest", () => {
   const source = SITE_MODULES.map(behaviorSource).join("\n");
+  const computed = computeModuleGraphDigest();
   assert.equal(Buffer.byteLength(source), evidence.current_module_graph.normalized_source_bytes);
   assert.equal(
     createHash("sha256").update(source).digest("hex"),
     evidence.current_module_graph.normalized_source_sha256,
   );
+  assert.equal(computed.normalized_source_sha256, evidence.current_module_graph.normalized_source_sha256);
+  assert.equal(computed.normalized_source_bytes, evidence.current_module_graph.normalized_source_bytes);
 });
 
-test("representative targeted-read byte measurements stay current", () => {
-  assert.equal(Buffer.byteLength(index), evidence.after.index_html_bytes);
-  for (const task of evidence.representative_tasks) {
-    const bytes = task.files.reduce(
-      (total, path, index) => total + Buffer.byteLength(readFileSync(new URL(`../${path}`, import.meta.url))) + (index ? 1 : 0),
-      0,
-    );
-    assert.equal(bytes, task.after_bytes, task.task);
-    assert.ok(task.before_tokens / task.after_tokens >= 9.5, task.task);
-  }
-});
+// Historical split evidence (before/after token measurements on representative tasks)
+// remains in docs/evidence/index-module-split.json for the modular-split write-up.
+// One-time migration assertions (hard-coded after_bytes + token_reduction >= 9.5)
+// were retired: they re-proved the split forever and broke on every intentional module edit.
+// Refresh the live fingerprint with: node tools/site_module_architecture.mjs --update

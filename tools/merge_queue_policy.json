@@ -17,11 +17,19 @@
     "Accessibility + language gate (axe on every PR)",
     "Reading-level ratchet gate (readable-or-else)"
   ],
+  "elder_slot": {
+    "enabled": true,
+    "elder_age_hours": 6,
+    "rebase_churn_threshold": 3,
+    "reserve_next_slot_for_elder": true,
+    "policy_module": "tools/elder_merge_slot.mjs",
+    "external_seater_note": "The one-auto-merge-at-a-time seat cap lives outside this repository. That seater should call pickElderSeatHolder() (or re-implement the same thresholds) before seating a younger ready PR so an aged PR is not overtaken."
+  },
   "notes": [
     "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
     "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
     "Required checks are only Unit, Accessibility, and Reading-level — not Performance budgets (20-sample p95). That job path-filters on `perf` (site chrome/assets + budget harness) and reports SUCCESS without measuring for data/worker/docs diffs.",
     "Runtime multi-locale stray-English is not a required check; Unit static lint owns that class.",
-    "A same-repo merge-when-ready seat cap (one auto-merge at a time) is complementary and lives outside this repo."
+    "A same-repo merge-when-ready seat cap (one auto-merge at a time) is complementary and lives outside this repo. Elder slot reservation policy for that seater is tools/elder_merge_slot.mjs + elder_slot above."
   ]
 }

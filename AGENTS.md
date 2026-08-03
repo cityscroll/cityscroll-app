@@ -6,9 +6,23 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## PR and CI preflight
 
-- Run `./tools/preflight-required-checks.sh` before creating or handing back a PR URL and
-  before opening a pull request. CI still runs the full accessibility and runtime
-  stray-English work after Unit checks.
+- Run `make prepush` (or `./tools/preflight-required-checks.sh`) before creating or
+  handing back a PR URL and before opening a pull request. Install the versioned
+  pre-push hook once per clone with `make install-hooks` (`core.hooksPath=tools/git-hooks`);
+  the hook rejects pushes that fail the fast preflight and runs `--full` when the
+  push range touches `site/**`. Bypass only with `git push --no-verify` (CI still must pass).
+- Module-graph fingerprint: after intentional `site/app/` edits, refresh with
+  `node tools/site_module_architecture.mjs --update` (or `make module-graph-digest`).
+  `--check` is the CI-facing form; one-time token_reduction / hard-coded after_bytes
+  migration assertions were retired.
+- Test-clock auditor (`node tools/audit-test-clocks.mjs`) runs in local preflight **and**
+  the CI unit job. PR gates must not set `CROL_BASE` to production hosts
+  (`test/ci_no_prod_origin_gates.test.mjs`); scheduled cutover-regression owns live prod.
+- After a gate-fixing merge to `main`, `.github/workflows/rerun-stale-pr-checks.yml`
+  re-queues open PRs whose failing CI run predates that merge.
+- Elder merge-slot policy (oldest ready PR reservation) is `tools/elder_merge_slot.mjs` +
+  `elder_slot` in `tools/merge_queue_policy.json`. The one-auto-merge seat cap itself
+  lives outside this repo and should call that policy before seating a younger PR.
 
 ## Main site module boundaries
 
@@ -47,7 +61,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   checks are Unit, Accessibility + language, and Reading-level (three total).
 - Playwright installs go through `.github/actions/setup-playwright` (browser cache for a11y/perf).
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
-  (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
+  (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree;
+  elder reservation thresholds for that seater are `elder_slot` / `tools/elder_merge_slot.mjs`.
 
 ## Cross-domain entity intelligence
 
