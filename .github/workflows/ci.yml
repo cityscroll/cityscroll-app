@@ -234,6 +234,11 @@ jobs:
       - name: Public demo-link manifest schema
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/demo_links.py
+      - name: Test-clock auditor (reject un-injected new Date()/Date.now() in tests)
+        if: needs.changes.outputs.unit_full == 'true'
+        # Local preflight already runs this; promote into CI so a skipped preflight
+        # cannot land a date-boundary flake class that only fails at UTC midnight.
+        run: node tools/audit-test-clocks.mjs
       - name: Site unit tests
         if: needs.changes.outputs.unit_full == 'true'
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
@@ -461,6 +466,11 @@ jobs:
 
   # Pre-merge changelog reading-level safeguard — deliberately NOT frontend-gated.
   # update-changelog.yml harvests a "What this means for you" entry only from a PR labeled
+  # Manual full functional suite (workflow_dispatch only). Not a required check.
+  # a11y-pr already covers the accessibility/language/demo-link/focus subset on every
+  # PR. This job retains unique numbered specs 01–10, 13, 18, 19_rules_time_spine,
+  # 20_navigation_history and the full run.sh loop for operator deep dives — do not
+  # retire until those scripts are promoted or explicitly dropped.
   functional:
     name: Functional (Playwright, manual)
     needs: changes
