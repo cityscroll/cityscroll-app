@@ -1185,6 +1185,16 @@ Verify:
 `node --test worker/test/rulemaking_siblings.test.mjs worker/test/nyc_rules.test.mjs
 worker/test/subject_registry.test.mjs test/rules_phase_spine.test.mjs`.
 
+**Rules domain explorer (list):** pure `site/rules_explorer.mjs` groups
+high-confidence multi-notice rulemakings into one list entry, filters by
+process phase (`#rulesprocessrail`: proposal → public process → adoption →
+effective), and stamps next-action keys + agency entity links (`#agency/…`)
+plus comment/hearing destinations when NYC Rules fields exist. Flat SODA wall
+is not the product surface — same list-ontology shape as
+`site/property_explorer.mjs`. Detail timeline stays `rules_phase_spine.mjs`.
+Verify: `node --test test/rules_explorer.test.mjs test/rules_phase_spine.test.mjs`.
+Captures: `python3 tools/capture_rules_ops_ontology.py`.
+
 **RSS egress (hard):** `worker/src/rules.mjs` must send `RULES_RSS_HEADERS`
 (`User-Agent` + RSS Accept) on `https://rules.cityofnewyork.us/feed/`. An empty or
 missing User-Agent gets Cloudflare HTTP 403 challenge HTML ("Just a moment…"), so
