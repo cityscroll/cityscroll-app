@@ -217,7 +217,7 @@ export function attachDistricts(geo, layer) {
 /** Load and lightly validate a council-only v0 document. */
 export function loadCouncilDistrictLayer(doc) {
   if (!doc || typeof doc !== "object") return null;
-  // v1 unified: project council slice into the v0 shape consumers expect.
+  // v1 unified: map council slice into the v0 shape consumers expect.
   if (doc.schema === DISTRICT_BOUNDARIES_SCHEMA_V1 && Array.isArray(doc.council_districts)) {
     return {
       schema: COUNCIL_DISTRICT_LAYER_SCHEMA,
@@ -226,7 +226,7 @@ export function loadCouncilDistrictLayer(doc) {
       boundary_vintage: doc.sources?.council_district?.boundary_vintage || doc.boundary_vintage || null,
       district_count: doc.council_district_count || doc.council_districts.length,
       districts: doc.council_districts,
-      // Keep community list for dual resolve when callers pass this projected doc.
+      // Keep community list for dual resolve when callers pass this mapped doc.
       community_districts: doc.community_districts,
       sources: doc.sources,
     };
