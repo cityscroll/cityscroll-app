@@ -321,6 +321,8 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     project_url:zapParticipation?participation:null,
     bbl:propBbl,
     owner_name:r._property_owner||null,
+    // Surplus-buyer commercial payload (item / price / bid steps) when extracted.
+    commercial:isProperty?(r.commercial||null):null,
   };
 }
 function actionRailLabel(action){

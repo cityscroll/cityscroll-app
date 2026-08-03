@@ -44,7 +44,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 65237,
+      "after_bytes": 65297,
       "after_tokens": 17589,
       "token_reduction_ratio": 13.54
     },
@@ -68,8 +68,9 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 751793,
-    "normalized_source_sha256": "83f90da882b1424a28fa437d8670a62dd19ef0fb0f8910f639c113fe7c4f5999",
-    "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata)."
+    "normalized_source_bytes": 761736,
+    "normalized_source_sha256": "66590137e1bcf0d5aec30778dab1135ce5e504449696f355427cf179819810f2",
+    "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata).",
+    "updated_at": "2026-08-03"
   }
 }

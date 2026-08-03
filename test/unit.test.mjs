@@ -88,13 +88,13 @@ const propEnv = new Function(
   + "return { classifyAsset, propStage, dollarBadge };"
 )(realT);
 
-test("classifyAsset: distinctive vocabularies route to the right bucket", () => {
+test("classifyAsset: distinctive vocabularies route to persona categories", () => {
   const c = (title, desc="") => propEnv.classifyAsset({ short_title: title, additional_description_1: desc });
-  assert.equal(c("Forest Management Project #5205", "134,164 board feet of sawtimber"), "forest");
-  assert.equal(c("Upset Price Notice", "32 accessible minifleet medallions"), "medallion");
-  assert.equal(c("AUTO AUCTION", "vehicle and heavy machinery auctions"), "vehequip");
-  assert.equal(c("Notice", "in the custody of the property clerk"), "seized");
-  assert.equal(c("Property Disposition", "sale of City-owned property, Disposition Area"), "realty");
+  assert.equal(c("Forest Management Project #5205", "134,164 board feet of sawtimber"), "timber");
+  assert.equal(c("Upset Price Notice", "32 accessible minifleet medallions"), "other");
+  assert.equal(c("AUTO AUCTION", "vehicle and heavy machinery auctions"), "vehicle");
+  assert.equal(c("Notice", "in the custody of the property clerk"), "other");
+  assert.equal(c("Property Disposition", "sale of City-owned property, Disposition Area"), "real_property");
   assert.equal(c("Something unclassifiable", "no keywords at all"), "other");
 });
 test("propStage: lifecycle derivation", () => {

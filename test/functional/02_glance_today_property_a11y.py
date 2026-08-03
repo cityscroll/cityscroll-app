@@ -102,8 +102,8 @@ with sync_playwright() as pw:
     counts = p3.evaluate("[...document.querySelectorAll('#assettabs .chip .ct')].map(s=>+s.textContent)")
     sum_ok = counts[0] == sum(counts[1:])
     step("OK" if len(tabs)==7 and sum_ok else "FAIL", "#9 asset tabs + count math", f"{tabs} | all={counts[0]} vs sum={sum(counts[1:])}")
-    # click Forest / timber
-    p3.click('#assettabs .chip[data-a="forest"]')
+    # click Timber (persona asset category; legacy URL key "forest" still normalizes)
+    p3.click('#assettabs .chip[data-a="timber"]')
     p3.wait_for_timeout(400)
     d = p3.evaluate("""({
         n: document.querySelectorAll('#propertyfeed .fcard').length,
@@ -111,18 +111,18 @@ with sync_playwright() as pw:
         hash: location.hash,
         rail: document.querySelectorAll('#liferail .chip').length
     })""")
-    ok = d["n"]>0 and all(b=="Forest / timber" for b in d["badges"]) and "asset=forest" in d["hash"] and d["rail"]==5
-    step("OK" if ok else "FAIL", "#9 forest tab filters + URL", json.dumps(d)[:200])
+    ok = d["n"]>0 and all(b=="Timber" for b in d["badges"]) and "asset=timber" in d["hash"] and d["rail"]==5
+    step("OK" if ok else "FAIL", "#9 timber tab filters + URL", json.dumps(d)[:200])
     # dollar badges present somewhere in the full set
     p3.click('#assettabs .chip[data-a="all"]'); p3.wait_for_timeout(400)
     nbadge = p3.evaluate("document.querySelectorAll('#propertyfeed .tag.amt').length")
     step("OK" if nbadge>=0 else "OK", "#9 labeled $ badges", f"{nbadge} badge(s) in loaded set")
     # deep-link with asset preselected (fresh page)
     p4 = ctx.new_page()
-    p4.goto(BASE + "#property?asset=forest", timeout=30000)
+    p4.goto(BASE + "#property?asset=timber", timeout=30000)
     p4.wait_for_selector("#assettabs .chip.on", timeout=45000)
     onchip = p4.evaluate("document.querySelector('#assettabs .chip.on')?.dataset.a")
-    step("OK" if onchip=="forest" else "FAIL", "#9 asset deep-link", f"on={onchip}")
+    step("OK" if onchip=="timber" else "FAIL", "#9 asset deep-link", f"on={onchip}")
     p4.screenshot(path=SHOT + "property.png")
     p4.close()
     p3.close()

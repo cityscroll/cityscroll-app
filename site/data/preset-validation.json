@@ -110,12 +110,12 @@
     },
     "legal-property": {
       "id": "realty",
-      "href": "#property?asset=realty",
+      "href": "#property?asset=real_property",
       "labelKey": "tab_property",
       "label": "Property",
       "count": 156,
       "counts": {
-        "realty": 156,
+        "real_property": 156,
         "all": 243
       }
     },

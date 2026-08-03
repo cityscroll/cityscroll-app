@@ -12,7 +12,8 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
 | `site/app/land.mjs` | Land search/detail/map, ZAP outcomes, ULURP timeline, and notice-to-ZAP joins. |
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, hearing explorer, and notice/land action rails. |
-| `site/app/property.mjs` | Franchise and property-disposition spines, property explorer, and tax-lien context. |
+| `site/app/property.mjs` | Franchise and property-disposition spines, surplus-buyer commercial glance, property explorer, and tax-lien context. |
+| `site/property_commercial.mjs` | Pure Property commercial extraction (item/qty/price/deal/participation) for list + detail. |
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, and generic feed-card rendering. |
 | `site/app/alerts.mjs` | Watch state, digest preview/items, rollups/preferences, flags, and address/context hydration. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |

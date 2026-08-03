@@ -1,0 +1,69 @@
+{
+  "schema": "cityscroll.persona_capability_inputs.v1",
+  "observed_at": "2026-08-03",
+  "note": "Persona-grounded capability checks for breadth / surface-load measurement inputs. Structure audits catch layout density; these catch extraction-vs-persona gaps. Coordinate with the surface-load (wackness) sampling flywheel — consume as inputs, do not fork a parallel dimension evaluator in that lane.",
+  "why_prior_sweeps_missed": "Layout and structure audits measured density, hierarchy, and resident-serving actions in the opening viewport. They did not ask whether Property Disposition notices answer a surplus-goods buyer's ordered questions (what / how much / deal? / how to bid) from unstructured notice bodies. Capability coverage was invisible to density metrics.",
+  "personas": [
+    {
+      "id": "surplus_goods_buyer",
+      "lens": "property",
+      "priority": "primary",
+      "questions": [
+        "WHAT is being sold (item category + quantity)?",
+        "HOW MUCH (labeled minimum bid / upset / appraisal)?",
+        "Is it a DEAL (discount vs stated value when both publish)?",
+        "When / how do I bid (sale method + participation steps)?"
+      ],
+      "capability_id": "property_commercial_payload",
+      "surface_checks": [
+        {
+          "surface": "property_list",
+          "requires": ["item_in_prime_position", "price_or_honest_absence", "close_date_when_known"]
+        },
+        {
+          "surface": "property_notice_detail",
+          "requires": ["full_extraction_with_provenance", "deal_signal_or_insufficient", "bid_steps_feed_action_rail"]
+        }
+      ],
+      "golden_cases": [
+        {
+          "request_id": "20251106024",
+          "expect": "vehicle + marketplace bid URL + registration steps; no invented price or deal"
+        },
+        {
+          "request_id": "synthetic-deal-vehicle-001",
+          "expect": "vehicle + min bid + appraisal → deal signal 40% of stated appraised value"
+        }
+      ],
+      "future_hooks": [
+        {
+          "id": "market_basket_comparables",
+          "status": "not_yet_acquired",
+          "interface": "deal_signal.comparables_slot { category, source }",
+          "data_acquisition": "External comparable pricing by category (vehicle book values, timber stumpage, equipment indexes). Card separately; ship nothing fake."
+        }
+      ]
+    },
+    {
+      "id": "real_property_developer",
+      "lens": "property",
+      "priority": "secondary",
+      "questions": ["parcel identity (BBL)", "sale/lease method", "upset or minimum rent", "process stage"],
+      "capability_id": "property_disposition_spine_and_parcel",
+      "note": "Served by disposition spine + BBL joins; commercial category real_property shares price/method extraction."
+    },
+    {
+      "id": "community_land_reuse",
+      "lens": "property",
+      "priority": "secondary",
+      "questions": ["what land is transferring", "nominal vs market consideration", "hearing / award stage"],
+      "capability_id": "property_disposition_spine_and_nominal_price",
+      "note": "Nominal $1 and HPD disposition language surface as price facts when labeled; deal signal only when appraisal dollars also publish."
+    }
+  ],
+  "measurement_handoff": {
+    "sibling_lane": "surface-load / wackness sampling flywheel",
+    "recommended_input": "For each property_list and property_notice_detail sample, record whether persona capability_id property_commercial_payload fields are present in the opening viewport (item, price-or-absence, deal-or-insufficient on detail). Do not mint layout cards for missing extraction — mint capability cards.",
+    "do_not": "Do not collide with surface-load evaluator implementation; this file is the input contract only."
+  }
+}

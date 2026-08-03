@@ -10,6 +10,7 @@ import {
   propertyLocationFromRow,
 } from "../../site/property_location.mjs";
 import { attachDispositionSpines } from "./lib/property_disposition_spine.mjs";
+import { attachPropertyCommercial } from "./lib/property_commercial.mjs";
 import { slimPropertyListView } from "./lib/property_list.mjs";
 
 export const PROPERTY_KV_KEY = "property:location:v1";
@@ -105,7 +106,8 @@ export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
     },
     properties,
   };
-  return attachDispositionSpines(view);
+  // Disposition spines first (join keys), then commercial payload for surplus-buyer glance.
+  return attachPropertyCommercial(attachDispositionSpines(view));
 }
 
 export async function refreshProperties(env, fetchImpl = fetch, now = new Date()) {

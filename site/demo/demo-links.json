@@ -581,7 +581,7 @@
     },
     {
       "id": "property-honest-location-fallback",
-      "url": "#property?asset=forest",
+      "url": "#property?asset=timber",
       "feature": "property-location-fallback",
       "description": "Show a Property notice without inventing a site when the notice identifies none.",
       "expectations": {
@@ -605,7 +605,7 @@
         ],
         "states": [
           {
-            "selector": "#assettabs [data-a='forest']",
+            "selector": "#assettabs [data-a='timber']",
             "attribute": "class",
             "equals": "chip on"
           }
@@ -614,7 +614,7 @@
     },
     {
       "id": "scenario-legal-compliance",
-      "url": "#property?asset=realty",
+      "url": "#property?asset=real_property",
       "feature": "scenario-legal-compliance",
       "description": "Start the legal and compliance path with public real-estate notices.",
       "expectations": {
@@ -634,7 +634,7 @@
         ],
         "states": [
           {
-            "selector": "#assettabs [data-a='realty']",
+            "selector": "#assettabs [data-a='real_property']",
             "attribute": "class",
             "equals": "chip on"
           }
