@@ -344,6 +344,18 @@ as `withdrawn`. Verify:
 `node --test test/ulurp_statutory_clock.test.mjs`. Capture:
 `python3 tools/capture_ulurp_statutory_clock.py`.
 
+**Contract renewal forecasts (cs-pred-09):** Checkbook `fc:*` rows keep product
+fields for `/forecast`, vendor profiles, and digests, and also carry
+`cityscroll.prediction.v0` provenance (`method: term_arithmetic`) via
+`worker/src/lib/contract_forecast_predictions.mjs`. Digest de-dup stays
+`sent:fc:<contract_id>:<sub_key>` (warning_date single-fire). Accuracy:
+`forecast_score.mjs` fuzzy Solicitation hit_rate + `resolveForecastPredictions`
+for exact-join status. Next-award cadence tags `method: cadence` on the derived
+object only (render copy unchanged). Verify:
+`node --test worker/test/contract_forecast_predictions.test.mjs
+worker/test/forecast_scoring.test.mjs worker/test/checkbook_expiration.test.mjs
+test/cadence_estimate.test.mjs`.
+
 ## Legistar agenda/vote depth
 
 Ranked class-(a) meeting-outcomes depth. **Edge materialization is live** (daily

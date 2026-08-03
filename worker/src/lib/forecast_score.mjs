@@ -1,15 +1,27 @@
-// Forecast accuracy scoring: compare fc:* renewal estimates in ALERT_STATE
+// Forecast accuracy scoring: compare fc:* renewal forecasts in ALERT_STATE
 // against actual Solicitation notices in the D1 mirror.
 //
 // A "hit" is a prediction whose ±WINDOW_DAYS window around its predicted date
 // contains a Solicitation notice from the same agency (stem match) or sharing a
 // PIN prefix. We don't claim causal proof — the label is "matched", not "caused".
 //
+// After the prediction-contract retrofit, rows may carry cityscroll.prediction.v0
+// fields. Collection and hit_rate still use the product fuzzy Solicitation join
+// (legacy contract accuracy). When a row converts to a full assertion, resolution
+// also runs through resolvePredictions for status lifecycle (open → hit/miss) on
+// exact (subject_ref, event_kind) joins when callers supply realized events.
+//
 // Exported surface:
 //   scoreForecastAccuracy(env, db) → { scored, hits, hit_rate, window_days, note }
 //
 // The handler (GET /forecast/accuracy) caches the result in KV for ~6 hours to
 // avoid hammering D1 on every request; the KV key is "forecast_accuracy_cache".
+
+import { resolvePredictions } from "./prediction_contract.mjs";
+import {
+  forecastPredictedDate,
+  forecastRecordToPrediction,
+} from "./contract_forecast_predictions.mjs";
 
 export const WINDOW_DAYS = 30; // ±30 days around predicted date
 const EARLY_SAMPLE = 20;       // below this we add the small-sample note
@@ -46,13 +58,11 @@ export function pinPrefix(pin) {
 }
 
 // Check whether a single prediction has a matching Solicitation notice in D1.
-// prediction: { predicted_date, agency_name?, pin?, vendor_name? }
+// prediction: { predicted_date, expiration_date, predicted_window, agency_name?, pin?, vendor_name? }
 // db: D1 database binding.
 // Returns true if a Solicitation was published inside the ±WINDOW window.
 export async function checkPredictionHit(prediction, db) {
-  const rawDate = prediction.predicted_date
-    || prediction.expiration_date  // checkbook forecasts: expiration is the predicted trigger
-    || prediction.warning_date;    // warning_date is the delivery trigger, but expiration is the forecast
+  const rawDate = forecastPredictedDate(prediction);
 
   if (!rawDate) return false;
   const [lo, hi] = predictionWindow(rawDate, WINDOW_DAYS);
@@ -97,7 +107,7 @@ export async function checkPredictionHit(prediction, db) {
   return false;
 }
 
-// Collect all fc:* renewal estimates from ALERT_STATE.
+// Collect all fc:* renewal forecasts from ALERT_STATE.
 // Returns an array of raw prediction objects.
 export async function collectPredictions(kv) {
   const predictions = [];
@@ -121,10 +131,32 @@ export async function collectPredictions(kv) {
 // We only score predictions we can already observe — future windows aren't scoreable yet.
 export function pastWindowPredictions(predictions, todayISO) {
   return predictions.filter((p) => {
-    const rawDate = p.predicted_date || p.expiration_date;
+    const rawDate = forecastPredictedDate(p);
     if (!rawDate) return false;
     const [, hi] = predictionWindow(rawDate, WINDOW_DAYS);
     return hi != null && hi < todayISO;
+  });
+}
+
+/**
+ * Convert retrofitted (or legacy) fc rows through the prediction contract and
+ * resolve open assertions against realized civic events via resolvePredictions.
+ * Product hit_rate scoring continues to use the fuzzy Solicitation path above;
+ * this path is the generic contract resolver for status lifecycle.
+ */
+export function resolveForecastPredictions(forecastRows = [], realizedEvents = [], opts = {}) {
+  const assertions = [];
+  for (const row of (Array.isArray(forecastRows) ? forecastRows : [])) {
+    try {
+      assertions.push(forecastRecordToPrediction(row, opts));
+    } catch {
+      // Skip rows that cannot form a valid assertion (incomplete legacy).
+    }
+  }
+  return resolvePredictions(assertions, realizedEvents, {
+    graceDays: opts.graceDays ?? WINDOW_DAYS,
+    now: opts.now,
+    horizonDaysByDomain: opts.horizonDaysByDomain,
   });
 }
 
