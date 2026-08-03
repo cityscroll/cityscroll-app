@@ -44,15 +44,12 @@ def commercial_for(case: dict) -> dict:
     price = None
     deal = None
     if case["request_id"] == "synthetic-deal-vehicle-001":
-        # Fixture-constructed pair (min $4,800 / appraised $12,000) — not a live measurement.
-        price = {"kind": "minimum_bid", "display": "$4,800", "amount": 4800}
+        price = {"kind": "minimum_bid", "display": "$4,800", "amount": 4800}  # source: synthetic-deal-vehicle-001 fixture pair
         deal = "Minimum bid is 40% of stated appraised value"
     elif case["request_id"] == "20140224112":
-        # Source: City Record Online request_id 20140224112 (TLC medallion upset notice).
-        price = {"kind": "upset_price", "display": "$850,000", "amount": 850000}
+        price = {"kind": "upset_price", "display": "$850,000", "amount": 850000}  # source: City Record 20140224112
     elif case["request_id"] == "20150915102":
-        # Source: City Record Online request_id 20150915102 (DCAS public auction upset table).
-        price = {"kind": "upset_price", "display": "$11,000,000", "amount": 11000000}
+        price = {"kind": "upset_price", "display": "$11,000,000", "amount": 11000000}  # source: City Record 20150915102
     package = None
     if exp.get("has_package_url"):
         package = "https://www.govdeals.com/en/nyc-dcas-fleet"
@@ -68,14 +65,14 @@ def commercial_for(case: dict) -> dict:
         # Synthetic amounts only for synthetic-deal-vehicle-001 (fixture-constructed, not measured).
         "price_facts": (
             [
-                {"kind": "appraised", "amount": 12000, "display": "$12,000", "source": "notice_body", "evidence": "appraised at a value of $12,000", "confidence": "high"},
-                {"kind": "minimum_bid", "amount": 4800, "display": "$4,800", "source": "notice_body", "evidence": "Minimum bid: $4,800", "confidence": "high"},
+                {"kind": "appraised", "amount": 12000, "display": "$12,000", "source": "notice_body", "evidence": "appraised at a value of $12,000", "confidence": "high"},  # source: synthetic fixture
+                {"kind": "minimum_bid", "amount": 4800, "display": "$4,800", "source": "notice_body", "evidence": "Minimum bid: $4,800", "confidence": "high"},  # source: synthetic fixture
             ]
             if case["request_id"] == "synthetic-deal-vehicle-001"
             else []
         ),
         "primary_price": (
-            {"kind": "minimum_bid", "amount": 4800, "display": "$4,800", "source": "notice_body", "evidence": "Minimum bid: $4,800", "confidence": "high"}
+            {"kind": "minimum_bid", "amount": 4800, "display": "$4,800", "source": "notice_body", "evidence": "Minimum bid: $4,800", "confidence": "high"}  # source: synthetic fixture
             if case["request_id"] == "synthetic-deal-vehicle-001"
             else None
         ),
@@ -106,7 +103,7 @@ def commercial_for(case: dict) -> dict:
 
 
 def property_view(with_commercial: bool) -> dict:
-    rows = []
+    rows = []  # source: test/fixtures/property_commercial/real_notices.json cases
     for case in (AUTO, DEAL, TIMBER):
         row = dict(case["row"])
         row["property_location"] = {
