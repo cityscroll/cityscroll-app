@@ -97,6 +97,7 @@ run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + jo
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
+run_and_fail node tools/audit-test-clocks.mjs
 run_and_fail node --test test/*.test.mjs
 run_and_fail node --test test/contract/*.test.mjs
 

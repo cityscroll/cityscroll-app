@@ -15,6 +15,9 @@ import {
   usageAnalyticsQuery,
 } from "../worker/src/lib/analytics.mjs";
 
+const FIXTURE_NOW = new Date("2026-07-27T12:00:00Z");
+const FIXTURE_DAY = FIXTURE_NOW.toISOString().slice(0, 10);
+
 function fakeKV(seed = {}) {
   const store = new Map(Object.entries(seed));
   return {
@@ -155,16 +158,13 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
   await emit(points, { event: "alert_confirmed", lens: "land", surface: "email" });
   await emit(points, { event: "scenario_open", lens: "meetings", detail: "hearings", surface: "home" });
 
-  // Fixture day must sit inside the last-7-day window relative to wall clock
-  // (buildUsageSnapshot uses dayOffset(now, 6) against real Date when handleStats runs).
-  const fixtureDay = new Date().toISOString().slice(0, 10);
-  const rows = points.map((point) => rowFromPoint(point, fixtureDay));
+  const rows = points.map((point) => rowFromPoint(point, FIXTURE_DAY));
   const env = {
     USAGE_ANALYTICS: analyticsBinding(points),
     ANALYTICS_ACCOUNT_ID: "test-account",
     ANALYTICS_READ_TOKEN: "test-token",
     ANALYTICS_DATASET: "crol_usage_events_v1",
-    ANALYTICS_MEASURED_SINCE: fixtureDay,
+    ANALYTICS_MEASURED_SINCE: FIXTURE_DAY,
     ALERT_STATE: fakeKV(),
     NL_METER: fakeKV(),
     SUBS: fakeKV(),
@@ -179,6 +179,7 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
         assert.equal(init.headers["Content-Type"], "text/plain");
         return Response.json({ data: rows });
       },
+      now: FIXTURE_NOW,
     },
   );
   const body = await response.json();

@@ -48,9 +48,9 @@ async function readCatchUpReceipt(env) {
 
 // Count subscriptions whose delivery watermark (lastsent) lags behind today by >= threshold
 // days. No PII — a count only. Best-effort: a partial scan beats a 500.
-async function countLaggingSubs(env, thresholdDays = 2) {
+async function countLaggingSubs(env, thresholdDays = 2, now = new Date()) {
   if (!env?.SUBS || !env?.ALERT_STATE) return 0;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date(now).toISOString().slice(0, 10);
   const todayMs = new Date(today + "T00:00:00Z").getTime();
   let n = 0, cursor;
   try {
@@ -132,7 +132,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     if (hit) return hit;
   }
 
-  const now = new Date();
+  const now = options.now == null ? new Date() : new Date(options.now);
   const today = dayStr(now);
 
   const [
@@ -178,7 +178,7 @@ export async function handleStats(req, env, ctx, options = {}) {
       sumStat(env.ALERT_STATE, "digest_catchup", 1, now),
       readStatAllTime(env.ALERT_STATE, "digest_catchup"),
       readCatchUpReceipt(env),
-      countLaggingSubs(env, 2),
+      countLaggingSubs(env, 2, now),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
