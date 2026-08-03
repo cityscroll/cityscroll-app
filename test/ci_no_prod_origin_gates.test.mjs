@@ -1,0 +1,100 @@
+// Guard: PR / merge-group gate jobs must not sample live production.
+// Live production demo-link and hosting checks belong to scheduled monitors
+// (cutover-regression), not required merge checks.
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+
+/** Production site origins that must not appear as gate fetch targets in ci.yml. */
+const PROD_SITE_ORIGINS = [
+  "https://cityscroll.org",
+  "https://www.cityscroll.org",
+  "https://cityscroll.pages.dev",
+];
+
+/**
+ * Extract a top-level job body from a GitHub Actions workflow YAML.
+ * Jobs are indented with two spaces; steps and nested keys use more.
+ */
+function extractJob(workflow, jobId) {
+  const re = new RegExp(`\\n  ${jobId}:\\n([\\s\\S]*?)(?=\\n  [a-zA-Z0-9_-]+:|$)`);
+  const m = workflow.match(re);
+  return m ? m[1] : null;
+}
+
+test("ci.yml PR-gate jobs never set CROL_BASE to a production origin", () => {
+  const ci = read(".github/workflows/ci.yml");
+  // Required merge checks + the jobs they compose (see tools/merge_queue_policy.json).
+  const gateJobs = ["unit", "a11y-pr", "reading-level", "performance", "functional"];
+  for (const jobId of gateJobs) {
+    const body = extractJob(ci, jobId);
+    assert.ok(body, `expected job ${jobId} in ci.yml`);
+    for (const origin of PROD_SITE_ORIGINS) {
+      // CROL_BASE: https://cityscroll.org/  (or bare host)
+      const crolBase = new RegExp(
+        String.raw`CROL_BASE:\s*${origin.replace(/\./g, "\\.")}`,
+      );
+      assert.doesNotMatch(
+        body,
+        crolBase,
+        `${jobId} must not set CROL_BASE to ${origin} (use local server or PR preview)`,
+      );
+    }
+    // Hard-fail the old step title if someone reintroduces it.
+    assert.doesNotMatch(
+      body,
+      /Public demo-link contract on cityscroll\.org/,
+      `${jobId} must not reintroduce a production demo-link gate step`,
+    );
+  }
+});
+
+test("a11y-pr demo-link contract uses the local site server only", () => {
+  const ci = read(".github/workflows/ci.yml");
+  const a11y = extractJob(ci, "a11y-pr");
+  assert.ok(a11y, "expected a11y-pr job");
+  assert.match(a11y, /CROL_BASE:\s*http:\/\/127\.0\.0\.1:8000\//);
+  assert.match(a11y, /python3 test\/functional\/20_demo_links\.py/);
+  // Exactly one demo-links.py invocation in a11y-pr (local only).
+  const runs = a11y.match(/python3 test\/functional\/20_demo_links\.py/g) || [];
+  assert.equal(runs.length, 1, "a11y-pr should run demo-links once against local origin");
+});
+
+test("scheduled cutover-regression owns live production demo-link monitoring", () => {
+  const workflow = read(".github/workflows/cutover-regression.yml");
+  assert.match(workflow, /schedule:/);
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /pull_request:|merge_group:|push:/);
+  assert.match(workflow, /CROL_BASE:\s*https:\/\/cityscroll\.org\//);
+  assert.match(workflow, /Full public demo-link contract on production/);
+  assert.match(workflow, /python3 test\/functional\/20_demo_links\.py/);
+  // Full suite has no ID filter on the primary step (targeted attachment step may filter).
+  const fullStep = workflow.slice(
+    workflow.indexOf("Full public demo-link contract on production"),
+  );
+  const fullEnv = fullStep.slice(0, fullStep.indexOf("run:"));
+  assert.doesNotMatch(fullEnv, /CROL_DEMO_LINK_IDS/);
+});
+
+test("Cloudflare Pages PR path smokes the preview deploy, not production site", () => {
+  const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  assert.match(workflow, /pull_request:/);
+  // Numbered preview branch is resolved in bash, then passed to wrangler.
+  assert.match(workflow, /branch="pr-\$\{\{\s*github\.event\.pull_request\.number\s*\}\}"/);
+  assert.match(workflow, /--branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
+  assert.match(workflow, /is_preview/);
+  assert.match(workflow, /deployment_url|deployment-url/);
+  // Production route parity must be gated off for previews.
+  assert.match(
+    workflow,
+    /Route inventory parity[\s\S]*?if:\s*needs\.deploy\.outputs\.is_preview\s*!=\s*'true'/,
+  );
+  // Smoke + demo-link consume the resolved deploy origin, not a hardcoded prod host alone.
+  const smoke = workflow.slice(workflow.indexOf("smoke:"));
+  assert.match(smoke, /steps\.origin\.outputs\.base_url|steps\.origin\.outputs\.base_host/);
+  assert.match(smoke, /CROL_BASE:\s*\$\{\{\s*steps\.origin\.outputs\.base_url\s*\}\}/);
+  // Hardcoded production demo-link base must not appear in the smoke job.
+  assert.doesNotMatch(smoke, /CROL_BASE:\s*https:\/\/cityscroll\.org\//);
+});

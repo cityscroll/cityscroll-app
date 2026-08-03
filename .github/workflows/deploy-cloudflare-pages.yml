@@ -1,5 +1,9 @@
 # Deploys the verified static site to the public Cloudflare Pages origin.
 # GitHub Pages remains deployed as the fallback origin.
+#
+# Pull requests deploy a numbered preview branch and smoke that preview only.
+# Production alias + cityscroll.org parity run on main (and manual dispatch),
+# never as a PR gate against live production.
 name: Deploy Cloudflare Pages
 
 on:
@@ -12,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: cloudflare-pages
+  group: cloudflare-pages-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -22,10 +26,35 @@ jobs:
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment-url }}
+      pages_alias: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+      is_preview: ${{ steps.branch.outputs.is_preview }}
+      smoke_base: ${{ steps.branch.outputs.smoke_base }}
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Resolve deploy branch and smoke base
+        id: branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            branch="pr-${{ github.event.pull_request.number }}"
+            is_preview=true
+            # Immutable deployment URL is filled after deploy; alias is stable per PR.
+            smoke_base="https://pr-${{ github.event.pull_request.number }}.cityscroll.pages.dev/"
+          else
+            branch="main"
+            is_preview=false
+            smoke_base="https://cityscroll.pages.dev/"
+          fi
+          {
+            echo "branch=${branch}"
+            echo "is_preview=${is_preview}"
+            echo "smoke_base=${smoke_base}"
+          } >> "$GITHUB_OUTPUT"
       - name: Ensure stable Pages project
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -43,24 +72,37 @@ jobs:
           command: >-
             pages deploy _site
             --project-name=cityscroll
-            --branch=main
+            --branch=${{ steps.branch.outputs.branch }}
             --commit-hash=${{ github.sha }}
             --commit-message="Static site deploy"
             --commit-dirty=false
       - name: Publish deployment receipt
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          PAGES_ALIAS: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+          SMOKE_BASE: ${{ steps.branch.outputs.smoke_base }}
+          IS_PREVIEW: ${{ steps.branch.outputs.is_preview }}
           PAGES_URL: https://cityscroll.pages.dev
         shell: bash
         run: |
           {
-            echo "## Cloudflare Pages (public origin)"
+            echo "## Cloudflare Pages"
             echo
-            echo "Production alias: [$PAGES_URL]($PAGES_URL)"
+            if [ "$IS_PREVIEW" = "true" ]; then
+              echo "Pull-request preview (not production)."
+              echo
+              echo "Stable preview alias: [$SMOKE_BASE]($SMOKE_BASE)"
+              if [ -n "${PAGES_ALIAS:-}" ]; then
+                echo
+                echo "Wrangler alias: [$PAGES_ALIAS]($PAGES_ALIAS)"
+              fi
+            else
+              echo "Production alias: [$PAGES_URL]($PAGES_URL)"
+              echo
+              echo "cityscroll.org and www.cityscroll.org use this Pages project. GitHub Pages remains deployed as the fallback origin."
+            fi
             echo
             echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
-            echo
-            echo "cityscroll.org and www.cityscroll.org use this Pages project. GitHub Pages remains deployed as the fallback origin."
           } >> "$GITHUB_STEP_SUMMARY"
 
   smoke:
@@ -76,13 +118,35 @@ jobs:
         with:
           node-version: 20
       - uses: ./.github/actions/setup-playwright
-      - name: Smoke cityscroll.pages.dev
+      - name: Resolve smoke origin (preview deploy or production alias)
+        id: origin
+        env:
+          DEPLOYMENT_URL: ${{ needs.deploy.outputs.deployment_url }}
+          SMOKE_BASE: ${{ needs.deploy.outputs.smoke_base }}
+          IS_PREVIEW: ${{ needs.deploy.outputs.is_preview }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Prefer the immutable deployment URL when present (exact bytes just uploaded).
+          if [ -n "${DEPLOYMENT_URL:-}" ]; then
+            base="${DEPLOYMENT_URL%/}"
+          else
+            base="${SMOKE_BASE%/}"
+          fi
+          {
+            echo "base_url=${base}/"
+            echo "base_host=${base}"
+            echo "is_preview=${IS_PREVIEW}"
+          } >> "$GITHUB_OUTPUT"
+          echo "Smoke origin: ${base}/ (preview=${IS_PREVIEW})"
+      - name: Smoke deploy target
         run: >-
           node tools/live_url_smoke.mjs
-          --base-url https://cityscroll.pages.dev
+          --base-url ${{ steps.origin.outputs.base_host }}
           --timeout-ms 720000
           --interval-ms 20000
-      - name: Route inventory parity vs live site
+      - name: Route inventory parity vs live site (production only)
+        if: needs.deploy.outputs.is_preview != 'true'
         run: >-
           node tools/pages_route_parity.mjs
           --reference https://cityscroll.org
@@ -90,13 +154,13 @@ jobs:
           --timeout-ms 720000
           --interval-ms 20000
           --out docs/evidence/cloudflare-pages-route-parity.md
-      - name: Render the live civil-service exam guide
+      - name: Render demo-link contract on deploy target
         env:
-          CROL_BASE: https://cityscroll.pages.dev/
+          CROL_BASE: ${{ steps.origin.outputs.base_url }}
           CROL_DEMO_LINK_IDS: exam-guide
         run: python3 test/functional/20_demo_links.py
       - name: Upload parity report
-        if: always()
+        if: always() && needs.deploy.outputs.is_preview != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: cloudflare-pages-route-parity

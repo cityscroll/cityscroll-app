@@ -12,7 +12,8 @@ test("Cloudflare Pages serves publicly while GitHub Pages remains deployed as fa
   assert.match(gh, /actions\/deploy-pages@v4/);
   assert.match(cf, /pages deploy _site/);
   assert.match(cf, /--project-name=cityscroll/);
-  assert.match(cf, /--branch=main/);
+  // Production branch is main; pull requests use a numbered preview branch.
+  assert.match(cf, /branch=main|branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
   assert.doesNotMatch(cf, /deploy-pages@v4/);
   assert.doesNotMatch(cf, /cloudflare_pages.*replace|disable.*github pages/i);
 });
@@ -29,7 +30,7 @@ test("Cloudflare Pages workflow preserves custom-domain configuration", () => {
   assert.doesNotMatch(workflow, /ensure_stable_pages\.mjs domain/);
   assert.doesNotMatch(workflow, /--domain=/);
   assert.doesNotMatch(workflow, /pages domain add/i);
-  // Deploys may reference cityscroll.org for parity checks; custom-domain
+  // Production path may reference cityscroll.org for parity; custom-domain
   // attachment remains an explicit hosting configuration action.
   assert.doesNotMatch(workflow, /pages domains? (add|create)/i);
   assert.doesNotMatch(workflow, /Custom domains/i);
@@ -38,26 +39,35 @@ test("Cloudflare Pages workflow preserves custom-domain configuration", () => {
 test("Pages hostname smoke and public route parity run after deploy", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /live_url_smoke\.mjs/);
-  assert.match(workflow, /--base-url https:\/\/cityscroll\.pages\.dev/);
   assert.match(workflow, /pages_route_parity\.mjs/);
   assert.match(workflow, /--timeout-ms 720000/);
   assert.match(workflow, /needs:\s*deploy/);
+  // Production alias smoke is via resolved origin; base-url is not a fixed host string.
+  assert.match(workflow, /--base-url \$\{\{\s*steps\.origin\.outputs\.base_host\s*\}\}/);
   const smokeBlock = workflow.slice(workflow.indexOf("live_url_smoke"));
   assert.doesNotMatch(
     smokeBlock.slice(0, 500),
     /continue-on-error:\s*true/,
     "smoke must not soft-pass failures",
   );
+  // Route parity against live production is production-only (not PR previews).
+  assert.match(
+    workflow,
+    /Route inventory parity[\s\S]*?if:\s*needs\.deploy\.outputs\.is_preview\s*!=\s*'true'/,
+  );
 });
 
-test("post-deploy smoke renders real civil-service exam rows", () => {
+test("post-deploy smoke renders real civil-service exam rows on the deploy target", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   const smoke = workflow.slice(workflow.indexOf("smoke:"));
   assert.match(smoke, /uses: \.\/\.github\/actions\/setup-playwright/);
-  assert.match(smoke, /CROL_BASE: https:\/\/cityscroll\.pages\.dev\//);
+  assert.match(smoke, /CROL_BASE:\s*\$\{\{\s*steps\.origin\.outputs\.base_url\s*\}\}/);
   assert.match(smoke, /CROL_DEMO_LINK_IDS: exam-guide/);
   assert.match(smoke, /python3 test\/functional\/20_demo_links\.py/);
   assert.doesNotMatch(smoke, /continue-on-error:\s*true/);
+  // Must not hardcode production or the stable pages.dev alias as CROL_BASE.
+  assert.doesNotMatch(smoke, /CROL_BASE:\s*https:\/\/cityscroll\.org\//);
+  assert.doesNotMatch(smoke, /CROL_BASE:\s*https:\/\/cityscroll\.pages\.dev\//);
 });
 
 test("deploy uses the shared verified build action", () => {
@@ -70,4 +80,7 @@ test("same-repository pull requests may deploy the Pages host for validation", (
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /pull_request:/);
   assert.match(workflow, /head\.repo\.full_name == github\.repository/);
+  assert.match(workflow, /branch="pr-\$\{\{\s*github\.event\.pull_request\.number\s*\}\}"/);
+  assert.match(workflow, /--branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
+  assert.match(workflow, /is_preview/);
 });
