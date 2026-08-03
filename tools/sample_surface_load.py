@@ -41,7 +41,7 @@ def load_fixture() -> dict[str, Any]:
 
 def select_definitions(inventory: dict[str, Any], only: str | None) -> list[dict[str, Any]]:
     definitions = inventory.get("definitions", [])
-    selected = [item for item in definitions if not only or item.get("id") == only]
+    selected = list(item for item in definitions if not only or item.get("id") == only)
     if only and not selected:
         raise SystemExit(f"unknown surface id: {only}")
     return selected
@@ -66,7 +66,7 @@ def sample_live(source: dict[str, Any], base: str, only: str | None) -> dict[str
     definitions = select_definitions(source, only)
     viewport = source.get("viewport") or {"width": 1440, "height": 900}
     base_url = base.rstrip("/") + "/"
-    surfaces: list[dict[str, Any]] = []
+    surfaces: list[dict[str, Any]] = list()
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -158,7 +158,7 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
             .filter(text => (text.match(/[\p{L}\p{N}][\p{L}\p{N}'’.-]*/gu) || []).length >= 6);
           const repeats = new Map();
           for (const text of candidates) repeats.set(text, (repeats.get(text) || 0) + 1);
-          const duplicateRows = [...repeats.entries()]
+          const duplicateRows = Array.from(repeats.entries())
             .filter(([, count]) => count > 1)
             .map(([text, count]) => ({ text, count }))
             .sort((a, b) => b.count - a.count || a.text.localeCompare(b.text));
@@ -185,7 +185,7 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
 
 
 def breach_rows(inventory: dict[str, Any]) -> list[str]:
-    rows: list[str] = []
+    rows: list[str] = list()
     for surface in inventory.get("surfaces", []):
         if surface.get("status") != "ok":
             rows.append(f"{surface.get('id')}: incomplete sample")
