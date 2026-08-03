@@ -4,7 +4,7 @@
     "name": "Civil Service List (Active)",
     "dataset_id": "vx8i-nprf",
     "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-    "fetched_at": "2026-08-01",
+    "fetched_at": "2026-08-03",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "privacy": "Only aggregate counts are retained; candidate records and names are not copied."

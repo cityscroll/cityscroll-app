@@ -1082,14 +1082,20 @@ strict **BBL** or **borough + block/lot** (never bare block alone); same
 `agency_name` required. Materialized on `/property-locations` as
 `disposition_spines` + per-row `disposition_stage` / `disposition_subject_ref`
 via `attachDispositionSpines` in `buildPropertyView`. Notice detail mounts
-`propertyDispositionSpineHTML` / `loadPropertyDispositionSpine` (`#ndisposition`).
+`propertyDispositionSpineHTML` / `loadPropertyDispositionSpine` (`#ndisposition`)
+with phase presentation from `site/property_phase_spine.mjs` (aggregate
+verbatim-repeated titles + dedupe source URLs per phase).
 
-**Not the list filter rail:** `propStage` / `PROP_STAGES` remain temporal
-feed filters (proposed / soon / upcoming / past) — do not re-label those chips
+**Property domain explorer (list):** pure `site/property_explorer.mjs` groups
+multi-notice disposition subjects into one list entry, filters by process stage
+(`#processrail`), and stamps next-action keys + BBL entity links (ZoLa when a
+10-digit BBL exists; honest “no tax-lot BBL” when not). Temporal
+`propStage` / `PROP_STAGES` remain a secondary When rail — do not re-label them
 as process stages. Empty spine stages use class-(a) `not_yet_ingested` naming
 City Record Online; never invent auction/award events. Metric:
 `property_disposition_spine_completeness_rate`. Verify:
-`node --test test/property_disposition_spine.test.mjs worker/test/property.test.mjs`.
+`node --test test/property_disposition_spine.test.mjs test/property_phase_spine.test.mjs
+test/property_explorer.test.mjs worker/test/property.test.mjs`.
 
 
 ## Franchise / concession review spine (FCRC)

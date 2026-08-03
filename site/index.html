@@ -563,6 +563,15 @@
   .disposition-phase-stepper .lc-step.todo{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
   .franchise-phase-stepper .lc-step.done,
   .disposition-phase-stepper .lc-step.done{border-color:#9bb39a;background:#f0f4ef;color:var(--muted)}
+  .property-domain-intro{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+  .property-domain-heading{font:800 22px/1.15 var(--font-display);margin:0 0 8px}
+  .property-domain-deck{font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:820px;margin:0 0 12px}
+  .property-domain-stepper{margin:0 0 4px}
+  .property-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+  .property-fcard .property-process-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 6px}
+  .property-fcard .property-action-lead{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);margin:0 0 6px}
+  .property-fcard .property-mini-stepper{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px;padding:0;list-style:none}
+  .property-fcard .property-mini-stepper .lc-step{font-size:11px;padding:2px 7px}
   .subsidy-phase-not-yet{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 10px;padding:8px 12px;border:1px dashed var(--rule);border-radius:8px;background:var(--paper-2,#f7f1e4)}
   .box.matched{border-top-color:var(--green)}
   .box.matched .stage-name{color:var(--green)}
@@ -1378,6 +1387,16 @@
 <!-- ============ PROPERTY / RULES / MEETINGS (feed lenses) ============ -->
 <section id="tab-property" class="tabpane">
   <div class="wrap">
+    <div class="property-domain-intro" id="property-domain-intro">
+      <p class="career-kicker" data-i18n="property_domain_kicker">City property disposition</p>
+      <h2 class="property-domain-heading" data-i18n="property_domain_heading">Hearings, sales, and awards</h2>
+      <p class="property-domain-deck" data-i18n="property_domain_deck">City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot.</p>
+      <ol class="lc-stepper disposition-phase-stepper property-domain-stepper" data-i18n-aria="property_process_stepper_aria" aria-label="Disposition process stages">
+        <li><span class="lc-step done" data-i18n="disposition_stage_hearing">Hearing</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
+        <li><span class="lc-step current" data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
+        <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
+      </ol>
+    </div>
     <div class="controls">
       <div class="field"><label for="propertyboro" data-i18n="borough_label">Borough</label><select id="propertyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
       <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
@@ -1387,7 +1406,10 @@
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="chiprow" id="assettabs"></div>
-    <div class="chiprow" id="liferail" style="margin-top:8px"></div>
+    <div class="property-rail-label" data-i18n="property_process_rail_label">Disposition stage</div>
+    <div class="chiprow" id="processrail" role="group" aria-label="Disposition stage"></div>
+    <div class="property-rail-label" data-i18n="property_temporal_rail_label">When</div>
+    <div class="chiprow" id="liferail" style="margin-top:4px" role="group" aria-label="When"></div>
     <div class="exportbar">
       <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
       <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -3713,6 +3735,7 @@ function searchFilterFromHash(lens, hash){
   }
   if(lens==="property"){
     filter.asset=q.get("asset")||"all";
+    filter.process=q.get("process")||"all";
     filter.stage=q.get("stage")||"all";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
@@ -3750,6 +3773,7 @@ function searchFilterChips(lens, filter){
     if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
     if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
     if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
+    if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("property_process_label")} <b>${t(([["hearing","disposition_stage_hearing"],["auction_or_rfp","disposition_stage_auction_or_rfp"],["award_or_conveyance","disposition_stage_award_or_conveyance"],["unstaged","disposition_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
     if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
   }
   return chips;
@@ -3789,7 +3813,7 @@ function bindClearSearchState(lens, root){
     $("#"+lens+"kw").value="";
     const when=$("#"+lens+"when"); if(when) when.value="upcoming";
     if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; }
-    if(lens==="property"){ propAsset="all"; propStageSel="all"; $("#propertyboro").value=""; $("#propertyneighborhood").value=""; }
+    if(lens==="property"){ propAsset="all"; propStageSel="all"; propProcessSel="all"; $("#propertyboro").value=""; $("#propertyneighborhood").value=""; }
     $("#nltrans-"+lens).innerHTML="";
     loadSection(lens);
   });
@@ -4049,7 +4073,7 @@ function exportSpec(lens){
     ["Request ID",r=>r.request_id],["Permalink",r=>noticeLink(r.request_id)],
     ["City Record URL",r=>REQ_URL(r.request_id)]
   ];
-  if(lens==="property") columns.splice(3,0,[t("csv_asset_type"),r=>r._asset||""],["Lifecycle",r=>r._stage||""]);
+  if(lens==="property") columns.splice(3,0,[t("csv_asset_type"),r=>r._asset||""],[t("property_process_label"),r=>r.disposition_stage||""],["Lifecycle",r=>r._stage||""]);
   return {rows,columns};
 }
 function exportLensCsv(lens){
@@ -5855,6 +5879,9 @@ async function loadSection(key){
         const response=await workerFetch("/property-locations",{},12000);
         if(response.ok){
           const payload=await response.json();
+          if(Array.isArray(payload.disposition_spines)){
+            propSpines=payload.disposition_spines;
+          }
           if(Array.isArray(payload.properties)){
             rows=payload.properties.filter(row=>(!ag||row.agency_name===ag)
               && (!kw||matchText(row).toLowerCase().includes(kw.toLowerCase())));
@@ -7043,16 +7070,25 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
       const more=p.notice_count>1
         ?` · ${t("disposition_stage_notice_count",{n:String(p.notice_count)})}`
         :"";
+      // Aggregate verbatim-repeated titles under one line when multiple notices share wording.
+      const aggNote=(Array.isArray(p.aggregates) && p.aggregates.length===1 && p.aggregates[0].count>1)
+        ?` · ${t("disposition_stage_notice_count",{n:String(p.aggregates[0].count)})}`
+        :"";
       const noticeLink=p.primary?.request_id
-        ?`<div class="lc-pct"><a href="#notice/${escUiHtml(p.primary.request_id)}">${escUiHtml(p.primary.request_id)}</a>${more}</div>`
-        :(more?`<div class="lc-pct">${more}</div>`:"");
+        ?`<div class="lc-pct"><a href="#notice/${escUiHtml(p.primary.request_id)}">${escUiHtml(p.primary.request_id)}</a>${more||aggNote}</div>`
+        :((more||aggNote)?`<div class="lc-pct">${more||aggNote}</div>`:"");
+      // One outbound source family per phase (deduped).
+      const sourceLink=p.source_url
+        ?`<div class="lc-pct"><a href="${escUiHtml(p.source_url)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a></div>`
+        :"";
       return `<div class="stage"><div class="box matched">
         <div class="stage-name">${dispositionStageLabel(p.id)}</div>
         <div class="when">${escUiHtml(when)}</div>
         ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
         ${noticeLink}
+        ${sourceLink}
       </div></div>`;
-    }).join('<div class="connector">→</div>');
+    }).join('<div class="connector" aria-hidden="true">→</div>');
     return `<div class="chain-h">${t("disposition_spine_heading")}</div>
       <div class="note">${keyNote}</div>
       ${actionLead}
@@ -7274,11 +7310,12 @@ async function loadPropertyCrossDomain(r, el){
     <div class="note">${t("property_xd_provenance_html")}</div>`;
 }
 
-/* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
-   Asset type is derived from the notice text (no category column exists — 98% coverage on the
-   validation set); dollar figures are shown only as LABELED badges, never a filter (§2b).
-   The rail below is a LIST FILTER (proposed/soon/upcoming/past), not the multi-notice
-   disposition process spine mounted on notice detail. ===== */
+/* ===== Property explorer: asset-type tabs + process-stage rail + temporal When rail.
+   Process stages (hearing → auction_or_rfp → award_or_conveyance) are the ops ontology;
+   multi-notice disposition subjects collapse to one list entry (site/property_explorer.mjs).
+   PROP_STAGES remain temporal list filters (proposed/soon/upcoming/past), not process stages.
+   Asset type is derived from the notice text (no category column); dollar figures are
+   labeled badges only, never a filter. ===== */
 // Values are i18n keys — render with t() so the explorer chrome follows the active language.
 const ASSET_BUCKETS=[["realty","asset_realty"],["forest","asset_forest"],["vehequip","asset_vehequip"],["medallion","asset_medallion"],["seized","asset_seized"],["other","asset_other"]];
 const ASSET_LABEL=Object.fromEntries(ASSET_BUCKETS);
@@ -7312,27 +7349,159 @@ function dollarBadge(r){
   if(/(?:sold for|consideration of)\s+(?:one dollar|\$\s?1(?:\.00)?\b)/i.test(txt)) return t("badge_nominal");
   return null;
 }
-let propAll=[], propAsset="all", propStageSel="all";
-function renderPropExplorer(){
+let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
+let propertyExplorerToolsPromise=null;
+function propertyExplorerTools(){
+  if(!propertyExplorerToolsPromise){
+    propertyExplorerToolsPromise=import("./property_explorer.mjs").catch(()=>null);
+  }
+  return propertyExplorerToolsPromise;
+}
+function propertyExplorerCardHTML(entry, terms, parcelLinks){
+  const r=entry.primary;
+  if(!r) return "";
+  const ev=r.event_date;
+  const propertyAddress=r._location?.addresses?.[0]?.label;
+  const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
+  const scopeHtml=excerptHtml(r.additional_description_1,200);
+  const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
+  const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
+  const processStage=entry.process_stage;
+  const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
+  const actionKey=entry.action_key||"property_action_open_notice";
+  const actionLead=`<p class="property-action-lead">${escUiHtml(t(actionKey))}</p>`;
+  // Mini process stepper: matched phases done/current, unmatched todo (honest empties).
+  const phases=["hearing","auction_or_rfp","award_or_conveyance"];
+  const matched=new Set(entry.matched_phases||(processStage?[processStage]:[]));
+  const miniStepper=`<ol class="property-mini-stepper disposition-phase-stepper" aria-label="${escUiHtml(t("property_process_stepper_aria"))}">${
+    phases.map((id,i)=>{
+      const isCurrent=processStage===id;
+      const cls=matched.has(id)?(isCurrent?"current":"done"):"todo";
+      const aria=isCurrent?` aria-current="step"`:"";
+      const arrow=i<phases.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
+      return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(dispositionStageLabel(id))}">${escUiHtml(dispositionStageLabel(id))}</span>${arrow}</li>`;
+    }).join("")
+  }</ol>`;
+  const processLine=`<div class="property-process-line">
+    <span class="tag open">${escUiHtml(processLabel)}</span>
+    ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
+    ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:`<span class="tag place">${escUiHtml(t("property_list_no_bbl"))}</span>`}
+  </div>`;
+  // Next-action first (process lead), then open notice, then parcel entity links when BBL known.
+  let acts=`<a class="act primary" href="${noticeHref}">${t(actionKey)}</a>`;
+  acts+=`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
+  acts+=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
+  if(entry.bbl && parcelLinks){
+    const links=parcelLinks(entry.bbl);
+    if(links?.zola_url) acts+=`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`;
+  }
+  acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
+  if(ev) acts+=`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
+  const geometry=r._location?.geometry;
+  const taxLot=r._location?.tax_lots?.[0];
+  const blockLotQuery=geometry?"":(taxLot&&r._location?.boroughs?.length?`${taxLot.label}, ${r._location.boroughs[0]}, New York NY`:"");
+  const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
+  if(mapQuery) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
+  if(addr) acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
+  const pbadges = (r._asset || r._badge)
+    ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
+  return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
+      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
+      ${pbadges}
+      ${processLine}
+      ${miniStepper}
+      ${actionLead}
+      <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
+      ${propertyPlaceChips(r._location)}
+      ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
+      ${digEvidenceHTML(mev)}
+      <div class="factions">${acts}</div>
+    </div>`;
+}
+async function renderPropExplorer(){
   propAll.forEach(r=>{ if(!r._asset){ r._asset=classifyAsset(r); r._stage=propStage(r); r._badge=dollarBadge(r); } });
   const ac={all:propAll.length}, sc={all:propAll.length};
   propAll.forEach(r=>{ ac[r._asset]=(ac[r._asset]||0)+1; sc[r._stage]=(sc[r._stage]||0)+1; });
-  $("#assettabs").innerHTML=[["all","all_types"],...ASSET_BUCKETS].map(([k,l])=>
-    `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
-  $("#liferail").innerHTML=PROP_STAGES.map(([k,l])=>
-    `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${t(l)}<span class="ct">${sc[k]||0}</span></button>`).join("");
-  $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  const borough=$("#propertyboro").value, neighborhood=$("#propertyneighborhood").value.trim();
-  const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset)
-    && (propStageSel==="all"||r._stage===propStageSel)
-    && (!borough||(r._location?.boroughs||[]).includes(borough))
-    && (!neighborhood||[
-      ...(r._location?.neighborhoods||[]),
-      ...(r._location?.addresses||[]).map(address=>address.label),
-    ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())));
-  announce(t("property_notices_announce",{n:subset.length}));
-  renderFeed("property", subset);
+  const assetEl=$("#assettabs");
+  if(assetEl){
+    assetEl.innerHTML=[["all","all_types"],...ASSET_BUCKETS].map(([k,l])=>
+      `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
+    assetEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+  }
+  const lifeEl=$("#liferail");
+  if(lifeEl){
+    lifeEl.innerHTML=PROP_STAGES.map(([k,l])=>
+      `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${t(l)}<span class="ct">${sc[k]||0}</span></button>`).join("");
+    lifeEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+  }
+
+  const tools=await propertyExplorerTools();
+  const processRail=$("#processrail");
+  const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
+  let entries=[];
+  if(tools && tools.buildPropertyExplorerEntries){
+    entries=tools.buildPropertyExplorerEntries(propAll, propSpines);
+    entries=tools.filterPropertyExplorerEntries(entries,{
+      process: propProcessSel,
+      asset: propAsset,
+      temporal: propStageSel,
+      temporalOf: propStage,
+      assetOf: (r)=>r._asset||classifyAsset(r),
+      borough: borough||null,
+      neighborhood: neighborhood||null,
+    });
+    const pc=tools.countPropertyProcessStages(tools.buildPropertyExplorerEntries(propAll, propSpines));
+    if(processRail){
+      const stages=tools.PROP_PROCESS_STAGES||[["all","stage_all"]];
+      processRail.innerHTML=stages.map(([k,l])=>
+        `<button type="button" class="chip ${propProcessSel===k?'on':''}" data-p="${k}">${t(l)}<span class="ct">${pc[k]||0}</span></button>`
+      ).join("");
+      processRail.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propProcessSel=b.dataset.p; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+    }
+  } else {
+    // Fallback: flat notice list if the explorer module fails to load.
+    if(processRail) processRail.innerHTML="";
+    entries=propAll
+      .filter(r=>(propAsset==="all"||r._asset===propAsset)
+        && (propStageSel==="all"||r._stage===propStageSel)
+        && (!borough||(r._location?.boroughs||[]).includes(borough))
+        && (!neighborhood||[
+          ...(r._location?.neighborhoods||[]),
+          ...(r._location?.addresses||[]).map(address=>address.label),
+        ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())))
+      .map(r=>({
+        kind:"notice",
+        primary:r,
+        members:[r],
+        notice_count:1,
+        process_stage:r.disposition_stage||null,
+        process_filter:r.disposition_stage||"unstaged",
+        action_key:"property_action_open_notice",
+        bbl:null,
+        matched_phases:r.disposition_stage?[r.disposition_stage]:[],
+      }));
+  }
+
+  announce(t("property_entries_announce",{n:entries.length}));
+  const feedEl=$("#propertyfeed");
+  if(!feedEl) return;
+  const kwEl=$("#propertykw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
+  // Export/print still want notice rows (primaries of visible entries).
+  const visibleRows=entries.map(e=>e.primary).filter(Boolean);
+  feedVisible.property=visibleRows;
+  if(!entries.length){
+    feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
+    return;
+  }
+  let parcelLinks=null;
+  try{
+    const locTools=await propertyLocationTools();
+    parcelLinks=locTools.parcelLinksFromBbl;
+  }catch(_e){}
+  feedEl.innerHTML=entries.map(e=>propertyExplorerCardHTML(e, terms, parcelLinks)).join("");
+  feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
+  feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
+  feedEl.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));
 }
 
 function propertyPlaceChips(location){
@@ -12610,6 +12779,7 @@ function serializeState(){
       if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propAsset !== "all") q.set("asset", propAsset);
+      if(propProcessSel !== "all") q.set("process", propProcessSel);
       if(propStageSel !== "all") q.set("stage", propStageSel);
     }
   }
@@ -13219,6 +13389,7 @@ function applyHash(){
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
         propAsset = q.get("asset") || "all";
+        propProcessSel = q.get("process") || "all";
         propStageSel = q.get("stage") || "all";
       }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
