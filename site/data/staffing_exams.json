@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "generated_at": "2026-08-03",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
@@ -84,6 +84,31 @@
       "freshness_required": false
     },
     {
+      "id": "dcas-noe-differentiators",
+      "name": "OASys NOE differentiators densify",
+      "role": "Structured filter facets and card leads from OASys GetActiveExams + NOE HTML body parse. Open Data has no NOE body dataset.",
+      "oasys_api": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+      "open_data_checked": [
+        {
+          "id": "4ptz-hmtc",
+          "name": "Annual Examination Schedule",
+          "noe_body": false
+        },
+        {
+          "id": "vx8i-nprf",
+          "name": "Civil Service List (Active)",
+          "noe_body": false
+        }
+      ],
+      "interface_choice": "bulk Open Data (schedule/list only) < OASys GetActiveExams JSON < polite NOE HTML parse",
+      "fetched_at": "2026-08-03",
+      "verified_at": "2026-08-03",
+      "stale_after_days": 45,
+      "freshness_required": false,
+      "mode": "live_noe_html",
+      "min_request_interval_ms": 1200
+    },
+    {
       "id": "oasys-active-exams",
       "name": "OASys active exams (GetActiveExams)",
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
@@ -135,6 +160,83 @@
       "map_records": 9,
       "exams_deep_linked": 9,
       "exams_landing": 219
+    },
+    "noe_differentiators": {
+      "densify_records": 9,
+      "densify_applied": 9,
+      "exams_with_format": 9,
+      "corpus": {
+        "field_stats": {
+          "exam_format": {
+            "present": 9,
+            "distinct_values": 2,
+            "top_value": "education_experience",
+            "top_share": 0.667,
+            "is_boilerplate": true
+          },
+          "fee_level": {
+            "present": 9,
+            "distinct_values": 4,
+            "top_value": "mid",
+            "top_share": 0.444,
+            "is_boilerplate": false
+          },
+          "salary_band": {
+            "present": 9,
+            "distinct_values": 3,
+            "top_value": "under_45k",
+            "top_share": 0.444,
+            "is_boilerplate": false
+          },
+          "no_experience_required": {
+            "present": 6,
+            "distinct_values": 2,
+            "top_value": "true",
+            "top_share": 0.667,
+            "is_boilerplate": true
+          },
+          "residency_required": {
+            "present": 5,
+            "distinct_values": 2,
+            "top_value": "false",
+            "top_share": 0.8,
+            "is_boilerplate": true
+          },
+          "fee_waiver_is_boilerplate": {
+            "present": 9,
+            "distinct_values": 1,
+            "top_value": "false",
+            "top_share": 1,
+            "is_boilerplate": true
+          },
+          "has_selective_certification": {
+            "present": 9,
+            "distinct_values": 2,
+            "top_value": "true",
+            "top_share": 0.778,
+            "is_boilerplate": true
+          },
+          "education_level": {
+            "present": 6,
+            "distinct_values": 2,
+            "top_value": "bachelors",
+            "top_share": 0.5,
+            "is_boilerplate": false
+          }
+        },
+        "boilerplate_fields": [
+          "exam_format",
+          "no_experience_required",
+          "residency_required",
+          "fee_waiver_is_boilerplate",
+          "has_selective_certification"
+        ],
+        "distinctive_fields": [
+          "fee_level",
+          "salary_band",
+          "education_level"
+        ]
+      }
     }
   },
   "outcomes": {
@@ -377,6 +479,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": {
         "application_cycle": "2025",
         "applicant_count": 1280,
@@ -424,6 +529,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -463,6 +571,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -502,6 +613,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -541,6 +655,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -580,6 +697,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -619,6 +739,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": {
         "application_cycle": "2025",
         "applicant_count": 910,
@@ -666,6 +789,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -705,6 +831,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -744,6 +873,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -783,6 +915,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -822,6 +957,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -861,6 +999,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -900,6 +1041,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -939,6 +1083,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -978,6 +1125,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1017,6 +1167,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1056,6 +1209,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1095,6 +1251,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1134,6 +1293,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1173,6 +1335,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1212,6 +1377,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1251,6 +1419,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1290,6 +1461,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1329,6 +1503,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1368,6 +1545,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1407,6 +1587,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1446,6 +1629,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1485,6 +1671,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1524,6 +1713,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1563,6 +1755,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1602,6 +1797,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1641,6 +1839,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1680,6 +1881,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1719,6 +1923,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1758,6 +1965,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1797,6 +2007,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1836,6 +2049,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1875,6 +2091,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1914,6 +2133,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1953,6 +2175,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -1992,6 +2217,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2031,6 +2259,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2070,6 +2301,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2109,6 +2343,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2148,6 +2385,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2187,6 +2427,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2226,6 +2469,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2265,6 +2511,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2304,6 +2553,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2343,6 +2595,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2382,6 +2637,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2421,6 +2679,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2460,6 +2721,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2499,6 +2763,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2538,6 +2805,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2577,6 +2847,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2616,6 +2889,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2655,6 +2931,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2694,6 +2973,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2733,6 +3015,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2772,6 +3057,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2811,6 +3099,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2850,6 +3141,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2889,6 +3183,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2928,6 +3225,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -2967,6 +3267,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3006,6 +3309,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3045,6 +3351,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3084,6 +3393,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3123,6 +3435,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3162,6 +3477,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3201,6 +3519,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3240,6 +3561,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3279,6 +3603,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3318,6 +3645,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3357,6 +3687,9 @@
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": null,
       "list_aggregate": {
@@ -3402,8 +3735,78 @@
       "sources": [
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "exam_format": "education_experience",
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience: If you have the experience in the areas listed below, you may be considered for appointment to positions requiring this experience through a process cal",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 39386
+        },
+        {
+          "key": "qualifications",
+          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The certification requirement…"
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "low",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $30.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $39,386 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement : City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience: If you have the experience in the areas listed below, you may be considered for appointment to positions requiring this experience through a process cal",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "summary": {
+          "source": "noe_body",
+          "method": "what_the_job_involves",
+          "excerpt": "WHAT THE JOB INVOLVES: Emergency Medical Specialists - EMTs, under general supervision, perform tasks such as the following: provide timely, professional, pre-hospital emergency medical care/Basic Lif",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
+        "oasys_exam_id": "9619"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3453,8 +3856,69 @@
       "sources": [
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "exam_format": "education_experience",
+      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 36330
+        },
+        {
+          "key": "qualifications",
+          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The experience requirement nee…"
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "low",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $30.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $36,330 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "summary": {
+          "source": "noe_body",
+          "method": "what_the_job_involves",
+          "excerpt": "WHAT THE JOB INVOLVES: Emergency Medical Specialist Trainees attend a training program conducted by the New York City Fire Department. Emergency Medical Specialist Trainees receive Emergency Medical T",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
+        "oasys_exam_id": "9620"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3497,6 +3961,8 @@
         "dcas-annual-schedule",
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf",
@@ -3508,6 +3974,79 @@
       "qualifications": "The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
       "test_method": "Education and experience exam",
       "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
+      "exam_format": "education_experience",
+      "education_level": "bachelors",
+      "no_experience_required": false,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience, License and/or Certificate: If you have the experience, license and/or certificates listed below, you may be considered for appointment to positions req",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 66330
+        },
+        {
+          "key": "experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree in civil engineering from an accredited college or university and one year of fulltime satisfactory experience in civil engineering work; or A baccalaureate degree from an accredited college or university in civil engineering technology and three years of full-time satisfactory experience in c…"
+        }
+      ],
+      "salary_band": "60k_80k",
+      "fee_level": "high",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $82.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $66,330 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience, License and/or Certificate: If you have the experience, license and/or certificates listed below, you may be considered for appointment to positions req",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625",
+        "oasys_exam_id": "9625"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3552,11 +4091,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277007000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 82
+        },
+        {
+          "key": "salary_min",
+          "value": 66330
+        }
+      ],
       "fee": 82,
       "salary_min": 66330,
       "salary_max": null,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body",
+      "salary_band": "60k_80k",
+      "fee_level": "high",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3597,6 +4148,8 @@
         "dcas-annual-schedule",
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf",
@@ -3608,6 +4161,78 @@
       "qualifications": "Two years of automotive maintenance experience, relevant trade or technical education, an associate degree in automotive technology, or an allowed combination.",
       "test_method": "Education and experience exam",
       "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
+      "exam_format": "education_experience",
+      "education_level": "high_school",
+      "no_experience_required": false,
+      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience, Certification and/or License: If you have the experience, certification, and/or license listed in one or more of the areas listed below, you may be cons",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 42387
+        },
+        {
+          "key": "experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "Two years of full-time satisfactory experience, performing automotive maintenance services, such as inspection, lubrication and oil changing acquired in a garage or gasoline service station; or Graduation from an approved trade school, vocational high school or technical school with a course of study in automotive m…"
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $61.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $42,387 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience, Certification and/or License: If you have the experience, certification, and/or license listed in one or more of the areas listed below, you may be cons",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
+        "oasys_exam_id": "9628"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3650,6 +4275,8 @@
         "dcas-annual-schedule",
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
@@ -3660,6 +4287,79 @@
       "summary": "Connect New Yorkers with public benefits, health care, housing, and other social services.",
       "qualifications": "A bachelor's degree from an accredited college or university.",
       "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "education_level": "bachelors",
+      "no_experience_required": true,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification. If you qualify for Selective Certification, you may be given preferred consideration for positions requiring this experience. Follow the onscreen instructions when completing ",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 48206
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree from an accredited college or university accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educated outside the United States, you…"
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $68.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $48,206 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification. If you qualify for Selective Certification, you may be given preferred consideration for positions requiring this experience. Follow the onscreen instructions when completing ",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
+        "oasys_exam_id": "9629"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3702,6 +4402,8 @@
         "dcas-annual-schedule",
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf",
@@ -3712,6 +4414,79 @@
       "summary": "Help hospital patients and families connect with benefits, care, housing, and social services.",
       "qualifications": "A bachelor's degree from an accredited college or university.",
       "test_method": "Education and experience exam",
+      "exam_format": "education_experience",
+      "education_level": "bachelors",
+      "no_experience_required": true,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Foreign Language and/or American Sign Language: If you can speak Albanian (ALB) , Arabic (ARA) , Bengali (BEN) , Bosnian/Serbo-Croatian (SRC) , Chinese (Cantonese) (CAN) , ",
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 48206
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree from an accredited college or university. The college or university must be accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educ…"
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $68.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $48,206 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Foreign Language and/or American Sign Language: If you can speak Albanian (ALB) , Arabic (ARA) , Bengali (BEN) , Bosnian/Serbo-Croatian (SRC) , Chinese (Cantonese) (CAN) , ",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
+        "oasys_exam_id": "9631"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3753,6 +4528,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3803,6 +4581,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3856,11 +4637,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3901,6 +4694,8 @@
         "dcas-annual-schedule",
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf",
@@ -3911,6 +4706,71 @@
       "summary": "Help keep public school buildings safe, assist visitors and students, and respond to incidents.",
       "qualifications": "A high school diploma or equivalent. The NOE also lists age, citizenship, residency, screening, and appointment requirements.",
       "test_method": "Multiple-choice testing is expected to begin October 20, 2026",
+      "salary_max": 58345,
+      "exam_format": "multiple_choice",
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Assistant School Safety Agent Program (ASA): If you have successfully completed at least six (6) months of satisfactory, full-time experience as an Assistant School Safety ",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "salary_min",
+          "value": 40480
+        },
+        {
+          "key": "qualifications",
+          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive an Admission Notice or score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 25, 2027. The expe…"
+        }
+      ],
+      "salary_band": "under_45k",
+      "fee_level": "mid",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $61.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $40,480 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "salary_max": {
+          "source": "noe_body",
+          "method": "labeled_salary_range",
+          "excerpt": "The current minimum salary is $40,480 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "MC"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Assistant School Safety Agent Program (ASA): If you have successfully completed at least six (6) months of satisfactory, full-time experience as an Assistant School Safety ",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
+        "oasys_exam_id": "9634"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3953,6 +4813,8 @@
         "dcas-annual-schedule",
         "dcas-open-competitive",
         "dcas-noe",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf",
@@ -3963,6 +4825,84 @@
       "summary": "Enforce parking and traffic rules and help keep vehicles and pedestrians moving safely.",
       "qualifications": "A high school diploma or equivalent, plus the license, medical, psychological, and screening requirements in the NOE.",
       "test_method": "Multiple-choice testing is expected to begin October 22, 2026",
+      "exam_format": "multiple_choice",
+      "education_level": "high_school",
+      "no_experience_required": true,
+      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 48719
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "By the date of appointment , you must have: A four-year high school diploma or its educational equivalent, approved by a State's Department of Education or a recognized accrediting organization. If you were educated outside the United States, you must have your foreign education evaluated to determine its equivalenc…"
+        }
+      ],
+      "salary_band": "45k_60k",
+      "fee_level": "none",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $0.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "for which the current minimum salary is $48,719 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "MC"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for this examination prior to submitting your application. If you are found \"Not",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "fee_waiver": {
+          "source": "noe_body",
+          "method": "fee_block",
+          "excerpt": "fee=0",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
+        "oasys_exam_id": "9635"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4005,14 +4945,112 @@
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify",
+        "dcas-noe-differentiators",
+        "oasys_noe_html",
         "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee_waiver": "No application fee is charged for this exam.",
+      "qualifications": "By the date of appointment, you must have a four-year high school diploma or its educational equivalent, and successfully completed 24 college semester credits at an accredited college or university with at least a 2.0 cumulative index or its equivalent, or have completed two years of honorable full-time U.S. milita…",
+      "test_method": "Multiple-choice test",
+      "exam_format": "multiple_choice",
+      "education_level": "high_school",
+      "no_experience_required": true,
+      "residency": "The New York State Public Officers Law requires that any person employed as a Police Officer in the New York City Police Department must be a resident of the City of New York or of Nassau, Westchester, Suffolk, Orange…",
+      "residency_required": true,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience : If you have the experience listed in one or more of the areas below, you may be considered for appointment to positions requiring this experience throu",
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "residency_required",
+          "value": true
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
+      "differentiator_provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $0.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $55,942 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "salary_max": {
+          "source": "noe_body",
+          "method": "labeled_salary_range",
+          "excerpt": "The current minimum salary is $55,942 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "MC"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for this examination prior to submitting your application. If you are found \"Not",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: The New York State Public Officers Law requires that any person employed as a Police Officer in the New York City Police Department must be a resident of the City of New York or of Nassau, Westchester, Suffol",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience : If you have the experience listed in one or more of the areas below, you may be considered for appointment to positions requiring this experience throu",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "fee_waiver": {
+          "source": "noe_body",
+          "method": "fee_block",
+          "excerpt": "fee=0",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        }
+      },
+      "fee_waiver_is_boilerplate": false,
+      "noe_differentiators": {
+        "densify_method": "oasys_noe_html_body",
+        "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+        "oasys_exam_id": "9646"
+      },
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4054,6 +5092,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4104,6 +5145,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4154,6 +5198,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4204,6 +5251,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4254,6 +5304,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4304,6 +5357,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4354,6 +5410,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4404,6 +5463,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4454,6 +5516,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4504,6 +5569,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4557,11 +5625,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4601,6 +5681,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4651,6 +5734,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4701,6 +5787,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4751,6 +5840,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4801,6 +5893,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4851,6 +5946,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4901,6 +5999,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4951,6 +6052,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5001,6 +6105,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5051,6 +6158,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5101,6 +6211,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5151,6 +6264,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5201,6 +6317,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5251,6 +6370,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5301,6 +6423,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5354,11 +6479,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5398,6 +6535,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5448,6 +6588,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5498,6 +6641,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5548,6 +6694,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5598,6 +6747,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5648,6 +6800,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5698,6 +6853,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5748,6 +6906,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5798,6 +6959,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5848,6 +7012,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5898,6 +7065,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5948,6 +7118,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5998,6 +7171,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6048,6 +7224,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6101,11 +7280,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6145,6 +7336,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6195,6 +7389,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6245,6 +7442,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6295,6 +7495,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6345,6 +7548,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6395,6 +7601,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6445,6 +7654,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6495,6 +7707,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6545,6 +7760,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6595,6 +7813,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6645,6 +7866,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6695,6 +7919,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6745,6 +7972,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6798,11 +8028,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6842,6 +8084,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6892,6 +8137,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6942,6 +8190,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6992,6 +8243,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7042,6 +8296,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7092,6 +8349,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7142,6 +8402,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7192,6 +8455,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7242,6 +8508,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7292,6 +8561,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7342,6 +8614,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7392,6 +8667,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7445,11 +8723,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7489,6 +8779,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7539,6 +8832,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7589,6 +8885,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7639,6 +8938,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7689,6 +8991,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7739,6 +9044,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7789,6 +9097,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7839,6 +9150,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7889,6 +9203,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7939,6 +9256,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7989,6 +9309,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8039,6 +9362,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8092,11 +9418,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8136,6 +9474,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8186,6 +9527,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8236,6 +9580,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8286,6 +9633,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8336,6 +9686,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8386,6 +9739,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8436,6 +9792,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8486,6 +9845,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8536,6 +9898,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8586,6 +9951,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8636,6 +10004,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8689,11 +10060,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8733,6 +10116,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8783,6 +10169,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8833,6 +10222,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8883,6 +10275,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8933,6 +10328,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -8983,6 +10381,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9033,6 +10434,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9083,6 +10487,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9133,6 +10540,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9183,6 +10593,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9233,6 +10646,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9286,11 +10702,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9330,6 +10758,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9380,6 +10811,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9430,6 +10864,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9480,6 +10917,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9530,6 +10970,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9580,6 +11023,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9630,6 +11076,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9680,6 +11129,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9730,6 +11182,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9780,6 +11235,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9830,6 +11288,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9880,6 +11341,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9933,11 +11397,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -9977,6 +11453,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10027,6 +11506,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10077,6 +11559,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10127,6 +11612,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10177,6 +11665,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10227,6 +11718,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10277,6 +11771,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10330,11 +11827,23 @@
         "dcas-noe-fee-salary-densify"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "card_leads": [
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        }
+      ],
       "fee": 0,
       "salary_min": 55942,
       "salary_max": 109352,
       "salary_note": "Current minimum annual salary",
       "fee_salary_densify": "noe_pdf_body_multi_exam",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10374,6 +11883,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10424,6 +11936,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10474,6 +11989,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10524,6 +12042,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10574,6 +12095,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10624,6 +12148,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10674,6 +12201,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10724,6 +12254,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10774,6 +12307,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10824,6 +12360,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -10874,6 +12413,9 @@
       "sources": [
         "dcas-annual-schedule"
       ],
+      "card_leads": [],
+      "salary_band": "unknown",
+      "fee_level": "unknown",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",

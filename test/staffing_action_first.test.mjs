@@ -30,7 +30,9 @@ test("action cards expose resident next steps before optional detail", () => {
 
   assert.match(card, /career-action-facts/);
   assert.match(card, /career_application_fee/);
-  assert.match(card, /career_no_account_label/);
+  // Differentiator-first: fee + salary lead; OASys apply remains the primary action.
+  assert.match(card, /career_starting_salary/);
+  assert.match(card, /careerDiffLeadsHTML/);
   assert.match(card, /examListForecastHTML/);
   assert.match(card, /const expanded=selected/);
   assert.ok(card.indexOf("career-action-facts") < card.indexOf("const expanded=selected"));

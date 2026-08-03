@@ -68,9 +68,9 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 797435,
-    "normalized_source_sha256": "80ec5cd3c9f24ba54627af186297b87c89c8c9a6d534006bc18262711a746ad1",
-    "note": "Wave-2 remaining batch-precompute first paint (money open RFPs, agency dropdown, staffing hires); rebased onto main with notice/lens alert-signup context.",
+    "normalized_source_bytes": 804273,
+    "normalized_source_sha256": "82e55870efcf4f714e21d60ecc08ae0f68bba2883ddc4ed39f073617bcc1e2f5",
+    "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata), ULURP pipeline position, and ZAP hearing logistics on land detail.",
     "updated_at": "2026-08-03"
   }
 }

@@ -1,6 +1,6 @@
 {
   "fetched_at": "2026-08-03",
-  "fetched_at_utc": "2026-08-03T16:52:06.125Z",
+  "fetched_at_utc": "2026-08-03T00:00:00Z",
   "http_status": 200,
   "payload": [
     {
@@ -9,7 +9,7 @@
       "examNumber": "6125",
       "filingStart": "2026-06-15T00:00:00",
       "filingEnd": "2026-08-07T00:00:00",
-      "filingFee": 30,
+      "filingFee": 30.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20266125000.pdf",
       "examParts": [
@@ -46,7 +46,7 @@
       "examNumber": "6126",
       "filingStart": "2026-06-15T00:00:00",
       "filingEnd": "2026-08-07T00:00:00",
-      "filingFee": 30,
+      "filingFee": 30.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20266126000.pdf",
       "examParts": [
@@ -83,7 +83,7 @@
       "examNumber": "7006",
       "filingStart": "2026-07-01T00:00:00",
       "filingEnd": "2026-08-25T00:00:00",
-      "filingFee": 82,
+      "filingFee": 82.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277006000.pdf",
       "examParts": [
@@ -120,7 +120,7 @@
       "examNumber": "7013",
       "filingStart": "2026-07-01T00:00:00",
       "filingEnd": "2026-08-25T00:00:00",
-      "filingFee": 61,
+      "filingFee": 61.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277013000.pdf",
       "examParts": [
@@ -157,7 +157,7 @@
       "examNumber": "7016",
       "filingStart": "2026-07-01T00:00:00",
       "filingEnd": "2026-08-25T00:00:00",
-      "filingFee": 68,
+      "filingFee": 68.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277016000.pdf",
       "examParts": [
@@ -194,7 +194,7 @@
       "examNumber": "7018",
       "filingStart": "2026-07-01T00:00:00",
       "filingEnd": "2026-08-25T00:00:00",
-      "filingFee": 68,
+      "filingFee": 68.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277018000.pdf",
       "examParts": [
@@ -231,7 +231,7 @@
       "examNumber": "7323",
       "filingStart": "2026-07-01T00:00:00",
       "filingEnd": "2026-08-25T00:00:00",
-      "filingFee": 61,
+      "filingFee": 61.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277323000.pdf",
       "examParts": [
@@ -268,7 +268,7 @@
       "examNumber": "7331",
       "filingStart": "2026-07-01T00:00:00",
       "filingEnd": "2026-08-25T00:00:00",
-      "filingFee": 0,
+      "filingFee": 0.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277331000.pdf",
       "examParts": [
@@ -305,7 +305,7 @@
       "examNumber": "7312",
       "filingStart": "2026-08-03T00:00:00",
       "filingEnd": "2026-08-17T00:00:00",
-      "filingFee": 0,
+      "filingFee": 0.0,
       "isPromotional": false,
       "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277312000.pdf",
       "examParts": [

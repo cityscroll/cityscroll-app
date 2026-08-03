@@ -857,6 +857,13 @@
   .career-action-facts{display:grid;grid-template-columns:minmax(100px,.55fr) minmax(0,1.45fr);gap:8px;border-block:1px solid var(--rule);padding:9px 0}
   .career-action-fact b{display:block;font:750 13px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
   .career-action-fact span{display:block;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px}
+  .career-diff-leads{display:flex;flex-wrap:wrap;gap:6px;margin:0}
+  .career-diff-chip{display:inline-flex;align-items:center;gap:4px;font:650 12px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--wash,#f4f1ea);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;max-width:100%}
+  .career-diff-chip[data-diff="exam_format"]{border-color:var(--blue);color:var(--blue)}
+  .career-diff-chip[data-diff="fee"]{border-color:var(--green);color:var(--green)}
+  .career-diff-chip[data-diff="no_experience_required"],.career-diff-chip[data-diff="experience_required"]{border-color:var(--amber,#b7791f);color:var(--amber,#b7791f)}
+  .career-diff-quals{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);margin:0}
+  .career-diff-quals b{color:var(--ink)}
   .career-card>.note[data-staffing-list-prediction]{margin-top:0}
   .career-summary{font-size:15px;line-height:1.45;color:var(--ink-soft);margin:0}
   .career-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border-block:1px solid var(--rule);padding:9px 0}
@@ -1389,6 +1396,44 @@
               <option value="open" data-i18n="career_open_option">Open now</option>
               <option value="upcoming" data-i18n="career_upcoming_option">Upcoming</option>
               <option value="all" data-i18n="career_all_windows_option">All scheduled exams</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="career-format" data-i18n="career_format_label">Exam format</label>
+            <select id="career-format">
+              <option value="all" data-i18n="career_format_all">Any format</option>
+              <option value="education_experience" data-i18n="career_format_eee">Education and experience</option>
+              <option value="multiple_choice" data-i18n="career_format_mc">Multiple choice</option>
+              <option value="physical" data-i18n="career_format_physical">Physical</option>
+              <option value="mixed" data-i18n="career_format_mixed">Mixed / multi-part</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="career-salary-band" data-i18n="career_salary_band_label">Starting salary</label>
+            <select id="career-salary-band">
+              <option value="all" data-i18n="career_salary_band_all">Any salary</option>
+              <option value="under_45k" data-i18n="career_salary_under_45k">Under $45,000</option>
+              <option value="45k_60k" data-i18n="career_salary_45k_60k">$45,000–$60,000</option>
+              <option value="60k_80k" data-i18n="career_salary_60k_80k">$60,000–$80,000</option>
+              <option value="80k_plus" data-i18n="career_salary_80k_plus">$80,000+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="career-fee-level" data-i18n="career_fee_level_label">Application fee</label>
+            <select id="career-fee-level">
+              <option value="all" data-i18n="career_fee_level_all">Any fee</option>
+              <option value="none" data-i18n="career_fee_none">No fee</option>
+              <option value="low" data-i18n="career_fee_low">$1–$40</option>
+              <option value="mid" data-i18n="career_fee_mid">$41–$70</option>
+              <option value="high" data-i18n="career_fee_high">$71+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="career-no-experience" data-i18n="career_no_experience_label">Experience</label>
+            <select id="career-no-experience">
+              <option value="all" data-i18n="career_experience_all">Any requirements</option>
+              <option value="yes" data-i18n="career_no_experience_yes">No prior experience required</option>
+              <option value="no" data-i18n="career_experience_required">Experience required</option>
             </select>
           </div>
         </div>
