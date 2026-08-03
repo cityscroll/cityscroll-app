@@ -360,15 +360,14 @@ jobs:
       - name: Focus-visibility keyboard-walk gate
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/14_focus_visible.py
+      # Demo-link contract runs ONLY against this job's local site server (PR / merge_group
+      # checkout). Live production sampling is the scheduled cutover-regression monitor —
+      # never a merge gate — so a deliberate behavior change cannot red every open PR against
+      # pre-merge production, and a gate verdict only depends on the code under test.
       - name: Public demo-link regression contract
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
           CROL_BASE: http://127.0.0.1:8000/
-        run: python3 test/functional/20_demo_links.py
-      - name: Public demo-link contract on cityscroll.org
-        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        env:
-          CROL_BASE: https://cityscroll.org/
         run: python3 test/functional/20_demo_links.py
       - name: External-link new-tab characterization gate (City Record/PASSPort/Checkbook NYC)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'

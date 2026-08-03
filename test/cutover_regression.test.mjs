@@ -122,21 +122,27 @@ test("scheduled monitor is dispatchable but never a pull-request or merge-queue 
   assert.match(workflow, /schedule:/);
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /node tools\/cutover_regression\.mjs/);
-  assert.match(workflow, /CROL_DEMO_LINK_IDS: exam-guide/);
+  assert.match(workflow, /Full public demo-link contract on production/);
   assert.match(workflow, /attachment-metadata\/receipt/);
   assert.match(workflow, /CROL_DEMO_LINK_IDS: notice-cannonsville-attachment/);
   assert.doesNotMatch(workflow, /continue-on-error/);
   assert.doesNotMatch(workflow, /pull_request:|merge_group:|push:/);
 });
 
-test("scheduled monitor renders real civil-service exam rows on production", () => {
+test("scheduled monitor owns the full production demo-link contract", () => {
   const workflow = readFileSync(
     new URL("../.github/workflows/cutover-regression.yml", import.meta.url),
     "utf8",
   );
   assert.match(workflow, /uses: \.\/\.github\/actions\/setup-playwright/);
   assert.match(workflow, /CROL_BASE: https:\/\/cityscroll\.org\//);
-  assert.match(workflow, /CROL_DEMO_LINK_IDS: exam-guide/);
+  assert.match(workflow, /Full public demo-link contract on production/);
   assert.match(workflow, /python3 test\/functional\/20_demo_links\.py/);
+  // Primary production step runs the full manifest (no ID filter on that step).
+  const full = workflow.slice(
+    workflow.indexOf("Full public demo-link contract on production"),
+  );
+  const fullEnv = full.slice(0, full.indexOf("run:"));
+  assert.doesNotMatch(fullEnv, /CROL_DEMO_LINK_IDS/);
   assert.doesNotMatch(workflow, /continue-on-error:\s*true/);
 });
