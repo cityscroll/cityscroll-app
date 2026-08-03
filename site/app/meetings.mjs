@@ -287,6 +287,37 @@ function meetingRollCallChipHTML(votes, ctx){
   </div>`;
 }
 
+/**
+ * Accessible full roll-call table (member + vote) with clickable officials.
+ * Chip stays compact on the matter card; this is the complete named list.
+ */
+function meetingRollCallTableHTML(people, ctx){
+  if(!Array.isArray(people) || !people.length) return "";
+  const rows = people.map(p => {
+    const id = officialIdFromPerson(p);
+    const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
+    const vote = p.vote_bucket || p.vote_value || "—";
+    const officialLink = officialHref(id, ctx);
+    const nameHTML = officialLink
+      ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
+      : escUiHtml(name);
+    return `<tr data-official-id="${escUiHtml(id)}" data-vote-bucket="${escUiHtml(String(p.vote_bucket || ""))}">
+      <th scope="row" lang="en" dir="ltr" class="meeting-roll-call-person">${nameHTML}</th>
+      <td lang="en" dir="ltr">${escUiHtml(String(vote))}</td>
+    </tr>`;
+  }).join("");
+  return `<table class="meeting-roll-call-table" data-official-votes data-official-count="${people.length}">
+    <caption class="meeting-roll-call-caption">${t("meeting_outcomes_roll_call_lbl")}</caption>
+    <thead>
+      <tr>
+        <th scope="col">${t("meeting_outcomes_roll_call_member_col")}</th>
+        <th scope="col">${t("meeting_outcomes_roll_call_vote_col")}</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
 /** Vote tallies only when aye/nay are non-zero or a person roll call exists.
  * Person-level roll call only when production retained officials. When tallies
  * exist but by_person is empty, use class-(a) not-yet-shown — never imply
@@ -310,20 +341,7 @@ function meetingVotesHTML(votes, ctx){
       })}</div>`;
     }
     if(people.length){
-      html += `<div class="lc-pct meeting-roll-call" data-official-votes data-official-count="${people.length}">${t("meeting_outcomes_roll_call_lbl")}: ${people.map(p => {
-        const id = officialIdFromPerson(p);
-        const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
-        const vote = p.vote_bucket || p.vote_value || "—";
-        // In-app #official/… skim — own href expression for link_targets.
-        const officialLink = officialHref(id, ctx);
-        const nameHTML = officialLink
-          ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
-          : escUiHtml(name);
-        return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml(id)}">${t("meeting_outcomes_vote_person_html",{
-          name: nameHTML,
-          vote: escUiHtml(String(vote))
-        })}</span>`;
-      }).join(" · ")}</div>`;
+      html += `<div class="meeting-roll-call" data-official-votes data-official-count="${people.length}">${meetingRollCallTableHTML(people, ctx)}</div>`;
     } else if(meaningful){
       html += `<div class="lc-norecord" data-person-votes-gap="not_yet_ingested">${t("meeting_outcomes_no_person_votes_html")}</div>`;
     }
@@ -758,6 +776,7 @@ globalThis.meetingPhaseLeadHTML = meetingPhaseLeadHTML;
 globalThis.meetingPhasePanelHTML = meetingPhasePanelHTML;
 globalThis.meetingPhaseStepperHTML = meetingPhaseStepperHTML;
 globalThis.meetingRollCallChipHTML = meetingRollCallChipHTML;
+globalThis.meetingRollCallTableHTML = meetingRollCallTableHTML;
 globalThis.meetingVotesHTML = meetingVotesHTML;
 globalThis.nonCouncilBodyLinks = nonCouncilBodyLinks;
 globalThis.nonCouncilHearingOutcomesHTML = nonCouncilHearingOutcomesHTML;

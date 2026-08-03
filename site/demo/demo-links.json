@@ -252,7 +252,7 @@
         "banner": {
           "selector": "#meetingswidening .widening-note",
           "visible": true,
-          "text": "Showing recent past meetings for \u201cIDA\u201d (none upcoming)."
+          "text": "Showing recent past meetings for “IDA” (none upcoming)."
         }
       }
     },
@@ -470,7 +470,7 @@
       "id": "rules-lifecycle-spine",
       "url": "#notice/20260714029",
       "feature": "rules-lifecycle-spine",
-      "description": "Show the phase-grouped rule lifecycle (proposal \u2192 public process \u2192 adoption \u2192 effective) on a commercial-meter parking rule notice.",
+      "description": "Show the phase-grouped rule lifecycle (proposal → public process → adoption → effective) on a commercial-meter parking rule notice.",
       "expectations": {
         "visible": [
           {
@@ -894,6 +894,30 @@
         "focus": "#adest"
       },
       "postDeployOnly": true
+    },
+    {
+      "id": "official-marte-votes",
+      "url": "#official/7801?notice=20260706036&event=22526",
+      "feature": "official-person-votes",
+      "description": "Council member Christopher Marte roll-call votes from densified Legistar by_person (hearing scope + recent across matters).",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#official-skim",
+            "text": "Marte"
+          },
+          {
+            "selector": "#official-skim .official-vote-table",
+            "text": "Vote"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview .loading"
+          }
+        ],
+        "focus": "#official-skim"
+      }
     }
   ]
 }
