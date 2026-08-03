@@ -7,7 +7,7 @@ get an email the morning something you care about appears. No single city websit
 these threads. CityScroll does.
 
 *   **Use it:** [cityscroll.org](https://cityscroll.org/)
-*   **Changelog:** [cityscroll.org/changelog.html](https://cityscroll.org/changelog.html)
+*   **About:** [cityscroll.org/about.html](https://cityscroll.org/about.html)
 *   **System Stats:** [cityscroll.org/stats.html](https://cityscroll.org/stats.html)
 
 ![CityScroll homepage — contracts, staffing, zoning, property, meetings, and rules, all in one place](docs/readme/homepage.png)

@@ -19,6 +19,11 @@ PAGES = [
     ("standards.html", "https://cityscroll.org/standards.html"),
     ("stats.html", "https://cityscroll.org/stats.html"),
 ]
+SITEMAP_PAGES = [page for page in PAGES if page[0] not in {"changelog.html", "data.html"}]
+RETIRED_DESTINATIONS = {
+    "changelog.html": "https://cityscroll.org/about.html",
+    "data.html": "https://cityscroll.org/about.html#data",
+}
 
 
 def attribute(source: str, tag_pattern: str, name: str) -> str | None:
@@ -31,17 +36,19 @@ def main() -> None:
 
     for filename, expected in PAGES:
         source = (SITE_ROOT / filename).read_text()
+        document_url = RETIRED_DESTINATIONS.get(filename, expected)
         canonical = attribute(source, r'<link rel="canonical" href="([^"]+)">', "canonical")
         og_url = attribute(source, r'<meta property="og:url" content="([^"]+)">', "og:url")
         og_image = attribute(source, r'<meta property="og:image" content="([^"]+)">', "og:image")
-        if canonical != expected:
-            failures.append(f"{filename}: canonical is {canonical!r}, expected {expected!r}")
-        if og_url != expected:
-            failures.append(f"{filename}: og:url is {og_url!r}, expected {expected!r}")
+        if canonical != document_url:
+            failures.append(f"{filename}: canonical is {canonical!r}, expected {document_url!r}")
+        if og_url != document_url:
+            failures.append(f"{filename}: og:url is {og_url!r}, expected {document_url!r}")
         if og_image != "https://cityscroll.org/assets/brand/cityscroll-social-card.png":
             failures.append(f"{filename}: og:image does not use cityscroll.org")
-        if '<meta name="robots" content="index,follow">' not in source:
-            failures.append(f"{filename}: missing index,follow robots metadata")
+        robots = "noindex,follow" if filename in RETIRED_DESTINATIONS else "index,follow"
+        if f'<meta name="robots" content="{robots}">' not in source:
+            failures.append(f"{filename}: missing {robots} robots metadata")
 
     robots = (SITE_ROOT / "robots.txt").read_text()
     if "Sitemap: https://cityscroll.org/sitemap.xml" not in robots or "crol-list.org" in robots:
@@ -57,7 +64,7 @@ def main() -> None:
     except ElementTree.ParseError as error:
         failures.append(f"sitemap.xml: invalid XML ({error})")
         locations = []
-    expected_locations = [expected for _, expected in PAGES]
+    expected_locations = [expected for _, expected in SITEMAP_PAGES]  # Source: canonical PAGES contract above.
     if locations != expected_locations:
         failures.append("sitemap.xml: page set or ordering differs from the canonical page contract")
     if any(not location.startswith("https://cityscroll.org") for location in locations):

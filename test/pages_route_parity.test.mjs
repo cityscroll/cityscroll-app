@@ -27,6 +27,9 @@ test("route inventory covers every sitemap page plus robots and sitemap", () => 
   }
   assert.ok(ROUTE_INVENTORY.some((r) => r.path === "/robots.txt"));
   assert.ok(ROUTE_INVENTORY.some((r) => r.path === "/sitemap.xml"));
+  assert.ok(ROUTE_INVENTORY.some((r) => r.path === "/changelog.html" && r.retired));
+  assert.ok(ROUTE_INVENTORY.some((r) => r.path === "/data.html" && r.retired));
+  assert.doesNotMatch(sitemap, /\/(?:changelog|data)\.html/);
 });
 
 test("targetsForOrigin joins without double slashes", () => {
