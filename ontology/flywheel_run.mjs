@@ -62,6 +62,9 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
   const lifecycle_coherence_scorecard = readJson(
     "worker/test/fixtures/lifecycle-coherence/expected_coherence.json",
   );
+  const notice_land_join_scorecard = readJson(
+    "docs/evidence/notice-land-join-resolution.json",
+  );
   const source_coverage = readJson("entity_resolution/source_coverage.json");
   const gap_taxonomy = readJson("site/data/gap_taxonomy.json");
   const source_contracts = readJson("site/data/source_contracts.json");
@@ -123,6 +126,7 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
     district_activity,
     temporal_scorecard,
     lifecycle_coherence_scorecard,
+    notice_land_join_scorecard,
     source_coverage,
     source_contracts,
     staffing_exams,

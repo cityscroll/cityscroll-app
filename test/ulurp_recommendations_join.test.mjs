@@ -56,6 +56,12 @@ test("extractUlurpKeys normalizes spaced, typed, and multi-number fields", () =>
   assert.equal(extractUlurpKeys("210033").size, 0); // bare body rejected
 });
 
+test("extractUlurpKeys rejects Zoom meeting-id false positive (302621MEET)", () => {
+  const keys = extractUlurpKeys("zoom.us/j/91467302621 Meeting ID: 914 6730 2621");
+  assert.equal(keys.size, 0);
+  assert.equal(keys.has("302621MEET"), false);
+});
+
 test("strict join accepts exact ULURP tokens only", () => {
   const hit = joinZapUlurpToRecommendations("C210033ZMK; M210034LDK", index);
   assert.ok(hit);

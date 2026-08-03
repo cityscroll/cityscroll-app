@@ -52,6 +52,7 @@ export function evaluateOntologyEnrichment(input = {}) {
     lesson_class: `ontology-${card.class}`,
   }));
   cards.push(...temporalScorecardCards(input));
+  cards.push(...noticeLandJoinScorecardCards(input));
 
   return {
     dimension: DIMENSION_ID,
@@ -66,10 +67,85 @@ export function evaluateOntologyEnrichment(input = {}) {
         input.lifecycle_coherence_scorecard?.procurement_lifecycle_coherence_rate ?? null,
       award_solicitation_recovery_rate:
         input.lifecycle_coherence_scorecard?.award_solicitation_recovery_rate ?? null,
+      notice_land_join_resolution_rate:
+        noticeLandJoinRate(input.notice_land_join_scorecard),
+      notice_land_malformed_unresolved:
+        noticeLandMalformed(input.notice_land_join_scorecard),
     },
     cards,
     receipt,
   };
+}
+
+function noticeLandJoinRate(scorecard) {
+  const after = scorecard?.after || scorecard;
+  const rate = Number(after?.join_resolution_rate);
+  return Number.isFinite(rate) ? rate : (scorecard?.join_resolution_rate ?? null);
+}
+
+function noticeLandMalformed(scorecard) {
+  const after = scorecard?.after || scorecard;
+  const n = Number(after?.unmatched_malformed_only);
+  return Number.isFinite(n) ? n : (scorecard?.unmatched_malformed_only ?? null);
+}
+
+function noticeLandJoinScorecardCards(input) {
+  const cards = [];
+  const score = input.notice_land_join_scorecard || {};
+  const after = score.after || score;
+  const malformed = Number(after.unmatched_malformed_only);
+  const eligible = Number(after.eligible_with_plausible_token ?? after.eligible);
+  const rate = Number(after.join_resolution_rate);
+  // Malformed extracted ids (Zoom/phone false ULURPs) are an extractor bug class —
+  // must not sit in the unresolved join pile.
+  if (Number.isFinite(malformed) && malformed > 0) {
+    cards.push(makeDimensionCard({
+      dimension: DIMENSION_ID,
+      slug: "notice-land-malformed-ulurp",
+      title: "Reject malformed ULURP tokens on notice→portal joins",
+      rank_score: 90,
+      evidence: {
+        kind: "notice-land-join-malformed",
+        unmatched_malformed_only: malformed,
+        join_resolution_rate: Number.isFinite(rate) ? rate : null,
+        examples: score.malformed_examples_before || score.malformed_examples || [],
+        owner_exemplar: score.owner_exemplar || null,
+      },
+      verify: "node --test test/notice_land_spine.test.mjs # owner exemplar 302621MEET",
+      demo_win: "Dining Out Zoom notices no longer mount a fake ULURP land-spine gap; only plausible application numbers join.",
+      context: [
+        "site/ulurp_tokens.mjs",
+        "site/notice_land_spine.mjs",
+        "docs/evidence/notice-land-join-resolution.json",
+      ],
+      lesson_class: "ontology-notice-land-malformed-ulurp",
+    }));
+  }
+  // Low join rate among plausible keys is a coverage signal (portal miss), not extractor noise.
+  if (Number.isFinite(eligible) && eligible >= 5 && Number.isFinite(rate) && rate < 0.15) {
+    cards.push(makeDimensionCard({
+      dimension: DIMENSION_ID,
+      slug: "notice-land-join-resolution",
+      title: "Raise notice→Zoning Application Portal join resolution",
+      rank_score: 78,
+      evidence: {
+        kind: "notice-land-join-rate",
+        eligible,
+        join_resolution_rate: rate,
+        unmatched_plausible: after.unmatched_plausible_or_ambiguous
+          ?? after.unmatched_plausible
+          ?? null,
+      },
+      verify: "node --test test/notice_land_spine.test.mjs # measureNoticeLandJoinResolution",
+      demo_win: "Most land notices with real ULURP numbers show a matched portal project timeline.",
+      context: [
+        "site/notice_land_spine.mjs",
+        "docs/evidence/notice-land-join-resolution.json",
+      ],
+      lesson_class: "ontology-notice-land-join-rate",
+    }));
+  }
+  return cards;
 }
 
 function temporalScorecardCards(input) {
