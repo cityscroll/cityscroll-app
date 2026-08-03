@@ -70,7 +70,8 @@ keyed by BBL (fixture-backed in tests).
 2. **Grant/deny outcomes for revocable consents** — no machine-readable public
    outcome feed is joined yet; outcomes stay `scheduled` / `held` with an explicit
    “no grant/deny outcome record found” summary.
-3. **Community/council district source of truth** — MapPLUTO `cd` / `council` by
+3. **Community/council district source of truth** — committed `district_boundaries.json`
+   point-in-polygon (community + council, labeled `boundary_vintage`); MapPLUTO `cd` by
    BBL works when geocode BBL is correct; borough mismatches need a guarded retry
    (borough-biased geocode or PAD filter) before districts are trusted in UI.
 4. **Accessibility language** — most Dining Out notices do not state

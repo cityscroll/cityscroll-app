@@ -16,30 +16,47 @@ const {
   canonicalSearchURL,
 } = require("../site/nl_deeplink.js");
 
-const COUNCIL_LAYER = {
-  schema: "cityscroll.district_boundaries.v0",
-  layer: "council_district",
-  dataset_id: "872g-cjhh",
+const FIXTURE_RING = [
+  [-73.89, 40.74],
+  [-73.87, 40.74],
+  [-73.87, 40.755],
+  [-73.89, 40.755],
+  [-73.89, 40.74],
+];
+const UNIFIED_LAYER = {
+  schema: "cityscroll.district_boundaries.v1",
   boundary_vintage: "2026-05-26",
-  districts: [{
+  sources: {
+    community_district: {
+      dataset_id: "5crt-au7u",
+      boundary_vintage: "2026-05-26",
+    },
+    council_district: {
+      dataset_id: "872g-cjhh",
+      boundary_vintage: "2026-05-26",
+    },
+  },
+  community_districts: [{
+    id: "Q04",
+    boro_cd: "404",
+    label: "Queens Community District 4",
+    bbox: [-73.89, 40.74, -73.87, 40.755],
+    polygons: [{ rings: [FIXTURE_RING] }],
+  }],
+  council_districts: [{
     id: "25",
     label: "City Council District 25",
     bbox: [-73.89, 40.74, -73.87, 40.755],
-    polygons: [{
-      rings: [[
-        [-73.89, 40.74],
-        [-73.87, 40.74],
-        [-73.87, 40.755],
-        [-73.89, 40.755],
-        [-73.89, 40.74],
-      ]],
-    }],
+    polygons: [{ rings: [FIXTURE_RING] }],
   }],
 };
+// Compat alias for older test call sites.
+const COUNCIL_LAYER = UNIFIED_LAYER;
 
 function locationOptions(extra) {
   return {
-    councilBoundaries: COUNCIL_LAYER,
+    districtBoundaries: UNIFIED_LAYER,
+    councilBoundaries: UNIFIED_LAYER,
     ...extra,
   };
 }
@@ -84,13 +101,8 @@ test("the tap control requests a position and GeoSearch only after activation", 
   };
   const fetchImpl = async (url) => {
     calls.fetch.push(url);
-    if (url.includes("MAPPLUTO")) {
-      return {
-        ok: true,
-        async json() {
-          return { features: [{ attributes: { CD: 404 } }] };
-        },
-      };
+    if (String(url).includes("MAPPLUTO")) {
+      throw new Error("MapPLUTO should not run when the shared boundary layer resolves CD");
     }
     return {
       ok: true,
@@ -123,7 +135,8 @@ test("the tap control requests a position and GeoSearch only after activation", 
   await button.click();
 
   assert.equal(calls.permission, 1);
-  assert.equal(calls.fetch.length, 2);
+  // GeoSearch only — community + council resolve from the in-memory fixture layer.
+  assert.equal(calls.fetch.length, 1);
   const request = new URL(calls.fetch[0]);
   assert.equal(request.origin + request.pathname, "https://geosearch.planninglabs.nyc/v2/reverse");
   assert.equal(request.searchParams.get("point.lat"), "40.7473");
@@ -136,6 +149,7 @@ test("the tap control requests a position and GeoSearch only after activation", 
     block: "401493",
     communityDistrict: "Q04",
     councilDistrict: "25",
+    boundaryVintage: "2026-05-26",
   });
   assert.equal("latitude" in resolved, false);
   assert.equal("longitude" in resolved, false);
@@ -161,21 +175,22 @@ test("an existing geolocation grant resolves the returning user's area without a
     },
     async fetchImpl(url) {
       calls.fetch++;
+      if (String(url).includes("MAPPLUTO")) {
+        throw new Error("MapPLUTO should not run when the shared boundary layer resolves CD");
+      }
       return {
         ok: true,
         async json() {
-          return url.includes("MAPPLUTO")
-            ? { features: [{ attributes: { CD: 404 } }] }
-            : {
-                features: [{
-                  properties: {
-                    label: "40-12 83 Street, Elmhurst, NY, USA",
-                    borough: "Queens",
-                    neighbourhood: "Elmhurst",
-                    addendum: { pad: { bbl: "4014930012" } },
-                  },
-                }],
-              };
+          return {
+            features: [{
+              properties: {
+                label: "40-12 83 Street, Elmhurst, NY, USA",
+                borough: "Queens",
+                neighbourhood: "Elmhurst",
+                addendum: { pad: { bbl: "4014930012" } },
+              },
+            }],
+          };
         },
       };
     },
@@ -186,10 +201,11 @@ test("an existing geolocation grant resolves the returning user's area without a
 
   assert.equal(calls.permission, 1);
   assert.equal(calls.position, 1);
-  assert.equal(calls.fetch, 2);
+  assert.equal(calls.fetch, 1);
   assert.equal(area, resolved);
   assert.equal(resolved.communityDistrict, "Q04");
   assert.equal(resolved.councilDistrict, "25");
+  assert.equal(resolved.boundaryVintage, "2026-05-26");
 });
 
 test("a first prompt-state Land entry asks once and dismissal preserves the tap fallback", async () => {
@@ -364,7 +380,7 @@ test("a located Land view emits only its resolved coarse area", () => {
   assert.doesNotMatch(url, /(?:lat|latitude|lon|longitude|40\.7473|-73\.8832|4014930012)/i);
 });
 
-test("missing council boundaries leave councilDistrict unset without failing the area", async () => {
+test("missing district boundaries fall back to MapPLUTO for community only", async () => {
   resetCouncilBoundariesCache();
   const button = locationButton();
   let resolved = null;
@@ -375,7 +391,7 @@ test("missing council boundaries leave councilDistrict unset without failing the
       },
     },
     async fetchImpl(url) {
-      if (String(url).includes("council_district_boundaries")) {
+      if (String(url).includes("district_boundaries") || String(url).includes("council_district_boundaries")) {
         return { ok: false, async json() { return {}; } };
       }
       if (String(url).includes("MAPPLUTO")) {

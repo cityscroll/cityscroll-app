@@ -61,11 +61,59 @@ function geocodedPins() {
   return pins.sort((a, b) => a.id.localeCompare(b.id));
 }
 
+function boundaryEntries() {
+  // Prefer the unified contracted layer; fall back to explicit not-contracted.
+  const path = "site/data/district_boundaries.json";
+  if (!existsSync(join(ROOT, path))) {
+    return [
+      {
+        id: "community-district-boundaries",
+        dataset_id: "5crt-au7u",
+        vintage_at: null,
+        max_stale_days: 730,
+        status: "vintage-not-contracted",
+      },
+      {
+        id: "city-council-district-boundaries",
+        dataset_id: "872g-cjhh",
+        vintage_at: null,
+        max_stale_days: 730,
+        status: "vintage-not-contracted",
+      },
+    ];
+  }
+  const layer = readJson(path);
+  const community = layer.sources?.community_district || {};
+  const council = layer.sources?.council_district || {};
+  return [
+    {
+      id: "community-district-boundaries",
+      dataset_id: community.dataset_id || "5crt-au7u",
+      vintage_at: community.boundary_vintage || layer.boundary_vintage || null,
+      max_stale_days: 730,
+      status: (community.boundary_vintage || layer.boundary_vintage)
+        ? "contracted"
+        : "vintage-not-contracted",
+      layer_path: path,
+    },
+    {
+      id: "city-council-district-boundaries",
+      dataset_id: council.dataset_id || "872g-cjhh",
+      vintage_at: council.boundary_vintage || layer.boundary_vintage || null,
+      max_stale_days: 730,
+      status: (council.boundary_vintage || layer.boundary_vintage)
+        ? "contracted"
+        : "vintage-not-contracted",
+      layer_path: path,
+    },
+  ];
+}
+
 function buildInventory() {
   return {
     schema: "cityscroll.location_resolution_inventory.v0",
     measured_at: MEASURED_AT,
-    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Missing boundary vintages remain explicit until authoritative boundary sources are contracted.",
+    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer.",
     lenses: [
       measureLens({
         lens: "meetings-hearings",
@@ -81,22 +129,7 @@ function buildInventory() {
       }),
     ],
     geocoded_pins: geocodedPins(),
-    boundaries: [
-      {
-        id: "community-district-boundaries",
-        dataset_id: "5crt-au7u",
-        vintage_at: null,
-        max_stale_days: 730,
-        status: "vintage-not-contracted",
-      },
-      {
-        id: "city-council-district-boundaries",
-        dataset_id: "872g-cjhh",
-        vintage_at: null,
-        max_stale_days: 730,
-        status: "vintage-not-contracted",
-      },
-    ],
+    boundaries: boundaryEntries(),
   };
 }
 
