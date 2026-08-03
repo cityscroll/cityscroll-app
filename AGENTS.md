@@ -11,10 +11,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   pre-push hook once per clone with `make install-hooks` (`core.hooksPath=tools/git-hooks`);
   the hook rejects pushes that fail the fast preflight and runs `--full` when the
   push range touches `site/**`. Bypass only with `git push --no-verify` (CI still must pass).
-- Module-graph fingerprint: after intentional `site/app/` edits, refresh with
-  `node tools/site_module_architecture.mjs --update` (or `make module-graph-digest`).
-  `--check` is the CI-facing form; one-time token_reduction / hard-coded after_bytes
-  migration assertions were retired.
+- Module-graph fingerprint: after intentional `site/app/` edits, validate with
+  `node tools/site_module_architecture.mjs --check` (or `make module-graph-digest`).
+  The digest is derived at check time rather than committed; one-time token_reduction /
+  hard-coded after_bytes migration assertions were retired.
 - Test-clock auditor (`node tools/audit-test-clocks.mjs`) runs in local preflight **and**
   the CI unit job. PR gates must not set `CROL_BASE` to production hosts
   (`test/ci_no_prod_origin_gates.test.mjs`); scheduled cutover-regression owns live prod.
@@ -31,15 +31,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   modules stay below 100 KB. Source-extraction tests read modules through
   `test/helpers/site_source.mjs`; rendered split parity is
   `python3 test/functional/21_module_dom_equivalence.py`.
-- **Module-graph digest (Unit CI, post-push trap):** changing `site/app/*.mjs` body, loader
-  order (`main.mjs` / `SITE_MODULES`), or `site/index.html` size invalidates the pinned
-  digest in `docs/evidence/index-module-split.json`. Before push, run
-  `node --test test/site_module_architecture.test.mjs` — if it fails, refresh
-  `current_module_graph` (bytes + sha256), `after.index_html_bytes`, and any
-  representative-task `after_bytes` that include the touched modules. Pure libs loaded only
-  via dynamic `import()` (not listed in `SITE_MODULES`) do not need graph registration; still
-  re-run the test when an *app* module that imports them changes. Fixing this only after CI
-  red is a recurring multi-PR tax.
+- **Module-graph digest (Unit CI):** `node --test test/site_module_architecture.test.mjs`
+  derives the fingerprint from the current loader graph and verifies that every
+  `site/app/*.mjs` module is registered exactly once, with no orphan or unregistered files.
+  Pure libs loaded only via dynamic `import()` (not listed in `SITE_MODULES`) do not need
+  graph registration; still re-run the test when an *app* module that imports them changes.
 
 ## Digest cron deploy safety
 
