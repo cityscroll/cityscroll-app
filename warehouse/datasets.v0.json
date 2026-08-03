@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs + WH-05 serve lookups + WH-07 City Record snapshot.",
+  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs + WH-05 serve lookups + WH-07 City Record snapshot + tax-lien prediction inputs.",
   "defaults": {
     "max_rows_default": 50,
     "max_rows_hard_cap": 10000,
@@ -74,6 +74,33 @@
         "section_name"
       ],
       "notes": "Largest Socrata surface (~1.1M rows). WH-02 queue last; prefer Mini overnight."
+    },
+    "dof-tax-lien-sale-lists": {
+      "id": "dof-tax-lien-sale-lists",
+      "source_contract_id": "dof-tax-lien-sale-lists",
+      "name": "DOF Tax Lien Sale Lists",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "9rz4-mjek",
+      "table_name": "dof_tax_lien_sale_lists",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "bulk_phase": "CS-PRED-10",
+      "soda_order": "month ASC, cycle ASC, borough ASC, block ASC, lot ASC",
+      "bulk_paging": {
+        "page_size": 50000,
+        "order": "month ASC, cycle ASC, borough ASC, block ASC, lot ASC",
+        "polite_delay_s": 0.5
+      },
+      "required_fields": [
+        "month",
+        "cycle",
+        "borough",
+        "block",
+        "lot"
+      ],
+      "notes": "Per-BBL 90/60/30/10-day and final-sale publications used by the transparent tax-lien progression model. Raw bulk and parquet stay uncommitted."
     },
     "zap-projects": {
       "id": "zap-projects",

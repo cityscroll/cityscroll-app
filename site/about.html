@@ -204,6 +204,9 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 </ul>
 <p class="src">The site file <code>data/property_disposition_timing_model.json</code> holds the current numbers.</p>
 
+<h3 id="tax-lien-sale-predictions" data-i18n="about_h_tax_lien_formula">Tax lien sale progression</h3>
+<p class="src" data-i18n-html="about_p_tax_lien_formula_html">Method: <b>borough base rate plus the announced sale date</b>. For each 90-, 60-, 30-, or 10-day stage, the rate is the number of distinct cycle-and-BBL pairs that also appear on that cycle's final sale list, divided by all distinct cycle-and-BBL pairs at that stage. Training requires at least three earlier cycles. A cycle-based holdout runs through the public prediction scorecard. Below the bar, CityScroll shows cohort statistics and observed BBL status, not a property-specific probability. False-positive modes include payment, payment plans, exemptions, corrections, and cancellation of an entire sale cycle. The dataset cannot identify which reason removed a BBL. A final-list match means the <b>lien</b> appeared on the sale list. It does not mean the property was sold, foreclosed, or transferred.</p>
+
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
 <p class="src" data-i18n-html="about_email_us_html">Or email us: <a href="mailto:feedback@cityscroll.org">feedback@cityscroll.org</a></p>
