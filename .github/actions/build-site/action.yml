@@ -33,6 +33,29 @@ runs:
         else
           echo "path=$SOURCE_DIR" >> "$GITHUB_OUTPUT"
         fi
+    # Map density payload must rebuild with the code that ships — otherwise a
+    # locator fix can merge while district_activity.json stays pre-fix (zero
+    # choropleth for place-based lenses). Pure offline rebuild from committed
+    # corpora + boundary layer; no live GIS.
+    # Node 22+: wrangler 4.x (pages deploy in the same job) requires >=22.
+    # setup-node persists on PATH for later steps — do not pin Node 20 here.
+    - name: Setup Node for map density rebuild
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - name: Rebuild district activity (map density)
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        if [ -f "$SOURCE_DIR/tools/build_district_activity.mjs" ]; then
+          node "$SOURCE_DIR/tools/build_district_activity.mjs"
+          node "$SOURCE_DIR/tools/build_district_activity.mjs" --check
+          echo "district_activity rebuilt at $(node -e "console.log(JSON.parse(require('fs').readFileSync('$SOURCE_DIR/site/data/district_activity.json','utf8')).built_at)")"
+        else
+          echo "skip district_activity rebuild (tool missing)"
+        fi
     - name: Build with GitHub Pages
       uses: actions/jekyll-build-pages@v1
       with:
