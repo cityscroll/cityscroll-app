@@ -15,7 +15,7 @@
     "inline_script_lines": 13290
   },
   "after": {
-    "index_html_bytes": 157481,
+    "index_html_bytes": 157383,
     "module_count": 19,
     "largest_module": {
       "path": "site/app/money-history.mjs",

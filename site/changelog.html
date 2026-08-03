@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-title="changelog_title">
+<html lang="en" data-destination="about.html">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Changelog · CityScroll</title>
-<meta name="description" content="What changed on CityScroll, newest first — plain-language notes on every update, from new features and languages to fixes and data improvements.">
-<meta name="robots" content="index,follow">
-<link rel="canonical" href="https://cityscroll.org/changelog.html">
+<title>Release notes moved · CityScroll</title>
+<meta name="description" content="CityScroll release notes have moved to an internal team surface so the public site can stay focused on civic records, decisions, and resident actions.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://cityscroll.org/about.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CityScroll">
-<meta property="og:title" content="Changelog · CityScroll">
-<meta property="og:description" content="Read CityScroll's newest plain-language feature, data, language, and accessibility updates.">
-<meta property="og:url" content="https://cityscroll.org/changelog.html">
+<meta property="og:title" content="Release notes moved · CityScroll">
+<meta property="og:description" content="CityScroll keeps its public site focused on civic content.">
+<meta property="og:url" content="https://cityscroll.org/about.html">
 <meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
 <meta property="og:image:alt" content="CityScroll — the City Record, made legible">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,433 +20,34 @@
 <link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="site.webmanifest">
+<link rel="stylesheet" href="brand.css">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
 <script defer src="clarity.js?v=1.0.0"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
-    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
-    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
-    --blue:#1f3a5f; --green:#2f4a32; --oxblood:#7a1f1f; --amber:#8a5a00;
-    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
-    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
-  }
+  :root{--paper:#f4efe4;--ink:#1a1714;--ink-soft:#3b342c;--oxblood:#7a1f1f}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
-  .wrap{position:relative;max-width:760px;margin:0 auto;padding:0 22px 80px}
+  body{min-height:100vh;margin:0;display:grid;place-items:center;padding:24px;background:var(--paper);color:var(--ink);font:17px/1.6 Georgia,serif;text-align:center}
+  main{max-width:38rem}
+  h1{margin:0 0 .5rem;font-size:1.55rem}
+  p{margin:.3rem 0;color:var(--ink-soft);font-family:ui-sans-serif,system-ui,sans-serif}
   a{color:var(--oxblood)}
-  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
-  header{padding-top:18px;text-align:center}
-  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
-  .home:hover .cr-title{color:var(--oxblood)}
-  .cr-seal{width:34px;height:34px;color:var(--ink)}
-  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
-  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
-  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
-  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
-  .backhome:hover{text-decoration:underline}
-  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 6px}
-  .rel-auto{margin-top:22px}
-  .rel-auto h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
-  ul.chg-auto{list-style:none;margin:0;padding:0;font:15.5px/1.6 var(--font-body);color:var(--ink-soft)}
-  ul.chg-auto li{padding:8px 0;border-top:1px solid var(--rule)}
-  ul.chg-auto li:first-child{border-top:none}
-  ul.chg-auto time{font:600 12px/1 var(--ui);color:var(--muted);display:inline-block;margin-inline-end:6px}
-  .chg-entry--media{color:var(--ink)}
-  .chg-entry-copy{color:var(--ink-soft)}
-  .chg-media{margin-top:14px;padding:14px;background:var(--card);border:1px solid var(--rule);border-radius:9px;box-shadow:var(--shadow)}
-  .chg-media-pair+.chg-media-pair,.chg-media-recording{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}
-  .chg-media h3{margin:0 0 8px;font:600 12px/1.3 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .chg-media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .chg-media-shot,.chg-media-recording{min-width:0;margin:0}
-  .chg-media-shot a{display:block;border-radius:6px;overflow:hidden;background:var(--paper-2)}
-  .chg-media-shot img{display:block;width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center}
-  .chg-media figcaption{margin-top:6px;font:12px/1.45 var(--ui);color:var(--muted)}
-  .chg-media figcaption strong{display:block;color:var(--ink);font-family:var(--font-sc);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-  .chg-media figcaption span{display:block;margin-top:2px}
-  .chg-media-recording video{display:block;width:min(100%,620px);height:auto;background:var(--ink);border-radius:6px}
-  @media(max-width:420px){.chg-media{padding:10px}.chg-media-grid{gap:8px}.chg-media figcaption{font-size:11px}}
-  .earlier-h2{font-family:var(--font-sc);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:34px 0 0}
-  .rel{margin-top:34px;border-top:1px solid var(--rule);padding-top:16px}
-  .rel h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
-  .rel .foryou{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--green);border-radius:0 9px 9px 0;box-shadow:var(--shadow);padding:10px 14px;margin:12px 0;font-size:15.5px}
-  .rel .foryou b{font-family:var(--font-sc);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
-  .rel ul{margin:10px 0;padding-left:20px;font:15px/1.65 var(--ui);color:var(--ink-soft)}
-  .rel li{margin:5px 0}
-  code{font:12.5px/1 ui-monospace,Menlo,monospace;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:1px 5px;color:var(--ink-soft)}
-  .incident{background:#f7efe8;border:1px solid var(--rule);border-left:4px solid var(--oxblood);border-radius:0 9px 9px 0;padding:10px 14px;margin:12px 0;font:14.5px/1.6 var(--ui);color:var(--ink-soft)}
-  .incident b{font-family:var(--font-sc);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood)}
-  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
-  .foot a{color:var(--oxblood)}
-  /* language switcher — matches index.html */
-  .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}.lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}.lang-select:focus-visible{outline:2px solid var(--blue,#1f3a5f);outline-offset:2px}
-  .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
-  :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
-  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
-  .skip:focus{left:0}
-  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
-<link rel="stylesheet" href="brand.css">
+<script>
+  (function () {
+    var destination = new URL(document.documentElement.dataset.destination, location.href);
+    destination.search = location.search;
+    destination.hash = location.hash;
+    location.replace(destination.toString());
+  })();
+</script>
 </head>
 <body>
-<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
-<div class="wrap">
-<header>
-  <div class="cr-rule"></div>
-  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
-    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
-      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span class="cr-title">CityScroll</span>
-  </a>
-  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
-  <h1 data-i18n="changelog_link">Changelog</h1>
-      <div class="lang-switcher" id="langSwitcher">
-      <select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language">
-        <option value="en" lang="en">English</option>
-        <option value="es" lang="es">Español</option>
-        <option value="zh-Hans" lang="zh-Hans">中文（简体）</option>
-        <option value="ru" lang="ru">Русский</option>
-        <option value="bn" lang="bn">বাংলা</option>
-        <option value="ht" lang="ht">Kreyòl ayisyen</option>
-        <option value="ko" lang="ko">한국어</option>
-        <option value="fr" lang="fr">Français</option>
-        <option value="pl" lang="pl">Polski</option>
-        <option value="ar" lang="ar" dir="rtl">العربية</option>
-        <option value="ur" lang="ur" dir="rtl">اردو</option>
-      </select>
-    </div>
-  <div id="langNotice" class="lang-notice" hidden></div>
-  <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
-</header>
-
-<main id="main" tabindex="-1">
-<p class="lede" data-i18n="chg_p_lede">What changed on CityScroll, newest first.</p>
-
-<section class="rel-auto" aria-labelledby="chgAutoH2">
-  <h2 id="chgAutoH2" data-i18n="chg_auto_h2">Recent updates</h2>
-  <ul class="chg-auto" id="chgAutoList"><!-- CHANGELOG:AUTO:START -->
-    <li><time datetime="2026-08-01">2026.08.01</time> — Readers can follow public procurement relationships without unlabeled lines implying more than the underlying records support. Every displayed connection says what it means and links back to its evidence.</li>
-    <li><time datetime="2026-07-30">2026.07.30</time> — Hearing notices that match a Council event now show agenda matters, action outcomes (for example Approved / Passed), roll-call tallies when published, agenda/minutes PDFs, and item attachments — instead of an empty “not yet shown” gap.</li>
-    <li><time datetime="2026-07-30">2026.07.30</time> — The changelog page again names the biggest recent visitor-facing changes, and a labeled major merge that cannot produce an entry fails the update job instead of succeeding silently.</li>
-    <li><time datetime="2026-07-27">2026.07.27</time> — You can open a QR code for the exact page or filtered view you are seeing, then scan it from another device or save it as a PNG.</li>
-    <li><time datetime="2026-07-27">2026.07.27</time> — Open a vendor profile and its name, totals, top agencies, 15 newest notices, and forecast now appear together. The page shows when the snapshot was made. Text-only mentions load only if you open that section, and a missing snapshot still uses the live source.</li>
-    <li><time datetime="2026-07-27">2026.07.27</time> — Open any agency page and you now see who runs the agency, its website, and its budget — pulled straight from the City's own data, not typed in by hand. A small label shows exactly which public dataset each fact came from, so you can check it yourself. If an agency is not in the City's roster, the page simply shows its City Record name and moves on. It is fast because the match is prepared ahead of time, so nothing is fetched while you wait.</li>
-    <li><time datetime="2026-07-27">2026.07.27</time> — You can download the agency-name reconciliation instead of rebuilding it. The crosswalk keeps each source spelling visible and shows which names this site connects. Anyone, including the City, can adopt or improve the same connection. It is not a competing registry.</li>
-    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — Some agencies don't file their awards in the City Record — they post them elsewhere. CityScroll now checks those outside sources for you: it shows what it finds, links to the source, and says so honestly when nothing has turned up yet. If a notice has no award on file, you can ask to be emailed the moment one appears — click &quot;Email me when the award registers,&quot; confirm your email once, and you're done. No extra emails until there's real news.</div>
-    <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
-      <figure class="chg-media-recording">
-        <video controls preload="none" playsinline width="780" height="620" poster="media/changelog/pr-80/poster-780.png">
-          <source src="media/changelog/pr-80/award-watch.webm" type="video/webm">
-          <span data-i18n="chg_media_video_fallback">Your browser cannot play this video.</span>
-        </video>
-        <figcaption><strong data-i18n="chg_media_recording">Screen recording</strong><span data-i18n="chg_pr80_recording_caption">Find a covered notice, choose the award watch, enter reader@example.com, and reach the email confirmation step.</span></figcaption>
-      </figure>
-    </div>
-    </li>
-    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — Click a link in a CityScroll digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.</div>
-    <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
-      <section class="chg-media-pair" aria-labelledby="chg-media-pr-74-390">
-        <h3 id="chg-media-pr-74-390"><span data-i18n="chg_media_viewport">Viewport</span> 390 px</h3>
-        <div class="chg-media-grid">
-        <figure class="chg-media-shot">
-          <a href="media/changelog/pr-74/before-390.png"><img src="media/changelog/pr-74/before-390.png" width="390" height="844" loading="lazy" decoding="async" alt="A notice page opened from a bare link, with no sign of why it matched." data-i18n-alt="chg_pr74_before_alt"></a>
-          <figcaption><strong data-i18n="chg_media_before">Before</strong><span data-i18n="chg_pr74_before_alt">A notice page opened from a bare link, with no sign of why it matched.</span></figcaption>
-        </figure>
-        <figure class="chg-media-shot">
-          <a href="media/changelog/pr-74/after-390.png"><img src="media/changelog/pr-74/after-390.png" width="390" height="844" loading="lazy" decoding="async" alt="The same notice page opened from a digest link, with the matching word highlighted and a plain summary of the watch." data-i18n-alt="chg_pr74_after_alt"></a>
-          <figcaption><strong data-i18n="chg_media_after">After</strong><span data-i18n="chg_pr74_after_alt">The same notice page opened from a digest link, with the matching word highlighted and a plain summary of the watch.</span></figcaption>
-        </figure>
-        </div>
-      </section>
-    </div>
-    </li>
-    <li><time datetime="2026-07-17">2026.07.17</time> — Has a saved alert gone quiet? If it finds nothing new for a couple of months, its next email says so. That email links back to the alerts page. Your exact search is already loaded there. You can broaden it in one step.</li>
-    <li><time datetime="2026-07-15">2026.07.15</time> — Notice pages now show whether a recurring bid was awarded before, and to whom — not just its own paper trail. When there's no confirmed match, you can choose &quot;Show possible earlier rounds&quot; to see looser, clearly-marked possibilities instead of a dead end.</li>
-    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-15">2026.07.15</time> — The stats page's &quot;all time&quot; numbers, topic/lens breakdowns, and day-by-day history now say exactly how far back they can honestly account for — no more numbers that quietly undercount, and no more &quot;since launch&quot; where that isn't true. Digests, searches, and now active watches are also easier to read at a glance, with the technical plumbing (feed fetches, API checks) moved to its own clearly-labeled section at the bottom.</div>
-    <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
-      <section class="chg-media-pair" aria-labelledby="chg-media-pr-62-1440">
-        <h3 id="chg-media-pr-62-1440"><span data-i18n="chg_media_viewport">Viewport</span> 1440 px</h3>
-        <div class="chg-media-grid">
-        <figure class="chg-media-shot">
-          <a href="media/changelog/pr-62/before-1440.png"><img src="media/changelog/pr-62/before-1440.png" width="1440" height="900" loading="lazy" decoding="async" alt="The stats page with one flat grid mixing plain outcomes and technical plumbing, and no note on how far back the totals count." data-i18n-alt="chg_pr62_before_alt"></a>
-          <figcaption><strong data-i18n="chg_media_before">Before</strong><span data-i18n="chg_pr62_before_alt">The stats page with one flat grid mixing plain outcomes and technical plumbing, and no note on how far back the totals count.</span></figcaption>
-        </figure>
-        <figure class="chg-media-shot">
-          <a href="media/changelog/pr-62/after-1440.png"><img src="media/changelog/pr-62/after-1440.png" width="1440" height="900" loading="lazy" decoding="async" alt="The stats page with headline numbers separated from a technical-details section, and a note on how far back each total counts." data-i18n-alt="chg_pr62_after_alt"></a>
-          <figcaption><strong data-i18n="chg_media_after">After</strong><span data-i18n="chg_pr62_after_alt">The stats page with headline numbers separated from a technical-details section, and a note on how far back each total counts.</span></figcaption>
-        </figure>
-        </div>
-      </section>
-    </div>
-    </li>
-    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-15">2026.07.15</time> — Typing a full sentence like &quot;education contracts over $200K due in 3 months&quot; into an alert now matches the category, amount, and deadline together — wherever you type it: the 60-second quiz, the &quot;Ask&quot; box, or Build an alert. You'll see the real, interpreted results before you subscribe. A single word or a quoted phrase still searches literally as before.</div>
-    <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
-      <figure class="chg-media-recording">
-        <video controls preload="none" playsinline width="780" height="620" poster="media/changelog/pr-50/poster-780.png">
-          <source src="media/changelog/pr-50/quiz-nl.webm" type="video/webm">
-          <span data-i18n="chg_media_video_fallback">Your browser cannot play this video.</span>
-        </video>
-        <figcaption><strong data-i18n="chg_media_recording">Screen recording</strong><span data-i18n="chg_pr50_recording_caption">Pick the &quot;City contracts and RFPs&quot; topic, type a full sentence, and preview the real, interpreted results.</span></figcaption>
-      </figure>
-    </div>
-    </li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — Alert emails and the &quot;Preview my digest&quot; tool now show exactly which word matched and where — no more guessing why an unrelated-looking notice showed up in your search results.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — Opening the Land or Staffing tab for the first time now shows a real, current example — a live rezoning application, or the city's most common job title with its salary band and career ladder — instead of an empty panel waiting for you to search. Your own searches and shared links work exactly as before.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — The stats page now shows day-by-day history of digests sent and searches asked, with recovered and live-counted days honestly labeled.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — You can now build an alert that watches one agency, or only awards, or only open solicitations, not just an amount or a deadline.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — The stats page now uses plain-language labels, shows all-time totals, and breaks down digest matches by topic.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — The Money tab is now called Contracts, and a notice page now leads with that notice's own facts before agency-wide totals.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — The homepage now says how many notices came in today, digest email titles are clickable, and a new tagline explains what the site does.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — You can now read every page in Arabic and Urdu, right to left.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — You can now read the site in Bengali, Haitian Creole, Korean, French, and Polish.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — You can now read the site in Chinese (Simplified) and Russian.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — Closed the last known accessibility gaps: every control now has a visible focus ring, an accurate label, and enough color contrast to read.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — Every page, not just the homepage, now translates into Español, and your language choice is remembered across visits.</li>
-  <!-- CHANGELOG:AUTO:END --></ul>
-</section>
-
-<h2 class="earlier-h2" data-i18n="chg_earlier_h2">Earlier releases</h2>
-<p class="note" data-i18n="chg_detail_note" style="font:13px/1.6 var(--ui);color:var(--muted);margin:6px 0 0">The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.</p>
-<section class="rel" id="2026-07-10e">
-  <h2 data-i18n="chg_0710e_h2">2026.07.10 · Espanol coverage: the whole interface, not just the chrome</h2>
-  <div class="foryou" data-i18n-html="chg_0710e_foryou_html"><b>Para usted</b> — Phase 2 of Spanish support: the entire visible interface
-  now translates when you switch to Espanol. Phase 1 covered tabs, buttons, and short labels (98 keys).
-  Phase 2 adds the empty states, search placeholders, panel headings, the Today's Edition strip,
-  alert builder labels and parameters, loading messages, and all control labels across every lens
-  (Money, People, Land, Property, Rules, Meetings, Alerts) -- growing the dictionary from 98 to
-  over 200 keys. A new residual-English coverage gate in the test suite verifies 15 high-visibility
-  sentinel strings are absent in Espanol mode.</div>
-  <ul class="chg-detail">
-    <li>Dictionary grows from 98 to 200+ keys; all new keys carry full en + es translations.</li>
-    <li>Static HTML: <code>data-i18n</code> attributes on all translatable labels, options, buttons,
-      and headings. New <code>data-i18n-placeholder</code> attribute pattern for search inputs.</li>
-    <li>JavaScript: hardcoded English strings in <code>renderToday</code>, loading states,
-      empty states, and dynamic label assignments replaced with <code>t()</code> calls.</li>
-    <li>Test spec <code>12_language.py</code> extended with a residual-English sentinel gate:
-      15 high-visibility phrases must be absent in Espanol mode.</li>
-    <li>Machine-translated; pending native review through community partners.</li>
-  </ul>
-</section>
-<section class="rel" id="2026-07-10d">
-  <h2 data-i18n="chg_0710d_h2">2026.07.10 · Spanish support + style-guide copy pass</h2>
-  <div class="foryou" data-i18n-html="chg_0710d_foryou_html"><b>For you</b> — A language switcher now appears in the header (English
-  / Espanol). Choosing Spanish translates all tabs, chips, and messages in the UI. Notices
-  themselves stay in English, which is the official language of the City Record. Your preference
-  is remembered across visits. Separately, time chips, deadline chips, and the feedback-category
-  selector were updated to follow the NYC Web Content Style Guide: "9 a.m." (not "9 AM"), spelled-out
-  numbers ("closes in two days"), and acronym expansions on first use (RFP, M/WBE, ZAP).
-  City Record content is now marked <code>translate="no"</code> so machine-translation tools
-  leave it intact.</div>
-  <ul class="chg-detail">
-    <li>Language switcher (English / Espanol) with USWDS-pattern native-language labels, stored
-      in localStorage, and <code>aria-pressed</code> for keyboard users.</li>
-    <li>Runtime dictionary (<code>i18n.js</code>) with 98 keys in English and Spanish — no build
-      step, plain script tag. Spanish is machine-translated and pending native review through
-      community partners.</li>
-    <li>Confirmation and digest emails deliver in the subscriber's chosen language.</li>
-    <li><code>translate="no"</code> on all notice-data containers; <code>lang</code> attribute
-      on all language-labeled spans and UI chrome.</li>
-    <li>Key parity lint added to CI: a missing translation key fails the build.</li>
-  </ul>
-</section>
-<section class="rel" id="2026-07-10c">
-  <h2 data-i18n="chg_0710c_h2">2026.07.10 · Accessibility: an enforced floor, not a promise</h2>
-  <div class="foryou" data-i18n-html="chg_0710c_foryou_html"><b>For you</b> — If you use a keyboard or a screen reader, the rough edges
-  are getting fixed for real: the feedback form's category picker now works without a mouse, the
-  plain-English search box announces itself properly, low-contrast text is corrected site-wide,
-  and the "minimum award" filter genuinely disables when it doesn't apply instead of just fading.
-  From now on, an automated accessibility check (axe) runs against every page in our test
-  harness — a change that breaks accessibility fails the build. CONTRIBUTING and SECURITY were
-  also rewritten to describe how the project is actually governed and defended.</div>
-  <ul class="chg-detail">
-    <li>The gate immediately earned its keep: it caught a third contrast violation (chip count
-      badges at 55% opacity, ratio 3.2:1) that two human passes had missed. All six public pages
-      now pass with zero critical/serious violations.</li>
-    <li>Per the NYC Web Content Style Guide we're aligning to (WCAG 2.2 + plain language) — more
-      of that standard becomes automated checks next.</li>
-  </ul>
-</section>
-<section class="rel" id="2026-07-10b">
-  <h2 data-i18n="chg_0710b_h2">2026.07.10 · Three new front doors: email-in, MCP, and The Data</h2>
-  <div class="foryou" data-i18n-html="chg_0710b_foryou_html"><b>For you</b> — Three new ways in. <b>Subscribe by email:</b> write to
-  <a href="mailto:subscribe@crol-list.org">subscribe@crol-list.org</a> in plain English
-  ("construction awards over $500k") and you'll get a confirmation link back — no form, no
-  CAPTCHA, just your words. <b>For AI assistants:</b> point any MCP client at
-  <code>api.cityscroll.org/mcp</code> to search notices and set up watches programmatically
-  (double opt-in still applies — nothing sends without the address confirming).
-  <b><a href="data.html">The Data</a>:</b> a new page showing the City Record at a glance —
-  what's actually in it, publication volume, procurement mix, top agencies and vendors by
-  cleaned dollars — computed live in your browser from NYC Open Data.</div>
-  <ul class="chg-detail">
-    <li>Inbound email → LLM-parsed watch with the same double-opt-in confirm flow as the site;
-      hard daily ceilings and per-sender limits on every model-backed path, failing closed.</li>
-    <li>MCP tools: <code>search_notices</code>, <code>get_notice</code> (the daily-refreshed
-      mirror), <code>preview_watch</code>, <code>create_watch</code> — documented on
-      <a href="api.html">the API page</a>.</li>
-    <li>Plain-English money searches understand more: amount ceilings ("under $500k") and
-      procurement categories ("construction", "human services").</li>
-    <li>Digest delivery moved to a queue: each subscriber's digest retries independently, so
-      one bad address can't block a run; daily send caps unchanged. (Groundwork from Dev
-      Doshi's crol-alert.)</li>
-  </ul>
-</section>
-<section class="rel" id="2026-07-10">
-  <h2 data-i18n="chg_0710_h2">2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)</h2>
-  <div class="foryou" data-i18n-html="chg_0710_foryou_html"><b>For you</b> — Money filters and digests can no longer be hijacked by
-  the dataset's data-entry errors: amounts of $10 billion or more (there's a $96 trillion typo in the
-  official record) are excluded, while real multi-billion awards now correctly appear — the old
-  cutoff silently dropped everything above $5 billion, including the largest legitimate award (about $6.68 billion).
-  Pre-qualified-list notices with placeholder year-2090 dates now say "no fixed deadline
-  (rolling)" instead of a date no one should calendar. The <a href="about.html#data">About
-  page documents the dataset's quirks</a> — what the City Record actually contains and how we
-  correct for it.</div>
-  <ul class="chg-detail">
-    <li>Data-honesty rules grounded in Dev Doshi's exploratory analysis of the full 1.09M-row
-      dataset (87.5% personnel-change skew, a data-entry-error amount tail, rolling-deadline placeholders,
-      dual agency-name conventions) — thanks Dev.</li>
-    <li>New server-side mirror of recent notices (Cloudflare D1), refreshed by the daily cron
-      from NYC Open Data — the source of truth is unchanged and site searches still query it
-      live; the mirror makes alert matching and upcoming features fast, and stores each raw
-      source row so upstream schema changes are recoverable.</li>
-    <li>Groundwork from the same analysis: a shared notice-search engine over the mirror
-      (AND-of-ORs keyword matching with the honesty rules enforced in SQL), powering the next
-      round of subscription features.</li>
-    <li>Continuous integration now runs both unit-test layers on every change (previous entry's
-      multi-watch regression suite included).</li>
-  </ul>
-</section>
-<section class="rel" id="2026-07-09">
-  <h2 data-i18n-html="chg_0709_h2">2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
-  <div class="foryou" data-i18n-html="chg_0709_foryou_html"><b>For you</b> — CityScroll now alerts you 6 months before contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
-  <ul class="chg-detail">
-    <li>Checkbook NYC contract end-date calculations to estimate renewal timelines; 180-day early warning triggers with single-send de-duplication.</li>
-    <li>Ingestion pipeline for annual Charter §112 MOCS agency procurement plans, normalizing value bands and expected RFP release quarters.</li>
-    <li>New unified <code>GET /forecast</code> API search endpoint and extended <code>GET /inv/:id</code> details, grouping future timeline milestones chronologically.</li>
-    <li>A visual vertical timeline component on vendor/agency profiles showing estimated renewals and planned solicitations, complete with direct alert subscriptions.</li>
-  </ul>
-</section>
-
-<section class="rel" id="2026-07-02d">
-  <h2 data-i18n="chg_0702d_h2">2026.07.02 · Fix: vendors with punctuated names resolve again</h2>
-  <div class="foryou" data-i18n-html="chg_0702d_foryou_html"><b>For you</b> — Vendor pages and vendor watches now work for names like
-  "Leon D. Dematteis Construction Corp." Before this fix, clicking such a vendor showed "no awards
-  on record" and a watch on them matched nothing — despite their awards being right there.</div>
-  <ul class="chg-detail">
-    <li>Root cause: entity resolution normalizes a name to a punctuation-free stem, but the server-side lookup prefix-matched that stem against the <em>raw</em> <code>vendor_name</code> column — so any vendor with mid-name punctuation could never match its own stem. Fixed by switching the lookup to Socrata full-text <code>$q</code> (punctuation-insensitive on both sides); the exact-stem filter still guarantees precision. Same fix in the site, the worker's entity watches, and the batch cross-reference tool.</li>
-    <li>Caught by functional spec 05; a new unit test pins the invariant (a vendor's own row must satisfy the compiled query).</li>
-  </ul>
-</section>
-
-<section class="rel" id="2026-07-02c">
-  <h2 data-i18n="chg_0702c_h2">2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass</h2>
-  <div class="foryou" data-i18n-html="chg_0702c_foryou_html"><b>For you</b> — The site looks calmer and feels immediate. Lists show
-  content-shaped placeholders instead of spinners. Filtering keeps your place instead of blanking
-  the list. Going back to a tab you already loaded is instant. Clicking a notice paints its detail
-  at once (the paper trail fills in a beat later). Search runs as you type — the Filter buttons
-  are gone because you no longer need them.</div>
-  <ul class="chg-detail">
-    <li>~150KB of map code (Leaflet) no longer blocks first paint — it loads only when the Land lens needs it. Unused font weight dropped; the browser now pre-connects to the data APIs.</li>
-    <li>A read-side query cache (5-minute TTL) with request coalescing: revisiting a tab, filter, or notice renders from memory.</li>
-    <li>Today's Edition renders instantly from your last visit's copy and refreshes behind itself — no more masthead reflow.</li>
-    <li>Declutter, per decision 005 (internal design log): one accent color (urgency and red flags keep theirs), ~40 decorative emoji removed, shadows off, the stage-legend strip retired. The design is now formally anchored to citymeetings.nyc/craigslist restraint and Tufte's data-ink rule.</li>
-  </ul>
-</section>
-
-<section class="rel" id="2026-07-02b">
-  <h2 data-i18n="chg_0702b_h2">2026.07.02 · Enablement: public stats, honest click counts, this page</h2>
-  <div class="foryou" data-i18n-html="chg_0702b_foryou_html"><b>For you</b> — You can now see the project's own usage numbers at
-  <a href="stats.html">/stats</a> (aggregate counts only — no accounts, no cookies, nobody tracked). Email-digest
-  links now pass through a count-only redirect so we can tell digests are useful. It counts clicks per day,
-  never who clicked, and every digest footer says so.</div>
-  <ul class="chg-detail">
-    <li>Public <code>/stats</code> endpoint + this site's <a href="stats.html">stats page</a>: active subscriptions (a count, not a list), digests sent, digest links followed, feed/batch/share activity, plain-English-search calls. <code>a5dbc18</code> (worker)</li>
-    <li>Count-only digest click-through <code>/r/&lt;kind&gt;/&lt;id&gt;</code> — validated ids only, cannot redirect off-site, junk paths fall to the homepage uncounted. <code>a5dbc18</code></li>
-    <li>This changelog; the maintenance rule now includes it (every shipped change lands an entry in the same session).</li>
-    <li>The backend went open source: the worker's code now lives in this repo's <code>worker/</code>
-    (fresh tree; secrets were never in git — see decision 004 (internal design log)). One clone is the whole system; SECURITY.md documents the threat model.</li>
-    <li>Governance files landed: <a href="https://github.com/jimdc/crol-list/blob/main/MISSION.md">MISSION.md</a>, CONTRIBUTING.md, and a decision log.</li>
-  </ul>
-</section>
-
-<section class="rel" id="2026-07-02">
-  <h2 data-i18n="chg_0702_h2">2026.07.02 · Follow the dollars, matter timelines, follows, workspace, API</h2>
-  <div class="foryou" data-i18n-html="chg_0702_foryou_html"><b>For you</b> — Awards now show what was <b>actually paid</b> (live from Checkbook NYC),
-  any procurement matter reads as one timeline, you can follow a vendor or agency and get emailed when they
-  reappear, pin anything into a citable investigation workspace, and use every view as an API.</div>
-  <ul class="chg-detail">
-    <li>Checkbook NYC join, deterministic by PIN: committed vs. paid-to-date with a progress bar, amended-from, M/WBE, vendor-mismatch warning; <code>#matter/&lt;pin&gt;</code> timelines. <code>943a858</code></li>
-    <li>Follow-an-entity alerts (name-stem matched) + Follow buttons on entity pages; investigation workspace — pin · annotate · export CSV/JSON · print dossier · 90-day share links; <code>api.html</code> docs + live batch cross-reference (<code>POST /batch</code>). <code>c794015</code> (site) · <code>3176ec2</code> (worker)</li>
-    <li>All user-visible worker URLs now read <code>api.cityscroll.org</code>. <code>03ed286</code></li>
-    <li>Test coverage across all twenty features; fixed a case-sensitivity bug it caught in junk-PIN filtering. <code>dc8499e</code></li>
-  </ul>
-  <div class="incident chg-detail"><b>Incident</b> — Adding the custom domain silently disabled the <code>workers.dev</code>
-  fallback alias (Cloudflare error 1042): cached pages and in-flight email-confirm links would have broken. Caught
-  by live probes minutes after deploy; fixed by keeping the alias explicitly enabled, and the site now fails over
-  between the two hostnames automatically. <code>d75626e</code></div>
-</section>
-
-<section class="rel" id="2026-07-01">
-  <h2 data-i18n="chg_0701_h2">2026.07.01 · Entity pages, red flags in context — and the first ten, all in one day</h2>
-  <div class="foryou" data-i18n-html="chg_0701_foryou_html"><b>For you</b> — Every vendor and agency became a page (with totals, top partners, and open
-  RFPs), procurement notices carry statistical context instead of bare text, and the whole
-  search-and-subscribe layer landed: watch any search, get a morning email digest, grab any view as RSS/calendar,
-  share any notice by URL, and see deadlines as countdowns instead of dates.</div>
-  <ul class="chg-detail">
-    <li>Entity pages: <code>#vendor/&lt;name&gt;</code> (name variants resolved — "Sinergia Inc" and "Sinergia Incorporated" are one profile) and <code>#agency/&lt;name&gt;</code>; every name on the site became a link. <code>d0db6c1</code> · <code>ad43b56</code></li>
-    <li>Red-flag badges (non-competitive method, short ad window, repeat vendor) + benchmarks ("larger than 94% of this agency's awards"), with the formulas and false-positive modes published on <a href="about.html#context">About</a>. <code>6708c33</code></li>
-    <li>Round one, all ten: watch-this-search on every lens + 60-second onboarding quiz <code>b217895</code>; RSS/Atom/JSON/calendar feeds <code>27e8b1e</code> (worker); permalinks everywhere <code>ef8c3b6</code>; deadline countdown chips <code>55087c6</code>; the who/what/when/act glance box <code>74de73e</code>; Today's Edition front page <code>d28b7d4</code>; the People lens's instant examples <code>2c0f72b</code>; the Property asset-type explorer <code>2ed20ee</code>; the accessibility & mobile pass <code>a46c2fa</code>.</li>
-    <li>The daily digest cron went <b>live</b>; cookieless Cloudflare Web Analytics beacon installed. <code>aec7673</code></li>
-  </ul>
-  <div class="incident chg-detail"><b>Incident</b> — The new vendor pages' full-text mentions query initially ran unbounded
-  over the 1M-row archive (slow, expensive). Caught by the browser test harness before it shipped; the query is
-  now scoped to recent editions with a hard timeout. <code>7fbe726</code></div>
-</section>
-
-<section class="rel" id="2026-06-30">
-  <h2 data-i18n="chg_0630_h2">2026.06.30 · Real subscriptions</h2>
-  <div class="foryou" data-i18n-html="chg_0630_foryou_html"><b>For you</b> — Email alerts became real: double opt-in (nothing is stored until you click
-  the confirmation link), one-click unsubscribe, and your address is only ever used to send you your own digest.</div>
-  <ul class="chg-detail">
-    <li>Turnstile-gated <code>/subscribe</code> → signed confirm link → KV; RFC-8058 one-click unsubscribe. <code>6b2b30d</code></li>
-  </ul>
-</section>
-
-<section class="rel" id="2026-06-26">
-  <h2 data-i18n="chg_0626_h2">2026.06.26 · crol-list.org</h2>
-  <div class="foryou" data-i18n-html="chg_0626_foryou_html"><b>For you</b> — The site got its own domain and a real "ask in plain English" box on every
-  lens (with an on-device fallback, so search works even if the helper is down).</div>
-  <ul class="chg-detail">
-    <li>Domain cutover to <code>crol-list.org</code> <code>cc8192a</code>; plain-English search wired to the worker <code>e32f3fa</code>; interface declutter <code>827fb9b</code>.</li>
-  </ul>
-</section>
-
-<section class="rel" id="2026-06-24">
-  <h2 data-i18n="chg_0624_h2">2026.06.24–25 · The seven lenses</h2>
-  <div class="foryou" data-i18n-html="chg_0624_foryou_html"><b>For you</b> — The tool took its shape: Money, People, Land, Property, Rules, Meetings, and
-  Alerts, in the letterpress design, over live open data with nothing cached.</div>
-  <ul class="chg-detail">
-    <li>Money/People/Land deep lenses; Property, Rules, Meetings feed lenses <code>d0670b7</code>; real rezoned tax-lot polygons on the Land map <code>38b648e</code>; the "Still standing?" demolition check <code>7cd5a96</code>; the City Record letterpress redesign <code>f2c4033</code>.</li>
-  </ul>
-</section>
-
+<main>
+  <h1>Release notes have moved</h1>
+  <p>CityScroll keeps its public site focused on civic content.</p>
+  <p><a href="about.html">Continue to the About page</a>.</p>
 </main>
-<footer class="foot">
-  <p data-i18n-html="chg_foot_html">CityScroll is an unofficial, free interface to public data. <a href="about.html">About</a> ·
-  <a href="stats.html">Stats</a> · <a href="api.html">API and feeds</a> · <a href="index.html">Home</a></p>
-</footer>
-
-<script>
-initSubpageLangSwitcher();
-</script>
-<!-- Cloudflare Web Analytics — cookieless, aggregate. -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
 </body>
 </html>

@@ -1,7 +1,5 @@
-// Characterization: automated changelog PRs must produce the required status checks
-// that main's merge-queue ruleset names, including on changelog-only path sets. Without a
-// fast path, path filters skip the suite and the queue waits forever for checks that never
-// report. See .github/workflows/ci.yml (changelog_only) and update-changelog.yml.
+// Characterization: machine changelog updates publish a data-only commit on the existing
+// bot branch and never create or enqueue a pull request.
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -71,18 +69,16 @@ test("required jobs stay runnable (not job-level skipped) so the check name alwa
   );
 });
 
-test("update-changelog.yml waits on the same three required check names", () => {
+test("update-changelog.yml publishes only the machine data contract", () => {
   const wf = read(".github/workflows/update-changelog.yml");
-  for (const name of REQUIRED_CHECK_NAMES) {
-    assert.match(wf, new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-  }
-  assert.doesNotMatch(wf, /Stray-English guard \(runtime, fixtures\)/);
+  assert.match(wf, /git add site\/changelog-data\.json/);
+  assert.match(wf, /HEAD:\$BOT_BRANCH/);
+  assert.doesNotMatch(wf, /git add[^\n]*site\/changelog\.html/);
+  assert.doesNotMatch(wf, /gh pr create|gh pr merge|enqueuePullRequest|workflow run ci\.yml/);
 });
 
-test("update-changelog.yml arms auto-merge without a strategy flag (merge queue owns squash)", () => {
+test("update-changelog.yml needs no pull-request or actions write permission", () => {
   const wf = read(".github/workflows/update-changelog.yml");
-  // gh pr merge --auto (no --squash/--merge/--rebase) when main is behind a merge queue.
-  assert.match(wf, /gh pr merge "\$PR_NUMBER" --auto\b/);
-  assert.doesNotMatch(wf, /gh pr merge "\$PR_NUMBER" --auto --squash/);
-  assert.doesNotMatch(wf, /gh pr merge "\$PR_NUMBER" --auto --merge/);
+  assert.match(wf, /permissions:\n  contents: write/);
+  assert.doesNotMatch(wf, /pull-requests: write|actions: write/);
 });
