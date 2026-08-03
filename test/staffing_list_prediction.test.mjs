@@ -96,5 +96,6 @@ test("exam phase spine and formula page publish the cohort statistic and legal c
   assert.match(indexHtml, /data-staffing-list-law-context="1"/);
   assert.match(indexHtml, /staffing-list-establishment-formula/);
   assert.match(aboutHtml, /id="staffing-list-establishment-formula"/);
-  assert.match(aboutHtml, /list established date − filing-period close date/);
+  assert.match(aboutHtml, /exact match between an exam number/);
+  assert.match(aboutHtml, /the close of filing to the date the list was set up/);
 });
