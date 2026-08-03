@@ -1994,6 +1994,8 @@
     career_read_noe: "Li NOE ofisyèl la",
     career_official_schedule: "Tcheke orè ofisyèl la",
     career_apply_oasys: "Aplike nan OASys",
+
+    career_apply_oasys_browse: "Navige egzamen OASys yo",
     career_back_all: "Retounen nan tout egzamen yo",
     career_show_more: "Montre {n} plis egzamen",
     career_exam_not_found: "Egzamen sa a pa nan orè DCAS aktyèl la.",

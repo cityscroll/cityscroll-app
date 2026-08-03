@@ -424,7 +424,7 @@ test("Zoom-style join URLs still label as Join online with a hearing guide", () 
   assert.equal(action.guide?.testimony_email, EXAMPLE_EMAIL);
 });
 
-test("exam action windows reuse the official OASys handoff", () => {
+test("exam action windows use the OASys landing with an honest browse label when unmapped", () => {
   const actions = compileActionRail({
     kind: "exam", lifecycle_stage: "open", deadline: "2026-08-20",
     exam_number: "7016",
@@ -436,6 +436,7 @@ test("exam action windows reuse the official OASys handoff", () => {
   assert.equal(actions[0].guide?.system, "oasys");
   assert.equal(actions[0].guide?.mode, "landing");
   assert.equal(actions[0].guide?.identifier, "7016");
+  assert.equal(actions[0].label_key, "career_apply_oasys_browse");
 });
 
 test("exam apply prefers a non-landing official_application_url when published", () => {
@@ -444,10 +445,11 @@ test("exam apply prefers a non-landing official_application_url when published",
     lifecycle_stage: "open",
     deadline: "2026-08-20",
     exam_number: "7016",
-    official_application_url: "https://a856-exams.nyc.gov/oasysweb/apply/7016",
+    official_application_url: "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
   }, {today: "2026-08-01"});
-  assert.equal(actions[0].destination, "https://a856-exams.nyc.gov/oasysweb/apply/7016");
+  assert.equal(actions[0].destination, "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629");
   assert.equal(actions[0].guide?.mode, "deep");
+  assert.equal(actions[0].label_key, "career_apply_oasys");
 });
 
 test("all compiled rails stay at three actions or fewer and validate", () => {

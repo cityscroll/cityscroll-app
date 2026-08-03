@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "generated_at": "2026-08-03",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
@@ -82,6 +82,17 @@
       "verified_at": "2026-08-02",
       "stale_after_days": 45,
       "freshness_required": false
+    },
+    {
+      "id": "oasys-active-exams",
+      "name": "OASys active exams (GetActiveExams)",
+      "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+      "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
+      "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
+      "fetched_at": "2026-08-03",
+      "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
+      "stale_after_days": 3,
+      "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
     }
   ],
   "source_checks": {
@@ -118,6 +129,12 @@
         "both": 21,
         "rate": 0.09210526315789473
       }
+    },
+    "oasys_exam_map": {
+      "source_id": "oasys-active-exams",
+      "map_records": 9,
+      "exams_deep_linked": 9,
+      "exams_landing": 219
     }
   },
   "outcomes": {
@@ -374,6 +391,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -411,6 +430,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -448,6 +469,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -485,6 +508,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -522,6 +547,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -559,6 +586,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -596,6 +625,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -633,6 +664,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -670,6 +703,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -707,6 +742,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -744,6 +781,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -781,6 +820,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -818,6 +859,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -855,6 +898,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -892,6 +937,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -929,6 +976,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -966,6 +1015,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1003,6 +1054,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1040,6 +1093,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1077,6 +1132,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1114,6 +1171,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1151,6 +1210,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1188,6 +1249,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1225,6 +1288,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1262,6 +1327,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1299,6 +1366,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1336,6 +1405,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1373,6 +1444,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1410,6 +1483,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1447,6 +1522,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1484,6 +1561,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1521,6 +1600,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1558,6 +1639,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1595,6 +1678,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1632,6 +1717,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1669,6 +1756,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1706,6 +1795,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1743,6 +1834,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1780,6 +1873,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1817,6 +1912,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1854,6 +1951,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1891,6 +1990,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1928,6 +2029,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -1965,6 +2068,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2002,6 +2107,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2039,6 +2146,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2076,6 +2185,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2113,6 +2224,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2150,6 +2263,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2187,6 +2302,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2224,6 +2341,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2261,6 +2380,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2298,6 +2419,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2335,6 +2458,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2372,6 +2497,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2409,6 +2536,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2446,6 +2575,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2483,6 +2614,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2520,6 +2653,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2557,6 +2692,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2594,6 +2731,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2631,6 +2770,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2668,6 +2809,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2705,6 +2848,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2742,6 +2887,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2779,6 +2926,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2816,6 +2965,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2853,6 +3004,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2890,6 +3043,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2927,6 +3082,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -2964,6 +3121,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3001,6 +3160,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3038,6 +3199,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3075,6 +3238,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3112,6 +3277,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3149,6 +3316,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3186,6 +3355,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": null
     },
     {
@@ -3207,7 +3378,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "outcome": {
         "application_cycle": "2026",
@@ -3221,6 +3393,10 @@
       "outcome_gap": null,
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9619",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3254,7 +3430,8 @@
       "schedule_status": "scheduled",
       "sources": [
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "outcome": null,
       "outcome_gap": {
@@ -3267,6 +3444,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9620",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3293,7 +3474,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf",
       "fee": 82,
@@ -3316,6 +3498,10 @@
       "outcome_gap": null,
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9625",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3361,6 +3547,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3387,7 +3575,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf",
       "fee": 61,
@@ -3409,6 +3598,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9628",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3435,7 +3628,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
       "fee": 68,
@@ -3456,6 +3650,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9629",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3482,7 +3680,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf",
       "fee": 68,
@@ -3503,6 +3702,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9631",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3551,6 +3754,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3599,6 +3804,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3644,6 +3851,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3670,7 +3879,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf",
       "fee": 61,
@@ -3691,6 +3901,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9634",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3717,7 +3931,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
-        "dcas-noe"
+        "dcas-noe",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf",
       "fee": 0,
@@ -3738,6 +3953,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9635",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3764,7 +3983,8 @@
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
-        "dcas-noe-fee-salary-densify"
+        "dcas-noe-fee-salary-densify",
+        "oasys-active-exams"
       ],
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "fee": 0,
@@ -3783,6 +4003,10 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "oasys_exam_id": "9646",
+      "oasys_noe_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+      "application_handoff_mode": "deep",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3831,6 +4055,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3879,6 +4105,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3927,6 +4155,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -3975,6 +4205,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4023,6 +4255,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4071,6 +4305,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4119,6 +4355,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4167,6 +4405,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4215,6 +4455,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4263,6 +4505,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4308,6 +4552,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4356,6 +4602,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4404,6 +4652,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4452,6 +4702,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4500,6 +4752,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4548,6 +4802,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4596,6 +4852,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4644,6 +4902,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4692,6 +4952,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4740,6 +5002,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4788,6 +5052,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4836,6 +5102,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4884,6 +5152,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4932,6 +5202,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -4980,6 +5252,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5028,6 +5302,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5073,6 +5349,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5121,6 +5399,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5169,6 +5449,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5217,6 +5499,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5265,6 +5549,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5313,6 +5599,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5361,6 +5649,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5409,6 +5699,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5457,6 +5749,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5505,6 +5799,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5553,6 +5849,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5601,6 +5899,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5649,6 +5949,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5697,6 +5999,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5745,6 +6049,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5790,6 +6096,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5838,6 +6146,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5886,6 +6196,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5934,6 +6246,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -5982,6 +6296,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6030,6 +6346,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6078,6 +6396,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6126,6 +6446,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6174,6 +6496,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6222,6 +6546,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6270,6 +6596,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6318,6 +6646,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6366,6 +6696,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6414,6 +6746,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6459,6 +6793,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6507,6 +6843,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6555,6 +6893,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6603,6 +6943,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6651,6 +6993,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6699,6 +7043,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6747,6 +7093,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6795,6 +7143,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6843,6 +7193,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6891,6 +7243,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6939,6 +7293,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -6987,6 +7343,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7035,6 +7393,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7080,6 +7440,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7128,6 +7490,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7176,6 +7540,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7224,6 +7590,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7272,6 +7640,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7320,6 +7690,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7368,6 +7740,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7416,6 +7790,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7464,6 +7840,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7512,6 +7890,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7560,6 +7940,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7608,6 +7990,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7656,6 +8040,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7701,6 +8087,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7749,6 +8137,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7797,6 +8187,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7845,6 +8237,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7893,6 +8287,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7941,6 +8337,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -7989,6 +8387,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8037,6 +8437,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8085,6 +8487,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8133,6 +8537,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8181,6 +8587,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8229,6 +8637,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8274,6 +8684,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8322,6 +8734,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8370,6 +8784,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8418,6 +8834,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8466,6 +8884,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8514,6 +8934,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8562,6 +8984,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8610,6 +9034,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8658,6 +9084,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8706,6 +9134,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8754,6 +9184,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8802,6 +9234,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8847,6 +9281,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8895,6 +9331,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8943,6 +9381,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -8991,6 +9431,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9039,6 +9481,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9087,6 +9531,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9135,6 +9581,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9183,6 +9631,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9231,6 +9681,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9279,6 +9731,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9327,6 +9781,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9375,6 +9831,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9423,6 +9881,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9468,6 +9928,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9516,6 +9978,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9564,6 +10028,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9612,6 +10078,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9660,6 +10128,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9708,6 +10178,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9756,6 +10228,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9804,6 +10278,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9849,6 +10325,8 @@
       },
       "list_aggregate": null,
       "fee_salary_gap": null,
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9897,6 +10375,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9945,6 +10425,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -9993,6 +10475,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10041,6 +10525,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10089,6 +10575,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10137,6 +10625,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10185,6 +10675,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10233,6 +10725,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10281,6 +10775,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10329,6 +10825,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",
@@ -10377,6 +10875,8 @@
           "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
         }
       },
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "application_handoff_mode": "landing",
       "list_establishment_forecast": {
         "method": "phase_duration_ecdf",
         "target_event_kind": "staffing.list_established",

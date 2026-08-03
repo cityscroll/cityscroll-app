@@ -1509,6 +1509,30 @@ resident-facing rule URL. The representative live sweep is
 `.github/workflows/action-links-live.yml` and treats City Record's HTTP-200
 error redirect as a soft 404.
 
+**Specificity class (missed-detection law):** a destination can resolve HTTP 200
+and still be wrong when it is a known **generic hub** for a system that publishes
+a per-item deep URL. `tools/audit-action-links.mjs` keeps
+`DEEP_LINK_SYSTEMS` (OASys NOE `noe?examId=`, PASSPort `process_manage_extranet/:rfp_id`,
+NYC Rules `/rule/:slug/`, ZAP `/projects/:id`) and
+`assessLinkSpecificity` / `collectSpecificityFindings`. Product samples that still
+point at examsforjobs / OASys home / portal roots while a deep pattern is known
+are **low-specificity** findings — not OK just because the lobby loads.
+
+## OASys exam deep links (staffing apply)
+
+OASys `examId` ≠ DCAS exam number. Build-time map from
+`GET https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams` joins on
+`examNumber` → `site/data/exam_sources/oasys_exam_map.json`. Staffing rebuild
+stamps `official_application_url` =
+`https://a856-exams.nyc.gov/OASysWeb/noe?examId={id}` and
+`application_handoff_mode: deep`. Unmapped open exams keep
+`https://www.nyc.gov/examsforjobs` with label **Browse OASys exams**. Pure lib:
+`tools/lib/oasys_exam_map.mjs`. Rebuild:
+`node tools/build_oasys_exam_map.mjs` then
+`node tools/build_staffing_exams.mjs`. Verify:
+`node --test test/oasys_exam_map.test.mjs test/deadline_exam_cards.test.mjs
+test/action-rail.test.mjs test/action_link_integrity.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
