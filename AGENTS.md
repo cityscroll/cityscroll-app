@@ -674,6 +674,23 @@ Closed exams that leave the current FY annual snapshot stay joinable through
 `not_yet_ingested` (`career_outcomes_not_yet_ingested_html`) — never class-(b)
 city-withhold for aggregates. Individual scores remain class-(b).
 
+## Staffing list-establishment predictions
+
+Build-time application-close → list-established ECDF lives in
+`worker/src/lib/staffing_list_prediction.mjs`. Its exact normalized exam-number
+join uses `site/data/exam_sources/annual_schedule_history.json` (historical
+revisions of the existing `4ptz-hmtc` schedule source) and exam-level-only
+`civil_service_list_aggregates.json`; refresh the former with
+`node tools/build_staffing_exams.mjs --refresh-prediction-history`. Cohorts are
+open-competitive / promotion with n≥20, else citywide. The strict pre-2025 / 2025+
+scorecard controls whether `cityscroll.prediction.v0` per-exam dates emit;
+below-bar builds expose only the cohort statistic. Authoritative join, miss,
+quantile, calibration, and privacy evidence is
+`verification_receipts/staffing_list_establishment_prediction_latest.json`.
+Verify: `node --test test/staffing_list_prediction.test.mjs
+worker/test/prediction_calibration_scorecard.test.mjs` and
+`node tools/build_staffing_exams.mjs --check`.
+
 ## Exam process spine (application → list → appointment)
 
 Multi-stage lifecycle for one `exam_number`: **application → list_establishment

@@ -75,6 +75,22 @@ test("fewer than 50 resolved predictions cannot clear the ship bar", () => {
   assert.equal(scorecard.public_projection, "cohort_statistic_only");
 });
 
+test("timing-only domains treat occurrence monotonicity as not applicable", () => {
+  const fixture = structuredClone(fixtureById.get("well_calibrated").backtest);
+  const timingSubjects = new Set(
+    fixture.predictions.filter((row) => row.claim === "timing").map((row) => row.subject_ref),
+  );
+  fixture.predictions = fixture.predictions.filter((row) => row.claim === "timing");
+  const evidenceIds = new Set(fixture.predictions.flatMap((row) => row.basis.evidence_event_ids));
+  fixture.events = fixture.events.filter((row) => timingSubjects.has(row.subject_ref)
+    || evidenceIds.has(row.event_id));
+
+  const scorecard = evaluatePredictionBacktest(fixture);
+  assert.equal(scorecard.occurrence_prediction_count, 0);
+  assert.equal(scorecard.occurrence_quintiles_monotone, null);
+  assert.equal(scorecard.ship_bar.checks.occurrence_quintiles_monotone, true);
+});
+
 test("backtests fail closed on post-split training evidence", () => {
   const fixture = structuredClone(fixtureById.get("well_calibrated").backtest);
   const leakedId = fixture.predictions[0].basis.evidence_event_ids[0];
