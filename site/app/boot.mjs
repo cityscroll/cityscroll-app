@@ -507,6 +507,16 @@ window.addEventListener("hashchange", ()=>{
   if(!hashLock && !applyHash()) showTab("money");
   restoreHistoryRouteScroll();
 }); // empty/unknown hash (e.g. Back to the first entry) → default view
+// Publish alert prefill bindings BEFORE the first applyHash() so #alerts?lens=…&notice=…
+// deep links (and health-fix links) can call prefillAlertFromLink on cold load.
+// routing.mjs resolves that free name on globalThis; assigning after applyHash left
+// cold entry as "prefillAlertFromLink is not defined" and a blank builder.
+globalThis.prefillAlertFromLink = prefillAlertFromLink;
+globalThis.applyNoticeWatchSeed = applyNoticeWatchSeed;
+globalThis.syncAlertsEntryHrefs = syncAlertsEntryHrefs;
+globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
+globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
+Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
 // just because #awatch's mandatory default ("bigaward") happens to match one of its chips —
@@ -696,13 +706,9 @@ globalThis.landLocationOptions = landLocationOptions;
 globalThis.maybeAutoLocateLand = maybeAutoLocateLand;
 globalThis.narrowFieldSel = narrowFieldSel;
 globalThis.paintEditionSpan = paintEditionSpan;
-globalThis.prefillAlertFromLink = prefillAlertFromLink;
-globalThis.applyNoticeWatchSeed = applyNoticeWatchSeed;
-globalThis.syncAlertsEntryHrefs = syncAlertsEntryHrefs;
-globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
-globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
+// prefillAlertFromLink / applyNoticeWatchSeed / syncAlertsEntryHrefs / lastNoticeContext
+// are published earlier (before first applyHash) — see hashchange wiring above.
 globalThis.refreshQuizDisplay = refreshQuizDisplay;
-Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
 globalThis.rerenderForLang = rerenderForLang;
 globalThis.sessionBoot = sessionBoot;
 globalThis.sessionCheck = sessionCheck;
