@@ -42,22 +42,28 @@
     return INTEREST_AREAS.includes(String(value || ""));
   }
 
+  function isContinuousExam(exam) {
+    const mode = `${exam?.application_mode || ""} ${exam?.filing_method || ""} ${exam?.schedule_status || ""}`.toLowerCase();
+    return /continuous|walk[- ]?in/.test(mode);
+  }
+
   function filterExams(exams, filters, today) {
     const q = String(filters.query || "").trim().toLowerCase();
     return exams.filter(exam => {
       const status = statusFor(exam, today);
+      const continuous = isContinuousExam(exam);
       if (filters.eligibility && filters.eligibility !== "all" && exam.eligibility !== filters.eligibility) return false;
       if (filters.interest && filters.interest !== "all" && exam.interest_area !== filters.interest) return false;
-      if (filters.window === "actionable" && !["open", "upcoming"].includes(status)) return false;
+      if (filters.window === "actionable" && !["open", "upcoming"].includes(status) && !continuous) return false;
       if (filters.window === "open" && status !== "open") return false;
       if (filters.window === "upcoming" && status !== "upcoming") return false;
       if (q && !`${exam.title} ${exam.exam_number} ${exam.summary || ""}`.toLowerCase().includes(q)) return false;
       return true;
     }).sort((a, b) => {
-      // Deadline-first: open windows first, then soonest application_end.
-      const rank = { open: 0, upcoming: 1, postponed: 2, unscheduled: 3, closed: 4, canceled: 5 };
-      const ar = rank[statusFor(a, today)] ?? 9;
-      const br = rank[statusFor(b, today)] ?? 9;
+      // Intent-first: finite open deadlines, upcoming windows, then continuous/walk-in.
+      const rank = { open: 0, upcoming: 1, postponed: 3, unscheduled: 4, closed: 5, canceled: 6 };
+      const ar = isContinuousExam(a) ? 2 : (rank[statusFor(a, today)] ?? 9);
+      const br = isContinuousExam(b) ? 2 : (rank[statusFor(b, today)] ?? 9);
       return ar - br
         || (a.application_end || "9999-12-31").localeCompare(b.application_end || "9999-12-31")
         || a.title.localeCompare(b.title)
@@ -269,6 +275,7 @@
     statusFor,
     applicationDaysLeft,
     isInterestArea,
+    isContinuousExam,
     filterExams,
     sourceAgeDays,
     sourceIsStale,
