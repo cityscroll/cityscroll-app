@@ -112,8 +112,8 @@ test("statistical timing emits through cityscroll.prediction.v0 and copy names i
   assert.equal(prediction.predicted_window.p50, addDays("2025-01-15", cohort.duration_days.p50));
 
   const copy = zoningStatisticCopy(cohort);
-  assert.match(copy, /^Predicted based on 40 zoning map amendment applications since 2020:/);
-  assert.match(copy, /% approved, typically .* months from certification to final action\.$/);
+  assert.match(copy, /^Based on 40 past zoning map amendment cases since 2020\./);
+  assert.match(copy, /% were approved\. Final action usually came .* months after certification\.$/);
 });
 
 test("unconditioned cohorts contain no applicant dimension", () => {
@@ -172,9 +172,10 @@ test("land timeline renders the base-rate register and formula page publishes ev
   assert.match(index, /data-zoning-base-rate/);
   assert.match(index, /land_zoning_base_rate_authority_html/);
   assert.match(about, /id="zoning-base-rates"/);
-  assert.match(about, /nearest-rank empirical 25th–75th percentile/);
-  assert.match(about, /approved \+ modified \+ disapproved/);
-  assert.match(about, /63 resolved projects, 77\.78%/);
+  assert.match(about, /take p25 and p75 by nearest rank/);
+  assert.match(about, /Each rate is its count divided by the total of those three results/);
+  assert.match(about, /It resolved 63 cases/);
+  assert.match(about, /77\.78%/);
   assert.match(worker, /attachZoningStatistics/);
   assert.match(worker, /zoning_statistics\.json/);
 });

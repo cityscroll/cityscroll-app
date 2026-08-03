@@ -269,8 +269,8 @@ export function zoningStatisticCopy(cohort) {
   const approved = Math.round(cohort.outcome_rates.approved * 100);
   const low = cohort.typical_months?.low;
   const high = cohort.typical_months?.high;
-  return `Predicted based on ${cohort.n} ${cohort.action_label} applications since ${year}: `
-    + `${approved}% approved, typically ${low}–${high} months from certification to final action.`;
+  return `Based on ${cohort.n} past ${cohort.action_label} cases since ${year}. `
+    + `${approved}% were approved. Final action usually came ${low}–${high} months after certification.`;
 }
 
 export function emitZoningStatisticalPrediction(record = {}, cohort, opts = {}) {

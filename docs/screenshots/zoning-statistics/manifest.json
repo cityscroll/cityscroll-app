@@ -11,8 +11,8 @@
     },
     {
       "name": "land-timeline-after-1440.png",
-      "bytes": 205166,
-      "sha256": "ea4715d30bb813c7dfc6d20c3a7061134dbaf548682a4a8debb3b48bec3b9cb2"
+      "bytes": 201788,
+      "sha256": "f7b23ee1c18ab278a0013682d3ce0a0d78d65c79221b236b03ed1202b40e3b94"
     },
     {
       "name": "land-timeline-before-390.png",
@@ -21,8 +21,8 @@
     },
     {
       "name": "land-timeline-after-390.png",
-      "bytes": 196352,
-      "sha256": "a722f6599be28d3abb6b111f30dba7417f4bb269d4178cd4674ace5153c19830"
+      "bytes": 195617,
+      "sha256": "18ded2847b18513a48d29e77e87e51698c6fb53598732bad93397b2389d5abcd"
     }
   ]
 }

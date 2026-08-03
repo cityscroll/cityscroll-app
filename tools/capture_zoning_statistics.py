@@ -28,11 +28,11 @@ def base_rate() -> dict:
     return {
         **cohort,
         "copy": (
-            f"Predicted based on {cohort['n']} {cohort['action_label']} applications "
-            f"since {cohort['train_from'][:4]}: "
-            f"{round(cohort['outcome_rates']['approved'] * 100)}% approved, typically "
-            f"{cohort['typical_months']['low']}–{cohort['typical_months']['high']} months "
-            "from certification to final action."
+            f"Based on {cohort['n']} past {cohort['action_label']} cases "
+            f"since {cohort['train_from'][:4]}. "
+            f"{round(cohort['outcome_rates']['approved'] * 100)}% were approved. "
+            f"Final action usually came {cohort['typical_months']['low']}–"
+            f"{cohort['typical_months']['high']} months after certification."
         ),
         "display_mode": "cohort_statistic_and_timing",
         "formula_url": "about.html#zoning-base-rates",
@@ -57,8 +57,8 @@ def capture(page: Page, base_url: str, payload: dict, path: Path, *, expected: b
     if expected:
         base_rate_box.first.wait_for(state="visible", timeout=5_000)
         text = base_rate_box.first.inner_text()
-        assert "Predicted based on" in text
-        assert "Statutory deadlines remain" in text
+        assert "Based on" in text
+        assert "Legal deadlines still control" in text
     else:
         assert base_rate_box.count() == 0
     page.locator("#land-outcomes").screenshot(path=str(path), animations="disabled")
