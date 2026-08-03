@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.map_lens_location_human_derivation.v1",
-  "measured_at": "2026-08-03T16:31:49.416Z",
+  "measured_at": "2026-08-03T16:37:26.154Z",
   "doctrine": "Extraction gives up only after reading like a location-interested human (matter place, venue line, vendor address, citywide phrase). Unlocated rows record a reason.",
   "golden_notice_ids": {
     "meetings": [
@@ -62,7 +62,7 @@
   },
   "after": {
     "note": "Human-derivation extractors + densified place stamps + deploy rebuild of district_activity",
-    "built_at": "2026-08-03T16:30:51.429Z",
+    "built_at": "2026-08-03T16:37:08.064Z",
     "sources": {
       "land": {
         "corpus": "zap_projects_warehouse_lookup",
@@ -85,7 +85,7 @@
           "venue_column": 40,
           "matter_title_place": 8,
           "citywide_phrase": 3,
-          "matter": 3
+          "classic_affected_area": 3
         }
       },
       "rules": {
@@ -93,10 +93,8 @@
         "counted": 100,
         "located": 100,
         "by_method": {
-          "rule-scope": 90,
-          "rule_default_citywide": 6,
-          "matter_title_place": 3,
-          "citywide_phrase": 1
+          "rule_default_citywide": 97,
+          "matter_title_place": 3
         }
       },
       "money": {

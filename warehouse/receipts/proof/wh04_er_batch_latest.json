@@ -5,7 +5,7 @@
   "er_batch_version": "wh04_er_batch_v1",
   "mode": "fixture",
   "snapshot_date": "fixture",
-  "observed_at": "2026-08-02T05:20:12.213Z",
+  "observed_at": "2026-08-03T16:37:38.456Z",
   "limit": 25,
   "metrics": {
     "er_batch_version": "wh04_er_batch_v1",
@@ -30,7 +30,7 @@
     "agency_method": "agency_canonical_v1",
     "matchers_version": "conventional_v1"
   },
-  "resolution_run_id": "run_0d570f7b_85",
+  "resolution_run_id": "run_ab1928eb_85",
   "stage_dir": "warehouse/raw/er-batch/snapshot_date=fixture",
   "materialize": {
     "catalog": "warehouse/duckdb/cityscroll.duckdb",
@@ -100,13 +100,13 @@
   "runner": {
     "phase": "WH-04",
     "entrypoint": "er_batch_run.py",
-    "started_at": "2026-08-02T05:20:11Z",
-    "finished_at": "2026-08-02T05:20:12Z",
+    "started_at": "2026-08-03T16:37:36Z",
+    "finished_at": "2026-08-03T16:37:38Z",
     "from_fixture": true,
     "limit": 25,
     "headroom": {
-      "status": "ok",
-      "constrained": false
+      "status": "constrained",
+      "constrained": true
     },
     "cpu_discipline": {
       "single_job_lock": true,

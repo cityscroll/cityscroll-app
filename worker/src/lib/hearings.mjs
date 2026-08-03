@@ -13,10 +13,7 @@ import {
   taxLotsIn,
   unique,
 } from "../../../site/location_extract.mjs";
-import {
-  placeFromDerivations,
-  venueFromPublisherColumns,
-} from "../../../site/location_derivation.mjs";
+import { placeFromDerivations } from "../../../site/location_derivation.mjs";
 
 export { plainText };
 
@@ -80,6 +77,11 @@ function subjectText(text) {
     .split(/\b(?:further information|public inspection|if you need (?:an )?accommodation)\b/i)[0];
 }
 
+/**
+ * Canonical product affected-area shape — hand-synced with site/hearing_location.js.
+ * Keep this surface stable (no derivation metadata): browser fallback deep-equals
+ * the Worker for golden fixtures. Map density uses meetingPlaceFromRow instead.
+ */
 export function affectedAreaFromRow(row) {
   const title = plainText(row.short_title);
   const body = plainText([
@@ -102,11 +104,7 @@ export function affectedAreaFromRow(row) {
   const applications = applicationSignals(localText);
   const boards = communityBoardSignals(body);
   const gazetteer = PROJECT_GAZETTEER.filter((entry) => entry.pattern.test(localText));
-  // Title addresses are matter pins when the human-readable title is the place
-  // (leases, acquisitions, short address titles) — not only the marked subject segment.
-  const titleAddresses = unique((title.match(ADDRESS_RE) || []).map(normalizeAddress));
-  const subjectAddresses = unique((subject.match(ADDRESS_RE) || []).map(normalizeAddress));
-  let boroughs = unique([
+  const boroughs = unique([
     ...boroughsIn(localText),
     ...applications.boroughs,
     ...boards.boroughs,
@@ -119,51 +117,26 @@ export function affectedAreaFromRow(row) {
   ]);
   const community_districts = unique([...localText.matchAll(/\bcommunity districts?\s+((?:\d{1,2})(?:\s*(?:,|and|&)\s*\d{1,2})*)/gi)]
     .flatMap((match) => match[1].match(/\d{1,2}/g) || []));
-  const addresses = unique([...titleAddresses, ...subjectAddresses]);
+  const addresses = unique((subject.match(ADDRESS_RE) || []).map(normalizeAddress));
   const street_ranges = streetRangesIn(subject);
   const tax_lots = taxLotsIn(subject);
   const citywide = /\b(?:citywide(?! (?:administrative|personnel) services)|throughout (?:new york )?city|all five boroughs)\b/i.test(body);
   const project_names = gazetteer.map((entry) => entry.name);
-
-  // Human-derivation pass: borough-of phrases, gazetteer, tax-lot borough labels.
-  // Matter-role only — venue is separate (venueFromRow / meetingPlaceFromRow).
-  const matterDerived = placeFromDerivations(row, { forLens: "matter" });
-  if (matterDerived.scope === "local" || matterDerived.scope === "citywide") {
-    boroughs = unique([...boroughs, ...(matterDerived.boroughs || [])]);
-  }
-
   const local = boroughs.length || neighborhoods.length || community_districts.length
     || boards.boards.length || addresses.length || street_ranges.length || tax_lots.length
     || project_names.length || applications.numbers.length;
-  const scope = citywide || matterDerived.scope === "citywide"
-    ? "citywide"
-    : local
-      ? "local"
-      : "unlocated";
-  const out = {
-    scope,
+  return {
+    scope: citywide ? "citywide" : local ? "local" : "unlocated",
     boroughs,
     neighborhoods,
     community_districts,
-    community_boards: unique([
-      ...boards.boards,
-      ...(matterDerived.community_boards || []),
-    ]),
+    community_boards: boards.boards,
     addresses: addresses.map((label) => ({ label })),
     street_ranges: street_ranges.map((label) => ({ label })),
     tax_lots: tax_lots.map((label) => ({ label })),
     project_names,
     application_numbers: applications.numbers,
   };
-  if (matterDerived.derivation?.methods?.length) {
-    out.derivation = matterDerived.derivation;
-    out.confidence_tier = matterDerived.confidence_tier || null;
-  }
-  if (scope === "unlocated") {
-    out.unlocated_reason = matterDerived.virtual_only ? "virtual_only" : "no_place_signal";
-    out.virtual_only = !!matterDerived.virtual_only;
-  }
-  return out;
 }
 
 export function venueFromRow(row) {
@@ -172,8 +145,7 @@ export function venueFromRow(row) {
     row.other_info_1,
     row.printout_1,
   ].filter(Boolean).join(" "));
-  const col = venueFromPublisherColumns(row);
-  const address = col?.address || normalizeAddress([
+  const address = normalizeAddress([
     row.street_address_1,
     row.street_address_2,
     row.city,
@@ -183,31 +155,60 @@ export function venueFromRow(row) {
   const virtual = /\b(?:online|conference call|zoom|webex|teams meeting|join (?:the )?(?:meeting|hearing)|via (?:phone|telephone|video))\b/i.test(body)
     || /https?:\/\//i.test(body);
   const inPerson = !!address;
-  const borough = col?.boroughs?.[0] || null;
   return {
     mode: virtual && inPerson ? "hybrid" : virtual ? "virtual" : inPerson ? "in-person" : "not-stated",
     building: plainText(row.building_name),
     address: address || null,
-    borough,
+    borough: null,
     neighborhood: null,
-    derivation: address
-      ? { methods: ["venue_column"], confidence: 0.65, evidence: [address] }
-      : null,
   };
 }
 
 /**
- * Meetings map placement: matter affected area first, then venue, then weak agency HQ.
- * Carries derivation method + confidence for honest density tiers.
+ * Meetings map placement: classic matter affected-area first, then human-derivation
+ * (borough-of phrases, title places, venue columns, agency HQ). Derivation metadata
+ * lives only on this map path — not on the product affected_area contract.
  */
 export function meetingPlaceFromRow(row) {
-  const matter = affectedAreaFromRow(row);
-  if (matter.scope === "local" || matter.scope === "citywide") {
+  const classic = affectedAreaFromRow(row);
+  if (classic.scope === "local" || classic.scope === "citywide") {
+    // Enrich with matter-role human derivations when classic already local/citywide
+    // so densify stamps carry method/confidence without changing product equality.
+    const matterDerived = placeFromDerivations(row, { forLens: "matter" });
+    const boroughs = unique([
+      ...(classic.boroughs || []),
+      ...(matterDerived.scope === "local" || matterDerived.scope === "citywide"
+        ? (matterDerived.boroughs || [])
+        : []),
+    ]);
     return {
-      ...matter,
+      ...classic,
+      boroughs,
+      community_boards: unique([
+        ...(classic.community_boards || []),
+        ...(matterDerived.community_boards || []),
+      ]),
+      community_districts: unique([
+        ...(classic.community_districts || []),
+        ...(matterDerived.community_districts || []),
+      ]),
+      source: "matter",
+      derivation: matterDerived.derivation?.methods?.length
+        ? matterDerived.derivation
+        : { methods: ["classic_affected_area"], confidence: 0.9, role: "matter", evidence: [] },
+      confidence_tier: matterDerived.confidence_tier || "strong",
+    };
+  }
+
+  // Human-derivation matter pass (Borough of X in body, gazetteer, tax-lot borough).
+  const matterOnly = placeFromDerivations(row, { forLens: "matter" });
+  if (matterOnly.scope === "local" || matterOnly.scope === "citywide") {
+    return {
+      ...matterOnly,
       source: "matter",
     };
   }
+
   // Venue / agency HQ fallthrough for "what's happening where".
   const derived = placeFromDerivations(row, { forLens: "meetings" });
   if (derived.scope !== "unlocated") {
@@ -223,8 +224,8 @@ export function meetingPlaceFromRow(row) {
     community_districts: [],
     addresses: [],
     source: "none",
-    unlocated_reason: derived.unlocated_reason || matter.unlocated_reason || "no_place_signal",
-    virtual_only: !!(derived.virtual_only || matter.virtual_only),
+    unlocated_reason: derived.unlocated_reason || "no_place_signal",
+    virtual_only: !!derived.virtual_only,
     derivation: { methods: [], confidence: 0, evidence: [] },
   };
 }

@@ -3,7 +3,7 @@
   "domain": "meetings",
   "title": "Meetings domain observations for entity intelligence",
   "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
-  "retrieved_at": "2026-08-03T16:29:59.639Z",
+  "retrieved_at": "2026-08-03T16:37:07.180Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -1287,6 +1287,15 @@
           "7",
           "8"
         ],
+        "derivation": {
+          "methods": [
+            "classic_affected_area"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": []
+        },
+        "confidence_tier": "strong",
         "source": "matter"
       }
     },
@@ -1562,6 +1571,15 @@
         "neighborhoods": [
           "park perimeter"
         ],
+        "derivation": {
+          "methods": [
+            "classic_affected_area"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": []
+        },
+        "confidence_tier": "strong",
         "source": "matter"
       }
     },
@@ -2972,6 +2990,15 @@
         "boroughs": [
           "Manhattan"
         ],
+        "derivation": {
+          "methods": [
+            "classic_affected_area"
+          ],
+          "confidence": 0.9,
+          "role": "matter",
+          "evidence": []
+        },
+        "confidence_tier": "strong",
         "source": "matter"
       }
     },
