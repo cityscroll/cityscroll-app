@@ -140,6 +140,7 @@ SPINE = {
         },
     ],
     "gaps": [],
+    # source: same lag fixture as tools/capture_land_event_spine.py (demo 2022M0258)
     "lag": {
         "open_data_vs_portal": {
             "status": "behind",
@@ -183,6 +184,7 @@ RECORD = {
             }
         ],
     },
+    # source: screenshot fixture shape from site/data/zoning_statistics.json (illustrative rates only)
     "zoning_statistics": {
         "n": 40,
         "action_type": "ha",
@@ -349,19 +351,19 @@ def capture_state(
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    files: list[dict] = []
+    files = list()
     with StaticServer() as base_url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         for mode in ("before", "after"):
             for width, height in ((390, 844), (1440, 900)):
                 page = browser.new_page(viewport={"width": width, "height": height})
-                errors: list[str] = []
+                errors = list()
                 page.on("pageerror", lambda error: errors.append(str(error)))
                 files.append(
                     capture_state(page, base_url, mode=mode, width=width, height=height)
                 )
                 # Module-load 404 is expected in before mode; ignore that class of error.
-                real = [e for e in errors if "notice_land_spine" not in e]
+                real = list(e for e in errors if "notice_land_spine" not in e)
                 if real:
                     raise AssertionError(real)
                 page.close()

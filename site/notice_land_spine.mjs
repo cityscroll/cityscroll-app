@@ -18,8 +18,9 @@
 
 export const NOTICE_LAND_SPINE_SCHEMA_VERSION = 1;
 
-/** Optional type letter + 6-digit body + 1–4 letter suffix (spaces optional). */
-const ULURP_TOKEN_RE = /(?:(?<type>[A-Z])\s*)?(?<num>\d{6})\s*(?<suf>[A-Z]{1,4})/gi;
+/** Optional type letter + 6-digit body + 1–4 letter suffix (spaces optional).
+ *  Pattern aligned with worker/src/lib/ulurp_recommendations_join.mjs extractUlurpKeys. */
+const ULURP_KEY_RE = /(?:(?<type>[A-Z])\s*)?(?<num>\d{6})\s*(?<suf>[A-Z]{1,4})/gi;
 
 /** ZAP portal / API project ids: 2022M0258 or P2018X0210. */
 const ZAP_PROJECT_ID_RE = /\b(P?\d{4}[A-Z]\d{3,6})\b/gi;
@@ -40,7 +41,7 @@ export function extractUlurpKeys(value) {
   const keys = new Set();
   if (value == null) return keys;
   const text = String(value).toUpperCase();
-  for (const m of text.matchAll(ULURP_TOKEN_RE)) {
+  for (const m of text.matchAll(ULURP_KEY_RE)) {
     const typ = (m.groups?.type || "").toUpperCase();
     const num = m.groups?.num;
     const suf = (m.groups?.suf || "").toUpperCase();
