@@ -1449,13 +1449,75 @@
     };
   }
 
+  /**
+   * Context-carrying alert entry: watch CTAs land on #alerts pre-scoped to the
+   * matter's natural lens/agency (and seed notice/project id for the email-template
+   * preview). Same hash-param shape as saved-search health fix links.
+   */
+  function watchDestination(matter) {
+    const m = matter || {};
+    const noticeId = m.request_id && /^[A-Za-z0-9_-]{4,40}$/.test(String(m.request_id))
+      ? String(m.request_id) : null;
+    const projectId = m.project_id && /^[A-Za-z0-9_-]{4,40}$/.test(String(m.project_id))
+      ? String(m.project_id) : null;
+    const agency = m.agency_name && String(m.agency_name).trim() ? String(m.agency_name).trim() : null;
+    const section = String(m.section_name || "");
+    const type = String(m.type_of_notice_description || "");
+    const kind = String(m.kind || "").toLowerCase();
+    let lens = "money";
+    const filter = {};
+    if (kind === "zoning" || projectId) {
+      lens = "land";
+      const place = String(m.project_name || m.title || m.borough || "")
+        .replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i, "")
+        .trim().split(/\s+/).slice(0, 3).join(" ").toLowerCase();
+      if (place) filter.keywords = [place];
+      filter.status = "all";
+      if (m.borough) filter.boro = m.borough;
+    } else if (kind === "hearing" || section === "Public Hearings and Meetings") {
+      lens = "meetings";
+      if (agency) filter.agency = agency;
+    } else if (kind === "rule" || section === "Agency Rules") {
+      lens = "rules";
+      if (agency) filter.agency = agency;
+    } else if (kind === "property" || section === "Property Disposition") {
+      lens = "property";
+      if (agency) filter.agency = agency;
+    } else if (section === "Changes in Personnel") {
+      lens = "entity";
+      filter.kind = "agency";
+      if (agency) filter.name = agency;
+    } else if (kind === "solicitation" || type === "Solicitation") {
+      lens = "money";
+      if (agency) filter.agency = agency;
+      filter.noticeType = "solicitation";
+    } else if (kind === "award" || /Award|Intent to Negotiate|Vendor List/i.test(type)) {
+      lens = "money";
+      if (agency) filter.agency = agency;
+      if (/Award/i.test(type) || kind === "award") filter.noticeType = "award";
+    } else if (kind === "franchise") {
+      lens = "meetings";
+      if (agency) filter.agency = agency;
+    } else {
+      if (agency) filter.agency = agency;
+    }
+    // No id and no filter bits → bare alerts (neutral).
+    if (!noticeId && !projectId && !Object.keys(filter).length) return "#alerts";
+    const params = new URLSearchParams();
+    params.set("lens", lens);
+    params.set("filter", JSON.stringify(filter));
+    if (noticeId) params.set("notice", noticeId);
+    if (projectId) params.set("project", projectId);
+    return "#alerts?" + params.toString();
+  }
+
   function compileActionRail(matter, options) {
     const opts = options || {};
     const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
     const kind = kindFor(matter || {});
     const stage = String(matter.lifecycle_stage || "").toLowerCase();
     const deadline = matter.deadline || null;
-    const watch = local("watch", "next_action_watch", "Watch this notice", "#alerts", null);
+    const watch = local("watch", "next_action_watch", "Watch this notice", watchDestination(matter), null);
     const calendar = local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, deadline);
     const notice = () => official("document", "read_official_notice", "Read the official notice", matter.official_notice_url, deadline);
     let actions;
@@ -1610,7 +1672,7 @@
     } else if (kind === "zoning") {
       const handoff = zoningHandoff(matter, {today});
       const actionDeadline = deadline || handoff.deadline || null;
-      const landWatch = local("watch", "next_action_watch_rezone", "Watch this rezoning", "#alerts", null);
+      const landWatch = local("watch", "next_action_watch_rezone", "Watch this rezoning", watchDestination(matter), null);
       // Rail keeps at most 3 actions (slice below). Prefer:
       //   join platform → [join, calendar, watch] (maps stay in guide steps)
       //   ZAP hybrid logistics → [maps attend, watch live, calendar|watch]
@@ -1869,6 +1931,7 @@
     examApplyIsDeep,
     isOasysGenericHub,
     compileActionRail,
+    watchDestination,
     solicitationHandoff,
     awardHandoff,
     hearingHandoff,
