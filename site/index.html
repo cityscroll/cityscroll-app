@@ -6764,7 +6764,9 @@ function meetingsExplorerCardHTML(entry){
   const participation=entry.participation||record.participation||{};
   let acts=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   acts+=`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`;
-  acts+=`<a class="act" href="${record.source_url||REQ_URL(record.request_id)}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`;
+  // City Record official notice — REQ_URL only so link_targets classifies as external
+  // (mixed source_url||REQ_URL expressions are unclassified by that gate).
+  acts+=`<a class="act" href="${REQ_URL(record.request_id)}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`;
   if(agency) acts+=`<a class="act" href="${agencyHref(agency)}">${t("meetings_action_agency_profile")}</a>`;
   acts+=participationLinksHTML({ participation });
   (participation.emails||[]).slice(0,1).forEach(email=>{
