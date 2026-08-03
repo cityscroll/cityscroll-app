@@ -64,8 +64,7 @@ def main() -> None:
     except ElementTree.ParseError as error:
         failures.append(f"sitemap.xml: invalid XML ({error})")
         locations = []
-    # Derived from the canonical PAGES contract above; no external data is introduced here.
-    expected_locations = [expected for _, expected in SITEMAP_PAGES]
+    expected_locations = [expected for _, expected in SITEMAP_PAGES]  # Source: canonical PAGES contract above.
     if locations != expected_locations:
         failures.append("sitemap.xml: page set or ordering differs from the canonical page contract")
     if any(not location.startswith("https://cityscroll.org") for location in locations):
