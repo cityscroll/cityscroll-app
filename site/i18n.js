@@ -1608,6 +1608,10 @@ const STRINGS = {
     disposition_phase_action_conveyance: "Review the award or conveyance",
     disposition_phase_now_html: "Now: <b>{phase}</b> — {action}",
     disposition_phase_next_html: "Next: {phase}",
+    // Cohort-only disposition timing (phase_duration_ecdf). No per-matter date when the ship bar fails.
+    disposition_timing_estimate_html: "{line} <span class=\"tag renewal\">{tag}</span>",
+    disposition_timing_cohort_note_html: "Citywide pattern only — this corpus is too thin for a dated projection on this parcel.",
+    disposition_timing_formula_link: "How this estimate is computed",
     property_domain_kicker: "City property disposition",
     property_domain_heading: "Hearings, sales, and awards",
     property_domain_deck: "City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot.",
