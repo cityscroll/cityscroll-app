@@ -65,6 +65,15 @@ test("Property view extracts sites, abstains honestly, and geocodes a representa
   assert.ok(view.disposition_spines.length >= 1);
   assert.equal(view.disposition_metrics.metric, "property_disposition_spine_completeness_rate");
   assert.ok(view.properties[0].disposition_join_keys.some((k) => k.startsWith("bbl:")));
+  // Surplus-buyer commercial payload stamped per row (item category + glance).
+  assert.ok(view.properties[0].commercial);
+  assert.equal(view.properties[0].commercial.item.category, "real_property");
+  assert.equal(view.properties[1].commercial.item.category, "vehicle");
+  assert.equal(view.commercial_metrics.metric, "property_commercial_price_coverage");
+  // Slim list keeps commercial glance fields.
+  const slim = (await import("../src/lib/property_list.mjs")).slimPropertyListView(view);
+  assert.ok(slim.properties[1].commercial.glance);
+  assert.equal(slim.properties[1].printout_1, undefined);
 });
 
 test("Property refresh writes the materialized view and its route serves it", async () => {

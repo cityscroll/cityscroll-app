@@ -693,7 +693,7 @@ function feedCardHTML(key, r, terms){
   if(mapQuery) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
   if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
   const pbadges = key==="property" && (r._asset || r._badge)
-    ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
+    ? `<div class="property-commercial-lead" data-commercial-glance="1">${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
   const rstage=key==="rules"?ruleStageChip(r._ruleStage):"";
   const rbadges=rstage?`<div>${rstage}</div>`:"";
   return `<div class="fcard">

@@ -81,18 +81,31 @@ function sectionWhere(lens) {
   return `section_name='${lens === "property" ? "Property Disposition" : "Agency Rules"}'`;
 }
 
+function normalizeAssetParam(raw) {
+  const key = String(raw || "").trim().toLowerCase().replace(/-/g, "_");
+  const aliases = {
+    vehequip: "vehicle",
+    forest: "timber",
+    realty: "real_property",
+    medallion: "other",
+    seized: "other",
+  };
+  return aliases[key] || key;
+}
+
 function classifyAsset(record) {
   const text = `${record.short_title || ""} ${record.additional_description_1 || ""}`.toLowerCase();
   const has = (...terms) => terms.some((term) => text.includes(term));
-  if (has("forest management", "board feet", "sawtimber", "cordwood", "timber")) return "forest";
-  if (has("medallion")) return "medallion";
-  if (has("auto auction", "heavy machinery", "fleet", "iaai")) return "vehequip";
-  if (has("unauthorized", "tobacco", "forfeiture", "pending destruction", "property clerk", "owners are wanted", "in the custody")) return "seized";
-  if (has("surplus assets", "machine tools", "furniture", "publicsurplus")) return "vehequip";
+  if (has("forest management", "board feet", "sawtimber", "cordwood", "timber", "firewood", "roundwood")) return "timber";
+  if (has("auto auction", "vehicle auction", "govdeals", "iaai", "fleet auction", "municipal auto")) return "vehicle";
+  if (has("heavy machinery", "machine tools", "equipment auction", "construction equipment")) return "equipment";
+  if (has("surplus assets", "publicsurplus", "furniture auction")) return "equipment";
+  if (has("scrap", "surplus materials", "recyclable metal")) return "scrap_materials";
+  if (has("unauthorized", "tobacco", "forfeiture", "pending destruction", "property clerk", "owners are wanted", "in the custody", "medallion")) return "other";
   if (text.includes("easement")) return "other";
   if (has("mortgage and note", "outstanding debt") && text.includes("mortgage")) return "other";
-  if (has("disposition area", "city-owned property", "block/lot", "residential property", "public auction", "premises", "reversionary")) return "realty";
-  if (has("rfp", "request for proposal", "redevelopment", "lease auction", "lease", "license")) return "realty";
+  if (has("disposition area", "city-owned property", "block/lot", "residential property", "public auction", "premises", "reversionary", "real property")) return "real_property";
+  if (has("rfp", "request for proposal", "redevelopment", "lease auction", "lease", "license")) return "real_property";
   return "other";
 }
 
@@ -131,7 +144,8 @@ async function countScenarioHash(hash) {
       "$order": "start_date DESC",
       "$limit": "300",
     })}`);
-    return rows.filter((row) => classifyAsset(row) === params.get("asset")).length;
+    const want = normalizeAssetParam(params.get("asset"));
+    return rows.filter((row) => classifyAsset(row) === want).length;
   }
   if (lens === "property" || lens === "rules") {
     const queryParams = { "$select": "count(1) as n", "$where": sectionWhere(lens) };
@@ -176,7 +190,7 @@ const SCENARIOS = [
   ] },
   { id: "subsidies-land", variants: [{ id: "land", href: "#land", labelKey: "tab_land", label: "Zoning" }] },
   { id: "legal-property", variants: [
-    { id: "realty", href: "#property?asset=realty", labelKey: "tab_property", label: "Property" },
+    { id: "realty", href: "#property?asset=real_property", labelKey: "tab_property", label: "Property" },
     { id: "all", href: "#property", labelKey: "tab_property", label: "Property" },
   ] },
   { id: "legal-rules", variants: [{ id: "rules", href: "#rules", labelKey: "tab_rules", label: "Rules" }] },

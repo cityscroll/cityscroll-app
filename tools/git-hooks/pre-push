@@ -59,9 +59,20 @@ else
 fi
 
 # Honor PREPUSH_EXTRA_ARGS for local overrides (e.g. PREPUSH_EXTRA_ARGS=--with-reading-level).
-# shellcheck disable=SC2206
-extra=( ${PREPUSH_EXTRA_ARGS:-} )
-if ! "$PREFLIGHT" "${args[@]}" "${extra[@]}"; then
+# Under `set -u`, empty-array expansion of "${extra[@]}" fails on some bash builds —
+# only append when PREPUSH_EXTRA_ARGS is non-empty.
+if [[ -n "${PREPUSH_EXTRA_ARGS:-}" ]]; then
+  # shellcheck disable=SC2206
+  extra=( ${PREPUSH_EXTRA_ARGS} )
+  args+=("${extra[@]}")
+fi
+# "${args[@]}" is unbound under set -u when the array is empty (bash 3.2+/set -u).
+if ((${#args[@]})); then
+  preflight_cmd=("$PREFLIGHT" "${args[@]}")
+else
+  preflight_cmd=("$PREFLIGHT")
+fi
+if ! "${preflight_cmd[@]}"; then
   echo "" >&2
   echo "pre-push: preflight failed — push rejected." >&2
   echo "  Fix locally, or re-run: make prepush" >&2

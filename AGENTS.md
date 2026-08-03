@@ -1298,6 +1298,27 @@ extractor so ZoLa / ACRIS / Who Owns What still open from body tax-lot text.
 Provenance distinguishes GeoSearch vs notice tax-lot (i18n keys
 `parcel_via_*`). Demo: `property-bbl-fallback` → `#notice/20241112003`.
 
+## Property commercial payload (surplus-goods buyer)
+
+Primary persona on `#property`: glancing surplus-goods buyer — **WHAT / HOW MUCH /
+DEAL? / when-bid**. Secondary: real-property developers, community land-reuse
+(same facts, different next steps). Pure extractor:
+`site/property_commercial.mjs` (worker re-export
+`worker/src/lib/property_commercial.mjs`). Stamped on `/property-locations` via
+`attachPropertyCommercial` after disposition spines. Categories: `vehicle`,
+`timber`, `equipment`, `real_property`, `scrap_materials`, `other` (legacy URL
+keys `vehequip`/`forest`/`realty` normalize). List prime position is item + $ +
+close-date; detail `#ncommercial` carries evidence + deal signal (only when the
+notice states both appraisal/assessed **and** minimum bid/upset — never invent
+market comps; `comparables_slot.status=not_yet_acquired`). Attachment titles
+(T0 metadata) may name item lists / volume reports (Cannonsville archetype).
+Action rail consumes `commercial.participation.package_url` for marketplace
+handoffs (GovDeals etc.). Persona capability input for breadth/surface-load:
+`ontology/fixtures/dimensions/persona_capability_inputs.json`. Verify:
+`node --test test/property_commercial.test.mjs worker/test/property.test.mjs
+test/action-rail.test.mjs`. Capture:
+`python3 tools/capture_property_commercial.py`.
+
 ## Property disposition process spine
 
 Multi-notice lifecycle for one parcel/asset: **hearing → auction_or_rfp →
