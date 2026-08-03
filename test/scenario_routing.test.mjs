@@ -1,8 +1,9 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 const analytics = readFileSync(new URL("../site/analytics.js", import.meta.url), "utf8");
 
 // Homepage no longer ships the "What are you here to do?" scenario grid (owner noise cut).

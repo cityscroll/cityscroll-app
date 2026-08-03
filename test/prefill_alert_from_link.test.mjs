@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Saved-search health fix path: a quiet watch's digest links back to the alerts page as
 // #alerts?lens=<lens>&filter=<json>&freq=<daily|weekly> (see worker/src/lib/search_health.mjs's
 // alertsFixUrl()). prefillAlertFromLink() (index.html) is what applyHash() calls to turn that
@@ -13,7 +14,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

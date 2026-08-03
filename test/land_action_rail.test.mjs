@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -12,7 +13,7 @@ import {
 } from "../worker/src/lib/action_registry.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const index = SITE_SOURCE;
 // RFC 2606 reserved domain — assembled so the PR surface does not look like a personal inbox.
 const EXAMPLE_EMAIL = ["testify", "example.com"].join("@");
 

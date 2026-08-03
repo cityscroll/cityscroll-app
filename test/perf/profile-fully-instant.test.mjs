@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "../helpers/site_source.mjs";
 // Full-profile performance regression.
 //
 // A vendor-profile bucket is an edge read model: opening a profile may read that
@@ -10,7 +11,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   const asyncStart = src.indexOf(`async function ${name}(`);

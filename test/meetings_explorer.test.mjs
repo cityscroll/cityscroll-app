@@ -6,6 +6,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
+
 import {
   MEETINGS_PROCESS_STAGES,
   buildMeetingsExplorerEntries,
@@ -303,13 +305,9 @@ test("meetings place grouping is opt-in (default flat)", async () => {
   assert.ok(MEETINGS_PLACE_GROUP_MODES.some(([k]) => k === "flat"));
   assert.ok(MEETINGS_PLACE_GROUP_MODES.some(([k]) => k === "place"));
   // Default list path is flat — group=place is the opt-in share link.
-  const indexSource = (await import("node:fs")).readFileSync(
-    new URL("../site/index.html", import.meta.url),
-    "utf8",
-  );
-  assert.match(indexSource, /meetingsPlaceGroupSel="flat"/);
-  assert.match(indexSource, /q\.set\("group", "place"\)/);
-  assert.match(indexSource, /meetingsplacegrouprail/);
+  assert.match(SITE_SOURCE, /meetingsPlaceGroupSel="flat"/);
+  assert.match(SITE_SOURCE, /q\.set\("group", "place"\)/);
+  assert.match(SITE_SOURCE, /meetingsplacegrouprail/);
 });
 
 test("pickPrimaryHearing prefers local scope; meetingsAgencyName cleans agency", () => {

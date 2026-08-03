@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -5,7 +6,7 @@ import { inflateRawSync } from "node:zlib";
 import { test } from "node:test";
 
 const require = createRequire(import.meta.url);
-const source = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const source = SITE_SOURCE;
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const {
   excelSafeCsv,

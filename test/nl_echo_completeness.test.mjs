@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // w12-09 field report (site owner, production): on the Land lens, following the suggestion
 // "rezonings in Queens", the interpretation echo read "We understood this as: in Queens" --
 // dropping "rezonings" entirely. Root cause: "rezonings" has no field in the filter schema
@@ -23,7 +24,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

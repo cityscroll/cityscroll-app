@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Characterization: Land/ZAP timeline ULURP phase grouping.
  * Field cases: long pre-cert thrash (2019K0147); mid-public-review (2022M0258).
@@ -139,7 +140,7 @@ test("2022M0258: mid public-review maps current to City Council phase", () => {
 });
 
 test("public Land detail template uses phase spine surface", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function landSpineHTML/);
   assert.match(index, /buildLandPhaseView|land_phase_spine/);
   assert.match(index, /land-phase-stepper|land-spine-lead/);

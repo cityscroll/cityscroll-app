@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization: client inv merge helpers + anonymous localStorage path
 // stay available when there is no recognized session (no server write).
 
@@ -8,7 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const INDEX = fs.readFileSync(path.join(ROOT, "site/index.html"), "utf8");
+const INDEX = SITE_SOURCE;
 const I18N = fs.readFileSync(path.join(ROOT, "site/i18n.js"), "utf8");
 const SHIPPING_LANGS = ["ar", "bn", "es", "fr", "ht", "ko", "pl", "ru", "ur", "zh-Hans"];
 

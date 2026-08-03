@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Wave-2 batch-precompute pure builders + property list slim view.
 // Run: node --test test/batch_precompute_snapshots.test.mjs worker/test/property.test.mjs
 
@@ -108,7 +109,7 @@ test("data.html paints from prebuilt snapshot before live SODA", () => {
 });
 
 test("index.html uses land default snapshot on Active ULURP first paint", () => {
-  const src = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const src = SITE_SOURCE;
   assert.match(src, /data\/land_default_ulurp\.json/);
   assert.match(src, /loadLandDefaultSnapshot/);
   assert.match(src, /isDefaultLandSearchState/);

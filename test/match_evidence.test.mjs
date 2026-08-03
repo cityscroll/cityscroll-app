@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins matchEvidence()/digTitleHTML()/digEvidenceHTML() (index.html) -- the on-page digest
 // preview's "why did this match" rendering, mirroring worker/src/lib/digest.mjs's matchEvidence()
 // (see worker/test/digest.test.mjs and worker/test/digest_match_evidence_render.test.mjs for the
@@ -17,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

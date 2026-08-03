@@ -1,0 +1,69 @@
+{
+  "schema": "cityscroll.index-module-split-evidence.v1",
+  "measured_at": "2026-08-03",
+  "baseline_commit": "d5320e9e52eef5b17d8322faf77815ccda147073",
+  "tokenizer": {
+    "implementation": "tiktoken 0.12.0",
+    "encoding": "cl100k_base"
+  },
+  "before": {
+    "path": "site/index.html",
+    "bytes": 879712,
+    "tokens": 238223,
+    "lines": 15030,
+    "inline_script_bytes": 730088,
+    "inline_script_lines": 13290
+  },
+  "after": {
+    "index_html_bytes": 149657,
+    "module_count": 18,
+    "largest_module": {
+      "path": "site/app/money-history.mjs",
+      "bytes": 68370
+    },
+    "working_bar_bytes": 100000
+  },
+  "representative_tasks": [
+    {
+      "task": "notice-detail render change",
+      "files": [
+        "site/app/core.mjs",
+        "site/app/money-history.mjs"
+      ],
+      "before_bytes": 879712,
+      "before_tokens": 238223,
+      "after_bytes": 88471,
+      "after_tokens": 23818,
+      "token_reduction_ratio": 10.0
+    },
+    {
+      "task": "single-lens view change (Rules)",
+      "files": [
+        "site/app/core.mjs",
+        "site/app/rules.mjs"
+      ],
+      "before_bytes": 879712,
+      "before_tokens": 238223,
+      "after_bytes": 64887,
+      "after_tokens": 17589,
+      "token_reduction_ratio": 13.54
+    },
+    {
+      "task": "digest render change",
+      "files": [
+        "site/app/core.mjs",
+        "site/app/alerts.mjs"
+      ],
+      "before_bytes": 879712,
+      "before_tokens": 238223,
+      "after_bytes": 70474,
+      "after_tokens": 19033,
+      "token_reduction_ratio": 12.52
+    }
+  ],
+  "source_equivalence": {
+    "normalization": "Replace the first of two byte-identical boxClass declarations with its module-conversion note, restore moved-module dynamic imports from ../ to their original ./ paths, trim the script wrapper's final newline, then concatenate module source before live-binding publication footers in loader order.",
+    "normalized_source_bytes": 730102,
+    "normalized_source_sha256": "b4e67624d9ea0332a762679cf5afed2f57ff0a1fd148fafc01881d751fa8139d"
+  }
+}

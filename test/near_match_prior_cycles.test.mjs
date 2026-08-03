@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins rankNearMatchCandidates() — the exploratory "maybe" tier below priorCycleAwards()'s own
 // strict cross-PIN matcher (crol-list/w12-18).
 //
@@ -29,7 +30,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

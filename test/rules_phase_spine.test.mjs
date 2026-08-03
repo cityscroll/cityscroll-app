@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pure rules phase spine: phase-group, aggregate, dedupe, current/next.
 //
 //   node --test test/rules_phase_spine.test.mjs
@@ -227,7 +228,7 @@ test("unmatched notice: empty spine stays on proposal with gap slots", () => {
 });
 
 test("public Rules detail template uses phase spine surface", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function ruleEventSpineHTML\(/);
   assert.match(index, /buildRulesPhaseView|rules_phase_spine/);
   assert.match(index, /rule-phase-stepper|rule-spine-lead/);

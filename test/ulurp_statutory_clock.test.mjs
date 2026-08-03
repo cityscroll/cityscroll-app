@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * ULURP statutory-clock deadlines (cs-pred-03).
  * Verify gate: certified on D → CB/BP/CPC/Council at D+60/90/150/200 with
@@ -165,7 +166,7 @@ test("statutoryDeadlinesFromCertification matches verify matrix", () => {
 });
 
 test("public land template and methodology cite Charter statutory clocks", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function landStatutoryDeadlineHTML/);
   assert.match(index, /land_spine_statutory_deadline_html/);
   assert.match(index, /land-statutory-deadline/);

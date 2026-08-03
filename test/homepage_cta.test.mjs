@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Homepage noise-reduction + primary email CTA (site owner priority change).
 // Masthead → email CTA → category tabs → content. No edition strip, no scenario grid.
 import test from "node:test";
@@ -7,7 +8,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const index = SITE_SOURCE;
 const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
 
 test("edition strip and scenario grid are gone", () => {

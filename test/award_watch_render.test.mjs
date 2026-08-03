@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins the two pure award-arrival-alert render helpers extracted out of index.html
 // (awardWatchOfferHTML/awardWatchPreviewHTML): the opt-in button only ever appears with a real
 // notice id (never on the agency-level, notice-less call site), and the preview panel tells
@@ -12,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

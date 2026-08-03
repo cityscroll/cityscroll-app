@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins lifecycleTimelineHTML()'s output shape: stage boxes, status-aware styling, source
 // links, unmatched/unknown/ambiguous "no record found" register statements, amendments,
 // and provenance notes. The rendering functions are extracted from index.html's inline
@@ -14,7 +15,7 @@ import { dirname, join } from "node:path";
 import * as procurementPhaseSpine from "../site/procurement_phase_spine.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

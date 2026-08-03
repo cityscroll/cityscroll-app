@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Standards gate: every inline <script> block and every .js file must parse.
+"""Standards gate: every inline script and first-party JavaScript module must parse.
 
 Born from a production outage (2026-07-11): an editing pass introduced smart quotes
 (“ ”) into index.html's main script block; unit tests exercise extracted pure
@@ -16,8 +16,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SITE_ROOT = ROOT / "site"
 HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
-# Source: the standalone first-party scripts loaded by index.html.
-JS_FILES = ["i18n.js", "nl_parse.js", "location_awareness.js", "hearing_location.js", "qr_share.js", "external_awards.js"]  # source: index.html script tags
+# Source: standalone first-party scripts and the main site's ES-module graph.
+JS_FILES = [
+    "i18n.js", "nl_parse.js", "location_awareness.js", "hearing_location.js",
+    "qr_share.js", "external_awards.js",
+] + [str(path.relative_to(SITE_ROOT)) for path in sorted((SITE_ROOT / "app").glob("*.mjs"))]
 
 failures = 0
 for page in HTML_PAGES:

@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization: Civil Service List aggregates (closed-exam join + PII hard rule).
 //   node --test test/civil_service_list_join.test.mjs
 
@@ -34,7 +35,7 @@ const receipt = JSON.parse(
 );
 const contracts = JSON.parse(readFileSync(join(ROOT, "site/data/source_contracts.json"), "utf8"));
 const artifact = JSON.parse(readFileSync(join(ROOT, "site/data/staffing_exams.json"), "utf8"));
-const html = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const html = SITE_SOURCE;
 
 test("aggregates artifact is exam-level only with no PII field names", () => {
   assert.ok(aggregates.records.length >= 100);

@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization for the owner-reported IDA hearing defect cluster:
 //   #notice/20250227021 (homepage demo "Past IDA meetings")
 // 1) participation links: trailing-comma body URLs must collapse to one affordance
@@ -23,7 +24,7 @@ import {
 } from "../worker/src/lib/subsidy_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 const hearingLoc = readFileSync(join(ROOT, "site", "hearing_location.js"), "utf8");
 

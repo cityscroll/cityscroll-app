@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Digest deep-links (w12-12): before this, a digest email's notice link carried nothing about
 // the watch that surfaced the item -- following it from an inbox landed on the plain notice
 // view, with no sign of why the item matched or what was searched for. This pins the client
@@ -22,7 +23,7 @@ import { dirname, join } from "node:path";
 import { sanitize as workerSanitize, LENSES as WORKER_LENSES } from "../worker/src/lib/filter.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {
