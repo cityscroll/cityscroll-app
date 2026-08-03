@@ -18,6 +18,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/helpers/site_source.mjs`; rendered split parity is
   `python3 test/functional/21_module_dom_equivalence.py`.
 
+## Digest cron deploy safety
+
+- Production Worker deploys must run `node tools/wait_for_digest_cron_window.mjs`
+  immediately before `wrangler deploy`. Wrangler rewrites Cron Trigger configuration,
+  so the guard keeps deploys outside 12:40–13:05 UTC around the 13:00 digest.
+- Cloudflare Pages owns `cityscroll.org` and `www.cityscroll.org`; the Worker custom-domain
+  routes are only `api.cityscroll.org` and the `api.crol-list.org` compatibility alias.
+
 ## CI path fast paths and merge queue
 
 - Required checks always report a conclusion (never stay missing). Fast paths:
