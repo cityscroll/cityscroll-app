@@ -531,9 +531,50 @@
     return bestScore >= 4 ? best : null;
   }
 
+  /**
+   * Deep package document from T0/T1 attachment metadata (City Record GetFile with
+   * DocumentID). Bare GetFile without DocumentID is a search page — never promote it.
+   * Body-extracted package_url still wins in noticeFieldGuidance when present.
+   */
+  function packageUrlFromAttachments(attachments) {
+    const list = Array.isArray(attachments) ? attachments : [];
+    for (const row of list) {
+      if (!row || typeof row !== "object") continue;
+      const url = httpsUrl(row.url || row.href || row.document_url);
+      if (!url) continue;
+      try {
+        const parsed = new URL(url);
+        const host = parsed.hostname.toLowerCase();
+        if (!(host.includes("a856-cityrecord.nyc.gov") || host.includes("cityrecord.nyc.gov"))) {
+          // Allowlisted marketplace / RFP package hosts already used as package_url.
+          if (
+            host.includes("govdeals.com")
+            || host.includes("opengov.com")
+            || host.includes("bonfirehub.com")
+            || host.includes("bidnetdirect.com")
+          ) {
+            return url;
+          }
+          continue;
+        }
+        if (!/\/Search\/GetFile/i.test(parsed.pathname || "")) continue;
+        const q = parsed.searchParams;
+        const docId = q.get("DocumentID") || q.get("documentId") || q.get("document_id");
+        const reqId = q.get("RequestID") || q.get("requestId") || q.get("request_id");
+        if (docId && reqId) return url;
+      } catch {
+        /* ignore malformed */
+      }
+    }
+    return null;
+  }
+
   function noticeFieldGuidance(matter) {
     const body = String(matter.notice_text || "");
-    const packageUrl = packageUrlFromBody(body) || httpsUrl(matter.package_url) || null;
+    const packageUrl = packageUrlFromBody(body)
+      || httpsUrl(matter.package_url)
+      || packageUrlFromAttachments(matter.attachments)
+      || null;
     const email = String(matter.email || "").trim() || null;
     const contactName = String(matter.contact_name || "").trim() || null;
     const contactPhone = String(matter.contact_phone || "").trim() || null;
@@ -1942,6 +1983,8 @@
     landHearingBody,
     parcelLookupActions,
     checkbookHandoffUrl,
+    packageUrlFromAttachments,
+    packageUrlFromBody,
     validateAction,
     outcomeEvent,
   };
