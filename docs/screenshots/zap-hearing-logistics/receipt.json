@@ -1,0 +1,10 @@
+{
+  "project_id": "2024Q0292",
+  "paths": {
+    "before_1440": "docs/screenshots/zap-hearing-logistics/before-1440.png",
+    "after_1440": "docs/screenshots/zap-hearing-logistics/after-1440.png",
+    "before_390": "docs/screenshots/zap-hearing-logistics/before-390.png",
+    "after_390": "docs/screenshots/zap-hearing-logistics/after-390.png"
+  },
+  "fixture_sha256": "54627d656af547f8e7a961f450ecd56a10615ee248f0f90c43e5ac180d7346a2"
+}

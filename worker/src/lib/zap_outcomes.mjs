@@ -27,6 +27,7 @@
 // Ship edge materialization via GET /zap-outcomes (precompute-first for the browser).
 
 import { extractUlurpKeys } from "./ulurp_recommendations_join.mjs";
+import { extractZapHearingLogistics } from "./zap_hearing_logistics.mjs";
 
 export const ZAP_API_BASE = "https://zap-api-production.herokuapp.com";
 export const ZAP_PORTAL_PROJECT = "https://zap.planning.nyc.gov/projects";
@@ -86,6 +87,19 @@ function isoDate(value) {
   const t = Date.parse(s);
   if (!Number.isFinite(t)) return null;
   return new Date(t).toISOString().slice(0, 10);
+}
+
+/** Full ISO datetime when the CRM field includes a non-midnight clock time. */
+function isoDateTime(value) {
+  if (!value) return null;
+  const s = String(value).trim();
+  if (!s) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const t = Date.parse(s);
+  if (!Number.isFinite(t)) return isoDate(s);
+  // Pure date stamped as midnight UTC → keep date-only precision.
+  if (/T00:00:00(?:\.0+)?Z$/i.test(s)) return isoDate(s);
+  return new Date(t).toISOString();
 }
 
 function clean(value) {
@@ -148,6 +162,8 @@ function dispositionGroupKey(disposition) {
   return [
     disposition.representing,
     disposition.vote_date,
+    disposition.hearing_date,
+    disposition.hearing_location,
     disposition.community_board,
     disposition.borough_president,
     disposition.borough_board,
@@ -260,6 +276,11 @@ export function parseZapApiProject(payload) {
         representing: clean(a["dcp-representing"]),
         vote_date: isoDate(a["dcp-dateofvote"]),
         hearing_date: isoDate(a["dcp-dateofpublichearing"]),
+        // Full clock when present (e.g. 2026-07-02T13:30:00.000Z → 9:30 AM ET).
+        hearing_at: isoDateTime(a["dcp-dateofpublichearing"]),
+        // Free-text logistics — often "In person at … or livestreamed at …".
+        hearing_location: clean(a["dcp-publichearinglocation"]),
+        vote_location: clean(a["dcp-votelocation"]),
         community_board: clean(a["dcp-communityboardrecommendation"]),
         borough_president: clean(a["dcp-boroughpresidentrecommendation"]),
         borough_board: clean(a["dcp-boroughboardrecommendation"]),
@@ -285,7 +306,8 @@ export function parseZapApiProject(payload) {
     || groupedDispositions.some((d) => d.vote_date || d.community_board)
     || Boolean(attrs["dcp-projectcompleted"] || attrs["dcp-publicstatus"]);
 
-  return {
+  const portalUrl = projectId ? `${ZAP_PORTAL_PROJECT}/${encodeURIComponent(projectId)}` : null;
+  const shell = {
     join: {
       matched: true,
       method: "exact_project_id",
@@ -298,7 +320,7 @@ export function parseZapApiProject(payload) {
     completed_date: isoDate(attrs["dcp-projectcompleted"]),
     certified_referred: isoDate(attrs["dcp-certifiedreferred"]),
     last_milestone_date: isoDate(attrs["dcp-lastmilestonedate"]),
-    portal_url: projectId ? `${ZAP_PORTAL_PROJECT}/${encodeURIComponent(projectId)}` : null,
+    portal_url: portalUrl,
     actions,
     milestones: milestones.sort((a, b) => (
       String(a.time?.value || "").localeCompare(String(b.time?.value || ""))
@@ -314,6 +336,14 @@ export function parseZapApiProject(payload) {
     source: ZAP_OUTCOMES_SOURCE,
     api_base: ZAP_API_BASE,
   };
+  // Precompute hearing logistics (venue + livestream + datetime) from disposition
+  // free text — never invent when the fragment cannot be parsed confidently.
+  shell.hearing_logistics = extractZapHearingLogistics(shell, {
+    project_id: projectId,
+    portal_url: portalUrl,
+    borough: clean(attrs["dcp-borough"]),
+  });
+  return shell;
 }
 
 function cityRecordBlob(row) {

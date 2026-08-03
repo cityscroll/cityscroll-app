@@ -147,7 +147,7 @@ test("public-review without hearing still offers ZAP comment + guide, never a pu
   assert.doesNotMatch(JSON.stringify(actions), /use the (response|official)/i);
 });
 
-test("venue/testimony without online join still guide-firsts instead of missing-link punt", () => {
+test("venue/testimony without online join still offers in-person attend instead of missing-link punt", () => {
   const actions = compileActionRail({
     kind: "zoning",
     project_id: "2024K0240",
@@ -165,9 +165,10 @@ test("venue/testimony without online join still guide-firsts instead of missing-
       notice_text: `Written testimony may be submitted electronically to ${EXAMPLE_EMAIL}.`,
     }],
   }, {today: "2026-08-02"});
-  // Official notice is the kinetic handoff when no join platform is published.
-  assert.equal(actions[0].type, "document");
-  assert.equal(actions[0].label_key, "land_action_open_hearing_notice");
+  // Venue address → maps attend is the kinetic handoff when no join platform is published.
+  assert.equal(actions[0].type, "attend");
+  assert.equal(actions[0].label_key, "land_action_attend_in_person");
+  assert.match(actions[0].destination || "", /maps\.google|google\.com\/maps/i);
   assert.equal(actions[0].guide?.testimony_email, EXAMPLE_EMAIL);
   assert.match(actions[0].guide?.venue_address || "", /350 Jay/i);
   assert.ok(!actions[0].guide?.participation_url);

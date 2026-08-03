@@ -93,6 +93,8 @@ function serializeState(){
     if(landCouncilDistrict) q.set("council", landCouncilDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
     if($("#lstatus").value !== "active") q.set("status", $("#lstatus").value);
+    const hm=$("#lhearingmode");
+    if(hm && $("#lstatus").value==="hearings" && hm.value) q.set("attendance", hm.value);
   } else if(SECTIONS[tab]){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
@@ -739,7 +741,13 @@ function applyHash(){
       landCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
-      $("#lstatus").value = q.get("status")==="all"?"all":"active";
+      const landStatus=q.get("status");
+      $("#lstatus").value = landStatus==="all"||landStatus==="hearings"?landStatus:"active";
+      const hm=$("#lhearingmode");
+      if(hm){
+        const att=q.get("attendance");
+        hm.value=att==="in_person"||att==="livestream"?att:"";
+      }
       const was = landLoaded; showTab("land"); if(was) landSearch();
     } else if(SECTIONS[tab]){
       $("#"+tab+"agency").value="";

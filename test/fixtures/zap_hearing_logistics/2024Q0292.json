@@ -1,0 +1,1153 @@
+{
+  "meta": {},
+  "included": [
+    {
+      "type": "actions",
+      "id": "650ee843-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-name": "",
+        "statuscode": "Certified",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "C260234ZMQ",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "ZM",
+        "dcp-zoningresolution-value": null,
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "actions",
+      "id": "41400b62-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-name": "",
+        "statuscode": "Referred",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "N260235ZRQ",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "ZR",
+        "dcp-zoningresolution-value": null,
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "a10ee843-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "663beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Prepare Filed Land Use Application  ",
+        "milestonename": "Prepare Filed Land Use Application",
+        "dcp-plannedstartdate": "2025-09-21T05:00:00.000Z",
+        "dcp-plannedcompletiondate": "2025-12-17T17:23:54.000Z",
+        "dcp-actualstartdate": "2025-08-05T17:23:54.000Z",
+        "dcp-actualenddate": "2026-01-11T01:53:55.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 26,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 134,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "1b4a1762-960e-f111-8406-001dd8086f37",
+      "attributes": {
+        "dcp-milestone": "663beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Prepare Filed Land Use Application  ",
+        "milestonename": "Prepare Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-02-20T19:57:41.000Z",
+        "dcp-plannedcompletiondate": "2026-03-12T19:57:52.000Z",
+        "dcp-actualstartdate": "2026-02-20T19:57:52.000Z",
+        "dcp-actualenddate": "2026-03-16T18:07:35.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 26,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 20,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "b50ee843-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "6a3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Prepare Filed Land Use Fee Payment  ",
+        "milestonename": "Prepare Filed Land Use Fee Payment",
+        "dcp-plannedstartdate": "2026-01-17T14:47:50.000Z",
+        "dcp-plannedcompletiondate": "2026-01-19T14:47:50.000Z",
+        "dcp-actualstartdate": "2026-01-12T05:00:00.000Z",
+        "dcp-actualenddate": "2026-01-15T21:26:46.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 28,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 2,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Fee Paid",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "d43bec49-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "6c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Review Filed Land Use Application  ",
+        "milestonename": "Review Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-01-20T17:55:40.000Z",
+        "dcp-plannedcompletiondate": "2026-02-19T18:30:41.000Z",
+        "dcp-actualstartdate": "2026-01-20T18:30:41.000Z",
+        "dcp-actualenddate": "2026-02-20T19:57:45.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 29,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 30,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "374a1762-960e-f111-8406-001dd8086f37",
+      "attributes": {
+        "dcp-milestone": "6c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Review Filed Land Use Application  ",
+        "milestonename": "Review Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-03-23T00:48:47.000Z",
+        "dcp-plannedcompletiondate": "2026-04-10T19:51:10.000Z",
+        "dcp-actualstartdate": "2026-03-16T19:51:10.000Z",
+        "dcp-actualenddate": "2026-04-14T18:10:07.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 29,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 25,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "b825fe6d-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "8e3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - Review Session - Certified / Referred  ",
+        "milestonename": "Review Session - Certified / Referred",
+        "dcp-plannedstartdate": "2026-04-08T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-05-19T04:00:00.000Z",
+        "dcp-actualstartdate": "2026-04-28T04:00:00.000Z",
+        "dcp-actualenddate": "2026-05-20T01:39:51.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 46,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 21,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
+        "display-name": "Application Reviewed at City Planning Commission Review Session",
+        "outcome": "Certified",
+        "dcp-reviewmeetingdate": "2026-05-11T04:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "e025fe6d-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "923beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - Community Board Referral  ",
+        "milestonename": "Community Board Referral",
+        "dcp-plannedstartdate": "2026-05-20T01:39:59.000Z",
+        "dcp-plannedcompletiondate": "2026-07-20T04:00:00.000Z",
+        "dcp-actualstartdate": "2026-05-20T04:00:00.000Z",
+        "dcp-actualenddate": "2026-07-08T19:50:25.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 48,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 61,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Community Board has 60 days from the time of referral (nine days after certification) to hold a hearing and issue a recommendation.",
+        "display-name": "Community Board Review",
+        "outcome": "Approved with Conditions",
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "3fc9f873-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "943beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - Borough President Referral  ",
+        "milestonename": "Borough President Referral",
+        "dcp-plannedstartdate": "2026-07-08T19:50:33.000Z",
+        "dcp-plannedcompletiondate": "2026-08-07T04:00:00.000Z",
+        "dcp-actualstartdate": "2026-07-09T04:00:00.000Z",
+        "dcp-actualenddate": null,
+        "statuscode": "In Progress",
+        "dcp-milestonesequence": 49,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 30,
+        "dcp-goalduration": 29,
+        "dcp-actualdurationasoftoday": 25,
+        "display-description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
+        "display-name": "Borough President Review",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "8bc9f873-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "9c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - Review Session - Pre-Hearing Review / Post Referral  ",
+        "milestonename": "Review Session - Pre-Hearing Review / Post Referral",
+        "dcp-plannedstartdate": "2026-08-08T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-08-14T04:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 53,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": null,
+        "dcp-goalduration": 6,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Review Session - Pre-Hearing Review / Post Referral",
+        "outcome": null,
+        "dcp-reviewmeetingdate": "2026-08-10T04:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "9ac9f873-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "9e3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - CPC Public Meeting - Public Hearing  ",
+        "milestonename": "CPC Public Meeting - Public Hearing",
+        "dcp-plannedstartdate": "2026-08-15T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-08-17T04:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 54,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": null,
+        "dcp-goalduration": 2,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The City Planning Commission has 60 days after the Borough President issues a recommendation to hold a hearing and vote on an application.",
+        "display-name": "City Planning Commission Review",
+        "outcome": null,
+        "dcp-reviewmeetingdate": "2026-08-26T04:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "bec9f873-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "a23beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - Review Session - Post Hearing Follow-Up / Future Votes  ",
+        "milestonename": "Review Session - Post Hearing Follow-Up / Future Votes",
+        "dcp-plannedstartdate": "2026-08-18T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-08-25T04:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 56,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": null,
+        "dcp-goalduration": 7,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Post Hearing Follow-Up / Future Votes",
+        "outcome": null,
+        "dcp-reviewmeetingdate": "2026-08-24T04:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "d9c9f873-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "a43beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - CPC Public Meeting - Vote  ",
+        "milestonename": "CPC Public Meeting - Vote",
+        "dcp-plannedstartdate": "2026-08-26T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-08-28T04:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 57,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": null,
+        "dcp-goalduration": 2,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "City Planning Commission Vote",
+        "outcome": null,
+        "dcp-reviewmeetingdate": "2026-08-26T04:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "dfc9f873-a055-ef11-a317-001dd8049f0b",
+      "attributes": {
+        "dcp-milestone": "a63beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "EAS - City Council Review  ",
+        "milestonename": "City Council Review",
+        "dcp-plannedstartdate": "2026-08-29T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-10-15T04:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 58,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 223,
+        "dcp-goalduration": 47,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The City Council has 50 days from receiving the City Planning Commission report to call up the application, hold a hearing and vote on the application.",
+        "display-name": "City Council Review",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "bbfb6785-a00f-f111-8407-001dd803dca7",
+      "attributes": {
+        "dcp-milestone": "755334e1-8bd7-f011-8544-001dd80698b8",
+        "dcp-name": "Ad-hoc - Request for Appeals Board Review",
+        "milestonename": "Request for Appeals Board Review",
+        "dcp-plannedstartdate": "2026-11-24T05:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-11-30T05:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 64,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 272,
+        "dcp-goalduration": 6,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Applicant and the Affordable Housing Appeals Board have five days to review the City Council\u2019s decision and request a call up or appeal.",
+        "display-name": "Request for Appeals Board Review",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "01395e8b-a00f-f111-8407-001dd803dca7",
+      "attributes": {
+        "dcp-milestone": "d1cdc050-8cd7-f011-8544-001dd80698b8",
+        "dcp-name": "Ad-hoc - Appeals Board Review",
+        "milestonename": "Appeals Board Review",
+        "dcp-plannedstartdate": "2026-11-29T05:00:00.000Z",
+        "dcp-plannedcompletiondate": "2026-12-14T05:00:00.000Z",
+        "dcp-actualstartdate": null,
+        "dcp-actualenddate": null,
+        "statuscode": "Not Started",
+        "dcp-milestonesequence": 65,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 286,
+        "dcp-goalduration": 15,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Affordable Housing Appeals Board has 15 days after the call up or appeal to restore the City Planning Commission action, partially restore the City Planning Commission action, or sustain the City Council action.",
+        "display-name": "Appeals Board Review",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "c4da3c97-66fc-f011-8407-001dd8070e6e",
+      "attributes": {
+        "dcp-publichearinglocation": "67-29 108TH STREET, FOREST HILLS",
+        "dcp-ispublichearingrequired": 717170000,
+        "dcp-dateofpublichearing": "2026-06-02T22:30:00.000Z",
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": "Conditional Favorable",
+        "dcp-consideration": "CB6 Approved the application with the following conditions:\n1.\tA vote in support of this project is in no way intended to set a precedent for zoning changes for the rest of the R1 District, also known as the Cord Meyer District\n2.\tAddition of electric charging stations for vehicles in the building as well as outdoor spaces for charging of micro-mobility devices and ensure that these are only for use to residents of the building.\n",
+        "dcp-votelocation": "120-55 Queens Boulevard",
+        "dcp-datereceived": "2026-07-08T19:22:03.000Z",
+        "dcp-dateofvote": "2026-06-25T04:00:00.000Z",
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2024Q0292_ZM_QN CB6",
+        "statecode": "Inactive",
+        "statuscode": "Submitted",
+        "dcp-docketdescription": "IN THE MATTER OF an application submitted by All My Children Daycare and Nursery School pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a, changing from an R1-2A District to an R7A District property bounded by 68th Avenue, a line 100 feet northeasterly of 108th Street, 68th Road, and 108th Street, as shown on a diagram (for illustrative purposes only) May 11, 2026, and subject to the conditions of CEQR Declaration E-862.",
+        "dcp-votinginfavorrecommendation": 35,
+        "dcp-votingagainstrecommendation": 4,
+        "dcp-votingabstainingonrecommendation": 0,
+        "dcp-totalmembersappointedtotheboard": 49,
+        "dcp-wasaquorumpresent": true,
+        "dcp-representing": "Community Board",
+        "dcp-recommendationsubmittedby-value": "QN CB6",
+        "dcp-projectaction-value": "650ee843-a055-ef11-a317-001dd8049f0b",
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "Community -Borough Board Recommendation.pdf",
+            "timeCreated": "2026-07-09T03:04:37Z",
+            "serverRelativeUrl": "/01QY2C5KMJCPXX2MI6UNGJ6G6BEZEN5ASJ"
+          }
+        ]
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "f0da3c97-66fc-f011-8407-001dd8070e6e",
+      "attributes": {
+        "dcp-publichearinglocation": "67-29 108TH STREET, FOREST HILLS",
+        "dcp-ispublichearingrequired": 717170000,
+        "dcp-dateofpublichearing": "2026-06-02T22:30:00.000Z",
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": "Conditional Favorable",
+        "dcp-consideration": "CB6 Approved the application with the following conditions:\n1.\tA vote in support of this project is in no way intended to set a precedent for zoning changes for the rest of the R1 District, also known as the Cord Meyer District\n2.\tAddition of electric charging stations for vehicles in the building as well as outdoor spaces for charging of micro-mobility devices and ensure that these are only for use to residents of the building.\n",
+        "dcp-votelocation": "120-55 Queens Boulevard",
+        "dcp-datereceived": "2026-07-08T19:22:03.000Z",
+        "dcp-dateofvote": "2026-06-25T04:00:00.000Z",
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2024Q0292_ZR_QN CB6",
+        "statecode": "Inactive",
+        "statuscode": "Submitted",
+        "dcp-docketdescription": null,
+        "dcp-votinginfavorrecommendation": 35,
+        "dcp-votingagainstrecommendation": 4,
+        "dcp-votingabstainingonrecommendation": 0,
+        "dcp-totalmembersappointedtotheboard": 49,
+        "dcp-wasaquorumpresent": true,
+        "dcp-representing": "Community Board",
+        "dcp-recommendationsubmittedby-value": "QN CB6",
+        "dcp-projectaction-value": "41400b62-a055-ef11-a317-001dd8049f0b",
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "Community -Borough Board Recommendation.pdf",
+            "timeCreated": "2026-07-09T03:04:41Z",
+            "serverRelativeUrl": "/01QY2C5KMNLJRV7ULUKRH35VWUPWMHSVQY"
+          }
+        ]
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "83bc49a7-66fc-f011-8407-001dd80d9613",
+      "attributes": {
+        "dcp-publichearinglocation": "In person at 120-55 Queens Blvd or livestreamed at www.youtube.com/@queensbp",
+        "dcp-ispublichearingrequired": 717170000,
+        "dcp-dateofpublichearing": "2026-07-02T13:30:00.000Z",
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": null,
+        "dcp-consideration": null,
+        "dcp-votelocation": null,
+        "dcp-datereceived": null,
+        "dcp-dateofvote": null,
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2024Q0292_ZM_QN BP",
+        "statecode": "Active",
+        "statuscode": "Saved",
+        "dcp-docketdescription": "IN THE MATTER OF an application submitted by All My Children Daycare and Nursery School pursuant to Sections 197-c and 201 of the New York City Charter for an amendment of the Zoning Map, Section No. 14a, changing from an R1-2A District to an R7A District property bounded by 68th Avenue, a line 100 feet northeasterly of 108th Street, 68th Road, and 108th Street, as shown on a diagram (for illustrative purposes only) May 11, 2026, and subject to the conditions of CEQR Declaration E-862.",
+        "dcp-votinginfavorrecommendation": null,
+        "dcp-votingagainstrecommendation": null,
+        "dcp-votingabstainingonrecommendation": null,
+        "dcp-totalmembersappointedtotheboard": null,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Borough President",
+        "dcp-recommendationsubmittedby-value": "QN BP",
+        "dcp-projectaction-value": "650ee843-a055-ef11-a317-001dd8049f0b",
+        "dcp-visibility": 717170004,
+        "documents": []
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "babc49a7-66fc-f011-8407-001dd80d9613",
+      "attributes": {
+        "dcp-publichearinglocation": "In person at 120-55 Queens Blvd or livestreamed at www.youtube.com/@queensbp",
+        "dcp-ispublichearingrequired": 717170000,
+        "dcp-dateofpublichearing": "2026-07-02T13:30:00.000Z",
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": null,
+        "dcp-consideration": null,
+        "dcp-votelocation": null,
+        "dcp-datereceived": null,
+        "dcp-dateofvote": null,
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2024Q0292_ZR_QN BP",
+        "statecode": "Active",
+        "statuscode": "Saved",
+        "dcp-docketdescription": null,
+        "dcp-votinginfavorrecommendation": null,
+        "dcp-votingagainstrecommendation": null,
+        "dcp-votingabstainingonrecommendation": null,
+        "dcp-totalmembersappointedtotheboard": null,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Borough President",
+        "dcp-recommendationsubmittedby-value": "QN BP",
+        "dcp-projectaction-value": "41400b62-a055-ef11-a317-001dd8049f0b",
+        "dcp-visibility": 717170004,
+        "documents": []
+      }
+    },
+    {
+      "type": "packages",
+      "id": "fa87e11e-933d-f111-88b3-001dd800e224",
+      "attributes": {
+        "statuscode": 717170012,
+        "statecode": 1,
+        "dcp-packagetype": 717170015,
+        "dcp-visibility": 717170003,
+        "dcp-packageversion": 1,
+        "dcp-rwcdsform-value": null,
+        "dcp-pasform-value": null,
+        "dcp-landuseapplication-value": "9887e11e-933d-f111-88b3-001dd800e224",
+        "dcp-packageid": "fa87e11e-933d-f111-88b3-001dd800e224",
+        "dcp-name": "2024Q0292_Post-Cert LU_1",
+        "dcp-statusdate": "2026-04-23T01:52:36.000Z",
+        "dcp-packagesubmissiondate": "2026-04-23T01:52:36.000Z",
+        "dcp-packagenotes": "For full revised application including MIH map pdf",
+        "documents": [
+          {
+            "name": "1.-108-05-68th-Road-Authorization-Letter-signed.pdf",
+            "timeCreated": "2026-04-23T01:51:50Z",
+            "serverRelativeUrl": "/01QY2C5KNFNJTWOADP2VA32J5ML5XHLYKZ"
+          },
+          {
+            "name": "2.-108-05-68th-Road---LR3-Project-Description-3-16.pdf",
+            "timeCreated": "2026-04-23T01:51:51Z",
+            "serverRelativeUrl": "/01QY2C5KO5BADYK53JQZC3A3IFZ5A2JFQX"
+          },
+          {
+            "name": "3.-108-05-68th-Road---Zoning-Map--2-27-26-.pdf",
+            "timeCreated": "2026-04-23T01:51:55Z",
+            "serverRelativeUrl": "/01QY2C5KKEPC52RUYEGJHLEZZWJE3DMJT3"
+          },
+          {
+            "name": "4.-108-05-68th-Road---Tax-Map.pdf",
+            "timeCreated": "2026-04-23T01:51:58Z",
+            "serverRelativeUrl": "/01QY2C5KO2T7QCKUAKEZB2OE4ITBJYFARK"
+          },
+          {
+            "name": "5.-108-05-68th-Road---Area-Map--2-27-26-.pdf",
+            "timeCreated": "2026-04-23T01:52:04Z",
+            "serverRelativeUrl": "/01QY2C5KJWZZVD4XSIONEZUEJ7LJAPO56H"
+          },
+          {
+            "name": "6.-108-05-68th-Road---Photographs--10-17-25-.pdf",
+            "timeCreated": "2026-04-23T01:52:09Z",
+            "serverRelativeUrl": "/01QY2C5KP77DV4K4OLZFDKBOHJCHP4FMVW"
+          },
+          {
+            "name": "7.-108-05-68th-Road---Zoning-Change-Map.pdf",
+            "timeCreated": "2026-04-23T01:52:14Z",
+            "serverRelativeUrl": "/01QY2C5KL5MAKOEMX54JHJABNYHUN7CMPW"
+          },
+          {
+            "name": "8.-108-05-68th-Road---MIHMap-4-22-26.pdf",
+            "timeCreated": "2026-04-23T01:52:15Z",
+            "serverRelativeUrl": "/01QY2C5KKBV2B62MPPR5DI53FOCQ7YGO2E"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-04-23T03:01:49Z",
+            "serverRelativeUrl": "/01QY2C5KL73QTU75PARZC2VSGLOR6PCGTS"
+          }
+        ]
+      }
+    },
+    {
+      "type": "packages",
+      "id": "a63a4e3a-e472-f011-bec3-001dd80340cd",
+      "attributes": {
+        "statuscode": 717170010,
+        "statecode": 1,
+        "dcp-packagetype": 717170011,
+        "dcp-visibility": 717170003,
+        "dcp-packageversion": 1,
+        "dcp-rwcdsform-value": null,
+        "dcp-pasform-value": null,
+        "dcp-landuseapplication-value": "bb3a4e3a-e472-f011-bec3-001dd80340cd",
+        "dcp-packageid": "a63a4e3a-e472-f011-bec3-001dd80340cd",
+        "dcp-name": "2024Q0292_Filed LU Package_1",
+        "dcp-statusdate": "2026-02-20T19:57:27.000Z",
+        "dcp-packagesubmissiondate": "2026-01-11T01:53:52.000Z",
+        "dcp-packagenotes": null,
+        "documents": [
+          {
+            "name": "1.-108-05-68th-Road-Authorization-Letter-signed.pdf",
+            "timeCreated": "2026-01-11T01:53:09Z",
+            "serverRelativeUrl": "/01QY2C5KJXO5NP7K63SVH3ZRAVAFU3LIQX"
+          },
+          {
+            "name": "2.-108-05-68th-Road---LR3-Project-Description.pdf",
+            "timeCreated": "2026-01-11T01:53:10Z",
+            "serverRelativeUrl": "/01QY2C5KIWDJ7KXF236VGK4TFJBUDRLWWQ"
+          },
+          {
+            "name": "3.-108-05-68th-Road---Zoning-Map.pdf",
+            "timeCreated": "2026-01-11T01:53:14Z",
+            "serverRelativeUrl": "/01QY2C5KOF3II47DUI3ZBJBK3KLXVOTTGC"
+          },
+          {
+            "name": "4.-108-05-68th-Road---Tax-Map.pdf",
+            "timeCreated": "2026-01-11T01:53:18Z",
+            "serverRelativeUrl": "/01QY2C5KM6GAYEQMHL7BDKW3RULXLWXQJK"
+          },
+          {
+            "name": "5.-108-05-68th-Road---Area-Map.pdf",
+            "timeCreated": "2026-01-11T01:53:23Z",
+            "serverRelativeUrl": "/01QY2C5KJDMDL4II5TCBC2D7UPORL75PP5"
+          },
+          {
+            "name": "6.-108-05-68th-Road---Photographs--10-17-25-.pdf",
+            "timeCreated": "2026-01-11T01:53:35Z",
+            "serverRelativeUrl": "/01QY2C5KMHATMGHIKIORGZJV47ZM7O7O7P"
+          },
+          {
+            "name": "7.-108-05-68th-Road---Zoning-Change-Map.pdf",
+            "timeCreated": "2026-01-11T01:53:39Z",
+            "serverRelativeUrl": "/01QY2C5KJS6OVXNLSW3ZA2TPBI6BWHZRVZ"
+          },
+          {
+            "name": "9.-108-05-68th-Road---MIH-Map.pdf",
+            "timeCreated": "2026-01-11T01:53:41Z",
+            "serverRelativeUrl": "/01QY2C5KLRY5Y7YXUWYZHYY2WLW7LODFDM"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-01-11T04:01:09Z",
+            "serverRelativeUrl": "/01QY2C5KPITVIG56CCOBHJTJAJDXQCGMX6"
+          }
+        ]
+      }
+    },
+    {
+      "type": "packages",
+      "id": "dd4a1762-960e-f111-8406-001dd8086f37",
+      "attributes": {
+        "statuscode": 717170005,
+        "statecode": 1,
+        "dcp-packagetype": 717170011,
+        "dcp-visibility": 717170003,
+        "dcp-packageversion": 2,
+        "dcp-rwcdsform-value": null,
+        "dcp-pasform-value": null,
+        "dcp-landuseapplication-value": "524a1762-960e-f111-8406-001dd8086f37",
+        "dcp-packageid": "dd4a1762-960e-f111-8406-001dd8086f37",
+        "dcp-name": "2024Q0292_Filed LU Package_2",
+        "dcp-statusdate": "2026-05-20T01:39:52.000Z",
+        "dcp-packagesubmissiondate": "2026-03-16T18:07:32.000Z",
+        "dcp-packagenotes": null,
+        "documents": [
+          {
+            "name": "1.-108-05-68th-Road-Authorization-Letter-signed.pdf",
+            "timeCreated": "2026-02-20T19:58:04Z",
+            "serverRelativeUrl": "/01QY2C5KOB4RPCCGVQENAKBL56XDWLOEYL"
+          },
+          {
+            "name": "2.-108-05-68th-Road---LR3-Project-Description-3-16.pdf",
+            "timeCreated": "2026-03-16T18:07:03Z",
+            "serverRelativeUrl": "/01QY2C5KLQVCD7DYMR7RGKQAEP67QVXH2B"
+          },
+          {
+            "name": "3.-108-05-68th-Road---Zoning-Map--2-27-26-.pdf",
+            "timeCreated": "2026-03-16T18:07:06Z",
+            "serverRelativeUrl": "/01QY2C5KIDSIOHW3NNXVBYFEWV5CJFBZUS"
+          },
+          {
+            "name": "4.-108-05-68th-Road---Tax-Map.pdf",
+            "timeCreated": "2026-02-20T19:58:04Z",
+            "serverRelativeUrl": "/01QY2C5KM5Q56J64HM3FGYD64FZ3QHGMAO"
+          },
+          {
+            "name": "5.-108-05-68th-Road---Area-Map--2-27-26-.pdf",
+            "timeCreated": "2026-03-16T18:07:13Z",
+            "serverRelativeUrl": "/01QY2C5KNMA6V3KA7VDBBZOXDP5SR24R2H"
+          },
+          {
+            "name": "6.-108-05-68th-Road---Photographs--10-17-25-.pdf",
+            "timeCreated": "2026-02-20T19:58:04Z",
+            "serverRelativeUrl": "/01QY2C5KI44M6BMNAO7BFJ7IUNYDODXBYF"
+          },
+          {
+            "name": "7.-108-05-68th-Road---Zoning-Change-Map.pdf",
+            "timeCreated": "2026-02-20T19:58:04Z",
+            "serverRelativeUrl": "/01QY2C5KOU5TYTO3JR6NG3NRJHRIU5YR22"
+          },
+          {
+            "name": "9.-108-05-68th-Road---MIH-Map.pdf",
+            "timeCreated": "2026-02-20T19:58:05Z",
+            "serverRelativeUrl": "/01QY2C5KKG7VKFHA4B6FF246JI6PXXEKB2"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-02-20T19:58:04Z",
+            "serverRelativeUrl": "/01QY2C5KILBMOZ2IQU6JALJRF4BRSDROCE"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "73396ba4-7149-f111-88b4-001dd800e224",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2024Q0292_Type II Memo_1_73396BA47149F11188B4001DD800E224",
+        "versionnumber": 1067460445,
+        "dcp-submittedfilename": "2024Q0292_Type II Memo_5/6/2026 1:33 PM _1  ",
+        "dcp-artifactsid": "73396ba4-7149-f111-88b4-001dd800e224",
+        "dcp-name": "2024Q0292_Type II Memo_1",
+        "modifiedon": "2026-05-06T19:41:29.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "26DCP085Q_Type II Memo_05112026.pdf",
+            "timeCreated": "2026-05-06T19:41:14Z",
+            "serverRelativeUrl": "/01QY2C5KIKNSOWFIY5BNE2SYOYNAIZX6YE"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "0fd8e731-9250-f111-bec6-001dd800e224",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2024Q0292_Notice of Certification_1_0FD8E7319250F111BEC6001DD800E224",
+        "versionnumber": 1070707317,
+        "dcp-submittedfilename": "2024Q0292_Notice of Certification_5/15/2026 3:13 PM _1  ",
+        "dcp-artifactsid": "0fd8e731-9250-f111-bec6-001dd800e224",
+        "dcp-name": "2024Q0292_Notice of Certification_1",
+        "modifiedon": "2026-05-15T19:42:15.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "1.-108-05-68th-Road-Authorization-Letter-signed.pdf",
+            "timeCreated": "2026-05-15T19:15:29Z",
+            "serverRelativeUrl": "/01QY2C5KPGD4HWVM4625EIKIHDNWYKKD7J"
+          },
+          {
+            "name": "108-05 68th Road Rezoning - Notice of Certification.pdf",
+            "timeCreated": "2026-05-15T19:15:20Z",
+            "serverRelativeUrl": "/01QY2C5KPN7CCUTBCGONAIWJGHISWBTLWS"
+          },
+          {
+            "name": "2.-108-05-68th-Road---LR3-Project-Description-3-16.pdf",
+            "timeCreated": "2026-05-15T19:15:39Z",
+            "serverRelativeUrl": "/01QY2C5KIX7BAKXXSCERALMTVK5ATKAAMV"
+          },
+          {
+            "name": "3.-108-05-68th-Road---Zoning-Map--2-27-26-.pdf",
+            "timeCreated": "2026-05-15T19:15:47Z",
+            "serverRelativeUrl": "/01QY2C5KN5GAAAIYJBJZCLXTYJ77YYNVIH"
+          },
+          {
+            "name": "4.-108-05-68th-Road---Tax-Map.pdf",
+            "timeCreated": "2026-05-15T19:15:55Z",
+            "serverRelativeUrl": "/01QY2C5KOLGB7KBHYJV5CISFPHZZ3NBKSG"
+          },
+          {
+            "name": "5.-108-05-68th-Road---Area-Map--2-27-26-.pdf",
+            "timeCreated": "2026-05-15T19:16:05Z",
+            "serverRelativeUrl": "/01QY2C5KOJ2ZVD4JQ2Z5BIDT6LDKCH5ZYO"
+          },
+          {
+            "name": "6.-108-05-68th-Road---Photographs--10-17-25-.pdf",
+            "timeCreated": "2026-05-15T19:16:19Z",
+            "serverRelativeUrl": "/01QY2C5KJDQS6UUQKN4VC3R7B2GNNBDY4H"
+          },
+          {
+            "name": "68th-Road_RER_5.5.26_Update.pdf",
+            "timeCreated": "2026-05-15T19:41:21Z",
+            "serverRelativeUrl": "/01QY2C5KOTCQAQTZZV3FHIUDMFELWUB7RI"
+          },
+          {
+            "name": "7.-108-05-68th-Road---Zoning-Change-Map.pdf",
+            "timeCreated": "2026-05-15T19:28:18Z",
+            "serverRelativeUrl": "/01QY2C5KLEDKGY3JBLMFEKVKCK2SYKDVMC"
+          },
+          {
+            "name": "9.-108-05-68th-Road---MIH-Map.pdf",
+            "timeCreated": "2026-05-15T19:28:26Z",
+            "serverRelativeUrl": "/01QY2C5KP6B3CLUENU6NALVFOTXPBUTU5F"
+          },
+          {
+            "name": "C 260234 ZMQ.SKT.pdf",
+            "timeCreated": "2026-05-15T19:28:46Z",
+            "serverRelativeUrl": "/01QY2C5KINLDJWBWO3F5FZWKBI5KTENJNS"
+          },
+          {
+            "name": "LandUse-2.pdf",
+            "timeCreated": "2026-05-15T19:28:36Z",
+            "serverRelativeUrl": "/01QY2C5KI5FFXITQJNVVGZLBHRSG4RDOBL"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "6f603a4c-31f6-f011-8406-001dd802f839",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2024Q0292_Notice of Receipt_1_6F603A4C31F6F0118406001DD802F839",
+        "versionnumber": 1017198107,
+        "dcp-submittedfilename": "2024Q0292_Notice of Receipt_1/20/2026 1:53 PM _1  ",
+        "dcp-artifactsid": "6f603a4c-31f6-f011-8406-001dd802f839",
+        "dcp-name": "2024Q0292_Notice of Receipt_1",
+        "modifiedon": "2026-01-20T18:56:06.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "1.-108-05-68th-Road-Authorization-Letter-signed.pdf",
+            "timeCreated": "2026-01-20T18:54:24Z",
+            "serverRelativeUrl": "/01QY2C5KPVN5N2OJPS5JFYWFWZEO2TPILQ"
+          },
+          {
+            "name": "2.-108-05-68th-Road---LR3-Project-Description.pdf",
+            "timeCreated": "2026-01-20T18:54:32Z",
+            "serverRelativeUrl": "/01QY2C5KPJOWGLZS6HCJAJR5YUY24SCVMB"
+          },
+          {
+            "name": "3.-108-05-68th-Road---Zoning-Map.pdf",
+            "timeCreated": "2026-01-20T18:54:45Z",
+            "serverRelativeUrl": "/01QY2C5KLKDYZXAXRWLREJXZJKUBXITMWE"
+          },
+          {
+            "name": "4.-108-05-68th-Road---Tax-Map.pdf",
+            "timeCreated": "2026-01-20T18:54:59Z",
+            "serverRelativeUrl": "/01QY2C5KJJYO3LY4472RBZNYHPZLVLGDGO"
+          },
+          {
+            "name": "5.-108-05-68th-Road---Area-Map.pdf",
+            "timeCreated": "2026-01-20T18:55:06Z",
+            "serverRelativeUrl": "/01QY2C5KK67RD6QE2MSFEJPGSA7EZWL44A"
+          },
+          {
+            "name": "6.-108-05-68th-Road---Photographs--10-17-25-.pdf",
+            "timeCreated": "2026-01-20T18:55:15Z",
+            "serverRelativeUrl": "/01QY2C5KIIEMCAJXD2NVCIRPKN3IWYC2XF"
+          },
+          {
+            "name": "7.-108-05-68th-Road---Zoning-Change-Map.pdf",
+            "timeCreated": "2026-01-20T18:55:25Z",
+            "serverRelativeUrl": "/01QY2C5KIRXP6W34DEQ5H2Y7POUQAFCNDB"
+          },
+          {
+            "name": "9.-108-05-68th-Road---MIH-Map.pdf",
+            "timeCreated": "2026-01-20T18:55:38Z",
+            "serverRelativeUrl": "/01QY2C5KKQVAOEPA55ORCJ3UADUSLK2VDV"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-01-20T18:55:55Z",
+            "serverRelativeUrl": "/01QY2C5KM6GKIFK3CX7FF2ZOO3YAOFNCND"
+          },
+          {
+            "name": "NOR - 108-05 68th Road Rezoning.pdf",
+            "timeCreated": "2026-01-20T18:54:13Z",
+            "serverRelativeUrl": "/01QY2C5KIVLW3RLLWISFH2ICSKNIO5GTFE"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "13f68d9c-9650-f111-bec6-001dd80e798c",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2024Q0292_Docket_1_13F68D9C9650F111BEC6001DD80E798C",
+        "versionnumber": 1093517149,
+        "dcp-submittedfilename": "2024Q0292_Docket_5/15/2026 3:45 PM _1  ",
+        "dcp-artifactsid": "13f68d9c-9650-f111-bec6-001dd80e798c",
+        "dcp-name": "2024Q0292_Docket_1",
+        "modifiedon": "2026-07-15T16:47:50.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "260234ZMQ_Dkt.pdf",
+            "timeCreated": "2026-05-15T19:45:38Z",
+            "serverRelativeUrl": "/01QY2C5KPLNAOP5ITSSZHIVIVTN7OBOWTS"
+          },
+          {
+            "name": "260235ZRQ_Dkt.pdf",
+            "timeCreated": "2026-07-15T16:46:08Z",
+            "serverRelativeUrl": "/01QY2C5KL644AAEJZQ3VEKJFK7ZSEXPL4I"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "f3d0c536-7709-ef11-9f89-001dd830760a",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2024Q0292_Racial Equity Report__F3D0C5367709EF119F89001DD830760A",
+        "versionnumber": 1067778713,
+        "dcp-submittedfilename": null,
+        "dcp-artifactsid": "f3d0c536-7709-ef11-9f89-001dd830760a",
+        "dcp-name": "2024Q0292_Racial Equity Report_",
+        "modifiedon": "2026-05-07T17:36:06.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "68th-Road_RER_5.5.26_Update.pdf",
+            "timeCreated": "2026-05-07T17:35:42Z",
+            "serverRelativeUrl": "/01QY2C5KIJGLO4NV2LE5BJBANJ3LJASUXN"
+          }
+        ]
+      }
+    }
+  ],
+  "data": {
+    "type": "projects",
+    "id": "2024Q0292",
+    "attributes": {
+      "applicantteam": [
+        {
+          "name": "All My Children Daycare and Nursery School",
+          "role": "Primary Applicant"
+        },
+        {
+          "name": "Alexia Landesman",
+          "role": "Primary Contact"
+        }
+      ],
+      "dcp-name": "2024Q0292",
+      "dcp-applicanttype": 717170002,
+      "dcp-borough": "Queens",
+      "dcp-ceqrnumber": "26DCP085Q",
+      "dcp-ceqrtype": "Type II",
+      "dcp-easeis": null,
+      "dcp-certifiedreferred": "2026-05-11T04:00:00.000Z",
+      "dcp-femafloodzonea": false,
+      "dcp-femafloodzoneshadedx": false,
+      "dcp-sisubdivision": false,
+      "dcp-sischoolseat": false,
+      "dcp-projectbrief": "A zoning map amendment from R1-2A to R7A and a zoning text amendment to facilitate MIH in a new seven-story mixed-use development, including approximately 41,239 sf of residential space (29 DUs) and approximately 11,519 sf of community facility space, is being sought by All My Children Daycare and Nursery School at 108-05 68th Road in Forest Hills, Community District 6, Queens.",
+      "dcp-additionalpublicinformation": null,
+      "dcp-projectid": "567fb643-4315-42d1-b1ab-6412a1e77762",
+      "dcp-projectname": "108-05 68th Road Rezoning",
+      "dcp-publicstatus": "In Public Review",
+      "dcp-projectcompleted": null,
+      "dcp-hiddenprojectmetrictarget": 717170000,
+      "dcp-ulurp-nonulurp": "ULURP",
+      "dcp-validatedcommunitydistricts": "Q06",
+      "dcp-bsanumber": null,
+      "dcp-wrpnumber": null,
+      "dcp-lpcnumber": null,
+      "dcp-lastmilestonedate": "2026-07-08T19:50:33.000Z",
+      "dcp-nydospermitnumber": null,
+      "bbls": [
+        "4021790006",
+        "4021790001"
+      ],
+      "bbl-featurecollection": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [
+                      -73.845856,
+                      40.726706
+                    ],
+                    [
+                      -73.845754,
+                      40.726508
+                    ],
+                    [
+                      -73.846098,
+                      40.726406
+                    ],
+                    [
+                      -73.8462,
+                      40.726604
+                    ],
+                    [
+                      -73.846363,
+                      40.726923
+                    ],
+                    [
+                      -73.846022,
+                      40.727025
+                    ],
+                    [
+                      -73.845889,
+                      40.726769
+                    ],
+                    [
+                      -73.845856,
+                      40.726706
+                    ]
+                  ]
+                ]
+              ]
+            },
+            "properties": {}
+          }
+        ]
+      },
+      "keywords": [],
+      "video-links": [],
+      "dcp-applicability": "Yes",
+      "dcp-noticeddate": "2026-03-27T00:00:00.000Z",
+      "dcp-applicant-customer-value": "All My Children Daycare and Nursery School",
+      "dcp-applicantadministrator-customer-value": "Alexia Landesman"
+    },
+    "relationships": {
+      "actions": {
+        "data": [
+          {
+            "type": "actions",
+            "id": "650ee843-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "actions",
+            "id": "41400b62-a055-ef11-a317-001dd8049f0b"
+          }
+        ]
+      },
+      "milestones": {
+        "data": [
+          {
+            "type": "milestones",
+            "id": "a10ee843-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "1b4a1762-960e-f111-8406-001dd8086f37"
+          },
+          {
+            "type": "milestones",
+            "id": "b50ee843-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "d43bec49-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "374a1762-960e-f111-8406-001dd8086f37"
+          },
+          {
+            "type": "milestones",
+            "id": "b825fe6d-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "e025fe6d-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "3fc9f873-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "8bc9f873-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "9ac9f873-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "bec9f873-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "d9c9f873-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "dfc9f873-a055-ef11-a317-001dd8049f0b"
+          },
+          {
+            "type": "milestones",
+            "id": "bbfb6785-a00f-f111-8407-001dd803dca7"
+          },
+          {
+            "type": "milestones",
+            "id": "01395e8b-a00f-f111-8407-001dd803dca7"
+          }
+        ]
+      },
+      "dispositions": {
+        "data": [
+          {
+            "type": "dispositions",
+            "id": "c4da3c97-66fc-f011-8407-001dd8070e6e"
+          },
+          {
+            "type": "dispositions",
+            "id": "f0da3c97-66fc-f011-8407-001dd8070e6e"
+          },
+          {
+            "type": "dispositions",
+            "id": "83bc49a7-66fc-f011-8407-001dd80d9613"
+          },
+          {
+            "type": "dispositions",
+            "id": "babc49a7-66fc-f011-8407-001dd80d9613"
+          }
+        ]
+      },
+      "packages": {
+        "data": [
+          {
+            "type": "packages",
+            "id": "fa87e11e-933d-f111-88b3-001dd800e224"
+          },
+          {
+            "type": "packages",
+            "id": "a63a4e3a-e472-f011-bec3-001dd80340cd"
+          },
+          {
+            "type": "packages",
+            "id": "dd4a1762-960e-f111-8406-001dd8086f37"
+          }
+        ]
+      },
+      "artifacts": {
+        "data": [
+          {
+            "type": "artifacts",
+            "id": "73396ba4-7149-f111-88b4-001dd800e224"
+          },
+          {
+            "type": "artifacts",
+            "id": "0fd8e731-9250-f111-bec6-001dd800e224"
+          },
+          {
+            "type": "artifacts",
+            "id": "6f603a4c-31f6-f011-8406-001dd802f839"
+          },
+          {
+            "type": "artifacts",
+            "id": "13f68d9c-9650-f111-bec6-001dd80e798c"
+          },
+          {
+            "type": "artifacts",
+            "id": "f3d0c536-7709-ef11-9f89-001dd830760a"
+          }
+        ]
+      }
+    }
+  }
+}
