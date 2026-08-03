@@ -1,0 +1,273 @@
+{
+  "schema": "cityscroll.action_link_integrity.v1",
+  "generated_at": "2026-08-03T11:03:06.171Z",
+  "probe_policy": {
+    "sequence": [
+      "HEAD",
+      "GET on non-success"
+    ],
+    "success_status": "HTTP 200-399 after redirects",
+    "delay_ms": 350,
+    "timeout_ms": 15000,
+    "user_agent": "CityScrollActionLinkAudit/1.0 (+https://cityscroll.org)"
+  },
+  "summary": {
+    "patterns": 9,
+    "verdicts": {
+      "OK": 8,
+      "broken-derivable-fix": 0,
+      "broken-upstream": 1
+    }
+  },
+  "patterns": [
+    {
+      "id": "rules-comment-page",
+      "surface": "rules",
+      "action": "comment",
+      "url_pattern": "https://rules.cityofnewyork.us/rule/:slug/",
+      "sample_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/",
+            "content_type": "text/html; charset=UTF-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the City Record notice, published deadline, and comment-contact steps visible.",
+      "derivation_evidence": {
+        "source_artifact_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/feed/",
+        "source_artifact_probe": {
+          "ok": false,
+          "status": 404,
+          "attempts": [
+            {
+              "method": "HEAD",
+              "status": 404,
+              "final_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/feed/",
+              "content_type": "text/html; charset=UTF-8",
+              "soft_error": false
+            },
+            {
+              "method": "GET",
+              "status": 404,
+              "final_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/feed/",
+              "content_type": "text/html; charset=UTF-8",
+              "soft_error": false
+            }
+          ]
+        },
+        "normalized_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/",
+        "normalized_matches_active_url": true,
+        "disposition": "fixed-at-ingest"
+      }
+    },
+    {
+      "id": "land-zap-project",
+      "surface": "land",
+      "action": "comment",
+      "url_pattern": "https://zap.planning.nyc.gov/projects/:project_id",
+      "sample_url": "https://zap.planning.nyc.gov/projects/2022M0258",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://zap.planning.nyc.gov/projects/2022M0258",
+            "content_type": "text/html; charset=UTF-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the joined City Record hearing and project identifier visible."
+    },
+    {
+      "id": "contracts-passport-process",
+      "surface": "contracts",
+      "action": "submit",
+      "url_pattern": "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/:rfp_id",
+      "sample_url": "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/36426",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/36426",
+            "content_type": "text/html; charset=utf-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the EPIN search recipe and City Record response instructions visible."
+    },
+    {
+      "id": "contracts-city-record-package",
+      "surface": "contracts",
+      "action": "submit",
+      "url_pattern": "https://a856-cityrecord.nyc.gov/Search/GetFile?RequestID=:request_id&DocumentID=:document_id",
+      "sample_url": "https://a856-cityrecord.nyc.gov/Search/GetFile?SectionID=6&RequestStatus=Archived&RequestID=20240816113&DocumentID=38698",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://a856-cityrecord.nyc.gov/Search/GetFile?SectionID=6&RequestStatus=Archived&RequestID=20240816113&DocumentID=38698",
+            "content_type": "application/pdf",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the notice page, procurement contact, deadline, and submission method visible."
+    },
+    {
+      "id": "contracts-city-record-notice",
+      "surface": "contracts",
+      "action": "submit",
+      "url_pattern": "https://a856-cityrecord.nyc.gov/RequestDetail/:request_id",
+      "sample_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260718010",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "broken-upstream",
+      "probe": {
+        "ok": false,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://a856-cityrecord.nyc.gov/Error/Error404?aspxerrorpath=/RequestDetail/20260718010",
+            "content_type": "text/html; charset=utf-8",
+            "soft_error": true
+          },
+          {
+            "method": "GET",
+            "status": 200,
+            "final_url": "https://a856-cityrecord.nyc.gov/Error/Error404?aspxerrorpath=/RequestDetail/20260718010",
+            "content_type": "text/html; charset=utf-8",
+            "soft_error": true
+          }
+        ]
+      },
+      "upstream_fallback": "Keep extracted response instructions and contact fields visible."
+    },
+    {
+      "id": "contracts-nycha-isupplier-registration",
+      "surface": "contracts",
+      "action": "apply",
+      "url_pattern": "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page",
+      "sample_url": "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page",
+      "destination_class": "landing",
+      "expected_destination_class": "landing",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page",
+            "content_type": "text/html;charset=UTF-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the notice's iSupplier upload instructions and registration lead time visible."
+    },
+    {
+      "id": "meetings-zoom-join",
+      "surface": "meetings",
+      "action": "attend",
+      "url_pattern": "https://*.zoom.us/j/:meeting_id",
+      "sample_url": "https://zoom.us/j/91467302621",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://zoom.us/j/91467302621",
+            "content_type": "text/html;charset=utf-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the venue, dial-in details, testimony contact, and City Record notice visible."
+    },
+    {
+      "id": "property-zola-lot",
+      "surface": "property",
+      "action": "review parcel",
+      "url_pattern": "https://zola.planning.nyc.gov/l/lot/:borough/:block/:lot",
+      "sample_url": "https://zola.planning.nyc.gov/l/lot/1/644/1",
+      "destination_class": "deep",
+      "expected_destination_class": "deep",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://zola.planning.nyc.gov/l/lot/1/644/1",
+            "content_type": "text/html; charset=UTF-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the BBL, disposition notice, and any hearing details visible."
+    },
+    {
+      "id": "staffing-oasys-apply",
+      "surface": "staffing",
+      "action": "apply",
+      "url_pattern": "https://www.nyc.gov/examsforjobs",
+      "sample_url": "https://www.nyc.gov/examsforjobs",
+      "destination_class": "landing",
+      "expected_destination_class": "landing",
+      "verdict": "OK",
+      "probe": {
+        "ok": true,
+        "status": 200,
+        "attempts": [
+          {
+            "method": "HEAD",
+            "status": 200,
+            "final_url": "https://www.nyc.gov/assets/dcas/html/redirects/oasys.html",
+            "content_type": "text/html; charset=utf-8",
+            "soft_error": false
+          }
+        ]
+      },
+      "upstream_fallback": "Keep the exam number, application window, and DCAS exam notice visible."
+    }
+  ]
+}
