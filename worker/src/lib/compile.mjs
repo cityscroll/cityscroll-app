@@ -5,6 +5,11 @@
 import { dateWindowEnd, hearingMatchesLocation } from "./hearings.mjs";
 // vendorStem lives in normalize.mjs (er-03); re-export for zero call-site churn.
 import { vendorStem } from "./normalize.mjs";
+import {
+  commercialMatchesFilters,
+  extractPropertyCommercial,
+  normalizeAssetFilter,
+} from "./property_commercial.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
@@ -131,17 +136,40 @@ export function compileSub(sub, todayISO) {
       const end = dateWindowEnd(todayISO, f.dateWindow || f.when);
       if (end) where += ` AND event_date <= '${end}T23:59:59'`;
       order = "event_date ASC";
+    } else if (sub.lens === "property" && f.sort === "closing_soon") {
+      // Prefer soonest event when the watch explicitly asks for closing-soon sort.
+      order = "event_date ASC";
     }
     const params = { "$select": CR_SELECT_EV, "$where": where, "$order": order, "$limit": "25" };
     if (kws.length) params["$q"] = kws.join(" ");
+
+    let postFilter;
+    if (sub.lens === "meetings" && (f.borough || f.neighborhood || f.locationScope)) {
+      postFilter = (row) => hearingMatchesLocation(row, f);
+    } else if (sub.lens === "property") {
+      const asset = normalizeAssetFilter(f.asset);
+      const saleMethod = f.saleMethod || "all";
+      const priceBand = f.priceBand || "all";
+      const commercialActive = asset !== "all" || (saleMethod && saleMethod !== "all") || (priceBand && priceBand !== "all");
+      if (commercialActive) {
+        postFilter = (row) => {
+          const commercial = extractPropertyCommercial(row);
+          return commercialMatchesFilters(commercial, {
+            asset,
+            saleMethod: saleMethod || "all",
+            priceBand: priceBand || "all",
+            commercialOnly: true,
+          });
+        };
+      }
+    }
+
     return {
       url: SODA,
       idField: "request_id",
       kind: sub.lens,
       params,
-      postFilter: sub.lens === "meetings" && (f.borough || f.neighborhood || f.locationScope)
-        ? (row) => hearingMatchesLocation(row, f)
-        : undefined,
+      postFilter,
     };
   }
 

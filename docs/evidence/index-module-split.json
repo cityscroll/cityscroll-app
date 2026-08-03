@@ -68,8 +68,8 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 811830,
-    "normalized_source_sha256": "374c2b368052638e150a561f29224890c532d8f8d3b2a93393426c8e5126b8dc",
+    "normalized_source_bytes": 821896,
+    "normalized_source_sha256": "5e8b580416a24635d8f383cce4fda75123be05714a1758242ebef4d6037b7f29",
     "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata), ULURP pipeline position, and ZAP hearing logistics on land detail.",
     "updated_at": "2026-08-03"
   }

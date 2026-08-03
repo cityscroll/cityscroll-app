@@ -1421,6 +1421,15 @@ Provenance distinguishes GeoSearch vs notice tax-lot (i18n keys
 
 ## Property commercial payload (surplus-goods buyer)
 
+**Commercial lens organization:** list cards lead with commercial glance; chip
+rails filter item type / sale method / price band; `#propsort` covers closing
+soon / price / newest. Export columns + watch filters: `asset`, `saleMethod`,
+`priceBand`. Non-sales (`sale_eligible=false`) stay on the general list but drop
+from commercial-filtered views. Verify: `node --test test/property_commercial_lens.test.mjs`.
+Capture: `python3 tools/capture_property_lens_organization.py`.
+
+
+
 Primary persona on `#property`: glancing surplus-goods buyer — **WHAT / HOW MUCH /
 DEAL? / when-bid**. Secondary: real-property developers, community land-reuse
 (same facts, different next steps). Pure extractor:

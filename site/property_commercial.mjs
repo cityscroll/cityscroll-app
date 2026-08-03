@@ -57,6 +57,7 @@ export const SALE_METHODS = Object.freeze([
 /**
  * Disposition-but-not-sale classes on Property Disposition notices.
  * These are still dispositions; they do not offer goods for purchase.
+ * Commercial-filtered list views exclude non-sales via sale_eligible.
  */
 export const NON_SALE_DISPOSITION_CLASSES = Object.freeze([
   "destruction",
@@ -64,7 +65,7 @@ export const NON_SALE_DISPOSITION_CLASSES = Object.freeze([
   "abandonment",
 ]);
 
-/** Categories that are sale-shaped when confidence is high. */
+/** Categories that are sale-shaped when confidence is medium/high. */
 export const SALE_ITEM_CATEGORIES = Object.freeze([
   "vehicle",
   "timber",
@@ -79,6 +80,23 @@ export const BID_PARTICIPATION_KINDS = Object.freeze([
   "bid_deadline",
   "show_or_inspection",
   "deposit_or_fee",
+]);
+
+/** Fixed price-band chips for the Property lens (where a labeled price exists). */
+export const PRICE_BANDS = Object.freeze([
+  "all",
+  "priced",
+  "under_10k",
+  "10k_100k",
+  "100k_plus",
+]);
+
+/** Sort keys for the Property commercial lens. */
+export const PROPERTY_SORTS = Object.freeze([
+  "closing_soon",
+  "newest",
+  "price_desc",
+  "price_asc",
 ]);
 
 const MAX_FACTS = 24;
@@ -238,6 +256,186 @@ export function normalizeAssetFilter(raw) {
   if (ASSET_FILTER_ALIASES[key]) return ASSET_FILTER_ALIASES[key];
   if (COMMERCIAL_CATEGORIES.includes(key)) return key;
   return "other";
+}
+
+/**
+ * Normalize sale-method filter chip / URL param.
+ * @param {string|null|undefined} raw
+ */
+export function normalizeSaleMethodFilter(raw) {
+  if (raw == null || raw === "" || raw === "all") return "all";
+  const key = String(raw).trim().toLowerCase().replace(/-/g, "_");
+  if (SALE_METHODS.includes(key)) return key;
+  return "all";
+}
+
+/**
+ * Normalize price-band chip / URL param.
+ * @param {string|null|undefined} raw
+ */
+export function normalizePriceBandFilter(raw) {
+  if (raw == null || raw === "" || raw === "all") return "all";
+  const key = String(raw).trim().toLowerCase().replace(/-/g, "_");
+  if (PRICE_BANDS.includes(key)) return key;
+  return "all";
+}
+
+/**
+ * Normalize Property lens sort key.
+ * @param {string|null|undefined} raw
+ */
+export function normalizePropertySort(raw) {
+  if (raw == null || raw === "") return "closing_soon";
+  const key = String(raw).trim().toLowerCase().replace(/-/g, "_");
+  if (PROPERTY_SORTS.includes(key)) return key;
+  return "closing_soon";
+}
+
+/**
+ * Resolved sale-eligibility for a commercial bag (stamped or computed).
+ * Uses hasCommercialSaleSignals (sale-gate from the empty-state work) when
+ * sale_eligible is not yet stamped.
+ * @param {object|null|undefined} commercial
+ */
+export function isCommercialSaleEligible(commercial) {
+  if (!commercial || typeof commercial !== "object") return false;
+  if (commercial.sale_eligible === true) return true;
+  if (commercial.sale_eligible === false) return false;
+  return hasCommercialSaleSignals(commercial);
+}
+
+/**
+ * Primary labeled price amount for filters/sorts (null when unpriced).
+ * @param {object|null|undefined} commercial
+ * @returns {number|null}
+ */
+export function commercialPriceAmount(commercial) {
+  if (!commercial) return null;
+  const primary = commercial.primary_price || commercial.glance?.price || null;
+  if (primary && Number.isFinite(Number(primary.amount))) return Number(primary.amount);
+  const facts = Array.isArray(commercial.price_facts) ? commercial.price_facts : [];
+  const first = primaryListPrice(facts);
+  if (first && Number.isFinite(Number(first.amount))) return Number(first.amount);
+  return null;
+}
+
+/**
+ * Map amount to a price-band chip key (null amount → unpriced).
+ * @param {number|null|undefined} amount
+ */
+export function priceBandForAmount(amount) {
+  if (amount == null || !Number.isFinite(Number(amount))) return null;
+  const n = Number(amount);
+  // Product band thresholds (UX chips, not measured market data): $10k and $100k cutovers.
+  if (n < 10000) return "under_10k"; // product threshold: under $10,000
+  if (n < 100000) return "10k_100k"; // product threshold: $10,000–$99,999.99
+  return "100k_plus"; // product threshold: $100,000+
+}
+
+/**
+ * Whether a commercial bag matches the active commercial list filters.
+ * When any commercial organize filter is active, non-sale dispositions are excluded.
+ *
+ * @param {object|null|undefined} commercial
+ * @param {object} [opts]
+ * @param {string} [opts.asset="all"]
+ * @param {string} [opts.saleMethod="all"]
+ * @param {string} [opts.priceBand="all"]
+ * @param {boolean} [opts.commercialOnly] — force sale-eligible gate
+ */
+export function commercialMatchesFilters(commercial, opts = {}) {
+  const asset = normalizeAssetFilter(opts.asset);
+  const saleMethod = normalizeSaleMethodFilter(opts.saleMethod);
+  const priceBand = normalizePriceBandFilter(opts.priceBand);
+  const commercialOnly = opts.commercialOnly === true
+    || asset !== "all"
+    || saleMethod !== "all"
+    || priceBand !== "all";
+
+  if (commercialOnly && !isCommercialSaleEligible(commercial)) return false;
+
+  if (asset !== "all") {
+    const cat = normalizeAssetFilter(commercial?.item?.category);
+    if (cat !== asset) return false;
+  }
+
+  if (saleMethod !== "all") {
+    const method = commercial?.sale_method?.method || null;
+    if (method !== saleMethod) return false;
+  }
+
+  if (priceBand !== "all") {
+    const amount = commercialPriceAmount(commercial);
+    if (priceBand === "priced") {
+      if (amount == null) return false;
+    } else {
+      if (priceBandForAmount(amount) !== priceBand) return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Close / event date for closing-soon sorts (ISO day or null).
+ * @param {object} row
+ * @param {object|null|undefined} commercial
+ */
+export function commercialCloseDate(row, commercial) {
+  const fromCommercial = commercial?.close_date || commercial?.glance?.close_date || null;
+  if (fromCommercial) return String(fromCommercial).slice(0, 10);
+  for (const key of ["event_date", "end_date", "start_date"]) {
+    const v = row?.[key];
+    if (!v) continue;
+    const s = String(v);
+    const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+/**
+ * i18n key for a sale method chip/badge.
+ * @param {string} method
+ */
+export function saleMethodI18nKey(method) {
+  const map = {
+    online_auction: "sale_method_online_auction",
+    public_auction: "sale_method_public_auction",
+    sealed_bid: "sale_method_sealed_bid",
+    rfp: "sale_method_rfp",
+    lease_auction: "sale_method_lease_auction",
+  };
+  return map[method] || "sale_method_unknown";
+}
+
+/**
+ * i18n key for a price-band chip.
+ * @param {string} band
+ */
+export function priceBandI18nKey(band) {
+  const map = {
+    all: "price_band_all",
+    priced: "price_band_priced",
+    under_10k: "price_band_under_10k",
+    "10k_100k": "price_band_10k_100k",
+    "100k_plus": "price_band_100k_plus",
+  };
+  return map[band] || "price_band_all";
+}
+
+/**
+ * i18n key for a property sort option.
+ * @param {string} sort
+ */
+export function propertySortI18nKey(sort) {
+  const map = {
+    closing_soon: "property_sort_closing_soon",
+    newest: "property_sort_newest",
+    price_desc: "property_sort_price_desc",
+    price_asc: "property_sort_price_asc",
+  };
+  return map[sort] || "property_sort_closing_soon";
 }
 
 /**
@@ -995,6 +1193,7 @@ export function extractPropertyCommercial(row = {}, options = {}) {
         : null,
       close_date,
       deal: deal_signal.status === "derived" ? deal_signal.summary : null,
+      sale_method: sale_method?.method || null,
     },
   };
   commercial.sale_eligible = hasCommercialSaleSignals(commercial);
@@ -1070,6 +1269,7 @@ function emptyCommercial(row = {}) {
       price: null,
       close_date: isoDate(row.event_date) || isoDate(row.end_date) || isoDate(row.start_date),
       deal: null,
+      sale_method: null,
     },
   };
   commercial.sale_eligible = hasCommercialSaleSignals(commercial);

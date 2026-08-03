@@ -1630,7 +1630,21 @@
       <div class="field kw"><label for="propertykw" data-i18n="search_label">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…" data-i18n-placeholder="kw_placeholder_property"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
-    <div class="chiprow" id="assettabs"></div>
+    <div class="property-rail-label" data-i18n="property_asset_rail_label">Item type</div>
+    <div class="chiprow" id="assettabs" role="group" aria-label="Item type"></div>
+    <div class="property-rail-label" data-i18n="property_sale_method_rail_label">Sale method</div>
+    <div class="chiprow" id="salerail" role="group" aria-label="Sale method"></div>
+    <div class="property-rail-label" data-i18n="property_price_rail_label">Price</div>
+    <div class="chiprow" id="pricerail" role="group" aria-label="Price"></div>
+    <div class="field" style="max-width:240px;margin:8px 0 4px">
+      <label for="propsort" data-i18n="property_sort_label">Sort by</label>
+      <select id="propsort">
+        <option value="closing_soon" data-i18n="property_sort_closing_soon">Closing soonest</option>
+        <option value="newest" data-i18n="property_sort_newest">Newest posted</option>
+        <option value="price_desc" data-i18n="property_sort_price_desc">Price: high to low</option>
+        <option value="price_asc" data-i18n="property_sort_price_asc">Price: low to high</option>
+      </select>
+    </div>
     <div class="property-rail-label" data-i18n="property_process_rail_label">Disposition stage</div>
     <div class="chiprow" id="processrail" role="group" aria-label="Disposition stage"></div>
     <div class="property-rail-label" data-i18n="property_temporal_rail_label">When</div>
