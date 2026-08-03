@@ -178,7 +178,8 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.match(html, /class="career-deadline-lead"/);
   assert.match(html, /career-deadline-primary/);
   assert.match(html, /career-deadline-countdown/);
-  assert.match(html, /staffing-upcoming-deadline/);
+  assert.match(html, /career-action-facts/);
+  assert.match(html, /examListForecastHTML/);
   assert.match(html, /applicationDaysLeft/);
   assert.match(html, /CrolStaffing\.OASY_APPLY_URL/);
   assert.match(html, /careerRouteFilters/);

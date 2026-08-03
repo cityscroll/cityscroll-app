@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture the Staffing landing viewport before and after its content-first rebuild."""
+"""Capture the cache-busted Staffing landing before/after its action-first inversion."""
 from __future__ import annotations
 
 import argparse
@@ -9,12 +9,13 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import sys
 import threading
+import time
 
 from playwright.sync_api import sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "site" / "media" / "review" / "staffing-content-first"
+OUTPUT = ROOT / "docs" / "screenshots" / "staffing-action-first"
 VIEWPORTS = ((390, 844), (1440, 900))
 
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
@@ -36,9 +37,10 @@ def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"
+    cache_bust = str(time.time_ns())
+    failures = []
+    captures = []
 
-    failures = []  # Runtime viewport-check results; no sourced data.
-    captures = []  # Paths created by this run; no sourced data.
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
@@ -48,36 +50,30 @@ def main():
                     device_scale_factor=1,
                 )
                 install_routes(page)
-                page.goto(base + "#people", wait_until="load")
-                page.locator("#tab-people").wait_for(state="visible")
-                page.wait_for_timeout(1000)
-                focus = "#career-guide" if args.stage == "after" else "#staffing-pathways"
-
-                if args.stage == "after":
-                    page.locator("#career-results .career-card").first.wait_for(
+                page.goto(f"{base}?staffing-capture={cache_bust}#people", wait_until="load")
+                if args.stage == "before":
+                    page.locator("#staffing-notice-list .staffing-hire-row").first.wait_for(
                         state="visible"
                     )
+                    if not page.locator("#staffing-feed-heading").is_visible():
+                        failures.append(f"{width}px: the pre-inversion personnel heading is missing")
+                else:
+                    page.locator("#career-results .career-card").first.wait_for(state="visible")
                     if not page.locator("#career-browser-heading").is_visible():
-                        failures.append(f"{width}px: action-first exam heading is not visible")
+                        failures.append(f"{width}px: the action-first exam heading is missing")
                     if page.locator("#staffing-ledger").get_attribute("open") is not None:
-                        failures.append(f"{width}px: appointment ledger is open by default")
+                        failures.append(f"{width}px: the appointments ledger is open by default")
+                    if page.locator("#career-results .career-action-facts").count() < 1:
+                        failures.append(f"{width}px: exam cards do not expose action facts")
 
-                page.eval_on_selector(focus, "el => el.scrollIntoView({block: 'start'})")
-                page.wait_for_timeout(100)
                 overflow = page.evaluate("document.documentElement.scrollWidth - innerWidth")
                 if overflow > 1:
                     failures.append(f"{width}px: horizontal overflow is {overflow}px")
-
                 if not args.verify_only:
                     OUTPUT.mkdir(parents=True, exist_ok=True)
                     target = OUTPUT / f"{args.stage}-{width}.png"
                     page.screenshot(path=target, animations="disabled")
                     captures.append(str(target.relative_to(ROOT)))
-                if args.stage == "after":
-                    page.locator("#staffing-ledger").evaluate("el => { el.open = true; }")
-                    page.locator("#staffing-notice-list .staffing-hire-row").first.wait_for(
-                        state="visible"
-                    )
                 page.close()
             browser.close()
     finally:
@@ -85,6 +81,7 @@ def main():
 
     result = {
         "stage": args.stage,
+        "cache_bust": cache_bust,
         "captured_viewports": [width for width, _ in VIEWPORTS],
         "captures": captures,
         "failures": failures,
