@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "feature": "applicant-conditioned-ulurp-outcome-rates",
+  "project_id": "FIXTURED0001",
+  "applicant_entity_key": "vendor:CALVANICO ASSOC",
+  "applicant_display_name": "Calvanico Associates",
+  "render_mode": "descriptive_history",
+  "files": [
+    {
+      "name": "applicant-entity-before-1440.png",
+      "bytes": 201788,
+      "sha256": "f7b23ee1c18ab278a0013682d3ce0a0d78d65c79221b236b03ed1202b40e3b94"
+    },
+    {
+      "name": "applicant-entity-after-1440.png",
+      "bytes": 220185,
+      "sha256": "d72f35b2c9767fefd6b3c517441fd8ddac375d917942adb0ce60efe674bd457c"
+    },
+    {
+      "name": "applicant-entity-before-390.png",
+      "bytes": 195617,
+      "sha256": "18ded2847b18513a48d29e77e87e51698c6fb53598732bad93397b2389d5abcd"
+    },
+    {
+      "name": "applicant-entity-after-390.png",
+      "bytes": 216629,
+      "sha256": "a65a6d957fe00778350a108780d5b84bad5af83a8dc209457e69709069a078dd"
+    }
+  ]
+}

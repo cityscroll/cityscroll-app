@@ -909,7 +909,7 @@
       }
     }
   ],
-  "generated_at": "2026-08-03T05:26:17Z",
+  "generated_at": "2026-08-03T07:19:31Z",
   "source": {
     "dataset": "NYC Open Data ZAP Project Data",
     "dataset_id": "hgx4-8ukb",
@@ -921,7 +921,20 @@
     "duration": "calendar days from certified_referred to approval_date (or the project completion/milestone date for a modified or disapproved action set); spans over 730 days are excluded",
     "typical_range": "nearest-rank empirical p25-p75 duration, divided by 30.4375 days per month",
     "timing_window": "nearest-rank empirical p10/p50/p90 duration added to the project's certification date",
-    "outcome_rate": "outcome count divided by approved + modified + disapproved projects in the selected cohort"
+    "outcome_rate": "outcome count divided by approved + modified + disapproved projects in the selected cohort",
+    "applicant_conditioning": {
+      "conditioning": "entity-resolution join on primary_applicant (agency preferred alias when government-shaped, otherwise vendor stem); cohorts require n>=20 terminal outcomes",
+      "outcome_rate": "approved / (approved + modified + disapproved) within the applicant entity cohort",
+      "presentation": "unconditioned action-type/borough base rate always shown beside the conditioned rate; never the conditioned number alone",
+      "false_positive_modes": [
+        "entity-resolution mislinks (distinct applicants collapsed onto one stem, or one firm split across stems)",
+        "small-cohort noise at the n=20 floor",
+        "era effects (practice or policy shifts between the training window and a live application)"
+      ],
+      "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, render_mode is descriptive_history",
+      "render_mode": "descriptive_history",
+      "beats_base_rate": false
+    }
   },
   "backtest": {
     "metric": "prediction_calibration",
@@ -1020,5 +1033,648 @@
         "occurrence_quintiles_monotone": true
       }
     }
+  },
+  "applicant_conditioning": {
+    "model_name": "zap_applicant_outcome_rate",
+    "model_version": "1.0.0",
+    "minimum_cohort_n": 20,
+    "train_from": "1976-08-02",
+    "train_to": "2026-04-24",
+    "source_row_count": 3136,
+    "dimensions": [
+      "applicant_entity"
+    ],
+    "conditioned_on_applicant": true,
+    "entity_resolution": {
+      "method": "agency_preferred_then_vendor_stem",
+      "confidence_surface": "public_link_confidence_v1"
+    },
+    "cohorts": [
+      {
+        "cohort_id": "applicant:agency:city-planning",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 64,
+        "duration_n": 22,
+        "train_from": "1976-09-27",
+        "train_to": "2025-11-12",
+        "outcome_counts": {
+          "approved": 64,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 205,
+          "p25": 206,
+          "p50": 210,
+          "p75": 220,
+          "p90": 225
+        },
+        "typical_months": {
+          "low": 6.8,
+          "high": 7.2
+        },
+        "applicant_entity_key": "agency:city-planning",
+        "applicant_entity_ref": "agency:id:city-planning",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "City Planning",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:citywide-administrative-services",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 31,
+        "duration_n": 27,
+        "train_from": "2019-03-11",
+        "train_to": "2025-09-25",
+        "outcome_counts": {
+          "approved": 31,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 37,
+          "p25": 38,
+          "p50": 38,
+          "p75": 45,
+          "p90": 164
+        },
+        "typical_months": {
+          "low": 1.2,
+          "high": 1.5
+        },
+        "applicant_entity_key": "agency:citywide-administrative-services",
+        "applicant_entity_ref": "agency:id:citywide-administrative-services",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Citywide Administrative Services",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:dept-of-real-estate",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 115,
+        "duration_n": 0,
+        "train_from": "1976-10-25",
+        "train_to": "1977-12-27",
+        "outcome_counts": {
+          "approved": 115,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": null,
+          "p25": null,
+          "p50": null,
+          "p75": null,
+          "p90": null
+        },
+        "typical_months": {
+          "low": null,
+          "high": null
+        },
+        "applicant_entity_key": "agency:dept-of-real-estate",
+        "applicant_entity_ref": "agency:id:dept-of-real-estate",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Dept Of Real Estate",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:environmental-protection",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 114,
+        "duration_n": 12,
+        "train_from": "1979-02-13",
+        "train_to": "2026-03-26",
+        "outcome_counts": {
+          "approved": 114,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 77,
+          "p25": 106,
+          "p50": 147,
+          "p75": 175,
+          "p90": 195
+        },
+        "typical_months": {
+          "low": 3.5,
+          "high": 5.7
+        },
+        "applicant_entity_key": "agency:environmental-protection",
+        "applicant_entity_ref": "agency:id:environmental-protection",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Environmental Protection",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:hda",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 67,
+        "duration_n": 6,
+        "train_from": "1976-08-30",
+        "train_to": "1981-06-30",
+        "outcome_counts": {
+          "approved": 61,
+          "modified": 6,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 0.9104,
+          "modified": 0.0896,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 0,
+          "p25": 122,
+          "p50": 122,
+          "p75": 136,
+          "p90": 139
+        },
+        "typical_months": {
+          "low": 4,
+          "high": 4.5
+        },
+        "applicant_entity_key": "agency:hda",
+        "applicant_entity_ref": "agency:id:hda",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Hda",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:housing-preservation-and-development",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 610,
+        "duration_n": 45,
+        "train_from": "1977-10-11",
+        "train_to": "2026-03-26",
+        "outcome_counts": {
+          "approved": 602,
+          "modified": 8,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 0.9869,
+          "modified": 0.0131,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 120,
+          "p25": 155,
+          "p50": 185,
+          "p75": 211,
+          "p90": 218
+        },
+        "typical_months": {
+          "low": 5.1,
+          "high": 6.9
+        },
+        "applicant_entity_key": "agency:housing-preservation-and-development",
+        "applicant_entity_ref": "agency:id:housing-preservation-and-development",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Housing Preservation and Development",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:landmarks-preservation-commission",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 167,
+        "duration_n": 36,
+        "train_from": "1976-08-02",
+        "train_to": "2025-11-25",
+        "outcome_counts": {
+          "approved": 167,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 45,
+          "p25": 52,
+          "p50": 66,
+          "p75": 73,
+          "p90": 87
+        },
+        "typical_months": {
+          "low": 1.7,
+          "high": 2.4
+        },
+        "applicant_entity_key": "agency:landmarks-preservation-commission",
+        "applicant_entity_ref": "agency:id:landmarks-preservation-commission",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Landmarks Preservation Commission",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:nycha",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 30,
+        "duration_n": 2,
+        "train_from": "1979-01-29",
+        "train_to": "2022-07-11",
+        "outcome_counts": {
+          "approved": 29,
+          "modified": 1,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 0.9667,
+          "modified": 0.0333,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 77,
+          "p25": 77,
+          "p50": 77,
+          "p75": 206,
+          "p90": 206
+        },
+        "typical_months": {
+          "low": 2.5,
+          "high": 6.8
+        },
+        "applicant_entity_key": "agency:nycha",
+        "applicant_entity_ref": "agency:id:nycha",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Nycha",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:parks-and-recreation",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 49,
+        "duration_n": 5,
+        "train_from": "1976-10-05",
+        "train_to": "2026-03-26",
+        "outcome_counts": {
+          "approved": 49,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 43,
+          "p25": 115,
+          "p50": 122,
+          "p75": 199,
+          "p90": 199
+        },
+        "typical_months": {
+          "low": 3.8,
+          "high": 6.5
+        },
+        "applicant_entity_key": "agency:parks-and-recreation",
+        "applicant_entity_ref": "agency:id:parks-and-recreation",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Parks and Recreation",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:pdc",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 50,
+        "duration_n": 0,
+        "train_from": "1979-01-22",
+        "train_to": "1984-10-29",
+        "outcome_counts": {
+          "approved": 50,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": null,
+          "p25": null,
+          "p50": null,
+          "p75": null,
+          "p90": null
+        },
+        "typical_months": {
+          "low": null,
+          "high": null
+        },
+        "applicant_entity_key": "agency:pdc",
+        "applicant_entity_ref": "agency:id:pdc",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Pdc",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:sanitation",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 24,
+        "duration_n": 0,
+        "train_from": "1977-07-06",
+        "train_to": "2020-02-12",
+        "outcome_counts": {
+          "approved": 24,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": null,
+          "p25": null,
+          "p50": null,
+          "p75": null,
+          "p90": null
+        },
+        "typical_months": {
+          "low": null,
+          "high": null
+        },
+        "applicant_entity_key": "agency:sanitation",
+        "applicant_entity_ref": "agency:id:sanitation",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Sanitation",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:agency:transportation",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 28,
+        "duration_n": 3,
+        "train_from": "1978-04-24",
+        "train_to": "2024-04-29",
+        "outcome_counts": {
+          "approved": 28,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": 157,
+          "p25": 157,
+          "p50": 168,
+          "p75": 185,
+          "p90": 185
+        },
+        "typical_months": {
+          "low": 5.2,
+          "high": 6.1
+        },
+        "applicant_entity_key": "agency:transportation",
+        "applicant_entity_ref": "agency:id:transportation",
+        "applicant_entity_kind": "agency",
+        "applicant_display_name": "Transportation",
+        "link_confidence": {
+          "status": "strong",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:vendor:calvanico-assoc",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 271,
+        "duration_n": 0,
+        "train_from": "1976-09-14",
+        "train_to": "2019-11-20",
+        "outcome_counts": {
+          "approved": 271,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": null,
+          "p25": null,
+          "p50": null,
+          "p75": null,
+          "p90": null
+        },
+        "typical_months": {
+          "low": null,
+          "high": null
+        },
+        "applicant_entity_key": "vendor:CALVANICO ASSOC",
+        "applicant_entity_ref": "vendor:stem:CALVANICO%20ASSOC",
+        "applicant_entity_kind": "vendor",
+        "applicant_display_name": "Calvanico Associates",
+        "link_confidence": {
+          "status": "tentative",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:vendor:drp",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 704,
+        "duration_n": 0,
+        "train_from": "1978-04-03",
+        "train_to": "1985-04-11",
+        "outcome_counts": {
+          "approved": 704,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": null,
+          "p25": null,
+          "p50": null,
+          "p75": null,
+          "p90": null
+        },
+        "typical_months": {
+          "low": null,
+          "high": null
+        },
+        "applicant_entity_key": "vendor:DRP",
+        "applicant_entity_ref": "vendor:stem:DRP",
+        "applicant_entity_kind": "vendor",
+        "applicant_display_name": "DRP",
+        "link_confidence": {
+          "status": "tentative",
+          "basis": "entity_link"
+        }
+      },
+      {
+        "cohort_id": "applicant:vendor:ports",
+        "level": "applicant_entity",
+        "action_type": null,
+        "action_label": "land-use",
+        "borough": null,
+        "n": 23,
+        "duration_n": 0,
+        "train_from": "1977-10-24",
+        "train_to": "1982-05-18",
+        "outcome_counts": {
+          "approved": 23,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "outcome_rates": {
+          "approved": 1,
+          "modified": 0,
+          "disapproved": 0
+        },
+        "duration_days": {
+          "p10": null,
+          "p25": null,
+          "p50": null,
+          "p75": null,
+          "p90": null
+        },
+        "typical_months": {
+          "low": null,
+          "high": null
+        },
+        "applicant_entity_key": "vendor:PORTS",
+        "applicant_entity_ref": "vendor:stem:PORTS",
+        "applicant_entity_kind": "vendor",
+        "applicant_display_name": "PORTS",
+        "link_confidence": {
+          "status": "tentative",
+          "basis": "entity_link"
+        }
+      }
+    ],
+    "formula": {
+      "conditioning": "entity-resolution join on primary_applicant (agency preferred alias when government-shaped, otherwise vendor stem); cohorts require n>=20 terminal outcomes",
+      "outcome_rate": "approved / (approved + modified + disapproved) within the applicant entity cohort",
+      "presentation": "unconditioned action-type/borough base rate always shown beside the conditioned rate; never the conditioned number alone",
+      "false_positive_modes": [
+        "entity-resolution mislinks (distinct applicants collapsed onto one stem, or one firm split across stems)",
+        "small-cohort noise at the n=20 floor",
+        "era effects (practice or policy shifts between the training window and a live application)"
+      ],
+      "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, render_mode is descriptive_history",
+      "render_mode": "descriptive_history",
+      "beats_base_rate": false
+    },
+    "backtest": {
+      "split_date": "2024-01-01",
+      "evaluation_n": 0,
+      "minimum_evaluation_n": 20,
+      "conditioned_brier": null,
+      "unconditioned_brier": null,
+      "beats_base_rate": false,
+      "render_mode": "descriptive_history",
+      "contract_backtest": null,
+      "note": "Applicant-conditioned rates do not beat the unconditioned base rate out of sample; public surfaces show them as descriptive history only."
+    },
+    "render_mode": "descriptive_history"
   }
 }
