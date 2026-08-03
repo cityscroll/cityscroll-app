@@ -255,6 +255,10 @@
     home_cta_prompt: "Des nouvelles par e-mail ?",
     home_cta_submit: "S'inscrire",
     home_cta_topics: "ou choisir des sujets",
+    alert_context_scope: "Vous recevrez un e-mail pour : {scope}",
+    alert_context_from_notice: "À partir de cet avis : « {title} »",
+    alert_context_next_step: "Prochaine étape attendue : {step}",
+    alert_context_confirm: "Confirmez avec votre e-mail ci-dessous — une seule étape.",
     lang_switcher_label: "Langue",
     empty_preview:      "Créez une alerte et cliquez sur Aperçu pour voir le bulletin, rempli avec les avis réels du jour.",
 

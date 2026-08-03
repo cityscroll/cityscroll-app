@@ -345,6 +345,11 @@ const STRINGS = {
     subscribe_confirm_note: "We'll email a link to confirm.",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
     home_cta_prompt:    "Want email updates?",
+    // Context-carrying alert entry (notice/lens → pre-scoped #alerts + real email preview)
+    alert_context_scope: "You'll get an email for: {scope}",
+    alert_context_from_notice: "From this notice: “{title}”",
+    alert_context_next_step: "Next expected step: {step}",
+    alert_context_confirm: "Confirm with your email below — one step.",
     home_cta_submit:    "Sign up",
     home_cta_topics:     "or pick topics",
     empty_preview:      "Build an alert and hit Preview to see the digest, populated with today's real notices.",

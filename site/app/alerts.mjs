@@ -30,6 +30,10 @@ let meetingWatchExtra = {};
 // "awardwatch" #awatch selection subscribes to. null until that button (or nothing, if the
 // dropdown is reached manually with no notice in context) sets it.
 let awardWatchTarget = null;
+// Seed notice/project row for context-carrying alert entry (#alerts?notice=… / project=…).
+// When set, aPreview() renders THIS item through digItemHTML (the real email-template path)
+// so the reader sees exactly what would arrive. Cleared when the watch type changes.
+let noticeWatchSeed = null; // { row, digKind, lens, filter }
 // skipQuizSync: true only for the two bookkeeping call sites (page-init, language re-render)
 // that run before/without any real user choice -- those must NOT manufacture a "topic
 // picked" look in the quiz above by highlighting whichever chip happens to match #awatch's
@@ -47,6 +51,8 @@ function aWatchChange(skipQuizSync){
     moneynlExtra = {};
     meetingWatchExtra = {};
     if(lastWatch==="awardwatch") awardWatchTarget = null; // leaving the type clears its one-notice target
+    noticeWatchSeed = null; // type switch leaves the carried notice behind
+    paintAlertContextLead(null);
   }
   lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
@@ -357,33 +363,102 @@ function awardWatchPreviewHTML(){
   const label = escUiHtml(awardWatchTarget.label || awardWatchTarget.agency || "");
   return `<div class="empty">${t("award_watch_preview_note_html",{label})}</div>`;
 }
+/** Plain-language lead for a context-carried alert entry (notice/lens scope). */
+function paintAlertContextLead(seedMeta){
+  const el = document.getElementById("acontextlead");
+  if(!el) return;
+  if(!seedMeta && !noticeWatchSeed){
+    el.hidden = true;
+    el.innerHTML = "";
+    return;
+  }
+  const seed = noticeWatchSeed && noticeWatchSeed.row;
+  const digKind = (noticeWatchSeed && noticeWatchSeed.digKind)
+    || (seedMeta && seedMeta.digKind)
+    || "notice";
+  const scopeBits = aDescribe();
+  const title = seed
+    ? cleanText(seed.short_title || seed.project_name || seed.title || "")
+    : "";
+  // Next step from the shared email awareness model when a seed notice is present.
+  let nextStep = "";
+  const tools = seedMeta && seedMeta.awarenessTools;
+  if(seed && tools && typeof tools.digestItemAwareness === "function"){
+    try{
+      const a = tools.digestItemAwareness(seed, { kind: digKind, today: todayISO() });
+      if(a && a.action && a.action.label) nextStep = a.action.label;
+      else if(a && a.deadline && a.deadline.label) nextStep = a.deadline.label;
+    }catch(_e){}
+  }
+  const parts = [];
+  parts.push(`<p class="alert-context-lead-main">${t("alert_context_scope",{scope:escUiHtml(scopeBits)})}</p>`);
+  if(title) parts.push(`<p class="alert-context-seed">${t("alert_context_from_notice",{title:escUiHtml(title)})}</p>`);
+  if(nextStep) parts.push(`<p class="alert-context-next">${t("alert_context_next_step",{step:escUiHtml(nextStep)})}</p>`);
+  parts.push(`<p class="alert-context-confirm muted">${t("alert_context_confirm")}</p>`);
+  el.innerHTML = parts.join("");
+  el.hidden = false;
+}
+
 async function aPreview(){
   $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> ' + t("fetching_today") + '</div>';
   renderFeedLinks();
   if($("#awatch").value === "awardwatch"){ $("#apreviewbox").innerHTML = awardWatchPreviewHTML(); return; }
+  // Same time + next-action chrome as the outbound email (digest_item_awareness.mjs).
+  const awarenessTools = await ensureDigAwarenessTools();
+  paintAlertContextLead({ awarenessTools, digKind: noticeWatchSeed && noticeWatchSeed.digKind });
+  // Context-carry seed: always render THIS notice/project through digItemHTML first so the
+  // preview cannot drift from the real template even when SODA returns a different top-N.
+  const seed = noticeWatchSeed && noticeWatchSeed.row;
+  const seedKind = (noticeWatchSeed && noticeWatchSeed.digKind) || "notice";
+  const previewKeywords = aLensFilter().filter.keywords || [];
+  let seedHtml = "";
+  if(seed){
+    // digItemHTML: rezone/rfp/award have dedicated branches; section lenses use kind
+    // "notice" so digAwarenessKind can read section_name / type_of_notice_description.
+    const kindForSeed = seed.project_id && !seed.request_id ? "rezone"
+      : (seedKind === "rfp" || seedKind === "award" || seedKind === "rezone") ? seedKind
+      : "notice";
+    seedHtml = digItemHTML(kindForSeed, seed, previewKeywords, awarenessTools);
+  }
   let data;
-  try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; return; }
-  const rows=data.rows||[];
+  try{ data = await aFetch(); }catch(e){
+    if(seedHtml){
+      const dest=$("#adest").value.trim() || t("email_placeholder");
+      $("#apreviewbox").innerHTML = `<div class="emailmock">
+        <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
+        <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
+        <div class="ebody">${seedHtml}
+          <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${tn("digest_footer",1)}</div>
+        </div></div>`;
+      return;
+    }
+    $("#apreviewbox").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>';
+    return;
+  }
+  let rows=data.rows||[];
+  // Prefer seed as first item; drop duplicate request_id/project_id from the live fetch.
+  if(seed){
+    const seedId = seed.request_id || seed.project_id;
+    rows = rows.filter(r => (r.request_id || r.project_id) !== seedId);
+  }
   const dest=$("#adest").value.trim() || t("email_placeholder");
   const kw = $("#aparam").value.trim();
-  const showSimplifyHint = !rows.length && isKeywordWatch($("#awatch").value) && keywordLooksSentenceLike(kw);
-  // Same {lens,filter} shape the worker compiles into a query -- keywords is whatever subset
-  // this watch type actually searches on (empty for amount/name-only watches).
-  const previewKeywords = aLensFilter().filter.keywords || [];
+  const showSimplifyHint = !rows.length && !seed && isKeywordWatch($("#awatch").value) && keywordLooksSentenceLike(kw);
   // A "moneynl" watch is one built from the Ask box (NL.alerts.apply) — reuse its own chip
   // builder so a zero-match preview echoes exactly what the ask translation understood,
   // same fix as the Money tab's own ask flow (field evidence 2026-07-14: a silent empty
   // result read as "the ask button is broken").
-  const nlChips = (!rows.length && $("#awatch").value === "moneynl") ? NL.alerts.chips(aLensFilter().filter).filter(Boolean) : [];
-  // Same time + next-action chrome as the outbound email (digest_item_awareness.mjs).
-  const awarenessTools = await ensureDigAwarenessTools();
-  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords,awarenessTools)).join("")
+  const nlChips = (!rows.length && !seed && $("#awatch").value === "moneynl") ? NL.alerts.chips(aLensFilter().filter).filter(Boolean) : [];
+  const liveBody = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords,awarenessTools)).join("") : "";
+  const body = (seedHtml || liveBody)
+    ? (seedHtml + liveBody)
     : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}${nlChips.length ? nlTransHTML(nlChips, "#nlq-alerts", true) : ""}</div>`;
+  const count = (seed ? 1 : 0) + rows.length;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
     <div class="ebody">${body}
-      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${tn("digest_footer",rows.length)}</div>
+      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${tn("digest_footer",count)}</div>
     </div></div>`;
 }
 
@@ -827,3 +902,5 @@ Object.defineProperty(globalThis, "digAwarenessToolsPromise", { configurable: tr
 Object.defineProperty(globalThis, "lastWatch", { configurable: true, get: () => lastWatch, set: value => { lastWatch = value; } });
 Object.defineProperty(globalThis, "meetingWatchExtra", { configurable: true, get: () => meetingWatchExtra, set: value => { meetingWatchExtra = value; } });
 Object.defineProperty(globalThis, "moneynlExtra", { configurable: true, get: () => moneynlExtra, set: value => { moneynlExtra = value; } });
+Object.defineProperty(globalThis, "noticeWatchSeed", { configurable: true, get: () => noticeWatchSeed, set: value => { noticeWatchSeed = value; } });
+globalThis.paintAlertContextLead = paintAlertContextLead;

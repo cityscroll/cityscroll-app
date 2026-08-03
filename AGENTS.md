@@ -967,6 +967,18 @@ test/digest_preview_awareness.test.mjs worker/test/alert_temporal.test.mjs`.
 Evidence: `node tools/render_digest_awareness_evidence.mjs` and
 `node tools/render_preview_ops_parity_evidence.mjs`.
 
+## Context-carrying alert entry
+
+"Watch this notice" / header "Want email updates?" / "Watch this search" land on
+`#alerts?lens=&filter=&notice=` (same hash-param shape as saved-search health
+fix links). Pure scope helpers: `site/alerts_context_carry.mjs`. Prefill +
+seeded `digItemHTML` preview (real email template, not a mock):
+`prefillAlertFromLink` in `site/app/boot.mjs`. Header CTA hrefs update via
+`syncAlertsEntryHrefs`. Verify: `node --test test/alerts_context_carry.test.mjs
+test/prefill_alert_from_link.test.mjs test/digest_preview_awareness.test.mjs`.
+Capture: `python3 tools/capture_alerts_context_carry.py`. Demo:
+`alerts-context-carry-notice` → notice `20260716009`.
+
 ## Civic-time event contract
 
 Shared event envelope + bounded kind registry for Money/Rules/Land/Meetings.

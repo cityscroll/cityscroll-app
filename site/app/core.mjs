@@ -283,6 +283,10 @@ function showTab(name, push){
   }
   if(name==="map") paintMapExploration();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
+  // Header alert CTA carries the active lens/filter (or clears to bare #alerts).
+  if(typeof syncAlertsEntryHrefs === "function"){
+    Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
+  }
 }
 
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
