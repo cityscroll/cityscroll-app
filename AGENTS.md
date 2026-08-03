@@ -215,27 +215,55 @@ fallback. Behavior lives in `site/app/map.mjs` (see `docs/module-map.md`).
 
 **All five map lenses** (land / property / rules / meetings / money) roll through
 `tools/lib/district_activity.mjs` at build time: land uses ZAP publisher CDs;
-property and any geocoded pin use boundary-layer point-in-polygon; meetings use
-`affectedAreaFromRow` (+ stamped `affected_area` on domain observations); rules
-use `ruleLocationFromRow` / hearing area; money uses publisher geo fields or
-coords when present (OCP warehouse awards are often unlocated — honest zero).
-Never invent districts for unlocated rows. `--check` fails if meetings are
-counted but zero-located (place-based lens wiring gate).
+property and any geocoded pin use boundary-layer point-in-polygon; meetings /
+rules / money use the human-derivation location chain (below). Never invent
+districts for unlocated rows. `--check` fails if meetings are counted but
+zero-located (place-based lens wiring gate).
+
+**Deploy wiring (load-bearing):** `tools/build_district_activity.mjs` runs inside
+`.github/actions/build-site` before the Jekyll/Pages artifact is assembled, so
+map density never ships stale against locator code. `built_at` advances on every
+site deploy. Committed `site/data/district_activity.json` (+ worker twin) is the
+offline source of truth; rebuild after densifying domain observations.
+
+**Human-derivation doctrine (location extractors):** extraction gives up only
+after reading a notice the way a location-interested human would — not at the
+first missing structured geo field. Pure lib `site/location_derivation.mjs`
+(evidence spans + method + confidence, same shape as `notice_facts` deadlines):
+
+| Lens | Where a human looks | Methods (strong → weak) |
+|---|---|---|
+| **Meetings** | Matter place in title/body ("Borough of X", tax block, park name); hearing **venue** line / `street_address_1`; sponsor agency HQ last | `matter_body_borough` → `matter_title_place` → `venue_column` / `venue_line` → `agency_hq` |
+| **Rules** | Affected-geography phrases and titled borough/district scope — **not** the comment-drop venue | `rule-scope` / `matter_title_place`; default **citywide** when no local pin |
+| **Money** | Performance/body place, OCP `vendor_address`, vendor place names, "throughout New York City" | `publisher_district` / coords → `vendor_address` → `citywide_phrase` → title borough |
+
+Confidence tiers ride on the stamp (`strong` / `derived` / `weak`); agency-HQ
+and vendor-address pins are weaker than a venue line or matter borough phrase.
+Only after every human-visible derivation fails is a row **unlocated**, and the
+payload records `unlocated_reason` (e.g. `virtual_only`, `no_place_signal`).
+Venue is not matter for rules; for meetings map density, venue is a legitimate
+"where is this happening" pin when the matter has no place.
+
+Densify stamps (no raw body on the public surface):
+`tools/build_rules_meetings_domain_observations.mjs` → `affected_area` /
+`rule_location` on domain observations; money place stamps may sit on
+`ocp_awards_warehouse_lookup` rows. Verify:
 
 ```bash
+node tools/build_rules_meetings_domain_observations.mjs --check
 node tools/build_district_activity.mjs
 node tools/build_district_activity.mjs --check
-node --test test/map_exploration.test.mjs test/map_surface.test.mjs
+node --test test/location_derivation.test.mjs test/map_exploration.test.mjs test/map_surface.test.mjs
 python3 tools/capture_map_exploration.py
 ```
 
-Artifacts: `site/data/district_activity.json` (stamped with `boundary_vintage`),
-pure UI helpers `site/map_exploration.mjs`, build lib
-`tools/lib/district_activity.mjs`. Deep links: `#map`,
-`#map?level=community_district&parent=Queens&lens=land`, district tap-through
-uses existing `cd=` / `council=` / `boro=` list grammar. Tax-lien statistics
-live at `#property?view=tax-lien` (not the property list masthead). The
-location-resolution flywheel dimension reads `district_activity.sources` and
+Artifacts: `site/data/district_activity.json` (stamped with `boundary_vintage`,
+`sources.*.by_method`, `unlocated_reasons`), pure UI helpers
+`site/map_exploration.mjs`, build lib `tools/lib/district_activity.mjs`. Deep
+links: `#map`, `#map?level=community_district&parent=Queens&lens=land`, district
+tap-through uses existing `cd=` / `council=` / `boro=` list grammar. Tax-lien
+statistics live at `#property?view=tax-lien` (not the property list masthead).
+The location-resolution flywheel dimension reads `district_activity.sources` and
 emits `map-zero-located-{lens}` when a non-empty corpus lands at 0 located.
 
 ## District boundary layer (cs-geo-01 + cs-geo-02)

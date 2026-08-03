@@ -21,7 +21,24 @@
       "short_title": "Catering Services",
       "pin": "81626W0043001",
       "contract_amount": "250000",
-      "vendor_name": "Make it Zesty LLC"
+      "vendor_name": "Make it Zesty LLC",
+      "place": {
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "derivation": {
+          "methods": [
+            "vendor_address"
+          ],
+          "confidence": 0.55,
+          "role": "vendor",
+          "evidence": [
+            "1880 Valentine Avenue"
+          ]
+        },
+        "confidence_tier": "derived"
+      }
     },
     {
       "request_id": "20260724010",
@@ -41,7 +58,21 @@
       "short_title": "Summer Youth Employment Program NAQ: Career Ready",
       "pin": "26026N0011014",
       "contract_amount": "2540261",
-      "vendor_name": "Child Development Center - Mosholu Montefiore Community Center"
+      "vendor_name": "Child Development Center - Mosholu Montefiore Community Center",
+      "place": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "citywide_phrase"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "throughout New York City"
+          ]
+        },
+        "confidence_tier": "strong"
+      }
     },
     {
       "request_id": "FIX001",
