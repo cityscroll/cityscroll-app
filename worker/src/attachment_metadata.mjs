@@ -1,5 +1,4 @@
 import materialization from "./data/attachment_metadata_lookup.json" with { type: "json" };
-import { checkAdminKey } from "./admin.mjs";
 
 const MAX_BODY_BYTES = 1_000_000;
 const MAX_NOTICES = 100;
@@ -153,6 +152,7 @@ export async function handleAttachmentMetadata(request, env) {
 }
 
 export async function handleAdminAttachmentMetadata(request, env) {
+  const { checkAdminKey } = await import("./admin.mjs");
   const auth = checkAdminKey(request, env);
   if (!auth.ok) return auth.res;
   if (request.method !== "POST") return json({ error: "method not allowed" }, 405);

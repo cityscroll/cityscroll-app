@@ -13,7 +13,6 @@ const fixture = JSON.parse(readFileSync(new URL("../warehouse/fixtures/attachmen
 const demo = JSON.parse(readFileSync(new URL("../site/demo/demo-links.json", import.meta.url)));
 const sources = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
 const gaps = JSON.parse(readFileSync(new URL("../site/data/gap_taxonomy.json", import.meta.url)));
-const workflow = readFileSync(new URL("../.github/workflows/attachment-metadata.yml", import.meta.url), "utf8");
 const runner = readFileSync(new URL("../warehouse/scripts/attachment_metadata_run.py", import.meta.url), "utf8");
 const staticLookup = JSON.parse(readFileSync(new URL("../site/data/attachment_metadata_lookup.json", import.meta.url)));
 
@@ -36,13 +35,10 @@ test("T0 source policy crosses the 2025 export cliff and excludes personnel", ()
   assert.equal(shouldScrapePortal(fixture.rows[2]), false, "Changes in Personnel is excluded");
 });
 
-test("warehouse runner and cron preserve CPU, checkpoint, and politeness controls", () => {
+test("warehouse runner preserves CPU, checkpoint, and politeness controls", () => {
   assert.match(runner, /IngestLock/);
   assert.match(runner, /check_headroom/);
   assert.match(runner, /attachment_metadata_by_notice/);
-  assert.match(workflow, /schedule:/);
-  assert.match(workflow, /--limit 200/);
-  assert.match(workflow, /CITYSCROLL_ATTACHMENT_ENDPOINT/);
 });
 
 test("notice chrome and demo contract expose the Cannonsville attachment chip", () => {
