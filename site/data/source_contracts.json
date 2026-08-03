@@ -724,6 +724,44 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "community-district-boundaries",
+      "name": "Community Districts",
+      "owner": "NYC Department of City Planning",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "5crt-au7u",
+      "landing_page": "https://data.cityofnewyork.us/d/5crt-au7u",
+      "required_fields": [
+        "boro_cd",
+        "the_geom"
+      ],
+      "max_stale_days": 730,
+      "publisher_cadence": "Updated when community district lines are redrawn or geometry is corrected",
+      "product_freshness": "Operator-built into data/district_boundaries.json (shared community + council layer) with a labeled boundary_vintage; the browser and Worker resolve points against that committed layer.",
+      "used_for": "Resolve community districts for geocoded place pins and location-aware filters (point-in-polygon against simplified polygons; no live MapPLUTO CD round-trip).",
+      "code_references": [
+        {
+          "path": "tools/build_district_boundaries.mjs",
+          "contains": "5crt-au7u"
+        },
+        {
+          "path": "site/council_district_lookup.mjs",
+          "contains": "resolveCommunityDistrict"
+        },
+        {
+          "path": "site/location_awareness.js",
+          "contains": "communityDistrict"
+        },
+        {
+          "path": "data/district_boundaries.json",
+          "contains": "boundary_vintage"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "city-council-district-boundaries",
       "name": "City Council Districts",
       "owner": "NYC Department of City Planning",
@@ -739,11 +777,11 @@
       ],
       "max_stale_days": 730,
       "publisher_cadence": "Updated when City Council district lines are redrawn or geometry is corrected",
-      "product_freshness": "Operator-built into data/council_district_boundaries.json with a labeled boundary_vintage; the browser and Worker resolve points against that committed layer.",
+      "product_freshness": "Operator-built into data/district_boundaries.json (shared community + council layer) and the council-only twin data/council_district_boundaries.json with a labeled boundary_vintage; the browser and Worker resolve points against that committed layer.",
       "used_for": "Resolve council districts for geocoded place pins and location-aware Land filters (point-in-polygon at build/request time against simplified polygons; no live GIS).",
       "code_references": [
         {
-          "path": "tools/build_council_district_boundaries.mjs",
+          "path": "tools/build_district_boundaries.mjs",
           "contains": "872g-cjhh"
         },
         {
@@ -755,7 +793,7 @@
           "contains": "councilDistrict"
         },
         {
-          "path": "data/council_district_boundaries.json",
+          "path": "data/district_boundaries.json",
           "contains": "boundary_vintage"
         }
       ],
