@@ -106,7 +106,7 @@
     }
   },
   "desk_daylog": {
-    "verdict": "correct_by_design",
+    "verdict": "ok_send_level",
     "note": "Operator daylog is send-level: noticeIds + noticeLinks + outcome labels. It does not re-render email item HTML. After the email upgrade, notice deep links and counts remain intact.",
     "entry": {
       "day": "2026-08-02",

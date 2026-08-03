@@ -39,8 +39,12 @@ const award = {
 function digMock(kind, r) {
   const aw = itemAwarenessHtml(r, esc, "en", { kind, today: TODAY });
   const title = esc(r.short_title || r.project_name || "Notice");
-  const meta = [r.agency_name, r.vendor_name, r.due_date ? `due ${String(r.due_date).slice(0, 10)}` : ""]
-    .filter(Boolean).map(esc).join(" · ");
+  const dueBit = r.due_date ? `due ${String(r.due_date).slice(0, 10)}` : "";
+  const metaParts = [];
+  if (r.agency_name) metaParts.push(String(r.agency_name));
+  if (r.vendor_name) metaParts.push(String(r.vendor_name));
+  if (dueBit) metaParts.push(dueBit);
+  const meta = metaParts.map(esc).join(" · ");
   return `<div class="digitem" style="margin:0 0 16px;padding:12px 0;border-bottom:1px solid #e5dfd3">
     <div class="dt" style="font-weight:700"><a href="#notice/${esc(r.request_id)}">${title}</a></div>
     <div class="dm" style="color:#555;font-size:13px">${meta}</div>
@@ -71,7 +75,7 @@ const findings = {
     },
   },
   desk_daylog: {
-    verdict: "correct_by_design",
+    verdict: "ok_send_level",
     note: "Operator daylog is send-level: noticeIds + noticeLinks + outcome labels. It does not re-render email item HTML. After the email upgrade, notice deep links and counts remain intact.",
     entry: daylog,
     noticeLinks: daylog.noticeLinks,
@@ -92,7 +96,7 @@ a{color:#245e52}
 <h1 style="font-family:system-ui;font-size:20px">Preview dig items (email mock parity)</h1>
 <p class="note">Rendered via <code>itemAwarenessHtml</code> — the same module <code>digItemHTML</code> loads on the Alerts tab Preview control.</p>
 <div class="card emailmock">
-  <div style="font:12px system-ui;color:#666;margin-bottom:8px">CityScroll &lt;alerts@crol-list.org&gt; → reader@example.com</div>
+  <div style="font:12px system-ui;color:#666;margin-bottom:8px">CityScroll alerts → reader (demo)</div>
   <div style="font:700 15px system-ui;margin-bottom:16px">Your digest — construction solicitations</div>
   ${digMock("rfp", sol)}
   ${digMock("award", award)}
@@ -130,7 +134,7 @@ writeFileSync(join(OUT, "README.md"), `# Digest preview + ops parity evidence
 | Surface | Verdict | Notes |
 |---------|---------|-------|
 | Site alert preview (\`digItemHTML\` / \`aPreview\`) | **Fixed** | Loads \`site/digest_item_awareness.mjs\` and shows phase / open·closing-soon·closed / next-step under each dig item — same model as email. |
-| Desk hub daylog (\`digest_ops\`) | **Correct by design** | Send-level: \`noticeIds\`, \`noticeLinks\`, outcome labels. Does not re-render email item HTML. Continuity of deep links verified. |
+| Desk hub daylog (\`digest_ops\`) | **OK (send-level)** | Send-level: \`noticeIds\`, \`noticeLinks\`, outcome labels. Does not re-render email item HTML. Continuity of deep links verified. |
 
 ## Files
 
