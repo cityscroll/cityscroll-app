@@ -1133,7 +1133,7 @@
         <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Sign up</button>
       </form>
       <p class="home-cta-alt"><a href="#alerts" id="homeCtaTopics" data-i18n="home_cta_topics">or pick topics</a></p>
-      <p class="home-cta-compact" id="homeCtaCompact"><a href="#alerts/topics"><span data-i18n="home_cta_prompt">Want email updates?</span> <span aria-hidden="true">→</span></a></p>
+      <p class="home-cta-compact" id="homeCtaCompact"><a href="#alerts"><span data-i18n="home_cta_prompt">Want email updates?</span> <span aria-hidden="true">→</span></a></p>
       <div id="homeCtaMsg" class="home-cta-msg" role="status" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
@@ -14229,7 +14229,8 @@ async function showTaskFirst(task, id){
 function applyHash(){
   setNoticeCompactCta(false);
   const incoming = location.hash.slice(1);
-  const raw = incoming === "alerts/topics" ? "alerts" : incoming;
+  const slashPos = incoming.indexOf("/");
+  const raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", "#"+raw); }
   if(!raw) return false;
   const collectionHash=bareCollectionHash(raw);
