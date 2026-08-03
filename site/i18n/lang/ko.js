@@ -790,6 +790,8 @@
     notice_attachment_chip_one: "첨부 파일 {n}개: {title}",
     notice_attachment_chip_other: "첨부 파일 {n}개: {title}",
     notice_attachment_title_fallback: "공식 공고 파일",
+    notice_attachment_extract_summary: "첨부 파일에서 추출한 텍스트 — 전체 텍스트를 보려면 펼치세요",
+    digest_match_attachment_html: "첨부 파일에서 일치: {snippet}",
     ext_link_new_tab_sr: "(새 탭에서 열림)",
     pin_unusable_note: "이 공고의 PIN(<code>{pin}</code>)은 연결에 사용할 수 없어 낙찰 내역을 자동으로 추적할 수 없습니다. 전체 본문을 읽으려면 시정 기록부에서 열어 주세요.",
     only_notice_note: "현재까지는 이 공고만 기록되어 있습니다 — PIN <code>{pin}</code>에 대한 이후 단계는 아직 발행되지 않았습니다. ",

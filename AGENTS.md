@@ -143,6 +143,22 @@ only serves precomputed rows; it never scrapes the portal. Fixture proof:
 `warehouse/.venv/bin/python warehouse/scripts/attachment_metadata_run.py
 --from-fixture --limit 25`.
 
+**T1 attachment inline text:** build-time extract over the T0 inventory for
+high-value office classes (docx/pdf; legacy `.doc` is an honest skip). Pure
+helpers `warehouse/lib/attachment_text.mjs` + binary extractors
+`warehouse/lib/attachment_text_extract.py` (docx via stdlib zipfile, pdf via
+pypdf). Guarded runner
+`warehouse/.venv/bin/python warehouse/scripts/attachment_text_run.py
+--from-fixture --limit 25` (size cap 5 MB, ≤25 docs/run, polite delay, receipt,
+no binaries/OCR stored). Text is stamped beside T0 rows
+(`extracted_text` / `text_preview` / `text_status`), served on
+`GET /attachment-metadata`, and merged into the D1 notices `haystack` with
+provenance marker `attachment-text`. Notice UI uses progressive disclosure
+(`.attachment-extract`, collapsed by default). Later tiers (not this PR):
+`att-t2-structured` (tables → parquet/DuckDB) and `att-t3-embeddings`.
+Exemplar: notice `20240515016` (Cannonsville). Capture:
+`python3 tools/capture_attachment_text.py`.
+
 ```bash
 python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5

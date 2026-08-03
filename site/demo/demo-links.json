@@ -6,13 +6,17 @@
       "id": "notice-cannonsville-attachment",
       "url": "#notice/20240515016",
       "feature": "notice-attachment-metadata",
-      "description": "Open the Cannonsville timber notice with its official map and volume-report attachment.",
+      "description": "Open the Cannonsville timber notice with its official map and volume-report attachment, plus progressive extracted text.",
       "postDeployOnly": true,
       "expectations": {
         "visible": [
           {
             "selector": "#ncontext .attachment-chip",
             "text": "Description, maps, and volume report"
+          },
+          {
+            "selector": "#ncontext .attachment-extract",
+            "text": "187 MBF"
           }
         ],
         "notVisible": [

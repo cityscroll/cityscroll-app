@@ -790,6 +790,8 @@
     notice_attachment_chip_one: "{n} 个附件：{title}",
     notice_attachment_chip_other: "{n} 个附件：{title}",
     notice_attachment_title_fallback: "官方公告文件",
+    notice_attachment_extract_summary: "从附件提取的文本 — 展开查看全文",
+    digest_match_attachment_html: "在附件中匹配：{snippet}",
     ext_link_new_tab_sr: "（在新标签页中打开）",
     pin_unusable_note: "此公告的 PIN 无法用于链接（<code>{pin}</code>），因此无法自动追溯其中标（授予合同）情况。请在市政公报中打开以阅读全文。",
     only_notice_note: "目前仅此一份公告有据可查 — PIN <code>{pin}</code> 尚未发布后续阶段。",

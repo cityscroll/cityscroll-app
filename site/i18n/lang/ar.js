@@ -797,6 +797,8 @@
     notice_attachment_chip_one: "مرفق واحد ({n}): {title}",
     notice_attachment_chip_other: "{n} مرفقات: {title}",
     notice_attachment_title_fallback: "ملف الإشعار الرسمي",
+    notice_attachment_extract_summary: "نص مستخرج من المرفق — وسّع للنص الكامل",
+    digest_match_attachment_html: "مطابقة في المرفق: {snippet}",
     ext_link_new_tab_sr: "(يفتح في علامة تبويب جديدة)",
     pin_unusable_note: "رقم التعريف (PIN) الخاص بهذا الإشعار غير صالح للربط (<code>{pin}</code>)، لذا لا يمكن تتبّع ترسيته تلقائيًا. افتحه في السجل البلدي لقراءة النص الكامل.",
     only_notice_note: "لا يوجد في السجل حتى الآن سوى هذا الإشعار — لم تُنشر بعد أي مرحلة لاحقة لرقم التعريف <code>{pin}</code>. ",

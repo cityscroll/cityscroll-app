@@ -790,6 +790,8 @@
     notice_attachment_chip_one: "{n} archivo adjunto: {title}",
     notice_attachment_chip_other: "{n} archivos adjuntos: {title}",
     notice_attachment_title_fallback: "Archivo oficial del aviso",
+    notice_attachment_extract_summary: "Texto extraído del adjunto — expanda para el texto completo",
+    digest_match_attachment_html: "Coincidencia en el adjunto: {snippet}",
     ext_link_new_tab_sr: "(se abre en una pestaña nueva)",
     pin_unusable_note: "El PIN de este aviso no sirve para enlazar (<code>{pin}</code>), así que su adjudicación no puede rastrearse automáticamente. Ábralo en el City Record para leer el texto completo.",
     only_notice_note: "Solo este aviso consta hasta ahora — todavía no se ha publicado una etapa posterior para el PIN <code>{pin}</code>. ",

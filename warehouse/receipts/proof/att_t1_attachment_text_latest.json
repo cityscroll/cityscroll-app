@@ -1,0 +1,34 @@
+{
+  "schema": "cityscroll.attachment_text.receipt.v1",
+  "run_id": "att-t1-2026-08-03-9916c148-66fa-4960-8435-817c3d049adc",
+  "started_at": "2026-08-03T20:28:34.841Z",
+  "finished_at": "2026-08-03T20:28:34.891Z",
+  "mode": "fixture",
+  "tier": "t1_inline_text",
+  "inventory_seen": 2,
+  "docs_attempted": 1,
+  "docs_extracted": 1,
+  "docs_skipped": 1,
+  "docs_failed": 0,
+  "max_docs_per_run": 25,
+  "max_extract_bytes": 5000000,
+  "binaries_stored": false,
+  "images_ocr": false,
+  "polite_delay_s": 0,
+  "checkpoint": true,
+  "later_tiers": {
+    "t2": "att-t2-structured",
+    "t3": "att-t3-embeddings"
+  },
+  "upload": {
+    "pushed": false,
+    "batches": 0
+  },
+  "warehouse": {
+    "table": "attachment_text",
+    "materialized_view": "attachment_text_by_notice",
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "taskpolicy_or_nice_wrap": false
+  }
+}

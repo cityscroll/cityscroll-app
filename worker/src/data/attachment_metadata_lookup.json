@@ -1,6 +1,7 @@
 {
   "schema": "cityscroll.attachment_metadata.v1",
   "built_at": "2026-08-03T00:00:00Z",
+  "tier": "t1_inline_text",
   "notices": {
     "20240515016": [
       {
@@ -8,9 +9,16 @@
         "document_id": "37470",
         "title": "Description, maps, and volume report for timber and roundwood products from forest management project in the Cannonsville watershed basin.",
         "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
-        "content_type": null,
+        "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "bytes": null,
-        "source": "portal"
+        "source": "portal",
+        "text_status": "ok",
+        "text_reason": null,
+        "text_method": "docx_xml",
+        "text_chars": 971,
+        "text_preview": "New York City Department of Environmental Protection · Bureau of Water Supply - Natural Resources Division · CARPENTERS EDDY EAST · Forest Management Project # 5116…",
+        "extracted_text": "New York City Department of Environmental Protection\nBureau of Water Supply - Natural Resources Division\nCARPENTERS EDDY EAST\nForest Management Project # 5116\nNOTICE OF PROJECT AVAILABILITY\nDescription: The City of New York will sell an estimated 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest Management Project #5116 in the Cannonsville watershed basin.\nSummary: This sale is comprised of mostly mature red oak and white ash. The project includes approximately 2.5 miles of trail construction and 27 acres of shelterwood regeneration.\nProject Area: 103 ac +/-\nTotal Volume: 187 MBF +/- sawtimber & 89 cords hardwood pulp\nSpecies as a percent of total sawtimber volume: 49% Red Oak, 22% White Ash, 14% Red Maple, 9% Chestnut Oak.\nShow Dates: Prospective bidders should attend one of the public showings to receive the full bid package.\nBid Deadline: Sealed bids must be received by the date stated in the official notice.",
+        "text_extracted_at": "2026-08-03T00:00:00Z"
       }
     ]
   }

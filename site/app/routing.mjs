@@ -904,7 +904,7 @@ async function showNotice(id, watch){
   const link = noticeLink(r.request_id);
   const scope = cleanText(r.additional_description_1);
   const title = cleanText(r.short_title) || t("untitled_notice");
-  const ev = watch ? matchEvidence(title, matchText(r), watch.filter.keywords||[]) : null;
+  const ev = watch ? matchEvidence(title, matchText(r), watch.filter.keywords||[], null, matchAttachmentText(r)) : null;
   const titleInner = (ev && ev.field==="title")
     ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`
     : title;
