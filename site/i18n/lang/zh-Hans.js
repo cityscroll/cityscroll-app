@@ -164,6 +164,7 @@
     map_citywide_detail_lead: "当前视图（{lens}）有 {n} 项全市范围事项。这些适用于每个社区，不固定到单一地点。",
     map_virtual_detail_lead: "当前视图（{lens}）有 {n} 场仅虚拟会议。未公布线下场地。",
     map_citywide_also_applies: "全市范围事项也适用于此处（不计入本区多边形内）。",
+    map_drill_when_all: "全部日期",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "描述您要查找的内容…",

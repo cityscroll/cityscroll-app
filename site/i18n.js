@@ -261,6 +261,7 @@ const STRINGS = {
     map_unlocated_detail_lead: "{n} items in the current lens ({lens}) have no published place. That is missing location text, not zero activity in a district.",
     map_citywide_also_applies: "city-scale items also apply here (not counted inside this district's polygons).",
     map_money_framing: "Most contracts are citywide service classes or lack a published place — {citywide} citywide, {local} with a borough pin, {unlocated} without a place signal (of {counted} recent awards).",
+    map_drill_when_all: "All dates",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
 

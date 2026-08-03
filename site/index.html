@@ -980,6 +980,8 @@
   .map-area-list button{width:100%;text-align:start;border:0;background:none;padding:10px 12px;cursor:pointer;font:600 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);display:flex;justify-content:space-between;gap:10px}
   .map-area-list button:hover,.map-area-list button[aria-current="true"]{background:#fff8ee}
   .map-area-list .map-count{color:var(--muted);font-variant-numeric:tabular-nums}
+  .map-detail-counts a.map-count-link{text-decoration:none;cursor:pointer}
+  .map-detail-counts a.map-count-link:hover,.map-detail-counts a.map-count-link:focus{outline:2px solid var(--ink);outline-offset:2px}
   .map-area-list .map-bucket button{background:#f7f1e6;font-weight:700}
   .map-area-list .map-bucket-citywide button{border-left:3px solid var(--oxblood)}
   .map-area-list .map-bucket-virtual button{border-left:3px solid #6b7c8a}
@@ -1692,6 +1694,7 @@
     </div>
     <div class="controls">
       <div class="field"><label for="rulesagency" data-i18n="agency_label">Agency</label><select id="rulesagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+      <div class="field"><label for="rulesboro" data-i18n="borough_label">Borough</label><select id="rulesboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide" data-i18n="map_bucket_citywide">Citywide</option></select></div>
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
@@ -1732,7 +1735,7 @@
     </div>
     <div class="controls">
       <div class="field"><label for="meetingswhen" data-i18n="date_window_label">Date window</label><select id="meetingswhen"><option value="week" data-i18n="this_week">This week</option><option value="month" data-i18n="next_30_days">Next 30 days</option><option value="upcoming" data-i18n="all_upcoming">All upcoming</option><option value="past" data-i18n="recent_past">Recent past</option></select></div>
-      <div class="field"><label for="meetingsboro" data-i18n="affected_area_label">Affected area</label><select id="meetingsboro"><option value="" data-i18n="all_areas">All areas</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide-unlocated" data-i18n="citywide_unlocated">Citywide / unlocated</option></select></div>
+      <div class="field"><label for="meetingsboro" data-i18n="affected_area_label">Affected area</label><select id="meetingsboro"><option value="" data-i18n="all_areas">All areas</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide" data-i18n="map_bucket_citywide">Citywide</option><option value="virtual" data-i18n="map_bucket_virtual">Virtual / online only</option><option value="unlocated" data-i18n="map_bucket_unlocated">No place signal</option><option value="citywide-unlocated" data-i18n="citywide_unlocated">Citywide / unlocated</option></select></div>
       <div class="field"><label for="meetingsneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="meetingsneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="meetingslocation" data-i18n="use_my_location">Use my location</button></div>
       <div class="field"><label for="meetingsagency" data-i18n="agency_label">Agency</label><select id="meetingsagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>

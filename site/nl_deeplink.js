@@ -106,7 +106,14 @@ function buildSearchDeepLink(lens, filter) {
       if (hearingBoro) params.set("boro", hearingBoro);
       var neighborhood = compactText(f.neighborhood, 80);
       if (neighborhood) params.set("neighborhood", neighborhood);
-      if (f.locationScope === "citywide-unlocated") params.set("scope", "citywide-unlocated");
+      if (
+        f.locationScope === "citywide-unlocated"
+        || f.locationScope === "citywide"
+        || f.locationScope === "virtual"
+        || f.locationScope === "unlocated"
+      ) {
+        params.set("scope", f.locationScope);
+      }
       var meetProcess = compactText(f.process, 40);
       if (["scheduled", "agenda", "held", "outcomes", "unstaged"].indexOf(meetProcess) >= 0) {
         params.set("process", meetProcess);

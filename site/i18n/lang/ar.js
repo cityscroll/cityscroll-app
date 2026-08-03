@@ -166,6 +166,7 @@
     map_citywide_detail_lead: "{n} أحداث على مستوى المدينة في العدسة الحالية ({lens}). تنطبق على كل الأحياء — وليست مثبتة في مكان واحد.",
     map_virtual_detail_lead: "{n} اجتماعات افتراضية فقط في العدسة الحالية ({lens}). لم يُنشر مكان حضوري.",
     map_citywide_also_applies: "تنطبق هنا أيضاً بنود على نطاق المدينة (غير محسوبة داخل مضلعات هذا الحي).",
+    map_drill_when_all: "كل التواريخ",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "صف ما تبحث عنه…",

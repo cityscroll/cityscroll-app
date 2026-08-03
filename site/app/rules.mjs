@@ -117,10 +117,13 @@ async function renderRulesExplorer(){
   let entries=[];
   if(tools && tools.buildRulesExplorerEntries){
     entries=tools.buildRulesExplorerEntries(rulesAll, rulesViewCache);
+    const rulesPlace=$("#rulesboro")?.value||"";
     entries=tools.filterRulesExplorerEntries(entries,{
       process: rulesProcessSel,
       agency: agency||null,
       keyword: kw||null,
+      borough: rulesPlace && rulesPlace!=="citywide" ? rulesPlace : null,
+      locationScope: rulesPlace==="citywide" ? "citywide" : null,
       matchText,
     });
     const base=tools.buildRulesExplorerEntries(rulesAll, rulesViewCache);

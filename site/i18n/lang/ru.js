@@ -164,6 +164,7 @@
     map_citywide_detail_lead: "{n} городских событий в текущей линзе ({lens}). Они действуют во всех районах — не привязаны к одному месту.",
     map_virtual_detail_lead: "{n} только виртуальных встреч в текущей линзе ({lens}). Место очной встречи не опубликовано.",
     map_citywide_also_applies: "здесь также действуют городские пункты (не учтены внутри полигонов этого района).",
+    map_drill_when_all: "Все даты",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "опишите, что вы ищете…",

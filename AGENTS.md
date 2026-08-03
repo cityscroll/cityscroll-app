@@ -1767,7 +1767,6 @@ stamps `official_application_url` =
 `node --test test/oasys_exam_map.test.mjs test/deadline_exam_cards.test.mjs
 test/action-rail.test.mjs test/action_link_integrity.test.mjs`.
 
-
 ## Property list close chips + closing soon (regression bar)
 
 - Close-date i18n uses `{date}` only (`property_commercial_close` / `_closed`). The
@@ -1780,6 +1779,15 @@ test/action-rail.test.mjs test/action_link_integrity.test.mjs`.
 - Detectors: `site/property_list_sanity.mjs` (currency-before-month chip lint +
   default-view past-deadline check), wired into surface-load sampling. Capture:
   `python3 tools/capture_property_date_chip_hotfix.py`.
+
+## Map drill-through scope (list hash carry)
+
+Map bag and area detail links must land on filtered lists via the existing hash
+grammar (`#meetings?scope=virtual&when=all`, `#rules?boro=Brooklyn`, etc.) —
+not bare `#meetings` / `#rules`. Pure builders: `mapDrillListHash`,
+`bucketFeedLinks`, `areaFeedLinks` in `site/map_exploration.mjs`. COUNT-EQUALS-LIST
+characterization: `test/map_exploration.test.mjs`. Capture:
+`python3 tools/capture_map_drill_context.py`.
 
 ## Maintaining this file
 

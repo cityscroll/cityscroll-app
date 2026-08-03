@@ -409,19 +409,46 @@ export function buildRulesExplorerEntries(notices, rulesView, opts = {}) {
 }
 
 /**
- * Filter explorer entries by process phase, agency, and keyword.
+ * Whether a rule notice row matches map-drill place scope (citywide bag or borough).
+ * Uses ruleLocationFromRow output (_ruleLocation) when present.
+ */
+export function ruleRowMatchesPlace(row, opts = {}) {
+  if (!row) return false;
+  const loc = row._ruleLocation || row.rule_location || row.affected_area || null;
+  const scope = opts.locationScope || null;
+  const boro = opts.borough || opts.boro || null;
+  if (scope === "citywide") {
+    if (!loc) return true; // default Agency Rules are citywide when location is unset
+    return loc.scope === "citywide" || !(loc.boroughs || []).length;
+  }
+  if (boro) {
+    if (!loc) return false;
+    if (loc.scope === "citywide") return false;
+    return (loc.boroughs || []).some(
+      (b) => String(b).toLowerCase() === String(boro).toLowerCase(),
+    );
+  }
+  return true;
+}
+
+/**
+ * Filter explorer entries by process phase, agency, keyword, and place scope.
  *
  * @param {object[]} entries
  * @param {object} opts
  * @param {string} [opts.process="all"]
  * @param {string|null} [opts.agency]
  * @param {string|null} [opts.keyword]
+ * @param {string|null} [opts.borough]
+ * @param {string|null} [opts.locationScope]
  * @param {(row: object) => string} [opts.matchText]
  */
 export function filterRulesExplorerEntries(entries, opts = {}) {
   const process = opts.process || "all";
   const agency = clean(opts.agency);
   const keyword = clean(opts.keyword)?.toLowerCase() || null;
+  const borough = clean(opts.borough) || clean(opts.boro) || null;
+  const locationScope = opts.locationScope === "citywide" ? "citywide" : null;
   const matchText =
     typeof opts.matchText === "function"
       ? opts.matchText
@@ -459,6 +486,13 @@ export function filterRulesExplorerEntries(entries, opts = {}) {
         (m) => clean(m.agency_name) === agency || clean(entry.agency) === agency,
       );
       if (!hit) return false;
+    }
+
+    if (locationScope || borough) {
+      const placeHit = (entry.members || [entry.primary]).some((m) =>
+        ruleRowMatchesPlace(m, { locationScope, borough }),
+      );
+      if (!placeHit) return false;
     }
 
     if (keyword) {

@@ -172,6 +172,7 @@
     map_citywide_detail_lead: "{n} wydarzeń ogólnomiejskich w bieżącej soczewce ({lens}). Obowiązują we wszystkich dzielnicach — nie są przypięte do jednego miejsca.",
     map_virtual_detail_lead: "{n} spotkań wyłącznie wirtualnych w bieżącej soczewce ({lens}). Nie opublikowano miejsca stacjonarnego.",
     map_citywide_also_applies: "elementy ogólnomiejskie też tu obowiązują (nie wliczone w poligony tej dzielnicy).",
+    map_drill_when_all: "Wszystkie daty",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "opisz, czego szukasz…",

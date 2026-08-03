@@ -35,8 +35,17 @@ function mapLensLabel(lens){
     money:t("tab_money"),
   })[lens]||lens;
 }
-function mapCountChip(lens, n){
-  return `<span class="tag place">${mapEsc(mapLensLabel(lens))} <b>${Number(n)||0}</b></span>`;
+function mapCountChip(lens, n, href){
+  const label=`${mapEsc(mapLensLabel(lens))} <b>${Number(n)||0}</b>`;
+  if(href && Number(n)>0){
+    return `<a class="tag place map-count-link" href="${mapEsc(href)}">${label}</a>`;
+  }
+  return `<span class="tag place">${label}</span>`;
+}
+function mapLinksFromDrill(links){
+  const byLens=Object.create(null);
+  for(const l of links||[]) byLens[l.lens]=l;
+  return byLens;
 }
 async function paintMapExploration(){
   const tools=await mapExplorationTools();
@@ -223,42 +232,48 @@ async function paintMapExploration(){
         :bucketSel.kind==="unlocated"
           ?t("map_bucket_unlocated")
           :t("map_bucket_virtual");
+      const links=typeof tools.bucketFeedLinks==="function"
+        ? tools.bucketFeedLinks(bucketSel.kind, { counts, onlyPositive:true })
+        : [];
+      const byLens=mapLinksFromDrill(links);
       detail.innerHTML=`<h3>${mapEsc(title)}</h3>
         <p class="map-fallback-note">${t(leadKey,{n:String(total), lens:mapEsc(mapLensLabel(mapState.lens))})}</p>
         <div class="map-detail-counts">
-          ${mapCountChip("land", counts.land)}
-          ${mapCountChip("property", counts.property)}
-          ${mapCountChip("rules", counts.rules)}
-          ${mapCountChip("meetings", counts.meetings)}
-          ${mapCountChip("money", counts.money)}
+          ${mapCountChip("land", counts.land, byLens.land?.hash)}
+          ${mapCountChip("property", counts.property, byLens.property?.hash)}
+          ${mapCountChip("rules", counts.rules, byLens.rules?.hash)}
+          ${mapCountChip("meetings", counts.meetings, byLens.meetings?.hash)}
+          ${mapCountChip("money", counts.money, byLens.money?.hash)}
         </div>
         <div class="map-detail-links">
-          ${bucketSel.kind==="citywide"?`<a class="act" href="#rules">${mapEsc(t("tab_rules"))}</a><a class="act" href="#money">${mapEsc(t("tab_money"))}</a>`:""}
-          ${bucketSel.kind==="virtual"?`<a class="act" href="#meetings">${mapEsc(t("tab_meetings"))}</a>`:""}
-          ${bucketSel.kind==="unlocated"?`<a class="act" href="#money">${mapEsc(t("tab_money"))}</a>`:""}
+          ${links.map(l=>`<a class="act" href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}${l.count!=null?` (${l.count})`:""}</a>`).join("")}
         </div>`;
     } else {
       detail.hidden=false;
-      const links=tools.areaFeedLinks(sel.level, sel.id);
       const counts=sel.counts||{};
+      const links=tools.areaFeedLinks(sel.level, sel.id, { counts, onlyPositive:true });
+      const byLens=mapLinksFromDrill(links);
       // When viewing a district, also surface citywide bag chips so city-scale
       // rules/meetings remain visible (labeled citywide — never fabricated into the polygon).
       const cw=typeof tools.citywideBucketCounts==="function"
         ? tools.citywideBucketCounts(activity)
         : (activity.citywide||null);
       const cwTotal=cw?tools.totalForLens(cw, mapState.lens==="all"?"all":mapState.lens):0;
+      const cwLinks=cwTotal>0 && typeof tools.bucketFeedLinks==="function"
+        ? tools.bucketFeedLinks("citywide", { counts:cw, onlyPositive:true })
+        : [];
       detail.innerHTML=`<h3>${mapEsc(sel.label)}</h3>
         <p class="map-fallback-note">${t("map_detail_lead",{n:String(sel.total), lens:mapEsc(mapLensLabel(mapState.lens))})}</p>
         <div class="map-detail-counts">
-          ${mapCountChip("land", counts.land)}
-          ${mapCountChip("property", counts.property)}
-          ${mapCountChip("rules", counts.rules)}
-          ${mapCountChip("meetings", counts.meetings)}
-          ${mapCountChip("money", counts.money)}
+          ${mapCountChip("land", counts.land, byLens.land?.hash)}
+          ${mapCountChip("property", counts.property, byLens.property?.hash)}
+          ${mapCountChip("rules", counts.rules, byLens.rules?.hash)}
+          ${mapCountChip("meetings", counts.meetings, byLens.meetings?.hash)}
+          ${mapCountChip("money", counts.money, byLens.money?.hash)}
         </div>
-        ${cwTotal>0?`<p class="map-citywide-note"><span class="tag place">${mapEsc(t("map_bucket_citywide"))} <b>${cwTotal}</b></span> ${mapEsc(t("map_citywide_also_applies"))}</p>`:""}
+        ${cwTotal>0?`<p class="map-citywide-note"><span class="tag place">${mapEsc(t("map_bucket_citywide"))} <b>${cwTotal}</b></span> ${mapEsc(t("map_citywide_also_applies"))}${cwLinks.length?` · ${cwLinks.map(l=>`<a href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}</a>`).join(" · ")}`:""}</p>`:""}
         <div class="map-detail-links">
-          ${links.map(l=>`<a class="act" href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}</a>`).join("")}
+          ${links.map(l=>`<a class="act" href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}${l.count!=null?` (${l.count})`:""}</a>`).join("")}
           ${sel.level==="borough"?`<button type="button" class="act primary" data-map-drill="${mapEsc(sel.id)}">${t("map_drill_community")}</button>`:""}
           ${sel.level==="borough"?`<button type="button" class="act" data-map-council="1">${t("map_show_council")}</button>`:""}
         </div>
