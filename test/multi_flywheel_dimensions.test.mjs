@@ -264,11 +264,12 @@ test("location-resolution measures corpora, districts, and boundary vintage with
   assert.equal(result.metrics.district_rates.community_resolution_rate, 1);
   assert.equal(result.metrics.district_rates.council_resolution_rate, 1);
   assert.equal(result.metrics.district_rates.district_resolution_rate, 1);
+  // Shared contracted layer stamps current labeled vintages for both sources.
   assert.equal(result.metrics.boundary_metrics.checked, 2);
-  assert.equal(result.metrics.boundary_metrics.stale, 2);
-  assert.deepEqual(result.cards.map((card) => card.id), [
-    "crol-list/mf-location-resolution-boundary-vintage",
-  ]);
-  assert.equal(result.cards[0].evidence.kind, "boundary-vintage-staleness");
-  assert.match(result.cards[0].verify, /boundary-vintage/);
+  assert.equal(result.metrics.boundary_metrics.stale, 0);
+  assert.equal(result.metrics.boundary_metrics.current, 2);
+  assert.equal(result.metrics.boundary_metrics.boundary_vintage_current_rate, 1);
+  assert.ok(inventory.boundaries.every((b) => b.status === "contracted" && b.vintage_at));
+  // No flood: located corpora + districts + current vintages → empty card queue.
+  assert.deepEqual(result.cards, []);
 });
