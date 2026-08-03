@@ -1995,6 +1995,8 @@
     career_read_noe: "অফিসিয়াল NOE পড়ুন",
     career_official_schedule: "অফিসিয়াল সময়সূচী পরীক্ষা করুন",
     career_apply_oasys: "OASys এ আবেদন করুন",
+
+    career_apply_oasys_browse: "OASys পরীক্ষা ব্রাউজ করুন",
     career_back_all: "সব পরীক্ষায় ফিরে যান",
     career_show_more: "{n} আরও পরীক্ষা দেখান",
     career_exam_not_found: "সেই পরীক্ষা বর্তমান DCAS সময়সূচীতে নেই।",

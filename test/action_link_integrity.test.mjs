@@ -4,7 +4,10 @@ import { test } from "node:test";
 import { classifyDestinationUrl } from "../ontology/actionability_sample.mjs";
 import {
   ACTION_LINK_PATTERNS,
+  assessLinkSpecificity,
   auditPattern,
+  collectSpecificityFindings,
+  DEEP_LINK_SYSTEMS,
   probeUrl,
 } from "../tools/audit-action-links.mjs";
 
@@ -29,6 +32,28 @@ test("action-link inventory covers every take-action surface with distinct HTTPS
     ids.add(pattern.id);
     urlPatterns.add(pattern.url_pattern);
   }
+  assert.ok(ids.has("staffing-oasys-noe"), "inventory must include OASys per-exam NOE deep link");
+  assert.ok(DEEP_LINK_SYSTEMS.some((s) => s.id === "oasys"));
+});
+
+test("specificity class flags OASys hub handoffs when a deep pattern is known", () => {
+  const hub = assessLinkSpecificity("https://www.nyc.gov/examsforjobs", {
+    system_id: "oasys",
+    item_mappable: true,
+  });
+  assert.equal(hub.finding?.class, "low-specificity");
+
+  const findings = collectSpecificityFindings([
+    {
+      id: "mapped-exam-still-lobby",
+      url: "https://a856-exams.nyc.gov/OASysWeb/home",
+      system_id: "oasys",
+      item_mappable: true,
+    },
+  ]);
+  assert.equal(findings.length, 1);
+
+  // HTTP 200 on the lobby is not success when the pattern expects a deep link.
 });
 
 test("probeUrl falls back from a failed HEAD request to GET", async () => {

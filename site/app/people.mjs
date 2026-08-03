@@ -427,14 +427,17 @@ function careerCardHTML(exam){
   const notice=exam.notice_url
     ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
     : `<a class="act" href="${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
-  // OASys has no public per-exam apply URL; use exam-specific official_application_url when
-  // present, else the stable examsforjobs landing. Open window is enough to show Apply —
-  // do not require an NOE PDF for the kinetic handoff.
+  // Prefer build-time OASys per-exam NOE deep link (examId ≠ DCAS exam number); unmapped
+  // open exams keep the examsforjobs landing with an honest browse label.
   const applyUrl=(window.CrolActions && CrolActions.examApplyUrl)
     ? CrolActions.examApplyUrl(exam)
     : (exam.official_application_url || CrolStaffing.OASY_APPLY_URL);
+  const applyDeep=(window.CrolActions && typeof CrolActions.examApplyIsDeep==="function")
+    ? CrolActions.examApplyIsDeep(applyUrl)
+    : (exam.application_handoff_mode==="deep" || /\/noe\?examId=\d+/i.test(String(applyUrl||"")));
+  const applyLabel=applyDeep?t("career_apply_oasys"):t("career_apply_oasys_browse");
   const apply=status==="open"
-    ? `<a class="act primary" href="${escUiHtml(applyUrl)}" ${EXT_ATTRS}>${t("career_apply_oasys")}${extSR()}</a>`:"";
+    ? `<a class="act primary" href="${escUiHtml(applyUrl)}" ${EXT_ATTRS} data-oasys-handoff="${applyDeep?"deep":"landing"}">${applyLabel}${extSR()}</a>`:"";
   const gapClass=feeSalary.class || (feeSalary.kind==="not_published"?"not_published":"not_yet_ingested");
   const actionFacts=`<div class="career-action-facts">
     <div class="career-action-fact"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>

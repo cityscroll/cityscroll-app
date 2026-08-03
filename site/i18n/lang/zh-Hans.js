@@ -1995,6 +1995,8 @@
     career_read_noe: "阅读官方NOE",
     career_official_schedule: "查看官方时间表",
     career_apply_oasys: "申请 OASys",
+
+    career_apply_oasys_browse: "浏览 OASys 考试",
     career_back_all: "返回所有考试",
     career_show_more: "显示 {n} 更多考试",
     career_exam_not_found: "该考试不在当前 DCAS 时间表中。",

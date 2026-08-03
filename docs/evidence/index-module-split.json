@@ -68,8 +68,8 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 751511,
-    "normalized_source_sha256": "0765463556eef48199f93de73dd573752478456b98379b8a99f969fde4b3a50f",
-    "note": "Discovery-parity NL routing in search-share.mjs + routing.mjs after modular split, map module, exam-guide hotfix, and notice attachment metadata."
+    "normalized_source_bytes": 751793,
+    "normalized_source_sha256": "83f90da882b1424a28fa437d8670a62dd19ef0fb0f8910f639c113fe7c4f5999",
+    "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata)."
   }
 }

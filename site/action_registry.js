@@ -17,8 +17,10 @@
   const PASSPORT_RFX_EXTRANET_BASE =
     "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet";
   const NYCHA_ISUPPLIER_URL = "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page";
-  // Stable public OASys handoff (city redirect → a856-exams.nyc.gov/oasysweb). No public per-exam apply URL.
+  // Stable public OASys landing when a per-exam NOE deep link is not mapped.
+  // Mapped open exams use https://a856-exams.nyc.gov/OASysWeb/noe?examId=… (build-time join).
   const OASY_APPLY_URL = "https://www.nyc.gov/examsforjobs";
+  const OASY_HOST = "a856-exams.nyc.gov";
   // Checkbook smart search — same shape as site/index.html checkbookSearchUrl (no bare landing as primary).
   const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 
@@ -50,21 +52,82 @@
     return portal || PASSPORT_RFX_URL;
   }
 
-  /** Prefer a publisher-supplied apply URL when it is not the generic OASys landing. */
-  function examApplyUrl(matter) {
-    const explicit = httpsUrl(matter && matter.official_application_url);
-    if (explicit) {
-      try {
-        const u = new URL(explicit);
-        const path = (u.pathname || "").replace(/\/+$/, "") || "/";
-        const isLanding = /examsforjobs/i.test(u.hostname + path)
-          || (u.hostname.includes("nyc.gov") && /\/examsforjobs$/i.test(path));
-        if (!isLanding) return explicit;
-      } catch (_e) {
-        return explicit;
+  /** True for examsforjobs / OASys home / exams list — not a per-exam door. */
+  function isOasysGenericHub(value) {
+    const safe = httpsUrl(value);
+    if (!safe) return false;
+    try {
+      const u = new URL(safe);
+      const host = u.hostname.toLowerCase();
+      const path = (u.pathname || "/").replace(/\/+$/, "") || "/";
+      const href = `${host}${path}`.toLowerCase();
+      if (/examsforjobs/i.test(href)) return true;
+      if (host.includes("nyc.gov") && /\/examsforjobs$/i.test(path)) return true;
+      if (host.includes("nyc.gov") && /\/redirects\/oasys\.html$/i.test(path)) return true;
+      if (host === OASY_HOST || (host.endsWith(".nyc.gov") && host.includes("exams"))) {
+        if (
+          path === "/"
+          || /^\/OASysWeb$/i.test(path)
+          || /^\/OASysWeb\/home$/i.test(path)
+          || /^\/OASysWeb\/exams$/i.test(path)
+          || /^\/OASysWeb\/login$/i.test(path)
+          || /^\/OASysWeb\/register$/i.test(path)
+          || /^\/oasysweb$/i.test(path)
+          || /^\/oasysweb\/home$/i.test(path)
+          || /^\/oasysweb\/exams$/i.test(path)
+        ) {
+          return true;
+        }
       }
+      return false;
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  function oasysNoeUrlFromExamId(examId) {
+    const id = String(examId || "").trim();
+    if (!/^\d+$/.test(id)) return null;
+    return `https://${OASY_HOST}/OASysWeb/noe?examId=${encodeURIComponent(id)}`;
+  }
+
+  /**
+   * Prefer a per-exam OASys NOE page (or other non-hub publisher URL) when present;
+   * otherwise the stable examsforjobs landing.
+   */
+  function examApplyUrl(matter) {
+    if (!matter) return OASY_APPLY_URL;
+    const candidates = [
+      matter.official_application_url,
+      matter.oasys_noe_url,
+      oasysNoeUrlFromExamId(matter.oasys_exam_id),
+    ];
+    for (const c of candidates) {
+      const explicit = httpsUrl(c);
+      if (!explicit) continue;
+      if (isOasysGenericHub(explicit)) continue;
+      return explicit;
     }
     return OASY_APPLY_URL;
+  }
+
+  function examApplyIsDeep(url) {
+    const safe = httpsUrl(url);
+    if (!safe || isOasysGenericHub(safe)) return false;
+    try {
+      const u = new URL(safe);
+      if (u.hostname.toLowerCase() === OASY_HOST) {
+        const path = (u.pathname || "").replace(/\/+$/, "");
+        if (/\/noe$/i.test(path) && /^\d+$/.test(String(u.searchParams.get("examId") || ""))) {
+          return true;
+        }
+        if (/\/noe\/[^/]+\.pdf$/i.test(path)) return true;
+      }
+      // Non-hub publisher URL counts as deep for mode labeling.
+      return true;
+    } catch (_e) {
+      return false;
+    }
   }
 
   function validateAction(action) {
@@ -1530,17 +1593,26 @@
       }
     } else if (kind === "exam") {
       const open = stage === "open";
-      // Prefer exam-specific apply URL when publisher supplies one; else stable OASys landing.
+      // Prefer per-exam OASys NOE deep link when mapped; else stable examsforjobs landing.
       const applyUrl = examApplyUrl(matter);
+      const applyDeep = examApplyIsDeep(applyUrl);
       actions = open
-        ? [official("official_application", "career_apply_oasys", "Apply in OASys", applyUrl, deadline, {
-            guide: {
-              system: "oasys",
-              mode: applyUrl === OASY_APPLY_URL ? "landing" : "deep",
-              identifier: String(matter.exam_number || matter.pin || "").trim() || null,
-              identifier_url: httpsUrl(matter.official_notice_url || matter.notice_url),
+        ? [official(
+            "official_application",
+            applyDeep ? "career_apply_oasys" : "career_apply_oasys_browse",
+            applyDeep ? "Apply in OASys" : "Browse OASys exams",
+            applyUrl,
+            deadline,
+            {
+              guide: {
+                system: "oasys",
+                mode: applyDeep ? "deep" : "landing",
+                identifier: String(matter.exam_number || matter.pin || "").trim() || null,
+                oasys_exam_id: matter.oasys_exam_id ? String(matter.oasys_exam_id) : null,
+                identifier_url: httpsUrl(matter.official_notice_url || matter.notice_url),
+              },
             },
-          }), calendar, notice()]
+          ), calendar, notice()]
         : [unavailable("official_application", stage === "closed" ? "next_action_exam_closed" : "next_action_exam_not_open", stage === "closed" ? "The application window has closed." : "Applications are not open yet.", deadline), notice()];
     } else if (kind === "property") {
       // Disposition process next-step from stage + real parcel affordances (no punt).
@@ -1648,6 +1720,8 @@
     passportRfxHandoffUrl,
     cleanPassportRfpId,
     examApplyUrl,
+    examApplyIsDeep,
+    isOasysGenericHub,
     compileActionRail,
     solicitationHandoff,
     awardHandoff,

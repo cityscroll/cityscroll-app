@@ -2023,6 +2023,8 @@
     career_read_noe: "Przeczytaj oficjalny NOE",
     career_official_schedule: "Sprawdź oficjalny harmonogram",
     career_apply_oasys: "Aplikuj w OASys",
+
+    career_apply_oasys_browse: "Przeglądaj egzaminy OASys",
     career_back_all: "Powrót do wszystkich egzaminów",
     career_show_more: "Pokaż {n} więcej badań",
     career_exam_not_found: "Egzamin ten nie jest uwzględniony w bieżącym harmonogramie DCAS.",

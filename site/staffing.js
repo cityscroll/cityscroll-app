@@ -5,7 +5,8 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  // Stable public OASys handoff. The City redirects this URL into the OASys host.
+  // Stable OASys landing for unmapped exams. Mapped open exams use per-exam NOE URLs
+  // (build-time OASys examId join → official_application_url on each exam row).
   const OASY_APPLY_URL = "https://www.nyc.gov/examsforjobs";
   const DCAS_OPEN_COMPETITIVE_URL =
     "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page";

@@ -11,13 +11,26 @@ source is the DCAS open-competitive schedule page and each linked Notice of
 Examination (NOE) PDF:
 
 - Schedule: https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page
-- OASys application handoff: https://www.nyc.gov/examsforjobs
+- OASys per-exam NOE page (preferred apply handoff when mapped):
+  `https://a856-exams.nyc.gov/OASysWeb/noe?examId={examId}`
+- OASys landing (unmapped exams only): https://www.nyc.gov/examsforjobs
 
 Registry entry: `dcas-exam-notices` in `data/source_contracts.json`. Live checks
 are recorded under `verification_receipts/` (for example
 `verification_receipts/dcas_open_competitive_2026-07-29.json`). The Annual
 Examination Schedule Open Data dataset (`4ptz-hmtc`) remains the fiscal-year
 planning table and can lag mid-cycle NOE amendments.
+
+**OASys examId map (build-time):** OASys internal `examId` is **not** the DCAS
+exam number (e.g. examId `9619` → exam `6125`). Rebuild the map with
+`node tools/build_oasys_exam_map.mjs` (polite live fetch of
+`/OASysWeb/api/Exam/GetActiveExams`). Artifact:
+`oasys_exam_map.json` + receipt
+`verification_receipts/oasys_exam_map_latest.json`. Offline fixture body:
+`oasys_active_exams_fixture.json`. `build_staffing_exams.mjs` joins on exact
+`exam_number` and stamps `official_application_url` / `oasys_exam_id` /
+`application_handoff_mode`. Unmapped rows keep the examsforjobs landing with a
+browse label.
 
 Sources and refresh rules:
 

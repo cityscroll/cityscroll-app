@@ -1,0 +1,340 @@
+{
+  "fetched_at": "2026-08-03",
+  "fetched_at_utc": "2026-08-03T16:52:06.125Z",
+  "http_status": 200,
+  "payload": [
+    {
+      "examId": 9619,
+      "title": "Emergency Medical Specialist - EMT",
+      "examNumber": "6125",
+      "filingStart": "2026-06-15T00:00:00",
+      "filingEnd": "2026-08-07T00:00:00",
+      "filingFee": 30,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20266125000.pdf",
+      "examParts": [
+        {
+          "examId": 9619,
+          "examPartId": 5114,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-06-15T11:19:16.127",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9620,
+      "title": "Emergency Medical Specialist Trainee",
+      "examNumber": "6126",
+      "filingStart": "2026-06-15T00:00:00",
+      "filingEnd": "2026-08-07T00:00:00",
+      "filingFee": 30,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20266126000.pdf",
+      "examParts": [
+        {
+          "examId": 9620,
+          "examPartId": 5115,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-06-15T11:18:56.977",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9625,
+      "title": "Assistant Civil Engineer",
+      "examNumber": "7006",
+      "filingStart": "2026-07-01T00:00:00",
+      "filingEnd": "2026-08-25T00:00:00",
+      "filingFee": 82,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277006000.pdf",
+      "examParts": [
+        {
+          "examId": 9625,
+          "examPartId": 5122,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-07-21T16:14:31.657",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9628,
+      "title": "Automotive Service Worker",
+      "examNumber": "7013",
+      "filingStart": "2026-07-01T00:00:00",
+      "filingEnd": "2026-08-25T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277013000.pdf",
+      "examParts": [
+        {
+          "examId": 9628,
+          "examPartId": 5127,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-07-21T16:15:05.78",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9629,
+      "title": "Caseworker",
+      "examNumber": "7016",
+      "filingStart": "2026-07-01T00:00:00",
+      "filingEnd": "2026-08-25T00:00:00",
+      "filingFee": 68,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277016000.pdf",
+      "examParts": [
+        {
+          "examId": 9629,
+          "examPartId": 5128,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-07-01T11:28:16.683",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9631,
+      "title": "Caseworker (NYC H+H)",
+      "examNumber": "7018",
+      "filingStart": "2026-07-01T00:00:00",
+      "filingEnd": "2026-08-25T00:00:00",
+      "filingFee": 68,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277018000.pdf",
+      "examParts": [
+        {
+          "examId": 9631,
+          "examPartId": 5132,
+          "partNo": 1,
+          "partTypeCode": "EEE",
+          "title": "EEE Test",
+          "examPartType": {
+            "partTypeCode": "EEE",
+            "partTypeDescription": "EEE Test",
+            "allowScheduling": false,
+            "allowOnlineEvaluation": true,
+            "allowAdmissionNotice": false,
+            "active": true,
+            "scheduleRequired": false
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": false,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 2,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-07-01T10:22:42.373",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9634,
+      "title": "School Safety Agent",
+      "examNumber": "7323",
+      "filingStart": "2026-07-01T00:00:00",
+      "filingEnd": "2026-08-25T00:00:00",
+      "filingFee": 61,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277323000.pdf",
+      "examParts": [
+        {
+          "examId": 9634,
+          "examPartId": 5136,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-07-01T06:46:12.953",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9635,
+      "title": "Traffic Enforcement Agent",
+      "examNumber": "7331",
+      "filingStart": "2026-07-01T00:00:00",
+      "filingEnd": "2026-08-25T00:00:00",
+      "filingFee": 0,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277331000.pdf",
+      "examParts": [
+        {
+          "examId": 9635,
+          "examPartId": 5137,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": true,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": false
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": false,
+      "updatedOn": "2026-07-01T06:41:43.817",
+      "isAddedToTop": false
+    },
+    {
+      "examId": 9646,
+      "title": "Police Officer",
+      "examNumber": "7312",
+      "filingStart": "2026-08-03T00:00:00",
+      "filingEnd": "2026-08-17T00:00:00",
+      "filingFee": 0,
+      "isPromotional": false,
+      "noeUrl": "https://a856-exams.nyc.gov/OASysWeb/noe/20277312000.pdf",
+      "examParts": [
+        {
+          "examId": 9646,
+          "examPartId": 5155,
+          "partNo": 1,
+          "partTypeCode": "MC",
+          "title": "Multiple Choice Test",
+          "examPartType": {
+            "partTypeCode": "MC",
+            "partTypeDescription": "Multiple Choice Test",
+            "allowScheduling": true,
+            "allowOnlineEvaluation": false,
+            "allowAdmissionNotice": true,
+            "active": true,
+            "scheduleRequired": true
+          },
+          "examPartStatusId": 2,
+          "systemScheduled": false,
+          "candidateReschedule": true,
+          "qualifyingIncumbent": false,
+          "isSelfSchedulable": true
+        }
+      ],
+      "examDesignationId": 1,
+      "isSelfSchedulable": true,
+      "updatedOn": "2026-08-03T10:07:33.563",
+      "isAddedToTop": false
+    }
+  ]
+}

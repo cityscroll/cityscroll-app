@@ -1997,6 +1997,8 @@
     career_read_noe: "سرکاری NOE پڑھیں",
     career_official_schedule: "سرکاری شیڈول چیک کریں۔",
     career_apply_oasys: "OASys میں اپلائی کریں۔",
+
+    career_apply_oasys_browse: "OASys امتحانات براؤز کریں",
     career_back_all: "تمام امتحانات پر واپس جائیں۔",
     career_show_more: "{n} مزید امتحانات دکھائیں۔",
     career_exam_not_found: "یہ امتحان موجودہ DCAS شیڈول میں نہیں ہے۔",
