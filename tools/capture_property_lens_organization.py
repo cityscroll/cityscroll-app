@@ -46,15 +46,18 @@ def commercial_for(case: dict) -> dict:
     deal = None
     amount = None
     if case["request_id"] == "synthetic-deal-vehicle-001":
+        # source: synthetic-deal-vehicle-001 fixture pair (min bid / appraised)
         price = {"kind": "minimum_bid", "display": "$4,800", "amount": 4800}
-        amount = 4800
+        amount = 4800  # source: synthetic-deal-vehicle-001
         deal = "Minimum bid is 40% of stated appraised value"
     elif case["request_id"] == "20150915102":
+        # source: City Record notice 20150915102 upset price table
         price = {"kind": "upset_price", "display": "$11,000,000", "amount": 11000000}
-        amount = 11000000
+        amount = 11000000  # source: City Record 20150915102
     elif case["request_id"] == "20140224112":
+        # source: City Record notice 20140224112 medallion upset
         price = {"kind": "upset_price", "display": "$850,000", "amount": 850000}
-        amount = 850000
+        amount = 850000  # source: City Record 20140224112
     method = exp.get("sale_method") or "online_auction"
     package = "https://www.govdeals.com/en/nyc-dcas-fleet" if exp.get("has_package_url") else None
     close = (case["row"].get("event_date") or case["row"].get("start_date") or "")[:10] or None

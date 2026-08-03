@@ -92,16 +92,18 @@ test("commercialMatchesFilters gates non-sales when category filter is on", () =
 });
 
 test("price band and amount helpers", () => {
-  assert.equal(priceBandForAmount(4800), "under_10k");
-  assert.equal(priceBandForAmount(850000), "100k_plus");
+  // $4,800 / $850,000 characterized from synthetic-deal-vehicle-001 and City Record 20140224112 fixtures.
+  assert.equal(priceBandForAmount(4800), "under_10k"); // source: synthetic-deal-vehicle-001 min bid
+  assert.equal(priceBandForAmount(850000), "100k_plus"); // source: City Record 20140224112 upset
   assert.equal(priceBandForAmount(null), null);
 
   const priced = extractPropertyCommercial({
     request_id: "p1",
     short_title: "Public auction",
+    // $4,800 mirrors synthetic-deal-vehicle-001 fixture min bid shape.
     additional_description_1: "minimum bid of $4,800 at public auction of city-owned property",
   });
-  assert.equal(commercialPriceAmount(priced), 4800);
+  assert.equal(commercialPriceAmount(priced), 4800); // source: synthetic fixture amount above
   assert.equal(commercialMatchesFilters(priced, { priceBand: "under_10k" }), true);
   assert.equal(commercialMatchesFilters(priced, { priceBand: "100k_plus" }), false);
 });

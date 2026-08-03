@@ -932,9 +932,10 @@ function propPriceBandOf(r){
     : (commercial && commercial.glance && commercial.glance.price && Number.isFinite(Number(commercial.glance.price.amount))
       ? Number(commercial.glance.price.amount) : null);
   if(amount==null) return null;
-  if(amount<10000) return "under_10k";
-  if(amount<100000) return "10k_100k";
-  return "100k_plus";
+  // Product band thresholds (UX chips; not measured market data).
+  if(amount<10000) return "under_10k"; // product threshold: under $10,000
+  if(amount<100000) return "10k_100k"; // product threshold: $10,000–$99,999.99
+  return "100k_plus"; // product threshold: $100,000+
 }
 function propSaleMethodOf(r){
   return (r && r.commercial && r.commercial.sale_method && r.commercial.sale_method.method) || null;
