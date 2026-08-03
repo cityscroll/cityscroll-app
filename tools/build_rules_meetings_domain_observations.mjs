@@ -26,6 +26,8 @@ import {
   extractMeetingLandRefs,
   observationsFromPeopleMaterialization,
 } from "../entity_resolution/cross_domain/index.mjs";
+import { affectedAreaFromRow } from "../worker/src/lib/hearings.mjs";
+import { ruleLocationFromRow } from "../site/rule_location.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
@@ -140,18 +142,81 @@ async function sodaFetch(where, limit) {
   return rows;
 }
 
+/**
+ * Compact place stamp for map aggregation — scope + boroughs/boards only.
+ * Never commit raw body text (contacts / testimony language stay off the public surface).
+ */
+function compactPlaceStamp(area) {
+  if (!area || typeof area !== "object") return null;
+  if (area.scope === "unlocated") return null;
+  const stamp = { scope: area.scope || "local" };
+  if (Array.isArray(area.boroughs) && area.boroughs.length) stamp.boroughs = area.boroughs.slice();
+  if (Array.isArray(area.community_boards) && area.community_boards.length) {
+    stamp.community_boards = area.community_boards.slice();
+  }
+  if (Array.isArray(area.community_districts) && area.community_districts.length) {
+    stamp.community_districts = area.community_districts.slice();
+  }
+  if (Array.isArray(area.neighborhoods) && area.neighborhoods.length) {
+    stamp.neighborhoods = area.neighborhoods.slice();
+  }
+  if (Array.isArray(area.districts) && area.districts.length) {
+    stamp.districts = area.districts.slice();
+  }
+  // Drop empty stamps that only say citywide with no bags — still useful for Citywide bag.
+  if (stamp.scope === "citywide") return stamp;
+  if (
+    !stamp.boroughs?.length
+    && !stamp.community_boards?.length
+    && !stamp.community_districts?.length
+    && !stamp.districts?.length
+  ) {
+    return stamp.scope === "local" ? null : stamp;
+  }
+  return stamp;
+}
+
 function cleanRule(row) {
   if (!row?.request_id || !row?.agency_name) return null;
-  return {
+  const shortTitle = row.short_title != null ? String(row.short_title) : null;
+  const fullRow = {
     request_id: String(row.request_id),
     agency_name: String(row.agency_name),
-    short_title: row.short_title != null ? String(row.short_title) : null,
+    short_title: shortTitle,
     start_date: row.start_date != null ? String(row.start_date) : null,
     type_of_notice_description:
       row.type_of_notice_description != null ? String(row.type_of_notice_description) : null,
     section_name: row.section_name != null ? String(row.section_name) : "Agency Rules",
     source_system: "city_record",
+    // Body fields for extractors only — stripped from committed output.
+    additional_description_1: row.additional_description_1,
+    additional_description_2: row.additional_description_2,
+    additional_description_3: row.additional_description_3,
+    other_info_1: row.other_info_1,
+    printout_1: row.printout_1,
   };
+  const hearingArea = affectedAreaFromRow(fullRow);
+  const ruleLoc = ruleLocationFromRow(fullRow, {
+    hearingArea: hearingArea.scope === "local" ? hearingArea : null,
+  });
+  const out = {
+    request_id: fullRow.request_id,
+    agency_name: fullRow.agency_name,
+    short_title: shortTitle,
+    start_date: fullRow.start_date,
+    type_of_notice_description: fullRow.type_of_notice_description,
+    section_name: fullRow.section_name,
+    source_system: "city_record",
+  };
+  const place = compactPlaceStamp(
+    ruleLoc.scope === "local" || ruleLoc.scope === "citywide" ? ruleLoc : hearingArea,
+  );
+  if (place) {
+    out.rule_location = place;
+    // Alias for map aggregation (same shape as meetings affected_area).
+    out.affected_area = place;
+  }
+  return out;
 }
 
 function cleanHearing(row) {
@@ -161,7 +226,7 @@ function cleanHearing(row) {
   // full historical name is a false-positive for data-quality scanners.
   const historicalBoard = "Board of E" + "stimate";
   if (shortTitle && shortTitle.includes(historicalBoard)) return null;
-  const out = {
+  const fullRow = {
     request_id: String(row.request_id),
     agency_name: String(row.agency_name),
     short_title: shortTitle,
@@ -170,6 +235,21 @@ function cleanHearing(row) {
     type_of_notice_description:
       row.type_of_notice_description != null ? String(row.type_of_notice_description) : null,
     section_name: row.section_name != null ? String(row.section_name) : null,
+    source_system: "city_record",
+    additional_description_1: row.additional_description_1,
+    additional_description_2: row.additional_description_2,
+    additional_description_3: row.additional_description_3,
+    other_info_1: row.other_info_1,
+    printout_1: row.printout_1,
+  };
+  const out = {
+    request_id: fullRow.request_id,
+    agency_name: fullRow.agency_name,
+    short_title: shortTitle,
+    start_date: fullRow.start_date,
+    event_date: fullRow.event_date,
+    type_of_notice_description: fullRow.type_of_notice_description,
+    section_name: fullRow.section_name,
     source_system: "city_record",
   };
   // Stamp ULURP / ZAP keys extracted from body — never commit the raw body.
@@ -183,6 +263,9 @@ function cleanHearing(row) {
   });
   if (landRefs.ulurp_keys.length) out.ulurp_keys = landRefs.ulurp_keys;
   if (landRefs.zap_project_ids.length) out.zap_project_ids = landRefs.zap_project_ids;
+  // Place stamp for map choropleth (scope + district bags only — no body text).
+  const place = compactPlaceStamp(affectedAreaFromRow(fullRow));
+  if (place) out.affected_area = place;
   // Measured Council demo join (notice → Legistar event 22526).
   if (out.request_id === "20260706036") {
     out.event_id = "22526";

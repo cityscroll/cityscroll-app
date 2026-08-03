@@ -213,6 +213,15 @@ council district, SVG choropleth from the cs-geo-02 boundary layer + precomputed
 per-district per-lens counts. No proprietary map SDK; list views remain the
 fallback. Behavior lives in `site/app/map.mjs` (see `docs/module-map.md`).
 
+**All five map lenses** (land / property / rules / meetings / money) roll through
+`tools/lib/district_activity.mjs` at build time: land uses ZAP publisher CDs;
+property and any geocoded pin use boundary-layer point-in-polygon; meetings use
+`affectedAreaFromRow` (+ stamped `affected_area` on domain observations); rules
+use `ruleLocationFromRow` / hearing area; money uses publisher geo fields or
+coords when present (OCP warehouse awards are often unlocated — honest zero).
+Never invent districts for unlocated rows. `--check` fails if meetings are
+counted but zero-located (place-based lens wiring gate).
+
 ```bash
 node tools/build_district_activity.mjs
 node tools/build_district_activity.mjs --check
@@ -225,7 +234,9 @@ pure UI helpers `site/map_exploration.mjs`, build lib
 `tools/lib/district_activity.mjs`. Deep links: `#map`,
 `#map?level=community_district&parent=Queens&lens=land`, district tap-through
 uses existing `cd=` / `council=` / `boro=` list grammar. Tax-lien statistics
-live at `#property?view=tax-lien` (not the property list masthead).
+live at `#property?view=tax-lien` (not the property list masthead). The
+location-resolution flywheel dimension reads `district_activity.sources` and
+emits `map-zero-located-{lens}` when a non-empty corpus lands at 0 located.
 
 ## District boundary layer (cs-geo-01 + cs-geo-02)
 
