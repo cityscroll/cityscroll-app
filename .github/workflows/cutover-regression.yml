@@ -35,3 +35,13 @@ jobs:
           CROL_BASE: https://cityscroll.org/
           CROL_DEMO_LINK_IDS: exam-guide
         run: python3 test/functional/20_demo_links.py
+      - name: Require an attachment metadata batch receipt
+        run: >-
+          curl --fail --silent --show-error
+          https://api.cityscroll.org/attachment-metadata/receipt
+          | node -e 'let s="";process.stdin.on("data",c=>s+=c).on("end",()=>{const r=JSON.parse(s).receipt;if(!r?.run_id||!r?.finished_at)process.exit(1)})'
+      - name: Render Cannonsville attachment metadata
+        env:
+          CROL_BASE: https://cityscroll.org/
+          CROL_DEMO_LINK_IDS: notice-cannonsville-attachment
+        run: python3 test/functional/20_demo_links.py
