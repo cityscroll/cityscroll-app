@@ -6049,6 +6049,139 @@ async function loadZapOutcomes(r, el, selection){
   paintLandActionRail($("#land-actions"), r, data.record, phaseTools);
 }
 
+/* ===================== NOTICE-LEVEL ZAP PROJECT SPINE =====================
+   Residual gap over #ldetail: land City Record notices mount the same phase-grouped
+   ULURP timeline (land_phase_spine + /zap-outcomes) when a strict warehouse join hits.
+   Precompute-first: ULURP→project from zap_projects_warehouse_lookup.json; spine from
+   edge-materialized GET /zap-outcomes (never live ZAP API / SODA from the browser). */
+let noticeLandSpineToolsPromise=null;
+function ensureNoticeLandSpineTools(){
+  if(!noticeLandSpineToolsPromise){
+    noticeLandSpineToolsPromise=import("./notice_land_spine.mjs").catch(()=>null);
+  }
+  return noticeLandSpineToolsPromise;
+}
+let zapProjectJoinIndexPromise=null;
+function loadZapProjectJoinIndex(){
+  if(zapProjectJoinIndexPromise) return zapProjectJoinIndexPromise;
+  zapProjectJoinIndexPromise=(async ()=>{
+    const tools=await ensureNoticeLandSpineTools();
+    if(!tools || typeof tools.buildZapProjectJoinIndex!=="function") return null;
+    try{
+      const res=await fetch("data/zap_projects_warehouse_lookup.json",{cache:"force-cache",credentials:"omit"});
+      if(!res || !res.ok) return null;
+      const doc=await res.json();
+      return tools.buildZapProjectJoinIndex(doc);
+    }catch(_e){ return null; }
+  })();
+  return zapProjectJoinIndexPromise;
+}
+function noticeLandMethodLabel(method){
+  if(method==="exact_project_id") return t("notice_land_join_method_project_id");
+  if(method==="exact_ulurp_token") return t("notice_land_join_method_ulurp");
+  return method || "—";
+}
+function noticeLandSpineHTML(record, phaseTools, joinMeta){
+  if(!record) return "";
+  const projectId=record.project_id || joinMeta?.project_id || "";
+  const projectName=cleanText(record.project_name || record.open_data?.project_name || projectId) || projectId;
+  const methodLabel=noticeLandMethodLabel(joinMeta?.method);
+  const keys=(joinMeta?.keys||[]).map(k=>escUiHtml(k)).join(", ") || "—";
+  const joinNote=`<div class="note notice-land-join" data-notice-land-join="${escUiHtml(joinMeta?.method||"")}">${t("notice_land_join_matched_html",{
+    project:escUiHtml(projectName+(projectId?` (${projectId})`:"")),
+    method:escUiHtml(methodLabel),
+    keys
+  })} ${t("notice_land_this_notice_html")}</div>`;
+  const landLink=projectId
+    ?`<div class="lc-pct"><a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_land_open_land_detail")}</a></div>`
+    :"";
+  // Reuse phase-grouped land spine (statutory clocks + zoning stats ride on the record).
+  const spineHTML=landSpineHTML(record.spine, record, phaseTools);
+  // Prefer the notice-context heading over the land-detail "Project timeline" alone.
+  const headed=spineHTML
+    ? spineHTML.replace(
+        `<div class="chain-h">${t("land_spine_heading")}</div>`,
+        `<div class="chain-h">${t("notice_land_spine_heading")}</div>${joinNote}${landLink}`
+      )
+    : `<div class="chain-h">${t("notice_land_spine_heading")}</div>${joinNote}${landLink}`;
+  return `<section class="notice-land-spine" data-notice-land-spine="1" data-zap-project="${escUiHtml(projectId)}" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
+    ${headed}
+    <div class="note">${t("notice_land_provenance_html")}</div>
+  </section>`;
+}
+async function loadNoticeLandSpine(r, el){
+  if(!el) return;
+  const tools=await ensureNoticeLandSpineTools();
+  if(!tools || typeof tools.isNoticeLandSpineEligible!=="function"){
+    el.innerHTML="";
+    return;
+  }
+  if(!tools.isNoticeLandSpineEligible(r)){
+    el.innerHTML="";
+    return;
+  }
+  const index=await loadZapProjectJoinIndex();
+  if(!document.contains(el)) return;
+  const resolution=tools.resolveZapProjectForNotice(r, index);
+  const keysLabel=(resolution?.refs?.ulurp_keys||resolution?.keys||[]).map(k=>escUiHtml(k)).join(", ") || "—";
+
+  if(resolution && resolution.reason==="ambiguous_project" && Array.isArray(resolution.candidates) && resolution.candidates.length){
+    const links=resolution.candidates.slice(0,6).map(c=>{
+      const label=escUiHtml(cleanText(c.project_name)||c.project_id);
+      return `<a class="view" href="#land/${escUiHtml(c.project_id)}">${label} <span lang="en" dir="ltr">(${escUiHtml(c.project_id)})</span></a>`;
+    }).join(" · ");
+    el.innerHTML=`<section class="notice-land-spine" data-notice-land-spine="1" data-notice-land-state="ambiguous" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
+      <div class="chain-h">${t("notice_land_spine_heading")}</div>
+      <div class="note">${t("notice_land_ambiguous_html",{keys:keysLabel})}</div>
+      <div class="lc-pct">${links}</div>
+    </section>`;
+    return;
+  }
+
+  if(!resolution || !resolution.matched || !resolution.project_id){
+    // Class-(a): notice has ULURP/ZAP refs but warehouse has no unique project yet.
+    const portalHint=`<a href="https://zap.planning.nyc.gov/" ${EXT_ATTRS}>Zoning Application Portal${extSR()}</a>`;
+    el.innerHTML=`<section class="notice-land-spine" data-notice-land-spine="1" data-notice-land-state="unmatched" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
+      <div class="chain-h">${t("notice_land_spine_heading")}</div>
+      <div class="note">${t("notice_land_no_match_html",{keys:keysLabel, portal:portalHint})}</div>
+    </section>`;
+    return;
+  }
+
+  // Stamp for action-rail / entity deep links.
+  r._zap_project_id=resolution.project_id;
+  r._notice_land_join={
+    method:resolution.method,
+    keys:resolution.keys,
+    project_id:resolution.project_id
+  };
+
+  const phaseToolsP=ensureLandPhaseSpineTools();
+  const [data, phaseTools]=await Promise.all([
+    fetchZapOutcomesPayload(resolution.project_id),
+    phaseToolsP
+  ]);
+  if(!document.contains(el)) return;
+  if(!data || data.ok===false || !data.record){
+    el.innerHTML=`<section class="notice-land-spine" data-notice-land-spine="1" data-notice-land-state="unavailable" data-zap-project="${escUiHtml(resolution.project_id)}" aria-label="${escUiHtml(t("notice_land_spine_heading"))}">
+      <div class="chain-h">${t("notice_land_spine_heading")}</div>
+      <div class="note">${t("notice_land_unavailable_html")}</div>
+      <div class="lc-pct"><a class="view" href="#land/${escUiHtml(resolution.project_id)}">${t("notice_land_open_land_detail")}</a></div>
+    </section>`;
+    return;
+  }
+  el.innerHTML=noticeLandSpineHTML(data.record, phaseTools, {
+    method:resolution.method,
+    keys:resolution.keys,
+    project_id:resolution.project_id
+  });
+  bindLandSpineUI(el);
+  // Re-mount action rail so land/testify affordances can see the joined project id.
+  try{
+    if($("#nactions")) mountNoticeActionRail($("#nactions"), r);
+  }catch(_e){}
+}
+
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},
@@ -14274,7 +14407,7 @@ async function showNotice(id, watch){
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -14310,6 +14443,7 @@ async function showNotice(id, watch){
     loadTaxLienForNotice(r,$("#ntaxlien"));
   }).catch(()=>{});
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
+  loadNoticeLandSpine(r, $("#nland"));
   loadMeetingOutcomes(r, $("#nmeet"));
   externalAwardForNotice(r, $("#nexternal"));
   priorCycleAwards(r, $("#nprior"));

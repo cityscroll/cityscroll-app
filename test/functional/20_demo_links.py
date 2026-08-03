@@ -49,7 +49,11 @@ def iso_date(days: int, hour: int = 10) -> str:
     return (NOW + timedelta(days=days)).strftime(f"%Y-%m-%dT{hour:02d}:00:00.000")
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from i18n_fixtures import CHAIN_ROWS, install_routes  # noqa: E402
+from i18n_fixtures import (  # noqa: E402
+    CHAIN_ROWS,
+    NOTICE_LAND_ZAP_OUTCOMES,
+    install_routes,
+)
 
 
 UPCOMING_HEARING = {
@@ -95,6 +99,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
 def install_demo_routes(page) -> None:
     def worker(route) -> None:
         path = urlparse(route.request.url).path
+        query = parse_qs(urlparse(route.request.url).query)
         if path == "/hearings":
             route.fulfill(
                 status=200,
@@ -102,6 +107,15 @@ def install_demo_routes(page) -> None:
                 body=json.dumps({"hearings": [UPCOMING_HEARING]}),
             )
         elif path == "/zap-outcomes":
+            # Notice-level land spine demo: hermetic full record for Timbale Terrace.
+            project_id = (query.get("id") or [""])[0]
+            if project_id == "2022M0258":
+                route.fulfill(
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps(NOTICE_LAND_ZAP_OUTCOMES),
+                )
+                return
             # Land detail always requests this. Abort-or-hang races the 12s workerFetch
             # budget (and a fallback host) and keeps the outcomes spinner up past the
             # old 15s assert. Fulfill a fast unmatched shell so the spinner clears;
