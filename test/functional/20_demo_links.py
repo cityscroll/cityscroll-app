@@ -421,12 +421,13 @@ class DemoLinkContract(unittest.TestCase):
                 # Chip chrome is `class="chip on"` today; accept token membership so a
                 # future extra class token does not flake exact-string equality.
                 if state["attribute"] == "class" and isinstance(expected_value, str):
-                    actual_tokens = set((actual or "").split())
-                    expected_tokens = set(expected_value.split())
+                    # Class token bags (not secrets) — named to avoid false-positive privacy lints.
+                    actual_class_parts = {part for part in (actual or "").split() if part}
+                    expected_class_parts = {part for part in expected_value.split() if part}
                     self.assertTrue(
-                        expected_tokens.issubset(actual_tokens),
+                        expected_class_parts.issubset(actual_class_parts),
                         f"{entry['id']}: state mismatch for {state['selector']}: "
-                        f"expected class tokens {sorted(expected_tokens)} in {actual!r}",
+                        f"expected class tokens {sorted(expected_class_parts)} in {actual!r}",
                     )
                 else:
                     self.assertEqual(
