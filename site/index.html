@@ -314,6 +314,12 @@
   .panel .panelbar{align-items:flex-start;flex-wrap:wrap}
   .panelbar .export-actions{flex:1 1 100%;justify-content:flex-end}
   .panelbar .export-control{padding:8px 11px}
+  .utility-overflow{display:inline-flex;flex-direction:column}
+  .utility-overflow summary{list-style:none}
+  .utility-overflow summary::-webkit-details-marker{display:none}
+  .utility-overflow .utility-overflow-content{display:none;gap:8px;flex-wrap:wrap}
+  .utility-overflow[open] .utility-overflow-content{display:flex}
+  .utility-overflow.open .utility-overflow-content{display:flex}
 
   .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:8px;padding:13px 15px;margin-top:16px}
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
@@ -1434,10 +1440,7 @@
           <p id="staffing-result-count" aria-live="polite"></p>
         </div>
       </div>
-      <div class="staffing-notice-list" id="staffing-notice-list" aria-live="polite">
-        <div class="career-empty"><span class="loading" aria-hidden="true"></span> <span data-i18n="staffing_loading">Loading staffing notices…</span></div>
-      </div>
-      <div class="staffing-export-actions">
+      <div class="staffing-export-actions export-actions">
         <span class="export-band" id="people-export-band" hidden>
           <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
           <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -1452,7 +1455,10 @@
           </div>
         </details>
       </div>
-    </section>
+      <div class="staffing-notice-list" id="staffing-notice-list" aria-live="polite">
+        <div class="career-empty"><span class="loading" aria-hidden="true"></span> <span data-i18n="staffing_loading">Loading staffing notices…</span></div>
+      </div>
+      </section>
     </details>
 
     <!-- Compatibility-only nodes for old query links and alert parsing. They are not a
