@@ -8,14 +8,15 @@ echo "== ontology registry + intelligence flywheel =="
 node --test test/ontology_registry.test.mjs test/intelligence_flywheel.test.mjs
 
 echo "== multi-dimension flywheel characterization =="
+OUT="${TMPDIR:-/tmp}/cs-multi-flywheel-verify-$$"
 node tools/build_location_resolution_inventory.mjs --check
+python3 tools/sample_surface_load.py --fixture --out "$OUT-surface-load.json"
 node --test test/multi_flywheel.test.mjs test/multi_flywheel_dimensions.test.mjs
 
 echo "== cross-spine fixture suite =="
 node tools/cross_spine_validate.mjs
 
 echo "== multi flywheel emit (fixture) =="
-OUT="${TMPDIR:-/tmp}/cs-multi-flywheel-verify-$$"
 node tools/flywheel-run.mjs --fixture --emit "$OUT" --generated-at 1970-01-01T00:00:00.000Z
 test -f "$OUT/queue.json"
 test -f "$OUT/receipt.json"
