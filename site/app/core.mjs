@@ -255,6 +255,9 @@ function showTab(name, push){
   }
   if(name==="people"){
     loadCareerGuide(); loadStaffingFeed();
+    if(!globalThis.careerSelected){
+      requestAnimationFrame(()=>scrollStaffingView("notices"));
+    }
   }
   if(name==="property"){
     const panel=$("#tax-lien-sale-panel");
