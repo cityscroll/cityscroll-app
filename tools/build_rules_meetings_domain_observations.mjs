@@ -26,8 +26,12 @@ import {
   extractMeetingLandRefs,
   observationsFromPeopleMaterialization,
 } from "../entity_resolution/cross_domain/index.mjs";
-import { affectedAreaFromRow } from "../worker/src/lib/hearings.mjs";
+import {
+  affectedAreaFromRow,
+  meetingPlaceFromRow,
+} from "../worker/src/lib/hearings.mjs";
 import { ruleLocationFromRow } from "../site/rule_location.mjs";
+import { compactDerivationStamp } from "../site/location_derivation.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
@@ -54,6 +58,7 @@ const MEETING_OUTCOMES_MAX_OFFSET = 2000;
 // (emails / phones / testimony contacts must not land on the public PR surface).
 const SELECT =
   "request_id,start_date,agency_name,type_of_notice_description,section_name,short_title,event_date,"
+  + "street_address_1,street_address_2,city,state,zip_code,building_name,"
   + "additional_description_1,additional_description_2,additional_description_3,"
   + "other_info_1,printout_1";
 
@@ -143,13 +148,23 @@ async function sodaFetch(where, limit) {
 }
 
 /**
- * Compact place stamp for map aggregation — scope + boroughs/boards only.
+ * Compact place stamp for map aggregation — scope + boroughs/boards + derivation meta.
  * Never commit raw body text (contacts / testimony language stay off the public surface).
  */
 function compactPlaceStamp(area) {
   if (!area || typeof area !== "object") return null;
-  if (area.scope === "unlocated") return null;
-  const stamp = { scope: area.scope || "local" };
+  if (area.scope === "unlocated") {
+    // Record honest unlocated reason for density accounting (no body text).
+    if (area.unlocated_reason || area.virtual_only) {
+      return {
+        scope: "unlocated",
+        unlocated_reason: area.unlocated_reason || (area.virtual_only ? "virtual_only" : "no_place_signal"),
+        virtual_only: !!area.virtual_only,
+      };
+    }
+    return null;
+  }
+  const stamp = compactDerivationStamp(area) || { scope: area.scope || "local" };
   if (Array.isArray(area.boroughs) && area.boroughs.length) stamp.boroughs = area.boroughs.slice();
   if (Array.isArray(area.community_boards) && area.community_boards.length) {
     stamp.community_boards = area.community_boards.slice();
@@ -163,6 +178,16 @@ function compactPlaceStamp(area) {
   if (Array.isArray(area.districts) && area.districts.length) {
     stamp.districts = area.districts.slice();
   }
+  if (area.derivation && !stamp.derivation) {
+    stamp.derivation = {
+      methods: area.derivation.methods || [],
+      confidence: area.derivation.confidence || 0,
+      role: area.derivation.role || null,
+      evidence: (area.derivation.evidence || []).slice(0, 4),
+    };
+  }
+  if (area.confidence_tier) stamp.confidence_tier = area.confidence_tier;
+  if (area.source) stamp.source = area.source;
   // Drop empty stamps that only say citywide with no bags — still useful for Citywide bag.
   if (stamp.scope === "citywide") return stamp;
   if (
@@ -236,6 +261,12 @@ function cleanHearing(row) {
       row.type_of_notice_description != null ? String(row.type_of_notice_description) : null,
     section_name: row.section_name != null ? String(row.section_name) : null,
     source_system: "city_record",
+    street_address_1: row.street_address_1,
+    street_address_2: row.street_address_2,
+    city: row.city,
+    state: row.state,
+    zip_code: row.zip_code,
+    building_name: row.building_name,
     additional_description_1: row.additional_description_1,
     additional_description_2: row.additional_description_2,
     additional_description_3: row.additional_description_3,
@@ -263,8 +294,9 @@ function cleanHearing(row) {
   });
   if (landRefs.ulurp_keys.length) out.ulurp_keys = landRefs.ulurp_keys;
   if (landRefs.zap_project_ids.length) out.zap_project_ids = landRefs.zap_project_ids;
-  // Place stamp for map choropleth (scope + district bags only — no body text).
-  const place = compactPlaceStamp(affectedAreaFromRow(fullRow));
+  // Place stamp for map choropleth: human derivation (matter → venue → agency HQ).
+  // Scope + district bags + method/confidence only — never raw body text.
+  const place = compactPlaceStamp(meetingPlaceFromRow(fullRow));
   if (place) out.affected_area = place;
   // Measured Council demo join (notice → Legistar event 22526).
   if (out.request_id === "20260706036") {

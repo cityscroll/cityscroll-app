@@ -9,16 +9,18 @@
   },
   "dataset_id": "ocp-recent-contract-awards",
   "headroom": {
-    "constrained": false,
-    "ok": true,
-    "problems": [],
-    "returncode": 0,
-    "status": "ok"
+    "constrained": true,
+    "ok": false,
+    "problems": [
+      "cpu 98% > 85%"
+    ],
+    "returncode": 1,
+    "status": "constrained"
   },
   "limit": 5,
-  "observed_at": "2026-08-02T03:14:56Z",
+  "observed_at": "2026-08-03T16:37:39Z",
   "parquet": {
-    "bytes": 2089,
+    "bytes": 2295,
     "column_map_applied": false,
     "column_map_size": 0,
     "columns": [
@@ -30,6 +32,7 @@
       "contract_amount",
       "vendor_name",
       "short_title",
+      "contract_id",
       "snapshot_date"
     ],
     "parquet_path": "warehouse/parquet/ocp-recent-contract-awards/snapshot_date=fixture/part-000.parquet",
@@ -38,11 +41,11 @@
   },
   "phase": "WH-01",
   "raw": {
-    "bytes": 788,
+    "bytes": 834,
     "mode": "fixture",
     "path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=fixture/sample.csv",
     "row_count": 5,
-    "sha256": "a57dd6ea49eda05d5bc103166857050b2ff1912a7859f974b9de93afc45661b2",
+    "sha256": "5fac250fbca8002403dbf0aa0a16438e125edb4a50b9f09d3d0f3f975476f1f8",
     "source": "warehouse/fixtures/ocp-recent-contract-awards/sample.csv"
   },
   "register": {
@@ -56,6 +59,7 @@
       "contract_amount",
       "vendor_name",
       "short_title",
+      "contract_id",
       "snapshot_date"
     ],
     "parquet_glob": "warehouse/parquet/ocp-recent-contract-awards/snapshot_date=fixture/*.parquet",
@@ -64,6 +68,7 @@
   },
   "schema_version": 1,
   "snapshot_date": "fixture",
+  "snapshot_profile": null,
   "socrata_dataset_id": "qyyg-4tf5",
   "source_contract_id": "ocp-recent-contract-awards",
   "table_name": "ocp_recent_contract_awards",
