@@ -179,7 +179,7 @@
     export_csv: "导出 CSV",
     export_xlsx: "导出 Excel (.xlsx)",
     print_save_pdf: "打印 / 另存为 PDF",
-    share_export_btn: "Share / export",
+    share_export_btn: "分享 / 导出",
 
     print_header: "CityScroll · {link} · 截至 {date}",
     csv_address: "地址",

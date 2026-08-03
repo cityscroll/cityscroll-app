@@ -179,7 +179,7 @@
     export_csv: "CSV 내보내기",
     export_xlsx: "Excel(.xlsx) 내보내기",
     print_save_pdf: "인쇄 / PDF로 저장",
-    share_export_btn: "Share / export",
+    share_export_btn: "공유 / 내보내기",
 
     print_header: "CityScroll · {link} · {date} 기준",
     csv_address: "주소",

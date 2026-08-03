@@ -122,7 +122,7 @@ function setExportBandVisibility(count, bandId, overflowId){
   if(!band || !overflow) return;
   const value = Number(count);
   band.hidden = Number.isFinite(value) && value <= EXPORT_BAND_THRESHOLD;
-  overflow.hidden = !Number.isFinite(value) || value === 0;
+  overflow.hidden = !Number.isFinite(value) || value === 0 || value > EXPORT_BAND_THRESHOLD;
 }
 function busyList(sel, n){
   const el = $(sel); if(!el) return;
@@ -255,7 +255,7 @@ function showTab(name, push){
   }
   if(name==="people"){
     loadCareerGuide(); loadStaffingFeed();
-    if(!globalThis.careerSelected){
+    if(push && !globalThis.careerSelected){
       requestAnimationFrame(()=>scrollStaffingView("notices"));
     }
   }
