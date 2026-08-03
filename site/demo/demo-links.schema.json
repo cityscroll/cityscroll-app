@@ -49,6 +49,10 @@
           "type": "boolean",
           "description": "When true, the route is exercised only against the local fixture server, not production cityscroll.org (use for routes not yet deployed)."
         },
+        "postDeployOnly": {
+          "type": "boolean",
+          "description": "When true, local fixture coverage runs normally, while production coverage requires explicit scheduled selection after deployment."
+        },
         "expectations": {
           "$ref": "#/$defs/expectations"
         }

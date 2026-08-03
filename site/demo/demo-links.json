@@ -3,6 +3,27 @@
   "schemaVersion": 1,
   "entries": [
     {
+      "id": "notice-cannonsville-attachment",
+      "url": "#notice/20240515016",
+      "feature": "notice-attachment-metadata",
+      "description": "Open the Cannonsville timber notice with its official map and volume-report attachment.",
+      "postDeployOnly": true,
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#ncontext .attachment-chip",
+            "text": "Description, maps, and volume report"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#ncontext .loading"
+          }
+        ],
+        "focus": "#noticeview .route-item"
+      }
+    },
+    {
       "id": "matter-21st-avenue-bridge",
       "url": "#matter/84124P0003001",
       "feature": "contract-timeline",

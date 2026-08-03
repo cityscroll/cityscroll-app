@@ -104,6 +104,15 @@ ingest: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny row
 defaults; full Socrata export only via `--bulk --ack-large` (one dataset at a
 time). Setup + fixture proof:
 
+**T0 attachment metadata:** City Record `document_links` is the archive source
+before 2025; it is effectively empty from 2025 onward, so the guarded host-side
+collector uses polite (at least 1.2 seconds/request) RequestDetail deltas for the
+modern era. It excludes Changes in Personnel, stores metadata only, checkpoints,
+and writes `attachment_metadata` plus `attachment_metadata_by_notice`. The Worker
+only serves precomputed rows; it never scrapes the portal. Fixture proof:
+`warehouse/.venv/bin/python warehouse/scripts/attachment_metadata_run.py
+--from-fixture --limit 25`.
+
 ```bash
 python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5

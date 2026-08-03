@@ -259,6 +259,32 @@
       ]
     },
     {
+      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 2,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 2,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
       "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
       "worth_materializing": "maybe",
       "score": 2,
@@ -302,30 +328,6 @@
       ],
       "gaps_would_close": [
         "exam-outcome-aggregate"
-      ]
-    },
-    {
-      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
-      "worth_materializing": "maybe",
-      "score": 1,
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards"
-      ]
-    },
-    {
-      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
-      "worth_materializing": "maybe",
-      "score": 1,
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards"
       ]
     },
     {
@@ -633,5 +635,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "dbb02ec59de3783c89837134d7b3fab10df3166012ac742ed5b8dfcde3a3454c"
+  "registry_sha256": "3c08af72c326d0d65878b3bdf80ef5972dc5ab6662b7303006369691ac0a6201"
 }
