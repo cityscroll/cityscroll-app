@@ -23,6 +23,7 @@ import {
   totalForLens,
   zoomViewBox,
   panViewBox,
+  BOROUGH_META,
 } from "../site/map_exploration.mjs";
 import {
   buildDistrictActivity,
@@ -530,10 +531,8 @@ test("committed district_activity money densify has multi-borough density and fr
   assert.ok((doc.unlocated?.money || 0) >= 50,
     `money unlocated expected ≥50 (honest non-spatial share), got ${doc.unlocated?.money}`);
   // Multiple boroughs must show density — not a single Bronx pin + zeros.
-  // Borough list: NYC five boroughs (official City of New York geography).
   const boroMoney = doc.by_level?.borough || {};
-  const localBoros = ["Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Island"]
-    .filter((b) => (boroMoney[b]?.money || 0) > 0);
+  const localBoros = Object.keys(BOROUGH_META).filter((b) => (boroMoney[b]?.money || 0) > 0);
   assert.ok(localBoros.length >= 3,
     `expected ≥3 boroughs with money density, got ${localBoros.join(",")}`);
   const bags = nonPolygonBuckets(doc);
