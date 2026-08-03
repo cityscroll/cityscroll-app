@@ -3,8 +3,9 @@
  *
  * Pure view model over disposition stages (hearing → auction_or_rfp →
  * award_or_conveyance): compact stepper, current + next, one action lead.
- * Same shape as land_phase_spine / procurement_phase_spine. Does not invent
- * events — empty stages stay class-(a) not_yet_ingested slots.
+ * Aggregates verbatim-repeated titles within a phase and dedupes identical
+ * source URLs (same shape as franchise_phase_spine / procurement_phase_spine).
+ * Does not invent events — empty stages stay class-(a) not_yet_ingested slots.
  *
  * Presentation (HTML) lives in site/index.html propertyDispositionSpineHTML.
  */
@@ -55,6 +56,13 @@ function isoDate(value) {
   return new Date(t).toISOString().slice(0, 10);
 }
 
+function normalizeKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /**
  * Map a process stage kind onto a presentation phase id.
  * @param {string} kind
@@ -63,6 +71,58 @@ export function dispositionStageToPhase(kind) {
   const k = clean(kind);
   if (k && PROPERTY_PHASE_META[k]) return k;
   return null;
+}
+
+/**
+ * Collapse verbatim-identical titles within one phase. Keeps every member so
+ * dates stay recoverable under disclosure when the UI needs them.
+ * @param {object[]} events
+ */
+export function aggregatePhaseEvents(events) {
+  const map = new Map();
+  for (const event of events || []) {
+    const title = clean(event.title) || clean(event.request_id) || "—";
+    const key = normalizeKey(title) || `__empty_${map.size}`;
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(event);
+  }
+  const out = [];
+  for (const group of map.values()) {
+    const dates = group
+      .map((e) => isoDate(e.time?.value || e.when))
+      .filter(Boolean)
+      .sort();
+    out.push({
+      title: clean(group[0].title) || clean(group[0].request_id) || "—",
+      count: group.length,
+      first: dates[0] || null,
+      last: dates[dates.length - 1] || null,
+      members: group,
+    });
+  }
+  out.sort((a, b) => String(a.first || "9999").localeCompare(String(b.first || "9999")));
+  return out;
+}
+
+/**
+ * Dedupe identical source URLs within a phase to a single outbound link.
+ * @param {object[]} events
+ */
+export function dedupePhaseSourceLinks(events) {
+  const urls = (events || [])
+    .map((e) => clean(e.source?.url) || clean(e.source_url) || null)
+    .filter(Boolean);
+  const unique = new Map();
+  for (const u of urls) {
+    const key = u.replace(/\/+$/, "").toLowerCase();
+    if (!unique.has(key)) unique.set(key, u);
+  }
+  const first = unique.size ? [...unique.values()][0] : null;
+  return {
+    url: first,
+    count: unique.size,
+    candidates: urls.length,
+  };
 }
 
 /**
@@ -87,6 +147,8 @@ export function buildPropertyPhaseView(spine) {
     };
     const events = Array.isArray(stage.events) ? stage.events : [];
     const primary = events[0] || null;
+    const aggregates = aggregatePhaseEvents(events);
+    const source = dedupePhaseSourceLinks(events);
     return {
       id,
       short: meta.short,
@@ -96,12 +158,15 @@ export function buildPropertyPhaseView(spine) {
       notice_count: stage.notice_count || events.length || 0,
       request_ids: stage.request_ids || [],
       events,
+      aggregates,
+      source_url: source.url,
+      source_link_count: source.count,
       primary: primary
         ? {
             request_id: primary.request_id || null,
             title: clean(primary.title),
             when: isoDate(primary.time?.value || primary.when) || null,
-            source_url: primary.source?.url || null,
+            source_url: primary.source?.url || primary.source_url || source.url || null,
             status: primary.status || null,
           }
         : null,

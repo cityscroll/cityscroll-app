@@ -1,18 +1,18 @@
 {
   "source": {
     "id": "dcas-active-civil-service-list",
-    "name": "Civil Service List (Active) \u2014 exam-level aggregates only",
+    "name": "Civil Service List (Active) — exam-level aggregates only",
     "dataset_id": "vx8i-nprf",
     "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
     "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-    "fetched_at": "2026-07-30",
+    "fetched_at": "2026-08-03",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "privacy": "Per-applicant rows and names are never retained. Only exam-level counts and list dates from group-by."
   },
   "summary": {
-    "distinct_exams": 853,
-    "total_list_rows_sum": 408068
+    "distinct_exams": 854,
+    "total_list_rows_sum": 408276
   },
   "records": [
     {
@@ -6741,6 +6741,14 @@
       "list_count": 605,
       "established_date": "2021-01-20",
       "extension_date": "2027-01-20",
+      "title_count": 1
+    },
+    {
+      "exam_number": "9044",
+      "exam_no_raw": "9044",
+      "list_count": 208,
+      "established_date": "2021-06-02",
+      "extension_date": "2027-06-02",
       "title_count": 1
     },
     {

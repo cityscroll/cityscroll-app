@@ -228,14 +228,16 @@ test("attachDispositionSpines stamps the property view without inventing locatio
   assert.ok(stamped.disposition_join_keys.includes("bbl:5006840261"));
 });
 
-test("public Property Disposition notice detail mounts the spine; filter rail stays filter-only", () => {
+test("public Property Disposition notice detail mounts the spine; temporal filter rail stays filter-only", () => {
   const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
   assert.match(index, /function propertyDispositionSpineHTML/);
   assert.match(index, /loadPropertyDispositionSpine/);
   assert.match(index, /disposition_spines/);
-  // Temporal filter rail (not process stages) remains.
+  // Temporal filter rail (not process stages) remains alongside the process rail.
   assert.match(index, /const PROP_STAGES=\[\["all","stage_all"\],\["proposed"/);
   assert.match(index, /function propStage\(r\)/);
+  assert.match(index, /id="processrail"/);
+  assert.match(index, /buildPropertyExplorerEntries/);
   // Process stage labels used by the spine UI.
   assert.match(index, /disposition_stage_hearing/);
   assert.match(index, /disposition_stage_auction_or_rfp/);

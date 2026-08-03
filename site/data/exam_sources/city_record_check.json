@@ -5,7 +5,7 @@
     "dataset_id": "dg92-zbpx",
     "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
     "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-    "fetched_at": "2026-08-01",
+    "fetched_at": "2026-08-03",
     "refresh_cadence": "Daily",
     "stale_after_days": 3,
     "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."

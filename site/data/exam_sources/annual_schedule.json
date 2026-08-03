@@ -5,7 +5,7 @@
     "dataset_id": "4ptz-hmtc",
     "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
     "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-    "fetched_at": "2026-08-01",
+    "fetched_at": "2026-08-03",
     "data_current_as_of": "2026-07-22",
     "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
     "stale_after_days": 95
