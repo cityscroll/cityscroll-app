@@ -212,7 +212,7 @@ function locateAnyTerm(text, terms){
 // through to the "unknown" guess (that fallback's whole premise is "SODA's $q matched
 // somewhere we didn't fetch," which never happened for a structured filter). They only ever
 // surface real evidence: found in the visible text, or nothing rendered at all.
-function matchEvidence(title, description, terms, contextTerms){
+function matchEvidence(title, description, terms, contextTerms, attachmentText){
   const words=(terms||[]).filter(Boolean);
   const context=(contextTerms||[]).filter(Boolean);
   const all=[...words, ...context];
@@ -228,6 +228,16 @@ function matchEvidence(title, description, terms, contextTerms){
       hit:text.slice(inDesc.index, inDesc.index+inDesc.term.length),
       after:text.slice(inDesc.index+inDesc.term.length, end)+(end<text.length?"…":"") };
   }
+  // T1: extracted attachment text is part of the search index (provenance attachment-text).
+  const attach=String(attachmentText||"");
+  const inAttach=locateAnyTerm(attach, all);
+  if(inAttach){
+    const RADIUS=70, start=Math.max(0,inAttach.index-RADIUS), end=Math.min(attach.length, inAttach.index+inAttach.term.length+RADIUS);
+    return { field:"attachment-text", provenance:"attachment-text", term:inAttach.term,
+      before:(start>0?"…":"")+attach.slice(start,inAttach.index),
+      hit:attach.slice(inAttach.index, inAttach.index+inAttach.term.length),
+      after:attach.slice(inAttach.index+inAttach.term.length, end)+(end<attach.length?"…":"") };
+  }
   if(!words.length) return null;
   return {field:"unknown", term:words[0]};
 }
@@ -239,6 +249,11 @@ function matchEvidence(title, description, terms, contextTerms){
 // find and quote the actual text.
 function matchText(r){
   return [cleanText(r.additional_description_1), cleanText(r.other_info_1)].filter(Boolean).join(" ");
+}
+function matchAttachmentText(r){
+  if(r.attachment_text) return cleanText(r.attachment_text);
+  const attachments = Array.isArray(r.attachments) ? r.attachments : [];
+  return attachments.map(a=>cleanText(a && a.extracted_text)).filter(Boolean).join(" ");
 }
 // digTitleHTML: the item's title, term <mark>-highlighted when the TITLE is what matched.
 // ev.index is an offset into the cleaned (decoded) title. Escape text slices once so a notice
@@ -255,6 +270,7 @@ function digEvidenceHTML(ev){
   if(!ev || ev.field==="title") return "";
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
   if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  if(ev.field==="attachment-text") return `<div class="dev" data-match-provenance="attachment-text">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
   return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
 }
 function digContact(r){
@@ -300,7 +316,7 @@ function digAwarenessHTML(kind, r, tools){
 function digItemHTML(kind, r, keywords, awarenessTools){
   const aw=digAwarenessHTML(kind, r, awarenessTools);
   if(kind==="award"){
-    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords, null, matchAttachmentText(r));
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
     <div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name? " · "+escUiHtml(cleanText(r.vendor_name)):""}</div>
     ${aw}
@@ -308,7 +324,7 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
   if(kind==="notice"){
-    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords, null, matchAttachmentText(r));
     const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
     return `<div class="digitem"><div class="dt">${digTitleHTML(title, ev)}</div>
     <div class="dm">${meta}</div>
@@ -317,7 +333,7 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date), rolling=isRollingDeadline(r.due_date);
-    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords, null, matchAttachmentText(r));
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
     if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>${t("respond_lbl")}</b></a>`);
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
@@ -791,6 +807,22 @@ async function fillAddressLinks(r, el){
   el.innerHTML = `${propertyPlaceChips(location)}${parcelLinksHTML(links, "parcel_via_notice_tax_lot")}`;
 }
 
+function attachmentExtractHTML(attachment){
+  const text = String(attachment?.extracted_text || "").trim();
+  if(!text || attachment.text_status && attachment.text_status !== "ok") return "";
+  const preview = String(attachment.text_preview || text.split(/\n+/).filter(Boolean).slice(0,4).join(" · ")).trim();
+  const previewShort = preview.length > 280 ? preview.slice(0,277).trimEnd()+"…" : preview;
+  // Progressive disclosure: collapsed by default; few-line preview in the summary;
+  // expand for the full extract. Original document link stays beside this block.
+  return `<details class="attachment-extract inline-disclose" style="margin:6px 0 2px">
+    <summary class="attachment-extract-summary" style="font:12px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted);cursor:pointer">
+      <span class="attachment-extract-label">${escUiHtml(t("notice_attachment_extract_summary"))}</span>
+      <span class="attachment-extract-preview" lang="en" dir="ltr" style="display:block;margin-top:2px;color:var(--ink)">“${escUiHtml(previewShort)}”</span>
+    </summary>
+    <div class="attachment-extract-body inline-disclose-body scope" lang="en" dir="ltr" style="margin-top:8px;white-space:pre-wrap;font:13px/1.55 ui-sans-serif,system-ui,sans-serif;max-height:22rem;overflow:auto">${escUiHtml(text.slice(0,50000))}${text.length>50000?"…":""}</div>
+  </details>`;
+}
+
 function attachmentChipHTML(r){
   if((r.section_name || r.section) === "Changes in Personnel") return "";
   const attachments = Array.isArray(r.attachments) ? r.attachments.filter(a=>a && a.url) : [];
@@ -799,7 +831,12 @@ function attachmentChipHTML(r){
   const rawTitle = String(first.title || t("notice_attachment_title_fallback")).replace(/\s+/g," ").trim();
   const title = rawTitle.length > 108 ? rawTitle.slice(0,105).trimEnd()+"…" : rawTitle;
   const label = tn("notice_attachment_chip", attachments.length, {title});
-  return `<div style="margin:6px 0 4px"><a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a></div>`;
+  const extract = attachmentExtractHTML(first);
+  // Always keep the original-document link; text extract is optional progressive disclosure.
+  return `<div class="attachment-panel" style="margin:6px 0 4px">
+    <a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a>
+    ${extract}
+  </div>`;
 }
 
 // Fill a placeholder div asynchronously; bail if the view moved on while queries ran.
@@ -884,6 +921,9 @@ globalThis.keywordLooksSentenceLike = keywordLooksSentenceLike;
 globalThis.loadAlertsRollupTools = loadAlertsRollupTools;
 globalThis.locateAnyTerm = locateAnyTerm;
 globalThis.matchEvidence = matchEvidence;
+globalThis.matchAttachmentText = matchAttachmentText;
+globalThis.attachmentChipHTML = attachmentChipHTML;
+globalThis.attachmentExtractHTML = attachmentExtractHTML;
 globalThis.matchText = matchText;
 globalThis.noticeFlags = noticeFlags;
 globalThis.ordinal = ordinal;

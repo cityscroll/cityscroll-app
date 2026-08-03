@@ -2,3 +2,5 @@
 #   python3 -m venv warehouse/.venv
 #   warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 duckdb>=1.0,<2
+# T1 attachment inline text (PDF plain-text extract; docx uses stdlib zipfile)
+pypdf>=4.0,<6
