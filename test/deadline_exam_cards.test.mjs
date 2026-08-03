@@ -188,7 +188,7 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.match(html, /isInterestArea/);
   // Card structure: deadline lead appears before the title block in the template.
   const cardFnStart = html.indexOf("function careerCardHTML(exam)");
-  const cardFn = html.slice(cardFnStart, cardFnStart + 4500);
+  const cardFn = html.slice(cardFnStart, cardFnStart + 6500);
   assert.ok(cardFn.includes("career-deadline-lead"));
   assert.ok(
     cardFn.indexOf("career-deadline-lead") < cardFn.indexOf("career-card-title"),
@@ -198,7 +198,21 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.ok(cardFn.includes("career_fee_waiver"));
   assert.ok(cardFn.includes("career_read_noe"));
   assert.ok(cardFn.includes("career_apply_oasys"));
+  assert.ok(cardFn.includes("career_apply_oasys_browse") || cardFn.includes("applyDeep"), "unmapped exams get an honest browse label");
+  assert.ok(cardFn.includes("data-oasys-handoff") || cardFn.includes("examApplyIsDeep"), "cards expose deep vs landing handoff");
   assert.ok(cardFn.includes("careerOutcomeHTML"), "cards surface precomputed exam outcomes");
+});
+
+test("golden open exams 6125 and 7312 deep-link to OASys NOE pages (not examsforjobs)", () => {
+  for (const examNumber of ["6125", "7312"]) {
+    const exam = artifact.exams.find((item) => item.exam_number === examNumber);
+    assert.ok(exam, examNumber);
+    assert.equal(exam.application_handoff_mode, "deep", examNumber);
+    assert.match(exam.official_application_url, /a856-exams\.nyc\.gov\/OASysWeb\/noe\?examId=\d+$/, examNumber);
+    assert.notEqual(exam.official_application_url, Staffing.OASY_APPLY_URL, examNumber);
+    assert.ok(exam.oasys_exam_id, examNumber);
+    assert.notEqual(String(exam.oasys_exam_id), examNumber, "examId must not equal DCAS exam number");
+  }
 });
 
 test("acceptance cards flip outcome slots from gaps to joined aggregates where published", () => {

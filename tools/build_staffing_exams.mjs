@@ -16,6 +16,10 @@ import {
   canonicalHistoricalSchedule,
   publicStaffingModelReport,
 } from "../worker/src/lib/staffing_list_prediction.mjs";
+import {
+  attachOasysDeepLink,
+  OASY_SOURCE_ID,
+} from "./lib/oasys_exam_map.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
@@ -32,8 +36,9 @@ const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
 const LIST_DEPTH_CLOSED_FILE = "list_depth_closed_exams.json";
 const NOE_DENSIFY_FILE = "noe_fee_salary_densify.json";
 const ANNUAL_HISTORY_FILE = "annual_schedule_history.json";
-/** Bump when densify merge / fee-salary materialization shape changes (version-guard). */
-export const STAFFING_EXAMS_SCHEMA_VERSION = 3;
+const OASY_MAP_FILE = "oasys_exam_map.json";
+/** Bump when densify merge / fee-salary / OASys handoff materialization shape changes. */
+export const STAFFING_EXAMS_SCHEMA_VERSION = 4;
 
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
@@ -513,6 +518,7 @@ export function buildArtifact({
   annualHistory,
   listDepthClosed,
   noeDensify,
+  oasysMap,
   priorArtifact,
   today,
 }) {
@@ -529,8 +535,13 @@ export function buildArtifact({
     listDepthClosed?.source?.fetched_at,
     noeDensify?.source?.fetched_at,
     noeDensify?.source?.verified_at,
+    oasysMap?.source?.fetched_at,
   ]
     .filter(Boolean).sort().at(-1);
+
+  const oasysByNumber = new Map(
+    (oasysMap?.records || []).map((row) => [String(row.exam_number).padStart(4, "0"), row]),
+  );
 
   const prior = new Map((priorArtifact?.exams || []).map((exam) => [exam.exam_number, exam]));
 
@@ -626,6 +637,7 @@ export function buildArtifact({
   // Source rows are already normalized from the registered DCAS schedule/NOE inputs above.
   const baseRecords = Array.from(exams.values())
     .map((exam) => attachFeeSalaryGap(joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex)))
+    .map((exam) => attachOasysDeepLink(exam, oasysByNumber))
     .sort((a, b) => {
       const ad = a.application_start || "9999-12-31";
       const bd = b.application_start || "9999-12-31";
@@ -641,6 +653,7 @@ export function buildArtifact({
     publicProjection: lagBacktest.scorecard.public_projection,
     generatedAt: generatedInstant,
   }));
+  const oasysDeepCount = records.filter((e) => e.application_handoff_mode === "deep").length;
   const emittedPredictions = records
     .map((exam) => exam.list_establishment_forecast?.prediction)
     .filter(Boolean);
@@ -653,6 +666,7 @@ export function buildArtifact({
   const sources = [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source];
   if (annualHistory?.source) sources.push(annualHistory.source);
   if (noeDensify?.source) sources.push(noeDensify.source);
+  if (oasysMap?.source) sources.push(oasysMap.source);
 
   return {
     schema_version: STAFFING_EXAMS_SCHEMA_VERSION,
@@ -678,6 +692,12 @@ export function buildArtifact({
         densify_applied: densifyApplied,
         fee_salary_non_null_before: beforeDensifyStats,
         fee_salary_non_null_after: afterDensifyStats,
+      },
+      oasys_exam_map: {
+        source_id: OASY_SOURCE_ID,
+        map_records: oasysByNumber.size,
+        exams_deep_linked: oasysDeepCount,
+        exams_landing: records.length - oasysDeepCount,
       },
     },
     outcomes: buildOutcomes({ outcomes }),
@@ -930,7 +950,7 @@ async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
   if (process.argv.includes("--refresh-prediction-history")) await refreshAnnualScheduleHistory();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, oasysMap, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
@@ -940,6 +960,7 @@ async function main() {
     readJsonOptional(ANNUAL_HISTORY_FILE),
     readJsonOptional(LIST_DEPTH_CLOSED_FILE),
     readJsonOptional(NOE_DENSIFY_FILE),
+    readJsonOptional(OASY_MAP_FILE),
     (async () => {
       try {
         return JSON.parse(await readFile(OUTPUT, "utf8"));
@@ -979,6 +1000,14 @@ async function main() {
       stale_after_days: noeDensify.source.stale_after_days ?? 45,
     }, today);
   }
+  // OASys map is optional at build (offline CI may lack a fresh fetch); when present, apply
+  // the same open-window freshness window as other daily exam sources.
+  if (oasysMap?.source && oasysMap.source.freshness_required !== false) {
+    assertSourceFresh({
+      ...oasysMap.source,
+      stale_after_days: oasysMap.source.stale_after_days ?? 3,
+    }, today);
+  }
   const artifact = buildArtifact({
     annual,
     current,
@@ -989,6 +1018,7 @@ async function main() {
     annualHistory,
     listDepthClosed,
     noeDensify,
+    oasysMap,
     priorArtifact,
     today,
   });

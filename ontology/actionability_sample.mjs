@@ -147,11 +147,16 @@ export function classifyDestinationUrl(url, hints = {}) {
     return "deep";
   }
 
-  // OASys apply landing (not exam-specific)
+  // OASys: per-exam NOE page is deep; examsforjobs / OASys home / exams list are landings.
   if (
-    /examsforjobs/i.test(href)
+    host.includes("a856-exams.nyc.gov")
+    || /examsforjobs/i.test(href)
     || (host.includes("nyc.gov") && /\/examsforjobs\/?$/i.test(path))
   ) {
+    if (/\/noe$/i.test(path.replace(/\/+$/, "")) && /[?&]examId=\d+/i.test(search)) {
+      return "deep";
+    }
+    if (/\/noe\/[^/]+\.pdf$/i.test(path)) return "deep";
     return "landing";
   }
 

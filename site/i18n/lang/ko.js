@@ -2001,6 +2001,8 @@
     career_read_noe: "공식 NOE 읽기",
     career_official_schedule: "공식 일정을 확인하세요",
     career_apply_oasys: "OAsys에 적용",
+
+    career_apply_oasys_browse: "OASys 시험 찾아보기",
     career_back_all: "모든 시험으로 돌아가기",
     career_show_more: "{n} 더 많은 시험 보기",
     career_exam_not_found: "해당 시험은 현재 DCAS 일정에 없습니다.",

@@ -2101,6 +2101,8 @@
     career_read_noe: "Lire le NOE officiel",
     career_official_schedule: "Consultez le calendrier officiel",
     career_apply_oasys: "Postuler dans OASys",
+
+    career_apply_oasys_browse: "Parcourir les examens OASys",
     career_back_all: "Retour à tous les examens",
     career_show_more: "Afficher {n} plus d'examens",
     career_exam_not_found: "Cet examen ne figure pas dans le calendrier actuel du DCAS.",
