@@ -161,7 +161,7 @@
   }
 
   function formatSource(contract) {
-    var name = contract.name || "Unnamed source";
+    var name = contract.name || contract.source_id || "";
     var href = contract.landing_page || "";
     var tag = contract.dataset_id ? " <code>" + esc(contract.dataset_id) + "</code>" :
       (contract.data_type ? " <code>" + esc(contract.data_type) + "</code>" : "");
@@ -212,7 +212,7 @@
   function render(registry) {
     var contracts = (registry && Array.isArray(registry.contracts)) ? registry.contracts : [];
     if (!contracts.length) {
-      showError("Could not read source contracts from site/data/source_contracts.json");
+      showError(t("retry_open_data"));
       return;
     }
     setCounts(contracts);
@@ -224,12 +224,12 @@
 
   fetch(SOURCE_URL)
     .then(function (response) {
-      if (!response.ok) throw new Error("Unable to load source registry");
+      if (!response.ok) throw new Error(t("retry_open_data"));
       return response.json();
     })
     .then(render)
     .catch(function () {
-      showError("Unable to load source-contract registry. Use the links above for the current source list.");
+      showError(t("retry_open_data"));
     });
 })();
 </script>
