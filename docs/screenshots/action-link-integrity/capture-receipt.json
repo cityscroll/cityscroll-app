@@ -1,0 +1,17 @@
+{
+  "notice_id": "20260715041",
+  "source": "NYC Open Data City Record Online (dg92-zbpx) and NYC Rules RSS",
+  "captured_at": "2026-08-03",
+  "before": {
+    "comment_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/feed/",
+    "http_status": 404
+  },
+  "after": {
+    "comment_url": "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/",
+    "http_status": 200
+  },
+  "viewports": [
+    390,
+    1440
+  ]
+}

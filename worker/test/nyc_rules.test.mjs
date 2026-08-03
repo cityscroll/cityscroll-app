@@ -320,7 +320,7 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
 
   assert.equal(view.schema_version, RULES_VIEW_VERSION);
-  assert.equal(view.schema_version, 5);
+  assert.equal(view.schema_version, 6);
   assert.equal(view.source.primary.lookback_days, CITY_RECORD_RULES_LOOKBACK_DAYS);
   assert.equal(view.source.primary.limit, CITY_RECORD_RULES_LIMIT);
   // Lookback must cover the sibling stitch window so months-apart rulemakings can co-appear.
@@ -713,18 +713,18 @@ test("rulesViewNeedsRefresh retries young views whose RSS enrichment is still st
   const nowMs = Date.parse("2026-08-01T18:00:00.000Z");
   assert.equal(rulesViewNeedsRefresh(null, nowMs), true);
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 5,
+    schema_version: 6,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), false);
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 5,
+    schema_version: 6,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "stale", error: "NYC Rules RSS 403" } },
   }, nowMs), true);
   // Older than MAX_AGE_MS (~36h) even when enrichment is ok.
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 5,
+    schema_version: 6,
     generated_at: "2026-07-30T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
@@ -750,8 +750,14 @@ test("rulesViewNeedsRefresh rebuilds young KV written under an older schema_vers
     generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
+  // Pre-link-normalization materialization (schema 5) must rebuild dead RSS CTAs.
   assert.equal(rulesViewNeedsRefresh({
     schema_version: 5,
+    generated_at: "2026-08-02T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), true);
+  assert.equal(rulesViewNeedsRefresh({
+    schema_version: 6,
     generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), false);

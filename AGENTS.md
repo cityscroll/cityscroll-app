@@ -1414,6 +1414,16 @@ node --test test/zoning_statistics.test.mjs
 python3 tools/capture_applicant_conditioned_ulurp.py
 ```
 
+## Outbound action-link integrity
+
+NYC Rules `wfw:commentRss` is syndication metadata, not a resident comment
+page. Normalize it only at the RSS boundary with `normalizeRuleActionUrl` in
+`worker/src/lib/rules.mjs` so action rails, timelines, and digests share the
+resident-facing rule URL. The representative live sweep is
+`node tools/audit-action-links.mjs --live`; it is scheduled by
+`.github/workflows/action-links-live.yml` and treats City Record's HTTP-200
+error redirect as a soft 404.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

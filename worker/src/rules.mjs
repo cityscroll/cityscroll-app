@@ -18,8 +18,9 @@ export const RULES_KV_KEY = "rules:materialized:v2";
 /** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds.
  *  v4: City Record Agency Rules lookback widened so multi-notice siblings co-appear.
  *  v5: demote generic Title-N / bare-sections refs; shared_reference needs exact
- *      section cite or title-core floor (false-merge hotfix). */
-export const RULES_VIEW_VERSION = 5;
+ *      section cite or title-core floor (false-merge hotfix).
+ *  v6: normalize WordPress RSS endpoints to resident-facing NYC Rules pages. */
+export const RULES_VIEW_VERSION = 6;
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 /** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
  *  "Just a moment…" when the request has an empty or missing User-Agent

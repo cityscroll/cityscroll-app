@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   classifyStage,
   joinRulesToNotices,
+  normalizeRuleActionUrl,
   normalizeRuleItem,
   parseRssItems,
 } from "../../worker/src/lib/rules.mjs";
@@ -163,6 +164,39 @@ test("comment-open: future comment deadline classifies as comment-open with offi
   assert.ok(rule.comment_url);
 });
 
+test("NYC Rules comment feed URLs normalize to the resident-facing rule page", () => {
+  const rule = normalizeRuleItem({
+    title: "Amendments Related to the NYC Energy Conservation Code",
+    link: "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/",
+    commentRss: "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/feed/",
+    comment_by_date: "20260824",
+  });
+
+  assert.equal(
+    rule.comment_url,
+    "https://rules.cityofnewyork.us/rule/amendments-related-to-the-nyc-energy-conservation-code/",
+  );
+});
+
+test("NYC Rules URL normalization removes sibling RSS artifacts without dropping page parameters", () => {
+  assert.equal(
+    normalizeRuleActionUrl("https://rules.cityofnewyork.us/rule/example/?format=rss"),
+    "https://rules.cityofnewyork.us/rule/example/",
+  );
+  assert.equal(
+    normalizeRuleActionUrl("https://rules.cityofnewyork.us/rule/example/?format="),
+    "https://rules.cityofnewyork.us/rule/example/",
+  );
+  assert.equal(
+    normalizeRuleActionUrl("https://rules.cityofnewyork.us/rule/example/?feed=atom&lang=es"),
+    "https://rules.cityofnewyork.us/rule/example/?lang=es",
+  );
+  assert.equal(
+    normalizeRuleActionUrl("https://rules.cityofnewyork.us/rule/example/?format=html"),
+    "https://rules.cityofnewyork.us/rule/example/?format=html",
+  );
+});
+
 test("hearing: future hearing date without open comment classifies as hearing", () => {
   const rule = parseRss(FIXTURES.hearing.rss);
   assert.equal(classifyStage(rule, NOW), "hearing");
@@ -198,7 +232,7 @@ test("matched join preserves the official NYC Rules URL and comment link without
   assert.equal(matched.length, 1);
   const m = matched[0];
   assert.equal(m.rule.url, "https://rules.cityofnewyork.us/rule/meter-parking/");
-  assert.equal(m.rule.comment_url, "https://rules.cityofnewyork.us/rule/meter-parking/feed/");
+  assert.equal(m.rule.comment_url, "https://rules.cityofnewyork.us/rule/meter-parking/");
   assert.equal(m.rule.comment_count, 0);
   assert.equal(m.rule.summary, "Allow for-hire vehicles at commercial parking meters.");
   assert.equal(m.stage, "comment-open");
@@ -250,7 +284,7 @@ test("cross-agency items never match even with similar titles", () => {
 // Official links and dates are preserved through the join, not synthesized
 // ---------------------------------------------------------------------------
 
-test("the comment URL links to the official NYC Rules comment feed, not a copied comment", () => {
+test("the comment URL links to the resident-facing NYC Rules page, not a copied comment", () => {
   const rule = parseRss(FIXTURES.adopted.rss);
   const { matched } = joinRulesToNotices([rule], [FIXTURES.adopted.notice], NOW);
   const m = matched[0];
