@@ -15,7 +15,7 @@
     "inline_script_lines": 13290
   },
   "after": {
-    "index_html_bytes": 162204,
+    "index_html_bytes": 163038,
     "module_count": 19,
     "largest_module": {
       "path": "site/app/money-history.mjs",
@@ -32,7 +32,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 89399,
+      "after_bytes": 89784,
       "after_tokens": 23818,
       "token_reduction_ratio": 10
     },
@@ -44,7 +44,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 65297,
+      "after_bytes": 65682,
       "after_tokens": 17589,
       "token_reduction_ratio": 13.54
     },
@@ -56,7 +56,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 72267,
+      "after_bytes": 72652,
       "after_tokens": 19329,
       "token_reduction_ratio": 12.32
     }
@@ -68,9 +68,9 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 761736,
-    "normalized_source_sha256": "66590137e1bcf0d5aec30778dab1135ce5e504449696f355427cf179819810f2",
-    "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata).",
+    "normalized_source_bytes": 772995,
+    "normalized_source_sha256": "4b725cbf8f66c9a4a464e46fd256ba18acd8b40fbc475dea7d339b97b175d194",
+    "note": "OASys per-exam NOE deep-link handoff labels on people.mjs exam cards; share/export overflow on feed utility bands (plus prior discovery-parity NL routing, map module, exam-guide hotfix, and notice attachment metadata), ULURP pipeline position, and ZAP hearing logistics on land detail.",
     "updated_at": "2026-08-03"
   }
 }
