@@ -58,15 +58,15 @@ def main():
                 page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
                 install_routes(page)
                 page.goto(base + "#people", wait_until="load")
-                page.locator("#staffing-upcoming-list .staffing-upcoming-item").first.wait_for(state="visible")
-                if page.locator("#staffing-upcoming-list .staffing-upcoming-item").count() != 4:
-                    failures.append(f"{width}px: Staffing page did not render four featured exams")
-                if not page.locator("#staffing-upcoming-list .staffing-upcoming-item").first.get_attribute("href").startswith("#exam/"):
-                    failures.append(f"{width}px: featured exam does not deep-link to its guide detail")
-                if page.locator('a[href="#people?view=guide"]').count() < 2:
-                    failures.append(f"{width}px: contextual Staffing-to-guide links are missing")
-                if page.locator("#staffing-notice-list .staffing-notice-card").count() < 1:
-                    failures.append(f"{width}px: Staffing does not open on live appointment notices")
+                page.locator("#career-results .career-card").first.wait_for(state="visible")
+                if page.locator("#career-results .career-card").count() < 4:
+                    failures.append(f"{width}px: Staffing page did not render actionable exam cards")
+                if not page.locator("#career-results .career-card").first.locator("a[href^='#exam/']").count():
+                    failures.append(f"{width}px: action card does not deep-link to exam detail")
+                if page.locator("#staffing-ledger").get_attribute("open") is not None:
+                    failures.append(f"{width}px: appointments ledger is open by default")
+                if page.locator("#staffing-notice-list .staffing-hire-row").count() < 1:
+                    failures.append(f"{width}px: appointments ledger did not retain live notices")
                 tagged_role = page.evaluate(
                     """() => roleRowHTML(
                       {title_description:'CASEWORKER', n:'20', mn:'50000', mx:'70000'},
@@ -92,8 +92,8 @@ def main():
                     OUTPUT.mkdir(parents=True, exist_ok=True)
                     target = OUTPUT / f"guide-{width}.png"
                     page.evaluate("location.hash='#people'")
-                    page.locator("#staffing-feed").wait_for(state="visible")
-                    page.locator("#staffing-feed").screenshot(path=target, animations="disabled")
+                    page.locator("#career-browser-heading").wait_for(state="visible")
+                    page.locator("#career-guide").screenshot(path=target, animations="disabled")
                     captures.append(str(target.relative_to(ROOT)))
                 page.close()
             browser.close()
@@ -114,7 +114,7 @@ def main():
         for failure in failures:
             print("FAIL", failure)
         raise SystemExit(1)
-    print("Staffing notice feed, contextual guide, exam-tag, deep-link, responsive-layout, and capture checks passed.")
+    print("Staffing action guide, collapsed ledger, exam-tag, deep-link, responsive-layout, and capture checks passed.")
 
 
 if __name__ == "__main__":
