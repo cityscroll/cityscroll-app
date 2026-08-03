@@ -20,6 +20,11 @@ import {
   attachOasysDeepLink,
   OASY_SOURCE_ID,
 } from "./lib/oasys_exam_map.mjs";
+import {
+  listAggregateBelongsToExamCycle,
+  measureExamTemporalIncoherence,
+  outcomeBelongsToExamCycle,
+} from "../site/exam_process_spine.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
@@ -404,10 +409,13 @@ export function outcomesByExamNumber(outcomeRecords) {
  * Attach a per-exam outcome object (or null) so cards never live-fetch the outcomes table.
  * Gap class is decided only after the list-aggregate join (see joinOutcomesAndListOntoExam):
  * public annual + list sources exist, so a miss is not automatically "city does not publish".
+ *
+ * Cycle-aware: refuse outcomes whose published_on is on or before application_end
+ * for non-continuous exams (exam numbers name one filing cycle).
  */
 export function joinOutcomeOntoExam(exam, outcomeMap) {
   const matched = outcomeMap.get(exam.exam_number) || null;
-  if (!matched) {
+  if (!matched || !outcomeBelongsToExamCycle(exam, matched)) {
     return {
       ...exam,
       outcome: null,
@@ -415,6 +423,9 @@ export function joinOutcomeOntoExam(exam, outcomeMap) {
       outcome_gap: {
         class: "not_yet_ingested",
         pending_stage: "list_establishment",
+        ...(matched
+          ? { reason: "cycle_mismatch", rejected_published_on: matched.published_on || null }
+          : {}),
       },
     };
   }
@@ -430,6 +441,9 @@ export function joinOutcomeOntoExam(exam, outcomeMap) {
  * Attach privacy-safe Civil Service List aggregates (list_count + dates only).
  * Never copies per-applicant fields. When annual outcomes are absent but a list
  * is established, cards can render post-list depth without inventing hire counts.
+ *
+ * Cycle-aware: refuse list rows whose established_date is on or before application_end
+ * for non-continuous exams.
  */
 export function joinListAggregateOntoExam(exam, listIndex) {
   const hit = joinExamToListAggregate(exam.exam_number, listIndex);
@@ -439,15 +453,22 @@ export function joinListAggregateOntoExam(exam, listIndex) {
       list_aggregate: null,
     };
   }
+  const candidate = {
+    list_count: hit.list_count,
+    established_date: hit.established_date,
+    extension_date: hit.extension_date,
+    title_count: hit.title_count,
+    source_id: "dcas-active-civil-service-list",
+  };
+  if (!listAggregateBelongsToExamCycle(exam, candidate)) {
+    return {
+      ...exam,
+      list_aggregate: null,
+    };
+  }
   return {
     ...exam,
-    list_aggregate: {
-      list_count: hit.list_count,
-      established_date: hit.established_date,
-      extension_date: hit.extension_date,
-      title_count: hit.title_count,
-      source_id: "dcas-active-civil-service-list",
-    },
+    list_aggregate: candidate,
   };
 }
 
@@ -458,6 +479,9 @@ export function joinListAggregateOntoExam(exam, listIndex) {
  * exist for aggregate post-cycle depth. An empty slot is incomplete join / cycle
  * pending — never a false class-(b) "city does not publish" withhold. Individual
  * scores stay class-(b) elsewhere (exam-outcome-individual).
+ *
+ * Cycle membership is enforced in the per-source join helpers so open application
+ * windows never paint list / cert / hire events from a different (or invented) cycle.
  */
 export function joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex) {
   const withOutcome = joinOutcomeOntoExam(exam, outcomeMap);
@@ -478,9 +502,18 @@ export function joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex) {
         "dcas-annual-exam-outcomes",
         "dcas-active-civil-service-list",
       ],
+      ...(withOutcome.outcome_gap?.reason
+        ? {
+            reason: withOutcome.outcome_gap.reason,
+            rejected_published_on: withOutcome.outcome_gap.rejected_published_on || null,
+          }
+        : {}),
     },
   };
 }
+
+/** Re-export for tests / flywheel class measurement. */
+export { measureExamTemporalIncoherence, outcomeBelongsToExamCycle, listAggregateBelongsToExamCycle };
 
 /** Closed annual rows retained so list_aggregate joins survive FY snapshot roll-forward. */
 export function normalizeListDepthClosed(row) {
@@ -663,6 +696,7 @@ export function buildArtifact({
   const afterDensifyStats = feeSalaryNonNullStats(records);
   const listSource = listAggregates?.source || activeList.source;
   const listJoinedCount = records.filter((e) => e.list_aggregate && Number(e.list_aggregate.list_count) > 0).length;
+  const cycleCoherence = measureExamTemporalIncoherence(records);
   const sources = [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source];
   if (annualHistory?.source) sources.push(annualHistory.source);
   if (noeDensify?.source) sources.push(noeDensify.source);
@@ -701,6 +735,14 @@ export function buildArtifact({
       },
     },
     outcomes: buildOutcomes({ outcomes }),
+    exam_cycle_coherence: {
+      metric: cycleCoherence.metric,
+      exam_cycle_temporal_incoherence_count: cycleCoherence.exam_cycle_temporal_incoherence_count,
+      exam_count: cycleCoherence.exam_count,
+      rate: cycleCoherence.rate,
+      // Compact findings for receipts (exam numbers only — no PII).
+      incoherent_exam_numbers: cycleCoherence.findings.map((f) => f.exam_number).filter(Boolean),
+    },
     list_aggregates: {
       source: {
         id: listSource.id || "dcas-active-civil-service-list",

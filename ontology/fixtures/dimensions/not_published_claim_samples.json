@@ -152,7 +152,7 @@
         "historical": { "size": 12, "not_published": 2 },
         "non_null_examples": 19,
         "public_source_has_data": true,
-        "public_source_evidence": "Build-time dcas_exam_outcomes artifact joins exam 6125 with non-null aggregates.",
+        "public_source_evidence": "Build-time dcas_exam_outcomes artifact joins exam 6311 with non-null aggregates.",
         "classification_hint": "healthy"
       }
     },

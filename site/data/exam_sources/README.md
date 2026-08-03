@@ -64,8 +64,14 @@ Sources and refresh rules:
   snapshot from NYC DCAS publications. This is **not** an applicant-level feed:
   only counts are kept (applicants, eligible-list size, certifications, hires).
   `tools/build_staffing_exams.mjs` joins each row onto exam cards by `exam_number`
-  at build time; exams without annual or list depth carry an explicit class-(a)
-  not-yet-ingested gap (public sources exist — not a false city-withhold).
+  at build time **only when cycle-coherent**: for non-continuous exams,
+  `published_on` must be strictly after `application_end`. Mid-window post-list
+  joins are refused (exam numbers name one filing cycle). Exams without annual
+  or list depth carry an explicit class-(a) not-yet-ingested gap (public sources
+  exist — not a false city-withhold). Continuous / walk-in filing is exempt only
+  when the source labels it. Class measurement:
+  `exam_cycle_temporal_incoherence_count` on the staffing artifact + flywheel
+  data-integrity dimension.
 
 Run `node tools/build_staffing_exams.mjs --refresh` to refresh the Open Data
 snapshots and rebuild the client artifact. The DCAS current-page snapshot remains
