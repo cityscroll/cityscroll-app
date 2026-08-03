@@ -154,11 +154,10 @@ effect on the next daily run.
 
 Empty lifecycle slots say **which kind of gap** they are: not yet joined from a public
 source, or not published by the city at all — never a blank “unknown.” The
-[Data page](https://cityscroll.org/data.html) shows the current source-contract register: live
-sources, materialization tier, disabled entries, and freshness policy per source. It is the
-system inventory for what feeds are in use, not just one dataset’s aggregates.
+[API page](https://cityscroll.org/api.html) links the public delivery surfaces and
+describes what feeds are live and how they are used.
 
-[![The Data page — source-contract registry and freshness tiers](docs/readme/data-page.png)](https://cityscroll.org/data.html)
+[![API and feed surfaces](docs/readme/data-page.png)](https://cityscroll.org/api.html)
 
 ---
 

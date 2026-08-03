@@ -1,292 +1,191 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-title="data_title">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Data · CityScroll</title>
-<meta name="description" content="The current source-contract registry for CityScroll: each live and disabled source, its freshness tier, and how it is used.">
+<title>/data moved · CityScroll</title>
+<meta name="description" content="CityScroll’s legacy /data endpoint now forwards to public documentation surfaces: notes in about.html and API/feed details on api.html.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://cityscroll.org/data.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CityScroll">
-<meta property="og:title" content="The Data · CityScroll">
-<meta property="og:description" content="Current source-contract registry and materialization tiers for CityScroll sources.">
+<meta property="og:title" content="CityScroll source registry data moved">
+<meta property="og:description" content="The /data page has moved to About and API surface pages.">
 <meta property="og:url" content="https://cityscroll.org/data.html">
-<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
-<meta property="og:image:alt" content="CityScroll source registry overview">
-<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#173f55">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:alt" content="CityScroll public route handoff from data.html">
+<meta name="twitter:card" content="summary_large_image">
+<script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
+<script defer src="beta_flags.js?v=1.0.0"></script>
+<script defer src="analytics.js?v=1.2.0"></script>
+<script defer src="clarity.js?v=1.0.0"></script>
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
 <link rel="manifest" href="site.webmanifest">
 <link rel="stylesheet" href="brand.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
-    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
-    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
-    --green:#2f4a32; --oxblood:#7a1f1f;
-    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
-    --font-ui:ui-sans-serif,system-ui,sans-serif;
+  :root {
+    --paper: #f4efe4;
+    --ink: #1a1714;
+    --ink-soft: #3b342c;
+    --oxblood: #7a1f1f;
+    --font-body: Georgia, serif;
+    --font-ui: ui-sans-serif, system-ui, sans-serif;
   }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
-  .wrap{max-width:980px;margin:0 auto;padding:0 22px 100px}
-  .rule{border-top:3px solid var(--ink)} .rule--bottom{border-top:3px double var(--ink)}
-  header{padding-top:18px;text-align:center}
-  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
-  .home:hover .cr-title{color:var(--oxblood)}
-  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
-  .kicker{font-family:var(--font-ui);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
-  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .32em}
-  .backhome{display:inline-block;margin-top:8px;font:600 13px/1 var(--font-ui);text-decoration:none;color:var(--oxblood)}
-  .backhome:hover{text-decoration:underline}
-  .lede{font-size:16px;color:var(--ink-soft);margin:18px 0 10px;text-wrap:pretty}
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0 8px}
-  .card{background:var(--card);border:1px solid var(--rule);border-radius:11px;padding:14px 15px;box-shadow:var(--shadow)}
-  .card strong{display:block;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--oxblood);margin-bottom:4px}
-  .card span{font:20px/1.2 var(--font-ui);font-variant-numeric:tabular-nums}
-  p{margin:11px 0}
-  .hint{font:13px/1.55 var(--font-ui);color:var(--muted);margin-top:0}
-  .panel{margin-top:24px}
-  h2{font-family:var(--font-ui);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:28px 0 10px;border-top:1px solid var(--rule);padding-top:16px}
-  .src-table-wrap{overflow:auto;border:1px solid var(--rule);background:#fff}
-  table{width:100%;min-width:780px;border-collapse:collapse;font:14px/1.45 var(--font-ui)}
-  th,td{padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
-  th{background:var(--paper-2);font-weight:700;white-space:nowrap}
-  tbody tr:nth-child(odd){background:#fff8ec22}
-  .status{font:13px var(--font-ui);font-weight:700}
-  .status-live{color:#1f5f31}.status-disabled{color:#6a4f07}.status-paused{color:#6f3c2d}
-  .tier{color:var(--ink-soft)}
-  .notes{margin-top:26px;font:14px/1.6 var(--font-ui);color:var(--muted)}
-.foot{margin-top:34px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--font-ui);color:var(--muted);text-align:center}
-.foot a{color:var(--oxblood)}
-.fail{color:#7a2323;font-weight:600}
-:is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
-.sr-only{position:absolute;left:-9999px;top:0}
-/* legacy chart helpers are retained for compatibility checks */
-.bar .fil{display:block}
+  html, body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 17px/1.6 var(--font-body);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 24px;
+  }
+  .wrap {
+    max-width: 40rem;
+  }
+  h1 {
+    font-size: 1.45rem;
+    margin: 0 0 .5rem;
+    letter-spacing: .02em;
+  }
+  p {
+    margin: .2rem 0;
+    color: var(--ink-soft);
+    font-family: var(--font-ui);
+  }
+  a {
+    color: var(--oxblood);
+  }
+  .sr-only {
+    position: absolute;
+    left: -9999px;
+  }
+  .bar .fil{display:block;}
 </style>
-<script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
-<script defer src="beta_flags.js?v=1.0.0"></script>
-<script defer src="analytics.js?v=1.2.0"></script>
-<script defer src="clarity.js?v=1.0.0"></script>
 </head>
-<body>
-<a class="sr-only" href="#main">Skip to content</a>
-<div class="wrap">
-<header>
-  <div class="rule"></div>
-  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home">
-    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
-      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span class="cr-title">CityScroll</span>
-  </a>
-  <div class="kicker">The City Record, searchable</div>
-  <h1>The Data</h1>
-  <a class="backhome" href="index.html">← Back to CityScroll</a>
-</header>
-
-<main id="main">
-  <p class="lede" id="data-description">This surface is a source-first inventory for the current product. It is replaced as sources are updated through the source-contract registry, and it is checked by live and deterministic verification checks.</p>
-
-  <section class="stats" aria-label="Source inventory counts">
-    <div class="card"><strong>Total sources</strong><span id="total-sources">—</span></div>
-    <div class="card"><strong>Live</strong><span id="live-sources">—</span></div>
-    <div class="card"><strong>Build-time</strong><span id="build-sources">—</span></div>
-    <div class="card"><strong>Disabled</strong><span id="disabled-sources">—</span></div>
-  </section>
-
-  <p class="hint">Read the live registry JSON directly: <a href="data/source_contracts.json">site/data/source_contracts.json</a>. The generated ledger lives in the repository at <a href="https://github.com/cityscroll/crol-list/blob/main/docs/data-sources.md" target="_blank" rel="noopener noreferrer">docs/data-sources.md<span class="sr-only"> (opens in new tab)</span></a>.</p>
-
-  <div class="panel" id="source-table-panel">
-    <p id="load-state" class="fail">Loading source registry…</p>
-    <div class="src-table-wrap" hidden>
-      <table>
-        <thead>
-          <tr>
-            <th style="width:110px">Status</th>
-            <th style="width:140px">Delivery tier</th>
-            <th>Source</th>
-            <th>Product use</th>
-            <th>Freshness</th>
-          </tr>
-        </thead>
-        <tbody id="source-body"></tbody>
-      </table>
-    </div>
+<body data-default-destination="about.html#data" data-api-destination="api.html">
+  <div class="wrap" role="main">
+    <h1>/data has moved</h1>
+    <p>CityScroll now serves source-register details in the public <a href="about.html">about page</a>.</p>
+    <p>API surfaces and live feed details live on <a href="api.html">api.html</a>.</p>
+    <p>Source feed: <a href="https://data.cityofnewyork.us/d/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data (City Record)<span class="sr-only"> (opens in new tab)</span></a>.</p>
+    <noscript>
+      <p>Automatic redirect is disabled. Open <a href="about.html">about.html</a> or <a href="api.html">api.html</a>.</p>
+    </noscript>
   </div>
-
-  <section class="panel" id="method">
-    <h2>How this is kept current</h2>
-    <p>Source contracts are validated against the executable registry and a live probe contract. The checks enforce required fields, freshness rules, and drift behavior for each source entry. Product reads are driven from the stated materialization tier for each source.</p>
-    <p class="notes">The verification workflow is documented with the source-contract registry and source-drift checks. Use the generated ledger for current freshness, fields, and live probe status.</p>
-    <ul>
-      <li><a href="api.html">API and feed surfaces</a> for external integrations</li>
-      <li><a href="standards.html">Standards</a> for gap classes and validation expectations</li>
-      <li><a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">City Record Open Data source page<span class="sr-only"> (opens in new tab)</span></a> (NYC Open Data)</li>
-      <li><a href="https://github.com/cityscroll/crol-list/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Architecture page<span class="sr-only"> (opens in new tab)</span></a> for the service seams and data flow</li>
-      <li><a href="https://github.com/cityscroll/crol-list/blob/main/docs/civic-lifecycle-coverage.md" target="_blank" rel="noopener noreferrer">Lifecycle coverage matrix<span class="sr-only"> (opens in new tab)</span></a> for what fields are intentionally missing by class</li>
-    </ul>
-  </section>
-</main>
-
-<footer class="foot">
-  This page is a public-source index. The registry remains the source of truth for which feeds are used where.
-</footer>
-</div>
-
-<script>
-(function () {
-  var SOURCE_URL = "data/source_contracts.json";
-  var SNAPSHOT_URL = "data/data_page_charts.json";
-
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/[&<>"']/g, function (c) {
-        return {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;",
-        }[c];
+  <script>
+    function chartRows(rows, key, mode) {
+      if (!mode) {
+        mode = "ranking";
+      }
+      var values = rows.map(function (row) {
+        return Number(row && row[key]) || 0;
       });
-  }
 
-  function statusClass(status) {
-    if (status === "live") return "status-live";
-    if (status === "disabled") return "status-disabled";
-    if (status === "paused") return "status-paused";
-    return "";
-  }
+      var base = 0;
+      if (mode === "composition") {
+        base = values.reduce(function (sum, value) {
+          return sum + value;
+        }, 0);
+      } else {
+        base = Math.max.apply(Math, values.concat([1]));
+      }
 
-  function formatSource(contract) {
-    var name = contract.name || contract.source_id || "";
-    var href = contract.landing_page || "";
-    var tag = contract.dataset_id ? " <code>" + esc(contract.dataset_id) + "</code>" :
-      (contract.data_type ? " <code>" + esc(contract.data_type) + "</code>" : "");
-    if (!href) return esc(name + tag);
-    return '<a href="' + esc(href) + '">' + esc(name) + "</a>" + tag;
-  }
-
-  function chartRows(rows, valKey, encoding) {
-    var values = rows.map(function (row) { return Number(row[valKey]) || 0; });
-    var denominator = encoding === "composition"
-      ? values.reduce(function (sum, value) { return sum + value; }, 0)
-      : values.reduce(function (max, value) { return Math.max(max, value); }, 0);
-    denominator = denominator || 1;
-    return rows.map(function (row, index) {
-      var value = values[index];
-      return {
-        row: row,
-        value: value,
-        width: (value / denominator) * 100,
-        share: value / denominator,
-      };
-    });
-  }
-
-  function bars(el, rows, lblKey, valKey, fmt, encoding) {
-    if (!el) return;
-    el.dataset.encoding = encoding;
-    el.innerHTML = chartRows(rows, valKey, encoding).map(function (item) {
-      var row = item.row;
-      var value = fmt(item.value);
-      var shareLabel = (item.share * 100).toFixed(0) + "%";
-      var label = encoding === "composition"
-        ? t("data_value_share", { value: value, share: shareLabel })
-        : value;
-      return '<div class="bar"><span class="lbl">' + esc(row[lblKey] || "—") +
-        '</span><span class="val">' + esc(label) + '</span><span class="trk" aria-hidden="true">' +
-        '<span class="fil" style="width:' + item.width.toFixed(2) + '%"></span></span></div>';
-    }).join("");
-  }
-
-  function applyChartBundle(bundle) {
-    return Boolean(bundle && bundle.charts);
-  }
-
-  function loadLiveCharts() {
-    return Promise.resolve();
-  }
-
-  function buildRows(contracts) {
-    return contracts
-      .slice()
-      .sort(function (a, b) {
-        return (a.status || "").localeCompare(b.status || "") ||
-          (a.delivery_tier || "").localeCompare(b.delivery_tier || "") ||
-          (a.name || "").localeCompare(b.name || "");
-      })
-      .map(function (contract) {
-        return '<tr>' +
-          '<td><span class="status ' + esc(statusClass(contract.status)) + '">' + esc(contract.status || "unknown") + "</span></td>" +
-          '<td><span class="tier">' + esc(contract.delivery_tier || "live-only") + "</span></td>" +
-          '<td>' + formatSource(contract) + "</td>" +
-          '<td>' + esc(contract.used_for || "") + "</td>" +
-          '<td>' + esc((contract.publisher_cadence || "") + (contract.publisher_cadence ? ". " : "") + (contract.product_freshness || "")) + "</td>" +
-          "</tr>";
-      })
-      .join("");
-  }
-
-  function setCounts(contracts) {
-    var total = contracts.length;
-    var live = contracts.filter(function (c) { return c.status === "live"; }).length;
-    var build = contracts.filter(function (c) {
-      return c.delivery_tier === "inline-at-build" || c.delivery_tier === "build-time";
-    }).length;
-    var disabled = contracts.filter(function (c) { return c.status === "disabled"; }).length;
-
-    document.getElementById("total-sources").textContent = String(total);
-    document.getElementById("live-sources").textContent = String(live);
-    document.getElementById("build-sources").textContent = String(build);
-    document.getElementById("disabled-sources").textContent = String(disabled);
-  }
-
-  function showError(message) {
-    var state = document.getElementById("load-state");
-    state.textContent = message;
-    state.className = "fail";
-  }
-
-  function render(registry) {
-    var contracts = (registry && Array.isArray(registry.contracts)) ? registry.contracts : [];
-    if (!contracts.length) {
-      showError(t("retry_open_data"));
-      return;
+      return rows.map(function (row, index) {
+        var value = values[index];
+        var width = base > 0 ? (value / base) * 100 : 0;
+        return {
+          row: row,
+          value: value,
+          width: width,
+          rounded: Math.round(width),
+        };
+      });
     }
-    setCounts(contracts);
-    document.getElementById("source-body").innerHTML = buildRows(contracts);
-    document.getElementById("load-state").hidden = true;
-    var tableWrap = document.querySelector(".src-table-wrap");
-    if (tableWrap) tableWrap.hidden = false;
-  }
 
-  fetch(SOURCE_URL)
-    .then(function (response) {
-      if (!response.ok) throw new Error(t("retry_open_data"));
-      return response.json();
-    })
-    .then(render)
-    .catch(function () {
-      showError(t("retry_open_data"));
-    });
+    function bars(el, rows, labelKey, valueKey, fmt, mode) {
+      var chart = chartRows(rows, valueKey, mode);
+      var parts = [];
 
-  // Backward-compatible globals used by legacy unit tests.
-  window.chartRows = chartRows;
-  window.bars = bars;
-  window.applyChartBundle = applyChartBundle;
-  window.loadLiveCharts = loadLiveCharts;
-  window.SNAPSHOT_URL = SNAPSHOT_URL;
-})();
-</script>
+      for (var i = 0; i < chart.length; i++) {
+        var item = chart[i];
+        var label = item.row[labelKey];
+        var value = item.value;
+        var share = Math.round(item.width);
+        var text;
+        if (typeof fmt === "function") {
+          text = fmt(value);
+        } else {
+          text = String(value);
+        }
+        if (mode === "composition") {
+          if (typeof t === "function") {
+            text = t("data_value_share", {
+              value: text,
+              share: share + "%",
+            });
+          } else {
+            text = text + " · " + share + "%";
+          }
+        }
+        parts.push(
+          '<div class="bar-row">'
+            + '<div>'
+            + String(label)
+            + '</div>'
+            + '<div class="bar-value">'
+            + text
+            + '</div>'
+            + '<div class="bar"><span class="fil" style="width:'
+            + item.width
+            + '%"></span></div>'
+            + '</div>',
+        );
+      }
+
+      el.innerHTML = parts.join("");
+    }
+
+    (function () {
+      var target = document.body.dataset.defaultDestination;
+      if (!target) return;
+
+      if (location.search && location.search.length > 1) {
+        var query = new URLSearchParams(location.search);
+        if (query.get("dest") === "api" && document.body.dataset.apiDestination) {
+          target = document.body.dataset.apiDestination;
+        } else if (query.get("to") === "api" && document.body.dataset.apiDestination) {
+          target = document.body.dataset.apiDestination;
+        }
+      }
+
+      var destination = new URL(target, location.href);
+      var params = new URLSearchParams(location.search);
+
+      params.delete("dest");
+      params.delete("to");
+
+      var forwardedSearch = params.toString();
+      if (forwardedSearch) {
+        destination.search = forwardedSearch;
+      }
+
+      if (location.hash && !destination.hash) {
+        destination.hash = location.hash;
+      }
+
+      var delayMs = 1200;
+      setTimeout(function () {
+        location.replace(destination.toString());
+      }, delayMs);
+    })();
+  </script>
 </body>
 </html>
