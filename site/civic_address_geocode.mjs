@@ -213,8 +213,10 @@ export function geocodeFromPlaceOrRow(area = null, row = null) {
 }
 
 /**
- * Approximate polygon / district centroid from a boundary-layer district object.
+ * Representative point for a boundary-layer district polygon.
  * Prefers bbox center (stable, cheap); falls back to outer-ring mean.
+ * Used only as a density join input (CD → council PIP), not as a published
+ * geometry claim.
  * @returns {{ lat:number, lon:number }|null}
  */
 export function districtCentroid(district) {
