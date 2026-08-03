@@ -1896,7 +1896,7 @@
     std_timeline_entry_html: "Stan na {date}: {matched} z {total} języków Ustawy lokalnej 30 było w przełączniku. Cel dostępności: {city} dziś, przechodzi na {next} do {nextdate} dla podmiotów stanu Nowy Jork.",
     std_timeline_loading: "Wczytywanie migawek…",
     std_timeline_fail: "Nie udało się teraz wczytać historii migawek — odśwież, aby spróbować ponownie.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">O nas</a> · <a href=\"data.html\">Dane</a> · <a href=\"index.html\">Strona główna</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">O nas</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">Dziennik zmian</a> · <a href=\"index.html\">Strona główna</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "Kariera w administracji miasta",
     staffing_pathways_heading: "Wybierz następny krok",

@@ -29,8 +29,8 @@ on that axis — cross-domain × real actionability. Examples point at shipping 
 Agency profiles are more than a City Record notice list. A linked-object panel groups
 **contracts and awards, rezonings and tax-lot projects, rulemakings, and hearings** for the
 same agency — each object named, dated when known, and stamped with source provenance so you
-can see *why* it is linked. Person-level vote rows stay honest when the city has not yet
-published joinable person data on the matched path.
+can see *why* it is linked. District context, vendor links, and meeting outcomes stay connected
+when the source graph has enough confidence.
 
 This is the product’s clearest “one real-world organization, every domain it touches”
 surface — the scatter of Open Data portals does not offer it.
@@ -62,7 +62,7 @@ notice and joined portals:
 
 Browse more open RFPs: [Money · open solicitations closing this week](https://cityscroll.org/#money?mode=open&closing=week)
 
-### 3. Phase-grouped timelines — dense civic histories that still read clearly
+### 3. Phase-grouped timelines and predictions — dense civic histories with explicit uncertainty
 
 Long paper trails collapse onto **canonical phase walls** instead of a flat milestone dump:
 
@@ -74,6 +74,9 @@ Long paper trails collapse onto **canonical phase walls** instead of a flat mile
 *   **PIN matter pages:** every City Record stage that shares the identifier, plus Checkbook
     registration and paid-to-date, under the same procurement phases so multi-year renewals
     read as one contract story.
+*   **Predictions:** statutory and lifecycle predictions are shown with method and confidence
+    labels (for example, ULURP statutory clocks and contract-renewal forecasts), never as certain
+    outcomes.
 
 **Live examples:**
 
@@ -83,7 +86,7 @@ Long paper trails collapse onto **canonical phase walls** instead of a flat mile
 *   [21st Avenue bridge engineering · PIN `84124P0003001`](https://cityscroll.org/#matter/84124P0003001)
 *   [Timbale Terrace rezoning (`2022M0258`)](https://cityscroll.org/#land/2022M0258)
 
-[![A procurement lifecycle timeline joining City Record, Checkbook NYC, and PASSPort on one notice page](docs/readme/procurement-lifecycle.png)](https://cityscroll.org/#notice/20260724018)
+[![A procurement timeline joining City Record, Checkbook NYC, PASSPort, and OCP on one notice page](docs/readme/procurement-lifecycle.png)](https://cityscroll.org/#notice/20260724018)
 
 ### 4. Follow the money across systems that don’t link to each other
 
@@ -94,7 +97,7 @@ as labeled assertions, not a silently chosen “winner.”
 
 **Live example:** [Award with registration + payments joined](https://cityscroll.org/#notice/20240723114)
 
-### 5. Entity-linked vendors — one firm across every agency that names it
+### 5. Entity-linked vendors and agencies — one object across every mention
 
 Vendor profiles resolve name variants (punctuation, casing, legal suffixes), total awards
 across agencies, list every notice that names the firm, and attach **Doing Business Search**
@@ -106,7 +109,19 @@ cross-domain agency intelligence: identity first, then every published trail.
 
 [![Vendor profile resolving four name variants, $184M across 50 awards and six agencies](docs/readme/vendor-profile.png)](https://cityscroll.org/#vendor/Community%20Mediation%20Services%2C%20Inc.)
 
-### 6. Hearings that answer “what was decided?”
+### 6. District-aware maps and filters — same decision context by place
+
+District boundaries come from committed geometry layers, then every matching domain view applies
+the same place filters without repeated live geocoding:
+
+*   **Land and property:** district-first discovery for ULURP, disposition, and map-based route
+    entry points.
+*   **Meetings and alerts:** hearing and notice workflows can stay in the same district slice as you
+    navigate between timeline, alert, and profile routes.
+*   **Map-first workflow:** address search, neighborhood filters, and BBL-driven views stay in one
+    source-of-truth location frame.
+
+### 7. Hearings that answer “what was decided?”
 
 Council hearing notices join **Legistar** agenda trees: matters, actions, votes, and
 attachments on a matter-centric outcomes view. Non-Council hearings keep the process spine
@@ -115,7 +130,7 @@ citywide machine feed exists — never a fake vote.
 
 **Live example:** [Council hearing with matched agenda → matter → vote spine](https://cityscroll.org/#notice/20260706036)
 
-### 7. Rules comment windows while they are still open
+### 8. Rules comment windows while they are still open
 
 Agency Rules notices carry a lifecycle spine enriched from the **NYC Rules** feed: proposal,
 hearing, comment close, adoption, and effective dates — with official comment links when the
@@ -123,7 +138,7 @@ feed joins. Same “do something while the window is open” posture as solicita
 
 **Live example:** [FHV / taxi parking rules · comment window](https://cityscroll.org/#notice/20260714029)
 
-### 8. Morning digests when something you care about appears
+### 9. Morning digests when something you care about appears
 
 Describe a watch in plain English (or build one on the Alerts tab), confirm via double
 opt-in, and receive a morning email when new matches appear — in your chosen language.
@@ -139,10 +154,10 @@ effect on the next daily run.
 
 Empty lifecycle slots say **which kind of gap** they are: not yet joined from a public
 source, or not published by the city at all — never a blank “unknown.” The
-[Data page](https://cityscroll.org/data.html) shows live section totals and procurement mix
-from Open Data, with data-entry quirks called out rather than hidden.
+[API page](https://cityscroll.org/api.html) links the public delivery surfaces and
+describes what feeds are live and how they are used.
 
-[![The Data page — live per-section counts, procurement mix, and data-quality notes](docs/readme/data-page.png)](https://cityscroll.org/data.html)
+[![API and feed surfaces](docs/readme/data-page.png)](https://cityscroll.org/api.html)
 
 ---
 
@@ -265,22 +280,20 @@ official plan forecasts until a source passes the executable contract.
 
 ## Under the hood
 
-This repository holds the complete system: a static client (`site/`) and a serverless
-Cloudflare Worker backend (`worker/`) that handles email alerts, feeds, public metrics,
-edge materializations (procurement lifecycles, PASSPort, meeting outcomes, ZAP outcomes,
-vendor profiles, cross-domain entity intelligence), and the plain-English search assistant.
-Hot paths prefer CityScroll-owned materializations first and fall back to live Open Data
-when a row is not yet cached — including prebuilt award, ZAP project, and tax-lot (BBL)
-lookups so joined detail pages stay fast without multi-source fan-out on every click.
-Civil-service exam sources are normalized at build time into `site/data/staffing_exams.json`,
-so career exploration needs one small static file and no runtime API fan-out. Source
-provenance and refresh rules live in
-[`site/data/exam_sources/`](site/data/exam_sources/README.md). The project is designed to be
-forked and pointed at any city's open-data portal.
+CityScroll is a two-part product:
 
-For the code map and how the pieces fit together, see
-[CONTRIBUTING.md](CONTRIBUTING.md#geography-of-indexhtml); for backend routes, storage, and
-deploy steps, see [worker/README.md](worker/README.md).
+*   **Static interface layer (`site/`)** for route, list, and page navigation.
+*   **Cloudflare Worker layer (`worker/`)** for feeds, alerts, operator jobs, and materialized joins.
+
+For implementation detail that moves, use live surfaces instead of README duplication:
+
+*   [`docs/architecture.md`](docs/architecture.md): current code map, storage model, and service seams.
+*   [System methodology and standards](standards.html): validation, gap taxonomy, and source-contract discipline.
+*   [Methods and API entry points](api.html) and the generated source registry in
+    [docs/data-sources.md](docs/data-sources.md).
+
+The repository remains forkable for different jurisdictions; operational boundaries, runtime materialization
+tiers, and provenance rules are versioned in the canonical docs above.
 
 ---
 

@@ -1874,7 +1874,7 @@
     std_timeline_entry_html: "{date} 기준: 지역법 30호 언어 {total}개 중 {matched}개가 전환기에 있었습니다. 접근성 목표: 오늘은 {city}, 뉴욕주 기관의 경우 {nextdate}까지 {next}로 이동합니다.",
     std_timeline_loading: "스냅샷 불러오는 중…",
     std_timeline_fail: "지금은 스냅샷 기록을 불러올 수 없습니다 — 새로고침하여 다시 시도하세요.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">소개</a> · <a href=\"data.html\">데이터</a> · <a href=\"index.html\">홈</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">소개</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">변경 기록</a> · <a href=\"index.html\">홈</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "시정부 경력",
     staffing_pathways_heading: "다음 단계를 선택하세요",
