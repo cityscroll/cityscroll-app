@@ -11,6 +11,7 @@
 //   node tools/flywheel-run.mjs --fixture --emit ontology/queue/out --update-ledger
 //   node tools/flywheel-run.mjs --fixture --json
 //   node tools/flywheel-run.mjs --fixture --dimensions coverage,data-integrity
+//   node tools/flywheel-run.mjs --live --surface-load <sample.json> --dimensions surface-load
 
 import {
   existsSync,
@@ -37,10 +38,11 @@ const DEFAULT_LESSONS = join(ROOT, "ontology/engineering-lessons.md");
 function usage(message) {
   if (message) console.error(`error: ${message}`);
   console.error(`Usage:
-  node tools/flywheel-run.mjs --fixture --emit <dir> [options]
+  node tools/flywheel-run.mjs (--fixture | --live --surface-load <path>) --emit <dir> [options]
 
 Options:
   --dimensions a,b     subset of dimensions (default: all)
+  --surface-load path  rendered inventory produced by tools/sample_surface_load.py
   --ledger <path>      idempotency ledger (default: ontology/queue/ledger.json)
   --update-ledger      write merged ledger back to --ledger path
   --lessons <path>     engineering-lessons.md path (default: ontology/engineering-lessons.md)
@@ -62,6 +64,8 @@ Emits under --emit:
 function parseArgs(argv) {
   const args = {
     fixture: false,
+    live: false,
+    surfaceLoad: null,
     emit: null,
     dimensions: null,
     ledger: DEFAULT_LEDGER,
@@ -78,6 +82,8 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--fixture") args.fixture = true;
+    else if (a === "--live") args.live = true;
+    else if (a === "--surface-load") args.surfaceLoad = resolve(argv[++i]);
     else if (a === "--emit") args.emit = resolve(argv[++i]);
     else if (a === "--dimensions") {
       args.dimensions = String(argv[++i] || "")
@@ -147,8 +153,12 @@ function main(argv = process.argv.slice(2)) {
     usage();
     return;
   }
-  if (!args.fixture) {
-    usage("require --fixture (live mode is reserved for scheduled runners with the same inventories)");
+  if (args.fixture === args.live) {
+    usage("choose exactly one of --fixture or --live");
+    return;
+  }
+  if (args.live && !args.surfaceLoad) {
+    usage("--live requires --surface-load <path>");
     return;
   }
   if (!args.emit && !args.json) {
@@ -156,7 +166,10 @@ function main(argv = process.argv.slice(2)) {
     return;
   }
 
-  const inputs = loadDefaultInputs(ROOT, { mode: "fixture" });
+  const inputs = loadDefaultInputs(ROOT, {
+    mode: args.live ? "live" : "fixture",
+    surfaceLoadPath: args.surfaceLoad,
+  });
   const ledger = loadLedger(args.ledger);
   const result = runMultiFlywheel({
     inputs,

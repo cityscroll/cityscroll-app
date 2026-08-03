@@ -21,6 +21,7 @@ import { evaluateOntologyEnrichment } from "../ontology/dimensions/ontology_enri
 import { evaluateCoverage } from "../ontology/dimensions/coverage.mjs";
 import { evaluateCrossSourceConsistency } from "../ontology/dimensions/cross_source_consistency.mjs";
 import { evaluateLocationResolution } from "../ontology/dimensions/location_resolution.mjs";
+import { evaluateSurfaceLoad, surfaceLoadBreaches } from "../ontology/dimensions/surface_load.mjs";
 import { DIMENSION_IDS, DIMENSION_EVALUATORS } from "../ontology/dimensions/index.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
 
@@ -30,7 +31,7 @@ function loadJson(rel) {
   return JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
 }
 
-test("dimension catalog lists six evaluators", () => {
+test("dimension catalog lists seven evaluators", () => {
   assert.deepEqual(DIMENSION_IDS, [
     "data-integrity",
     "readability",
@@ -38,10 +39,62 @@ test("dimension catalog lists six evaluators", () => {
     "coverage",
     "cross-source-consistency",
     "location-resolution",
+    "surface-load",
   ]);
   for (const id of DIMENSION_IDS) {
     assert.equal(typeof DIMENSION_EVALUATORS[id], "function");
   }
+});
+
+test("surface-load stays quiet for the green fixture", () => {
+  const inventory = loadJson("ontology/fixtures/dimensions/surface_load.json");
+  const result = evaluateSurfaceLoad({ surface_load: inventory });
+  assert.equal(result.dimension, "surface-load");
+  assert.equal(result.metrics.surfaces_complete, 3);
+  assert.equal(result.metrics.surfaces_over_budget, 0);
+  assert.deepEqual(result.cards, []);
+});
+
+test("surface-load emits one evidence-rich card per measured bad surface", () => {
+  const overloaded = {
+    id: "staffing",
+    label: "Staffing",
+    route: "#people",
+    status: "ok",
+    action_required: true,
+    budgets: {
+      words: 2500,
+      links: 150,
+      buttons: 80,
+      max_verbatim_repeat: 25,
+      max_first_action_y: 900,
+    },
+    measured: {
+      words: 3100,
+      links: 95,
+      buttons: 23,
+      max_verbatim_repeat: 80,
+      verbatim_duplicates: [{ text: "The same explanatory sentence appears on every row", count: 80 }],
+      first_action_y: 5400,
+    },
+  };
+  assert.deepEqual(surfaceLoadBreaches({ ...overloaded, status: "incomplete" }), []);
+  const result = evaluateSurfaceLoad({
+    surface_load: {
+      measured_at: "2026-08-03T12:00:00Z",
+      viewport: { width: 1440, height: 900 },
+      definitions: [{}],
+      surfaces: [overloaded],
+    },
+  });
+  assert.equal(result.metrics.surfaces_over_budget, 1);
+  assert.equal(result.metrics.action_position_flags, 1);
+  assert.equal(result.metrics.duplication_flags, 1);
+  assert.equal(result.cards.length, 1);
+  assert.match(result.cards[0].id, /surface-load-surface-staffing$/);
+  assert.match(result.cards[0].title, /action-first/);
+  assert.equal(result.cards[0].evidence.breaches.length, 3);
+  assert.equal(result.cards[0].verify, "python3 tools/sample_surface_load.py --live --only staffing --gate");
 });
 
 test("computeNotPublishedRate combines recent + historical population", () => {
