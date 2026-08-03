@@ -122,6 +122,10 @@ test("scheduled monitor is dispatchable but never a pull-request or merge-queue 
   assert.match(workflow, /schedule:/);
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /node tools\/cutover_regression\.mjs/);
+  assert.match(workflow, /CROL_DEMO_LINK_IDS: exam-guide/);
+  assert.match(workflow, /attachment-metadata\/receipt/);
+  assert.match(workflow, /CROL_DEMO_LINK_IDS: notice-cannonsville-attachment/);
+  assert.doesNotMatch(workflow, /continue-on-error/);
   assert.doesNotMatch(workflow, /pull_request:|merge_group:|push:/);
 });
 
