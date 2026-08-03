@@ -1,0 +1,2 @@
+commercial_panels=0
+ncommercial_chars=0

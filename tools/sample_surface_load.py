@@ -167,6 +167,43 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
           const firstAction = actions
             .map(el => ({ el, y: el.getBoundingClientRect().top + scrollY }))
             .sort((a, b) => a.y - b.y)[0];
+          // Empty-state / apology density: count visible blocks that apologize for
+          // missing facts vs data-bearing blocks (wackness sampler).
+          const apologyPhrases = [
+            'not yet shown here',
+            'not available yet',
+            'needs both',
+            'nothing is invented here',
+            'no labeled minimum bid',
+            'market-basket discount',
+            'could not reach',
+            'the city does not publish',
+          ];
+          const blockEls = [...root.querySelectorAll(
+            '.stage, .box, .note, .lc-norecord, .property-commercial-detail > div, .chain-h, p, li, section'
+          )].filter(visible);
+          const empty_state_blocks = [];
+          let empty_blocks = 0;
+          let content_blocks = 0;
+          for (const el of blockEls) {
+            const text = normalize(el.innerText || '');
+            if (!text || text.length < 8) continue;
+            // Skip containers that only wrap the same text as a direct counted child.
+            const childSame = [...el.children].some(child => {
+              if (!visible(child)) return false;
+              return normalize(child.innerText || '') === text;
+            });
+            if (childSame) continue;
+            const lower = text.toLowerCase();
+            const apologyHits = apologyPhrases.filter(p => lower.includes(p));
+            const cls = String(el.className || '');
+            const isEmptyClass = /\\blc-norecord\\b/.test(cls)
+              || (/\\bnote\\b/.test(cls) && apologyHits.length > 0);
+            const role = (apologyHits.length || isEmptyClass) ? 'empty' : 'content';
+            if (role === 'empty') empty_blocks += 1;
+            else content_blocks += 1;
+            empty_state_blocks.push({ text: text.slice(0, 240), className: cls, role });
+          }
           return {
             words: words.length,
             links: links.length,
@@ -178,6 +215,10 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
             first_action_document_y: firstAction ? Math.round(firstAction.y) : null,
             document_height: Math.round(document.documentElement.scrollHeight),
             visible_loading_placeholders: [...root.querySelectorAll('.loading, .skel, .skl')].filter(visible).length,
+            empty_blocks,
+            content_blocks,
+            empty_state_blocks: empty_state_blocks.slice(0, 40),
+            visible_text: normalize(root.innerText).slice(0, 4000),
           };
         }""",
         [root_selector, action_selector],
@@ -186,6 +227,16 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
 
 def breach_rows(inventory: dict[str, Any]) -> list[str]:
     rows: list[str] = list()
+    apology_phrases = (
+        "not yet shown here",
+        "not available yet",
+        "needs both",
+        "nothing is invented here",
+        "no labeled minimum bid",
+        "market-basket discount",
+        "could not reach",
+        "the city does not publish",
+    )
     for surface in inventory.get("surfaces", []):
         if surface.get("status") != "ok":
             rows.append(f"{surface.get('id')}: incomplete sample")
@@ -202,6 +253,21 @@ def breach_rows(inventory: dict[str, Any]) -> list[str]:
                 rows.append(f"{surface['id']}: no resident-serving action matched")
             elif maximum is not None and action_y > maximum:
                 rows.append(f"{surface['id']}: first_action_y {action_y} > {maximum}")
+        empty_blocks = int(measured.get("empty_blocks") or 0)
+        content_blocks = int(measured.get("content_blocks") or 0)
+        total_blocks = empty_blocks + content_blocks
+        if total_blocks > 0 and empty_blocks / total_blocks > 0.5:
+            rows.append(
+                f"{surface['id']}: empty-state majority "
+                f"{empty_blocks}/{total_blocks} blocks"
+            )
+        text = str(measured.get("visible_text") or "").lower()
+        apology_hits = sum(text.count(p) for p in apology_phrases)
+        if apology_hits > 1:
+            rows.append(
+                f"{surface['id']}: apology phrases x{apology_hits} "
+                f"(threshold 1 per card)"
+            )
     return rows
 
 
