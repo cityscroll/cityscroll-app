@@ -11,4 +11,5 @@ export {
   digestItemAwareness,
   itemAwarenessHtml,
   temporalActionHtml,
+  adoptionLagAwarenessLine,
 } from "../../../site/digest_item_awareness.mjs";

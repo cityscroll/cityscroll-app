@@ -457,6 +457,40 @@ function deadlineStatusCopy(deadline, lang) {
  * @param {string} lang
  * @param {{ kind?: string, today?: string }} opts
  */
+
+/**
+ * Optional adoption-lag digest line for watched rules whose comment period has
+ * closed. Prefer a pre-rendered adoption_lag_line (band-transition gated by the
+ * caller via adoptionLagDigestItem). Falls back to a pattern-only line.
+ */
+export function adoptionLagAwarenessLine(row, opts = {}) {
+  if (row?.adoption_lag_line) return String(row.adoption_lag_line);
+  if (opts.line) return String(opts.line);
+  const pattern = row?.adoption_lag_pattern || opts.pattern || null;
+  if (!pattern || !pattern.n) return null;
+  const date = String(
+    pattern.comment_close
+    || row?.comment_close
+    || row?.nyc_rules?.comment_by_date
+    || opts.commentClose
+    || "",
+  ).slice(0, 10);
+  const closed = /^\d{4}-\d{2}-\d{2}$/.test(date) ? `Comment period closed ${date}. ` : "";
+  const n = pattern.n;
+  const year = pattern.since_year || "2013";
+  const median = pattern.median_days;
+  const lo = pattern.middle_half_low;
+  const hi = pattern.middle_half_high;
+  if (pattern.projection === "cohort_statistic_only" || median == null) {
+    const half = (lo != null && hi != null) ? ` middle half ${lo}–${hi} days.` : ".";
+    const med = median != null ? ` typically ${median} days to adoption,` : "";
+    return `${closed}Predicted based on ${n} similar rule adoptions since ${year} —${med}${half}`
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — median ${median} days to adoption, middle half ${lo}–${hi}.`;
+}
+
 export function itemAwarenessHtml(row, esc, lang = "en", opts = {}) {
   const awareness = digestItemAwareness(row, opts);
   const parts = [];
@@ -534,9 +568,19 @@ export function itemAwarenessHtml(row, esc, lang = "en", opts = {}) {
       `<ul style="margin:4px 0 6px;padding-left:18px;font-size:12px;color:#444">${lis}</ul>`,
     );
   } else if (!actionRendered && !status && !phase) {
-    return "";
+    // may still have adoption-lag line below
   }
 
+  // One-line adoption-lag pattern attribution after closed comment periods.
+  // Band-transition gating lives with the caller (adoptionLagDigestItem).
+  const lagLine = adoptionLagAwarenessLine(row, opts);
+  if (lagLine) {
+    parts.push(
+      `<div style="color:#5c564c;font-size:12px;margin:4px 0 2px">${esc(lagLine)}</div>`,
+    );
+  }
+
+  if (!parts.length) return "";
   return parts.join("");
 }
 
