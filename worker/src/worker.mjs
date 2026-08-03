@@ -31,7 +31,7 @@ import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
 import { handleInv } from "./inv.mjs";
-import { handleStats, countActiveSubs } from "./stats.mjs";
+import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
 import { handleEvent } from "./events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
@@ -295,6 +295,14 @@ export default {
       await ensureHistEra(env.ALERT_STATE, "watches_active", now);
     } catch (e) {
       console.error("watches_active snapshot failed (digest already ran):", String(e?.message || e));
+    }
+    // Public /stats: write-ahead edge prewarm so the first visitor after cache expiry does
+    // not pay the multi-second KV fan-out (measured cold ~3–4s; warm ~0.05s). Fail-soft.
+    try {
+      const r = await prewarmStats(env);
+      console.log("stats prewarm:", JSON.stringify(r));
+    } catch (e) {
+      console.error("stats prewarm failed (digest already ran):", String(e?.message || e));
     }
   },
 

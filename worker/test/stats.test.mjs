@@ -9,7 +9,7 @@ import {
   snapshotHistDay, ensureHistEra,
 } from "../src/lib/stats.mjs";
 import { handleRedirect } from "../src/redirect.mjs";
-import { countSubscriptionMetrics, handleStats } from "../src/stats.mjs";
+import { countSubscriptionMetrics, handleStats, prewarmStats, statsEdgeCacheKey } from "../src/stats.mjs";
 
 // A minimal in-memory KV double (get/put/list subset used by the stats helpers).
 function fakeKV(seed = {}) {
@@ -409,4 +409,19 @@ test("GET /stats includes a watches_active history block with the same recovered
   const body = await res.json();
   assert.deepEqual(body.history.watches_active.by_day, { "2026-07-14": 12, "2026-07-15": 14 });
   assert.equal(body.history.watches_active.live_from, "2026-07-14");
+});
+
+test("prewarmStats writes the public edge cache key (or reports no_cache_api offline)", async () => {
+  const env = { ALERT_STATE: fakeKV(), NL_METER: fakeKV(), SUBS: fakeKV() };
+  const result = await prewarmStats(env);
+  // Node unit runs have no caches.default; Workers runtime returns warmed:true.
+  if (typeof caches === "undefined") {
+    assert.equal(result.warmed, false);
+    assert.equal(result.reason, "no_cache_api");
+  } else {
+    assert.equal(result.warmed, true);
+    assert.equal(result.status, 200);
+  }
+  const key = statsEdgeCacheKey("https://api.cityscroll.org");
+  assert.match(key.url, /\/stats\?edge=watch-account-v1$/);
 });

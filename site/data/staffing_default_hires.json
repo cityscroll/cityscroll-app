@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "delivery_tier": "inline-at-build",
+  "generated_at": "2026-08-03T20:08:29.261Z",
+  "source": {
+    "name": "City Record Online — Changes in Personnel (APPOINTED)",
+    "dataset": "dg92-zbpx",
+    "url": "https://data.cityofnewyork.us/d/dg92-zbpx"
+  },
+  "query": {
+    "$select": "request_id,start_date,agency_name,short_title,additional_description_1",
+    "$where": "section_name='Changes in Personnel' AND short_title='APPOINTED'",
+    "$order": "start_date DESC, request_id DESC",
+    "$limit": "80",
+    "note": "Default Staffing appointments feed. Keyword search and payroll stay live."
+  },
+  "count": 80,
+  "notices": [
+    {
+      "request_id": "984089",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: ROSE,CHANILE V."
+    },
+    {
+      "request_id": "984088",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 56056; Reason For Change: APPOINTED; Salary: 43460.00; Employee Name: WHICHARD,JOCKLYEN S."
+    },
+    {
+      "request_id": "984084",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: PAUL,LINDSAY E."
+    },
+    {
+      "request_id": "984079",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 51274; Reason For Change: APPOINTED; Salary: 59359.00; Employee Name: ALEXANDER,SILKA M."
+    },
+    {
+      "request_id": "984077",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 52408; Reason For Change: APPOINTED; Salary: 84863.00; Employee Name: PHILLIPS,JAQUELIN L."
+    },
+    {
+      "request_id": "984076",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: HOUSTON,ANTHONY C."
+    },
+    {
+      "request_id": "984075",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/11/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: FELDER,ANTONIO D."
+    },
+    {
+      "request_id": "984067",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/07/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: ROBINSON,SHERON L."
+    },
+    {
+      "request_id": "984064",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: SAMUEL,RONELL A."
+    },
+    {
+      "request_id": "984063",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: WARD,NESTA  ."
+    },
+    {
+      "request_id": "984062",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: NEMBHARD,NACLAUJA D."
+    },
+    {
+      "request_id": "984057",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 31164; Reason For Change: APPOINTED; Salary: 32.17; Employee Name: CASTILLO,STEVEN  ."
+    },
+    {
+      "request_id": "984054",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: LENNARD,DOMARGIN L."
+    },
+    {
+      "request_id": "984052",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/26/2026; Provisional Status: Yes; Title Code: 12626; Reason For Change: APPOINTED; Salary: 71894.00; Employee Name: RIO,LINDSAY  ."
+    },
+    {
+      "request_id": "984051",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: ARNOLD,TERRENCE J."
+    },
+    {
+      "request_id": "984050",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 70810; Reason For Change: APPOINTED; Salary: 40480.00; Employee Name: WRIGHT,STEPHANI  ."
+    },
+    {
+      "request_id": "984049",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: DUNN,SHALAURI L."
+    },
+    {
+      "request_id": "984047",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MCFADDEN,GABRIEL L."
+    },
+    {
+      "request_id": "984042",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: DAVIS,DIELYN S."
+    },
+    {
+      "request_id": "984036",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 1005D; Reason For Change: APPOINTED; Salary: 190000.00; Employee Name: CHEN,BO  ."
+    },
+    {
+      "request_id": "984035",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: THOMPSON,ERIC  ."
+    },
+    {
+      "request_id": "984033",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/19/2026; Provisional Status: Yes; Title Code: 1002A; Reason For Change: APPOINTED; Salary: 98140.00; Employee Name: WEST,MARSHA N."
+    },
+    {
+      "request_id": "984029",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: RUBIO,CLYDSON A."
+    },
+    {
+      "request_id": "984028",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: ALLEN,SHA-TARA A."
+    },
+    {
+      "request_id": "984024",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MERCHANT JR,PHILLIP K."
+    },
+    {
+      "request_id": "984023",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 92005; Reason For Change: APPOINTED; Salary: 398.86; Employee Name: DIAL,KENNETH A."
+    },
+    {
+      "request_id": "984022",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: NELSON,AARON  ."
+    },
+    {
+      "request_id": "984021",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 12200; Reason For Change: APPOINTED; Salary: 41531.00; Employee Name: ALI,MANSOOR A."
+    },
+    {
+      "request_id": "984020",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: STANLEY,JAVELL J."
+    },
+    {
+      "request_id": "984019",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MYERS,KAHIEM S."
+    },
+    {
+      "request_id": "984018",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 90210; Reason For Change: APPOINTED; Salary: 41224.00; Employee Name: AGDOMAR,JEVON A."
+    },
+    {
+      "request_id": "984017",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 12158; Reason For Change: APPOINTED; Salary: 80196.00; Employee Name: COLON,CRISTALI B."
+    },
+    {
+      "request_id": "984013",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: SALVADOR,ABAYOMI  ."
+    },
+    {
+      "request_id": "984010",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 52408; Reason For Change: APPOINTED; Salary: 84863.00; Employee Name: SAMPLES,ERIN C."
+    },
+    {
+      "request_id": "984003",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MERILES DEMRY,IBRAHIM  ."
+    },
+    {
+      "request_id": "984001",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: GUZMAN,CYNTHIA  ."
+    },
+    {
+      "request_id": "983999",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: FRANCOIS,NAJHA  ."
+    },
+    {
+      "request_id": "983995",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 92510; Reason For Change: APPOINTED; Salary: 346.56; Employee Name: DIWAN,ALMAS B."
+    },
+    {
+      "request_id": "983994",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MCCULLOUGH JR,JEFFREY E."
+    },
+    {
+      "request_id": "983992",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MOISE,FIDNEY  ."
+    },
+    {
+      "request_id": "983988",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: CAESAR,BRITTANY A."
+    },
+    {
+      "request_id": "983984",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: MAGNAN,SHANICE M."
+    },
+    {
+      "request_id": "983983",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "ADMIN FOR CHILDREN'S SVCS",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: JACKSON,JONATHAN A."
+    },
+    {
+      "request_id": "983979",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: XOCHIMITL,NAIDELY  ."
+    },
+    {
+      "request_id": "983978",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/08/2026; Provisional Status: Yes; Title Code: 70205; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: SCOTT,MALAYSIA  ."
+    },
+    {
+      "request_id": "983975",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: VAIRO,PETER A."
+    },
+    {
+      "request_id": "983974",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TRAUTMAN,MATTHEW T."
+    },
+    {
+      "request_id": "983972",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TORRES TEJADA,LORYN E."
+    },
+    {
+      "request_id": "983970",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROJAS,EDGAR  ."
+    },
+    {
+      "request_id": "983967",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: VELEZ,VERONICA A."
+    },
+    {
+      "request_id": "983964",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: REYES PAULINO,ABEL  ."
+    },
+    {
+      "request_id": "983963",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/08/2026; Provisional Status: Yes; Title Code: 70205; Reason For Change: APPOINTED; Salary: 19.14; Employee Name: THOMAS,GEETHU V."
+    },
+    {
+      "request_id": "983962",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 42288.00; Employee Name: MILLS,CHEYENE M."
+    },
+    {
+      "request_id": "983961",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TUCCI,SEAN A."
+    },
+    {
+      "request_id": "983960",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANCHEZ,ANGEL M."
+    },
+    {
+      "request_id": "983957",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SOLAK,SERTAC  ."
+    },
+    {
+      "request_id": "983955",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SANCHEZ,JUAN J."
+    },
+    {
+      "request_id": "983954",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: PABLU,MISBAHUR R."
+    },
+    {
+      "request_id": "983953",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RAJA,SHAYAAN Z."
+    },
+    {
+      "request_id": "983951",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: PEREZ,JAIME  ."
+    },
+    {
+      "request_id": "983950",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SOTO,ESVIN  ."
+    },
+    {
+      "request_id": "983949",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: WANG,YILIN  ."
+    },
+    {
+      "request_id": "983946",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: YAP,ABIGAIL A."
+    },
+    {
+      "request_id": "983945",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: TRIPOLI,NINA M."
+    },
+    {
+      "request_id": "983944",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: PRENIQI,ADONIS  ."
+    },
+    {
+      "request_id": "983942",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: PEREZ,PHILLIP  ."
+    },
+    {
+      "request_id": "983941",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SCOTT,LAMONT R."
+    },
+    {
+      "request_id": "983940",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: ROJAS,BRIAN P."
+    },
+    {
+      "request_id": "983938",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RODRIGUEZ ARVEL,CHRISSDE  ."
+    },
+    {
+      "request_id": "983937",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RAMPERSAUD,TOTARAM  ."
+    },
+    {
+      "request_id": "983935",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: WALLACE,JAYLYN C."
+    },
+    {
+      "request_id": "983934",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "FIRE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/11/2026; Provisional Status: Yes; Title Code: 52287; Reason For Change: APPOINTED; Salary: 55075.00; Employee Name: FELDER,ANTONIO D."
+    },
+    {
+      "request_id": "983931",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/10/2026; Provisional Status: Yes; Title Code: 56314; Reason For Change: APPOINTED; Salary: 56647.00; Employee Name: SALMOND,SADARIE C."
+    },
+    {
+      "request_id": "983930",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RADONCIC,FIKRET  ."
+    },
+    {
+      "request_id": "983929",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: WHYTE,SHAVOY R."
+    },
+    {
+      "request_id": "983927",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: SYLVESTRE,MAQUINO  ."
+    },
+    {
+      "request_id": "983925",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "HRA/DEPT OF SOCIAL SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 10104; Reason For Change: APPOINTED; Salary: 43866.00; Employee Name: BEGUM,MARIUM  ."
+    },
+    {
+      "request_id": "983924",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: PIERRE LOUIS,FEDIA  ."
+    },
+    {
+      "request_id": "983923",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "DEPT. OF HOMELESS SERVICES",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 05/03/2026; Provisional Status: Yes; Title Code: 56058; Reason For Change: APPOINTED; Salary: 62868.00; Employee Name: CAMEJO,YAMID  ."
+    },
+    {
+      "request_id": "983921",
+      "start_date": "2026-05-22T00:00:00.000",
+      "agency_name": "POLICE DEPARTMENT",
+      "short_title": "APPOINTED",
+      "additional_description_1": "Effective Date: 04/22/2026; Provisional Status: Yes; Title Code: 70210; Reason For Change: APPOINTED; Salary: 55942.00; Employee Name: RAHMAN,KHONDOKE A."
+    }
+  ]
+}

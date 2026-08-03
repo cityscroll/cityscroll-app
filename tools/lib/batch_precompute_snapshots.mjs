@@ -3,6 +3,7 @@
 
 export const DATA_PAGE_DATASET = "dg92-zbpx";
 export const LAND_DEFAULT_DATASET = "hgx4-8ukb";
+export const CITY_RECORD_DATASET = "dg92-zbpx";
 export const SODA_BASE = "https://data.cityofnewyork.us/resource";
 
 // List-card fields only for the committed snapshot. project_brief stays off the
@@ -29,6 +30,39 @@ export const LAND_DEFAULT_DETAIL_SELECT = [...LAND_DEFAULT_LIST_FIELDS, "project
 
 export const LAND_DEFAULT_WHERE = "ulurp_non='ULURP' AND project_status='Active'";
 export const LAND_DEFAULT_LIMIT = 40;
+
+// Money default open RFP strip — list-card fields only on the committed snapshot so the
+// public PR surface does not republish publisher contact emails/phones from City Record.
+// Full SELECT (site/app/core.mjs) still loads on hybrid SODA refresh / detail select.
+export const MONEY_DEFAULT_LIST_FIELDS = Object.freeze([
+  "request_id",
+  "start_date",
+  "agency_name",
+  "type_of_notice_description",
+  "category_description",
+  "short_title",
+  "pin",
+  "contract_amount",
+  "vendor_name",
+  "due_date",
+  "selection_method_description",
+]);
+export const MONEY_DEFAULT_SELECT = MONEY_DEFAULT_LIST_FIELDS.join(",");
+/** Full detail select for live SODA paths (matches site/app/core.mjs SELECT). */
+export const MONEY_DEFAULT_DETAIL_SELECT = [
+  ...MONEY_DEFAULT_LIST_FIELDS,
+  "address_to_request",
+  "contact_name",
+  "contact_phone",
+  "email",
+  "additional_description_1",
+  "other_info_1",
+].join(",");
+export const MONEY_DEFAULT_LIMIT = 40;
+export const MONEY_AGENCIES_LIMIT = 600;
+export const STAFFING_HIRES_LIMIT = 80;
+export const STAFFING_HIRES_SELECT =
+  "request_id,start_date,agency_name,short_title,additional_description_1";
 
 export function yearAgoISO(now = new Date()) {
   const d = new Date(now.getTime() - 365 * 86400000);
@@ -145,6 +179,169 @@ export function isDefaultLandSearch({ status, boro, kw, communityDistrict, counc
   );
 }
 
+/** Calendar day for due_date floors (UTC date string YYYY-MM-DD). */
+export function calendarDayISO(now = new Date()) {
+  return new Date(now).toISOString().slice(0, 10);
+}
+
+export function moneyDefaultOpenWhere(now = new Date()) {
+  return `type_of_notice_description='Solicitation' AND due_date > '${calendarDayISO(now)}'`;
+}
+
+export function moneyDefaultOpenQuery(now = new Date()) {
+  return {
+    $select: MONEY_DEFAULT_SELECT,
+    $where: moneyDefaultOpenWhere(now),
+    $order: "due_date ASC",
+    $limit: String(MONEY_DEFAULT_LIMIT),
+  };
+}
+
+export function moneyAgenciesQuery() {
+  return {
+    $select: "agency_name",
+    $where: "section_name='Procurement' AND agency_name IS NOT NULL",
+    $group: "agency_name",
+    $order: "agency_name",
+    $limit: String(MONEY_AGENCIES_LIMIT),
+  };
+}
+
+export function staffingHiresQuery() {
+  return {
+    $select: STAFFING_HIRES_SELECT,
+    $where: "section_name='Changes in Personnel' AND short_title='APPOINTED'",
+    $order: "start_date DESC, request_id DESC",
+    $limit: String(STAFFING_HIRES_LIMIT),
+  };
+}
+
+/**
+ * Default Money tab: open solicitations, no agency/keyword/method/closing-week/NL filters,
+ * default due_date sort. Arbitrary filters stay live SODA.
+ */
+export function isDefaultMoneySearch({
+  mode,
+  agency,
+  kw,
+  methodSel,
+  closingWeek,
+  minAmount,
+  sort,
+  nlResolved,
+} = {}) {
+  const nl = nlResolved && typeof nlResolved === "object" ? nlResolved : {};
+  const hasNl =
+    Boolean(nl.category) ||
+    nl.maxAmount != null ||
+    nl.months != null ||
+    Boolean(nl.excludeSpecial);
+  return (
+    (mode || "open") === "open" &&
+    !agency &&
+    !String(kw || "").trim() &&
+    !methodSel &&
+    !closingWeek &&
+    !minAmount &&
+    !hasNl &&
+    // Default control value is "deadline" (soonest due_date ASC).
+    (!sort || sort === "deadline" || sort === "due" || sort === "due_date" || sort === "")
+  );
+}
+
+/** Drop snapshot rows whose due_date is no longer after today (stale build-day floor). */
+export function filterStillOpenNotices(rows, now = new Date()) {
+  const floor = calendarDayISO(now);
+  return (Array.isArray(rows) ? rows : []).filter((r) => {
+    const due = String(r?.due_date || "").slice(0, 10);
+    return due && due > floor;
+  });
+}
+
+export function projectToMoneyRow(row) {
+  if (!row || typeof row !== "object") return row;
+  const out = {};
+  for (const key of MONEY_DEFAULT_LIST_FIELDS) {
+    if (row[key] !== undefined) out[key] = row[key];
+  }
+  return out;
+}
+
+export function buildMoneyDefaultOpenSnapshot(rows, { now = new Date() } = {}) {
+  const list = Array.isArray(rows)
+    ? rows.slice(0, MONEY_DEFAULT_LIMIT).map(projectToMoneyRow)
+    : [];
+  return {
+    schema_version: 1,
+    delivery_tier: "inline-at-build",
+    generated_at: now.toISOString(),
+    open_as_of: calendarDayISO(now),
+    source: {
+      name: "City Record Online",
+      dataset: CITY_RECORD_DATASET,
+      url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET}`,
+    },
+    query: {
+      ...moneyDefaultOpenQuery(now),
+      note: "Default Money tab: open solicitations, all agencies, no keyword/method. List fields only; contact and body hydrate on live refresh.",
+    },
+    count: list.length,
+    notices: list,
+  };
+}
+
+export function buildMoneyAgenciesSnapshot(rows, { now = new Date() } = {}) {
+  const agencies = (Array.isArray(rows) ? rows : [])
+    .map((r) => (typeof r === "string" ? r : r?.agency_name))
+    .filter((name) => typeof name === "string" && name.trim())
+    .map((name) => name.trim());
+  // Stable unique order (SODA already groups; re-sort for determinism).
+  const unique = [...new Set(agencies)].sort((a, b) => a.localeCompare(b));
+  return {
+    schema_version: 1,
+    delivery_tier: "inline-at-build",
+    generated_at: now.toISOString(),
+    source: {
+      name: "City Record Online",
+      dataset: CITY_RECORD_DATASET,
+      url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET}`,
+    },
+    query: {
+      ...moneyAgenciesQuery(),
+      note: "Procurement agency dropdown on Money tab. Hybrid-refresh live SODA after first paint.",
+    },
+    count: unique.length,
+    agencies: unique,
+  };
+}
+
+export function buildStaffingHiresSnapshot(rows, { now = new Date() } = {}) {
+  const notices = (Array.isArray(rows) ? rows : []).slice(0, STAFFING_HIRES_LIMIT).map((row) => {
+    if (!row || typeof row !== "object") return row;
+    const out = {};
+    for (const key of STAFFING_HIRES_SELECT.split(",")) {
+      if (row[key] !== undefined) out[key] = row[key];
+    }
+    return out;
+  });
+  return {
+    schema_version: 1,
+    delivery_tier: "inline-at-build",
+    generated_at: now.toISOString(),
+    source: {
+      name: "City Record Online — Changes in Personnel (APPOINTED)",
+      dataset: CITY_RECORD_DATASET,
+      url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET}`,
+    },
+    query: {
+      ...staffingHiresQuery(),
+      note: "Default Staffing appointments feed. Keyword search and payroll stay live.",
+    },
+    count: notices.length,
+    notices,
+  };
+}
+
 export function projectToLandListRow(project) {
   if (!project || typeof project !== "object") return project;
   const row = {};
@@ -226,5 +423,23 @@ export async function fetchLandDefaultProjects(fetchImpl = fetch, opts = {}) {
   }
   const rows = await fetchJson(fetchImpl, sodaUrl(LAND_DEFAULT_DATASET, landDefaultQuery()));
   if (!Array.isArray(rows)) throw new Error("land default SODA returned a non-array");
+  return rows;
+}
+
+export async function fetchMoneyDefaultOpen(fetchImpl = fetch, now = new Date()) {
+  const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyDefaultOpenQuery(now)));
+  if (!Array.isArray(rows)) throw new Error("money default open SODA returned a non-array");
+  return rows;
+}
+
+export async function fetchMoneyAgencies(fetchImpl = fetch) {
+  const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, moneyAgenciesQuery()));
+  if (!Array.isArray(rows)) throw new Error("money agencies SODA returned a non-array");
+  return rows;
+}
+
+export async function fetchStaffingHires(fetchImpl = fetch) {
+  const rows = await fetchJson(fetchImpl, sodaUrl(CITY_RECORD_DATASET, staffingHiresQuery()));
+  if (!Array.isArray(rows)) throw new Error("staffing hires SODA returned a non-array");
   return rows;
 }
