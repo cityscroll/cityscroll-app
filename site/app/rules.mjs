@@ -31,16 +31,6 @@ function rulesExplorerCardHTML(entry, terms){
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const agency=entry.agency||r.agency_name||"";
   const scopeHtml=excerptHtml(r.additional_description_1,200);
-  const matched=new Set(entry.matched_phases||(processStage?[processStage]:[]));
-  const miniStepper=`<ol class="rules-mini-stepper rule-phase-stepper" aria-label="${escUiHtml(t("rules_process_stepper_aria"))}">${
-    RULES_PHASE_IDS.map((id,i)=>{
-      const isCurrent=processStage===id;
-      const isDone=!isCurrent&&matched.has(id);
-      const cls=isCurrent?"current":isDone?"done":"future";
-      const arrow=i<RULES_PHASE_IDS.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
-      return `<li><span class="lc-step ${cls}">${escUiHtml(t(RULES_PHASE_LABEL_KEYS[id]))}</span>${arrow}</li>`;
-    }).join("")
-  }</ol>`;
   const chainChip=entry.notice_count>1
     ? `<span class="tag asset">${escUiHtml(t("rules_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
@@ -110,7 +100,6 @@ function rulesExplorerCardHTML(entry, terms){
       <div class="ftype">${r.type_of_notice_description||""}${agency?" · "+pivotA(agencyHref(agency), agency):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${rbadges}
       ${processLine}
-      ${miniStepper}
       ${actionLead}
       <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
       ${siblingsHtml}
