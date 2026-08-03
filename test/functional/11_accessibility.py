@@ -14,6 +14,15 @@ we don't stop at the load state: we ACTIVATE each of the seven .tabbtn tabs in t
 re-run axe after each, catching violations (like unlabeled fields) that only exist once a
 panel is shown.
 
+Handoff shells (data.html, changelog.html) client-side location.replace to About/API.
+Axe on those races mid-navigation ("Execution context was destroyed"); destinations are
+already covered as about.html. Keep them out of PAGES (see #423). run_axe still retries
+once on context-destroyed so an activated index state that navigates does not red the gate.
+
+Context-carrying alert entry: after notice detail, activate "Watch this notice" (hash to
+#alerts?lens=…&notice=…) as its own state so the prefilled builder + digItemHTML preview
+are scanned.
+
 w9-09: the full audit (data/crol-a11y-full-q9) found its only two real failures — the
 critical #invname label and the serious .pin contrast — in states this file didn't drive
 at all: digest preview, notice detail, entity profiles, and the investigation workspace,
@@ -164,54 +173,75 @@ def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, 
              f"{len(info)} lesser finding(s) noted; wcag22aa={sorted(wcag22_rules)}")
 
 
-def run_focus_exposure(page, state_name, failures):
+def run_focus_exposure(page, state_name, failures, *, retry=True):
     """Approximate the SC 2.4.11 keyboard check across every rendered focus target."""
-    hidden = page.evaluate(
-        """() => {
-          const selector = [
-            'a[href]', 'button:not([disabled])', 'input:not([disabled]):not([type="hidden"])',
-            'select:not([disabled])', 'textarea:not([disabled])', 'summary',
-            '[tabindex]:not([tabindex="-1"])'
-          ].join(',');
-          const rendered = el => {
-            const style = getComputedStyle(el);
-            const rect = el.getBoundingClientRect();
-            const closed = el.closest('details:not([open])');
-            if (closed && !closed.querySelector('summary')?.contains(el)) return false;
-            return style.display !== 'none' && style.visibility !== 'hidden'
-              && rect.width > 0 && rect.height > 0;
-          };
-          const exposedAt = (el, x, y) => {
-            const top = document.elementFromPoint(x, y);
-            return top === el || (top && el.contains(top));
-          };
-          const findings = [];
-          for (const el of [...document.querySelectorAll(selector)].filter(rendered)) {
-            el.focus({preventScroll:false});
-            let exposed = false;
-            for (const rect of el.getClientRects()) {
-              const left = Math.max(0, rect.left), right = Math.min(innerWidth, rect.right);
-              const top = Math.max(0, rect.top), bottom = Math.min(innerHeight, rect.bottom);
-              if (right <= left || bottom <= top) continue;
-              const xs = [left + 1, (left + right) / 2, right - 1];
-              const ys = [top + 1, (top + bottom) / 2, bottom - 1];
-              if (xs.some(x => ys.some(y => exposedAt(el, x, y)))) {
-                exposed = true;
-                break;
+    try:
+        hidden = page.evaluate(
+            """() => {
+              const selector = [
+                'a[href]', 'button:not([disabled])', 'input:not([disabled]):not([type="hidden"])',
+                'select:not([disabled])', 'textarea:not([disabled])', 'summary',
+                '[tabindex]:not([tabindex="-1"])'
+              ].join(',');
+              const rendered = el => {
+                const style = getComputedStyle(el);
+                const rect = el.getBoundingClientRect();
+                const closed = el.closest('details:not([open])');
+                if (closed && !closed.querySelector('summary')?.contains(el)) return false;
+                return style.display !== 'none' && style.visibility !== 'hidden'
+                  && rect.width > 0 && rect.height > 0;
+              };
+              const exposedAt = (el, x, y) => {
+                const top = document.elementFromPoint(x, y);
+                return top === el || (top && el.contains(top));
+              };
+              const findings = [];
+              for (const el of [...document.querySelectorAll(selector)].filter(rendered)) {
+                // Skip #alerts hash links — activating them changes location.hash and would
+                // tear down this evaluate mid-loop. Those destinations are scanned as their
+                // own activated states (tab:alerts, alerts:context-carry).
+                const href = el.getAttribute('href') || '';
+                if (href.startsWith('#alerts')) continue;
+                el.focus({preventScroll:false});
+                let exposed = false;
+                for (const rect of el.getClientRects()) {
+                  const left = Math.max(0, rect.left), right = Math.min(innerWidth, rect.right);
+                  const top = Math.max(0, rect.top), bottom = Math.min(innerHeight, rect.bottom);
+                  if (right <= left || bottom <= top) continue;
+                  const xs = [left + 1, (left + right) / 2, right - 1];
+                  const ys = [top + 1, (top + bottom) / 2, bottom - 1];
+                  if (xs.some(x => ys.some(y => exposedAt(el, x, y)))) {
+                    exposed = true;
+                    break;
+                  }
+                }
+                if (!exposed) {
+                  findings.push({
+                    tag: el.tagName,
+                    id: el.id,
+                    cls: String(el.className || '').slice(0, 80),
+                    text: String(el.innerText || el.getAttribute('aria-label') || '').trim().slice(0, 80)
+                  });
+                }
               }
-            }
-            if (!exposed) {
-              findings.push({
-                tag: el.tagName,
-                id: el.id,
-                cls: String(el.className || '').slice(0, 80),
-                text: String(el.innerText || el.getAttribute('aria-label') || '').trim().slice(0, 80)
-              });
-            }
-          }
-          return findings;
-        }"""
-    )
+              return findings;
+            }"""
+        )
+    except Exception as err:
+        if retry and _is_context_destroyed(err):
+            step("warn", f"{state_name}: context destroyed during focus probe — reload and retry once",
+                 str(err).split("\n")[0][:160])
+            try:
+                page.reload(timeout=30000)
+                page.wait_for_load_state("load", timeout=20000)
+                page.wait_for_timeout(800)
+                _ensure_axe(page)
+            except Exception as restore_err:
+                step("FAIL", f"{state_name}: focus-probe restore failed", str(restore_err).split("\n")[0][:160])
+                failures.append((state_name, "focus-context-destroyed"))
+                return
+            return run_focus_exposure(page, state_name, failures, retry=False)
+        raise
     for item in hidden:
         detail = f"{item['tag']}#{item['id']}.{item['cls']} {item['text']!r}"
         step("FAIL", f"{state_name}: focus entirely obscured", detail)
@@ -271,6 +301,54 @@ def run_index_states(pw, lang, viewport, failures):
         page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures,
         restore_url=BASE,
     )
+
+    # Context-carrying alert entry: Watch this notice → #alerts?lens=…&notice=… (hash).
+    # Prefer #dactions rail (money detail) over header CTAs (earlier in DOM, may be bare #alerts).
+    rail_watch = (
+        "#dactions a.act[href*='#alerts?'], #nactions a.act[href*='#alerts?'], "
+        "#dactions a[href*='#alerts?'], #nactions a[href*='#alerts?']"
+    )
+    try:
+        page.wait_for_selector(rail_watch, timeout=8000)
+    except Exception:
+        pass
+    if page.locator(rail_watch).count() > 0:
+        prior = page.evaluate("() => location.hash")
+        page.locator(rail_watch).first.click(timeout=10000)
+        try:
+            page.wait_for_function(
+                """([want, prior]) => {
+                  const h = location.hash || '';
+                  return h.includes(want) && h !== prior;
+                }""",
+                arg=["#alerts", prior],
+                timeout=10000,
+            )
+        except Exception:
+            page.wait_for_function(
+                "(want) => (location.hash || '').includes(want)",
+                arg="#alerts",
+                timeout=10000,
+            )
+        page.wait_for_selector("#tab-alerts.active, #awatch, #apreviewbox", timeout=15000)
+        page.wait_for_timeout(1200)
+        carry_hash = page.evaluate("() => location.hash")
+        run_axe(
+            page, f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]", failures,
+            restore_url=BASE, restore_hash=carry_hash,
+        )
+        run_focus_exposure(
+            page, f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]", failures,
+        )
+    else:
+        step(
+            "FAIL",
+            f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]",
+            "no rail watch link with #alerts?… after notice-detail",
+        )
+        failures.append(
+            (f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]", "missing-watch-cta")
+        )
 
     # entity profile via permalink hash
     agency_hash = "#agency/Housing Preservation and Development"

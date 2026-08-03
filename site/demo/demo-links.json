@@ -865,6 +865,35 @@
         ]
       },
       "localOnly": true
+    },
+    {
+      "id": "alerts-context-carry-notice",
+      "url": "#alerts?lens=meetings&filter=%7B%22agency%22%3A%22Transportation%22%7D&notice=20260716009",
+      "feature": "alerts-context-carry",
+      "description": "Pre-scoped alert setup for the Dining Out NYC public hearing notice, with natural meetings/Transportation scope and a real digItemHTML email-template preview.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#acontextlead"
+          },
+          {
+            "selector": "#apreviewbox .emailmock"
+          },
+          {
+            "selector": "#apreviewbox .digitem"
+          },
+          {
+            "selector": "#adest"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#acontextlead[hidden]"
+          }
+        ],
+        "focus": "#adest"
+      },
+      "postDeployOnly": true
     }
   ]
 }

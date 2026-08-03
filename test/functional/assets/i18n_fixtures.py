@@ -95,6 +95,21 @@ HEARING_ROW = {
     "street_address_1": "120 Broadway, New York, NY",
     "additional_description_1": "A public hearing will be held by the City Planning Commission in the matter of a proposed zoning map amendment.",
 }
+# Owner-report exemplar for context-carrying alert entry (Dining Out NYC public hearing).
+# Used by demo id alerts-context-carry-notice on hermetic + production deep links.
+DINING_OUT_HEARING = {
+    "request_id": "20260716009", "start_date": "2026-07-22T00:00:00.000",
+    "agency_name": "Transportation",
+    "type_of_notice_description": "Public Hearings",
+    "section_name": "Public Hearings and Meetings",
+    "event_date": "2026-08-06T00:00:00.000",
+    "short_title": "Dining Out NYC Public Hearing",
+    "additional_description_1": (
+        "NOTICE IS HEREBY GIVEN that a public hearing will be held remotely via Zoom "
+        "on August 6th, 2026, at 11:00 am, in the matter of proposed revocable consents "
+        "authorizing roadway cafes under Dining Out NYC."
+    ),
+}
 METHOD_FACET = [
     {"selection_method_description": "Competitive Sealed Proposals", "n": "20"},
     {"selection_method_description": "Sole Source", "n": "6"},
@@ -834,6 +849,8 @@ def _soda_response(url):
             RULES_LIFECYCLE_NOTICE,
             PROPERTY_BBL_FALLBACK_NOTICE,
             NOTICE_LAND_ZAP_SPINE_NOTICE,
+            DINING_OUT_HEARING,
+            HEARING_ROW,
         ):
             if row.get("request_id") == rid:
                 return [row]

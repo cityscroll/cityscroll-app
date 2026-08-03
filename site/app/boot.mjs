@@ -77,15 +77,33 @@ function applySuggestion(w, p){
 }
 document.querySelectorAll(".wandchip").forEach(b=>b.addEventListener("click",()=>applySuggestion(b.dataset.w, b.dataset.p)));
 
-/* "Watch this search" — carry the current lens filters into a prefilled alert (SAM.gov's
-   saved-search→digest move, without the account). */
-function watchFromFilters(lens){
+/* "Watch this search" — carry the current lens filters into a prefilled alert via hash
+   params (same entry path as notice "Watch this notice" and header CTA). */
+async function watchFromFilters(lens){
+  const carry = await ensureAlertsContextCarry();
+  const state = currentLensFilterState(lens) || {};
+  // Preserve prior money bigaward threshold mapping when award mode + min is set.
+  if(lens==="money" && mode==="award" && $("#minamt").value){
+    const thr = Number($("#minamt").value);
+    const opts = [1000000, 5000000, 10000000, 50000000];
+    state.minAmount = opts.filter(o => o <= thr).pop() || opts[0];
+    state.noticeType = "award";
+    state.mode = "award";
+  }
+  if(carry && typeof carry.alertScopeFromLensState === "function"){
+    const scope = carry.alertScopeFromLensState(lens, state);
+    if(scope){
+      location.hash = carry.alertsHref(scope);
+      return;
+    }
+  }
+  // Fail-soft: previous direct-prefill path if the module failed to load.
   showTab("alerts", true);
   if(lens==="money"){
     if(mode==="award" && $("#minamt").value){
       $("#awatch").value="bigaward"; aWatchChange();
-      const t=Number($("#minamt").value), opts=[1000000,5000000,10000000,50000000];
-      $("#athresh").value=String(opts.filter(o=>o<=t).pop()||opts[0]);
+      const thr=Number($("#minamt").value), opts=[1000000,5000000,10000000,50000000];
+      $("#athresh").value=String(opts.filter(o=>o<=thr).pop()||opts[0]);
     } else {
       $("#awatch").value="rfpkw"; aWatchChange();
       $("#aparam").value=$("#kw").value.trim();
@@ -108,32 +126,65 @@ function watchFromFilters(lens){
       };
     }
   }
-  refreshQuizDisplay(); // same reason as applySuggestion() above -- the param is set after aWatchChange()
+  refreshQuizDisplay();
   aPreview();
 }
 document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
 
-/* Saved-search health fix path — a watch that's gone quiet links back here as
-   #alerts?lens=<lens>&filter=<json>&freq=<daily|weekly>, using the exact {lens,filter} shape
-   already stored on the subscription (see applyHash()). A money-lens filter is applied via
-   NL.alerts.apply(), the SAME path the Ask box uses -- so the existing "understood as" echo
-   (aPreview()'s zero-match chips) is what helps the reader see and broaden it; other lenses are
-   pre-filled directly (no chip echo for those yet -- a documented, smaller gap, not a crash). An
-   unrecognized lens leaves the builder at its defaults rather than guessing. */
-function prefillAlertFromLink(lens, filter, freq){
+/* Context-carry helpers (pure module). Loaded once; used by prefill + header CTA sync. */
+let alertsContextCarryPromise = null;
+function ensureAlertsContextCarry(){
+  if(!alertsContextCarryPromise){
+    alertsContextCarryPromise = import("../alerts_context_carry.mjs").catch(()=>null);
+  }
+  return alertsContextCarryPromise;
+}
+
+/** Last notice row painted by showNotice — header CTA reads this for notice-scoped entry. */
+let lastNoticeContext = null; // { row }
+
+/* Saved-search health fix path + context-carrying alert entry —
+   #alerts?lens=<lens>&filter=<json>&freq=<daily|weekly>&notice=<id>&project=<id>,
+   using the exact {lens,filter} shape already stored on the subscription (see applyHash()).
+   A money-lens filter is applied via NL.alerts.apply(), the SAME path the Ask box uses.
+   When notice=/project= is present, the real digItemHTML email template is seeded with that
+   item so the preview cannot drift. An unrecognized lens leaves the builder at defaults. */
+async function prefillAlertFromLink(lens, filter, freq, opts){
   filter = filter || {};
+  opts = opts || {};
+  noticeWatchSeed = null;
+  paintAlertContextLead(null);
   if(freq==="weekly" || freq==="daily") $("#afreq").selectedIndex = freq==="weekly" ? 1 : 0;
+  // Seed notice/project first so a missing lens can be derived from the row.
+  const noticeId = opts.noticeId || filter.requestId || null;
+  const projectId = opts.projectId || null;
+  if(noticeId || projectId){
+    await applyNoticeWatchSeed({ noticeId, projectId, lens, filter });
+    if(!lens && noticeWatchSeed && noticeWatchSeed.row){
+      const carry = await ensureAlertsContextCarry();
+      if(carry && typeof carry.alertScopeFromNotice === "function"){
+        const scope = carry.alertScopeFromNotice(noticeWatchSeed.row);
+        lens = scope.lens;
+        filter = Object.assign({}, scope.filter, filter);
+        noticeWatchSeed.lens = lens;
+        noticeWatchSeed.filter = filter;
+        noticeWatchSeed.digKind = scope.digKind || noticeWatchSeed.digKind;
+      }
+    }
+  }
+  let filled = false;
   if(lens==="money"){
     NL.alerts.apply(filter);
+    filled = true;
   } else if(lens==="entity"){
     $("#awatch").value = filter.kind==="agency" ? "entityagency" : "entityvendor";
     aWatchChange();
     $("#aparam").value = filter.name || "";
-    aPreview();
+    filled = true;
   } else if(lens==="land"){
     $("#awatch").value = "rezone"; aWatchChange();
     $("#aparam").value = (filter.keywords||[]).join(" ");
-    aPreview();
+    filled = true;
   } else if(SECTION_WATCH_LABEL[lens]){
     $("#awatch").value = lens; aWatchChange();
     $("#aparam").value = (filter.keywords||[]).join(" ");
@@ -143,9 +194,163 @@ function prefillAlertFromLink(lens, filter, freq){
       locationScope:filter.locationScope||null, dateWindow:filter.dateWindow||filter.when||"upcoming",
       when:filter.when||filter.dateWindow||"upcoming",
     };
-    aPreview();
+    filled = true;
+  } else if(lens==="award" && (filter.requestId || noticeId)){
+    // awardwatch one-notice path via hash (same as awardWatchOffer button).
+    awardWatchTarget = {
+      requestId: filter.requestId || noticeId,
+      agency: filter.agency || "",
+      label: filter.label || filter.agency || filter.requestId || noticeId,
+    };
+    $("#awatch").value = "awardwatch";
+    aWatchChange();
+    filled = true;
+  }
+  // aWatchChange() clears noticeWatchSeed when the type changes — re-seed after fill.
+  if((noticeId || projectId) && !noticeWatchSeed){
+    await applyNoticeWatchSeed({ noticeId, projectId, lens, filter });
   }
   refreshQuizDisplay();
+  if(filled || noticeWatchSeed){
+    await aPreview();
+    // One confirm action: focus email for subscribe.
+    const dest = $("#adest");
+    if(dest && (noticeId || projectId)) try{ dest.focus({ preventScroll: true }); }catch(_e){ try{ dest.focus(); }catch(__e){} }
+  }
+}
+
+/** Load a City Record notice (or ZAP project) and store as noticeWatchSeed for aPreview. */
+async function applyNoticeWatchSeed({ noticeId, projectId, lens, filter }){
+  const carry = await ensureAlertsContextCarry();
+  let row = null;
+  let digKind = "notice";
+  if(noticeId){
+    // Prefer the in-memory notice just viewed (avoids a second SODA round-trip).
+    if(lastNoticeContext && lastNoticeContext.row
+      && String(lastNoticeContext.row.request_id) === String(noticeId)){
+      row = lastNoticeContext.row;
+    } else {
+      try{
+        const rows = await soda({
+          "$select": typeof NOTICE_SELECT !== "undefined" ? NOTICE_SELECT : SELECT,
+          "$where": `request_id='${String(noticeId).replace(/'/g,"''")}'`,
+          "$limit": "1",
+        });
+        row = rows && rows[0] || null;
+      }catch(_e){ row = null; }
+    }
+    if(row){
+      digKind = carry && typeof carry.digKindForNotice === "function"
+        ? carry.digKindForNotice(row)
+        : "notice";
+      // If lens was missing, derive scope from the row.
+      if(!lens && carry && typeof carry.alertScopeFromNotice === "function"){
+        const scope = carry.alertScopeFromNotice(row);
+        // Do not recurse — only fill empty builder when nothing was applied.
+      }
+    }
+  } else if(projectId){
+    try{
+      const rows = await api(ZAP, {
+        "$select": "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date",
+        "$where": `project_id='${String(projectId).replace(/'/g,"''")}'`,
+        "$limit": "1",
+      });
+      row = rows && rows[0] || null;
+    }catch(_e){ row = null; }
+    digKind = "rezone";
+  }
+  if(!row) return;
+  noticeWatchSeed = { row, digKind, lens: lens || null, filter: filter || {} };
+}
+
+/**
+ * Header "Want email updates?" / "or pick topics" — carry current notice or lens filters.
+ * Neutral surfaces (home, about-style) stay bare #alerts.
+ */
+function currentLensFilterState(tab){
+  if(tab === "money"){
+    return {
+      agency: $("#agency") && $("#agency").value || "",
+      q: $("#kw") && $("#kw").value.trim() || "",
+      minAmount: $("#minamt") && $("#minamt").value || null,
+      mode: $("#mode") && $("#mode").value || "open",
+      noticeType: ($("#mode") && $("#mode").value === "award") ? "award" : null,
+    };
+  }
+  if(tab === "land"){
+    return {
+      q: $("#lkw") && $("#lkw").value.trim() || "",
+      boro: $("#lboro") && $("#lboro").value || "",
+      status: $("#lstatus") && $("#lstatus").value || "active",
+    };
+  }
+  if(tab === "meetings" || tab === "property" || tab === "rules"){
+    const state = {
+      agency: $("#"+tab+"agency") && $("#"+tab+"agency").value || "",
+      q: $("#"+tab+"kw") && $("#"+tab+"kw").value.trim() || "",
+    };
+    if(tab === "meetings"){
+      const place = $("#meetingsboro") && $("#meetingsboro").value || "";
+      if(place === "citywide-unlocated") state.locationScope = place;
+      else if(place) state.borough = place;
+      if($("#meetingsneighborhood") && $("#meetingsneighborhood").value.trim()){
+        state.neighborhood = $("#meetingsneighborhood").value.trim();
+      }
+      if($("#meetingswhen") && $("#meetingswhen").value){
+        state.when = $("#meetingswhen").value;
+        state.dateWindow = $("#meetingswhen").value;
+      }
+    }
+    return state;
+  }
+  return null;
+}
+
+async function currentAlertsEntryHref(){
+  const hash = location.hash || "";
+  // On the alerts page itself, keep the current hash (or bare).
+  if(hash === "#alerts" || hash.startsWith("#alerts?")) return hash.startsWith("#alerts") ? hash : "#alerts";
+  const carry = await ensureAlertsContextCarry();
+  if(!carry) return "#alerts";
+  // Notice detail → notice-scoped entry.
+  if(/^#notice\//.test(hash) && lastNoticeContext && lastNoticeContext.row){
+    return carry.alertsHref(carry.alertScopeFromNotice(lastNoticeContext.row));
+  }
+  // Land project detail (#land/<project_id>).
+  if(/^#land\//.test(hash)){
+    const id = decodeURIComponent(hash.slice(6).split("?")[0] || "");
+    if(id){
+      const row = (typeof lRows !== "undefined" && Array.isArray(lRows))
+        ? lRows.find(r => r && String(r.project_id) === id)
+        : null;
+      if(row) return carry.alertsHref(carry.alertScopeFromLandProject(row));
+      return carry.alertsHref({ lens: "land", filter: { keywords: [], status: "all" }, digKind: "rezone", projectId: id });
+    }
+  }
+  // Active lens tab with filters.
+  const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
+  if(tab && ["money","land","property","rules","meetings"].includes(tab)){
+    const state = currentLensFilterState(tab);
+    const scope = carry.alertScopeFromLensState(tab, state);
+    if(scope){
+      // Only pre-scope when the reader has actually narrowed something; empty list = bare.
+      const f = scope.filter || {};
+      const hasBits = !!(f.agency || f.name || (f.keywords && f.keywords.length)
+        || f.minAmount || f.borough || f.boro || f.neighborhood || f.noticeType
+        || f.locationScope || (tab === "land" && f.status === "all" && f.boro));
+      if(hasBits) return carry.alertsHref(scope);
+    }
+  }
+  return "#alerts";
+}
+
+async function syncAlertsEntryHrefs(){
+  const href = await currentAlertsEntryHref();
+  const topics = document.getElementById("homeCtaTopics");
+  if(topics) topics.setAttribute("href", href);
+  const compact = document.querySelector("#homeCtaCompact a");
+  if(compact) compact.setAttribute("href", href);
 }
 
 /* 60-second onboarding: chips → prefilled advanced options → live preview (Meet-Your-Mayor
@@ -302,6 +507,16 @@ window.addEventListener("hashchange", ()=>{
   if(!hashLock && !applyHash()) showTab("money");
   restoreHistoryRouteScroll();
 }); // empty/unknown hash (e.g. Back to the first entry) → default view
+// Publish alert prefill bindings BEFORE the first applyHash() so #alerts?lens=…&notice=…
+// deep links (and health-fix links) can call prefillAlertFromLink on cold load.
+// routing.mjs resolves that free name on globalThis; assigning after applyHash left
+// cold entry as "prefillAlertFromLink is not defined" and a blank builder.
+globalThis.prefillAlertFromLink = prefillAlertFromLink;
+globalThis.applyNoticeWatchSeed = applyNoticeWatchSeed;
+globalThis.syncAlertsEntryHrefs = syncAlertsEntryHrefs;
+globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
+globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
+Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
 // just because #awatch's mandatory default ("bigaward") happens to match one of its chips —
@@ -491,7 +706,8 @@ globalThis.landLocationOptions = landLocationOptions;
 globalThis.maybeAutoLocateLand = maybeAutoLocateLand;
 globalThis.narrowFieldSel = narrowFieldSel;
 globalThis.paintEditionSpan = paintEditionSpan;
-globalThis.prefillAlertFromLink = prefillAlertFromLink;
+// prefillAlertFromLink / applyNoticeWatchSeed / syncAlertsEntryHrefs / lastNoticeContext
+// are published earlier (before first applyHash) — see hashchange wiring above.
 globalThis.refreshQuizDisplay = refreshQuizDisplay;
 globalThis.rerenderForLang = rerenderForLang;
 globalThis.sessionBoot = sessionBoot;
