@@ -25,6 +25,7 @@ import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
+import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
 import { encodeWatchFilter } from "./lib/filter.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
@@ -1452,7 +1453,7 @@ export function dueLabel(dueDate) {
 
 async function runWatch(w) {
   const params = new URLSearchParams();
-  params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,additional_description_1");
+  params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1");
   params.set("$limit", String(w.limit || 25));
   params.set("$order", "start_date DESC");
 
@@ -1497,19 +1498,19 @@ function evidenceLineHtml(ev, esc, lang) {
   return `<div style="color:#666;font-size:12px;font-style:italic;margin-top:2px">${html}</div>`;
 }
 
-function temporalActionHtml(row, esc, lang = "en") {
-  const action = row?.temporal_action;
-  if (action?.kind !== "rules-comment-open" || !action.event_at || !action.url) return "";
-  const deadline = shortDate(action.event_at);
-  const status = emailT(lang, "rules_comment_open", { date: deadline });
-  const label = emailT(lang, "rules_comment_action");
-  return `<div style="color:#8a3d12;font-size:13px;margin:3px 0">${esc(status)} · <a href="${esc(action.url)}">${esc(label)}</a></div>`;
+// Time + action awareness (phase, open/closing-soon/closed, extracted next step).
+// Pure render in digest_item_awareness.mjs — reuses site action_registry handoffs.
+// opts.kind is the digest query kind (rfp/award/rules/meetings/property/rezone/…).
+function temporalActionHtml(row, esc, lang = "en", opts = {}) {
+  return itemAwarenessHtml(row, esc, lang, opts);
 }
 
 function digestHtml(w, rows) {
   const money = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const keywords = w.q ? [String(w.q)] : [];
+  const digestKind = w.type === "awards" ? "award" : "rfp";
+  const today = new Date().toISOString().slice(0, 10);
   const items = rows
     .map((r) => {
       const titleText = r.short_title || r.section_name || "Notice";
@@ -1522,6 +1523,7 @@ function digestHtml(w, rows) {
         .filter(Boolean).map(esc).join(" · ");
       return `<li style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${sub}</span><br>
+        ${temporalActionHtml(r, esc, "en", { kind: digestKind, today })}
         ${evidenceLineHtml(ev, esc, "en")}
         <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
     })
@@ -1722,15 +1724,17 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+  // Event-clock "today" for open / closing-soon / closed — render-only; does not affect send timing.
+  const today = new Date().toISOString().slice(0, 10);
   const item = (r) => {
     if (kind === "rezone") {
-      // Scope decision: rezoning (ZAP) match evidence is out of scope for this pass -- ZAP
-      // rows have their own shape (project_name/project_brief, not short_title/description)
-      // and the reported failure was a City Record procurement notice, not a rezoning.
+      // ZAP rows: project_name/public_status shape. Action rail uses zoningHandoff via
+      // itemAwarenessHtml (View/comment on ZAP + phase status when published).
       const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant, /^[ty1]/i.test(String(r.mih_flag || "")) ? "affordable housing" : ""]
         .filter(Boolean).map(esc).join(" · ");
       return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
+        ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
     }
     const titleText = r.short_title || "Notice";
@@ -1758,7 +1762,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       .filter(Boolean).map(esc).join(" · ");
     return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
-      ${temporalActionHtml(r, esc, lang)}
+      ${temporalActionHtml(r, esc, lang, { kind, today })}
       ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
@@ -1873,12 +1877,14 @@ function rollupDigestHtml({
     const forecasts = sec.forecastRows || [];
     const keywords = sec.keywords || [];
     const w = sec.w || null;
+    const today = new Date().toISOString().slice(0, 10);
     const items = rows.map((r) => {
       if (sec.kind === "rezone") {
         const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
           .filter(Boolean).map(esc).join(" · ");
         return `<li style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
-          <span style="color:#555;font-size:13px">${meta}</span></li>`;
+          <span style="color:#555;font-size:13px">${meta}</span><br>
+          ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}</li>`;
       }
       const titleText = r.short_title || "Notice";
       const ev = matchEvidence(titleText, r.additional_description_1, keywords);
@@ -1890,7 +1896,7 @@ function rollupDigestHtml({
       const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
       return `<li style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
-        ${temporalActionHtml(r, esc, lang)}
+        ${temporalActionHtml(r, esc, lang, { kind, today })}
         ${evidenceLineHtml(ev, esc, lang)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
     }).join("");
