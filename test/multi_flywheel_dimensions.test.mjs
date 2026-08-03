@@ -365,3 +365,44 @@ test("location-resolution emits map-zero-located when place lens is all-zero on 
   assert.equal(result.metrics.map_lens_rates.meetings.located_rate, 0);
   assert.equal(result.metrics.map_lens_rates.meetings.counted, 119);
 });
+
+test("location-resolution emits granularity-zero-collapse when council density is all-zero", () => {
+  const inventory = loadJson("ontology/fixtures/dimensions/location_resolution.json");
+  const collapsedMap = {
+    sources: {
+      land: { corpus: "zap", counted: 10, located: 10 },
+      property: { corpus: "property", counted: 5, located: 5 },
+      meetings: { corpus: "meetings", counted: 8, located: 8 },
+      rules: { corpus: "rules", counted: 4, located: 4 },
+      money: { corpus: "ocp", counted: 2, located: 1 },
+    },
+    by_level: {
+      borough: {
+        Manhattan: { land: 10, property: 0, rules: 0, meetings: 8, money: 0 },
+      },
+      community_district: {
+        M01: { land: 10, property: 0, rules: 0, meetings: 0, money: 0 },
+      },
+      council_district: {
+        "1": { land: 0, property: 0, rules: 0, meetings: 0, money: 0 },
+      },
+    },
+    citywide: { land: 0, property: 0, rules: 4, meetings: 0, money: 0 },
+    virtual: { land: 0, property: 0, rules: 0, meetings: 0, money: 0 },
+    unlocated_reasons: { meetings: { virtual_only: 2 } },
+  };
+  const result = evaluateLocationResolution({
+    location_resolution: inventory,
+    district_activity: collapsedMap,
+  });
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.kind === "granularity-zero-collapse"
+    && c.evidence?.lens === "land"
+    && c.evidence?.level === "council_district"));
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.kind === "granularity-zero-collapse"
+    && c.evidence?.lens === "meetings"));
+  assert.ok(result.cards.some((c) => c.evidence?.kind === "virtual-bucket-missing"));
+  assert.ok(Array.isArray(result.metrics.granularity_findings));
+  assert.ok(result.metrics.granularity_findings.length >= 1);
+});

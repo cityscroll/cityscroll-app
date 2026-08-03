@@ -186,6 +186,19 @@ function compactPlaceStamp(area) {
   if (Array.isArray(area.districts) && area.districts.length) {
     stamp.districts = area.districts.slice();
   }
+  // Address labels only (enables offline civic geocode at map precompute).
+  if (Array.isArray(area.addresses) && area.addresses.length) {
+    stamp.addresses = area.addresses
+      .map((a) => {
+        if (typeof a === "string") return String(a).replace(/\s+/g, " ").trim().slice(0, 160);
+        if (a && typeof a === "object") {
+          return String(a.label || a.address || a.value || "").replace(/\s+/g, " ").trim().slice(0, 160);
+        }
+        return "";
+      })
+      .filter(Boolean)
+      .slice(0, 4);
+  }
   if (area.derivation && !stamp.derivation) {
     stamp.derivation = {
       methods: area.derivation.methods || [],

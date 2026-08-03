@@ -76,6 +76,31 @@ function check(doc) {
   if ((doc.sources?.meetings?.counted || 0) > 0 && (doc.sources?.meetings?.located || 0) < 1) {
     throw new Error("expected some located meetings activity when the corpus is non-empty");
   }
+  // Granularity gates: land + meetings must resolve to council districts when coarser density exists.
+  const sumLevel = (level, lens) => {
+    const bag = doc.by_level?.[level] || {};
+    let sum = 0;
+    for (const [id, counts] of Object.entries(bag)) {
+      if (level === "borough" && (id === "Citywide" || id === "Virtual")) continue;
+      sum += Number(counts?.[lens]) || 0;
+    }
+    return sum;
+  };
+  if (sumLevel("community_district", "land") > 0 && sumLevel("council_district", "land") < 1) {
+    throw new Error("land has community-district density but council_district is all-zero");
+  }
+  if (sumLevel("borough", "meetings") > 0 && sumLevel("council_district", "meetings") < 1) {
+    throw new Error("meetings has borough density but council_district is all-zero");
+  }
+  // Citywide first-class bag when rules default citywide.
+  if ((doc.sources?.rules?.located || 0) > 0) {
+    const cw = Number(doc.citywide?.rules) || Number(doc.by_level?.borough?.Citywide?.rules) || 0;
+    const localRules = sumLevel("borough", "rules") + sumLevel("community_district", "rules");
+    // At least one of citywide bag or local borough/CD density must hold rules.
+    if (cw < 1 && localRules < 1) {
+      throw new Error("rules located but neither citywide bag nor local density holds them");
+    }
+  }
 }
 
 function writeTwin(doc) {

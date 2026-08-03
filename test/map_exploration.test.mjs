@@ -8,10 +8,13 @@ import {
   boroughFromCommunityId,
   choroplethFill,
   citywideTotals,
+  citywideBucketCounts,
   defaultViewBox,
   drillInto,
+  granularityCollapseFindings,
   loadDistrictActivity,
   mapFeatures,
+  nonPolygonBuckets,
   parseMapHashQuery,
   polygonsToSvgPath,
   projectLonLat,
@@ -23,8 +26,14 @@ import {
 import {
   buildDistrictActivity,
   communityDistrictFromAgencyName,
+  meetingPlacementsFromRow,
   parseZapCommunityDistricts,
 } from "../tools/lib/district_activity.mjs";
+import {
+  geocodeCivicAddress,
+  buildCommunityToCouncilIndex,
+} from "../site/civic_address_geocode.mjs";
+import { resolveCouncilDistrict } from "../site/council_district_lookup.mjs";
 
 const boundaries = JSON.parse(
   readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"),
@@ -263,11 +272,270 @@ test("buildDistrictActivity places money rows with publisher geo or coordinates 
     `publisher geo + PIP coords should locate money rows, got ${activity.sources.money.located}`,
   );
   // Both publisher-CD and PIP (Elmhurst) resolve into Queens CD Q04 / council 25.
+  // Publisher-CD also joins council via CD centroid, so council density is 2.
   assert.equal(activity.by_level.community_district.Q04.money, 2);
-  assert.equal(activity.by_level.council_district["25"].money, 1);
+  assert.equal(activity.by_level.council_district["25"].money, 2);
   assert.equal(activity.by_level.borough.Queens.money, 2);
   assert.equal(activity.unlocated.money, 1);
 });
+
+test("civic address gazetteer resolves known venues to lat/lon", () => {
+  const hit = geocodeCivicAddress("120 Broadway, Lower Level, New York, NY, 10271");
+  assert.ok(hit);
+  assert.equal(hit.method, "civic_address_gazetteer");
+  assert.ok(Number.isFinite(hit.lat) && Number.isFinite(hit.lon));
+  assert.equal(resolveCommunityDistrictProbe(hit.lat, hit.lon), "M01");
+});
+
+function resolveCommunityDistrictProbe(lat, lon) {
+  // Local import-free probe via full build path in meetingPlacementsFromRow.
+  const slots = meetingPlacementsFromRow({
+    request_id: "probe-120-broadway",
+    agency_name: "City Planning Commission",
+    short_title: "Public Hearing",
+    affected_area: {
+      scope: "local",
+      boroughs: ["Manhattan"],
+      derivation: {
+        methods: ["venue_column"],
+        confidence: 0.65,
+        role: "venue",
+        evidence: ["120 Broadway, Lower Level, New York, NY, 10271"],
+      },
+    },
+  }, boundaries);
+  assert.ok(slots.length >= 1, "venue address must place");
+  assert.equal(slots[0].community, "M01");
+  assert.equal(slots[0].council, "1");
+  assert.ok(
+    slots[0].method === "civic_address_pip" || slots[0].method === "coordinates_pip",
+    `expected point-PIP method, got ${slots[0].method}`,
+  );
+  return slots[0].community;
+}
+
+test("meeting venue addresses geocode to community + council districts", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    meetingsRows: [
+      {
+        request_id: "20260721023",
+        agency_name: "City Planning Commission",
+        short_title: "City Planning Commission Public Hearing",
+        affected_area: {
+          scope: "local",
+          boroughs: ["Manhattan"],
+          derivation: {
+            methods: ["venue_column"],
+            confidence: 0.65,
+            role: "venue",
+            evidence: ["120 Broadway, Lower Level, New York, NY, 10271"],
+          },
+        },
+      },
+      {
+        request_id: "20260710032",
+        agency_name: "Franchise and Concession Review Committee",
+        short_title: "FCRC AUGUST PUBLIC MEETING",
+        affected_area: {
+          scope: "local",
+          boroughs: ["Manhattan"],
+          derivation: {
+            methods: ["venue_column"],
+            confidence: 0.65,
+            role: "venue",
+            evidence: ["255 Greenwich Street, 9th Floor, New York, NY, 10007"],
+          },
+        },
+      },
+    ],
+  });
+  assert.ok((activity.by_level.community_district.M01?.meetings || 0) >= 2);
+  assert.ok((activity.by_level.council_district["1"]?.meetings || 0) >= 2);
+  assert.ok((activity.by_level.borough.Manhattan?.meetings || 0) >= 2);
+});
+
+test("virtual-only meetings land in the Virtual bucket, not silent unlocated", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    meetingsRows: [
+      {
+        request_id: "virt-1",
+        agency_name: "Board of Correction",
+        short_title: "Virtual public meeting",
+        affected_area: {
+          scope: "unlocated",
+          unlocated_reason: "virtual_only",
+          virtual_only: true,
+        },
+      },
+    ],
+  });
+  assert.equal(activity.virtual.meetings, 1);
+  assert.equal(activity.by_level.borough.Virtual?.meetings, 1);
+  assert.equal(activity.unlocated.meetings, 0);
+  assert.equal(activity.sources.meetings.located, 1);
+  const bags = nonPolygonBuckets(activity);
+  assert.ok(bags.some((b) => b.kind === "virtual" && b.counts.meetings === 1));
+});
+
+test("land ZAP community districts join council via CD centroid", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    zapRows: [
+      { project_id: "2018X0438", borough: "Bronx", community_district: "X05" },
+      { project_id: "2022M0258", borough: "Manhattan", community_district: "M04" },
+      { project_id: "2024Q0292", borough: "Queens", community_district: "Q04" },
+    ],
+  });
+  assert.equal(activity.by_level.community_district.X05.land, 1);
+  assert.equal(activity.by_level.community_district.M04.land, 1);
+  assert.equal(activity.by_level.community_district.Q04.land, 1);
+  // Council must be nonzero — CD centroid PIP against the boundary layer.
+  const councilTotal = Object.values(activity.by_level.council_district)
+    .reduce((sum, bag) => sum + (bag.land || 0), 0);
+  assert.ok(councilTotal >= 3, `expected council land ≥3, got ${councilTotal}`);
+  // Spot-check index: X05 centroid should resolve to a real council id.
+  const index = buildCommunityToCouncilIndex(boundaries, resolveCouncilDistrict);
+  assert.ok(index.X05, "X05 must map to a council district");
+  assert.ok(index.M04, "M04 must map to a council district");
+  assert.ok(index.Q04, "Q04 must map to a council district");
+  assert.equal(activity.by_level.council_district[index.X05].land, 1);
+  assert.equal(activity.by_level.council_district[index.M04].land, 1);
+  assert.equal(activity.by_level.council_district[index.Q04].land, 1);
+});
+
+test("citywide rules land in the first-class citywide bag", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    rulesRows: [
+      {
+        request_id: "rule-citywide-1",
+        agency_name: "Buildings",
+        short_title: "Amendments to Rules Relating to the Energy Conservation Code",
+        rule_location: {
+          scope: "citywide",
+          derivation: { methods: ["rule_default_citywide"], confidence: 0.8, role: "citywide" },
+        },
+      },
+      {
+        request_id: "rule-boro-1",
+        agency_name: "Sanitation",
+        short_title: "Brooklyn East CWZ dates",
+        rule_location: {
+          scope: "local",
+          boroughs: ["Brooklyn"],
+          derivation: { methods: ["matter_title_place"], confidence: 0.88, role: "matter" },
+        },
+      },
+    ],
+  });
+  assert.ok((activity.citywide?.rules || 0) >= 1);
+  assert.ok((activity.by_level.borough.Citywide?.rules || 0) >= 1);
+  assert.ok((activity.by_level.borough.Brooklyn?.rules || 0) >= 1);
+  const bags = nonPolygonBuckets(activity);
+  assert.ok(bags.some((b) => b.kind === "citywide" && b.counts.rules >= 1));
+  const cw = citywideBucketCounts(activity);
+  assert.ok(cw.rules >= 1);
+});
+
+test("money vendor address geocodes to CD + council when gazetteer matches", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    moneyRows: [
+      {
+        request_id: "20260723031",
+        agency_name: "Health and Mental Hygiene",
+        short_title: "Catering Services",
+        vendor_name: "Make it Zesty LLC",
+        place: {
+          scope: "local",
+          boroughs: ["Bronx"],
+          addresses: ["1880 Valentine Avenue"],
+          derivation: {
+            methods: ["vendor_address"],
+            confidence: 0.55,
+            role: "vendor",
+            evidence: ["1880 Valentine Avenue"],
+          },
+        },
+      },
+      {
+        request_id: "money-citywide",
+        agency_name: "Youth and Community Development",
+        short_title: "Summer Youth Employment Program",
+        place: {
+          scope: "citywide",
+          derivation: {
+            methods: ["citywide_phrase"],
+            confidence: 0.8,
+            role: "citywide",
+            evidence: ["throughout New York City"],
+          },
+        },
+      },
+    ],
+  });
+  assert.ok((activity.by_level.community_district.X05?.money || 0) >= 1);
+  assert.ok((activity.by_level.council_district["15"]?.money || 0) >= 1);
+  assert.ok((activity.citywide?.money || 0) >= 1);
+});
+
+test("granularityCollapseFindings flags council zero-collapse and clears on healthy payload", () => {
+  const broken = {
+    by_level: {
+      borough: { Manhattan: { land: 10, property: 0, rules: 0, meetings: 5, money: 0 } },
+      community_district: { M01: { land: 10, property: 0, rules: 0, meetings: 0, money: 0 } },
+      council_district: { "1": { land: 0, property: 0, rules: 0, meetings: 0, money: 0 } },
+    },
+    citywide: emptyZero(),
+    virtual: emptyZero(),
+    sources: {
+      land: { counted: 10, located: 10 },
+      meetings: { counted: 5, located: 5 },
+    },
+    unlocated_reasons: { meetings: { virtual_only: 2 } },
+  };
+  const findings = granularityCollapseFindings(broken);
+  assert.ok(findings.some((f) => f.lens === "land" && f.level === "council_district"));
+  assert.ok(findings.some((f) => f.lens === "meetings" && f.level === "council_district"));
+  assert.ok(findings.some((f) => f.kind === "virtual-bucket-missing"));
+
+  const healthy = buildDistrictActivity({
+    boundaries,
+    zapRows: [{ project_id: "1", borough: "Queens", community_district: "Q04" }],
+    meetingsRows: [{
+      request_id: "m1",
+      agency_name: "City Planning Commission",
+      short_title: "Hearing",
+      affected_area: {
+        scope: "local",
+        boroughs: ["Manhattan"],
+        derivation: {
+          methods: ["venue_column"],
+          evidence: ["120 Broadway, New York, NY"],
+        },
+      },
+    }],
+    propertyRows: [{
+      request_id: "p1",
+      property_location: {
+        boroughs: ["Queens"],
+        geometry: { latitude: 40.7473, longitude: -73.8832 },
+      },
+    }],
+  });
+  const healthyFindings = granularityCollapseFindings(healthy);
+  assert.equal(
+    healthyFindings.filter((f) => f.kind === "granularity-zero-collapse").length,
+    0,
+    `healthy payload must not zero-collapse: ${JSON.stringify(healthyFindings)}`,
+  );
+});
+
+function emptyZero() {
+  return { land: 0, property: 0, rules: 0, meetings: 0, money: 0 };
+}
 
 test("committed district_activity artifact is present and loadable", () => {
   const path = new URL("../site/data/district_activity.json", import.meta.url);
@@ -289,4 +557,19 @@ test("committed district_activity artifact is present and loadable", () => {
     (doc.sources?.meetings?.located || 0) >= 1,
     "committed map artifact must locate some meetings (place-based lens)",
   );
+  // Granularity: committed artifact must not zero-collapse land/meetings at council.
+  const councilLand = Object.values(doc.by_level.council_district)
+    .reduce((sum, bag) => sum + (bag.land || 0), 0);
+  const councilMeetings = Object.values(doc.by_level.council_district)
+    .reduce((sum, bag) => sum + (bag.meetings || 0), 0);
+  assert.ok(councilLand >= 1, "committed land council density must be nonzero");
+  assert.ok(councilMeetings >= 1, "committed meetings council density must be nonzero");
+  // Citywide bag present when rules are located.
+  if ((doc.sources?.rules?.located || 0) > 0) {
+    assert.ok(
+      (doc.citywide?.rules || doc.by_level.borough?.Citywide?.rules || 0) >= 1
+        || Object.values(doc.by_level.borough || {}).some((b) => (b.rules || 0) > 0),
+      "rules must land in citywide bag or borough density",
+    );
+  }
 });
