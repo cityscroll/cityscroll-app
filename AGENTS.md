@@ -1344,6 +1344,30 @@ cohort statistic. Verify the calibrated pass, deliberate miscalibrated failure,
 and byte-stable artifact with:
 `node worker/scripts/prediction-calibration-scorecard.mjs --fixtures worker/test/fixtures/predictions --check`.
 
+## Rules adoption-lag predictions (cs-pred-05)
+
+First statistical prediction domain on `cityscroll.prediction.v0`. Comment-close →
+adoption gaps from City Record Agency Rules history (sibling stitch reused from
+`worker/src/lib/rules.mjs`), right-censored KM/ECDF, method `phase_duration_ecdf`,
+predicted kind `rules.adoption`. Batch-only precompute — no per-request inference.
+Ship-bar thresholds come from `prediction_calibration.mjs` (`MINIMUM_RESOLVED`,
+interval nominal/tolerance); short phase durations use expanding-window
+walk-forward evidence (single New-Year open-at-T is too thin for this domain).
+
+```bash
+node tools/build_rules_adoption_predictions.mjs
+node tools/build_rules_adoption_predictions.mjs --check
+node --test test/rules_adoption_lag.test.mjs worker/test/prediction_contract.test.mjs
+python3 tools/capture_rules_adoption_lag.py
+```
+
+Artifacts: `site/data/rules_adoption_lag_model.json`,
+`site/data/rules_adoption_predictions.json`,
+`docs/evidence/rules-adoption-lag/backtest.json`, formula
+`docs/formulas/rules-adoption-lag.md`. Ghost Estimate segment only after
+comment_close (`site/rules_adoption_lag_view.mjs`); digest line on band
+transitions only (`adoptionLagDigestItem`).
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

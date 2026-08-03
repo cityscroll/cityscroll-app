@@ -609,6 +609,11 @@
   .rule-phase-stepper .lc-step.future{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
   .rule-chain.rule-phase-cards{margin-top:4px}
   .rule-spine-lead .lc-phase-action .act{margin-inline-end:6px}
+  /* Adoption-lag ghost estimate — dashed segment after comment_close, never an event dot. */
+  .rule-adoption-estimate{margin:8px 0 12px;padding:10px 12px;border:1px dashed #a39a88;border-radius:10px;background:color-mix(in srgb,var(--paper-2,#f7f1e4) 70%,#fff);color:var(--ink)}
+  .rule-adoption-estimate .tag{margin-inline-start:6px;vertical-align:middle}
+  .rule-adoption-estimate-line{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0}
+  .rule-adoption-estimate-window{font:12px/1.4 ui-monospace,SFMono-Regular,monospace;color:var(--muted);margin:6px 0 0}
   /* Multi-notice rulemaking siblings (high-confidence stitch only) */
   .rule-siblings{margin:0 0 12px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2,#f7f1e4)}
   .rule-siblings-h{font-weight:600;margin:0 0 4px;color:var(--ink)}
@@ -8346,11 +8351,28 @@ function ruleSiblingsHTML(view){
   </div>`;
 }
 
+function ruleAdoptionEstimateHTML(estimate){
+  if(!estimate||!estimate.pattern_line) return "";
+  const chip=`<span class="tag renewal">${escUiHtml(t("cadence_estimate_tag"))}</span>`;
+  let window="";
+  if(estimate.predicted_window&&estimate.pattern?.projection==="per_matter"){
+    const w=estimate.predicted_window;
+    if(w.p10&&w.p50&&w.p90){
+      window=`<p class="rule-adoption-estimate-window">${escUiHtml(t("rule_adoption_estimate_window",{p10:w.p10,p50:w.p50,p90:w.p90}))}</p>`;
+    }
+  }
+  return `<div class="rule-adoption-estimate" data-rule-adoption-estimate="1" data-ghost="1" role="note">
+    <p class="rule-adoption-estimate-line">${escUiHtml(estimate.pattern_line)} ${chip}</p>
+    ${window}
+  </div>`;
+}
+
 function ruleEventSpineHTMLPhase(view, rec){
   if(!view) return "";
   const lead=rulePhaseLeadHTML(view, rec);
   const siblings=ruleSiblingsHTML(view);
   const stepper=rulePhaseStepperHTML(view);
+  const estimate=ruleAdoptionEstimateHTML(view.adoption_lag_estimate||null);
   const currentPanel=(view.phases||[]).filter(p=>p.state==="current")
     .map(p=>rulePhasePanelHTML(p, rec, view)).join("");
   const historyPanels=(view.phases||[]).filter(p=>p.state==="passed")
@@ -8367,11 +8389,14 @@ function ruleEventSpineHTMLPhase(view, rec){
     : t("rule_event_join_gap_html",{source:`<a href="${RULES_PUBLIC_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`});
   const howBody=view.multi_notice?t("rule_phase_how_multi_html"):t("rule_phase_how_html");
   const how=`<details class="inline-disclose lc-how"><summary>${t("rule_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
+  // Ghost estimate sits after comment_close context (stepper + current public-process
+  // panel), before future adoption phase panels — never as an event card/dot.
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
     ${lead}
     ${siblings}
     ${stepper}
     ${currentPanel}
+    ${estimate}
     ${futurePanels}
     ${historyWrap}
     ${how}
@@ -8393,13 +8418,28 @@ function ruleEventSpineHTMLFlat(rec){
     <div class="note">${provenance}</div>`;
 }
 
-function ruleEventSpineHTML(rec, phaseTools, recordsById){
+let rulesAdoptionLagModelPromise=null;
+function loadRulesAdoptionLagModel(){
+  if(!rulesAdoptionLagModelPromise){
+    rulesAdoptionLagModelPromise=fetch("./data/rules_adoption_lag_model.json")
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return rulesAdoptionLagModelPromise;
+}
+
+function ruleEventSpineHTML(rec, phaseTools, recordsById, adoptionModel){
   if(phaseTools && typeof phaseTools.buildRulesPhaseView==="function"){
-    const view=phaseTools.buildRulesPhaseView(rec||{},{recordsById:recordsById||null});
+    let view=phaseTools.buildRulesPhaseView(rec||{},{recordsById:recordsById||null});
     // Prefer stitched record for nyc_rules / stage when multi-notice merge ran.
     const paintRec=(view&&view.stitched&&phaseTools.stitchRulemakingRecord)
       ? phaseTools.stitchRulemakingRecord(rec||{}, recordsById||null)
       : rec;
+    if(adoptionModel && typeof phaseTools.attachAdoptionLagEstimate==="function"){
+      view=phaseTools.attachAdoptionLagEstimate(view, paintRec||rec, adoptionModel);
+    }else if(adoptionModel && window.__rulesAdoptionLagAttach){
+      view=window.__rulesAdoptionLagAttach(view, paintRec||rec, adoptionModel);
+    }
     return ruleEventSpineHTMLPhase(view, paintRec||rec);
   }
   return ruleEventSpineHTMLFlat(rec);
@@ -8466,7 +8506,16 @@ async function loadRuleLifecycle(r,el){
   if(!document.contains(el)) return;
   // High-confidence multi-notice stitch: merge sibling events via related_notices
   // + stage map so proposal/hearing/adoption show as one lifecycle (not three cards).
-  el.innerHTML=ruleEventSpineHTML(rec, phaseTools, stageMap);
+  let adoptionModel=null;
+  try{
+    const lagMod=await import("./rules_adoption_lag_view.mjs").catch(()=>null);
+    if(lagMod?.attachAdoptionLagEstimate){
+      window.__rulesAdoptionLagAttach=lagMod.attachAdoptionLagEstimate;
+    }
+    adoptionModel=await loadRulesAdoptionLagModel();
+  }catch(_e){}
+  if(!document.contains(el)) return;
+  el.innerHTML=ruleEventSpineHTML(rec, phaseTools, stageMap, adoptionModel);
   bindRulesPhaseUI(el);
   // Comment deadline may come from a sibling’s NYC Rules join after stitch.
   let commentEvent=(rec.events||[]).find(event=>event.event_type==="comment_close");
