@@ -3,7 +3,7 @@
   "dataset": "rules_adoption_lag",
   "model_name": "rules_adoption_lag",
   "model_version": "1.0.0",
-  "observed_at": "2026-08-03T04:25:40.542Z",
+  "observed_at": "2026-08-03T04:28:33.805Z",
   "source_row_count": 3061,
   "observation_count": 925,
   "event_count": 129,

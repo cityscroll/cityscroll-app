@@ -2,7 +2,7 @@
   "metric": "rules_adoption_lag_backtest",
   "model_name": "rules_adoption_lag",
   "model_version": "1.0.0",
-  "generated_at": "2026-08-03T04:25:40.542Z",
+  "generated_at": "2026-08-03T04:28:33.805Z",
   "source_row_count": 3061,
   "protocol": "expanding_window_walk_forward",
   "train_observations": 784,
