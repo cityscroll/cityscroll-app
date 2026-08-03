@@ -2427,6 +2427,7 @@ function priorCycleNoneHTML(r, eligibleCount, near){
 }
 
 async function priorCycleAwards(r, el){
+  if(!isContractLifecycleEligible(r)) return;
   if(!el || !r.agency_name || !cleanText(r.short_title)) return;
   if(priorCycleTitleWords(r.short_title).length < 2){ el.innerHTML = priorCycleNoneHTML(r, 0, []); return; } // too generic to search — no worker round trip
   let data = null;
