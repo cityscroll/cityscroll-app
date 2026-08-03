@@ -550,10 +550,15 @@ Path guard: `tools/changelog-path-guard.sh`. Characterization: `test/changelog_q
 
 ## Live-URL smoke target sets
 
-Post-deploy gate: `node tools/live_url_smoke.mjs` (default set includes apex, www, crol-list redirect host, about). Named opt-in sets do not change production routing:
+Cloudflare Pages is the public origin for `cityscroll.org` and `www.cityscroll.org`;
+GitHub Pages remains deployed as the fallback origin. Post-deploy gate:
+`node tools/live_url_smoke.mjs` (default set includes apex, www, crol-list redirect
+host, about). Scheduled production monitoring runs `node tools/cutover_regression.mjs`
+and is intentionally not a pull-request or merge-queue check. Named opt-in sets do
+not change production routing:
 
-- `--set pages-dev` — parallel host only (or `--base-url https://cityscroll.pages.dev`)
-- `--set post-flip` — post-cutover URL matrix **plus** named incident checks (EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY in `tools/post_flip_checks.mjs` + `tools/human_path_journey.py`); select only after an owner-authorized flip
+- `--set pages-dev` — direct Pages hostname only (or `--base-url https://cityscroll.pages.dev`)
+- `--set post-flip` — Pages-primary URL matrix **plus** named incident checks (EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY in `tools/post_flip_checks.mjs` + `tools/human_path_journey.py`)
 
 Migration value baseline (merge-to-live wall-clock, detection exemplars, rollback estimate, dual-host live metrics): `docs/evidence/hosting-migration-baseline.json` + full receipt `docs/evidence/hosting-dual-host-metrics.json`. After cutover, measure against it — do not assert improvements. Re-measure dual-host only (read-only, no DNS/route changes): `node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json`. Characterization: `node --test test/measure_hosting_baseline.test.mjs test/live_url_smoke.test.mjs test/post_flip_checks.test.mjs`. Operator flip procedure lives outside this public tree.
 
