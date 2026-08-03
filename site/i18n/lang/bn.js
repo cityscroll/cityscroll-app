@@ -790,6 +790,8 @@
     notice_attachment_chip_one: "{n}টি সংযুক্তি: {title}",
     notice_attachment_chip_other: "{n}টি সংযুক্তি: {title}",
     notice_attachment_title_fallback: "সরকারি বিজ্ঞপ্তির ফাইল",
+    notice_attachment_extract_summary: "সংযুক্তি থেকে নেওয়া পাঠ্য — সম্পূর্ণ পাঠ্যের জন্য প্রসারিত করুন",
+    digest_match_attachment_html: "সংযুক্তিতে মিলেছে: {snippet}",
     ext_link_new_tab_sr: "(নতুন ট্যাবে খোলে)",
     pin_unusable_note: "এই নোটিশের PIN লিংকিংয়ের জন্য ব্যবহারযোগ্য নয় (<code>{pin}</code>), তাই এর প্রদান স্বয়ংক্রিয়ভাবে অনুসরণ করা যায় না। সম্পূর্ণ লেখা পড়তে নগর নথিতে এটি খুলুন।",
     only_notice_note: "এখন পর্যন্ত শুধু এই নোটিশটিই নথিভুক্ত আছে — PIN <code>{pin}</code>-এর জন্য এখনও কোনো পরবর্তী পর্যায় প্রকাশিত হয়নি। ",

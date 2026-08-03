@@ -790,6 +790,8 @@
     notice_attachment_chip_one: "{n} вложение: {title}",
     notice_attachment_chip_other: "{n} вложений: {title}",
     notice_attachment_title_fallback: "Официальный файл извещения",
+    notice_attachment_extract_summary: "Текст из вложения — разверните для полного текста",
+    digest_match_attachment_html: "Совпадение во вложении: {snippet}",
     ext_link_new_tab_sr: "(открывается в новой вкладке)",
     pin_unusable_note: "PIN этого уведомления не пригоден для связывания (<code>{pin}</code>), поэтому присуждение контракта нельзя отследить автоматически. Откройте его в Городском вестнике, чтобы прочитать полный текст.",
     only_notice_note: "Пока в записях есть только это уведомление — для PIN <code>{pin}</code> более поздний этап ещё не опубликован. ",

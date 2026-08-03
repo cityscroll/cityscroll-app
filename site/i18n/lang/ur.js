@@ -797,6 +797,8 @@
     notice_attachment_chip_one: "{n} منسلک فائل: {title}",
     notice_attachment_chip_other: "{n} منسلک فائلیں: {title}",
     notice_attachment_title_fallback: "سرکاری نوٹس کی فائل",
+    notice_attachment_extract_summary: "منسلکہ سے نکالا گیا متن — مکمل متن کے لیے پھیلائیں",
+    digest_match_attachment_html: "منسلکہ میں مماثلت: {snippet}",
     ext_link_new_tab_sr: "(نئے ٹیب میں کھلتا ہے)",
     pin_unusable_note: "اس نوٹس کا PIN لنک کرنے کے قابل نہیں ہے (<code>{pin}</code>)، اس لیے اس کے ایوارڈ کا خودکار طور پر سراغ نہیں لگایا جا سکتا۔ مکمل متن پڑھنے کے لیے اسے City Record میں کھولیں۔",
     only_notice_note: "اب تک صرف یہی نوٹس ریکارڈ پر ہے — PIN <code>{pin}</code> کے لیے ابھی تک کوئی بعد کا مرحلہ شائع نہیں ہوا۔ ",

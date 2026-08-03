@@ -10,6 +10,11 @@
 
 import { excerptPlain } from "../../../site/text_clean.mjs";
 import { loadAttachmentMetadata, mergeAttachments } from "../attachment_metadata.mjs";
+import {
+  joinAttachmentTexts,
+  matchAttachmentTextEvidence,
+  TEXT_PROVENANCE,
+} from "./attachment_text.mjs";
 
 const ROLLING_YEAR = 2090;
 
@@ -125,8 +130,35 @@ export function toRecord(r, attachmentMetadata = []) {
     n_documents: Math.max(r.n_documents || 0, attachments.length),
     documents: attachments.length ? attachments.map((item) => item.url) : docs.slice(0, 8),
     attachments,
+    attachment_text: joinAttachmentTexts(attachments) || null,
     structured_facts: structuredFacts,
   };
+}
+
+/** Label search hits that matched via attachment text (provenance: attachment-text). */
+export function annotateSearchMatchProvenance(record, terms = []) {
+  if (!record || !terms?.length) return record;
+  const title = record.title || "";
+  const description = record.snippet || "";
+  const titleHit = terms.some((t) => title.toLowerCase().includes(String(t).toLowerCase()));
+  if (titleHit) return { ...record, match_provenance: "title" };
+  const descHit = terms.some((t) => String(description).toLowerCase().includes(String(t).toLowerCase()));
+  if (descHit) return { ...record, match_provenance: "description" };
+  const attachEv = matchAttachmentTextEvidence(record.attachment_text, terms);
+  if (attachEv) {
+    return {
+      ...record,
+      match_provenance: TEXT_PROVENANCE,
+      match_evidence: attachEv,
+    };
+  }
+  // Haystack may still have matched printout/other_info or a prior attachment-text marker.
+  const haystackHint = String(record._haystack || "");
+  if (haystackHint.includes(`[${TEXT_PROVENANCE}]`)
+    && terms.some((t) => haystackHint.includes(String(t).toLowerCase()))) {
+    return { ...record, match_provenance: TEXT_PROVENANCE };
+  }
+  return { ...record, match_provenance: "other" };
 }
 
 export async function searchNotices(db, opts = {}) {
@@ -137,6 +169,13 @@ export async function searchNotices(db, opts = {}) {
   return {
     terms_used: terms,
     total_matches: rows.length,
-    results: rows.map((row) => toRecord(row, attachments.get(String(row.request_id)) || [])),
+    results: rows.map((row) => {
+      const record = toRecord(row, attachments.get(String(row.request_id)) || []);
+      // Carry haystack only for provenance annotation, never to public clients.
+      record._haystack = row.haystack || "";
+      const annotated = annotateSearchMatchProvenance(record, terms);
+      delete annotated._haystack;
+      return annotated;
+    }),
   };
 }
