@@ -1,0 +1,18 @@
+{
+  "feature": "map-exploration",
+  "hashes": [
+    "#map",
+    "#map?level=community_district&parent=Queens&lens=land",
+    "#map?level=community_district&parent=Queens&id=Q04&lens=land"
+  ],
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ]
+}

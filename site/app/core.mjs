@@ -247,9 +247,19 @@ function showTab(name, push){
   if(name==="people"){
     loadCareerGuide(); loadStaffingFeed();
   }
-  if(name==="property") paintTaxLienSalePanel();
+  if(name==="property"){
+    const panel=$("#tax-lien-sale-panel");
+    if(panel){
+      // Only keep the tax-lien panel open on its dedicated deep link.
+      const openLien=location.hash.includes("view=tax-lien");
+      panel.hidden=!openLien;
+      if(openLien) paintTaxLienSalePanel();
+    }
+  }
+  if(name==="map") paintMapExploration();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
+
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
 
 /* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */

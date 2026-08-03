@@ -15,8 +15,8 @@
     "inline_script_lines": 13290
   },
   "after": {
-    "index_html_bytes": 149657,
-    "module_count": 18,
+    "index_html_bytes": 157481,
+    "module_count": 19,
     "largest_module": {
       "path": "site/app/money-history.mjs",
       "bytes": 68370
@@ -32,7 +32,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 88471,
+      "after_bytes": 88765,
       "after_tokens": 23818,
       "token_reduction_ratio": 10.0
     },
@@ -44,7 +44,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 64887,
+      "after_bytes": 64514,
       "after_tokens": 17589,
       "token_reduction_ratio": 13.54
     },
@@ -56,14 +56,14 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 70474,
+      "after_bytes": 70768,
       "after_tokens": 19033,
       "token_reduction_ratio": 12.52
     }
   ],
   "source_equivalence": {
     "normalization": "Replace the first of two byte-identical boxClass declarations with its module-conversion note, restore moved-module dynamic imports from ../ to their original ./ paths, trim the script wrapper's final newline, then concatenate module source before live-binding publication footers in loader order.",
-    "normalized_source_bytes": 730102,
-    "normalized_source_sha256": "b4e67624d9ea0332a762679cf5afed2f57ff0a1fd148fafc01881d751fa8139d"
+    "normalized_source_bytes": 739550,
+    "normalized_source_sha256": "ec52d1b777655c2858a1417c6965442fc845aa3d2d78bbcfcea06d93f9709749"
   }
 }

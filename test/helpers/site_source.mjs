@@ -17,6 +17,7 @@ export const SITE_MODULES = [
   "meetings.mjs",
   "entities.mjs",
   "workspace.mjs",
+  "map.mjs",
   "routing.mjs",
   "boot.mjs",
 ];
