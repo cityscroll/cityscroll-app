@@ -86,6 +86,14 @@ function serializeState(){
       if(eligibility && eligibility !== "open_competitive") q.set("eligibility", eligibility);
       const windowFilter=$("#career-window")?.value;
       if(windowFilter && windowFilter !== "actionable") q.set("window", windowFilter);
+      const format=$("#career-format")?.value;
+      if(format && format !== "all") q.set("format", format);
+      const salaryBand=$("#career-salary-band")?.value;
+      if(salaryBand && salaryBand !== "all") q.set("salary", salaryBand);
+      const feeLevel=$("#career-fee-level")?.value;
+      if(feeLevel && feeLevel !== "all") q.set("fee", feeLevel);
+      const noExp=$("#career-no-experience")?.value;
+      if(noExp && noExp !== "all") q.set("experience", noExp);
     }
   } else if(tab === "land"){
     if($("#lboro").value) q.set("boro", $("#lboro").value);
@@ -713,23 +721,43 @@ function applyHash(){
       $("#staffing-query").value=staffingFilters.query;
       // A guide route is not an exam detail route — clear any prior #exam/ selection.
       careerSelected=null;
-      // Declared structured attributes only (interest/eligibility/window). No identity profile.
+      // Declared structured attributes only (interest/eligibility/window/format facets).
+      // No identity profile.
       const interest=q.get("interest");
       const eligibility=q.get("eligibility");
       const windowFilter=q.get("window");
+      const format=q.get("format");
+      const salaryBand=q.get("salary");
+      const feeLevel=q.get("fee");
+      const noExperience=q.get("experience");
+      const FORMAT_OK=["education_experience","multiple_choice","physical","mixed","all"];
+      const SALARY_OK=["under_45k","45k_60k","60k_80k","80k_plus","all"];
+      const FEE_OK=["none","low","mid","high","all"];
+      const EXP_OK=["yes","no","all"];
       if(
         (interest && CrolStaffing.isInterestArea(interest))
         || (eligibility && ["open_competitive","promotion","all"].includes(eligibility))
         || (windowFilter && ["actionable","open","upcoming","all"].includes(windowFilter))
+        || (format && FORMAT_OK.includes(format))
+        || (salaryBand && SALARY_OK.includes(salaryBand))
+        || (feeLevel && FEE_OK.includes(feeLevel))
+        || (noExperience && EXP_OK.includes(noExperience))
       ){
         careerRouteFilters={
           interest: CrolStaffing.isInterestArea(interest)?interest:null,
           eligibility: ["open_competitive","promotion","all"].includes(eligibility)?eligibility:null,
           window: ["actionable","open","upcoming","all"].includes(windowFilter)?windowFilter:null,
+          format: FORMAT_OK.includes(format)?format:null,
+          salary_band: SALARY_OK.includes(salaryBand)?salaryBand:null,
+          fee_level: FEE_OK.includes(feeLevel)?feeLevel:null,
+          no_experience: EXP_OK.includes(noExperience)?noExperience:null,
         };
       } else if(q.get("view")==="guide" || legacyExamRoute){
         // Explicit guide landing without filters: reset controls to defaults.
-        careerRouteFilters={ interest:null, eligibility:"open_competitive", window:"actionable" };
+        careerRouteFilters={
+          interest:null, eligibility:"open_competitive", window:"actionable",
+          format:"all", salary_band:"all", fee_level:"all", no_experience:"all",
+        };
       }
       showTab("people");
       const ledgerRoute=!!(staffingFilters.query||staffingFilters.role||staffingFilters.agency);

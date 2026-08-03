@@ -48,6 +48,76 @@
     return /continuous|walk[- ]?in/.test(mode);
   }
 
+  function salaryBandFor(salaryMin) {
+    const n = Number(salaryMin);
+    if (!Number.isFinite(n) || n <= 0) return "unknown";
+    if (n < 45000) return "under_45k";
+    if (n < 60000) return "45k_60k";
+    if (n < 80000) return "60k_80k";
+    return "80k_plus";
+  }
+
+  function feeLevelFor(fee) {
+    if (fee == null || fee === "") return "unknown";
+    const n = Number(fee);
+    if (!Number.isFinite(n)) return "unknown";
+    if (n === 0) return "none";
+    if (n <= 40) return "low";
+    if (n <= 70) return "mid";
+    return "high";
+  }
+
+  /**
+   * Differentiator facets for card leads / filters (precomputed on the exam row).
+   * @param {object} exam
+   */
+  function examDifferentiatorView(exam) {
+    if (!exam) {
+      return {
+        exam_format: null,
+        salary_band: "unknown",
+        fee_level: "unknown",
+        no_experience_required: null,
+        card_leads: [],
+      };
+    }
+    return {
+      exam_format: exam.exam_format || null,
+      salary_band: exam.salary_band || salaryBandFor(exam.salary_min),
+      fee_level: exam.fee_level || feeLevelFor(exam.fee),
+      no_experience_required: exam.no_experience_required == null
+        ? null
+        : Boolean(exam.no_experience_required),
+      residency_required: exam.residency_required == null
+        ? null
+        : Boolean(exam.residency_required),
+      qualifications: exam.qualifications || null,
+      test_method: exam.test_method || null,
+      card_leads: Array.isArray(exam.card_leads) ? exam.card_leads : [],
+      fee_waiver_is_boilerplate: Boolean(exam.fee_waiver_is_boilerplate),
+    };
+  }
+
+  function examMatchesDifferentiatorFilters(exam, filters) {
+    if (!exam) return false;
+    const view = examDifferentiatorView(exam);
+    if (filters.format && filters.format !== "all") {
+      if (String(view.exam_format || "") !== String(filters.format)) return false;
+    }
+    if (filters.salary_band && filters.salary_band !== "all") {
+      if (view.salary_band !== filters.salary_band) return false;
+    }
+    if (filters.fee_level && filters.fee_level !== "all") {
+      if (view.fee_level !== filters.fee_level) return false;
+    }
+    if (filters.no_experience === "yes") {
+      if (view.no_experience_required !== true) return false;
+    } else if (filters.no_experience === "no") {
+      if (view.no_experience_required !== false) return false;
+    }
+    return true;
+  }
+
   function filterExams(exams, filters, today) {
     const q = String(filters.query || "").trim().toLowerCase();
     return exams.filter(exam => {
@@ -58,7 +128,8 @@
       if (filters.window === "actionable" && !["open", "upcoming"].includes(status) && !continuous) return false;
       if (filters.window === "open" && status !== "open") return false;
       if (filters.window === "upcoming" && status !== "upcoming") return false;
-      if (q && !`${exam.title} ${exam.exam_number} ${exam.summary || ""}`.toLowerCase().includes(q)) return false;
+      if (!examMatchesDifferentiatorFilters(exam, filters)) return false;
+      if (q && !`${exam.title} ${exam.exam_number} ${exam.summary || ""} ${exam.qualifications || ""} ${exam.test_method || ""}`.toLowerCase().includes(q)) return false;
       return true;
     }).sort((a, b) => {
       // Intent-first: finite open deadlines, upcoming windows, then continuous/walk-in.
@@ -290,5 +361,9 @@
     topValues,
     examFeeSalaryView,
     examOutcomeView,
+    salaryBandFor,
+    feeLevelFor,
+    examDifferentiatorView,
+    examMatchesDifferentiatorFilters,
   };
 });

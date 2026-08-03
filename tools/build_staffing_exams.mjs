@@ -21,6 +21,10 @@ import {
   OASY_SOURCE_ID,
 } from "./lib/oasys_exam_map.mjs";
 import {
+  applyNoeDifferentiatorRecord,
+  stampExamDifferentiatorFacets,
+} from "../worker/src/lib/noe_differentiators.mjs";
+import {
   listAggregateBelongsToExamCycle,
   measureExamTemporalIncoherence,
   outcomeBelongsToExamCycle,
@@ -37,13 +41,15 @@ const CITY_RECORD_ID = "dg92-zbpx";
 const CURRENT_ID = "dcas-open-competitive";
 const NOE_ID = "dcas-noe";
 const NOE_DENSIFY_ID = "dcas-noe-fee-salary-densify";
+const NOE_DIFF_ID = "dcas-noe-differentiators";
 const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
 const LIST_DEPTH_CLOSED_FILE = "list_depth_closed_exams.json";
 const NOE_DENSIFY_FILE = "noe_fee_salary_densify.json";
+const NOE_DIFF_FILE = "noe_differentiators.json";
 const ANNUAL_HISTORY_FILE = "annual_schedule_history.json";
 const OASY_MAP_FILE = "oasys_exam_map.json";
-/** Bump when densify merge / fee-salary / OASys handoff materialization shape changes. */
-export const STAFFING_EXAMS_SCHEMA_VERSION = 4;
+/** Bump when densify merge / fee-salary / OASys handoff / differentiator materialization changes. */
+export const STAFFING_EXAMS_SCHEMA_VERSION = 5;
 
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
@@ -56,6 +62,14 @@ export const NOE_DETAIL_FIELDS = [
   "summary",
   "qualifications",
   "test_method",
+  "exam_format",
+  "education_level",
+  "no_experience_required",
+  "residency",
+  "residency_required",
+  "has_selective_certification",
+  "selective_certification_summary",
+  "card_leads",
   "noe_body",
 ];
 
@@ -551,6 +565,7 @@ export function buildArtifact({
   annualHistory,
   listDepthClosed,
   noeDensify,
+  noeDifferentiators,
   oasysMap,
   priorArtifact,
   today,
@@ -665,12 +680,33 @@ export function buildArtifact({
     exams.set(examNumber, densified);
   }
 
+  // Differentiator densify: exam format, quals, residency, filter facets, card leads.
+  // Fill-only — never overwrites structured open-competitive / fee densify amounts.
+  const diffByNumber = new Map(
+    (noeDifferentiators?.records || []).map((row) => [
+      String(row.exam_number).padStart(4, "0"),
+      row,
+    ]),
+  );
+  const corpusLeads = Object.fromEntries(
+    (noeDifferentiators?.records || [])
+      .filter((row) => Array.isArray(row.card_leads) && row.card_leads.length)
+      .map((row) => [String(row.exam_number).padStart(4, "0"), row.card_leads]),
+  );
+  let diffApplied = 0;
+  for (const [examNumber, exam] of exams.entries()) {
+    const withDiff = applyNoeDifferentiatorRecord(exam, diffByNumber.get(examNumber));
+    if (withDiff !== exam) diffApplied += 1;
+    exams.set(examNumber, stampExamDifferentiatorFacets(withDiff, corpusLeads));
+  }
+
   const outcomeMap = outcomesByExamNumber(outcomes.records);
   const listIndex = buildListAggregateIndex(listAggregates?.records || []);
   // Source rows are already normalized from the registered DCAS schedule/NOE inputs above.
   const baseRecords = Array.from(exams.values())
     .map((exam) => attachFeeSalaryGap(joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex)))
     .map((exam) => attachOasysDeepLink(exam, oasysByNumber))
+    .map((exam) => stampExamDifferentiatorFacets(exam, corpusLeads))
     .sort((a, b) => {
       const ad = a.application_start || "9999-12-31";
       const bd = b.application_start || "9999-12-31";
@@ -687,6 +723,7 @@ export function buildArtifact({
     generatedAt: generatedInstant,
   }));
   const oasysDeepCount = records.filter((e) => e.application_handoff_mode === "deep").length;
+  const formatCount = records.filter((e) => e.exam_format).length;
   const emittedPredictions = records
     .map((exam) => exam.list_establishment_forecast?.prediction)
     .filter(Boolean);
@@ -700,6 +737,7 @@ export function buildArtifact({
   const sources = [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source];
   if (annualHistory?.source) sources.push(annualHistory.source);
   if (noeDensify?.source) sources.push(noeDensify.source);
+  if (noeDifferentiators?.source) sources.push(noeDifferentiators.source);
   if (oasysMap?.source) sources.push(oasysMap.source);
 
   return {
@@ -732,6 +770,12 @@ export function buildArtifact({
         map_records: oasysByNumber.size,
         exams_deep_linked: oasysDeepCount,
         exams_landing: records.length - oasysDeepCount,
+      },
+      noe_differentiators: {
+        densify_records: diffByNumber.size,
+        densify_applied: diffApplied,
+        exams_with_format: formatCount,
+        corpus: noeDifferentiators?.corpus || null,
       },
     },
     outcomes: buildOutcomes({ outcomes }),
@@ -992,7 +1036,7 @@ async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
   if (process.argv.includes("--refresh-prediction-history")) await refreshAnnualScheduleHistory();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, oasysMap, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, noeDifferentiators, oasysMap, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
@@ -1002,6 +1046,7 @@ async function main() {
     readJsonOptional(ANNUAL_HISTORY_FILE),
     readJsonOptional(LIST_DEPTH_CLOSED_FILE),
     readJsonOptional(NOE_DENSIFY_FILE),
+    readJsonOptional(NOE_DIFF_FILE),
     readJsonOptional(OASY_MAP_FILE),
     (async () => {
       try {
@@ -1060,6 +1105,7 @@ async function main() {
     annualHistory,
     listDepthClosed,
     noeDensify,
+    noeDifferentiators,
     oasysMap,
     priorArtifact,
     today,
