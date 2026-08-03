@@ -63,13 +63,13 @@
   ],
   "source_equivalence": {
     "normalization": "Replace the first of two byte-identical boxClass declarations with its module-conversion note, restore moved-module dynamic imports from ../ to their original ./ paths, trim the script wrapper's final newline, then concatenate module source before live-binding publication footers in loader order.",
-    "normalized_source_bytes": 748486,
-    "normalized_source_sha256": "dbc7ca08d560a4c634b379549cee61a0a733dea4965ca9d00cab602e81fc2d80",
-    "note": "Refreshed after discovery-parity on modular split + map + exam-guide hotfix."
+    "normalized_source_bytes": 739550,
+    "normalized_source_sha256": "ec52d1b777655c2858a1417c6965442fc845aa3d2d78bbcfcea06d93f9709749"
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 741994,
-    "normalized_source_sha256": "9a8af2d570fd9368f250f41b9eb55b0737c4750bc10fd80e84b2cef98fcf440f"
+    "normalized_source_bytes": 748486,
+    "normalized_source_sha256": "dbc7ca08d560a4c634b379549cee61a0a733dea4965ca9d00cab602e81fc2d80",
+    "note": "Discovery-parity NL routing in search-share.mjs + routing.mjs after modular split, map module, and exam-guide hotfix."
   }
 }
