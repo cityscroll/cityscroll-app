@@ -134,12 +134,13 @@ export function landDefaultQuery() {
   };
 }
 
-export function isDefaultLandSearch({ status, boro, kw, communityDistrict, located } = {}) {
+export function isDefaultLandSearch({ status, boro, kw, communityDistrict, councilDistrict, located } = {}) {
   return (
     (status || "active") === "active" &&
     !boro &&
     !String(kw || "").trim() &&
     !communityDistrict &&
+    !councilDistrict &&
     !located
   );
 }

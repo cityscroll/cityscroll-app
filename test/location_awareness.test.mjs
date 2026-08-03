@@ -8,12 +8,41 @@ const indexSource = readFileSync(new URL("../site/index.html", import.meta.url),
 const {
   bindLocationControl,
   coarseLandFilter,
+  resetCouncilBoundariesCache,
   resolveLandEntryLocation,
 } = require("../site/location_awareness.js");
 const {
   buildSearchDeepLink,
   canonicalSearchURL,
 } = require("../site/nl_deeplink.js");
+
+const COUNCIL_LAYER = {
+  schema: "cityscroll.district_boundaries.v0",
+  layer: "council_district",
+  dataset_id: "872g-cjhh",
+  boundary_vintage: "2026-05-26",
+  districts: [{
+    id: "25",
+    label: "City Council District 25",
+    bbox: [-73.89, 40.74, -73.87, 40.755],
+    polygons: [{
+      rings: [[
+        [-73.89, 40.74],
+        [-73.87, 40.74],
+        [-73.87, 40.755],
+        [-73.89, 40.755],
+        [-73.89, 40.74],
+      ]],
+    }],
+  }],
+};
+
+function locationOptions(extra) {
+  return {
+    councilBoundaries: COUNCIL_LAYER,
+    ...extra,
+  };
+}
 
 function locationButton() {
   return {
@@ -43,6 +72,7 @@ function memoryStorage(initial) {
 }
 
 test("the tap control requests a position and GeoSearch only after activation", async () => {
+  resetCouncilBoundariesCache();
   const button = locationButton();
   const calls = { permission: 0, fetch: [] };
   let resolved = null;
@@ -80,13 +110,13 @@ test("the tap control requests a position and GeoSearch only after activation", 
     };
   };
 
-  bindLocationControl(button, {
+  bindLocationControl(button, locationOptions({
     geolocation,
     fetchImpl,
     onResolved(area) {
       resolved = area;
     },
-  });
+  }));
 
   assert.equal(calls.permission, 0, "wiring the page never asks for location");
   assert.equal(calls.fetch.length, 0, "wiring the page never contacts GeoSearch");
@@ -105,15 +135,17 @@ test("the tap control requests a position and GeoSearch only after activation", 
     bbl: "4014930012",
     block: "401493",
     communityDistrict: "Q04",
+    councilDistrict: "25",
   });
   assert.equal("latitude" in resolved, false);
   assert.equal("longitude" in resolved, false);
 });
 
 test("an existing geolocation grant resolves the returning user's area without a tap", async () => {
+  resetCouncilBoundariesCache();
   const calls = { permission: 0, position: 0, fetch: 0 };
   let resolved = null;
-  const area = await resolveLandEntryLocation({
+  const area = await resolveLandEntryLocation(locationOptions({
     permissions: {
       async query(descriptor) {
         calls.permission++;
@@ -150,13 +182,14 @@ test("an existing geolocation grant resolves the returning user's area without a
     onResolved(value) {
       resolved = value;
     },
-  });
+  }));
 
   assert.equal(calls.permission, 1);
   assert.equal(calls.position, 1);
   assert.equal(calls.fetch, 2);
   assert.equal(area, resolved);
   assert.equal(resolved.communityDistrict, "Q04");
+  assert.equal(resolved.councilDistrict, "25");
 });
 
 test("a first prompt-state Land entry asks once and dismissal preserves the tap fallback", async () => {
@@ -318,6 +351,7 @@ test("a located Land view emits only its resolved coarse area", () => {
     bbl: "4014930012",
     block: "401493",
     communityDistrict: "Q04",
+    councilDistrict: "25",
   }, "active");
   const hash = buildSearchDeepLink("land", filter);
   const url = canonicalSearchURL(
@@ -325,9 +359,49 @@ test("a located Land view emits only its resolved coarse area", () => {
     hash,
   );
 
-  assert.equal(hash, "#land?boro=Queens&cd=Q04");
-  assert.equal(url, "https://cityscroll.org/#land?boro=Queens&cd=Q04");
+  assert.equal(hash, "#land?boro=Queens&cd=Q04&council=25");
+  assert.equal(url, "https://cityscroll.org/#land?boro=Queens&cd=Q04&council=25");
   assert.doesNotMatch(url, /(?:lat|latitude|lon|longitude|40\.7473|-73\.8832|4014930012)/i);
+});
+
+test("missing council boundaries leave councilDistrict unset without failing the area", async () => {
+  resetCouncilBoundariesCache();
+  const button = locationButton();
+  let resolved = null;
+  bindLocationControl(button, {
+    geolocation: {
+      getCurrentPosition(success) {
+        success({ coords: { latitude: 40.7473, longitude: -73.8832 } });
+      },
+    },
+    async fetchImpl(url) {
+      if (String(url).includes("council_district_boundaries")) {
+        return { ok: false, async json() { return {}; } };
+      }
+      if (String(url).includes("MAPPLUTO")) {
+        return { ok: true, async json() { return { features: [{ attributes: { CD: 404 } }] }; } };
+      }
+      return {
+        ok: true,
+        async json() {
+          return {
+            features: [{
+              properties: {
+                label: "40-12 83 Street, Elmhurst, NY, USA",
+                borough: "Queens",
+                neighbourhood: "Elmhurst",
+                addendum: { pad: { bbl: "4014930012" } },
+              },
+            }],
+          };
+        },
+      };
+    },
+    onResolved(area) { resolved = area; },
+  });
+  await button.click();
+  assert.equal(resolved.communityDistrict, "Q04");
+  assert.equal(resolved.councilDistrict, undefined);
 });
 
 test("the Land control is a translated, focusable button wired through the click gate", () => {

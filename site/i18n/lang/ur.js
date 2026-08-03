@@ -269,6 +269,7 @@
     parcel_via_geosearch: "لاٹ {bbl} بذریعہ GeoSearch — میچ کی تصدیق کریں",
     parcel_via_notice_tax_lot: "لاٹ {bbl} اس نوٹس کے ٹیکس-لاٹ متن سے — میچ کی تصدیق کریں",
     community_district_short: "کمیونٹی ڈسٹرکٹ {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "آن لائن یا فون پر",
     venue_in_person: "بالمشافہ",
     venue_hybrid: "بالمشافہ اور آن لائن",

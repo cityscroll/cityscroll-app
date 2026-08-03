@@ -269,6 +269,7 @@
     parcel_via_geosearch: "القطعة {bbl} عبر GeoSearch — تحقق من التطابق",
     parcel_via_notice_tax_lot: "القطعة {bbl} من نص القطعة الضريبية في هذا الإشعار — تحقق من التطابق",
     community_district_short: "المنطقة المجتمعية {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "عبر الإنترنت أو الهاتف",
     venue_in_person: "حضوريًا",
     venue_hybrid: "حضوريًا وعبر الإنترنت",

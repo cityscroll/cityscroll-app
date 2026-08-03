@@ -266,6 +266,7 @@
     parcel_via_geosearch: "lote {bbl} vía GeoSearch — verifique la coincidencia",
     parcel_via_notice_tax_lot: "lote {bbl} del texto de lote fiscal de este aviso — verifique la coincidencia",
     community_district_short: "Distrito Comunitario {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "En línea o por teléfono",
     venue_in_person: "En persona",
     venue_hybrid: "En persona y en línea",

@@ -131,6 +131,7 @@ test("filtered, entity, located, and saved-preset URLs survive matrix encoding e
     "https://cityscroll.org/#vendor/Acme%20Gardens",
     "https://cityscroll.org/#land?boro=Queens",
     "https://cityscroll.org/#land?boro=Queens&cd=Q04",
+    "https://cityscroll.org/#land?boro=Queens&cd=Q04&council=25",
     "https://cityscroll.org/#rules?q=sidewalk",
   ];
   for (const url of urls) assert.equal(decodeMatrix(sandbox.QRShare.matrix(url)), url);
@@ -144,6 +145,7 @@ test("located Land QR equals Copy link's coarse-area canonical URL", () => {
     bbl: "4014930012",
     block: "401493",
     communityDistrict: "Q04",
+    councilDistrict: "25",
   }, "active");
   const hash = buildSearchDeepLink("land", filter);
   const copyLinkOutput = canonicalSearchURL(
@@ -151,7 +153,7 @@ test("located Land QR equals Copy link's coarse-area canonical URL", () => {
     hash,
   );
 
-  assert.equal(copyLinkOutput, "https://cityscroll.org/#land?boro=Queens&cd=Q04");
+  assert.equal(copyLinkOutput, "https://cityscroll.org/#land?boro=Queens&cd=Q04&council=25");
   assert.equal(decodeMatrix(sandbox.QRShare.matrix(copyLinkOutput)), copyLinkOutput);
   assert.doesNotMatch(copyLinkOutput, /(?:lat|latitude|lon|longitude|40\.7473|-73\.8832|4014930012)/i);
 });

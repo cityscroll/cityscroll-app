@@ -266,6 +266,7 @@
     parcel_via_geosearch: "участок {bbl} через GeoSearch — проверьте совпадение",
     parcel_via_notice_tax_lot: "участок {bbl} из текста налогового лота в этом уведомлении — проверьте совпадение",
     community_district_short: "Общественный округ {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "Онлайн или по телефону",
     venue_in_person: "Очно",
     venue_hybrid: "Очно и онлайн",

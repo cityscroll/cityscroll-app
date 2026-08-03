@@ -274,6 +274,7 @@
     parcel_via_geosearch: "działka {bbl} przez GeoSearch — zweryfikuj dopasowanie",
     parcel_via_notice_tax_lot: "działka {bbl} z tekstu działki podatkowej w tym ogłoszeniu — zweryfikuj dopasowanie",
     community_district_short: "Okręg społeczności {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "Online lub telefonicznie",
     venue_in_person: "Osobiście",
     venue_hybrid: "Osobiście i online",
