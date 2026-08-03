@@ -101,6 +101,17 @@ PAST_IDA_HEARING = {
     "additional_description_1": "Industrial Development Agency public hearing.",
 }
 
+CANNONSVILLE_EXTRACT = (
+    "New York City Department of Environmental Protection\n"
+    "Bureau of Water Supply - Natural Resources Division\n"
+    "CARPENTERS EDDY EAST\n"
+    "Forest Management Project # 5116\n"
+    "NOTICE OF PROJECT AVAILABILITY\n"
+    "Description: The City of New York will sell an estimated 187 MBF of hardwood "
+    "sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest "
+    "Management Project #5116 in the Cannonsville watershed basin."
+)
+
 CANNONSVILLE_NOTICE = {
     "request_id": "20240515016",
     "start_date": "2024-05-15T00:00:00.000",
@@ -115,23 +126,32 @@ CANNONSVILLE_NOTICE = {
         "document_id": "37470",
         "title": "Description, maps, and volume report",
         "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
-        "content_type": None,
+        "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "bytes": None,
         "source": "portal",
+        "text_status": "ok",
+        "text_method": "docx_xml",
+        "text_preview": "New York City Department of Environmental Protection · Bureau of Water Supply - Natural Resources Division · CARPENTERS EDDY EAST · Forest Management Project # 5116…",
+        "extracted_text": CANNONSVILLE_EXTRACT,
     }],
 }
 
 CANNONSVILLE_ATTACHMENTS = {
     "request_id": "20240515016",
     "n_attachments": 1,
+    "n_with_text": 1,
     "attachments": [{
         "request_id": "20240515016",
         "document_id": "37470",
         "title": "Description, maps, and volume report",
         "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
-        "content_type": None,
+        "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "bytes": None,
         "source": "portal",
+        "text_status": "ok",
+        "text_method": "docx_xml",
+        "text_preview": "New York City Department of Environmental Protection · Bureau of Water Supply - Natural Resources Division · CARPENTERS EDDY EAST · Forest Management Project # 5116…",
+        "extracted_text": CANNONSVILLE_EXTRACT,
     }],
 }
 

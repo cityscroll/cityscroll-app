@@ -14,3 +14,9 @@ test("scheduled attachment metadata batch is bounded and publishes its receipt",
   assert.match(workflow, /CITYSCROLL_ATTACHMENT_ENDPOINT/);
   assert.match(workflow, /CITYSCROLL_ADMIN_KEY/);
 });
+
+test("scheduled attachment jobs also run the T1 inline-text extract", () => {
+  assert.match(workflow, /attachment_text_run\.py/);
+  assert.match(workflow, /--limit 25/);
+  assert.match(workflow, /attachment_text_latest\.json/);
+});

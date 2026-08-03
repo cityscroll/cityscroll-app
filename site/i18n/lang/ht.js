@@ -789,6 +789,8 @@
     notice_attachment_chip_one: "{n} dokiman anekse: {title}",
     notice_attachment_chip_other: "{n} dokiman anekse: {title}",
     notice_attachment_title_fallback: "Dosye ofisyèl avi a",
+    notice_attachment_extract_summary: "Tèks yo extrè nan dokiman anekse a — elaji pou tout tèks la",
+    digest_match_attachment_html: "Yo jwenn li nan dokiman anekse: {snippet}",
     ext_link_new_tab_sr: "(louvri nan yon nouvo fenèt)",
     pin_unusable_note: "PIN avi sa a pa ka sèvi pou lye (<code>{pin}</code>), donk akòdman li pa ka swiv otomatikman. Louvri l nan City Record la pou li tèks konplè a.",
     only_notice_note: "Se sèl avi sa a ki anrejistre pou kounye a — pa gen okenn etap ki vin apre ki pibliye pou PIN <code>{pin}</code> a toujou. ",

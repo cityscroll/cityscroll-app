@@ -51,9 +51,13 @@ test("notice chrome and demo contract expose the Cannonsville attachment chip", 
   assert.equal(entry.url, "#notice/20240515016");
   assert.equal(entry.postDeployOnly, true);
   assert.match(entry.expectations.visible[0].text, /maps, and volume report/);
+  const extractExpectation = entry.expectations.visible.find((item) => item.selector?.includes("attachment-extract"));
+  assert.ok(extractExpectation, "demo expects progressive attachment extract");
+  assert.match(extractExpectation.text, /187 MBF/);
   const demoHarness = readFileSync(new URL("./functional/20_demo_links.py", import.meta.url), "utf8");
   assert.match(demoHarness, /CANNONSVILLE_NOTICE/);
   assert.match(demoHarness, /CANNONSVILLE_ATTACHMENTS/);
+  assert.match(demoHarness, /CANNONSVILLE_EXTRACT/);
   assert.match(demoHarness, /CROL_DEMO_LINK_IDS/);
 });
 
