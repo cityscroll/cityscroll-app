@@ -150,6 +150,7 @@ test("developer exclusion is authenticated, invisible, and fail-closed", async (
 });
 
 test("fixture event flows emit -> sampling-aware aggregate -> public stats endpoint", async () => {
+  // FIXTURE_DAY / FIXTURE_NOW pin the last7d window (main #375); do not use wall-clock today.
   const points = [];
   await emit(points, { event: "page_view", surface: "home" });
   await emit(points, { event: "page_view", surface: "stats" });

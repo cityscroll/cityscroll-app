@@ -133,10 +133,15 @@ export function toDigestRow(r) {
     contact_phone:   null,                            // not in D1 mirror
     email:           null,                            // not in D1 mirror
     section_name:    r.section              ?? null,  // D1 "section" → SODA "section_name"
+    // type_of_notice → SODA type_of_notice_description (action-rail kindFor / award handoff).
+    type_of_notice_description: r.type_of_notice ?? null,
+    selection_method: r.selection_method ?? null,
+    selection_method_description: r.selection_method ?? null,
     event_date:      r.event_date           ?? null,
     street_address_1: r.event_addr1         ?? null,
     // D1 "description" → SODA "additional_description_1" -- matchEvidence() (lib/digest.mjs)
-    // reads this name regardless of which path served the row.
+    // reads this name regardless of which path served the row. Also used for package URL
+    // extraction in digest action awareness.
     additional_description_1: r.description ?? null,
     structured_facts: r.structured_facts ?? null,
   };
