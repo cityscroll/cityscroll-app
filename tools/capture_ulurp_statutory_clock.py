@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Before/after screenshots for ULURP statutory-clock projections on the land timeline."""
+"""Before/after screenshots for ULURP statutory-clock deadlines on the land timeline."""
 
 from __future__ import annotations
 
@@ -189,6 +189,7 @@ def base_record(*, with_clock: bool) -> dict:
     }
     if with_clock:
         record["statutory_clock"] = STATUTORY_CLOCK
+        # No prediction assertions on the before-frame (shows unlabeled timeline only).
         record["predictions"] = []
     return record
 
@@ -272,10 +273,12 @@ def capture_variant(page: Page, base_url: str, record: dict, out: Path, *, expec
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    # Screenshot file receipts for manifest.json.
     files = []
     with StaticServer() as base_url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 900})
+        # Playwright pageerror collector for this capture run.
         errors: list[str] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
 

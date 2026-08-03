@@ -1136,7 +1136,7 @@
     land_spine_statutory_deadline_html: "法定截止日期：{stage} 审查须在 {n} 天内结束（市宪章 §197-c）——不晚于 {date}。",
     land_spine_statutory_due_summary: "法定截止日期 {date}",
     land_spine_statutory_testify_hint: "在此截止日期前举行的听证会通常是作证的最后机会。",
-    land_spine_statutory_withdrawn_note: "该项目已撤回；未完成的法定预测已关闭。",
+    land_spine_statutory_withdrawn_note: "该项目已撤回；未完成的法定期限已关闭。",
     land_phase_pre_application: "预申请与提交",
     land_phase_environmental: "环境审查（CEQR）",
     land_phase_pre_certification: "预认证通知",

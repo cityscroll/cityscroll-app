@@ -1,5 +1,5 @@
 /**
- * ULURP statutory-clock projections (cs-pred-03).
+ * ULURP statutory-clock deadlines (cs-pred-03).
  * Verify gate: certified on D → CB/BP/CPC/Council at D+60/90/150/200 with
  * statute_ref; withdrawn project open predictions resolve to withdrawn.
  */

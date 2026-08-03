@@ -339,7 +339,7 @@ assertions (`method: statutory_clock`). Pure table:
 `site/ulurp_statutory_clock.mjs`; emission:
 `worker/src/lib/ulurp_statutory_predictions.mjs` via
 `attachUlurpStatutoryPredictions` in `buildZapOutcomeRecord`. UI uses the
-precomputed view only (Estimate chip). Withdrawn projects close open predictions
+precomputed view only (shared labeled-forecast chip class). Withdrawn projects close open predictions
 as `withdrawn`. Verify:
 `node --test test/ulurp_statutory_clock.test.mjs`. Capture:
 `python3 tools/capture_ulurp_statutory_clock.py`.
