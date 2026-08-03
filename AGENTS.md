@@ -1275,6 +1275,14 @@ mislabeled red-flag card (not a polite class-(b) mask). Pure helpers:
 `ontology/dimensions/not_published_rate.mjs`; samples:
 `ontology/fixtures/dimensions/not_published_claim_samples.json`.
 
+## Prediction calibration scorecard
+
+Every public per-matter prediction domain must clear the assertion-native backtest
+in `worker/src/lib/prediction_calibration.mjs`; below the ship bar, expose only the
+cohort statistic. Verify the calibrated pass, deliberate miscalibrated failure,
+and byte-stable artifact with:
+`node worker/scripts/prediction-calibration-scorecard.mjs --fixtures worker/test/fixtures/predictions --check`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
