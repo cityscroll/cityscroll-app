@@ -1,10 +1,20 @@
 // Dimension: location-resolution
 // Measures whether lens records are located, geocoded pins resolve both
-// resident-facing district types, and boundary data carries a current vintage.
+// resident-facing district types, boundary data carries a current vintage,
+// and the map surface's per-district aggregates are not silently zero-located.
 
 import { makeDimensionCard } from "./shared.mjs";
 
 export const DIMENSION_ID = "location-resolution";
+
+/** Place-based map lenses that must not ship as all-zero when the corpus has rows. */
+export const MAP_PLACE_LENSES = Object.freeze([
+  "land",
+  "property",
+  "rules",
+  "meetings",
+  "money",
+]);
 
 const rate = (numerator, denominator) => denominator > 0 ? numerator / denominator : null;
 
@@ -13,6 +23,11 @@ export function evaluateLocationResolution(input = {}) {
   const lenses = Array.isArray(inventory.lenses) ? inventory.lenses : [];
   const pins = Array.isArray(inventory.geocoded_pins) ? inventory.geocoded_pins : [];
   const boundaries = Array.isArray(inventory.boundaries) ? inventory.boundaries : [];
+  // Map aggregates: prefer explicit input (live flywheel), else inventory stamp.
+  const mapActivity = input.district_activity
+    || inventory.map_aggregates
+    || inventory.district_activity
+    || null;
   const cards = [];
 
   const lens_rates = {};
@@ -47,6 +62,53 @@ export function evaluateLocationResolution(input = {}) {
       demo_win: `${lens.label || id} records with stated geography resolve to a reader-visible place.`,
       context: [lens.corpus, "ontology/fixtures/dimensions/location_resolution.json"].filter(Boolean),
       lesson_class: "spatial-location-recall",
+    }));
+  }
+
+  // Map surface: zero-located lens on a non-empty district_activity corpus is a wiring bug
+  // (extractors locate but precompute never counted). Distinct from golden-corpus rates.
+  const map_lens_rates = {};
+  const mapSources = mapActivity?.sources && typeof mapActivity.sources === "object"
+    ? mapActivity.sources
+    : {};
+  for (const lensId of MAP_PLACE_LENSES) {
+    const src = mapSources[lensId] || {};
+    const counted = Number(src.counted) || 0;
+    const located = Number(src.located) || 0;
+    const locatedRate = rate(located, counted);
+    map_lens_rates[lensId] = {
+      corpus: src.corpus || null,
+      counted,
+      located,
+      located_rate: locatedRate,
+    };
+    if (counted < 1) continue;
+    if (located >= 1) continue;
+    // money often has no serving geography in the OCP warehouse slice — still flag when
+    // counted>0 and located=0 so the wiring gap is visible; rank below place-critical lenses.
+    const placeCritical = lensId === "meetings" || lensId === "land" || lensId === "property";
+    cards.push(makeDimensionCard({
+      dimension: DIMENSION_ID,
+      slug: `map-zero-located-${lensId}`,
+      title: `Map density shows zero located ${lensId} events citywide`,
+      rank_score: placeCritical ? 95 : 86,
+      evidence: {
+        kind: "map-zero-located",
+        lens: lensId,
+        corpus: src.corpus || null,
+        counted,
+        located,
+        located_rate: locatedRate,
+        surface: "district_activity",
+      },
+      verify: "node tools/build_district_activity.mjs --check",
+      demo_win: `The map density view shows nonzero located ${lensId} activity where the corpus has placeable rows.`,
+      context: [
+        "site/data/district_activity.json",
+        "tools/lib/district_activity.mjs",
+        "ontology/fixtures/dimensions/location_resolution.json",
+      ],
+      lesson_class: "spatial-map-aggregate-wiring",
     }));
   }
 
@@ -119,7 +181,7 @@ export function evaluateLocationResolution(input = {}) {
 
   return {
     dimension: DIMENSION_ID,
-    metrics: { lens_rates, district_rates, boundary_metrics },
+    metrics: { lens_rates, map_lens_rates, district_rates, boundary_metrics },
     cards,
   };
 }

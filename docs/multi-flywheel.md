@@ -17,7 +17,7 @@ Public vocabulary is neutral. This is an object–link–action **catalog** plus
 | `ontology-enrichment` | Registry sync, class-(a) gaps, dual-write, cross-spine | Metric-driven enrichment (legacy intelligence flywheel) |
 | `coverage` | Declared `source_contracts` vs observation coverage | Declared-not-ingested or dual-write gap |
 | `cross-source-consistency` | Disagreement inventory + cross-spine fail fixtures | Unreconciled source disagreements |
-| `location-resolution` | Golden-corpus located rates, community + council district resolution on geocoded pins, boundary vintage | Stated places remain unlocated, either district is missing, or a boundary source is stale/unlabeled |
+| `location-resolution` | Golden-corpus located rates, **map** `district_activity` per-lens located rates, community + council district resolution on geocoded pins, boundary vintage | Stated places remain unlocated, a map lens is zero-located with a non-empty corpus (`map-zero-located-*`), either district is missing, or a boundary source is stale/unlabeled |
 
 ### Data-integrity core: not-published-rate credibility audit
 

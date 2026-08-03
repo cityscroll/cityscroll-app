@@ -257,7 +257,20 @@ test("cross-source-consistency emits open disagreements and spine failures", () 
 
 test("location-resolution measures corpora, districts, and boundary vintage without card flood", () => {
   const inventory = loadJson("ontology/fixtures/dimensions/location_resolution.json");
-  const result = evaluateLocationResolution({ location_resolution: inventory });
+  // Healthy map aggregates: every non-empty lens has ≥1 located row.
+  const healthyMap = {
+    sources: {
+      land: { corpus: "zap", counted: 10, located: 10 },
+      property: { corpus: "property", counted: 5, located: 5 },
+      meetings: { corpus: "meetings", counted: 8, located: 3 },
+      rules: { corpus: "rules", counted: 4, located: 1 },
+      money: { corpus: "ocp", counted: 2, located: 0 },
+    },
+  };
+  const result = evaluateLocationResolution({
+    location_resolution: inventory,
+    district_activity: healthyMap,
+  });
   assert.equal(result.dimension, "location-resolution");
   assert.equal(result.metrics.lens_rates["meetings-hearings"].located_rate, 1);
   assert.equal(result.metrics.lens_rates.property.located_rate, 1);
@@ -270,6 +283,31 @@ test("location-resolution measures corpora, districts, and boundary vintage with
   assert.equal(result.metrics.boundary_metrics.current, 2);
   assert.equal(result.metrics.boundary_metrics.boundary_vintage_current_rate, 1);
   assert.ok(inventory.boundaries.every((b) => b.status === "contracted" && b.vintage_at));
-  // No flood: located corpora + districts + current vintages → empty card queue.
-  assert.deepEqual(result.cards, []);
+  // money counted with 0 located → map-zero-located card; place-critical lenses healthy.
+  assert.ok(result.metrics.map_lens_rates.meetings.located_rate > 0);
+  assert.ok(result.cards.some((c) => c.evidence?.kind === "map-zero-located" && c.evidence?.lens === "money"));
+  assert.ok(!result.cards.some((c) => c.evidence?.lens === "meetings" && c.evidence?.kind === "map-zero-located"));
+});
+
+test("location-resolution emits map-zero-located when place lens is all-zero on map aggregates", () => {
+  const inventory = loadJson("ontology/fixtures/dimensions/location_resolution.json");
+  const brokenMap = {
+    sources: {
+      land: { corpus: "zap", counted: 10, located: 10 },
+      property: { corpus: "property", counted: 5, located: 5 },
+      meetings: { corpus: "meetings", counted: 119, located: 0 },
+      rules: { corpus: "rules", counted: 100, located: 0 },
+      money: { corpus: "ocp", counted: 8, located: 0 },
+    },
+  };
+  const result = evaluateLocationResolution({
+    location_resolution: inventory,
+    district_activity: brokenMap,
+  });
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.kind === "map-zero-located" && c.evidence?.lens === "meetings"));
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.kind === "map-zero-located" && c.evidence?.lens === "rules"));
+  assert.equal(result.metrics.map_lens_rates.meetings.located_rate, 0);
+  assert.equal(result.metrics.map_lens_rates.meetings.counted, 119);
 });
