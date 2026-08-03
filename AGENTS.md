@@ -535,6 +535,19 @@ one outbound affordance per notice. NYCIDA board URL labels as **IDA meetings pa
 `node --test test/ida_notice_defects.test.mjs`. Captures:
 `python3 tools/capture_ida_notice_defects.py`.
 
+**Meetings domain explorer (list):** pure `site/meetings_explorer.mjs` elevates
+the Meetings lens on process stage (scheduled → agenda → held → outcomes),
+next-action keys (attend / join / testimony when the notice publishes them),
+and agency entity links — while **keeping place-based navigation** (local /
+citywide / unlocated groups + affected-area filters). Same-agency same-day
+notices collapse to one event card; same-agency same-matter decides text can
+collapse a multi-notice journey. Detail vote spine stays
+`site/meeting_phase_spine.mjs`; non-Council process spine stays
+`site/non_council_hearing_spine.mjs`. Verify:
+`node --test test/meetings_explorer.test.mjs test/meeting_phase_spine.test.mjs
+test/non_council_hearing_spine.test.mjs`. Captures:
+`python3 tools/capture_meetings_ops_ontology.py`.
+
 ## Contract lifecycle category gate
 
 `isContractLifecycleEligible` — Procurement section or Solicitation/Award/Intent
