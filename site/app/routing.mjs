@@ -115,6 +115,15 @@ function serializeState(){
     if(tab === "rules"){
       if(rulesProcessSel !== "all") q.set("process", rulesProcessSel);
     }
+  } else if(tab === "map"){
+    if(mapState.level && mapState.level !== "borough") q.set("level", mapState.level);
+    if(mapState.id) q.set("id", mapState.id);
+    if(mapState.parent) q.set("parent", mapState.parent);
+    if(mapState.lens && mapState.lens !== "all") q.set("lens", mapState.lens);
+  }
+  if(tab === "property"){
+    const taxPanel=$("#tax-lien-sale-panel");
+    if(taxPanel && !taxPanel.hidden) q.set("view", "tax-lien");
   }
   const qs = q.toString();
   return "#" + tab + (qs ? "?" + qs : "");
@@ -736,6 +745,12 @@ function applyHash(){
         propAsset = q.get("asset") || "all";
         propProcessSel = q.get("process") || "all";
         propStageSel = q.get("stage") || "all";
+        const taxPanel=$("#tax-lien-sale-panel");
+        if(taxPanel){
+          const showLien=q.get("view")==="tax-lien";
+          taxPanel.hidden=!showLien;
+          if(showLien) paintTaxLienSalePanel();
+        }
       }
       if(tab === "rules"){
         const process=q.get("process")||"all";
@@ -754,6 +769,14 @@ function applyHash(){
       if(q.get("view") === "rollup"){
         renderAlertsRollupPrefs().then(()=>focusAlertsRollupPanel());
       }
+    } else if(tab === "map"){
+      const levelRaw=q.get("level")||"borough";
+      const level=["borough","community_district","council_district"].includes(levelRaw)?levelRaw:"borough";
+      const lensRaw=q.get("lens")||"all";
+      const lens=["all","land","property","rules","meetings","money"].includes(lensRaw)?lensRaw:"all";
+      mapState={ level, id:q.get("id")||null, parent:q.get("parent")||null, lens };
+      mapViewBox=null;
+      showTab("map");
     } else {
       showTab(tab);
     }

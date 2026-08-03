@@ -198,6 +198,27 @@ Materialized views: `er_entity_link`, `er_canonical_entity`, `er_resolution_run`
 `warehouse/receipts/proof/wh04_er_batch_latest.json`. Verify:
 `node --test test/warehouse_er_batch.test.mjs`.
 
+## Map exploration surface (cs-geo-04)
+
+Zoomable "what's happening where" browse mode: borough → community district →
+council district, SVG choropleth from the cs-geo-02 boundary layer + precomputed
+per-district per-lens counts. No proprietary map SDK; list views remain the
+fallback. Behavior lives in `site/app/map.mjs` (see `docs/module-map.md`).
+
+```bash
+node tools/build_district_activity.mjs
+node tools/build_district_activity.mjs --check
+node --test test/map_exploration.test.mjs test/map_surface.test.mjs
+python3 tools/capture_map_exploration.py
+```
+
+Artifacts: `site/data/district_activity.json` (stamped with `boundary_vintage`),
+pure UI helpers `site/map_exploration.mjs`, build lib
+`tools/lib/district_activity.mjs`. Deep links: `#map`,
+`#map?level=community_district&parent=Queens&lens=land`, district tap-through
+uses existing `cd=` / `council=` / `boro=` list grammar. Tax-lien statistics
+live at `#property?view=tax-lien` (not the property list masthead).
+
 ## District boundary layer (cs-geo-01 + cs-geo-02)
 
 Community districts and City Council districts resolve from **one committed

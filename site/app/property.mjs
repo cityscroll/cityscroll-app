@@ -669,18 +669,6 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
   const actionKey=entry.action_key||"property_action_open_notice";
   const actionLead=`<p class="property-action-lead">${escUiHtml(t(actionKey))}</p>`;
-  // Mini process stepper: matched phases done/current, unmatched todo (honest empties).
-  const phases=["hearing","auction_or_rfp","award_or_conveyance"];
-  const matched=new Set(entry.matched_phases||(processStage?[processStage]:[]));
-  const miniStepper=`<ol class="property-mini-stepper disposition-phase-stepper" aria-label="${escUiHtml(t("property_process_stepper_aria"))}">${
-    phases.map((id,i)=>{
-      const isCurrent=processStage===id;
-      const cls=matched.has(id)?(isCurrent?"current":"done"):"todo";
-      const aria=isCurrent?` aria-current="step"`:"";
-      const arrow=i<phases.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
-      return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(dispositionStageLabel(id))}">${escUiHtml(dispositionStageLabel(id))}</span>${arrow}</li>`;
-    }).join("")
-  }</ol>`;
   const processLine=`<div class="property-process-line">
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
@@ -707,7 +695,6 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       ${processLine}
-      ${miniStepper}
       ${actionLead}
       ${entry.bbl?`<div class="tax-lien-card-slot" data-tax-lien-bbl="${escUiHtml(entry.bbl)}"></div>`:""}
       <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>

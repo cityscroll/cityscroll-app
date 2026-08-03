@@ -21,6 +21,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/meetings.mjs` | Meeting outcomes, roll calls, matter phase spine, and outcome loading. |
 | `site/app/entities.mjs` | Official, agency, and vendor profiles; vendor phase timeline and forecasts. |
 | `site/app/workspace.mjs` | Investigation storage/sync/share and matter timeline. |
+| `site/app/map.mjs` | District choropleth map exploration (borough → CD → council), precomputed activity density, and area feed deep links. |
 | `site/app/routing.mjs` | Permalinks, URL/filter state, route history, and item-route dispatch. |
 | `site/app/boot.mjs` | Event wiring, initial loads, language repaint, alert quiz, and session boot. |
 

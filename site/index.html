@@ -919,6 +919,49 @@
   .map-pan-controls button{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:var(--card);color:var(--ink);border:1px solid var(--rule-strong);font:700 17px/1 ui-sans-serif,system-ui,sans-serif}
   .map-pan-controls button:hover{border-color:var(--oxblood);color:var(--oxblood)}
   #landmapnote{margin-top:8px}
+
+  /* Map exploration (cs-geo-04) — SVG choropleth, no map SDK */
+  .map-explore{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(240px,0.8fr);gap:16px;align-items:start}
+  .map-explore-main{min-width:0}
+  .map-explore-side{min-width:0}
+  .map-svg-wrap{position:relative;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2);overflow:hidden;aspect-ratio:1.05/1;max-height:min(72vh,640px)}
+  .map-svg-wrap svg{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+  .map-svg-wrap svg:active{cursor:grabbing}
+  .map-district{stroke:#5c4a3a;stroke-width:0.9;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .12s ease,stroke .12s ease}
+  .map-district:hover,.map-district:focus{stroke:var(--oxblood);stroke-width:1.8}
+  .map-district[aria-current="true"]{stroke:var(--oxblood);stroke-width:2.2}
+  .map-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+  .map-zoom-controls,.map-level-controls{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .map-zoom-controls button,.map-level-controls button{min-width:36px;min-height:36px;padding:6px 10px;border:1px solid var(--rule-strong);background:var(--card);color:var(--ink);font:700 14px/1 ui-sans-serif,system-ui,sans-serif;border-radius:6px;cursor:pointer}
+  .map-zoom-controls button:hover,.map-level-controls button:hover{border-color:var(--oxblood);color:var(--oxblood)}
+  .map-zoom-controls button:focus-visible,.map-level-controls button:focus-visible,.map-district:focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  .map-crumb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 10px;font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .map-crumb button{border:0;background:none;color:var(--oxblood);font:inherit;cursor:pointer;text-decoration:underline;padding:0}
+  .map-crumb [aria-current="page"]{color:var(--ink);text-decoration:none;cursor:default}
+  .map-lens-row{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+  .map-lens-row .chip{cursor:pointer}
+  .map-legend{display:flex;align-items:center;gap:8px;margin:8px 0 0;font:12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .map-legend-swatch{display:inline-block;width:72px;height:10px;border-radius:3px;border:1px solid var(--rule);
+    background:linear-gradient(90deg,#f4efe6,#d6aa5a,#7a1f1f)}
+  .map-area-list{list-style:none;margin:0;padding:0;max-height:min(52vh,480px);overflow:auto;border:1px solid var(--rule);border-radius:8px;background:var(--card)}
+  .map-area-list li{border-bottom:1px solid var(--rule)}
+  .map-area-list li:last-child{border-bottom:0}
+  .map-area-list button{width:100%;text-align:start;border:0;background:none;padding:10px 12px;cursor:pointer;font:600 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);display:flex;justify-content:space-between;gap:10px}
+  .map-area-list button:hover,.map-area-list button[aria-current="true"]{background:#fff8ee}
+  .map-area-list .map-count{color:var(--muted);font-variant-numeric:tabular-nums}
+  .map-detail{margin-top:12px;padding:14px 16px;border:1px solid var(--rule);border-radius:10px;background:var(--card);box-shadow:var(--shadow)}
+  .map-detail h3{margin:0 0 6px;font:800 18px/1.2 var(--font-display)}
+  .map-detail-counts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+  .map-detail-links{display:flex;flex-wrap:wrap;gap:8px}
+  .map-vintage{margin:10px 0 0;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .map-intro{margin:0 0 14px;max-width:62ch;font:15px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .map-fallback-note{margin:8px 0 0;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .tax-lien-panel[hidden]{display:none!important}
+  .property-tax-lien-link{margin:8px 0 14px;font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .property-tax-lien-link a{color:var(--oxblood)}
+  @media(max-width:860px){
+    .map-explore{grid-template-columns:minmax(0,1fr)}
+    .map-svg-wrap{max-height:min(58vh,480px)}
   .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#faf6ee;border-inline-start:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
   .landbanner.land-methodology{border-inline-start-color:var(--rule);background:#f4eee2;color:var(--muted)}
   .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px}
@@ -1153,6 +1196,7 @@
       <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
       <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
       <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
+      <button class="tabbtn" data-tab="map" data-i18n="tab_map">Map</button>
       <button class="tabbtn" data-tab="alerts" data-i18n="tab_alerts">Alerts</button>
     </nav>
     <div id="langNotice" class="lang-notice" hidden></div>
@@ -1456,13 +1500,14 @@
       <p class="career-kicker" data-i18n="property_domain_kicker">City property disposition</p>
       <h2 class="property-domain-heading" data-i18n="property_domain_heading">Hearings, sales, and awards</h2>
       <p class="property-domain-deck" data-i18n="property_domain_deck">City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot.</p>
+      <p class="property-tax-lien-link"><a href="#property?view=tax-lien" data-i18n="property_tax_lien_link">Tax lien sale statistics</a> · <a href="#map?lens=property" data-i18n="property_explore_map_link">Explore property on the map</a></p>
       <ol class="lc-stepper disposition-phase-stepper property-domain-stepper" data-i18n-aria="property_process_stepper_aria" aria-label="Disposition process stages">
         <li><span class="lc-step done" data-i18n="disposition_stage_hearing">Hearing</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
         <li><span class="lc-step current" data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
         <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
       </ol>
     </div>
-    <section class="tax-lien-panel" id="tax-lien-sale-panel" aria-live="polite">
+    <section class="tax-lien-panel" id="tax-lien-sale-panel" aria-live="polite" hidden>
       <div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div>
     </section>
     <div class="controls">
@@ -1555,6 +1600,52 @@
 </section>
 
 <!-- ============ ALERTS ============ -->
+<!-- ============ MAP EXPLORATION (cs-geo-04) ============ -->
+<section id="tab-map" class="tabpane">
+  <div class="wrap">
+    <p class="career-kicker" data-i18n="map_kicker">What is happening where</p>
+    <h2 class="property-domain-heading" data-i18n="map_heading">Explore civic activity by district</h2>
+    <p class="map-intro" data-i18n="map_intro">Expand and contract the city map to see density of land actions, property disposition, rules, meetings, and contracts — then open the live feed for that area. District lines are a published layer, not a live geo query.</p>
+    <div class="map-toolbar" role="toolbar" aria-label="Map controls">
+      <div class="map-level-controls" role="group" aria-label="Geography level">
+        <button type="button" data-map-level="borough" data-i18n="map_level_borough">Boroughs</button>
+        <button type="button" data-map-level="community_district" data-i18n="map_level_community">Community districts</button>
+        <button type="button" data-map-level="council_district" data-i18n="map_level_council">Council districts</button>
+      </div>
+      <div class="map-zoom-controls" role="group" aria-label="Zoom and pan">
+        <button type="button" data-map-zoom="in" aria-label="Zoom in" data-i18n-aria="map_zoom_in_aria">+</button>
+        <button type="button" data-map-zoom="out" aria-label="Zoom out" data-i18n-aria="map_zoom_out_aria">−</button>
+        <button type="button" data-map-pan="west" aria-label="Pan map west" data-i18n-aria="map_pan_west">←</button>
+        <button type="button" data-map-pan="north" aria-label="Pan map north" data-i18n-aria="map_pan_north">↑</button>
+        <button type="button" data-map-pan="south" aria-label="Pan map south" data-i18n-aria="map_pan_south">↓</button>
+        <button type="button" data-map-pan="east" aria-label="Pan map east" data-i18n-aria="map_pan_east">→</button>
+        <button type="button" data-map-zoom="reset" data-i18n="map_reset_view">Reset</button>
+      </div>
+    </div>
+    <nav class="map-crumb" id="mapCrumb" aria-label="Map location"></nav>
+    <div class="map-lens-row chiprow" id="mapLensRow" role="group" aria-label="Activity lens"></div>
+    <div class="map-explore">
+      <div class="map-explore-main">
+        <div class="map-svg-wrap" id="mapSvgWrap">
+          <svg id="mapSvg" role="img" aria-labelledby="mapSvgTitle mapSvgDesc" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+            <title id="mapSvgTitle">New York City district map</title>
+            <desc id="mapSvgDesc">Choropleth of civic activity by district. Use the area list for the same data.</desc>
+            <g id="mapPolygons" fill-rule="evenodd"></g>
+          </svg>
+        </div>
+        <div class="map-legend"><span class="map-legend-swatch" aria-hidden="true"></span><span data-i18n="map_legend_label">Fewer → more located events</span></div>
+        <p class="map-vintage" id="mapVintage"></p>
+        <p class="map-fallback-note" data-i18n="map_fallback_note">The map is optional. The district list and live lens filters stay available if the map does not load.</p>
+      </div>
+      <div class="map-explore-side">
+        <h3 class="property-rail-label" id="mapListHeading" data-i18n="map_list_heading">Areas</h3>
+        <ul class="map-area-list" id="mapAreaList" aria-labelledby="mapListHeading"></ul>
+        <div class="map-detail" id="mapDetail" hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="tab-alerts" class="tabpane">
   <div class="wrap">
 

@@ -888,16 +888,6 @@ function meetingsExplorerCardHTML(entry){
   const processLabel=meetingStageLabel(processStage);
   const agency=entry.agency||record.agency||null;
   const matched=new Set(entry.matched_phases||(processStage?[processStage]:[]));
-  const miniStepper=`<ol class="meetings-mini-stepper meetings-phase-stepper" aria-label="${escUiHtml(t("meetings_process_stepper_aria"))}">${
-    MEETING_PHASE_IDS.map((id,i)=>{
-      const isCurrent=processStage===id;
-      const isDone=!isCurrent&&matched.has(id);
-      const cls=isCurrent?"current":isDone?"done":"todo";
-      const aria=isCurrent?` aria-current="step"`:"";
-      const arrow=i<MEETING_PHASE_IDS.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
-      return `<li><span class="lc-step ${cls}"${aria}>${escUiHtml(t(MEETING_PHASE_LABEL_KEYS[id]))}</span>${arrow}</li>`;
-    }).join("")
-  }</ol>`;
   const chainChip=entry.notice_count>1
     ? `<span class="tag asset">${escUiHtml(t("meetings_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
@@ -948,7 +938,6 @@ function meetingsExplorerCardHTML(entry){
   return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${agency?" · "+pivotA(agencyHref(agency),agency):""}${record.event_date?` · <b style="color:var(--ink)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       ${processLine}
-      ${miniStepper}
       ${actionLead}
       <div class="ftitle"><a href="${noticeHref}">${excerptHtml(title,400)}</a></div>
       ${siblingsHtml}
