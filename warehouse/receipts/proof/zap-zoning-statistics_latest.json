@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "program": "cs-pred-08",
-  "observed_at": "2026-08-03T05:26:17Z",
+  "program": "cs-pred-08+cs-pred-11",
+  "observed_at": "2026-08-03T07:14:32Z",
   "source_snapshot": {
     "dataset_id": "hgx4-8ukb",
     "snapshot_date": "2026-08-03",
@@ -14,8 +14,8 @@
     "certification_to_final_date_pairs": 29589
   },
   "action_outcome_enrichment": {
-    "cached_project_details": 1711,
-    "projects_with_action_statuses": 1710,
+    "cached_project_details": 2500,
+    "projects_with_action_statuses": 2500,
     "source": "Zoning Application Portal project detail API"
   },
   "model": {
@@ -32,7 +32,41 @@
       "duration": "calendar days from certified_referred to approval_date (or the project completion/milestone date for a modified or disapproved action set); spans over 730 days are excluded",
       "typical_range": "nearest-rank empirical p25-p75 duration, divided by 30.4375 days per month",
       "timing_window": "nearest-rank empirical p10/p50/p90 duration added to the project's certification date",
-      "outcome_rate": "outcome count divided by approved + modified + disapproved projects in the selected cohort"
+      "outcome_rate": "outcome count divided by approved + modified + disapproved projects in the selected cohort",
+      "applicant_conditioning": {
+        "conditioning": "entity-resolution join on primary_applicant (agency preferred alias when government-shaped, otherwise vendor stem); cohorts require n>=20 terminal outcomes",
+        "outcome_rate": "approved / (approved + modified + disapproved) within the applicant entity cohort",
+        "presentation": "unconditioned action-type/borough base rate always shown beside the conditioned rate; never the conditioned number alone",
+        "false_positive_modes": [
+          "entity-resolution mislinks (distinct applicants collapsed onto one stem, or one firm split across stems)",
+          "small-cohort noise at the n=20 floor",
+          "era effects (practice or policy shifts between the training window and a live application)"
+        ],
+        "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, public_projection is descriptive_history",
+        "public_projection": "descriptive_history",
+        "beats_base_rate": false
+      },
+      "applicant": {
+        "conditioning": "entity-resolution join on primary_applicant (agency preferred alias when government-shaped, otherwise vendor stem); cohorts require n>=20 terminal outcomes",
+        "outcome_rate": "approved / (approved + modified + disapproved) within the applicant entity cohort",
+        "presentation": "unconditioned action-type/borough base rate always shown beside the conditioned rate; never the conditioned number alone",
+        "false_positive_modes": [
+          "entity-resolution mislinks (distinct applicants collapsed onto one stem, or one firm split across stems)",
+          "small-cohort noise at the n=20 floor",
+          "era effects (practice or policy shifts between the training window and a live application)"
+        ],
+        "backtest": "time-split Brier score of conditioned P(approved) vs unconditioned base rate on holdout dispositions; if conditioning does not beat the base rate, public_projection is descriptive_history",
+        "public_projection": "descriptive_history",
+        "beats_base_rate": false
+      }
+    },
+    "applicant_conditioning": {
+      "cohort_count": 15,
+      "minimum_cohort_n": 20,
+      "public_projection": "descriptive_history",
+      "beats_base_rate": false,
+      "conditioned_brier": null,
+      "unconditioned_brier": null
     }
   },
   "backtest": {
@@ -132,5 +166,17 @@
         "occurrence_quintiles_monotone": true
       }
     }
+  },
+  "applicant_row_source": "soda",
+  "applicant_backtest": {
+    "split_date": "2024-01-01",
+    "evaluation_n": 0,
+    "minimum_evaluation_n": 20,
+    "conditioned_brier": null,
+    "unconditioned_brier": null,
+    "beats_base_rate": false,
+    "public_projection": "descriptive_history",
+    "contract_backtest": null,
+    "note": "Applicant-conditioned rates do not beat the unconditioned base rate out of sample; public surfaces show them as descriptive history only."
   }
 }

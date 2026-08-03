@@ -210,7 +210,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <h2 id="zoning-base-rates">What past zoning cases show</h2>
 <p class="src">This line uses past
 <a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener noreferrer">ZAP Project Data<span class="sr-only"> (opens in new tab)</span></a>
-and public action results. It does not use the applicant's name. It does not change a legal deadline.</p>
+and public action results. The base line does not use the applicant's name. It does not change a legal deadline.</p>
 <ul class="src" style="margin:8px 0;padding-left:20px">
   <li><b>Pick a group.</b> We start with the action type and borough. A group needs at least 20 cases. If it is too small, we use that action type across the city. Next we use all action types in the borough. Last, we use all city cases.</li>
   <li><b>Count the time.</b> We count days from certification to final action. We sort those day counts and take p25 and p75 by nearest rank. We divide by 30.4375 to show months. The date range uses p10, p50, and p90. We leave out gaps over 730 days.</li>
@@ -218,6 +218,17 @@ and public action results. It does not use the applicant's name. It does not cha
   <li><b>Test the dates.</b> The model learns from final actions before 2024. It then checks later final actions for projects certified before 2024. It resolved 63 cases. The date range held 77.78% of results. Its target was 80%. The middle date missed by 35 days. A date range needs at least 50 results and coverage from 70% to 90%.</li>
 </ul>
 <p class="src"><b>Legal dates still control.</b> NYC Charter §197-c sets the deadlines. The past range is context only.</p>
+
+<h2 id="applicant-conditioned-ulurp">Applicant history on ULURP outcomes</h2>
+<p class="src">When the same applicant has enough past ZAP projects, CityScroll also shows that applicant's historical approval rate <b>next to</b> the unconditioned base rate above. The conditioned number never appears alone.</p>
+<ul class="src" style="margin:8px 0;padding-left:20px">
+  <li><b>Method.</b> Join each project's <code>primary_applicant</code> through entity resolution: known city agencies map to a stable agency id (including common ZAP acronyms such as HPD and LPC); private applicants map to a vendor stem. Cohorts need at least <b>20</b> terminal outcomes (approved, modified, or disapproved). Below that floor, nothing conditioned is shown.</li>
+  <li><b>Rate.</b> For an applicant entity, approved count ÷ (approved + modified + disapproved). Withdrawals and administrative terminations stay out of the denominator.</li>
+  <li><b>Presentation.</b> One line names the sample and both percentages: “Based on {N} applications by this applicant since {YYYY}: {P}% approved, vs {P0}% overall.” Match confidence uses the public strong / tentative link band.</li>
+  <li><b>Backtest.</b> A time split (train before 2024) compares Brier scores for the applicant-conditioned probability against the unconditioned base rate on later dispositions. If conditioning does not beat the base rate out of sample, pages label the line as <b>descriptive history</b> and do not emit a predictive occurrence claim.</li>
+  <li><b>False-positive modes.</b> (1) Entity-resolution mislinks — distinct applicants collapsed onto one stem, or one firm split across stems. (2) Small-cohort noise at the n=20 floor. (3) Era effects — practice or policy shifts between the training window and a live application.</li>
+</ul>
+<p class="src">The current numbers live in <code>data/zoning_statistics.json</code> under <code>applicant_conditioning</code>. Legal deadlines still control; this is public-record history and context, not a claim that a named party will win or lose a review.</p>
 
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>

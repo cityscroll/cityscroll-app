@@ -694,6 +694,9 @@
   .land-base-rate-register p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:0}
   .land-base-rate-register .base-rate-outcomes,.land-base-rate-register .base-rate-authority{font-size:12px;color:var(--muted);margin-top:6px}
   .land-base-rate-register a{font-weight:600}
+  .land-base-rate-register .applicant-conditioned{margin-top:10px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--blue) 25%,var(--rule))}
+  .land-base-rate-register .applicant-conf{display:inline-block;margin-left:6px;font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--muted);letter-spacing:.02em}
+  .land-base-rate-register[data-applicant-projection="descriptive_history"] .applicant-conditioned{border-top-style:dashed}
   .land-spine-how{display:block;margin-top:10px}
   .land-spine-how > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
   .land-spine-how-body{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:8px}
@@ -5674,6 +5677,40 @@ function landStatutoryDeadlineHTML(phaseId, clock, phaseState){
     : "";
   return `<div class="note land-statutory-deadline" data-land-statutory-phase="${escUiHtml(phaseId)}" data-land-statutory-due="${escUiHtml(row.due_date)}" data-land-statutory-status="${escUiHtml(clock.status||"open")}">${deadline}${actionHint}${withdrawn} <span class="tag renewal">${t("cadence_estimate_tag")}</span></div>`;
 }
+function landApplicantConditionedHTML(stats){
+  const ac=stats?.applicant_conditioned;
+  if(!ac || !ac.n || ac.n < 20 || ac.outcome_rates?.approved==null) return "";
+  const baseApproved=ac.base_rate?.approved!=null
+    ? Math.round(Number(ac.base_rate.approved)*100)
+    : (stats.outcome_rates?.approved!=null ? Math.round(Number(stats.outcome_rates.approved)*100) : null);
+  if(baseApproved==null) return ""; // never show conditioned without the base rate
+  const year=String(ac.train_from||"").slice(0,4)||"—";
+  const approved=Math.round(Number(ac.outcome_rates.approved||0)*100);
+  const projection=ac.public_projection||"descriptive_history";
+  const conf=ac.link_confidence?.status;
+  const confLabel=conf==="strong"
+    ? t("land_applicant_link_strong")
+    : conf==="tentative"
+      ? t("land_applicant_link_tentative")
+      : "";
+  const confChip=confLabel
+    ? `<span class="applicant-conf" data-link-confidence="${escUiHtml(conf)}">${escUiHtml(confLabel)}</span>`
+    : "";
+  const lineKey=projection==="per_matter_projection"
+    ? "land_applicant_conditioned_predict_html"
+    : "land_applicant_conditioned_history_html";
+  return `<div class="applicant-conditioned" data-applicant-conditioned="1" data-applicant-n="${escUiHtml(String(ac.n))}" data-applicant-projection="${escUiHtml(projection)}">
+    <p>${t(lineKey,{
+      n:String(ac.n),
+      year,
+      p:String(approved),
+      p0:String(baseApproved)
+    })}${confChip}</p>
+    <p class="base-rate-authority">${t("land_applicant_conditioned_authority_html",{
+      link:`<a href="${escUiHtml(ac.formula_url||t("land_applicant_conditioned_formula_url"))}">${t("land_applicant_conditioned_formula_link")}</a>`
+    })}</p>
+  </div>`;
+}
 function landZoningStatisticsHTML(record){
   const stats=record?.zoning_statistics;
   if(!stats || !stats.n || stats.outcome_rates?.approved==null) return "";
@@ -5685,7 +5722,9 @@ function landZoningStatisticsHTML(record){
   const approved=Math.round(Number(stats.outcome_rates.approved||0)*100);
   const modified=Math.round(Number(stats.outcome_rates.modified||0)*100);
   const disapproved=Math.round(Number(stats.outcome_rates.disapproved||0)*100);
-  return `<aside class="land-base-rate-register" data-zoning-base-rate="1" aria-label="${escUiHtml(t("land_zoning_base_rate_heading"))}">
+  const applicantBlock=landApplicantConditionedHTML(stats);
+  const projection=stats.applicant_conditioned?.public_projection||"";
+  return `<aside class="land-base-rate-register" data-zoning-base-rate="1" data-applicant-projection="${escUiHtml(projection)}" aria-label="${escUiHtml(t("land_zoning_base_rate_heading"))}">
     <div class="base-rate-kicker">${t("land_zoning_base_rate_heading")}</div>
     <p>${t("land_zoning_base_rate_html",{
       n:String(stats.n),type:escUiHtml(actionLabel),year,approved:String(approved),
@@ -5694,6 +5733,7 @@ function landZoningStatisticsHTML(record){
     <p class="base-rate-outcomes">${t("land_zoning_base_rate_outcomes",{
       approved:String(approved),modified:String(modified),disapproved:String(disapproved)
     })}</p>
+    ${applicantBlock}
     <p class="base-rate-authority">${t("land_zoning_base_rate_authority_html",{
       link:`<a href="${escUiHtml(stats.formula_url||t("land_zoning_base_rate_formula_url"))}">${t("land_zoning_base_rate_formula_link")}</a>`
     })}</p>

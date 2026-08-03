@@ -1380,16 +1380,29 @@ sale means the lien was sold; later foreclosure is outside this dataset and is
 never predicted. Verify:
 `node --test test/tax_lien_sale_prediction.test.mjs test/ontology_registry.test.mjs`.
 
-## ZAP duration and outcome base rates
+## ZAP duration, outcome base rates, and applicant conditioning
 
 The unconditioned land model is materialized by
-`tools/build_zoning_statistics.mjs` from the capped ZAP warehouse plus the
-resumable public action-status cache. Cohorts use action type + borough with an
-n>=20 back-off; statutory clocks remain authoritative for act-by dates. Verify
-the receipt, cohort twins, and ship bar with
-`node tools/build_zoning_statistics.mjs --check` and
-`node --test test/zoning_statistics.test.mjs test/warehouse_bulk.test.mjs`.
-Applicant-conditioned rates are outside this model.
+`tools/build_zoning_statistics.mjs` from the capped ZAP warehouse (or SODA
+fallback) plus the resumable public action-status cache
+(`warehouse/raw/zap-action-outcomes/`). Cohorts use action type + borough with
+an n>=20 back-off; statutory clocks remain authoritative for act-by dates.
+
+**Applicant-conditioned outcome rates (cs-pred-11)** live in the same artifact
+under `applicant_conditioning` — same cohort summarizer, entity-resolution join
+on `primary_applicant` (agency preferred alias + ZAP acronyms, else vendor
+stem), n>=20 floor. Public UI always shows the unconditioned base rate beside
+any conditioned rate; when the time-split Brier backtest does not beat the base
+rate, `public_projection` is `descriptive_history` (no occurrence emission).
+Formula + false-positive modes: `about.html#applicant-conditioned-ulurp`,
+`docs/formulas/applicant-conditioned-ulurp-outcomes.md`.
+
+```bash
+node tools/build_zoning_statistics.mjs --applicant-only   # extend existing model
+node tools/build_zoning_statistics.mjs --check
+node --test test/zoning_statistics.test.mjs
+python3 tools/capture_applicant_conditioned_ulurp.py
+```
 
 ## Maintaining this file
 
