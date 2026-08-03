@@ -56,6 +56,20 @@ runs:
         else
           echo "skip district_activity rebuild (tool missing)"
         fi
+    # Land upcoming-hearings payload: production rows must be ZAP-traceable.
+    # Live sweep is scheduled separately; deploy only re-checks the committed
+    # snapshot so synthetic padding cannot re-enter the public site.
+    - name: Check land upcoming hearings (no synthetic rows)
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        if [ -f "$SOURCE_DIR/tools/build_land_upcoming_hearings.mjs" ]; then
+          node "$SOURCE_DIR/tools/build_land_upcoming_hearings.mjs" --check
+        else
+          echo "skip land_upcoming_hearings check (tool missing)"
+        fi
     - name: Build with GitHub Pages
       uses: actions/jekyll-build-pages@v1
       with:
