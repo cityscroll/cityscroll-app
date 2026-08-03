@@ -14,6 +14,7 @@ export const DIMENSION_IDS = Object.freeze([
   "cross-source-consistency",
   "location-resolution",
   "surface-load",
+  "ontology-coherence",
 ]);
 
 export function clean(value) {

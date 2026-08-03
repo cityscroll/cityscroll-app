@@ -437,6 +437,14 @@ as `withdrawn`. Verify:
 `node --test test/ulurp_statutory_clock.test.mjs`. Capture:
 `python3 tools/capture_ulurp_statutory_clock.py`.
 
+**Land current-stage pointer (stranded outcomes):** `deriveLandCurrentPhaseId` in
+`site/land_phase_spine.mjs` must not keep an earlier phase as `current` when a
+later phase already has terminal completions (e.g. CB still "In Progress" while
+BP/CPC completed — field case `2019K0190`). Advance past missing outcome rows;
+mark those earlier phases `outcome_status: no_recorded_outcome`. Verify:
+`node --test test/land_phase_spine.test.mjs test/ontology_coherence.test.mjs`.
+Capture: `python3 tools/capture_land_stage_coherence.py`.
+
 **Contract renewal forecasts (cs-pred-09):** Checkbook `fc:*` rows keep product
 fields for `/forecast`, vendor profiles, and digests, and also carry
 `cityscroll.prediction.v0` provenance (`method: term_arithmetic`) via
@@ -1403,14 +1411,20 @@ test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs` and
 
 Standing MAPE loops under `ontology/` emit a ranked, deduplicated card queue (not a
 one-shot backlog). Dimensions: data-integrity, readability, ontology-enrichment,
-coverage, cross-source-consistency. Entrypoint:
+coverage, cross-source-consistency, location-resolution, surface-load,
+**ontology-coherence** (logical contradictions in generated lifecycle payloads —
+current stage past deadline, later-stage completions while current, completion
+order, future-dated actuals, exam post-list during open application window).
+Rule registry + pure audit: `ontology/dimensions/ontology_coherence.mjs`;
+inventory `ontology/fixtures/dimensions/ontology_coherence_payloads.json`;
+CLI `node tools/audit_ontology_coherence.mjs`. Entrypoint:
 `node tools/flywheel-run.mjs --fixture --emit <dir>`. Idempotent ledger:
 `ontology/queue/ledger.json`. Consumer contract + schedule:
 [`docs/multi-flywheel.md`](docs/multi-flywheel.md). Verify:
-`./tools/verify_multi_flywheel.sh`. Hourly CI artifact: `multi-flywheel-queue`
-(`.github/workflows/multi-flywheel.yml`). Recurring classes append to
-`ontology/engineering-lessons.md`. Do not hand-author parallel metric-driven
-roadmap cards; re-run the flywheel after merges.
+`./tools/verify_multi_flywheel.sh` and `node --test test/ontology_coherence.test.mjs`.
+Hourly CI artifact: `multi-flywheel-queue` (`.github/workflows/multi-flywheel.yml`).
+Recurring classes append to `ontology/engineering-lessons.md`. Do not hand-author
+parallel metric-driven roadmap cards; re-run the flywheel after merges.
 
 **Actionability sample (honesty):** `actionability_rate_sample` is the **deep**
 destination-class rate over a committed handoff sample — not

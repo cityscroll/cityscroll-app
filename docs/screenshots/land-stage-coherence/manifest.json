@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "feature": "land-stage-coherence",
+  "project_id": "2019K0190",
+  "files": [
+    {
+      "name": "before/land-2019K0190-390.png",
+      "bytes": 427113,
+      "sha256": "63543d2a2d1a23dce816ee1bcbdb7b77e3edd4eac3c90ce43dcc426e6981abea",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "before/land-2019K0190-1440.png",
+      "bytes": 580884,
+      "sha256": "e5ac694d0b8b72eed6fd72ec31d53f362356d63cfd583340fa8f850eed756d1f",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "after/land-2019K0190-390.png",
+      "bytes": 296227,
+      "sha256": "dac03a75925a53ccd6d04ad1f5a1fe18d9aa76a485ae2287d05ca77a9140df65",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "after/land-2019K0190-1440.png",
+      "bytes": 271756,
+      "sha256": "6e6fb4be2d7cdfe00c58ad4d5b290399b58a536eb869c4876f76117e24e5a0da",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ]
+}

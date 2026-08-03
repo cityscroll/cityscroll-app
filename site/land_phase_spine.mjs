@@ -194,6 +194,197 @@ function eventIsActualProgress(event) {
 }
 
 /**
+ * True when the event is a finished disposition/milestone from a source row
+ * (not planned, not in-progress, not a synthetic open-data status stamp).
+ * Synthetic "Noticed" must not count as later-stage completion — CEQR and
+ * pre-cert notice legitimately overlap.
+ */
+function eventIsTerminalComplete(event) {
+  if (event?._synthetic) return false;
+  if (!eventIsActualProgress(event)) return false;
+  if (eventIsInProgress(event)) return false;
+  return true;
+}
+
+/**
+ * Phase has non-synthetic finished rows and none still "In Progress".
+ * Used to advance the pipeline pointer past a finished stage into the next one.
+ * Synthetic-only phases (pre-cert Noticed stamp) are not terminal for advance.
+ */
+function phaseIsFullyTerminal(byPhase, phaseId) {
+  const all = byPhase[phaseId] || [];
+  const material = all.filter((e) => eventIsActualProgress(e) && !e._synthetic);
+  if (!material.length) return false;
+  if (material.some(eventIsInProgress)) return false;
+  return material.some(eventIsTerminalComplete);
+}
+
+/**
+ * Whether any later pipeline phase already has a terminal completion row.
+ * A missing CB outcome must not strand the pointer when BP/CPC already ran.
+ * Pre-cert "Noticed" alone does not strand an in-progress CEQR phase.
+ */
+function laterPhaseHasTerminalCompletes(byPhase, phaseId) {
+  const idx = LAND_ULURP_PHASES.indexOf(phaseId);
+  if (idx < 0) return false;
+  for (let i = idx + 1; i < LAND_ULURP_PHASES.length; i++) {
+    const id = LAND_ULURP_PHASES[i];
+    if ((byPhase[id] || []).some(eventIsTerminalComplete)) return true;
+  }
+  return false;
+}
+
+/**
+ * Derive the pipeline current phase.
+ *
+ * Semantics (owner feedback on stranded stages): when a later stage already has
+ * actual events, advance past earlier stages even if they lack a completion row.
+ * Prefer a live "In Progress" only when nothing later has moved; if the latest
+ * actual phase is fully terminal and the next phase has any events (including
+ * planned Not Started), the process has arrived at that next phase.
+ *
+ * @param {object} args
+ * @param {object} args.byPhase
+ * @param {object[]} args.events
+ * @param {string|null} args.currentMilestoneLabel
+ * @param {boolean} args.completedLike
+ * @returns {{ phase_id: string, reason: string }}
+ */
+export function deriveLandCurrentPhaseId({
+  byPhase,
+  events = [],
+  currentMilestoneLabel = null,
+  completedLike = false,
+} = {}) {
+  function lastPhaseWithActuals() {
+    for (let i = LAND_ULURP_PHASES.length - 1; i >= 0; i--) {
+      const id = LAND_ULURP_PHASES[i];
+      if ((byPhase[id] || []).some(eventIsActualProgress)) return id;
+    }
+    return null;
+  }
+
+  const latestActual = lastPhaseWithActuals();
+  const latestIdx = latestActual ? LAND_ULURP_PHASES.indexOf(latestActual) : -1;
+
+  if (completedLike) {
+    return {
+      phase_id: latestActual || "pre_application",
+      reason: "completed_like",
+    };
+  }
+
+  // In-progress rows that are not stranded behind later terminal completions.
+  const liveInProgress = (events || [])
+    .filter(eventIsInProgress)
+    .map((e) =>
+      mapMilestoneToPhase(e.title, {
+        kind: e.kind,
+        representing: e.detail,
+        detail: e.detail,
+      }),
+    )
+    .filter((id) => id && !laterPhaseHasTerminalCompletes(byPhase, id));
+
+  if (liveInProgress.length) {
+    // Prefer the latest live in-progress phase (not the first stranded one).
+    let best = liveInProgress[0];
+    let bestIdx = LAND_ULURP_PHASES.indexOf(best);
+    for (const id of liveInProgress) {
+      const i = LAND_ULURP_PHASES.indexOf(id);
+      if (i > bestIdx) {
+        best = id;
+        bestIdx = i;
+      }
+    }
+    return { phase_id: best, reason: "in_progress" };
+  }
+
+  // Latest actual phase finished → process has moved into the next published stage
+  // when that stage already has portal events (including planned Not Started).
+  if (latestActual && phaseIsFullyTerminal(byPhase, latestActual)) {
+    const nextId = LAND_ULURP_PHASES[latestIdx + 1];
+    if (nextId && (byPhase[nextId] || []).length > 0) {
+      return { phase_id: nextId, reason: "advanced_past_terminal" };
+    }
+  }
+
+  // Prefer the latest phase with a real (non-synthetic) terminal or in-progress row
+  // when open-data / synthetic stamps would otherwise pull the pointer forward.
+  function lastPhaseWithMaterialActuals() {
+    for (let i = LAND_ULURP_PHASES.length - 1; i >= 0; i--) {
+      const id = LAND_ULURP_PHASES[i];
+      if ((byPhase[id] || []).some((e) => eventIsActualProgress(e) && !e._synthetic)) {
+        return id;
+      }
+    }
+    return null;
+  }
+  const latestMaterial = lastPhaseWithMaterialActuals();
+  const latestMaterialIdx = latestMaterial ? LAND_ULURP_PHASES.indexOf(latestMaterial) : -1;
+
+  if (currentMilestoneLabel) {
+    let mapped = mapMilestoneToPhase(currentMilestoneLabel);
+    // Guard: generic filing labels while later phases already have actuals.
+    if (
+      mapped === "pre_application" &&
+      latestMaterial &&
+      latestMaterial !== "pre_application"
+    ) {
+      mapped = latestMaterial;
+    }
+    // Guard: open-data current_milestone can lag (e.g. still "Community Board
+    // Referral" after CPC vote). Never point current behind later terminal work.
+    const mappedIdx = LAND_ULURP_PHASES.indexOf(mapped);
+    if (
+      mappedIdx >= 0 &&
+      latestMaterialIdx >= 0 &&
+      mappedIdx < latestMaterialIdx &&
+      laterPhaseHasTerminalCompletes(byPhase, mapped)
+    ) {
+      // Fall through to latest-material / advance path below.
+    } else {
+      return { phase_id: mapped, reason: "open_data_milestone" };
+    }
+  }
+
+  if (latestMaterial && phaseIsFullyTerminal(byPhase, latestMaterial)) {
+    const nextId = LAND_ULURP_PHASES[latestMaterialIdx + 1];
+    if (nextId && (byPhase[nextId] || []).length > 0) {
+      // Only auto-advance into public-review stages when material work finished;
+      // do not hop from CEQR → certification on planned portal stubs alone when
+      // open-data still reports an earlier active milestone (handled above).
+      return { phase_id: nextId, reason: "advanced_past_terminal" };
+    }
+  }
+
+  return {
+    phase_id: latestMaterial || latestActual || "pre_application",
+    reason: latestMaterial || latestActual ? "last_actual" : "default_pre_application",
+  };
+}
+
+/**
+ * Phases the pipeline advanced past without a terminal completion row.
+ * Callers may surface these as "no recorded outcome" rather than inventing one.
+ */
+export function phasesMissingRecordedOutcome(byPhase, currentPhaseId) {
+  const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
+  if (curIdx < 0) return [];
+  const missing = [];
+  for (let i = 0; i < curIdx; i++) {
+    const id = LAND_ULURP_PHASES[i];
+    const all = byPhase[id] || [];
+    const actuals = all.filter(eventIsActualProgress);
+    if (!actuals.length) continue;
+    if (actuals.some(eventIsTerminalComplete)) continue;
+    // Only non-terminal actuals (e.g. stranded In Progress) → no recorded outcome.
+    missing.push(id);
+  }
+  return missing;
+}
+
+/**
  * Collapse verbatim-identical titles within one phase into aggregates.
  * @param {object[]} events
  */
@@ -290,47 +481,51 @@ export function buildLandPhaseView(spine, opts = {}) {
   }
 
   const inProgress = events.find((e) => eventIsInProgress(e));
-  const currentMilestoneLabel =
-    clean(openData?.current_milestone) || clean(inProgress?.title) || null;
-  const currentMilestoneDate =
-    isoDate(inProgress?.time?.value) || isoDate(openData?.current_milestone_date) || null;
-
-  function lastPhaseWithActuals() {
-    for (let i = LAND_ULURP_PHASES.length - 1; i >= 0; i--) {
-      const id = LAND_ULURP_PHASES[i];
-      if ((byPhase[id] || []).some(eventIsActualProgress)) return id;
-    }
-    return null;
-  }
-
+  const openDataMilestoneLabel = clean(openData?.current_milestone) || null;
   const statusLower = (publicStatus || "").toLowerCase();
   const completedLike =
     /completed|approved/.test(statusLower) ||
     /project completed|project withdrawn|project terminated/.test(
-      normalizeTitle(currentMilestoneLabel || ""),
+      normalizeTitle(openDataMilestoneLabel || clean(inProgress?.title) || ""),
     );
 
-  let currentPhaseId = null;
-  if (inProgress) {
-    currentPhaseId = mapMilestoneToPhase(inProgress.title, { kind: inProgress.kind });
-  } else if (completedLike) {
-    // Prefer the latest phase that actually ran (Council / CPC / …), not a CRM
-    // "HA - Project Completed" label that would otherwise mis-map.
-    currentPhaseId = lastPhaseWithActuals();
-  } else if (currentMilestoneLabel) {
-    currentPhaseId = mapMilestoneToPhase(currentMilestoneLabel);
-    // Guard: generic labels that map to filing while later phases already have actuals.
-    if (
-      currentPhaseId === "pre_application" &&
-      lastPhaseWithActuals() &&
-      lastPhaseWithActuals() !== "pre_application"
-    ) {
-      currentPhaseId = lastPhaseWithActuals();
+  const derived = deriveLandCurrentPhaseId({
+    byPhase,
+    events,
+    currentMilestoneLabel: openDataMilestoneLabel,
+    completedLike,
+  });
+  let currentPhaseId = derived.phase_id || "pre_application";
+  const missingOutcomes = new Set(phasesMissingRecordedOutcome(byPhase, currentPhaseId));
+
+  // Display label: prefer a milestone that belongs to the derived current phase.
+  // Open Data current_milestone often lags (stranded CB referral after CPC vote).
+  let currentMilestoneLabel = openDataMilestoneLabel || clean(inProgress?.title) || null;
+  let currentMilestoneDate =
+    isoDate(inProgress?.time?.value) || isoDate(openData?.current_milestone_date) || null;
+  const openDataPhase = openDataMilestoneLabel
+    ? mapMilestoneToPhase(openDataMilestoneLabel)
+    : null;
+  const openDataPhaseIdx = openDataPhase ? LAND_ULURP_PHASES.indexOf(openDataPhase) : -1;
+  const curIdxForLabel = LAND_ULURP_PHASES.indexOf(currentPhaseId);
+  if (
+    openDataPhaseIdx >= 0 &&
+    curIdxForLabel >= 0 &&
+    openDataPhaseIdx < curIdxForLabel
+  ) {
+    const curEvents = (byPhase[currentPhaseId] || []).slice().sort((a, b) =>
+      String(isoDate(a.time?.value) || "").localeCompare(String(isoDate(b.time?.value) || "")),
+    );
+    const preferred =
+      curEvents.find(eventIsInProgress) ||
+      [...curEvents].reverse().find(eventIsActualProgress) ||
+      curEvents[curEvents.length - 1] ||
+      null;
+    if (preferred) {
+      currentMilestoneLabel = clean(preferred.title) || currentMilestoneLabel;
+      currentMilestoneDate = isoDate(preferred.time?.value) || currentMilestoneDate;
     }
-  } else {
-    currentPhaseId = lastPhaseWithActuals();
   }
-  if (!currentPhaseId) currentPhaseId = "pre_application";
 
   /**
    * Phase state:
@@ -339,7 +534,8 @@ export function buildLandPhaseView(spine, opts = {}) {
    * - future: otherwise (including planned-only public-review stages)
    *
    * Note: CEQR and pre-cert can overlap (Noticed while EAS still in progress). Both may be
-   * non-future; only one is `current`.
+   * non-future; only one is `current`. Later-stage actuals force earlier stranded
+   * in-progress phases to `passed` (outcome may be missing — see outcome_status).
    */
   function phaseState(id) {
     if (id === currentPhaseId) return "current";
@@ -363,6 +559,9 @@ export function buildLandPhaseView(spine, opts = {}) {
     if (state === "future") {
       const planned = all.filter(eventIsPlanned);
       display = planned.length ? planned : all;
+    } else if (state === "current" && !(byPhase[id] || []).some(eventIsActualProgress)) {
+      // Arrived at next phase with only planned Not Started rows — show them as current work.
+      display = all;
     } else {
       // History / current: hide pure planned Not Started rows (they live under future phases).
       display = all.filter((e) => !eventIsPlanned(e) || eventIsInProgress(e) || e._synthetic);
@@ -379,6 +578,9 @@ export function buildLandPhaseView(spine, opts = {}) {
       short: LAND_PHASE_META[id].short,
       label_key: LAND_PHASE_META[id].label_key,
       state,
+      // "no_recorded_outcome" when the pipeline advanced past this stage without a
+      // terminal completion row (stranded In Progress / missing disposition).
+      outcome_status: missingOutcomes.has(id) ? "no_recorded_outcome" : null,
       event_count: display.length,
       total_count: all.length,
       first: dates[0] || null,
@@ -418,6 +620,8 @@ export function buildLandPhaseView(spine, opts = {}) {
       in_public_review: publicStatus
         ? /public review|completed|approved/i.test(publicStatus)
         : false,
+      // Machine-readable derivation reason (stranded-stage advance, in_progress, …).
+      derivation: derived.reason || null,
     },
     next: nextPhase
       ? {
