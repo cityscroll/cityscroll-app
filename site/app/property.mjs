@@ -422,6 +422,100 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     <div class="chain">${chain}</div>
     <div class="note">${t("disposition_provenance_html")}</div>`;
 }
+/**
+ * Detail commercial panel: full extraction with provenance for the surplus-goods buyer.
+ * Mounts above the disposition spine when the notice is Property Disposition.
+ */
+function propertyCommercialDetailHTML(commercial){
+  if(!commercial || !commercial.item) return "";
+  const item=commercial.item;
+  const catKey=ASSET_LABEL[item.category]||"asset_other";
+  const qty=(commercial.quantities||[]).map(q=>`<li><span lang="en" dir="ltr">${escUiHtml(q.display||"")}</span>
+    ${q.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(q.evidence)}</div>`:""}</li>`).join("");
+  const prices=(commercial.price_facts||[]).map(p=>{
+    const label=priceKindBadge(p.kind, String(p.display||"").replace(/^\$/,"") ) || p.display;
+    return `<li><span class="tag amt">${label}</span>
+      ${p.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(p.evidence)}</div>`:""}</li>`;
+  }).join("");
+  const deal=commercial.deal_signal && commercial.deal_signal.status==="derived"
+    ? `<p class="property-deal-signal" data-deal-status="derived"><strong>${escUiHtml(commercial.deal_signal.summary)}</strong></p>
+       <div class="note">${t("property_commercial_deal_method_html")}</div>`
+    : `<div class="note">${t("property_commercial_deal_insufficient_html")}</div>`;
+  const comps=commercial.deal_signal && commercial.deal_signal.comparables_slot
+    ? `<div class="note" data-comparables-status="${escUiHtml(commercial.deal_signal.comparables_slot.status||"not_yet_acquired")}">${t("property_commercial_comparables_slot_html")}</div>`
+    : "";
+  const method=commercial.sale_method
+    ? `<div class="lc-pct">${t("property_commercial_method_lbl")}: <span lang="en" dir="ltr">${escUiHtml(commercial.sale_method.method.replace(/_/g," "))}</span>
+        ${commercial.sale_method.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(commercial.sale_method.evidence)}</div>`:""}</div>`
+    : "";
+  const steps=(commercial.participation && commercial.participation.steps||[]).map(s=>
+    `<li><span lang="en" dir="ltr">${escUiHtml(s.text||s.kind||"")}</span></li>`).join("");
+  const packageUrl=commercial.participation && commercial.participation.package_url
+    ? `<div class="lc-pct"><a href="${escUiHtml(commercial.participation.package_url)}" ${EXT_ATTRS}>${t("property_action_open_rfp")}${extSR()}</a></div>`
+    : "";
+  const contacts=[];
+  for(const e of (commercial.participation && commercial.participation.emails)||[]){
+    contacts.push(`<a href="mailto:${escUiHtml(e.value)}">${escUiHtml(e.value)}</a>`);
+  }
+  for(const p of (commercial.participation && commercial.participation.phones)||[]){
+    contacts.push(`<span lang="en" dir="ltr">${escUiHtml(p.value)}</span>`);
+  }
+  return `<section class="property-commercial-detail" data-commercial-detail="1" aria-label="${escUiHtml(t("property_commercial_heading"))}">
+    <div class="chain-h">${t("property_commercial_heading")}</div>
+    <div class="note">${t("property_commercial_persona_html")}</div>
+    <div class="property-commercial-what">
+      <div class="stage-name">${t("property_commercial_what_lbl")}</div>
+      <div><span class="tag asset">${escUiHtml(t(catKey))}</span>
+        ${item.label?`<span lang="en" dir="ltr"> · ${escUiHtml(item.label)}</span>`:""}</div>
+      ${item.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(item.evidence)}</div>`:""}
+      ${qty?`<ul class="ei-list property-commercial-qty">${qty}</ul>`:""}
+    </div>
+    <div class="property-commercial-price">
+      <div class="stage-name">${t("property_commercial_price_lbl")}</div>
+      ${prices?`<ul class="ei-list">${prices}</ul>`:`<div class="note">${t("property_commercial_price_none_html")}</div>`}
+    </div>
+    <div class="property-commercial-deal">
+      <div class="stage-name">${t("property_commercial_deal_lbl")}</div>
+      ${deal}
+      ${comps}
+    </div>
+    <div class="property-commercial-bid">
+      <div class="stage-name">${t("property_commercial_bid_lbl")}</div>
+      ${method}
+      ${packageUrl}
+      ${steps?`<ul class="ei-list">${steps}</ul>`:""}
+      ${contacts.length?`<div class="lc-pct">${contacts.join(" · ")}</div>`:""}
+      ${!method && !packageUrl && !steps && !contacts.length
+        ? `<div class="note">${t("property_commercial_bid_none_html")}</div>` : ""}
+    </div>
+    <div class="note">${t("property_commercial_provenance_html")}</div>
+  </section>`;
+}
+async function loadPropertyCommercialDetail(r, el){
+  if(!el || !r || !isPropertyDispositionEligible(r)) return;
+  try{
+    const tools=await propertyCommercialTools();
+    // Prefer full-body extraction on detail; merge attachment titles when materialization stamped them.
+    let attachments=[];
+    if(r.commercial && r.commercial.item && r.commercial.item.source==="attachment_metadata"){
+      // Keep label signal from stamped commercial when body is thin.
+    }
+    const commercial=tools && tools.extractPropertyCommercial
+      ? tools.extractPropertyCommercial(r, { attachments })
+      : (r.commercial || null);
+    // If list stamped a richer item label from attachment metadata, preserve it on thin bodies.
+    if(commercial && r.commercial && r.commercial.item && r.commercial.item.source==="attachment_metadata"){
+      if(!commercial.item.label || commercial.item.source!=="attachment_metadata"){
+        commercial.item={ ...commercial.item, ...r.commercial.item };
+      }
+    }
+    if(commercial) r.commercial=commercial;
+    if(!document.contains(el)) return;
+    el.innerHTML=commercial ? propertyCommercialDetailHTML(commercial) : "";
+  }catch(_e){
+    if(document.contains(el) && r.commercial) el.innerHTML=propertyCommercialDetailHTML(r.commercial);
+  }
+}
 async function loadPropertyDispositionSpine(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
   let spine = null;
@@ -442,6 +536,7 @@ async function loadPropertyDispositionSpine(r, el){
           r.disposition_stage = propRow.disposition_stage || r.disposition_stage || null;
           r.disposition_join_keys = propRow.disposition_join_keys || null;
           r.disposition_subject_ref = propRow.disposition_subject_ref || null;
+          if(propRow.commercial) r.commercial = propRow.commercial;
         }
       }
       // Fallback: build a singleton from this notice if the cached view is stale/missing.
@@ -609,28 +704,48 @@ async function loadPropertyCrossDomain(r, el){
     <div class="note">${t("property_xd_provenance_html")}</div>`;
 }
 
-/* ===== Property explorer: asset-type tabs + process-stage rail + temporal When rail.
-   Process stages (hearing → auction_or_rfp → award_or_conveyance) are the ops ontology;
+/* ===== Property explorer: surplus-buyer commercial glance + process-stage rail.
+   Primary persona: glancing surplus-goods buyer — WHAT / HOW MUCH / DEAL? / when-bid.
+   Process stages (hearing → auction_or_rfp → award_or_conveyance) remain the ops ontology;
    multi-notice disposition subjects collapse to one list entry (site/property_explorer.mjs).
    PROP_STAGES remain temporal list filters (proposed/soon/upcoming/past), not process stages.
-   Asset type is derived from the notice text (no category column); dollar figures are
-   labeled badges only, never a filter. ===== */
+   Category vocabulary is persona-grounded (vehicle/timber/equipment/real_property/…);
+   legacy URL keys (vehequip/forest/realty) normalize via normalizeAssetFilter. ===== */
 // Values are i18n keys — render with t() so the explorer chrome follows the active language.
-const ASSET_BUCKETS=[["realty","asset_realty"],["forest","asset_forest"],["vehequip","asset_vehequip"],["medallion","asset_medallion"],["seized","asset_seized"],["other","asset_other"]];
+const ASSET_BUCKETS=[
+  ["vehicle","asset_vehicle"],
+  ["timber","asset_timber"],
+  ["equipment","asset_equipment"],
+  ["real_property","asset_real_property"],
+  ["scrap_materials","asset_scrap_materials"],
+  ["other","asset_other"],
+];
 const ASSET_LABEL=Object.fromEntries(ASSET_BUCKETS);
+const ASSET_FILTER_ALIASES={vehequip:"vehicle",forest:"timber",realty:"real_property",medallion:"other",seized:"other"};
+function normalizePropAsset(raw){
+  if(raw==null||raw===""||raw==="all") return "all";
+  const key=String(raw).trim().toLowerCase().replace(/-/g,"_");
+  if(ASSET_FILTER_ALIASES[key]) return ASSET_FILTER_ALIASES[key];
+  if(ASSET_LABEL[key]) return key;
+  return "other";
+}
+// Sync fallback when commercial module / stamped payload is unavailable (tests + cold paint).
 function classifyAsset(rec){
+  if(rec && rec.commercial && rec.commercial.item && rec.commercial.item.category){
+    return normalizePropAsset(rec.commercial.item.category);
+  }
   const t=(cleanText(rec.short_title)+" "+cleanText(rec.additional_description_1)).toLowerCase();
   const has=(...k)=>k.some(w=>t.includes(w));
-  if(has("forest management","board feet","sawtimber","cordwood","timber")) return "forest";
-  if(has("medallion")) return "medallion";
-  if(has("auto auction","heavy machinery","fleet","iaai")) return "vehequip";
-  if(has("unauthorized","tobacco","forfeiture","pending destruction")) return "seized";
-  if(has("property clerk","owners are wanted","in the custody")) return "seized";
-  if(has("surplus assets","machine tools","furniture","publicsurplus")) return "vehequip";
+  if(has("forest management","board feet","sawtimber","cordwood","timber","firewood","roundwood")) return "timber";
+  if(has("auto auction","vehicle auction","govdeals","iaai","fleet auction","municipal auto")) return "vehicle";
+  if(has("heavy machinery","machine tools","equipment auction","construction equipment")) return "equipment";
+  if(has("surplus assets","publicsurplus","furniture auction")) return "equipment";
+  if(has("scrap","surplus materials","recyclable metal")) return "scrap_materials";
+  if(has("unauthorized","tobacco","forfeiture","pending destruction","property clerk","owners are wanted","in the custody","medallion")) return "other";
   if(t.includes("easement")) return "other";
   if(has("mortgage and note","outstanding debt") && t.includes("mortgage")) return "other";
-  if(has("disposition area","city-owned property","block/lot","residential property","public auction","premises","reversionary")) return "realty";
-  if(has("rfp","request for proposal","redevelopment","lease auction","lease","license")) return "realty";
+  if(has("disposition area","city-owned property","block/lot","residential property","public auction","premises","reversionary","real property")) return "real_property";
+  if(has("rfp","request for proposal","redevelopment","lease auction","lease","license")) return "real_property";
   return "other";
 }
 function propStage(r){
@@ -640,12 +755,36 @@ function propStage(r){
   return "past";
 }
 const PROP_STAGES=[["all","stage_all"],["proposed","stage_proposed"],["soon","stage_soon"],["upcoming","stage_upcoming"],["past","stage_past"]];
+function priceKindBadge(kind, amt){
+  if(kind==="upset_price") return t("badge_upset_price",{amt});
+  if(kind==="minimum_bid") return t("badge_min_bid",{amt});
+  if(kind==="appraised") return t("badge_appraised",{amt});
+  if(kind==="assessed") return t("badge_assessed",{amt});
+  if(kind==="nominal") return t("badge_nominal");
+  if(kind==="minimum_monthly_bid") return t("badge_min_monthly_bid",{amt});
+  if(kind==="minimum_annual_bid") return t("badge_min_annual_bid",{amt});
+  return amt?`$${amt}`:null;
+}
 function dollarBadge(r){
+  if(r && r.commercial && r.commercial.primary_price){
+    const p=r.commercial.primary_price;
+    const amt=p.display?String(p.display).replace(/^\$/,""):String(p.amount);
+    return priceKindBadge(p.kind, amt);
+  }
   const txt=cleanText(r.short_title)+" "+cleanText(r.additional_description_1);
   let m=txt.match(/upset price[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return t("badge_upset_price",{amt:m[1]});
   m=txt.match(/minimum bid[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return t("badge_min_bid",{amt:m[1]});
   m=txt.match(/appraised[^$]{0,120}\$\s?([\d][\d,.]*)/i); if(m) return t("badge_appraised",{amt:m[1]});
   if(/(?:sold for|consideration of)\s+(?:one dollar|\$\s?1(?:\.00)?\b)/i.test(txt)) return t("badge_nominal");
+  return null;
+}
+function ensurePropertyCommercial(r, tools){
+  if(!r) return null;
+  if(r.commercial && r.commercial.glance) return r.commercial;
+  if(tools && tools.extractPropertyCommercial){
+    r.commercial=tools.extractPropertyCommercial(r);
+    return r.commercial;
+  }
   return null;
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
@@ -656,30 +795,54 @@ function propertyExplorerTools(){
   }
   return propertyExplorerToolsPromise;
 }
+let propertyCommercialToolsPromise=null;
+function propertyCommercialTools(){
+  if(!propertyCommercialToolsPromise){
+    propertyCommercialToolsPromise=import("../property_commercial.mjs").catch(()=>null);
+  }
+  return propertyCommercialToolsPromise;
+}
 function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const r=entry.primary;
   if(!r) return "";
-  const ev=r.event_date;
+  const commercial=r.commercial||null;
+  const glance=commercial && commercial.glance ? commercial.glance : null;
+  const ev=r.event_date || (glance && glance.close_date) || null;
+  const closeDate=glance && glance.close_date ? glance.close_date : (r.event_date||null);
   const propertyAddress=r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
-  const scopeHtml=excerptHtml(r.additional_description_1,200);
   const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
   const actionKey=entry.action_key||"property_action_open_notice";
-  const actionLead=`<p class="property-action-lead">${escUiHtml(t(actionKey))}</p>`;
+  // Surplus-buyer prime position: ITEM + $ + close-date (replaces weaker type-line lead).
+  const itemLabel=glance && glance.item
+    ? glance.item
+    : (ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):"");
+  const priceLabel=r._badge || (glance && glance.price ? priceKindBadge(glance.price.kind, String(glance.price.display||"").replace(/^\$/,"")) : null);
+  const closeLabel=closeDate ? fdt(closeDate) : "";
+  const commercialLead=`<div class="property-commercial-lead" data-commercial-glance="1">
+    ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
+    ${priceLabel?`<span class="tag amt">${priceLabel}</span>`:""}
+    ${closeLabel?`<span class="tag open">${escUiHtml(t("property_commercial_close",{date:closeLabel}))}${eventTag(closeDate)}</span>`:""}
+  </div>`;
+  const dealLine=(glance && glance.deal)
+    ? `<p class="property-deal-signal" data-deal-status="derived">${escUiHtml(glance.deal)}</p>`
+    : "";
   const processLine=`<div class="property-process-line">
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
     ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:``}
   </div>`;
-  // Next-action first (process lead), then open notice, then parcel entity links when BBL known.
   const primaryAction=`<a class="act primary" href="${noticeHref}">${t(actionKey)}</a>`;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
     if(links?.zola_url) secondaryActions.push(`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`);
+  }
+  if(commercial && commercial.participation && commercial.participation.package_url){
+    secondaryActions.push(`<a class="act" href="${escUiHtml(commercial.participation.package_url)}" ${EXT_ATTRS}>${t("property_action_open_rfp")}${extSR()}</a>`);
   }
   secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
   if(ev) secondaryActions.push(`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
@@ -689,30 +852,40 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
-  const pbadges = (r._asset || r._badge)
-    ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
-  return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
-      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
-      ${pbadges}
+  return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}">
+      ${commercialLead}
+      ${dealLine}
+      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       ${processLine}
-      ${actionLead}
       ${entry.bbl?`<div class="tax-lien-card-slot" data-tax-lien-bbl="${escUiHtml(entry.bbl)}"></div>`:""}
       <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
       ${propertyPlaceChips(r._location)}
-      ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
       ${digEvidenceHTML(mev)}
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
 async function renderPropExplorer(){
-  propAll.forEach(r=>{ if(!r._asset){ r._asset=classifyAsset(r); r._stage=propStage(r); r._badge=dollarBadge(r); } });
+  propAsset=normalizePropAsset(propAsset);
+  const commercialTools=await propertyCommercialTools();
+  propAll.forEach(r=>{
+    ensurePropertyCommercial(r, commercialTools);
+    if(!r._asset){
+      r._asset=classifyAsset(r);
+      r._stage=propStage(r);
+      r._badge=dollarBadge(r);
+    } else {
+      r._asset=normalizePropAsset(r._asset);
+      if(!r._badge) r._badge=dollarBadge(r);
+      if(!r._stage) r._stage=propStage(r);
+    }
+  });
   const ac={all:propAll.length}, sc={all:propAll.length};
   propAll.forEach(r=>{ ac[r._asset]=(ac[r._asset]||0)+1; sc[r._stage]=(sc[r._stage]||0)+1; });
   const assetEl=$("#assettabs");
   if(assetEl){
     assetEl.innerHTML=[["all","all_types"],...ASSET_BUCKETS].map(([k,l])=>
       `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
-    assetEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+    assetEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=normalizePropAsset(b.dataset.a); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
   }
   const lifeEl=$("#liferail");
   if(lifeEl){
@@ -917,8 +1090,11 @@ globalThis.ASSET_BUCKETS = ASSET_BUCKETS;
 globalThis.ASSET_LABEL = ASSET_LABEL;
 globalThis.PROP_STAGES = PROP_STAGES;
 globalThis.classifyAsset = classifyAsset;
+globalThis.normalizePropAsset = normalizePropAsset;
 globalThis.dispositionStageLabel = dispositionStageLabel;
 globalThis.dollarBadge = dollarBadge;
+globalThis.loadPropertyCommercialDetail = loadPropertyCommercialDetail;
+globalThis.propertyCommercialDetailHTML = propertyCommercialDetailHTML;
 globalThis.franchiseConcessionSpineHTML = franchiseConcessionSpineHTML;
 globalThis.franchisePhaseSpineTools = franchisePhaseSpineTools;
 globalThis.franchiseStageLabel = franchiseStageLabel;
