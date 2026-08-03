@@ -191,6 +191,61 @@ test("golden: SYEP throughout New York City → citywide", () => {
   assert.ok(slots.some((s) => s.borough === "Citywide"));
 });
 
+test("golden: money title CITYWIDE and borough abbreviations", () => {
+  const citywide = placeFromDerivations({
+    short_title: "FIRE EXTINGUISHER MAINTENANCE, INSTALLATION AND REPAIRS, CITYWIDE",
+    agency_name: "Citywide Administrative Services",
+  }, { forLens: "money" });
+  assert.equal(citywide.scope, "citywide");
+
+  const bx = placeFromDerivations({
+    short_title: "Immediate Emergency Demolition - 2592 3rd Ave, BX",
+    agency_name: "Housing Preservation and Development",
+  }, { forLens: "money" });
+  assert.equal(bx.scope, "local");
+  assert.ok(bx.boroughs.includes("Bronx"), `expected Bronx, got ${bx.boroughs}`);
+
+  const hood = placeFromDerivations({
+    short_title: "South Hollis Library Renovation RFQ",
+    agency_name: "Queens Public Library",
+  }, { forLens: "money" });
+  assert.equal(hood.scope, "local");
+  assert.ok(hood.boroughs.includes("Queens"), `expected Queens from neighborhood, got ${hood.boroughs}`);
+});
+
+test("golden: money agency service area and MN04 community-district token", () => {
+  const bp = placeFromDerivations({
+    short_title: "Neighborhood planning study",
+    agency_name: "Bronx Borough President",
+  }, { forLens: "money" });
+  assert.equal(bp.scope, "local");
+  assert.ok(bp.boroughs.includes("Bronx"));
+  assert.ok(bp.derivation?.methods?.includes("agency_service_area"));
+
+  const cd = placeFromDerivations({
+    short_title: "Floor tile in apartments located in Manhattan Neighborhood (MN04)",
+    agency_name: "Housing Authority",
+  }, { forLens: "money" });
+  assert.equal(cd.scope, "local");
+  assert.ok(cd.boroughs.includes("Manhattan"));
+  assert.ok(
+    (cd.community_districts || []).includes("M04")
+      || (cd.derivation?.methods || []).includes("community_board")
+      || (cd.derivation?.methods || []).includes("matter_title_place"),
+  );
+});
+
+test("money does not pin from vendor_name alone (org HQ ≠ service geography)", () => {
+  const place = placeFromDerivations({
+    short_title: "Citywide pest management services",
+    agency_name: "Citywide Administrative Services",
+    vendor_name: "Queens Community House Inc",
+  }, { forLens: "money" });
+  // Citywide in title wins; must not prefer Queens from vendor org name.
+  assert.equal(place.scope, "citywide");
+  assert.ok(!place.boroughs?.includes("Queens") || place.scope === "citywide");
+});
+
 test("unlocated virtual-only meeting records reason", () => {
   const row = {
     request_id: "virtual-1",

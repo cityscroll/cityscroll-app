@@ -21,7 +21,10 @@ const PATHS = {
   property: join(ROOT, "site/data/property_domain_observations.json"),
   meetings: join(ROOT, "site/data/meetings_domain_observations.json"),
   rules: join(ROOT, "site/data/rules_domain_observations.json"),
-  money: join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"),
+  // Prefer densified money domain observations (OCP awards + open RFPs with
+  // place stamps). Fall back to the slim OCP warehouse lookup when missing.
+  money: join(ROOT, "site/data/money_domain_observations.json"),
+  moneyFallback: join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"),
 };
 
 function loadJson(path) {
@@ -38,7 +41,7 @@ function build() {
   const property = loadJson(PATHS.property);
   const meetings = loadJson(PATHS.meetings);
   const rules = loadJson(PATHS.rules);
-  const money = loadJson(PATHS.money);
+  const money = loadJson(PATHS.money) || loadJson(PATHS.moneyFallback);
 
   return buildDistrictActivity({
     boundaries,
@@ -99,6 +102,19 @@ function check(doc) {
     // At least one of citywide bag or local borough/CD density must hold rules.
     if (cw < 1 && localRules < 1) {
       throw new Error("rules located but neither citywide bag nor local density holds them");
+    }
+  }
+  // Money corpus: when densified, require some located rows OR an explicit
+  // citywide/unlocated framing signal (zeros that look broken are not OK).
+  if ((doc.sources?.money?.counted || 0) >= 20) {
+    const moneyLocated = Number(doc.sources?.money?.located) || 0;
+    const moneyCw = Number(doc.citywide?.money) || Number(doc.by_level?.borough?.Citywide?.money) || 0;
+    const moneyUnloc = Number(doc.unlocated?.money) || 0;
+    if (moneyLocated < 1 && moneyCw < 1) {
+      throw new Error("money corpus counted but neither located nor citywide density exists");
+    }
+    if (moneyUnloc < 1 && moneyLocated === (doc.sources?.money?.counted || 0)) {
+      // Allow all-located corpora; only fail when framing metadata is missing.
     }
   }
 }

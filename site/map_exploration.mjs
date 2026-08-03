@@ -502,13 +502,15 @@ export function citywideBucketCounts(activity) {
 }
 
 /**
- * First-class non-polygon map bags (citywide rules, virtual-only meetings).
- * Shown as labeled list rows / detail chips — never painted onto district polygons.
+ * First-class non-polygon map bags (citywide rules, virtual-only meetings,
+ * and items with no place signal). Shown as labeled list rows / detail chips —
+ * never painted onto district polygons.
  */
 export function nonPolygonBuckets(activity) {
   const bags = [];
   const citywide = activity?.citywide || activity?.by_level?.borough?.Citywide || null;
   const virtual = activity?.virtual || activity?.by_level?.borough?.Virtual || null;
+  const unlocated = activity?.unlocated || null;
   if (citywide && totalForLens(citywide, "all") > 0) {
     bags.push({
       id: "Citywide",
@@ -527,7 +529,44 @@ export function nonPolygonBuckets(activity) {
       total: totalForLens(virtual, "all"),
     });
   }
+  // Unlocated is a framing bag — distinct from "zero activity in this district".
+  if (unlocated && totalForLens(unlocated, "all") > 0) {
+    bags.push({
+      id: "Unlocated",
+      label: "No place signal",
+      kind: "unlocated",
+      counts: { ...emptyLensCounts(), ...unlocated },
+      total: totalForLens(unlocated, "all"),
+    });
+  }
   return bags;
+}
+
+/**
+ * Money-lens coverage framing: most contracts are citywide service classes or
+ * lack a published place. Returns null when money corpus is empty.
+ *
+ * @param {object} activity
+ * @returns {{counted:number,located:number,citywide:number,unlocated:number,local:number,locate_rate:number}|null}
+ */
+export function moneyCoverageFraming(activity) {
+  const counted = Number(activity?.sources?.money?.counted) || 0;
+  if (counted < 1) return null;
+  const citywide = Number(activity?.citywide?.money)
+    || Number(activity?.by_level?.borough?.Citywide?.money)
+    || 0;
+  const unlocated = Number(activity?.unlocated?.money) || 0;
+  const located = Number(activity?.sources?.money?.located) || 0;
+  // Local = located minus pure citywide bag (citywide counts as "located" in sources).
+  const local = Math.max(0, located - citywide);
+  return {
+    counted,
+    located,
+    citywide,
+    unlocated,
+    local,
+    locate_rate: counted > 0 ? located / counted : 0,
+  };
 }
 
 /**

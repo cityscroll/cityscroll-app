@@ -31,6 +31,8 @@ export const LOCATION_CONFIDENCE = Object.freeze({
   venue_column: 0.65,
   vendor_place: 0.55,
   agency_hq: 0.35,
+  agency_service_area: 0.7,
+  neighborhood_place: 0.72,
   citywide_phrase: 0.8,
 });
 
@@ -67,6 +69,48 @@ const PLACE_GAZETTEER = Object.freeze([
   { pattern: /\b22\s+Reade\s+Street\b/i, boroughs: ["Manhattan"], label: "22 Reade Street" },
   { pattern: /\b125\s+Worth\s+Street\b/i, boroughs: ["Manhattan"], label: "125 Worth Street" },
   { pattern: /\bOne\s+Centre\s+Street\b|\b1\s+Centre\s+Street\b/i, boroughs: ["Manhattan"], label: "1 Centre Street" },
+  // Neighborhoods / campuses used in contract and program titles (single-borough only).
+  { pattern: /\bHarlem\b/i, boroughs: ["Manhattan"], label: "Harlem" },
+  { pattern: /\bWashington\s+Heights\b/i, boroughs: ["Manhattan"], label: "Washington Heights" },
+  { pattern: /\bInwood\b/i, boroughs: ["Manhattan"], label: "Inwood" },
+  { pattern: /\bLower\s+East\s+Side\b/i, boroughs: ["Manhattan"], label: "Lower East Side" },
+  { pattern: /\bSouth\s+Bronx\b/i, boroughs: ["Bronx"], label: "South Bronx" },
+  { pattern: /\bMott\s+Haven\b/i, boroughs: ["Bronx"], label: "Mott Haven" },
+  { pattern: /\bHunts\s+Point\b/i, boroughs: ["Bronx"], label: "Hunts Point" },
+  { pattern: /\bFordham\b/i, boroughs: ["Bronx"], label: "Fordham" },
+  { pattern: /\bBed-?Stuy(?:vesant)?\b|\bBedford-Stuyvesant\b/i, boroughs: ["Brooklyn"], label: "Bed-Stuy" },
+  { pattern: /\bBrownsville\b/i, boroughs: ["Brooklyn"], label: "Brownsville" },
+  { pattern: /\bCrown\s+Heights\b/i, boroughs: ["Brooklyn"], label: "Crown Heights" },
+  { pattern: /\bConey\s+Island\b/i, boroughs: ["Brooklyn"], label: "Coney Island" },
+  { pattern: /\bEast\s+New\s+York\b/i, boroughs: ["Brooklyn"], label: "East New York" },
+  { pattern: /\bWilliamsburg\b/i, boroughs: ["Brooklyn"], label: "Williamsburg" },
+  { pattern: /\bBushwick\b/i, boroughs: ["Brooklyn"], label: "Bushwick" },
+  { pattern: /\bAstoria\b/i, boroughs: ["Queens"], label: "Astoria" },
+  { pattern: /\bLong\s+Island\s+City\b|\bLIC\b/i, boroughs: ["Queens"], label: "Long Island City" },
+  { pattern: /\bFlushing\b/i, boroughs: ["Queens"], label: "Flushing" },
+  { pattern: /\bJamaica\b/i, boroughs: ["Queens"], label: "Jamaica" },
+  { pattern: /\bRockaway\b/i, boroughs: ["Queens"], label: "Rockaway" },
+  { pattern: /\bSouth\s+Hollis\b/i, boroughs: ["Queens"], label: "South Hollis" },
+  { pattern: /\bSunnyside\b/i, boroughs: ["Queens"], label: "Sunnyside" },
+  { pattern: /\bSt\.?\s*George\b/i, boroughs: ["Staten Island"], label: "St. George" },
+  { pattern: /\bTottenville\b/i, boroughs: ["Staten Island"], label: "Tottenville" },
+]);
+
+/**
+ * Agencies whose jurisdiction is a borough (not citywide HQ). Used as matter
+ * geography for money / program awards — never for citywide departments.
+ */
+const AGENCY_SERVICE_AREA = Object.freeze([
+  { pattern: /\bBronx\s+Borough\s+President\b/i, boroughs: ["Bronx"], label: "Bronx Borough President" },
+  { pattern: /\bBrooklyn\s+Borough\s+President\b/i, boroughs: ["Brooklyn"], label: "Brooklyn Borough President" },
+  { pattern: /\bManhattan\s+Borough\s+President\b/i, boroughs: ["Manhattan"], label: "Manhattan Borough President" },
+  { pattern: /\bQueens\s+Borough\s+President\b/i, boroughs: ["Queens"], label: "Queens Borough President" },
+  { pattern: /\bStaten\s+Island\s+Borough\s+President\b/i, boroughs: ["Staten Island"], label: "Staten Island Borough President" },
+  { pattern: /\bBronx\s+Community\s+Board\b/i, boroughs: ["Bronx"], label: "Bronx Community Board" },
+  { pattern: /\bBrooklyn\s+Community\s+Board\b/i, boroughs: ["Brooklyn"], label: "Brooklyn Community Board" },
+  { pattern: /\bManhattan\s+Community\s+Board\b/i, boroughs: ["Manhattan"], label: "Manhattan Community Board" },
+  { pattern: /\bQueens\s+Community\s+Board\b/i, boroughs: ["Queens"], label: "Queens Community Board" },
+  { pattern: /\bStaten\s+Island\s+Community\s+Board\b/i, boroughs: ["Staten Island"], label: "Staten Island Community Board" },
 ]);
 
 /**
@@ -333,6 +377,47 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
       community_boards: boards.boards,
       evidence: boards.boards.join("; "),
     }));
+  }
+
+  // Compact community-district tokens common in procurement titles: MN04, BX03, QN12.
+  // Two-letter forms only — single-letter M/X/K/Q/R collide with project codes (Q099-…).
+  const CD_TOKEN_BORO = Object.freeze({
+    MN: "Manhattan",
+    BX: "Bronx",
+    BK: "Brooklyn",
+    QN: "Queens",
+    SI: "Staten Island",
+  });
+  for (const match of body.matchAll(/\b(MN|BX|BK|QN|SI)(\d{2})\b/g)) {
+    const boro = CD_TOKEN_BORO[match[1].toUpperCase()];
+    const num = Number(match[2]);
+    if (!boro || !Number.isFinite(num) || num < 1 || num > 18) continue;
+    const prefix = { Manhattan: "M", Bronx: "X", Brooklyn: "K", Queens: "Q", "Staten Island": "R" }[boro];
+    const cd = `${prefix}${String(num).padStart(2, "0")}`;
+    hits.push(hit({
+      method: "community_board",
+      confidence: LOCATION_CONFIDENCE.community_board,
+      role: "matter",
+      boroughs: [boro],
+      community_districts: [cd],
+      evidence: match[0],
+    }));
+  }
+
+  // Borough-scoped agencies (BP / CB) — service geography for awards, not HQ.
+  if (agency) {
+    for (const entry of AGENCY_SERVICE_AREA) {
+      if (entry.pattern.test(agency)) {
+        hits.push(hit({
+          method: "agency_service_area",
+          confidence: LOCATION_CONFIDENCE.agency_service_area,
+          role: "matter",
+          boroughs: entry.boroughs,
+          evidence: entry.label,
+        }));
+        break;
+      }
+    }
   }
 
   // Tax-lot borough labels ("Staten Island Tax Block…").
