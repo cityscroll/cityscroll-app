@@ -34,9 +34,9 @@ def main():
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"
     cache_bust = str(time.time_ns())
-    failures = []
-    captures = []
-    exams = {}
+    failures = []  # runtime assertion bag; not publisher data
+    captures = []  # repo-relative screenshot paths written this run
+    exams = {}  # per-exam href probe results from local guide DOM
 
     try:
         with sync_playwright() as playwright:
@@ -57,7 +57,7 @@ def main():
                     card = page.locator(f"#career-exam-{num}")
                     if card.count() == 0:
                         failures.append(f"{width}px: missing exam card {num}")
-                        exams[num] = {"present": False}
+                        exams[num] = {"present": False}  # local DOM probe; not Open Data
                         continue
                     apply = card.locator("a.act.primary").first
                     href = apply.get_attribute("href") if apply.count() else None
