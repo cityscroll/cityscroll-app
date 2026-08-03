@@ -49,6 +49,7 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
   lRows=rows; landBanner=banner||"";
+  setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
   $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
   announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));

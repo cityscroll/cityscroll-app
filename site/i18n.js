@@ -276,6 +276,7 @@ const STRINGS = {
     closing_this_week:"Closing this week",
     money_trail_heading: "Contract trail",
     export_csv:       "Export CSV",
+    share_export_btn: "Share / export",
     export_xlsx:      "Export Excel (.xlsx)",
     print_save_pdf:   "Print / Save as PDF",
     print_header:     "CityScroll · {link} · As of {date}",

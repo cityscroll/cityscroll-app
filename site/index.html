@@ -314,6 +314,13 @@
   .panel .panelbar{align-items:flex-start;flex-wrap:wrap}
   .panelbar .export-actions{flex:1 1 100%;justify-content:flex-end}
   .panelbar .export-control{padding:8px 11px}
+  .utility-overflow{display:inline-flex;flex-direction:column}
+  .utility-overflow[hidden]{display:none!important}
+  .utility-overflow summary{list-style:none}
+  .utility-overflow summary::-webkit-details-marker{display:none}
+  .utility-overflow .utility-overflow-content{display:none;gap:8px;flex-wrap:wrap}
+  .utility-overflow[open] .utility-overflow-content{display:flex}
+  .utility-overflow.open .utility-overflow-content{display:flex}
 
   .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:8px;padding:13px 15px;margin-top:16px}
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
@@ -1304,9 +1311,19 @@
                default after the correct search has already rendered. -->
           <h2><span id="reshead">Open RFPs</span> <span class="count" id="rescount"></span></h2>
           <span class="export-actions">
-            <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
-            <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-            <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
+            <span class="export-band" id="money-export-band" hidden>
+              <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
+              <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+              <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
+            </span>
+            <details class="utility-overflow export-overflow" id="money-export-overflow">
+              <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+              <div class="utility-overflow-content">
+                <button class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
+                <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+                <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
+              </div>
+            </details>
           </span>
         </div>
         <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
@@ -1424,15 +1441,25 @@
           <p id="staffing-result-count" aria-live="polite"></p>
         </div>
       </div>
+      <div class="staffing-export-actions export-actions">
+        <span class="export-band" id="people-export-band" hidden>
+          <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+          <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        </span>
+        <details class="utility-overflow export-overflow" id="people-export-overflow">
+          <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+          <div class="utility-overflow-content">
+            <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+            <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          </div>
+        </details>
+      </div>
       <div class="staffing-notice-list" id="staffing-notice-list" aria-live="polite">
         <div class="career-empty"><span class="loading" aria-hidden="true"></span> <span data-i18n="staffing_loading">Loading staffing notices…</span></div>
       </div>
-      <div class="staffing-export-actions">
-        <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
-        <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-        <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
-      </div>
-    </section>
+      </section>
     </details>
 
     <!-- Compatibility-only nodes for old query links and alert parsing. They are not a
@@ -1479,9 +1506,19 @@
         <div class="panelbar">
           <h2><span><span id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
           <span class="export-actions">
-            <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
-            <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-            <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+            <span class="export-band" id="land-export-band" hidden>
+              <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+              <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+              <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+            </span>
+            <details class="utility-overflow export-overflow" id="land-export-overflow">
+              <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+              <div class="utility-overflow-content">
+                <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+                <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+                <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+              </div>
+            </details>
           </span>
         </div>
         <div class="list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
@@ -1525,9 +1562,19 @@
     <div class="property-rail-label" data-i18n="property_temporal_rail_label">When</div>
     <div class="chiprow" id="liferail" style="margin-top:4px" role="group" aria-label="When"></div>
     <div class="exportbar">
-      <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
-      <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-      <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      <span class="export-band" id="property-export-band" hidden>
+        <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+        <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="property-export-overflow">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+          <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        </div>
+      </details>
     </div>
     <div class="feed" id="propertyfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -1554,9 +1601,19 @@
     <div class="rules-rail-label" data-i18n="rules_process_rail_label">Rulemaking stage</div>
     <div class="chiprow" id="rulesprocessrail" role="group" aria-label="Rulemaking stage"></div>
     <div class="exportbar">
-      <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
-      <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-      <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      <span class="export-band" id="rules-export-band" hidden>
+        <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+        <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="rules-export-overflow" hidden>
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+          <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        </div>
+      </details>
     </div>
     <div class="feed" id="rulesfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -1592,9 +1649,19 @@
     <div id="meetingswidening"></div>
     <div id="hearingssummary" class="nlunderstood" role="status"></div>
     <div class="exportbar">
-      <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
-      <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-      <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      <span class="export-band" id="meetings-export-band" hidden>
+        <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+        <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="meetings-export-overflow">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+          <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        </div>
+      </details>
     </div>
     <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -1823,7 +1890,6 @@
 </footer>
 
 <script type="module" src="app/main.mjs"></script>
-
 <!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon: the static origin is served
      directly by GitHub Pages (not proxied through Cloudflare), so zone-level Automatic Setup collects
      nothing — the snippet must live here. Token is a public site id, safe to commit. -->

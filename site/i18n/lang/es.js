@@ -179,6 +179,8 @@
     export_csv: "Exportar CSV",
     export_xlsx: "Exportar Excel (.xlsx)",
     print_save_pdf: "Imprimir / Guardar como PDF",
+    share_export_btn: "Compartir / exportar",
+
     print_header: "CityScroll · {link} · Al {date}",
     csv_address: "Dirección",
     csv_applicant: "Solicitante",

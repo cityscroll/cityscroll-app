@@ -15,7 +15,7 @@
     "inline_script_lines": 13290
   },
   "after": {
-    "index_html_bytes": 157383,
+    "index_html_bytes": 162204,
     "module_count": 19,
     "largest_module": {
       "path": "site/app/money-history.mjs",
@@ -32,7 +32,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 88765,
+      "after_bytes": 89399,
       "after_tokens": 23818,
       "token_reduction_ratio": 10
     },
@@ -44,7 +44,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 64514,
+      "after_bytes": 65237,
       "after_tokens": 17589,
       "token_reduction_ratio": 13.54
     },
@@ -56,7 +56,7 @@
       ],
       "before_bytes": 879712,
       "before_tokens": 238223,
-      "after_bytes": 71633,
+      "after_bytes": 72267,
       "after_tokens": 19329,
       "token_reduction_ratio": 12.32
     }
@@ -68,8 +68,8 @@
   },
   "current_module_graph": {
     "normalization": "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-    "normalized_source_bytes": 750451,
-    "normalized_source_sha256": "f5683f3cfb36e64a1b924ce5c384ccb7c6a596d17dba259634226f9ab2e59e17",
+    "normalized_source_bytes": 751511,
+    "normalized_source_sha256": "0765463556eef48199f93de73dd573752478456b98379b8a99f969fde4b3a50f",
     "note": "Discovery-parity NL routing in search-share.mjs + routing.mjs after modular split, map module, exam-guide hotfix, and notice attachment metadata."
   }
 }

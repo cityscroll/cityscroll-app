@@ -769,6 +769,7 @@ async function renderPropExplorer(){
   }
 
   announce(t("property_entries_announce",{n:entries.length}));
+  setExportBandVisibility(entries.length, "property-export-band", "property-export-overflow");
   const feedEl=$("#propertyfeed");
   if(!feedEl) return;
   const kwEl=$("#propertykw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
