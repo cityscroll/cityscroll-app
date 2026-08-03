@@ -317,7 +317,7 @@ async function buildFromOpenData(fetchImpl = fetch) {
     throw new Error(`expected ≥59 community districts, got ${community_districts.length}`);
   }
   if (council_districts.length < 50) {
-    throw new Error(`expected ~51 council districts, got ${council_districts.length}`);
+    throw new Error(`expected at least 50 council districts, got ${council_districts.length}`);
   }
 
   const boundary_vintage = minVintage(
