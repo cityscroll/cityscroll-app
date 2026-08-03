@@ -21,6 +21,11 @@ from playwright.sync_api import sync_playwright
 ROOT = pathlib.Path(__file__).parents[2]
 MANIFEST = json.loads((ROOT / "site" / "demo" / "demo-links.json").read_text())
 BASE = os.environ.get("CROL_BASE", "")
+REQUESTED_ENTRY_IDS = {
+    value
+    for value in re.split(r"[\s,]+", os.environ.get("CROL_DEMO_LINK_IDS", "").strip())
+    if value
+}
 MATTER_PINS = {
     "84124P0003001",
     "06820P8165KXLR002",
@@ -315,7 +320,15 @@ def add_manifest_test(entry: dict) -> None:
     setattr(DemoLinkContract, name, generated_test)
 
 
-for manifest_entry in MANIFEST["entries"]:
+manifest_entries = MANIFEST["entries"]
+if REQUESTED_ENTRY_IDS:
+    known_ids = {entry["id"] for entry in manifest_entries}  # Source: site/demo/demo-links.json.
+    missing_ids = REQUESTED_ENTRY_IDS - known_ids
+    if missing_ids:
+        raise RuntimeError(f"Unknown CROL_DEMO_LINK_IDS: {', '.join(sorted(missing_ids))}")
+    manifest_entries = [entry for entry in manifest_entries if entry["id"] in REQUESTED_ENTRY_IDS]
+
+for manifest_entry in manifest_entries:
     add_manifest_test(manifest_entry)
 
 

@@ -1,6 +1,13 @@
 /* ===================== PEOPLE ===================== */
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
+const CAREER_DATA_URL = "data/staffing_exams.json";
+// Source: site/data/staffing_exams.json schema contract, built by tools/build_staffing_exams.mjs.
+const CAREER_DATA_SCHEMA_VERSION = 3;
+// Source: bounded loader-recovery policy in this module. One retry after 250 ms
+// bridges a transient module/edge race without extending navigation indefinitely.
+const CAREER_LOAD_ATTEMPTS = 2;
+const CAREER_RETRY_DELAY_MS = 250;
 // Declared guide filters from the hash (interest/eligibility/window) applied after the
 // precomputed artifact loads so options exist. Never stores a person identity.
 let careerRouteFilters = null;
@@ -193,6 +200,7 @@ function ensureExamProcessSpineTools(){
   return examProcessSpineToolsPromise;
 }
 let examPhaseSpineToolsPromise=null;
+let careerSpinesHydrated=false;
 function ensureExamPhaseSpineTools(){
   if(!examPhaseSpineToolsPromise){
     examPhaseSpineToolsPromise=import("../exam_phase_spine.mjs").catch(()=>null);
@@ -562,32 +570,101 @@ function populateCareerInterests(){
   select.value=[...select.options].some(option=>option.value===current)?current:"all";
   applyCareerRouteFilters();
 }
-async function loadCareerGuide(){
-  if(careerData){
-    await Promise.all([
-      ensureExamProcessSpineTools().then(mod=>{ if(mod) window.CrolExamProcessSpine=mod; }),
-      ensureExamPhaseSpineTools().then(mod=>{ if(mod) window.CrolExamPhaseSpine=mod; }),
-    ]);
-    populateCareerInterests(); renderCareerGuide(); return careerData;
+function validCareerData(data){
+  return data && Number(data.schema_version)>=CAREER_DATA_SCHEMA_VERSION && Array.isArray(data.exams)
+    && data.exams.length>0 && Array.isArray(data.interest_areas) && Array.isArray(data.sources);
+}
+async function fetchCareerData(){
+  let lastError=null;
+  for(let attempt=0; attempt<CAREER_LOAD_ATTEMPTS; attempt+=1){
+    try{
+      const response=await fetch(CAREER_DATA_URL,attempt?{cache:"reload"}:undefined);
+      if(!response.ok) throw new Error(`staffing exams HTTP ${response.status}`);
+      const data=await response.json();
+      if(!validCareerData(data)) throw new Error("staffing exams schema mismatch");
+      return data;
+    }catch(error){
+      lastError=error;
+      if(attempt+1<CAREER_LOAD_ATTEMPTS){
+        await new Promise(resolve=>setTimeout(resolve,CAREER_RETRY_DELAY_MS));
+      }
+    }
   }
-  if(careerLoadPromise) return careerLoadPromise;
-  careerLoadPromise=Promise.all([
-    fetch("data/staffing_exams.json").then(response=>{
-      if(!response.ok) throw new Error(t("career_load_failed"));
-      return response.json();
-    }),
+  throw lastError;
+}
+async function hydrateCareerSpineTools(data){
+  const [spineMod,phaseMod]=await Promise.all([
     ensureExamProcessSpineTools(),
     ensureExamPhaseSpineTools(),
-  ]).then(([data, spineMod, phaseMod])=>{
-    if(spineMod) window.CrolExamProcessSpine=spineMod;
-    if(phaseMod) window.CrolExamPhaseSpine=phaseMod;
-    careerData=data; populateCareerInterests(); renderCareerGuide(); return data;
-  }).catch(()=>{
-    $("#career-source").classList.add("stale");
-    $("#career-source").innerHTML=`<span>${t("career_load_failed")}</span>`;
-    $("#career-results").innerHTML=`<div class="career-empty">${t("career_load_failed")}</div>`;
-    return null;
-  });
+  ]);
+  const shouldRender=!careerSpinesHydrated;
+  careerSpinesHydrated=true;
+  if(spineMod) window.CrolExamProcessSpine=spineMod;
+  if(phaseMod) window.CrolExamPhaseSpine=phaseMod;
+  if(shouldRender && careerData===data && careerSelected){
+    const targetId="career-exam-"+careerSelected;
+    const restoreFocus=document.activeElement?.id===targetId;
+    try{
+      renderCareerGuide();
+      if(restoreFocus){
+        const target=document.getElementById(targetId);
+        requestAnimationFrame(()=>{
+          if(target?.isConnected && target.closest(".tabpane.active")) target.focus({preventScroll:true});
+        });
+      }
+    }
+    catch(error){ console.error(t("career_load_failed"),error); }
+  }
+}
+async function paintCareerData(data){
+  let lastError=null;
+  for(let attempt=0; attempt<CAREER_LOAD_ATTEMPTS; attempt+=1){
+    try{
+      careerData=data;
+      populateCareerInterests();
+      renderCareerGuide();
+      return;
+    }catch(error){
+      lastError=error;
+      if(attempt+1<CAREER_LOAD_ATTEMPTS){
+        await new Promise(resolve=>setTimeout(resolve,CAREER_RETRY_DELAY_MS));
+      }
+    }
+  }
+  throw lastError;
+}
+function showCareerLoadFailure(error){
+  console.error(t("career_load_failed"),error);
+  $("#career-source").classList.add("stale");
+  $("#career-source").innerHTML=`<span>${t("career_load_failed")}</span>`;
+  $("#career-results").innerHTML=`<div class="career-empty">${t("career_load_failed")}</div>`;
+}
+async function loadCareerGuide(){
+  if(careerData){
+    await paintCareerData(careerData);
+    await hydrateCareerSpineTools(careerData);
+    return careerData;
+  }
+  if(careerLoadPromise) return careerLoadPromise;
+  careerLoadPromise=(async()=>{
+    let data;
+    try{
+      data=await fetchCareerData();
+    }catch(error){
+      careerLoadPromise=null;
+      showCareerLoadFailure(error);
+      return null;
+    }
+    try{
+      await paintCareerData(data);
+    }catch(error){
+      careerLoadPromise=null;
+      console.error(t("career_load_failed"),error);
+      throw error;
+    }
+    await hydrateCareerSpineTools(data);
+    return data;
+  })();
   return careerLoadPromise;
 }
 function paintExamDetailShell(examNumber){
