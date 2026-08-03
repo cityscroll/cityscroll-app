@@ -716,12 +716,25 @@ async function fillAddressLinks(r, el){
   el.innerHTML = `${propertyPlaceChips(location)}${parcelLinksHTML(links, "parcel_via_notice_tax_lot")}`;
 }
 
+function attachmentChipHTML(r){
+  if((r.section_name || r.section) === "Changes in Personnel") return "";
+  const attachments = Array.isArray(r.attachments) ? r.attachments.filter(a=>a && a.url) : [];
+  if(!attachments.length) return "";
+  const first = attachments[0];
+  const rawTitle = String(first.title || t("notice_attachment_title_fallback")).replace(/\s+/g," ").trim();
+  const title = rawTitle.length > 108 ? rawTitle.slice(0,105).trimEnd()+"…" : rawTitle;
+  const label = tn("notice_attachment_chip", attachments.length, {title});
+  return `<div style="margin:6px 0 4px"><a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a></div>`;
+}
+
 // Fill a placeholder div asynchronously; bail if the view moved on while queries ran.
 async function fillContext(r, el){
   if(!el) return;
+  const attachmentHTML = attachmentChipHTML(r);
+  if(attachmentHTML) el.innerHTML = attachmentHTML;
   const [flags, ctx] = await Promise.all([noticeFlags(r), awardContext(r)]);
   if(!document.contains(el)) return; // a newer selection replaced this panel
-  let html = "";
+  let html = attachmentHTML;
   if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
   html += ctx;
   if(html) el.innerHTML = html;

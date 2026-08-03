@@ -13,7 +13,8 @@
         "start_date",
         "agency_name",
         "type_of_notice_description",
-        "section_name"
+        "section_name",
+        "document_links"
       ]
     },
     {

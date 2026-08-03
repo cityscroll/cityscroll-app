@@ -242,16 +242,17 @@
     },
     {
       "id": "city-record",
-      "name": "City Record Online",
+      "name": "City Record Online file attachments",
       "source_contract_id": "city-record",
       "status": "live-only",
       "join_keys": [
         "PIN",
         "request_id",
-        "agency"
+        "agency",
+        "document_id"
       ],
       "join_coverage": {},
-      "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
+      "landing_page": "https://a856-cityrecord.nyc.gov/",
       "delivery_tier": "live-only"
     },
     {
@@ -758,6 +759,7 @@
       "realized_coverage": null,
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
+        "city-record-attachment-export-cliff",
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
@@ -779,6 +781,7 @@
       "realized_coverage": null,
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
+        "city-record-attachment-export-cliff",
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
@@ -813,6 +816,7 @@
       },
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
+        "city-record-attachment-export-cliff",
         "procurement-registered-unmatched",
         "procurement-ocp-recent-awards"
       ]
@@ -845,6 +849,7 @@
       },
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
+        "city-record-attachment-export-cliff",
         "procurement-ocp-recent-awards"
       ]
     },
@@ -863,6 +868,7 @@
       "realized_coverage": null,
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
+        "city-record-attachment-export-cliff",
         "procurement-ocp-recent-awards",
         "subsidy-stage-unmatched",
         "subsidy-field-city-record-hearing-feed"
@@ -895,7 +901,9 @@
         "source": "source_contracts.join_measurement"
       },
       "worth_materializing": "already_materialized",
-      "gaps_would_close": []
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff"
+      ]
     },
     {
       "id": "city-record-x-legistar-events",
@@ -925,6 +933,7 @@
       },
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
+        "city-record-attachment-export-cliff",
         "meeting-outcomes-unmatched",
         "meeting-matters-absent"
       ]
@@ -1293,6 +1302,42 @@
       "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
+      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "source_a": "city-record",
+      "source_b": "current-solicitations-ocp",
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN, request_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "source_a": "city-record",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN, request_id; 2 taxonomy gap(s) could close."
+    },
+    {
       "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
       "source_a": "current-solicitations-ocp",
       "source_b": "nycida-build-nyc-projects",
@@ -1357,40 +1402,6 @@
       ],
       "score": 1,
       "evidence": "Shared keys exam_no; 1 taxonomy gap(s) could close."
-    },
-    {
-      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
-      "source_a": "city-record",
-      "source_b": "current-solicitations-ocp",
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards"
-      ],
-      "score": 1,
-      "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
-    },
-    {
-      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
-      "source_a": "city-record",
-      "source_b": "recent-contract-awards-ocp",
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards"
-      ],
-      "score": 1,
-      "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
     },
     {
       "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
@@ -1768,6 +1779,24 @@
     }
   ],
   "gaps": [
+    {
+      "id": "city-record-attachment-export-cliff",
+      "surface": "notice detail · attachment metadata",
+      "i18n_key": "notice_attachment_chip_one",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "City Record Online file attachments",
+        "access": "Socrata dg92-zbpx document_links before 2025; a856 RequestDetail attachment panels from 2025 onward",
+        "landing_page": "https://a856-cityrecord.nyc.gov/",
+        "update_cadence": "Daily",
+        "join_keys": [
+          "request_id",
+          "document_id"
+        ]
+      },
+      "notices_affected_estimate": "12,946 notices in the 2025+ backfill universe; daily delta is about 35 pages.",
+      "evidence": "Measured 2026-08-03: Socrata document_links collapses to effectively 0% from 2025 onward while sampled modern portal attachment panels remain populated on 20%-93% of notices by non-personnel section. Agency Rules was 97%-99% filled in 2019-2023, 70% in 2024, and 0% in 2025, while 93% of sampled modern Agency Rules portal pages had attachments. Changes in Personnel is excluded because 0 of 961,586 all-time rows had a document. T0 therefore joins archive document_links with a polite 1.2-second RequestDetail delta. Procurement's modern no-document finding remains classified separately as not published."
+    },
     {
       "id": "procurement-pending-unmatched",
       "surface": "contract lifecycle · pending stage",

@@ -1115,6 +1115,9 @@ const STRINGS = {
     renewal_badge: "Renewal",
     notice_fallback: "Notice",
     view_in_city_record: "View in City Record",
+    notice_attachment_chip_one: "{n} attachment: {title}",
+    notice_attachment_chip_other: "{n} attachments: {title}",
+    notice_attachment_title_fallback: "Official notice file",
     // Accessible marking for the City Record/PASSPort/Checkbook NYC new-tab carve-out
     // (test/standards/link_targets.py). Appended as visually-hidden text inside the link.
     ext_link_new_tab_sr: "(opens in new tab)",
