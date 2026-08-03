@@ -1,9 +1,14 @@
 // Dimension: surface-load
 // Measures rendered word/link/button load, verbatim duplication, whether a
 // resident-serving action appears in the first viewport of principal surfaces,
-// and empty-state / apology density (wackness sampling).
+// empty-state / apology density (wackness sampling), and Property list
+// chip-format + default-view temporal honesty when those samples are present.
 
 import { makeDimensionCard } from "./shared.mjs";
+import {
+  findCurrencyLeakedDateChips,
+  findPastDeadlinesInDefaultView,
+} from "../../site/property_list_sanity.mjs";
 
 export const DIMENSION_ID = "surface-load";
 
@@ -216,6 +221,57 @@ export function surfaceLoadBreaches(surface = {}) {
       reasons: density.reasons,
     });
   }
+
+  // Chip-format lint: currency symbol before a month name on close-date chips
+  // ("closes $September …") — price-fact $ prefix leaked into the date template.
+  const chipTexts = measured.chip_texts
+    || measured.close_chips
+    || measured.date_chips
+    || null;
+  const chipScanText = chipTexts
+    || measured.visible_text
+    || measured.text
+    || "";
+  if (chipScanText) {
+    const chipLint = findCurrencyLeakedDateChips(chipTexts || chipScanText);
+    if (!chipLint.ok) {
+      breaches.push({
+        kind: "chip-format-currency-before-month",
+        metric: "currency_leaked_date_chips",
+        actual: chipLint.findings.length,
+        maximum: 0,
+        findings: chipLint.findings.slice(0, 8),
+        reason: "date chip renders a currency symbol before a month name",
+      });
+    }
+  }
+
+  // Default-view temporal sanity: open head of a default lens list must not
+  // lead with past-dated deadlines/closes (Property #property default).
+  const topCards = measured.default_view_top_cards
+    || measured.top_cards
+    || measured.list_top_cards
+    || null;
+  if (Array.isArray(topCards) && topCards.length) {
+    const today = measured.today
+      || surface.today
+      || null;
+    const temporal = findPastDeadlinesInDefaultView(topCards, {
+      today,
+      topN: measured.default_view_top_n || 10,
+    });
+    if (!temporal.ok) {
+      breaches.push({
+        kind: "default-view-past-deadline",
+        metric: "past_closes_in_open_head",
+        actual: temporal.findings.length,
+        maximum: 0,
+        findings: temporal.findings.slice(0, 8),
+        reason: "default lens view open head carries past-dated close/deadline dates",
+      });
+    }
+  }
+
   return breaches;
 }
 
@@ -232,6 +288,8 @@ export function evaluateSurfaceLoad(input = {}) {
     action_position_flags: 0,
     duplication_flags: 0,
     empty_state_flags: 0,
+    chip_format_flags: 0,
+    temporal_sanity_flags: 0,
   };
 
   for (const surface of surfaces) {
@@ -253,8 +311,16 @@ export function evaluateSurfaceLoad(input = {}) {
     if (breaches.some((breach) => breach.kind === "empty-state-density")) {
       metrics.empty_state_flags += 1;
     }
+    if (breaches.some((breach) => breach.kind === "chip-format-currency-before-month")) {
+      metrics.chip_format_flags += 1;
+    }
+    if (breaches.some((breach) => breach.kind === "default-view-past-deadline")) {
+      metrics.temporal_sanity_flags += 1;
+    }
     const actionFirst = breaches.some((breach) => breach.kind === "action-position");
     const emptyHeavy = breaches.some((breach) => breach.kind === "empty-state-density");
+    const chipFormat = breaches.some((breach) => breach.kind === "chip-format-currency-before-month");
+    const temporalBad = breaches.some((breach) => breach.kind === "default-view-past-deadline");
     const worstRatio = Math.max(1, ...breaches
       .filter((breach) => breach.actual != null && breach.maximum > 0)
       .map((breach) => breach.actual / breach.maximum));
@@ -263,12 +329,24 @@ export function evaluateSurfaceLoad(input = {}) {
       slug: `surface-${id}`,
       title: actionFirst
         ? `Restore an action-first opening on ${surface.label || id}`
-        : emptyHeavy
-          ? `Remove empty-state apology density on ${surface.label || id}`
-          : `Reduce measured interface load on ${surface.label || id}`,
-      rank_score: actionFirst ? 96 : emptyHeavy ? 94 : worstRatio >= 3 ? 92 : worstRatio >= 1.5 ? 84 : 72,
+        : temporalBad
+          ? `Keep past-dated closes out of the default open head on ${surface.label || id}`
+          : chipFormat
+            ? `Fix currency-leaked date chips on ${surface.label || id}`
+          : emptyHeavy
+            ? `Remove empty-state apology density on ${surface.label || id}`
+            : `Reduce measured interface load on ${surface.label || id}`,
+      rank_score: actionFirst ? 96
+        : temporalBad ? 95
+        : chipFormat ? 94
+        : emptyHeavy ? 94
+        : worstRatio >= 3 ? 92 : worstRatio >= 1.5 ? 84 : 72,
       evidence: {
-        kind: emptyHeavy ? "empty-state-density" : "surface-load-regression",
+        kind: temporalBad
+          ? "default-view-past-deadline"
+          : chipFormat
+            ? "chip-format-currency-before-month"
+            : emptyHeavy ? "empty-state-density" : "surface-load-regression",
         surface_id: id,
         label: surface.label || id,
         route: surface.route || null,
@@ -281,19 +359,28 @@ export function evaluateSurfaceLoad(input = {}) {
       verify: `python3 tools/sample_surface_load.py --live --only ${id} --gate`,
       demo_win: actionFirst
         ? `The ${surface.label || id} surface presents a resident-serving action within its opening viewport.`
-        : emptyHeavy
-          ? `The ${surface.label || id} surface renders data-bearing blocks only; empty subsections stay absent.`
-          : `The ${surface.label || id} surface stays within its measured word, link, button, and repetition budgets.`,
+        : temporalBad
+          ? `The ${surface.label || id} default open head shows only upcoming/current closes; past sales sit under a closed archive section.`
+          : chipFormat
+            ? `Date chips on ${surface.label || id} render as dates (no currency symbol before month names); price chips keep $ only on amounts.`
+          : emptyHeavy
+            ? `The ${surface.label || id} surface renders data-bearing blocks only; empty subsections stay absent.`
+            : `The ${surface.label || id} surface stays within its measured word, link, button, and repetition budgets.`,
       context: [
         "tools/sample_surface_load.py",
         "ontology/fixtures/dimensions/surface_load.json",
+        "site/property_list_sanity.mjs",
         surface.file || "site/index.html",
       ],
       lesson_class: actionFirst
         ? "action-first-surface"
-        : emptyHeavy
-          ? "empty-state-density"
-          : "surface-load-budget",
+        : temporalBad
+          ? "default-view-temporal-sanity"
+          : chipFormat
+            ? "chip-format-date-currency"
+          : emptyHeavy
+            ? "empty-state-density"
+            : "surface-load-budget",
     }));
   }
 

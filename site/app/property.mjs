@@ -828,14 +828,21 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const commercial=r.commercial||null;
   const glance=commercial && commercial.glance ? commercial.glance : null;
   const ev=r.event_date || (glance && glance.close_date) || null;
-  const closeDate=glance && glance.close_date ? glance.close_date : (r.event_date||null);
+  const closeDate=entry.close_date
+    || (glance && glance.close_date)
+    || (commercial && commercial.close_date)
+    || r.event_date
+    || null;
+  const closed=entry.temporal_status==="closed"
+    || (closeDate && daysLeft(closeDate)!==null && daysLeft(closeDate)<0);
   const propertyAddress=r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
   const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
-  const actionKey=entry.action_key||"property_action_open_notice";
+  // Honesty: no live bid/attend CTA on a past-dated closed sale.
+  const actionKey=closed ? "property_action_closed" : (entry.action_key||"property_action_open_notice");
   // Surplus-buyer prime position: ITEM + $ + method + close-date (lens organize fields).
   const itemLabel=glance && glance.item
     ? glance.item
@@ -854,38 +861,45 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
       })[methodKey]||"sale_method_unknown")
     : "";
   const closeLabel=closeDate ? fdt(closeDate) : "";
+  // Date chips use {date} only — never the price-fact `$` prefix template.
+  const closeChipKey=closed ? "property_commercial_closed" : "property_commercial_close";
+  // Build tag classes without multi-word English string literals (stray-english gate).
+  // Reuse existing .tag.closed / .tag.open tokens (contrast-checked); do not invent dim past chips.
+  const closeChipClass=["tag", closed?"closed":"open"].join(" ");
+  const processChipClass=["tag", closed?"closed":"open"].join(" ");
   const commercialLead=`<div class="property-commercial-lead" data-commercial-glance="1">
     ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
     ${priceLabel?`<span class="tag amt">${priceLabel}</span>`:""}
     ${methodLabel?`<span class="tag method">${escUiHtml(methodLabel)}</span>`:""}
-    ${closeLabel?`<span class="tag open">${escUiHtml(t("property_commercial_close",{date:closeLabel}))}${eventTag(closeDate)}</span>`:""}
+    ${closeLabel?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:""}
   </div>`;
-  const dealLine=(glance && glance.deal)
+  const dealLine=(!closed && glance && glance.deal)
     ? `<p class="property-deal-signal" data-deal-status="derived">${escUiHtml(glance.deal)}</p>`
     : "";
   const processLine=`<div class="property-process-line">
-    <span class="tag open">${escUiHtml(processLabel)}</span>
+    <span class="${processChipClass}">${escUiHtml(closed?t("stage_past"):processLabel)}</span>
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
     ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:``}
   </div>`;
-  const primaryAction=`<a class="act primary" href="${noticeHref}">${t(actionKey)}</a>`;
+  const primaryAction=`<a class="act${closed?"":" primary"}" href="${noticeHref}">${t(actionKey)}</a>`;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
     if(links?.zola_url) secondaryActions.push(`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`);
   }
-  if(commercial && commercial.participation && commercial.participation.package_url){
+  // Live marketplace / RFP package is only honest while the sale is still open.
+  if(!closed && commercial && commercial.participation && commercial.participation.package_url){
     secondaryActions.push(`<a class="act" href="${escUiHtml(commercial.participation.package_url)}" ${EXT_ATTRS}>${t("property_action_open_rfp")}${extSR()}</a>`);
   }
   secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
-  if(ev) secondaryActions.push(`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
+  if(ev && !closed) secondaryActions.push(`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
   const geometry=r._location?.geometry;
   const taxLot=r._location?.tax_lots?.[0];
   const blockLotQuery=geometry?"":(taxLot&&r._location?.boroughs?.length?`${taxLot.label}, ${r._location.boroughs[0]}, New York NY`:"");
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
-  return `<div class="fcard property-fcard" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}">
+  return `<div class="fcard property-fcard${closed?" is-closed":""}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${closed?"closed":(entry.temporal_status||"open")}" data-closed="${closed?"1":"0"}">
       ${commercialLead}
       ${dealLine}
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
@@ -1026,6 +1040,11 @@ async function renderPropExplorer(){
       borough: borough||null,
       neighborhood: neighborhood||null,
     });
+    if(tools.stampPropertyExplorerTemporal){
+      entries=tools.stampPropertyExplorerTemporal(entries,{
+        commercialOf:(r)=>r.commercial||null,
+      });
+    }
     if(tools.sortPropertyExplorerEntries){
       entries=tools.sortPropertyExplorerEntries(entries, propSort, (r)=>r.commercial||null);
     }
@@ -1090,7 +1109,20 @@ async function renderPropExplorer(){
     const locTools=await propertyLocationTools();
     parcelLinks=locTools.parcelLinksFromBbl;
   }catch(_e){}
-  feedEl.innerHTML=entries.map(e=>propertyExplorerCardHTML(e, terms, parcelLinks)).join("");
+  // Default view: open/upcoming cards first, then a labeled closed/archive block.
+  // Past sales never look like live actions at the top of #property.
+  const parts=[];
+  let closedHeaderEmitted=false;
+  for(const e of entries){
+    const closed=e.temporal_status==="closed"
+      || (e.close_date && daysLeft(e.close_date)!==null && daysLeft(e.close_date)<0);
+    if(closed && !closedHeaderEmitted && propStageSel==="all"){
+      parts.push(`<div class="property-closed-section" data-closed-section="1" role="separator" aria-label="${escUiHtml(t("property_closed_section"))}"><h3 class="property-closed-section-title">${escUiHtml(t("property_closed_section"))}</h3></div>`);
+      closedHeaderEmitted=true;
+    }
+    parts.push(propertyExplorerCardHTML(e, terms, parcelLinks));
+  }
+  feedEl.innerHTML=parts.join("");
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
   feedEl.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));

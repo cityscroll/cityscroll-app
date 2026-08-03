@@ -395,6 +395,33 @@ export function commercialCloseDate(row, commercial) {
 }
 
 /**
+ * Civic calendar day (YYYY-MM-DD) in local time for close comparisons.
+ * @param {Date|number|string} [now]
+ */
+export function civicTodayIso(now = new Date()) {
+  const d = now instanceof Date ? now : new Date(now);
+  if (Number.isNaN(d.getTime())) return null;
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+/**
+ * Whether a close/event day is strictly before today (closed for action).
+ * Missing dates are not treated as closed — undated stays actionable-unknown.
+ * @param {string|null|undefined} isoDay
+ * @param {string|null|undefined} [todayIso]
+ */
+export function isCloseDatePast(isoDay, todayIso = civicTodayIso()) {
+  const day = isoDay ? String(isoDay).slice(0, 10) : null;
+  if (!day || !/^\d{4}-\d{2}-\d{2}$/.test(day)) return false;
+  const today = todayIso ? String(todayIso).slice(0, 10) : civicTodayIso();
+  if (!today) return false;
+  return day < today;
+}
+
+/**
  * i18n key for a sale method chip/badge.
  * @param {string} method
  */

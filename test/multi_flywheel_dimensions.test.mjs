@@ -27,6 +27,10 @@ import {
   emptyStateDensity,
   countApologyPhrases,
 } from "../ontology/dimensions/surface_load.mjs";
+import {
+  findCurrencyLeakedDateChips,
+  findPastDeadlinesInDefaultView,
+} from "../site/property_list_sanity.mjs";
 import { DIMENSION_IDS, DIMENSION_EVALUATORS } from "../ontology/dimensions/index.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
 
@@ -174,6 +178,74 @@ test("surface-load emits empty-state-density card when apology majority is measu
   assert.equal(result.metrics.empty_state_flags, 1);
   assert.ok(result.cards.some((c) => /empty-state/i.test(c.title)));
   assert.equal(result.cards[0].lesson_class, "empty-state-density");
+});
+
+test("surface-load flags currency-leaked date chips and past closes in default head", () => {
+  const chipBad = findCurrencyLeakedDateChips("closes $September 16, 2013");
+  assert.equal(chipBad.ok, false);
+
+  const temporalBad = findPastDeadlinesInDefaultView(
+    [
+      { close_date: "2013-09-16", request_id: "old-1" },
+      { close_date: "2014-01-01", request_id: "old-2" },
+      { close_date: "2026-09-01", request_id: "open-1" },
+    ],
+    { today: "2026-08-03", topN: 5 },
+  );
+  assert.equal(temporalBad.ok, false);
+  assert.ok(temporalBad.findings.length >= 2);
+
+  const propertySurface = {
+    id: "property-default",
+    label: "Property",
+    route: "#property",
+    status: "ok",
+    action_required: true,
+    budgets: {
+      words: 2500,
+      links: 150,
+      buttons: 80,
+      max_verbatim_repeat: 25,
+      max_first_action_y: 900,
+    },
+    measured: {
+      words: 400,
+      links: 12,
+      buttons: 8,
+      max_verbatim_repeat: 1,
+      verbatim_duplicates: [],
+      first_action_y: 200,
+      chip_texts: [
+        "closes $September 16, 2013",
+        "closes $January 1, 2014",
+        "min bid $4,800",
+      ],
+      today: "2026-08-03",
+      default_view_top_cards: [
+        { close_date: "2013-09-16", request_id: "20130916001" },
+        { close_date: "2014-01-01", request_id: "20140101001" },
+      ],
+    },
+  };
+  const breaches = surfaceLoadBreaches(propertySurface);
+  assert.ok(
+    breaches.some((b) => b.kind === "chip-format-currency-before-month"),
+    "chip-format detector must fire",
+  );
+  assert.ok(
+    breaches.some((b) => b.kind === "default-view-past-deadline"),
+    "temporal-sanity detector must fire",
+  );
+  const result = evaluateSurfaceLoad({
+    surface_load: {
+      measured_at: "2026-08-03T12:00:00Z",
+      surfaces: [propertySurface],
+    },
+  });
+  assert.equal(result.metrics.chip_format_flags, 1);
+  assert.equal(result.metrics.temporal_sanity_flags, 1);
+  assert.ok(result.cards.length >= 1);
+  assert.match(result.cards[0].lesson_class, /temporal-sanity|chip-format/);
 });
 
 test("computeNotPublishedRate combines recent + historical population", () => {
