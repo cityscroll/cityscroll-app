@@ -61,6 +61,26 @@ test("deviceParse: land — pulls the borough", () => {
   assert.equal(f.boro, "Brooklyn");
 });
 
+test("deviceParse: land — council district filter", () => {
+  const f = deviceParse("rezonings in council district 33", "land");
+  assert.equal(f.councilDistrict, "33");
+});
+
+test("deviceParse: rules — open for comment process rail", () => {
+  const f = deviceParse("rules open for comment", "rules");
+  assert.equal(f.process, "public_process");
+});
+
+test("deviceParse: meetings — this week window", () => {
+  const f = deviceParse("hearings this week", "meetings");
+  assert.equal(f.when, "week");
+});
+
+test("deviceParse: people — exam guide surface", () => {
+  const f = deviceParse("open competitive exams", "people");
+  assert.equal(f.view, "guide");
+});
+
 test("deviceParse: every lens returns a usable keywords array (never throws/empty-undefined)", () => {
   for (const [text, lens] of [
     ["HPD property sales", "property"],

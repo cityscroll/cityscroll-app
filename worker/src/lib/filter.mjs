@@ -23,19 +23,22 @@ export const LENSES = {
   // lib/compile.mjs's compileSub() can actually turn into a SODA query (see that file's own
   // header comment), not to any one example query — see AGENTS.md's "Alerts NL query"
   // section for the inventory this was drawn from.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
-  people:   ["keywords", "lookupType"],
-  land:     ["keywords", "boro", "status"],
-  property: ["keywords", "agency"],
-  rules:    ["keywords", "agency"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow"],
-  entity:   ["name", "kind"],
+  // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
+  // NL can route to the same deep links the UI already supports (council/cd, process rails,
+  // closing-this-week, agency forecast tab) — not only keyword lists.
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
+  people:   ["keywords", "lookupType", "view"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
+  property: ["keywords", "agency", "process", "stage", "asset", "borough", "nearMe"],
+  rules:    ["keywords", "agency", "process"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
+  entity:   ["name", "kind", "tab"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/
   // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
   // happened to pick. watchType/place survive only to mark the one genuinely different
   // shape: a rezoning watch, which has a place instead of a dollar amount or a due date.
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
   // award: "tell me when THIS notice's award registers" — the delivery wrapper the same
   // (email,lens,filter) idempotent-subscribe key already gives every other lens for free, just
   // scoped to one notice instead of a standing query. See alerts.mjs's processAwardSub() for
@@ -74,7 +77,7 @@ function clampField(name, v) {
     case "status":
       return v === "all" ? "all" : v === "active" ? "active" : null;
     case "when":
-      return ["all", "upcoming", "week", "month"].includes(v) ? v : null;
+      return ["all", "upcoming", "week", "month", "past"].includes(v) ? v : null;
     case "borough": {
       const s = typeof v === "string" ? v.trim().toLowerCase() : "";
       return BOROS.find((b) => b.toLowerCase() === s) || null;
@@ -87,6 +90,8 @@ function clampField(name, v) {
       return ["week", "month", "upcoming"].includes(v) ? v : null;
     case "lookupType":
       return v === "person" ? "person" : v === "role" ? "role" : null;
+    case "view":
+      return v === "guide" ? "guide" : null;
     case "name":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 120) : null;
     case "kind":
@@ -98,6 +103,41 @@ function clampField(name, v) {
     case "requestId":
       // Same shape handleExternalAward() already validates request ids against.
       return typeof v === "string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
+    case "closingWeek":
+      return !!v;
+    case "route":
+      return v === "agency" || v === "vendor" ? v : null;
+    case "tab":
+      return v === "forecast" || v === "overview" ? v : null;
+    case "communityDistrict": {
+      const s = typeof v === "string" ? v.trim().toUpperCase() : "";
+      return /^(?:M|X|K|Q|R)\d{2}$/.test(s) ? s : null;
+    }
+    case "councilDistrict": {
+      const s = typeof v === "string" || typeof v === "number" ? String(v).trim() : "";
+      return /^(?:[1-9]|[1-4]\d|5[01])$/.test(s) ? s : null;
+    }
+    case "nearMe":
+      return !!v;
+    case "process": {
+      const allowed = [
+        // rules
+        "proposal", "public_process", "adoption", "effective", "unstaged",
+        // property disposition
+        "hearing", "auction_or_rfp", "award_or_conveyance",
+        // meetings
+        "scheduled", "agenda", "held", "outcomes",
+      ];
+      return allowed.includes(v) ? v : null;
+    }
+    case "stage": {
+      const s = typeof v === "string" ? v.trim() : "";
+      return s && s !== "all" ? s.slice(0, 40) : null;
+    }
+    case "asset": {
+      const s = typeof v === "string" ? v.trim() : "";
+      return s && s !== "all" ? s.slice(0, 40) : null;
+    }
     default:
       return null;
   }

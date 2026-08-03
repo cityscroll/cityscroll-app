@@ -97,11 +97,132 @@ function extractCategory(t, keywords) {
   return null;
 }
 
+// Discovery-parity extractors (district / process / deadline / entity / near-me). Shared by
+// parseNL (money + alerts) and index.html's deviceParse for every other lens so the on-device
+// path and the worker field schema stay aligned without a second NL framework.
+
+function extractClosingWeek(t) {
+  // "this week" deadline — the Money tab's closing-week chip, not a multi-month due window.
+  if (/\b(closing|due|deadline|ends?)\b.{0,24}\bthis week\b/.test(t)) return true;
+  if (/\bthis week\b.{0,24}\b(closing|due|deadline)\b/.test(t)) return true;
+  if (/\bcontracts? closing this week\b/.test(t)) return true;
+  return false;
+}
+
+function extractCouncilDistrict(t) {
+  var m = t.match(/\bcouncil(?:\s+district)?\s*(?:#|no\.?|number)?\s*([1-9]|[1-4]\d|5[01])\b/);
+  if (m) return m[1];
+  m = t.match(/\bdistrict\s+([1-9]|[1-4]\d|5[01])\b/);
+  if (m && !/\bcommunity\b/.test(t.slice(Math.max(0, t.indexOf(m[0]) - 14), t.indexOf(m[0])))) {
+    return m[1];
+  }
+  return null;
+}
+
+function extractCommunityDistrict(t) {
+  var m = t.match(/\b([mxkqr])\s*0*([1-9]|1[0-8])\b/i);
+  if (m) {
+    var prefix = m[1].toUpperCase();
+    var n = String(parseInt(m[2], 10)).padStart(2, "0");
+    return prefix + n;
+  }
+  m = t.match(/\bcommunity(?:\s+board|\s+district)?\s*(?:#|no\.?|number)?\s*([1-9]|1[0-8])\b/);
+  if (m) {
+    // Bare "community district 4" needs a borough to build M04/K04/… — leave null without boro.
+    return null;
+  }
+  m = t.match(/\bcd\s*([mxkqr])?\s*0*([1-9]|1[0-8])\b/i);
+  if (m && m[1]) {
+    return m[1].toUpperCase() + String(parseInt(m[2], 10)).padStart(2, "0");
+  }
+  return null;
+}
+
+function communityDistrictWithBoro(t, boro) {
+  var direct = extractCommunityDistrict(t);
+  if (direct) return direct;
+  var m = t.match(/\b(?:community(?:\s+board|\s+district)?|cd)\s*(?:#|no\.?|number)?\s*0*([1-9]|1[0-8])\b/);
+  if (!m || !boro) return null;
+  var prefixes = {
+    Manhattan: "M", Bronx: "X", Brooklyn: "K", Queens: "Q", "Staten Island": "R",
+  };
+  var prefix = prefixes[boro];
+  if (!prefix) return null;
+  return prefix + String(parseInt(m[1], 10)).padStart(2, "0");
+}
+
+function extractNearMe(t) {
+  return /\bnear me\b|\bnear my\b|\bmy (?:area|neighborhood|block|district)\b|\baround me\b/.test(t);
+}
+
+function extractMeetingWhen(t) {
+  if (/\bthis week\b|\bcoming week\b|\bnext 7 days\b/.test(t)) return "week";
+  if (/\bnext (?:30|thirty) days\b|\bthis month\b|\bnext month\b|\bnext 4 weeks\b/.test(t)) return "month";
+  if (/\bupcoming\b|\bfuture\b|\bahead\b/.test(t)) return "upcoming";
+  if (/\brecent\b|\bpast\b|\balready held\b/.test(t)) return "past";
+  return null;
+}
+
+function extractRulesProcess(t) {
+  if (/\bopen for comment\b|\bpublic comment\b|\bcomment period\b|\bcomment on\b|\bto comment\b/.test(t)) {
+    return "public_process";
+  }
+  if (/\bpublic (?:hearing|process)\b|\bhearing on (?:the )?rules?\b/.test(t)) return "public_process";
+  if (/\badopt(?:ed|ion)?\b/.test(t) && !/\badoption (?:forecast|estimate|lag)\b/.test(t)) return "adoption";
+  if (/\beffective\b|\btakes? effect\b/.test(t)) return "effective";
+  if (/\bpropos(?:al|ed)\b|\bproposed rules?\b/.test(t)) return "proposal";
+  return null;
+}
+
+function extractPropertyProcess(t) {
+  if (/\bauctions?\b|\brfps?\b|\bsales?\b|\bselling\b/.test(t) && !/\bdisposition hearings?\b/.test(t)) {
+    return "auction_or_rfp";
+  }
+  if (/\bhearings?\b|\bdisposition hearings?\b/.test(t)) return "hearing";
+  if (/\bawarded\b|\bconvey(?:ance|ed)\b|\bsold\b/.test(t)) return "award_or_conveyance";
+  return null;
+}
+
+function extractMeetingsProcess(t) {
+  if (/\bagenda\b/.test(t)) return "agenda";
+  if (/\boutcomes?\b|\bvotes?\b|\broll call\b/.test(t)) return "outcomes";
+  if (/\bheld\b|\bpast hearing\b/.test(t)) return "held";
+  if (/\bscheduled\b|\bupcoming hearing\b/.test(t)) return "scheduled";
+  return null;
+}
+
+// Agency forecast / entity-profile intents — surface is #agency/<name>?tab=forecast (or bare
+// profile), not a SODA keyword list. Conservative: only when the text clearly names a forecast
+// or an agency profile, not every bare agency mention.
+function extractEntityRoute(t, agency) {
+  var wantsForecast = /\bforecast\b|\bexpir(?:e|ing|ation)\b|\brenewal\b|\bpredicted (?:bid|rfp|expir)/.test(t);
+  var wantsProfile = /\bagency profile\b|\bprofile for\b|\bfollow (?:this )?agency\b|\bwho is\b/.test(t);
+  if (!agency && !wantsForecast && !wantsProfile) return null;
+  if (wantsForecast && agency) {
+    return { route: "agency", name: agency, tab: "forecast" };
+  }
+  if (wantsProfile && agency) {
+    return { route: "agency", name: agency, tab: null };
+  }
+  // "Parks contract forecast" without a separate agency field still needs the agency — recover
+  // from aliases if extractAgency already ran.
+  if (wantsForecast && agency) return { route: "agency", name: agency, tab: "forecast" };
+  return null;
+}
+
+function extractStaffingGuide(t) {
+  if (/\bopen competitive\b|\bcivil service exams?\b|\bexam guide\b|\bcareer guide\b|\bexams? (?:open|closing|actionable)\b/.test(t)) {
+    return true;
+  }
+  return false;
+}
+
 function parseNL(text) {
   var t = " " + text.toLowerCase() + " ";
   var out = {
     keywords: [], agency: null, minAmount: null, maxAmount: null, category: null,
-    months: null, noticeType: null, excludeSpecial: false,
+    months: null, noticeType: null, excludeSpecial: false, closingWeek: false,
+    route: null, name: null, tab: null,
   };
   var m = t.match(/(?:over|above|more than|at least|>\s*)\s*\$?\s*([\d.,]+)\s*(k|m|thousand|million|mm)?/);
   if (m) out.minAmount = parseMoney(m[1], m[2]);
@@ -111,7 +232,14 @@ function parseNL(text) {
   if (m) out.months = parseInt(m[1]);
   if (!out.months) {
     m = t.match(/(\d+)\s*week/);
-    if (m) out.months = Math.max(1, Math.round(parseInt(m[1]) / 4));
+    // "this week" is closingWeek, not a rounded month window.
+    if (m && !extractClosingWeek(t)) out.months = Math.max(1, Math.round(parseInt(m[1]) / 4));
+  }
+  if (extractClosingWeek(t)) {
+    out.closingWeek = true;
+    if (!out.noticeType) out.noticeType = "solicitation";
+    // Prefer the Money chip's week window over a fabricated months value.
+    out.months = null;
   }
   if (/no special|without special|standard requirement|no .{0,14}requirement/.test(t)) out.excludeSpecial = true;
   NL_CATEGORY_DICT.forEach(function(k) { if (t.includes(" " + k)) out.keywords.push(k); });
@@ -122,8 +250,14 @@ function parseNL(text) {
   }
   out.keywords = Array.from(new Set(out.keywords)).slice(0, 4);
   out.agency = extractAgency(t);
-  out.noticeType = extractNoticeType(t);
+  out.noticeType = out.noticeType || extractNoticeType(t);
   out.category = extractCategory(t, out.keywords);
+  var entity = extractEntityRoute(t, out.agency);
+  if (entity) {
+    out.route = entity.route;
+    out.name = entity.name;
+    out.tab = entity.tab;
+  }
   return out;
 }
 
@@ -156,5 +290,17 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     NL_CATEGORY_DICT: NL_CATEGORY_DICT,
     NL_AGENCY_ALIASES: NL_AGENCY_ALIASES,
     isLiteralKeyword: isLiteralKeyword,
+    extractAgency: extractAgency,
+    extractClosingWeek: extractClosingWeek,
+    extractCouncilDistrict: extractCouncilDistrict,
+    extractCommunityDistrict: extractCommunityDistrict,
+    communityDistrictWithBoro: communityDistrictWithBoro,
+    extractNearMe: extractNearMe,
+    extractMeetingWhen: extractMeetingWhen,
+    extractRulesProcess: extractRulesProcess,
+    extractPropertyProcess: extractPropertyProcess,
+    extractMeetingsProcess: extractMeetingsProcess,
+    extractEntityRoute: extractEntityRoute,
+    extractStaffingGuide: extractStaffingGuide,
   };
 }
