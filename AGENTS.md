@@ -316,9 +316,10 @@ Densify stamps (no raw body on the public surface):
 `rule_location` on domain observations (addresses kept for offline geocode);
 money densify: `tools/build_money_domain_observations.mjs` →
 `site/data/money_domain_observations.json` (OCP awards + open RFPs with compact
-`place` stamps; map corpus — not the slim WH-03 OCP pin lookup). Map client
-loads `district_activity.json` with `cache: "no-cache"` so deploy rebuilds reach
-returning browsers (origin already sends `max-age=0, must-revalidate`). Verify:
+`place` stamps; map corpus — separate from the OCP pin warehouse lookup used for
+lifecycle side-cars). Map client loads `district_activity.json` with
+`cache: "no-cache"` so deploy rebuilds reach returning browsers (origin already
+sends `max-age=0, must-revalidate`). Verify:
 
 ```bash
 node tools/build_money_domain_observations.mjs --check
