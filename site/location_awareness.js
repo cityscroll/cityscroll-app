@@ -1,10 +1,14 @@
 // Browser-location helpers shared by the Land UI and its Node fixtures.
-// Exact coordinates exist only long enough to make the existing GeoSearch request. The
-// returned application state contains the resolved NYC area and block, never the coordinates.
+// Exact coordinates exist only long enough to make the existing GeoSearch request
+// and the committed council-district point-in-polygon lookup. The returned
+// application state contains the resolved NYC area and block, never the coordinates.
 
 var GEOSEARCH_REVERSE = "https://geosearch.planninglabs.nyc/v2/reverse";
 var MAPPLUTO_QUERY = "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0/query";
+var COUNCIL_BOUNDARIES_URL = "data/council_district_boundaries.json";
 var LAND_AUTO_PROMPT_KEY = "crol_land_location_auto_asked_v1";
+var councilBoundariesCache = null;
+var councilLookupModulePromise = null;
 
 function reverseGeoSearchURL(coords, endpoint) {
   var latitude = Number(coords && coords.latitude);
@@ -65,6 +69,57 @@ function mapPlutoCommunityDistrict(payload, borough) {
   return prefix + String(district).padStart(2, "0");
 }
 
+function loadCouncilLookupModule() {
+  if (councilLookupModulePromise) return councilLookupModulePromise;
+  // Dynamic import works from classic browser scripts and from Node tests that
+  // require this file. Fail soft when the module cannot load.
+  councilLookupModulePromise = import("./council_district_lookup.mjs").catch(function () {
+    return null;
+  });
+  return councilLookupModulePromise;
+}
+
+async function loadCouncilBoundaries(settings) {
+  var options = settings || {};
+  if (options.councilBoundaries) return options.councilBoundaries;
+  if (councilBoundariesCache) return councilBoundariesCache;
+  var fetchImpl = options.fetchImpl;
+  if (typeof fetchImpl !== "function") return null;
+  var url = options.councilBoundariesUrl || COUNCIL_BOUNDARIES_URL;
+  try {
+    var response = await fetchImpl(url);
+    if (!response || response.ok === false) return null;
+    var doc = await response.json();
+    var lookup = await loadCouncilLookupModule();
+    var layer = lookup && typeof lookup.loadCouncilDistrictLayer === "function"
+      ? lookup.loadCouncilDistrictLayer(doc)
+      : doc;
+    if (layer && Array.isArray(layer.districts)) {
+      councilBoundariesCache = layer;
+      return layer;
+    }
+  } catch (_error) {}
+  return null;
+}
+
+async function resolveCouncilDistrictForCoords(coords, settings) {
+  var latitude = Number(coords && coords.latitude);
+  var longitude = Number(coords && coords.longitude);
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+  if (settings && typeof settings.councilDistrict === "string") {
+    return settings.councilDistrict;
+  }
+  try {
+    var lookup = await loadCouncilLookupModule();
+    if (!lookup || typeof lookup.resolveCouncilDistrict !== "function") return null;
+    var layer = await loadCouncilBoundaries(settings);
+    if (!layer) return null;
+    return lookup.resolveCouncilDistrict(latitude, longitude, layer);
+  } catch (_error) {
+    return null;
+  }
+}
+
 function requestCurrentArea(options) {
   var settings = options || {};
   var geolocation = settings.geolocation;
@@ -78,7 +133,8 @@ function requestCurrentArea(options) {
     try {
       geolocation.getCurrentPosition(async function (position) {
         try {
-          var url = reverseGeoSearchURL(position && position.coords, settings.endpoint);
+          var coords = position && position.coords;
+          var url = reverseGeoSearchURL(coords, settings.endpoint);
           if (!url) return resolve(null);
           var response = await fetchImpl(url);
           if (!response || response.ok === false) return resolve(null);
@@ -96,6 +152,12 @@ function requestCurrentArea(options) {
               }
             } catch (_districtError) {}
           }
+          // Coordinates exist only here — resolve council district from the
+          // committed boundary layer, then drop lat/lon from the returned area.
+          try {
+            var councilId = await resolveCouncilDistrictForCoords(coords, settings);
+            if (councilId) area.councilDistrict = councilId;
+          } catch (_councilError) {}
           resolve(area);
         } catch (_error) {
           resolve(null);
@@ -160,9 +222,15 @@ function coarseLandFilter(area, status) {
   return {
     boro: area && area.borough || null,
     communityDistrict: area && area.communityDistrict || null,
+    councilDistrict: area && area.councilDistrict || null,
     keywords: [],
     status: status === "all" ? "all" : "active",
   };
+}
+
+// Test helper: clear the module-level boundary cache between cases.
+function resetCouncilBoundariesCache() {
+  councilBoundariesCache = null;
 }
 
 if (typeof module !== "undefined" && module.exports !== undefined) {
@@ -170,9 +238,12 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     bindLocationControl: bindLocationControl,
     coarseLandFilter: coarseLandFilter,
     geoSearchArea: geoSearchArea,
+    loadCouncilBoundaries: loadCouncilBoundaries,
     mapPlutoCommunityDistrict: mapPlutoCommunityDistrict,
     mapPlutoCommunityDistrictURL: mapPlutoCommunityDistrictURL,
     requestCurrentArea: requestCurrentArea,
+    resetCouncilBoundariesCache: resetCouncilBoundariesCache,
+    resolveCouncilDistrictForCoords: resolveCouncilDistrictForCoords,
     resolveLandEntryLocation: resolveLandEntryLocation,
     reverseGeoSearchURL: reverseGeoSearchURL,
   };

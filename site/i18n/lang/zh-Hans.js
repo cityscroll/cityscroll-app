@@ -266,6 +266,7 @@
     parcel_via_geosearch: "地块 {bbl} 来自 GeoSearch — 请核实匹配",
     parcel_via_notice_tax_lot: "地块 {bbl} 来自本公告税地文本 — 请核实匹配",
     community_district_short: "社区行政区 {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "在线或电话",
     venue_in_person: "现场",
     venue_hybrid: "现场和在线",

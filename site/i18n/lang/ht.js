@@ -265,6 +265,7 @@
     parcel_via_geosearch: "lo {bbl} atravè GeoSearch — verifye korespondans la",
     parcel_via_notice_tax_lot: "lo {bbl} nan tèks lo taks avi sa a — verifye korespondans la",
     community_district_short: "Distri Kominotè {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "Sou entènèt oswa nan telefòn",
     venue_in_person: "An pèsòn",
     venue_hybrid: "An pèsòn ak sou entènèt",

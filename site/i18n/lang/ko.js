@@ -266,6 +266,7 @@
     parcel_via_geosearch: "필지 {bbl} (GeoSearch) — 일치 여부를 확인하세요",
     parcel_via_notice_tax_lot: "필지 {bbl} (이 고시의 세금 필지 문구) — 일치 여부를 확인하세요",
     community_district_short: "커뮤니티 지구 {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "온라인 또는 전화",
     venue_in_person: "대면",
     venue_hybrid: "대면 및 온라인",

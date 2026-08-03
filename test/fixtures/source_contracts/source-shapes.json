@@ -250,6 +250,19 @@
       ]
     },
     {
+      "id": "city-council-district-boundaries",
+      "kind": "socrata",
+      "identifier": "872g-cjhh",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "coundist",
+        "the_geom",
+        "shape_leng",
+        "shape_area"
+      ]
+    },
+    {
       "id": "dob-now-job-filings",
       "kind": "socrata",
       "identifier": "w9ak-ipjd",

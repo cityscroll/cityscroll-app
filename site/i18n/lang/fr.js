@@ -295,6 +295,7 @@
     parcel_via_geosearch: "lot {bbl} via GeoSearch — vérifiez la correspondance",
     parcel_via_notice_tax_lot: "lot {bbl} d’après le texte de lot fiscal de cet avis — vérifiez la correspondance",
     community_district_short: "District communautaire {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "En ligne ou par téléphone",
     venue_in_person: "En personne",
     venue_hybrid: "En personne et en ligne",

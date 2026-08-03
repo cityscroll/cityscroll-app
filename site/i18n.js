@@ -397,6 +397,7 @@ const STRINGS = {
     parcel_via_geosearch: "lot {bbl} via GeoSearch — verify the match",
     parcel_via_notice_tax_lot: "lot {bbl} from this notice's tax-lot text — verify the match",
     community_district_short: "Community District {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "Online or by phone",
     venue_in_person: "In person",
     venue_hybrid: "In person and online",

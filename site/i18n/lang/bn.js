@@ -266,6 +266,7 @@
     parcel_via_geosearch: "লট {bbl} GeoSearch-এর মাধ্যমে — মিল যাচাই করুন",
     parcel_via_notice_tax_lot: "লট {bbl} এই বিজ্ঞপ্তির ট্যাক্স-লট লেখা থেকে — মিল যাচাই করুন",
     community_district_short: "কমিউনিটি ডিস্ট্রিক্ট {n}",
+    council_district_short: "Council District {n}",
     venue_virtual: "অনলাইন বা ফোনে",
     venue_in_person: "সশরীরে",
     venue_hybrid: "সশরীরে ও অনলাইনে",
