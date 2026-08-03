@@ -189,8 +189,7 @@ def base_record(*, with_clock: bool) -> dict:
     }
     if with_clock:
         record["statutory_clock"] = STATUTORY_CLOCK
-        # No prediction assertions on the before-frame (shows unlabeled timeline only).
-        record["predictions"] = []
+        record["predictions"] = []  # before-frame: no prediction assertions
     return record
 
 
@@ -273,13 +272,11 @@ def capture_variant(page: Page, base_url: str, record: dict, out: Path, *, expec
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    # Screenshot file receipts for manifest.json.
-    files = []
+    files = []  # screenshot file receipts for manifest.json
     with StaticServer() as base_url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 900})
-        # Playwright pageerror collector for this capture run.
-        errors: list[str] = []
+        errors: list[str] = []  # Playwright pageerror collector
         page.on("pageerror", lambda error: errors.append(str(error)))
 
         before = OUT / "land-timeline-before.png"

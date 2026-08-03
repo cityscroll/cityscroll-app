@@ -196,8 +196,7 @@ export function projectStatutoryDeadlines(certifiedDate) {
  * Evidence event ids for the certification anchor (stable strings for the contract).
  */
 export function certificationEvidenceIds(record = {}, certifiedDate) {
-  // Evidence ids derived from ZAP certification milestone (NYC Charter §197-c anchor).
-  const ids = [];
+  const ids = []; // evidence ids from ZAP certification milestone (NYC Charter §197-c)
   const date = isoDateOnly(certifiedDate);
   const projectId = clean(record.project_id) || clean(record.open_data?.project_id) || "project";
   if (record.certified_referred || record.open_data?.certified_referred) {

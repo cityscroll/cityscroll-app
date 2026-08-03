@@ -77,8 +77,7 @@ export function emitUlurpStatutoryPredictions(record = {}, opts = {}) {
     ? clock.evidence_event_ids
     : [`ulurp-certification:${record.project_id}:${trainTo}`];
   const status = clock.status === "withdrawn" ? "withdrawn" : "open";
-  // cityscroll.prediction.v0 timing rows for statutory stages (Charter §197-c).
-  const out = [];
+  const out = []; // cityscroll.prediction.v0 timing rows (Charter §197-c stages)
 
   for (const phase of clock.phases || []) {
     if (!phase.due_date) continue;
