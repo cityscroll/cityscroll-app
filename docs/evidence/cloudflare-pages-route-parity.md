@@ -4,7 +4,7 @@ Parallel-serving evidence: the Cloudflare Pages host is compared against
 the live production site for every path in the public route inventory.
 DNS is unchanged in this phase; GitHub Pages remains the production origin.
 
-- Compared at: 2026-07-30T03:50:33.066Z
+- Compared at: 2026-08-03T02:33:18.930Z
 - Reference (live): https://cityscroll.org
 - Candidate (Pages): https://cityscroll.pages.dev
 - Inventory size: 9
@@ -46,11 +46,11 @@ on both hosts. Status codes matched path-for-path.
 ### Candidate
 
 - `/` status=200 ok=true chain=200
-- `/about.html` status=200 ok=true chain=308 → /about?_smoke=1785383432479 | 200
-- `/api.html` status=200 ok=true chain=308 → /api?_smoke=1785383432479 | 200
-- `/changelog.html` status=200 ok=true chain=308 → /changelog?_smoke=1785383432479 | 200
-- `/data.html` status=200 ok=true chain=308 → /data?_smoke=1785383432479 | 200
-- `/standards.html` status=200 ok=true chain=308 → /standards?_smoke=1785383432479 | 200
-- `/stats.html` status=200 ok=true chain=308 → /stats?_smoke=1785383432479 | 200
+- `/about.html` status=200 ok=true chain=308 → /about?_smoke=1785724398427 | 200
+- `/api.html` status=200 ok=true chain=308 → /api?_smoke=1785724398427 | 200
+- `/changelog.html` status=200 ok=true chain=308 → /changelog?_smoke=1785724398427 | 200
+- `/data.html` status=200 ok=true chain=308 → /data?_smoke=1785724398427 | 200
+- `/standards.html` status=200 ok=true chain=308 → /standards?_smoke=1785724398427 | 200
+- `/stats.html` status=200 ok=true chain=308 → /stats?_smoke=1785724398427 | 200
 - `/robots.txt` status=200 ok=true chain=200
 - `/sitemap.xml` status=200 ok=true chain=200
