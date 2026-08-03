@@ -1867,7 +1867,7 @@
     std_timeline_entry_html: "Depi {date}: {matched} nan {total} lang Lwa Lokal 30 te nan selektè a. Objektif aksesibilite: {city} jodi a, k ap monte nan {next} anvan {nextdate} pou antite Eta New York yo.",
     std_timeline_loading: "N ap chaje enstantane yo…",
     std_timeline_fail: "Nou pa t kapab chaje istwa enstantane yo kounye a — rechaje pou eseye ankò.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">Konsènan</a> · <a href=\"data.html\">Done yo</a> · <a href=\"index.html\">Akèy</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">Konsènan</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">Chanjman</a> · <a href=\"index.html\">Akèy</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "Karyè nan Vil la",
     staffing_pathways_heading: "Chwazi pwochen etap ou",

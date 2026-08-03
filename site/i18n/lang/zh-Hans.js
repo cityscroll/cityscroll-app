@@ -1868,7 +1868,7 @@
     std_timeline_entry_html: "截至 {date}：第 30 号地方法的 {total} 种语言中有 {matched} 种当时在切换器中。无障碍目标：目前为 {city}，到 {nextdate} 前纽约州各实体将升级到 {next}。",
     std_timeline_loading: "正在加载快照…",
     std_timeline_fail: "目前无法加载快照历史——请刷新重试。",
-    std_foot_html: "CityScroll · <a href=\"about.html\">关于</a> · <a href=\"data.html\">数据</a> · <a href=\"index.html\">首页</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">关于</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">更新日志</a> · <a href=\"index.html\">首页</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "市政府职业",
     staffing_pathways_heading: "选择您的下一步",
