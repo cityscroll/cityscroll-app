@@ -180,6 +180,12 @@ really happen. Some markets are specialized and have few bidders. Name matching 
   <li><b>Context strip</b> — how big an award is, shown as a percentile of that agency's awards in the last 12
   months (shown only when the agency has 20 or more awards in that time). It also shows the vendor's share of the
   agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.</li>
+  <li><b>Rules adoption lag (estimate)</b> — after comments close, how long similar Agency Rules usually
+  took to reach a Notice of Adoption. Built from City Record history. Unfinished cases are not treated as
+  fast ones. Uses an agency pool when it has at least 20 past gaps, or the whole city if not. Shown as a dashed
+  “Estimate” segment on the rules timeline, and as one digest line only when the band changes — never as a
+  confirmed date. Full formula:
+  <a href="https://github.com/cityscroll/crol-list/blob/main/docs/formulas/rules-adoption-lag.md" target="_blank" rel="noopener noreferrer">rules adoption lag<span class="sr-only"> (opens in new tab)</span></a>.</li>
 </ul>
 <h3 id="staffing-list-establishment-formula" data-i18n="about_staffing_formula_heading">Civil-service eligible-list timing</h3>
 <p class="src" data-i18n-html="about_staffing_formula_html">We make an exact match between an exam number in the DCAS annual schedule and the same number in the exam-level Civil Service List totals. Each gap runs from <b>the close of filing to the date the list was set up</b>. We group exams as open competitive or promotion. A group needs at least 20 exams. Smaller groups use all city exams. For each group, we sort the gaps and take the p10, median, and p90 by nearest rank. We test old results on later data. The test learns from lists set up by the end of 2024 and scores lists set up in 2025 and 2026. A page may show an exam date only when 50 or more test cases resolve, p10–p90 coverage is 70% to 90%, and each scored group rises from low to high. If the test falls short, pages show only the group median. Results can be wrong when the schedule changes, an exam number is used again, a list is late, or an active-list record has no set-up date. We never use applicant rows, names, scores, or ranks.</p>
