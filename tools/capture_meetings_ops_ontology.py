@@ -60,10 +60,10 @@ HEARINGS = [
             "links": [
                 {
                     "label": "Join online",
-                    "url": "https://zoom.example.nyc.gov/j/landmarks",
+                    "url": "https://zoom.example.com/j/landmarks",
                 }
             ],
-            "emails": ["testimony@lpc.nyc.gov"],
+            "emails": ["testimony@example.com"],
             "phones": [],
             "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260812011",
         },
@@ -103,7 +103,7 @@ HEARINGS = [
         },
         "participation": {
             "links": [],
-            "emails": ["testimony@lpc.nyc.gov"],
+            "emails": ["testimony@example.com"],
             "phones": [],
             "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260812012",
         },

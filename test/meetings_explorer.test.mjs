@@ -126,7 +126,7 @@ test("meetingProcessActionKey prefers join / testimony / dated attend when publi
   const testimony = hearing({
     participation: {
       links: [],
-      emails: ["testify@example.nyc.gov"],
+      emails: ["testify@example.com"],
       phones: [],
     },
   });
