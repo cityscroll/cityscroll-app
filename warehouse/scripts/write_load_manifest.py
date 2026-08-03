@@ -45,28 +45,30 @@ def main(argv: list[str] | None = None) -> int:
         raw = r.get("raw") or {}
         pq = r.get("parquet") or {}
         regm = r.get("register") or {}
-        loaded.append(
-            {
-                "dataset_id": ds_id,
-                "socrata_dataset_id": r.get("socrata_dataset_id"),
-                "table_name": r.get("table_name"),
-                "snapshot_date": r.get("snapshot_date"),
-                "observed_at": r.get("observed_at"),
-                "mode": raw.get("mode"),
-                "row_count": regm.get("row_count") or pq.get("row_count") or raw.get("row_count"),
-                "raw_bytes": raw.get("bytes"),
-                "raw_sha256": raw.get("sha256"),
-                "parquet_bytes": pq.get("bytes"),
-                "parquet_row_count": pq.get("row_count"),
-                "headroom": r.get("headroom"),
-                "proof_receipt": f"warehouse/receipts/proof/{ds_id}_bulk_latest.json",
-                "verify_sql": {
-                    "ocp-recent-contract-awards": "warehouse/sql/examples/ocp_bulk_verify.sql",
-                    "zap-projects": "warehouse/sql/examples/zap_bulk_verify.sql",
-                    "zap-bbl": "warehouse/sql/examples/zap_bbl_bulk_verify.sql",
-                }.get(ds_id),
-            }
-        )
+        entry = {
+            "dataset_id": ds_id,
+            "socrata_dataset_id": r.get("socrata_dataset_id"),
+            "table_name": r.get("table_name"),
+            "snapshot_date": r.get("snapshot_date"),
+            "observed_at": r.get("observed_at"),
+            "mode": raw.get("mode"),
+            "row_count": regm.get("row_count") or pq.get("row_count") or raw.get("row_count"),
+            "raw_bytes": raw.get("bytes"),
+            "raw_sha256": raw.get("sha256"),
+            "parquet_bytes": pq.get("bytes"),
+            "parquet_row_count": pq.get("row_count"),
+            "headroom": r.get("headroom"),
+            "proof_receipt": f"warehouse/receipts/proof/{ds_id}_bulk_latest.json",
+            "verify_sql": {
+                "ocp-recent-contract-awards": "warehouse/sql/examples/ocp_bulk_verify.sql",
+                "zap-projects": "warehouse/sql/examples/zap_bulk_verify.sql",
+                "zap-bbl": "warehouse/sql/examples/zap_bbl_bulk_verify.sql",
+                "city-record": "warehouse/sql/examples/city_record_bulk_verify.sql",
+            }.get(ds_id),
+        }
+        if r.get("snapshot_profile"):
+            entry["snapshot_profile"] = r["snapshot_profile"]
+        loaded.append(entry)
 
     loaded_ids = {x["dataset_id"] for x in loaded}  # code structure (not a sourced data table)
     remaining = [d for d in queue if d not in loaded_ids]  # code structure (not a sourced data table)
@@ -125,6 +127,8 @@ def main(argv: list[str] | None = None) -> int:
             "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bulk_verify.sql",
             "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-bbl --bulk --ack-large --write-sample 25",
             "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql",
+            "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset city-record --bulk --ack-large --resume",
+            "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/city_record_bulk_verify.sql",
             "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py",
             "node tools/build_zap_warehouse_lookup.mjs --fixture --bench",
             "node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --bench",

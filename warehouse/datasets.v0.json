@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs + WH-05 serve lookups (OCP, Doing Business, ZAP projects).",
+  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs + WH-05 serve lookups + WH-07 City Record snapshot.",
   "defaults": {
     "max_rows_default": 50,
     "max_rows_hard_cap": 10000,
@@ -59,7 +59,13 @@
       "bulk_class": "BULK",
       "default_limit": 50,
       "wh02_full_export": true,
+      "bulk_phase": "WH-07",
       "soda_order": "start_date DESC",
+      "bulk_paging": {
+        "page_size": 50000,
+        "order": "start_date DESC, request_id DESC",
+        "polite_delay_s": 0.5
+      },
       "required_fields": [
         "request_id",
         "start_date",

@@ -48,6 +48,9 @@ describe("WH-02 registry + pack plan", () => {
 
     const cr = getDataset("city-record");
     assert.equal(cr.dataset_id, "dg92-zbpx");
+    assert.equal(cr.bulk_phase, "WH-07");
+    assert.equal(cr.bulk_paging.page_size, 50000);
+    assert.match(cr.bulk_paging.order, /request_id/);
 
     const ids = listDatasets().map((d) => d.id);
     assert.ok(ids.includes("doing-business-entities"));
@@ -133,6 +136,68 @@ describe("WH-02 bulk CLI contracts", () => {
     assert.notEqual(r.status, 0);
     const out = `${r.stdout || ""}\n${r.stderr || ""}`;
     assert.match(out, /Cannot combine/);
+  });
+});
+
+describe("WH-07 City Record resumable paging", () => {
+  it("builds stable page URLs and merges receipt profiles", () => {
+    const r = spawnSync(
+      pyBin(),
+      [
+        "-c",
+        `
+import sys
+sys.path.insert(0, "warehouse/scripts")
+from socrata_fetch import soda_csv_page_url, _merge_profiles
+url = soda_csv_page_url("https://example.test", "abcd-1234", limit=50000, offset=100000, order="start_date DESC, request_id DESC")
+assert "%24offset=100000" in url
+assert "request_id+DESC" in url
+p = _merge_profiles([
+  {"start_date_min": "2016-01-01", "start_date_max": "2020-01-01", "section_counts": {"Agency Rules": 2}},
+  {"start_date_min": "2015-01-01", "start_date_max": "2026-01-01", "section_counts": {"Agency Rules": 3, "Property Disposition": 4}},
+])
+assert p["start_date_min"] == "2015-01-01"
+assert p["start_date_max"] == "2026-01-01"
+assert p["section_counts"]["Agency Rules"] == 5
+assert p["section_counts"]["Property Disposition"] == 4
+print("OK")
+`,
+      ],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+    assert.equal(r.status, 0, r.stderr || r.stdout);
+    assert.match(r.stdout, /OK/);
+  });
+
+  it("ships the City Record verification query", () => {
+    const sql = readFileSync(
+      join(WAREHOUSE_DIR, "sql", "examples", "city_record_bulk_verify.sql"),
+      "utf8"
+    );
+    assert.match(sql, /MIN\(start_date\)/);
+    assert.match(sql, /Agency Rules/);
+    assert.match(sql, /Property Disposition/);
+  });
+
+  it("commits the historical snapshot proof with prediction-program sections", () => {
+    const proof = JSON.parse(
+      readFileSync(
+        join(
+          WAREHOUSE_DIR,
+          "receipts",
+          "proof",
+          "city-record_bulk_latest.json"
+        ),
+        "utf8"
+      )
+    );
+    assert.equal(proof.phase, "WH-07");
+    assert.ok(proof.register.row_count > 1_000_000);
+    assert.ok(proof.snapshot_profile.start_date_min);
+    assert.ok(proof.snapshot_profile.start_date_max);
+    assert.ok(proof.snapshot_profile.section_counts["Agency Rules"] > 0);
+    assert.ok(proof.snapshot_profile.section_counts["Property Disposition"] > 0);
+    assert.equal(proof.raw.paging.resumable, true);
   });
 });
 

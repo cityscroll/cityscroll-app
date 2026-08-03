@@ -135,6 +135,14 @@ the MacBook.
 - `--resume` skips stages whose outputs already exist for that snapshot.
 - Full `rows.csv?accessType=DOWNLOAD` is the WH-02 path (`--bulk --ack-large`).
   Dated re-exports / `$where` cursors for deltas remain follow-up work.
+- City Record uses checkpointed 50,000-row SODA pages with a stable
+  `start_date, request_id` order. An interrupted pull resumes at the first
+  unfinished offset:
+
+  ```bash
+  warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+    --dataset city-record --bulk --ack-large --resume
+  ```
 
 ## Query seam
 
