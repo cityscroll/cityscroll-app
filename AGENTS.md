@@ -1428,17 +1428,29 @@ DEAL? / when-bid**. Secondary: real-property developers, community land-reuse
 `worker/src/lib/property_commercial.mjs`). Stamped on `/property-locations` via
 `attachPropertyCommercial` after disposition spines. Categories: `vehicle`,
 `timber`, `equipment`, `real_property`, `scrap_materials`, `other` (legacy URL
-keys `vehequip`/`forest`/`realty` normalize). List prime position is item + $ +
-close-date; detail `#ncommercial` carries evidence + deal signal (only when the
-notice states both appraisal/assessed **and** minimum bid/upset — never invent
-market comps; `comparables_slot.status=not_yet_acquired`). Attachment titles
-(T0 metadata) may name item lists / volume reports (Cannonsville archetype).
+keys `vehequip`/`forest`/`realty` normalize).
+
+**Sale gate (load-bearing):** detail `#ncommercial` mounts only when
+`hasCommercialSaleSignals` / `sale_eligible` is true — sale method, labeled
+price facts, bid participation steps / marketplace URL, or a confidently
+sale-shaped item category. Disposition-but-not-sale classes
+(`destruction`, `transfer`, `abandonment` via `classifyDispositionSaleClass`)
+with zero hard sale signals render **no commercial panel** (field case:
+`#notice/20260526003` NYPD pending destruction). Absent subsections render
+nothing — never per-slot apology boxes; methodology lives in one collapsed
+how-toggle. Evidence spans snap to word boundaries with ellipses. Empty-state
+density is sampled in the surface-load (wackness) dimension
+(`emptyStateDensity` / apology-phrase greps). Class-split receipt:
+`docs/evidence/property-empty-state-axe/disposition-sale-class-split.json`.
+List prime position is item + $ + close-date; deal signal only when the notice
+states both appraisal/assessed **and** minimum bid/upset — never invent market
+comps. Attachment titles (T0 metadata) may name item lists / volume reports.
 Action rail consumes `commercial.participation.package_url` for marketplace
-handoffs (GovDeals etc.). Persona capability input for breadth/surface-load:
-`ontology/fixtures/dimensions/persona_capability_inputs.json`. Verify:
+handoffs (GovDeals etc.). Verify:
 `node --test test/property_commercial.test.mjs worker/test/property.test.mjs
-test/action-rail.test.mjs`. Capture:
-`python3 tools/capture_property_commercial.py`.
+test/action-rail.test.mjs test/multi_flywheel_dimensions.test.mjs`. Capture:
+`python3 tools/capture_property_commercial.py` and
+`python3 tools/capture_property_empty_state_axe.py`.
 
 ## Property disposition process spine
 

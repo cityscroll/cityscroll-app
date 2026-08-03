@@ -330,7 +330,7 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
   // Phase-grouped compact stepper (same pattern as land / money) when the pure module loads.
   if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
     const cur=phaseView.current;
-    const actionLead=cur?`<p class="land-spine-status disposition-phase-lead">${t("disposition_phase_now_html",{
+    const actionLead=cur && cur.matched?`<p class="land-spine-status disposition-phase-lead">${t("disposition_phase_now_html",{
       phase:escUiHtml(dispositionStageLabel(cur.id)),
       action:escUiHtml(t(cur.action_key||"disposition_phase_action_attend"))
     })}${phaseView.next?` · ${t("disposition_phase_next_html",{phase:escUiHtml(dispositionStageLabel(phaseView.next.id))})}`:""}</p>`:"";
@@ -342,16 +342,10 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
         return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(dispositionStageLabel(p.id))}">${escUiHtml(p.short||dispositionStageLabel(p.id))}</span>${arrow}</li>`;
       }).join("")
     }</ol>`;
-    // Detail only for matched phases + current (collapse pure-future empties to stepper chips).
-    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)).map(p=>{
-      if(!p.matched){
-        return `<div class="stage"><div class="box">
-          <div class="stage-name">${dispositionStageLabel(p.id)}</div>
-          <div class="lc-norecord">${t("disposition_stage_not_yet_ingested_html",{
-            source:`<span lang="en" dir="ltr">${t("disposition_source_city_record")}</span>`
-          })}</div>
-        </div></div>`;
-      }
+    // Detail cards only for matched phases — empty stages stay stepper chips only
+    // (absent means absent; no per-stage "not yet shown" explainer).
+    const matchedPhases=phaseView.phases.filter(p=>p.matched);
+    const cards=matchedPhases.map(p=>{
       const when=p.primary?.when?fdate(p.primary.when):"—";
       const title=p.primary?.title?cleanText(p.primary.title):"";
       const more=p.notice_count>1
@@ -376,20 +370,19 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
         ${sourceLink}
       </div></div>`;
     }).join('<div class="connector" aria-hidden="true">→</div>');
+    const how=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${keyNote}<div class="note" style="margin-top:8px">${t("disposition_provenance_html")}</div></div></details>`;
     return `<div class="chain-h">${t("disposition_spine_heading")}</div>
-      <div class="note">${keyNote}</div>
       ${actionLead}
       ${stepper}
       ${timingEstimate}
-      <div class="chain disposition-phase-cards">${cards}</div>
-      <div class="note">${t("disposition_provenance_html")}</div>`;
+      ${cards?`<div class="chain disposition-phase-cards">${cards}</div>`:""}
+      ${how}`;
   }
 
-  // Flat fallback when the phase module is unavailable.
-  const stages = Array.isArray(spine.stages) ? spine.stages : [];
+  // Flat fallback when the phase module is unavailable — matched stages only.
+  const stages = Array.isArray(spine.stages) ? spine.stages.filter(s=>s && s.matched) : [];
   let chain = "";
   stages.forEach((stage, idx) => {
-    const matched = stage && stage.matched;
     const stageEvents = Array.isArray(stage.events) ? stage.events : [];
     const primary = stageEvents[0] || null;
     const when = primary?.time?.value ? fdate(primary.time.value) : "—";
@@ -400,36 +393,34 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     const noticeLink = primary?.request_id
       ? `<div class="lc-pct"><a href="#notice/${escUiHtml(primary.request_id)}">${escUiHtml(primary.request_id)}</a>${more}</div>`
       : (more ? `<div class="lc-pct">${more}</div>` : "");
-    if(matched){
-      chain += `<div class="stage"><div class="box matched">
-        <div class="stage-name">${dispositionStageLabel(stage.kind)}</div>
-        <div class="when">${escUiHtml(when)}</div>
-        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
-        ${noticeLink}
-      </div></div>`;
-    } else {
-      chain += `<div class="stage"><div class="box">
-        <div class="stage-name">${dispositionStageLabel(stage.kind)}</div>
-        <div class="lc-norecord">${t("disposition_stage_not_yet_ingested_html",{
-          source:`<span lang="en" dir="ltr">${t("disposition_source_city_record")}</span>`
-        })}</div>
-      </div></div>`;
-    }
+    chain += `<div class="stage"><div class="box matched">
+      <div class="stage-name">${dispositionStageLabel(stage.kind)}</div>
+      <div class="when">${escUiHtml(when)}</div>
+      ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
+      ${noticeLink}
+    </div></div>`;
     if(idx < stages.length - 1) chain += '<div class="connector">→</div>';
   });
+  const howFlat=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${keyNote}<div class="note" style="margin-top:8px">${t("disposition_provenance_html")}</div></div></details>`;
   return `<div class="chain-h">${t("disposition_spine_heading")}</div>
-    <div class="note">${keyNote}</div>
-    <div class="chain">${chain}</div>
-    <div class="note">${t("disposition_provenance_html")}</div>`;
+    ${chain?`<div class="chain">${chain}</div>`:""}
+    ${howFlat}`;
 }
 /**
  * Detail commercial panel: full extraction with provenance for the surplus-goods buyer.
- * Mounts above the disposition spine when the notice is Property Disposition.
+ * Mounts only when extraction finds real sale signals (method, price, bid steps, or
+ * confidently sale-shaped item). Destruction / transfer / abandonment notices stay quiet.
+ * Absent subsection data renders nothing — never per-slot apology boxes.
  */
 function propertyCommercialDetailHTML(commercial){
   if(!commercial || !commercial.item) return "";
+  // Gate: no sale signals → no panel (not an empty "what is for sale" apology stack).
+  const eligible = commercial.sale_eligible === true
+    || (commercial.sale_eligible == null && commercialSaleSignalsFallback(commercial));
+  if(!eligible) return "";
   const item=commercial.item;
   const catKey=ASSET_LABEL[item.category]||"asset_other";
+  const hasWhat=Boolean(item.label || item.category && item.category!=="other" || (commercial.quantities||[]).length);
   const qty=(commercial.quantities||[]).map(q=>`<li><span lang="en" dir="ltr">${escUiHtml(q.display||"")}</span>
     ${q.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(q.evidence)}</div>`:""}</li>`).join("");
   const prices=(commercial.price_facts||[]).map(p=>{
@@ -437,12 +428,8 @@ function propertyCommercialDetailHTML(commercial){
     return `<li><span class="tag amt">${label}</span>
       ${p.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(p.evidence)}</div>`:""}</li>`;
   }).join("");
-  const deal=commercial.deal_signal && commercial.deal_signal.status==="derived"
-    ? `<p class="property-deal-signal" data-deal-status="derived"><strong>${escUiHtml(commercial.deal_signal.summary)}</strong></p>
-       <div class="note">${t("property_commercial_deal_method_html")}</div>`
-    : `<div class="note">${t("property_commercial_deal_insufficient_html")}</div>`;
-  const comps=commercial.deal_signal && commercial.deal_signal.comparables_slot
-    ? `<div class="note" data-comparables-status="${escUiHtml(commercial.deal_signal.comparables_slot.status||"not_yet_acquired")}">${t("property_commercial_comparables_slot_html")}</div>`
+  const dealDerived=commercial.deal_signal && commercial.deal_signal.status==="derived"
+    ? `<p class="property-deal-signal" data-deal-status="derived"><strong>${escUiHtml(commercial.deal_signal.summary)}</strong></p>`
     : "";
   const method=commercial.sale_method
     ? `<div class="lc-pct">${t("property_commercial_method_lbl")}: <span lang="en" dir="ltr">${escUiHtml(commercial.sale_method.method.replace(/_/g," "))}</span>
@@ -460,36 +447,58 @@ function propertyCommercialDetailHTML(commercial){
   for(const p of (commercial.participation && commercial.participation.phones)||[]){
     contacts.push(`<span lang="en" dir="ltr">${escUiHtml(p.value)}</span>`);
   }
-  return `<section class="property-commercial-detail" data-commercial-detail="1" aria-label="${escUiHtml(t("property_commercial_heading"))}">
-    <div class="chain-h">${t("property_commercial_heading")}</div>
-    <div class="note">${t("property_commercial_persona_html")}</div>
-    <div class="property-commercial-what">
+  const hasBid=Boolean(method || packageUrl || steps || contacts.length);
+  const whatBlock=hasWhat?`<div class="property-commercial-what">
       <div class="stage-name">${t("property_commercial_what_lbl")}</div>
       <div><span class="tag asset">${escUiHtml(t(catKey))}</span>
         ${item.label?`<span lang="en" dir="ltr"> · ${escUiHtml(item.label)}</span>`:""}</div>
       ${item.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(item.evidence)}</div>`:""}
       ${qty?`<ul class="ei-list property-commercial-qty">${qty}</ul>`:""}
-    </div>
-    <div class="property-commercial-price">
+    </div>`:"";
+  const priceBlock=prices?`<div class="property-commercial-price">
       <div class="stage-name">${t("property_commercial_price_lbl")}</div>
-      ${prices?`<ul class="ei-list">${prices}</ul>`:`<div class="note">${t("property_commercial_price_none_html")}</div>`}
-    </div>
-    <div class="property-commercial-deal">
+      <ul class="ei-list">${prices}</ul>
+    </div>`:"";
+  const dealBlock=dealDerived?`<div class="property-commercial-deal">
       <div class="stage-name">${t("property_commercial_deal_lbl")}</div>
-      ${deal}
-      ${comps}
-    </div>
-    <div class="property-commercial-bid">
+      ${dealDerived}
+    </div>`:"";
+  const bidBlock=hasBid?`<div class="property-commercial-bid">
       <div class="stage-name">${t("property_commercial_bid_lbl")}</div>
       ${method}
       ${packageUrl}
       ${steps?`<ul class="ei-list">${steps}</ul>`:""}
       ${contacts.length?`<div class="lc-pct">${contacts.join(" · ")}</div>`:""}
-      ${!method && !packageUrl && !steps && !contacts.length
-        ? `<div class="note">${t("property_commercial_bid_none_html")}</div>` : ""}
-    </div>
-    <div class="note">${t("property_commercial_provenance_html")}</div>
+    </div>`:"";
+  // Methodology / provenance: one collapsed affordance, never inline apology prose.
+  const how=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("property_commercial_provenance_html")}</div></details>`;
+  return `<section class="property-commercial-detail" data-commercial-detail="1" data-sale-eligible="1" aria-label="${escUiHtml(t("property_commercial_heading"))}">
+    <div class="chain-h">${t("property_commercial_heading")}</div>
+    ${whatBlock}
+    ${priceBlock}
+    ${dealBlock}
+    ${bidBlock}
+    ${how}
   </section>`;
+}
+/** Sync fallback when pure-module hasCommercialSaleSignals is not loaded yet. */
+function commercialSaleSignalsFallback(commercial){
+  if(!commercial) return false;
+  if(commercial.sale_method && commercial.sale_method.method) return true;
+  if(Array.isArray(commercial.price_facts) && commercial.price_facts.length) return true;
+  const steps=commercial.participation && Array.isArray(commercial.participation.steps)
+    ? commercial.participation.steps : [];
+  if(steps.some(s=>s && (s.kind==="registration"||s.kind==="bid_deadline"||s.kind==="show_or_inspection"||s.kind==="deposit_or_fee"))) return true;
+  const url=commercial.participation && commercial.participation.package_url;
+  if(url && /govdeals\.com|iaai\.com|publicsurplus|nyc\.gov\/auctions/i.test(url)) return true;
+  const cat=commercial.item && commercial.item.category;
+  const conf=commercial.item && commercial.item.confidence;
+  if(["vehicle","timber","equipment","real_property","scrap_materials"].includes(cat) && (conf==="high"||conf==="medium")){
+    const dc=commercial.disposition_class;
+    if(dc==="destruction"||dc==="transfer"||dc==="abandonment") return false;
+    return true;
+  }
+  return false;
 }
 async function loadPropertyCommercialDetail(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
@@ -508,6 +517,12 @@ async function loadPropertyCommercialDetail(r, el){
       if(!commercial.item.label || commercial.item.source!=="attachment_metadata"){
         commercial.item={ ...commercial.item, ...r.commercial.item };
       }
+    }
+    // Recompute sale gate after merge (attachment boost may change eligibility).
+    if(commercial && tools && typeof tools.hasCommercialSaleSignals==="function"){
+      commercial.sale_eligible=tools.hasCommercialSaleSignals(commercial);
+    } else if(commercial && commercial.sale_eligible==null){
+      commercial.sale_eligible=commercialSaleSignalsFallback(commercial);
     }
     if(commercial) r.commercial=commercial;
     if(!document.contains(el)) return;

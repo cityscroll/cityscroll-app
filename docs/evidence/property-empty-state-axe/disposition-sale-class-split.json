@@ -1,0 +1,66 @@
+{
+  "schema": "cityscroll.property_disposition_sale_class_split.v1",
+  "observed_at": "2026-08-03",
+  "note": "Disposition notices that are not public sales (destruction, transfer, abandonment) must not mount the commercial what-is-for-sale panel. Classified from notice title+body text via classifyDispositionSaleClass / hasCommercialSaleSignals.",
+  "corpora": {
+    "property_location_golden": {
+      "source": "test/contract/fixtures/property_location_golden.json",
+      "n": 66,
+      "by_class": {
+        "sale": 56,
+        "destruction": 4,
+        "transfer": 0,
+        "abandonment": 0,
+        "unknown": 6
+      },
+      "sale_eligible": 61,
+      "non_sale": 4,
+      "sale_eligible_rate": 0.9242424242424242,
+      "non_sale_rate": 0.06060606060606061
+    },
+    "property_disposition_history": {
+      "source": "site/data/property_sources/property_disposition_history.json",
+      "note": "Title + type only (bodies not retained on this artifact); unknown share is higher than body-full golden.",
+      "n": 243,
+      "by_class": {
+        "sale": 56,
+        "destruction": 17,
+        "transfer": 0,
+        "abandonment": 0,
+        "unknown": 170
+      },
+      "sale_eligible": 83,
+      "non_sale": 17,
+      "sale_eligible_rate": 0.34156378600823045,
+      "non_sale_rate": 0.06995884773662552
+    },
+    "property_commercial_fixture": {
+      "source": "test/fixtures/property_commercial/real_notices.json",
+      "n": 6,
+      "by_class": {
+        "sale": 5,
+        "destruction": 0,
+        "transfer": 0,
+        "abandonment": 0,
+        "unknown": 1
+      },
+      "sale_eligible": 6,
+      "non_sale": 0,
+      "sale_eligible_rate": 1,
+      "non_sale_rate": 0
+    }
+  },
+  "field_cases": {
+    "20260526003": {
+      "disposition_class": "destruction",
+      "sale_eligible": false,
+      "item_label": "Seized / unclaimed property",
+      "evidence": "OFFICIAL NOTICE OF PENDING DESTRUCTION OF CERTAIN UNAUTHORIZED TOBACCO…"
+    },
+    "20251106024": {
+      "disposition_class": "sale",
+      "sale_eligible": true,
+      "sale_method": "online_auction"
+    }
+  }
+}

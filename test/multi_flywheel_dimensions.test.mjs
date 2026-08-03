@@ -21,7 +21,12 @@ import { evaluateOntologyEnrichment } from "../ontology/dimensions/ontology_enri
 import { evaluateCoverage } from "../ontology/dimensions/coverage.mjs";
 import { evaluateCrossSourceConsistency } from "../ontology/dimensions/cross_source_consistency.mjs";
 import { evaluateLocationResolution } from "../ontology/dimensions/location_resolution.mjs";
-import { evaluateSurfaceLoad, surfaceLoadBreaches } from "../ontology/dimensions/surface_load.mjs";
+import {
+  evaluateSurfaceLoad,
+  surfaceLoadBreaches,
+  emptyStateDensity,
+  countApologyPhrases,
+} from "../ontology/dimensions/surface_load.mjs";
 import { DIMENSION_IDS, DIMENSION_EVALUATORS } from "../ontology/dimensions/index.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
 
@@ -96,6 +101,79 @@ test("surface-load emits one evidence-rich card per measured bad surface", () =>
   assert.match(result.cards[0].title, /action-first/);
   assert.equal(result.cards[0].evidence.breaches.length, 3);
   assert.equal(result.cards[0].verify, "python3 tools/sample_surface_load.py --live --only staffing --gate");
+});
+
+test("empty-state density flags majority apology blocks and repeated phrases", () => {
+  const apologyStack = emptyStateDensity({
+    blocks: [
+      { text: "Not yet shown here — later disposition notices live in City Record Online.", role: "empty" },
+      { text: "No labeled minimum bid, upset price, or appraisal dollar is stated in this notice.", className: "note" },
+      { text: "A discount signal needs both a stated appraisal and a minimum bid.", className: "note" },
+      { text: "Market-basket discount is not available yet — nothing is invented here.", className: "note" },
+      { text: "What is for sale", role: "content" },
+    ],
+  });
+  assert.equal(apologyStack.flagged, true);
+  assert.equal(apologyStack.majority_empty, true);
+  assert.ok(apologyStack.apology.total > 1);
+  assert.ok(apologyStack.apology_repeat_breach);
+
+  const clean = emptyStateDensity({
+    blocks: [
+      { text: "Vehicles · AUTO AUCTION", role: "content" },
+      { text: "Open the sale package on GovDeals", role: "content" },
+      { text: "Registration is free", role: "content" },
+    ],
+  });
+  assert.equal(clean.flagged, false);
+  assert.equal(clean.majority_empty, false);
+  assert.equal(clean.apology.total, 0);
+
+  const counts = countApologyPhrases(
+    "Not yet shown here. Not yet shown here. needs both figures.",
+  );
+  assert.equal(counts.total, 3);
+  assert.ok(counts.phrases_hit.includes("not yet shown here"));
+});
+
+test("surface-load emits empty-state-density card when apology majority is measured", () => {
+  const emptyHeavy = {
+    id: "notice-property-destruction",
+    label: "Destruction notice",
+    route: "#notice/20260526003",
+    status: "ok",
+    action_required: true,
+    budgets: {
+      words: 1200,
+      links: 80,
+      buttons: 50,
+      max_verbatim_repeat: 2,
+      max_first_action_y: 900,
+    },
+    measured: {
+      words: 400,
+      links: 10,
+      buttons: 5,
+      max_verbatim_repeat: 1,
+      verbatim_duplicates: [],
+      first_action_y: 200,
+      empty_blocks: 6,
+      content_blocks: 2,
+      visible_text:
+        "Not yet shown here. No labeled minimum bid. needs both. not available yet. nothing is invented here.",
+    },
+  };
+  const breaches = surfaceLoadBreaches(emptyHeavy);
+  assert.ok(breaches.some((b) => b.kind === "empty-state-density"));
+  const result = evaluateSurfaceLoad({
+    surface_load: {
+      measured_at: "2026-08-03T12:00:00Z",
+      surfaces: [emptyHeavy],
+    },
+  });
+  assert.equal(result.metrics.empty_state_flags, 1);
+  assert.ok(result.cards.some((c) => /empty-state/i.test(c.title)));
+  assert.equal(result.cards[0].lesson_class, "empty-state-density");
 });
 
 test("computeNotPublishedRate combines recent + historical population", () => {
