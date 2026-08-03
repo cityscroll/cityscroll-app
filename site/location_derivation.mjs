@@ -379,9 +379,9 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
     }));
   }
 
-  // Compact community-district tokens common in procurement titles: MN04, BX03, QN12.
+  // Compact community-district codes common in procurement titles: MN04, BX03, QN12.
   // Two-letter forms only — single-letter M/X/K/Q/R collide with project codes (Q099-…).
-  const CD_TOKEN_BORO = Object.freeze({
+  const CD_PREFIX_TO_BOROUGH = Object.freeze({
     MN: "Manhattan",
     BX: "Bronx",
     BK: "Brooklyn",
@@ -389,7 +389,7 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
     SI: "Staten Island",
   });
   for (const match of body.matchAll(/\b(MN|BX|BK|QN|SI)(\d{2})\b/g)) {
-    const boro = CD_TOKEN_BORO[match[1].toUpperCase()];
+    const boro = CD_PREFIX_TO_BOROUGH[match[1].toUpperCase()];
     const num = Number(match[2]);
     if (!boro || !Number.isFinite(num) || num < 1 || num > 18) continue;
     const prefix = { Manhattan: "M", Bronx: "X", Brooklyn: "K", Queens: "Q", "Staten Island": "R" }[boro];

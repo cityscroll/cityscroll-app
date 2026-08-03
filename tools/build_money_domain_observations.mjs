@@ -85,18 +85,26 @@ function stampRow(raw, sourceSystem) {
     scope: "unlocated",
     unlocated_reason: place?.unlocated_reason || "no_place_signal",
   };
-  // Public snapshot: no raw body (emails / phones occasionally appear in award prose).
+  // Public map stamp: scope + boroughs/CDs + methods only.
+  // Drop addresses and evidence spans (street text is not needed for choropleth).
+  delete stamp.addresses;
+  if (stamp.derivation && typeof stamp.derivation === "object") {
+    const { methods, confidence, role, confidence_tier } = stamp.derivation;
+    stamp.derivation = {
+      ...(methods ? { methods } : {}),
+      ...(confidence != null ? { confidence } : {}),
+      ...(role ? { role } : {}),
+      ...(confidence_tier ? { confidence_tier } : {}),
+    };
+  }
+  // Public snapshot: compact place stamp only — no award prose, vendor identity,
+  // or address (those can re-derive offline from Open Data if needed).
   return {
     request_id: row.request_id,
     start_date: row.start_date,
     agency_name: row.agency_name,
     type_of_notice_description: row.type_of_notice_description,
-    short_title: row.short_title,
     pin: row.pin,
-    contract_amount: row.contract_amount,
-    vendor_name: row.vendor_name,
-    vendor_address: row.vendor_address,
-    category_description: row.category_description,
     source_system: sourceSystem,
     place: stamp,
   };
