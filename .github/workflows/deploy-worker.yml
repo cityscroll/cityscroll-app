@@ -41,6 +41,11 @@ jobs:
           workingDirectory: worker
           wranglerVersion: "4.110.0"
           command: d1 migrations apply crol-notices --remote
+      # Wrangler rewrites Cron Trigger configuration on every deploy. Cloudflare says
+      # trigger changes can take up to 15 minutes to propagate, so a deploy immediately
+      # before 13:00 UTC can suppress that day's digest invocation.
+      - name: Keep deploys clear of the digest cron
+        run: node tools/wait_for_digest_cron_window.mjs
       - name: Deploy
         uses: cloudflare/wrangler-action@v3.14.1
         with:

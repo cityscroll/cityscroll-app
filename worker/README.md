@@ -6,11 +6,10 @@ The thin serverless backend for **[CityScroll](https://cityscroll.org)** — a s
 a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
 the worker — every feature degrades gracefully when it's absent.
 
-The same worker answers the canonical `cityscroll.org` / `www.cityscroll.org` site
-hosts by reverse-proxying the GitHub Pages origin at `crol-list.org` byte-for-byte
-(`src/mirror.mjs`). The old hostname's direct-visitor redirect excludes Worker
-subrequests, preventing a mirror loop. CORS allowlists use CityScroll by default
-while retaining the old origins for compatibility.
+Cloudflare Pages owns the canonical `cityscroll.org` / `www.cityscroll.org` site
+hostnames. This Worker owns only `api.cityscroll.org` and the compatibility alias
+`api.crol-list.org`; do not add the public Pages hostnames to `wrangler.toml` routes.
+CORS allowlists retain the old origins for compatibility.
 
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
@@ -20,7 +19,7 @@ while retaining the old origins for compatibility.
 ## How it all plugs together
 
 ```
-   Browser (cityscroll.org, mirrored from static GitHub Pages)
+   Browser (cityscroll.org, served by Cloudflare Pages)
         │
         │  most queries go straight to NYC Open Data (CORS-open, no key)
         ├───────────────────────────►  Socrata SODA / GeoSearch / MapPLUTO
