@@ -26,10 +26,19 @@ test("money: clamps junk / out-of-range (defense in depth)", () => {
 
 test("land: only land fields; borough validated to the 5", () => {
   const out = sanitize("land", { keywords: ["housing"], boro: "brooklyn", status: "all", minAmount: 9999 /* not a land field */ });
-  assert.deepEqual(Object.keys(out).sort(), ["boro", "keywords", "status"]);
+  assert.deepEqual(Object.keys(out).sort(), ["boro", "communityDistrict", "councilDistrict", "keywords", "nearMe", "status"]);
   assert.equal(out.boro, "Brooklyn"); // normalized to canonical casing
   assert.equal(out.status, "all");
   assert.deepEqual(out.keywords, ["housing"]);
+});
+
+test("land: council + community district clamped", () => {
+  const out = sanitize("land", { councilDistrict: "33", communityDistrict: "k02", nearMe: true });
+  assert.equal(out.councilDistrict, "33");
+  assert.equal(out.communityDistrict, "K02");
+  assert.equal(out.nearMe, true);
+  assert.equal(sanitize("land", { councilDistrict: "99" }).councilDistrict, null);
+  assert.equal(sanitize("land", { communityDistrict: "ZZ9" }).communityDistrict, null);
 });
 
 test("land: a neighborhood is not a borough -> null", () => {
@@ -39,7 +48,8 @@ test("land: a neighborhood is not a borough -> null", () => {
 test("people: lookupType constrained to role|person", () => {
   assert.equal(sanitize("people", { lookupType: "person" }).lookupType, "person");
   assert.equal(sanitize("people", { lookupType: "banana" }).lookupType, null);
-  assert.deepEqual(Object.keys(sanitize("people", {})).sort(), ["keywords", "lookupType"]);
+  assert.deepEqual(Object.keys(sanitize("people", {})).sort(), ["keywords", "lookupType", "view"]);
+  assert.equal(sanitize("people", { view: "guide" }).view, "guide");
 });
 
 test("meetings: date and affected-area fields are constrained", () => {
@@ -63,7 +73,7 @@ test("unknown lens falls back to money shape", () => {
   // money's field list is the general procurement-notice filter schema (see AGENTS.md's
   // "Alerts NL query" section for the inventory) — additive, so this list only ever grows.
   assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(),
-    ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "noticeType"]);
+    ["agency", "category", "closingWeek", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "route", "tab"]);
 });
 
 test("money: noticeType constrained to award|solicitation|null", () => {
@@ -80,7 +90,7 @@ test("alerts: reuses money's full general schema, plus watchType/place for rezon
     category: "Goods", months: 3, noticeType: "award", excludeSpecial: true,
   });
   assert.deepEqual(Object.keys(out).sort(),
-    ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "noticeType", "place", "watchType"]);
+    ["agency", "category", "closingWeek", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "place", "route", "tab", "watchType"]);
   assert.equal(out.watchType, "rezone");
   assert.equal(out.place, "79 Rivington");
   // A rezone watch has no dollar amount, agency, or deadline, but sanitize() clamps each
@@ -95,6 +105,23 @@ test("alerts: reuses money's full general schema, plus watchType/place for rezon
   assert.equal(out.excludeSpecial, true);
   assert.equal(sanitize("alerts", { watchType: "bigaward" }).watchType, null, "old single-payload values no longer valid");
   assert.equal(sanitize("alerts", { watchType: "nope" }).watchType, null);
+});
+
+test("money: closingWeek and entity route fields clamp", () => {
+  const close = sanitize("money", { closingWeek: true, noticeType: "solicitation" });
+  assert.equal(close.closingWeek, true);
+  const route = sanitize("money", { route: "agency", name: "Parks and Recreation", tab: "forecast" });
+  assert.equal(route.route, "agency");
+  assert.equal(route.name, "Parks and Recreation");
+  assert.equal(route.tab, "forecast");
+  assert.equal(sanitize("money", { route: "dossier" }).route, null);
+});
+
+test("rules/property/meetings: process stages clamp to known rails", () => {
+  assert.equal(sanitize("rules", { process: "public_process" }).process, "public_process");
+  assert.equal(sanitize("property", { process: "hearing" }).process, "hearing");
+  assert.equal(sanitize("meetings", { process: "agenda", when: "week" }).process, "agenda");
+  assert.equal(sanitize("rules", { process: "mystery" }).process, null);
 });
 
 test("alerts: the general case (no watchType) keeps ANY combination of the general schema's fields", () => {

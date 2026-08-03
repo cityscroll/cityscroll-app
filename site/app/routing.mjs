@@ -165,14 +165,15 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 // an unexpected extra key or an out-of-range value fail soft (silently dropped, not an error)
 // rather than break rendering.
 const DEEPLINK_LENSES = {
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
-  people:   ["keywords", "lookupType"],
-  land:     ["keywords", "boro", "status"],
-  property: ["keywords", "agency"],
-  rules:    ["keywords", "agency"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow"],
-  entity:   ["name", "kind"],
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
+  // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
+  people:   ["keywords", "lookupType", "view"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
+  property: ["keywords", "agency", "process", "stage", "asset", "borough", "nearMe"],
+  rules:    ["keywords", "agency", "process"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
+  entity:   ["name", "kind", "tab"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
   award:    ["requestId", "agency"],
 };
 const DEEPLINK_CATEGORIES = ["Goods", "Goods and Services", "Services (other than human services)",
@@ -194,13 +195,26 @@ function deeplinkClampField(name, v){
     case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
     case "neighborhood": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
     case "locationScope": return v==="citywide-unlocated"?v:null;
-    case "dateWindow": return ["week","month","upcoming","past"].includes(v)?v:null;
+    case "dateWindow": return ["week","month","upcoming"].includes(v)?v:null;
     case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
+    case "view": return v==="guide" ? "guide" : null;
     case "name": return typeof v==="string" && v.trim() ? v.replace(/\s+/g," ").trim().slice(0,120) : null;
     case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
     case "watchType": return v==="rezone" ? "rezone" : null;
     case "place": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "requestId": return typeof v==="string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
+    case "closingWeek": return !!v;
+    case "route": return v==="agency" || v==="vendor" ? v : null;
+    case "tab": return v==="forecast" || v==="overview" ? v : null;
+    case "communityDistrict": { const s=typeof v==="string"?v.trim().toUpperCase():""; return /^(?:M|X|K|Q|R)\d{2}$/.test(s)?s:null; }
+    case "councilDistrict": { const s=(typeof v==="string"||typeof v==="number")?String(v).trim():""; return /^(?:[1-9]|[1-4]\d|5[01])$/.test(s)?s:null; }
+    case "nearMe": return !!v;
+    case "process": {
+      const allowed=["proposal","public_process","adoption","effective","unstaged","hearing","auction_or_rfp","award_or_conveyance","scheduled","agenda","held","outcomes"];
+      return allowed.includes(v)?v:null;
+    }
+    case "stage": { const s=typeof v==="string"?v.trim():""; return s&&s!=="all"?s.slice(0,40):null; }
+    case "asset": { const s=typeof v==="string"?v.trim():""; return s&&s!=="all"?s.slice(0,40):null; }
     default: return null;
   }
 }

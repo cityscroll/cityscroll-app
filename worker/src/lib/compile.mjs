@@ -54,7 +54,10 @@ export function compileSub(sub, todayISO) {
     // open bids do not (EDA) — so an amount bound alone still implies the award query. This
     // fallback is what makes every subscription stored before noticeType existed keep working
     // unchanged.
-    const wantsAward = f.noticeType === "award" || (!f.noticeType && (f.minAmount || f.maxAmount));
+    // Entity/agency forecast routes are not SODA list queries — handled by the client
+    // (location.hash = #agency/…?tab=forecast). Count them as fruitless for list compile.
+    if (f.route === "agency" || f.route === "vendor") return null;
+    const wantsAward = f.noticeType === "award" || (!f.noticeType && (f.minAmount || f.maxAmount) && !f.closingWeek);
     if (wantsAward) {
       // Amount-validity cap per the crol-analyzer EDA: rows >= $10B are data-entry
       // errors (max legitimate award ≈ $6.68B — the old $5B cap wrongly excluded it).
@@ -71,7 +74,14 @@ export function compileSub(sub, todayISO) {
       return { url: SODA, idField: "request_id", kind: "award", params: awardParams };
     }
     let where = `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`;
-    if (f.months) where += ` AND due_date <= '${monthsFromISO(todayISO, Number(f.months))}'`;
+    if (f.closingWeek) {
+      // Same week window the Money "Closing this week" chip uses (7 calendar days).
+      const d = new Date(todayISO + "T00:00:00Z");
+      d.setUTCDate(d.getUTCDate() + 7);
+      where += ` AND due_date <= '${d.toISOString().slice(0, 10)}'`;
+    } else if (f.months) {
+      where += ` AND due_date <= '${monthsFromISO(todayISO, Number(f.months))}'`;
+    }
     const params = {
       "$select": CR_SELECT,
       "$where": where + catClause + agencyClause,
@@ -136,7 +146,25 @@ export function compileSub(sub, todayISO) {
   }
 
   if (sub.lens === "land") {
-    const params = { "$select": ZAP_SELECT, "$where": "ulurp_non='ULURP'", "$order": "current_milestone_date DESC", "$limit": "25" };
+    // Mirror the Land tab's zapWhere + district filters so suggestion fruitfulness counts
+    // the same surface a click resolves to (borough / community district / council district).
+    let where = "ulurp_non='ULURP'";
+    if (f.status !== "all") where += " AND project_status='Active'";
+    const boro = typeof f.boro === "string" && f.boro.trim() ? f.boro.trim().replace(/'/g, "''") : null;
+    if (boro) where += ` AND borough='${boro}'`;
+    const cd = typeof f.communityDistrict === "string" && /^(?:M|X|K|Q|R)\d{2}$/.test(f.communityDistrict)
+      ? f.communityDistrict
+      : null;
+    if (cd) where += ` AND community_district like '%${cd}%'`;
+    const council = typeof f.councilDistrict === "string" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(f.councilDistrict)
+      ? f.councilDistrict
+      : null;
+    if (council) {
+      // Exact match only: multi-district concatenation cells exist, but Socrata rejects
+      // LIKE on this column for some field types — exact ids still prove fruitfulness.
+      where += ` AND cc_district='${council}'`;
+    }
+    const params = { "$select": ZAP_SELECT, "$where": where, "$order": "current_milestone_date DESC", "$limit": "25" };
     const q = kws.map((k) => REZ_ALIAS[k.toLowerCase()] || k).join(" ");
     if (q) params["$q"] = q;
     return { url: ZAP, idField: "project_id", kind: "rezone", params };
