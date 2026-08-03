@@ -171,6 +171,8 @@ def install_routes(page: Page, fixture: dict[str, Any], unexpected: list[str]) -
     page.route("https://fonts.gstatic.com/**", lambda route: route.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda route: route.abort())
     page.route("https://challenges.cloudflare.com/**", lambda route: route.abort())
+    page.route("https://scripts.clarity.ms/**", lambda route: route.abort())
+    page.route("https://j.clarity.ms/**", lambda route: route.abort())
 
     delay = int(fixture["sourceDelayMs"])
 

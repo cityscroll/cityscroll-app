@@ -1870,7 +1870,7 @@
     std_timeline_entry_html: "اعتبارًا من {date}: كانت {matched} من أصل {total} لغات القانون المحلي رقم 30 في المُبدِّل. هدف إمكانية الوصول: {city} اليوم، وينتقل إلى {next} بحلول {nextdate} لكيانات ولاية نيويورك.",
     std_timeline_loading: "جارٍ تحميل اللقطات…",
     std_timeline_fail: "تعذّر تحميل سجل اللقطات الآن — أعد التحميل للمحاولة مرة أخرى.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">حول</a> · <a href=\"data.html\">البيانات</a> · <a href=\"index.html\">الرئيسية</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">حول</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">سجل التغييرات</a> · <a href=\"index.html\">الرئيسية</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "المسارات المهنية في المدينة",
     staffing_pathways_heading: "اختر خطوتك التالية",

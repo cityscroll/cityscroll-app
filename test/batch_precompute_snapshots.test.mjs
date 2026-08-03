@@ -101,11 +101,12 @@ test("committed data page and land default snapshots exist and parse", () => {
   assert.ok(land.projects[0].project_id);
 });
 
-test("data.html paints from prebuilt snapshot before live SODA", () => {
+test("data.html forwards to public successor paths", () => {
   const src = readFileSync(join(ROOT, "site/data.html"), "utf8");
-  assert.match(src, /data\/data_page_charts\.json/);
-  assert.match(src, /applyChartBundle/);
-  assert.match(src, /loadLiveCharts/);
+  assert.match(src, /data has moved/i);
+  assert.match(src, /location\.replace/);
+  assert.match(src, /about\.html#data/);
+  assert.match(src, /api\.html/);
 });
 
 test("index.html uses land default snapshot on Active ULURP first paint", () => {

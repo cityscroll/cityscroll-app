@@ -1870,7 +1870,7 @@
     std_timeline_entry_html: "{date} تک: مقامی قانون 30 کی {total} زبانوں میں سے {matched} اُس وقت سوئچر میں تھیں۔ رسائی کا ہدف: آج {city}، اور {nextdate} تک ریاست نیویارک کے اداروں کے لیے {next} تک منتقل ہو رہا ہے۔",
     std_timeline_loading: "سنیپ شاٹس لوڈ ہو رہے ہیں…",
     std_timeline_fail: "ابھی سنیپ شاٹ کی تاریخ لوڈ نہیں ہو سکی — دوبارہ کوشش کے لیے ری لوڈ کریں۔",
-    std_foot_html: "CityScroll · <a href=\"about.html\">تعارف</a> · <a href=\"data.html\">ڈیٹا</a> · <a href=\"index.html\">ہوم</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">تعارف</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">تبدیلیوں کی فہرست</a> · <a href=\"index.html\">ہوم</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "شہری ملازمتیں",
     staffing_pathways_heading: "اپنا اگلا قدم منتخب کریں",

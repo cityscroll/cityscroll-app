@@ -1868,7 +1868,7 @@
     std_timeline_entry_html: "Al {date}: {matched} de {total} idiomas de la Ley Local 30 estaban en el selector. Objetivo de accesibilidad: {city} hoy, subiendo a {next} para {nextdate} para las entidades del estado de Nueva York.",
     std_timeline_loading: "Cargando instantáneas…",
     std_timeline_fail: "No se pudo cargar el historial de instantáneas — recargue para volver a intentarlo.",
-    std_foot_html: "CityScroll · <a href=\"about.html\">Acerca de</a> · <a href=\"data.html\">Los datos</a> · <a href=\"index.html\">Inicio</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">Acerca de</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">Registro de cambios</a> · <a href=\"index.html\">Inicio</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "Carreras en la Ciudad",
     staffing_pathways_heading: "Elija su próximo paso",

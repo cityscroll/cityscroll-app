@@ -1868,7 +1868,7 @@
     std_timeline_entry_html: "{date} অনুযায়ী: স্থানীয় আইন ৩০-এর {total}টি ভাষার মধ্যে {matched}টি তখন পরিবর্তকে ছিল। প্রবেশযোগ্যতার লক্ষ্য: আজ {city}, নিউ ইয়র্ক স্টেট সংস্থাগুলোর জন্য {nextdate}-এর মধ্যে {next}-এ উন্নীত হবে।",
     std_timeline_loading: "স্ন্যাপশট লোড হচ্ছে…",
     std_timeline_fail: "এই মুহূর্তে স্ন্যাপশটের ইতিহাস লোড করা যায়নি — আবার চেষ্টা করতে রিলোড করুন।",
-    std_foot_html: "CityScroll · <a href=\"about.html\">সম্পর্কে</a> · <a href=\"data.html\">তথ্য</a> · <a href=\"index.html\">হোম</a>",
+    std_foot_html: "CityScroll · <a href=\"about.html\">সম্পর্কে</a> · <a href=\"api.html\">API</a> · <a href=\"changelog.html\">পরিবর্তনের তালিকা</a> · <a href=\"index.html\">হোম</a>",
     // BEGIN GENERATED CAREER GUIDE TRANSLATIONS
     staffing_pathways_kicker: "সিটি কর্মজীবন",
     staffing_pathways_heading: "আপনার পরবর্তী ধাপ বেছে নিন",
