@@ -332,6 +332,16 @@ compute-on-miss. Verify:
 test/land_event_spine.test.mjs`. UI capture:
 `python3 tools/capture_land_event_spine.py`.
 
+**Notice-level ZAP project spine:** City Record land notices (`#notice/{id}`)
+mount the same phase-grouped ULURP timeline on `#nland` when a strict warehouse
+join resolves. Pure join: `site/notice_land_spine.mjs` (ULURP / project-id →
+`zap_projects_warehouse_lookup.json`); spine + statutory clocks + zoning stats
+from edge `GET /zap-outcomes` via existing `landSpineHTML` / `land_phase_spine.mjs`
+(no live ZAP API from the browser). Property Disposition is the wrong universe —
+never eligible. Demo: `#notice/20230912001` → project `2022M0258`. Verify:
+`node --test test/notice_land_spine.test.mjs`. Capture:
+`python3 tools/capture_notice_land_zap_spine.py`.
+
 **ULURP statutory clocks (cs-pred-03):** after certification, Charter §197-c
 windows (CB 60 → BP +30 → CPC +60 → Council +50 → Mayor +5, ≤205 days) are
 batch-stamped on `/zap-outcomes` as `statutory_clock` + `cityscroll.prediction.v0`
