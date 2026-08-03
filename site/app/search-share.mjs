@@ -470,7 +470,10 @@ function nlFeed(key, placeholder){
                (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"",
                (key==='meetings'&&f.borough)?`<span class="qchip">${t("affected_area_label")} <b>${f.borough}</b></span>`:"",
                (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
-               (key==='property'&&f.borough)?`<span class="qchip">${t("borough_label")} <b>${f.borough}</b></span>`:"" ];
+               (key==='property'&&f.borough)?`<span class="qchip">${t("borough_label")} <b>${f.borough}</b></span>`:"",
+               (key==='property'&&f.asset&&f.asset!=="all")?`<span class="qchip">${t("property_asset_rail_label")} <b>${f.asset}</b></span>`:"",
+               (key==='property'&&(f.saleMethod||f.method)&& (f.saleMethod||f.method)!=="all")?`<span class="qchip">${t("property_sale_method_rail_label")} <b>${f.saleMethod||f.method}</b></span>`:"",
+               (key==='property'&&(f.priceBand||f.price)&&(f.priceBand||f.price)!=="all")?`<span class="qchip">${t("property_price_rail_label")} <b>${f.priceBand||f.price}</b></span>`:"" ];
     },
     apply:f=>{
       if(key==='meetings'){
@@ -492,6 +495,10 @@ function nlFeed(key, placeholder){
         }
         if(f.stage) propStageSel=f.stage;
         if(f.asset) propAsset=f.asset;
+        if(f.saleMethod || f.method) propSaleMethod=f.saleMethod||f.method;
+        if(f.priceBand || f.price) propPriceBand=f.priceBand||f.price;
+        if(f.sort) propSort=f.sort;
+        const sortEl=$("#propsort"); if(sortEl && propSort) sortEl.value=propSort;
         if(f.nearMe){
           const btn=$("#propertylocation");
           if(btn && !btn.disabled){ btn.click(); }
@@ -526,6 +533,9 @@ function searchFilterFromHash(lens, hash){
   }
   if(lens==="property"){
     filter.asset=q.get("asset")||"all";
+    filter.saleMethod=q.get("method")||"all";
+    filter.priceBand=q.get("price")||"all";
+    filter.sort=q.get("sort")||"closing_soon";
     filter.process=q.get("process")||"all";
     filter.stage=q.get("stage")||"all";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
@@ -607,7 +617,12 @@ function bindClearSearchState(lens, root){
     $("#"+lens+"kw").value="";
     const when=$("#"+lens+"when"); if(when) when.value="upcoming";
     if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; meetingsProcessSel="all"; meetingsPlaceGroupSel="flat"; }
-    if(lens==="property"){ propAsset="all"; propStageSel="all"; propProcessSel="all"; $("#propertyboro").value=""; $("#propertyneighborhood").value=""; }
+    if(lens==="property"){
+      propAsset="all"; propStageSel="all"; propProcessSel="all";
+      propSaleMethod="all"; propPriceBand="all"; propSort="closing_soon";
+      const sortEl=$("#propsort"); if(sortEl) sortEl.value="closing_soon";
+      $("#propertyboro").value=""; $("#propertyneighborhood").value="";
+    }
     if(lens==="rules"){ rulesProcessSel="all"; }
     $("#nltrans-"+lens).innerHTML="";
     loadSection(lens);
@@ -868,7 +883,25 @@ function exportSpec(lens){
     ["Request ID",r=>r.request_id],["Permalink",r=>noticeLink(r.request_id)],
     ["City Record URL",r=>REQ_URL(r.request_id)]
   ];
-  if(lens==="property") columns.splice(3,0,[t("csv_asset_type"),r=>r._asset||""],[t("property_process_label"),r=>r.disposition_stage||""],["Lifecycle",r=>r._stage||""]);
+  if(lens==="property"){
+    columns.splice(3,0,
+      [t("csv_asset_type"),r=>r._asset||(r.commercial&&r.commercial.item&&r.commercial.item.category)||""],
+      [t("csv_commercial_item"),r=>(r.commercial&&r.commercial.glance&&r.commercial.glance.item)||(r.commercial&&r.commercial.item&&r.commercial.item.label)||""],
+      [t("csv_primary_price"),r=>{
+        const p=r.commercial&& (r.commercial.primary_price|| (r.commercial.glance&&r.commercial.glance.price));
+        return p ? (p.display || (p.amount!=null?String(p.amount):"")) : "";
+      }],
+      [t("csv_price_kind"),r=>{
+        const p=r.commercial&& (r.commercial.primary_price|| (r.commercial.glance&&r.commercial.glance.price));
+        return p&&p.kind ? p.kind : "";
+      }],
+      [t("csv_sale_method"),r=>(r.commercial&&r.commercial.sale_method&&r.commercial.sale_method.method)||""],
+      [t("csv_close_date"),r=>(r.commercial&&r.commercial.close_date)||r.event_date||""],
+      [t("property_process_label"),r=>r.disposition_stage||""],
+      ["Lifecycle",r=>r._stage||""],
+      [t("csv_sale_eligible"),r=>r.commercial&&r.commercial.sale_eligible===false?"no":"yes"],
+    );
+  }
   return {rows,columns};
 }
 function exportLensCsv(lens){

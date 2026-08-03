@@ -20,6 +20,8 @@ export function slimCommercial(commercial) {
   return {
     schema: commercial.schema,
     request_id: commercial.request_id,
+    disposition_class: commercial.disposition_class || null,
+    sale_eligible: commercial.sale_eligible !== false,
     item: commercial.item,
     quantities: Array.isArray(commercial.quantities) ? commercial.quantities.slice(0, 4) : [],
     price_facts: Array.isArray(commercial.price_facts) ? commercial.price_facts.slice(0, 6) : [],
