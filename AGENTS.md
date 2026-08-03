@@ -713,6 +713,27 @@ recovery under queue mode.
 
 Characterization: `node --test test/markseen_policy.test.mjs test/digest_catchup.test.mjs`.
 
+## Digest email time + action awareness (render only)
+
+Digest HTML (`subDigestHtml` / rollup) carries the same event-clock deadline state
+and next-action extraction as the site action rails — **content only**, not send
+timing or Resend config. Pure model: `worker/src/lib/digest_item_awareness.mjs`
+(reuses `site/action_registry.js` via `worker/src/lib/action_registry.mjs`).
+Phase + open / closing-soon / closed from **event** time; specific next step
+(package URL, comment link, hearing venue/testimony, award vendor/amount) when
+ingested fields support it; otherwise one honest pointer. Delivery identity stays
+`docs/digest-time-ontology.md` / `alert_temporal.mjs` (seen: keys unchanged).
+**Delivery-continuity regressions** (required for any digest path change):
+`worker/test/digest_delivery_continuity.test.mjs` locks golden `seen:` keys per
+item type, proves pre-existing subscriber state neither floods nor skips after
+upgrade, and covers timestamp-republish + new-actionable-state through the
+upgraded render path — no post-deploy watermark backfill.
+Verify: `node --test worker/test/digest_item_awareness.test.mjs
+worker/test/digest_delivery_continuity.test.mjs
+worker/test/alert_temporal.test.mjs`. Dry-run evidence:
+`node tools/render_digest_awareness_evidence.mjs` →
+`docs/evidence/digest-time-action-awareness/`.
+
 ## Civic-time event contract
 
 Shared event envelope + bounded kind registry for Money/Rules/Land/Meetings.

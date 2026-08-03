@@ -311,6 +311,7 @@ test("multi-watch with only one matching section: subject names N watches, body 
     assert.match(mail.html, /of 3 watches with updates/i);
     // Quiet + weekly sections stay in the body (not collapsed to a single-watch email).
     assert.match(mail.html, /zzzznonexistentterm|Nothing new for this watch/i);
+    // FIXTURE_NOW freezes wall clock so weekly skip path is deterministic (non-Monday).
     assert.match(mail.html, /weekly|Monday/i);
     assert.match(mail.html, /Unsubscribe from all|unsubscribe/i);
   });
