@@ -6,14 +6,9 @@ name: CI
 
 on:
   pull_request:
-    # Automated changelog PRs only touch these guarded paths and dispatch CI explicitly
-    # (workflow_dispatch from update-changelog.yml). PR branch filters match the base
-    # branch, so they cannot exclude bot/changelog-update. merge_group still runs CI so
-    # the merge queue can see required checks; those jobs take a fast path when the
-    # path set is changelog-only (see jobs.changes / changelog_only).
+    # Machine changelog data commits do not need the pull-request suite.
     paths-ignore:
       - site/changelog-data.json
-      - site/changelog.html
     types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
   merge_group:
   push:
@@ -35,8 +30,8 @@ jobs:
       perf: ${{ steps.filter.outputs.perf }}
       worker: ${{ steps.filter.outputs.worker }}
       docs: ${{ steps.filter.outputs.docs }}
-      # true only when every changed path is one the changelog bot owns
-      # (site/changelog-data.json, site/changelog.html). Used so required checks
+      # true only when every changed path is the machine changelog data contract.
+      # Used so required checks
       # still report SUCCESS on changelog-only PRs without running the full suite —
       # otherwise path filters + skipped jobs leave the merge queue waiting forever.
       changelog_only: ${{ steps.path_class.outputs.changelog_only }}
@@ -143,7 +138,7 @@ jobs:
         if: needs.changes.outputs.unit_full != 'true'
         run: |
           if [ "${{ needs.changes.outputs.changelog_only }}" = "true" ]; then
-            echo "Only site/changelog-data.json and site/changelog.html changed."
+            echo "Only site/changelog-data.json changed."
           else
             echo "Docs-only path set (docs/** and/or top-level Markdown)."
           fi
@@ -467,60 +462,6 @@ jobs:
 
   # Pre-merge changelog reading-level safeguard — deliberately NOT frontend-gated.
   # update-changelog.yml harvests a "What this means for you" entry only from a PR labeled
-  # `changelog:major`, so this job runs on exactly those PRs (any file set — worker-only and
-  # docs-only included) and is skipped otherwise (a skipped conclusion satisfies required
-  # checks and merge queues). It simulates the exact regeneration the merge-triggered workflow
-  # would perform and runs the identical ratchet check against the result, catching a
-  # changelog-entry reading-level regression on the FEATURE PR itself, before merge, instead of
-  # only on the automated bot PR after merge (see AGENTS.md's changelog section — two separate
-  # merged PRs stranded the bot PR this way). update-changelog.yml's own post-merge ratchet
-  # check is untouched by this addition.
-  changelog-reading-level:
-    name: Changelog reading-level gate (pre-merge simulation)
-    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'changelog:major')
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install readable-or-else
-        run: pip install git+https://github.com/jimdc/readable-or-else.git
-      - name: Changelog reading-level gate — unit tests (fixtures for the pre-merge simulation)
-        run: node --test test/check_changelog_reading_level.test.mjs
-      - name: Load the changelog regeneration base (bot branch's pending entries if present; changelog.html always stays this tree's own current copy — see tools/prepare-changelog-base.sh)
-        env:
-          BOT_BRANCH: bot/changelog-update
-        run: |
-          mkdir -p "$RUNNER_TEMP/changelog-sim"
-          bash tools/prepare-changelog-base.sh "$BOT_BRANCH"
-          cp site/changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
-          cp site/changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
-      - name: Simulate this PR's merged changelog entry and gate its reading level
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
-        run: |
-          printf '%s' "$PR_BODY" > "$RUNNER_TEMP/changelog-sim/pr-body.md"
-          node tools/check_changelog_reading_level.mjs \
-            --base-data "$RUNNER_TEMP/changelog-sim/base-data.json" \
-            --base-html "$RUNNER_TEMP/changelog-sim/base.html" \
-            --i18n site/i18n.js \
-            --number "$PR_NUMBER" \
-            --url "$PR_URL" \
-            --merged-at "$(date -u +%Y-%m-%d)" \
-            --body-file "$RUNNER_TEMP/changelog-sim/pr-body.md" \
-            --labels "$PR_LABELS" \
-            --baseline site/reading-level-baseline.json
-
   functional:
     name: Functional (Playwright, manual)
     needs: changes

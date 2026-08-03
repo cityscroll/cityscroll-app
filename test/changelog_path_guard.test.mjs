@@ -23,12 +23,12 @@ function run(paths) {
   }
 }
 
-test("both changelog-owned files changed: guard arms", () => {
+test("the machine changelog data file is allowed", () => {
   const result = run(["site/changelog-data.json", "site/changelog.html"]);
-  assert.equal(result.code, 0);
+  assert.equal(result.code, 1);
 });
 
-test("only one changelog-owned file changed: guard arms", () => {
+test("the data-only path set is allowed", () => {
   const result = run(["site/changelog-data.json"]);
   assert.equal(result.code, 0);
 });

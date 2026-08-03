@@ -29,7 +29,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## CI path fast paths and merge queue
 
 - Required checks always report a conclusion (never stay missing). Fast paths:
-  `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
+  `changelog_only` (the machine changelog data file) and `docs_only` (`tools/docs-only-path-guard.sh`)
   skip the full unit suite; non-frontend PRs skip browser a11y / reading-level
   heavy work while still posting SUCCESS. Performance budgets (20-sample p95) use a
   narrower `perf` path filter (site HTML/CSS/JS/media + budget harness) — not all of
@@ -593,23 +593,19 @@ Detect orphaned/contradictory Money stages on assembled lifecycles and measure t
   worker/test/fixtures/lifecycle-coherence --check`
 
 
-## Changelog harvest
+## Machine changelog harvest
 
-Public surface: `site/changelog-data.json` + `site/changelog.html` (not repo-root). Workflow:
+Team data contract: `site/changelog-data.json` (not repo-root). Workflow:
 `.github/workflows/update-changelog.yml` → `tools/prepare-changelog-base.sh` →
 `tools/gen_changelog.mjs`. Editorial bar: `changelog:major` **and** an accepted user-impact
 heading (canonical `## What this means for you`; aliases in `tools/changelog_extract.mjs`).
-**Vacuity tripwire:** major label with nothing extractable, or major with an empty `site/`
-delta that is not already-recorded, fails the job — never a green no-op. Convention:
+**Vacuity tripwire:** a major label with nothing extractable fails the job. Convention:
 `CONTRIBUTING.md` “Changelog entries”. Characterization: `test/changelog_*.test.mjs`,
 `test/changelog_entry_gate.test.mjs`.
 
-**Self-merge / merge queue:** main’s ruleset requires three named checks (see
-`update-changelog.yml` `REQUIRED_CHECKS` and `tools/merge_queue_policy.json`). Changelog-only
-bot PRs take `ci.yml`’s `changelog_only` fast path so those check names report SUCCESS within
-about a minute (workflow_dispatch + merge_group); without that, the queue waits forever.
-Auto-merge arms with `gh pr merge --auto` (no strategy flag — the queue’s method is SQUASH).
-Path guard: `tools/changelog-path-guard.sh`. Characterization: `test/changelog_queue_checks.test.mjs`.
+The workflow publishes only that file to the existing `bot/changelog-update` branch. It does
+not generate `site/changelog.html`, open a pull request, or enter the merge queue. Path guard:
+`tools/changelog-path-guard.sh`. Characterization: `test/changelog_queue_checks.test.mjs`.
 
 ## Live-URL smoke target sets
 

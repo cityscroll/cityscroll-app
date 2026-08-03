@@ -39,8 +39,8 @@ These rules built the project and they're not aspirational — every shipped fea
    it. The harness has caught a real bug in nearly every wave; trust it.
 3. **Docs land in the same session as the change.** A feature that ships updates `README.md`
    and, if it changed a route or a defense, the worker README's table. No "docs later." The
-   `changelog.html` entry is automatic (see below) — write the marker section, don't hand-edit
-   the page.
+   machine release-note entry is automatic (see below) — write the marker section, don't
+   hand-edit the data contract.
 4. **Live probes after deploy.** After `wrangler deploy`, hit the changed routes on
    `api.cityscroll.org` and confirm real behavior (this caught a production DNS incident within
    minutes once — see the changelog).
@@ -62,11 +62,11 @@ Ready status does not deploy either stable or beta. Beta promotion remains a
 separate, manually triggered exact-commit operation. See
 [docs/beta-channel.md](docs/beta-channel.md) for deployment and rollback.
 
-## Changelog entries
+## Machine release-note entries
 
-`changelog.html`'s "Recent updates" list is generated, not hand-edited, and it's curated: it
-exists to surface the handful of changes worth a returning visitor's attention, not to mirror
-every merged PR. Two things earn a PR an entry, both required:
+`site/changelog-data.json` is generated, not hand-edited, and curated for the team surface.
+It records the handful of changes worth calling out rather than mirroring every merged PR.
+Two things earn a PR an entry, both required:
 
 1. A short user-impact section in the PR body — plain language, present tense, no code names
    or internal jargon. Canonical heading: `## What this means for you`. Accepted aliases
@@ -75,13 +75,14 @@ every merged PR. Two things earn a PR an entry, both required:
 2. The `changelog:major` label, applied when the change is genuinely significant to a
    visitor — a new feature, a new language, a meaningful fix to something visibly broken.
    Most PRs should NOT carry this label: a bug fix, an internal/tooling change, a wording
-   tweak, or a refinement to something that already shipped is real work but not a changelog
+   tweak, or a refinement to something that already shipped is real work but not a release-note
    moment. If in doubt, leave it off — the PR history is still the complete record; the
-   changelog page is the curated highlights, not the log.
+   machine data is the curated highlights, not the log.
 
 A merge-triggered workflow (`.github/workflows/update-changelog.yml`) checks for the label,
-then extracts the marker line, and regenerates the page under `site/changelog-data.json` and
-`site/changelog.html`. No label → no entry (intentional). The label without an accepted
+then extracts the marker line and publishes a data-only commit on the bot-owned branch. It
+does not generate a public page or open a pull request. No label → no entry (intentional).
+The label without an accepted
 user-impact section fails the workflow closed — a silent green no-op is not allowed for an
 explicitly major-labeled merge.
 
@@ -127,7 +128,7 @@ cd worker && npx wrangler deploy        # deploy (needs Cloudflare auth)
 
 - **Use cases, UX feedback, testing** — open an issue describing the real-world task ("as a
   vendor I need to…"). These steer the roadmap more than code does.
-- **Docs, outreach, research** — the About/api pages, the changelog's plain-language lines, and
+- **Docs, outreach, research** — the About/API pages, release-note lines, and
   anything that helps the right people find the tool.
 - **Code** — the site is dependency-free static HTML plus browser-native ES modules under
   `site/app/` (vanilla JS, no build step); the backend is one Cloudflare Worker under `worker/`.

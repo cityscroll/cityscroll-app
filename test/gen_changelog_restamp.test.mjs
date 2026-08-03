@@ -17,7 +17,7 @@ test("restampI18nVersion normalizes a stale committed hash to the build token", 
   assert.equal(out, '<script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>\n<p>unrelated</p>');
 });
 
-test("a full --rebuild run cannot put a generated hash back into source", () => {
+test("a full --rebuild run validates data without rewriting the retired page", () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "gen-changelog-restamp-"));
   try {
     fs.mkdirSync(path.join(tmp, "tools"));
@@ -38,8 +38,9 @@ test("a full --rebuild run cannot put a generated hash back into source", () => 
     execFileSync(process.execPath, [path.join(tmp, "tools", "gen_changelog.mjs"), "--rebuild"], { cwd: tmp });
 
     const rebuilt = fs.readFileSync(path.join(tmp, "site", "changelog.html"), "utf8");
-    assert.match(rebuilt, /src="i18n\.js\?v=__I18N_ASSET_VERSION__"/);
-    assert.doesNotMatch(rebuilt, /v=aaaaaaaa/);
+    assert.match(rebuilt, /v=aaaaaaaa/);
+    const data = JSON.parse(fs.readFileSync(path.join(tmp, "site", "changelog-data.json"), "utf8"));
+    assert.equal(data.entries.length, 1);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
