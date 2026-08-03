@@ -8,6 +8,8 @@
 // credibility more than a visible gap.
 //
 // Secondary: always-null / broken-join feature inventory (non-null example test).
+// Tertiary: exam-cycle temporal incoherence — post-list events inside an open
+// application window without continuous-filing modeling (owner-report class).
 
 import { makeDimensionCard } from "./shared.mjs";
 import {
@@ -18,6 +20,7 @@ import {
   classifyNotPublishedClaim,
   NOT_PUBLISHED_THRESHOLDS,
 } from "./not_published_rate.mjs";
+import { measureExamTemporalIncoherence } from "../../site/exam_process_spine.mjs";
 
 export const DIMENSION_ID = "data-integrity";
 
@@ -36,6 +39,8 @@ export {
  * @param {Array<object>} [input.not_published_claims] — pre-merged claims with samples
  * @param {Array<object>} [input.features] — secondary feature inventory
  * @param {object} [input.thresholds] — override red_flag_rate / min_sample
+ * @param {object|Array} [input.staffing_exams] — staffing_exams artifact or exam array
+ * @param {Array<object>} [input.exams] — exam rows for cycle-coherence check
  */
 export function evaluateDataIntegrity(input = {}) {
   const cards = [];
@@ -158,6 +163,46 @@ export function evaluateDataIntegrity(input = {}) {
     }));
   }
 
+  // ── Tertiary: exam cycle temporal incoherence ────────────────────────
+  const examRows = Array.isArray(input.exams)
+    ? input.exams
+    : Array.isArray(input.staffing_exams?.exams)
+      ? input.staffing_exams.exams
+      : Array.isArray(input.staffing_exams)
+        ? input.staffing_exams
+        : [];
+  const cycleCoherence = measureExamTemporalIncoherence(examRows);
+  if (cycleCoherence.exam_cycle_temporal_incoherence_count > 0) {
+    const sample = cycleCoherence.findings.slice(0, 8).map((f) => f.exam_number).filter(Boolean);
+    cards.push(makeDimensionCard({
+      dimension: DIMENSION_ID,
+      slug: "exam-cycle-temporal-incoherence",
+      title: "Repair exam post-list events inside open application windows",
+      rank_score: 93,
+      evidence: {
+        kind: "exam_cycle_temporal_incoherence",
+        method: "post_list_vs_application_window",
+        exam_cycle_temporal_incoherence_count:
+          cycleCoherence.exam_cycle_temporal_incoherence_count,
+        exam_count: cycleCoherence.exam_count,
+        rate: cycleCoherence.rate,
+        sample_exam_numbers: sample,
+        class: "exam_cycle_temporal_incoherence",
+      },
+      verify:
+        "node --test test/exam_cycle_coherence.test.mjs test/exam_process_spine.test.mjs",
+      demo_win:
+        "Open exams no longer show eligible-list / certification / hire counts from a different cycle; continuous filing is modeled explicitly when the source says so.",
+      context: [
+        "site/exam_process_spine.mjs",
+        "tools/build_staffing_exams.mjs",
+        "site/data/staffing_exams.json",
+        sample[0] ? `#exam/${sample[0]}` : "#people",
+      ],
+      lesson_class: "exam-cycle-temporal-incoherence",
+    }));
+  }
+
   return {
     dimension: DIMENSION_ID,
     metrics: {
@@ -172,12 +217,21 @@ export function evaluateDataIntegrity(input = {}) {
       thresholds,
       // Secondary feature inventory
       ...featureMetrics,
+      // Exam cycle coherence
+      exam_cycle_temporal_incoherence_count:
+        cycleCoherence.exam_cycle_temporal_incoherence_count,
+      exam_cycle_coherence_checked: cycleCoherence.exam_count,
       // Back-compat aliases used by earlier tests / receipts
       always_null: featureMetrics.always_null,
-      broken_join: featureMetrics.broken_join + credibility.metrics.red_flags,
-      ok: featureMetrics.ok + credibility.metrics.healthy,
+      broken_join: featureMetrics.broken_join
+        + credibility.metrics.red_flags
+        + cycleCoherence.exam_cycle_temporal_incoherence_count,
+      ok: featureMetrics.ok
+        + credibility.metrics.healthy
+        + (cycleCoherence.exam_count - cycleCoherence.exam_cycle_temporal_incoherence_count),
     },
     findings: credibility.findings,
+    exam_cycle_coherence: cycleCoherence,
     cards,
   };
 }

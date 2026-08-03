@@ -3,6 +3,32 @@
   "description": "Field cases for exam → list → appointment process spine (from real staffing shapes).",
   "exams": [
     {
+      "exam_number": "6311",
+      "title": "Police Officer",
+      "application_start": "2025-07-01",
+      "application_end": "2025-07-14",
+      "schedule_status": "scheduled",
+      "eligibility": "open_competitive",
+      "notice_url": null,
+      "outcome": {
+        "application_cycle": "2025",
+        "applicant_count": 1280,
+        "list_establishment": 1010,
+        "certification_count": 74,
+        "appointment_count": 68,
+        "hire_count": 68,
+        "published_on": "2026-01-15"
+      },
+      "list_aggregate": {
+        "list_count": 1983,
+        "established_date": "2025-12-03",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "outcome_gap": null
+    },
+    {
       "exam_number": "6125",
       "title": "Emergency Medical Specialist - EMT (Fire Department)",
       "application_start": "2026-06-15",
@@ -11,6 +37,24 @@
       "eligibility": "open_competitive",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266125000.pdf",
       "fee": 30,
+      "outcome": null,
+      "list_aggregate": null,
+      "outcome_gap": {
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
+      }
+    },
+    {
+      "exam_number": "6125-misjoin",
+      "title": "Regression: mid-window outcomes must not paint post-list stages",
+      "application_start": "2026-06-15",
+      "application_end": "2026-08-07",
+      "schedule_status": "scheduled",
+      "eligibility": "open_competitive",
       "outcome": {
         "application_cycle": "2026",
         "applicant_count": 1280,
@@ -21,24 +65,6 @@
         "published_on": "2026-07-22"
       },
       "list_aggregate": null,
-      "outcome_gap": null
-    },
-    {
-      "exam_number": "6311",
-      "title": "Police Officer",
-      "application_start": "2025-07-01",
-      "application_end": "2025-07-14",
-      "schedule_status": "scheduled",
-      "eligibility": "open_competitive",
-      "notice_url": null,
-      "outcome": null,
-      "list_aggregate": {
-        "list_count": 1983,
-        "established_date": "2025-12-03",
-        "extension_date": null,
-        "title_count": 1,
-        "source_id": "dcas-active-civil-service-list"
-      },
       "outcome_gap": null
     },
     {
@@ -73,6 +99,25 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       }
+    },
+    {
+      "exam_number": "cont-1",
+      "title": "Continuous filing modeled exam",
+      "application_start": "2026-01-01",
+      "application_end": "2026-12-31",
+      "schedule_status": "scheduled",
+      "filing_mode": "continuous",
+      "outcome": {
+        "application_cycle": "2026",
+        "applicant_count": 100,
+        "list_establishment": 80,
+        "certification_count": 10,
+        "appointment_count": 5,
+        "hire_count": 5,
+        "published_on": "2026-06-01"
+      },
+      "list_aggregate": null,
+      "outcome_gap": null
     }
   ]
 }

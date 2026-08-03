@@ -65,6 +65,7 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
   const source_coverage = readJson("entity_resolution/source_coverage.json");
   const gap_taxonomy = readJson("site/data/gap_taxonomy.json");
   const source_contracts = readJson("site/data/source_contracts.json");
+  const staffing_exams = readJson("site/data/staffing_exams.json");
   const registry_sync = checkOntologyRegistrySync();
 
   const crossDir = join(root, "ontology/fixtures/cross_spine");
@@ -124,6 +125,8 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
     lifecycle_coherence_scorecard,
     source_coverage,
     source_contracts,
+    staffing_exams,
+    exams: staffing_exams?.exams || [],
     registry_sync,
     cross_spine,
     cross_spine_bundles,

@@ -216,9 +216,11 @@ test("golden open exams 6125 and 7312 deep-link to OASys NOE pages (not examsfor
 });
 
 test("acceptance cards flip outcome slots from gaps to joined aggregates where published", () => {
-  const withOutcomes = ["6125", "7006"];
+  // Cycle-coherent closed exams may join annual outcomes (published_on after application_end).
+  const withOutcomes = ["6311", "6073"];
   // Open exams without annual or list depth: class-(a) not-yet-ingested (public sources exist).
-  const withoutOutcomes = ["7013", "7016", "7331"];
+  // 6125/7006 stay open-window — mid-window outcome joins are refused.
+  const withoutOutcomes = ["6125", "7006", "7013", "7016", "7331"];
   for (const examNumber of withOutcomes) {
     const exam = artifact.exams.find(item => item.exam_number === examNumber);
     assert.ok(exam?.outcome, examNumber);

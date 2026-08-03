@@ -1,0 +1,35 @@
+{
+  "metric": "exam_cycle_temporal_incoherence_count",
+  "diagnosis": "(a) mis-join — cycle-unaware annual outcome join by bare exam_number",
+  "evidence": {
+    "civil_service_list_rows_for_6125": 0,
+    "prior_emt_list_exam_numbers": [
+      "6053",
+      "5067"
+    ],
+    "exam_number_recurrence_in_schedule_history": 0,
+    "fDNY_fixed_filing_close": "2026-08-07"
+  },
+  "before": {
+    "count": 2,
+    "exams": [
+      "6125",
+      "7006"
+    ]
+  },
+  "after": {
+    "count": 0,
+    "exams": []
+  },
+  "exam_count": 228,
+  "screenshots": {
+    "before": [
+      "docs/screenshots/exam-cycle-coherence/before-6125-390.png",
+      "docs/screenshots/exam-cycle-coherence/before-6125-1440.png"
+    ],
+    "after": [
+      "docs/screenshots/exam-cycle-coherence/after-6125-390.png",
+      "docs/screenshots/exam-cycle-coherence/after-6125-1440.png"
+    ]
+  }
+}
