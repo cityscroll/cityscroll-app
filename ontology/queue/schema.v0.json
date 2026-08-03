@@ -37,7 +37,8 @@
               "readability",
               "ontology-enrichment",
               "coverage",
-              "cross-source-consistency"
+              "cross-source-consistency",
+              "location-resolution"
             ]
           },
           "title": { "type": "string" },
