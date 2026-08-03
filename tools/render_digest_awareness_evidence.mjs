@@ -32,9 +32,7 @@ const fixtures = [
       agency_name: "Department of Transportation",
       type_of_notice_description: "Solicitation",
       due_date: "2026-08-10",
-      email: "example@example.com",
       contact_name: "Testy McTestface",
-      contact_phone: "555-0100",
       pin: "DOT-RFQ-2026-01",
       address_to_request: "1 Example Street, NY",
       selection_method_description: "Competitive Sealed Bid",
@@ -85,11 +83,10 @@ const fixtures = [
       section_name: "Public Hearings and Meetings",
       type_of_notice_description: "Public Hearing",
       event_date: "2026-08-05",
-      email: "example@example.com",
       street_address_1: "1 Example Plaza",
       building_name: "Fixture Hall",
       additional_description_1:
-        "Written testimony may be submitted electronically to example@example.com until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
+        "Written testimony may be submitted electronically until the close of the public hearing. Join via Zoom at https://example.com/join/fixture-hearing.",
     },
   },
   {
