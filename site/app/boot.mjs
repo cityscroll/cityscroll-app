@@ -234,6 +234,8 @@ const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — 
 $("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; debouncedLandSearch(); });
 $("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; landSearch(); });
 $("#lstatus").addEventListener("change", landSearch);
+const lhearingmode=$("#lhearingmode");
+if(lhearingmode) lhearingmode.addEventListener("change", landSearch);
 const landLocationOptions={
   permissions:navigator.permissions,
   geolocation:navigator.geolocation,

@@ -171,6 +171,15 @@ ZAP_ROWS = [
      "public_status": "Completed", "project_status": "Completed", "borough": "Queens",
      "community_district": "7", "actions": "ZM", "mih_flag": "false",
      "current_milestone": "Approved", "current_milestone_date": _iso(-60), "ulurp_numbers": "C260002ZMQ"},
+    # Hermetic field case for ULURP pipeline position + ZAP hearing logistics (#land/2024Q0292).
+    {"project_id": "2024Q0292", "project_name": "108-05 68th Road Rezoning",
+     "project_brief": "Rezoning a daycare site in Forest Hills, Queens.",
+     "primary_applicant": "All My Children Daycare and Nursery School",
+     "public_status": "In Public Review", "project_status": "Active", "borough": "Queens",
+     "community_district": "Q06", "actions": "ZM; ZR", "mih_flag": "false",
+     "current_milestone": "Borough President Review",
+     "current_milestone_date": "2026-07-09T00:00:00.000",
+     "ulurp_numbers": "260234ZMQ; 260235ZRQ"},
 ]
 
 # Wave-2 land default snapshot (site/data/land_default_ulurp.json) paints before SODA.
@@ -434,6 +443,169 @@ NOTICE_LAND_ZAP_OUTCOMES = {
                     "portal_date": "2024-03-13",
                 }
             },
+        },
+    },
+}
+
+# Hermetic /zap-outcomes for #land/2024Q0292 — pipeline sentence + hearing logistics.
+_LAND_PIPELINE_PORTAL = "https://zap.planning.nyc.gov/projects/2024Q0292"
+LAND_PIPELINE_ZAP_OUTCOMES = {
+    "ok": True,
+    "cached": True,
+    "record": {
+        "project_id": "2024Q0292",
+        "project_name": "108-05 68th Road Rezoning",
+        "public_status": "In Public Review",
+        "portal_url": _LAND_PIPELINE_PORTAL,
+        "certified_referred": "2026-05-11",
+        "join": {"matched": True, "method": "exact_project_id"},
+        "filled": True,
+        "n_documents": 0,
+        "approved_actions": [],
+        "dispositions": [],
+        "documents": [],
+        "dob": {"matched": False, "reason": "Demo fixture — no DOB side-car."},
+        "open_data": {
+            "project_id": "2024Q0292",
+            "project_name": "108-05 68th Road Rezoning",
+            "public_status": "In Public Review",
+            "borough": "Queens",
+            "current_milestone": "Borough President Review",
+            "current_milestone_date": "2026-07-09",
+        },
+        "hearing_logistics": [
+            {
+                "representing": "Borough President",
+                "phase_id": "borough_president",
+                "hearing_date": "2026-09-02",
+                "hearing_at": "2026-09-02T13:30:00.000Z",
+                "hearing_location_raw": (
+                    "In person at 120-55 Queens Blvd or livestreamed at "
+                    "www.youtube.com/@queensbp"
+                ),
+                "venue_address": "120-55 Queens Blvd",
+                "livestream_url": "https://www.youtube.com/@queensbp",
+                "attendance_modes": ["in_person", "livestream"],
+                "maps_url": (
+                    "https://www.google.com/maps/search/?api=1&query="
+                    "120-55%20Queens%20Blvd%2C%20New%20York%2C%20NY"
+                ),
+                "parse_status": "parsed",
+                "portal_url": _LAND_PIPELINE_PORTAL,
+                "project_id": "2024Q0292",
+                "borough": "Queens",
+            }
+        ],
+        "statutory_clock": {
+            "schema_version": 1,
+            "statute_ref": "NYC Charter §197-c",
+            "status": "open",
+            "certified_date": "2026-05-11",
+            "total_days": 205,
+            "phases": [
+                {
+                    "phase_id": "community_board",
+                    "short": "CB",
+                    "label_key": "land_phase_community_board",
+                    "days": 60,
+                    "due_date": "2026-07-10",
+                    "status": "open",
+                },
+                {
+                    "phase_id": "borough_president",
+                    "short": "BP",
+                    "label_key": "land_phase_borough_president",
+                    "days": 30,
+                    "due_date": "2026-08-09",
+                    "status": "open",
+                },
+                {
+                    "phase_id": "cpc",
+                    "short": "CPC",
+                    "label_key": "land_phase_cpc",
+                    "days": 60,
+                    "due_date": "2026-10-08",
+                    "status": "open",
+                },
+                {
+                    "phase_id": "city_council",
+                    "short": "Council",
+                    "label_key": "land_phase_city_council",
+                    "days": 50,
+                    "due_date": "2026-11-27",
+                    "status": "open",
+                },
+                {
+                    "phase_id": "mayoral_appeals",
+                    "short": "Mayor",
+                    "label_key": "land_phase_mayoral_appeals",
+                    "days": 5,
+                    "due_date": "2026-12-02",
+                    "status": "open",
+                },
+            ],
+        },
+        "spine": {
+            "schema_version": 1,
+            "project_id": "2024Q0292",
+            "events": [
+                {
+                    "id": "cert",
+                    "kind": "zap_milestone",
+                    "title": "Application Reviewed at City Planning Commission Review Session",
+                    "detail": "Certified",
+                    "status": "Completed",
+                    "time": {
+                        "value": "2026-05-11",
+                        "precision": "day",
+                        "basis": "actual_end",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _LAND_PIPELINE_PORTAL,
+                    },
+                },
+                {
+                    "id": "cb",
+                    "kind": "zap_milestone",
+                    "title": "Community Board Review",
+                    "detail": "Completed",
+                    "status": "Completed",
+                    "time": {
+                        "value": "2026-07-08",
+                        "precision": "day",
+                        "basis": "actual_end",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _LAND_PIPELINE_PORTAL,
+                    },
+                },
+                {
+                    "id": "bp",
+                    "kind": "zap_milestone",
+                    "title": "Borough President Review",
+                    "detail": "In Progress",
+                    "status": "In Progress",
+                    "time": {
+                        "value": "2026-07-09",
+                        "precision": "day",
+                        "basis": "actual_start",
+                        "certainty": "actual",
+                    },
+                    "source": {
+                        "id": "zap-project-api",
+                        "label": "Zoning Application Portal",
+                        "url": _LAND_PIPELINE_PORTAL,
+                    },
+                },
+            ],
+            "gaps": [],
+            "lag": {"open_data_vs_portal": {"status": "unknown"}},
         },
     },
 }

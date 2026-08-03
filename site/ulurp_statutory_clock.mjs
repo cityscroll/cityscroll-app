@@ -292,3 +292,94 @@ export function statutoryDeadlineForPhase(clockView, phaseId) {
   if (!clockView || clockView.status === "ineligible") return null;
   return (clockView.phases || []).find((p) => p.phase_id === phaseId) || null;
 }
+
+/** Statutory public-review phase ids in Charter order (CB → … → Mayor). */
+export const ULURP_PUBLIC_REVIEW_PHASE_IDS = Object.freeze(
+  ULURP_STATUTORY_STAGES.map((s) => s.phase_id),
+);
+
+/**
+ * Pipeline position inside formal ULURP public review.
+ *
+ * Public status "In Public Review" is the OVERALL stage; Community Board /
+ * Borough President / CPC / Council / Mayor is the CURRENT STEP inside it.
+ * Renders as one sentence so the two labels stop competing on the land card.
+ *
+ * @param {object} [opts]
+ * @param {object|null} [opts.phaseView] buildLandPhaseView result
+ * @param {object|null} [opts.clock] statutory_clock from /zap-outcomes
+ * @param {string|null} [opts.publicStatus]
+ * @param {string} [opts.today] YYYY-MM-DD (for days-left math)
+ * @returns {object|null} null when not in measurable public-review pipeline
+ */
+export function buildUlurpPipelinePosition(opts = {}) {
+  const phaseView = opts.phaseView || null;
+  const clock = opts.clock || null;
+  const publicStatus = clean(opts.publicStatus)
+    || clean(phaseView?.current?.public_status)
+    || null;
+  const today = isoDateOnly(opts.today) || new Date().toISOString().slice(0, 10);
+
+  const statusLower = (publicStatus || "").toLowerCase();
+  const overallPublicReview = /public review/i.test(statusLower)
+    || phaseView?.current?.in_public_review === true
+    || (clock && clock.status === "open" && clock.certified_date);
+
+  // Current step: prefer phase-view current when it is a statutory public-review stage.
+  let stepPhaseId = clean(phaseView?.current?.phase_id) || null;
+  if (stepPhaseId && !ULURP_PUBLIC_REVIEW_PHASE_IDS.includes(stepPhaseId)) {
+    // Pre-cert / CEQR / filing are not steps *inside* public review.
+    if (!/public review/i.test(statusLower)) return null;
+    stepPhaseId = null;
+  }
+
+  // Fall back: first open statutory stage by due-date / sequence when phase view
+  // has not advanced into the public-review band yet but status says public review.
+  if (!stepPhaseId && overallPublicReview && clock?.phases?.length) {
+    const open = clock.phases.find((p) => p.status === "open" || !p.status);
+    stepPhaseId = open?.phase_id || clock.phases[0]?.phase_id || null;
+  }
+
+  if (!stepPhaseId || !ULURP_PUBLIC_REVIEW_PHASE_IDS.includes(stepPhaseId)) {
+    return null;
+  }
+  if (!overallPublicReview && !phaseView?.current?.in_public_review) {
+    // Only emit the combined sentence when public review is the overall frame.
+    // Still allow when clock is open (certified) even if Open Data is stale.
+    if (!(clock && clock.status === "open" && clock.certified_date)) return null;
+  }
+
+  const stepIndex = ULURP_PUBLIC_REVIEW_PHASE_IDS.indexOf(stepPhaseId);
+  const stepN = stepIndex + 1;
+  const stepM = ULURP_PUBLIC_REVIEW_PHASE_IDS.length;
+  const stageMeta = ULURP_STATUTORY_STAGES.find((s) => s.phase_id === stepPhaseId);
+  const clockRow = statutoryDeadlineForPhase(clock, stepPhaseId);
+  const dueDate = clockRow?.due_date || null;
+  const windowDays = stageMeta?.days ?? clockRow?.days ?? null;
+
+  let daysLeft = null;
+  if (dueDate) {
+    const dueMs = Date.parse(`${dueDate}T00:00:00Z`);
+    const todayMs = Date.parse(`${today}T00:00:00Z`);
+    if (Number.isFinite(dueMs) && Number.isFinite(todayMs)) {
+      daysLeft = Math.ceil((dueMs - todayMs) / 86_400_000);
+    }
+  }
+
+  return {
+    schema_version: ULURP_STATUTORY_CLOCK_SCHEMA_VERSION,
+    overall_status: "public_review",
+    overall_label_key: "land_pipeline_overall_public_review",
+    step_phase_id: stepPhaseId,
+    step_label_key: stageMeta?.label_key || null,
+    step_short: stageMeta?.short || null,
+    step_n: stepN,
+    step_m: stepM,
+    window_days: windowDays,
+    due_date: dueDate,
+    days_left: daysLeft,
+    statute_ref: ULURP_STATUTORY_STATUTE_REF,
+    certified_date: clock?.certified_date || null,
+    public_status: publicStatus,
+  };
+}

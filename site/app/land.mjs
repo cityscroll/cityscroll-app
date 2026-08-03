@@ -30,7 +30,9 @@ function zapCouncilWhere(councilDistrict){
 
 // Commit-time default Active ULURP list (wave-2 batch precompute). Filter/keyword/geo stay live SODA.
 const LAND_DEFAULT_SNAPSHOT_URL="data/land_default_ulurp.json";
+const LAND_UPCOMING_HEARINGS_URL="data/land_upcoming_hearings.json";
 let landDefaultSnapshotPromise=null;
+let landUpcomingHearingsPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
     landDefaultSnapshotPromise=fetch(LAND_DEFAULT_SNAPSHOT_URL)
@@ -39,8 +41,108 @@ function loadLandDefaultSnapshot(){
   }
   return landDefaultSnapshotPromise;
 }
+function loadLandUpcomingHearings(){
+  if(!landUpcomingHearingsPromise){
+    landUpcomingHearingsPromise=fetch(LAND_UPCOMING_HEARINGS_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return landUpcomingHearingsPromise;
+}
 function isDefaultLandSearchState(status, boro, kw, located){
   return status==="active" && !boro && !kw && !landCommunityDistrict && !landCouncilDistrict && !located;
+}
+function landHearingModeFieldSync(){
+  const field=$("#lhearingmode-field");
+  const status=$("#lstatus")?$("#lstatus").value:"";
+  if(field) field.hidden=status!=="hearings";
+}
+function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
+  const day=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
+  const b=(boro||"").toLowerCase();
+  const m=mode||"";
+  const q=(kw||"").toLowerCase();
+  return (rows||[]).filter(row=>{
+    if(!row) return false;
+    const when=String(row.hearing_date||row.hearing_at||"").slice(0,10);
+    if(!when||when<day) return false;
+    if(b && String(row.borough||"").toLowerCase()!==b) return false;
+    const modes=Array.isArray(row.attendance_modes)?row.attendance_modes:[];
+    if(m==="in_person" && !modes.includes("in_person") && !row.venue_address) return false;
+    if(m==="livestream" && !modes.includes("livestream") && !row.livestream_url) return false;
+    if(q){
+      const blob=`${row.project_name||""} ${row.project_id||""} ${row.venue_address||""} ${row.representing||""}`.toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function landHearingRowHTML(row, i){
+  const when=row.hearing_at||row.hearing_date||"";
+  const modes=(row.attendance_modes||[]).map(mode=>{
+    if(mode==="in_person") return t("land_hearings_mode_list_in_person");
+    if(mode==="livestream") return t("land_hearings_mode_list_livestream");
+    return mode;
+  }).filter(Boolean);
+  const modeTxt=modes.length?t("land_hearings_card_modes",{modes:modes.join(" · ")}):"";
+  const venue=row.venue_address?escUiHtml(row.venue_address):"";
+  const live=row.livestream_url
+    ? `<a class="act" href="${escUiHtml(row.livestream_url)}" ${EXT_ATTRS}>${t("land_action_watch_live")}${extSR()}</a>`
+    : "";
+  const maps=row.maps_url&&row.venue_address
+    ? `<a class="act" href="${escUiHtml(row.maps_url)}" ${EXT_ATTRS}>${t("land_action_attend_in_person")}${extSR()}</a>`
+    : "";
+  const open=row.project_id
+    ? `<a class="act" href="#land/${encodeURIComponent(row.project_id)}">${t("land_hearings_open_project")}</a>`
+    : "";
+  return `<div class="row land-hearing-row" data-i="${i}" data-project-id="${escUiHtml(row.project_id||"")}" tabindex="0" role="button">
+    <p class="rtitle">${escUiHtml(row.project_name||row.project_id||t("unnamed_project"))}</p>
+    <p class="rmeta"><span class="ragency">${escUiHtml(row.borough||"")}${row.representing?` · ${escUiHtml(row.representing)}`:""}</span>
+      · ${t("land_hearings_card_when",{date:fdt(when)})}${modeTxt?` · ${escUiHtml(modeTxt)}`:""}
+      ${venue?`<br>${venue}`:""}
+      ${row.hearing_location_raw&&!row.venue_address?`<br lang="en" dir="ltr">${escUiHtml(row.hearing_location_raw)}`:""}
+    </p>
+    <div class="fcard-compact-actions">${maps}${live}${open}</div>
+  </div>`;
+}
+async function landSearchHearings(stale){
+  landHearingModeFieldSync();
+  const boro=$("#lboro").value;
+  const kw=$("#lkw").value.trim();
+  const mode=$("#lhearingmode")?$("#lhearingmode").value:"";
+  $("#lreshead").textContent=t("land_hearings_heading")+(boro?" · "+boro:"")+(mode?` · ${t(mode==="in_person"?"land_hearings_mode_in_person":"land_hearings_mode_livestream")}`:"");
+  try{
+    const snap=await loadLandUpcomingHearings();
+    if(stale()) return;
+    const all=snap&&Array.isArray(snap.hearings)?snap.hearings:[];
+    const rows=filterLandHearingRows(all,{boro, mode, kw, today:todayISO()});
+    lRows=rows.map(r=>({
+      // Keep enough project shape so landSelect can open a detail route.
+      project_id:r.project_id,
+      project_name:r.project_name,
+      borough:r.borough,
+      public_status:r.public_status||null,
+      project_status:"Active",
+      _hearing:r,
+    }));
+    unbusy("#llist");
+    $("#lrescount").textContent=String(lRows.length);
+    announce(t("land_hearings_heading")+`: ${lRows.length}`);
+    if(!lRows.length){
+      $("#llist").innerHTML=`<div class="empty">${t("land_hearings_empty")}</div>`;
+      return;
+    }
+    $("#llist").innerHTML=lRows.map((r,i)=>landHearingRowHTML(r._hearing||r,i)).join("");
+    $("#llist").querySelectorAll(".row").forEach(el=>{
+      el.addEventListener("click",()=>landSelect(+el.dataset.i, el));
+      el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); landSelect(+el.dataset.i, el); } });
+    });
+  }catch(e){
+    if(!stale()){
+      unbusy("#llist");
+      $("#llist").innerHTML=`<div class="empty">${t("could_not_reach")}</div>`;
+    }
+  }
 }
 function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   if(stale()) return;
@@ -69,6 +171,7 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
 }
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
+  landHearingModeFieldSync();
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
   updateHash();
   if(located){
@@ -83,10 +186,14 @@ async function landSearch(){
   } else {
     renderSearchComponents("land");
   }
-  $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   $("#lrescount").textContent=""; landBanner="";
   busyList("#llist", 3);
   const stale = staleGuard("land");
+  // Upcoming-hearings view: precomputed ZAP disposition logistics (not live SODA).
+  if(status==="hearings"){
+    return landSearchHearings(stale);
+  }
+  $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   let geo=located?landResolvedArea:null, block=located?landResolvedArea.block:null;
   if(kw){ geo=await geocode(kw); if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6); }
   // Default Land tab: paint prebuilt Active ULURP snapshot first (no SODA wait), then hybrid-refresh.
@@ -397,7 +504,15 @@ function landToAlert(term){
 let landPhaseSpineToolsPromise=null;
 function ensureLandPhaseSpineTools(){
   if(!landPhaseSpineToolsPromise){
-    landPhaseSpineToolsPromise=import("../land_phase_spine.mjs").catch(()=>null);
+    landPhaseSpineToolsPromise=Promise.all([
+      import("../land_phase_spine.mjs").catch(()=>null),
+      import("../ulurp_statutory_clock.mjs").catch(()=>null),
+    ]).then(([phase, clock])=>{
+      if(clock&&typeof clock.buildUlurpPipelinePosition==="function"){
+        globalThis.buildUlurpPipelinePosition=clock.buildUlurpPipelinePosition;
+      }
+      return phase;
+    });
   }
   return landPhaseSpineToolsPromise;
 }
@@ -570,6 +685,44 @@ function landZoningStatisticsHTML(record){
     })}</p>
   </aside>`;
 }
+/** One-sentence ULURP public-review pipeline position (overall status + current step). */
+function landPipelinePositionHTML(view, record){
+  const build=typeof buildUlurpPipelinePosition==="function"
+    ? buildUlurpPipelinePosition
+    : (globalThis.buildUlurpPipelinePosition||null);
+  if(!build) return null;
+  let pos=null;
+  try{
+    pos=build({
+      phaseView:view,
+      clock:record?.statutory_clock||null,
+      publicStatus:record?.public_status||view?.current?.public_status||null,
+      today:typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10),
+    });
+  }catch(_e){ return null; }
+  if(!pos||!pos.step_n) return null;
+  const stageName=landPhaseLabel({label_key:pos.step_label_key, id:pos.step_phase_id});
+  const windowDays=pos.window_days!=null?String(pos.window_days):"—";
+  let clockBit="";
+  if(pos.days_left!=null&&Number.isFinite(pos.days_left)){
+    if(pos.days_left>0){
+      clockBit=t("land_pipeline_clock_days_left",{n:String(pos.window_days||""),left:String(pos.days_left)});
+    }else if(pos.days_left===0){
+      clockBit=t("land_pipeline_clock_due_today",{n:windowDays});
+    }else{
+      clockBit=t("land_pipeline_clock_overdue",{n:windowDays,over:String(Math.abs(pos.days_left))});
+    }
+  }else if(pos.window_days!=null){
+    clockBit=t("land_pipeline_clock_window_only",{n:windowDays});
+  }
+  const sentence=t("land_pipeline_position_html",{
+    step:String(pos.step_n),
+    total:String(pos.step_m),
+    stage:escUiHtml(stageName),
+    clock:clockBit,
+  });
+  return `<p class="land-pipeline-position" data-land-pipeline-step="${escUiHtml(String(pos.step_n))}" data-land-pipeline-total="${escUiHtml(String(pos.step_m))}" data-land-pipeline-phase="${escUiHtml(pos.step_phase_id||"")}">${sentence}</p>`;
+}
 function landPhaseSpineHTML(view, tools, record){
   if(!view) return "";
   const isPortalUrl=tools?.isProjectPortalUrl;
@@ -579,15 +732,20 @@ function landPhaseSpineHTML(view, tools, record){
     : "";
   const cur=view.current||{};
   const phaseName=landPhaseLabel({label_key:cur.label_key});
+  const pipelineHTML=landPipelinePositionHTML(view, record);
   let statusExtra="";
-  if(cur.noticed && !cur.in_public_review){
+  // When the pipeline sentence already joins overall public review + current step,
+  // skip the competing "Public status: In Public Review" line.
+  if(pipelineHTML){
+    statusExtra="";
+  }else if(cur.noticed && !cur.in_public_review){
     statusExtra=t("land_spine_status_noticed_html");
   }else if(cur.public_status){
     statusExtra=t("land_spine_status_public_html",{status:escUiHtml(cur.public_status)});
   }
   const lead=`<div class="land-spine-lead">
     <div class="land-spine-now-label">${t("land_spine_now_label")}</div>
-    <p class="land-spine-now-phase">${escUiHtml(phaseName)}</p>
+    ${pipelineHTML||`<p class="land-spine-now-phase">${escUiHtml(phaseName)}</p>`}
     <p class="land-spine-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || "—")}${cur.since?` · ${t("land_spine_since",{date:fdate(cur.since)})}`:""}${statusExtra?`<br>${statusExtra}`:""}</p>
     ${view.next?`<p class="land-spine-next">${t("land_spine_next_html",{phase:escUiHtml(landPhaseLabel(view.next))})}</p>`:""}
   </div>`;

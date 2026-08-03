@@ -501,11 +501,29 @@ function actionRailGuideHTML(actions){
     if(when && where) steps.push(step(t("land_guide_attend_step",{date:fdt(when),where}),"land_hearing"));
     else if(when) steps.push(step(t("land_guide_attend_date_step",{date:fdt(when)}),"land_hearing"));
     else if(where) steps.push(step(t("land_guide_attend_where_step",{where}),"land_where"));
-    if(guide.participation_url){
+    // Maps-friendly in-person deep link when ZAP disposition logistics published an address.
+    if(guide.maps_url && guide.venue_address){
+      steps.push(step(t("land_guide_attend_maps_step_html",{
+        address:escUiHtml(guide.venue_address),
+        url:escUiHtml(guide.maps_url),
+      }),"land_maps"));
+    }
+    const liveUrl=guide.livestream_url
+      || (guide.join_kind==="livestream"?guide.participation_url:null);
+    if(liveUrl){
+      const host=escUiHtml(hostOf(liveUrl));
+      steps.push(step(t("land_guide_watch_live_step_html",{url:escUiHtml(liveUrl),host}),"land_livestream"));
+    }else if(guide.participation_url){
       const host=escUiHtml(hostOf(guide.participation_url));
       steps.push(step(guide.join_kind==="join"
         ? t("land_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
         : t("land_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}),"land_participation"));
+    }
+    // When free-text logistics could not be fully parsed, show the raw publisher string.
+    if(guide.hearing_location_raw && !guide.venue_address && !liveUrl){
+      steps.push(step(t("land_guide_hearing_location_raw_step",{
+        text:escUiHtml(guide.hearing_location_raw),
+      }),"land_hearing_raw"));
     }
     if(guide.testimony_email){
       const email=escUiHtml(guide.testimony_email);
@@ -692,10 +710,56 @@ async function mountNoticeActionRail(el,r){
 }
 
 /** Build hearings for land action rail from zap-outcomes city_record_notices (+ hearing_location). */
+function landActionZapHearingsFromRecord(record){
+  const logistics=Array.isArray(record&&record.hearing_logistics)?record.hearing_logistics:[];
+  if(!logistics.length) return [];
+  return logistics.map(row=>{
+    const venueAddress=row.venue_address||null;
+    const livestream=row.livestream_url||null;
+    const modes=Array.isArray(row.attendance_modes)?row.attendance_modes:[];
+    const venue=venueAddress
+      ? {
+          address:venueAddress,
+          building:null,
+          mode:livestream||modes.includes("livestream")?"hybrid":"in-person",
+        }
+      : livestream
+        ? {address:null, building:null, mode:"virtual"}
+        : null;
+    // Prefer full hearing_at (clock time) when CRM published it.
+    const when=row.hearing_at||row.hearing_date||null;
+    return {
+      request_id:null,
+      event_date:when,
+      agency:row.representing||null,
+      title:row.representing||null,
+      // Free-text logistics so extractors can re-parse; never drop the raw string.
+      notice_text:row.hearing_location_raw||"",
+      venue,
+      participation:livestream
+        ? {links:[{url:livestream, kind:"livestream", label:t("land_action_watch_live")}]}
+        : null,
+      participation_url:livestream||null,
+      street_address_1:venueAddress||null,
+      source_url:row.portal_url||(record&&record.portal_url)||null,
+      body_kind:row.phase_id||null,
+      maps_url:row.maps_url||(venueAddress
+        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueAddress+", New York, NY")}`
+        : null),
+      livestream_url:livestream,
+      hearing_location_raw:row.hearing_location_raw||null,
+      parse_status:row.parse_status||null,
+      provenance:row.provenance||null,
+      source:"zap_disposition",
+    };
+  });
+}
 function landActionHearingsFromRecord(record){
+  const zapHearings=landActionZapHearingsFromRecord(record);
   const notices=Array.isArray(record&&record.city_record_notices)?record.city_record_notices:[];
+  let cityRecord=[];
   if(notices.length){
-    return notices.map(row=>{
+    cityRecord=notices.map(row=>{
       const body=[
         row.additional_description_1,row.additional_description_2,row.additional_description_3,
         row.other_info_1,row.other_info_2,row.other_info_3,
@@ -734,19 +798,24 @@ function landActionHearingsFromRecord(record){
         contact_name:row.contact_name||null,
         contact_phone:row.contact_phone||null,
         source_url:row.request_id?REQ_URL(row.request_id):null,
+        source:"city_record",
       };
     });
+  }else{
+    // Fallback: spine city_record_hearing events only (title/date/agency — no body).
+    const events=((record&&record.spine&&record.spine.events)||[]).filter(e=>e&&e.kind==="city_record_hearing");
+    cityRecord=events.map(e=>({
+      request_id:null,
+      event_date:e.time&&e.time.value||null,
+      agency:e.detail||null,
+      title:e.title||null,
+      notice_text:"",
+      source_url:e.source&&e.source.url||null,
+      source:"city_record_spine",
+    }));
   }
-  // Fallback: spine city_record_hearing events only (title/date/agency — no body).
-  const events=((record&&record.spine&&record.spine.events)||[]).filter(e=>e&&e.kind==="city_record_hearing");
-  return events.map(e=>({
-    request_id:null,
-    event_date:e.time&&e.time.value||null,
-    agency:e.detail||null,
-    title:e.title||null,
-    notice_text:"",
-    source_url:e.source&&e.source.url||null,
-  }));
+  // ZAP disposition logistics first (structured venue + livestream); City Record fills gaps.
+  return zapHearings.concat(cityRecord);
 }
 function landActionMatter(projectRow, outcomeRecord, phaseTools){
   const r=projectRow||{};

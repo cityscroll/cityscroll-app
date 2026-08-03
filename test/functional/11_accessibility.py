@@ -142,7 +142,6 @@ def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, 
                 restore_url=restore_url, restore_hash=restore_hash, retry=False,
             )
         raise
-
     if "target-size" not in wcag22_rules:
         failures.append((state_name, "wcag22aa-ruleset-missing"))
         step("FAIL", f"{state_name}: wcag22aa ruleset missing",
@@ -322,7 +321,13 @@ def run_subpage(pw, path, viewport, failures):
     target = BASE + path
     page.goto(target, timeout=30000)
     page.wait_for_load_state("load", timeout=20000)
-    page.wait_for_timeout(1000)
+    # Handoff pages (data.html → about.html#data) use location.replace after parse.
+    # Give the redirect a beat, then axe the settled document.
+    page.wait_for_timeout(1200)
+    try:
+        page.wait_for_load_state("domcontentloaded", timeout=10000)
+    except Exception:
+        pass
     page.add_script_tag(path=AXE)
     state = f"{path} [{viewport_name}] [load]"
     run_axe(page, state, failures, restore_url=target)
