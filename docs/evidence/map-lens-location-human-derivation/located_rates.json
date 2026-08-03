@@ -1,0 +1,136 @@
+{
+  "schema": "cityscroll.map_lens_location_human_derivation.v1",
+  "measured_at": "2026-08-03T16:37:26.154Z",
+  "doctrine": "Extraction gives up only after reading like a location-interested human (matter place, venue line, vendor address, citywide phrase). Unlocated rows record a reason.",
+  "golden_notice_ids": {
+    "meetings": [
+      "20260723022",
+      "20260716022",
+      "20260709020",
+      "20260601045",
+      "20260721023",
+      "20260618050"
+    ],
+    "money": [
+      "20260723031",
+      "20260724015",
+      "20260724010"
+    ]
+  },
+  "before": {
+    "note": "Pre-human-derivation / pre-densify map payload (PR 409 aggregation only; extractors yield little on sparse stamps)",
+    "built_at": "2026-08-03T13:03:41.018Z",
+    "sources": {
+      "land": {
+        "corpus": "zap_projects_warehouse_lookup",
+        "counted": 236,
+        "located": 236
+      },
+      "property": {
+        "corpus": "property_domain_observations",
+        "counted": 133,
+        "located": 133
+      },
+      "meetings": {
+        "corpus": "meetings_domain_observations",
+        "counted": 119,
+        "located": 0
+      },
+      "rules": {
+        "corpus": "rules_domain_observations",
+        "counted": 100,
+        "located": 0
+      },
+      "money": {
+        "corpus": "ocp_awards_warehouse_lookup",
+        "counted": 8,
+        "located": 0
+      }
+    },
+    "unlocated": {
+      "land": 0,
+      "property": 0,
+      "rules": 100,
+      "meetings": 119,
+      "money": 8
+    },
+    "located_rate": {
+      "meetings": 0,
+      "rules": 0,
+      "money": 0
+    }
+  },
+  "after": {
+    "note": "Human-derivation extractors + densified place stamps + deploy rebuild of district_activity",
+    "built_at": "2026-08-03T16:37:08.064Z",
+    "sources": {
+      "land": {
+        "corpus": "zap_projects_warehouse_lookup",
+        "counted": 236,
+        "located": 236,
+        "by_method": {}
+      },
+      "property": {
+        "corpus": "property_domain_observations",
+        "counted": 133,
+        "located": 133,
+        "by_method": {}
+      },
+      "meetings": {
+        "corpus": "meetings_domain_observations",
+        "counted": 119,
+        "located": 81,
+        "by_method": {
+          "matter_body_borough": 27,
+          "venue_column": 40,
+          "matter_title_place": 8,
+          "citywide_phrase": 3,
+          "classic_affected_area": 3
+        }
+      },
+      "rules": {
+        "corpus": "rules_domain_observations",
+        "counted": 100,
+        "located": 100,
+        "by_method": {
+          "rule_default_citywide": 97,
+          "matter_title_place": 3
+        }
+      },
+      "money": {
+        "corpus": "ocp_awards_warehouse_lookup",
+        "counted": 8,
+        "located": 2,
+        "by_method": {
+          "vendor_address": 1,
+          "citywide_phrase": 1
+        }
+      }
+    },
+    "unlocated": {
+      "land": 0,
+      "property": 0,
+      "rules": 0,
+      "meetings": 38,
+      "money": 6
+    },
+    "unlocated_reasons": {
+      "land": {},
+      "property": {},
+      "meetings": {
+        "no_place_signal": 35,
+        "virtual_only": 3
+      },
+      "rules": {},
+      "money": {
+        "no_place_signal": 6
+      }
+    },
+    "located_rate": {
+      "meetings": 0.6807,
+      "rules": 1,
+      "money": 0.25
+    }
+  },
+  "deploy_wiring": "tools/build_district_activity.mjs runs in .github/actions/build-site before Jekyll so built_at advances on every site deploy"
+}

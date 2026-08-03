@@ -24,13 +24,20 @@ import {
   resolveCommunityDistrict,
   resolveCouncilDistrict,
 } from "../../site/council_district_lookup.mjs";
-import { affectedAreaFromRow } from "../../worker/src/lib/hearings.mjs";
+import {
+  affectedAreaFromRow,
+  meetingPlaceFromRow,
+} from "../../worker/src/lib/hearings.mjs";
 import { ruleLocationFromRow } from "../../site/rule_location.mjs";
 import {
   boroughsIn,
   communityBoardSignals,
   plainText,
 } from "../../site/location_extract.mjs";
+import {
+  placeFromDerivations,
+  compactDerivationStamp,
+} from "../../site/location_derivation.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
 
@@ -276,13 +283,26 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
 }
 
 /**
- * Resolve meetings placement from stamped affected_area or the pure extractor.
+ * Resolve meetings placement from stamped affected_area or the human-derivation chain
+ * (matter → venue → agency HQ). Slots carry method + confidence when known.
  */
 export function meetingPlacementsFromRow(row, boundaries) {
   const stamped = row?.affected_area || row?.place || row?._location || null;
-  const area = stamped && typeof stamped === "object" && (stamped.scope || stamped.boroughs)
-    ? stamped
-    : affectedAreaFromRow(row || {});
+  let area;
+  let meta = { method: null, confidence: null, confidence_tier: null, unlocated_reason: null };
+
+  if (stamped && typeof stamped === "object" && (stamped.scope || stamped.boroughs?.length)) {
+    area = stamped;
+    meta.method = stamped.derivation?.methods?.[0] || stamped.source || "stamped";
+    meta.confidence = stamped.derivation?.confidence ?? null;
+    meta.confidence_tier = stamped.confidence_tier || null;
+  } else {
+    area = meetingPlaceFromRow(row || {});
+    meta.method = area.derivation?.methods?.[0] || area.source || null;
+    meta.confidence = area.derivation?.confidence ?? null;
+    meta.confidence_tier = area.confidence_tier || null;
+    meta.unlocated_reason = area.unlocated_reason || null;
+  }
 
   // Agency-level borough / CD signals supplement title/body extraction.
   const agencyCd = communityDistrictFromAgencyName(row?.agency_name);
@@ -316,9 +336,32 @@ export function meetingPlacementsFromRow(row, boundaries) {
       community: agencyCd,
       council: null,
     }];
+    meta.method = meta.method || "agency_community_board";
+    meta.confidence = meta.confidence ?? 0.85;
+    meta.confidence_tier = meta.confidence_tier || "strong";
   }
   if (!slots.length && agencyBoro) {
     slots = [{ borough: agencyBoro, community: null, council: null }];
+    meta.method = meta.method || "agency_borough";
+    meta.confidence = meta.confidence ?? 0.85;
+    meta.confidence_tier = meta.confidence_tier || "strong";
+  }
+
+  // Annotate slots with derivation meta for density payload accounting.
+  slots = slots.map((s) => ({
+    ...s,
+    method: meta.method,
+    confidence: meta.confidence,
+    confidence_tier: meta.confidence_tier || (
+      meta.confidence == null ? null
+        : meta.confidence >= 0.8 ? "strong"
+          : meta.confidence >= 0.55 ? "derived" : "weak"
+    ),
+  }));
+  if (!slots.length) {
+    slots.unlocated_reason = meta.unlocated_reason
+      || area?.unlocated_reason
+      || "no_place_signal";
   }
   return slots;
 }
@@ -329,17 +372,25 @@ export function meetingPlacementsFromRow(row, boundaries) {
 export function rulePlacementsFromRow(row, boundaries) {
   const stamped = row?.rule_location || row?.affected_area || row?.place || null;
   let area;
+  let method = "rule-scope";
+  let confidence = 0.8;
   if (stamped && typeof stamped === "object" && (stamped.scope || stamped.boroughs)) {
     area = stamped;
+    method = stamped.derivation?.methods?.[0] || stamped.source || "stamped";
+    confidence = stamped.derivation?.confidence ?? 0.8;
   } else {
     // Rule hearings may carry the same body fields as meetings; prefer hearing area when present.
     const hearingArea = affectedAreaFromRow(row || {});
     if (hearingArea.scope === "local") {
       area = hearingArea;
+      method = "hearing_matter";
+      confidence = hearingArea.derivation?.confidence ?? 0.88;
     } else {
       area = ruleLocationFromRow(row || {}, {
         hearingArea: hearingArea.scope === "local" ? hearingArea : null,
       });
+      method = area.derivation?.methods?.[0] || area.source || "rule-scope";
+      confidence = area.derivation?.confidence ?? 0.8;
     }
   }
   const agencyCd = communityDistrictFromAgencyName(row?.agency_name);
@@ -365,23 +416,48 @@ export function rulePlacementsFromRow(row, boundaries) {
       community: agencyCd,
       council: null,
     }];
+    method = "agency_community_board";
+    confidence = 0.85;
   }
   if (!slots.length && agencyBoro) {
     slots = [{ borough: agencyBoro, community: null, council: null }];
+    method = "agency_borough";
+    confidence = 0.85;
   }
-  return slots;
+  return slots.map((s) => ({
+    ...s,
+    method: s.method || method,
+    confidence: s.confidence ?? confidence,
+    confidence_tier: confidence >= 0.8 ? "strong" : confidence >= 0.55 ? "derived" : "weak",
+  }));
 }
 
 /**
- * Resolve money / contracts placement from publisher geo fields, coords, or place stamp.
+ * Resolve money / contracts placement from publisher geo fields, coords, place stamp,
+ * or human-derivation (performance place phrases, vendor place names, citywide body).
  */
 export function moneyPlacementsFromRow(row, boundaries) {
+  const annotate = (slots, method, confidence) => slots.map((s) => ({
+    ...s,
+    method: s.method || method,
+    confidence: s.confidence ?? confidence,
+    confidence_tier: s.confidence_tier || (
+      confidence >= 0.8 ? "strong" : confidence >= 0.55 ? "derived" : "weak"
+    ),
+  }));
+
   const stamped = row?.place || row?.location || row?.affected_area || null;
   if (stamped && typeof stamped === "object") {
     const slots = placementsFromLocatedArea(stamped, boundaries, {
       coords: coordsFromPropertyRow(row),
     });
-    if (slots.length) return slots;
+    if (slots.length) {
+      return annotate(
+        slots,
+        stamped.derivation?.methods?.[0] || "stamped",
+        stamped.derivation?.confidence ?? 0.9,
+      );
+    }
   }
 
   const coords = coordsFromPropertyRow(row);
@@ -392,7 +468,7 @@ export function moneyPlacementsFromRow(row, boundaries) {
       ? boroughFromCommunityId(community)
       : canonBorough(row?.borough);
     if (community || council || borough) {
-      return [{ borough, community, council }];
+      return annotate([{ borough, community, council }], "coordinates_pip", 0.95);
     }
   }
 
@@ -402,23 +478,55 @@ export function moneyPlacementsFromRow(row, boundaries) {
   const borough = canonBorough(row?.borough)
     || (cds[0] ? boroughFromCommunityId(cds[0]) : null);
   if (cds.length) {
-    return cds.map((cd) => ({
-      borough: borough || boroughFromCommunityId(cd),
-      community: cd,
-      council: council || null,
-    }));
+    return annotate(
+      cds.map((cd) => ({
+        borough: borough || boroughFromCommunityId(cd),
+        community: cd,
+        council: council || null,
+      })),
+      "publisher_district",
+      0.95,
+    );
   }
   if (council || borough) {
-    return [{ borough, community: null, council: council || null }];
+    return annotate(
+      [{ borough, community: null, council: council || null }],
+      "publisher_district",
+      0.9,
+    );
   }
 
-  // Last resort: title/agency place words (honest borough-only when present).
-  const haystack = plainText([row?.short_title, row?.agency_name].filter(Boolean).join(" "));
+  // Human derivation: title/body place phrases, vendor gazetteer, citywide awards.
+  const derived = placeFromDerivations(row || {}, { forLens: "money" });
+  if (derived.scope !== "unlocated") {
+    const slots = placementsFromLocatedArea(derived, boundaries, {});
+    if (slots.length) {
+      return annotate(
+        slots,
+        derived.derivation?.methods?.[0] || "derived",
+        derived.derivation?.confidence ?? 0.55,
+      );
+    }
+  }
+
+  // Title/agency place words (honest borough-only when present).
+  const haystack = plainText([
+    row?.short_title,
+    row?.agency_name,
+    row?.vendor_name,
+    row?.additional_description_1,
+  ].filter(Boolean).join(" "));
   const boros = boroughsIn(haystack);
   if (boros.length) {
-    return boros.map((b) => ({ borough: b, community: null, council: null }));
+    return annotate(
+      boros.map((b) => ({ borough: b, community: null, council: null })),
+      "title_borough",
+      0.88,
+    );
   }
-  return [];
+  const empty = [];
+  empty.unlocated_reason = derived.unlocated_reason || "no_place_signal";
+  return empty;
 }
 
 /**
@@ -443,13 +551,30 @@ export function buildDistrictActivity(opts = {}) {
   const byCommunity = Object.create(null);
   const byCouncil = Object.create(null);
   const unlocated = emptyLensCounts();
-  const sources = {
-    land: { corpus: "zap_projects_warehouse_lookup", counted: 0, located: 0 },
-    property: { corpus: "property_domain_observations", counted: 0, located: 0 },
-    meetings: { corpus: "meetings_domain_observations", counted: 0, located: 0 },
-    rules: { corpus: "rules_domain_observations", counted: 0, located: 0 },
-    money: { corpus: "ocp_awards_warehouse_lookup", counted: 0, located: 0 },
+  const unlocatedReasons = {
+    land: Object.create(null),
+    property: Object.create(null),
+    meetings: Object.create(null),
+    rules: Object.create(null),
+    money: Object.create(null),
   };
+  const sources = {
+    land: { corpus: "zap_projects_warehouse_lookup", counted: 0, located: 0, by_method: Object.create(null) },
+    property: { corpus: "property_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
+    meetings: { corpus: "meetings_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
+    rules: { corpus: "rules_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
+    money: { corpus: "ocp_awards_warehouse_lookup", counted: 0, located: 0, by_method: Object.create(null) },
+  };
+
+  function bumpMethod(lens, method) {
+    const key = method || "unknown";
+    sources[lens].by_method[key] = (sources[lens].by_method[key] || 0) + 1;
+  }
+
+  function bumpUnlocatedReason(lens, reason) {
+    const key = reason || "no_place_signal";
+    unlocatedReasons[lens][key] = (unlocatedReasons[lens][key] || 0) + 1;
+  }
 
   function place(lens, { borough, community, council }) {
     sources[lens].counted += 1;
@@ -488,11 +613,14 @@ export function buildDistrictActivity(opts = {}) {
     sources[lens].counted += 1;
     if (!slots.length) {
       unlocated[lens] += 1;
+      bumpUnlocatedReason(lens, slots.unlocated_reason || "no_place_signal");
       return;
     }
     let placed = false;
+    let method = null;
     for (const slot of slots) {
       let slotPlaced = false;
+      if (slot.method) method = slot.method;
       if (slot.community) {
         const cd = normalizeCommunityDistrictId(slot.community);
         if (cd) {
@@ -515,8 +643,13 @@ export function buildDistrictActivity(opts = {}) {
       }
       if (slotPlaced) placed = true;
     }
-    if (placed) sources[lens].located += 1;
-    else unlocated[lens] += 1;
+    if (placed) {
+      sources[lens].located += 1;
+      bumpMethod(lens, method);
+    } else {
+      unlocated[lens] += 1;
+      bumpUnlocatedReason(lens, slots.unlocated_reason || "no_place_signal");
+    }
   }
 
   // Land — publisher community_district on ZAP; resolve council via CD centroid when possible.
@@ -591,7 +724,10 @@ export function buildDistrictActivity(opts = {}) {
       council_district: byCouncil,
     },
     unlocated: { ...unlocated },
+    unlocated_reasons: unlocatedReasons,
     sources,
-    note: "Precomputed per-district per-lens activity for the map exploration surface. Counts are from committed corpora + per-lens location extractors (not live geo queries). Unlocated items stay in unlocated — never invented into a district.",
+    note: "Precomputed per-district per-lens activity for the map exploration surface. Counts are from committed corpora + human-derivation location extractors (matter place, venue line, agency/vendor place, citywide phrase — with method + confidence). Unlocated items stay in unlocated with a reason — never invented into a district.",
   };
 }
+
+export { compactDerivationStamp, placeFromDerivations };

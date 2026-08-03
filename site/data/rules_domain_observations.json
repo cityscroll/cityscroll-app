@@ -3,7 +3,7 @@
   "domain": "rules",
   "title": "Rules domain observations for entity intelligence",
   "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Mirrors the city_record side of rules:materialized:v2; no invented contract/vendor joins.",
-  "retrieved_at": "2026-08-02T13:38:55.781Z",
+  "retrieved_at": "2026-08-03T16:37:07.180Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -22,7 +22,37 @@
       "start_date": "2026-07-24T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260715041",
@@ -31,7 +61,37 @@
       "start_date": "2026-07-23T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260715045",
@@ -40,7 +100,37 @@
       "start_date": "2026-07-22T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260714024",
@@ -49,7 +139,37 @@
       "start_date": "2026-07-22T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260714029",
@@ -58,7 +178,37 @@
       "start_date": "2026-07-22T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260714002",
@@ -67,7 +217,37 @@
       "start_date": "2026-07-20T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260713006",
@@ -76,7 +256,37 @@
       "start_date": "2026-07-20T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260708018",
@@ -85,7 +295,37 @@
       "start_date": "2026-07-15T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260708002",
@@ -94,7 +334,47 @@
       "start_date": "2026-07-15T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn",
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn",
+          "Queens"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260707025",
@@ -103,7 +383,37 @@
       "start_date": "2026-07-14T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260706041",
@@ -112,7 +422,37 @@
       "start_date": "2026-07-14T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260710033",
@@ -121,7 +461,37 @@
       "start_date": "2026-07-14T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260706044",
@@ -130,7 +500,37 @@
       "start_date": "2026-07-13T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260701025",
@@ -139,7 +539,37 @@
       "start_date": "2026-07-09T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260626036",
@@ -148,7 +578,37 @@
       "start_date": "2026-07-08T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260626035",
@@ -157,7 +617,37 @@
       "start_date": "2026-07-08T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260626034",
@@ -166,7 +656,37 @@
       "start_date": "2026-07-06T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260624032",
@@ -175,7 +695,37 @@
       "start_date": "2026-07-01T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260624035",
@@ -184,7 +734,37 @@
       "start_date": "2026-06-30T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260622072",
@@ -193,7 +773,37 @@
       "start_date": "2026-06-29T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260618036",
@@ -202,7 +812,37 @@
       "start_date": "2026-06-26T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260618004",
@@ -211,7 +851,37 @@
       "start_date": "2026-06-25T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260617037",
@@ -220,7 +890,37 @@
       "start_date": "2026-06-25T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260612002",
@@ -229,7 +929,37 @@
       "start_date": "2026-06-23T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260612037",
@@ -238,7 +968,37 @@
       "start_date": "2026-06-22T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260609003",
@@ -247,7 +1007,37 @@
       "start_date": "2026-06-16T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260605008",
@@ -256,7 +1046,45 @@
       "start_date": "2026-06-11T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260602003",
@@ -265,7 +1093,37 @@
       "start_date": "2026-06-09T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260605058",
@@ -274,7 +1132,37 @@
       "start_date": "2026-06-09T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260602045",
@@ -283,7 +1171,37 @@
       "start_date": "2026-06-09T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260601006",
@@ -292,7 +1210,37 @@
       "start_date": "2026-06-08T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260521021",
@@ -301,7 +1249,37 @@
       "start_date": "2026-06-01T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260521002",
@@ -310,7 +1288,37 @@
       "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260522007",
@@ -319,7 +1327,37 @@
       "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260522005",
@@ -328,7 +1366,37 @@
       "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260522008",
@@ -337,7 +1405,37 @@
       "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260519048",
@@ -346,7 +1444,37 @@
       "start_date": "2026-05-27T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260519037",
@@ -355,7 +1483,37 @@
       "start_date": "2026-05-27T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260519043",
@@ -364,7 +1522,37 @@
       "start_date": "2026-05-22T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260519042",
@@ -373,25 +1561,37 @@
       "start_date": "2026-05-21T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260513026",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOA Home Improvement Contractor Disclosures",
-      "start_date": "2026-05-20T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260515003",
-      "agency_name": "Mayor's Office of Contract Services",
-      "short_title": "MOCS FY27 Regulatory Agenda",
-      "start_date": "2026-05-20T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260515002",
@@ -400,16 +1600,115 @@
       "start_date": "2026-05-20T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
-      "request_id": "20260512030",
-      "agency_name": "Information Technology and Telecommunications",
-      "short_title": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
-      "start_date": "2026-05-19T00:00:00.000",
+      "request_id": "20260515003",
+      "agency_name": "Mayor's Office of Contract Services",
+      "short_title": "MOCS FY27 Regulatory Agenda",
+      "start_date": "2026-05-20T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260513026",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Home Improvement Contractor Disclosures",
+      "start_date": "2026-05-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260512047",
@@ -418,7 +1717,76 @@
       "start_date": "2026-05-19T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260512030",
+      "agency_name": "Information Technology and Telecommunications",
+      "short_title": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
+      "start_date": "2026-05-19T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260512003",
@@ -427,7 +1795,37 @@
       "start_date": "2026-05-18T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260512015",
@@ -436,7 +1834,37 @@
       "start_date": "2026-05-18T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260514002",
@@ -445,7 +1873,37 @@
       "start_date": "2026-05-18T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260512040",
@@ -454,7 +1912,37 @@
       "start_date": "2026-05-18T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260512035",
@@ -463,25 +1951,37 @@
       "start_date": "2026-05-15T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260506027",
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
-      "start_date": "2026-05-14T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260507003",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP FY 2027 Regulatory Agenda",
-      "start_date": "2026-05-14T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260508032",
@@ -490,7 +1990,115 @@
       "start_date": "2026-05-14T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260507003",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP FY 2027 Regulatory Agenda",
+      "start_date": "2026-05-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260506027",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+      "start_date": "2026-05-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260506005",
@@ -499,16 +2107,37 @@
       "start_date": "2026-05-13T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260506019",
-      "agency_name": "Buildings",
-      "short_title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
-      "start_date": "2026-05-12T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260506007",
@@ -517,7 +2146,76 @@
       "start_date": "2026-05-12T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260506019",
+      "agency_name": "Buildings",
+      "short_title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
+      "start_date": "2026-05-12T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260504027",
@@ -526,7 +2224,37 @@
       "start_date": "2026-05-11T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260430025",
@@ -535,7 +2263,37 @@
       "start_date": "2026-05-08T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260430008",
@@ -544,7 +2302,37 @@
       "start_date": "2026-05-06T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260428027",
@@ -553,7 +2341,37 @@
       "start_date": "2026-05-04T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260417003",
@@ -562,43 +2380,37 @@
       "start_date": "2026-05-04T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260428036",
-      "agency_name": "Comptroller",
-      "short_title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
-      "start_date": "2026-05-01T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260324022",
-      "agency_name": "Sanitation",
-      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
-      "start_date": "2026-05-01T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260423016",
-      "agency_name": "Environmental Protection",
-      "short_title": "Construction Noise Monitoring Penalty Rule",
-      "start_date": "2026-05-01T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260323029",
-      "agency_name": "Transportation",
-      "short_title": "FY 2027 Regulatory Agenda",
-      "start_date": "2026-05-01T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260424028",
@@ -607,7 +2419,193 @@
       "start_date": "2026-05-01T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260423016",
+      "agency_name": "Environmental Protection",
+      "short_title": "Construction Noise Monitoring Penalty Rule",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260428036",
+      "agency_name": "Comptroller",
+      "short_title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260323029",
+      "agency_name": "Transportation",
+      "short_title": "FY 2027 Regulatory Agenda",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260324022",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260422018",
@@ -616,7 +2614,37 @@
       "start_date": "2026-04-30T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260427026",
@@ -625,7 +2653,37 @@
       "start_date": "2026-04-30T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260421022",
@@ -634,7 +2692,37 @@
       "start_date": "2026-04-29T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260421036",
@@ -643,7 +2731,37 @@
       "start_date": "2026-04-28T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260421020",
@@ -652,7 +2770,37 @@
       "start_date": "2026-04-28T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260421004",
@@ -661,7 +2809,37 @@
       "start_date": "2026-04-27T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260415033",
@@ -670,7 +2848,37 @@
       "start_date": "2026-04-22T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260414010",
@@ -679,16 +2887,37 @@
       "start_date": "2026-04-20T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260331049",
-      "agency_name": "Civilian Complaint Review Board",
-      "short_title": "Civilian Complaint Review Board FY 2027 Regulatory Agenda",
-      "start_date": "2026-04-17T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260410006",
@@ -697,7 +2926,76 @@
       "start_date": "2026-04-17T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260331049",
+      "agency_name": "Civilian Complaint Review Board",
+      "short_title": "Civilian Complaint Review Board FY 2027 Regulatory Agenda",
+      "start_date": "2026-04-17T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260409035",
@@ -706,7 +3004,37 @@
       "start_date": "2026-04-16T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260407013",
@@ -715,7 +3043,37 @@
       "start_date": "2026-04-15T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260409002",
@@ -724,7 +3082,37 @@
       "start_date": "2026-04-15T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260327026",
@@ -733,7 +3121,37 @@
       "start_date": "2026-04-08T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260406002",
@@ -742,7 +3160,37 @@
       "start_date": "2026-04-08T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260402006",
@@ -751,7 +3199,45 @@
       "start_date": "2026-04-07T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "DSNY Proposed Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan",
+          "Brooklyn"
+        ],
+        "derivation": {
+          "methods": [
+            "matter_title_place"
+          ],
+          "confidence": 0.88,
+          "role": "matter",
+          "evidence": [
+            "DSNY Proposed Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260331027",
@@ -760,7 +3246,37 @@
       "start_date": "2026-04-07T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260327005",
@@ -769,7 +3285,37 @@
       "start_date": "2026-04-06T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260327020",
@@ -778,7 +3324,37 @@
       "start_date": "2026-04-03T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260327013",
@@ -787,7 +3363,37 @@
       "start_date": "2026-04-03T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260326020",
@@ -796,7 +3402,37 @@
       "start_date": "2026-04-02T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260325028",
@@ -805,7 +3441,37 @@
       "start_date": "2026-03-31T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260323027",
@@ -814,7 +3480,37 @@
       "start_date": "2026-03-30T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260320022",
@@ -823,7 +3519,37 @@
       "start_date": "2026-03-27T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260317026",
@@ -832,7 +3558,37 @@
       "start_date": "2026-03-25T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260313007",
@@ -841,7 +3597,37 @@
       "start_date": "2026-03-24T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260311018",
@@ -850,16 +3636,37 @@
       "start_date": "2026-03-23T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260313020",
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Rules Relating to Stipulated Fine and Commercial Abatement Fine Programs",
-      "start_date": "2026-03-20T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260310018",
@@ -868,7 +3675,76 @@
       "start_date": "2026-03-20T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260313020",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Stipulated Fine and Commercial Abatement Fine Programs",
+      "start_date": "2026-03-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260313023",
@@ -877,7 +3753,37 @@
       "start_date": "2026-03-20T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260312013",
@@ -886,7 +3792,37 @@
       "start_date": "2026-03-19T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260302022",
@@ -895,7 +3831,37 @@
       "start_date": "2026-03-12T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260303021",
@@ -904,7 +3870,37 @@
       "start_date": "2026-03-11T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     },
     {
       "request_id": "20260302018",
@@ -913,7 +3909,37 @@
       "start_date": "2026-03-10T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
     }
   ]
 }
