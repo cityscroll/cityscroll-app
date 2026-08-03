@@ -1,0 +1,33 @@
+{
+  "schema": "cityscroll.attachment_metadata.receipt.v1",
+  "run_id": "att-t0-2026-08-02-49d0977e-a264-47d8-a046-ec934498675c",
+  "started_at": "2026-08-03T15:09:02.227Z",
+  "finished_at": "2026-08-03T15:09:02.230Z",
+  "window_start": "2026-08-02",
+  "window_end": "2026-08-02",
+  "mode": "fixture",
+  "notices_seen": 3,
+  "notices_materialized": 2,
+  "notices_scraped": 1,
+  "personnel_skipped": 1,
+  "attachments_found": 2,
+  "source_counts": {
+    "dataset": 0,
+    "portal": 2
+  },
+  "source_cliff_policy": "dataset_pre_2025_portal_2025_plus",
+  "polite_delay_s": 0,
+  "checkpoint": true,
+  "binaries_stored": false,
+  "upload": {
+    "pushed": false,
+    "batches": 0
+  },
+  "warehouse": {
+    "table": "attachment_metadata",
+    "materialized_view": "attachment_metadata_by_notice",
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "taskpolicy_or_nice_wrap": false
+  }
+}

@@ -44,8 +44,12 @@ def is_production_base(base: str) -> bool:
 
 
 def entry_applies(entry: dict, base: str = BASE) -> bool:
-    """localOnly routes are hermetic PR coverage; skip them against production hosts."""
+    """Select requested routes and keep deployment-ordered checks out of PR production runs."""
+    if REQUESTED_ENTRY_IDS and entry.get("id") not in REQUESTED_ENTRY_IDS:
+        return False
     if entry.get("localOnly") and is_production_base(base):
+        return False
+    if entry.get("postDeployOnly") and is_production_base(base) and entry.get("id") not in REQUESTED_ENTRY_IDS:
         return False
     return True
 
@@ -95,6 +99,40 @@ PAST_IDA_HEARING = {
     "additional_description_1": "Industrial Development Agency public hearing.",
 }
 
+CANNONSVILLE_NOTICE = {
+    "request_id": "20240515016",
+    "start_date": "2024-05-15T00:00:00.000",
+    "agency_name": "Environmental Protection",
+    "type_of_notice_description": "Property Disposition",
+    "section_name": "Property Disposition",
+    "short_title": "Cannonsville watershed basin timber sale",
+    "additional_description_1": "Sale of standing timber in the Cannonsville watershed basin.",
+    "n_documents": 1,
+    "attachments": [{
+        "request_id": "20240515016",
+        "document_id": "37470",
+        "title": "Description, maps, and volume report",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+        "content_type": None,
+        "bytes": None,
+        "source": "portal",
+    }],
+}
+
+CANNONSVILLE_ATTACHMENTS = {
+    "request_id": "20240515016",
+    "n_attachments": 1,
+    "attachments": [{
+        "request_id": "20240515016",
+        "document_id": "37470",
+        "title": "Description, maps, and volume report",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
+        "content_type": None,
+        "bytes": None,
+        "source": "portal",
+    }],
+}
+
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_args: object) -> None:
@@ -111,6 +149,8 @@ def install_demo_routes(page) -> None:
                 content_type="application/json",
                 body=json.dumps({"hearings": [UPCOMING_HEARING]}),
             )
+        elif path == "/attachment-metadata" and (query.get("id") or [""])[0] == "20240515016":
+            route.fulfill(status=200, content_type="application/json", body=json.dumps(CANNONSVILLE_ATTACHMENTS))
         elif path == "/zap-outcomes":
             # Notice-level land spine demo: hermetic full record for Timbale Terrace.
             project_id = (query.get("id") or [""])[0]
@@ -137,8 +177,14 @@ def install_demo_routes(page) -> None:
         query = parse_qs(urlparse(route.request.url).query)
         where = " ".join(query.get("$where", []))
         keyword = " ".join(query.get("$q", []))
+        if REQUESTED_ENTRY_IDS == {"notice-cannonsville-attachment"}:
+            route.fulfill(status=200, content_type="application/json", body=json.dumps([CANNONSVILLE_NOTICE]))
+            return
         exact_pin = re.search(r"\bpin='([^']+)'", where)
-        if exact_pin and exact_pin.group(1) in MATTER_PINS:
+        exact_request = re.search(r"\brequest_id='([^']+)'", where)
+        if exact_request and exact_request.group(1) == "20240515016":
+            route.fulfill(status=200, content_type="application/json", body=json.dumps([CANNONSVILLE_NOTICE]))
+        elif exact_pin and exact_pin.group(1) in MATTER_PINS:
             pin = exact_pin.group(1)
             rows = [
                 {**row, "pin": pin, "request_id": f"demo-{index}-{pin}"}
