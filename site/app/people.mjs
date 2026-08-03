@@ -3,7 +3,7 @@ let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
 const CAREER_DATA_URL = "data/staffing_exams.json";
 // Source: site/data/staffing_exams.json schema contract, built by tools/build_staffing_exams.mjs.
-const CAREER_DATA_SCHEMA_VERSION = 3;
+const CAREER_DATA_SCHEMA_VERSION = 4;
 // Source: bounded loader-recovery policy in this module. One retry after 250 ms
 // bridges a transient module/edge race without extending navigation indefinitely.
 const CAREER_LOAD_ATTEMPTS = 2;
@@ -170,6 +170,70 @@ function careerSalaryHTML(feeSalary, exam, gapClass){
     return `${careerMoney(min, gapClass)} – ${careerMoney(max, gapClass)}`;
   }
   return careerMoney(min, gapClass);
+}
+/** Short format label for differentiator chips. */
+function careerFormatLabel(format){
+  return t({
+    education_experience:"career_diff_format_eee",
+    multiple_choice:"career_diff_format_mc",
+    physical:"career_diff_format_physical",
+    mixed:"career_diff_format_mixed",
+    other:"career_diff_format_other",
+  }[format] || "career_diff_format_other");
+}
+/**
+ * Lead with what makes THIS exam different (format, fee surprise, salary, quals).
+ * Boilerplate fee-waiver copy is compressed when expanded detail shows it.
+ */
+function careerDiffLeadsHTML(exam, feeSalary){
+  const view=CrolStaffing.examDifferentiatorView
+    ? CrolStaffing.examDifferentiatorView(exam)
+    : { exam_format:exam.exam_format, card_leads:exam.card_leads||[], no_experience_required:exam.no_experience_required };
+  const chips=[];
+  const seen=new Set();
+  const push=(key,label)=>{
+    if(!label || seen.has(key)) return;
+    seen.add(key);
+    chips.push(`<span class="career-diff-chip" data-diff="${escUiHtml(key)}">${escUiHtml(label)}</span>`);
+  };
+  const leads=Array.isArray(view.card_leads) && view.card_leads.length
+    ? view.card_leads
+    : [
+      view.exam_format?{key:"exam_format",value:view.exam_format}:null,
+      exam.fee===0?{key:"fee",value:0}:null,
+      exam.salary_min!=null?{key:"salary_min",value:exam.salary_min}:null,
+      view.no_experience_required===true?{key:"no_experience_required",value:true}:null,
+      exam.qualifications?{key:"qualifications",value:exam.qualifications}:null,
+    ].filter(Boolean);
+
+  for(const lead of leads){
+    if(!lead || !lead.key) continue;
+    if(lead.key==="exam_format") push("exam_format", careerFormatLabel(lead.value || view.exam_format));
+    else if(lead.key==="fee" && (lead.value===0 || exam.fee===0)) push("fee", t("career_diff_no_fee"));
+    else if(lead.key==="fee_level" && lead.value==="none") push("fee", t("career_diff_no_fee"));
+    else if(lead.key==="salary_min" || lead.key==="salary_max"){
+      // handled after loop as one salary chip
+    } else if(lead.key==="no_experience_required") push("no_experience_required", t("career_diff_no_experience"));
+    else if(lead.key==="experience_required") push("experience_required", t("career_diff_experience"));
+    else if(lead.key==="residency_required") push("residency_required", t("career_diff_residency"));
+    else if(lead.key==="residency_not_required") push("residency_not_required", t("career_diff_no_residency"));
+  }
+  const min=feeSalary.salary_min ?? exam.salary_min;
+  const max=feeSalary.salary_max ?? exam.salary_max;
+  if(min != null){
+    const amount=max != null && Number(max) > Number(min)
+      ? t("career_diff_salary_range",{min:careerMoney(min),max:careerMoney(max)})
+      : t("career_diff_salary",{amount:careerMoney(min)});
+    push("salary", amount);
+  }
+  // Always surface format when present and not already chipped.
+  if(view.exam_format && !seen.has("exam_format")) push("exam_format", careerFormatLabel(view.exam_format));
+
+  const quals=exam.qualifications
+    ? `<p class="career-diff-quals" lang="en" dir="ltr"><b>${t("career_diff_quals")}</b> ${escUiHtml(exam.qualifications)}</p>`
+    : "";
+  if(!chips.length && !quals) return "";
+  return `${chips.length?`<div class="career-diff-leads" aria-label="${escUiHtml(t("career_diff_quals"))}">${chips.join("")}</div>`:""}${quals}`;
 }
 function careerStatusLabel(status){
   return t({
@@ -470,24 +534,29 @@ function careerCardHTML(exam){
   const apply=status==="open"
     ? `<a class="act primary" href="${escUiHtml(applyUrl)}" ${EXT_ATTRS} data-oasys-handoff="${applyDeep?"deep":"landing"}">${applyLabel}${extSR()}</a>`:"";
   const gapClass=feeSalary.class || (feeSalary.kind==="not_published"?"not_published":"not_yet_ingested");
+  const diffLeads=careerDiffLeadsHTML(exam, feeSalary);
   const actionFacts=`<div class="career-action-facts">
     <div class="career-action-fact"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>
-    <div class="career-action-fact"><b>${t("career_apply_oasys")}</b><span>${t("career_no_account_label")}</span></div>
-  </div>${examListForecastHTML(exam)}`;
+    <div class="career-action-fact"><b>${careerSalaryHTML(feeSalary, exam, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
+  </div>${diffLeads}${examListForecastHTML(exam)}`;
   const expanded=selected;
-  const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || exam.qualifications || exam.test_method);
+  const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || exam.qualifications || exam.test_method || exam.exam_format);
+  const feeWaiverLine=exam.fee_waiver_is_boilerplate
+    ? t("career_fee_waiver_boilerplate")
+    : (exam.fee_waiver || "");
   const details=hasNoeDetail ? `
     <div class="career-metrics" data-fee-salary="${feeSalary.kind}">
       <div class="career-metric"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>
       <div class="career-metric"><b>${careerSalaryHTML(feeSalary, exam, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
     </div>
-    <p class="career-detail-line"><b>${t("career_qualifications")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.qualifications||"")}</span></p>
-    <p class="career-detail-line"><b>${t("career_test_method")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.test_method||"")}</span></p>
-    <p class="career-detail-line"><b>${t("career_fee_waiver")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.fee_waiver||"")}</span></p>
+    ${exam.test_method||exam.exam_format?`<p class="career-detail-line"><b>${t("career_test_method")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.test_method||careerFormatLabel(exam.exam_format))}</span></p>`:""}
+    ${exam.qualifications?`<p class="career-detail-line"><b>${t("career_qualifications")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.qualifications)}</span></p>`:""}
+    ${exam.residency?`<p class="career-detail-line"><b>${t("career_diff_residency")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.residency)}</span></p>`:""}
+    ${feeWaiverLine?`<p class="career-detail-line"><b>${t("career_fee_waiver")}</b> <span lang="en" dir="ltr">${escUiHtml(feeWaiverLine)}</span></p>`:""}
     ${exam.amendment?`<p class="note warn" lang="en" dir="ltr">${escUiHtml(exam.amendment)}</p>`:""}
     <p class="career-english-note">${t("career_official_english_note")}</p>`
     : `<p class="note" data-fee-salary="not_yet_ingested">${t("career_noe_pending")}</p>`;
-  return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
+  return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" data-exam-format="${escUiHtml(exam.exam_format||"")}" data-salary-band="${escUiHtml(exam.salary_band||"")}" data-fee-level="${escUiHtml(exam.fee_level||"")}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
     <div class="career-deadline-lead">
       <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
       ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}
@@ -548,6 +617,10 @@ function careerFilters(){
     interest:$("#career-interest").value,
     eligibility:$("#career-eligibility").value,
     window:$("#career-window").value,
+    format:$("#career-format")?.value || "all",
+    salary_band:$("#career-salary-band")?.value || "all",
+    fee_level:$("#career-fee-level")?.value || "all",
+    no_experience:$("#career-no-experience")?.value || "all",
   };
 }
 function renderCareerGuide(){
@@ -577,7 +650,10 @@ function renderCareerGuide(){
 }
 function applyCareerRouteFilters(){
   if(!careerRouteFilters) return;
-  const {interest, eligibility, window: windowFilter} = careerRouteFilters;
+  const {
+    interest, eligibility, window: windowFilter,
+    format, salary_band: salaryBand, fee_level: feeLevel, no_experience: noExperience,
+  } = careerRouteFilters;
   const interestEl=$("#career-interest");
   if(interestEl){
     if(interest && CrolStaffing.isInterestArea(interest) && [...interestEl.options].some(option=>option.value===interest)){
@@ -595,6 +671,26 @@ function applyCareerRouteFilters(){
   if(windowEl){
     if(windowFilter && ["actionable","open","upcoming","all"].includes(windowFilter)) windowEl.value=windowFilter;
     else if(windowFilter===null) windowEl.value="actionable";
+  }
+  const formatEl=$("#career-format");
+  if(formatEl){
+    if(format && [...formatEl.options].some(option=>option.value===format)) formatEl.value=format;
+    else if(format===null || format==="all") formatEl.value="all";
+  }
+  const salaryEl=$("#career-salary-band");
+  if(salaryEl){
+    if(salaryBand && [...salaryEl.options].some(option=>option.value===salaryBand)) salaryEl.value=salaryBand;
+    else if(salaryBand===null || salaryBand==="all") salaryEl.value="all";
+  }
+  const feeEl=$("#career-fee-level");
+  if(feeEl){
+    if(feeLevel && [...feeEl.options].some(option=>option.value===feeLevel)) feeEl.value=feeLevel;
+    else if(feeLevel===null || feeLevel==="all") feeEl.value="all";
+  }
+  const expEl=$("#career-no-experience");
+  if(expEl){
+    if(noExperience && [...expEl.options].some(option=>option.value===noExperience)) expEl.value=noExperience;
+    else if(noExperience===null || noExperience==="all") expEl.value="all";
   }
   careerRouteFilters=null;
 }

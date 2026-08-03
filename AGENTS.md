@@ -941,6 +941,23 @@ keeps hash + paints detail shell first (`showExam` / `paintExamDetailShell` /
 Verify: `node --test test/exam_fee_salary.test.mjs test/noe_fee_salary.test.mjs
 test/deadline_exam_cards.test.mjs`.
 
+## NOE differentiators (exam cards + filters)
+
+Interface preference: Open Data has **no** NOE body corpus (`4ptz-hmtc` schedule,
+`vx8i-nprf` lists). Best bulk is OASys `GetActiveExams` (fee, promotional,
+examParts EEE/MC). Full quals/residency/salary range come from polite
+build-time NOE HTML parse (`/OASysWeb/noe?examId=`), cached as
+`site/data/exam_sources/noe_differentiators.json`. Pure lib:
+`worker/src/lib/noe_differentiators.mjs`; rebuild
+`node tools/build_noe_differentiators.mjs` (or `--from-text-fixtures`).
+`build_staffing_exams.mjs` merges fill-only and stamps `exam_format`,
+`salary_band`, `fee_level`, `no_experience_required`, `card_leads`. Cards lead
+with differentiators; filters: format / salary band / fee / no-experience.
+Precompute-first — no live fetch at render. Exemplars: Police Officer `7312`
+(MC, $0 fee), Caseworker `7016` (EEE, bachelor's, no experience), Automotive
+Service Worker `7013` (EEE, experience). Verify:
+`node --test test/noe_differentiators.test.mjs`.
+
 ## Digest watermark recovery (catch-up digests)
 
 **markSeen policy (hard rule):** `markSeen` advances the delivery-adjacent seen set

@@ -52,6 +52,17 @@ Sources and refresh rules:
   amounts; annual-schedule-only rows without a densify hit stay class-(a)
   not_yet_ingested. Receipt:
   `verification_receipts/noe_fee_salary_densify_latest.json`.
+- `noe_differentiators.json` — precomputed filter facets and card leads from
+  OASys `GetActiveExams` (fee, promotional, examParts EEE/MC) plus polite
+  build-time parse of OASys NOE HTML pages (`/noe?examId=`). Open Data has no
+  NOE body corpus (`4ptz-hmtc` schedule, `vx8i-nprf` lists only). Fields:
+  salary band, fee level, exam format, qualifications, no-experience flag,
+  residency, selective certification, and a corpus frequency split of
+  boilerplate vs distinctive content. Rebuild:
+  `node tools/build_noe_differentiators.mjs` (live, rate-limited) or
+  `--from-text-fixtures`. Receipt:
+  `verification_receipts/noe_differentiators_latest.json`. Text fixtures:
+  `fixtures/noe_text/examId_*.txt`.
 - `active_list_summary.json` — aggregate-only counts from the daily DCAS active
   civil-service-list dataset `vx8i-nprf`. Candidate names are never copied into
   this repository.

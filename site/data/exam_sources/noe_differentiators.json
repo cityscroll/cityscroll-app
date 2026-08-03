@@ -1,0 +1,944 @@
+{
+  "schema_version": 1,
+  "source": {
+    "id": "dcas-noe-differentiators",
+    "name": "OASys NOE differentiators densify",
+    "role": "Structured filter facets and card leads from OASys GetActiveExams + NOE HTML body parse. Open Data has no NOE body dataset.",
+    "oasys_api": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
+    "open_data_checked": [
+      {
+        "id": "4ptz-hmtc",
+        "name": "Annual Examination Schedule",
+        "noe_body": false
+      },
+      {
+        "id": "vx8i-nprf",
+        "name": "Civil Service List (Active)",
+        "noe_body": false
+      }
+    ],
+    "interface_choice": "bulk Open Data (schedule/list only) < OASys GetActiveExams JSON < polite NOE HTML parse",
+    "fetched_at": "2026-08-03",
+    "verified_at": "2026-08-03",
+    "stale_after_days": 45,
+    "freshness_required": false,
+    "mode": "live_noe_html",
+    "min_request_interval_ms": 1200
+  },
+  "densify_policy": {
+    "never_fabricate": true,
+    "precompute_first": true,
+    "no_live_fetch_at_render": true,
+    "rate_limit_ms": 1200
+  },
+  "corpus": {
+    "field_stats": {
+      "exam_format": {
+        "present": 9,
+        "distinct_values": 2,
+        "top_value": "education_experience",
+        "top_share": 0.667,
+        "is_boilerplate": true
+      },
+      "fee_level": {
+        "present": 9,
+        "distinct_values": 4,
+        "top_value": "mid",
+        "top_share": 0.444,
+        "is_boilerplate": false
+      },
+      "salary_band": {
+        "present": 9,
+        "distinct_values": 3,
+        "top_value": "under_45k",
+        "top_share": 0.444,
+        "is_boilerplate": false
+      },
+      "no_experience_required": {
+        "present": 6,
+        "distinct_values": 2,
+        "top_value": "true",
+        "top_share": 0.667,
+        "is_boilerplate": true
+      },
+      "residency_required": {
+        "present": 5,
+        "distinct_values": 2,
+        "top_value": "false",
+        "top_share": 0.8,
+        "is_boilerplate": true
+      },
+      "fee_waiver_is_boilerplate": {
+        "present": 9,
+        "distinct_values": 1,
+        "top_value": "false",
+        "top_share": 1,
+        "is_boilerplate": true
+      },
+      "has_selective_certification": {
+        "present": 9,
+        "distinct_values": 2,
+        "top_value": "true",
+        "top_share": 0.778,
+        "is_boilerplate": true
+      },
+      "education_level": {
+        "present": 6,
+        "distinct_values": 2,
+        "top_value": "bachelors",
+        "top_share": 0.5,
+        "is_boilerplate": false
+      }
+    },
+    "boilerplate_fields": [
+      "exam_format",
+      "no_experience_required",
+      "residency_required",
+      "fee_waiver_is_boilerplate",
+      "has_selective_certification"
+    ],
+    "distinctive_fields": [
+      "fee_level",
+      "salary_band",
+      "education_level"
+    ]
+  },
+  "summary": {
+    "oasys_rows": 9,
+    "records": 9,
+    "bodies_parsed": 9,
+    "api_only": 0
+  },
+  "records": [
+    {
+      "exam_number": "6125",
+      "title": "Emergency Medical Specialist - EMT",
+      "oasys_exam_id": "9619",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20266125000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
+      "fee": 30,
+      "salary_min": 39386,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "under_45k",
+      "fee_level": "low",
+      "exam_format": "education_experience",
+      "part_type_codes": [
+        "EEE"
+      ],
+      "test_method": "Education and experience exam",
+      "qualifications": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The certification requirement…",
+      "education_level": null,
+      "no_experience_required": null,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience: If you have the experience in the areas listed below, you may be considered for appointment to positions requiring this experience through a process cal",
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": "Emergency Medical Specialists - EMTs, under general supervision, perform tasks such as the following: provide timely, professional, pre-hospital emergency medical care/Basic Life Support",
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $30.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $39,386 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement : City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience: If you have the experience in the areas listed below, you may be considered for appointment to positions requiring this experience through a process cal",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        },
+        "summary": {
+          "source": "noe_body",
+          "method": "what_the_job_involves",
+          "excerpt": "WHAT THE JOB INVOLVES: Emergency Medical Specialists - EMTs, under general supervision, perform tasks such as the following: provide timely, professional, pre-hospital emergency medical care/Basic Lif",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9619"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 39386
+        },
+        {
+          "key": "qualifications",
+          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The certification requirement…"
+        }
+      ]
+    },
+    {
+      "exam_number": "6126",
+      "title": "Emergency Medical Specialist Trainee",
+      "oasys_exam_id": "9620",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20266126000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
+      "fee": 30,
+      "salary_min": 36330,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "under_45k",
+      "fee_level": "low",
+      "exam_format": "education_experience",
+      "part_type_codes": [
+        "EEE"
+      ],
+      "test_method": "Education and experience exam",
+      "qualifications": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The experience requirement nee…",
+      "education_level": null,
+      "no_experience_required": null,
+      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+      "residency_required": null,
+      "has_selective_certification": false,
+      "selective_certification_summary": null,
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": "Emergency Medical Specialist Trainees attend a training program conducted by the New York City Fire Department.",
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $30.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $36,330 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        },
+        "summary": {
+          "source": "noe_body",
+          "method": "what_the_job_involves",
+          "excerpt": "WHAT THE JOB INVOLVES: Emergency Medical Specialist Trainees attend a training program conducted by the New York City Fire Department. Emergency Medical Specialist Trainees receive Emergency Medical T",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9620"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 36330
+        },
+        {
+          "key": "qualifications",
+          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive a score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 7, 2027. The experience requirement nee…"
+        }
+      ]
+    },
+    {
+      "exam_number": "7006",
+      "title": "Assistant Civil Engineer",
+      "oasys_exam_id": "9625",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277006000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625",
+      "fee": 82,
+      "salary_min": 66330,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "60k_80k",
+      "fee_level": "high",
+      "exam_format": "education_experience",
+      "part_type_codes": [
+        "EEE"
+      ],
+      "test_method": "Education and experience exam",
+      "qualifications": "A baccalaureate degree in civil engineering from an accredited college or university and one year of fulltime satisfactory experience in civil engineering work; or A baccalaureate degree from an accredited college or university in civil engineering technology and three years of full-time satisfactory experience in c…",
+      "education_level": "bachelors",
+      "no_experience_required": false,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience, License and/or Certificate: If you have the experience, license and/or certificates listed below, you may be considered for appointment to positions req",
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $82.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $66,330 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience, License and/or Certificate: If you have the experience, license and/or certificates listed below, you may be considered for appointment to positions req",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9625"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 66330
+        },
+        {
+          "key": "experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree in civil engineering from an accredited college or university and one year of fulltime satisfactory experience in civil engineering work; or A baccalaureate degree from an accredited college or university in civil engineering technology and three years of full-time satisfactory experience in c…"
+        }
+      ]
+    },
+    {
+      "exam_number": "7013",
+      "title": "Automotive Service Worker",
+      "oasys_exam_id": "9628",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277013000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
+      "fee": 61,
+      "salary_min": 42387,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "under_45k",
+      "fee_level": "mid",
+      "exam_format": "education_experience",
+      "part_type_codes": [
+        "EEE"
+      ],
+      "test_method": "Education and experience exam",
+      "qualifications": "Two years of full-time satisfactory experience, performing automotive maintenance services, such as inspection, lubrication and oil changing acquired in a garage or gasoline service station; or Graduation from an approved trade school, vocational high school or technical school with a course of study in automotive m…",
+      "education_level": "high_school",
+      "no_experience_required": false,
+      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+      "residency_required": null,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience, Certification and/or License: If you have the experience, certification, and/or license listed in one or more of the areas listed below, you may be cons",
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $61.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $42,387 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience, Certification and/or License: If you have the experience, certification, and/or license listed in one or more of the areas listed below, you may be cons",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9628"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 42387
+        },
+        {
+          "key": "experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "Two years of full-time satisfactory experience, performing automotive maintenance services, such as inspection, lubrication and oil changing acquired in a garage or gasoline service station; or Graduation from an approved trade school, vocational high school or technical school with a course of study in automotive m…"
+        }
+      ]
+    },
+    {
+      "exam_number": "7016",
+      "title": "Caseworker",
+      "oasys_exam_id": "9629",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277016000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
+      "fee": 68,
+      "salary_min": 48206,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
+      "exam_format": "education_experience",
+      "part_type_codes": [
+        "EEE"
+      ],
+      "test_method": "Education and experience exam",
+      "qualifications": "A baccalaureate degree from an accredited college or university accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educated outside the United States, you…",
+      "education_level": "bachelors",
+      "no_experience_required": true,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification. If you qualify for Selective Certification, you may be given preferred consideration for positions requiring this experience. Follow the onscreen instructions when completing ",
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $68.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $48,206 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification. If you qualify for Selective Certification, you may be given preferred consideration for positions requiring this experience. Follow the onscreen instructions when completing ",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9629"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 48206
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree from an accredited college or university accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educated outside the United States, you…"
+        }
+      ]
+    },
+    {
+      "exam_number": "7018",
+      "title": "Caseworker (NYC H+H)",
+      "oasys_exam_id": "9631",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277018000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
+      "fee": 68,
+      "salary_min": 48206,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "45k_60k",
+      "fee_level": "mid",
+      "exam_format": "education_experience",
+      "part_type_codes": [
+        "EEE"
+      ],
+      "test_method": "Education and experience exam",
+      "qualifications": "A baccalaureate degree from an accredited college or university. The college or university must be accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educ…",
+      "education_level": "bachelors",
+      "no_experience_required": true,
+      "residency": "City residency is not required for this position.",
+      "residency_required": false,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Foreign Language and/or American Sign Language: If you can speak Albanian (ALB) , Arabic (ARA) , Bengali (BEN) , Bosnian/Serbo-Croatian (SRC) , Chinese (Cantonese) (CAN) , ",
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $68.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $48,206 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "EEE"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: City residency is not required for this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Foreign Language and/or American Sign Language: If you can speak Albanian (ALB) , Arabic (ARA) , Bengali (BEN) , Bosnian/Serbo-Croatian (SRC) , Chinese (Cantonese) (CAN) , ",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "salary_min",
+          "value": 48206
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "A baccalaureate degree from an accredited college or university. The college or university must be accredited by regional, national, professional, or specialized agencies recognized as accrediting bodies by the U.S. Secretary of Education and by the Council for Higher Education Accreditation (CHEA). If you were educ…"
+        }
+      ]
+    },
+    {
+      "exam_number": "7312",
+      "title": "Police Officer",
+      "oasys_exam_id": "9646",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277312000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
+      "exam_format": "multiple_choice",
+      "part_type_codes": [
+        "MC"
+      ],
+      "test_method": "Multiple-choice test",
+      "qualifications": "By the date of appointment, you must have a four-year high school diploma or its educational equivalent, and successfully completed 24 college semester credits at an accredited college or university with at least a 2.0 cumulative index or its equivalent, or have completed two years of honorable full-time U.S. milita…",
+      "education_level": "high_school",
+      "no_experience_required": true,
+      "residency": "The New York State Public Officers Law requires that any person employed as a Police Officer in the New York City Police Department must be a resident of the City of New York or of Nassau, Westchester, Suffolk, Orange…",
+      "residency_required": true,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Special Experience : If you have the experience listed in one or more of the areas below, you may be considered for appointment to positions requiring this experience throu",
+      "fee_waiver": "No application fee is charged for this exam.",
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $0.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $55,942 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "salary_max": {
+          "source": "noe_body",
+          "method": "labeled_salary_range",
+          "excerpt": "The current minimum salary is $55,942 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "MC"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for this examination prior to submitting your application. If you are found \"Not",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: The New York State Public Officers Law requires that any person employed as a Police Officer in the New York City Police Department must be a resident of the City of New York or of Nassau, Westchester, Suffol",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Special Experience : If you have the experience listed in one or more of the areas below, you may be considered for appointment to positions requiring this experience throu",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        },
+        "fee_waiver": {
+          "source": "noe_body",
+          "method": "fee_block",
+          "excerpt": "fee=0",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9646"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 55942
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "residency_required",
+          "value": true
+        }
+      ]
+    },
+    {
+      "exam_number": "7323",
+      "title": "School Safety Agent",
+      "oasys_exam_id": "9634",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277323000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
+      "fee": 61,
+      "salary_min": 40480,
+      "salary_max": 58345,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "under_45k",
+      "fee_level": "mid",
+      "exam_format": "multiple_choice",
+      "part_type_codes": [
+        "MC"
+      ],
+      "test_method": "Multiple-choice test",
+      "qualifications": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive an Admission Notice or score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 25, 2027. The expe…",
+      "education_level": null,
+      "no_experience_required": null,
+      "residency": null,
+      "residency_required": null,
+      "has_selective_certification": true,
+      "selective_certification_summary": "Selective Certification for Assistant School Safety Agent Program (ASA): If you have successfully completed at least six (6) months of satisfactory, full-time experience as an Assistant School Safety ",
+      "fee_waiver": null,
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $61.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "The current minimum salary is $40,480 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "salary_max": {
+          "source": "noe_body",
+          "method": "labeled_salary_range",
+          "excerpt": "The current minimum salary is $40,480 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "MC"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for the examination before submitting your application. If you are deemed \"Not Q",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        },
+        "has_selective_certification": {
+          "source": "noe_body",
+          "method": "selective_certification_heading",
+          "excerpt": "Selective Certification for Assistant School Safety Agent Program (ASA): If you have successfully completed at least six (6) months of satisfactory, full-time experience as an Assistant School Safety ",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9634"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "salary_min",
+          "value": 40480
+        },
+        {
+          "key": "qualifications",
+          "value": "for the examination before submitting your application. If you are deemed \"Not Qualified,\" your application fee will not be refunded and you will not receive an Admission Notice or score. As per Section 54; of the Civil Service Law, the education requirement needed to qualify must be met by August 25, 2027. The expe…"
+        }
+      ]
+    },
+    {
+      "exam_number": "7331",
+      "title": "Traffic Enforcement Agent",
+      "oasys_exam_id": "9635",
+      "is_promotional": false,
+      "eligibility": "open_competitive",
+      "notice_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277331000.pdf",
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
+      "fee": 0,
+      "salary_min": 48719,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "salary_band": "45k_60k",
+      "fee_level": "none",
+      "exam_format": "multiple_choice",
+      "part_type_codes": [
+        "MC"
+      ],
+      "test_method": "Multiple-choice test",
+      "qualifications": "By the date of appointment , you must have: A four-year high school diploma or its educational equivalent, approved by a State's Department of Education or a recognized accrediting organization. If you were educated outside the United States, you must have your foreign education evaluated to determine its equivalenc…",
+      "education_level": "high_school",
+      "no_experience_required": true,
+      "residency": "Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+      "residency_required": null,
+      "has_selective_certification": false,
+      "selective_certification_summary": null,
+      "fee_waiver": "No application fee is charged for this exam.",
+      "fee_waiver_is_boilerplate": false,
+      "summary": null,
+      "densify_method": "oasys_noe_html_body",
+      "source_interface": "oasys_noe_html",
+      "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
+      "provenance": {
+        "fee": {
+          "source": "noe_body",
+          "method": "labeled_application_fee",
+          "excerpt": "Application Fee: $0.00",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "salary_min": {
+          "source": "noe_body",
+          "method": "labeled_minimum_salary",
+          "excerpt": "for which the current minimum salary is $48,719 per annum",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "exam_format": {
+          "source": "oasys_get_active_exams",
+          "field": "examParts.partTypeCode",
+          "codes": [
+            "MC"
+          ]
+        },
+        "qualifications": {
+          "source": "noe_body",
+          "method": "education_experience_or_how_to_qualify",
+          "excerpt": "education and experience requirements for this examination prior to submitting your application. If you are found \"Not",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "no_experience_required": {
+          "source": "noe_body",
+          "method": "qualifications_inference",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "residency": {
+          "source": "noe_body",
+          "method": "residency_requirement_advisory",
+          "excerpt": "Residency Requirement Advisory: Under New York City Administrative Code Section 12-120, you might need to be a resident of the City of New York within 90 days of the date you are appointed to this position.",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        },
+        "fee_waiver": {
+          "source": "noe_body",
+          "method": "fee_block",
+          "excerpt": "fee=0",
+          "source_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+        }
+      },
+      "card_leads": [
+        {
+          "key": "exam_format",
+          "value": "multiple_choice"
+        },
+        {
+          "key": "fee",
+          "value": 0
+        },
+        {
+          "key": "salary_min",
+          "value": 48719
+        },
+        {
+          "key": "no_experience_required",
+          "value": true
+        },
+        {
+          "key": "qualifications",
+          "value": "By the date of appointment , you must have: A four-year high school diploma or its educational equivalent, approved by a State's Department of Education or a recognized accrediting organization. If you were educated outside the United States, you must have your foreign education evaluated to determine its equivalenc…"
+        }
+      ]
+    }
+  ]
+}
