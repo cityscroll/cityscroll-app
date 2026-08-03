@@ -153,6 +153,122 @@ test("community board agency names map to product CD ids", () => {
   assert.deepEqual(parseZapCommunityDistricts("Q01, Q02"), ["Q01", "Q02"]);
 });
 
+test("buildDistrictActivity places meetings via affected-area extractor (not only CB agency names)", () => {
+  // Golden corpus: extractors locate many hearings; the map precompute must wire them.
+  const goldenPath = new URL("../test/contract/fixtures/affected_area_golden.json", import.meta.url);
+  assert.ok(existsSync(goldenPath), "affected_area golden corpus must exist");
+  const golden = JSON.parse(readFileSync(goldenPath, "utf8"));
+  const meetingsRows = golden.notices.map((n) => n.row);
+  assert.ok(meetingsRows.length >= 20, "golden corpus should have hearing rows");
+
+  const activity = buildDistrictActivity({
+    boundaries,
+    zapRows: [],
+    propertyRows: [],
+    meetingsRows,
+    rulesRows: [],
+    moneyRows: [],
+  });
+
+  assert.ok(
+    activity.sources.meetings.located >= 1,
+    `expected located meetings from extractor corpus, got ${activity.sources.meetings.located}/${activity.sources.meetings.counted}`,
+  );
+  assert.ok(
+    activity.sources.meetings.located < activity.sources.meetings.counted
+      || activity.unlocated.meetings === 0,
+    "unlocated bag should absorb extractor misses (never invent districts)",
+  );
+
+  const boroughTotals = Object.values(activity.by_level.borough)
+    .reduce((sum, bag) => sum + (bag.meetings || 0), 0);
+  assert.ok(boroughTotals >= 1, "borough choropleth must show meetings where extractors locate them");
+
+  // Field case: Community Board 1, Brooklyn board language → product CD K01.
+  const kent = meetingsRows.find((r) => r.request_id === "20260428004");
+  if (kent) {
+    const single = buildDistrictActivity({
+      boundaries,
+      meetingsRows: [kent],
+    });
+    assert.ok(
+      (single.by_level.community_district.K01?.meetings || 0) >= 1
+        || (single.by_level.borough.Brooklyn?.meetings || 0) >= 1,
+      "Kent Avenue hearing should land in Brooklyn / CB1 when board signals resolve",
+    );
+  }
+});
+
+test("buildDistrictActivity places rules via rule-scope extractor", () => {
+  const rulesRows = [
+    {
+      request_id: "rule-boro-1",
+      agency_name: "Sanitation",
+      short_title:
+        "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+      type_of_notice_description: "Notice",
+      section_name: "Agency Rules",
+    },
+    {
+      request_id: "rule-citywide-1",
+      agency_name: "Buildings",
+      short_title: "Amendments to Rules Relating to the Energy Conservation Code",
+      type_of_notice_description: "Notice",
+      section_name: "Agency Rules",
+    },
+  ];
+  const activity = buildDistrictActivity({
+    boundaries,
+    rulesRows,
+  });
+  assert.ok(
+    activity.sources.rules.located >= 1,
+    `expected at least one located rule from borough-scoped title, got ${activity.sources.rules.located}`,
+  );
+  assert.ok(
+    (activity.by_level.borough.Brooklyn?.rules || 0)
+      + (activity.by_level.borough.Manhattan?.rules || 0)
+      + (activity.by_level.borough.Queens?.rules || 0)
+      >= 1,
+  );
+});
+
+test("buildDistrictActivity places money rows with publisher geo or coordinates via PIP", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    moneyRows: [
+      {
+        request_id: "money-geo-1",
+        agency_name: "Parks",
+        short_title: "Park maintenance",
+        community_district: "Q04",
+        borough: "Queens",
+      },
+      {
+        request_id: "money-pip-1",
+        agency_name: "DOT",
+        short_title: "Street work",
+        latitude: 40.7473,
+        longitude: -73.8832,
+      },
+      {
+        request_id: "money-bare-1",
+        agency_name: "Health",
+        short_title: "Catering Services",
+      },
+    ],
+  });
+  assert.ok(
+    activity.sources.money.located >= 2,
+    `publisher geo + PIP coords should locate money rows, got ${activity.sources.money.located}`,
+  );
+  // Both publisher-CD and PIP (Elmhurst) resolve into Queens CD Q04 / council 25.
+  assert.equal(activity.by_level.community_district.Q04.money, 2);
+  assert.equal(activity.by_level.council_district["25"].money, 1);
+  assert.equal(activity.by_level.borough.Queens.money, 2);
+  assert.equal(activity.unlocated.money, 1);
+});
+
 test("committed district_activity artifact is present and loadable", () => {
   const path = new URL("../site/data/district_activity.json", import.meta.url);
   if (!existsSync(path)) {
@@ -168,4 +284,9 @@ test("committed district_activity artifact is present and loadable", () => {
   assert.ok(totals.land + totals.property + totals.meetings + totals.rules + totals.money >= 1);
   // Schema constant is exported for surface verification.
   assert.equal(typeof MAP_EXPLORATION_SCHEMA, "string");
+  // Place-based lenses must not ship as all-zero after wiring extractors.
+  assert.ok(
+    (doc.sources?.meetings?.located || 0) >= 1,
+    "committed map artifact must locate some meetings (place-based lens)",
+  );
 });

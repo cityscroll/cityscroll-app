@@ -72,6 +72,10 @@ function check(doc) {
   if ((doc.sources?.property?.located || 0) < 1) {
     throw new Error("expected some located property activity");
   }
+  // Meetings is the place-based lens — zero located across the corpus is a wiring bug.
+  if ((doc.sources?.meetings?.counted || 0) > 0 && (doc.sources?.meetings?.located || 0) < 1) {
+    throw new Error("expected some located meetings activity when the corpus is non-empty");
+  }
 }
 
 function writeTwin(doc) {
@@ -103,6 +107,9 @@ if (checkOnly) {
     boundary_vintage: existing.boundary_vintage,
     land_located: existing.sources?.land?.located,
     property_located: existing.sources?.property?.located,
+    meetings_located: existing.sources?.meetings?.located,
+    rules_located: existing.sources?.rules?.located,
+    money_located: existing.sources?.money?.located,
   });
   process.exit(0);
 }

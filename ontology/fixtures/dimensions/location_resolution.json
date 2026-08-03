@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.location_resolution_inventory.v0",
   "measured_at": "2026-08-02",
-  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer.",
+  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources so a zero-located map lens emits a flywheel card.",
   "lenses": [
     {
       "lens": "meetings-hearings",
@@ -26,6 +26,44 @@
       "false_positive_ids": []
     }
   ],
+  "map_aggregates": {
+    "schema": "cityscroll.district_activity.v1",
+    "boundary_vintage": "2026-05-26",
+    "built_at": "2026-08-03T14:43:50.426Z",
+    "path": "site/data/district_activity.json",
+    "sources": {
+      "land": {
+        "corpus": "zap_projects_warehouse_lookup",
+        "counted": 236,
+        "located": 236,
+        "located_rate": 1
+      },
+      "property": {
+        "corpus": "property_domain_observations",
+        "counted": 133,
+        "located": 133,
+        "located_rate": 1
+      },
+      "meetings": {
+        "corpus": "meetings_domain_observations",
+        "counted": 119,
+        "located": 14,
+        "located_rate": 0.11764705882352941
+      },
+      "rules": {
+        "corpus": "rules_domain_observations",
+        "counted": 100,
+        "located": 100,
+        "located_rate": 1
+      },
+      "money": {
+        "corpus": "ocp_awards_warehouse_lookup",
+        "counted": 8,
+        "located": 0,
+        "located_rate": 0
+      }
+    }
+  },
   "geocoded_pins": [
     {
       "id": "113 Franklin Street|Brooklyn",

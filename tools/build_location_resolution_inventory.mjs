@@ -109,11 +109,36 @@ function boundaryEntries() {
   ];
 }
 
+function mapAggregates() {
+  const path = "site/data/district_activity.json";
+  if (!existsSync(join(ROOT, path))) return null;
+  const doc = readJson(path);
+  const sources = doc?.sources && typeof doc.sources === "object" ? doc.sources : {};
+  const lenses = {};
+  for (const [lens, src] of Object.entries(sources)) {
+    const counted = Number(src?.counted) || 0;
+    const located = Number(src?.located) || 0;
+    lenses[lens] = {
+      corpus: src?.corpus || null,
+      counted,
+      located,
+      located_rate: counted > 0 ? located / counted : null,
+    };
+  }
+  return {
+    schema: doc?.schema || null,
+    boundary_vintage: doc?.boundary_vintage || null,
+    built_at: doc?.built_at || null,
+    path,
+    sources: lenses,
+  };
+}
+
 function buildInventory() {
   return {
     schema: "cityscroll.location_resolution_inventory.v0",
     measured_at: MEASURED_AT,
-    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer.",
+    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources so a zero-located map lens emits a flywheel card.",
     lenses: [
       measureLens({
         lens: "meetings-hearings",
@@ -128,6 +153,7 @@ function buildInventory() {
         extractor: propertyLocationFromRow,
       }),
     ],
+    map_aggregates: mapAggregates(),
     geocoded_pins: geocodedPins(),
     boundaries: boundaryEntries(),
   };
