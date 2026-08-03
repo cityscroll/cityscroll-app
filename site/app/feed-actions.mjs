@@ -684,7 +684,12 @@ function actionRailHTML(actions){
         `<span>${label}<span class="act-official">${escUiHtml(action.destination_label)}</span></span>${extSR()}</a>`;
     }
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
-    return `<a class="act" href="#alerts">${label}</a>`;
+    // Local watch (and other local navigations): use the action destination when present
+    // so "Watch this notice" carries #alerts?lens=…&filter=…&notice=… context.
+    const href = action.destination && String(action.destination).startsWith("#")
+      ? action.destination
+      : "#alerts";
+    return `<a class="act" href="${escUiHtml(href)}">${label}</a>`;
   }).join("");
   return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}</section>`;
 }
@@ -882,18 +887,8 @@ function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
     try{ downloadEventICS(synthetic); }catch(_e){}
   });
   el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
-  // Watch CTA: prefill rezone alert from the selected project area.
-  el.querySelectorAll('a[href="#alerts"]').forEach(a=>{
-    a.addEventListener("click",(ev)=>{
-      const area=(projectRow.project_name||projectRow.borough||"")
-        .replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"")
-        .trim().split(/\s+/).slice(0,3).join(" ")||projectRow.borough||"";
-      if(area){
-        ev.preventDefault();
-        landToAlert(area);
-      }
-    });
-  });
+  // Watch CTA destinations already carry land scope via action_registry.watchDestination
+  // (#alerts?lens=land&filter=…&project=…). No showTab side-channel — hash apply does the prefill.
 }
 function hearingAreaText(record){
   const area=record.affected_area||{};

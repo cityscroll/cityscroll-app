@@ -782,10 +782,18 @@ function applyHash(){
     } else if(tab === "alerts"){
       showTab("alerts");
       const lens = q.get("lens");
-      if(lens){
+      const noticeId = q.get("notice");
+      const projectId = q.get("project");
+      if(lens || noticeId || projectId){
         let filter = {};
         try{ filter = JSON.parse(q.get("filter") || "{}"); }catch(e){ filter = {}; }
-        prefillAlertFromLink(lens, filter, q.get("freq"));
+        // Context-carrying entry: pre-scope builder + seed real digItemHTML preview.
+        Promise.resolve(prefillAlertFromLink(lens, filter, q.get("freq"), { noticeId, projectId }))
+          .catch(()=>{});
+      } else {
+        // Neutral #alerts — clear any prior carried seed.
+        noticeWatchSeed = null;
+        if(typeof paintAlertContextLead === "function") paintAlertContextLead(null);
       }
       // #alerts?view=rollup — multi-watch digest rollup + prefs surface (demo fixture).
       if(q.get("view") === "rollup"){
@@ -810,6 +818,10 @@ function setNoticeCompactCta(isNoticeRoute){
   const homeCta = $("#homeCta");
   if(!homeCta) return;
   homeCta.classList.toggle("compact", !!isNoticeRoute);
+  // Header CTA carries current context (notice / lens filters / neutral).
+  if(typeof syncAlertsEntryHrefs === "function"){
+    Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
+  }
 }
 
 // Extra description/printout fields so participation URL extraction matches the meetings list.
@@ -852,10 +864,15 @@ async function showNotice(id, watch){
     }
   }catch(e){}
   if(!r){
+    lastNoticeContext = null;
     box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")} · <a href="${REQ_URL(id)}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a></div>`;
     applyActiveHistoryRouteScroll();
+    if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
     return;
   }
+  // Header "Want email updates?" and Watch CTAs read this for notice-scoped #alerts entry.
+  lastNoticeContext = { row: r };
+  if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
   const link = noticeLink(r.request_id);
   const scope = cleanText(r.additional_description_1);
   const title = cleanText(r.short_title) || t("untitled_notice");
