@@ -89,10 +89,10 @@ test("emits occurrence assertions through the prediction contract", () => {
   assert.equal(prediction.basis.statute_ref, null);
 });
 
-test("registers only the lien-sale event vocabulary needed by this program", () => {
+test("registers lien-sale event vocabulary alongside the landed property kinds", () => {
   assert.ok(EVENT_KIND_REGISTRY["property.tax_lien_notice_90"]);
   assert.ok(EVENT_KIND_REGISTRY["property.tax_lien_sold"]);
-  assert.equal(EVENT_KIND_REGISTRY["property.disposition_hearing"], undefined);
+  assert.ok(EVENT_KIND_REGISTRY["property.disposition_hearing"]);
 });
 
 test("warehouse and source-contract registries include the DOF list", () => {
