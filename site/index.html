@@ -675,7 +675,10 @@
   .land-spine-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f7f1e4) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
   .land-spine-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 4px}
   .land-spine-now-phase{font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 4px;color:var(--ink)}
+  .land-pipeline-position{font:700 16px/1.35 ui-sans-serif,system-ui,sans-serif;margin:0 0 6px;color:var(--ink)}
+  .land-pipeline-position b{font-weight:700}
   .land-spine-now-detail{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+  .land-hearing-row .fcard-compact-actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
   .land-spine-next{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0;padding-top:8px;border-top:1px solid var(--rule);color:var(--muted)}
   .land-spine-next strong{color:var(--ink);font-weight:700}
   .land-spine-portal{display:inline-flex;align-items:center;gap:6px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 12px}
@@ -1496,7 +1499,15 @@
       </div>
       <div class="field">
         <label for="lstatus" data-i18n="status_label">Status</label>
-        <select id="lstatus"><option value="active" data-i18n="status_active">In review / active</option><option value="all" data-i18n="status_all">All</option></select>
+        <select id="lstatus"><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option><option value="all" data-i18n="status_all">All</option></select>
+      </div>
+      <div class="field" id="lhearingmode-field" hidden>
+        <label for="lhearingmode" data-i18n="land_hearings_mode_label">Attendance</label>
+        <select id="lhearingmode">
+          <option value="" data-i18n="land_hearings_mode_all">Any mode</option>
+          <option value="in_person" data-i18n="land_hearings_mode_in_person">In person</option>
+          <option value="livestream" data-i18n="land_hearings_mode_livestream">Livestream</option>
+        </select>
       </div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="landlocation" data-i18n="use_my_location">Use my location</button></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button></div>

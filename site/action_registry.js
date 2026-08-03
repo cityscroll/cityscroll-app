@@ -614,6 +614,19 @@
     return /\b(?:zoom|webex|teams|meet\.google)\b/i.test(String(url || ""));
   }
 
+  function isLivestreamUrl(url) {
+    return /\b(?:youtube\.com|youtu\.be|vimeo\.com|facebook\.com\/.*live|twitch\.tv)\b/i.test(
+      String(url || ""),
+    );
+  }
+
+  /** Maps deep-link for an in-person venue (never invents an address). */
+  function mapsSearchUrl(address) {
+    const a = String(address || "").trim();
+    if (!a) return null;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${a}, New York, NY`)}`;
+  }
+
   function venueFromMatter(matter) {
     const venue = matter && matter.venue ? matter.venue : {};
     const address = String(venue.address || "").trim()
@@ -786,10 +799,23 @@
     const body = String(hearing.notice_text || hearing.description || "");
     const venue = venueFromMatter(hearing);
     const participation = hearing.participation || {};
-    const linkUrl = httpsUrl(hearing.participation_url)
+    // Prefer explicit livestream URL (ZAP disposition logistics) over body scrape.
+    const livestreamUrl = httpsUrl(hearing.livestream_url)
+      || (httpsUrl(hearing.participation_url) && isLivestreamUrl(hearing.participation_url)
+        ? httpsUrl(hearing.participation_url)
+        : null)
+      || (() => {
+        const fromBody = participationUrlFromBody(body);
+        return fromBody && isLivestreamUrl(fromBody) ? fromBody : null;
+      })();
+    const linkUrl = livestreamUrl
+      || httpsUrl(hearing.participation_url)
       || httpsUrl(((participation.links || [])[0] || {}).url)
       || participationUrlFromBody(body);
-    const joinKind = linkUrl ? (isJoinPlatformUrl(linkUrl) ? "join" : "link") : null;
+    const joinKind = linkUrl
+      ? (isJoinPlatformUrl(linkUrl) ? "join" : isLivestreamUrl(linkUrl) ? "livestream" : "link")
+      : null;
+    const mapsUrl = httpsUrl(hearing.maps_url) || mapsSearchUrl(venue.address || hearing.street_address_1);
     const testimonyEmail = extractTestimonyEmail(body);
     const testimonyUntil = extractTestimonyUntil(body);
     const bodyEmails = extractEmails(body);
@@ -821,12 +847,14 @@
       linkUrl
       || venue.address
       || venue.building
+      || mapsUrl
       || testimonyEmail
       || contactName
       || contactEmail
       || contactPhone
       || eventDate
       || sourceUrl
+      || hearing.hearing_location_raw
     );
     return {
       request_id: String(hearing.request_id || "").trim() || null,
@@ -837,9 +865,13 @@
       past,
       participation_url: linkUrl,
       join_kind: joinKind,
+      livestream_url: livestreamUrl || (joinKind === "livestream" ? linkUrl : null),
+      maps_url: mapsUrl,
       venue_address: venue.address,
       venue_building: venue.building,
-      venue_mode: venue.mode,
+      venue_mode: venue.mode || (venue.address && livestreamUrl ? "hybrid" : venue.address ? "in-person" : livestreamUrl ? "virtual" : null),
+      hearing_location_raw: String(hearing.hearing_location_raw || "").trim() || null,
+      parse_status: hearing.parse_status || null,
       testimony_email: testimonyEmail,
       testimony_until: testimonyUntil,
       contact_name: contactName,
@@ -1060,18 +1092,44 @@
       || LAND_PUBLIC_PHASES.includes(phaseId);
     const preReview = !closed && !publicReview;
 
-    // Primary kinetic destination: online join when published; else hearing notice; else ZAP.
+    // Prefer current-phase hearing logistics even when the hearing date has passed
+    // (still useful: venue maps + livestream channel) — but mark past honestly.
+    let logisticsHearing = nextHearing;
+    if (!logisticsHearing) {
+      logisticsHearing = hearings
+        .filter((h) => h.has_fields && (h.venue_address || h.livestream_url || h.participation_url || h.maps_url))
+        .sort((a, b) => String(b.event_date || "").localeCompare(String(a.event_date || "")))[0] || null;
+    }
+
+    // Primary kinetic destination: join → maps attend → livestream watch → notice → ZAP.
     let destination = null;
     let labelKey = "view_comment_zap";
     let label = "View and comment on ZAP";
     let primaryType = "comment";
-    if (nextHearing && !nextHearing.past && nextHearing.participation_url && nextHearing.join_kind === "join") {
-      destination = nextHearing.participation_url;
+    const activeHearing = logisticsHearing && !logisticsHearing.past ? logisticsHearing : null;
+    const showHearing = activeHearing || logisticsHearing;
+    if (activeHearing && activeHearing.participation_url && activeHearing.join_kind === "join") {
+      destination = activeHearing.participation_url;
       labelKey = "join_online";
       label = "Join online";
       primaryType = "attend";
-    } else if (nextHearing && !nextHearing.past && nextHearing.source_url && nextHearing.has_fields) {
-      destination = nextHearing.source_url;
+    } else if (activeHearing && activeHearing.maps_url && activeHearing.venue_address) {
+      destination = activeHearing.maps_url;
+      labelKey = "land_action_attend_in_person";
+      label = "Attend in person";
+      primaryType = "attend";
+    } else if (activeHearing && activeHearing.livestream_url) {
+      destination = activeHearing.livestream_url;
+      labelKey = "land_action_watch_live";
+      label = "Watch live";
+      primaryType = "attend";
+    } else if (activeHearing && activeHearing.participation_url && activeHearing.join_kind === "livestream") {
+      destination = activeHearing.participation_url;
+      labelKey = "land_action_watch_live";
+      label = "Watch live";
+      primaryType = "attend";
+    } else if (activeHearing && activeHearing.source_url && activeHearing.has_fields) {
+      destination = activeHearing.source_url;
       labelKey = "land_action_open_hearing_notice";
       label = "Open the hearing notice";
       primaryType = "document";
@@ -1090,12 +1148,14 @@
     const hasFields = !!(
       projectUrl
       || nextHearing
+      || logisticsHearing
       || phaseId
       || publicStatus
       || m.deadline
       || hearings.length
     );
 
+    const hearingForGuide = showHearing || nextHearing;
     return {
       system: "zoning_extracted",
       mode: closed ? "closed" : publicReview ? "public_review" : preReview ? "pre_review" : "active",
@@ -1110,22 +1170,27 @@
       phase_id: phaseId,
       phase_label: phaseLabel,
       stage,
-      deadline: m.deadline || (nextHearing && !nextHearing.past ? nextHearing.event_date : null),
-      next_hearing: nextHearing,
+      deadline: m.deadline
+        || (nextHearing && !nextHearing.past ? nextHearing.event_date : null)
+        || (activeHearing ? activeHearing.event_date : null),
+      next_hearing: hearingForGuide,
       hearings: hearings.slice(0, 6),
       // Flatten next-hearing participation for guide renderers shared with hearing rails.
-      participation_url: nextHearing ? nextHearing.participation_url : null,
-      join_kind: nextHearing ? nextHearing.join_kind : null,
-      venue_address: nextHearing ? nextHearing.venue_address : null,
-      venue_building: nextHearing ? nextHearing.venue_building : null,
-      venue_mode: nextHearing ? nextHearing.venue_mode : null,
-      event_date: nextHearing ? nextHearing.event_date : null,
-      testimony_email: nextHearing ? nextHearing.testimony_email : null,
-      testimony_until: nextHearing ? nextHearing.testimony_until : null,
-      contact_name: nextHearing ? nextHearing.contact_name : null,
-      email: nextHearing ? nextHearing.email : null,
-      contact_phone: nextHearing ? nextHearing.contact_phone : null,
-      official_notice_url: nextHearing ? nextHearing.source_url : httpsUrl(m.official_notice_url),
+      participation_url: hearingForGuide ? hearingForGuide.participation_url : null,
+      join_kind: hearingForGuide ? hearingForGuide.join_kind : null,
+      livestream_url: hearingForGuide ? (hearingForGuide.livestream_url || null) : null,
+      maps_url: hearingForGuide ? (hearingForGuide.maps_url || null) : null,
+      venue_address: hearingForGuide ? hearingForGuide.venue_address : null,
+      venue_building: hearingForGuide ? hearingForGuide.venue_building : null,
+      venue_mode: hearingForGuide ? hearingForGuide.venue_mode : null,
+      hearing_location_raw: hearingForGuide ? hearingForGuide.hearing_location_raw : null,
+      event_date: hearingForGuide ? hearingForGuide.event_date : null,
+      testimony_email: hearingForGuide ? hearingForGuide.testimony_email : null,
+      testimony_until: hearingForGuide ? hearingForGuide.testimony_until : null,
+      contact_name: hearingForGuide ? hearingForGuide.contact_name : null,
+      email: hearingForGuide ? hearingForGuide.email : null,
+      contact_phone: hearingForGuide ? hearingForGuide.contact_phone : null,
+      official_notice_url: hearingForGuide ? hearingForGuide.source_url : httpsUrl(m.official_notice_url),
       has_fields: hasFields,
     };
   }
@@ -1546,6 +1611,43 @@
       const handoff = zoningHandoff(matter, {today});
       const actionDeadline = deadline || handoff.deadline || null;
       const landWatch = local("watch", "next_action_watch_rezone", "Watch this rezoning", "#alerts", null);
+      // Rail keeps at most 3 actions (slice below). Prefer:
+      //   join platform → [join, calendar, watch] (maps stay in guide steps)
+      //   ZAP hybrid logistics → [maps attend, watch live, calendar|watch]
+      const pushAttendanceExtras = (list, opts) => {
+        const options = opts || {};
+        const seen = new Set((list || []).map((a) => a && a.destination).filter(Boolean));
+        const live = handoff.livestream_url
+          || (handoff.join_kind === "livestream" ? handoff.participation_url : null);
+        // Zoom/Webex join is already the primary CTA — don't burn a slot on maps.
+        if (handoff.join_kind === "join" && !options.force) return list;
+        if (handoff.maps_url && handoff.venue_address && !seen.has(handoff.maps_url)) {
+          const label = handoff.venue_address
+            ? `Attend in person at ${handoff.venue_address}`
+            : "Attend in person";
+          list.push(official(
+            "attend",
+            "land_action_attend_in_person_at",
+            label,
+            handoff.maps_url,
+            actionDeadline,
+            {guide: handoff, label_vars: {address: handoff.venue_address}},
+          ));
+          seen.add(handoff.maps_url);
+        }
+        if (live && !seen.has(live)) {
+          list.push(official(
+            "attend",
+            "land_action_watch_live",
+            "Watch live",
+            live,
+            actionDeadline,
+            {guide: handoff},
+          ));
+          seen.add(live);
+        }
+        return list;
+      };
       if (handoff.mode === "closed") {
         actions = [
           unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", actionDeadline),
@@ -1563,12 +1665,21 @@
             ? "document"
             : "comment";
         actions = [
-          official(type, handoff.label_key, handoff.label, handoff.destination, actionDeadline, {guide: handoff}),
+          official(type, handoff.label_key, handoff.label, handoff.destination, actionDeadline, {
+            guide: handoff,
+            label_vars: handoff.venue_address ? {address: handoff.venue_address} : undefined,
+          }),
         ];
+        pushAttendanceExtras(actions);
         if (actionDeadline && !isPast(actionDeadline, today)) {
           actions.push(local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, actionDeadline));
         }
-        actions.push(landWatch);
+        // Prefer watch when a 3-slot rail still has room after attendance CTAs.
+        if (actions.length < 3) actions.push(landWatch);
+        else if (!actions.some((a) => a && a.type === "watch")) {
+          // Hybrid maps+live+calendar: drop calendar for watch only when no deadline.
+          if (!(actionDeadline && !isPast(actionDeadline, today))) actions.push(landWatch);
+        }
       } else if (handoff.has_fields) {
         // Phase context and/or hearing fields without a single outbound URL — guide-first.
         actions = [validateAction({
@@ -1581,10 +1692,11 @@
           confirmation_required: false,
           guide: handoff,
         })];
-        if (actionDeadline && !isPast(actionDeadline, today)) {
+        pushAttendanceExtras(actions, {force: true});
+        if (actionDeadline && !isPast(actionDeadline, today) && actions.length < 3) {
           actions.push(local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, actionDeadline));
         }
-        actions.push(landWatch);
+        if (actions.length < 3) actions.push(landWatch);
       } else {
         actions = [
           unavailable("comment", "next_action_land_steps_missing", "No participation steps are published for this rezoning yet.", actionDeadline),
