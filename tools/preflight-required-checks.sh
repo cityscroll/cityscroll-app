@@ -109,7 +109,9 @@ run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests
 if [[ "$RUN_READING_LEVEL" == "1" ]]; then
   run_banner "Reading-level ratchet gate (readable-or-else)" "reading-level gate" \
     "python3 test/standards/reading_level.py --root site --mode ratchet --baseline site/reading-level-baseline.json --format gh-annotations"
-  run_and_fail pip install git+https://github.com/jimdc/readable-or-else.git
+  if ! command -v readable-or-else >/dev/null 2>&1; then
+    run_and_fail python3 -m pip install git+https://github.com/jimdc/readable-or-else.git
+  fi
   run_and_fail python3 test/standards/reading_level.py \
     --root site \
     --mode ratchet \
@@ -125,13 +127,16 @@ fi
 if [[ "$RUN_FULL" == "1" ]]; then
   run_banner "Accessibility + language gate (axe on every PR)" "CI-equivalent full accessibility + stray-English runtime" \
     "Python playwright + test/functional/*"
-  run_and_fail python3 -m pip install playwright
+  if ! python3 -c 'import playwright' >/dev/null 2>&1; then
+    run_and_fail python3 -m pip install playwright
+  fi
   run_and_fail python3 -m playwright install --with-deps chromium
   run_banner "Unit tests (site + worker)" "Optional source-contract/network gates" \
     "node tools/verify_source_contracts.mjs"
   run_and_fail node tools/verify_source_contracts.mjs
   run_and_fail python3 test/functional/capture_qr_share.py --verify-only
   run_and_fail python3 test/functional/19_hash_route_focus.py
+  run_and_fail python3 test/functional/21_module_dom_equivalence.py
   python3 -m http.server 8000 --directory site &
   SERVER_PID=$!
   trap 'kill "${SERVER_PID}" 2>/dev/null || true' EXIT

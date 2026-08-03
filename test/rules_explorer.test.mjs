@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Rules domain explorer — process-stage ontology, multi-notice grouping, next-action keys.
  *
@@ -412,7 +413,7 @@ test("entryCurrentProcessStage prefers the latest matched process phase", () => 
 });
 
 test("public Rules domain mounts process rail + explorer cards", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /id="rulesprocessrail"/);
   assert.match(index, /rules-domain-intro/);
   assert.match(index, /function rulesExplorerCardHTML/);

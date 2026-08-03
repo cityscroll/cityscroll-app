@@ -25,7 +25,7 @@
       "used_for": "Core notices, feeds, alerts, profiles, hearings, property records, prior-cycle matches, and aggregates.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/core.mjs",
           "contains": "dg92-zbpx"
         },
         {
@@ -375,7 +375,7 @@
       "used_for": "Title and pay history in the Staffing experience.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/core.mjs",
           "contains": "k397-673e"
         }
       ],
@@ -404,7 +404,7 @@
       "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only \u2014 never per-applicant rows).",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/core.mjs",
           "contains": "vx8i-nprf"
         },
         {
@@ -538,7 +538,7 @@
       "used_for": "Rezoning search, status, milestones, applicants, and comments handoff.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/land.mjs",
           "contains": "hgx4-8ukb"
         }
       ],
@@ -567,7 +567,7 @@
       "used_for": "Tax-lot joins from ZAP projects to MapPLUTO.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/land.mjs",
           "contains": "2iga-a6mk"
         }
       ],
@@ -661,7 +661,7 @@
           "contains": "zap-outcomes"
         },
         {
-          "path": "site/index.html",
+          "path": "site/app/land.mjs",
           "contains": "zap-outcomes"
         }
       ],
@@ -688,7 +688,7 @@
       "used_for": "Tax-lot boundary geometry.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/land.mjs",
           "contains": "rest/services/MAPPLUTO/FeatureServer/0"
         }
       ],
@@ -713,7 +713,7 @@
       "used_for": "Address, neighborhood, borough, and BBL resolution.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/land.mjs",
           "contains": "geosearch.planninglabs.nyc/v2/search"
         },
         {
@@ -823,7 +823,7 @@
       "used_for": "Current demolition-filing verification.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/rules.mjs",
           "contains": "w9ak-ipjd"
         }
       ],
@@ -854,7 +854,7 @@
       "used_for": "Legacy demolition-filing verification.",
       "code_references": [
         {
-          "path": "index.html",
+          "path": "site/app/rules.mjs",
           "contains": "ic3t-wcy2"
         }
       ],
@@ -988,7 +988,7 @@
           "contains": "examOutcomeView"
         },
         {
-          "path": "index.html",
+          "path": "site/app/people.mjs",
           "contains": "careerOutcomeHTML"
         }
       ],

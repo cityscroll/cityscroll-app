@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -174,7 +175,7 @@ test("every public page loads the Clarity runtime", () => {
 });
 
 test("email capture fields ship with data-clarity-mask in markup", () => {
-  const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+  const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   assert.match(index, /id="adest"[^>]*data-clarity-mask="true"/);
   assert.match(index, /id="homeCtaEmail"[^>]*data-clarity-mask="true"/);

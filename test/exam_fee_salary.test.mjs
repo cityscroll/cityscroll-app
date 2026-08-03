@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Exam fee/salary integrity: NOE path delivers non-null amounts; schedule-only
 // nulls are class (a) not_yet_ingested, never a false city-withhold claim.
 //
@@ -32,7 +33,7 @@ const densify = JSON.parse(
 const densifyReceipt = JSON.parse(
   readFileSync(new URL("../site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json", import.meta.url)),
 );
-const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const html = SITE_SOURCE;
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 
 test("NOE open-competitive path yields non-null fee and salary (field case 7016 Caseworker)", () => {

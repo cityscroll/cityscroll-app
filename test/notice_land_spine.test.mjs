@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Notice-level ZAP project spine: ULURP/project-id join + notice page mount.
 //   node --test test/notice_land_spine.test.mjs
 
@@ -144,7 +145,7 @@ test("extractNoticeLandRefs prefers body ULURP over inventing from agency alone"
 });
 
 test("notice page mounts #nland and loadNoticeLandSpine", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /id="nland"/);
   assert.match(index, /function loadNoticeLandSpine/);
   assert.match(index, /function noticeLandSpineHTML/);

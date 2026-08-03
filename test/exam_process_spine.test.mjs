@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Characterization: civil-service exam process spine
  * (application → list_establishment → certification → appointment).
@@ -176,7 +177,7 @@ test("live staffing artifact: every exam builds a spine; no class-(b) aggregate 
 });
 
 test("public exam detail mounts the process spine; guide steps stay teaching-only", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /function examProcessSpineHTML/);
   assert.match(index, /exam_spine_heading/);
   assert.match(index, /exam_stage_application/);

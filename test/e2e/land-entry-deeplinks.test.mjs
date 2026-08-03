@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "../helpers/site_source.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -5,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

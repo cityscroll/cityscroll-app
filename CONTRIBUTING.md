@@ -129,9 +129,9 @@ cd worker && npx wrangler deploy        # deploy (needs Cloudflare auth)
   vendor I need to…"). These steer the roadmap more than code does.
 - **Docs, outreach, research** — the About/api pages, the changelog's plain-language lines, and
   anything that helps the right people find the tool.
-- **Code** — the site is one dependency-free `site/index.html` (inline CSS, vanilla JS, no build
-  step); the backend is one Cloudflare Worker under `worker/`. Keep both boring: no frameworks,
-  no build steps, graceful degradation everywhere.
+- **Code** — the site is dependency-free static HTML plus browser-native ES modules under
+  `site/app/` (vanilla JS, no build step); the backend is one Cloudflare Worker under `worker/`.
+  Keep both boring: no frameworks, no build steps, graceful degradation everywhere.
 - **Adapting this to another city** — fork it; the SODA queries and the lens definitions are
   the city-specific parts. Open an issue if you get stuck and we'll point you at the seams
   (as time permits — your fork is your project).
@@ -140,21 +140,10 @@ cd worker && npx wrangler deploy        # deploy (needs Cloudflare auth)
 
 See [SECURITY.md](SECURITY.md) for the threat model and how to report a vulnerability.
 
-## Geography of site/index.html
+## Geography of the main site
 
-The site is deliberately one dependency-free file (~3,000 lines). It reads top to bottom:
-
-| Lines (approx) | Region |
-|---|---|
-| 1–279 | All CSS — design tokens in `:root` (use `var(--muted)` etc., never hardcoded grays) |
-| 280–607 | Static markup: masthead, lens tabs, each lens's controls and empty containers |
-| 608–~800 | JS foundations: `$` helpers, SODA query builders, the read-side cache |
-| ~800–1690 | The Money lens: `loadAgencies`, facets, entity chains, Checkbook joins, maps loader |
-| ~1690–2040 | Other lenses: `loadSection` (rules/meetings/property), land/ZAP |
-| ~2040–2300 | Today's Edition + cross-lens rendering helpers |
-| ~2300–2980 | Notice detail rendering, workspace (pins/notes, localStorage), feeds/share |
-| ~2980–end | The subscription quiz and boot sequence |
-
-To find a lens's code, search for its container id (e.g. `#minwrap`, `#fbchips`) or its
-loader (`loadSection`, `loadToday`). Unit-testable logic gets *extracted* to plain functions
-(see `test/unit.test.mjs`) rather than tested through the DOM.
+`site/index.html` owns CSS and static markup. `site/app/main.mjs` loads browser-native modules in
+dependency order; the terse task-to-module index is [`docs/module-map.md`](docs/module-map.md).
+Application modules stay below 100 KB so a focused change fits a short agent context. Unit-testable
+logic is still extracted to plain functions through `test/helpers/site_source.mjs`; rendered parity
+with the former inline-script shape is guarded by `test/functional/21_module_dom_equivalence.py`.

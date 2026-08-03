@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins pastWinnersHTML()'s roll-up of chainHTML()'s own award-type stages into an
 // at-a-glance "who won, when, for how much" strip (crol-list/w12-05).
 //
@@ -18,7 +19,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

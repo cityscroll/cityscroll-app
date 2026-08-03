@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Property domain explorer — process-stage ontology, multi-notice grouping, next-action keys.
  */
@@ -148,7 +149,7 @@ test("spineCurrentProcessStage is the latest matched process phase", () => {
 });
 
 test("public Property domain mounts process rail + explorer cards; temporal rail remains", () => {
-  const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  const index = SITE_SOURCE;
   assert.match(index, /id="processrail"/);
   assert.match(index, /property-domain-intro/);
   assert.match(index, /function propertyExplorerCardHTML/);

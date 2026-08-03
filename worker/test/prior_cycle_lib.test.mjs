@@ -9,9 +9,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { SITE_SOURCE } from "../../test/helpers/site_source.mjs";
 import {
   priorCycleTitleWords, daysBetween, rankPriorCycleCandidates,
   priorCycleEligibleCount, pinPrefixShared, nearMatchReasons, rankNearMatchCandidates,
@@ -218,13 +216,12 @@ test("nearMatchReasons: agency and title always present; PIN/amount conditional"
 
 // ---- dual-implementation cross-check: the port must not diverge from index.html's copies ------
 
-test("ported lib matches index.html's client functions byte-for-behavior on the shared fixtures", () => {
-  const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-  const html = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+test("ported lib matches the site's client functions byte-for-behavior on the shared fixtures", () => {
+  const html = SITE_SOURCE;
   const extractFn = (name) => {
     let start = html.indexOf("async function " + name + "(");
     if (start === -1) start = html.indexOf("function " + name + "(");
-    assert.notEqual(start, -1, `function ${name} not found in index.html`);
+    assert.notEqual(start, -1, `function ${name} not found in site source`);
     let depth = 0, seen = false;
     for (let j = html.indexOf("{", start); j < html.length; j++) {
       if (html[j] === "{") { depth++; seen = true; }

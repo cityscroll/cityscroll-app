@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization tests for the notice-detail procurement lifecycle stitch:
 // contract timeline + dollars panel, subsidy lifecycle, council meeting outcomes,
 // and prior-award history — each with real joined field cases and explicit gap
@@ -17,7 +18,7 @@ import {
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

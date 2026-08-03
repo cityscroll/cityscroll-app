@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // The how-to-respond explainer note must describe the buttons actually rendered above it:
 // no "Email a response" callout when a solicitation lists no contact email.
 //
@@ -9,7 +10,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

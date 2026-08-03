@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Pins cadenceEstimate()/cadenceHTML() (w12-04): "is this a yearly bid?" answered in words,
 // computed purely from the same paper-trail chain chainHTML() already renders — no new fetch.
 //
@@ -56,7 +57,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 
 function extractFn(name) {

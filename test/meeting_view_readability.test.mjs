@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Characterization: matter-centric Council meeting outcomes (scan list).
 // Replaces the N× four-stage lifecycle chain dump with summary chips, short
 // titles, outcome badges, and progressive disclosure.
@@ -13,7 +14,7 @@ import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
 import { buildPhaseViewForMatter } from "../site/meeting_phase_spine.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 const fixture = JSON.parse(
   readFileSync(join(ROOT, "test/contract/fixtures/meeting_outcomes.json"), "utf8"),

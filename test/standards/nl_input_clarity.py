@@ -27,6 +27,16 @@ ROOT = pathlib.Path(__file__).parents[2]
 SITE_ROOT = ROOT / "site"
 
 
+def load_site_source():
+    index_src = (SITE_ROOT / "index.html").read_text(encoding="utf-8")
+    main_src = (SITE_ROOT / "app" / "main.mjs").read_text(encoding="utf-8")
+    modules = re.findall(r'import\("\./([^"?]+\.mjs)"\)', main_src)
+    return index_src + "\n" + "\n".join(
+        (SITE_ROOT / "app" / module).read_text(encoding="utf-8")
+        for module in modules
+    )
+
+
 def load_strings_en():
     out = subprocess.check_output(
         ["node", "-e",
@@ -48,7 +58,7 @@ def main():
             "invitation to type a sentence, same as the Ask box next to it"
         )
 
-    index_src = (SITE_ROOT / "index.html").read_text(encoding="utf-8")
+    index_src = load_site_source()
 
     # (2a) every parsed-filter summary has its own explicit status label + role. Section
     # Ask-in-progress echoes use nlTransHTML(); replayed/active state on every search lens

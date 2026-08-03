@@ -348,6 +348,9 @@ jobs:
       - name: Item hash-route scroll and focus gate
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/19_hash_route_focus.py
+      - name: Inline-to-module rendered DOM equivalence gate
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        run: python3 test/functional/21_module_dom_equivalence.py
       - name: Serve site locally
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |

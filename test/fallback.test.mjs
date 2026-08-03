@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Proves the on-device fallback actually works — so the README can claim it honestly.
 //
 // crol-list is one static index.html with no build step, so there's nothing to import.
@@ -17,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const src = SITE_SOURCE;
 // parseNL() now lives in its own module (nl_parse.js) — a plain global-declaring script in
 // the browser, so its source can be inlined into the Function body the same way the
 // brace-extracted index.html functions below are.

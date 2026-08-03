@@ -1,3 +1,4 @@
+import { SITE_SOURCE } from "./helpers/site_source.mjs";
 /**
  * Characterization: multi-watch digest rollup + preference surface on #alerts.
  *
@@ -23,7 +24,7 @@ import {
 } from "../site/alerts_rollup_prefs.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const html = readFileSync(join(ROOT, "site/index.html"), "utf8");
+const html = SITE_SOURCE;
 const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
 const agents = readFileSync(join(ROOT, "AGENTS.md"), "utf8");
 
@@ -90,7 +91,7 @@ test("#alerts mounts rollup prefs panel and group-by chips", () => {
   assert.match(html, /id="alertsPrefsManage"/);
   assert.match(html, /function renderAlertsRollupPrefs/);
   assert.match(html, /function initAlertsRollupPrefs/);
-  assert.match(html, /import\("\.\/alerts_rollup_prefs\.mjs"\)/);
+  assert.match(html, /import\("\.\.\/alerts_rollup_prefs\.mjs"\)/);
   assert.match(html, /view"\) === "rollup"/);
 });
 
