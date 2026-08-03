@@ -67,6 +67,7 @@ const {
   extractFn("officialHref") +
   extractFn("collectRollCallPeople") +
   extractFn("meetingRollCallChipHTML") +
+  extractFn("meetingRollCallTableHTML") +
   extractFn("meetingVotesHTML") +
   extractFn("isCityCouncilNotice") +
   extractFn("meetingPhaseLabel") +
@@ -336,6 +337,11 @@ test("roll-call chip surfaces on matter card when by_person is retained", () => 
   assert.match(html, /notice=20260706036/);
   assert.match(html, /event=22526/);
   assert.match(html, /Christopher Marte/);
+  // Full roll call in decision panel is an accessible table with person links
+  assert.match(html, /meeting-roll-call-table/);
+  assert.match(html, /<th scope="col">/);
+  assert.match(html, /scope="row"/);
+  assert.match(html, /meeting-official-link/);
 });
 
 test("tally_only votes do not invent a roll-call chip", () => {

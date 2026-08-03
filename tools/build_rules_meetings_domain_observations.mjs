@@ -32,11 +32,13 @@ import {
 } from "../worker/src/lib/hearings.mjs";
 import { ruleLocationFromRow } from "../site/rule_location.mjs";
 import { compactDerivationStamp } from "../site/location_derivation.mjs";
+import { buildPersonVotesLookup } from "../site/person_votes.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
 const OUT_PEOPLE = path.join(ROOT, "site/data/people_domain_observations.json");
+const OUT_PERSON_VOTES = path.join(ROOT, "site/data/person_votes_lookup.json");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 /** Product API used only for by_person extract (already-materialized votes). */
 const MEETING_OUTCOMES_API =
@@ -127,6 +129,12 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt) {
   writeFileSync(OUT_PEOPLE, `${JSON.stringify(peopleDoc, null, 2)}\n`);
   console.log(
     `wrote ${path.relative(ROOT, OUT_PEOPLE)} rows=${peopleDoc.row_count} people=${peopleDoc.person_count} notices=${peopleDoc.notice_count} events=${peopleDoc.event_count}`,
+  );
+  // Person-page index (#official/{id}) — same densify, keyed by person_id.
+  const voteLookup = buildPersonVotesLookup(peopleDoc);
+  writeFileSync(OUT_PERSON_VOTES, `${JSON.stringify(voteLookup, null, 2)}\n`);
+  console.log(
+    `wrote ${path.relative(ROOT, OUT_PERSON_VOTES)} persons=${voteLookup.person_count} rows=${voteLookup.row_count}`,
   );
   return peopleDoc;
 }
