@@ -11,7 +11,9 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Re
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
-const CR_SELECT = "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,section_name,additional_description_1";
+// type_of_notice_description + address/method feed digest action rails (handoffs).
+// additional_description_1 feeds matchEvidence + package URL extraction.
+const CR_SELECT = "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1";
 // Section lenses additionally need the event date + address for a useful digest line.
 const CR_SELECT_EV = CR_SELECT + ",event_date,street_address_1,street_address_2,building_name,city,state,zip_code,additional_description_2,additional_description_3,other_info_1,other_info_2,other_info_3,printout_1";
 const SECTION_BY_LENS = {
