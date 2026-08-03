@@ -1,0 +1,48 @@
+{
+  "today": "2026-07-10",
+  "description": "Frozen fc:* rows for hit_rate regression after prediction-contract retrofit",
+  "predictions": [
+    {
+      "contract_id": "CT-HIT-1",
+      "agency_name": "Buildings",
+      "expiration_date": "2025-06-01",
+      "warning_date": "2024-12-03",
+      "registration_date": "2022-06-01",
+      "source": "checkbook",
+      "pin": "84624-PA-01"
+    },
+    {
+      "contract_id": "CT-HIT-2",
+      "agency_name": "Buildings",
+      "expiration_date": "2025-01-15",
+      "warning_date": "2024-07-19",
+      "registration_date": "2022-01-15",
+      "source": "checkbook",
+      "pin": "8462X"
+    },
+    {
+      "contract_id": "CT-MISS-1",
+      "agency_name": "Parks",
+      "expiration_date": "2025-03-01",
+      "warning_date": "2024-09-02",
+      "registration_date": "2022-03-01",
+      "source": "checkbook",
+      "pin": ""
+    },
+    {
+      "contract_id": "CT-FUTURE-1",
+      "agency_name": "Buildings",
+      "expiration_date": "2099-01-01",
+      "warning_date": "2098-07-05",
+      "registration_date": "2026-01-01",
+      "source": "checkbook"
+    }
+  ],
+  "d1_hit_agencies": ["BUILDINGS"],
+  "expected": {
+    "scored": 3,
+    "hits": 2,
+    "hit_rate": 0.667,
+    "window_days": 30
+  }
+}

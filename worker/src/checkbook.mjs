@@ -9,6 +9,7 @@
 
 import { vendorStem } from "./lib/compile.mjs";
 import { scoreForecastAccuracy } from "./lib/forecast_score.mjs";
+import { enrichForecastWithPrediction } from "./lib/contract_forecast_predictions.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
@@ -186,17 +187,19 @@ export async function runCheckbookPipeline(env, watches, subs) {
 
           if (!expirationDate) continue;
           const warningDate = calculateWarningDate(expirationDate);
-          
-          forecasts.push({
+          const generatedAt = new Date().toISOString();
+
+          forecasts.push(enrichForecastWithPrediction({
             contract_id: tx.id,
             vendor_name: tx.vendor,
-            agency_name: tx.agency || stem, 
+            agency_name: tx.agency || stem,
             amount: tx.current || tx.original,
             registration_date: tx.registered,
             expiration_date: expirationDate,
             warning_date: warningDate,
-            source: "checkbook"
-          });
+            pin: cleanPin || pin,
+            source: "checkbook",
+          }, { generatedAt }));
         }
       } catch (e) {
         // ignore individual pin failures

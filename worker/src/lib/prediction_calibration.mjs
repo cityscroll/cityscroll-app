@@ -1,7 +1,8 @@
 // Domain-generic, out-of-time evaluation for cityscroll.prediction.v0.
 //
-// This is intentionally separate from forecast_score.mjs, whose fuzzy
-// contracts-only accuracy loop remains in service until its later retrofit.
+// Contract renewal fc:* rows are retrofitted via contract_forecast_predictions.mjs;
+// forecast_score.mjs keeps the product fuzzy Solicitation hit_rate and also
+// exposes resolveForecastPredictions → resolvePredictions for status lifecycle.
 
 import { isRegisteredEventKind } from "./civic_time.mjs";
 import { validatePrediction } from "./prediction_contract.mjs";

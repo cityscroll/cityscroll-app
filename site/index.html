@@ -3000,7 +3000,22 @@ function cadenceEstimate(chain){
   const nextDate = new Date(awards[awards.length-1].start_date);
   nextDate.setUTCDate(nextDate.getUTCDate() + Math.round(avgDays));
   if(isNaN(nextDate.getTime())) return null;
-  return { count: awards.length, avgMonths, avgYears, nextDate };
+  // Provenance for the prediction contract (method: cadence). cadenceHTML ignores these
+  // fields so rendered copy stays byte-stable; abort-rather-than-guess above is unchanged.
+  return {
+    count: awards.length,
+    avgMonths,
+    avgYears,
+    nextDate,
+    model_name: "award_cadence",
+    model_version: "1.0.0",
+    basis: {
+      method: "cadence",
+      n: awards.length,
+      // Machine evidence ids only (request_id); not user-facing copy.
+      evidence_event_ids: awards.map(a => a.request_id).filter(Boolean),
+    },
+  };
 }
 
 function cadenceMonthYear(d){
