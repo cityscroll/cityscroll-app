@@ -42,6 +42,7 @@ from register_duckdb import register_table
 from socrata_fetch import (
     bulk_csv_url,
     fetch_column_map,
+    fetch_paged_csv_to_file,
     fetch_to_file,
     soda_csv_url,
     write_json,
@@ -106,7 +107,7 @@ def stage_raw_from_socrata(ds: dict, snap: str, limit: int) -> dict:
     return meta
 
 
-def stage_raw_from_bulk(ds: dict, snap: str, reg_defaults: dict) -> dict:
+def stage_raw_from_bulk(ds: dict, snap: str, reg_defaults: dict, *, resume: bool = False) -> dict:
     """Full rows.csv?accessType=DOWNLOAD — WH-02 path only."""
     if ds.get("kind") != "socrata":
         raise SystemExit(f"Bulk export only for socrata datasets; got {ds.get('kind')!r}")
@@ -123,18 +124,33 @@ def stage_raw_from_bulk(ds: dict, snap: str, reg_defaults: dict) -> dict:
     column_map = fetch_column_map(ds["domain"], ds["dataset_id"])
     write_json(col_map_path, column_map)
 
-    url = bulk_csv_url(ds["domain"], ds["dataset_id"])
     dest = dest_dir / f"{ds['dataset_id']}_bulk.csv"
     timeout = int(reg_defaults.get("bulk_fetch_timeout_s") or 3600)
     heartbeat = int(reg_defaults.get("bulk_heartbeat_s") or 180)
-    print(f"raw: bulk download {url}", flush=True)
-    meta = fetch_to_file(
-        url,
-        dest,
-        timeout=timeout,
-        heartbeat_every_s=heartbeat,
-        label=f"bulk:{ds['id']}",
-    )
+    paging = ds.get("bulk_paging") or None
+    if paging:
+        print(f"raw: paged bulk download for {ds['dataset_id']}", flush=True)
+        meta = fetch_paged_csv_to_file(
+            ds["domain"],
+            ds["dataset_id"],
+            dest,
+            page_size=int(paging.get("page_size") or 50000),
+            order=str(paging["order"]),
+            timeout=timeout,
+            heartbeat_every_s=heartbeat,
+            polite_delay_s=float(paging.get("polite_delay_s") or 0),
+            resume=resume,
+        )
+    else:
+        url = bulk_csv_url(ds["domain"], ds["dataset_id"])
+        print(f"raw: bulk download {url}", flush=True)
+        meta = fetch_to_file(
+            url,
+            dest,
+            timeout=timeout,
+            heartbeat_every_s=heartbeat,
+            label=f"bulk:{ds['id']}",
+        )
     meta["mode"] = "soda_bulk"
     meta["column_map_path"] = str(col_map_path)
     meta["column_map_entries"] = len(column_map)
@@ -255,7 +271,7 @@ def main(argv: list[str] | None = None) -> int:
             write_json(raw_meta_path, raw_meta)
             print(f"raw: fixture → {raw_meta['path']} rows={raw_meta['row_count']}")
         elif args.bulk:
-            raw_meta = stage_raw_from_bulk(ds, snap, reg_defaults)
+            raw_meta = stage_raw_from_bulk(ds, snap, reg_defaults, resume=args.resume)
             write_json(raw_meta_path, raw_meta)
             print(
                 f"raw: bulk → {raw_meta['path']} rows={raw_meta['row_count']} "
@@ -425,7 +441,10 @@ def _write_bulk_sample(csv_path: Path, dataset_id: str, n: int) -> Path:
 
 
 def _write_receipt(ds, snap, limit, raw_meta, pq_meta, register_meta, *, headroom, bulk) -> Path:
-    phase = "WH-02" if bulk or (raw_meta.get("mode") == "soda_bulk") else "WH-01"
+    if bulk or (raw_meta.get("mode") == "soda_bulk"):
+        phase = ds.get("bulk_phase") or "WH-02"
+    else:
+        phase = "WH-01"
     receipt = {
         "schema_version": 1,
         "phase": phase,
@@ -442,6 +461,7 @@ def _write_receipt(ds, snap, limit, raw_meta, pq_meta, register_meta, *, headroo
         "parquet": pq_meta,
         "register": register_meta,
         "headroom": headroom,
+        "snapshot_profile": raw_meta.get("snapshot_profile"),
         "cpu_discipline": {
             "single_job_lock": True,
             "duckdb_threads": 1,
@@ -476,6 +496,9 @@ def _write_receipt(ds, snap, limit, raw_meta, pq_meta, register_meta, *, headroo
             for pk in ("path", "parquet_path", "catalog", "source", "parquet_glob", "column_map_path"):
                 if pk in block and isinstance(block[pk], str):
                     block[pk] = port(block[pk])
+        paging = (portable.get("raw") or {}).get("paging") or {}
+        if isinstance(paging.get("checkpoint_path"), str):
+            paging["checkpoint_path"] = port(paging["checkpoint_path"])
         write_json(proof, portable)
     return out
 
