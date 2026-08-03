@@ -10184,7 +10184,6 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
       ceilingNote: lifecycleCommittedUnderrun(paid, committed, regDetail.end_date),
       noticeId: notice && notice.request_id,
       paymentState: payState,
-      includeZeroLag: false,
     });
     const amtHTML = payState === "unavailable"
       ? `<div class="amt muted">—</div>`
