@@ -870,6 +870,8 @@
     notice_attachment_chip_other: "{n} 个附件：{title}",
     notice_attachment_title_fallback: "官方公告文件",
     notice_attachment_extract_summary: "从附件提取的文本 — 展开查看全文",
+    notice_attachment_tables_summary: "从附件提取的表格 — 展开查看结构化数据",
+    notice_attachment_table_caption: "表 {n}",
     notice_attachment_related_heading: "按附件内容相关",
     notice_attachment_related_lead: "与正式附件正文主题相近的其他公告——不只是关键词重合。",
     digest_match_attachment_html: "在附件中匹配：{snippet}",

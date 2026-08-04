@@ -2,7 +2,9 @@
  * T1 attachment inline text — pure helpers (no I/O).
  *
  * High-value office classes (docx / pdf / doc) get clean extracted text stored
- * beside T0 metadata. No images, no OCR. Later tier: att-t2-structured (tables → parquet/DuckDB). T3 embeddings: see warehouse/lib/attachment_embeddings.mjs.
+ * beside T0 metadata. No images, no OCR.
+ * T2 tables: docs/adr/attachment-tables-storage.md (JSON at current scale).
+ * T3 embeddings: warehouse/lib/attachment_embeddings.mjs (related edges only).
  */
 
 export const ATTACHMENT_TEXT_SCHEMA = "cityscroll.attachment_text.v1";

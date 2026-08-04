@@ -870,6 +870,8 @@
     notice_attachment_chip_other: "첨부 파일 {n}개: {title}",
     notice_attachment_title_fallback: "공식 공고 파일",
     notice_attachment_extract_summary: "첨부 파일에서 추출한 텍스트 — 전체 텍스트를 보려면 펼치세요",
+    notice_attachment_tables_summary: "첨부 파일에서 추출한 표 — 구조화된 데이터를 보려면 펼치세요",
+    notice_attachment_table_caption: "표 {n}",
     notice_attachment_related_heading: "첨부 내용으로 관련된 공고",
     notice_attachment_related_lead: "공식 첨부 텍스트와 주제가 겹치는 다른 공고입니다. 단순 키워드 일치가 아닙니다.",
     digest_match_attachment_html: "첨부 파일에서 일치: {snippet}",

@@ -869,6 +869,8 @@
     notice_attachment_chip_other: "{n} dokiman anekse: {title}",
     notice_attachment_title_fallback: "Dosye ofisyèl avi a",
     notice_attachment_extract_summary: "Tèks yo extrè nan dokiman anekse a — elaji pou tout tèks la",
+    notice_attachment_tables_summary: "Tablo ekstrè nan dokiman anexe — elaji pou done estriktire",
+    notice_attachment_table_caption: "Tablo {n}",
     notice_attachment_related_heading: "Ki gen rapò ak kontni dokiman anekse a",
     notice_attachment_related_lead: "Lòt avi ki pataje tèm ak tèks dosye ofisyèl la — pa sèlman mo kle yo genyen an komen.",
     digest_match_attachment_html: "Yo jwenn li nan dokiman anekse: {snippet}",

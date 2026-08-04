@@ -1,7 +1,9 @@
 {
   "schema": "cityscroll.attachment_metadata.v1",
-  "built_at": "2026-08-03T00:00:00Z",
-  "tier": "t1_inline_text",
+  "built_at": "2026-08-04T00:00:00Z",
+  "tier": "t2_structured_tables",
+  "storage": "json",
+  "storage_adr": "docs/adr/attachment-tables-storage.md",
   "notices": {
     "20240515016": [
       {
@@ -10,15 +12,125 @@
         "title": "Description, maps, and volume report for timber and roundwood products from forest management project in the Cannonsville watershed basin.",
         "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470",
         "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "bytes": null,
+        "bytes": 2039,
         "source": "portal",
         "text_status": "ok",
         "text_reason": null,
         "text_method": "docx_xml",
-        "text_chars": 971,
-        "text_preview": "New York City Department of Environmental Protection · Bureau of Water Supply - Natural Resources Division · CARPENTERS EDDY EAST · Forest Management Project # 5116…",
-        "extracted_text": "New York City Department of Environmental Protection\nBureau of Water Supply - Natural Resources Division\nCARPENTERS EDDY EAST\nForest Management Project # 5116\nNOTICE OF PROJECT AVAILABILITY\nDescription: The City of New York will sell an estimated 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest Management Project #5116 in the Cannonsville watershed basin.\nSummary: This sale is comprised of mostly mature red oak and white ash. The project includes approximately 2.5 miles of trail construction and 27 acres of shelterwood regeneration.\nProject Area: 103 ac +/-\nTotal Volume: 187 MBF +/- sawtimber & 89 cords hardwood pulp\nSpecies as a percent of total sawtimber volume: 49% Red Oak, 22% White Ash, 14% Red Maple, 9% Chestnut Oak.\nShow Dates: Prospective bidders should attend one of the public showings to receive the full bid package.\nBid Deadline: Sealed bids must be received by the date stated in the official notice.",
-        "text_extracted_at": "2026-08-03T00:00:00Z"
+        "text_chars": 1410,
+        "text_preview": "New York City Department of Environmental Protection \u00b7 Bureau of Water Supply - Natural Resources Division \u00b7 CARPENTERS EDDY EAST \u00b7 Forest Management Project # 5116\u2026",
+        "extracted_text": "New York City Department of Environmental Protection\nBureau of Water Supply - Natural Resources Division\nCARPENTERS EDDY EAST\nForest Management Project # 5116\nNOTICE OF PROJECT AVAILABILITY\nDescription: The City of New York will sell 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest Management Project #5116 in the Cannonsville watershed basin.\nSummary: This sale is comprised of mostly mature red oak and white ash. The project includes 2.5 miles of trail construction and 27 acres of shelterwood regeneration.\nProject Area: 103 ac\nTotal Volume: 187 MBF sawtimber and 89 cords hardwood pulp\nSpecies as a percent of total sawtimber volume: 49% Red Oak, 22% White Ash, 14% Red Maple, 9% Chestnut Oak.\nShow Dates: Prospective bidders should attend one of the public showings to receive the full bid package.\nBid Deadline: Sealed bids must be received by the date stated in the official notice.\nVolume by species (sawtimber MBF)\nSpecies\nSawtimber (MBF)\nPulp (cords)\nPercent of sawtimber\nRed Oak\n91.6\n28\n49%\nWhite Ash\n41.1\n18\n22%\nRed Maple\n26.2\n22\n14%\nChestnut Oak\n16.8\n12\n9%\nOther hardwoods\n11.3\n9\n6%\nTotal\n187.0\n89\n100%\nStand summary by unit\nStand\nAcres\nDominant species\nSawtimber (MBF)\nTreatment\n1\n28\nRed Oak\n62.4\nShelterwood\n2\n35\nWhite Ash / Red Oak\n71.2\nShelterwood\n3\n24\nRed Maple\n38.1\nGroup selection\n4\n16\nMixed hardwoods\n15.3\nTrail / access\nTotal\n103\n\u2014\n187.0\n\u2014",
+        "text_extracted_at": "2026-08-03T00:00:00Z",
+        "tables_status": "ok",
+        "tables_reason": null,
+        "tables_method": "docx_tbl",
+        "tables_count": 2,
+        "tables_preview": "2 tables: Species \u00b7 Sawtimber (MBF) \u00b7 Pulp (cords) \u00b7 Percent of sawtimber \u2014 Red Oak \u00b7 91.6 \u00b7 28 \u00b7 49% \u00b7 +11 more",
+        "extracted_tables": [
+          {
+            "index": 0,
+            "caption": null,
+            "headers": [
+              "Species",
+              "Sawtimber (MBF)",
+              "Pulp (cords)",
+              "Percent of sawtimber"
+            ],
+            "rows": [
+              [
+                "Red Oak",
+                "91.6",
+                "28",
+                "49%"
+              ],
+              [
+                "White Ash",
+                "41.1",
+                "18",
+                "22%"
+              ],
+              [
+                "Red Maple",
+                "26.2",
+                "22",
+                "14%"
+              ],
+              [
+                "Chestnut Oak",
+                "16.8",
+                "12",
+                "9%"
+              ],
+              [
+                "Other hardwoods",
+                "11.3",
+                "9",
+                "6%"
+              ],
+              [
+                "Total",
+                "187.0",
+                "89",
+                "100%"
+              ]
+            ],
+            "n_rows": 6,
+            "n_cols": 4,
+            "method": "docx_tbl"
+          },
+          {
+            "index": 1,
+            "caption": null,
+            "headers": [
+              "Stand",
+              "Acres",
+              "Dominant species",
+              "Sawtimber (MBF)",
+              "Treatment"
+            ],
+            "rows": [
+              [
+                "1",
+                "28",
+                "Red Oak",
+                "62.4",
+                "Shelterwood"
+              ],
+              [
+                "2",
+                "35",
+                "White Ash / Red Oak",
+                "71.2",
+                "Shelterwood"
+              ],
+              [
+                "3",
+                "24",
+                "Red Maple",
+                "38.1",
+                "Group selection"
+              ],
+              [
+                "4",
+                "16",
+                "Mixed hardwoods",
+                "15.3",
+                "Trail / access"
+              ],
+              [
+                "Total",
+                "103",
+                "\u2014",
+                "187.0",
+                "\u2014"
+              ]
+            ],
+            "n_rows": 5,
+            "n_cols": 5,
+            "method": "docx_tbl"
+          }
+        ],
+        "tables_extracted_at": "2026-08-04T00:00:00Z"
       }
     ]
   }

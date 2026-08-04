@@ -33,12 +33,14 @@ function fakeDB(seed = {}) {
     },
   };
 }
+const FIXTURE_CACHE_AT = "2026-08-03T12:00:00.000Z";
 function seedNychaCache(db, requestId, matches) {
   // computed_at is required for empty matches: nychaCacheFresh treats legacy
   // rows without a timestamp as keep-only-if-non-empty (empty → miss → live).
+  // Fixed fixture clock (not wall clock) so the test-clock auditor stays green.
   db._cache[requestId] = {
     matches: JSON.stringify({ matches }),
-    computed_at: new Date().toISOString(),
+    computed_at: FIXTURE_CACHE_AT,
   };
 }
 class MockKV {
