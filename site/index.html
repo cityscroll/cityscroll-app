@@ -135,11 +135,8 @@
   .wandchip{font-family:var(--font-sc);font-weight:600;letter-spacing:.04em;font-size:12px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .wandchip:hover{border-color:var(--oxblood);color:var(--oxblood)}
   .nlbox{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-md);padding:var(--space-4);margin-top:var(--space-4);box-shadow:var(--shadow)}
-  .ask-cityscroll{padding:0;box-shadow:none}
-  .ask-cityscroll>summary{padding:var(--space-3) var(--space-4);font:600 13px/1.35 var(--font-interface);color:var(--ink-soft);cursor:pointer}
-  .ask-cityscroll[open]>summary{border-bottom:1px solid var(--rule)}
-  .ask-cityscroll-body{padding:var(--space-4)}
-  .ask-cityscroll-context{margin:var(--space-2) var(--space-4) 0;font:12px/1.4 var(--font-interface);color:var(--muted)}
+  .ask-cityscroll{padding:0;box-shadow:none}.ask-cityscroll>summary{padding:var(--space-3) var(--space-4);font:600 13px/1.35 var(--font-interface);color:var(--ink-soft);cursor:pointer}.ask-cityscroll[open]>summary{border-bottom:1px solid var(--rule)}
+  .nlbody{padding:var(--space-4)}.ask-context{margin:var(--space-2) var(--space-4) 0;font:12px/1.4 var(--font-interface);color:var(--muted)}
   .nllabel{font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.13em;font-size:12px;color:var(--ink-soft);display:block;margin-bottom:8px}
   .nlworking{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--oxblood)}
   .nltry{display:grid;gap:var(--space-2);margin-top:var(--space-3)}
@@ -1562,20 +1559,10 @@
         <div class="chiprow lens-primary-rail" id="methodfacet" role="group" aria-label="Procurement method"></div>
       </div>
     </div>
-    <details class="nlbox ask-cityscroll" data-ask-lens="money">
-      <summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary>
-      <div class="ask-cityscroll-body">
-        <div class="nlrow">
-          <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
-          <button id="nlgo" data-i18n="ask_btn">Ask</button>
-        </div>
-        <div id="nltry" class="nltry"></div>
-        <div id="nltrans"></div>
-        <div id="landing-share-actions"></div>
-        <div id="nlpresets" data-search-presets></div>
-      </div>
-    </details>
-    <p class="ask-cityscroll-context" data-i18n="ask_cityscroll_context">Interprets your request</p>
+    <details class="nlbox ask-cityscroll" data-ask-lens="money"><summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary><div class="nlbody">
+      <div class="nlrow"><input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money"><button id="nlgo" data-i18n="ask_btn">Ask</button></div>
+      <div id="nltry" class="nltry"></div><div id="nltrans"></div><div id="landing-share-actions"></div><div id="nlpresets" data-search-presets></div>
+    </div></details><p class="ask-context" data-i18n="ask_cityscroll_context">Interprets your request</p>
     <div class="lens-search-state" id="moneyactivefilters"></div>
     <div class="lens-resultbar">
       <span class="lens-count" id="rescount" aria-live="polite"></span>

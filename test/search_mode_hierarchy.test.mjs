@@ -29,7 +29,7 @@ test("exact list search is primary and Ask CityScroll is a disclosed secondary m
   );
   assert.match(
     SITE_SOURCE,
-    /context\.insertAdjacentElement\("afterend", tools\)/,
+    /box\.insertAdjacentHTML\("afterend",[\s\S]*search-scope-tools/,
     "current-scope status and actions should remain visible outside the collapsed Ask mode",
   );
 });
@@ -45,7 +45,7 @@ test("a conventional query visibly takes over from an interpreted request", () =
   );
   assert.match(
     SITE_SOURCE,
-    /exactSearchSelectors[\s\S]*addEventListener\("input",\(\)=>deactivateAskSearch\(lens\)/,
+    /Object\.entries\(\{money:"kw"[\s\S]*addEventListener\("input",\(\)=>deactivateAskSearch\(lens\)/,
     "typing in an exact-search input should deactivate the interpreted request",
   );
 });

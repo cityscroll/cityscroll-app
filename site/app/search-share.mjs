@@ -111,7 +111,7 @@ function bindNLQResolvedActions(label, hash){
 }
 async function nlTranslate(){
   const text=$("#nlq").value.trim(); if(!text) return;
-  activateAskSearch("money");
+  askPanel("money")?.setAttribute("open","");
   const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
   const p=await nlResolve(text, "money");
   // Entity/forecast intents leave the list surface for the agency (or vendor) profile.
@@ -722,7 +722,7 @@ async function nlTranslateLens(lens, opts){
   const inpSel=(opts&&opts.inputSel)||("#nlq-"+lens);
   const text=(opts&&opts.text!=null)?opts.text:($(inpSel)?.value.trim()||"");
   if(!text) return;
-  if(inpSel==="#nlq-"+lens) activateAskSearch(lens);
+  if(inpSel==="#nlq-"+lens) askPanel(lens)?.setAttribute("open","");
   const btn=$("#nlgo-"+lens); if(btn) btn.disabled=true;
   $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
   const f=await nlResolve(text, lens);
@@ -751,16 +751,12 @@ const NL_SUGGESTIONS_FALLBACK = {
 };
 let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
 
-// Pure: which idx values are currently eligible to display for a lens — the daily-validated
-// set if we have one for this lens, else the static fallback.
 function currentSuggestionIndices(lens){
   const validated = NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens];
   if(validated && validated.length) return validated.map(c=>c.idx);
   return NL_SUGGESTIONS_FALLBACK[lens] || [];
 }
 
-// Pure: idx values in the validated set flagged lineage-rich / forecast-bearing for a lens.
-// Empty sets for the static fallback or a lens with no validated data yet — never a guess.
 function currentSuggestionMeta(lens){
   const validated = (NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens]) || [];
   const lineage = new Set(), forecast = new Set();
@@ -771,9 +767,6 @@ function currentSuggestionMeta(lens){
   return { lineage, forecast };
 }
 
-// Pure: deterministic day-seeded rotation over a pool of idx values — stable within a day
-// (every visitor that day sees the same rotation), different across days. seed is whole days
-// since the epoch (daySeed(), below); kept as a parameter so it's testable without Date.
 function pickSuggestions(indices, displayCount, seed){
   if(!indices || !indices.length) return [];
   const n = indices.length;
@@ -784,11 +777,6 @@ function pickSuggestions(indices, displayCount, seed){
   return out;
 }
 
-// Money-lens-only guarantee (w12-17 acceptance criterion): when lineage-rich candidates exist,
-// at least LINEAGE_GUARANTEE_MIN of the displayed chips come from that subset — representation,
-// not exclusivity, so the general pool still fills the remaining slots via the same day-seeded
-// rotation as before. Which lineage-rich idx get pinned in also rotates day to day (they're
-// picked with the same seed), not just which non-lineage chips fill the rest.
 const LINEAGE_GUARANTEE_MIN = 2;
 function pickSuggestionsGuaranteed(indices, lineageIndices, displayCount, seed, guarantee){
   if(!lineageIndices || !lineageIndices.length || !guarantee) return pickSuggestions(indices, displayCount, seed);
@@ -842,10 +830,6 @@ function rerenderAllSuggestions(){
   ["people","land","property","rules","meetings","alerts"].forEach(lens=>renderNLSamples(lens, $("#nltry-"+lens)));
 }
 
-// Fetches the daily-validated set; on any failure (worker unreachable, or the cron hasn't
-// populated it yet — GET /suggestions 404s until the first successful run) this just leaves
-// chips already rendered from NL_SUGGESTIONS_FALLBACK in place, so a suggestion is never
-// blank while waiting.
 async function loadValidatedSuggestions(){
   try{
     const r = await workerFetch("/suggestions", null, 6000);
@@ -856,14 +840,11 @@ async function loadValidatedSuggestions(){
   }catch(e){ /* stays on the static fallback */ }
 }
 
-const exactSearchSelectors={money:"#kw",people:"#pkw",land:"#lkw",property:"#propertykw",rules:"#ruleskw",meetings:"#meetingskw",alerts:"#quiznarrow"};
 function askPanel(lens){ return document.querySelector(`[data-ask-lens="${lens}"]`); }
 
-function activateAskSearch(lens){ askPanel(lens)?.setAttribute("open",""); }
-
 function deactivateAskSearch(lens){
-  const input=$(lens==="money"?"#nlq":"#nlq-"+lens);
-  const translation=$(lens==="money"?"#nltrans":"#nltrans-"+lens);
+  const suffix=lens==="money"?"":"-"+lens;
+  const input=$("#nlq"+suffix), translation=$("#nltrans"+suffix);
   if(input) input.value="";
   askPanel(lens)?.removeAttribute("open");
   if(translation) translation.innerHTML="";
@@ -876,7 +857,7 @@ function injectNLBoxes(){
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("details"); box.className="nlbox ask-cityscroll"; box.dataset.askLens=lens;
-    box.innerHTML='<summary data-i18n="ask_cityscroll_action">'+t("ask_cityscroll_action")+'</summary><div class="ask-cityscroll-body">'+
+    box.innerHTML='<summary data-i18n="ask_cityscroll_action">'+t("ask_cityscroll_action")+'</summary><div class="nlbody">'+
       '<div class="nlrow"><input type="text" id="nlq-'+lens+'" aria-label="'+t("nl_aria")+'" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
       '<button id="nlgo-'+lens+'" data-i18n="ask_btn">Ask</button></div>'+
       '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div></div>';
@@ -884,21 +865,11 @@ function injectNLBoxes(){
     else anchor.insertAdjacentElement("afterend", box);
     $("#nlgo-"+lens).addEventListener("click",()=>nlTranslateLens(lens));
     $("#nlq-"+lens).addEventListener("keydown",e=>{ if(e.key==="Enter") nlTranslateLens(lens); });
-    const context=document.createElement("p"); context.className="ask-cityscroll-context";
-    context.dataset.i18n="ask_cityscroll_context"; context.textContent=t("ask_cityscroll_context");
-    box.insertAdjacentElement("afterend", context);
-    if(lens!=="alerts"){
-      const tools=document.createElement("div"); tools.className="search-scope-tools";
-      const state=wrap.querySelector(`[data-search-state="${lens}"]`)?"":'<div id="searchstate-'+lens+'" data-search-state="'+lens+'"></div>';
-      tools.innerHTML=state+'<div id="searchactions-'+lens+'" data-search-actions="'+lens+'"></div>'+
-        '<div id="nlpresets-'+lens+'" data-search-presets></div>';
-      context.insertAdjacentElement("afterend", tools);
-    }
+    const state=wrap.querySelector(`[data-search-state="${lens}"]`)?"":'<div id="searchstate-'+lens+'" data-search-state="'+lens+'"></div>';
+    box.insertAdjacentHTML("afterend",'<p class="ask-context" data-i18n="ask_cityscroll_context">'+t("ask_cityscroll_context")+'</p>'+(lens==="alerts"?"":'<div class="search-scope-tools">'+state+'<div id="searchactions-'+lens+'" data-search-actions="'+lens+'"></div><div id="nlpresets-'+lens+'" data-search-presets></div></div>'));
     renderNLSamples(lens, $("#nltry-"+lens));
   });
-  Object.entries(exactSearchSelectors).forEach(([lens,selector])=>{
-    const input=$(selector); if(input) input.addEventListener("input",()=>deactivateAskSearch(lens));
-  });
+  Object.entries({money:"kw",people:"pkw",land:"lkw",property:"propertykw",rules:"ruleskw",meetings:"meetingskw",alerts:"quiznarrow"}).forEach(([lens,id])=>$("#"+id)?.addEventListener("input",()=>deactivateAskSearch(lens)));
 }
 
 function exportSpec(lens){
