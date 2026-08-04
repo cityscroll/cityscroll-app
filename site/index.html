@@ -212,6 +212,17 @@
   .row .rtitle{font-weight:700;font-size:15px;margin:0 0 4px}
   .row .rmeta{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .row .ragency{color:var(--blue)}
+  /* Money results are compound rows: the primary action and the detail selector are
+     siblings, never nested controls. Action-first DOM order gives keyboard users the
+     kinetic path before the optional detail expansion without adding a second row. */
+  .money-row-card{position:relative;border-bottom:1px solid var(--rule);min-width:0}
+  .money-row-card>.row{border-bottom:0;min-width:0}
+  .money-row-card>.money-row-action{position:absolute;z-index:1;inset-block-start:13px;inset-inline-end:16px;justify-content:center;max-width:132px;padding:8px 10px;font-size:12px;line-height:1.2;text-align:center}
+  .money-row-card>.money-row-action~.row .rtitle{min-height:36px}
+  .money-row-card>.money-row-action[data-money-row-action="solicitation"]~.row .rtitle{padding-inline-end:92px}
+  .money-row-card>.money-row-action[data-money-row-action="award"]~.row .rtitle{padding-inline-end:142px}
+  .money-row-card:has(>.row.sel){background:#eef2ff;box-shadow:inset 3px 0 var(--blue)}
+  .money-row-card:has(>.row.sel)>.row{background:transparent;box-shadow:none}
   .pin{font:11px/1 ui-monospace,Menlo,monospace;background:#eceef2;border:1px solid var(--rule);border-radius:5px;padding:2px 6px;color:#5b6470}
   /* w9-07: de-emphasize the "no linkable PIN" badge without opacity -- opacity:.6 faded BOTH
      text and background together, compositing down to 2.63:1 (axe serious). Full-opacity
@@ -1373,7 +1384,7 @@
     html,body{background:#fff!important;color:#000!important}
     body{font:11pt/1.4 Georgia,"Times New Roman",serif}
     body::before{content:attr(data-print-meta);display:block;padding:0 0 8pt;margin:0 0 12pt;border-bottom:1pt solid #000;font:9pt/1.35 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
-    header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions,.home-cta,.lang-switcher,.lens-toolbar,.lens-resultbar,.lens-search-state,.lens-method{display:none!important}
+    header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions,.money-row-action,.home-cta,.lang-switcher,.lens-toolbar,.lens-resultbar,.lens-search-state,.lens-method{display:none!important}
     .tabpane:not(.active){display:none!important}
     .tabpane.active{display:block!important;padding:0}
     main,.wrap{max-width:none!important;margin:0!important;padding:0!important}
