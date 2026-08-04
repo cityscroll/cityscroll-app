@@ -34,6 +34,26 @@
     }
   }
 
+  function actionLinkPatternState(matter, patternId) {
+    const state = matter && matter.action_link_health
+      ? matter.action_link_health
+      : (typeof globalThis !== "undefined" ? globalThis.CrolActionLinkHealth : null);
+    return state && state.patterns ? state.patterns[patternId] || null : null;
+  }
+
+  function cityRecordNoticeUnavailable(matter, value) {
+    const safe = httpsUrl(value);
+    if (!safe) return false;
+    try {
+      const url = new URL(safe);
+      if (!/(^|\.)a856-cityrecord\.nyc\.gov$/i.test(url.hostname)) return false;
+      if (!/^\/RequestDetail\//i.test(url.pathname)) return false;
+      return actionLinkPatternState(matter, "contracts-city-record-notice")?.degraded === true;
+    } catch (_error) {
+      return false;
+    }
+  }
+
   /** Numeric PASSPort Public rfp_id only (strips BOM). */
   function cleanPassportRfpId(value) {
     const id = String(value || "").replace(/^\uFEFF/, "").trim();
@@ -1277,9 +1297,19 @@
     const rfx = matter.rfx_detail || null;
     const detail = rfx && rfx.status === "matched" ? (rfx.detail || {}) : null;
     const explicitUrl = httpsUrl(matter.official_application_url);
-    const fields = noticeFieldGuidance(matter);
+    let fields = noticeFieldGuidance(matter);
+    const unavailableNotice = cityRecordNoticeUnavailable(matter, matter.official_notice_url)
+      || cityRecordNoticeUnavailable(matter, fields.package_url);
+    if (cityRecordNoticeUnavailable(matter, fields.package_url)) {
+      fields = {...fields, package_url: null};
+    }
+    const availability = {
+      upstream_unavailable_note_key: unavailableNotice ? "next_action_unavailable_handoff" : null,
+    };
     // Prefer notice-published package/submit URL for iSupplier RFQ depth when present.
-    const nychaNoticeUrl = httpsUrl(matter.official_notice_url);
+    const nychaNoticeUrl = cityRecordNoticeUnavailable(matter, matter.official_notice_url)
+      ? null
+      : httpsUrl(matter.official_notice_url);
 
     if (/housing authority|\bnycha\b/i.test(agency) && /\bisupplier\b/i.test(body)) {
       // No public per-RFQ iSupplier URL is published. Registration guide remains the
@@ -1298,6 +1328,7 @@
         // Outbound for the RFQ identity when City Record request_id is known.
         identifier_url: nychaNoticeUrl,
         ...fields,
+        ...availability,
         // package_url from body wins; else official notice is the deepest public package link.
         package_url: fields.package_url || nychaNoticeUrl,
       };
@@ -1316,6 +1347,7 @@
         procurement_name: title,
         status: null,
         ...fields,
+        ...availability,
       };
     }
 
@@ -1337,6 +1369,7 @@
         status: String(detail.rfx_status || "").trim() || null,
         rfp_id: cleanPassportRfpId(rfpId),
         ...fields,
+        ...availability,
       };
     }
 
@@ -1354,6 +1387,7 @@
         procurement_name: title,
         status: null,
         ...fields,
+        ...availability,
       };
     }
 
@@ -1369,6 +1403,7 @@
         procurement_name: title,
         status: null,
         ...fields,
+        ...availability,
       };
     }
 
@@ -1384,6 +1419,7 @@
         procurement_name: title,
         status: null,
         ...fields,
+        ...availability,
       };
     }
 
@@ -1397,6 +1433,7 @@
       procurement_name: title,
       status: null,
       ...fields,
+      ...availability,
     };
   }
 
@@ -1413,19 +1450,22 @@
 
     if (stage === "solicitation") {
       const sol = solicitationHandoff(m);
+      const packageUrl = sol.package_url
+        || (sol.upstream_unavailable_note_key ? null : fields.package_url)
+        || null;
       return {
         system: sol.destination ? sol.system : "franchise_extracted",
         mode: "solicitation",
         stage: "solicitation",
-        destination: sol.destination || fields.package_url || null,
+        destination: sol.destination || packageUrl,
         label_key: sol.destination
           ? sol.label_key
-          : (fields.package_url ? "open_rfp_package" : "franchise_phase_action_solicitation"),
+          : (packageUrl ? "open_rfp_package" : "franchise_phase_action_solicitation"),
         label: sol.destination
           ? sol.label
-          : (fields.package_url ? "Get the RFP package" : "Review the franchise solicitation steps"),
-        primary_type: sol.destination || fields.package_url ? "official_application" : "bid_checklist",
-        package_url: fields.package_url || sol.package_url || null,
+          : (packageUrl ? "Get the RFP package" : "Review the franchise solicitation steps"),
+        primary_type: sol.destination || packageUrl ? "official_application" : "bid_checklist",
+        package_url: packageUrl,
         email: fields.email || sol.email || null,
         contact_name: fields.contact_name || sol.contact_name || null,
         contact_phone: fields.contact_phone || sol.contact_phone || null,
@@ -1433,9 +1473,9 @@
         selection_method: fields.selection_method || sol.selection_method || null,
         identifier: sol.identifier || null,
         identifier_url: sol.identifier_url || null,
+        upstream_unavailable_note_key: sol.upstream_unavailable_note_key || null,
         has_fields: !!(sol.destination || fields.has_fields || fields.package_url),
         guide_system: sol.destination ? sol.system : "notice_extracted",
-        ...fields,
       };
     }
 

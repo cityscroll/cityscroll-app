@@ -43,14 +43,37 @@ test("NYCHA iSupplier field case never becomes a PASSPort bid", () => {
   assert.equal(handoff.system, "nycha_isupplier");
   assert.equal(handoff.identifier, "517992");
   assert.match(handoff.destination, /nycha\/business\/isupplier-vendor-registration/);
-  // RFQ identity + package point at City Record when no public per-RFQ iSupplier URL exists.
-  assert.equal(handoff.identifier_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050");
-  assert.equal(handoff.package_url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050");
+  // The current machine verdict suppresses the unavailable City Record handoff while
+  // preserving the notice-extracted response fields and the working iSupplier guide.
+  assert.equal(handoff.identifier_url, null);
+  assert.equal(handoff.package_url, null);
+  assert.equal(handoff.upstream_unavailable_note_key, "next_action_unavailable_handoff");
 
   const [action] = compileActionRail(matter, {today: "2026-08-01"});
   assert.equal(action.label_key, "open_nycha_isupplier");
   assert.equal(action.guide.mode, "notice_named");
   assert.doesNotMatch(action.destination, /passport/i);
+});
+
+test("a recovered City Record pattern restores its notice handoff without a code edit", () => {
+  const officialNoticeUrl = "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050";
+  const handoff = solicitationHandoff({
+    kind: "solicitation",
+    agency_name: "Housing Authority",
+    pin: "517992",
+    title: "Elevator Rehabilitation",
+    notice_text: "Upload the bid in iSupplier. Contact bids@example.com for response instructions.",
+    official_notice_url: officialNoticeUrl,
+    action_link_health: {
+      patterns: {
+        "contracts-city-record-notice": {verdict: "OK", degraded: false},
+      },
+    },
+  });
+
+  assert.equal(handoff.identifier_url, officialNoticeUrl);
+  assert.equal(handoff.package_url, officialNoticeUrl);
+  assert.equal(handoff.upstream_unavailable_note_key, null);
 });
 
 test("matched Released PASSPort RFx with rfp_id deep-links to process_manage_extranet", () => {
@@ -695,6 +718,20 @@ test("franchise solicitation leads with package or response guide, never award b
   // No award "bid" framing on a franchise solicitation rail primary.
   assert.notEqual(actions[0].type, "rsvp");
   actions.forEach(validateAction);
+});
+
+test("franchise solicitation cannot reintroduce a degraded City Record notice as its package", () => {
+  const handoff = franchiseHandoff({
+    franchise_stage: "solicitation",
+    kind: "solicitation",
+    pin: "FRANCHISE-42",
+    package_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
+    email: "bids@example.com",
+  });
+  assert.equal(handoff.destination, null);
+  assert.equal(handoff.package_url, null);
+  assert.equal(handoff.upstream_unavailable_note_key, "next_action_unavailable_handoff");
 });
 
 test("franchise award primary is review award, never bid or solicitation submit", () => {

@@ -240,7 +240,17 @@ export const ACTION_LINK_PATTERNS = Object.freeze([
     surface: "contracts",
     action: "submit",
     url_pattern: "https://a856-cityrecord.nyc.gov/RequestDetail/:request_id",
-    sample_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260718010",
+    sample_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
+    // Real rows confirmed in the official City Record Open Data export. One
+    // reachable representative proves the route shape; every per-vintage probe
+    // remains in the report so a narrower archive gap is still visible.
+    sample_urls: Object.freeze([
+      "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
+      "https://a856-cityrecord.nyc.gov/RequestDetail/20250130002",
+      "https://a856-cityrecord.nyc.gov/RequestDetail/20241028013",
+      "https://a856-cityrecord.nyc.gov/RequestDetail/20220203104",
+      "https://a856-cityrecord.nyc.gov/RequestDetail/20190515036",
+    ]),
     expected_destination_class: "deep",
     expected_specificity: "unknown",
     upstream_fallback: "Keep extracted response instructions and contact fields visible.",
@@ -366,7 +376,28 @@ export async function probeUrl(url, options = {}) {
 }
 
 export async function auditPattern(pattern, options = {}) {
-  const activeProbe = await probeUrl(pattern.sample_url, options);
+  const sampleUrls = [...new Set(
+    Array.isArray(pattern.sample_urls) && pattern.sample_urls.length
+      ? pattern.sample_urls
+      : [pattern.sample_url],
+  )];
+  const sampleResults = [];
+  for (let index = 0; index < sampleUrls.length; index += 1) {
+    if (index > 0 && (options.sampleDelayMs || 0) > 0) await sleep(options.sampleDelayMs);
+    sampleResults.push({url: sampleUrls[index], probe: await probeUrl(sampleUrls[index], options)});
+  }
+  const successes = sampleResults.filter((sample) => sample.probe.ok).length;
+  const representative = sampleResults.find((sample) => sample.probe.ok)
+    || sampleResults.at(-1);
+  const activeProbe = {
+    ok: successes > 0,
+    status: representative?.probe.status || null,
+    sample_count: sampleResults.length,
+    successes,
+    failures: sampleResults.length - successes,
+    attempts: sampleResults.flatMap((sample) =>
+      (sample.probe.attempts || []).map((attempt) => ({sample_url: sample.url, ...attempt}))),
+  };
   let verdict = activeProbe.ok ? "OK" : "broken-upstream";
   let derived = null;
 
@@ -407,6 +438,10 @@ export async function auditPattern(pattern, options = {}) {
     probe: activeProbe,
     upstream_fallback: pattern.upstream_fallback,
   };
+  if (sampleResults.length > 1) {
+    result.sample_urls = sampleUrls;
+    result.sample_results = sampleResults;
+  }
   if (derived) result.derived = derived;
 
   if (pattern.source_artifact_url) {
@@ -434,7 +469,7 @@ export async function auditActionLinks(options = {}) {
   const results = [];
   for (let i = 0; i < patterns.length; i += 1) {
     if (i > 0 && delayMs > 0) await sleep(delayMs);
-    results.push(await auditPattern(patterns[i], options));
+    results.push(await auditPattern(patterns[i], { ...options, sampleDelayMs: options.sampleDelayMs ?? delayMs }));
   }
 
   const productSamples = options.product_samples || [];
