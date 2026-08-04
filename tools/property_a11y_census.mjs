@@ -23,6 +23,13 @@ import { cleanNoticeText } from "../site/text_clean.mjs";
 import { extractPropertyCommercial } from "../site/property_commercial.mjs";
 import { classifyDispositionStage } from "../site/property_disposition_stage.mjs";
 import { extractPropertyTimedEvents } from "../site/property_timed_events.mjs";
+import {
+  PROPERTY_PATTERN_LABELS,
+  classifyPropertyPattern,
+} from "../site/property_notice_patterns.mjs";
+import { extractPropertyReaderActions } from "../site/property_reader_actions.mjs";
+
+export { classifyPropertyPattern };
 
 export const PROPERTY_SECTION = "Property Disposition";
 export const DETAIL_BODY_LIMIT = 6000;
@@ -40,19 +47,7 @@ export const SOURCE_FIELDS = Object.freeze([
   "printout_1", "printout_2", "printout_3",
 ]);
 
-export const PATTERN_LABELS = Object.freeze({
-  pending_destruction: "Pending destruction / seized products",
-  unclaimed_property: "Unclaimed property / Property Clerk",
-  forest_timber_sale: "Forest and timber sale",
-  lease_or_real_property_rfp: "Lease auction or real-property RFP",
-  surplus_auction: "Surplus, vehicle, or equipment auction",
-  direct_property_sale: "Direct real-property sale",
-  medallion_auction: "Taxicab-medallion auction",
-  udaap: "UDAAP",
-  acquisition_or_easement: "Acquisition or easement",
-  disposition: "Disposition hearing or conveyance",
-  other: "Other property notice",
-});
+export const PATTERN_LABELS = PROPERTY_PATTERN_LABELS;
 
 export const JARGON_LABELS = Object.freeze({
   pursuant_to: "pursuant to",
@@ -88,43 +83,6 @@ function joinedRenderedText(row) {
     .map(cleanNoticeText)
     .filter(Boolean)
     .join(" ");
-}
-
-/** Mutually exclusive structural pattern, ordered from specific to general. */
-export function classifyPropertyPattern(row = {}) {
-  const text = joinedRenderedText(row);
-  if (/pending destruction|unauthorized tobacco|flavored e-cigarette|flavored e-liquid|forfeiture/i.test(text)) {
-    return "pending_destruction";
-  }
-  if (/property clerk|owners are wanted|without claimants|unclaimed property/i.test(text)) {
-    return "unclaimed_property";
-  }
-  if (/forest management|timber|firewood|sawtimber|cordwood/i.test(text)) {
-    return "forest_timber_sale";
-  }
-  if (/online public lease auction|lease auction|request for proposals|\bRFP\b|leasing opportunities|lease offers/i.test(text)) {
-    return "lease_or_real_property_rfp";
-  }
-  if (/auto auction|municipal auto|surplus assets|govdeals|publicsurplus|redbird subway|heavy machinery|auction.{0,40}vehicle/i.test(text)) {
-    return "surplus_auction";
-  }
-  if (/public sale of residential property|real estate public auction|sale\/assignment of mortgage|sale of city mort?gage and note/i.test(text)) {
-    return "direct_property_sale";
-  }
-  if (/medallion (?:auction|sale)|auction.{0,40}medallion|winning bidders.{0,60}medallion/i.test(text)) {
-    return "medallion_auction";
-  }
-  if (/\bUDAAP\b|Urban Development Action Area/i.test(text)) return "udaap";
-  if (/\bacquisition\b|\bacquire(?:s|d)?\b|condemnation|eminent domain|vesting|easement/i.test(text)) {
-    return "acquisition_or_easement";
-  }
-  if (
-    row.type_of_notice_description === "Public Hearings"
-    || /disposition area|proposed (?:sale|disposition)|land disposition agreement|property disposition|public hearing/i.test(text)
-  ) {
-    return "disposition";
-  }
-  return "other";
 }
 
 /**
@@ -207,7 +165,7 @@ export function detectPropertyJargon(row = {}) {
 }
 
 /** Measure what the current Property-specific extractors can structure today. */
-export function currentPropertyExtraction(row = {}) {
+export function currentPropertyExtraction(row = {}, options = {}) {
   const stage = classifyDispositionStage(row);
   const commercial = extractPropertyCommercial(row);
   const events = extractPropertyTimedEvents(row);
@@ -218,6 +176,11 @@ export function currentPropertyExtraction(row = {}) {
     const source = String(row[event.source_field] || "");
     return source.slice(event.source_span?.start, event.source_span?.end) === event.source_span?.text;
   });
+  const reader = extractPropertyReaderActions(row, {
+    today: options.today || null,
+    events,
+  });
+  const actionKinds = new Set(reader.actions.map((action) => action.kind));
   return {
     stage_hearing: stage === "hearing",
     stage_auction_or_rfp: stage === "auction_or_rfp",
@@ -242,9 +205,16 @@ export function currentPropertyExtraction(row = {}) {
     inspection_or_showing_step: stepKinds.has("show_or_inspection"),
     registration_step: stepKinds.has("registration"),
     package_url: Boolean(commercial?.participation?.package_url),
-    objection_step: false,
-    comment_step: false,
-    accommodation_deadline_step: false,
+    source_grounded_action: reader.actions.length > 0,
+    source_receipted_action: reader.actions.length > 0 && reader.actions.every((action) => Boolean(action.how?.text)),
+    bid_action: actionKinds.has("bid"),
+    inspection_action: actionKinds.has("inspect"),
+    attend_action: actionKinds.has("attend"),
+    inquiry_or_claim_action: actionKinds.has("inquire_claim"),
+    review_action: actionKinds.has("review_documents") || actionKinds.has("review_result"),
+    objection_step: actionKinds.has("object"),
+    comment_step: actionKinds.has("comment"),
+    accommodation_deadline_step: actionKinds.has("request_accommodation"),
   };
 }
 
@@ -375,7 +345,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       pattern: classifyPropertyPattern(row),
       signals: detectPropertySignals(row),
       jargon: detectPropertyJargon(row),
-      current_extraction: currentPropertyExtraction(row),
+      current_extraction: currentPropertyExtraction(row, { today: asOf }),
       scores: Object.fromEntries(Object.keys(surfaces).map((surface) => [
         surface,
         scores.get(`${requestId}:${surface}`) || null,

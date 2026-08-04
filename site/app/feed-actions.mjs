@@ -338,6 +338,8 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     owner_name:r._property_owner||null,
     // Surplus-buyer commercial payload (item / price / bid steps) when extracted.
     commercial:isProperty?(r.commercial||null):null,
+    // Deterministic source spans grouped into the existing action rail guide.
+    reader_actions:r.property_reader_actions||null,
     // T0/T1 attachment inventory (GetFile DocumentID) — package handoff when body has none.
     attachments:Array.isArray(r.attachments)?r.attachments:null,
     package_url:(()=>{
@@ -382,7 +384,11 @@ function actionRailGuideHTML(actions){
   let steps=[];
   let guideExtra="";
   let headingKey="bid_guide_heading";
-  if(guide.system==="hearing_extracted"){
+  if(typeof guide.render_steps==="function"){
+    headingKey=guide.heading_key||headingKey;
+    steps=guide.render_steps(guide.actions,{t,escape:escUiHtml,formatDate:fdt,extAttrs:EXT_ATTRS,extSr:extSR});
+  }
+  else if(guide.system==="hearing_extracted"){
     // Attend / testify / contact — fields only when the notice published them.
     headingKey="hearing_guide_heading";
     const when=guide.event_date||action.deadline;

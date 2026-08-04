@@ -75,6 +75,19 @@ test("current extraction measurement reuses Property stage and participation ext
   assert.equal(current.bid_deadline_step, true);
   assert.equal(current.inspection_or_showing_step, true);
   assert.equal(current.objection_step, false);
+  assert.equal(current.bid_action, true);
+  assert.equal(current.source_receipted_action, true);
+});
+
+test("current extraction reports future source-grounded objection and comment support", () => {
+  const current = currentPropertyExtraction({
+    type_of_notice_description: "Public Hearings",
+    short_title: "Property disposition",
+    additional_description_1: "Mail written comments to the agency by September 1. Objections must be mailed to 100 Main Street within 30 days.",
+  }, { today: "2026-08-04" });
+  assert.equal(current.comment_step, true);
+  assert.equal(current.objection_step, true);
+  assert.equal(current.source_receipted_action, true);
 });
 
 test("jargon inventory only records literal source-language evidence", () => {

@@ -487,6 +487,7 @@ async function loadPropertyCommercialDetail(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
   try{
     const tools=await propertyCommercialTools();
+    const readerTools=await import("../property_reader_actions.mjs").catch(()=>null);
     // Prefer full-body extraction on detail; merge attachment titles when materialization stamped them.
     let attachments=[];
     if(r.commercial && r.commercial.item && r.commercial.item.source==="attachment_metadata"){
@@ -511,6 +512,7 @@ async function loadPropertyCommercialDetail(r, el){
       commercial.event_views=tools.propertyTimedEventViews(commercial.timed_events||[]);
     }
     if(commercial) r.commercial=commercial;
+    if(readerTools?.extractPropertyReaderActions) r.property_reader_actions=readerTools.extractPropertyReaderActions(r,{today:todayISO(),events:commercial?.timed_events||[]});
     if(!document.contains(el)) return;
     el.innerHTML=commercial ? propertyCommercialDetailHTML(commercial) : "";
   }catch(_e){
