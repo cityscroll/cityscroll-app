@@ -188,7 +188,7 @@ test("site modules mount solicitation and sub-outreach slots", () => {
   assert.match(SITE_SOURCE, /loadSolicitationMwbe/);
   assert.match(SITE_SOURCE, /data-mwbe-sub-outreach|sub-outreach-detail|sub_outreach/);
   assert.match(SITE_SOURCE, /mwbe_goal_surface\.mjs/);
-  assert.match(SITE_SOURCE, /mwbe_chip_goal_percent|mwbe_sub_heading/);
+  assert.match(SITE_SOURCE, /mwbe_sol_heading|mwbe_chip_goal_percent|loadSolicitationMwbe/);
 });
 
 test("i18n English dictionary carries surface keys", () => {
