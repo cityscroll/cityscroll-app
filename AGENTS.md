@@ -2055,6 +2055,13 @@ accommodation boilerplate must never become a bid deadline. Verify extraction, t
 bands, and honest-empty behavior with `node --test test/property_timed_events.test.mjs`,
 then rerun `node tools/property_a11y_census.mjs --as-of 2026-08-04 --format markdown`.
 
+## Property plain-language summaries
+
+Property detail summaries come from `site/property_plain_summary.mjs`. A classifier match alone
+must never force a template: each generated fact needs an exact reader-visible source receipt,
+and deviations fall back to the original City Record text. Verify the real-notice fixtures with
+`node --test test/property_plain_summary.test.mjs`, then rerun the Property accessibility census.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

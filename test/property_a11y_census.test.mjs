@@ -40,6 +40,20 @@ test("rendered surfaces mirror the title and detail-body boundaries", () => {
   assert.equal(surfaces.title, "A & B");
   assert.equal(surfaces.detail_body.length, DETAIL_BODY_LIMIT);
   assert.doesNotMatch(surfaces.combined, /fetched but not rendered/);
+  assert.equal(surfaces.plain_summary, "", "an unrelated notice honestly has no forced template");
+});
+
+test("the census scores the receipt-backed authored summary separately from official prose", () => {
+  const surfaces = renderedNoticeSurfaces({
+    request_id: "20241112003",
+    section_name: "Property Disposition",
+    type_of_notice_description: "Public Hearings",
+    short_title: "Notice of voluntary public hearing",
+    additional_description_1: "A voluntary public hearing will be held on November 26, 2024 about the listed property.",
+  });
+  assert.match(surfaces.plain_summary, /This notice is about a public hearing on a property matter\./);
+  assert.match(surfaces.plain_summary, /The hearing is on November 26, 2024\./);
+  assert.doesNotMatch(surfaces.plain_summary, /voluntary/);
 });
 
 test("query excerpts use the same 70-character radius and are absent without a term", () => {
