@@ -221,7 +221,7 @@ test("buildMeetingsExplorerEntries collapses multi-notice matter subject across 
   assert.ok(entries.some((e) => e.primary?.request_id === "20260701001"));
 });
 
-test("filterMeetingsExplorerEntries and counts support the process rail", () => {
+test("filterMeetingsExplorerEntries and counts support exclusive current-stage buckets", () => {
   const rows = [
     hearing({
       request_id: "u1",
@@ -265,9 +265,47 @@ test("filterMeetingsExplorerEntries and counts support the process rail", () => 
     process: "scheduled",
     now: NOW,
   });
-  assert.ok(scheduledOnly.every((e) => e.process_filter === "scheduled"
-    || (e.matched_phases || []).includes("scheduled")
-    || (e.members || []).some((m) => meetingProcessStage(m, { now: NOW }) === "scheduled")));
+  assert.ok(scheduledOnly.every((e) => e.process_filter === "scheduled"));
+  for (const [key] of MEETINGS_PROCESS_STAGES) {
+    assert.equal(
+      counts[key],
+      filterMeetingsExplorerEntries(entries, { process: key, now: NOW }).length,
+      `count-equals-list for ${key}`,
+    );
+  }
+});
+
+test("multi-notice meetings appear only in their current-stage bucket", () => {
+  const decides = "Whether to renew the same public market concession";
+  const entries = buildMeetingsExplorerEntries([
+    hearing({
+      request_id: "past",
+      agency: "Franchise and Concession Review Committee",
+      decides,
+      event_date: "2026-07-20",
+      description: "The public hearing was held.",
+    }),
+    hearing({
+      request_id: "future",
+      agency: "Franchise and Concession Review Committee",
+      decides,
+      event_date: "2026-08-20",
+      description: "A follow-up public hearing is scheduled.",
+    }),
+  ], { now: NOW });
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].process_filter, "held");
+
+  const counts = countMeetingsProcessStages(entries);
+  for (const [key] of MEETINGS_PROCESS_STAGES) {
+    assert.equal(
+      counts[key],
+      filterMeetingsExplorerEntries(entries, { process: key, now: NOW }).length,
+      `count-equals-list for ${key}`,
+    );
+  }
+  assert.equal(filterMeetingsExplorerEntries(entries, { process: "scheduled", now: NOW }).length, 0);
+  assert.equal(filterMeetingsExplorerEntries(entries, { process: "held", now: NOW }).length, 1);
 });
 
 test("groupMeetingsByPlace preserves local / citywide / unlocated sections (opt-in)", () => {

@@ -492,16 +492,16 @@ test("entryCurrentProcessStage prefers the latest matched process phase", () => 
   assert.ok(phase === "adoption" || phase === "public_process");
 });
 
-test("public Rules domain mounts process rail + explorer cards", () => {
+test("public Rules domain presents chain membership as an ordinary facet", () => {
   const index = SITE_SOURCE;
   assert.equal((index.match(/id="rulesprocessrail"/g) || []).length, 1);
   assert.match(index, /rules-domain-intro/);
   assert.doesNotMatch(index, /rules-domain-stepper/);
-  assert.match(index, /rules-stage-lifecycle/);
+  assert.match(index, />Includes phase</);
+  assert.match(index, /rules-stage-facets/);
   assert.match(index, /rules-stage-unmatched/);
   assert.match(index, /aria-pressed=/);
-  assert.match(index, /#rulesprocessrail \[aria-pressed="true"\]\{background:var\(--color-surface\);border-color:var\(--color-action\);color:var\(--color-text\);box-shadow:0 0 0 2px var\(--color-action\)\}/);
-  assert.doesNotMatch(index, /\.rules-stage-lifecycle \.lc-step-arrow\{display:none\}/);
+  assert.match(index, /#rulesprocessrail \.chip\[aria-pressed="true"\]/);
   assert.match(index, /function rulesExplorerCardHTML/);
   assert.match(index, /buildRulesExplorerEntries/);
   assert.match(index, /rulesProcessSel/);
@@ -524,6 +524,6 @@ test("public Rules domain mounts process rail + explorer cards", () => {
     RULES_APP_SOURCE.indexOf("function rulesProcessControlHTML"),
     RULES_APP_SOURCE.indexOf("async function renderRulesExplorer"),
   );
-  assert.match(processControlTemplate, /lc-step-arrow/);
-  assert.match(processControlTemplate, /→/);
+  assert.match(processControlTemplate, /chiprow rules-stage-facets/);
+  assert.doesNotMatch(processControlTemplate, /lc-step|lc-step-arrow|→|<ol/);
 });
