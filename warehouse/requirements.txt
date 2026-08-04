@@ -2,5 +2,7 @@
 #   python3 -m venv warehouse/.venv
 #   warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 duckdb>=1.0,<2
+# RC-1 MOCS plan workbooks. Loaded read-only; formulas are never evaluated.
+openpyxl>=3.1,<4
 # T1 attachment inline text (PDF plain-text extract; docx uses stdlib zipfile)
 pypdf>=4.0,<6

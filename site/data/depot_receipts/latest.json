@@ -4,7 +4,7 @@
   "observed_on": "2026-08-04",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 42,
+  "sources_count": 44,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -586,6 +586,16 @@
       "score": 0,
       "key_path": [
         "BBL"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "mocs-ll1-plans-x-mocs-ll63-plans-via-agency_+_description_+_term_(reviewed_candidate_only)+published_PIN/EPIN_when_present",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "published_PIN/EPIN_when_present",
+        "agency_+_description_+_term_(reviewed_candidate_only)"
       ],
       "gaps_would_close": []
     }
