@@ -97,6 +97,7 @@ test("#alerts mounts rollup prefs panel and group-by chips", () => {
 
 test("English i18n carries alerts rollup preference keys", () => {
   for (const key of [
+    "alerts_rollup_summary",
     "alerts_rollup_heading",
     "alerts_rollup_lead",
     "alerts_rollup_group_label",
