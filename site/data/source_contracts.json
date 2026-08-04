@@ -1179,8 +1179,8 @@
         "quarter"
       ],
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
-      "product_freshness": "Collector and fixture receipt framework are committed. Production materialization and its measured receipt are not included in this stage. The old egea-b8r5 and whpb-ebtd IDs remain retired and are not queried.",
-      "used_for": "No current product output. Staged host-side input for a future cityscroll.procurement_planning.v1 build; no notice/PASSPort edge is enabled before the production fixed-sample receipt clears its independent 30% and precision-review gates.",
+      "product_freshness": "The FY2027 production snapshot contains 8,641 normalized rows from 69 workbooks. Re-run after in-year agency workbook updates. The old egea-b8r5 and whpb-ebtd IDs remain retired and are not queried.",
+      "used_for": "Committed cityscroll.procurement_planning.v1 source rows. The dated production receipt measured both 100-row notice/PASSPort paths at 0%, so no product edge is enabled.",
       "join_keys": [
         "published PIN/EPIN when present",
         "agency + description + term (reviewed candidate only)"
@@ -1193,6 +1193,10 @@
         {
           "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
           "contains": "mocs_ll63_to_city_record"
+        },
+        {
+          "path": "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-04.json",
+          "contains": "mocs_ll63_to_passport"
         }
       ],
       "delivery_tier": "inline-at-build"
@@ -1217,8 +1221,8 @@
         "quarter"
       ],
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
-      "product_freshness": "Collector and fixture receipt framework are committed. Production materialization and its measured receipt are not included in this stage.",
-      "used_for": "No current product output. Staged host-side input for future forecast rows with publisher-supplied purpose, term, method, industry, quarter, and estimated amount. No agency-total budget is inferred.",
+      "product_freshness": "The FY2027 production snapshot contains 2,925 normalized rows from 32 workbooks. Re-run after in-year agency workbook updates.",
+      "used_for": "Committed cityscroll.procurement_planning.v1 source rows with publisher-supplied purpose, term, method, industry, quarter, and estimated amount. The dated production receipt measured both 100-row notice/PASSPort paths at 0%, so no product edge is enabled and no agency-total budget is inferred.",
       "join_keys": [
         "published PIN/EPIN when present",
         "agency + description + term (reviewed candidate only)"
@@ -1231,6 +1235,10 @@
         {
           "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
           "contains": "mocs_ll1_to_passport"
+        },
+        {
+          "path": "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-04.json",
+          "contains": "mocs_ll1_to_city_record"
         }
       ],
       "delivery_tier": "inline-at-build"
@@ -1780,8 +1788,8 @@
       ],
       "max_stale_days": 180,
       "publisher_cadence": "Three times a year after OMB commitment-plan releases (January, May, and September)",
-      "product_freshness": "Collector and fixture receipt framework are committed. Production collection through the Socrata resource API and its measured receipt are not included in this stage.",
-      "used_for": "No current product output. Staged host-side input for future capital budget, spend, FMS identifier, project description, phase, and schedule rows.",
+      "product_freshness": "The production snapshot contains the latest 50,000 rows returned by the ordered Socrata resource query. Refresh after January, May, and September commitment-plan releases.",
+      "used_for": "Committed cityscroll.procurement_planning.v1 capital budget, spend, FMS identifier, project description, phase, and schedule rows. The dated production receipt measured both 100-row notice/PASSPort paths at 0%, so no product edge is enabled.",
       "join_keys": [
         "fms_id",
         "managing_agency + agency_project_name + phase time (reviewed candidate only)"
@@ -1794,6 +1802,10 @@
         {
           "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
           "contains": "capital_projects_dashboard_to_city_record"
+        },
+        {
+          "path": "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-04.json",
+          "contains": "capital_projects_dashboard_to_passport"
         }
       ],
       "delivery_tier": "inline-at-build"

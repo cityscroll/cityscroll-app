@@ -1,0 +1,162 @@
+{
+  "schema": "cityscroll.procurement_plans.receipt.v1",
+  "proof_scope": "production_materialization",
+  "production_data_claimed": true,
+  "observed_at": "2026-08-04T16:09:54Z",
+  "fiscal_year": 2027,
+  "mode": "live",
+  "sources": {
+    "ll63_index": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
+    "ll1_index": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page",
+    "capital_projects_dashboard": "https://data.cityofnewyork.us/d/fb86-vt7u"
+  },
+  "collection": {
+    "host_side": true,
+    "checkpointed": true,
+    "conditional_get": true,
+    "polite_min_delay_seconds": 1.2,
+    "user_agent": "Mozilla/5.0 (compatible; CityScrollProcurementPlans/1.0; +https://cityscroll.org; official procurement-plan materialization)",
+    "retry_on_403": false,
+    "source_files": 104,
+    "source_file_counts": {
+      "mocs_ll63": 69,
+      "mocs_ll1": 32,
+      "capital_projects_dashboard": 1
+    }
+  },
+  "normalization": {
+    "mocs_plan_rows": 11566,
+    "capital_project_rows": 50000,
+    "fields": [
+      "agency",
+      "description",
+      "procurement_method",
+      "industry",
+      "term_start",
+      "term_end",
+      "quarter",
+      "budget",
+      "published_identifiers"
+    ],
+    "honest_absent": true
+  },
+  "bridge_targets": {
+    "city_record": {
+      "rows": 7516,
+      "sha256": "d1b369a39cc77428627fb957bcfc293b7647a0cd07f9298af1bdc9420f1f8ab4"
+    },
+    "passport_contracts": {
+      "rows": 61013,
+      "sha256": "992b150ed6f60a3f06826e53f423eb20f52e1d44c27b3fa4c3cf19fc423a072c",
+      "malformed_rows_skipped": 10
+    },
+    "passport_rfx": {
+      "rows": 12002,
+      "sha256": "f1d3cd2ba8d4e43e0f51283bba61cf5b03bdfe42c7bcd689e00b36024317018a",
+      "malformed_rows_skipped": 19
+    }
+  },
+  "join_measurement": {
+    "sample": {
+      "method": "fixed_sorted_modern_sample",
+      "size_per_plan_source": 100,
+      "modern_target_start": "2025-01-01",
+      "sort_key": "source_record_id ASC"
+    },
+    "usefulness_threshold": 0.3,
+    "paths": {
+      "mocs_ll63_to_city_record": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "materialize": false,
+        "verdict": "Stop: below usefulness threshold or review incomplete; no edges materialize."
+      },
+      "mocs_ll63_to_passport": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "materialize": false,
+        "verdict": "Stop: below usefulness threshold or review incomplete; no edges materialize."
+      },
+      "mocs_ll1_to_city_record": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "materialize": false,
+        "verdict": "Stop: below usefulness threshold or review incomplete; no edges materialize."
+      },
+      "mocs_ll1_to_passport": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "materialize": false,
+        "verdict": "Stop: below usefulness threshold or review incomplete; no edges materialize."
+      },
+      "capital_projects_dashboard_to_city_record": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "materialize": false,
+        "verdict": "Stop: below usefulness threshold or review incomplete; no edges materialize."
+      },
+      "capital_projects_dashboard_to_passport": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0,
+        "candidates": 0,
+        "review_complete": true,
+        "unreviewed_candidates": 0,
+        "materialize": false,
+        "verdict": "Stop: below usefulness threshold or review incomplete; no edges materialize."
+      }
+    },
+    "false_positive_review": {
+      "reviewed": 0,
+      "accepted": 0,
+      "false_positives": 0,
+      "unreviewed": 0,
+      "cases": [],
+      "rubric": "Agency+title+time candidates require an explicit label; deterministic identifier equality does not rely on title similarity."
+    }
+  },
+  "warehouse": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "tables": [
+      "mocs_procurement_plan_files",
+      "mocs_procurement_plans",
+      "capital_projects_dashboard",
+      "procurement_plan_bridge_edges"
+    ],
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "duckdb_threads": 1,
+    "headroom_status": "ok"
+  },
+  "payload_contract": {
+    "schema": "cityscroll.procurement_planning.v1",
+    "path": "site/data/procurement_planning_payload.json",
+    "schema_path": "site/data/procurement_planning_payload.schema.json",
+    "reader_surface_included": false,
+    "unmatched_rows_remain_unmatched": true,
+    "infer_budget_from_agency_total": false,
+    "production_materialized": true,
+    "production_bridge_edges": 0,
+    "fixture_bridge_edges": 0
+  }
+}
