@@ -278,7 +278,7 @@ test("class b: unmatched subsidy project uses not-published register", () => {
 // Class (a) — real Council unmatched meeting outcomes
 // ---------------------------------------------------------------------------
 
-test("class a: unmatched Council outcomes use not-yet-ingested register naming Legistar", () => {
+test("unmatched Council outcomes stay absent from the meeting detail", () => {
   const html = meetingOutcomesHTML({
     request_id: "20260714002",
     join: {
@@ -288,11 +288,10 @@ test("class a: unmatched Council outcomes use not-yet-ingested register naming L
     council_event: null,
     agenda_items: [],
   }, { agency_name: "City Council", request_id: "20260714002" });
-  assert.match(html, CLASS_A_PREFIX);
-  assert.match(html, /Council outcomes live in NYC Council Legistar/);
+  assert.equal(html, "");
 });
 
-test("class b: unmatched non-Council hearings use not-published register with BP/CB pointers", () => {
+test("unmatched non-Council outcomes stay absent from the meeting detail", () => {
   const html = meetingOutcomesHTML({
     request_id: "20260701001",
     join: { matched: false, reason: "No Council event matched." },
@@ -305,18 +304,10 @@ test("class b: unmatched non-Council hearings use not-published register with BP
     event_date: "2026-07-01",
     short_title: "Community Board public hearing",
   });
-  assert.match(html, CLASS_B_PREFIX);
-  assert.match(html, /borough president|community board/i);
-  // Outbound HTTPS landings (not text-only "where")
-  assert.match(html, /href="https:\/\/[^"]+"/);
-  assert.match(html, /community-boards|bronxboropres/i);
-  // Spine presents class-(b) on outcome + minutes stages (not a single bare note)
-  assert.match(html, /data-non-council-spine="1"/);
-  assert.match(html, /data-gap-class="not_published"/);
-  assert.doesNotMatch(html, /Not yet shown here — Council outcomes/);
+  assert.equal(html, "");
 });
 
-test("class a: matter without votes uses not-yet-ingested register", () => {
+test("matter without votes keeps the published matter and omits a vote gap", () => {
   const html = meetingOutcomesHTML({
     request_id: "M1",
     join: { matched: true },
@@ -325,9 +316,10 @@ test("class a: matter without votes uses not-yet-ingested register", () => {
       matters: [{ matter_id: "Int 1234", title: "A Local Law", votes: [], documents: [] }],
     }],
   });
-  assert.match(html, CLASS_A_PREFIX);
-  assert.match(html, /votes for matter/);
-  assert.match(html, /NYC Council Legistar/);
+  assert.match(html, /A Local Law/);
+  assert.doesNotMatch(html, CLASS_A_PREFIX);
+  assert.doesNotMatch(html, /lc-norecord|data-gap-class|data-person-votes-gap/);
+  assert.doesNotMatch(html, /meeting-badge|<strong>1<\/strong> other|>—</);
 });
 
 // ---------------------------------------------------------------------------
