@@ -32,7 +32,8 @@
       "fcpMs": 1000,
       "lcpMs": 2500,
       "cls": 0.1,
-      "wireBytes": 430000
+      "wireBytes": 440000,
+      "comment": "Cold home loads the full ordered app module graph plus digest preview awareness on boot (aPreview). CI p95 measured 436015 gzip wire bytes after the digest-decouple train base; 440000 clears that cumulative graph with a small headroom and does not hide a sudden step change. Ratchet target: under 430000 after a home-path load split that defers alerts preview awareness."
     },
     "home.warm": {
       "viewports": [

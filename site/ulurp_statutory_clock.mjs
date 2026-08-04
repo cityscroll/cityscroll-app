@@ -7,8 +7,14 @@
  * via cityscroll.prediction.v0 (method: statutory_clock) — they are not source
  * assertions (the clock can toll; projects can withdraw).
  *
+ * Phase status is not only open/withdrawn: completed milestones and terminal
+ * public_status close stages so clocks and pipeline position do not stay
+ * frozen on Community Board after review has moved on.
+ *
  * Pure: no fetch, no env. Browser and worker share this module.
  */
+
+import { mapMilestoneToPhase } from "./land_phase_spine.mjs";
 
 export const ULURP_STATUTORY_CLOCK_SCHEMA_VERSION = 1;
 export const ULURP_STATUTORY_STATUTE_REF = "NYC Charter §197-c";
@@ -170,6 +176,150 @@ export function projectIsWithdrawn(record = {}) {
   return false;
 }
 
+/** True when the publisher marks the land-use review as finished (not withdrawn). */
+export function projectIsCompleted(record = {}) {
+  if (projectIsWithdrawn(record)) return false;
+  const blobs = [
+    record.public_status,
+    record.open_data?.public_status,
+    record.open_data?.project_status,
+  ];
+  for (const b of blobs) {
+    const s = String(b || "").toLowerCase();
+    if (/\bcompleted\b|\bapproved\b|\bdisapproved\b|\bterminated\b/.test(s)) return true;
+  }
+  const milestones = Array.isArray(record.milestones) ? record.milestones : [];
+  for (const m of milestones) {
+    const t = `${m?.title || ""} ${m?.status || ""}`;
+    if (/project completed/i.test(t) && /completed|approved/i.test(String(m?.status || t))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function milestoneLooksCompleted(status, detail) {
+  const s = `${status || ""} ${detail || ""}`.toLowerCase();
+  if (!s.trim()) return false;
+  if (/\bin progress\b|\bnot started\b|\bplanned\b|\bupcoming\b/.test(s)) return false;
+  return /\bcompleted\b|\bapproved\b|\bsubmitted\b|\bcertified\b|\bfavorable\b|\bunfavorable\b|\bdisapproved\b/.test(
+    s,
+  );
+}
+
+/**
+ * Map completed ZAP milestones / spine events onto statutory public-review phases.
+ * Returns phase_id → { completed_at, evidence_id } (earliest completion date wins).
+ */
+export function completedStatutoryPhases(record = {}) {
+  const out = new Map();
+  const statutory = new Set(ULURP_STATUTORY_STAGES.map((s) => s.phase_id));
+
+  const consider = (title, status, detail, date, evidenceId, kind, representing) => {
+    if (!milestoneLooksCompleted(status, detail)) return;
+    const day = isoDateOnly(date);
+    if (!day) return;
+    const phaseId = mapMilestoneToPhase(title, {
+      kind: kind || null,
+      representing: representing || detail || null,
+      detail: detail || null,
+    });
+    if (!statutory.has(phaseId)) return;
+    const prev = out.get(phaseId);
+    if (!prev || day < prev.completed_at) {
+      out.set(phaseId, {
+        completed_at: day,
+        evidence_id: evidenceId || `ulurp-phase-complete:${phaseId}:${day}`,
+      });
+    }
+  };
+
+  const milestones = Array.isArray(record.milestones) ? record.milestones : [];
+  for (const m of milestones) {
+    consider(
+      m?.title,
+      m?.status,
+      m?.outcome || m?.detail,
+      m?.time?.value || m?.date || m?.display_date || m?.dcp_actualenddate,
+      m?.id ? `zap-milestone:${m.id}` : null,
+      m?.kind || "zap_milestone",
+      m?.representing || null,
+    );
+  }
+
+  const events = Array.isArray(record.spine?.events) ? record.spine.events : [];
+  for (const e of events) {
+    if (e?.time?.certainty === "planned") continue;
+    consider(
+      e?.title,
+      e?.status,
+      e?.detail || e?.outcome,
+      e?.time?.value,
+      e?.id ? String(e.id) : null,
+      e?.kind || "zap_milestone",
+      e?.representing || e?.detail || null,
+    );
+  }
+
+  // Disposition rows carry body identity + vote/hearing completion signals.
+  const dispositions = Array.isArray(record.dispositions) ? record.dispositions : [];
+  for (const d of dispositions) {
+    const status = d?.status || "";
+    const representing = d?.representing || d?.name || "";
+    const day = isoDateOnly(d?.vote_date || d?.hearing_date || d?.date);
+    if (!day) continue;
+    if (!milestoneLooksCompleted(status, representing) && !/submitted|completed|approved/i.test(String(status))) {
+      // Saved / draft dispositions are not completions.
+      if (!/\bsubmitted\b|\bcompleted\b|\bapproved\b/i.test(String(status))) continue;
+    }
+    const phaseId = mapMilestoneToPhase(d?.name || representing, {
+      kind: "zap_disposition",
+      representing,
+      detail: representing,
+    });
+    if (!statutory.has(phaseId)) continue;
+    const prev = out.get(phaseId);
+    const evidence = d?.id ? `zap-disposition:${d.id}` : `ulurp-disposition:${phaseId}:${day}`;
+    if (!prev || day < prev.completed_at) {
+      out.set(phaseId, { completed_at: day, evidence_id: evidence });
+    }
+  }
+
+  return out;
+}
+
+/**
+ * Detector: completed / advanced land projects whose statutory clock still lists
+ * every phase as open. Returns finding object or null.
+ */
+export function detectStaleOpenStatutoryClock(record = {}, clock = null) {
+  const view = clock || buildUlurpStatutoryClockView(record);
+  if (!view || view.status === "ineligible") return null;
+  if (view.status === "withdrawn") return null;
+  const phases = Array.isArray(view.phases) ? view.phases : [];
+  if (!phases.length) return null;
+  const allOpen = phases.every((p) => !p.status || p.status === "open");
+  if (!allOpen) return null;
+
+  const completedMap = completedStatutoryPhases(record);
+  const projectDone = projectIsCompleted(record);
+  if (!projectDone && completedMap.size === 0) return null;
+
+  const projectId = clean(record.project_id) || clean(record.open_data?.project_id) || "unknown";
+  return {
+    rule_id: "statutory_clock_stale_open",
+    subject_ref: `land:${projectId}`,
+    detail: {
+      clock_status: view.status,
+      public_status: record.public_status || record.open_data?.public_status || null,
+      open_phase_count: phases.length,
+      completed_phase_count: completedMap.size,
+      project_completed: projectDone,
+      sample_completed_phases: [...completedMap.keys()].slice(0, 5),
+    },
+  };
+}
+
 /**
  * Build per-phase statutory due dates from a certification date.
  * Does not invent a cert date — returns null when uncertified.
@@ -256,19 +406,72 @@ export function buildUlurpStatutoryClockView(record = {}, opts = {}) {
   }
 
   const withdrawn = projectIsWithdrawn(record);
-  const phases = projectStatutoryDeadlines(certifiedDate).map((p) => ({
-    ...p,
-    status: withdrawn ? "withdrawn" : "open",
-  }));
+  const projectDone = !withdrawn && projectIsCompleted(record);
+  const completed = withdrawn ? new Map() : completedStatutoryPhases(record);
   const dispositionDue = addCalendarDays(certifiedDate, ULURP_STATUTORY_TOTAL_DAYS);
+
+  const phases = projectStatutoryDeadlines(certifiedDate).map((p) => {
+    if (withdrawn) {
+      return { ...p, status: "withdrawn", completed_at: null, evidence_id: null };
+    }
+    const hit = completed.get(p.phase_id);
+    if (hit) {
+      return {
+        ...p,
+        status: "completed",
+        completed_at: hit.completed_at,
+        evidence_id: hit.evidence_id,
+      };
+    }
+    // Terminal project status closes remaining statutory stages without inventing dates.
+    if (projectDone) {
+      return {
+        ...p,
+        status: "completed",
+        completed_at: null,
+        evidence_id: null,
+      };
+    }
+    return { ...p, status: "open", completed_at: null, evidence_id: null };
+  });
+
+  let dispositionStatus = "open";
+  let dispositionCompletedAt = null;
+  let dispositionEvidence = null;
+  if (withdrawn) {
+    dispositionStatus = "withdrawn";
+  } else if (projectDone) {
+    dispositionStatus = "completed";
+    // Prefer last completed statutory phase date as disposition evidence when present.
+    const completedDays = phases
+      .map((p) => p.completed_at)
+      .filter(Boolean)
+      .sort();
+    dispositionCompletedAt = completedDays.length ? completedDays[completedDays.length - 1] : null;
+    dispositionEvidence = dispositionCompletedAt
+      ? `ulurp-disposition-complete:${clean(record.project_id) || "project"}:${dispositionCompletedAt}`
+      : null;
+  }
+
+  const allPhasesCompleted =
+    phases.length > 0 && phases.every((p) => p.status === "completed" || p.status === "withdrawn");
+  let status = "open";
+  let reason = null;
+  if (withdrawn) {
+    status = "withdrawn";
+    reason = "project_withdrawn";
+  } else if (projectDone || (allPhasesCompleted && dispositionStatus === "completed")) {
+    status = "completed";
+    reason = projectDone ? "project_completed" : "statutory_phases_completed";
+  }
 
   return {
     schema_version: ULURP_STATUTORY_CLOCK_SCHEMA_VERSION,
     statute_ref: ULURP_STATUTORY_STATUTE_REF,
     model_name: ULURP_STATUTORY_MODEL_NAME,
     model_version: ULURP_STATUTORY_MODEL_VERSION,
-    status: withdrawn ? "withdrawn" : "open",
-    reason: withdrawn ? "project_withdrawn" : null,
+    status,
+    reason,
     certified_date: certifiedDate,
     total_days: ULURP_STATUTORY_TOTAL_DAYS,
     phases,
@@ -278,7 +481,9 @@ export function buildUlurpStatutoryClockView(record = {}, opts = {}) {
       due_date: dispositionDue,
       cumulative_days: ULURP_STATUTORY_TOTAL_DAYS,
       statute_ref: ULURP_STATUTORY_STATUTE_REF,
-      status: withdrawn ? "withdrawn" : "open",
+      status: dispositionStatus,
+      completed_at: dispositionCompletedAt,
+      evidence_id: dispositionEvidence,
     },
     evidence_event_ids: certificationEvidenceIds(record, certifiedDate),
     generated_at: opts.generatedAt || null,

@@ -26,6 +26,9 @@ export {
   ULURP_STATUTORY_TOTAL_DAYS,
   buildUlurpStatutoryClockView,
   resolveCertificationDate,
+  detectStaleOpenStatutoryClock,
+  completedStatutoryPhases,
+  projectIsCompleted,
 } from "../../../site/ulurp_statutory_clock.mjs";
 
 /** Per-stage model name so prediction_id is stable and distinct per phase. */
@@ -58,11 +61,67 @@ function statutoryBasis({ cohort, evidenceEventIds, trainTo }) {
 }
 
 /**
- * Emit open (or withdrawn) timing predictions for each statutory stage plus
- * the final land.zap_disposition. Returns [] when the project is not certified.
+ * Phase-aware resolution for statutory predictions.
+ *
+ * Cannot use generic resolvePredictions: every public-review stage shares
+ * predicted_event_kind land.zap_milestone, so a single CB completion would
+ * incorrectly close BP/CPC/Council assertions. Pair by model_stage instead.
+ */
+export function resolveStatutoryPrediction(prediction, phaseOrDisposition, opts = {}) {
+  if (!prediction || prediction.status !== "open") return prediction;
+  const graceDays = opts.graceDays ?? 14;
+  const status = phaseOrDisposition?.status;
+  if (status !== "completed") return prediction;
+
+  const evidenceId =
+    phaseOrDisposition.evidence_id
+    || (phaseOrDisposition.phase_id
+      ? `ulurp-phase-closed:${phaseOrDisposition.phase_id}:terminal`
+      : `ulurp-disposition-closed:terminal`);
+
+  const realizedDay = phaseOrDisposition.completed_at
+    ? String(phaseOrDisposition.completed_at).slice(0, 10)
+    : null;
+  if (!realizedDay) {
+    // Terminal project status closed the stage without a dated milestone.
+    return validatePrediction({
+      ...prediction,
+      status: "resolved_hit",
+      resolved_by_event_id: evidenceId,
+    });
+  }
+
+  const p10 = prediction.predicted_window?.p10;
+  const p90 = prediction.predicted_window?.p90;
+  if (!p10 || !p90) {
+    return validatePrediction({
+      ...prediction,
+      status: "resolved_hit",
+      resolved_by_event_id: evidenceId,
+    });
+  }
+
+  // Calendar grace around the point statutory deadline.
+  const lowerMs = Date.parse(`${p10}T00:00:00Z`) - graceDays * 86_400_000;
+  const upperMs = Date.parse(`${p90}T00:00:00Z`) + graceDays * 86_400_000;
+  const realizedMs = Date.parse(`${realizedDay}T00:00:00Z`);
+  const hit = Number.isFinite(realizedMs) && realizedMs >= lowerMs && realizedMs <= upperMs;
+  return validatePrediction({
+    ...prediction,
+    status: hit ? "resolved_hit" : "resolved_miss",
+    resolved_by_event_id: evidenceId,
+  });
+}
+
+/**
+ * Emit timing predictions for each statutory stage plus the final
+ * land.zap_disposition. Returns [] when the project is not certified.
  *
  * Intermediate stages target land.zap_milestone (phase conclusion on the ZAP
  * rail). The final prediction targets land.zap_disposition.
+ *
+ * Completed phases resolve phase-by-stage (hit/miss vs the statutory due date).
+ * Withdrawn projects keep status withdrawn. Open phases stay open.
  */
 export function emitUlurpStatutoryPredictions(record = {}, opts = {}) {
   const clock = buildUlurpStatutoryClockView(record, {
@@ -76,58 +135,63 @@ export function emitUlurpStatutoryPredictions(record = {}, opts = {}) {
   const evidence = clock.evidence_event_ids?.length
     ? clock.evidence_event_ids
     : [`ulurp-certification:${record.project_id}:${trainTo}`];
-  const status = clock.status === "withdrawn" ? "withdrawn" : "open";
+  const withdrawn = clock.status === "withdrawn";
+  const graceDays = opts.graceDays ?? 14;
   const out = []; // cityscroll.prediction.v0 timing rows (Charter §197-c stages)
 
   for (const phase of clock.phases || []) {
     if (!phase.due_date) continue;
-    out.push(
-      buildPrediction({
-        subject_ref: subjectRef,
-        predicted_event_kind: "land.zap_milestone",
-        claim: "timing",
-        predicted_window: pointWindow(phase.due_date),
-        // Point statutory deadline — not a probability of approval.
-        probability: 1,
-        basis: statutoryBasis({
-          cohort: `ulurp.statutory · ${phase.phase_id}`,
-          evidenceEventIds: evidence,
-          trainTo,
-        }),
-        model_name: stageModelName(phase.model_stage || phase.phase_id),
-        model_version: ULURP_STATUTORY_MODEL_VERSION,
-        generated_at: generatedAt,
-        supersedes_prediction_id: null,
-        status,
-        resolved_by_event_id: null,
+    let prediction = buildPrediction({
+      subject_ref: subjectRef,
+      predicted_event_kind: "land.zap_milestone",
+      claim: "timing",
+      predicted_window: pointWindow(phase.due_date),
+      // Point statutory deadline — not a probability of approval.
+      probability: 1,
+      basis: statutoryBasis({
+        cohort: `ulurp.statutory · ${phase.phase_id}`,
+        evidenceEventIds: evidence,
+        trainTo,
       }),
-    );
+      model_name: stageModelName(phase.model_stage || phase.phase_id),
+      model_version: ULURP_STATUTORY_MODEL_VERSION,
+      generated_at: generatedAt,
+      supersedes_prediction_id: null,
+      status: withdrawn ? "withdrawn" : "open",
+      resolved_by_event_id: null,
+    });
+    if (!withdrawn) {
+      prediction = resolveStatutoryPrediction(prediction, phase, { graceDays });
+    }
+    out.push(validatePrediction(prediction));
   }
 
   if (clock.disposition?.due_date) {
-    out.push(
-      buildPrediction({
-        subject_ref: subjectRef,
-        predicted_event_kind: "land.zap_disposition",
-        claim: "timing",
-        predicted_window: pointWindow(clock.disposition.due_date),
-        probability: 1,
-        basis: statutoryBasis({
-          cohort: "ulurp.statutory · final_disposition",
-          evidenceEventIds: evidence,
-          trainTo,
-        }),
-        model_name: stageModelName("disposition"),
-        model_version: ULURP_STATUTORY_MODEL_VERSION,
-        generated_at: generatedAt,
-        supersedes_prediction_id: null,
-        status,
-        resolved_by_event_id: null,
+    let prediction = buildPrediction({
+      subject_ref: subjectRef,
+      predicted_event_kind: "land.zap_disposition",
+      claim: "timing",
+      predicted_window: pointWindow(clock.disposition.due_date),
+      probability: 1,
+      basis: statutoryBasis({
+        cohort: "ulurp.statutory · final_disposition",
+        evidenceEventIds: evidence,
+        trainTo,
       }),
-    );
+      model_name: stageModelName("disposition"),
+      model_version: ULURP_STATUTORY_MODEL_VERSION,
+      generated_at: generatedAt,
+      supersedes_prediction_id: null,
+      status: withdrawn ? "withdrawn" : "open",
+      resolved_by_event_id: null,
+    });
+    if (!withdrawn) {
+      prediction = resolveStatutoryPrediction(prediction, clock.disposition, { graceDays });
+    }
+    out.push(validatePrediction(prediction));
   }
 
-  return out.map(validatePrediction);
+  return out;
 }
 
 /**

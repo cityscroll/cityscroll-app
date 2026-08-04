@@ -324,6 +324,15 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     owner_name:r._property_owner||null,
     // Surplus-buyer commercial payload (item / price / bid steps) when extracted.
     commercial:isProperty?(r.commercial||null):null,
+    // T0/T1 attachment inventory (GetFile DocumentID) — package handoff when body has none.
+    attachments:Array.isArray(r.attachments)?r.attachments:null,
+    package_url:(()=>{
+      if(r.package_url) return r.package_url;
+      if(window.CrolActions&&typeof CrolActions.packageUrlFromAttachments==="function"){
+        return CrolActions.packageUrlFromAttachments(r.attachments)||null;
+      }
+      return null;
+    })(),
   };
 }
 function actionRailLabel(action){
@@ -1020,8 +1029,8 @@ function meetingsExplorerCardHTML(entry){
 function renderHearingGroup(scope, entries){
   if(!entries.length) return "";
   const label=scope==="local"?"local_hearings_group":scope==="citywide"?"citywide_hearings_group":"unlocated_hearings_group";
-  const note=scope==="local"?"local_hearings_note":scope==="citywide"?"citywide_hearings_note":"unlocated_hearings_note";
-  return `<h2 class="hearinggroup">${t(label)} <small>${t(note)}</small></h2>${entries.map(meetingsExplorerCardHTML).join("")}`;
+  const noteText=scope==="citywide"?t("citywide_hearings_note"):"";
+  return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(meetingsExplorerCardHTML).join("")}`;
 }
 async function renderHearingExplorer(){
   const seq=++hearingRenderSeq;

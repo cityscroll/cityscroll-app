@@ -14,6 +14,11 @@ import {
   adoptionLagPatternLine,
   adoptionLagGhostSegment,
   adoptionLagDigestItem,
+  agencyCohortIsEligible,
+  detectPredictionLifecycleWackness,
+  expireAdoptionPrediction,
+  materializePredictionView,
+  selectCohort,
   kaplanMeier,
   kmQuantile,
   empiricalQuantile,
@@ -24,6 +29,7 @@ import {
   MODEL_NAME,
   PREDICTED_EVENT_KIND,
   EARLY_SAMPLE,
+  OCCURRENCE_HORIZON_DAYS,
 } from "../worker/src/lib/rules_adoption_lag.mjs";
 import {
   validatePrediction,
@@ -198,6 +204,155 @@ describe("rules adoption lag — prediction contract emission", () => {
     assert.match(line, /214 similar rule adoptions since 2019/);
     assert.match(line, /median 42 days/);
     assert.match(line, /middle half 26–75/);
+  });
+
+  it("pattern line omits collapsed middle half", () => {
+    const line = adoptionLagPatternLine(
+      {
+        n: 3,
+        since_year: "2013",
+        median_days: 43,
+        middle_half_low: 43,
+        middle_half_high: 43,
+        projection: "per_matter",
+      },
+      { commentClose: "2025-01-09" },
+    );
+    assert.match(line, /median 43 days to adoption\./);
+    assert.doesNotMatch(line, /middle half 43–43/);
+  });
+
+  it("thin agency cohorts (few realized adoptions) back off to citywide", () => {
+    // Citywide: many realized events with spread quantiles. DOB: many censored rows, only 3 adoptions.
+    const rows = [];
+    for (let i = 0; i < 40; i++) {
+      const gap = 20 + (i % 12) * 5; // 20..75 so middle half is not collapsed
+      rows.push({
+        subject_ref: `rulemaking:city:c${i}`,
+        agency: "DOT",
+        comment_close: "2022-01-01",
+        adoption: "2022-02-15",
+        gap_days: gap,
+        follow_up_days: gap,
+        censored: false,
+        comment_close_basis: "hearing_event_date",
+        notice_ids: [`n-c${i}`],
+        notice_count: 1,
+      });
+    }
+    for (let i = 0; i < 25; i++) {
+      rows.push({
+        subject_ref: `rulemaking:dob:d${i}`,
+        agency: "DOB",
+        comment_close: "2022-01-01",
+        adoption: i < 3 ? "2022-02-13" : null,
+        gap_days: i < 3 ? 43 : null,
+        follow_up_days: i < 3 ? 43 : 400,
+        censored: i >= 3,
+        comment_close_basis: "hearing_event_date",
+        notice_ids: [`n-d${i}`],
+        notice_count: 1,
+      });
+    }
+    const model = fitAdoptionLagModel(rows, {
+      trainFrom: "2022-01-01",
+      trainTo: "2024-12-31",
+    });
+    assert.equal(model.agencies.DOB, undefined, "DOB must not enter agency map with n_events < 20");
+    assert.ok(agencyCohortIsEligible(model.citywide));
+    const { source } = selectCohort(model, "DOB");
+    assert.equal(source, "citywide");
+    // Degenerate cohort object is ineligible even if present.
+    assert.equal(
+      agencyCohortIsEligible({
+        quantiles_complete: true,
+        n_events: 3,
+        p25_days: 43,
+        p50_days: 43,
+        p75_days: 43,
+      }),
+      false,
+    );
+  });
+
+  it("materialize view expires assertions past occurrence horizon", () => {
+    const synth = Array.from({ length: 30 }, (_, i) => ({
+      subject_ref: `rulemaking:city:t${i}`,
+      agency: "DOT",
+      comment_close: "2022-01-01",
+      adoption: "2022-03-01",
+      gap_days: 40 + (i % 5),
+      follow_up_days: 40 + (i % 5),
+      censored: false,
+      comment_close_basis: "hearing_event_date",
+      notice_ids: [`n${i}`],
+      notice_count: 1,
+    }));
+    const model = fitAdoptionLagModel(synth, {
+      trainFrom: "2022-01-01",
+      trainTo: "2024-12-31",
+    });
+    const view = materializePredictionView(
+      [
+        {
+          subject_ref: "notice:old",
+          agency: "DOT",
+          comment_close: "2025-01-01",
+          evidence_event_ids: ["cte:x"],
+        },
+      ],
+      model,
+      {
+        generatedAt: "2026-07-31T12:00:00.000Z",
+        shipBarPassed: true,
+        now: "2026-07-31",
+      },
+    );
+    assert.equal(view.items.length, 1);
+    assert.equal(view.items[0].assertion.status, "expired");
+    assert.equal(view.items[0].band, null);
+    assert.ok(OCCURRENCE_HORIZON_DAYS >= 365);
+
+    const fresh = emitAdoptionPrediction(
+      {
+        subject_ref: "notice:fresh",
+        agency: "DOT",
+        comment_close: "2026-06-01",
+        evidence_event_ids: ["cte:y"],
+      },
+      model,
+      {
+        now: "2026-07-01",
+        generatedAt: "2026-07-01T12:00:00.000Z",
+        shipBarPassed: true,
+      },
+    );
+    assert.equal(fresh.assertion.status, "open");
+    const stillOpen = expireAdoptionPrediction(fresh.assertion, "2026-06-01", {
+      now: "2026-07-01",
+      horizonDays: 365,
+    });
+    assert.equal(stillOpen.status, "open");
+  });
+
+  it("detector flags high overdue+open share on a public prediction view", () => {
+    const finding = detectPredictionLifecycleWackness({
+      model_name: MODEL_NAME,
+      items: Array.from({ length: 10 }, (_, i) => ({
+        band: "overdue",
+        assertion: { status: "open", prediction_id: `pred:${"a".repeat(24)}` },
+        subject_ref: `notice:${i}`,
+      })),
+    });
+    assert.ok(finding);
+    assert.equal(finding.rule_id, "prediction_overdue_open_rate");
+    assert.ok(finding.detail.overdue_open_rate >= 0.5);
+    assert.equal(
+      detectPredictionLifecycleWackness({
+        items: [{ band: "imminent", assertion: { status: "open" } }],
+      }),
+      null,
+    );
   });
 
   it("digest delivery fires only on band transitions", () => {

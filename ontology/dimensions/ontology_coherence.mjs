@@ -209,6 +209,37 @@ export function auditLandPayload(payload = {}, opts = {}) {
     }
   }
 
+  // Rule: statutory clock still all-open after completed milestones / terminal status
+  if (clock && clock.status !== "ineligible" && clock.status !== "withdrawn") {
+    const phases = Array.isArray(clock.phases) ? clock.phases : [];
+    const allOpen = phases.length > 0 && phases.every((p) => !p.status || p.status === "open");
+    if (allOpen) {
+      const pub = String(payload.public_status || payload.open_data?.public_status || "").toLowerCase();
+      const projectDone = /\bcompleted\b|\bapproved\b|\bdisapproved\b/.test(pub);
+      const completedMilestone = (payload.spine?.events || []).some((e) => {
+        const title = String(e?.title || "").toLowerCase();
+        const st = String(e?.status || e?.detail || "").toLowerCase();
+        return /community board|borough president|city planning|city council|mayoral/.test(title)
+          && /\bcompleted\b|\bapproved\b|\bsubmitted\b/.test(st);
+      });
+      if (projectDone || completedMilestone) {
+        violations.push({
+          rule_id: "statutory_clock_stale_open",
+          subject_ref,
+          permalink,
+          lens: "land",
+          detail: {
+            clock_status: clock.status,
+            public_status: payload.public_status || payload.open_data?.public_status || null,
+            open_phase_count: phases.length,
+            project_completed: projectDone,
+            completed_milestone_signal: completedMilestone,
+          },
+        });
+      }
+    }
+  }
+
   // Rule: completion order (later phase completed before earlier phase)
   const firstCompleteByPhase = new Map();
   for (const event of spine.events) {
