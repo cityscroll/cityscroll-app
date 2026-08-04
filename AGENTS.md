@@ -754,12 +754,14 @@ Every live failure line must name `source_id` and URL class. Never emit bare
 
 ### Generated source-topology view
 
-`node tools/data_source_graph.mjs` rebuilds the desk-consumable topology at
-`docs/data-source-graph.{json,html}` from source contracts, warehouse configs/receipts,
-and Worker cron code. Run `node tools/data_source_graph.mjs --check` after changing any
-of those inputs; the output carries a `sources_hash`, and the HTML keeps graph and table
-views in one dependency-free artifact. The authenticated desk route lives outside this
-repository, so this generator does not own or change its access gate.
+`node tools/data_source_graph.mjs` derives the desk-consumable topology at the ignored,
+untracked paths `docs/data-source-graph.{json,html}` from source contracts, warehouse
+configs/receipts, and Worker cron code. The site build runs generation followed by
+`--check`; the latter fails if any declared input changes without rebuilding the artifact.
+Do not commit the generated HTML or JSON: the broad receipt manifest makes either file a
+shared merge-conflict source. The HTML remains dependency-free and byte-stable for
+unchanged inputs, and the composite build action exposes `data-source-graph-dir` for the
+authenticated desk deploy without changing its paths or access gate.
 
 When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register. After landing a source or stamping `join_measurement`, run `depot_rederive.mjs` so realized coverage, candidate crosswalks, and the ranked queue stay current.
 

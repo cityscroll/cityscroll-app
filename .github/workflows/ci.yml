@@ -164,6 +164,7 @@ jobs:
         if: needs.changes.outputs.unit_full == 'true'
         run: |
           node tools/generate_source_docs.mjs --check
+          node tools/data_source_graph.mjs
           node tools/data_source_graph.mjs --check
       - name: Recorded civic-data source contracts
         if: needs.changes.outputs.unit_full == 'true'
