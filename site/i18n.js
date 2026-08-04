@@ -2095,6 +2095,8 @@ const STRINGS = {
     asset_equipment: "Equipment",
     asset_real_property: "Real property",
     asset_scrap_materials: "Scrap / materials",
+    asset_seized_property: "Seized / unclaimed property",
+    asset_rights_and_interests: "Rights / interests",
     asset_other: "Other",
     // Legacy category keys kept so older bookmarks and translations still resolve.
     asset_realty: "Real property",
@@ -2141,7 +2143,8 @@ const STRINGS = {
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
-    property_cluster_summary: "{n} near-identical notices",
+    property_cluster_summary: "{description} — {n} similar",
+    property_cluster_fallback: "Dated notices",
     property_cluster_show: "Show each notice",
     property_cluster_hide: "Hide",
     property_action_closed: "Closed — view notice",
