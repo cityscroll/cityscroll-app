@@ -5,7 +5,7 @@
 #
 # Allowed:
 #   - docs/**
-#   - top-level Markdown (README.md, CONTRIBUTING.md, Agents.md, …)
+#   - top-level Markdown (README.md, AGENTS.md, …)
 #   - LICENSE, NOTICE, CHANGELOG*, CODE_OF_CONDUCT*
 #
 # Anything under site/, worker/, test/, tools/, entity_resolution/, .github/,

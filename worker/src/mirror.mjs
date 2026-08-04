@@ -21,7 +21,7 @@ const MIRROR_HOSTS = new Set([
   "www.cityscroll.org",
   "crol-list.org",
 ]);
-const ROOT_DOCUMENTS = new Set(["/CONTRIBUTING.md", "/MISSION.md", "/README.md", "/SECURITY.md"]);
+const ROOT_DOCUMENTS = new Set(["/README.md"]);
 const FALLBACK_CONTENT_TYPES = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
