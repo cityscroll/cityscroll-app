@@ -2000,6 +2000,19 @@ can land. Production materialization is a separate run, and the Money reader is
 a later surface. Verify with
 `node --test test/procurement_plans.test.mjs`.
 
+## Non-Council minutes and vote registry
+
+The RC-3 source inventory is
+`site/data/non_council_outcome_sources/source_registry.json`: all 59 community
+boards and five borough presidents are represented, but coverage is reported by
+body rather than as citywide. The dated strict-join sample measured 0/10, so
+`policy.join_bridge_enabled` is false and the committed outcome lookup is empty;
+do not enable outcome edges without a replacement receipt clearing the 30%
+usefulness threshold. Rebuild/check with
+`node tools/build_non_council_source_registry.mjs --check`; exercise the guarded
+warehouse path with
+`warehouse/.venv/bin/python warehouse/scripts/non_council_outcomes_run.py --from-fixture --limit 8 --max-docs 10`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

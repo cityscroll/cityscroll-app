@@ -1,0 +1,68 @@
+{
+  "schema": "cityscroll.non_council_outcomes.collection_receipt.v1",
+  "run_id": "non-council-7521ecf9-df38-47f9-a76e-befd05a69821",
+  "started_at": "2026-08-04T11:36:51.334Z",
+  "finished_at": "2026-08-04T11:36:51.345Z",
+  "mode": "fixture",
+  "sources_seen": 8,
+  "pages_fetched": 0,
+  "documents_seen": 7,
+  "documents_fetched": 0,
+  "documents_reused_from_checkpoint": 0,
+  "documents_with_text": 7,
+  "notices_seen": 10,
+  "notices_matched": 0,
+  "candidate_matches_with_bridge_disabled": 4,
+  "join_bridge_enabled": false,
+  "candidate_measurement": {
+    "joined": 4,
+    "total": 10,
+    "rate": 0.4,
+    "threshold": 0.3,
+    "above_threshold": true,
+    "sample_by_borough": {
+      "Bronx": 2,
+      "Brooklyn": 2,
+      "Manhattan": 2,
+      "Queens": 2,
+      "Staten Island": 2
+    },
+    "false_positive_review": {
+      "reviewed_pairs": 7,
+      "accepted": 4,
+      "rejected": 3,
+      "rejection_reasons": {
+        "matter_token_mismatch": 2,
+        "date_mismatch": 1
+      }
+    }
+  },
+  "authoritative_join_gate": {
+    "enabled": false,
+    "receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json"
+  },
+  "coverage_scope": "board_level_not_citywide",
+  "polite_delay_s": 0,
+  "checkpoint": true,
+  "stop_on_403": true,
+  "user_agent": "CityScroll non-Council minutes collector (cityscroll.org; civic-data refresh)",
+  "max_extract_bytes": 5000000,
+  "binaries_stored": false,
+  "honest_absent": true,
+  "warehouse": {
+    "database": "warehouse/duckdb/cityscroll.duckdb",
+    "tables": [
+      "non_council_outcome_sources",
+      "non_council_outcome_documents",
+      "non_council_outcome_matches"
+    ],
+    "views": [
+      "non_council_outcomes_by_notice",
+      "non_council_source_coverage_by_body"
+    ],
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "payload_contract": "warehouse/raw/non-council-outcomes/snapshot_date=fixture/payload.json",
+    "taskpolicy_or_nice_wrap": false
+  }
+}
