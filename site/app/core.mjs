@@ -195,14 +195,22 @@ function money(v){
   return "$" + n.toLocaleString("en-US",{maximumFractionDigits:0});
 }
 function fdate(s){ return s ? String(s).slice(0,10) : ""; }
-function fdt(s){
+function fdt(s, opts){
   if(!s) return "";
-  const d = new Date(s);
+  opts=opts||{};
+  const raw=String(s);
+  const calendarDay=raw.match(/^(\d{4}-\d{2}-\d{2})/);
+  const dateOnly=opts.dateOnly===true;
+  const d = dateOnly&&calendarDay
+    ? new Date(`${calendarDay[1]}T00:00:00Z`)
+    : new Date(s);
   if(Number.isNaN(d.getTime())) return String(s).slice(0,10);
   const _lm=(window.LANG_META||{})[window.LANG||"en"];
   const _loc=_lm?_lm.intlDate:"en-US";
+  if(dateOnly){
+    return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric",timeZone:"UTC"});
+  }
   // Full ISO with a non-midnight clock → include local time (ULURP hearing logistics).
-  const raw=String(s);
   const hasClock=/T\d{2}:\d{2}/.test(raw) && !/T00:00:00/.test(raw);
   if(hasClock){
     return d.toLocaleString(_loc,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"});

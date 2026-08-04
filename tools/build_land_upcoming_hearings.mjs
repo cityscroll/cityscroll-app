@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Materialize site/data/land_upcoming_hearings.json from ZAP disposition logistics.
+ * Materialize site/data/land_upcoming_hearings.json from published ZAP hearing evidence.
  *
  * Production path (--live): list sell-facing land projects from Open Data
  * (hgx4-8ukb), polite-fetch each project from the ZAP API, extract hearing
- * venue / livestream / datetime, keep only upcoming rows. Never pads with
- * synthetic demo rows.
+ * disposition venue / livestream / datetime plus accepted meeting milestones,
+ * then keep only upcoming rows. Never pads with synthetic demo rows.
  *
  * Offline path (--fixture): committed test fixtures under
  * test/fixtures/zap_hearing_logistics/ only (for unit characterization).
@@ -20,19 +20,17 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   LAND_HEARING_SWEEP_STATUSES,
-  hearingsFromZapApiPayload,
+  materializationRowsFromZapApiPayload,
   buildUpcomingHearingsSnapshot,
   buildMaterializationReceipt,
   detectSyntheticUpcomingHearings,
   isSyntheticHearingRow,
-  enrichHearingRows,
 } from "./lib/land_upcoming_hearings.mjs";
 import {
   ZAP_API_BASE,
   ZAP_SODA_PROJECTS,
   parseZapApiProject,
 } from "../worker/src/lib/zap_outcomes.mjs";
-import { extractZapHearingLogistics } from "../worker/src/lib/zap_hearing_logistics.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "site/data/land_upcoming_hearings.json");
@@ -81,6 +79,32 @@ function parseArgs(argv) {
 }
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function emptyMilestoneReview() {
+  return {
+    published_meeting_dates_evaluated: 0,
+    hearing_shaped_candidates_reviewed: 0,
+    accepted_by_class: {},
+    reviewed_false_positive_sample: [],
+  };
+}
+
+function mergeMilestoneReview(target, next) {
+  target.published_meeting_dates_evaluated += next?.published_meeting_dates_evaluated || 0;
+  target.hearing_shaped_candidates_reviewed += next?.hearing_shaped_candidates_reviewed || 0;
+  for (const [eventClass, count] of Object.entries(next?.accepted_by_class || {})) {
+    target.accepted_by_class[eventClass] = (target.accepted_by_class[eventClass] || 0) + count;
+  }
+  for (const row of next?.reviewed_false_positive_sample || []) {
+    const key = `${row.project_id}|${row.source_title}|${row.meeting_date}`;
+    if (target.reviewed_false_positive_sample.some((item) => (
+      `${item.project_id}|${item.source_title}|${item.meeting_date}` === key
+    ))) continue;
+    if (target.reviewed_false_positive_sample.length >= 12) break;
+    target.reviewed_false_positive_sample.push(row);
+  }
+  return target;
+}
 
 async function fetchJson(url, { timeoutMs = 20000 } = {}) {
   const ctl = new AbortController();
@@ -162,6 +186,7 @@ export async function sweepHearingLogistics(projects, {
   onProgress = null,
 } = {}) {
   const all = [];
+  const milestoneReview = emptyMilestoneReview();
   let fetched = 0;
   let failed = 0;
   for (let i = 0; i < projects.length; i++) {
@@ -169,8 +194,9 @@ export async function sweepHearingLogistics(projects, {
     const url = `${ZAP_API_BASE}/projects/${encodeURIComponent(meta.project_id)}`;
     try {
       const payload = await fetchImpl(url, { timeoutMs: 25000 });
-      const rows = hearingsFromZapApiPayload(payload, meta);
-      all.push(...rows);
+      const result = materializationRowsFromZapApiPayload(payload, meta);
+      all.push(...result.hearings);
+      mergeMilestoneReview(milestoneReview, result.milestone_review);
       fetched += 1;
     } catch (e) {
       failed += 1;
@@ -181,7 +207,12 @@ export async function sweepHearingLogistics(projects, {
     }
     if (i + 1 < projects.length && delayMs > 0) await wait(delayMs);
   }
-  return { hearings: all, projects_fetched: fetched, projects_failed: failed };
+  return {
+    hearings: all,
+    projects_fetched: fetched,
+    projects_failed: failed,
+    milestone_review: milestoneReview,
+  };
 }
 
 /**
@@ -189,8 +220,14 @@ export async function sweepHearingLogistics(projects, {
  * Never invents synthetic future rows.
  */
 export function loadFixtureHearings({ fixtureDir = FIX_DIR } = {}) {
+  return loadFixtureMaterialization({ fixtureDir }).hearings;
+}
+
+/** Fixture equivalent of the live sweep, including bounded review measurements. */
+export function loadFixtureMaterialization({ fixtureDir = FIX_DIR } = {}) {
   const out = [];
-  if (!existsSync(fixtureDir)) return out;
+  const milestoneReview = emptyMilestoneReview();
+  if (!existsSync(fixtureDir)) return { hearings: out, milestone_review: milestoneReview };
   const names = readdirSync(fixtureDir).filter((n) => n.endsWith(".json")).sort();
   for (const name of names) {
     const path = join(fixtureDir, name);
@@ -212,23 +249,18 @@ export function loadFixtureHearings({ fixtureDir = FIX_DIR } = {}) {
       R: "Staten Island",
       Y: "Citywide",
     }[letter] || null;
-    const logistics = extractZapHearingLogistics(record, {
+    const result = materializationRowsFromZapApiPayload(payload, {
       project_id: record.project_id,
-      portal_url: record.portal_url,
       borough: boroughFromId,
     });
-    out.push(
-      ...enrichHearingRows(logistics, {
-        project_id: record.project_id,
-        project_name: record.project_name,
-        public_status: record.public_status,
-        portal_url: record.portal_url,
-        borough: boroughFromId,
-      }),
-    );
+    out.push(...result.hearings);
+    mergeMilestoneReview(milestoneReview, result.milestone_review);
   }
   // Strip any accidental synthetic markers if a fixture was mislabeled.
-  return out.filter((row) => !isSyntheticHearingRow(row));
+  return {
+    hearings: out.filter((row) => !isSyntheticHearingRow(row)),
+    milestone_review: milestoneReview,
+  };
 }
 
 function writeJson(path, value) {
@@ -292,10 +324,13 @@ async function main() {
   let projectsListed = 0;
   let projectsFetched = 0;
   let projectsFailed = 0;
+  let milestoneReview = emptyMilestoneReview();
   let mode = args.live ? "live" : "fixture";
 
   if (args.fixture) {
-    allHearings = loadFixtureHearings();
+    const fixture = loadFixtureMaterialization();
+    allHearings = fixture.hearings;
+    milestoneReview = fixture.milestone_review;
     projectsListed = new Set(allHearings.map((h) => h.project_id).filter(Boolean)).size;
     projectsFetched = projectsListed;
   } else {
@@ -317,6 +352,7 @@ async function main() {
     allHearings = sweep.hearings;
     projectsFetched = sweep.projects_fetched;
     projectsFailed = sweep.projects_failed;
+    milestoneReview = sweep.milestone_review;
   }
 
   const snap = buildUpcomingHearingsSnapshot(allHearings, {
@@ -327,6 +363,7 @@ async function main() {
     projects_failed: projectsFailed,
     statuses: LAND_HEARING_SWEEP_STATUSES.slice(),
     polite_delay_ms: args.live ? args.delayMs : null,
+    milestone_review: milestoneReview,
   });
 
   const detection = detectSyntheticUpcomingHearings(snap);
@@ -339,6 +376,7 @@ async function main() {
   const receipt = buildMaterializationReceipt(snap, {
     out: "site/data/land_upcoming_hearings.json",
     fixture_scoped: mode === "fixture",
+    milestone_review: milestoneReview,
   });
 
   if (args.dryRun) {
