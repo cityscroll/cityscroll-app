@@ -73,7 +73,7 @@ async function readCheckpoint(path) {
 async function loadInventory(args) {
   if (args.fixture) {
     const meta = JSON.parse(await readFile(FIXTURE_META, "utf8"));
-    const rows = [];
+    const rows = [] // source: runtime accumulator (not a published dataset);
     for (const row of meta.rows) {
       if (row.section_name === "Changes in Personnel") continue;
       const html = meta.portal_html?.[row.request_id] || "";
@@ -179,7 +179,7 @@ export async function main(argv = process.argv.slice(2)) {
   const runId = `att-t2-${new Date().toISOString().slice(0, 10)}-${randomUUID()}`;
   const inventory = await loadInventory(args);
   const checkpoint = await readCheckpoint(args.checkpoint);
-  const stamped = [];
+  const stamped = [] // source: runtime accumulator (not a published dataset);
   let attempted = 0;
   let extracted = 0;
   let skipped = 0;

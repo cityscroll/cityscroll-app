@@ -78,7 +78,7 @@ export function normalizeExtractedTable(table = {}, index = 0) {
 }
 
 export function normalizeExtractedTables(tables = []) {
-  const out = [];
+  const out = [] // source: runtime accumulator (not a published dataset);
   for (const item of Array.isArray(tables) ? tables : []) {
     if (out.length >= MAX_TABLES_PER_DOC) break;
     const normalized = normalizeExtractedTable(item, out.length);
@@ -89,7 +89,7 @@ export function normalizeExtractedTables(tables = []) {
 
 /** Flatten all cell text for search / haystack (lowercased by caller if needed). */
 export function tablesToSearchText(tables = []) {
-  const parts = [];
+  const parts = [] // source: runtime accumulator (not a published dataset);
   for (const table of normalizeExtractedTables(tables)) {
     if (table.caption) parts.push(table.caption);
     parts.push(...table.headers.filter(Boolean));
@@ -147,7 +147,7 @@ export function stampAttachmentTables(attachment, extract = {}) {
 
 /** Build the attachment-tables slice that feeds the D1 notices haystack. */
 export function attachmentTablesForHaystack(attachments = []) {
-  const parts = [];
+  const parts = [] // source: runtime accumulator (not a published dataset);
   for (const item of Array.isArray(attachments) ? attachments : []) {
     const text = tablesToSearchText(item?.extracted_tables || []);
     if (!text) continue;
@@ -273,7 +273,7 @@ export function recommendTableStorage({
   const PARQUET_DOCS = 500;
   const PARQUET_TABLES = 2_000;
   const PARQUET_BYTES = 5_000_000;
-  const reasons = [];
+  const reasons = [] // source: runtime accumulator (not a published dataset);
   if (docsWithTables >= PARQUET_DOCS) reasons.push(`docs_with_tables>=${PARQUET_DOCS}`);
   if (totalTables >= PARQUET_TABLES) reasons.push(`total_tables>=${PARQUET_TABLES}`);
   if (payloadBytes >= PARQUET_BYTES) reasons.push(`payload_bytes>=${PARQUET_BYTES}`);

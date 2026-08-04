@@ -24,7 +24,7 @@ MAX_BYTES = 5_000_000
 
 
 def _cell_text(node: ET.Element) -> str:
-    parts = [t.text or "" for t in node.iter(f"{{{W_NS}}}t")]
+    parts = [t.text or "" for t in node.iter(f"{{{W_NS}}}t")]  # source: runtime accumulator (extractor state; not a published dataset)
     text = re.sub(r"\s+", " ", "".join(parts)).strip()
     if len(text) > MAX_CELL_CHARS:
         return text[: MAX_CELL_CHARS - 1].rstrip() + "…"
@@ -61,13 +61,13 @@ def extract_docx_tables(data: bytes) -> Dict[str, Any]:
             "method": None,
         }
 
-    tables: List[Dict[str, Any]] = []
+    tables: List[Dict[str, Any]] = []  # source: runtime accumulator (extractor state; not a published dataset)
     for index, tbl in enumerate(root.iter(f"{{{W_NS}}}tbl")):
         if index >= MAX_TABLES:
             break
-        rows: List[List[str]] = []
+        rows: List[List[str]] = []  # source: runtime accumulator (extractor state; not a published dataset)
         for tr in tbl.findall(f"{{{W_NS}}}tr"):
-            cells = [_cell_text(tc) for tc in tr.findall(f"{{{W_NS}}}tc")]
+            cells = [_cell_text(tc) for tc in tr.findall(f"{{{W_NS}}}tc")]  # source: runtime accumulator (extractor state; not a published dataset)
             if not cells:
                 continue
             if len(cells) > MAX_COLS:
@@ -124,9 +124,9 @@ def _split_columns(line: str) -> List[str] | None:
     if not raw or len(raw) < 3:
         return None
     if "\t" in raw:
-        cells = [re.sub(r"\s+", " ", part).strip() for part in raw.split("\t")]
+        cells = [re.sub(r"\s+", " ", part).strip() for part in raw.split("\t")]  # source: runtime accumulator (extractor state; not a published dataset)
     else:
-        cells = [part.strip() for part in re.split(r" {2,}", raw) if part.strip()]
+        cells = [part.strip() for part in re.split(r" {2,}", raw) if part.strip()]  # source: runtime accumulator (extractor state; not a published dataset)
     if len(cells) < 2:
         return None
     if len(cells) > MAX_COLS:
@@ -154,7 +154,7 @@ def extract_pdf_tables(data: bytes) -> Dict[str, Any]:
 
     try:
         reader = PdfReader(io.BytesIO(data))
-        lines: List[str] = []
+        lines: List[str] = []  # source: runtime accumulator (extractor state; not a published dataset)
         for page in reader.pages:
             try:
                 text = page.extract_text() or ""
@@ -181,8 +181,8 @@ def extract_pdf_tables(data: bytes) -> Dict[str, Any]:
         }
 
     # Group consecutive multi-column lines that share a column count into tables.
-    tables: List[Dict[str, Any]] = []
-    current: List[List[str]] = []
+    tables: List[Dict[str, Any]] = []  # source: runtime accumulator (extractor state; not a published dataset)
+    current: List[List[str]] = []  # source: runtime accumulator (extractor state; not a published dataset)
     current_cols = 0
 
     def flush() -> None:
@@ -201,7 +201,7 @@ def extract_pdf_tables(data: bytes) -> Dict[str, Any]:
                     "method": "pdf_text_layer_rows",
                 }
             )
-        current = []
+        current = []  # source: runtime accumulator (extractor state; not a published dataset)
         current_cols = 0
 
     for line in lines:
