@@ -24,7 +24,7 @@ Seven same-SHA pairs had zero byte spread and zero verdict flips. The largest pa
 | `572cdd75` | [30880272235](https://github.com/cityscroll/crol-list/actions/runs/30880272235) / [30880000323](https://github.com/cityscroll/crol-list/actions/runs/30880000323) | 472,611 | 8.0 ms | pass / pass |
 | `43e027fd` | [30879313155](https://github.com/cityscroll/crol-list/actions/runs/30879313155) / [30879046417](https://github.com/cityscroll/crol-list/actions/runs/30879046417) | 464,084 | 20.2 ms | fail / fail |
 
-Expected false-positive rate after this change is 0% for unchanged bytes: the metric is a gzip census of local files, the observed same-SHA byte spread was 0 bytes in 7/7 pairs above, and inventory instability is now an explicit failure. The operational expectation for the combined check is also 0% within the observed envelope because no same-SHA verdict flipped in 7/7 pairs. That repeat set is small: with zero flips in seven pairs, the one-sided 95% binomial upper bound is 34.8%, so 0% is an engineering expectation rather than a population estimate.
+Expected false-positive rate after this change is 0% for unchanged bytes: the metric is a gzip census of local files, the observed same-SHA byte spread was 0 bytes in 7/7 pairs above, and inventory instability is now an explicit failure. The operational expectation for the combined check is also 0% within the observed envelope because no same-SHA verdict flipped in 7/7 pairs. That repeat set is small: with zero flips in seven pairs, the one-sided 95% binomial upper bound is 34.8%, so 0% is an engineering forecast rather than a population claim.
 
 ## Per-landing attribution
 
