@@ -36,8 +36,8 @@ def main() -> None:
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"
 
-    failures: list[str] = []
-    captures: list[str] = []
+    failures: list[str] = list()
+    captures: list[str] = list()
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
@@ -80,7 +80,7 @@ def main() -> None:
     finally:
         server.shutdown()
 
-    result = {"captures": captures, "failures": failures}
+    result = dict(captures=captures, failures=failures)
     print(json.dumps(result, indent=2))
     if failures:
         raise SystemExit(1)
