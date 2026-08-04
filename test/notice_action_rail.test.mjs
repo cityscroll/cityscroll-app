@@ -7,6 +7,11 @@ const html = SITE_SOURCE;
 
 test("notice detail loads and mounts the shared action registry", () => {
   assert.match(html, /<script src="action_registry\.js"><\/script>/);
+  assert.ok(
+    html.indexOf('<script src="action_link_health.js"></script>')
+      < html.indexOf('<script src="action_registry.js"></script>'),
+    "machine health state must load before the action registry",
+  );
   assert.match(html, /id="nactions"/);
   assert.match(html, /mountNoticeActionRail\(\$\("#nactions"\),r\)/);
   assert.match(html, /id="dactions"/);
@@ -36,6 +41,7 @@ test("solicitation rail hydrates from lifecycle evidence and renders a copyable 
   assert.match(html, /data-copy-value/);
   assert.doesNotMatch(html, /href="\$\{PASSPORT\}"/);
   assert.doesNotMatch(html, /official_application_url:kind==="solicitation"\?PASSPORT/);
+  assert.match(html, /upstream_unavailable_note_key/);
 });
 
 test("hearing action matter passes venue, participation, and full body for step extraction", () => {
