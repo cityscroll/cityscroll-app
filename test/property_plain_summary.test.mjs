@@ -6,7 +6,9 @@ import { cleanNoticeText } from "../site/text_clean.mjs";
 import {
   buildPropertyPlainSummary,
   deShoutPropertyTitle,
+  ensurePropertyCardPlainSummary,
   propertyCardPlainSummary,
+  propertyCardTitleDisclosureHTML,
   propertyPlainSummaryHTML,
   propertyPlainSummarySurface,
 } from "../site/property_plain_summary.mjs";
@@ -110,6 +112,22 @@ test("card summaries use a receipted action when no timed event exists and prese
     section_name: "Property Disposition",
     ...fallback.row,
   })), null);
+});
+
+test("card variant caches the landed detail facts and preserves the exact legal title", () => {
+  const row = structuredClone(fixture.cases.find((entry) => entry.id === "forest-timber-sale").row);
+  const card = ensurePropertyCardPlainSummary(row, { today: "2019-04-16" });
+  assert.equal(card, row.property_card_plain_summary);
+  assert.equal(card, ensurePropertyCardPlainSummary(row, { today: "2099-01-01" }));
+  assert.ok(row.property_plain_summary?.templated);
+
+  const title = "NYC DCAS <RFP>";
+  const html = propertyCardTitleDisclosureHTML({
+    display_title_html: "NYC DCAS &lt;RFP&gt;",
+    original_title: title,
+  });
+  assert.match(html, /<summary[^>]*>Legal title<\/summary>/);
+  assert.match(html, /<q[^>]*>NYC DCAS &lt;RFP&gt;<\/q>/);
 });
 
 test("legal-title de-shouting preserves mixed case, proper names, acronyms, and roman numerals", () => {

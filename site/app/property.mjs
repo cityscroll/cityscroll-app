@@ -859,26 +859,11 @@ function propertyPlainSummaryTools(){
   }
   return propertyPlainSummaryToolsPromise;
 }
-function ensurePropertyCardCopy(r, tools){
-  if(!r||!tools?.buildPropertyPlainSummary||!tools?.propertyCardPlainSummary) return null;
-  if(!r.property_plain_summary){
-    r.property_plain_summary=tools.buildPropertyPlainSummary(r,{
-      today:todayISO(),
-      events:r.commercial?.timed_events||undefined,
-      readerActions:r.property_reader_actions||undefined,
-    });
-    if(r.property_plain_summary?.reader_actions) r.property_reader_actions=r.property_plain_summary.reader_actions;
-  }
-  if(!Object.prototype.hasOwnProperty.call(r,"property_card_plain_summary")){
-    r.property_card_plain_summary=tools.propertyCardPlainSummary(r.property_plain_summary);
-  }
-  return r.property_card_plain_summary;
-}
 function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
   const r=entry.primary;
   if(!r) return "";
   const commercial=r.commercial||null;
-  const cardCopy=ensurePropertyCardCopy(r,plainTools);
+  const cardCopy=plainTools?.ensurePropertyCardPlainSummary?.(r,{today:todayISO(),events:r.commercial?.timed_events||undefined,readerActions:r.property_reader_actions||undefined})||null;
   const glance=commercial && commercial.glance ? commercial.glance : null;
   const ev=r.event_date || (glance && glance.close_date) || null;
   const closeDate=entry.close_date
@@ -956,7 +941,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
   const titleBlock=cardCopy
     ? `<div class="ftitle property-card-summary" data-card-fact="${escUiHtml(cardCopy.fact_key||"")}" lang="en" dir="ltr"><a href="${noticeHref}">${escUiHtml(cardCopy.text)}</a></div>
-      <details class="inline-disclose property-card-title-source"${mev?.field==="title"?" open":""}><summary lang="en" dir="ltr">Legal title</summary><div class="inline-disclose-body property-card-title-body"><div class="property-card-display-title" lang="en" dir="ltr">${displayTitle?digTitleHTML(displayTitle,mev):t("untitled")}</div><div class="property-card-original-title"><b>Official title:</b> <q lang="en" dir="ltr">${escUiHtml(title)}</q></div></div></details>`
+      ${plainTools.propertyCardTitleDisclosureHTML({display_title_html:displayTitle?digTitleHTML(displayTitle,mev):t("untitled"),original_title:title,open:mev?.field==="title"},{escape:escUiHtml})}`
     : `<div class="ftitle"><a href="${noticeHref}">${title?digTitleHTML(title,mev):t("untitled")}</a></div>`;
   return `<div class="fcard property-fcard${closed?" is-closed":""}" data-request-id="${escUiHtml(r.request_id||"")}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${closed?"closed":(entry.temporal_status||"open")}" data-closed="${closed?"1":"0"}">
       ${commercialLead}
@@ -993,11 +978,11 @@ function propertyClusterCardHTML(cluster,plainTools){
   const items=(cluster.members||[]).map(m=>{
     const r=m.primary; if(!r) return "";
     const title=cleanText(r.short_title)||t("untitled");
-    const cardCopy=ensurePropertyCardCopy(r,plainTools);
+    const cardCopy=plainTools?.ensurePropertyCardPlainSummary?.(r,{today:todayISO(),events:r.commercial?.timed_events||undefined,readerActions:r.property_reader_actions||undefined})||null;
     const displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
     const href=`#notice/${encodeURIComponent(r.request_id)}`;
     const d=m.close_date||r.event_date||r.start_date||null;
-    const source=cardCopy?`<details class="inline-disclose property-card-title-source"><summary lang="en" dir="ltr">Legal title${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}</summary><div class="inline-disclose-body property-card-title-body"><div class="property-card-display-title" lang="en" dir="ltr">${escUiHtml(displayTitle)}</div><div class="property-card-original-title"><b>Official title:</b> <q lang="en" dir="ltr">${escUiHtml(title)}</q> · <a href="${href}">${t("open_notice_btn")}</a></div></div></details>`:`<a href="${href}">${escUiHtml(title)}</a>${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}`;
+    const source=cardCopy?plainTools.propertyCardTitleDisclosureHTML({display_title_html:escUiHtml(displayTitle),original_title:title,summary_suffix_html:d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:"",body_suffix_html:` · <a href="${href}">${t("open_notice_btn")}</a>`},{escape:escUiHtml}):`<a href="${href}">${escUiHtml(title)}</a>${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}`;
     return `<li>${source}</li>`;
   }).join("");
   return `<div class="property-cluster${closed?" is-closed":""}" data-cluster="1" data-count="${cluster.count}">

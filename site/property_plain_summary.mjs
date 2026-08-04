@@ -457,6 +457,28 @@ export function propertyCardPlainSummary(summary) {
   };
 }
 
+/** Cache the detail template and its card variant on one list row. */
+export function ensurePropertyCardPlainSummary(row, options = {}) {
+  if (!row) return null;
+  if (!row.property_plain_summary) {
+    row.property_plain_summary = buildPropertyPlainSummary(row, options);
+    if (row.property_plain_summary?.reader_actions) {
+      row.property_reader_actions = row.property_plain_summary.reader_actions;
+    }
+  }
+  if (!Object.prototype.hasOwnProperty.call(row, "property_card_plain_summary")) {
+    row.property_card_plain_summary = propertyCardPlainSummary(row.property_plain_summary);
+  }
+  return row.property_card_plain_summary;
+}
+
+/** Shared collapsed legal-title disclosure for single cards and clustered rows. */
+export function propertyCardTitleDisclosureHTML(options = {}, helpers = {}) {
+  const escape = helpers.escape || defaultEscape;
+  const open = options.open ? " open" : "";
+  return `<details class="inline-disclose property-card-title-source"${open}><summary lang="en" dir="ltr">Legal title${options.summary_suffix_html || ""}</summary><div class="inline-disclose-body property-card-title-body"><div class="property-card-display-title" lang="en" dir="ltr">${options.display_title_html || ""}</div><div class="property-card-original-title"><b>Official title:</b> <q lang="en" dir="ltr">${escape(options.original_title)}</q>${options.body_suffix_html || ""}</div></div></details>`;
+}
+
 const TITLE_ACRONYMS = Object.freeze(new Set([
   "ACRIS", "DCAS", "DEP", "DOT", "DPR", "EDC", "FCRC", "HDC", "HPD",
   "IFB", "LLC", "LP", "MOCS", "MTA", "NY", "NYC", "NYCHA", "NYPD", "PIN",
