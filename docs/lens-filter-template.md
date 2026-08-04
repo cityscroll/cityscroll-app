@@ -36,13 +36,16 @@ one-in-one-out ledger for anything retired.
 Each card is a concrete, independently shippable task with its own acceptance. Ship one
 lens per PR; keep capability parity and re-run the lens's characterization + capture.
 
-### card lens-tmpl-01 — Contracts / Money (`#`)
+### card lens-tmpl-01 — Contracts / Money (`#`) — adopted
 - **Do:** fold the money intro stepper into "How this works"; collapse the agency/method/
   award/keyword controls into one toolbar with **method** as the primary visible facet
   (the procurement user's first cut) and the rest behind "More filters"; sort beside the
   count; archive-never-leads on closed solicitations.
 - **Parity:** agency, procurement method, award type, keyword, watch, export all reachable.
 - **Verify:** `node --test test/*money*` + money capture; a11y + reading-level + stray-english green.
+- **Landed shape:** method is the primary rail; keyword stays visible; mode, agency, amount,
+  and timing share one disclosure; sort sits beside the result count; current solicitations
+  precede the labeled archive.
 
 ### card lens-tmpl-02 — Staffing (`#staffing`)
 - **Do:** primary facet = **exam format** (or salary band) — the job-seeker's first cut;
