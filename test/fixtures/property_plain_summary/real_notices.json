@@ -139,9 +139,8 @@
       }
     },
     {
-      "id": "deviant-disposition-fallback",
+      "id": "public-hearing-section-pointer",
       "pattern": "disposition",
-      "templated": false,
       "row": {
         "request_id": "20240108007",
         "start_date": "2024-01-16T00:00:00.000",

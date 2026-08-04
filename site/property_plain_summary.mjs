@@ -164,6 +164,8 @@ function whatFact(row, pattern) {
     return acquisition && property ? fact("what", "This notice is about getting a property right.", [acquisition, property]) : null;
   }
   if (pattern === "disposition") {
+    const sectionPointer = firstReceipt(row, /all notices regarding housing preservation(?: and development)? dispositions? of city-owned propert(?:y|ies)[\s,]*(?:appear|appears) in the public hearing section/i);
+    if (sectionPointer) return fact("what", "These notices are in the Public Hearing section.", [sectionPointer]);
     const hearing = firstReceipt(row, /(?:voluntary )?public hearing[\s\S]{0,60}(?:(?:will be|is|to be) held|scheduled to (?:take place|begin))/i);
     const property = firstReceipt(row, /property|lease|disposition area|proposed disposition/i);
     if (hearing && property) return fact("what", "This notice is about a public hearing on a property matter.", [hearing, property]);

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "corpus_baseline": {
+    "as_of": "2026-08-04",
+    "count": 243,
+    "sha256": "99e9d655e63d9c31af53500f1d7a1e72ba93cfb8d3be742505fe7ed961989a67"
+  },
+  "metrics": {
+    "grade_level": {
+      "direction": "max",
+      "baseline": 5.03,
+      "surface": "plain_summary",
+      "statistic": "mean_grade"
+    },
+    "templated_fraction": {
+      "direction": "min",
+      "baseline": 0.995885,
+      "numerator": 242,
+      "denominator": 243
+    }
+  }
+}

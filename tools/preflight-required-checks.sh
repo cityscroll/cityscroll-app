@@ -123,6 +123,10 @@ if [[ "$RUN_READING_LEVEL" == "1" ]]; then
     --baseline site/reading-level-baseline.json \
     --format gh-annotations \
     about.html api.html changelog.html data.html index.html stats.html standards.html
+  run_and_fail node tools/property_a11y_census.mjs \
+    --limit 50000 \
+    --ratchet-baseline site/property-a11y-ratchet.json \
+    --format markdown
 else
   echo
   echo "Reading-level ratchet check is CI-required but not run by default."

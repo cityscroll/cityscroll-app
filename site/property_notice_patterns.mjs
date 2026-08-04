@@ -52,7 +52,7 @@ export function classifyPropertyPattern(row = {}) {
   if (/auto auction|municipal auto|surplus assets|govdeals|publicsurplus|redbird subway|heavy machinery|auction.{0,40}vehicle/i.test(text)) {
     return "surplus_auction";
   }
-  if (/public sale of residential property|real estate public auction|sale\/assignment of mortgage|sale of city mort?gage and note/i.test(text)) {
+  if (/public sale of residential property|real estate public auction|(?:proposed )?sale of (?:certain )?(?:new york city )?real property parcels by public auction|sale\/assignment of mortgage|sale of city mort?gage and note/i.test(text)) {
     return "direct_property_sale";
   }
   if (/medallion (?:auction|sale)|auction.{0,40}medallion|winning bidders.{0,60}medallion/i.test(text)) {

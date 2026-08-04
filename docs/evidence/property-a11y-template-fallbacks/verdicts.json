@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "source": {
+    "dataset": "dg92-zbpx",
+    "section": "Property Disposition",
+    "as_of": "2026-08-04",
+    "corpus_count": 243,
+    "corpus_sha256": "99e9d655e63d9c31af53500f1d7a1e72ba93cfb8d3be742505fe7ed961989a67"
+  },
+  "verdicts": [
+    {
+      "request_id": "20240108007",
+      "verdict": "recurring_template",
+      "cohort": "hpd_public_hearing_section_pointer",
+      "cohort_size": 6,
+      "expected_pattern": "disposition",
+      "expected_lead": "These notices are in the Public Hearing section.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Notices Regarding Housing Preservation",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions of City-Owned Property appear in the Public Hearing Section."
+      }
+    },
+    {
+      "request_id": "20220103008",
+      "verdict": "recurring_template",
+      "cohort": "hpd_public_hearing_section_pointer",
+      "cohort_size": 6,
+      "expected_pattern": "disposition",
+      "expected_lead": "These notices are in the Public Hearing section.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Property Disposition",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions of City-Owned Property, appear in the Public Hearing Section."
+      }
+    },
+    {
+      "request_id": "20201229007",
+      "verdict": "recurring_template",
+      "cohort": "hpd_public_hearing_section_pointer",
+      "cohort_size": 6,
+      "expected_pattern": "disposition",
+      "expected_lead": "These notices are in the Public Hearing section.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Property disposition",
+        "additional_description_1": "All notices Regarding Housing Preservation and Development Disposition of City-Owned property, appear in the Public Hearing Section"
+      }
+    },
+    {
+      "request_id": "20200102102",
+      "verdict": "recurring_template",
+      "cohort": "hpd_public_hearing_section_pointer",
+      "cohort_size": 6,
+      "expected_pattern": "disposition",
+      "expected_lead": "These notices are in the Public Hearing section.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Notice",
+        "short_title": "Property Disposition",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions of City-Owned Property appear in the Public Hearing Section."
+      }
+    },
+    {
+      "request_id": "20190108114",
+      "verdict": "recurring_template",
+      "cohort": "hpd_public_hearing_section_pointer",
+      "cohort_size": 6,
+      "expected_pattern": "disposition",
+      "expected_lead": "These notices are in the Public Hearing section.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Property Disposition",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions of City-Owned Property appear in the Public Hearing Section."
+      }
+    },
+    {
+      "request_id": "20180628112",
+      "verdict": "recurring_template",
+      "cohort": "hpd_public_hearing_section_pointer",
+      "cohort_size": 6,
+      "expected_pattern": "disposition",
+      "expected_lead": "These notices are in the Public Hearing section.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Public Hearings on Dispositions",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions Of City-Owned Property Appear In the Public Hearing Section."
+      }
+    },
+    {
+      "request_id": "20150915102",
+      "verdict": "recurring_template",
+      "cohort": "real_property_parcel_public_auction",
+      "cohort_size": 2,
+      "expected_pattern": "direct_property_sale",
+      "expected_lead": "This notice is about a public sale of real property.",
+      "row": {
+        "agency_name": "Citywide Administrative Services",
+        "type_of_notice_description": "Sale",
+        "short_title": "Notice of Public Auction on 10/28/15",
+        "additional_description_1": "CITY OF NEW YORK DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES PROPOSED SALE OF CERTAIN NEW YORK CITY REAL PROPERTY PARCELS BY PUBLIC AUCTION PUBLIC NOTICE IS HEREBY GIVEN THAT the Department of Citywide Administrative Services proposes to offer the properties listed herein for sale at Public Auction."
+      }
+    },
+    {
+      "request_id": "20131023104",
+      "verdict": "recurring_template",
+      "cohort": "real_property_parcel_public_auction",
+      "cohort_size": 2,
+      "expected_pattern": "direct_property_sale",
+      "expected_lead": "This notice is about a public sale of real property.",
+      "row": {
+        "agency_name": "Citywide Administrative Services",
+        "type_of_notice_description": "Notice",
+        "short_title": "Proposed Sale of Real Property Parcels by Public Auction"
+      }
+    },
+    {
+      "request_id": "20131113103",
+      "verdict": "permanent_honest_fallback",
+      "cohort": "unique_future_interest_deed_amendment",
+      "cohort_size": 1,
+      "expected_pattern": "acquisition_or_easement",
+      "rationale": "This is the corpus's only notice about amending repayment terms for a future deed interest. A generic acquisition or disposition sentence would erase the conditional legal effect, and no recurring cohort supports a dedicated deterministic template.",
+      "row": {
+        "agency_name": "Housing Preservation and Development",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Dispositions",
+        "additional_description_1": "Sponsor is not in a position to either enter into a Regulatory Agreement or buy back the future interest by December 31, 2013. Therefore, in order to avoid title vesting in the City on January 31, 2014, the deed must be modified again. Under the proposed fourth amendment to the deed, Sponsor must either pay the City $652,433 (the Outstanding Repurchase Price) or enter into a Regulatory Agreement with HPD by December 31, 2014."
+      }
+    }
+  ]
+}
