@@ -22,6 +22,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, M/WBE solicitation detail, and prime sub-outreach mount. |
 | `site/sub_outreach.mjs` | Pure prime-win sub-outreach view + HTML from `award_prime_goal` (facts only; no goal-gap apology). |
 | `site/app/subsidy.mjs` | Subsidy eligibility, phase timeline, facts, gaps, and lifecycle loading. |
+| `site/app/authority-award.mjs` | Receipt-gated ABO award detail on eligible authority notices. |
 | `site/app/meetings.mjs` | Meeting outcomes, roll calls, matter phase spine, and outcome loading. |
 | `site/app/entities.mjs` | Official, agency, and vendor profiles; vendor phase timeline and forecasts. |
 | `site/app/workspace.mjs` | Investigation storage/sync/share and matter timeline. |

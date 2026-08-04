@@ -11,6 +11,7 @@ await import("./alerts.mjs");
 await import("./procurement-lifecycle.mjs");
 await import("./procurement-phase.mjs");
 await import("./subsidy.mjs");
+await import("./authority-award.mjs");
 await import("./meetings.mjs");
 await import("./entities.mjs");
 await import("./workspace.mjs");
