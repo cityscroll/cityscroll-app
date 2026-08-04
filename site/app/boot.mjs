@@ -585,6 +585,9 @@ globalThis.applyNoticeWatchSeed = applyNoticeWatchSeed;
 globalThis.syncAlertsEntryHrefs = syncAlertsEntryHrefs;
 globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
 globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
+// Land deep links call showTab("land") during the first applyHash; publish this dependency
+// before routing instead of waiting for the general export block at the end of this module.
+globalThis.maybeAutoLocateLand = maybeAutoLocateLand;
 Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked

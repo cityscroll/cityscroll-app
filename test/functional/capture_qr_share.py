@@ -292,7 +292,7 @@ def verify_interactions(browser: Browser) -> None:
             "#searchactions-land [data-search-copy]",
             "#searchactions-land [data-qr-share]",
         )
-        assert land_url == base_url + LAND_HASH
+        assert land_url == base_url + "?lang=es" + LAND_HASH
 
         page.locator("#nlpresets-land .nlqpreset-run", has_text="Sidewalk").click()
         page.wait_for_function("location.hash === '#rules?q=sidewalk'")
@@ -302,12 +302,12 @@ def verify_interactions(browser: Browser) -> None:
             "#searchactions-rules [data-search-copy]",
             "#searchactions-rules [data-qr-share]",
         )
-        assert preset_url == base_url + "#rules?q=sidewalk"
+        assert preset_url == base_url + "?lang=es#rules?q=sidewalk"
 
         page.goto(base_url + "#vendor/ACME%20GARDENS", wait_until="domcontentloaded")
         page.locator("#entityview #eqr").wait_for(state="visible")
         vendor_url = assert_copy_matches_qr(page, "#entityview #ecopy", "#entityview #eqr")
-        assert vendor_url == base_url + "#vendor/ACME%20GARDENS%20LLC"
+        assert vendor_url == base_url + "?lang=es#vendor/ACME%20GARDENS%20LLC"
 
         assert not errors, errors
         context.close()

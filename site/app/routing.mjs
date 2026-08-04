@@ -3,8 +3,8 @@
    #notice/<request_id> and #land/<project_id> are canonical addresses for individual records.
    The router reads/writes the same control values the NL layer and hand-set filters use —
    three spellings of one state. */
-const noticeLink = id => location.origin + location.pathname + "#notice/" + encodeURIComponent(id);
-const landLink = id => location.origin + location.pathname + "#land/" + encodeURIComponent(id);
+const noticeLink = id => currentLanguageURL(location.origin + location.pathname + "#notice/" + encodeURIComponent(id));
+const landLink = id => currentLanguageURL(location.origin + location.pathname + "#land/" + encodeURIComponent(id));
 let hashLock = false;
 let focusedItemRouteHash = "";
 
@@ -27,6 +27,7 @@ function focusItemRouteTarget(target){
 }
 
 async function copyText(txt, btn){ // NOT `t` — that's the i18n lookup
+  if(/^https?:\/\//i.test(String(txt||""))) txt=currentLanguageURL(txt);
   let ok = false;
   try{ await navigator.clipboard.writeText(txt); ok = true; }
   catch(e){
