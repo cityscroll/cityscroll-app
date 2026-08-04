@@ -1,18 +1,23 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { join, relative } from "node:path";
 import test from "node:test";
 import {
+  DEFAULT_OUTPUT_DIR,
+  HTML_OUTPUT,
+  JSON_OUTPUT,
   ROOT,
   buildDataSourceGraph,
-  checkGeneratedGraphFiles,
+  checkGraphBuild,
   declaredInputPaths,
   generatedGraphFiles,
+  inputManifest,
   renderGraphHtml,
+  writeGeneratedGraphFiles,
 } from "../tools/data_source_graph.mjs";
 
 const registry = JSON.parse(readFileSync(join(ROOT, "site/data/source_contracts.json"), "utf8"));
-const graph = JSON.parse(generatedGraphFiles()["docs/data-source-graph.json"]);
+const graph = JSON.parse(generatedGraphFiles()[JSON_OUTPUT]);
 const sourceDocument = readFileSync(join(ROOT, "docs/data-sources.md"), "utf8");
 
 test("generated topology covers every documented source with all four layers", () => {
@@ -31,7 +36,7 @@ test("generated topology covers every documented source with all four layers", (
   }
 });
 
-test("source graph declares topology inputs and committed outputs are current", () => {
+test("source graph declares topology inputs and derives outputs outside the committed tree", () => {
   const paths = declaredInputPaths();
   for (const required of [
     "docs/data-sources.md",
@@ -41,7 +46,29 @@ test("source graph declares topology inputs and committed outputs are current", 
     "worker/src/worker.mjs",
   ]) assert.ok(paths.includes(required), required);
   assert.match(graph.sources_hash, /^[a-f0-9]{64}$/);
-  assert.equal(checkGeneratedGraphFiles().length, 0);
+  assert.equal(DEFAULT_OUTPUT_DIR, "docs");
+  const ignore = readFileSync(join(ROOT, ".gitignore"), "utf8");
+  assert.match(ignore, /^docs\/data-source-graph\.json$/m);
+  assert.match(ignore, /^docs\/data-source-graph\.html$/m);
+});
+
+test("build output detects a declared input change without regeneration", () => {
+  mkdirSync(join(ROOT, ".generated"), { recursive: true });
+  const outputDir = mkdtempSync(join(ROOT, ".generated/data-source-graph-test-"));
+  try {
+    const inputPath = join(outputDir, "declared-input.json");
+    const manifestPath = relative(ROOT, inputPath);
+    writeFileSync(inputPath, '{"version":1}\n');
+    const inputs = inputManifest([manifestPath]);
+    writeGeneratedGraphFiles({ outputDir, inputs });
+    assert.deepEqual(checkGraphBuild({ outputDir, inputs }), []);
+
+    writeFileSync(inputPath, '{"version":2}\n');
+    const changedInputs = inputManifest([manifestPath]);
+    assert.deepEqual(checkGraphBuild({ outputDir, inputs: changedInputs }), [JSON_OUTPUT, HTML_OUTPUT]);
+  } finally {
+    rmSync(outputDir, { recursive: true, force: true });
+  }
 });
 
 test("a new source contract appears without hand-editing diagram markup", () => {
@@ -76,7 +103,7 @@ test("a rehearsal cron does not replace the production ingest cadence", () => {
 });
 
 test("self-contained renderer keeps graph detail and table views available", () => {
-  const html = generatedGraphFiles()["docs/data-source-graph.html"];
+  const html = generatedGraphFiles()[HTML_OUTPUT];
   assert.match(html, /<svg id="sourceGraph"/);
   assert.match(html, /id="details"/);
   assert.match(html, /selectSource\(s\.id\)/);
