@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Measured verdict on the value of CityScroll's Cloudflare Pages hosting migration.">
+  <title>Cloudflare Pages migration value verdict · CityScroll</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper, #f5f6f8); color: var(--ink, #12181f); font: 16px/1.55 var(--font-body, system-ui, sans-serif); }
+    a { color: var(--oxblood, #1a44e0); text-underline-offset: 3px; }
+    button, a { overflow-wrap: anywhere; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--oxblood, #1a44e0); outline-offset: 3px; }
+    .shell { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 64px; }
+    .mast { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; border-bottom: 3px solid var(--blue, #1b3a8f); }
+    .brand { font: 700 1.05rem/1 var(--font-display, system-ui, sans-serif); color: var(--blue, #1b3a8f); }
+    .stamp { color: var(--muted, #5b6470); font-size: .82rem; text-align: right; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(230px, .8fr); gap: 28px; align-items: end; padding: 50px 0 34px; }
+    .eyebrow { margin: 0 0 10px; color: var(--blue, #1b3a8f); font: 700 .75rem/1.2 var(--font-sc, system-ui, sans-serif); letter-spacing: .12em; text-transform: uppercase; }
+    h1 { max-width: 16ch; margin: 0; font: 700 clamp(2.35rem, 7vw, 5rem)/.95 var(--font-display, system-ui, sans-serif); letter-spacing: -.045em; }
+    .lede { max-width: 68ch; margin: 22px 0 0; color: var(--ink-soft, #37414d); font-size: 1.08rem; }
+    .overall { min-width: 0; padding: 22px; background: var(--card, #fff); border: 1px solid var(--rule, #dde1e7); border-top: 5px solid var(--amber, #8a5a00); border-radius: var(--radius-md, 10px); }
+    .overall .label, .metric-label, .tag { font: 700 .72rem/1.2 var(--font-sc, system-ui, sans-serif); letter-spacing: .08em; text-transform: uppercase; }
+    .overall .label { color: var(--muted, #5b6470); }
+    .overall strong { display: block; margin-top: 7px; color: var(--amber, #8a5a00); font: 700 1.65rem/1 var(--font-display, system-ui, sans-serif); }
+    .overall p { margin: 12px 0 0; color: var(--ink-soft, #37414d); }
+    .score-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; overflow: hidden; margin: 0 0 34px; border: 1px solid var(--rule, #dde1e7); border-radius: var(--radius-md, 10px); background: var(--rule, #dde1e7); }
+    .score { min-width: 0; padding: 18px; background: var(--card, #fff); }
+    .score b { display: block; margin-top: 6px; font: 700 1.5rem/1 var(--font-display, system-ui, sans-serif); }
+    .score span { display: block; margin-top: 8px; color: var(--muted, #5b6470); font-size: .86rem; }
+    .claim-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 18px; }
+    .claim-tab { min-width: 0; min-height: 66px; padding: 12px 14px; border: 1px solid var(--rule-strong, #7a828f); border-radius: var(--radius-md, 10px); background: var(--card, #fff); color: var(--ink, #12181f); cursor: pointer; font: 700 .95rem/1.25 var(--font-interface, system-ui, sans-serif); text-align: left; }
+    .claim-tab small { display: block; margin-top: 4px; color: var(--muted, #5b6470); font-weight: 600; }
+    .claim-tab[aria-selected="true"] { border-color: var(--oxblood, #1a44e0); background: var(--cs-action-tint, #eef2ff); box-shadow: inset 0 -4px 0 var(--oxblood, #1a44e0); }
+    .panel { min-width: 0; padding: clamp(20px, 4vw, 34px); background: var(--card, #fff); border: 1px solid var(--rule, #dde1e7); border-radius: var(--radius-md, 10px); }
+    .panel[hidden] { display: none; }
+    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    .panel h2 { max-width: 24ch; margin: 0; font: 700 clamp(1.65rem, 4vw, 2.4rem)/1.05 var(--font-display, system-ui, sans-serif); letter-spacing: -.025em; }
+    .verdict { flex: 0 0 auto; padding: 7px 9px; border: 1px solid currentColor; border-radius: var(--radius-sm, 6px); font: 700 .72rem/1 var(--font-sc, system-ui, sans-serif); letter-spacing: .06em; text-transform: uppercase; }
+    .verdict.confirmed { color: var(--green, #1a6b34); background: var(--cs-success-tint, #e7f4ec); }
+    .verdict.wait { color: var(--amber, #8a5a00); background: var(--cs-caution-tint, #fbf1d8); }
+    .claim-copy { max-width: 76ch; margin: 16px 0 0; color: var(--ink-soft, #37414d); }
+    .comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+    .side { min-width: 0; padding: 18px; border: 1px solid var(--rule, #dde1e7); border-radius: var(--radius-sm, 6px); background: var(--paper, #f5f6f8); }
+    .side h3 { margin: 0 0 12px; font: 700 .77rem/1.2 var(--font-sc, system-ui, sans-serif); letter-spacing: .1em; text-transform: uppercase; color: var(--muted, #5b6470); }
+    .big { display: block; font: 700 clamp(1.75rem, 4vw, 2.7rem)/1 var(--font-display, system-ui, sans-serif); letter-spacing: -.03em; }
+    .big small { font-size: .48em; letter-spacing: 0; color: var(--muted, #5b6470); }
+    .side p { margin: 10px 0 0; color: var(--ink-soft, #37414d); font-size: .9rem; }
+    .tag { display: inline-block; margin-top: 12px; color: var(--blue, #1b3a8f); }
+    .evidence { margin-top: 22px; overflow-x: auto; border: 1px solid var(--rule, #dde1e7); border-radius: var(--radius-sm, 6px); }
+    table { width: 100%; border-collapse: collapse; min-width: 660px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--rule, #dde1e7); text-align: left; vertical-align: top; }
+    th { background: var(--paper-2, #eceef2); color: var(--ink-soft, #37414d); font: 700 .72rem/1.25 var(--font-sc, system-ui, sans-serif); letter-spacing: .06em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    td { font-size: .9rem; }
+    .boundary { margin-top: 22px; padding: 16px 18px; border-left: 4px solid var(--amber, #8a5a00); background: var(--cs-caution-tint, #fbf1d8); color: var(--ink-soft, #37414d); }
+    .boundary strong { color: var(--ink, #12181f); }
+    .source-row { display: flex; flex-wrap: wrap; gap: 9px 16px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule, #dde1e7); font-size: .86rem; }
+    .method { margin-top: 32px; padding: 22px; border: 1px solid var(--rule, #dde1e7); border-radius: var(--radius-md, 10px); color: var(--ink-soft, #37414d); }
+    .method h2 { margin: 0; color: var(--ink, #12181f); font: 700 1.25rem/1.2 var(--font-display, system-ui, sans-serif); }
+    .method p { max-width: 78ch; margin: 10px 0 0; }
+    footer { margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--rule, #dde1e7); color: var(--muted, #5b6470); font-size: .82rem; }
+    @media (max-width: 760px) {
+      .hero, .comparison { grid-template-columns: 1fr; }
+      .score-strip, .claim-nav { grid-template-columns: 1fr; }
+      .mast, .panel-head { align-items: flex-start; flex-direction: column; }
+      .stamp { text-align: left; }
+      .claim-tab { min-height: 54px; }
+    }
+    @media print {
+      .claim-nav { display: none; }
+      .panel[hidden] { display: block; margin-top: 18px; }
+      .shell { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="mast">
+      <div class="brand">CityScroll · hosting evidence</div>
+      <div class="stamp">Measured 2026-08-04 UTC · no production routing changed</div>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Migration value scorecard · after soak</p>
+        <h1 id="page-title">Fast publish. Incomplete proof.</h1>
+        <p class="lede">Cloudflare Pages beats the registered delivery-time baseline. The broader value claim does not clear the same bar: automated checks are demonstrably useful, but their comparative latency is not measurable against an un-timed human baseline, and rollback has not been safely stopwatch-tested.</p>
+      </div>
+      <aside class="overall" aria-label="Overall verdict">
+        <span class="label">Overall verdict</span>
+        <strong>Not confirmed</strong>
+        <p>Keep the measured speed benefit. Do not claim the full migration thesis until rollback and same-class detection are tested.</p>
+      </aside>
+    </section>
+
+    <section class="score-strip" aria-label="Claim verdict counts">
+      <div class="score"><span>Confirmed</span><b>1</b><span>Ship faster</span></div>
+      <div class="score"><span>Not confirmed</span><b>0</b><span>No claim was contradicted by a complete test</span></div>
+      <div class="score"><span>Can't measure yet</span><b>2</b><span>Catch faster · rollback</span></div>
+    </section>
+
+    <nav class="claim-nav" role="tablist" aria-label="Migration claims">
+      <button class="claim-tab" id="tab-ship" role="tab" aria-selected="true" aria-controls="panel-ship" data-panel="panel-ship">Ship faster<small>Confirmed · 50 deployments</small></button>
+      <button class="claim-tab" id="tab-catch" role="tab" aria-selected="false" aria-controls="panel-catch" data-panel="panel-catch" tabindex="-1">Catch breaks faster<small>Can't measure yet · gates work</small></button>
+      <button class="claim-tab" id="tab-rollback" role="tab" aria-selected="false" aria-controls="panel-rollback" data-panel="panel-rollback" tabindex="-1">Roll back instantly<small>Can't measure yet · dry run only</small></button>
+    </nav>
+
+    <section class="panel" id="panel-ship" role="tabpanel" aria-labelledby="tab-ship">
+      <div class="panel-head">
+        <h2>Pages publishes faster than the registered baseline.</h2>
+        <span class="verdict confirmed">Confirmed</span>
+      </div>
+      <p class="claim-copy">Fifty successful main-branch deployments were paired to their pull request merge time. The endpoint is Wrangler's own <em>Deployment complete</em> log line: a precise publish marker, not an estimate of browser propagation.</p>
+      <div class="comparison">
+        <article class="side">
+          <h3>Before · GitHub Pages + mirror</h3>
+          <span class="big">74.5 <small>seconds median</small></span>
+          <p>8 measured runs, <code>run_started_at → updated_at</code>. A later 10-run first-to-last-log proxy measured 56 seconds.</p>
+          <span class="tag">Measured</span>
+        </article>
+        <article class="side">
+          <h3>After · Cloudflare Pages</h3>
+          <span class="big">52.46 <small>seconds median</small></span>
+          <p>50 measured merges; 41.76–149.80 seconds, mean 56.58, p95 80.54. Forty of fifty completed in under one minute.</p>
+          <span class="tag">Measured</span>
+        </article>
+      </div>
+      <div class="boundary"><strong>Method boundary:</strong> the before and after endpoints are not identical. The after median is 29.58% below the registered 74.5-second baseline and 6.32% below the refreshed 56-second proxy. This confirms faster publish completion, not universal edge visibility.</div>
+      <div class="source-row">
+        <a href="hosting-migration-baseline.json">Before baseline</a>
+        <a href="migration-value-scorecard.md">Pre-cutover scorecard</a>
+        <a href="migration-value-verdict.json">50-row machine record</a>
+        <a href="https://github.com/cityscroll/crol-list/actions/runs/30885970932">Newest sampled deployment</a>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-catch" role="tabpanel" aria-labelledby="tab-catch" hidden>
+      <div class="panel-head">
+        <h2>The gates catch real defects. “Faster than people” remains untested.</h2>
+        <span class="verdict wait">Can't measure yet</span>
+      </div>
+      <p class="claim-copy">The pre-cutover redirect-loop incident was discovered in a browser without a recorded start or discovery timestamp. Comparing it with a different automated defect class would manufacture a speedup, so the verdict stays open.</p>
+      <div class="evidence">
+        <table>
+          <thead><tr><th>Gate exemplar</th><th>First actionable diagnostic</th><th>Red conclusion</th><th>Named evidence</th></tr></thead>
+          <tbody>
+            <tr><td>URL route parity</td><td>1.341 s</td><td>720.015 s after the persistence window</td><td><a href="https://github.com/cityscroll/crol-list/actions/runs/30781086054">Run 30781086054</a> · 9 mismatches first seen, 3 persisted</td></tr>
+            <tr><td>Accessibility + language</td><td>15.335 s</td><td>15.358 s</td><td><a href="https://github.com/cityscroll/crol-list/actions/runs/30884034362">Run 30884034362</a> · unnamed select in 9 render states</td></tr>
+            <tr><td>Performance budgets</td><td>64.614 s</td><td>486.4 s after completing the matrix</td><td><a href="https://github.com/cityscroll/crol-list/actions/runs/30879078830">Run 30879078830</a> · 471,794 wire bytes vs 445,000 budget</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="comparison">
+        <article class="side">
+          <h3>Automated PR history</h3>
+          <span class="big">20 <small>red PR runs</small></span>
+          <p>15 performance, 6 accessibility, 1 overlapping both: two detector classes, not twenty incidents.</p>
+          <span class="tag">Measured run-history count</span>
+        </article>
+        <article class="side">
+          <h3>Documented human field cases</h3>
+          <span class="big">7 <small>defect classes</small></span>
+          <p>Five fix areas named by PRs 409, 417, 420, 421, 437, and 438. These classes do not map one-for-one to CI runs.</p>
+          <span class="tag">Measured documented cases</span>
+        </article>
+      </div>
+      <div class="boundary"><strong>What would close this claim:</strong> a controlled same-class failure on a non-production deployment, or a naturally observed outage with both first-bad and automated-detection timestamps. The current evidence proves coverage and response shape, not comparative latency.</div>
+      <div class="source-row">
+        <a href="migration-value-verdict.json">Gate and human audit record</a>
+        <a href="https://github.com/cityscroll/crol-list/pull/409">Human field case: map zeros</a>
+        <a href="https://github.com/cityscroll/crol-list/pull/420">Human field case: exam cycle</a>
+        <a href="https://github.com/cityscroll/crol-list/pull/438">Human field case: Property defaults</a>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-rollback" role="tabpanel" aria-labelledby="tab-rollback" hidden>
+      <div class="panel-head">
+        <h2>Rollback is a runbook, not yet a stopwatch result.</h2>
+        <span class="verdict wait">Can't measure yet</span>
+      </div>
+      <p class="claim-copy">The documented rollback moves the public custom domains from Pages back to the Worker. That is a production mutation, so the drill stopped at the boundary and timed only read-only readiness checks.</p>
+      <div class="comparison">
+        <article class="side">
+          <h3>Before · planning estimate</h3>
+          <span class="big">5–15 <small>operator minutes</small></span>
+          <p>Plus an estimated 0–12 minutes of visitor recovery. No stopwatch trial supported this range.</p>
+          <span class="tag">Estimated</span>
+        </article>
+        <article class="side">
+          <h3>After · timed dry run</h3>
+          <span class="big">No <small>restore time</small></span>
+          <p>The 14-target readiness matrix passed in 2.05 seconds. That is a preflight, not a rollback.</p>
+          <span class="tag">Measured dry run only</span>
+        </article>
+      </div>
+      <div class="evidence">
+        <table>
+          <thead><tr><th>Dry-run step</th><th>Wall clock</th><th>Result</th><th>Interpretation</th></tr></thead>
+          <tbody>
+            <tr><td>Generic fallback smoke</td><td>30.03 s</td><td>Failed</td><td>Root-level route joining does not fit the fallback's <code>/crol-list/</code> project subpath.</td></tr>
+            <tr><td>Supported cutover readiness matrix</td><td>2.05 s</td><td>Passed</td><td>All 14 current targets passed first attempt, including fallback root and API health.</td></tr>
+            <tr><td>Fallback deep-route check</td><td>0.17 s</td><td>Failed</td><td>The fallback root is a repository README page; About and robots routes returned 404.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="boundary"><strong>What would close this claim:</strong> a complete fallback artifact and a disposable domain that can exercise the same detach/reattach sequence, followed by a timed restore and visitor smoke. “Instant” is not supported by the present evidence.</div>
+      <div class="source-row">
+        <a href="hosting-migration-baseline.json">Estimated rollback baseline</a>
+        <a href="dns-cutover-2026-08-03.md">Cutover record</a>
+        <a href="https://github.com/cityscroll/crol-list/blob/main/tools/cutover_regression.mjs">Readiness matrix</a>
+        <a href="migration-value-verdict.json">Dry-run command record</a>
+      </div>
+    </section>
+
+    <section class="method" aria-labelledby="method-title">
+      <h2 id="method-title">Decision rule</h2>
+      <p><strong>Measured beats marketing.</strong> A claim is confirmed only when the after measurement directly tests the registered before claim. Estimated values stay labeled estimated; missing timestamps stay null; repeated check runs are not converted into incident counts. The migration can remain operationally sound while its entire value thesis remains only partly proved.</p>
+    </section>
+
+    <footer>Machine-readable evidence: <a href="migration-value-verdict.json">migration-value-verdict.json</a>. Every displayed number traces to that record or the named pre-cutover baseline.</footer>
+  </main>
+
+  <script>
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+
+    function selectTab(tab, focus = true) {
+      for (const candidate of tabs) {
+        const selected = candidate === tab;
+        candidate.setAttribute('aria-selected', String(selected));
+        candidate.tabIndex = selected ? 0 : -1;
+      }
+      for (const panel of panels) panel.hidden = panel.id !== tab.dataset.panel;
+      if (focus) tab.focus();
+    }
+
+    for (const [index, tab] of tabs.entries()) {
+      tab.addEventListener('click', () => selectTab(tab, false));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabs.length - 1;
+        selectTab(tabs[next]);
+      });
+    }
+  </script>
+</body>
+</html>
