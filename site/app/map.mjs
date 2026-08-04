@@ -246,7 +246,11 @@ async function paintMapExploration(){
           ${mapCountChip("money", counts.money, byLens.money?.hash)}
         </div>
         <div class="map-detail-links">
-          ${links.map(l=>`<a class="act" href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}${l.count!=null?` (${l.count})`:""}</a>`).join("")}
+          ${links.map(l=>{
+            const scope=l.scope||"bag";
+            const count=l.count!=null?` (${l.count})`:"";
+            return `<a class="act" href="${mapEsc(l.hash)}" data-map-feed-scope="${mapEsc(scope)}" data-map-feed-lens="${mapEsc(l.lens||"")}">${mapEsc(t(l.label_key))}${count}</a>`;
+          }).join("")}
         </div>`;
     } else {
       detail.hidden=false;
@@ -273,7 +277,14 @@ async function paintMapExploration(){
         </div>
         ${cwTotal>0?`<p class="map-citywide-note"><span class="tag place">${mapEsc(t("map_bucket_citywide"))} <b>${cwTotal}</b></span> ${mapEsc(t("map_citywide_also_applies"))}${cwLinks.length?` · ${cwLinks.map(l=>`<a href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}</a>`).join(" · ")}`:""}</p>`:""}
         <div class="map-detail-links">
-          ${links.map(l=>`<a class="act" href="${mapEsc(l.hash)}">${mapEsc(t(l.label_key))}${l.count!=null?` (${l.count})`:""}</a>`).join("")}
+          ${links.map(l=>{
+            const label=t(l.label_key||("tab_"+l.lens));
+            const scope=l.scope||"district";
+            // Class tokens only — never a reader-facing English phrase.
+            const cls=scope==="citywide"?("act"+" "+"map-feed-citywide"):"act";
+            const count=l.count!=null?` (${l.count})`:"";
+            return `<a class="${cls}" href="${mapEsc(l.hash)}" data-map-feed-scope="${mapEsc(scope)}" data-map-feed-lens="${mapEsc(l.lens||"")}">${mapEsc(label)}${count}</a>`;
+          }).join("")}
           ${sel.level==="borough"?`<button type="button" class="act primary" data-map-drill="${mapEsc(sel.id)}">${t("map_drill_community")}</button>`:""}
           ${sel.level==="borough"?`<button type="button" class="act" data-map-council="1">${t("map_show_council")}</button>`:""}
         </div>

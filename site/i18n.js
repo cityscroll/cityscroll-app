@@ -262,6 +262,14 @@ const STRINGS = {
     map_citywide_also_applies: "city-scale items also apply here (not counted inside this district's polygons).",
     map_money_framing: "Most contracts are citywide service classes or lack a published place — {citywide} citywide, {local} with a borough pin, {unlocated} without a place signal (of {counted} recent awards).",
     map_drill_when_all: "All dates",
+    // Map → list handoffs when the list filter is coarser than the selected polygon.
+    map_feed_citywide_money: "Citywide contracts",
+    map_feed_citywide_rules: "Citywide rules",
+    map_feed_citywide_meetings: "Citywide meetings",
+    map_feed_citywide_property: "Citywide property",
+    map_feed_borough_meetings: "Meetings in this borough",
+    map_feed_borough_property: "Property in this borough",
+    map_feed_borough_rules: "Rules in this borough",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
 

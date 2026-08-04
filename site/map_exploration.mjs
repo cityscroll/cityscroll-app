@@ -245,6 +245,15 @@ export const MAP_LIST_SCOPES = Object.freeze([
 ]);
 
 /**
+ * Place-scope class for a map → list handoff (ops honesty).
+ *   district — list filter matches the selected map area (cd / council / boro exact)
+ *   borough  — only the parent borough filter is available (CD drill partial)
+ *   bag      — first-class citywide / virtual / unlocated bag (intentional)
+ *   citywide — bare citywide lobby with no place filter (must not wear a district label)
+ */
+export const MAP_FEED_SCOPES = Object.freeze(["district", "borough", "bag", "citywide"]);
+
+/**
  * Build a list-lens hash that carries map drill scope.
  * Coordinates never ride share links — only declarative filters.
  *
@@ -340,7 +349,13 @@ export function areaFeedLinks(level, id, opts = {}) {
   const counts = opts.counts && typeof opts.counts === "object" ? opts.counts : null;
   const onlyPositive = opts.onlyPositive !== false && counts;
   const links = [];
-  const push = (lens, scope) => {
+  /**
+   * @param {string} lens
+   * @param {object} scope
+   * @param {"district"|"borough"|"citywide"|"bag"} feedScope
+   * @param {string} [labelKey]
+   */
+  const push = (lens, scope, feedScope = "district", labelKey) => {
     const n = counts ? Number(counts[lens]) || 0 : null;
     if (onlyPositive && n != null && n <= 0) return;
     const hash = mapDrillListHash(lens, scope);
@@ -348,34 +363,36 @@ export function areaFeedLinks(level, id, opts = {}) {
     links.push({
       lens,
       hash,
-      label_key: `tab_${lens === "money" ? "money" : lens}`,
+      label_key: labelKey || `tab_${lens === "money" ? "money" : lens}`,
       count: n,
+      scope: feedScope,
     });
   };
 
   if (level === "borough" && BOROUGH_META[id]) {
     const scope = { boro: id };
-    push("land", scope);
-    push("property", scope);
-    push("meetings", scope);
-    push("rules", scope);
+    push("land", scope, "district");
+    push("property", scope, "district");
+    push("meetings", scope, "district");
+    push("rules", scope, "district");
     return links;
   }
   if (level === "community_district" && /^(?:M|X|K|Q|R)\d{2}$/.test(id || "")) {
     const boro = boroughFromCommunityId(id);
     const scope = { boro, communityDistrict: id };
-    // Land alone has CD filter; other lenses fall back to parent borough.
-    push("land", scope);
+    // Land alone has CD filter; other lenses fall back to parent borough — honest label.
+    push("land", scope, "district");
     if (boro) {
-      push("property", { boro });
-      push("meetings", { boro });
-      push("rules", { boro });
+      push("property", { boro }, "borough", "map_feed_borough_property");
+      push("meetings", { boro }, "borough", "map_feed_borough_meetings");
+      push("rules", { boro }, "borough", "map_feed_borough_rules");
     }
     return links;
   }
   if (level === "council_district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(id || ""))) {
-    // Council district is first-class on Land only today.
-    push("land", { councilDistrict: String(id) });
+    // Council district is first-class on Land only today — omit other lenses rather than
+    // emitting a citywide lobby under a district count.
+    push("land", { councilDistrict: String(id) }, "district");
     return links;
   }
   return links;
@@ -401,6 +418,8 @@ export function bucketFeedLinks(kind, opts = {}) {
       hash,
       label_key: `tab_${lens === "money" ? "money" : lens}`,
       count: n,
+      // Intentional bag handoff — not a polygon lobby lie.
+      scope: "bag",
     });
   };
 
@@ -529,6 +548,43 @@ export function rowMatchesMapDrillFilter(lens, row, filter = {}) {
   }
 
   return false;
+}
+
+/**
+ * Detector: map feed links that drop place scope while the selected area has a
+ * non-zero count for that lens. Used by characterization tests.
+ *
+ * Lobby classes:
+ * - scope === "citywide" (or bare #lens with no query) under a positive district count
+ * - Partial borough fallback is NOT a lobby lie when labeled (scope === "borough")
+ * - Bag handoffs (scope === "bag") are intentional citywide/virtual/unlocated
+ *
+ * @param {object[]} links — from areaFeedLinks / bucketFeedLinks
+ * @param {object} [counts] — per-lens counts for the selected area
+ * @returns {{ ok: boolean, findings: object[] }}
+ */
+export function detectMapFeedScopeLobby(links, counts = {}) {
+  const findings = [];
+  for (const link of links || []) {
+    if (!link) continue;
+    const n = Number(counts[link.lens]);
+    if (!(Number.isFinite(n) && n > 0)) continue;
+    const hash = String(link.hash || "");
+    const bare = /^#[a-z]+$/i.test(hash);
+    const scope = link.scope || (bare ? "citywide" : "district");
+    if (scope === "citywide" || bare) {
+      findings.push({
+        kind: "map-feed-scope-lobby",
+        lens: link.lens,
+        hash,
+        label_key: link.label_key,
+        district_count: n,
+        detail:
+          `Map shows ${n} ${link.lens} item(s) in this area but the feed link opens a citywide list (${hash})`,
+      });
+    }
+  }
+  return { ok: findings.length === 0, findings };
 }
 
 /**
