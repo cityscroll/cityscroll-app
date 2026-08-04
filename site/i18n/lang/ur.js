@@ -254,7 +254,7 @@
     watch_awardwatch: "جس نوٹس کو میں دیکھ رہا ہوں اس کا ایوارڈ",
     email_label: "ای میل پتہ",
     alerts_email_step_label: "آپ کا ای میل",
-    email_placeholder: "you@example.com",
+    email_placeholder: "example@example.com",
     freq_label: "تعدد",
     freq_daily: "روزانہ",
     freq_weekly: "ہفتہ وار",

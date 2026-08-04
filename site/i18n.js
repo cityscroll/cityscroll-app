@@ -365,7 +365,7 @@ const STRINGS = {
     watch_awardwatch:   "The award on a notice I'm viewing",
     email_label:        "Email address",
     alerts_email_step_label: "Your email",
-    email_placeholder:  "you@example.com",
+    email_placeholder:  "example@example.com",
     freq_label:         "Frequency",
     freq_daily:         "Daily",
     freq_weekly:        "Weekly",

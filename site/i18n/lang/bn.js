@@ -252,7 +252,7 @@
     watch_awardwatch: "আমি যে নোটিশ দেখছি তার চুক্তি প্রদান",
     email_label: "ইমেইল ঠিকানা",
     alerts_email_step_label: "আপনার ইমেইল",
-    email_placeholder: "you@example.com",
+    email_placeholder: "example@example.com",
     freq_label: "ঘনত্ব",
     freq_daily: "প্রতিদিন",
     freq_weekly: "সাপ্তাহিক",

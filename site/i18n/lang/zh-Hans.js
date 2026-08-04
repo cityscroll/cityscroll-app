@@ -252,7 +252,7 @@
     watch_awardwatch: "我正在查看的通知的中标结果",
     email_label: "电子邮件地址",
     alerts_email_step_label: "您的邮箱",
-    email_placeholder: "you@example.com",
+    email_placeholder: "example@example.com",
     freq_label: "频率",
     freq_daily: "每日",
     freq_weekly: "每周",

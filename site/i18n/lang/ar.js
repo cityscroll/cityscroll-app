@@ -254,7 +254,7 @@
     watch_awardwatch: "قرار الترسية الخاص بإشعار أشاهده الآن",
     email_label: "عنوان البريد الإلكتروني",
     alerts_email_step_label: "بريدك الإلكتروني",
-    email_placeholder: "you@example.com",
+    email_placeholder: "example@example.com",
     freq_label: "التكرار",
     freq_daily: "يوميًا",
     freq_weekly: "أسبوعيًا",

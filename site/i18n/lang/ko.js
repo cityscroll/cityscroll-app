@@ -252,7 +252,7 @@
     watch_awardwatch: "지금 보고 있는 공고의 낙찰 결과",
     email_label: "이메일 주소",
     alerts_email_step_label: "이메일",
-    email_placeholder: "you@example.com",
+    email_placeholder: "example@example.com",
     freq_label: "빈도",
     freq_daily: "매일",
     freq_weekly: "매주",

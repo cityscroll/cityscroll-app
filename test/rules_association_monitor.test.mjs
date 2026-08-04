@@ -75,13 +75,13 @@ test("registry ships four association verticals as data", () => {
 test("template subscribe payloads match existing /subscribe shape", () => {
   const tpl = getWatchTemplate(registry, "restaurants");
   const payloads = templateSubscribePayloads(tpl, {
-    email: "reader@example.com",
+    email: "example@example.com",
     freq: "daily",
     lang: "en",
   });
   assert.equal(payloads.length, 2);
   for (const p of payloads) {
-    assert.equal(p.email, "reader@example.com");
+    assert.equal(p.email, "example@example.com");
     assert.equal(p.lens, "rules");
     assert.equal(p.freq, "daily");
     assert.ok(p.filter);

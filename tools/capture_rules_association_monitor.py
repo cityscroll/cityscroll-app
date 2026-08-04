@@ -34,6 +34,9 @@ OUT = Path(
 SITE = Path(os.environ.get("CROL_ASSOC_ROOT", str(ROOT / "site")))
 VIEWPORTS = ((390, 844), (1440, 900))
 
+# Fixture notices for hermetic screenshots only.
+# request_id / agency / titles are shaped like City Record Online Agency Rules rows
+# (dataset dg92-zbpx); stage + nyc_rules dates are product fixtures for capture, not a live export.
 NOTICES = [
     {
         "request_id": "20260706044",
@@ -212,15 +215,16 @@ def install_routes(page: Page) -> None:
         if "data.cityofnewyork.us/resource/dg92-zbpx" in url:
             qs = parse_qs(urlparse(url).query)
             where = unquote((qs.get("$where") or [""])[0])
-            body = NOTICES
-            for n in NOTICES:
-                if f"request_id='{n['request_id']}'" in where:
-                    body = [n]
+            # Fixture slice of NOTICES (City Record-shaped capture rows declared above).
+            fixture_rows = NOTICES
+            for notice_row in NOTICES:
+                if f"request_id='{notice_row['request_id']}'" in where:
+                    fixture_rows = [notice_row]
                     break
             route.fulfill(
                 status=200,
                 content_type="application/json",
-                body=json.dumps(body),
+                body=json.dumps(fixture_rows),
             )
             return
         # Worker /rules materialization only (never app modules like site/app/rules.mjs).
