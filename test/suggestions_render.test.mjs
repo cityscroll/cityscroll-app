@@ -205,28 +205,28 @@ test("pickSuggestionsGuaranteed: the general pool still fills the remaining slot
 
 test("trychipHTML: a chip with no signal renders as a plain .trychip — no class, no aria-describedby, no hint span", () => {
   const html = trychipHTML("money", 0, { lineage: new Set(), forecast: new Set() });
-  assert.match(html, /class="trychip"/);
+  assert.match(html, /class="trychip teaching-example"/);
   assert.doesNotMatch(html, /has-lineage|has-forecast|aria-describedby/);
   assert.doesNotMatch(html, /sr-only/);
 });
 
 test("trychipHTML: a lineage-rich chip gets the has-lineage class, aria-describedby, and a sr-only hint span", () => {
   const html = trychipHTML("money", 0, { lineage: new Set([0]), forecast: new Set() });
-  assert.match(html, /class="trychip has-lineage"/);
+  assert.match(html, /class="trychip teaching-example has-lineage"/);
   assert.match(html, /aria-describedby="sugghint-lineage-money-0"/);
   assert.match(html, /<span id="sugghint-lineage-money-0" class="sr-only"[^>]*>Includes contracts with award history<\/span>/);
 });
 
 test("trychipHTML: a forecast-bearing chip gets its own distinct class + hint, not the lineage one", () => {
   const html = trychipHTML("money", 3, { lineage: new Set(), forecast: new Set([3]) });
-  assert.match(html, /class="trychip has-forecast"/);
+  assert.match(html, /class="trychip teaching-example has-forecast"/);
   assert.match(html, /<span id="sugghint-forecast-money-3" class="sr-only"[^>]*>Includes contracts with forecast data<\/span>/);
   assert.doesNotMatch(html, /has-lineage/);
 });
 
 test("trychipHTML: a chip that is both lineage-rich and forecast-bearing carries both classes and both hints", () => {
   const html = trychipHTML("money", 4, { lineage: new Set([4]), forecast: new Set([4]) });
-  assert.match(html, /class="trychip has-lineage has-forecast"/);
+  assert.match(html, /class="trychip teaching-example has-lineage has-forecast"/);
   assert.match(html, /aria-describedby="sugghint-lineage-money-4 sugghint-forecast-money-4"/);
   assert.match(html, /sugghint-lineage-money-4.*sugghint-forecast-money-4/s);
 });

@@ -610,7 +610,6 @@ if(!isAlertsContextEntry) aWatchChange(true);
 updateAWhen();
 aRenderSaved();
 initAlertsRollupPrefs();
-if(typeof initWatchTemplates==="function") initWatchTemplates();
 
 // Language switch must also repaint DYNAMICALLY-BUILT surfaces (2026-07-13 hotfix): applyStrings()
 // only covers data-i18n chrome, so lists, dropdowns and detail panels kept their old language.
@@ -628,7 +627,7 @@ function rerenderForLang(){
   paintEditionSpan();
   loadAgencies();
   aWatchChange(true); updateAWhen(); aRenderSaved(); renderAlertsRollupPrefs();
-  if(typeof initWatchTemplates==="function") initWatchTemplates();
+  if(document.querySelector("#tab-alerts.active") && typeof initWatchTemplates==="function") initWatchTemplates();
   renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them

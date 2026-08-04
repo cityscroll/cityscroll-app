@@ -735,28 +735,9 @@ async function nlTranslateLens(lens, opts){
   renderSearchComponents(lens, {hash:deepLink, label:text});
 }
 
-// Suggestion-chip candidate pool + validated-set rotation (w12-08). Field evidence (site
-// owner, live production): the money lens's "IT consulting RFPs"/"shelter services contracts"
-// chips returned ZERO results while "construction contracts over $500k" worked — a suggestion
-// that leads nowhere reads as a broken site. The daily 13:00 UTC cron (worker/src/suggest.mjs)
-// verifies every candidate in worker/src/lib/suggestions.mjs's SUGGESTION_POOL against fresh
-// data and publishes the currently-fruitful set at GET /suggestions;
-// NL_SUGGESTIONS_VALIDATED holds that set once fetched (keyed by lens, each entry {idx,count}).
-// NL_SUGGESTIONS_FALLBACK is the build-validated subset shown when the worker is unreachable.
-// tools/validate_presets.mjs resolves every candidate, counts the identical destination query,
-// and generates this list plus the worker copy from data/preset-validation.json. A build fails
-// if a selected candidate drifts to zero; `--write` rotates the dead candidate out.
-//
-// w12-17: owner directive — the suggestions themselves should make the lineage (paper-trail
-// history) and forecast (predictive) features "much more discoverable". A validated entry now
-// also carries lineageRich/forecastBearing booleans, computed once daily by the cron
-// (worker/src/suggest.mjs's enrichCandidate(), worker/src/lib/lineage.mjs) against the
-// candidate's OWN live results — no extra client request. currentSuggestionMeta() exposes them
-// as idx sets per lens; renderNLSamples()/trychipHTML() add a subtle border-tint class + an
-// accessible hint to a qualifying chip. NL_SUGGESTIONS_FALLBACK carries no such data by
-// construction — unvalidated is exactly the "uncertain" case this feature must never guess at,
-// so a fallback chip never gets an indicator (currentSuggestionMeta() returns empty sets when
-// there's no validated entry for a lens).
+// Daily validation keeps examples non-empty; `tools/validate_presets.mjs --write` refreshes
+// this fallback and the Worker copy. Live metadata may also identify lineage/forecast-rich
+// examples. Fallbacks never guess those signals.
 const NL_SUGGESTIONS_FALLBACK = {
   money: [0, 1, 2, 3, 4, 5, 6, 7],
   people: [1, 3],
@@ -817,15 +798,10 @@ function pickSuggestionsGuaranteed(indices, lineageIndices, displayCount, seed, 
 }
 function daySeed(){ return Math.floor(Date.now()/86400000); }
 
-// One chip's markup: the .trychip button, plus — when the candidate carries a w12-17 signal —
-// a subtle border-tint class and a visually-hidden SIBLING hint the button's aria-describedby
-// points at. The hint deliberately lives OUTSIDE the button (not nested inside it) so
-// applyStrings()'s zero-children data-i18n guard still retranslates the button's own visible
-// label on a language switch (see AGENTS.md's static-fallback-drift sharp edge — a nested child
-// would silently freeze the label in whatever language was active at render time).
+// Hints stay outside the button so applyStrings() can replace its translated text.
 function trychipHTML(lens, idx, meta){
   const isLineage = meta.lineage.has(idx), isForecast = meta.forecast.has(idx);
-  const cls = ["trychip"];
+  const cls = ["trychip", "teaching-example"];
   if(isLineage) cls.push("has-lineage");
   if(isForecast) cls.push("has-forecast");
   const describedBy = [], hints = [];
@@ -850,8 +826,9 @@ function renderNLSamples(lens, el){
   const picked = lens==="money"
     ? pickSuggestionsGuaranteed(indices, [...meta.lineage], 3, daySeed(), LINEAGE_GUARANTEE_MIN)
     : pickSuggestions(indices, 3, daySeed());
-  el.innerHTML = picked.map(idx=>trychipHTML(lens, idx, meta)).join("");
-  el.querySelectorAll(".trychip").forEach(b=>b.addEventListener("click",()=>{
+  const examples=picked.map(idx=>trychipHTML(lens, idx, meta)).join("");
+  el.innerHTML = `<span class="teaching-examples-label" data-i18n="try_asking_label">${t("try_asking_label")}</span><div class="teaching-example-list">${examples}</div>`;
+  el.querySelectorAll(".teaching-example").forEach(b=>b.addEventListener("click",()=>{
     const inp = lens==="money" ? $("#nlq") : $("#nlq-"+lens);
     if(inp) inp.value = b.textContent;
     lens==="money" ? nlTranslate() : nlTranslateLens(lens);
