@@ -164,6 +164,50 @@ with sync_playwright() as pw:
     step("STAT", "i18n coverage",
          f"data-i18n: {coverage['i18n']}, data-i18n-placeholder: {coverage['placeholder']}, total: {coverage['total']}")
 
+    # Shared-link fidelity: an explicit URL language wins for this visit without replacing the
+    # device preference. The reported field-case notice is fulfilled locally so this remains a
+    # deterministic PR gate with no production-origin dependency.
+    shared = browser.new_context()
+    shared.add_init_script("""
+      localStorage.setItem('crol_lang', 'ru');
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: {
+        writeText(value) { window.__copiedLanguageUrl = value; return Promise.resolve(); }
+      }});
+    """)
+    linked = shared.new_page()
+    fixture = [{
+        "request_id": "20260716022",
+        "short_title": "Public Hearing",
+        "type_of_notice_description": "Public Hearings and Meetings",
+        "section_name": "Public Hearings and Meetings",
+        "agency_name": "City Council",
+        "start_date": "2026-07-16T00:00:00.000",
+        "additional_description_1": "A public hearing notice used for shared-link testing.",
+    }]
+    linked.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*",
+                 lambda route: route.fulfill(status=200, content_type="application/json", body=__import__("json").dumps(fixture)))
+    linked.route("**/attachment-metadata*",
+                 lambda route: route.fulfill(status=200, content_type="application/json", body='{"attachments":[]}'))
+    linked.goto(BASE.rstrip("/") + "/?lang=es#notice/20260716022", timeout=30000)
+    linked.wait_for_selector("#ncopy", state="visible", timeout=10000)
+    assert linked.locator("#langSelect").input_value() == "es"
+    assert linked.evaluate("document.documentElement.lang") == "es"
+    assert linked.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() != "contracts"
+    assert linked.evaluate("localStorage.getItem('crol_lang')") == "ru", "URL override must not replace the saved preference"
+
+    linked.locator("#ncopy").click()
+    copied = linked.evaluate("window.__copiedLanguageUrl")
+    assert "?lang=es#notice/20260716022" in copied, f"notice copy link lost language: {copied}"
+
+    linked.select_option("#langSelect", "fr")
+    linked.wait_for_timeout(300)
+    assert linked.evaluate("new URL(location.href).searchParams.get('lang')") == "fr"
+    assert linked.evaluate("localStorage.getItem('crol_lang')") == "fr", "picker interaction must persist"
+    linked.select_option("#langSelect", "en")
+    assert linked.evaluate("new URL(location.href).searchParams.has('lang')") is False
+    shared.close()
+    step("OK", "shared notice language fidelity", "URL override, copy link, preference, replaceState")
+
     browser.close()
 
 print("✅ language switcher spec green")
