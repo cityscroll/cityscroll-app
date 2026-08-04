@@ -1,0 +1,107 @@
+{
+  "project_id": "2022M0258",
+  "public_status": "Completed",
+  "certified_referred": "2023-08-21",
+  "milestones": [
+    {
+      "id": "cb",
+      "title": "Community Board Review",
+      "status": "Completed",
+      "date": "2023-10-26"
+    },
+    {
+      "id": "bp",
+      "title": "Borough President Review",
+      "status": "Completed",
+      "date": "2023-11-24"
+    },
+    {
+      "id": "cpc",
+      "title": "City Planning Commission Review",
+      "status": "Completed",
+      "date": "2023-11-29"
+    },
+    {
+      "id": "vote",
+      "title": "City Planning Commission Vote",
+      "status": "Completed",
+      "date": "2024-01-03"
+    },
+    {
+      "id": "cc",
+      "title": "City Council Review",
+      "status": "Completed",
+      "date": "2024-03-07"
+    },
+    {
+      "id": "mayor",
+      "title": "Mayoral Review",
+      "status": "Completed",
+      "date": "2024-03-12"
+    }
+  ],
+  "spine": {
+    "events": [
+      {
+        "id": "zap-milestone:cb",
+        "title": "Community Board Review",
+        "status": "Completed",
+        "detail": "Completed",
+        "time": {
+          "value": "2023-10-26",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-milestone:bp",
+        "title": "Borough President Review",
+        "status": "Completed",
+        "detail": "Completed",
+        "time": {
+          "value": "2023-11-24",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-milestone:cpc",
+        "title": "City Planning Commission Review",
+        "status": "Completed",
+        "detail": "Completed",
+        "time": {
+          "value": "2023-11-29",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-milestone:cc",
+        "title": "City Council Review",
+        "status": "Completed",
+        "detail": "Completed",
+        "time": {
+          "value": "2024-03-07",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-milestone:mayor",
+        "title": "Mayoral Review",
+        "status": "Completed",
+        "detail": "Completed",
+        "time": {
+          "value": "2024-03-12",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      }
+    ]
+  }
+}
