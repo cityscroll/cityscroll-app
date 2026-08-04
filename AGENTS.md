@@ -1807,6 +1807,28 @@ not bare `#meetings` / `#rules`. Pure builders: `mapDrillListHash`,
 characterization: `test/map_exploration.test.mjs`. Capture:
 `python3 tools/capture_map_drill_context.py`.
 
+## Lens filter template (Property is the reference instance)
+
+The Property lens is the reference for the shared **lens filter template** (principles +
+exemplars + capability-parity ledger in [`docs/design-principles-lens.md`](docs/design-principles-lens.md);
+per-lens rollout cards in [`docs/lens-filter-template.md`](docs/lens-filter-template.md)).
+Shape: one primary facet rail visible (Property = **Item type**), all secondary facets in a
+`.lens-more-filters` `<details>` (the `.utility-overflow` idiom, **not** `.controls` — the
+`@media(max-width:680px){.controls{display:none}}` money-tray rule would hide them); the
+selected-filters summary + Clear reuses `renderSearchComponents` → `[data-search-state="property"]`
+(`clear_filters_btn`); sort sits beside a visible count in `.lens-resultbar`; the process
+stepper folds into a "How this list works" disclosure.
+
+- **Small-multiples collapse (Tufte):** `clusterRepeatedEntries` (lens-neutral, in
+  `site/property_explorer.mjs`) folds ≥3 near-identical single notices (agency + asset +
+  stage + title-stem) into one `kind:"cluster"` card with count + date range, expandable.
+  Multi-notice spines (`kind:"disposition"`) are never re-clustered.
+- **Archive never leads:** when `propStageSel==="all"`, `renderPropExplorer` renders current
+  (open/upcoming/undated) first, then the labeled closed block; when nothing is current it
+  leads with the honest `property_nothing_current` line, not the archive.
+- Verify: `node --test test/property_explorer.test.mjs`. Capture before/after:
+  `python3 tools/capture_property_lens_reground.py` (`CROL_REGROUND_LABEL=before|after`).
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

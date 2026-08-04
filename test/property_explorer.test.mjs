@@ -11,6 +11,7 @@ import { test } from "node:test";
 import {
   PROP_PROCESS_STAGES,
   buildPropertyExplorerEntries,
+  clusterRepeatedEntries,
   countPropertyProcessStages,
   filterPropertyExplorerEntries,
   parcelLookupUrls,
@@ -160,4 +161,75 @@ test("public Property domain mounts process rail + explorer cards; temporal rail
   // Aggregate + source dedupe on disposition detail.
   assert.match(index, /p\.aggregates/);
   assert.match(index, /p\.source_url/);
+});
+
+// ---- Small-multiples collapse (Tufte) + archive-never-leads honesty ------------------
+// Runs of near-identical single notices (same agency + asset + stage + title stem,
+// differing only by date) collapse into ONE cluster carrying the count + date range —
+// the fix for "five identical destruction notices lead the archive".
+function noticeEntry({ id, title, agency = "NYPD", asset = "other", stage = "auction_or_rfp", close, status = "closed" }) {
+  return {
+    kind: "notice",
+    notice_count: 1,
+    process_stage: stage,
+    process_filter: stage,
+    temporal_status: status,
+    close_date: close || null,
+    primary: { request_id: id, short_title: title, agency_name: agency, _asset: asset, event_date: close || null },
+  };
+}
+
+test("clusterRepeatedEntries collapses >=3 near-identical single notices into one cluster with a date range", () => {
+  const entries = [
+    noticeEntry({ id: "1", title: "PROPERTY CLERK INVOICE 1001 PENDING DESTRUCTION", close: "2026-01-10" }),
+    noticeEntry({ id: "2", title: "PROPERTY CLERK INVOICE 1002 PENDING DESTRUCTION", close: "2026-03-14" }),
+    noticeEntry({ id: "3", title: "PROPERTY CLERK INVOICE 1003 PENDING DESTRUCTION", close: "2026-05-01" }),
+    noticeEntry({ id: "4", title: "PROPERTY CLERK INVOICE 1004 PENDING DESTRUCTION", close: "2026-02-02" }),
+    noticeEntry({ id: "5", title: "PROPERTY CLERK INVOICE 1005 PENDING DESTRUCTION", close: "2026-04-04" }),
+  ];
+  const out = clusterRepeatedEntries(entries);
+  assert.equal(out.length, 1, "five near-identical notices become one card");
+  const cluster = out[0];
+  assert.equal(cluster.kind, "cluster");
+  assert.equal(cluster.count, 5);
+  assert.equal(cluster.members.length, 5, "every member is preserved (expandable, not deleted)");
+  assert.equal(cluster.date_range.start, "2026-01-10");
+  assert.equal(cluster.date_range.end, "2026-05-01");
+  assert.equal(cluster.temporal_status, "closed");
+});
+
+test("clusterRepeatedEntries leaves distinct notices and small runs (<3) untouched", () => {
+  const entries = [
+    noticeEntry({ id: "a", title: "Sale of surplus fire apparatus", asset: "vehicle", close: "2026-06-01", status: "open" }),
+    noticeEntry({ id: "b", title: "PROPERTY CLERK INVOICE 1 PENDING DESTRUCTION", close: "2026-01-01" }),
+    noticeEntry({ id: "c", title: "PROPERTY CLERK INVOICE 2 PENDING DESTRUCTION", close: "2026-02-01" }),
+  ];
+  const out = clusterRepeatedEntries(entries);
+  assert.equal(out.length, 3, "a pair (<3) does not collapse; a unique notice stays");
+  assert.ok(out.every((e) => e.kind === "notice"));
+});
+
+test("clusterRepeatedEntries never collapses already-grouped multi-notice spines", () => {
+  const spine = { kind: "notice", notice_count: 3, process_filter: "hearing", temporal_status: "closed", primary: { request_id: "s", short_title: "PROPERTY CLERK INVOICE PENDING DESTRUCTION", agency_name: "NYPD", _asset: "other" } };
+  const entries = [
+    spine,
+    noticeEntry({ id: "1", title: "PROPERTY CLERK INVOICE 1 PENDING DESTRUCTION", stage: "hearing", close: "2026-01-01" }),
+    noticeEntry({ id: "2", title: "PROPERTY CLERK INVOICE 2 PENDING DESTRUCTION", stage: "hearing", close: "2026-02-01" }),
+    noticeEntry({ id: "3", title: "PROPERTY CLERK INVOICE 3 PENDING DESTRUCTION", stage: "hearing", close: "2026-03-01" }),
+  ];
+  const out = clusterRepeatedEntries(entries);
+  // The 3 single notices collapse; the multi-notice spine is left as its own entry.
+  assert.ok(out.some((e) => e.kind === "cluster" && e.count === 3));
+  assert.ok(out.some((e) => e === spine), "multi-notice spine is untouched");
+});
+
+test("renderPropExplorer splits current-first then a labeled closed block (archive never leads)", () => {
+  const index = readFileSync(join(ROOT, "site/app/property.mjs"), "utf8");
+  // Current (open/upcoming/undated) render before the closed/archive header.
+  assert.match(index, /const current=entries\.filter\(e=>!isClosed\(e\)\)/);
+  assert.match(index, /property-empty-current/);
+  assert.match(index, /property_nothing_current/);
+  // Small-multiples collapse is wired into the feed.
+  assert.match(index, /clusterRepeatedEntries/);
+  assert.match(index, /propertyClusterCardHTML/);
 });
