@@ -5,6 +5,7 @@ import {
   MAP_EXPLORATION_SCHEMA,
   DISTRICT_ACTIVITY_SCHEMA,
   areaFeedLinks,
+  detectMapFeedScopeLobby,
   boroughFromCommunityId,
   bucketFeedLinks,
   choroplethFill,
@@ -74,10 +75,38 @@ test("areaFeedLinks uses existing list filter grammar", () => {
   assert.ok(boro.some((l) => l.hash === "#property?boro=Queens"));
   assert.ok(boro.some((l) => l.hash === "#meetings?boro=Queens&when=all"));
   assert.ok(boro.some((l) => l.hash === "#rules?boro=Queens"));
+  assert.equal(boro.find((l) => l.lens === "land")?.scope, "district");
+  // Money has no borough polygon filter — omit rather than bare #money lobby.
+  assert.ok(!boro.some((l) => l.lens === "money"));
   const cd = areaFeedLinks("community_district", "Q04", { onlyPositive: false });
   assert.ok(cd.some((l) => l.hash.includes("cd=Q04")));
+  assert.equal(cd.find((l) => l.lens === "property")?.scope, "borough");
+  assert.match(String(cd.find((l) => l.lens === "property")?.label_key || ""), /borough/i);
   const council = areaFeedLinks("council_district", "25", { onlyPositive: false });
   assert.ok(council.some((l) => l.hash === "#land?council=25"));
+  assert.equal(council.find((l) => l.lens === "land")?.scope, "district");
+  // Council list filters exist only for land — do not emit citywide lobby under district counts.
+  for (const lens of ["property", "meetings", "money", "rules"]) {
+    assert.ok(!council.some((l) => l.lens === lens), lens);
+  }
+});
+
+test("detectMapFeedScopeLobby flags bare citywide links under positive district counts", () => {
+  const lobby = [
+    { lens: "meetings", hash: "#meetings", label_key: "tab_meetings", scope: "citywide" },
+    { lens: "land", hash: "#land?council=1", label_key: "tab_land", scope: "district" },
+  ];
+  const hit = detectMapFeedScopeLobby(lobby, { land: 5, meetings: 34, money: 0, rules: 0, property: 12 });
+  assert.equal(hit.ok, false);
+  assert.ok(hit.findings.some((f) => f.kind === "map-feed-scope-lobby" && f.lens === "meetings" && f.district_count === 34));
+  assert.ok(!hit.findings.some((f) => f.lens === "land"));
+  // Real areaFeedLinks for council must not produce lobby findings.
+  const council = areaFeedLinks("council_district", "1", {
+    onlyPositive: false,
+    counts: { land: 5, meetings: 34, money: 0, rules: 0, property: 12 },
+  });
+  const quiet = detectMapFeedScopeLobby(council, { land: 5, meetings: 34, money: 0, rules: 0, property: 12 });
+  assert.equal(quiet.ok, true);
 });
 
 test("bucketFeedLinks carry virtual and citywide scopes into list hashes", () => {

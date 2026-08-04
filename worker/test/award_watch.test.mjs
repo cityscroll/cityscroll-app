@@ -34,7 +34,12 @@ function fakeDB(seed = {}) {
   };
 }
 function seedNychaCache(db, requestId, matches) {
-  db._cache[requestId] = { matches: JSON.stringify({ matches }) };
+  // computed_at is required for empty matches: nychaCacheFresh treats legacy
+  // rows without a timestamp as keep-only-if-non-empty (empty → miss → live).
+  db._cache[requestId] = {
+    matches: JSON.stringify({ matches }),
+    computed_at: new Date().toISOString(),
+  };
 }
 class MockKV {
   constructor(seed = {}) { this.store = new Map(Object.entries(seed)); }
