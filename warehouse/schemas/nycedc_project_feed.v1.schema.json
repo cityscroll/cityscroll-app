@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/nycedc_project_feed.v1.schema.json",
+  "title": "NYCIDA and Build NYC project feed record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "authority",
+    "project_id",
+    "project_name",
+    "company",
+    "address",
+    "request_id",
+    "requested_benefit",
+    "estimated_public_cost",
+    "project_cost",
+    "milestones",
+    "provenance"
+  ],
+  "properties": {
+    "schema": { "const": "cityscroll.nycedc_project_feed.v1" },
+    "authority": { "enum": ["nycida", "build_nyc", "nycedc"] },
+    "project_id": { "type": "string", "minLength": 1 },
+    "project_name": { "type": "string", "minLength": 1 },
+    "company": { "type": "string", "minLength": 1 },
+    "address": { "type": ["string", "null"] },
+    "request_id": { "type": ["string", "null"] },
+    "requested_benefit": { "type": ["number", "null"], "minimum": 0 },
+    "estimated_public_cost": { "type": ["number", "null"], "minimum": 0 },
+    "project_cost": { "type": ["number", "null"], "minimum": 0 },
+    "milestones": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["application", "board_decision", "closing", "compliance"],
+      "properties": {
+        "application": { "$ref": "#/$defs/statusMilestone" },
+        "board_decision": { "$ref": "#/$defs/decisionMilestone" },
+        "closing": { "$ref": "#/$defs/statusMilestone" },
+        "compliance": { "$ref": "#/$defs/statusMilestone" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_url", "document_type", "content_sha256", "observed_at", "source_locator"],
+      "properties": {
+        "source_url": { "type": "string", "format": "uri", "pattern": "^https://edc\\.nyc/" },
+        "document_type": { "type": "string" },
+        "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "source_locator": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "statusMilestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "status"],
+      "properties": {
+        "date": { "type": ["string", "null"], "format": "date" },
+        "status": { "type": ["string", "null"] }
+      }
+    },
+    "decisionMilestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "outcome"],
+      "properties": {
+        "date": { "type": ["string", "null"], "format": "date" },
+        "outcome": { "type": ["string", "null"], "enum": ["approved", "denied", "deferred", null] }
+      }
+    }
+  }
+}
