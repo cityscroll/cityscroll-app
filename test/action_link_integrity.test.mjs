@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { classifyDestinationUrl } from "../ontology/actionability_sample.mjs";
@@ -10,6 +11,7 @@ import {
   DEEP_LINK_SYSTEMS,
   probeUrl,
 } from "../tools/audit-action-links.mjs";
+import { applyAuditVerdicts } from "../tools/lib/action_link_health.mjs";
 
 test("action-link inventory covers every take-action surface with distinct HTTPS patterns", () => {
   const requiredSurfaces = ["rules", "land", "contracts", "meetings", "property", "staffing"];
@@ -22,6 +24,9 @@ test("action-link inventory covers every take-action surface with distinct HTTPS
     assert.ok(!ids.has(pattern.id), `duplicate id ${pattern.id}`);
     assert.ok(!urlPatterns.has(pattern.url_pattern), `duplicate URL pattern ${pattern.url_pattern}`);
     assert.equal(new URL(pattern.sample_url).protocol, "https:");
+    for (const sampleUrl of pattern.sample_urls || []) {
+      assert.equal(new URL(sampleUrl).protocol, "https:");
+    }
     assert.equal(
       classifyDestinationUrl(pattern.sample_url),
       pattern.expected_destination_class,
@@ -34,6 +39,18 @@ test("action-link inventory covers every take-action surface with distinct HTTPS
   }
   assert.ok(ids.has("staffing-oasys-noe"), "inventory must include OASys per-exam NOE deep link");
   assert.ok(DEEP_LINK_SYSTEMS.some((s) => s.id === "oasys"));
+});
+
+test("City Record notice pattern uses verified request IDs across publication vintages", () => {
+  const pattern = ACTION_LINK_PATTERNS.find((item) => item.id === "contracts-city-record-notice");
+  assert.deepEqual(pattern.sample_urls, [
+    "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
+    "https://a856-cityrecord.nyc.gov/RequestDetail/20250130002",
+    "https://a856-cityrecord.nyc.gov/RequestDetail/20241028013",
+    "https://a856-cityrecord.nyc.gov/RequestDetail/20220203104",
+    "https://a856-cityrecord.nyc.gov/RequestDetail/20190515036",
+  ]);
+  assert.doesNotMatch(pattern.sample_urls.join("\n"), /20260718010/);
 });
 
 test("specificity class flags OASys hub handoffs when a deep pattern is known", () => {
@@ -113,4 +130,78 @@ test("a dead publisher URL without a derivable replacement stays an honest upstr
 
   assert.equal(result.verdict, "broken-upstream");
   assert.match(result.upstream_fallback, /venue/);
+});
+
+test("one reachable representative confirms a route pattern while preserving failed sample evidence", async () => {
+  const result = await auditPattern({
+    id: "multi-vintage-route",
+    surface: "contracts",
+    action: "submit",
+    url_pattern: "https://example.com/detail/:id",
+    sample_url: "https://example.com/detail/current",
+    sample_urls: [
+      "https://example.com/detail/current",
+      "https://example.com/detail/archive",
+    ],
+    expected_destination_class: "deep",
+    upstream_fallback: "Keep the extracted response instructions and contact fields visible.",
+  }, {
+    fetchImpl: async (url) => new Response(null, {status: url.endsWith("archive") ? 404 : 200}),
+  });
+
+  assert.equal(result.verdict, "OK");
+  assert.equal(result.probe.sample_count, 2);
+  assert.equal(result.probe.successes, 1);
+  assert.equal(result.probe.failures, 1);
+  assert.equal(result.sample_results[1].probe.ok, false);
+});
+
+test("audit health degrades immediately, escalates on the second consecutive failure, and recovers automatically", () => {
+  const prior = {
+    schema: "cityscroll.action_link_health.v1",
+    patterns: {
+      "contracts-city-record-notice": {
+        verdict: "broken-upstream",
+        degraded: true,
+        consecutive_failures: 1,
+        first_failed_at: "2026-08-03T14:01:25.936Z",
+      },
+    },
+  };
+  const brokenReport = {
+    generated_at: "2026-08-04T14:01:25.936Z",
+    patterns: [{
+      id: "contracts-city-record-notice",
+      verdict: "broken-upstream",
+      upstream_fallback: "Keep extracted response instructions and contact fields visible.",
+    }],
+  };
+  const broken = applyAuditVerdicts(brokenReport, prior, {escalationAfter: 2});
+  assert.equal(broken.patterns["contracts-city-record-notice"].consecutive_failures, 2);
+  assert.equal(broken.patterns["contracts-city-record-notice"].degraded, true);
+  assert.deepEqual(broken.summary.newly_escalated_patterns, ["contracts-city-record-notice"]);
+
+  const recovered = applyAuditVerdicts({
+    generated_at: "2026-08-05T14:01:25.936Z",
+    patterns: [{
+      id: "contracts-city-record-notice",
+      verdict: "OK",
+      upstream_fallback: "Keep extracted response instructions and contact fields visible.",
+    }],
+  }, broken, {escalationAfter: 2});
+  assert.equal(recovered.patterns["contracts-city-record-notice"].consecutive_failures, 0);
+  assert.equal(recovered.patterns["contracts-city-record-notice"].degraded, false);
+  assert.deepEqual(recovered.summary.recovered_patterns, ["contracts-city-record-notice"]);
+});
+
+test("scheduled audit persists verdict state, deploys it, escalates persistent failures, and clears recovered issues", () => {
+  const workflow = readFileSync(new URL("../.github/workflows/action-links-live.yml", import.meta.url), "utf8");
+  assert.match(workflow, /actions\/cache\/restore@v4/);
+  assert.match(workflow, /update-action-link-health\.mjs/);
+  assert.match(workflow, /action_link_health\.json/);
+  assert.match(workflow, /actions\/cache\/save@v4/);
+  assert.match(workflow, /pages deploy _site/);
+  assert.match(workflow, /newly_escalated_patterns/);
+  assert.match(workflow, /recovered_patterns/);
+  assert.match(workflow, /state_reason:\s*"completed"/);
 });

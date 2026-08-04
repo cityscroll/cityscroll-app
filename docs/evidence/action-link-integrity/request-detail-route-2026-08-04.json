@@ -1,0 +1,94 @@
+{
+  "schema": "cityscroll.request_detail_route_probe.v1",
+  "measured_at": "2026-08-04T23:13:26Z",
+  "sources": {
+    "notice_route": "https://a856-cityrecord.nyc.gov/RequestDetail/:request_id",
+    "official_dataset": "https://data.cityofnewyork.us/resource/dg92-zbpx.json"
+  },
+  "finding": "The RequestDetail path remains valid across publication vintages. The audit sample 20260718010 is not present in the official dataset and soft-404s; it is a stale representative, not evidence of a route migration.",
+  "method_behavior": "HEAD redirects to the soft-404 page even for valid RequestDetail IDs. The detector's GET retry reaches each valid Notice Details page and is required for an accurate verdict.",
+  "valid_samples": [
+    {
+      "request_id": "20260706006",
+      "start_date": "2026-07-10T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20260706006",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20260515001",
+      "start_date": "2026-05-28T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20260515001",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20260227017",
+      "start_date": "2026-03-03T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20260227017",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20250130002",
+      "start_date": "2025-02-26T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20250130002",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20241028013",
+      "start_date": "2024-11-04T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20241028013",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20230807118",
+      "start_date": "2023-09-27T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20230807118",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20220203104",
+      "start_date": "2022-02-25T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20220203104",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    },
+    {
+      "request_id": "20190515036",
+      "start_date": "2019-05-15T00:00:00.000",
+      "http_status": 200,
+      "final_path": "/RequestDetail/20190515036",
+      "page_title": "The City Record Online (CROL) | Notice Details"
+    }
+  ],
+  "stale_sample": {
+    "request_id": "20260718010",
+    "official_dataset_rows": 0,
+    "http_status": 200,
+    "final_path": "/Error/Error404?aspxerrorpath=/RequestDetail/20260718010",
+    "page_title": "The City Record Online (CROL) | 404 Error"
+  },
+  "alternate_forms": [
+    {
+      "form": "/RequestDetail?RequestID=20260718010",
+      "result": "soft-404"
+    },
+    {
+      "form": "/RequestDetail?request_id=20260718010",
+      "result": "HTTP 500"
+    },
+    {
+      "form": "/Search/RequestDetail?RequestID=20260718010",
+      "result": "soft-404"
+    },
+    {
+      "form": "/RequestDetail/20260718010/",
+      "result": "soft-404"
+    }
+  ],
+  "disposition": "Keep the existing route pattern, replace the stale sample with verified multi-vintage IDs, and retain verdict-driven degradation for future systemic failures."
+}

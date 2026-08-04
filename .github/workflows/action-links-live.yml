@@ -23,51 +23,125 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+      - name: Restore consecutive-audit state
+        id: restore-health
+        uses: actions/cache/restore@v4
+        with:
+          path: .action-link-state
+          key: action-link-health-${{ github.run_id }}
+          restore-keys: |
+            action-link-health-
+      - name: Seed consecutive-audit state
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .action-link-state
+          if [ ! -s .action-link-state/action_link_health.json ]; then
+            cp site/data/action_link_health.json .action-link-state/action_link_health.json
+          fi
       - name: Probe representative action-link patterns
         id: links
         continue-on-error: true
         run: |
           set -o pipefail
-          node tools/audit-action-links.mjs --live 2>&1 | tee action-link-integrity.json
+          node tools/audit-action-links.mjs --live --output action-link-integrity.json 2>&1 | tee action-link-integrity.log
+      - name: Publish current runtime health state
+        id: health
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s action-link-integrity.json
+          node tools/update-action-link-health.mjs \
+            --report action-link-integrity.json \
+            --previous .action-link-state/action_link_health.json \
+            --output site/data/action_link_health.json \
+            --script-output site/action_link_health.js \
+            --escalation-after 2
+          cp site/data/action_link_health.json .action-link-state/action_link_health.json
+      - name: Save consecutive-audit state
+        if: always() && steps.health.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          path: .action-link-state
+          key: action-link-health-${{ github.run_id }}
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: action-link-integrity
-          path: action-link-integrity.json
+          path: |
+            action-link-integrity.json
+            action-link-integrity.log
+            site/data/action_link_health.json
           retention-days: 30
-      - name: Report action-link drift
-        if: steps.links.outcome == 'failure'
+      - uses: actions/configure-pages@v5
+        if: steps.health.outcome == 'success' && github.ref == 'refs/heads/main'
+      - name: Build site with the current health state
+        if: steps.health.outcome == 'success' && github.ref == 'refs/heads/main'
+        uses: ./.github/actions/build-site
+      - name: Deploy current health state
+        if: steps.health.outcome == 'success' && github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4.110.0"
+          command: >-
+            pages deploy _site
+            --project-name=cityscroll
+            --branch=main
+            --commit-hash=${{ github.sha }}
+            --commit-message="Action-link health refresh"
+            --commit-dirty=true
+      - name: Escalate persistent drift or close a recovered incident
+        if: steps.health.outcome == 'success' && github.ref == 'refs/heads/main'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require("fs");
             const title = "Outbound action-link integrity drift";
-            const output = fs.readFileSync("action-link-integrity.json", "utf8").slice(-18000);
-            const body = [
-              "The scheduled action-link audit found a broken resident handoff.",
-              "",
-              `Workflow: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              "",
-              "```json",
-              output,
-              "```",
-            ].join("\n");
+            const state = JSON.parse(fs.readFileSync("site/data/action_link_health.json", "utf8"));
+            const newlyEscalated = state.summary.newly_escalated_patterns || [];
+            const recovered = state.summary.recovered_patterns || [];
+            const degraded = state.summary.degraded_patterns || [];
             const { data: issues } = await github.rest.issues.listForRepo({
               ...context.repo,
               state: "open",
               per_page: 100,
             });
             const existing = issues.find((issue) => issue.title === title);
-            if (existing) {
+            if (newlyEscalated.length) {
+              const body = [
+                "The same resident handoff pattern failed two consecutive daily audits.",
+                "",
+                `Patterns: ${newlyEscalated.map((id) => `\`${id}\``).join(", ")}`,
+                "",
+                `Workflow: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                "",
+                "The affected handoff is degraded to its published response details until a later audit recovers.",
+              ].join("\n");
+              if (existing) {
+                await github.rest.issues.createComment({
+                  ...context.repo,
+                  issue_number: existing.number,
+                  body,
+                });
+              } else {
+                await github.rest.issues.create({ ...context.repo, title, body });
+              }
+            } else if (existing && recovered.length && degraded.length === 0) {
               await github.rest.issues.createComment({
                 ...context.repo,
                 issue_number: existing.number,
-                body,
+                body: `Recovered patterns: ${recovered.map((id) => `\`${id}\``).join(", ")}. The normal handoffs are active again.`,
               });
-            } else {
-              await github.rest.issues.create({ ...context.repo, title, body });
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: existing.number,
+                state: "closed",
+                state_reason: "completed",
+              });
             }
       - name: Mark the scheduled audit failed
         if: always() && steps.links.outcome == 'failure'
