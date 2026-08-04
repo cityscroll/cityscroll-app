@@ -864,20 +864,22 @@ function applyHash(){
       const lens = q.get("lens");
       const noticeId = q.get("notice");
       const projectId = q.get("project");
+      const rollupView = q.get("view") === "rollup";
       if(lens || noticeId || projectId){
         let filter = {};
         try{ filter = JSON.parse(q.get("filter") || "{}"); }catch(e){ filter = {}; }
         // Context-carrying entry: pre-scope builder + seed real digItemHTML preview.
         Promise.resolve(prefillAlertFromLink(lens, filter, q.get("freq"), { noticeId, projectId }))
           .catch(()=>{});
-      } else {
+      } else if(!rollupView){
         // Neutral #alerts — clear carried seed and return the single form to a calm bare draft
         // so back-button / bare entry never keep a previous agency/notice prefill.
+        // skipQuizSync: refreshQuizDisplay may not be on globalThis yet during first applyHash.
         noticeWatchSeed = null;
         if(typeof paintAlertContextLead === "function") paintAlertContextLead(null);
         if($("#awatch")){
           $("#awatch").value = "rfpkw";
-          if(typeof aWatchChange === "function") aWatchChange();
+          if(typeof aWatchChange === "function") aWatchChange(true);
           if($("#aparam")) $("#aparam").value = "";
           if($("#aagency")) $("#aagency").value = "";
           if($("#amoneykw")) $("#amoneykw").value = "";
@@ -893,8 +895,10 @@ function applyHash(){
         }
       }
       // #alerts?view=rollup — multi-watch digest rollup + prefs surface (demo fixture).
-      if(q.get("view") === "rollup"){
-        renderAlertsRollupPrefs().then(()=>focusAlertsRollupPanel());
+      if(rollupView){
+        Promise.resolve(renderAlertsRollupPrefs())
+          .then(()=>focusAlertsRollupPanel())
+          .catch(()=>focusAlertsRollupPanel());
       }
     } else if(tab === "map"){
       const levelRaw=q.get("level")||"borough";
