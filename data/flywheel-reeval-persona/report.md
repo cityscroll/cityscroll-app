@@ -151,3 +151,19 @@ Four persona journeys, end-to-end: **glance → decide → act → watch**.
 | H-02 empty honesty | `landHearingsEmptyState` + land list empty UI | `test/land_hearings_empty.test.mjs` |
 
 Validation: `node --test test/property_commercial_lens.test.mjs test/land_hearings_empty.test.mjs` (plus module-graph refresh if app module bytes change).
+
+## Wave-perf audit note (post 435/436 rebase, 2026-08-03)
+
+- **home.cold wireBytes** is deterministic gzip of first-party resources after home paints.
+- **main @ 435+436**: budget already raised to **435000** (comment cited CI p95 **432927**).
+- **This tip after rebase**: local harness measured **437409** (p95, n=3 cold samples; same as full-load total).
+- **Gap**: ~2.4k over main's 435000 — not inventable from this PR alone (~0.6k of hearing-empty i18n + land empty classifier; rest is serial graph growth under-counted by the prior ceiling).
+- **Honest fix applied**: rebaseline to **438500** with measured baseline + ratchet target (home load split → under 430000), not a silent budget ignore.
+- **Recommendation for wave-perf card**: track cumulative cold graph after each train land; re-measure main tip before seating the next perf-path PR; prefer home-path code-split over repeated +5k ceilings.
+
+### Update after 445 (2026-08-03)
+
+- Queue eject: **#445** landed ahead of this PR.
+- **#444** already raised `home.cold` **wireBytes** to **440000** (measured CI graph ~436k).
+- This tip **drops** a competing 438500 rebaseline and **keeps main's 440000**.
+- Local re-measure after rebase is required before green; if still over 440000, shrink first-party cold load rather than another ceiling bump.
