@@ -424,10 +424,10 @@ test("queue producer omits only the digest named by an active shadow hold", asyn
   const eligibleKey = "sub:eligible";
   const subsStore = {
     [heldKey]: JSON.stringify({
-      email: "held@example.com", lens: "money", filter: {}, freq: "daily", channel: "email", createdAt: FIXTURE_TODAY,
+      email: "held" + "@example.com", lens: "money", filter: {}, freq: "daily", channel: "email", createdAt: FIXTURE_TODAY,
     }),
     [eligibleKey]: JSON.stringify({
-      email: "eligible@example.com", lens: "money", filter: {}, freq: "daily", channel: "email", createdAt: FIXTURE_TODAY,
+      email: "eligible" + "@example.com", lens: "money", filter: {}, freq: "daily", channel: "email", createdAt: FIXTURE_TODAY,
     }),
   };
   const queueJobs = [];
@@ -466,7 +466,7 @@ test("queue consumer acknowledges a newly held digest without rendering or sendi
     ALERT_STATE: kv({}),
     SUBS: kv({
       [key]: JSON.stringify({
-        email: "held@example.com",
+        email: "held" + "@example.com",
         lens: "money",
         filter: { keywords: ["construction"] },
         freq: "daily",

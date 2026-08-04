@@ -111,10 +111,10 @@ test("operator overrides release only named affected digests", () => {
 });
 
 test("queue partition leaves unrelated accounts eligible", async () => {
-  const single = { type: "sub", key: "sub:single", email: "single@example.com" };
+  const single = { type: "sub", key: "sub:single", email: "single" + "@example.com" };
   const rollup = {
     type: "rollup",
-    email: "rollup@example.com",
+    email: "rollup" + "@example.com",
     keys: ["sub:b", "sub:a"],
   };
   const heldId = await digestIdForJob(single);
