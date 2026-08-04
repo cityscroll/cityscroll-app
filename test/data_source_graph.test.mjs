@@ -64,6 +64,17 @@ test("a new source contract appears without hand-editing diagram markup", () => 
   assert.match(renderGraphHtml(built), /New Source Fixture/);
 });
 
+test("a rehearsal cron does not replace the production ingest cadence", () => {
+  const built = buildDataSourceGraph({
+    registry: { contracts: [registry.contracts.find((source) => source.id === "city-record")] },
+    wranglerText: '[triggers]\ncrons = ["0 10 * * *", "0 13 * * *"]',
+    workerText: "ingestNotices",
+    inputs: [],
+  });
+  assert.deepEqual(built.cron.expressions, ["0 10 * * *", "0 13 * * *"]);
+  assert.equal(built.sources[0].ingest.cadence, "Daily at 13:00 UTC (0 13 * * *)");
+});
+
 test("self-contained renderer keeps graph detail and table views available", () => {
   const html = generatedGraphFiles()["docs/data-source-graph.html"];
   assert.match(html, /<svg id="sourceGraph"/);

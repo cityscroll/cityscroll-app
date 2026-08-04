@@ -2,7 +2,7 @@
   "schema_version": 1,
   "title": "CityScroll data-source topology",
   "description": "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
-  "sources_hash": "96b458696d9034c57b988f7f9915ca99ba036c8d1aa08aaa555bb0bda2170e75",
+  "sources_hash": "b631ae4b9053cd886aee780dc549d030b05383b236ee9c664024ad1dc4073f3e",
   "declared_inputs": [
     {
       "path": "docs/data-sources.md",
@@ -210,15 +210,16 @@
     },
     {
       "path": "worker/src/worker.mjs",
-      "sha256": "053553101b2ec7f17434236220ad7b701d5c7d6c1ae602dec63ba0af40d824aa"
+      "sha256": "39b58b7251050b608a5c8ce38194a2f754beb9736aa3d0b88b42179ef496cde9"
     },
     {
       "path": "worker/wrangler.toml",
-      "sha256": "61e169eb87e9efa0be5b089c01fd035cd82f7b0716b2a8a52867188cccb761e2"
+      "sha256": "96babe1fc76199fcd7f6cd9bb50144fc16791fc859461ef5fa1cfa6b4898538c"
     }
   ],
   "cron": {
     "expressions": [
+      "0 10 * * *",
       "0 13 * * *"
     ]
   },

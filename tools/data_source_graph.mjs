@@ -88,7 +88,9 @@ function inputManifest(paths = declaredInputPaths()) {
 function cronSettings(wranglerText) {
   const match = wranglerText.match(/crons\s*=\s*\[([^\]]+)\]/);
   const expressions = match ? [...match[1].matchAll(/["']([^"']+)["']/g)].map((m) => m[1]) : [];
-  const primary = expressions[0] || "not configured";
+  // The 10:00 UTC trigger is a delivery-free digest rehearsal. Source refreshes
+  // that feed product read models remain on the production 13:00 UTC trigger.
+  const primary = expressions.includes("0 13 * * *") ? "0 13 * * *" : expressions[0] || "not configured";
   return {
     expressions,
     daily_label: primary === "0 13 * * *"
