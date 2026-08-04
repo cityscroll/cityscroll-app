@@ -1,0 +1,79 @@
+[
+  {
+    "request_id": "20240723114",
+    "start_date": "2024-07-29T00:00:00.000",
+    "agency_name": "Homeless Services",
+    "type_of_notice_description": "Award",
+    "category_description": "Human Services/Client Services",
+    "pin": "07124N0022001",
+    "vendor_name": "Acacia Network Housing Inc.",
+    "contract_amount": 7397875,
+    "short_title": "NAE-Millennium Adult Family Facility"
+  },
+  {
+    "request_id": "20250115001",
+    "start_date": "2025-01-15T00:00:00.000",
+    "agency_name": "Youth and Community Development",
+    "type_of_notice_description": "Award",
+    "category_description": "Human Services/Client Services",
+    "pin": "26025N0099001",
+    "vendor_name": "Fixture Youth Org",
+    "contract_amount": 100000,
+    "short_title": "Same-day registration fixture"
+  },
+  {
+    "request_id": "20250301002",
+    "start_date": "2025-03-01T00:00:00.000",
+    "agency_name": "Dept. of Social Svcs/Human Resources Administration",
+    "type_of_notice_description": "Award",
+    "category_description": "Human Services/Client Services",
+    "pin": "06925P0001001",
+    "vendor_name": "Unjoined Vendor Inc",
+    "contract_amount": 50000,
+    "short_title": "No registration join fixture"
+  },
+  {
+    "request_id": "20250401003",
+    "start_date": "2025-04-01T00:00:00.000",
+    "agency_name": "Homeless Services",
+    "type_of_notice_description": "Award",
+    "category_description": "Human Services/Client Services",
+    "pin": "07125P0010001",
+    "vendor_name": "Prior Registration Shelter Inc",
+    "contract_amount": 2000000,
+    "short_title": "Registration before City Record award fixture"
+  },
+  {
+    "request_id": "20250601004",
+    "start_date": "2025-06-01T00:00:00.000",
+    "agency_name": "Youth and Community Development",
+    "type_of_notice_description": "Award",
+    "category_description": "Human Services/Client Services",
+    "pin": "26025N0011014",
+    "vendor_name": "Joined Pending No Date Org",
+    "contract_amount": 75000,
+    "short_title": "EPIN joins but registration_date empty"
+  },
+  {
+    "request_id": "99999999000",
+    "start_date": "2025-07-01T00:00:00.000",
+    "agency_name": "Citywide Administrative Services",
+    "type_of_notice_description": "Award",
+    "category_description": "Goods",
+    "pin": "85725G0001001",
+    "vendor_name": "Not Human Services",
+    "contract_amount": 1000,
+    "short_title": "Should be filtered out"
+  },
+  {
+    "request_id": "20250801005",
+    "start_date": "2025-08-01T00:00:00.000",
+    "agency_name": "Health and Mental Hygiene",
+    "type_of_notice_description": "Solicitation",
+    "category_description": "Human Services/Client Services",
+    "pin": "81625S0001001",
+    "vendor_name": null,
+    "contract_amount": null,
+    "short_title": "Solicitation not award"
+  }
+]
