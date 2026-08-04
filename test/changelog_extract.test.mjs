@@ -1,5 +1,5 @@
 // Characterization tests for tools/changelog_extract.mjs, the parser that decides which
-// merged PRs get a machine release-note entry (see CONTRIBUTING.md).
+// merged PRs get a machine release-note entry.
 //
 // Both fixtures are real merged-PR bodies from this repo's own history (crol-list #26 and
 // #33). Neither PR actually carried the "## What this means for you" marker — the

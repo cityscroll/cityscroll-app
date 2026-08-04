@@ -32,7 +32,6 @@ test("the pull request template is capability-only", () => {
 
 test("public beta guidance contains no team-governance workflow", () => {
   for (const path of [
-    "CONTRIBUTING.md",
     "docs/beta-channel.md",
     "tools/check_beta_review_contract.mjs",
   ]) {

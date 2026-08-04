@@ -1,5 +1,5 @@
 {
-  "_comment": "Machine-readable release-note contract for team consumers. Updated by tools/gen_changelog.mjs from merged PRs carrying both the 'changelog:major' label and an accepted user-impact section (see CONTRIBUTING.md). Entries are newest first. Optional media and merged_prs fields retain their existing validated schemas.",
+  "_comment": "Machine-readable release-note contract for team consumers. Updated by tools/gen_changelog.mjs from merged PRs carrying both the 'changelog:major' label and an accepted user-impact section. Entries are newest first. Optional media and merged_prs fields retain their existing validated schemas.",
   "entries": [
     {
       "pr": 318,

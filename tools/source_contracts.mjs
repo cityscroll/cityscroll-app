@@ -4,10 +4,7 @@ import { fileURLToPath } from "node:url";
 export const ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const REGISTRY_PATH = fileURLToPath(new URL("../site/data/source_contracts.json", import.meta.url));
 export const DOC_PATH = fileURLToPath(new URL("../docs/data-sources.md", import.meta.url));
-export const README_PATH = fileURLToPath(new URL("../README.md", import.meta.url));
 export const SHAPE_FIXTURE_PATH = fileURLToPath(new URL("../test/fixtures/source_contracts/source-shapes.json", import.meta.url));
-export const README_BEGIN = "<!-- BEGIN GENERATED SOURCE CONTRACTS -->";
-export const README_END = "<!-- END GENERATED SOURCE CONTRACTS -->";
 
 const ALLOWED_STATUS = new Set(["live", "build-time", "manual", "disabled"]);
 const ALLOWED_KIND = new Set(["socrata", "checkbook", "arcgis", "geosearch", "html", "mocs-disabled", "rss"]);
@@ -220,34 +217,6 @@ export function awardCoverage(registryEntries) {
   };
 }
 
-export function renderReadmeSourceBlock(registry, coverage) {
-  const runtime = registry.contracts.filter((contract) => contract.status === "live" && contract.scope === "runtime");
-  const rows = runtime.map((contract) => (
-    `| ${sourceRef(contract)} | ${mdCell(contract.used_for)} | ${mdCell(contract.product_freshness)} |`
-  ));
-  return [
-    README_BEGIN,
-    "",
-    "The executable registry is [`site/data/source_contracts.json`](site/data/source_contracts.json);",
-    "[the generated source ledger](docs/data-sources.md) records coverage, cadence, freshness,",
-    "required fields, and known gaps. Required pull-request checks validate recorded upstream",
-    "shapes; a separate daily workflow runs the live verifier and reports publisher drift.",
-    "",
-    "| Live source | Used for | Product freshness |",
-    "|---|---|---|",
-    ...rows,
-    "",
-    `The external-award registry currently maps ${coverage.aliases} agency names to ${coverage.authorities} distinct ABO authorities across \`${coverage.datasets.join("`, `")}\`, adds ${coverage.nycha} exact NYCHA mapping, and records ${coverage.absent} verified coverage gaps. ABO joins remain possible matches rather than exact contract identity.`,
-    "",
-    "MOCS Local Law 63 plan rows are disabled. The current official page publishes rotating",
-    "per-agency spreadsheets without a stable machine manifest; the former configured dataset is",
-    "non-tabular, and the former documented dataset does not exist. CityScroll does not show",
-    "official plan forecasts until a source passes the executable contract.",
-    "",
-    README_END,
-  ].join("\n");
-}
-
 export function renderSourceDocument(registry, coverage) {
   const rows = registry.contracts.map((contract) => {
     const source = sourceRef(contract);
@@ -300,22 +269,6 @@ export function renderSourceDocument(registry, coverage) {
     "product behavior.",
     "",
   ].join("\n");
-}
-
-export function replaceReadmeSourceBlock(readme, block) {
-  if (readme.includes(README_BEGIN) && readme.includes(README_END)) {
-    const start = readme.indexOf(README_BEGIN);
-    const end = readme.indexOf(README_END, start) + README_END.length;
-    return `${readme.slice(0, start)}${block}${readme.slice(end)}`;
-  }
-
-  const heading = "## Data Sources";
-  const next = "\n---";
-  const start = readme.indexOf(heading);
-  if (start < 0) throw new Error("README Data Sources heading not found");
-  const end = readme.indexOf(next, start);
-  if (end < 0) throw new Error("README Data Sources section terminator not found");
-  return `${readme.slice(0, start + heading.length)}\n\n${block}\n${readme.slice(end)}`;
 }
 
 export function verifyCodeReferences(registry) {
