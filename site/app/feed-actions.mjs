@@ -730,8 +730,7 @@ function actionRailHTML(actions){
     if(action.delivery==="official_handoff"){
       const primary=primaryUsed?"":" primary"; primaryUsed=true;
       const accessible=`${label} — ${action.destination_label}`;
-      return `<span class="next-action-item"><a class="act${primary}" aria-label="${escUiHtml(accessible)}" href="${escUiHtml(action.destination)}" data-action-outcome-index="${index}" ${EXT_ATTRS}>`+
-        `<span>${label}</span>${extSR()}</a><span class="act-official" aria-hidden="true">${escUiHtml(action.destination_label)}</span></span>`;
+      return `<a class="act${primary}" aria-label="${escUiHtml(accessible)}" title="${escUiHtml(action.destination_label)}" href="${escUiHtml(action.destination)}" data-action-outcome-index="${index}" ${EXT_ATTRS}>${label}${extSR()}</a>`;
     }
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
     // Local watch (and other local navigations): use the action destination when present
@@ -1036,7 +1035,7 @@ function meetingsExplorerCardHTML(entry){
   // Primary kinetic destination: notice detail (outcomes + action rail live there);
   // participation join/materials stay as secondary classified EXT links.
   const participation=entry.participation||record.participation||{};
-  const primaryAction=`<a class="act primary" aria-label="${escUiHtml(`${actionLeadText}: ${entry.title||record.title||t("untitled")}`)}" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
+  const primaryAction=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   const secondaryActions=[];
   // City Record official notice — REQ_URL only so link_targets classifies as external
   // (mixed source_url||REQ_URL expressions are unclassified by that gate).

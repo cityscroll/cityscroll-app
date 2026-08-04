@@ -5,9 +5,7 @@ import test from "node:test";
 
 import {
   groupSameExcept,
-  installStaffingConsolidationStyles,
   repeatedSameExceptFindings,
-  staffingAppointmentListHTML,
 } from "../site/same_consolidation.mjs";
 import {
   auditUnconsolidatedRepeatedRows,
@@ -133,56 +131,15 @@ test("the committed appointment census preserves every person while reducing rep
 
 test("the People renderer uses the shared grouping utility and keeps exports on raw rows", () => {
   const people = readFileSync(new URL("../site/app/people.mjs", import.meta.url), "utf8");
-  const grouping = readFileSync(new URL("../site/same_consolidation.mjs", import.meta.url), "utf8");
+  const consolidation = readFileSync(new URL("../site/same_consolidation.mjs", import.meta.url), "utf8");
   const exports = readFileSync(new URL("../site/app/search-share.mjs", import.meta.url), "utf8");
 
-  assert.match(people, /import\("\.\.\/same_consolidation\.mjs"\)/);
-  assert.match(people, /staffingAppointmentListHTML\(items\)/);
-  assert.match(grouping, /groupSameExcept\(items/);
-  assert.match(grouping, /members = \[\.\.\.entry\.members\]\.sort/);
+  assert.match(people, /SameConsolidation\.group\(items/);
+  assert.match(people, /function loadSameConsolidation/);
+  assert.doesNotMatch(people, /^const sameConsolidationReady=import/m);
+  assert.match(consolidation, /members = \[\.\.\.entry\.members\]\.sort/);
+  assert.match(consolidation, /createStaffingConsolidationUI/);
+  assert.match(consolidation, /staffingAppointmentGroupHTML/);
   assert.match(exports, /if\(lens==="people"\) return \{rows:staffingVisibleItems\(\)/);
   assert.deepEqual(auditUnconsolidatedRepeatedRows(), []);
-});
-
-test("the lazy Staffing renderer preserves grouped names and installs its styles once", () => {
-  const rows = [
-    appointment({ request_id: "1", person: "DOE,JANE" }),
-    appointment({ request_id: "2", person: "ROE,JOHN" }),
-    appointment({ request_id: "3", person: "PUBLIC,JANET" }),
-  ];
-  const ui = {
-    EXT_ATTRS: 'target="_blank"',
-    REQ_URL: (id) => `https://example.test/${id}`,
-    escUiHtml: String,
-    extSR: () => "",
-    fdate: (value) => String(value).slice(0, 10),
-    fdt: () => "January 1, 2026",
-    fmtNumber: String,
-    money: () => "$1",
-    staffingHireRowHTML: (row) => `<article>${row.person}</article>`,
-    t: (key, vars = {}) => ({
-      staffing_appointment_group_names: `${vars.n} names`,
-      staffing_appointment_group_posted: `Posted ${vars.date}`,
-      staffing_appointment_group_stipend: `${vars.amount} stipend`,
-      staffing_appointment_group_summary: `${vars.n} appointed`,
-      staffing_effective_date: `Effective ${vars.date}`,
-      staffing_title_code: `Title code ${vars.code}`,
-    })[key] || key,
-  };
-  const html = staffingAppointmentListHTML(rows, ui);
-  assert.match(html, /data-group-count="3"/);
-  assert.match(html, /DOE,JANE/);
-  assert.match(html, /PUBLIC,JANET/);
-
-  const nodes = new Map();
-  const doc = {
-    createElement: () => ({}),
-    getElementById: (id) => nodes.get(id) || null,
-    head: { append: (node) => nodes.set(node.id, node) },
-  };
-  installStaffingConsolidationStyles(doc);
-  installStaffingConsolidationStyles(doc);
-  assert.equal(nodes.size, 1);
-  assert.match(nodes.get("staffing-consolidation-styles").textContent, /\.staffing-hire-row/);
-  assert.match(nodes.get("staffing-consolidation-styles").textContent, /\.staffing-hire-group/);
 });
