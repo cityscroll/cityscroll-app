@@ -8,6 +8,7 @@ import { handleStats } from "../worker/src/stats.mjs";
 import {
   ANALYTICS_LENSES,
   ANALYTICS_SCENARIOS,
+  COMPATIBLE_TAXONOMY_VERSIONS,
   TAXONOMY_VERSION,
   buildUsageSnapshot,
   normalizeUsageEvent,
@@ -390,5 +391,7 @@ test("taxonomy and budget note pin current Cloudflare allowances and limits", as
   assert.match(doc, /ANALYTICS_ENVIRONMENT/);
   assert.match(doc, /https:\/\/developers\.cloudflare\.com\/analytics\/analytics-engine\/pricing\//);
   assert.match(usageAnalyticsQuery(), /INTERVAL '90' DAY/);
-  assert.match(usageAnalyticsQuery(), /blob6 IN \('1\.0\.0', '1\.1\.0'\)/);
+  for (const version of COMPATIBLE_TAXONOMY_VERSIONS) {
+    assert.match(usageAnalyticsQuery(), new RegExp(`'${version.replaceAll(".", "\\.")}'`));
+  }
 });

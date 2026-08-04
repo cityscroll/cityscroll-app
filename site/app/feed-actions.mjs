@@ -720,7 +720,7 @@ function actionRailGuideHTML(actions){
 }
 function actionRailHTML(actions){
   let primaryUsed=false;
-  const items=actions.map(action=>{
+  const items=actions.map((action,index)=>{
     const label=actionRailLabel(action);
     if(action.delivery==="unavailable") return `<div class="next-action-unavailable" role="status">${label}</div>`;
     if(action.type==="bid_checklist"){
@@ -729,7 +729,7 @@ function actionRailHTML(actions){
     }
     if(action.delivery==="official_handoff"){
       const primary=primaryUsed?"":" primary"; primaryUsed=true;
-      return `<a class="act${primary}" href="${escUiHtml(action.destination)}" ${EXT_ATTRS}>`+
+      return `<a class="act${primary}" href="${escUiHtml(action.destination)}" data-action-outcome-index="${index}" ${EXT_ATTRS}>`+
         `<span>${label}<span class="act-official">${escUiHtml(action.destination_label)}</span></span>${extSR()}</a>`;
     }
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
@@ -740,12 +740,25 @@ function actionRailHTML(actions){
       : "#alerts";
     return `<a class="act" href="${escUiHtml(href)}">${label}</a>`;
   }).join("");
-  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}</section>`;
+  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}<div data-action-outcome-slot></div></section>`;
+}
+function bindActionOutcomePrompt(el,actions,contextKey){
+  const options={registry:window.CrolActions,analytics:window.crolAnalytics,t,escape:escUiHtml,today:todayISO(),contextKey};
+  const load=(selected,officialClicked=false)=>import("../action_outcome_prompt.mjs").then(module=>{
+    if(document.contains(el)) module.bindActionOutcomePrompt(el,selected,{...options,officialClicked});
+  }).catch(()=>{});
+  const passedCandidate=actions.some(action=>(action?.guide?.system==="property_reader_actions"&&action.guide.mode==="historical")||action?.delivery==="unavailable");
+  if(passedCandidate){ load(actions); return; }
+  el.querySelectorAll("a[data-action-outcome-index]").forEach(link=>link.addEventListener("click",()=>{
+    const action=actions[Number(link.dataset.actionOutcomeIndex)];
+    if(action) load([action],true);
+  }));
 }
 function paintNoticeActionRail(el,r,ruleRecord,lifecycleData){
   if(!el||!window.CrolActions) return;
   const actions=CrolActions.compileActionRail(noticeActionMatter(r,ruleRecord,lifecycleData),{today:todayISO()});
   el.innerHTML=actionRailHTML(actions);
+  bindActionOutcomePrompt(el,actions,r.request_id||null);
   const calendar=el.querySelector("[data-next-calendar]");
   if(calendar) calendar.addEventListener("click",()=>{
     if(r.type_of_notice_description==="Solicitation"){
@@ -919,6 +932,7 @@ function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
   const matter=landActionMatter(projectRow, outcomeRecord, phaseTools);
   const actions=CrolActions.compileActionRail(matter,{today:todayISO()});
   el.innerHTML=actionRailHTML(actions);
+  bindActionOutcomePrompt(el,actions,projectRow.project_id||null);
   const calendar=el.querySelector("[data-next-calendar]");
   if(calendar) calendar.addEventListener("click",()=>{
     // Hearing-shaped ICS when a next hearing date is known; else skip silently.
