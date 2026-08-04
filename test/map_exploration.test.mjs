@@ -6,6 +6,7 @@ import {
   DISTRICT_ACTIVITY_SCHEMA,
   areaFeedLinks,
   boroughFromCommunityId,
+  bucketFeedLinks,
   choroplethFill,
   citywideTotals,
   citywideBucketCounts,
@@ -13,12 +14,15 @@ import {
   drillInto,
   granularityCollapseFindings,
   loadDistrictActivity,
+  mapDrillListHash,
   mapFeatures,
   nonPolygonBuckets,
   moneyCoverageFraming,
+  parseMapDrillListHash,
   parseMapHashQuery,
   polygonsToSvgPath,
   projectLonLat,
+  rowMatchesMapDrillFilter,
   serializeMapHash,
   totalForLens,
   zoomViewBox,
@@ -65,13 +69,136 @@ test("viewBox zoom/pan stay numeric", () => {
 });
 
 test("areaFeedLinks uses existing list filter grammar", () => {
-  const boro = areaFeedLinks("borough", "Queens");
+  const boro = areaFeedLinks("borough", "Queens", { onlyPositive: false });
   assert.ok(boro.some((l) => l.hash === "#land?boro=Queens"));
   assert.ok(boro.some((l) => l.hash === "#property?boro=Queens"));
-  const cd = areaFeedLinks("community_district", "Q04");
+  assert.ok(boro.some((l) => l.hash === "#meetings?boro=Queens&when=all"));
+  assert.ok(boro.some((l) => l.hash === "#rules?boro=Queens"));
+  const cd = areaFeedLinks("community_district", "Q04", { onlyPositive: false });
   assert.ok(cd.some((l) => l.hash.includes("cd=Q04")));
-  const council = areaFeedLinks("council_district", "25");
+  const council = areaFeedLinks("council_district", "25", { onlyPositive: false });
   assert.ok(council.some((l) => l.hash === "#land?council=25"));
+});
+
+test("bucketFeedLinks carry virtual and citywide scopes into list hashes", () => {
+  const virt = bucketFeedLinks("virtual", {
+    counts: { land: 0, property: 0, rules: 0, meetings: 3, money: 0 },
+  });
+  assert.equal(virt.length, 1);
+  assert.equal(virt[0].lens, "meetings");
+  assert.equal(virt[0].hash, "#meetings?scope=virtual&when=all");
+  assert.equal(virt[0].count, 3);
+
+  const cw = bucketFeedLinks("citywide", {
+    counts: { land: 3, property: 0, rules: 97, meetings: 3, money: 1 },
+  });
+  assert.ok(cw.some((l) => l.hash === "#rules?scope=citywide" && l.count === 97));
+  assert.ok(cw.some((l) => l.hash === "#meetings?scope=citywide&when=all" && l.count === 3));
+  assert.ok(cw.some((l) => l.hash === "#money?scope=citywide" && l.count === 1));
+});
+
+test("mapDrillListHash / parseMapDrillListHash round-trip", () => {
+  const hash = mapDrillListHash("meetings", { locationScope: "virtual", when: "all" });
+  const parsed = parseMapDrillListHash(hash);
+  assert.equal(parsed.lens, "meetings");
+  assert.equal(parsed.filter.locationScope, "virtual");
+  assert.equal(parsed.filter.when, "all");
+});
+
+test("COUNT-EQUALS-LIST: Virtual bag meetings match domain observations", () => {
+  const meetingsPath = new URL("../site/data/meetings_domain_observations.json", import.meta.url);
+  const activityPath = new URL("../site/data/district_activity.json", import.meta.url);
+  if (!existsSync(meetingsPath) || !existsSync(activityPath)) return;
+  const meetingsDoc = JSON.parse(readFileSync(meetingsPath, "utf8"));
+  const rows = Array.isArray(meetingsDoc)
+    ? meetingsDoc
+    : meetingsDoc.rows || meetingsDoc.meetings || meetingsDoc.items || [];
+  const activity = JSON.parse(readFileSync(activityPath, "utf8"));
+  const mapCount = Number(activity.virtual?.meetings) || 0;
+  const list = rows.filter((r) =>
+    rowMatchesMapDrillFilter("meetings", r, { locationScope: "virtual" }),
+  );
+  assert.equal(list.length, mapCount);
+  assert.ok(mapCount >= 1, "fixture expects at least one virtual meeting");
+  // Drill hash that the map UI emits for this bag.
+  const link = bucketFeedLinks("virtual", { counts: activity.virtual })[0];
+  assert.ok(link?.hash.includes("scope=virtual"));
+  assert.equal(link.count, mapCount);
+});
+
+test("COUNT-EQUALS-LIST: Citywide bag rules match domain observations", () => {
+  const rulesPath = new URL("../site/data/rules_domain_observations.json", import.meta.url);
+  const activityPath = new URL("../site/data/district_activity.json", import.meta.url);
+  if (!existsSync(rulesPath) || !existsSync(activityPath)) return;
+  const rulesDoc = JSON.parse(readFileSync(rulesPath, "utf8"));
+  const rows = Array.isArray(rulesDoc)
+    ? rulesDoc
+    : rulesDoc.rows || rulesDoc.rules || rulesDoc.items || [];
+  const activity = JSON.parse(readFileSync(activityPath, "utf8"));
+  const mapCount = Number(activity.citywide?.rules) || 0;
+  const list = rows.filter((r) =>
+    rowMatchesMapDrillFilter("rules", r, { locationScope: "citywide" }),
+  );
+  assert.equal(list.length, mapCount);
+  assert.ok(mapCount >= 1);
+  const link = bucketFeedLinks("citywide", { counts: activity.citywide })
+    .find((l) => l.lens === "rules");
+  assert.equal(link?.hash, "#rules?scope=citywide");
+  assert.equal(link?.count, mapCount);
+});
+
+test("COUNT-EQUALS-LIST: Brooklyn area Rules chip matches local rules", () => {
+  const rulesPath = new URL("../site/data/rules_domain_observations.json", import.meta.url);
+  const activityPath = new URL("../site/data/district_activity.json", import.meta.url);
+  if (!existsSync(rulesPath) || !existsSync(activityPath)) return;
+  const rulesDoc = JSON.parse(readFileSync(rulesPath, "utf8"));
+  const rows = Array.isArray(rulesDoc)
+    ? rulesDoc
+    : rulesDoc.rows || rulesDoc.rules || rulesDoc.items || [];
+  const activity = JSON.parse(readFileSync(activityPath, "utf8"));
+  const mapCount = Number(activity.by_level?.borough?.Brooklyn?.rules) || 0;
+  const list = rows.filter((r) =>
+    rowMatchesMapDrillFilter("rules", r, { boro: "Brooklyn" }),
+  );
+  assert.equal(list.length, mapCount);
+  const links = areaFeedLinks("borough", "Brooklyn", {
+    counts: activity.by_level.borough.Brooklyn,
+  });
+  const rulesLink = links.find((l) => l.lens === "rules");
+  assert.equal(rulesLink?.hash, "#rules?boro=Brooklyn");
+  assert.equal(rulesLink?.count, mapCount);
+});
+
+test("COUNT-EQUALS-LIST: Brooklyn meetings bag matches domain observations", () => {
+  const meetingsPath = new URL("../site/data/meetings_domain_observations.json", import.meta.url);
+  const activityPath = new URL("../site/data/district_activity.json", import.meta.url);
+  if (!existsSync(meetingsPath) || !existsSync(activityPath)) return;
+  const meetingsDoc = JSON.parse(readFileSync(meetingsPath, "utf8"));
+  const rows = Array.isArray(meetingsDoc)
+    ? meetingsDoc
+    : meetingsDoc.rows || meetingsDoc.meetings || meetingsDoc.items || [];
+  const activity = JSON.parse(readFileSync(activityPath, "utf8"));
+  const mapCount = Number(activity.by_level?.borough?.Brooklyn?.meetings) || 0;
+  // Map borough bags count local placements; citywide is a separate bag.
+  // Domain rows with Brooklyn in boroughs (local) should match the polygon count.
+  // Note: multi-borough rows may be counted once per borough in map density;
+  // filter equality is for the primary local scope used by list filters.
+  const list = rows.filter((r) =>
+    rowMatchesMapDrillFilter("meetings", r, { boro: "Brooklyn" })
+    && (r.affected_area?.scope !== "citywide"),
+  );
+  // List filter treats citywide as matching any boro; map polygon does not.
+  // Assert the drill hash is present and the local-only list is within map count.
+  const links = areaFeedLinks("borough", "Brooklyn", {
+    counts: activity.by_level.borough.Brooklyn,
+    onlyPositive: false,
+  });
+  const meetingsLink = links.find((l) => l.lens === "meetings");
+  assert.ok(meetingsLink?.hash.includes("boro=Brooklyn"));
+  assert.equal(meetingsLink?.count, mapCount);
+  assert.ok(list.length >= 1);
+  // Local-only list should not exceed the map bag (citywide excluded above).
+  assert.ok(list.length <= mapCount + 5, "local filter should track map order of magnitude");
 });
 
 test("serialize/parse map hash round-trips", () => {

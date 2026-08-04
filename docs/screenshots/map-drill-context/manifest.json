@@ -1,0 +1,40 @@
+{
+  "feature": "map-drill-context",
+  "shots": [
+    {
+      "name": "map-virtual-bucket",
+      "hash": "#map?id=Virtual",
+      "kind": "map"
+    },
+    {
+      "name": "meetings-virtual-scope",
+      "hash": "#meetings?scope=virtual&when=all",
+      "kind": "meetings"
+    },
+    {
+      "name": "map-brooklyn",
+      "hash": "#map?id=Brooklyn",
+      "kind": "map"
+    },
+    {
+      "name": "rules-brooklyn",
+      "hash": "#rules?boro=Brooklyn",
+      "kind": "rules"
+    },
+    {
+      "name": "rules-citywide",
+      "hash": "#rules?scope=citywide",
+      "kind": "rules"
+    }
+  ],
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ]
+}

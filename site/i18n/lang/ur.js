@@ -166,6 +166,7 @@
     map_citywide_detail_lead: "موجودہ لینس ({lens}) میں {n} شہر بھر کے واقعات۔ یہ ہر ضلع پر لاگو ہوتے ہیں — ایک جگہ پر نہیں۔",
     map_virtual_detail_lead: "موجودہ لینس ({lens}) میں {n} صرف ورچوئل اجلاس۔ کوئی جسمانی مقام شائع نہیں ہوا۔",
     map_citywide_also_applies: "شہر بھر کے آئٹمز یہاں بھی لاگو ہوتے ہیں (اس ضلع کے پولیگون میں شمار نہیں)۔",
+    map_drill_when_all: "تمام تاریخیں",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "بیان کریں کہ آپ کیا تلاش کر رہے ہیں…",

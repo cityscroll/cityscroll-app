@@ -164,6 +164,7 @@
     map_citywide_detail_lead: "বর্তমান লেন্সে ({lens}) {n}টি সিটিওয়াইড ইভেন্ট। এগুলো সব জেলায় প্রযোজ্য — এক জায়গায় আবদ্ধ নয়।",
     map_virtual_detail_lead: "বর্তমান লেন্সে ({lens}) {n}টি শুধু ভার্চুয়াল মিটিং। কোনো সশরীর ভেন্যু প্রকাশিত হয়নি।",
     map_citywide_also_applies: "সিটি-স্কেল আইটেমও এখানে প্রযোজ্য (এই জেলার পলিগনের ভিতরে গণনা হয় না)।",
+    map_drill_when_all: "সব তারিখ",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "আপনি কী খুঁজছেন তা বর্ণনা করুন…",
