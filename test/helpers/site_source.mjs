@@ -14,6 +14,7 @@ export const SITE_MODULES = [
   "procurement-lifecycle.mjs",
   "procurement-phase.mjs",
   "subsidy.mjs",
+  "authority-award.mjs",
   "meetings.mjs",
   "entities.mjs",
   "workspace.mjs",

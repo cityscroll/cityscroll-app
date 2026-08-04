@@ -138,7 +138,10 @@ fixture proof and DuckDB materialization:
 `warehouse/.venv/bin/python warehouse/scripts/abo_awards_run.py --from-fixture
 --force-headroom`; detector: `node --test test/abo_awards_residual.test.mjs`.
 Payload contract: `site/data/abo_award_residual_lookup.json` (+ Worker twin),
-currently an honest empty match map; reader UI belongs to a separate card.
+currently an honest empty match map. The notice reader is
+`site/abo_award_panel.mjs` + `site/app/authority-award.mjs`; it renders only an
+accepted, receipt-gated edge and otherwise leaves the notice unchanged. Verify with
+`node --test test/abo_awards_residual.test.mjs test/abo_award_panel.test.mjs`.
 
 **T0 attachment metadata:** City Record `document_links` is the archive source
 before 2025; it is effectively empty from 2025 onward, so the guarded host-side
