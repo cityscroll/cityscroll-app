@@ -24,6 +24,8 @@ export const COMMERCIAL_CATEGORIES = Object.freeze([
   "equipment",
   "real_property",
   "scrap_materials",
+  "seized_property",
+  "rights_and_interests",
   "other",
 ]);
 
@@ -32,8 +34,8 @@ export const ASSET_FILTER_ALIASES = Object.freeze({
   vehequip: "vehicle",
   forest: "timber",
   realty: "real_property",
-  medallion: "other",
-  seized: "other",
+  medallion: "rights_and_interests",
+  seized: "seized_property",
 });
 
 export const PRICE_KINDS = Object.freeze([
@@ -527,7 +529,7 @@ export function classifyCommercialCategory(text) {
   }
   if (hit("medallion")) {
     return {
-      category: "other",
+      category: "rights_and_interests",
       label: "Taxi medallions",
       confidence: "high",
       evidence: around(/medallion/i, "medallion"),
@@ -535,7 +537,7 @@ export function classifyCommercialCategory(text) {
   }
   if (hit("property clerk", "forfeiture", "pending destruction", "unauthorized tobacco", "owners are wanted")) {
     return {
-      category: "other",
+      category: "seized_property",
       label: "Seized / unclaimed property",
       confidence: "medium",
       evidence: around(/(?:property clerk|forfeiture|pending destruction|unclaimed)/i, "seized"),
@@ -569,10 +571,10 @@ export function classifyCommercialCategory(text) {
   }
   if (hit("easement", "mortgage and note", "outstanding debt")) {
     return {
-      category: "other",
-      label: null,
-      confidence: "low",
-      evidence: null,
+      category: "rights_and_interests",
+      label: "Rights / interests",
+      confidence: "medium",
+      evidence: around(/(?:easement|mortgage and note|outstanding debt)/i, "rights or interests"),
     };
   }
   return {
@@ -735,8 +737,8 @@ export function hasCommercialSaleSignals(commercial) {
     return true;
   }
 
-  // Taxi medallions labeled under category other with high confidence + sale language.
-  if (category === "other" && confidence === "high" && /medallion/i.test(String(commercial.item?.label || ""))) {
+  // Taxi medallions are transferable rights and still need explicit sale language.
+  if (category === "rights_and_interests" && confidence === "high" && /medallion/i.test(String(commercial.item?.label || ""))) {
     return true;
   }
 
@@ -1404,6 +1406,8 @@ export function commercialCategoryI18nKey(category) {
     equipment: "asset_equipment",
     real_property: "asset_real_property",
     scrap_materials: "asset_scrap_materials",
+    seized_property: "asset_seized_property",
+    rights_and_interests: "asset_rights_and_interests",
     other: "asset_other",
   };
   return map[category] || "asset_other";
