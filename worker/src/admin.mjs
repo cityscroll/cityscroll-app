@@ -26,6 +26,7 @@ import {
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
+import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -501,6 +502,38 @@ export async function handleAdminDigestRollup(req, env) {
     return json(out, 200);
   } catch (e) {
     return json({ error: String(e?.message || e) }, 500);
+  }
+}
+
+/**
+ * GET /admin/digest-shadow?key=…[&day=YYYY-MM-DD][&digest=<masked-id>]
+ * Machine-readable 06:00 rehearsal summary. A redlined run deliberately returns 503 so
+ * scheduled monitoring can wake on HTTP status while still consuming structured evidence.
+ */
+export async function handleAdminDigestShadow(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
+  if (!env.DB) return json({ error: "no-store" }, 503);
+  if (req.method === "POST") {
+    try {
+      const summary = await runDigestShadow(env);
+      return json({ summary }, summary.ok ? 200 : 503);
+    } catch (error) {
+      return json({ error: "shadow-rerun-failed", detail: String(error?.message || error) }, 503);
+    }
+  }
+  const url = new URL(req.url);
+  const day = url.searchParams.get("day");
+  if (day && !/^\d{4}-\d{2}-\d{2}$/.test(day)) return json({ error: "invalid-day" }, 400);
+  const digestId = url.searchParams.get("digest");
+  try {
+    const out = await readDigestShadow(env.DB, { day, digestId });
+    if (!out) return json({ error: "not-run" }, 404);
+    if (digestId && !out.preview) return json({ ...out, error: "preview-not-found" }, 404);
+    return json(out, out.summary?.ok === false ? 503 : 200);
+  } catch (error) {
+    return json({ error: "shadow-read-failed", detail: String(error?.message || error) }, 503);
   }
 }
 
