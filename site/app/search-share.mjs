@@ -856,43 +856,18 @@ async function loadValidatedSuggestions(){
   }catch(e){ /* stays on the static fallback */ }
 }
 
-const exactSearchSelectors={
-  money:"#kw",
-  people:"#pkw",
-  land:"#lkw",
-  property:"#propertykw",
-  rules:"#ruleskw",
-  meetings:"#meetingskw",
-  alerts:"#quiznarrow",
-};
-
-function askInput(lens){ return $(lens==="money"?"#nlq":"#nlq-"+lens); }
+const exactSearchSelectors={money:"#kw",people:"#pkw",land:"#lkw",property:"#propertykw",rules:"#ruleskw",meetings:"#meetingskw",alerts:"#quiznarrow"};
 function askPanel(lens){ return document.querySelector(`[data-ask-lens="${lens}"]`); }
-function askTranslation(lens){ return $(lens==="money"?"#nltrans":"#nltrans-"+lens); }
 
-function activateAskSearch(lens){
-  const panel=askPanel(lens);
-  if(panel){ panel.open=true; panel.dataset.askActive="true"; }
-}
+function activateAskSearch(lens){ askPanel(lens)?.setAttribute("open",""); }
 
-// Exact search is the primary list control. Once a reader types there, the prior interpreted
-// request must not remain as a second, contradictory visible value or as hidden Money-only
-// constraints. Facets that Ask populated remain inspectable in their ordinary controls.
 function deactivateAskSearch(lens){
-  const input=askInput(lens);
-  const panel=askPanel(lens);
-  const translation=askTranslation(lens);
+  const input=$(lens==="money"?"#nlq":"#nlq-"+lens);
+  const translation=$(lens==="money"?"#nltrans":"#nltrans-"+lens);
   if(input) input.value="";
-  if(panel){ panel.open=false; delete panel.dataset.askActive; }
+  askPanel(lens)?.removeAttribute("open");
   if(translation) translation.innerHTML="";
   if(lens==="money") moneyNlResolved={};
-}
-
-function bindAskSearchHierarchy(){
-  Object.entries(exactSearchSelectors).forEach(([lens,selector])=>{
-    const input=$(selector); if(!input) return;
-    input.addEventListener("input",()=>deactivateAskSearch(lens));
-  });
 }
 
 function injectNLBoxes(){
@@ -921,7 +896,9 @@ function injectNLBoxes(){
     }
     renderNLSamples(lens, $("#nltry-"+lens));
   });
-  bindAskSearchHierarchy();
+  Object.entries(exactSearchSelectors).forEach(([lens,selector])=>{
+    const input=$(selector); if(input) input.addEventListener("input",()=>deactivateAskSearch(lens));
+  });
 }
 
 function exportSpec(lens){

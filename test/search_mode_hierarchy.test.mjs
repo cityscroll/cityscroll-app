@@ -37,7 +37,7 @@ test("exact list search is primary and Ask CityScroll is a disclosed secondary m
 test("a conventional query visibly takes over from an interpreted request", () => {
   assert.match(SITE_SOURCE, /function deactivateAskSearch\(lens\)/);
   assert.match(SITE_SOURCE, /input\.value=""/);
-  assert.match(SITE_SOURCE, /panel\.open=false/);
+  assert.match(SITE_SOURCE, /askPanel\(lens\)\?\.removeAttribute\("open"\)/);
   assert.match(
     SITE_SOURCE,
     /moneyNlResolved=\{\}/,
