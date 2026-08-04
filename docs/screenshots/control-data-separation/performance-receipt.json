@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "fixture": "home.cold",
+  "quantile": 0.95,
+  "samples": 20,
+  "warmup_samples": 1,
+  "budget": {
+    "ttfb_ms": 300,
+    "fcp_ms": 1000,
+    "lcp_ms": 2500,
+    "cls": 0.1,
+    "wire_bytes": 455000
+  },
+  "mobile_p95": {
+    "ttfb_ms": 5.555,
+    "fcp_ms": 264.4,
+    "lcp_ms": 264.4,
+    "cls": 0.016911,
+    "wire_bytes": 452098
+  },
+  "desktop_p95": {
+    "ttfb_ms": 4.625,
+    "fcp_ms": 256.2,
+    "lcp_ms": 256.2,
+    "cls": 0.008823,
+    "wire_bytes": 452098
+  }
+}

@@ -13,6 +13,7 @@ each gate's verdict logic; it does not redesign the rules.
 | Gate | What it enforces |
 |---|---|
 | `link_text` | Link text must make sense out of context (no "click here") |
+| `control_labels` | Visible controls use at most four words and do not present status as an action |
 | `i18n_keys` | Every shipping language has every English key |
 | `nyc_copy_lint` | Style-guide copy rules (acronyms, currency form, PDF links, …) |
 | `heading_punctuation` | No colon/period in headings (question marks allowed) |

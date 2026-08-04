@@ -156,7 +156,9 @@ export function rulesProcessActionKey(phase, fineStage = null) {
   const fine = normalizeRuleStage(fineStage);
   if (fine === "comment-open") return "rule_action_comment";
   if (fine === "hearing") return "rule_action_attend_hearing";
-  if (fine === "comment-closed") return "rule_action_comment_closed";
+  // Closed comment is status data, not a control label. The card renders that
+  // state beside a neutral notice action.
+  if (fine === "comment-closed") return "rule_action_open_notice";
   if (fine === "proposed") return "rule_phase_action_proposal";
   if (fine === "adopted") return "rule_phase_action_adoption";
   if (fine === "effective") return "rule_phase_action_effective";

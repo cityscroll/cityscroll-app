@@ -765,7 +765,8 @@ test("registered Award notice leads with Checkbook registration, not watch or bi
   const actions = compileActionRail(matter, {today: "2026-08-01"});
   actions.forEach(validateAction);
   assert.equal(actions[0].delivery, "official_handoff");
-  assert.equal(actions[0].label_key, "next_action_award_registered");
+  assert.equal(actions[0].label_key, "next_action_award_checkbook");
+  assert.equal(actions[0].guide.label_key, "next_action_award_registered");
   assert.equal(actions[0].guide.system, "award_lifecycle");
   assert.equal(actions[0].type, "document");
   assert.doesNotMatch(actions[0].label_key, /bid|passport|response/i);
@@ -794,7 +795,8 @@ test("Award with vendor and amount but no Checkbook join is guide-first, not wat
   // PIN yields a Checkbook search destination when present.
   assert.ok(action.guide);
   assert.equal(action.guide.system, "award_lifecycle");
-  assert.equal(action.label_key, "next_action_award_to");
+  assert.equal(action.label_key, "next_action_award_checkbook");
+  assert.equal(action.guide.label_key, "next_action_award_to");
   assert.equal(action.label_vars.vendor, "HNTB New York Engineering and Architecture P.C.");
   assert.doesNotMatch(action.label_key, /bid|watch/i);
   assert.doesNotMatch(String(action.label || ""), /bid|Watch this notice/i);

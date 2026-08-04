@@ -257,7 +257,7 @@ test("phase tools render lead → stepper → panels on fixture spines", () => {
   assert.equal((html.match(/data-meeting-matter(?:=|[\s>])/g) || []).length, 1);
   // Not a flat 4-stage chain dump of labels in order.
   assert.doesNotMatch(html, /class="chain meeting-spine"/);
-  assert.match(html, /How this timeline works|meeting_phase_how/);
+  assert.match(html, /Explain timeline|meeting_phase_how/);
 });
 
 test("meetingMatterPhaseHTML is empty for empty views", () => {

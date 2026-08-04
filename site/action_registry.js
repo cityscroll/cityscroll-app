@@ -442,7 +442,7 @@
     const zola = `https://zola.planning.nyc.gov/l/lot/${boro}/${block}/${lot}`;
     // Prefer ZoLa as the primary “look up this lot” action; ACRIS/WOW live on the parcel row.
     return [
-      official("document", "property_action_lookup_zola", "Look up this lot on ZoLa", zola, deadline, {
+      official("document", "property_action_lookup_zola", "Open ZoLa", zola, deadline, {
         guide: {
           system: "parcel_lookup",
           mode: "bbl",
@@ -1024,7 +1024,7 @@
     if (open && (commentUrl || ruleUrl)) {
       destination = commentUrl || ruleUrl;
       labelKey = "rule_comment_btn";
-      label = "Comment on the official rule page";
+      label = "Comment";
       primaryType = "comment";
     } else if (hearingUpcoming && bits && bits.participation_url && bits.join_kind === "join") {
       destination = bits.participation_url;
@@ -1039,7 +1039,7 @@
     } else if (hearingUpcoming && (ruleUrl || (bits && bits.source_url))) {
       destination = ruleUrl || bits.source_url;
       labelKey = "rule_action_open_rule_page";
-      label = "Open the official rule page";
+      label = "Open rule page";
       primaryType = "document";
     } else if (open && commentEmail) {
       // No portal URL but a published comment email — guide-first (destination null).
@@ -1755,9 +1755,7 @@
         // Zoom/Webex join is already the primary CTA — don't burn a slot on maps.
         if (handoff.join_kind === "join" && !options.force) return list;
         if (handoff.maps_url && handoff.venue_address && !seen.has(handoff.maps_url)) {
-          const label = handoff.venue_address
-            ? `Attend in person at ${handoff.venue_address}`
-            : "Attend in person";
+          const label = "Attend in person";
           list.push(official(
             "attend",
             "land_action_attend_in_person_at",
@@ -1899,7 +1897,7 @@
         if (!past) actions.push(watch);
       } else if (disp === "auction_or_rfp" || /sale/i.test(String(matter.type_of_notice_description || ""))) {
         if (packageUrl) {
-          actions = [official("official_application", "property_action_open_rfp", "Open the sale / RFP package", packageUrl, deadline, { guide: commercialGuide })];
+          actions = [official("official_application", "property_action_open_rfp", "Open sale package", packageUrl, deadline, { guide: commercialGuide })];
         } else if (commercialSteps.length || fields.has_fields) {
           actions = [validateAction({
             type: "bid_checklist",
@@ -1928,7 +1926,7 @@
       } else {
         // Generic disposition notice: bid marketplace / commercial steps when present, else parcel.
         if (packageUrl) {
-          actions = [official("official_application", "property_action_open_rfp", "Open the sale / RFP package", packageUrl, deadline, { guide: commercialGuide }), watch];
+          actions = [official("official_application", "property_action_open_rfp", "Open sale package", packageUrl, deadline, { guide: commercialGuide }), watch];
         } else if (commercialSteps.length) {
           actions = [validateAction({
             type: "bid_checklist",
@@ -1955,8 +1953,8 @@
         if (handoff.destination) {
           actions = [official(
             "document",
-            handoff.label_key,
-            handoff.label,
+            "next_action_award_checkbook",
+            "Open Checkbook",
             handoff.destination,
             null,
             { guide: handoff, ...labelExtra },

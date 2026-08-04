@@ -100,7 +100,6 @@ open RFPs
 project_id='
 type_of_notice_description='Award'
 type_of_notice_description='Solicitation'
-">Follow: anything new from them</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Search notices mentioning them →</a></div>
 (agency median
 (see notice)
@@ -112,7 +111,6 @@ type_of_notice_description='Solicitation'
 </div><div class="lbl">first / latest<br>award published</div></div> </div>
 </div><div class="lbl">open RFPs<br>right now</div></div> </div>
 </div><div class="lbl">total awarded,<br>on record</div></div> <div><div class="big">
-<button class="act" type="button" data-aw="rules">Watch rules only</button> <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
 <div class="chain-h">Open solicitations</div><div class="timeline">
 <div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">
 <div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">
