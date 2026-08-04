@@ -133,6 +133,16 @@ if [[ "$RUN_FULL" == "1" ]]; then
     run_and_fail python3 -m pip install playwright
   fi
   run_and_fail python3 -m playwright install --with-deps chromium
+  if node tools/home_cold_load.mjs; then
+    run_banner "Performance budgets (local smoke)" "home.cold fixture" \
+      "python3 test/performance/verify.py --budgets performance-budgets.json --fixtures test/performance/fixtures --fixture home.cold --site-root site --samples 1"
+    run_and_fail python3 test/performance/verify.py \
+      --budgets performance-budgets.json \
+      --fixtures test/performance/fixtures \
+      --fixture home.cold \
+      --site-root site \
+      --samples 1
+  fi
   run_banner "Unit tests (site + worker)" "Optional source-contract/network gates" \
     "node tools/verify_source_contracts.mjs"
   run_and_fail node tools/verify_source_contracts.mjs
