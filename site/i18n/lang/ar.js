@@ -802,6 +802,8 @@
     notice_attachment_chip_other: "{n} مرفقات: {title}",
     notice_attachment_title_fallback: "ملف الإشعار الرسمي",
     notice_attachment_extract_summary: "نص مستخرج من المرفق — وسّع للنص الكامل",
+    notice_attachment_related_heading: "ذات صلة بمحتوى المرفق",
+    notice_attachment_related_lead: "إشعارات أخرى تشارك موضوعات نص الملف الرسمي — وليس فقط كلمات مفتاحية مشتركة.",
     digest_match_attachment_html: "مطابقة في المرفق: {snippet}",
     ext_link_new_tab_sr: "(يفتح في علامة تبويب جديدة)",
     pin_unusable_note: "رقم التعريف (PIN) الخاص بهذا الإشعار غير صالح للربط (<code>{pin}</code>)، لذا لا يمكن تتبّع ترسيته تلقائيًا. افتحه في السجل البلدي لقراءة النص الكامل.",

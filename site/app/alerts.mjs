@@ -839,14 +839,39 @@ function attachmentChipHTML(r){
   </div>`;
 }
 
+// T3: precomputed attachment-content related notices (no query-time embedding).
+let attachmentRelatedToolsPromise = null;
+async function attachmentRelatedTools(){
+  if(!attachmentRelatedToolsPromise){
+    attachmentRelatedToolsPromise = import("../attachment_related.mjs").catch(()=>null);
+  }
+  return attachmentRelatedToolsPromise;
+}
+async function attachmentRelatedHTMLFor(r){
+  if(!r || !r.request_id) return "";
+  // Only surface when this notice has attachment context (chip or extract path).
+  const hasAttach = Array.isArray(r.attachments) && r.attachments.some(a=>a && (a.url || a.extracted_text));
+  if(!hasAttach) return "";
+  const tools = await attachmentRelatedTools();
+  if(!tools) return "";
+  const artifact = await tools.loadAttachmentRelatedLookup();
+  if(!artifact) return "";
+  return tools.attachmentRelatedHTML(artifact, r.request_id, { t, esc: escUiHtml });
+}
+
 // Fill a placeholder div asynchronously; bail if the view moved on while queries ran.
 async function fillContext(r, el){
   if(!el) return;
   const attachmentHTML = attachmentChipHTML(r);
   if(attachmentHTML) el.innerHTML = attachmentHTML;
-  const [flags, ctx] = await Promise.all([noticeFlags(r), awardContext(r)]);
+  const [flags, ctx, relatedHTML] = await Promise.all([
+    noticeFlags(r),
+    awardContext(r),
+    attachmentRelatedHTMLFor(r),
+  ]);
   if(!document.contains(el)) return; // a newer selection replaced this panel
   let html = attachmentHTML;
+  if(relatedHTML) html += relatedHTML;
   if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
   html += ctx;
   if(html) el.innerHTML = html;
@@ -924,6 +949,7 @@ globalThis.matchEvidence = matchEvidence;
 globalThis.matchAttachmentText = matchAttachmentText;
 globalThis.attachmentChipHTML = attachmentChipHTML;
 globalThis.attachmentExtractHTML = attachmentExtractHTML;
+globalThis.attachmentRelatedHTMLFor = attachmentRelatedHTMLFor;
 globalThis.matchText = matchText;
 globalThis.noticeFlags = noticeFlags;
 globalThis.ordinal = ordinal;

@@ -1,0 +1,19 @@
+{
+  "schema": "cityscroll.attachment_embeddings.receipt.v1",
+  "tier": "t3_embeddings",
+  "architecture": "precomputed_related_edges",
+  "method": "hashed_ngram_tfidf_v0",
+  "dim": 256,
+  "started_at": "2026-08-04T00:54:56.355Z",
+  "finished_at": "2026-08-04T00:54:56.355Z",
+  "mode": "fixture",
+  "source_count": 1,
+  "target_count": 6,
+  "notices_with_edges": 1,
+  "edge_count": 2,
+  "attachment_related_edge_rate": 1,
+  "golden_pass": true,
+  "paid_api": false,
+  "query_time_embedding": false,
+  "binaries_stored": false
+}

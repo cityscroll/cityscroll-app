@@ -877,6 +877,8 @@
     notice_attachment_chip_other: "{n} pièces jointes : {title}",
     notice_attachment_title_fallback: "Fichier officiel de l’avis",
     notice_attachment_extract_summary: "Texte extrait de la pièce jointe — développez pour le texte complet",
+    notice_attachment_related_heading: "Liés par le contenu de la pièce jointe",
+    notice_attachment_related_lead: "D’autres avis qui partagent des thèmes avec le texte du fichier officiel — pas seulement des mots-clés.",
     digest_match_attachment_html: "Correspondance dans la pièce jointe : {snippet}",
     ext_link_new_tab_sr: "(s'ouvre dans un nouvel onglet)",
     pin_unusable_note: "Le PIN de cet avis n'est pas utilisable pour établir un lien (<code>{pin}</code>), donc son attribution ne peut pas être retracée automatiquement. Ouvrez-le dans le City Record pour lire le texte complet.",

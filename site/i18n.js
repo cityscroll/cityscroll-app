@@ -1195,6 +1195,8 @@ const STRINGS = {
     notice_attachment_chip_other: "{n} attachments: {title}",
     notice_attachment_title_fallback: "Official notice file",
     notice_attachment_extract_summary: "Extracted text from attachment — expand for full text",
+    notice_attachment_related_heading: "Related by attachment content",
+    notice_attachment_related_lead: "Other notices that share themes with the official file text — not just shared keywords.",
     digest_match_attachment_html: "Matched in attachment: {snippet}",
     // Accessible marking for the City Record/PASSPort/Checkbook NYC new-tab carve-out
     // (test/standards/link_targets.py). Appended as visually-hidden text inside the link.
