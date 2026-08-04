@@ -52,7 +52,8 @@ test("preview award fixture is not a bid CTA", () => {
     pin: "PIN-PREV-1",
   };
   const a = digestItemAwareness(row, { kind: "award", today: TODAY });
-  assert.match(a.action?.label || "", /Awarded to/i);
+  assert.equal(a.action?.label, "Open Checkbook");
+  assert.match(a.action?.guide?.label || "", /Awarded to/i);
   assert.doesNotMatch(a.action?.label || "", /\bbid\b/i);
 });
 

@@ -414,7 +414,7 @@ test("ruleDisplayStage: a comment-open whose deadline passed is corrected to com
   assert.equal(ruleChipEnv.ruleDisplayStage(stale), "comment-closed");
   const chip = ruleChipEnv.ruleStageChip(stale);
   assert.match(chip, /tag closed/);
-  assert.match(chip, /rule_stage_comment_closed/);
+  assert.match(chip, /rule_stage_comment_closed · /, "closed status carries the known end date as data");
 });
 
 test("ruleCommentAction: leads with the comment CTA only while the period is genuinely open", () => {

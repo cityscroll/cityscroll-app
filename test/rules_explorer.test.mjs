@@ -233,6 +233,11 @@ test("RULES_PROCESS_STAGES is the ops-ontology rail (not a flat notice wall)", (
   assert.equal(rulesProcessActionKey("proposal", "proposed"), "rule_phase_action_proposal");
   assert.equal(rulesProcessActionKey("public_process", "comment-open"), "rule_action_comment");
   assert.equal(rulesProcessActionKey("public_process", "hearing"), "rule_action_attend_hearing");
+  assert.equal(
+    rulesProcessActionKey("public_process", "comment-closed"),
+    "rule_action_open_notice",
+    "closed comment is status beside a neutral action, never the action label",
+  );
   assert.equal(rulesProcessActionKey("adoption", "adopted"), "rule_phase_action_adoption");
   assert.equal(rulesProcessActionKey(null, null), "rule_action_open_notice");
 });
@@ -512,6 +517,8 @@ test("public Rules domain mounts process rail + explorer cards", () => {
   assert.doesNotMatch(cardTemplate, /ruleStageChip\(/);
   assert.doesNotMatch(cardTemplate, /rules-action-lead/);
   assert.match(cardTemplate, /data-card-fact/);
+  assert.match(cardTemplate, /rule_stage_comment_closed/);
+  assert.match(cardTemplate, /role="status"/);
 
   const processControlTemplate = RULES_APP_SOURCE.slice(
     RULES_APP_SOURCE.indexOf("function rulesProcessControlHTML"),

@@ -430,12 +430,12 @@ async function showAgency(name, initialTab){
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">Follow: anything new from them</button>
-        <button class="act" type="button" id="ecopy">Copy link</button>
+        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}" aria-label="${escUiHtml(`${t("agency_follow_btn")}: ${nm}`)}">${t("agency_follow_btn")}</button>
+        <button class="act" type="button" id="ecopy">${t("copy_link")}</button>
         ${qrButtonHTML("eqr","act")}
         ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
-        <button class="act" type="button" data-aw="rules">Watch rules only</button>
-        <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
+        <button class="act" type="button" data-aw="rules">${t("agency_watch_rules_btn")}</button>
+        <button class="act" type="button" data-aw="meetings">${t("agency_watch_meetings_btn")}</button>
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}
       </div>
       <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>

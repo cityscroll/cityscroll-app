@@ -871,7 +871,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
   // Honesty: no live bid/attend CTA on a past-dated closed sale.
-  const actionKey=closed ? "property_action_closed" : (entry.action_key||"property_action_open_notice");
+  const actionKey=closed ? "property_action_open_notice" : (entry.action_key||"property_action_open_notice");
   // Surplus-buyer prime position: ITEM + $ + method + close-date (lens organize fields).
   const itemLabel=glance && glance.item
     ? glance.item
@@ -910,7 +910,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
     ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:``}
   </div>`;
-  const primaryAction=`<a class="act${closed?"":" primary"}" href="${noticeHref}">${t(actionKey)}</a>`;
+  const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(actionKey)}: ${title||t("untitled")}`)}" href="${noticeHref}">${t(actionKey)}</a>`;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
