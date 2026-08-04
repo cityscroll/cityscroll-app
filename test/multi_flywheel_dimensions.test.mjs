@@ -26,6 +26,7 @@ import {
   surfaceLoadBreaches,
   emptyStateDensity,
   countApologyPhrases,
+  findDuplicateCardFacts,
 } from "../ontology/dimensions/surface_load.mjs";
 import {
   findCurrencyLeakedDateChips,
@@ -246,6 +247,46 @@ test("surface-load flags currency-leaked date chips and past closes in default h
   assert.equal(result.metrics.temporal_sanity_flags, 1);
   assert.ok(result.cards.length >= 1);
   assert.match(result.cards[0].lesson_class, /temporal-sanity|chip-format/);
+});
+
+test("surface-load flags the same semantic fact repeated within one card", () => {
+  const duplicateFacts = findDuplicateCardFacts([
+    {
+      card_id: "rule-1",
+      facts: [
+        { key: "comment-deadline:2026-08-19", text: "Comments open until August 19" },
+        { key: "stage:public-process", text: "Public process" },
+        { key: "comment-deadline:2026-08-19", text: "Comment by August 19" },
+      ],
+    },
+    {
+      card_id: "rule-2",
+      facts: [
+        { key: "comment-deadline:2026-09-01", text: "Comment by September 1" },
+      ],
+    },
+  ]);
+  assert.equal(duplicateFacts.ok, false);
+  assert.equal(duplicateFacts.findings.length, 1);
+  assert.equal(duplicateFacts.findings[0].card_id, "rule-1");
+  assert.equal(duplicateFacts.findings[0].key, "comment-deadline:2026-08-19");
+
+  const breaches = surfaceLoadBreaches({
+    status: "ok",
+    action_required: false,
+    measured: {
+      card_facts: [
+        {
+          card_id: "rule-1",
+          facts: [
+            { key: "comment-deadline:2026-08-19", text: "Comments open until August 19" },
+            { key: "comment-deadline:2026-08-19", text: "Comment by August 19" },
+          ],
+        },
+      ],
+    },
+  });
+  assert.ok(breaches.some((breach) => breach.kind === "duplicate-card-fact"));
 });
 
 test("computeNotPublishedRate combines recent + historical population", () => {
