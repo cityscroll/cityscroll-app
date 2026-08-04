@@ -738,6 +738,17 @@ Precompute-first on the notice page: never live Checkbook proxy; never render `l
 
 **Award action rail (no watch-only punt):** Award notices already carry vendor, amount, PIN, and `/contract-lifecycle` registration/spending. Primary CTA is dollars/vendor/registration-aware (`awardHandoff` → `system: award_lifecycle`) — e.g. awarded-to, registered date, pending registration, Checkbook handoff — never “Watch this notice” as the only next step. **Intent to Award / Intent to Negotiate / Vendor List** are selection-phase guides (not a solicitation bid CTA). Closed awards never say “bid.” Fields only when present; empty lifecycle degrades to notice + watch. Verify: `node --test test/action-rail.test.mjs test/notice_action_rail.test.mjs`.
 
+**Award → prime → M/WBE-goal join (payload):** `GET /contract-lifecycle` stamps
+`award_prime_goal` (`cityscroll.award_prime_goal.v1`) via pure
+`worker/src/lib/award_prime_goal.mjs` — prime identity (`vendorStem` +
+`subject_ref`), canonical agency, dollars, industry chips (City Record
+`category_description` + PASSPort industry/commodity when present), and an
+honest-absent subcontract-goal slot (`status: not_published`, never invents
+goal %). `possible_subcontract_window` is the interface for a separate
+sub-outreach surface card (not rendered here). Assembly version **v3** requires
+the side-car on cache hits. Verify:
+`node --test worker/test/award_prime_goal.test.mjs worker/test/checkbook_lifecycle.test.mjs`.
+
 **Hearing action rail (no online-link punt):** for `kind === "hearing"`, extract attend / testify / contact steps from ingested City Record body + `hearing_location.js` participation (URLs/emails/phones) and venue fields. `hearingHandoff` in `site/action_registry.js`; `noticeActionMatter` passes full body + `venue` / `participation`. Present as a “How to participate” step list — never “No online participation link…” when venue or testimony is published. Field cases: `20260716022` (FCRC/Parks), `20260709028` (FCRC/NYPD).
 
 **Land / rezone action rail:** `#ldetail` mounts `#land-actions` via `paintLandActionRail` / `landActionMatter` — phase-tied ULURP next steps from ZAP status + `city_record_notices` on `/zap-outcomes` (testimony, venue, join, hearing dates). Logic: `zoningHandoff` in `site/action_registry.js` (`system: zoning_extracted`). Never invent hearings or comment-open CTAs pre-review. Verify: `node --test test/land_action_rail.test.mjs test/land_event_spine.test.mjs`.

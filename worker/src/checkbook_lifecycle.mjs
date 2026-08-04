@@ -39,6 +39,7 @@ import {
 } from "./lib/ocp_awards.mjs";
 import { lookupOcpFromWarehouseMaterialization } from "./lib/ocp_warehouse_lookup.mjs";
 import { attachMoneyCivicEvents } from "./lib/civic_time.mjs";
+import { attachAwardPrimeGoal } from "./lib/award_prime_goal.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 const SODA_NYC = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -486,6 +487,8 @@ export async function computeLifecycle(env, requestId, noticeRow) {
       processed_at: new Date().toISOString(),
       run_id: `contract-lifecycle:${requestId}`,
     });
+    // Re-stamp after OCP so prime/dollar resolution sees the side-car.
+    noPinLifecycle = attachAwardPrimeGoal(noPinLifecycle, r);
     return { lifecycle: noPinLifecycle, ok: true };
   }
 
@@ -591,6 +594,9 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     run_id: `contract-lifecycle:${requestId}`,
   });
 
+  // Re-stamp award→prime→goal after OCP/PASSPort so industry/prime/dollars see side-cars.
+  lifecycle = attachAwardPrimeGoal(lifecycle, r);
+
   return { lifecycle, ok: true };
 }
 
@@ -608,7 +614,8 @@ export async function computeLifecycle(env, requestId, noticeRow) {
  * out_of_order on CR publication vs Checkbook registration). Same pattern as
  * subsidy parser_version and rules/meeting-outcomes schema_version guards (#358).
  */
-export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 2;
+// v3: stamp award_prime_goal (award → prime identity → honest M/WBE-goal absence).
+export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 3;
 
 /**
  * True when a cached lifecycle was assembled by the current recovery/coherence path.
@@ -620,6 +627,8 @@ export function contractLifecycleCacheIsCurrent(
 ) {
   if (!lifecycle || !Array.isArray(lifecycle.timeline)) return false;
   if (!lifecycle.ocp_award || !Array.isArray(lifecycle.civic_events)) return false;
+  // v3+ requires the award→prime→goal payload side-car.
+  if (assemblyVersion >= 3 && !lifecycle.award_prime_goal) return false;
   // Pre-version rows (and any older assembly) must recompute after recovery/coherence ships.
   if (lifecycle.assembly_version !== assemblyVersion) return false;
   return true;
