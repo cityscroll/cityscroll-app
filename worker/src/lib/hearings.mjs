@@ -169,12 +169,15 @@ export function venueFromRow(row) {
  * (borough-of phrases, title places, venue columns, agency HQ). Derivation metadata
  * lives only on this map path — not on the product affected_area contract.
  */
-export function meetingPlaceFromRow(row) {
+export function meetingPlaceFromRow(row, options = {}) {
   const classic = affectedAreaFromRow(row);
   if (classic.scope === "local" || classic.scope === "citywide") {
     // Enrich with matter-role human derivations when classic already local/citywide
     // so densify stamps carry method/confidence without changing product equality.
-    const matterDerived = placeFromDerivations(row, { forLens: "matter" });
+    const matterDerived = placeFromDerivations(row, {
+      forLens: "matter",
+      neighborhoodGazetteer: options.neighborhoodGazetteer,
+    });
     const boroughs = unique([
       ...(classic.boroughs || []),
       ...(matterDerived.scope === "local" || matterDerived.scope === "citywide"
@@ -201,7 +204,10 @@ export function meetingPlaceFromRow(row) {
   }
 
   // Human-derivation matter pass (Borough of X in body, gazetteer, tax-lot borough).
-  const matterOnly = placeFromDerivations(row, { forLens: "matter" });
+  const matterOnly = placeFromDerivations(row, {
+    forLens: "matter",
+    neighborhoodGazetteer: options.neighborhoodGazetteer,
+  });
   if (matterOnly.scope === "local" || matterOnly.scope === "citywide") {
     return {
       ...matterOnly,
@@ -210,7 +216,10 @@ export function meetingPlaceFromRow(row) {
   }
 
   // Venue / agency HQ fallthrough for "what's happening where".
-  const derived = placeFromDerivations(row, { forLens: "meetings" });
+  const derived = placeFromDerivations(row, {
+    forLens: "meetings",
+    neighborhoodGazetteer: options.neighborhoodGazetteer,
+  });
   if (derived.scope !== "unlocated") {
     return {
       ...derived,
