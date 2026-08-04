@@ -1,324 +1,192 @@
-# Intentional public content reviewed 2026-08-04.
-# Each entry is scoped to reviewed content or its public-purpose file.
-
-A004:test/functional/assets/axe.min.js # Vendored accessibility code text; the matched words are not a project data claim.
-A006:AGENTS.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/architecture.md # The text clearly marks or tests derived values; it does not hide derived data.
-A005:civic-content-gates/civic_content_gates/cli.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/genai_disclosure.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/heading_punctuation.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/i18n_keys.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/link_text.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/nyc_copy_lint.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/page_metadata.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/reading_level.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/civic_content_gates/suite.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:civic-content-gates/pyproject.toml # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:site/app/money-history.mjs # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/01_permalinks_deadlines_people.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/02_glance_today_property_a11y.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/03_watch_quiz_feeds.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/04_regression_quiz_parallel.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/05_entity_pages_pivots.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/06_flags_benchmarks.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/07_dollars_matter_timeline.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/08_follow_workspace_api.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/09_regression_dns_fallback.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/11_accessibility.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/12_language.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/13_stray_english.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/14_focus_visible.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/15_rtl.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/16_external_links.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/16_forecast_discoverability.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/17_default_examples.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/18_draft_alert_sync.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/20_demo_links.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/21_module_dom_equivalence.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/assets/i18n_fixtures.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/capture_export_workflows.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/capture_lifecycle_timeline.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/capture_nlq_deeplink_legibility.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/functional/capture_rules_status_chips.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/attribution.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/brand_identity.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/canonical_domain.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/es_diacritics.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/form_border_contrast.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/heading_uniqueness.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/i18n_fallback_sync.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/i18n_glossary.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/i18n_refs.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/js_syntax.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/label_coverage.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/link_targets.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/nl_input_clarity.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/no_official_marks.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/outline_guard.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/reading_level.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/standards/stray_english.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:test/test_url_parity.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_analytics_readiness.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_bid_tabulations_recon.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_changelog_media.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_cityscroll_rebrand.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_data_viz_media.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_deadline_exam_cards.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_design_language_evidence.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_exam_outcomes.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_exam_polish.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_gap_taxonomy.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_land_methodology_note.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_legistar_depth_recon.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_preset_widening.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_procurement_lifecycle_stitch.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_property_lens_reground.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_rfx_documents_recon.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_scenario_routing.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_standards_self_conformance.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_task_first_entry.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_ulurp_recommendations_recon.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_unofficial_translation.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_wave4_review.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_wcag22_map_controls.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/capture_zap_outcomes.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/check_url_parity.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:tools/human_path_journey.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:warehouse/lib/attachment_text_extract.py # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:worker/src/alerts.mjs # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:worker/src/ingest.mjs # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:worker/src/lib/notices.mjs # Program or test configuration syntax; the match is not an unsourced public data claim.
-A005:worker/wrangler.toml # Program or test configuration syntax; the match is not an unsourced public data claim.
-A006:commit:08a794b2 # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/adr/entity-resolution-taxonomy.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/data-sources.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/drift-inventory.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/evidence/hosting-migration-baseline.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/evidence/hosting-migration-baseline.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/formulas/property-disposition-timing.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/formulas/rules-adoption-lag.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/precompute-first-inventory-2026-07-29.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:docs/screenshots/entity-double-escaping/raw-notice.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:ontology/fixtures/dimensions/not_published_claim_samples.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/about.html # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/app/money-history.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/app/money-list.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/app/property.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/app/rules.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/exam_sources/annual_schedule.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/gap_taxonomy.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/property_sources/property_disposition_history.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/rules_adoption_predictions.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/source_contracts.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/staffing_exams.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/data/task_first_examples.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/digest_item_awareness.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/ar.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/bn.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/es.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/fr.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/ht.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/ko.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/pl.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/ru.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/ur.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/i18n/lang/zh-Hans.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/index.html # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/nl_parse.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/property_disposition_timing.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:site/rules_adoption_lag_view.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/cadence_estimate.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/contract/fixtures/affected_area_golden.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/contract/fixtures/property_location_golden.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/contract/property_location.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/data_viz_intuitive.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/fixtures/source_contracts/source-shapes.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/fixtures/zap_hearing_logistics/2024Q0292.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/fixtures/zap_outcomes/joined_timbale_terrace.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/fixtures/zap_outcomes/thin_or_legacy.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/forecast_render.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/functional/11_accessibility.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/functional/16_forecast_discoverability.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/functional/20_demo_links.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/functional/assets/axe.min.js # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/functional/assets/i18n_fixtures.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/gap_taxonomy.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/ida_notice_defects.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/land_copy_copytest.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/lineage_indicator.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/near_match_prior_cycles.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/post_flip_checks.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/procurement_lifecycle_stitch.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/property_disposition_timing.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/rules_adoption_lag.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/standards/english_words.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/subsidy_hearing_money.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:test/subsidy_lifecycle.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:tools/capture_attachment_text.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:tools/capture_property_disposition_timing.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:tools/capture_rules_adoption_lag.py # The text clearly marks or tests derived values; it does not hide derived data.
-A006:tools/depot.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:tools/measure_hosting_baseline.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:tools/source_contracts.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/e2e/usage.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/README.md # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/alerts.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/checkbook.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/property_disposition_timing.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/rules_adoption_lag.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/stats.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/subsidy_lifecycle.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/suggestions.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/tax_lien_sale_model.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/lib/usage.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/passport.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/property.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/suggest.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/vendor_profile.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/src/worker.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/test/fixtures/subsidy-hearing-money/20220525018.json # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/test/forecast_scoring.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/test/suggestions.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/test/translate_invariants.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-A006:worker/test/usage.test.mjs # The text clearly marks or tests derived values; it does not hide derived data.
-fp:L002:0eb3b9049bafeb09 # Public meeting access detail quoted from an expired civic notice; it is not a private account credential.
-fp:L002:306f70190ffb6d7c # Public meeting access detail quoted from an expired civic notice; it is not a private account credential.
-fp:L002:a3c807b2a8eb87a0 # Public meeting access detail quoted from an expired civic notice; it is not a private account credential.
-fp:L002:bd8fa5659c4bfe55 # Public meeting access detail quoted from an expired civic notice; it is not a private account credential.
-fp:L002:ee8fbc6481de59b5 # Public meeting access detail quoted from an expired civic notice; it is not a private account credential.
-fp:L002:f2d161f73b3ee6fb # Public meeting access detail quoted from an expired civic notice; it is not a private account credential.
-fp:L020:0585cff0a5de75c5 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:0735d5bfaedd4884 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:0ba38ed9ffabd435 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:0dc8bac85cb4fdfe # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:11c099c4a5e456b9 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:11f8387be0ae3f6e # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:181a38450779641a # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:1a88aeca598fa6ba # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:1aaf3551fa55e304 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:1f1a771cd3c5b452 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:2569664dfe09c4ca # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:2684037444a938a6 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:276b3508750cb14a # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:31326b03962253c9 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:31c5543c1734d25c # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:37951c571670de45 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:42c8c179620fe537 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:46e9dbc4900f454e # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:4b46e95acc54ee3c # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:4e24c430ea818273 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:4e52601e47dcf1ac # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:51de486b561d5284 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:53e6cdc30765aade # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:5c199aecb774221a # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:6d1a1da164c63c06 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:70f81719b6a95704 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:76d445f2d3a745aa # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:7ac91c1754d6d136 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:7c7af2fb8d9195c9 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:7ffac5627ca7683c # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:80305c9bb1bb2480 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:81ed236542a7b003 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:852e7b941ea20521 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:8b5db9a7e2ca1050 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:8c1f43b65366bb42 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:9d89a171976e57ca # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:a06db73f1b3df0ea # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:a1fa03af97c5bf16 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:a31bc4ba74bd7ae5 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:a5b8e9eec5b829bf # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:a8b69f362e90a2b3 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:af22243d2661d145 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:b2eaa7b8d24e0824 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:b348e094b2a7c5f2 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:bb6051b9b12bbfb4 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:bc8de104802df956 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:bdd609d96691948d # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:c307ecda9c11e2cd # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:c47bd82e5579b6d0 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:c5adf3d0b64347ec # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:d108b279434fe1d5 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:d2220c7ba34d7cba # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:dc8cba3a36b872d9 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:eb9b4eba51fb332b # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:faadc331a4a1b96c # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:fb98d44ad7501a95 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:fcb58a20ca9c1091 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L020:ff326ac82753f73e # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L031:0c2cba60135abed0 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:19fb3685b1dcca86 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:372862837fabe56f # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:38be761fce2acf78 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:3eb1bd439947eb76 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:4d94f657c0e23115 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:7dfee5a580c31a33 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:853c467b90bbe62d # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:a212049383068902 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:b1334e8ae63d4393 # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L031:e6670a150bfb3bec # Integrity or provenance digest for a public artifact; it is not credential material.
-fp:L032:939d6a038346f120 # Integrity or package digest for a public artifact; it is not credential material.
-fp:L032:bb704c4f6da419d0 # Integrity or package digest for a public artifact; it is not credential material.
-fp:L032:fa8615ad032a37ee # Integrity or package digest for a public artifact; it is not credential material.
-fp:L081:57acf722046bf0b4 # Public business contact or test phone value required by a source or fixture contract.
-fp:L081:abea01af4a7466e0 # Public business contact or test phone value required by a source or fixture contract.
-fp:L081:c34416aab3f3c24d # Public business contact or test phone value required by a source or fixture contract.
-fp:L083:0585cff0a5de75c5 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:1a88aeca598fa6ba # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:1f1a771cd3c5b452 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:31326b03962253c9 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:4e52601e47dcf1ac # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:76d445f2d3a745aa # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:7ac91c1754d6d136 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:7ffac5627ca7683c # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:80305c9bb1bb2480 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:852e7b941ea20521 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:8b5db9a7e2ca1050 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:8c1f43b65366bb42 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:9d89a171976e57ca # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:a5b8e9eec5b829bf # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:bdd609d96691948d # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:dc8cba3a36b872d9 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L083:fb98d44ad7501a95 # Published site, agency, or fixture contact address required for product behavior or source fidelity.
-fp:L094:4e0ab4cf4b6b353d # Repository-local merge-test identity; it is not a personal identity or shipped file.
-fp:L094:596d8724dfdd9650 # Repository-local merge-test identity; it is not a personal identity or shipped file.
-L041:test/functional/01_permalinks_deadlines_people.py # Loopback URL used only by local test and development code.
-L041:test/functional/02_glance_today_property_a11y.py # Loopback URL used only by local test and development code.
-L041:test/functional/03_watch_quiz_feeds.py # Loopback URL used only by local test and development code.
-L041:test/functional/04_regression_quiz_parallel.py # Loopback URL used only by local test and development code.
-L041:test/functional/05_entity_pages_pivots.py # Loopback URL used only by local test and development code.
-L041:test/functional/06_flags_benchmarks.py # Loopback URL used only by local test and development code.
-L041:test/functional/07_dollars_matter_timeline.py # Loopback URL used only by local test and development code.
-L041:test/functional/08_follow_workspace_api.py # Loopback URL used only by local test and development code.
-L041:test/functional/09_regression_dns_fallback.py # Loopback URL used only by local test and development code.
-L041:test/functional/10_changelog_stats.py # Loopback URL used only by local test and development code.
-L041:test/functional/11_accessibility.py # Loopback URL used only by local test and development code.
-L041:test/functional/12_language.py # Loopback URL used only by local test and development code.
-L041:test/functional/14_focus_visible.py # Loopback URL used only by local test and development code.
-L041:test/functional/16_external_links.py # Loopback URL used only by local test and development code.
-L041:test/functional/18_draft_alert_sync.py # Loopback URL used only by local test and development code.
-L041:test/functional/run.sh # Loopback URL used only by local test and development code.
-L041:test/standards/heading_uniqueness.py # Loopback URL used only by local test and development code.
-L041:test/standards/label_coverage.py # Loopback URL used only by local test and development code.
-L041:tools/preflight-required-checks.sh # Loopback URL used only by local test and development code.
-L041:worker/e2e/nl.mjs # Loopback URL used only by local test and development code.
-L041:worker/e2e/suggestions.mjs # Loopback URL used only by local test and development code.
-L041:worker/e2e/usage.mjs # Loopback URL used only by local test and development code.
-L041:worker/README.md # Loopback URL used only by local test and development code.
-L041:worker/src/agency.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/batch.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/checkbook_lifecycle.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/external_award.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/inv.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/lib/session.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/prior_cycle.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/subsidy_lifecycle.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/suggest.mjs # Loopback URL used only by local test and development code.
-L041:worker/src/usage.mjs # Loopback URL used only by local test and development code.
-L041:worker/test/feedback.test.mjs # Loopback URL used only by local test and development code.
-L095:git:log # Aggregate public commit metadata; it does not disclose a private schedule.
-L096:git:log # Aggregate public commit metadata; it does not disclose a location or itinerary.
-L148:AGENTS.md # Public contributor instructions are intentionally committed as the repository's project contract.
-L150:test/contract/fixtures/affected_area_golden.json # Public organization name in a civic notice fixture; it is not an internal project codename.
-V001:.github/workflows/ci.yml # Intentional operational tone in public deployment workflow text.
-V001:.github/workflows/deploy-worker.yml # Intentional operational tone in public deployment workflow text.
+test/functional/assets/axe.min.js
+AGENTS.md
+docs/architecture.md
+civic-content-gates/civic_content_gates/cli.py
+civic-content-gates/civic_content_gates/genai_disclosure.py
+civic-content-gates/civic_content_gates/heading_punctuation.py
+civic-content-gates/civic_content_gates/i18n_keys.py
+civic-content-gates/civic_content_gates/link_text.py
+civic-content-gates/civic_content_gates/nyc_copy_lint.py
+civic-content-gates/civic_content_gates/page_metadata.py
+civic-content-gates/civic_content_gates/reading_level.py
+civic-content-gates/civic_content_gates/suite.py
+civic-content-gates/pyproject.toml
+site/app/money-history.mjs
+test/functional/01_permalinks_deadlines_people.py
+test/functional/02_glance_today_property_a11y.py
+test/functional/03_watch_quiz_feeds.py
+test/functional/04_regression_quiz_parallel.py
+test/functional/05_entity_pages_pivots.py
+test/functional/06_flags_benchmarks.py
+test/functional/07_dollars_matter_timeline.py
+test/functional/08_follow_workspace_api.py
+test/functional/09_regression_dns_fallback.py
+test/functional/11_accessibility.py
+test/functional/12_language.py
+test/functional/13_stray_english.py
+test/functional/14_focus_visible.py
+test/functional/15_rtl.py
+test/functional/16_external_links.py
+test/functional/16_forecast_discoverability.py
+test/functional/17_default_examples.py
+test/functional/18_draft_alert_sync.py
+test/functional/20_demo_links.py
+test/functional/21_module_dom_equivalence.py
+test/functional/assets/i18n_fixtures.py
+test/functional/capture_export_workflows.py
+test/functional/capture_lifecycle_timeline.py
+test/functional/capture_nlq_deeplink_legibility.py
+test/functional/capture_rules_status_chips.py
+test/standards/attribution.py
+test/standards/brand_identity.py
+test/standards/canonical_domain.py
+test/standards/es_diacritics.py
+test/standards/form_border_contrast.py
+test/standards/heading_uniqueness.py
+test/standards/i18n_fallback_sync.py
+test/standards/i18n_glossary.py
+test/standards/i18n_refs.py
+test/standards/js_syntax.py
+test/standards/label_coverage.py
+test/standards/link_targets.py
+test/standards/nl_input_clarity.py
+test/standards/no_official_marks.py
+test/standards/outline_guard.py
+test/standards/reading_level.py
+test/standards/stray_english.py
+test/test_url_parity.py
+tools/capture_analytics_readiness.py
+tools/capture_bid_tabulations_recon.py
+tools/capture_changelog_media.py
+tools/capture_cityscroll_rebrand.py
+tools/capture_data_viz_media.py
+tools/capture_deadline_exam_cards.py
+tools/capture_design_language_evidence.py
+tools/capture_exam_outcomes.py
+tools/capture_exam_polish.py
+tools/capture_gap_taxonomy.py
+tools/capture_land_methodology_note.py
+tools/capture_legistar_depth_recon.py
+tools/capture_preset_widening.py
+tools/capture_procurement_lifecycle_stitch.py
+tools/capture_property_lens_reground.py
+tools/capture_rfx_documents_recon.py
+tools/capture_scenario_routing.py
+tools/capture_standards_self_conformance.py
+tools/capture_task_first_entry.py
+tools/capture_ulurp_recommendations_recon.py
+tools/capture_unofficial_translation.py
+tools/capture_wave4_review.py
+tools/capture_wcag22_map_controls.py
+tools/capture_zap_outcomes.py
+tools/check_url_parity.py
+tools/human_path_journey.py
+warehouse/lib/attachment_text_extract.py
+worker/src/alerts.mjs
+worker/src/ingest.mjs
+worker/src/lib/notices.mjs
+worker/wrangler.toml
+commit:08a794b2
+docs/adr/entity-resolution-taxonomy.md
+docs/data-sources.md
+docs/drift-inventory.md
+docs/evidence/hosting-migration-baseline.json
+docs/evidence/hosting-migration-baseline.md
+docs/formulas/property-disposition-timing.md
+docs/formulas/rules-adoption-lag.md
+docs/precompute-first-inventory-2026-07-29.md
+docs/screenshots/entity-double-escaping/raw-notice.json
+ontology/fixtures/dimensions/not_published_claim_samples.json
+site/about.html
+site/app/money-list.mjs
+site/app/property.mjs
+site/app/rules.mjs
+site/data/exam_sources/annual_schedule.json
+site/data/gap_taxonomy.json
+site/data/property_sources/property_disposition_history.json
+site/data/rules_adoption_predictions.json
+site/data/source_contracts.json
+site/data/staffing_exams.json
+site/data/task_first_examples.json
+site/digest_item_awareness.mjs
+site/i18n.js
+site/i18n/lang/ar.js
+site/i18n/lang/bn.js
+site/i18n/lang/es.js
+site/i18n/lang/fr.js
+site/i18n/lang/ht.js
+site/i18n/lang/ko.js
+site/i18n/lang/pl.js
+site/i18n/lang/ru.js
+site/i18n/lang/ur.js
+site/i18n/lang/zh-Hans.js
+site/index.html
+site/nl_parse.js
+site/property_disposition_timing.mjs
+site/rules_adoption_lag_view.mjs
+test/cadence_estimate.test.mjs
+test/contract/fixtures/affected_area_golden.json
+test/contract/fixtures/property_location_golden.json
+test/contract/property_location.test.mjs
+test/data_viz_intuitive.test.mjs
+test/fixtures/source_contracts/source-shapes.json
+test/fixtures/zap_hearing_logistics/2024Q0292.json
+test/fixtures/zap_outcomes/joined_timbale_terrace.json
+test/fixtures/zap_outcomes/thin_or_legacy.json
+test/forecast_render.test.mjs
+test/gap_taxonomy.test.mjs
+test/ida_notice_defects.test.mjs
+test/land_copy_copytest.test.mjs
+test/lineage_indicator.test.mjs
+test/near_match_prior_cycles.test.mjs
+test/post_flip_checks.test.mjs
+test/procurement_lifecycle_stitch.test.mjs
+test/property_disposition_timing.test.mjs
+test/rules_adoption_lag.test.mjs
+test/standards/english_words.py
+test/subsidy_hearing_money.test.mjs
+test/subsidy_lifecycle.test.mjs
+tools/capture_attachment_text.py
+tools/capture_property_disposition_timing.py
+tools/capture_rules_adoption_lag.py
+tools/depot.mjs
+tools/measure_hosting_baseline.mjs
+tools/source_contracts.mjs
+worker/e2e/usage.mjs
+worker/README.md
+worker/src/checkbook.mjs
+worker/src/lib/property_disposition_timing.mjs
+worker/src/lib/rules_adoption_lag.mjs
+worker/src/lib/stats.mjs
+worker/src/lib/subsidy_lifecycle.mjs
+worker/src/lib/suggestions.mjs
+worker/src/lib/tax_lien_sale_model.mjs
+worker/src/lib/usage.mjs
+worker/src/passport.mjs
+worker/src/property.mjs
+worker/src/suggest.mjs
+worker/src/vendor_profile.mjs
+worker/src/worker.mjs
+worker/test/fixtures/subsidy-hearing-money/20220525018.json
+worker/test/forecast_scoring.test.mjs
+worker/test/suggestions.test.mjs
+worker/test/translate_invariants.test.mjs
+worker/test/usage.test.mjs
+test/functional/10_changelog_stats.py
+test/functional/run.sh
+tools/preflight-required-checks.sh
+worker/e2e/nl.mjs
+worker/e2e/suggestions.mjs
+worker/src/agency.mjs
+worker/src/batch.mjs
+worker/src/checkbook_lifecycle.mjs
+worker/src/external_award.mjs
+worker/src/inv.mjs
+worker/src/lib/session.mjs
+worker/src/prior_cycle.mjs
+worker/src/subsidy_lifecycle.mjs
+worker/src/usage.mjs
+worker/test/feedback.test.mjs
+git:log
+.github/workflows/ci.yml
+.github/workflows/deploy-worker.yml
