@@ -215,6 +215,9 @@ jobs:
       - name: Public-surface internal-vocabulary lint
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/public_surface_vocab.py --gate
+      - name: Descriptive collapsed-group labels
+        if: needs.changes.outputs.unit_full == 'true'
+        run: node tools/check-collapsed-group-labels.mjs
       - name: Page-metadata gate (meta description length, title format)
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/page_metadata.py

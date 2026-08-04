@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.0.0";
+export const OPS_CONTRACT_VERSION = "1.1.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -37,7 +37,40 @@ export const DIGEST_MODES = Object.freeze([
     aliases: [],
     description: "Evaluation without Resend send (ALERTS_LIVE off, admin rollup dry-run, test-send).",
   },
+  {
+    id: "shadow_run",
+    aliases: [],
+    description: "06:00 ET full render against live data; delivery and state advancement disabled.",
+  },
 ]);
+
+export const DIGEST_SHADOW = Object.freeze({
+  contract: "digest-shadow.v1",
+  cron_utc: "0 10 * * *",
+  status_values: ["READY", "NEEDS_ATTENTION"],
+  endpoint: "/admin/digest-shadow",
+  storage: {
+    binding: "DB",
+    run_table: "digest_shadow_runs",
+    preview_table: "digest_shadow_previews",
+  },
+  redline_fields: ["code", "digest_id", "watch_id", "reason", "evidence"],
+  redline_codes: [
+    "render_error",
+    "historical_watch_zero",
+    "aggregate_count_collapse",
+    "aggregate_count_explosion",
+    "count_list_mismatch",
+    "broken_digest_link",
+    "owner_notification_failed",
+  ],
+  monitoring: {
+    poll_status: "HTTP 200 only when READY; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
+    wake: "Scheduled repository monitor opens or updates a repair issue for redlines or missing runs.",
+    rerun: "Authenticated POST /admin/digest-shadow rebuilds all previews after a repair; affected_digest_ids scopes diagnosis.",
+    delivery_effect: "none; the 13:00 UTC queue/send path is unchanged",
+  },
+});
 
 /**
  * Daylog entry `action` values the worker writes. `skipped:<reason>` is open-ended;
@@ -261,6 +294,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "Dry-run account digest for ?email= (no Resend).",
   },
   {
+    path: "/admin/digest-shadow",
+    methods: ["GET", "POST"],
+    auth: "ADMIN_KEY",
+    description: "GET reads the rehearsal or rendered preview; POST reruns the delivery-free build after repair.",
+  },
+  {
     path: "/admin/digest-send-test",
     methods: ["POST"],
     auth: "OPERATOR_PROBE",
@@ -469,6 +508,7 @@ export function buildOpsContract(opts = {}) {
     note:
       "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
     digest_modes: DIGEST_MODES,
+    digest_shadow: DIGEST_SHADOW,
     daylog: {
       kv_key_pattern: "digest:daylog:YYYY-MM-DD",
       actions: DAYLOG_ACTIONS,

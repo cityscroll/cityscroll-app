@@ -80,6 +80,18 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
 // stats:page_view, stats:catday:*, stats:alert_confirmed) so a list-prefix scan or
 // exact get can never confuse a page-view counter with a send cap or last-sent clock.
 export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
+
+async function shadowDigestId(kind, value, enabled) {
+  if (!enabled) return null;
+  const input = new TextEncoder().encode(String(value || ""));
+  const digest = await crypto.subtle.digest("SHA-256", input);
+  const hex = Array.from(
+    new Uint8Array(digest),
+    (byte) => byte.toString(16).padStart(2, "0"),
+  ).join("");
+  return `${kind}:${hex.slice(0, 24)}`;
+}
+
 export function digestRunDayKey(day) {
   return `digest:run:${day}`;
 }
@@ -307,7 +319,7 @@ const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeU
 
 export async function runAlerts(env, watches = cfg.watches || [], options = {}) {
   const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
-  const LIVE = env.ALERTS_LIVE === "true";
+  const LIVE = options.live == null ? env.ALERTS_LIVE === "true" : options.live === true;
   const maxPerRun = Number(env.MAX_PER_RUN) || 25;            // most emails one cron firing may send
   const maxPerDay = Number(env.MAX_SENDS_PER_DAY) || 50;      // daily ceiling, kept below Resend's free 100/day
   const heartbeatDays = Number(env.HEARTBEAT_DAYS) || 14;     // quiet days before a daily sub gets a liveness ping
@@ -340,10 +352,15 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
       });
       const send = underCap && LIVE;
 
+      let preview = null;
       if (underCap) {
         const subject = `CityScroll: ${fresh.length} new for "${w.label}"`;
         const html = digestHtml(w, fresh);
         const listUnsub = listUnsubscribe(FROM, w.id);
+        const payload = emailPayload(env, FROM, w.email, subject, html, listUnsub);
+        if (options.capturePreviews) {
+          preview = { subject, html, listUnsubscribe: listUnsub || null };
+        }
         if (send) {
           await sendEmail(env, FROM, w.email, subject, html, listUnsub);
           sentThisRun++; sentToday++;
@@ -354,7 +371,8 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
           emitUsageEvent(env, { event: "digest_sent", lens: w.type, surface: "email" });
         } else {
           // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
-          logDryRunEmail(emailPayload(env, FROM, w.email, subject, html, listUnsub));
+          logDryRunEmail(payload);
+          if (options.simulateDryRunCounters) { sentThisRun++; sentToday++; }
         }
       }
 
@@ -366,6 +384,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 
       results.push({
         watch: w.id,
+        ...(options.capturePreviews ? { previewId: `watch:${w.id}` } : {}),
         lens: w.type || null,
         queryLabel: w.label || w.id,
         emailRedacted: w.email ? redactEmail(w.email) : null,
@@ -377,6 +396,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         sent: send,
         capped,
         dryRun: underCap && !LIVE,
+        ...(preview ? { preview } : {}),
       });
     } catch (e) {
       results.push({ watch: w.id, error: String(e?.message || e) });
@@ -396,14 +416,17 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const isMonday = now.getUTCDay() === 1;
   const ctx = {
     FROM, LIVE, heartbeatDays, today, isMonday,
-    counts: () => ({ "per-run": sentThisRun, daily: sentToday }),
+    counts: () => ({ "per-run": options.queueCapSemantics ? 0 : sentThisRun, daily: sentToday }),
     caps: { "per-run": maxPerRun, daily: maxPerDay },
     onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
+    onDryRun: options.simulateDryRunCounters ? async () => { sentThisRun++; sentToday++; } : null,
+    capturePreviews: options.capturePreviews === true,
+    advanceState: options.advanceState,
   };
   let mode = "inline";
   let enqueued = 0;
   const allSubs = await subWatches(env);
-  if (env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
+  if (!options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
     const jobs = buildDigestJobs(allSubs);
     for (const job of jobs) {
@@ -430,17 +453,22 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const receipt = summarizeDigestRun({
     ranAt, day, live: LIVE, mode, sentThisRun, sentToday, results, enqueued,
   });
-  await writeDigestRunReceipt(env, receipt);
+  if (options.persist !== false) await writeDigestRunReceipt(env, receipt);
   // Day log carries per-sub notice ids + zero-match rows for the ops dashboard.
   // Queue mode only has the fan-out stub here; consumers append via mergeDayLogEntry.
-  if (mode !== "queue") {
-    await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results }));
-  } else {
-    // Seed an empty/queue daylog so the day is present even before consumers finish.
-    await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results: [] }));
+  if (options.persist !== false) {
+    if (mode !== "queue") {
+      await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results }));
+    } else {
+      // Seed an empty/queue daylog so the day is present even before consumers finish.
+      await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results: [] }));
+    }
   }
   const summary = { ranAt, live: LIVE, sentThisRun, sentToday, caps: { perRun: maxPerRun, perDay: maxPerDay }, receipt, results };
-  console.log("alerts run:", JSON.stringify(summary));
+  const logSummary = options.capturePreviews
+    ? { ...summary, results: results.map(({ preview: _preview, ...result }) => result) }
+    : summary;
+  console.log("alerts run:", JSON.stringify(logSummary));
   return summary;
 }
 
@@ -450,6 +478,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 //
 // For multi-watch accounts use processAccountRollup() instead — one email, one send unit.
 export async function processOneSub(env, s, ctx) {
+  const previewId = await shadowDigestId("digest", s.key, ctx.capturePreviews);
   try {
     if (s.paused) return { sub: maskKey(s.key), skipped: "paused", kind: "subscription" };
     if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly", kind: "subscription" };
@@ -516,7 +545,7 @@ export async function processOneSub(env, s, ctx) {
     const matched = fresh.length > 0;
     const health = nextSearchHealth(s.health, matched, ctx.today);
     const healthStatus = searchHealthStatus({ health, createdAt: s.createdAt, today: ctx.today });
-    await saveSubHealth(env, s, health);
+    if (ctx.advanceState !== false) await saveSubHealth(env, s, health);
 
     // Confidence: decide whether to break silence (a weekly check-in or a daily heartbeat) even
     // with no fresh notices, so a quiet inbox never looks like a broken alert. `since` = when we
@@ -533,6 +562,7 @@ export async function processOneSub(env, s, ctx) {
     const send = underCap && ctx.LIVE;
 
     let manageUrlPresent = false;
+    let preview = null;
     if (underCap) {
       const label = describeFilter(s.lens, s.filter);
       const unsubUrl = await unsubLink(env, s.key);
@@ -570,6 +600,8 @@ export async function processOneSub(env, s, ctx) {
           : `CityScroll: still watching — ${label}`;
         html = quietHtml(label, decision.action, since, unsubUrl, lang, healthNote, manageUrl);
       }
+      const payload = emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+      if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubUrl}>` };
       if (send) {
         await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
         await ctx.onSent();
@@ -582,7 +614,8 @@ export async function processOneSub(env, s, ctx) {
         }
       } else {
         // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
-        logDryRunEmail(emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true));
+        logDryRunEmail(payload);
+        if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
 
@@ -597,6 +630,7 @@ export async function processOneSub(env, s, ctx) {
     const lagRecovery = isMultiDayLagRecovery(since, ctx.today, fresh.length);
     return {
       sub: maskKey(s.key),
+      ...(previewId ? { previewId } : {}),
       kind: "subscription",
       lens: s.lens,
       queryLabel: describeFilter(s.lens, s.filter),
@@ -613,9 +647,10 @@ export async function processOneSub(env, s, ctx) {
       manageUrlPresent,
       capped,
       sendUnits: send || (underCap && !ctx.LIVE) ? 1 : 0,
+      ...(preview ? { preview } : {}),
     };
   } catch (e) {
-    return { sub: maskKey(s.key), kind: "subscription", error: String(e?.message || e) };
+    return { sub: maskKey(s.key), ...(previewId ? { previewId } : {}), kind: "subscription", error: String(e?.message || e) };
   }
 }
 
@@ -629,13 +664,15 @@ export async function processOneSub(env, s, ctx) {
 export async function processAccountRollup(env, subs, ctx) {
   const email = normalizeEmail(subs?.[0]?.email || "");
   const accountId = accountLogId(email);
+  const previewId = await shadowDigestId("digest", (subs || []).map((sub) => sub.key).sort().join("|"), ctx.capturePreviews);
   if (!email || !subs?.length) {
-    return { sub: accountId, kind: "rollup", skipped: "empty", emailRedacted: redactEmail(email) };
+    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", skipped: "empty", emailRedacted: redactEmail(email) };
   }
 
   try {
     const sections = [];
     let manageUrlPresent = false;
+    let preview = null;
     for (const s of subs) {
       if (!isWatchActive(s)) {
         sections.push({
@@ -697,6 +734,8 @@ export async function processAccountRollup(env, subs, ctx) {
         sessionTok,
         base,
       });
+      const payload = emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
+      if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
       // List-Unsubscribe points at all-watches for rollup (account-level one-click).
       if (send) {
         await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
@@ -715,7 +754,8 @@ export async function processAccountRollup(env, subs, ctx) {
           emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email" });
         }
       } else {
-        logDryRunEmail(emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true));
+        logDryRunEmail(payload);
+        if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
 
@@ -735,6 +775,7 @@ export async function processAccountRollup(env, subs, ctx) {
     );
     const result = {
       sub: accountId,
+      ...(previewId ? { previewId } : {}),
       kind: "rollup",
       emailRedacted: redactEmail(email),
       queryLabel: `${sections.length} watches`,
@@ -754,6 +795,7 @@ export async function processAccountRollup(env, subs, ctx) {
       sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
       sections: sections.map((sec) => ({
         sub: sec.sub,
+        ...(sec.previewId ? { previewId: sec.previewId } : {}),
         lens: sec.lens,
         queryLabel: sec.queryLabel,
         new: sec.new,
@@ -763,10 +805,11 @@ export async function processAccountRollup(env, subs, ctx) {
         error: sec.error || null,
         forecasts: sec.forecasts || 0,
       })),
+      ...(preview ? { preview } : {}),
     };
     return result;
   } catch (e) {
-    return { sub: accountId, kind: "rollup", emailRedacted: redactEmail(email), error: String(e?.message || e) };
+    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", emailRedacted: redactEmail(email), error: String(e?.message || e) };
   }
 }
 
@@ -777,6 +820,7 @@ export async function processAccountRollup(env, subs, ctx) {
 async function evaluateSubSection(env, s, ctx) {
   const base = {
     sub: maskKey(s.key),
+    ...((ctx.capturePreviews && s.key) ? { previewId: await shadowDigestId("watch", s.key, true) } : {}),
     subKey: s.key,
     lens: s.lens,
     queryLabel: describeFilter(s.lens, s.filter),
@@ -841,7 +885,7 @@ async function evaluateSubSection(env, s, ctx) {
     const matched = fresh.length > 0;
     const health = nextSearchHealth(s.health, matched, ctx.today);
     const healthStatus = searchHealthStatus({ health, createdAt: s.createdAt, today: ctx.today });
-    await saveSubHealth(env, s, health);
+    if (ctx.advanceState !== false) await saveSubHealth(env, s, health);
 
     const since = (await getLastSent(env, s.key)) || s.createdAt || null;
     const effectiveCount = fresh.length + forecasts.length;
@@ -918,6 +962,7 @@ async function evaluateAwardSection(env, s, ctx, base) {
 // just under a distinct key namespace (`award:<sub key>`) so it can never collide with a notices
 // "seen" set even if a (email,lens,filter) hash were ever reused across lenses.
 export async function processAwardSub(env, s, ctx) {
+  const previewId = await shadowDigestId("digest", s.key, ctx.capturePreviews);
   try {
     const filter = s.filter || {};
     if (typeof filter.requestId !== "string" || !filter.requestId) {
@@ -938,12 +983,15 @@ export async function processAwardSub(env, s, ctx) {
     });
     const send = underCap && ctx.LIVE;
 
+    let preview = null;
     if (underCap) {
       const lang = s.lang || "en";
       const unsubUrl = await unsubLink(env, s.key);
       const subject = emailT(lang, "award_watch_subject", { agency: filter.agency || "" });
       const sessionTok = await issueEmailSessionToken(env, s.email);
       const html = awardWatchDigestHtml(fresh, filter, unsubUrl, lang, sessionTok);
+      const payload = emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+      if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubUrl}>` };
       if (send) {
         await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
         await ctx.onSent();
@@ -953,7 +1001,8 @@ export async function processAwardSub(env, s, ctx) {
         await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
         emitUsageEvent(env, { event: "digest_sent", surface: "email" });
       } else {
-        logDryRunEmail(emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true));
+        logDryRunEmail(payload);
+        if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
 
@@ -962,6 +1011,7 @@ export async function processAwardSub(env, s, ctx) {
 
     return {
       sub: maskKey(s.key),
+      ...(previewId ? { previewId } : {}),
       lens: "award",
       queryLabel: describeFilter("award", filter),
       emailRedacted: redactEmail(s.email),
@@ -973,9 +1023,10 @@ export async function processAwardSub(env, s, ctx) {
       sent: send,
       dryRun: underCap && !ctx.LIVE,
       capped,
+      ...(preview ? { preview } : {}),
     };
   } catch (e) {
-    return { sub: maskKey(s.key), error: String(e?.message || e) };
+    return { sub: maskKey(s.key), ...(previewId ? { previewId } : {}), error: String(e?.message || e) };
   }
 }
 
@@ -996,10 +1047,10 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", session
     const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
     const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
     if (c.kind === "exact") {
-      return `<li style="margin:0 0 14px"><b>${esc(emailT(lang, "award_watch_exact_label"))}</b><br>
+      return `<li data-digest-item="1" style="margin:0 0 14px"><b>${esc(emailT(lang, "award_watch_exact_label"))}</b><br>
         <span style="color:#555;font-size:13px">${meta}</span></li>`;
     }
-    return `<li style="margin:0 0 14px;font-style:italic;color:#555"><b>${esc(emailT(lang, "award_watch_fuzzy_label"))}</b><br>
+    return `<li data-digest-item="1" style="margin:0 0 14px;font-style:italic;color:#555"><b>${esc(emailT(lang, "award_watch_fuzzy_label"))}</b><br>
       <span style="font-size:13px">${meta}</span><br>
       <span style="font-size:12px">${esc(emailT(lang, "award_watch_fuzzy_note"))}</span></li>`;
   }).join("");
@@ -1565,7 +1616,7 @@ function digestHtml(w, rows) {
       acts.push(`<a href="${REQ_URL(r.request_id)}">↗ View in City Record</a>`);
       const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r.due_date)]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b><br>
+      return `<li data-digest-item="1" style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${sub}</span><br>
         ${temporalActionHtml(r, esc, "en", { kind: digestKind, today })}
         ${evidenceLineHtml(ev, esc, "en")}
@@ -1790,7 +1841,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
         : "";
       const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
       const noe = r.notice_url ? `<span style="color:#33691e;font-size:13px">NOE posted</span><br>` : "";
-      return `<li${itemClass} style="margin:0 0 14px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>${noe}
         <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` &nbsp; <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
     }
@@ -1799,7 +1850,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       // itemAwarenessHtml (View/comment on ZAP + phase status when published).
       const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant, /^[ty1]/i.test(String(r.mih_flag || "")) ? "affordable housing" : ""]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li${itemClass} style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
@@ -1838,7 +1889,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const propertyStage = itemKind === "property" && r.property_watch
       ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
       : "";
-    return `<li${itemClass} style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+    return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
       ${propertyStage}
       ${temporalActionHtml(r, esc, lang, { kind: itemKind, today })}
@@ -1849,7 +1900,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   let forecastsHtml = "";
   if (forecasts.length > 0) {
     const fItems = forecasts.map(f => (
-      `<li style="margin:0 0 14px"><b>Estimated Renewal: ${esc(f.vendor_name || "Vendor")}</b><br>
+      `<li data-digest-item="1" style="margin:0 0 14px"><b>Forecast renewal: ${esc(f.vendor_name || "Vendor")}</b><br>
         <span style="color:#555;font-size:13px">${esc(f.agency_name)} · Amount ${usd(f.amount)}</span><br>
         <span style="color:#a42;font-size:13px">Predicted Expiration: ${f.expiration_date} · 6-Month Warning: ${f.warning_date}</span></li>`
     )).join("");
@@ -1984,12 +2035,16 @@ function rollupDigestHtml({
       const items = sec.awardCandidates.map((c) => {
         const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
         const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
-        return `<li style="margin:0 0 10px">${meta}</li>`;
+        return `<li data-digest-item="1" style="margin:0 0 10px">${meta}</li>`;
       }).join("");
+      const requestId = sec.awardFilter?.requestId;
+      const contextLink = requestId
+        ? `<p style="font-size:13px"><a href="https://cityscroll.org/#notice/${encodeURIComponent(requestId)}">View the watched notice on CityScroll</a></p>`
+        : "";
       return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
         <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
         <ul style="list-style:none;padding:0;margin:0">${items || `<li style="color:#666;font-style:italic">No new award updates.</li>`}</ul>
-        ${sec.subKey ? `<p style="font-size:12px;margin:10px 0 0"><a href="${esc("#")}"> </a></p>` : ""}
+        ${contextLink}
       </section>`;
     }
 
@@ -2005,7 +2060,7 @@ function rollupDigestHtml({
         const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
         const dates = r.application_start && r.application_end ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}` : "";
         const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
-        return `<li${itemClass} style="margin:0 0 12px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
+        return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
           ${r.notice_url ? `<span style="color:#33691e;font-size:13px">NOE posted</span><br>` : ""}
           <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` · <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
@@ -2013,7 +2068,7 @@ function rollupDigestHtml({
       if (itemKind === "rezone") {
         const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
           .filter(Boolean).map(esc).join(" · ");
-        return `<li${itemClass} style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
+        return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
           ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}</li>`;
       }
@@ -2028,7 +2083,7 @@ function rollupDigestHtml({
       const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";
-      return `<li${itemClass} style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${propertyStage}
         ${temporalActionHtml(r, esc, lang, { kind: rowKind, today })}
@@ -2040,7 +2095,7 @@ function rollupDigestHtml({
     let forecastsHtml = "";
     if (forecasts.length) {
       forecastsHtml = `<p style="font-size:13px;color:#666;margin:10px 0 6px">Forecasts</p><ul style="list-style:none;padding:0">${forecasts.map((f) =>
-        `<li style="margin:0 0 8px;font-size:13px">${esc(f.vendor_name || "Vendor")} · ${usd(f.amount)} · exp ${esc(f.expiration_date || "")}</li>`
+        `<li data-digest-item="1" style="margin:0 0 8px;font-size:13px">${esc(f.vendor_name || "Vendor")} · ${usd(f.amount)} · exp ${esc(f.expiration_date || "")}</li>`
       ).join("")}</ul>`;
     }
 

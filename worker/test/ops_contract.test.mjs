@@ -40,10 +40,13 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.equal(doc.version, OPS_CONTRACT_VERSION);
   assert.ok(Array.isArray(doc.digest_modes) && doc.digest_modes.length >= 5);
   const modeIds = doc.digest_modes.map((m) => m.id).sort();
-  assert.deepEqual(modeIds, ["catch_up", "cron", "dry_run", "queue", "rollup"].sort());
+  assert.deepEqual(modeIds, ["catch_up", "cron", "dry_run", "queue", "rollup", "shadow_run"].sort());
   assert.ok(doc.daylog.actions.length >= 5);
   assert.ok(doc.stats_metrics.some((m) => m.exclude_developer_traffic === true));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/digest-shadow"));
+  assert.equal(doc.digest_shadow.contract, "digest-shadow.v1");
+  assert.deepEqual(doc.digest_shadow.redline_fields, ["code", "digest_id", "watch_id", "reason", "evidence"]);
   assert.ok(doc.auth_classes.some((a) => a.id === "ADMIN_KEY"));
   assert.ok(doc.auth_classes.some((a) => a.id === "USAGE_KEY"));
   assert.ok(doc.auth_classes.some((a) => a.id === "ANALYTICS_DEV_KEY"));

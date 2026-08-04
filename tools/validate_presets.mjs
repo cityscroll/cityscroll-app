@@ -87,8 +87,8 @@ function normalizeAssetParam(raw) {
     vehequip: "vehicle",
     forest: "timber",
     realty: "real_property",
-    medallion: "other",
-    seized: "other",
+    medallion: "rights_and_interests",
+    seized: "seized_property",
   };
   return aliases[key] || key;
 }
@@ -101,9 +101,9 @@ function classifyAsset(record) {
   if (has("heavy machinery", "machine tools", "equipment auction", "construction equipment")) return "equipment";
   if (has("surplus assets", "publicsurplus", "furniture auction")) return "equipment";
   if (has("scrap", "surplus materials", "recyclable metal")) return "scrap_materials";
-  if (has("unauthorized", "tobacco", "forfeiture", "pending destruction", "property clerk", "owners are wanted", "in the custody", "medallion")) return "other";
-  if (text.includes("easement")) return "other";
-  if (has("mortgage and note", "outstanding debt") && text.includes("mortgage")) return "other";
+  if (has("unauthorized", "tobacco", "forfeiture", "pending destruction", "property clerk", "owners are wanted", "in the custody")) return "seized_property";
+  if (has("medallion", "easement")) return "rights_and_interests";
+  if (has("mortgage and note", "outstanding debt") && text.includes("mortgage")) return "rights_and_interests";
   if (has("disposition area", "city-owned property", "block/lot", "residential property", "public auction", "premises", "reversionary", "real property")) return "real_property";
   if (has("rfp", "request for proposal", "redevelopment", "lease auction", "lease", "license")) return "real_property";
   return "other";
