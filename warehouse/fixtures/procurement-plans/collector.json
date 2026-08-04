@@ -1,0 +1,279 @@
+{
+  "source_files": [
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_New.xlsx",
+      "label": "New ACS Procurement Plan",
+      "sha256": "fixture-ll63"
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/ACS_LL1_FY27.xlsx",
+      "label": "Administration for Children's Services",
+      "sha256": "fixture-ll1"
+    }
+  ],
+  "ll63_rows": [
+    [
+      "Plan ID #",
+      "Agency",
+      "Description of Services to be Provided",
+      "Anticipated Contract Start Date",
+      "Anticipated Contract End Date",
+      "Anticipated Procurement Method",
+      "Anticipated Fiscal Quarter",
+      "Job Titles",
+      "Head-count"
+    ],
+    [
+      "FY27NACS1",
+      "ACS",
+      "Detention Vendor Management and Building Engineering Consulting",
+      "2027-04-01",
+      "2030-03-31",
+      "Competitive Sealed Bid",
+      3,
+      "None",
+      0
+    ]
+  ],
+  "ll1_rows": [
+    [null, "Agency:", "ACS"],
+    [null, "Description of Goods and Services to be Procured", "Anticipated Contract Info"],
+    [
+      "Plan ID #",
+      null,
+      "Anticipated Contract Start",
+      "Anticipated Contract End",
+      "Procurement Method",
+      "Procurement Industry",
+      "Estimated Amount",
+      "Fiscal Quarter of Solicitation",
+      "Procurement Probability"
+    ],
+    [
+      "FY27NACS1",
+      "Psychologist Evaluations 06827P1234",
+      "2027-07-01",
+      "2030-06-30",
+      "Request for Proposal--Best Value",
+      "Professional Services",
+      750000,
+      3,
+      "Definite"
+    ]
+  ],
+  "capital_rows": [
+    {
+      "reporting_period": "202605",
+      "managing_agency": "DOHMH",
+      "sponsor_agency": "DOHMH",
+      "pid": "1",
+      "fms_id": "HL82ZERGA",
+      "total_budget": "4510560.10",
+      "spend_to_date": "4274560.10",
+      "fms_project_name": "LEASE SPACE RENOVATION - 1235 ZEREGA AVENUE, BRONX, NY",
+      "agency_project_name": "Zerega Avenue Mobile Food Cart Inspection Station",
+      "agency_project_description": "New construction of Zerega Mobile Food Cart Inspection Station",
+      "current_phase": "Close-out",
+      "forecast_completion": "2024-05-30T00:00:00.000",
+      "actual_design_start": "2018-05-01T00:00:00.000",
+      "ten_year_plan_category": "ADMINISTRATION",
+      "borough": "Bronx",
+      "community_board": "Bronx"
+    }
+  ],
+  "bridge_plans": [
+    {
+      "source_record_id": "mocs_ll1:FY27NACS1",
+      "source": "mocs_ll1",
+      "source_url": "https://example.test/ll1.xlsx",
+      "agency": "Administration for Children's Services",
+      "description": "Psychologist Evaluations",
+      "term_start": "2027-07-01",
+      "term_end": "2030-06-30",
+      "published_identifiers": ["06827P1234"]
+    },
+    {
+      "source_record_id": "mocs_ll1:FY27NACS2",
+      "source": "mocs_ll1",
+      "source_url": "https://example.test/ll1.xlsx",
+      "agency": "Administration for Children's Services",
+      "description": "Meal preparation at detention center",
+      "term_start": "2027-01-01",
+      "term_end": "2029-12-31",
+      "published_identifiers": ["06827B9999"]
+    },
+    {
+      "source_record_id": "mocs_ll1:FY27NACS3",
+      "source": "mocs_ll1",
+      "source_url": "https://example.test/ll1.xlsx",
+      "agency": "Administration for Children's Services",
+      "description": "Network security platform implementation services",
+      "term_start": "2027-04-01",
+      "term_end": "2029-03-31",
+      "published_identifiers": []
+    },
+    {
+      "source_record_id": "mocs_ll1:FY27NACS4",
+      "source": "mocs_ll1",
+      "source_url": "https://example.test/ll1.xlsx",
+      "agency": "Administration for Children's Services",
+      "description": "Language access consulting",
+      "term_start": "2027-01-01",
+      "term_end": "2028-12-31",
+      "published_identifiers": []
+    },
+    {
+      "source_record_id": "mocs_ll63:FY27NDOT1",
+      "source": "mocs_ll63",
+      "source_url": "https://example.test/ll63.xlsx",
+      "agency": "Department of Transportation",
+      "description": "Bridge inspection engineering",
+      "term_start": "2027-01-01",
+      "term_end": "2029-12-31",
+      "published_identifiers": ["84127P0001"]
+    },
+    {
+      "source_record_id": "mocs_ll63:FY27NDOT2",
+      "source": "mocs_ll63",
+      "source_url": "https://example.test/ll63.xlsx",
+      "agency": "Department of Transportation",
+      "description": "Traffic signal maintenance",
+      "term_start": "2027-01-01",
+      "term_end": "2029-12-31",
+      "published_identifiers": []
+    },
+    {
+      "source_record_id": "mocs_ll63:FY27NDOT3",
+      "source": "mocs_ll63",
+      "source_url": "https://example.test/ll63.xlsx",
+      "agency": "Department of Transportation",
+      "description": "Ferry terminal design",
+      "term_start": "2027-04-01",
+      "term_end": "2030-03-31",
+      "published_identifiers": []
+    },
+    {
+      "source_record_id": "mocs_ll63:FY27NDOT4",
+      "source": "mocs_ll63",
+      "source_url": "https://example.test/ll63.xlsx",
+      "agency": "Department of Transportation",
+      "description": "Roadway materials testing",
+      "term_start": "2027-07-01",
+      "term_end": "2029-06-30",
+      "published_identifiers": []
+    },
+    {
+      "source_record_id": "capital_projects_dashboard:202605:1:FMS100",
+      "source": "capital_projects_dashboard",
+      "source_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "agency": "DDC",
+      "description": "Public building rehabilitation",
+      "term_start": "2026-01-01",
+      "term_end": "2028-12-31",
+      "published_identifiers": ["FMS100"]
+    },
+    {
+      "source_record_id": "capital_projects_dashboard:202605:2:FMS200",
+      "source": "capital_projects_dashboard",
+      "source_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "agency": "DDC",
+      "description": "Courthouse electrical upgrades",
+      "term_start": "2026-01-01",
+      "term_end": "2028-12-31",
+      "published_identifiers": ["FMS200"]
+    },
+    {
+      "source_record_id": "capital_projects_dashboard:202605:3:FMS300",
+      "source": "capital_projects_dashboard",
+      "source_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "agency": "DDC",
+      "description": "Community center renovation",
+      "term_start": "2026-01-01",
+      "term_end": "2028-12-31",
+      "published_identifiers": []
+    },
+    {
+      "source_record_id": "capital_projects_dashboard:202605:4:FMS400",
+      "source": "capital_projects_dashboard",
+      "source_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "agency": "DDC",
+      "description": "Library roof replacement",
+      "term_start": "2026-01-01",
+      "term_end": "2028-12-31",
+      "published_identifiers": []
+    }
+  ],
+  "bridge_targets": [
+    {
+      "source": "city_record",
+      "target_id": "cr-1",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/cr-1",
+      "agency": "Administration for Children's Services",
+      "title": "Psychologist Evaluations",
+      "date": "2026-08-01",
+      "identifiers": ["06827P1234"]
+    },
+    {
+      "source": "passport_rfx",
+      "target_id": "pp-1",
+      "source_url": "https://a0333-passportpublic.nyc.gov/rfx.html",
+      "agency": "Administration for Children's Services",
+      "title": "Psychologist Evaluations",
+      "date": "2026-08-01",
+      "identifiers": ["06827P1234"]
+    },
+    {
+      "source": "passport_contract",
+      "target_id": "pp-2",
+      "source_url": "https://a0333-passportpublic.nyc.gov/contracts.html",
+      "agency": "Administration for Children's Services",
+      "title": "Meal preparation at detention center",
+      "date": "2026-09-01",
+      "identifiers": ["06827B9999"]
+    },
+    {
+      "source": "city_record",
+      "target_id": "cr-3",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/cr-3",
+      "agency": "Administration for Children's Services",
+      "title": "Network security platform implementation services",
+      "date": "2026-11-01",
+      "identifiers": []
+    },
+    {
+      "source": "city_record",
+      "target_id": "cr-ll63",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/cr-ll63",
+      "agency": "Department of Transportation",
+      "title": "Bridge inspection engineering",
+      "date": "2026-08-01",
+      "identifiers": ["84127P0001"]
+    },
+    {
+      "source": "city_record",
+      "target_id": "cr-capital",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/cr-capital",
+      "agency": "DDC",
+      "title": "Public building rehabilitation",
+      "date": "2026-08-01",
+      "identifiers": ["FMS100"]
+    },
+    {
+      "source": "passport_contract",
+      "target_id": "pp-capital",
+      "source_url": "https://a0333-passportpublic.nyc.gov/contracts.html",
+      "agency": "DDC",
+      "title": "Courthouse electrical upgrades",
+      "date": "2026-08-01",
+      "identifiers": ["FMS200"]
+    }
+  ],
+  "review_labels": {
+    "mocs_ll1:FY27NACS3|city_record|cr-3": {
+      "accepted": false,
+      "reason": "Generic title overlap without a published identifier cannot establish that these are the same procurement."
+    }
+  }
+}

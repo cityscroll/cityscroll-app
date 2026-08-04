@@ -1114,25 +1114,75 @@
       "id": "mocs-ll63-plans",
       "name": "MOCS Local Law 63 procurement plans",
       "owner": "NYC Mayor's Office of Contract Services",
-      "status": "disabled",
-      "scope": "runtime",
-      "kind": "mocs-disabled",
+      "status": "manual",
+      "scope": "build",
+      "kind": "html",
       "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
-      "legacy_dataset_ids": [
-        "egea-b8r5",
-        "whpb-ebtd"
+      "required_fields": [
+        "plan_id",
+        "agency",
+        "description",
+        "term_start",
+        "term_end",
+        "procurement_method",
+        "quarter"
       ],
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
-      "product_freshness": "Disabled. No plan rows are read or shown, and stale plan cache entries are purged.",
-      "used_for": "No current product output.",
-      "gap": "The official page links rotating per-agency spreadsheets but provides no stable tabular feed or machine manifest. The former configured ID is non-tabular and the former documented ID does not exist.",
+      "product_freshness": "Collector and fixture receipt framework are committed. Production materialization and its measured receipt are not included in this stage. The old egea-b8r5 and whpb-ebtd IDs remain retired and are not queried.",
+      "used_for": "No current product output. Staged host-side input for a future cityscroll.procurement_planning.v1 build; no notice/PASSPort edge is enabled before the production fixed-sample receipt clears its independent 30% and precision-review gates.",
+      "join_keys": [
+        "published PIN/EPIN when present",
+        "agency + description + term (reviewed candidate only)"
+      ],
       "code_references": [
         {
-          "path": "worker/src/mocs_plan.mjs",
-          "contains": "status: \"disabled\""
+          "path": "warehouse/scripts/procurement_plans_run.py",
+          "contains": "mocs_procurement_plans"
+        },
+        {
+          "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
+          "contains": "mocs_ll63_to_city_record"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "mocs-ll1-plans",
+      "name": "MOCS Local Law 1 M/WBE procurement plans",
+      "owner": "NYC Mayor's Office of Contract Services",
+      "status": "manual",
+      "scope": "build",
+      "kind": "html",
+      "landing_page": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page",
+      "required_fields": [
+        "plan_id",
+        "agency",
+        "description",
+        "term_start",
+        "term_end",
+        "procurement_method",
+        "industry",
+        "estimated_amount",
+        "quarter"
+      ],
+      "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
+      "product_freshness": "Collector and fixture receipt framework are committed. Production materialization and its measured receipt are not included in this stage.",
+      "used_for": "No current product output. Staged host-side input for future forecast rows with publisher-supplied purpose, term, method, industry, quarter, and estimated amount. No agency-total budget is inferred.",
+      "join_keys": [
+        "published PIN/EPIN when present",
+        "agency + description + term (reviewed candidate only)"
+      ],
+      "code_references": [
+        {
+          "path": "warehouse/scripts/procurement_plans_run.py",
+          "contains": "mocs_ll1"
+        },
+        {
+          "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
+          "contains": "mocs_ll1_to_passport"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "ocp-current-solicitations",
@@ -1654,6 +1704,48 @@
       "delivery_tier": "live-only",
       "contract_class": "pointer",
       "stale_policy": "skip"
+    },
+    {
+      "id": "capital-projects-dashboard",
+      "name": "Capital Projects Dashboard - Citywide Budget and Schedule",
+      "owner": "Mayor's Office of Operations",
+      "status": "manual",
+      "scope": "build",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "fb86-vt7u",
+      "landing_page": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "required_fields": [
+        "reporting_period",
+        "managing_agency",
+        "sponsor_agency",
+        "pid",
+        "fms_id",
+        "total_budget",
+        "spend_to_date",
+        "agency_project_name",
+        "agency_project_description",
+        "current_phase"
+      ],
+      "max_stale_days": 180,
+      "publisher_cadence": "Three times a year after OMB commitment-plan releases (January, May, and September)",
+      "product_freshness": "Collector and fixture receipt framework are committed. Production collection through the Socrata resource API and its measured receipt are not included in this stage.",
+      "used_for": "No current product output. Staged host-side input for future capital budget, spend, FMS identifier, project description, phase, and schedule rows.",
+      "join_keys": [
+        "fms_id",
+        "managing_agency + agency_project_name + phase time (reviewed candidate only)"
+      ],
+      "code_references": [
+        {
+          "path": "warehouse/scripts/procurement_plans_run.py",
+          "contains": "fb86-vt7u"
+        },
+        {
+          "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
+          "contains": "capital_projects_dashboard_to_city_record"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "city-council-meetings-open-data",

@@ -1984,6 +1984,17 @@ Never materialize a City Record edge unless the fixed-sample receipt clears 30% 
 positives or unreviewed candidates; missing facts stay null, and hearing publication never
 implies board approval.
 
+## Procurement planning infrastructure (RC-1)
+
+Host-side FY2027 MOCS LL63/LL1 XLSX collection plus Capital Projects Dashboard
+`fb86-vt7u` lives in `warehouse/scripts/procurement_plans_run.py`. The staged
+framework defines four DuckDB tables and `cityscroll.procurement_planning.v1`;
+every City Record/PASSPort bridge is independently fixed-sample gated at 30%,
+and reviewer-labeled agency+title+time candidates are required before an edge
+can land. Production materialization is a separate run, and the Money reader is
+a later surface. Verify with
+`node --test test/procurement_plans.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
