@@ -1,4 +1,5 @@
 import materialization from "./data/attachment_metadata_lookup.json" with { type: "json" };
+import relatedMaterialization from "./data/attachment_related_notices.json" with { type: "json" };
 import {
   cleanExtractedText,
   joinAttachmentTexts,
@@ -6,6 +7,7 @@ import {
   publicAttachmentTextFields,
   TEXT_PROVENANCE,
 } from "./lib/attachment_text.mjs";
+import { publicRelatedPayload } from "./lib/attachment_embeddings.mjs";
 
 const MAX_BODY_BYTES = 2_000_000;
 const MAX_NOTICES = 100;
@@ -229,12 +231,15 @@ export async function handleAttachmentMetadata(request, env) {
   if (!requestId || !/^\d{8,20}$/.test(requestId)) return json({ error: "invalid id" }, 400);
   const metadata = await loadAttachmentMetadata(env.DB, [requestId]);
   const attachments = metadata.get(requestId) || [];
+  // T3 precomputed related edges (static twin) — never embed at request time.
+  const related = publicRelatedPayload(relatedMaterialization, requestId);
   return Response.json(
     {
       request_id: requestId,
       n_attachments: attachments.length,
       n_with_text: attachments.filter((item) => item.text_status === "ok" && item.extracted_text).length,
       attachments,
+      related_by_attachment: related,
     },
     { headers: { "Cache-Control": "public, max-age=300, stale-while-revalidate=86400" } },
   );

@@ -33,7 +33,7 @@
       "lcpMs": 2500,
       "cls": 0.1,
       "wireBytes": 440000,
-      "comment": "Cold home loads the full ordered app module graph plus digest preview awareness on boot (aPreview). CI p95 measured 436015 gzip wire bytes after the digest-decouple train base; 440000 clears that cumulative graph with a small headroom and does not hide a sudden step change. Ratchet target: under 430000 after a home-path load split that defers alerts preview awareness."
+      "comment": "Cold home loads the full ordered app module graph plus digest preview awareness on boot (aPreview). Digest-decouple train base measured ~436015 gzip wire bytes p95 in CI. T3 attachment related-notices adds ~0.8\u20131.2 KB gzip on the always-loaded path (alerts/routing/i18n/index chrome only); the related JSON artifact and client helper load only on attachment-bearing notice detail, not home cold. Ceiling 440000 keeps small headroom without masking a sudden step. Ratchet target: under 430000 after a home-path load split that defers alerts preview awareness."
     },
     "home.warm": {
       "viewports": [

@@ -100,6 +100,11 @@ test("public metadata endpoint serves precomputed rows without a portal fetch", 
   assert.equal(body.n_attachments, 1);
   assert.equal(body.attachments[0].document_id, "37470");
   assert.match(response.headers.get("cache-control"), /stale-while-revalidate/);
+  // T3: precomputed related edges ride along (no request-time embedding).
+  assert.ok(body.related_by_attachment);
+  assert.equal(body.related_by_attachment.request_id, "20240515016");
+  assert.ok(body.related_by_attachment.related.length >= 1);
+  assert.match(body.related_by_attachment.related[0].title || "", /Ashokan|timber|forest|reservoir/i);
 });
 
 test("scheduled production detector can require the latest batch receipt", async () => {
