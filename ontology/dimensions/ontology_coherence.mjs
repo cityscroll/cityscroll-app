@@ -185,11 +185,25 @@ export function auditLandPayload(payload = {}, opts = {}) {
   }
 
   // Rule: current stage past statutory deadline
+  // Skip when the clock or project is already terminal — a completed review
+  // still carries historical due dates and must not read as an open overdue step.
   const clock = payload.statutory_clock || null;
-  if (currentId && clock && clock.status !== "ineligible" && clock.status !== "withdrawn") {
+  const pubStatus = String(payload.public_status || payload.open_data?.public_status || "").toLowerCase();
+  const projectTerminal =
+    (clock && (clock.status === "completed" || clock.status === "withdrawn"))
+    || /\bcompleted\b|\bapproved\b|\bdisapproved\b|\bwithdrawn\b|\bterminated\b/.test(pubStatus);
+  if (
+    currentId
+    && clock
+    && clock.status !== "ineligible"
+    && clock.status !== "withdrawn"
+    && clock.status !== "completed"
+    && !projectTerminal
+  ) {
     const row = statutoryDeadlineForPhase(clock, currentId);
+    const rowClosed = row && row.status && row.status !== "open";
     const due = isoDateOnly(row?.due_date);
-    if (due) {
+    if (due && !rowClosed) {
       const lag = daysBetween(due, today);
       if (lag != null && lag > CURRENT_DEADLINE_PAST_TOLERANCE_DAYS) {
         violations.push({

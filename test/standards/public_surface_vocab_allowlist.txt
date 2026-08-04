@@ -1,17 +1,9 @@
 # Explicit remaining public strings that still use a listed internal-ish term.
 # Prefer rewriting copy over adding lines. Format: key  OR  key:term
 #
-# Staffing / career guide product language intentionally distinguishes the
-# precomputed DCAS schedule from live City Record searches.
-staffing_upcoming_deck:precompute
-staffing_notices_deck:precompute
-staffing_exam_redirect_html:precompute
-career_loading:precompute
-career_noe_pending:precompute
-career_load_failed:precompute
-exam_spine_provenance_html:precompute
-lifecycle_dollars_provenance_html:precompute
-matter_spine_note:precompute
-career_source_current:precompute
+# Staffing / career guide product language previously used "precomputed" to
+# distinguish the DCAS exam guide from live City Record searches; those strings
+# were rewritten to plain reader language (overnight quality sweep). Keep this
+# file for intentional exceptions only.
 # API docs page names the Socrata SODA protocol on upstream dataset links.
 api_p_upstream_html:SODA

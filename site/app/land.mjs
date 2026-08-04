@@ -536,10 +536,27 @@ function ensureLandPhaseSpineTools(){
       if(clock&&typeof clock.buildUlurpPipelinePosition==="function"){
         globalThis.buildUlurpPipelinePosition=clock.buildUlurpPipelinePosition;
       }
+      if(clock&&typeof clock.normalizeLandOutcomeRecord==="function"){
+        globalThis.normalizeLandOutcomeRecord=clock.normalizeLandOutcomeRecord;
+      }
+      if(clock&&typeof clock.buildUlurpStatutoryClockView==="function"){
+        globalThis.buildUlurpStatutoryClockView=clock.buildUlurpStatutoryClockView;
+      }
       return phase;
     });
   }
   return landPhaseSpineToolsPromise;
+}
+/** Rebuild stale-open statutory clocks so Completed projects never show overdue public-review steps. */
+function normalizeLandRecord(record){
+  if(!record||typeof record!=="object") return record;
+  const norm=typeof normalizeLandOutcomeRecord==="function"
+    ? normalizeLandOutcomeRecord
+    : (globalThis.normalizeLandOutcomeRecord||null);
+  if(norm){
+    try{ return norm(record); }catch(_e){ return record; }
+  }
+  return record;
 }
 function landPhaseLabel(phase){
   if(!phase) return "—";
@@ -629,8 +646,11 @@ function landPhaseAggregateHTML(agg, phaseId, idx){
 /** Statutory deadline note for one ULURP phase (precomputed on the outcome record). */
 function landStatutoryDeadlineHTML(phaseId, clock, phaseState){
   if(!clock || clock.status==="ineligible") return "";
+  // Terminal clocks: historical due dates only — no "testify before deadline" action frame.
+  if(clock.status==="completed" || clock.status==="withdrawn") return "";
   const row=(clock.phases||[]).find(p=>p.phase_id===phaseId);
   if(!row || !row.due_date) return "";
+  if(row.status && row.status!=="open") return "";
   const stageName=landPhaseLabel({label_key:row.label_key, id:phaseId});
   const deadline=t("land_spine_statutory_deadline_html",{
     stage:escUiHtml(stageName),
@@ -751,6 +771,7 @@ function landPipelinePositionHTML(view, record){
 function landPhaseSpineHTML(view, tools, record){
   if(!view) return "";
   const isPortalUrl=tools?.isProjectPortalUrl;
+  record=normalizeLandRecord(record);
   const clock=record?.statutory_clock || null;
   const portal=view.portal_url
     ? `<a class="view land-spine-portal" href="${escUiHtml(view.portal_url)}" ${EXT_ATTRS}>${t("land_spine_portal_link")}${extSR()}</a>`
@@ -894,6 +915,7 @@ function landOutcomesHTML(record, phaseTools){
         reason: escUiHtml(t("land_outcomes_unmatched_default"))
       })}</div>`;
   }
+  record=normalizeLandRecord(record);
   const spineHTML=landSpineHTML(record.spine, record, phaseTools);
   const join = record.join || {};
   if(!join.matched || !record.filled){
@@ -1043,9 +1065,10 @@ async function loadZapOutcomes(r, el, selection){
     const phaseTools = await phaseToolsP;
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
-    el.innerHTML = landOutcomesHTML(warm.data.record, phaseTools);
+    const record = normalizeLandRecord(warm.data.record);
+    el.innerHTML = landOutcomesHTML(record, phaseTools);
     bindLandSpineUI(el);
-    paintLandActionRail($("#land-actions"), r, warm.data.record, phaseTools);
+    paintLandActionRail($("#land-actions"), r, record, phaseTools);
     return;
   }
   const [data, phaseTools] = await Promise.all([fetchZapOutcomesPayload(r.project_id), phaseToolsP]);
@@ -1058,9 +1081,10 @@ async function loadZapOutcomes(r, el, selection){
       })}</div>`;
     return;
   }
-  el.innerHTML = landOutcomesHTML(data.record, phaseTools);
+  const record = normalizeLandRecord(data.record);
+  el.innerHTML = landOutcomesHTML(record, phaseTools);
   bindLandSpineUI(el);
-  paintLandActionRail($("#land-actions"), r, data.record, phaseTools);
+  paintLandActionRail($("#land-actions"), r, record, phaseTools);
 }
 
 /* ===================== NOTICE-LEVEL ZAP PROJECT SPINE =====================
