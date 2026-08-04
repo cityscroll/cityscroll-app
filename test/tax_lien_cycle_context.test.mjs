@@ -145,7 +145,7 @@ test("disposition cycle context reuses the shared envelope shape", () => {
     next: { id: "auction_or_rfp" },
     disposition_timing_estimate: {
       kind: "cohort_statistic",
-      pattern_line: "Predicted based on 34 Property Disposition auction notices since 2013 — when a sale date is published, it typically falls 1–6 weeks after the auction notice.",
+      pattern_line: "Based on 34 Property Disposition auction notices since 2013 — when a sale date is published, it typically falls 1–6 weeks after the auction notice.",
       n: 34,
       since_year: "2013",
       public_projection: "cohort_statistic_only",
@@ -155,7 +155,7 @@ test("disposition cycle context reuses the shared envelope shape", () => {
   assert.equal(ctx.class_id, "property_disposition");
   assert.equal(ctx.position.current_id, "hearing");
   assert.equal(ctx.position.stages.filter((s) => s.status === "current").length, 1);
-  assert.match(ctx.historical_context.line, /Predicted based on 34/);
+  assert.match(ctx.historical_context.line, /Based on 34/);
   assert.match(ctx.historical_context.attribution, /34 prior dispositions/);
   assert.equal(ctx.survey_status, "implemented");
 });

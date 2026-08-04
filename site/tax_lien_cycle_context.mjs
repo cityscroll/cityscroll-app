@@ -298,10 +298,10 @@ export function propertyCycleContextEnvelope(partial = {}) {
 }
 
 /**
- * Disposition class: fold phase view + timing estimate into the shared envelope.
+ * Disposition class: fold phase view + attributed timing line into the shared envelope.
  * Historical context only when the timing model provides an attributed line.
  *
- * @param {object|null} phaseView from buildPropertyPhaseView + attachDispositionTimingEstimate
+ * @param {object|null} phaseView from buildPropertyPhaseView (+ optional timing attach)
  * @param {object} [opts]
  */
 export function buildDispositionCycleContext(phaseView, opts = {}) {
@@ -317,16 +317,17 @@ export function buildDispositionCycleContext(phaseView, opts = {}) {
       ? (phaseView.current && phaseView.current.id === p.id ? "current" : "done")
       : "todo",
   }));
-  const estimate = phaseView.disposition_timing_estimate || null;
-  const historical = estimate && estimate.pattern_line
+  // Field name disposition_timing_estimate is the existing product stamp; read-only here.
+  const timingStamp = phaseView.disposition_timing_estimate || null;
+  const historical = timingStamp && timingStamp.pattern_line
     ? {
-      kind: estimate.kind || "cohort_statistic",
-      line: estimate.pattern_line,
-      n: estimate.n ?? null,
-      since_year: estimate.since_year || null,
-      public_projection: estimate.public_projection || "cohort_statistic_only",
-      attribution: estimate.n != null
-        ? `Based on ${estimate.n} prior dispositions`
+      kind: timingStamp.kind || "cohort_statistic",
+      line: timingStamp.pattern_line,
+      n: timingStamp.n ?? null,
+      since_year: timingStamp.since_year || null,
+      public_projection: timingStamp.public_projection || "cohort_statistic_only",
+      attribution: timingStamp.n != null
+        ? `Based on ${timingStamp.n} prior dispositions`
         : null,
     }
     : null;
@@ -370,7 +371,7 @@ export const PROPERTY_CYCLE_CONTEXT_SURVEY = [
     label: "Property disposition (hearing → auction/RFP → award)",
     status: "implemented",
     history: "Cohort auction-notice→event lags (n≈34); multi-stage hearing→auction pairs rare",
-    surface: "disposition phase spine + timing estimate on Property Disposition notices",
+    surface: "disposition phase spine + attributed timing line on Property Disposition notices",
   },
   {
     class_id: "commercial_surplus_auction",
