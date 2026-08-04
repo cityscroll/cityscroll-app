@@ -228,7 +228,9 @@ def install_observers(page: Page) -> None:
     )
 
 
-def local_wire_bytes(page: Page, site_root: Path, base_url: str) -> int:
+def local_wire_inventory(
+    page: Page, site_root: Path, base_url: str
+) -> tuple[int, list[dict[str, Any]]]:
     names: list[str] = page.evaluate(
         """base => performance.getEntriesByType("resource")
           .map(entry => entry.name)
@@ -246,7 +248,22 @@ def local_wire_bytes(page: Page, site_root: Path, base_url: str) -> int:
             candidate = candidate / "index.html"
         if candidate.is_file():
             files.add(candidate)
-    return sum(len(gzip.compress(path.read_bytes(), compresslevel=9)) for path in files)
+    inventory = sorted(
+        (
+            {
+                "path": path.relative_to(site_root).as_posix(),
+                "gzipBytes": len(gzip.compress(path.read_bytes(), compresslevel=9)),
+            }
+            for path in files
+        ),
+        key=lambda item: (-item["gzipBytes"], item["path"]),
+    )
+    return sum(item["gzipBytes"] for item in inventory), inventory
+
+
+def local_wire_bytes(page: Page, site_root: Path, base_url: str) -> int:
+    total, _inventory = local_wire_inventory(page, site_root, base_url)
+    return total
 
 
 def nav_metrics(page: Page) -> dict[str, float]:
@@ -288,7 +305,7 @@ def measure_home(
     fixture: dict[str, Any],
     site_root: Path,
     warm: bool,
-) -> tuple[dict[str, float], list[str]]:
+) -> tuple[dict[str, Any], list[str]]:
     unexpected: list[str] = list()
     context = browser.new_context(viewport=viewport)
     page = context.new_page()
@@ -304,7 +321,9 @@ def measure_home(
     wait_for_home(page)
     metrics = nav_metrics(page)
     if not warm:
-        metrics["wireBytes"] = float(local_wire_bytes(page, site_root, base_url))
+        wire_bytes, wire_files = local_wire_inventory(page, site_root, base_url)
+        metrics["wireBytes"] = float(wire_bytes)
+        metrics["wireFiles"] = wire_files
     context.close()
     return metrics, unexpected
 
@@ -314,7 +333,7 @@ def measure_contracts(
     base_url: str,
     viewport: dict[str, int],
     fixture: dict[str, Any],
-) -> tuple[dict[str, float], list[str]]:
+) -> tuple[dict[str, Any], list[str]]:
     unexpected: list[str] = list()
     context = browser.new_context(viewport=viewport)
     page = context.new_page()
@@ -412,7 +431,7 @@ def measure(
     viewport: dict[str, int],
     fixture: dict[str, Any],
     site_root: Path,
-) -> tuple[dict[str, float], list[str]]:
+) -> tuple[dict[str, Any], list[str]]:
     if fixture_name == "home.cold":
         return measure_home(browser, base_url, viewport, fixture, site_root, warm=False)
     if fixture_name == "home.warm":
@@ -460,6 +479,7 @@ def main() -> int:
                     raise SystemExit(f"{fixture_name} does not support viewport {viewport_name}")
                 viewport = budgets["viewports"][viewport_name]
                 raw: list[dict[str, Any]] = list()
+                wire_inventories: list[list[dict[str, Any]]] = list()
                 unexpected: set[str] = set()
                 for index in range(warmups + samples):
                     sample, sample_unexpected = measure(
@@ -467,6 +487,9 @@ def main() -> int:
                     )
                     unexpected.update(sample_unexpected)
                     if index >= warmups:
+                        wire_files = sample.pop("wireFiles", None)
+                        if wire_files is not None:
+                            wire_inventories.append(wire_files)
                         raw.append(sample)
                     if (index + 1) % 5 == 0:
                         print(
@@ -486,6 +509,17 @@ def main() -> int:
                         summary[metric] = quantile(values, quantile_probability)
                 invariant_passed = all(sample.get("invariant", 1) == 1 for sample in raw)
                 run_failures: list[str] = list()
+                wire_files = wire_inventories[0] if wire_inventories else None
+                if "wireBytes" in budget and len(wire_inventories) != len(raw):
+                    run_failures.append(
+                        "wire file inventory was not captured for every measured sample"
+                    )
+                elif wire_files is not None and any(
+                    inventory != wire_files for inventory in wire_inventories[1:]
+                ):
+                    run_failures.append(
+                        "wire file inventory changed across measured samples"
+                    )
                 if budget.get("invariant") and not invariant_passed:
                     state = next(
                         (sample.get("state") for sample in raw if sample.get("invariant") != 1),
@@ -520,17 +554,18 @@ def main() -> int:
                 failures.extend(
                     f"{fixture_name} [{viewport_name}]: {failure}" for failure in run_failures
                 )
-                results["runs"].append(
-                    {
-                        "fixture": fixture_name,
-                        "viewport": viewport_name,
-                        "status": status,
-                        "budget": budget,
-                        "p95": summary,
-                        "samples": raw,
-                        "failures": run_failures,
-                    }
-                )
+                run_result = {
+                    "fixture": fixture_name,
+                    "viewport": viewport_name,
+                    "status": status,
+                    "budget": budget,
+                    "p95": summary,
+                    "samples": raw,
+                    "failures": run_failures,
+                }
+                if wire_files is not None:
+                    run_result["wireFiles"] = wire_files
+                results["runs"].append(run_result)
         browser.close()
 
     results["status"] = "FAIL" if failures else "PASS"
