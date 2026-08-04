@@ -218,6 +218,9 @@ export function awardCoverage(registryEntries) {
 }
 
 export function renderSourceDocument(registry, coverage) {
+  const aboResidual = registry.contracts.find((contract) =>
+    contract.id === "abo-local-authorities"
+  )?.join_measurement;
   const rows = registry.contracts.map((contract) => {
     const source = sourceRef(contract);
     const freshness = `${contract.publisher_cadence}. ${contract.product_freshness}`;
@@ -239,7 +242,7 @@ export function renderSourceDocument(registry, coverage) {
     "",
     "## External-award coverage",
     "",
-    `The runtime registry maps ${coverage.aliases} City Record agency names to ${coverage.authorities} distinct Authorities Budget Office authorities (${coverage.sourcePairs} distinct dataset-and-authority pulls) across \`${coverage.datasets.join("`, `")}\`. It also contains ${coverage.nycha} exact NYCHA mapping and ${coverage.absent} explicit gaps. ABO matches are fuzzy: vendor, date, and amount can support a possible match, but do not establish exact contract identity.`,
+    `The runtime registry maps ${coverage.aliases} City Record agency names to ${coverage.authorities} distinct Authorities Budget Office authorities (${coverage.sourcePairs} distinct dataset-and-authority pulls) across \`${coverage.datasets.join("`, `")}\`. It also contains ${coverage.nycha} exact NYCHA mapping and ${coverage.absent} explicit gaps. ABO rows remain authority-scoped: the measured residual bridge joined ${aboResidual?.rates?.labeled_residual?.joined ?? 0}/${aboResidual?.rates?.labeled_residual?.total ?? 0} notices and is stopped below the ${Math.round((aboResidual?.usefulness_threshold ?? 0.3) * 100)}% usefulness and ${Math.round((aboResidual?.fuzzy_precision_floor ?? 0.95) * 100)}% precision gates, so no notice-level edge is published.`,
     "",
     "## Procurement-plan gap",
     "",
