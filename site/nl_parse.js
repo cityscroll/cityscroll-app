@@ -64,11 +64,32 @@ var NL_AGENCY_ALIASES = [
 var NOTICE_TYPE_AWARD_RE = /\b(awards?|awarded|winners?)\b/;
 var NOTICE_TYPE_SOLICITATION_RE = /\b(rfps?|solicitations?|bids?|proposals?)\b/;
 
+function normalizeNaturalLanguageText(value) {
+  var text = String(value || "");
+  if (typeof text.normalize === "function") text = text.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+  return (" " + text.toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/\b(\d+)(?:st|nd|rd|th)\b/g, "$1")
+    .replace(/\bst[.]?(?=\s+[a-z])/g, "saint")
+    .replace(/\.(?!\d)/g, " ")
+    .replace(/[^a-z0-9.$<>]+/g, " ")
+    .replace(/\s+/g, " ").trim() + " ");
+}
+
+function containsAliasWords(text, alias) {
+  var normalized = normalizeNaturalLanguageText(alias);
+  if (text.indexOf(normalized) !== -1) return true;
+  var noise = { the: true, of: true, and: true, department: true };
+  var words = normalized.trim().split(/\s+/).filter(function(word) { return word && !noise[word]; });
+  if (!words.length) return false;
+  return words.every(function(word) { return text.indexOf(" " + word + " ") !== -1; });
+}
+
 function extractAgency(t) {
   for (var i = 0; i < NL_AGENCY_ALIASES.length; i++) {
     var canonical = NL_AGENCY_ALIASES[i][0], aliases = NL_AGENCY_ALIASES[i][1];
     for (var j = 0; j < aliases.length; j++) {
-      if (t.indexOf(" " + aliases[j] + " ") !== -1) return canonical;
+      if (containsAliasWords(t, aliases[j])) return canonical;
     }
   }
   return null;
@@ -175,7 +196,7 @@ function extractRulesProcess(t) {
 }
 
 function extractPropertyProcess(t) {
-  if (/\bauctions?\b|\brfps?\b|\bsales?\b|\bselling\b/.test(t) && !/\bdisposition hearings?\b/.test(t)) {
+  if (/\bauctions?\b|\brfps?\b|\bsales?\b|\bselling\b|\breal estate offerings?\b/.test(t) && !/\bdisposition hearings?\b/.test(t)) {
     return "auction_or_rfp";
   }
   if (/\bhearings?\b|\bdisposition hearings?\b/.test(t)) return "hearing";
@@ -218,7 +239,7 @@ function extractStaffingGuide(t) {
 }
 
 function parseNL(text) {
-  var t = " " + text.toLowerCase() + " ";
+  var t = normalizeNaturalLanguageText(text);
   var out = {
     keywords: [], agency: null, minAmount: null, maxAmount: null, category: null,
     months: null, noticeType: null, excludeSpecial: false, closingWeek: false,

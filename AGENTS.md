@@ -2025,6 +2025,16 @@ context must not appear on the franchise timeline. Receipt:
 Reproduce with `node tools/measure_franchise_mocs_plan_join.mjs` after collecting the staged
 MOCS plan JSONL; verify with `node --test test/franchise_mocs_plan_join.test.mjs`.
 
+## Neighborhood search geography
+
+Neighborhood queries resolve through the committed NYC Planning NTA 2020
+gazetteer (`site/data/neighborhood_gazetteer.json`, source dataset `9nt8-h7nd`)
+and the pure matcher in `site/neighborhood_search.mjs`. Property and Land reuse
+the existing community-district boundary keys, so map drill counts and list
+filters stay in parity. Rebuild with `node tools/build_neighborhood_gazetteer.mjs`;
+verify with `node --test test/neighborhood_search.test.mjs` and measure with
+`node tools/benchmark_neighborhood_search.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

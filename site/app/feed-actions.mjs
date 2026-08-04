@@ -40,10 +40,42 @@ function buildRulesStageMap(view){
   return m;
 }
 
+let neighborhoodSearchToolsPromise=null;
+function neighborhoodSearchTools(){
+  if(!neighborhoodSearchToolsPromise) neighborhoodSearchToolsPromise=import("../neighborhood_search.mjs").catch(()=>null);
+  return neighborhoodSearchToolsPromise;
+}
+
+async function resolveFeedNeighborhood(key, query){
+  if(!query||!["property","rules","meetings"].includes(key)) return null;
+  const tools=await neighborhoodSearchTools();
+  const place=tools?await tools.resolveNeighborhoodQuery(query):null;
+  if(!place) return null;
+  const kwEl=$("#"+key+"kw");
+  if(kwEl) kwEl.value="";
+  if(key==="property"){
+    propertyResolvedNeighborhood=place;
+    propertyCommunityDistrict=place.community_districts?.[0]||"";
+    $("#propertyboro").value=place.borough||"";
+    $("#propertyneighborhood").value=place.name;
+  } else if(key==="meetings"){
+    $("#meetingsboro").value=place.borough||"";
+    $("#meetingsneighborhood").value=place.name;
+  } else if(key==="rules"){
+    const boro=$("#rulesboro"); if(boro) boro.value=place.borough||"";
+  }
+  return place;
+}
+
 async function loadSection(key){
   const cfg=SECTIONS[key];
-  const kw=($("#"+key+"kw").value||"").trim();
-  updateHash();
+  const keepHash=hashLock;
+  let kw=($("#"+key+"kw").value||"").trim();
+  const resolvedNeighborhood=await resolveFeedNeighborhood(key, kw);
+  if(resolvedNeighborhood) kw="";
+  else if(key==="property" && kw){ propertyResolvedNeighborhood=null; propertyCommunityDistrict=""; }
+  if(!keepHash || resolvedNeighborhood) updateHash();
+  globalThis.syncAlertsEntryHrefs?.();
   renderSearchComponents(key);
   if(key==="meetings") return loadHearings();
   const whenSel=$("#"+key+"when");

@@ -4,10 +4,28 @@ async function nlResolve(text, lens){
   if(API){
     try{
       const r=await workerFetch("/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})}, 12000);
-      if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return {source:"model",...withPersonName(text, lens, j.filter)};}
+      if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return enrichNeighborhoodFilter(text,lens,{source:"model",...withPersonName(text, lens, j.filter)});}
     }catch(e){}
   }
-  return {source:"device",...deviceParse(text, lens)};
+  return enrichNeighborhoodFilter(text,lens,{source:"device",...deviceParse(text, lens)});
+}
+
+async function enrichNeighborhoodFilter(text,lens,filter){
+  if(!["land","property","rules","meetings"].includes(lens)) return filter;
+  try{
+    const tools=await import("../neighborhood_search.mjs");
+    const place=await tools.resolveNeighborhoodQuery(text);
+    if(!place) return filter;
+    const aliases=[place.name,...(place.aliases||[]),...(place.official_names||[])].map(tools.normalizeSearchText);
+    const keywords=(filter.keywords||[]).filter(keyword=>{
+      const normalized=tools.normalizeSearchText(keyword);
+      return normalized && !aliases.some(alias=>alias===normalized||alias.includes(normalized)||normalized.includes(alias));
+    });
+    const enriched={...filter,keywords,borough:place.borough,neighborhood:place.name,
+      communityDistrict:place.community_districts?.[0]||null,neighborhoodMatch:place.match_method};
+    if(lens==="land") enriched.boro=place.borough;
+    return enriched;
+  }catch(_e){ return filter; }
 }
 
 const NLQ_PRESET_KEY = "crd_nlq_presets_v1";
@@ -242,7 +260,7 @@ function withPersonName(text, lens, f){
 function deviceParse(text, lens){
   if(lens==="money") return parseNL(text);
   const out={keywords:[]};
-  const low=" "+text.toLowerCase()+" ";
+  const low=normalizeNaturalLanguageText(text);
   if(lens==="alerts"){
     // Rezonings are a different lens (land/ZAP) with no dollar amount, agency, or due date,
     // so they stay their own shape; everything else (contracts, RFPs, awards) reuses
@@ -471,6 +489,8 @@ function nlFeed(key, placeholder){
                (key==='meetings'&&f.borough)?`<span class="qchip">${t("affected_area_label")} <b>${f.borough}</b></span>`:"",
                (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
                (key==='property'&&f.borough)?`<span class="qchip">${t("borough_label")} <b>${f.borough}</b></span>`:"",
+               (key==='property'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
+               (key==='rules'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"",
                (key==='property'&&f.asset&&f.asset!=="all")?`<span class="qchip">${t("property_asset_rail_label")} <b>${f.asset}</b></span>`:"",
                (key==='property'&&(f.saleMethod||f.method)&& (f.saleMethod||f.method)!=="all")?`<span class="qchip">${t("property_sale_method_rail_label")} <b>${f.saleMethod||f.method}</b></span>`:"",
                (key==='property'&&(f.priceBand||f.price)&&(f.priceBand||f.price)!=="all")?`<span class="qchip">${t("property_price_rail_label")} <b>${f.priceBand||f.price}</b></span>`:"" ];
@@ -492,6 +512,12 @@ function nlFeed(key, placeholder){
       }
       if(key==='property'){
         if(f.borough) $("#propertyboro").value=f.borough;
+        if(f.neighborhood) $("#propertyneighborhood").value=f.neighborhood;
+        propertyResolvedNeighborhood=f.neighborhood?{
+          name:f.neighborhood,borough:f.borough||null,
+          community_districts:f.communityDistrict?[f.communityDistrict]:[],
+        }:null;
+        propertyCommunityDistrict=f.communityDistrict||"";
         if(f.process && ["hearing","auction_or_rfp","award_or_conveyance","unstaged"].includes(f.process)){
           propProcessSel=f.process;
         }
@@ -547,6 +573,7 @@ function searchFilterFromHash(lens, hash){
     filter.stage=q.get("stage")||"all";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
+    filter.communityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):null;
   }
   if(lens==="rules"){
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
@@ -584,6 +611,7 @@ function searchFilterChips(lens, filter){
     if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
     if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
     if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
+    else if(filter.communityDistrict) chips.push(`<span class="qchip">CD <b>${Number(filter.communityDistrict.slice(1))}</b></span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     return chips;
   } else {
@@ -650,6 +678,7 @@ function bindClearSearchState(lens, root){
       propSaleMethod="all"; propPriceBand="all"; propSort="closing_soon";
       const sortEl=$("#propsort"); if(sortEl) sortEl.value="closing_soon";
       $("#propertyboro").value=""; $("#propertyneighborhood").value="";
+      propertyCommunityDistrict=""; propertyResolvedNeighborhood=null;
     }
     if(lens==="rules"){ rulesProcessSel="all"; const rb=$("#rulesboro"); if(rb) rb.value=""; }
     $("#nltrans-"+lens).innerHTML="";

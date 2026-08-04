@@ -1690,6 +1690,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "В <b>{name}</b> сейчас нет объявлений о распоряжении имуществом.",
+    follow_this_area: "Следить за районом",
     property_cluster_summary: "{description} — похожих: {n}",
     property_cluster_fallback: "Объявления с датой",
     property_cluster_show: "Show each notice",

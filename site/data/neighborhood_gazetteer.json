@@ -1,0 +1,2485 @@
+{
+  "schema": "cityscroll.neighborhood_gazetteer.v1",
+  "source": {
+    "agency": "NYC Department of City Planning",
+    "dataset_id": "9nt8-h7nd",
+    "dataset_name": "2020 Neighborhood Tabulation Areas (NTAs)",
+    "url": "https://data.cityofnewyork.us/d/9nt8-h7nd",
+    "updated_at": "2026-05-28T15:11:19.000Z"
+  },
+  "source_row_count": 262,
+  "residential_nta_count": 197,
+  "neighborhood_count": 188,
+  "common_neighborhoods": [
+    "Canarsie",
+    "Bedford-Stuyvesant",
+    "Bed-Stuy",
+    "Williamsburg",
+    "Greenpoint",
+    "Bushwick",
+    "Crown Heights",
+    "Park Slope",
+    "Bay Ridge",
+    "Sunset Park",
+    "Flatbush",
+    "East Flatbush",
+    "Brownsville",
+    "Bensonhurst",
+    "Coney Island",
+    "Brooklyn Heights",
+    "Downtown Brooklyn",
+    "DUMBO",
+    "Prospect Heights",
+    "Red Hook",
+    "Astoria",
+    "Long Island City",
+    "Jackson Heights",
+    "Flushing",
+    "Jamaica",
+    "Forest Hills",
+    "Sunnyside",
+    "Woodside",
+    "Elmhurst",
+    "Ridgewood",
+    "Bayside",
+    "Far Rockaway",
+    "South Ozone Park",
+    "Fresh Meadows",
+    "Queens Village",
+    "Harlem",
+    "East Harlem",
+    "Washington Heights",
+    "Inwood",
+    "Upper East Side",
+    "Upper West Side",
+    "Chelsea",
+    "SoHo",
+    "Lower East Side",
+    "Financial District",
+    "Mott Haven",
+    "Fordham",
+    "Riverdale",
+    "Pelham Bay",
+    "Bedford Park",
+    "St. George",
+    "New Brighton",
+    "Stapleton",
+    "Tottenville",
+    "Great Kills"
+  ],
+  "neighborhoods": [
+    {
+      "name": "Allerton",
+      "borough": "Bronx",
+      "community_districts": [
+        "X11"
+      ],
+      "nta_codes": [
+        "BX1104"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Annadale-Huguenot-Prince's Bay-Woodrow",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R03"
+      ],
+      "nta_codes": [
+        "SI0304"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Arden Heights-Rossville",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R03"
+      ],
+      "nta_codes": [
+        "SI0303"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Astoria",
+      "borough": "Queens",
+      "community_districts": [
+        "Q01"
+      ],
+      "nta_codes": [
+        "QN0103"
+      ],
+      "official_names": [
+        "Astoria (Central)"
+      ],
+      "aliases": [
+        "Astoria (Central)"
+      ]
+    },
+    {
+      "name": "Astoria (East)-Woodside",
+      "borough": "Queens",
+      "community_districts": [
+        "Q01"
+      ],
+      "nta_codes": [
+        "QN0104"
+      ],
+      "official_names": [
+        "Astoria (East)-Woodside (North)"
+      ],
+      "aliases": [
+        "Astoria (East)-Woodside (North)"
+      ]
+    },
+    {
+      "name": "Astoria (North)-Ditmars-Steinway",
+      "borough": "Queens",
+      "community_districts": [
+        "Q01"
+      ],
+      "nta_codes": [
+        "QN0101"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Auburndale",
+      "borough": "Queens",
+      "community_districts": [
+        "Q11"
+      ],
+      "nta_codes": [
+        "QN1101"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Baisley Park",
+      "borough": "Queens",
+      "community_districts": [
+        "Q12"
+      ],
+      "nta_codes": [
+        "QN1203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bath Beach",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K11"
+      ],
+      "nta_codes": [
+        "BK1102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bay Ridge",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K10"
+      ],
+      "nta_codes": [
+        "BK1001"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bay Terrace-Clearview",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0703"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bayside",
+      "borough": "Queens",
+      "community_districts": [
+        "Q11"
+      ],
+      "nta_codes": [
+        "QN1102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bedford Park",
+      "borough": "Bronx",
+      "community_districts": [
+        "X07"
+      ],
+      "nta_codes": [
+        "BX0702"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bedford-Stuyvesant",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K03"
+      ],
+      "nta_codes": [
+        "BK0301",
+        "BK0302"
+      ],
+      "official_names": [
+        "Bedford-Stuyvesant (East)",
+        "Bedford-Stuyvesant (West)"
+      ],
+      "aliases": [
+        "Bed Stuy",
+        "Bed-Stuy",
+        "Bedford Stuyvesant",
+        "Bedford-Stuyvesant (East)",
+        "Bedford-Stuyvesant (West)"
+      ]
+    },
+    {
+      "name": "Bellerose",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1302"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Belmont",
+      "borough": "Bronx",
+      "community_districts": [
+        "X06"
+      ],
+      "nta_codes": [
+        "BX0603"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bensonhurst",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K11"
+      ],
+      "nta_codes": [
+        "BK1101"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Borough Park",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K12"
+      ],
+      "nta_codes": [
+        "BK1202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Breezy Point-Belle Harbor-Rockaway Park-Broad Channel",
+      "borough": "Queens",
+      "community_districts": [
+        "Q14"
+      ],
+      "nta_codes": [
+        "QN1403"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Brighton Beach",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K13"
+      ],
+      "nta_codes": [
+        "BK1303"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Brooklyn Heights",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K02"
+      ],
+      "nta_codes": [
+        "BK0201"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Brownsville",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K16"
+      ],
+      "nta_codes": [
+        "BK1602"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Bushwick",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K04"
+      ],
+      "nta_codes": [
+        "BK0401",
+        "BK0402"
+      ],
+      "official_names": [
+        "Bushwick (East)",
+        "Bushwick (West)"
+      ],
+      "aliases": [
+        "Bushwick (East)",
+        "Bushwick (West)"
+      ]
+    },
+    {
+      "name": "Cambria Heights",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1304"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Canarsie",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K18"
+      ],
+      "nta_codes": [
+        "BK1803"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Carroll Gardens-Cobble Hill-Gowanus-Red Hook",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K06"
+      ],
+      "nta_codes": [
+        "BK0601"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Red Hook"
+      ]
+    },
+    {
+      "name": "Castle Hill-Unionport",
+      "borough": "Bronx",
+      "community_districts": [
+        "X09"
+      ],
+      "nta_codes": [
+        "BX0903"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Chelsea-Hudson Yards",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M04"
+      ],
+      "nta_codes": [
+        "MN0401"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Chelsea",
+        "Hudson Yards"
+      ]
+    },
+    {
+      "name": "Chinatown-Two Bridges",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M03"
+      ],
+      "nta_codes": [
+        "MN0301"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Claremont Village-Claremont",
+      "borough": "Bronx",
+      "community_districts": [
+        "X03"
+      ],
+      "nta_codes": [
+        "BX0302"
+      ],
+      "official_names": [
+        "Claremont Village-Claremont (East)"
+      ],
+      "aliases": [
+        "Claremont Village-Claremont (East)"
+      ]
+    },
+    {
+      "name": "Clinton Hill",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K02"
+      ],
+      "nta_codes": [
+        "BK0204"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Co-op City",
+      "borough": "Bronx",
+      "community_districts": [
+        "X10"
+      ],
+      "nta_codes": [
+        "BX1004"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "College Point",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0701"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Concourse-Concourse Village",
+      "borough": "Bronx",
+      "community_districts": [
+        "X04"
+      ],
+      "nta_codes": [
+        "BX0401"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Coney Island-Sea Gate",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K13"
+      ],
+      "nta_codes": [
+        "BK1302"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Coney Island"
+      ]
+    },
+    {
+      "name": "Corona",
+      "borough": "Queens",
+      "community_districts": [
+        "Q04"
+      ],
+      "nta_codes": [
+        "QN0402"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Crotona Park East",
+      "borough": "Bronx",
+      "community_districts": [
+        "X03"
+      ],
+      "nta_codes": [
+        "BX0303"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Crown Heights",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K08",
+        "K09"
+      ],
+      "nta_codes": [
+        "BK0802",
+        "BK0901"
+      ],
+      "official_names": [
+        "Crown Heights (North)",
+        "Crown Heights (South)"
+      ],
+      "aliases": [
+        "Crown Heights (North)",
+        "Crown Heights (South)"
+      ]
+    },
+    {
+      "name": "Cypress Hills",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K05"
+      ],
+      "nta_codes": [
+        "BK0501"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Douglaston-Little Neck",
+      "borough": "Queens",
+      "community_districts": [
+        "Q11"
+      ],
+      "nta_codes": [
+        "QN1103"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Downtown Brooklyn-DUMBO-Boerum Hill",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K02"
+      ],
+      "nta_codes": [
+        "BK0202"
+      ],
+      "official_names": [],
+      "aliases": [
+        "DUMBO",
+        "Downtown Brooklyn"
+      ]
+    },
+    {
+      "name": "Dyker Heights",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K10"
+      ],
+      "nta_codes": [
+        "BK1002"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Elmhurst",
+      "borough": "Queens",
+      "community_districts": [
+        "Q03"
+      ],
+      "nta_codes": [
+        "QN0302"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Flatbush-Erasmus",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K17"
+      ],
+      "nta_codes": [
+        "BK1701"
+      ],
+      "official_names": [],
+      "aliases": [
+        "East Flatbush"
+      ]
+    },
+    {
+      "name": "East Flatbush-Farragut",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K17"
+      ],
+      "nta_codes": [
+        "BK1702"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Flatbush-Remsen Village",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K17"
+      ],
+      "nta_codes": [
+        "BK1704"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Flatbush-Rugby",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K17"
+      ],
+      "nta_codes": [
+        "BK1703"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Flushing",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0705"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Harlem",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M11"
+      ],
+      "nta_codes": [
+        "MN1101",
+        "MN1102"
+      ],
+      "official_names": [
+        "East Harlem (North)",
+        "East Harlem (South)"
+      ],
+      "aliases": [
+        "East Harlem (North)",
+        "East Harlem (South)",
+        "El Barrio",
+        "Spanish Harlem"
+      ]
+    },
+    {
+      "name": "East Midtown-Turtle Bay",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M06"
+      ],
+      "nta_codes": [
+        "MN0604"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East New York",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K05"
+      ],
+      "nta_codes": [
+        "BK0502"
+      ],
+      "official_names": [
+        "East New York (North)"
+      ],
+      "aliases": [
+        "East New York (North)"
+      ]
+    },
+    {
+      "name": "East New York-City Line",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K05"
+      ],
+      "nta_codes": [
+        "BK0505"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East New York-New Lots",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K05"
+      ],
+      "nta_codes": [
+        "BK0503"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Village",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M03"
+      ],
+      "nta_codes": [
+        "MN0303"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "East Williamsburg",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K01"
+      ],
+      "nta_codes": [
+        "BK0104"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Eastchester-Edenwald-Baychester",
+      "borough": "Bronx",
+      "community_districts": [
+        "X12"
+      ],
+      "nta_codes": [
+        "BX1202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Elmhurst",
+      "borough": "Queens",
+      "community_districts": [
+        "Q04"
+      ],
+      "nta_codes": [
+        "QN0401"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Far Rockaway-Bayswater",
+      "borough": "Queens",
+      "community_districts": [
+        "Q14"
+      ],
+      "nta_codes": [
+        "QN1401"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Far Rockaway"
+      ]
+    },
+    {
+      "name": "Financial District-Battery Park City",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M01"
+      ],
+      "nta_codes": [
+        "MN0101"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Financial District"
+      ]
+    },
+    {
+      "name": "Flatbush",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K14"
+      ],
+      "nta_codes": [
+        "BK1401"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Flatbush (West)-Ditmas Park-Parkville",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K14"
+      ],
+      "nta_codes": [
+        "BK1402"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Flatlands",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K18"
+      ],
+      "nta_codes": [
+        "BK1801"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Flushing-Willets Point",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0707"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Flushing"
+      ]
+    },
+    {
+      "name": "Fordham Heights",
+      "borough": "Bronx",
+      "community_districts": [
+        "X05"
+      ],
+      "nta_codes": [
+        "BX0503"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Fordham"
+      ]
+    },
+    {
+      "name": "Forest Hills",
+      "borough": "Queens",
+      "community_districts": [
+        "Q06"
+      ],
+      "nta_codes": [
+        "QN0602"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Fort Greene",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K02"
+      ],
+      "nta_codes": [
+        "BK0203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Fresh Meadows-Utopia",
+      "borough": "Queens",
+      "community_districts": [
+        "Q08"
+      ],
+      "nta_codes": [
+        "QN0803"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Fresh Meadows"
+      ]
+    },
+    {
+      "name": "Glen Oaks-Floral Park-New Hyde Park",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1301"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Glendale",
+      "borough": "Queens",
+      "community_districts": [
+        "Q05"
+      ],
+      "nta_codes": [
+        "QN0503"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Gramercy",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M06"
+      ],
+      "nta_codes": [
+        "MN0602"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Grasmere-Arrochar-South Beach-Dongan Hills",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R02"
+      ],
+      "nta_codes": [
+        "SI0201"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Gravesend",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K11",
+        "K13"
+      ],
+      "nta_codes": [
+        "BK1103",
+        "BK1301"
+      ],
+      "official_names": [
+        "Gravesend (South)",
+        "Gravesend (West)"
+      ],
+      "aliases": [
+        "Gravesend (South)",
+        "Gravesend (West)"
+      ]
+    },
+    {
+      "name": "Gravesend (East)-Homecrest",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K15"
+      ],
+      "nta_codes": [
+        "BK1501"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Great Kills-Eltingville",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R03"
+      ],
+      "nta_codes": [
+        "SI0302"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Great Kills"
+      ]
+    },
+    {
+      "name": "Greenpoint",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K01"
+      ],
+      "nta_codes": [
+        "BK0101"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Greenwich Village",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M02"
+      ],
+      "nta_codes": [
+        "MN0202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Hamilton Heights-Sugar Hill",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M09"
+      ],
+      "nta_codes": [
+        "MN0903"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Harlem",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M10"
+      ],
+      "nta_codes": [
+        "MN1001",
+        "MN1002"
+      ],
+      "official_names": [
+        "Harlem (North)",
+        "Harlem (South)"
+      ],
+      "aliases": [
+        "Harlem (North)",
+        "Harlem (South)"
+      ]
+    },
+    {
+      "name": "Hell's Kitchen",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M04"
+      ],
+      "nta_codes": [
+        "MN0402"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Clinton",
+        "Hells Kitchen"
+      ]
+    },
+    {
+      "name": "Highbridge",
+      "borough": "Bronx",
+      "community_districts": [
+        "X04"
+      ],
+      "nta_codes": [
+        "BX0402"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Hollis",
+      "borough": "Queens",
+      "community_districts": [
+        "Q12"
+      ],
+      "nta_codes": [
+        "QN1206"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Howard Beach-Lindenwood",
+      "borough": "Queens",
+      "community_districts": [
+        "Q10"
+      ],
+      "nta_codes": [
+        "QN1003"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Hunts Point",
+      "borough": "Bronx",
+      "community_districts": [
+        "X02"
+      ],
+      "nta_codes": [
+        "BX0201"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Inwood",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M12"
+      ],
+      "nta_codes": [
+        "MN1203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Jackson Heights",
+      "borough": "Queens",
+      "community_districts": [
+        "Q03"
+      ],
+      "nta_codes": [
+        "QN0301"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Jamaica",
+      "borough": "Queens",
+      "community_districts": [
+        "Q12"
+      ],
+      "nta_codes": [
+        "QN1201"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Jamaica Estates-Holliswood",
+      "borough": "Queens",
+      "community_districts": [
+        "Q08"
+      ],
+      "nta_codes": [
+        "QN0804"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Jamaica Hills-Briarwood",
+      "borough": "Queens",
+      "community_districts": [
+        "Q08"
+      ],
+      "nta_codes": [
+        "QN0805"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Kensington",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K12"
+      ],
+      "nta_codes": [
+        "BK1203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Kew Gardens",
+      "borough": "Queens",
+      "community_districts": [
+        "Q09"
+      ],
+      "nta_codes": [
+        "QN0901"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Kew Gardens Hills",
+      "borough": "Queens",
+      "community_districts": [
+        "Q08"
+      ],
+      "nta_codes": [
+        "QN0801"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Kingsbridge Heights-Van Cortlandt Village",
+      "borough": "Bronx",
+      "community_districts": [
+        "X08"
+      ],
+      "nta_codes": [
+        "BX0801"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Kingsbridge-Marble Hill",
+      "borough": "Bronx",
+      "community_districts": [
+        "X08"
+      ],
+      "nta_codes": [
+        "BX0802"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Laurelton",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1305"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Long Island City-Hunters Point",
+      "borough": "Queens",
+      "community_districts": [
+        "Q02"
+      ],
+      "nta_codes": [
+        "QN0201"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Long Island City"
+      ]
+    },
+    {
+      "name": "Longwood",
+      "borough": "Bronx",
+      "community_districts": [
+        "X02"
+      ],
+      "nta_codes": [
+        "BX0202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Lower East Side",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M03"
+      ],
+      "nta_codes": [
+        "MN0302"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Madison",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K15"
+      ],
+      "nta_codes": [
+        "BK1502"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Manhattanville-West Harlem",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M09"
+      ],
+      "nta_codes": [
+        "MN0902"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Mapleton-Midwood",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K12"
+      ],
+      "nta_codes": [
+        "BK1204"
+      ],
+      "official_names": [
+        "Mapleton-Midwood (West)"
+      ],
+      "aliases": [
+        "Mapleton-Midwood (West)"
+      ]
+    },
+    {
+      "name": "Marine Park-Mill Basin-Bergen Beach",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K18"
+      ],
+      "nta_codes": [
+        "BK1802"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Mariner's Harbor-Arlington-Graniteville",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0107"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Maspeth",
+      "borough": "Queens",
+      "community_districts": [
+        "Q05"
+      ],
+      "nta_codes": [
+        "QN0501"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Melrose",
+      "borough": "Bronx",
+      "community_districts": [
+        "X01"
+      ],
+      "nta_codes": [
+        "BX0102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Middle Village",
+      "borough": "Queens",
+      "community_districts": [
+        "Q05"
+      ],
+      "nta_codes": [
+        "QN0504"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Midtown South-Flatiron-Union Square",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M05"
+      ],
+      "nta_codes": [
+        "MN0501"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Flatiron",
+        "Union Square"
+      ]
+    },
+    {
+      "name": "Midtown-Times Square",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M05"
+      ],
+      "nta_codes": [
+        "MN0502"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Midwood",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K14"
+      ],
+      "nta_codes": [
+        "BK1403"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Morningside Heights",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M09"
+      ],
+      "nta_codes": [
+        "MN0901"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Morris Park",
+      "borough": "Bronx",
+      "community_districts": [
+        "X11"
+      ],
+      "nta_codes": [
+        "BX1102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Morrisania",
+      "borough": "Bronx",
+      "community_districts": [
+        "X03"
+      ],
+      "nta_codes": [
+        "BX0301"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Mott Haven-Port Morris",
+      "borough": "Bronx",
+      "community_districts": [
+        "X01"
+      ],
+      "nta_codes": [
+        "BX0101"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Mott Haven"
+      ]
+    },
+    {
+      "name": "Mount Eden-Claremont",
+      "borough": "Bronx",
+      "community_districts": [
+        "X04"
+      ],
+      "nta_codes": [
+        "BX0403"
+      ],
+      "official_names": [
+        "Mount Eden-Claremont (West)"
+      ],
+      "aliases": [
+        "Mount Eden-Claremont (West)"
+      ]
+    },
+    {
+      "name": "Mount Hope",
+      "borough": "Bronx",
+      "community_districts": [
+        "X05"
+      ],
+      "nta_codes": [
+        "BX0502"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Murray Hill-Broadway Flushing",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0704"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Murray Hill-Kips Bay",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M06"
+      ],
+      "nta_codes": [
+        "MN0603"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "New Dorp-Midland Beach",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R02"
+      ],
+      "nta_codes": [
+        "SI0202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "New Springville-Willowbrook-Bulls Head-Travis",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R02"
+      ],
+      "nta_codes": [
+        "SI0204"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "North Corona",
+      "borough": "Queens",
+      "community_districts": [
+        "Q03"
+      ],
+      "nta_codes": [
+        "QN0303"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Norwood",
+      "borough": "Bronx",
+      "community_districts": [
+        "X07"
+      ],
+      "nta_codes": [
+        "BX0703"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Oakland Gardens-Hollis Hills",
+      "borough": "Queens",
+      "community_districts": [
+        "Q11"
+      ],
+      "nta_codes": [
+        "QN1104"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Oakwood-Richmondtown",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R03"
+      ],
+      "nta_codes": [
+        "SI0301"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Ocean Hill",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K16"
+      ],
+      "nta_codes": [
+        "BK1601"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Old Astoria-Hallets Point",
+      "borough": "Queens",
+      "community_districts": [
+        "Q01"
+      ],
+      "nta_codes": [
+        "QN0102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Ozone Park",
+      "borough": "Queens",
+      "community_districts": [
+        "Q09",
+        "Q10"
+      ],
+      "nta_codes": [
+        "QN0904",
+        "QN1002"
+      ],
+      "official_names": [
+        "Ozone Park (North)"
+      ],
+      "aliases": [
+        "Ozone Park (North)"
+      ]
+    },
+    {
+      "name": "Park Slope",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K06"
+      ],
+      "nta_codes": [
+        "BK0602"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Park Slope-Gowanus"
+      ]
+    },
+    {
+      "name": "Parkchester",
+      "borough": "Bronx",
+      "community_districts": [
+        "X09"
+      ],
+      "nta_codes": [
+        "BX0904"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Pelham Bay-Country Club-City Island",
+      "borough": "Bronx",
+      "community_districts": [
+        "X10"
+      ],
+      "nta_codes": [
+        "BX1003"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Pelham Bay"
+      ]
+    },
+    {
+      "name": "Pelham Gardens",
+      "borough": "Bronx",
+      "community_districts": [
+        "X11"
+      ],
+      "nta_codes": [
+        "BX1103"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Pelham Parkway-Van Nest",
+      "borough": "Bronx",
+      "community_districts": [
+        "X11"
+      ],
+      "nta_codes": [
+        "BX1101"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Pomonok-Electchester-Hillcrest",
+      "borough": "Queens",
+      "community_districts": [
+        "Q08"
+      ],
+      "nta_codes": [
+        "QN0802"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Port Richmond",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0106"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Prospect Heights",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K08"
+      ],
+      "nta_codes": [
+        "BK0801"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Prospect Lefferts Gardens-Wingate",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K09"
+      ],
+      "nta_codes": [
+        "BK0902"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Queens Village",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1303"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Queensboro Hill",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0706"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Queensbridge-Ravenswood-Dutch Kills",
+      "borough": "Queens",
+      "community_districts": [
+        "Q01"
+      ],
+      "nta_codes": [
+        "QN0105"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Rego Park",
+      "borough": "Queens",
+      "community_districts": [
+        "Q06"
+      ],
+      "nta_codes": [
+        "QN0601"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Richmond Hill",
+      "borough": "Queens",
+      "community_districts": [
+        "Q09"
+      ],
+      "nta_codes": [
+        "QN0902"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Ridgewood",
+      "borough": "Queens",
+      "community_districts": [
+        "Q05"
+      ],
+      "nta_codes": [
+        "QN0502"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Riverdale-Spuyten Duyvil",
+      "borough": "Bronx",
+      "community_districts": [
+        "X08"
+      ],
+      "nta_codes": [
+        "BX0803"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Riverdale"
+      ]
+    },
+    {
+      "name": "Rockaway Beach-Arverne-Edgemere",
+      "borough": "Queens",
+      "community_districts": [
+        "Q14"
+      ],
+      "nta_codes": [
+        "QN1402"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Rosebank-Shore Acres-Park Hill",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0103"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Rosedale",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1307"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Sheepshead Bay-Manhattan Beach-Gerritsen Beach",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K15"
+      ],
+      "nta_codes": [
+        "BK1503"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "SoHo-Little Italy-Hudson Square",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M02"
+      ],
+      "nta_codes": [
+        "MN0201"
+      ],
+      "official_names": [],
+      "aliases": [
+        "SoHo",
+        "Soho",
+        "South of Houston"
+      ]
+    },
+    {
+      "name": "Soundview-Bruckner-Bronx River",
+      "borough": "Bronx",
+      "community_districts": [
+        "X09"
+      ],
+      "nta_codes": [
+        "BX0901"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Soundview-Clason Point",
+      "borough": "Bronx",
+      "community_districts": [
+        "X09"
+      ],
+      "nta_codes": [
+        "BX0902"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "South Jamaica",
+      "borough": "Queens",
+      "community_districts": [
+        "Q12"
+      ],
+      "nta_codes": [
+        "QN1202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "South Ozone Park",
+      "borough": "Queens",
+      "community_districts": [
+        "Q10"
+      ],
+      "nta_codes": [
+        "QN1001"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "South Richmond Hill",
+      "borough": "Queens",
+      "community_districts": [
+        "Q09"
+      ],
+      "nta_codes": [
+        "QN0903"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "South Williamsburg",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K01"
+      ],
+      "nta_codes": [
+        "BK0103"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Spring Creek-Starrett City",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K05"
+      ],
+      "nta_codes": [
+        "BK0504"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Springfield Gardens (North)-Rochdale Village",
+      "borough": "Queens",
+      "community_districts": [
+        "Q12"
+      ],
+      "nta_codes": [
+        "QN1204"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Springfield Gardens (South)-Brookville",
+      "borough": "Queens",
+      "community_districts": [
+        "Q13"
+      ],
+      "nta_codes": [
+        "QN1306"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "St. Albans",
+      "borough": "Queens",
+      "community_districts": [
+        "Q12"
+      ],
+      "nta_codes": [
+        "QN1205"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "St. George-New Brighton",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0101"
+      ],
+      "official_names": [],
+      "aliases": [
+        "New Brighton",
+        "Saint George",
+        "St George"
+      ]
+    },
+    {
+      "name": "Stuyvesant Town-Peter Cooper Village",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M06"
+      ],
+      "nta_codes": [
+        "MN0601"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Sunnyside",
+      "borough": "Queens",
+      "community_districts": [
+        "Q02"
+      ],
+      "nta_codes": [
+        "QN0202"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Sunset Park",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K07"
+      ],
+      "nta_codes": [
+        "BK0702",
+        "BK0703"
+      ],
+      "official_names": [
+        "Sunset Park (Central)",
+        "Sunset Park (West)"
+      ],
+      "aliases": [
+        "Sunset Park (Central)",
+        "Sunset Park (West)"
+      ]
+    },
+    {
+      "name": "Sunset Park (East)-Borough Park",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K12"
+      ],
+      "nta_codes": [
+        "BK1201"
+      ],
+      "official_names": [
+        "Sunset Park (East)-Borough Park (West)"
+      ],
+      "aliases": [
+        "Sunset Park (East)-Borough Park (West)"
+      ]
+    },
+    {
+      "name": "Throgs Neck-Schuylerville",
+      "borough": "Bronx",
+      "community_districts": [
+        "X10"
+      ],
+      "nta_codes": [
+        "BX1002"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Todt Hill-Emerson Hill-Lighthouse Hill-Manor Heights",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R02"
+      ],
+      "nta_codes": [
+        "SI0203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Tompkinsville-Stapleton-Clifton-Fox Hills",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0102"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Stapleton"
+      ]
+    },
+    {
+      "name": "Tottenville-Charleston",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R03"
+      ],
+      "nta_codes": [
+        "SI0305"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Tottenville"
+      ]
+    },
+    {
+      "name": "Tremont",
+      "borough": "Bronx",
+      "community_districts": [
+        "X06"
+      ],
+      "nta_codes": [
+        "BX0602"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Tribeca-Civic Center",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M01"
+      ],
+      "nta_codes": [
+        "MN0102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "University Heights (North)-Fordham",
+      "borough": "Bronx",
+      "community_districts": [
+        "X07"
+      ],
+      "nta_codes": [
+        "BX0701"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "University Heights (South)-Morris Heights",
+      "borough": "Bronx",
+      "community_districts": [
+        "X05"
+      ],
+      "nta_codes": [
+        "BX0501"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Upper East Side-Carnegie Hill",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M08"
+      ],
+      "nta_codes": [
+        "MN0802"
+      ],
+      "official_names": [],
+      "aliases": [
+        "Upper East Side"
+      ]
+    },
+    {
+      "name": "Upper East Side-Lenox Hill-Roosevelt Island",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M08"
+      ],
+      "nta_codes": [
+        "MN0801"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Upper East Side-Yorkville",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M08"
+      ],
+      "nta_codes": [
+        "MN0803"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Upper West Side",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M07"
+      ],
+      "nta_codes": [
+        "MN0702"
+      ],
+      "official_names": [
+        "Upper West Side (Central)"
+      ],
+      "aliases": [
+        "Upper West Side (Central)"
+      ]
+    },
+    {
+      "name": "Upper West Side-Lincoln Square",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M07"
+      ],
+      "nta_codes": [
+        "MN0701"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Upper West Side-Manhattan Valley",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M07"
+      ],
+      "nta_codes": [
+        "MN0703"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Wakefield-Woodlawn",
+      "borough": "Bronx",
+      "community_districts": [
+        "X12"
+      ],
+      "nta_codes": [
+        "BX1203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Washington Heights",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M12"
+      ],
+      "nta_codes": [
+        "MN1201",
+        "MN1202"
+      ],
+      "official_names": [
+        "Washington Heights (North)",
+        "Washington Heights (South)"
+      ],
+      "aliases": [
+        "Washington Heights (North)",
+        "Washington Heights (South)",
+        "Washington Heights North",
+        "Washington Heights South"
+      ]
+    },
+    {
+      "name": "West Farms",
+      "borough": "Bronx",
+      "community_districts": [
+        "X06"
+      ],
+      "nta_codes": [
+        "BX0601"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "West New Brighton-Silver Lake-Grymes Hill",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0104"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "West Village",
+      "borough": "Manhattan",
+      "community_districts": [
+        "M02"
+      ],
+      "nta_codes": [
+        "MN0203"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Westchester Square",
+      "borough": "Bronx",
+      "community_districts": [
+        "X10"
+      ],
+      "nta_codes": [
+        "BX1001"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Westerleigh-Castleton Corners",
+      "borough": "Staten Island",
+      "community_districts": [
+        "R01"
+      ],
+      "nta_codes": [
+        "SI0105"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Whitestone-Beechhurst",
+      "borough": "Queens",
+      "community_districts": [
+        "Q07"
+      ],
+      "nta_codes": [
+        "QN0702"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Williamsbridge-Olinville",
+      "borough": "Bronx",
+      "community_districts": [
+        "X12"
+      ],
+      "nta_codes": [
+        "BX1201"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Williamsburg",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K01"
+      ],
+      "nta_codes": [
+        "BK0102"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Windsor Terrace-South Slope",
+      "borough": "Brooklyn",
+      "community_districts": [
+        "K07"
+      ],
+      "nta_codes": [
+        "BK0701"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Woodhaven",
+      "borough": "Queens",
+      "community_districts": [
+        "Q09"
+      ],
+      "nta_codes": [
+        "QN0905"
+      ],
+      "official_names": [],
+      "aliases": []
+    },
+    {
+      "name": "Woodside",
+      "borough": "Queens",
+      "community_districts": [
+        "Q02"
+      ],
+      "nta_codes": [
+        "QN0203"
+      ],
+      "official_names": [],
+      "aliases": []
+    }
+  ]
+}

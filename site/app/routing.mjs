@@ -121,6 +121,7 @@ function serializeState(){
     if(tab === "property"){
       if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
+      if(propertyCommunityDistrict) q.set("cd", propertyCommunityDistrict);
       if(propAsset !== "all") q.set("asset", propAsset);
       if(typeof propSaleMethod !== "undefined" && propSaleMethod !== "all") q.set("method", propSaleMethod);
       if(typeof propPriceBand !== "undefined" && propPriceBand !== "all") q.set("price", propPriceBand);
@@ -188,7 +189,7 @@ const DEEPLINK_LENSES = {
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
-  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "nearMe"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   district: ["councilDistrict"],
@@ -836,6 +837,8 @@ function applyHash(){
       if(tab === "property"){
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
+        propertyCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
+        propertyResolvedNeighborhood=null;
         propAsset = (typeof normalizePropAsset === "function" ? normalizePropAsset(q.get("asset")) : (q.get("asset") || "all"));
         propSaleMethod = (typeof normalizePropSaleMethod === "function" ? normalizePropSaleMethod(q.get("method")) : (q.get("method") || "all"));
         propPriceBand = (typeof normalizePropPriceBand === "function" ? normalizePropPriceBand(q.get("price")) : (q.get("price") || "all"));

@@ -128,6 +128,10 @@ function buildSearchDeepLink(lens, filter) {
         return name.toLowerCase() === compactText(f.borough, 40).toLowerCase();
       });
       if (propBoro) params.set("boro", propBoro);
+      var propNeighborhood = compactText(f.neighborhood, 80);
+      if (propNeighborhood) params.set("neighborhood", propNeighborhood);
+      var propCommunityDistrict = compactText(f.communityDistrict, 8).toUpperCase();
+      if (/^(?:M|X|K|Q|R)\d{2}$/.test(propCommunityDistrict)) params.set("cd", propCommunityDistrict);
       if (asset && asset !== "all") params.set("asset", asset);
       if (stage && stage !== "all") params.set("stage", stage);
       if (["hearing", "auction_or_rfp", "award_or_conveyance", "unstaged"].indexOf(propProcess) >= 0) {
