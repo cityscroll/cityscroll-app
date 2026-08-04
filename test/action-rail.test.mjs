@@ -9,6 +9,7 @@ import {
   hearingHandoff,
   ruleHandoff,
   franchiseHandoff,
+  packageUrlFromAttachments,
   validateAction,
 } from "../worker/src/lib/action_registry.mjs";
 
@@ -534,6 +535,45 @@ test("property surplus auction commercial payload leads with marketplace bid han
   assert.equal(bid.guide?.system, "notice_extracted");
   assert.equal(bid.guide?.commercial_item, "vehicle");
   assert.ok(Array.isArray(bid.guide?.commercial_steps));
+});
+
+test("attachment GetFile with DocumentID becomes package_url when body has no package link", () => {
+  // Field shape: T0 attachment inventory (Cannonsville timber notice family).
+  // Bare GetFile without DocumentID must not be promoted (search_page, not deep package).
+  const deep =
+    "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=3&requestId=20240515016&requestStatus=Archived&documentId=37470";
+  const bare = "https://a856-cityrecord.nyc.gov/Search/GetFile";
+  assert.equal(
+    packageUrlFromAttachments([
+      { title: "Volume report", url: deep },
+    ]),
+    deep,
+  );
+  assert.equal(packageUrlFromAttachments([{ url: bare }]), null);
+  assert.equal(packageUrlFromAttachments([]), null);
+
+  const actions = compileActionRail({
+    kind: "property",
+    disposition_stage: "auction_or_rfp",
+    section_name: "Property Disposition",
+    type_of_notice_description: "Sale",
+    title: "Timber sale",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20240515016",
+    // Body has no download/package language — only the attachment inventory.
+    notice_text: "The City will sell hardwood sawtimber from forest management project 5116.",
+    attachments: [
+      {
+        title: "Description, maps, and volume report",
+        url: deep,
+        text_status: "ok",
+      },
+    ],
+  }, { today: "2026-08-01" });
+  actions.forEach(validateAction);
+  const primary = actions[0];
+  assert.equal(primary.label_key, "property_action_open_rfp");
+  assert.equal(primary.destination, deep);
+  assert.equal(primary.guide?.package_url, deep);
 });
 
 // --- Franchise / FCRC stage-tied action rail (phase spine + notice fields) ---

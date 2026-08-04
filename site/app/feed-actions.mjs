@@ -324,6 +324,15 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     owner_name:r._property_owner||null,
     // Surplus-buyer commercial payload (item / price / bid steps) when extracted.
     commercial:isProperty?(r.commercial||null):null,
+    // T0/T1 attachment inventory (GetFile DocumentID) — package handoff when body has none.
+    attachments:Array.isArray(r.attachments)?r.attachments:null,
+    package_url:(()=>{
+      if(r.package_url) return r.package_url;
+      if(window.CrolActions&&typeof CrolActions.packageUrlFromAttachments==="function"){
+        return CrolActions.packageUrlFromAttachments(r.attachments)||null;
+      }
+      return null;
+    })(),
   };
 }
 function actionRailLabel(action){
