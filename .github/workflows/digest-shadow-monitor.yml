@@ -5,6 +5,11 @@ on:
     # The Worker builds previews at 10:00 UTC; allow ten minutes for the full live-data pass.
     - cron: "10 10 * * *"
   workflow_dispatch:
+    inputs:
+      build:
+        description: Build today's digest shadow run before verification
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -19,6 +24,31 @@ jobs:
     name: Wake on digest redlines
     runs-on: ubuntu-latest
     steps:
+      - name: Build today's digest shadow run
+        if: github.event_name == 'workflow_dispatch' && inputs.build
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          curl --fail --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer ${CITYSCROLL_ADMIN_KEY}" \
+            https://api.cityscroll.org/admin/digest-shadow
+
+          today=$(date -u +%F)
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error \
+              --output digest-shadow-build.json \
+              --header "Authorization: Bearer ${CITYSCROLL_ADMIN_KEY}" \
+              https://api.cityscroll.org/admin/digest-shadow \
+              && test "$(jq -r '.summary.run_day // empty' digest-shadow-build.json)" = "$today"; then
+              exit 0
+            fi
+            if test "$attempt" -lt 30; then
+              sleep 10
+            fi
+          done
+          echo "Digest shadow run for ${today} was not ready within 5 minutes" >&2
+          exit 1
       - name: Read the machine contract
         id: shadow
         continue-on-error: true
