@@ -118,9 +118,9 @@ async function watchFromFilters(lens){
     if(lens==="meetings"){
       const place=$("#meetingsboro").value;
       meetingWatchExtra={
-        borough:place&&place!=="citywide-unlocated"?place:null,
+        borough:place&&place!=="citywide-unlocated"&&place!=="citywide"&&place!=="virtual"&&place!=="unlocated"?place:null,
         neighborhood:$("#meetingsneighborhood").value.trim()||null,
-        locationScope:place==="citywide-unlocated"?place:null,
+        locationScope:(place==="citywide-unlocated"||place==="citywide"||place==="virtual"||place==="unlocated")?place:null,
         dateWindow:$("#meetingswhen").value,
         when:$("#meetingswhen").value,
       };
@@ -292,7 +292,7 @@ function currentLensFilterState(tab){
     };
     if(tab === "meetings"){
       const place = $("#meetingsboro") && $("#meetingsboro").value || "";
-      if(place === "citywide-unlocated") state.locationScope = place;
+      if(place==="citywide-unlocated"||place==="citywide"||place==="virtual"||place==="unlocated") state.locationScope = place;
       else if(place) state.borough = place;
       if($("#meetingsneighborhood") && $("#meetingsneighborhood").value.trim()){
         state.neighborhood = $("#meetingsneighborhood").value.trim();
@@ -511,6 +511,13 @@ $("#meetingsboro").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>loadSection("meetings"),500));
 $("#propertyboro").addEventListener("change",()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); });
+const rulesBoroSel=$("#rulesboro");
+if(rulesBoroSel) rulesBoroSel.addEventListener("change",()=>{
+  if(typeof renderRulesExplorer==="function") renderRulesExplorer();
+  else loadSection("rules");
+  updateHash();
+  renderSearchComponents("rules");
+});
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
 $("#propertyneighborhood").addEventListener("input",debounce(()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
 loadAgencies();

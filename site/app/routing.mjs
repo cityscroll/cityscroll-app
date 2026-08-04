@@ -106,10 +106,12 @@ function serializeState(){
   } else if(SECTIONS[tab]){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
-    const w=$("#"+tab+"when"); if(w && w.value !== "upcoming") q.set("when", w.value);
+    const w=$("#"+tab+"when");
+    if(w && tab==="meetings" && w.value && w.value !== "week") q.set("when", w.value);
+    else if(w && tab!=="meetings" && w.value !== "upcoming") q.set("when", w.value);
     if(tab==="meetings"){
       const place=$("#meetingsboro").value;
-      if(place==="citywide-unlocated") q.set("scope",place);
+      if(place==="citywide-unlocated"||place==="citywide"||place==="virtual"||place==="unlocated") q.set("scope",place);
       else if(place) q.set("boro",place);
       if($("#meetingsneighborhood").value.trim()) q.set("neighborhood",$("#meetingsneighborhood").value.trim());
       if(meetingsProcessSel !== "all") q.set("process", meetingsProcessSel);
@@ -127,6 +129,9 @@ function serializeState(){
     }
     if(tab === "rules"){
       if(rulesProcessSel !== "all") q.set("process", rulesProcessSel);
+      const rulesBoro=$("#rulesboro");
+      if(rulesBoro && rulesBoro.value==="citywide") q.set("scope","citywide");
+      else if(rulesBoro && rulesBoro.value) q.set("boro", rulesBoro.value);
     }
   } else if(tab === "map"){
     if(mapState.level && mapState.level !== "borough") q.set("level", mapState.level);
@@ -207,7 +212,7 @@ function deeplinkClampField(name, v){
     case "when": return ["all","upcoming","week","month","past"].includes(v) ? v : null;
     case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
     case "neighborhood": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
-    case "locationScope": return v==="citywide-unlocated"?v:null;
+    case "locationScope": return v==="citywide-unlocated"||v==="citywide"||v==="virtual"||v==="unlocated"?v:null;
     case "dateWindow": return ["week","month","upcoming"].includes(v)?v:null;
     case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
     case "view": return v==="guide" ? "guide" : null;
@@ -796,9 +801,29 @@ function applyHash(){
       $("#"+tab+"agency").value="";
       forceSelect("#"+tab+"agency", q.get("agency"));
       $("#"+tab+"kw").value = q.get("q") || "";
-      const w=$("#"+tab+"when"); if(w) w.value = tab==="meetings"&&["week","month","upcoming","past"].includes(q.get("when"))?q.get("when"):tab==="meetings"?"week":"upcoming";
+      const w=$("#"+tab+"when");
+      if(w){
+        if(tab==="meetings"){
+          const whenRaw=q.get("when");
+          if(whenRaw==="all"){
+            if(![...w.options].some(o=>o.value==="all")){
+              const opt=document.createElement("option");
+              opt.value="all"; opt.textContent=t("map_drill_when_all");
+              w.appendChild(opt);
+            }
+            w.value="all";
+          } else {
+            w.value=["week","month","upcoming","past"].includes(whenRaw)?whenRaw:"week";
+          }
+        } else {
+          w.value="upcoming";
+        }
+      }
       if(tab==="meetings"){
-        $("#meetingsboro").value=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
+        const scope=q.get("scope");
+        $("#meetingsboro").value=(scope==="citywide-unlocated"||scope==="citywide"||scope==="virtual"||scope==="unlocated")
+          ?scope
+          :(DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
         $("#meetingsneighborhood").value=q.get("neighborhood")||"";
         const process=q.get("process")||"all";
         meetingsProcessSel=["scheduled","agenda","held","outcomes","unstaged"].includes(process)?process:"all";
@@ -824,6 +849,12 @@ function applyHash(){
       if(tab === "rules"){
         const process=q.get("process")||"all";
         rulesProcessSel=["proposal","public_process","adoption","effective","unstaged"].includes(process)?process:"all";
+        const rulesBoro=$("#rulesboro");
+        if(rulesBoro){
+          const scope=q.get("scope");
+          rulesBoro.value=scope==="citywide"?"citywide"
+            :(DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
+        }
       }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
     } else if(tab === "alerts"){

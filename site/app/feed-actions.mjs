@@ -138,9 +138,10 @@ function hearingWindowEnd(){
 }
 function hearingFilter(){
   const place=$("#meetingsboro").value;
+  const scopePlaces=new Set(["citywide-unlocated","citywide","virtual","unlocated"]);
   return {
-    borough: place && place!=="citywide-unlocated" ? place : null,
-    locationScope: place==="citywide-unlocated" ? place : null,
+    borough: place && !scopePlaces.has(place) ? place : null,
+    locationScope: scopePlaces.has(place) ? place : null,
     neighborhood: $("#meetingsneighborhood").value.trim() || null,
   };
 }
@@ -1025,10 +1026,11 @@ function renderHearingGroup(scope, entries){
 async function renderHearingExplorer(){
   const seq=++hearingRenderSeq;
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
-  const allowWidening=hearingWideningDismissed!==key;
+  const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
   let records=hearingAll||[];
   let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
-  const needsPast=filter.when==="past" || (allowWidening && !selection.rows.length);
+  // when=all (map drill) and past / empty-widen need the past SODA slice.
+  const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
   if(needsPast){
     try{
       const past=await loadPastHearings(filter);

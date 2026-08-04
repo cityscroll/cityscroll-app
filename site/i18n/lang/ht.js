@@ -163,6 +163,7 @@
     map_citywide_detail_lead: "{n} evènman nan tout vil la nan lantiy aktyèl la ({lens}). Yo aplike nan tout distri — yo pa mare nan yon sèl kote.",
     map_virtual_detail_lead: "{n} reyinyon sèlman vityèl nan lantiy aktyèl la ({lens}). Pa gen okenn lokal an pèsòn ki te pibliye.",
     map_citywide_also_applies: "eleman nan tout vil la aplike isit tou (yo pa konte nan poligòn distri sa a).",
+    map_drill_when_all: "Tout dat",
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "dekri sa w ap chèche a…",
