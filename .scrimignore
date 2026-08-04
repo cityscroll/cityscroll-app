@@ -1,7 +1,7 @@
 test/functional/assets/axe.min.js
 AGENTS.md
 docs/architecture.md
-A006:docs/data-source-graph.* # The text clearly marks or tests derived values; it does not hide derived data.
+docs/data-source-graph.*
 civic-content-gates/civic_content_gates/cli.py
 civic-content-gates/civic_content_gates/genai_disclosure.py
 civic-content-gates/civic_content_gates/heading_punctuation.py
