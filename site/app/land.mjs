@@ -129,7 +129,29 @@ async function landSearchHearings(stale){
     $("#lrescount").textContent=String(lRows.length);
     announce(t("land_hearings_heading")+`: ${lRows.length}`);
     if(!lRows.length){
-      $("#llist").innerHTML=`<div class="empty">${t("land_hearings_empty")}</div>`;
+      // Honest empty: filters vs zero future published dates (persona: hearing attender).
+      let emptyKind="empty";
+      let extracted=0;
+      let generatedAt=null;
+      try{
+        const mod=await import("../land_hearings_empty.mjs");
+        const st=mod.landHearingsEmptyState(snap,{allCount:all.length,filteredCount:rows.length});
+        emptyKind=st.kind||"empty";
+        extracted=st.extracted||0;
+        generatedAt=st.generated_at||null;
+      }catch(_){ /* pure helper optional at runtime */ }
+      let emptyHtml=`<div class="empty land-hearings-empty" data-empty-kind="${escUiHtml(emptyKind)}">${t("land_hearings_empty")}`;
+      if(emptyKind==="none_future"){
+        const when=generatedAt?fdt(generatedAt):t("land_hearings_empty_as_of_unknown");
+        emptyHtml+=`<p class="note muted">${t("land_hearings_empty_none_future",{
+          n:String(extracted),
+          when,
+        })}</p>`;
+      }else if(emptyKind==="filters"){
+        emptyHtml+=`<p class="note muted">${t("land_hearings_empty_filters")}</p>`;
+      }
+      emptyHtml+=`<p class="note">${t("land_hearings_empty_next_steps_html")}</p></div>`;
+      $("#llist").innerHTML=emptyHtml;
       return;
     }
     $("#llist").innerHTML=lRows.map((r,i)=>landHearingRowHTML(r._hearing||r,i)).join("");
