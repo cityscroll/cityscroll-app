@@ -289,21 +289,19 @@ function renderList(autoSelect){
   const kw = ($("#kw").value||"").trim(), terms = kw ? [kw] : [];
   // Preserve selection across hybrid refresh (snapshot → live) when the notice is still present.
   const keepId=autoSelect===false&&selectedRFP?selectedRFP.request_id:null;
-  // Prefetch M/WBE chip tools so the second paint (or first if already cached) shows badges.
+  // Prefetch M/WBE chip tools and inject chips in place — never replace the whole list
+  // (that would race loadLineageBadges and wipe .lineage-slot markers).
   ensureMwbeListChipsReady().then((tools)=>{
     if(!tools || !document.querySelector("#list .row")) return;
-    // Re-paint only when chips were missing on first paint (module not yet loaded).
-    if(document.querySelector("#list [data-mwbe-list-chips]")) return;
-    const needs = currentRows.some((r)=>/solicitation/i.test(r?.type_of_notice_description||""));
-    if(!needs) return;
-    const selected = document.querySelector("#list .row.sel");
-    const selIdx = selected ? selected.dataset.i : null;
-    $("#list").innerHTML = currentRows.map((r,i)=>moneyRowHTML(r,i,terms)).join("");
-    document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
-    if(selIdx != null){
-      const el = document.querySelector(`#list .row[data-i="${selIdx}"]`);
-      if(el) el.classList.add("sel");
-    }
+    document.querySelectorAll("#list .row").forEach((el)=>{
+      if(el.querySelector("[data-mwbe-list-chips]")) return;
+      const r = currentRows[+el.dataset.i];
+      if(!r || /award/i.test(r.type_of_notice_description||"")) return;
+      const chips = solicitationListChipsHTML(r);
+      if(!chips) return;
+      const rmeta = el.querySelector(".rmeta");
+      if(rmeta) rmeta.insertAdjacentHTML("afterend", chips);
+    });
   }).catch(()=>{});
   $("#list").innerHTML = currentRows.map((r,i)=>moneyRowHTML(r,i,terms)).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
