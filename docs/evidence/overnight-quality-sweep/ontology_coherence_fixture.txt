@@ -1,0 +1,9 @@
+ontology-coherence census  today=2026-08-03
+  checked land=3 exam=2 total=5
+  violations=2
+  land_class past_deadline_current=0 later_completed_while_current=0
+  rule exam_post_list_during_open_application: 1
+  rule statutory_clock_stale_open: 1
+  - statutory_clock_stale_open #land/2019K0190 {"clock_status":"open","public_status":"In Public Review","open_phase_count":5,"project_completed":false,"completed_mile
+  - exam_post_list_during_open_application #exam/9999-coherence-sample {"stage":"list_establishment","application_status":"open","sample":"2026-07-20"}
+  flywheel cards: 1

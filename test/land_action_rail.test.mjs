@@ -57,9 +57,11 @@ test("land detail mounts a next-action rail host and paints from ZAP outcomes", 
   assert.match(index, /landActionMatter/);
   assert.match(index, /function landActionHearingsFromRecord/);
   assert.match(index, /city_record_notices/);
-  // Rail paints on select and again when outcomes hydrate.
+  // Rail paints on select and again when outcomes hydrate (normalized record
+  // rebuilds stale-open statutory clocks before paint).
   assert.match(index, /paintLandActionRail\(\$\("#land-actions"\),\s*r,\s*null/);
-  assert.match(index, /paintLandActionRail\(\$\("#land-actions"\),\s*r,\s*(?:warm\.data\.record|data\.record)/);
+  assert.match(index, /paintLandActionRail\(\$\("#land-actions"\),\s*r,\s*(?:record|warm\.data\.record|data\.record)/);
+  assert.match(index, /normalizeLandRecord/);
 });
 
 test("rezone dig items deep-link into #land detail (not only ZAP)", () => {

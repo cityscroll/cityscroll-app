@@ -1,0 +1,99 @@
+{
+  "findings": [],
+  "metrics": {
+    "lens_rates": {},
+    "map_lens_rates": {
+      "land": {
+        "corpus": "zap_projects_warehouse_lookup",
+        "counted": 236,
+        "located": 236,
+        "located_rate": 1
+      },
+      "property": {
+        "corpus": "property_domain_observations",
+        "counted": 133,
+        "located": 133,
+        "located_rate": 1
+      },
+      "rules": {
+        "corpus": "rules_domain_observations",
+        "counted": 100,
+        "located": 100,
+        "located_rate": 1
+      },
+      "meetings": {
+        "corpus": "meetings_domain_observations",
+        "counted": 119,
+        "located": 95,
+        "located_rate": 0.7983193277310925
+      },
+      "money": {
+        "corpus": "money_domain_observations",
+        "counted": 340,
+        "located": 128,
+        "located_rate": 0.3764705882352941
+      }
+    },
+    "district_rates": {
+      "geocoded_pins": 0,
+      "community_resolved": 0,
+      "community_resolution_rate": null,
+      "council_resolved": 0,
+      "council_resolution_rate": null,
+      "both_resolved": 0,
+      "district_resolution_rate": null
+    },
+    "boundary_metrics": {
+      "checked": 0,
+      "current": 0,
+      "stale": 0,
+      "boundary_vintage_current_rate": null
+    },
+    "granularity_findings": [
+      {
+        "kind": "map-high-no-place-signal",
+        "lens": "meetings",
+        "counted": 119,
+        "no_place_signal": 24,
+        "no_place_share": 0.20168067226890757,
+        "surface": "district_activity"
+      },
+      {
+        "kind": "map-high-no-place-signal",
+        "lens": "money",
+        "counted": 340,
+        "no_place_signal": 212,
+        "no_place_share": 0.6235294117647059,
+        "surface": "district_activity"
+      }
+    ],
+    "no_place_findings": [
+      {
+        "kind": "map-high-no-place-signal",
+        "lens": "meetings",
+        "counted": 119,
+        "no_place_signal": 24,
+        "no_place_share": 0.20168067226890757,
+        "surface": "district_activity"
+      },
+      {
+        "kind": "map-high-no-place-signal",
+        "lens": "money",
+        "counted": 340,
+        "no_place_signal": 212,
+        "no_place_share": 0.6235294117647059,
+        "surface": "district_activity"
+      }
+    ]
+  },
+  "cards": [
+    {
+      "id": "crol-list/mf-location-resolution-map-high-no-place-signal-meetings",
+      "title": "Map meetings corpus still has a high no_place_signal residual"
+    },
+    {
+      "id": "crol-list/mf-location-resolution-map-high-no-place-signal-money",
+      "title": "Map money corpus still has a high no_place_signal residual"
+    }
+  ]
+}

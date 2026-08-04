@@ -1,0 +1,64 @@
+{
+  "fetched_at": "2026-08-04T02:34:48.760919Z",
+  "district_activity_url": "https://cityscroll.org/data/district_activity.json?v=20260804023448",
+  "built_at": "2026-08-04T02:31:49.707Z",
+  "boundary_vintage": "2026-05-26",
+  "sources_summary": {
+    "land": {
+      "total": null,
+      "located": 236,
+      "unlocated": null,
+      "by_method_keys": [
+        "cd_centroid_council"
+      ]
+    },
+    "property": {
+      "total": null,
+      "located": 133,
+      "unlocated": null,
+      "by_method_keys": [
+        "coordinates_pip"
+      ]
+    },
+    "meetings": {
+      "total": null,
+      "located": 95,
+      "unlocated": null,
+      "by_method_keys": [
+        "matter_body_borough",
+        "civic_address_pip",
+        "cd_centroid_council",
+        "matter_title_place",
+        "rule_default_citywide",
+        "citywide_phrase",
+        "venue_column",
+        "citywide",
+        "classic_affected_area",
+        "virtual_only",
+        "agency_hq"
+      ]
+    },
+    "rules": {
+      "total": null,
+      "located": 100,
+      "unlocated": null,
+      "by_method_keys": [
+        "citywide",
+        "matter_title_place"
+      ]
+    },
+    "money": {
+      "total": null,
+      "located": 128,
+      "unlocated": null,
+      "by_method_keys": [
+        "matter_title_place",
+        "citywide_phrase",
+        "vendor_address",
+        "vendor_place",
+        "matter_body_borough",
+        "cd_centroid_council"
+      ]
+    }
+  }
+}
