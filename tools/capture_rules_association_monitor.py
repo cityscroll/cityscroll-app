@@ -216,15 +216,14 @@ def install_routes(page: Page) -> None:
             qs = parse_qs(urlparse(url).query)
             where = unquote((qs.get("$where") or [""])[0])
             # Fixture slice of NOTICES (City Record-shaped capture rows declared above).
-            fixture_rows = NOTICES
-            for notice_row in NOTICES:
-                if f"request_id='{notice_row['request_id']}'" in where:
-                    fixture_rows = [notice_row]
-                    break
+            matched = next(
+                (row for row in NOTICES if f"request_id='{row['request_id']}'" in where),
+                None,
+            )
             route.fulfill(
                 status=200,
                 content_type="application/json",
-                body=json.dumps(fixture_rows),
+                body=json.dumps([matched] if matched is not None else NOTICES),
             )
             return
         # Worker /rules materialization only (never app modules like site/app/rules.mjs).
