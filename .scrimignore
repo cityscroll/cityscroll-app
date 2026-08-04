@@ -188,6 +188,8 @@ worker/src/prior_cycle.mjs
 worker/src/subsidy_lifecycle.mjs
 worker/src/usage.mjs
 worker/test/feedback.test.mjs
+worker/test/digest_rollup.test.mjs
+worker/test/digest_shadow_hold.test.mjs
 git:log
 .github/workflows/ci.yml
 .github/workflows/deploy-worker.yml

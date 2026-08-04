@@ -1,7 +1,6 @@
 {
   "contract": "digest-shadow-hold-evidence.v1",
   "measured_at": "2026-08-04T18:12:53Z",
-  "base_commit": "746f6e61a8eab65fd1effd9c6ca90ceb4fb77a09",
   "fixture_observation": {
     "kind": "deterministic_unit_fixture",
     "command": "node --test worker/test/digest_shadow.test.mjs worker/test/digest_shadow_hold.test.mjs worker/test/digest_rollup.test.mjs worker/test/ops_contract.test.mjs",
