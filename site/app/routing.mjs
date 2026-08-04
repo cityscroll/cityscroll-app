@@ -871,9 +871,26 @@ function applyHash(){
         Promise.resolve(prefillAlertFromLink(lens, filter, q.get("freq"), { noticeId, projectId }))
           .catch(()=>{});
       } else {
-        // Neutral #alerts — clear any prior carried seed.
+        // Neutral #alerts — clear carried seed and return the single form to a calm bare draft
+        // so back-button / bare entry never keep a previous agency/notice prefill.
         noticeWatchSeed = null;
         if(typeof paintAlertContextLead === "function") paintAlertContextLead(null);
+        if($("#awatch")){
+          $("#awatch").value = "rfpkw";
+          if(typeof aWatchChange === "function") aWatchChange();
+          if($("#aparam")) $("#aparam").value = "";
+          if($("#aagency")) $("#aagency").value = "";
+          if($("#amoneykw")) $("#amoneykw").value = "";
+          if($("#amoneymin")) $("#amoneymin").value = "";
+          if($("#amoneymonths")) $("#amoneymonths").value = "";
+          if($("#apreviewbox") && typeof t === "function"){
+            $("#apreviewbox").innerHTML = `<div class="empty">${t("empty_preview")}</div>`;
+          }
+          if($("#afeeds")) $("#afeeds").innerHTML = "";
+          const adv = document.getElementById("advopts");
+          if(adv) adv.open = false;
+          if(typeof refreshQuizDisplay === "function") refreshQuizDisplay();
+        }
       }
       // #alerts?view=rollup — multi-watch digest rollup + prefs surface (demo fixture).
       if(q.get("view") === "rollup"){
