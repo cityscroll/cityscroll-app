@@ -55,6 +55,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `active-civil-service-list` | live-only | exam_no | — | 44.5% (closed_exams_list_presence) |
 | `bid-tabulations-historical` | disabled | bid_number, PIN, bid_title, bid_opening_date | high-risk | 0% (modern_notices_strict) |
 | `capital-projects` | disabled | project_name, managing_agency, client_agency, pid | — | 0% (modern_procurement_substring_unique) |
+| `capital-projects-dashboard` | landed | fms_id, managing_agency_+_agency_project_name_+_phase_time_(reviewed_candidate_only) | — | — |
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
 | `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
@@ -67,6 +68,8 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `doing-business-entities` | landed | organization_name, vendor_name | medium | 70.4% (modern_awards_stem_notices) |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mappluto` | live-only | BBL | — | — |
+| `mocs-ll1-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
+| `mocs-ll63-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
 | `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
 | `nyc-rules-rss` | landed | agency, publication_date, title_tokens | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present | — | — |
@@ -193,4 +196,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `8f860e5bba73…` · materialized 11 · candidates 43 · class changes 0.
+Last refresh fingerprint: `8d7eb4edb4aa…` · materialized 11 · candidates 44 · class changes 0.

@@ -210,6 +210,32 @@
       ],
       "notes": "WH-06 third bulk pack + fetchBbls materialization. ~132k rows; project_id ↔ BBL."
     },
+    "capital-projects-dashboard": {
+      "id": "capital-projects-dashboard",
+      "source_contract_id": "capital-projects-dashboard",
+      "name": "Capital Projects Dashboard - Citywide Budget and Schedule",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "fb86-vt7u",
+      "table_name": "capital_projects_dashboard",
+      "bulk_class": "BATCHABLE",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "soda_order": "reporting_period DESC, pid ASC",
+      "required_fields": [
+        "reporting_period",
+        "managing_agency",
+        "sponsor_agency",
+        "pid",
+        "fms_id",
+        "total_budget",
+        "spend_to_date",
+        "agency_project_name",
+        "agency_project_description",
+        "current_phase"
+      ],
+      "notes": "RC-1 capital planning input. The dedicated procurement_plans_run.py collector measures bridges before emitting any notice edge."
+    },
     "doing-business-entities": {
       "id": "doing-business-entities",
       "source_contract_id": "doing-business-entities",

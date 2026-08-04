@@ -1,4 +1,4 @@
-# CityScroll data warehouse (WH-01…WH-06 + entity-intelligence index)
+# CityScroll data warehouse (WH-01…WH-06 + RC-1 + entity-intelligence index)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
@@ -166,6 +166,29 @@ requires at least three completed historical cycles before the held-out cycle.
 Heavy work should prefer the **Mac Mini** overnight, or a capped local batch when
 headroom is OK. Never launch parallel full City Record + payroll downloads on
 the MacBook.
+
+## Procurement plans (RC-1)
+
+`procurement_plans_run.py` is the host-side collector for the official FY2027
+MOCS LL63 and LL1 XLSX indexes plus Capital Projects Dashboard `fb86-vt7u`.
+It uses conditional checkpoints, a minimum 1.2-second source cadence, content
+hashes, and the shared single-job/headroom guards. Each City Record/PASSPort
+bridge is measured independently on a fixed sample; a path emits no edge below
+30% or while an agency+title+time candidate lacks a review label.
+
+```bash
+warehouse/.venv/bin/python warehouse/scripts/procurement_plans_run.py \
+  --from-fixture --force-headroom --output-dir warehouse/raw/procurement-plans-fixture
+
+# Stage two only: live/publish with green headroom. Re-runs resume checkpoints.
+warehouse/.venv/bin/python warehouse/scripts/procurement_plans_run.py --publish
+```
+
+Tables: `mocs_procurement_plan_files`, `mocs_procurement_plans`,
+`capital_projects_dashboard`, and `procurement_plan_bridge_edges`. Stage one
+commits the fixture receipt and `site/data/procurement_planning_payload.schema.json`;
+it enables no production rows or edges. The dependent Money reader is a later
+delivery unit after the production measurement lands.
 
 ## ZAP milestone and disposition statistics
 

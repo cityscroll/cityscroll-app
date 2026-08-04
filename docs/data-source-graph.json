@@ -2,11 +2,11 @@
   "schema_version": 1,
   "title": "CityScroll data-source topology",
   "description": "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
-  "sources_hash": "cda8ead5b6ba474beb75f143bec530e63647956b0c64c3b66a1b80efdbf87fb5",
+  "sources_hash": "ff827ba3567c9dfe84f2e83989837de7edb306aa1bc8cf014855b06d6f2cacc6",
   "declared_inputs": [
     {
       "path": "docs/data-sources.md",
-      "sha256": "9bd27772b789bd1295ea8439b7de7bb136a2d9299653efd295d400c32ac7f02b"
+      "sha256": "c8b98ccc6ea24a33524f93e46884a08514ca8b1e1cb7e140a4bfd81edcdd9e0c"
     },
     {
       "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
@@ -54,7 +54,7 @@
     },
     {
       "path": "site/data/gap_taxonomy.json",
-      "sha256": "1fb5c2cf8ce7be3729edee26702bc36c923e25d68d7958a7c512efcf10a95f55"
+      "sha256": "3a451976dfc71729fafe1a8b3460f177884f3675bb5da848f028bc6d5497daed"
     },
     {
       "path": "site/data/legistar_sources/verification_receipts/legistar_depth_2026-07-30.json",
@@ -102,7 +102,7 @@
     },
     {
       "path": "site/data/source_contracts.json",
-      "sha256": "f3dd6ab732f474010d0a9823c018f4b34de0588f1e263fa5be5c8f869950b9f9"
+      "sha256": "915b76151ca184865689888ff5013fd8b9b1a9a3d95378b6bca5d986863089a1"
     },
     {
       "path": "site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-07-30.json",
@@ -114,7 +114,7 @@
     },
     {
       "path": "warehouse/datasets.v0.json",
-      "sha256": "1a246e53f1eece1e047b4d627d2cd3df303887816ad675af5347320220fed194"
+      "sha256": "1294165bca5696160666ba69129050f7de7e2f87231d7fa2ca0b9d930eed2282"
     },
     {
       "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
@@ -163,6 +163,10 @@
     {
       "path": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
       "sha256": "117e0513c5d19c5b5d4e7c82061f137389363b23b64e2845056823c5a86ca596"
+    },
+    {
+      "path": "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json",
+      "sha256": "e7398ff7bd8796c44fb3463d14e17fdbc996c8ee27304ed73b396ac7f688567c"
     },
     {
       "path": "warehouse/receipts/proof/rc2_nycedc_project_documents_latest.json",
@@ -240,8 +244,8 @@
     ]
   },
   "counts": {
-    "bodies": 18,
-    "sources": 39,
+    "bodies": 19,
+    "sources": 41,
     "surfaces": 10
   },
   "bodies": [
@@ -252,6 +256,10 @@
     {
       "id": "mayor-s-office-of-contract-services-mocs",
       "name": "Mayor's Office of Contract Services (MOCS)"
+    },
+    {
+      "id": "mayor-s-office-of-operations",
+      "name": "Mayor's Office of Operations"
     },
     {
       "id": "mayor-s-office-of-operations-ops",
@@ -411,6 +419,43 @@
         "site/data/doing_business_sources/verification_receipts/doing_business_entities_2026-07-30.json",
         "test/fixtures/doing_business/join_cases.json",
         "test/doing_business_join.test.mjs"
+      ]
+    },
+    {
+      "id": "capital-projects-dashboard",
+      "name": "Capital Projects Dashboard - Citywide Budget and Schedule",
+      "body": "Mayor's Office of Operations",
+      "body_id": "mayor-s-office-of-operations",
+      "status": "manual",
+      "delivery_tier": "inline-at-build",
+      "endpoint": {
+        "identity": "fb86-vt7u · socrata",
+        "url": "https://data.cityofnewyork.us/d/fb86-vt7u"
+      },
+      "publisher_cadence": "Three times a year after OMB commitment-plan releases (January, May, and September)",
+      "ingest": {
+        "job": "warehouse/scripts/ingest.py --dataset capital-projects-dashboard",
+        "cadence": "Operator-run warehouse snapshot; no automated cron declared",
+        "transform": "Socrata rows → parquet + DuckDB capital_projects_dashboard",
+        "evidence": [
+          "warehouse/datasets.v0.json"
+        ]
+      },
+      "surfaces": [
+        "Agency profiles"
+      ],
+      "approach": "Collector and fixture receipt framework are committed. Production collection through the Socrata resource API and its measured receipt are not included in this stage.",
+      "coverage": "Contract verifier checks 10 required fields.",
+      "known_gap": null,
+      "wishlist": {
+        "label": "capital-projects-dashboard in the lifecycle data wishlist",
+        "href": "gap-taxonomy.md#join-graph-sources"
+      },
+      "last_successful_pull": null,
+      "latest_evidence": null,
+      "code_references": [
+        "warehouse/scripts/procurement_plans_run.py",
+        "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json"
       ]
     },
     {
@@ -1339,31 +1384,70 @@
       ]
     },
     {
-      "id": "mocs-ll63-plans",
-      "name": "MOCS Local Law 63 procurement plans",
+      "id": "mocs-ll1-plans",
+      "name": "MOCS Local Law 1 M/WBE procurement plans",
       "body": "NYC Mayor's Office of Contract Services",
       "body_id": "nyc-mayor-s-office-of-contract-services",
-      "status": "disabled",
-      "delivery_tier": "live-only",
+      "status": "manual",
+      "delivery_tier": "inline-at-build",
       "endpoint": {
-        "identity": "mocs-disabled",
-        "url": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page"
+        "identity": "html",
+        "url": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page"
       },
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
       "ingest": {
-        "job": "No ingest — source contract retained for gap tracking",
-        "cadence": "Disabled; no scheduled product pull",
-        "transform": "Measurement and source-shape verification only",
+        "job": "Operator-reviewed source snapshot",
+        "cadence": "Manual review; no automated cron declared",
+        "transform": "Reviewed source → committed build artifact",
         "evidence": [
           "site/data/source_contracts.json"
         ]
       },
       "surfaces": [
+        "Money",
+        "Agency profiles"
+      ],
+      "approach": "Collector and fixture receipt framework are committed. Production materialization and its measured receipt are not included in this stage.",
+      "coverage": "Contract verifier checks 9 required fields.",
+      "known_gap": null,
+      "wishlist": {
+        "label": "mocs-ll1-plans in the lifecycle data wishlist",
+        "href": "gap-taxonomy.md#join-graph-sources"
+      },
+      "last_successful_pull": null,
+      "latest_evidence": null,
+      "code_references": [
+        "warehouse/scripts/procurement_plans_run.py",
+        "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json"
+      ]
+    },
+    {
+      "id": "mocs-ll63-plans",
+      "name": "MOCS Local Law 63 procurement plans",
+      "body": "NYC Mayor's Office of Contract Services",
+      "body_id": "nyc-mayor-s-office-of-contract-services",
+      "status": "manual",
+      "delivery_tier": "inline-at-build",
+      "endpoint": {
+        "identity": "html",
+        "url": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page"
+      },
+      "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
+      "ingest": {
+        "job": "Operator-reviewed source snapshot",
+        "cadence": "Manual review; no automated cron declared",
+        "transform": "Reviewed source → committed build artifact",
+        "evidence": [
+          "site/data/source_contracts.json"
+        ]
+      },
+      "surfaces": [
+        "Notices & search",
         "Money"
       ],
-      "approach": "Disabled. No plan rows are read or shown, and stale plan cache entries are purged.",
-      "coverage": "The official page links rotating per-agency spreadsheets but provides no stable tabular feed or machine manifest. The former configured ID is non-tabular and the former documented ID does not exist.",
-      "known_gap": "The official page links rotating per-agency spreadsheets but provides no stable tabular feed or machine manifest. The former configured ID is non-tabular and the former documented ID does not exist.",
+      "approach": "Collector and fixture receipt framework are committed. Production materialization and its measured receipt are not included in this stage. The old egea-b8r5 and whpb-ebtd IDs remain retired and are not queried.",
+      "coverage": "Contract verifier checks 7 required fields.",
+      "known_gap": null,
       "wishlist": {
         "label": "mocs-ll63-plans in the lifecycle data wishlist",
         "href": "gap-taxonomy.md#join-graph-sources"
@@ -1371,7 +1455,8 @@
       "last_successful_pull": null,
       "latest_evidence": null,
       "code_references": [
-        "worker/src/mocs_plan.mjs"
+        "warehouse/scripts/procurement_plans_run.py",
+        "warehouse/receipts/proof/rc1_procurement_plans_framework_latest.json"
       ]
     },
     {
@@ -2013,6 +2098,21 @@
       "kind": "serves"
     },
     {
+      "from": "body:mayor-s-office-of-operations",
+      "to": "source:capital-projects-dashboard",
+      "kind": "publishes"
+    },
+    {
+      "from": "source:capital-projects-dashboard",
+      "to": "ingest:capital-projects-dashboard",
+      "kind": "pulls"
+    },
+    {
+      "from": "ingest:capital-projects-dashboard",
+      "to": "surface:Agency profiles",
+      "kind": "serves"
+    },
+    {
       "from": "body:mayor-s-office-of-operations-ops",
       "to": "source:capital-projects",
       "kind": "publishes"
@@ -2419,6 +2519,26 @@
     },
     {
       "from": "body:nyc-mayor-s-office-of-contract-services",
+      "to": "source:mocs-ll1-plans",
+      "kind": "publishes"
+    },
+    {
+      "from": "source:mocs-ll1-plans",
+      "to": "ingest:mocs-ll1-plans",
+      "kind": "pulls"
+    },
+    {
+      "from": "ingest:mocs-ll1-plans",
+      "to": "surface:Money",
+      "kind": "serves"
+    },
+    {
+      "from": "ingest:mocs-ll1-plans",
+      "to": "surface:Agency profiles",
+      "kind": "serves"
+    },
+    {
+      "from": "body:nyc-mayor-s-office-of-contract-services",
       "to": "source:mocs-ll63-plans",
       "kind": "publishes"
     },
@@ -2426,6 +2546,11 @@
       "from": "source:mocs-ll63-plans",
       "to": "ingest:mocs-ll63-plans",
       "kind": "pulls"
+    },
+    {
+      "from": "ingest:mocs-ll63-plans",
+      "to": "surface:Notices & search",
+      "kind": "serves"
     },
     {
       "from": "ingest:mocs-ll63-plans",
