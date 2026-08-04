@@ -191,3 +191,5 @@ worker/test/feedback.test.mjs
 git:log
 .github/workflows/ci.yml
 .github/workflows/deploy-worker.yml
+# Official public dataset content; terms originate from the source.
+site/data/procurement_planning_payload.json
