@@ -250,6 +250,7 @@
     watch_entityagency: "Yon ajans — tout sa li pibliye",
     watch_awardwatch: "Kontra ki akòde pou yon avi mwen ap gade",
     email_label: "Adrès imèl",
+    alerts_email_step_label: "Imèl ou",
     email_placeholder: "ou@egzanp.com",
     freq_label: "Frekans",
     freq_daily: "Chak jou",

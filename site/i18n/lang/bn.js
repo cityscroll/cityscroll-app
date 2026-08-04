@@ -251,6 +251,7 @@
     watch_entityagency: "একটি সংস্থা — তারা প্রকাশ করা যেকোনো কিছু",
     watch_awardwatch: "আমি যে নোটিশ দেখছি তার চুক্তি প্রদান",
     email_label: "ইমেইল ঠিকানা",
+    alerts_email_step_label: "আপনার ইমেইল",
     email_placeholder: "you@example.com",
     freq_label: "ঘনত্ব",
     freq_daily: "প্রতিদিন",

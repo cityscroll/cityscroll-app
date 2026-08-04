@@ -251,6 +251,7 @@
     watch_entityagency: "특정 기관 — 해당 기관이 발행하는 모든 공고",
     watch_awardwatch: "지금 보고 있는 공고의 낙찰 결과",
     email_label: "이메일 주소",
+    alerts_email_step_label: "이메일",
     email_placeholder: "you@example.com",
     freq_label: "빈도",
     freq_daily: "매일",

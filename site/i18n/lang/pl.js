@@ -259,6 +259,7 @@
     watch_entityagency: "Agencja — wszystko, co publikuje",
     watch_awardwatch: "Rozstrzygnięcie przetargu dla przeglądanego ogłoszenia",
     email_label: "Adres e-mail",
+    alerts_email_step_label: "Twój e-mail",
     email_placeholder: "ty@przyklad.com",
     freq_label: "Częstotliwość",
     freq_daily: "Codziennie",

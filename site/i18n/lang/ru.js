@@ -251,6 +251,7 @@
     watch_entityagency: "Ведомство — всё, что оно публикует",
     watch_awardwatch: "Присуждение контракта по просматриваемому уведомлению",
     email_label: "Адрес электронной почты",
+    alerts_email_step_label: "Ваш email",
     email_placeholder: "you@example.com",
     freq_label: "Частота",
     freq_daily: "Ежедневно",
