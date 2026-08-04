@@ -493,6 +493,28 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "non-council-board-minutes",
+      "name": "Community board and borough president minutes",
+      "source_contract_id": "non-council-board-minutes",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {
+        "realized": {
+          "rate": 0,
+          "joined": 0,
+          "total": 10,
+          "metric": "strict_body_date_matter",
+          "observed_on": "2026-08-04",
+          "universe": "City Record Community Boards notices with event_date and a body resolvable from published notice text (469 rows observed); fixed sample is the latest two per borough",
+          "strategy": "Exact body and meeting date plus a conservative matter token; explicit action language required",
+          "verdict": "Below usefulness threshold (0%). The notice-to-minutes outcome bridge is disabled; guessed URLs and a universal parser are also disabled. Unmatched notices remain unmatched.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "nyc-agencies",
       "name": "NYC Agencies and Governance Organizations",
       "source_contract_id": "nyc-agencies",
@@ -2463,7 +2485,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-04",
-    "source_contracts_fingerprint": "8d7eb4edb4aa5847bcc24b620013b5f1ee6eac7733f60f279666f64ce1c5e336",
+    "source_contracts_fingerprint": "05941dde3eb8f126d57a625d97244ae1ad77746ed490e71309aab0ac8212b38e",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 44,
     "class_changes": 0,

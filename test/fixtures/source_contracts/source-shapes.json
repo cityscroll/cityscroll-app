@@ -54,6 +54,21 @@
       "landing_probe": "bot_blocked"
     },
     {
+      "id": "non-council-board-minutes",
+      "kind": "html",
+      "identifier": "manhattan-boards.page",
+      "response_type": "text/html",
+      "fields": [
+        "body_id",
+        "body_type",
+        "borough",
+        "source_url",
+        "meeting_date",
+        "document_url",
+        "extracted_text"
+      ]
+    },
+    {
       "id": "checkbook-contracts",
       "kind": "checkbook",
       "identifier": "Contracts",

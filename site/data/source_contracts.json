@@ -131,6 +131,57 @@
       "landing_probe": "bot_blocked"
     },
     {
+      "id": "non-council-board-minutes",
+      "name": "Community board and borough president minutes",
+      "owner": "NYC community boards and borough president offices",
+      "status": "live",
+      "scope": "warehouse",
+      "delivery_tier": "inline-at-build",
+      "kind": "html",
+      "landing_page": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "required_fields": [
+        "body_id",
+        "body_type",
+        "borough",
+        "source_url",
+        "meeting_date",
+        "document_url",
+        "extracted_text"
+      ],
+      "publisher_cadence": "Heterogeneous; usually monthly for verified full-board minutes pages",
+      "product_freshness": "A bounded host-side collector checks explicitly registered pages with a 1.2-second minimum cadence, checkpoints document hashes, and reports coverage by board. Unverified bodies remain inventory-only.",
+      "used_for": "Warehouse-only source inventory plus minutes/document metadata and text. The notice-to-outcome lookup remains empty after the measured bridge failed its usefulness gate.",
+      "code_references": [
+        {
+          "path": "warehouse/scripts/non_council_outcomes.mjs",
+          "contains": "CityScroll non-Council minutes collector"
+        },
+        {
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "contains": "cityscroll.non_council_outcome_source_registry.v1"
+        }
+      ],
+      "join_measurement": {
+        "observed_on": "2026-08-04",
+        "universe": "City Record Community Boards notices with event_date and a body resolvable from published notice text (469 rows observed); fixed sample is the latest two per borough",
+        "strategy": "Exact body and meeting date plus a conservative matter token; explicit action language required",
+        "usefulness_threshold": 0.3,
+        "rates": {
+          "strict_body_date_matter": {
+            "joined": 0,
+            "total": 10,
+            "rate": 0
+          }
+        },
+        "false_positive_review": {
+          "reviewed_pairs": 1,
+          "accepted": 0,
+          "rejected": 1
+        },
+        "verdict": "Below usefulness threshold (0%). The notice-to-minutes outcome bridge is disabled; guessed URLs and a universal parser are also disabled. Unmatched notices remain unmatched."
+      }
+    },
+    {
       "id": "checkbook-contracts",
       "name": "Checkbook NYC registered contracts",
       "owner": "Office of the New York City Comptroller",
