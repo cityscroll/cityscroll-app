@@ -126,6 +126,60 @@ export function buildTaxLienStepper(currentStage) {
 }
 
 /**
+ * Resident actions, kept in the order a household can use them.
+ * Missing source links produce no step; the UI never invents a destination.
+ * @param {object|null} channels
+ */
+export function buildTaxLienResidentChecklist(channels) {
+  if (!channels) return [];
+  return [
+    { id: "exemptions", url: channels.exemption_url || null },
+    { id: "payment_plans", url: channels.payment_plan_url || null },
+    { id: "official_guide", url: channels.lien_sale_help_url || null },
+  ].filter((step) => step.url);
+}
+
+/**
+ * Shared cycle guide for notice detail and the archive surface.
+ * @param {object|null} summary
+ * @param {string} stage
+ * @param {string|Date|null} today
+ */
+export function buildTaxLienCycleGuide(summary, stage = "sold", today = null) {
+  if (!summary) return null;
+  const actionDeadline = isoDay(summary.schedule?.action_deadline);
+  const saleDate = isoDay(summary.schedule?.sale_date);
+  const deadline = deadlineState(actionDeadline, today);
+  const saleState = deadlineState(saleDate, today);
+  const publishedStatus = summary.latest_cycle?.status || null;
+  const cycleStatus = publishedStatus === "expired" || saleState.state === "closed"
+    ? "expired"
+    : publishedStatus;
+  const actionChannels = summary.action_channels
+    ? {
+      exemption_url: summary.action_channels.exemption_url || null,
+      payment_plan_url: summary.action_channels.payment_plan_url || null,
+      lien_sale_help_url: summary.action_channels.lien_sale_help_url || null,
+      phone: summary.action_channels.phone || "311",
+    }
+    : null;
+  return {
+    stepper: buildTaxLienStepper(stage),
+    deadline: {
+      action_deadline: actionDeadline,
+      sale_date: saleDate,
+      ...deadline,
+      cycle_status: cycleStatus,
+      // Never present a countdown after the announced cycle ended.
+      live: cycleStatus !== "expired"
+        && (deadline.state === "open" || deadline.state === "closing-soon"),
+    },
+    action_channels: actionChannels,
+    resident_checklist: buildTaxLienResidentChecklist(actionChannels),
+  };
+}
+
+/**
  * Cohort leave-before-sale rate for a stage (citywide training), 0–1.
  * @param {object|null} summary
  * @param {string} stage
@@ -222,10 +276,7 @@ export function buildTaxLienCycleContext({
   // lever is the same at every stage; stage-specific rates stay in the model.
   const leaveRate = leaveRateForStage(summary, "notice_90");
   const cycleCount = summary.training?.cycle_count ?? null;
-  const actionDeadline = isoDay(summary.schedule?.action_deadline);
-  const saleDate = isoDay(summary.schedule?.sale_date);
-  const deadline = deadlineState(actionDeadline, today);
-  const cycleStatus = summary.latest_cycle?.status || null;
+  const guide = buildTaxLienCycleGuide(summary, stage, today);
   const historical_line = taxLienHistoricalContextLine({
     leaveRate,
     cycleCount,
@@ -246,7 +297,7 @@ export function buildTaxLienCycleContext({
     })),
     stage,
     outcome: primary.outcome || null,
-    stepper: buildTaxLienStepper(stage),
+    stepper: guide.stepper,
     historical_context: historical_line
       ? {
         leave_rate: leaveRate,
@@ -257,22 +308,9 @@ export function buildTaxLienCycleContext({
         attribution: cycleCount != null ? `Based on ${cycleCount} prior cycles` : null,
       }
       : null,
-    deadline: {
-      action_deadline: actionDeadline,
-      sale_date: saleDate,
-      ...deadline,
-      cycle_status: cycleStatus,
-      // Live countdown only when the published cycle has not ended.
-      live: deadline.state === "open" || deadline.state === "closing-soon",
-    },
-    action_channels: summary.action_channels
-      ? {
-        exemption_url: summary.action_channels.exemption_url || null,
-        payment_plan_url: summary.action_channels.payment_plan_url || null,
-        lien_sale_help_url: summary.action_channels.lien_sale_help_url || null,
-        phone: summary.action_channels.phone || "311",
-      }
-      : null,
+    deadline: guide.deadline,
+    action_channels: guide.action_channels,
+    resident_checklist: guide.resident_checklist,
     data_vintage: isoDay(summary.latest_cycle?.data_vintage),
     public_projection: summary.public_projection || "cohort_statistic_only",
   };
