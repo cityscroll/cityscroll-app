@@ -11,19 +11,23 @@
  */
 
 import { propertyLocationFromRow } from "../../../site/property_location.mjs";
+import {
+  classifyDispositionStage,
+  DISPOSITION_STAGES,
+  STAGE_AUCTION_OR_RFP,
+  STAGE_AWARD_OR_CONVEYANCE,
+  STAGE_HEARING,
+} from "../../../site/property_disposition_stage.mjs";
+
+export {
+  classifyDispositionStage,
+  DISPOSITION_STAGES,
+  STAGE_AUCTION_OR_RFP,
+  STAGE_AWARD_OR_CONVEYANCE,
+  STAGE_HEARING,
+};
 
 export const PROPERTY_DISPOSITION_SPINE_SCHEMA_VERSION = 1;
-
-/** Ordered process stages for one disposition matter. */
-export const DISPOSITION_STAGES = Object.freeze([
-  "hearing",
-  "auction_or_rfp",
-  "award_or_conveyance",
-]);
-
-export const STAGE_HEARING = "hearing";
-export const STAGE_AUCTION_OR_RFP = "auction_or_rfp";
-export const STAGE_AWARD_OR_CONVEYANCE = "award_or_conveyance";
 
 const CITY_RECORD_SOURCE = "City Record Online";
 const CITY_RECORD_URL = "https://a856-cityrecord.nyc.gov/RequestDetail/";
@@ -70,38 +74,6 @@ function bodyText(row) {
     row?.printout_2,
     row?.printout_3,
   ].filter(Boolean).join(" "));
-}
-
-/**
- * Classify a Property Disposition notice into a process stage.
- * Returns null when the notice cannot be staged without inventing a label
- * (generic unlocated surplus, tobacco destruction, etc.).
- */
-export function classifyDispositionStage(row) {
-  const type = clean(row?.type_of_notice_description);
-  const text = bodyText(row);
-  // Award / conveyance wins over auction language when both appear.
-  if (/\b(?:winning bidder|tentative winning|successful bidder|has been sold|sold for|conveyance|deed of|deed to|closing of the sale|transferred title)\b/i.test(text)) {
-    return STAGE_AWARD_OR_CONVEYANCE;
-  }
-  if (
-    type === "Sale"
-    || /\b(?:request for proposals?|\brfps?\b|public auction|lease auction|online public lease auction|public sale|bid solicitation|sealed bid|notice of project availability|upset price|minimum bid|surplus assets)\b/i.test(text)
-  ) {
-    return STAGE_AUCTION_OR_RFP;
-  }
-  if (
-    type === "Public Hearings"
-    || type === "Meeting"
-    || /\b(?:public hearing|voluntary public hearing|cancelled hearing|cancellation of public hearing)\b/i.test(text)
-  ) {
-    return STAGE_HEARING;
-  }
-  if (type === "Notice") {
-    // Generic "Notice" without auction/award/hearing language is not a process stage.
-    return null;
-  }
-  return null;
 }
 
 /**

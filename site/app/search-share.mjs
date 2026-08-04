@@ -941,6 +941,21 @@ function exportLensCsv(lens){
     "text/csv;charset=utf-8"
   );
 }
+function exportPropertyAuctionCsv(){
+  const rows=globalThis.propertyAuctionExportVisible||[];
+  if(!rows.length) return;
+  const columns=[
+    [t("csv_address"),r=>r.address], ["Block",r=>r.block], ["Lot",r=>r.lot],
+    ["BBL",r=>r.bbl], [t("property_process_label"),r=>r.stage],
+    ["Posted",r=>r.posted], ["Event date",r=>r.event_date],
+    [t("csv_close_date"),r=>r.close_date], ["City Record URL",r=>r.source_link],
+  ];
+  CrolExports.downloadFile(
+    `cityscroll-property-auction-parcels-${new Date().toISOString().slice(0,10)}.csv`,
+    CrolExports.excelSafeCsv(columns,rows),
+    "text/csv;charset=utf-8"
+  );
+}
 function exportLensXlsx(lens){
   const spec=exportSpec(lens);
   if(!spec||!spec.rows.length) return;
@@ -995,6 +1010,7 @@ globalThis.currentSuggestionMeta = currentSuggestionMeta;
 globalThis.daySeed = daySeed;
 globalThis.deviceParse = deviceParse;
 globalThis.exportLensCsv = exportLensCsv;
+globalThis.exportPropertyAuctionCsv = exportPropertyAuctionCsv;
 globalThis.exportLensXlsx = exportLensXlsx;
 globalThis.exportNoticeXlsx = exportNoticeXlsx;
 globalThis.exportSpec = exportSpec;

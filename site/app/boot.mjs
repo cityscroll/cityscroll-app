@@ -26,6 +26,8 @@ document.addEventListener("click",e=>{
   }
   const csv=e.target.closest("[data-export-csv]");
   if(csv){ exportLensCsv(csv.dataset.exportCsv); return; }
+  const auctionCsv=e.target.closest("[data-export-property-auction]");
+  if(auctionCsv){ exportPropertyAuctionCsv(); return; }
   const xlsx=e.target.closest("[data-export-xlsx]");
   if(xlsx){ exportLensXlsx(xlsx.dataset.exportXlsx); return; }
   const print=e.target.closest("[data-print-view]");
@@ -193,6 +195,12 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
       borough:filter.borough||null, neighborhood:filter.neighborhood||null,
       locationScope:filter.locationScope||null, dateWindow:filter.dateWindow||filter.when||"upcoming",
       when:filter.when||filter.dateWindow||"upcoming",
+    };
+    if(lens==="property") propertyWatchExtra={
+      borough:filter.borough||null, neighborhood:filter.neighborhood||null,
+      process:filter.process||null, stage:filter.stage||null,
+      asset:filter.asset||null, saleMethod:filter.saleMethod||null,
+      priceBand:filter.priceBand||null, sort:filter.sort||null,
     };
     filled = true;
   } else if(lens==="award" && (filter.requestId || noticeId)){
