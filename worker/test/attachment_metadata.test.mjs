@@ -18,6 +18,11 @@ test("bundled Cannonsville metadata remains a visible acceptance exemplar", () =
   assert.match(items[0].title, /Description, maps, and volume report/);
   assert.equal(items[0].text_status, "ok");
   assert.match(items[0].extracted_text, /187 MBF/);
+  // T2 structured tables (species + stand) on the same golden attachment.
+  assert.equal(items[0].tables_status, "ok");
+  assert.equal(items[0].tables_count, 2);
+  assert.equal(items[0].extracted_tables[0].headers[0], "Species");
+  assert.equal(items[0].extracted_tables[0].rows[0][0], "Red Oak");
   const record = toRecord({
     request_id: "20240515016",
     document_urls: JSON.stringify([CANNONSVILLE_URL]),
@@ -27,6 +32,7 @@ test("bundled Cannonsville metadata remains a visible acceptance exemplar", () =
   assert.deepEqual(record.documents, [CANNONSVILLE_URL]);
   assert.match(record.attachments[0].title, /Cannonsville watershed basin/);
   assert.match(record.attachment_text, /187 MBF/);
+  assert.match(record.attachment_tables_text || "", /Red Oak|Shelterwood/);
 });
 
 test("search results label attachment-text provenance when the hit is only in the extract", () => {
@@ -66,10 +72,17 @@ test("haystack refresh merges attachment text into the notices search index", as
   };
   await refreshNoticeAttachmentHaystack(DB, "20240515016", [{
     extracted_text: "187 MBF hardwood sawtimber",
+    extracted_tables: [{
+      headers: ["Species", "MBF"],
+      rows: [["Red Oak", "91.6"]],
+      method: "docx_tbl",
+    }],
   }]);
   assert.match(updated, /cannonsville timber sale/);
   assert.match(updated, /\[attachment-text\]/);
   assert.match(updated, /187 mbf/);
+  assert.match(updated, /\[attachment-tables\]/);
+  assert.match(updated, /red oak/);
 });
 
 test("portal metadata wins over a title-free dataset URL", () => {
@@ -99,6 +112,8 @@ test("public metadata endpoint serves precomputed rows without a portal fetch", 
   const body = await response.json();
   assert.equal(body.n_attachments, 1);
   assert.equal(body.attachments[0].document_id, "37470");
+  assert.equal(body.n_with_tables, 1);
+  assert.equal(body.attachments[0].tables_count, 2);
   assert.match(response.headers.get("cache-control"), /stale-while-revalidate/);
   // T3: precomputed related edges ride along (no request-time embedding).
   assert.ok(body.related_by_attachment);

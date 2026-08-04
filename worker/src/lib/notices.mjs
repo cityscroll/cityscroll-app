@@ -15,6 +15,11 @@ import {
   matchAttachmentTextEvidence,
   TEXT_PROVENANCE,
 } from "./attachment_text.mjs";
+import {
+  joinAttachmentTablesText,
+  matchAttachmentTablesEvidence,
+  TABLE_PROVENANCE,
+} from "./attachment_tables.mjs";
 
 const ROLLING_YEAR = 2090;
 
@@ -131,11 +136,12 @@ export function toRecord(r, attachmentMetadata = []) {
     documents: attachments.length ? attachments.map((item) => item.url) : docs.slice(0, 8),
     attachments,
     attachment_text: joinAttachmentTexts(attachments) || null,
+    attachment_tables_text: joinAttachmentTablesText(attachments) || null,
     structured_facts: structuredFacts,
   };
 }
 
-/** Label search hits that matched via attachment text (provenance: attachment-text). */
+/** Label search hits that matched via attachment text or tables. */
 export function annotateSearchMatchProvenance(record, terms = []) {
   if (!record || !terms?.length) return record;
   const title = record.title || "";
@@ -152,11 +158,23 @@ export function annotateSearchMatchProvenance(record, terms = []) {
       match_evidence: attachEv,
     };
   }
-  // Haystack may still have matched printout/other_info or a prior attachment-text marker.
+  const tableEv = matchAttachmentTablesEvidence(record.attachment_tables_text, terms);
+  if (tableEv) {
+    return {
+      ...record,
+      match_provenance: TABLE_PROVENANCE,
+      match_evidence: tableEv,
+    };
+  }
+  // Haystack may still have matched printout/other_info or prior attachment markers.
   const haystackHint = String(record._haystack || "");
   if (haystackHint.includes(`[${TEXT_PROVENANCE}]`)
     && terms.some((t) => haystackHint.includes(String(t).toLowerCase()))) {
     return { ...record, match_provenance: TEXT_PROVENANCE };
+  }
+  if (haystackHint.includes(`[${TABLE_PROVENANCE}]`)
+    && terms.some((t) => haystackHint.includes(String(t).toLowerCase()))) {
+    return { ...record, match_provenance: TABLE_PROVENANCE };
   }
   return { ...record, match_provenance: "other" };
 }

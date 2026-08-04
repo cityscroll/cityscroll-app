@@ -53,6 +53,14 @@ jobs:
         run: |
           # T1 reads the T0 inventory JSONL produced above; 25 docs/run, polite cadence.
           python warehouse/scripts/attachment_text_run.py --limit 25
+      - name: Run bounded attachment structured-tables extract (T2)
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          CITYSCROLL_ATTACHMENT_ENDPOINT: https://api.cityscroll.org/admin/attachment-metadata
+        run: |
+          # T2 reads the same T0 inventory; JSON table payloads (see docs/adr/attachment-tables-storage.md).
+          # T3 embeddings is a parallel lane and is not run here.
+          python warehouse/scripts/attachment_tables_run.py --limit 25
       - name: Preserve run receipts
         if: always()
         uses: actions/upload-artifact@v4
@@ -61,5 +69,6 @@ jobs:
           path: |
             warehouse/receipts/attachment_metadata_latest.json
             warehouse/receipts/attachment_text_latest.json
+            warehouse/receipts/attachment_tables_latest.json
           if-no-files-found: error
           retention-days: 30
