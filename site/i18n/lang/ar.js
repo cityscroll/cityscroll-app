@@ -870,6 +870,8 @@
     notice_attachment_chip_other: "{n} مرفقات: {title}",
     notice_attachment_title_fallback: "ملف الإشعار الرسمي",
     notice_attachment_extract_summary: "نص مستخرج من المرفق — وسّع للنص الكامل",
+    notice_attachment_tables_summary: "جداول مستخرجة من المرفق — وسّع لعرض البيانات المنظمة",
+    notice_attachment_table_caption: "جدول {n}",
     notice_attachment_related_heading: "ذات صلة بمحتوى المرفق",
     notice_attachment_related_lead: "إشعارات أخرى تشارك موضوعات نص الملف الرسمي — وليس فقط كلمات مفتاحية مشتركة.",
     digest_match_attachment_html: "مطابقة في المرفق: {snippet}",

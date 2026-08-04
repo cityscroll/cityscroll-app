@@ -260,6 +260,9 @@ function matchEvidence(title, description, terms, contextTerms, attachmentText){
       hit:attach.slice(inAttach.index, inAttach.index+inAttach.term.length),
       after:attach.slice(inAttach.index+inAttach.term.length, end)+(end<attach.length?"…":"") };
   }
+  // T2: structured table cell text (same progressive path; provenance attachment-tables).
+  // attachmentText may already include joined table cells from matchAttachmentText when
+  // the caller passes a combined string; when only tables matched, field stays tables.
   if(!words.length) return null;
   return {field:"unknown", term:words[0]};
 }
@@ -275,7 +278,16 @@ function matchText(r){
 function matchAttachmentText(r){
   if(r.attachment_text) return cleanText(r.attachment_text);
   const attachments = Array.isArray(r.attachments) ? r.attachments : [];
-  return attachments.map(a=>cleanText(a && a.extracted_text)).filter(Boolean).join(" ");
+  const textParts = attachments.map(a=>cleanText(a && a.extracted_text)).filter(Boolean);
+  // T2: table cells also feed keyword match evidence (search index parity with haystack).
+  const tableParts = attachments.flatMap(a=>{
+    const tables = Array.isArray(a && a.extracted_tables) ? a.extracted_tables : [];
+    return tables.flatMap(t=>{
+      const cells = [...(t.headers||[]), ...(t.rows||[]).flat()];
+      return cells.map(c=>cleanText(c)).filter(Boolean);
+    });
+  });
+  return [...textParts, ...tableParts].join(" ");
 }
 // digTitleHTML: the item's title, term <mark>-highlighted when the TITLE is what matched.
 // ev.index is an offset into the cleaned (decoded) title. Escape text slices once so a notice
@@ -292,7 +304,7 @@ function digEvidenceHTML(ev){
   if(!ev || ev.field==="title") return "";
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
   if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
-  if(ev.field==="attachment-text") return `<div class="dev" data-match-provenance="attachment-text">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  if(ev.field==="attachment-text" || ev.field==="attachment-tables") return `<div class="dev" data-match-provenance="${esc(ev.field)}">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
   return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
 }
 function digContact(r){
@@ -1038,6 +1050,81 @@ function attachmentExtractHTML(attachment){
   </details>`;
 }
 
+function attachmentTableCellHTML(value){
+  return `<td style="border:1px solid var(--line,#d0d4dc);padding:6px 8px;vertical-align:top">${escUiHtml(String(value ?? ""))}</td>`;
+}
+
+function attachmentOneTableHTML(table, tableIndex){
+  const headers = Array.isArray(table?.headers) ? table.headers : [];
+  const rows = Array.isArray(table?.rows) ? table.rows : [];
+  if(!headers.length && !rows.length) return "";
+  const head = headers.length
+    ? `<thead><tr>${headers.map((h,i)=>`<th scope="col" data-col="${i}" tabindex="0" role="columnheader" style="border:1px solid var(--line,#d0d4dc);padding:6px 8px;background:var(--panel-2,#f4f5f7);text-align:left;cursor:pointer;user-select:none">${escUiHtml(String(h ?? ""))}</th>`).join("")}</tr></thead>`
+    : "";
+  const body = rows.map(row=>{
+    const cells = Array.isArray(row) ? row : [];
+    return `<tr>${(headers.length?headers:cells).map((_,i)=>attachmentTableCellHTML(cells[i] ?? "")).join("")}</tr>`;
+  }).join("");
+  const caption = table?.caption
+    ? `<caption style="caption-side:top;text-align:left;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding:0 0 6px">${escUiHtml(table.caption)}</caption>`
+    : (headers.length
+      ? `<caption style="caption-side:top;text-align:left;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding:0 0 6px">${escUiHtml(t("notice_attachment_table_caption",{n:tableIndex+1}))}</caption>`
+      : "");
+  // Real HTML table; th click sorts client-side (cheap; no library).
+  return `<table class="attachment-table" data-table-index="${tableIndex}" style="width:100%;border-collapse:collapse;font:12px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 12px">
+    ${caption}${head}<tbody>${body}</tbody>
+  </table>`;
+}
+
+function attachmentTablesHTML(attachment){
+  const tables = Array.isArray(attachment?.extracted_tables) ? attachment.extracted_tables : [];
+  if(!tables.length || (attachment.tables_status && attachment.tables_status !== "ok")) return "";
+  const preview = String(attachment.tables_preview || `${tables.length} table${tables.length===1?"":"s"}`).trim();
+  const previewShort = preview.length > 280 ? preview.slice(0,277).trimEnd()+"…" : preview;
+  const body = tables.map((table,i)=>attachmentOneTableHTML(table,i)).filter(Boolean).join("");
+  if(!body) return "";
+  return `<details class="attachment-tables inline-disclose attachment-extract" style="margin:6px 0 2px">
+    <summary class="attachment-tables-summary attachment-extract-summary" style="font:12px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted);cursor:pointer">
+      <span class="attachment-tables-label">${escUiHtml(t("notice_attachment_tables_summary"))}</span>
+      <span class="attachment-tables-preview attachment-extract-preview" lang="en" dir="ltr" style="display:block;margin-top:2px;color:var(--ink)">“${escUiHtml(previewShort)}”</span>
+    </summary>
+    <div class="attachment-tables-body inline-disclose-body scope" lang="en" dir="ltr" style="margin-top:8px;max-height:28rem;overflow:auto">${body}</div>
+  </details>`;
+}
+
+function bindAttachmentTableSort(root){
+  if(!root) return;
+  root.querySelectorAll("table.attachment-table").forEach(table=>{
+    const heads = table.querySelectorAll("th[data-col]");
+    heads.forEach(th=>{
+      const sortCol = ()=>{
+        const col = Number(th.getAttribute("data-col"));
+        const tbody = table.tBodies[0];
+        if(!tbody || !Number.isInteger(col)) return;
+        const dir = th.getAttribute("data-sort-dir") === "asc" ? "desc" : "asc";
+        heads.forEach(other=>other.removeAttribute("data-sort-dir"));
+        th.setAttribute("data-sort-dir", dir);
+        const rows = [...tbody.rows];
+        rows.sort((a,b)=>{
+          const av = (a.cells[col]?.textContent || "").trim();
+          const bv = (b.cells[col]?.textContent || "").trim();
+          const an = Number(av.replace(/[%,$]/g,""));
+          const bn = Number(bv.replace(/[%,$]/g,""));
+          let cmp = 0;
+          if(Number.isFinite(an) && Number.isFinite(bn) && av !== "" && bv !== "") cmp = an - bn;
+          else cmp = av.localeCompare(bv, undefined, { numeric:true, sensitivity:"base" });
+          return dir === "asc" ? cmp : -cmp;
+        });
+        rows.forEach(row=>tbody.appendChild(row));
+      };
+      th.addEventListener("click", sortCol);
+      th.addEventListener("keydown", ev=>{
+        if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); sortCol(); }
+      });
+    });
+  });
+}
+
 function attachmentChipHTML(r){
   if((r.section_name || r.section) === "Changes in Personnel") return "";
   const attachments = Array.isArray(r.attachments) ? r.attachments.filter(a=>a && a.url) : [];
@@ -1047,10 +1134,12 @@ function attachmentChipHTML(r){
   const title = rawTitle.length > 108 ? rawTitle.slice(0,105).trimEnd()+"…" : rawTitle;
   const label = tn("notice_attachment_chip", attachments.length, {title});
   const extract = attachmentExtractHTML(first);
-  // Always keep the original-document link; text extract is optional progressive disclosure.
+  const tables = attachmentTablesHTML(first);
+  // Always keep the original-document link; text + tables are progressive disclosure.
   return `<div class="attachment-panel" style="margin:6px 0 4px">
     <a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a>
     ${extract}
+    ${tables}
   </div>`;
 }
 
@@ -1089,7 +1178,10 @@ async function attachmentRelatedHTMLFor(r){
 async function fillContext(r, el){
   if(!el) return;
   const attachmentHTML = attachmentChipHTML(r);
-  if(attachmentHTML) el.innerHTML = attachmentHTML;
+  if(attachmentHTML){
+    el.innerHTML = attachmentHTML;
+    bindAttachmentTableSort(el);
+  }
   const [flags, ctx, relatedHTML] = await Promise.all([
     noticeFlags(r),
     awardContext(r),
@@ -1100,7 +1192,10 @@ async function fillContext(r, el){
   if(relatedHTML) html += relatedHTML;
   if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
   html += ctx;
-  if(html) el.innerHTML = html;
+  if(html){
+    el.innerHTML = html;
+    bindAttachmentTableSort(el);
+  }
 }
 
 /* ===================== FOLLOW THE DOLLARS =====================
@@ -1179,6 +1274,8 @@ globalThis.matchAttachmentText = matchAttachmentText;
 globalThis.attachmentChipHTML = attachmentChipHTML;
 globalThis.attachmentExtractHTML = attachmentExtractHTML;
 globalThis.attachmentRelatedHTMLFor = attachmentRelatedHTMLFor;
+globalThis.attachmentTablesHTML = attachmentTablesHTML;
+globalThis.bindAttachmentTableSort = bindAttachmentTableSort;
 globalThis.matchText = matchText;
 globalThis.noticeFlags = noticeFlags;
 globalThis.ordinal = ordinal;

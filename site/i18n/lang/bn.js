@@ -863,6 +863,8 @@
     notice_attachment_chip_other: "{n}টি সংযুক্তি: {title}",
     notice_attachment_title_fallback: "সরকারি বিজ্ঞপ্তির ফাইল",
     notice_attachment_extract_summary: "সংযুক্তি থেকে নেওয়া পাঠ্য — সম্পূর্ণ পাঠ্যের জন্য প্রসারিত করুন",
+    notice_attachment_tables_summary: "সংযুক্তি থেকে নেওয়া সারণি — কাঠামোবদ্ধ তথ্যের জন্য প্রসারিত করুন",
+    notice_attachment_table_caption: "সারণি {n}",
     notice_attachment_related_heading: "সংযুক্তির বিষয়বস্তু অনুসারে সম্পর্কিত",
     notice_attachment_related_lead: "অফিসিয়াল ফাইলের পাঠ্যের সঙ্গে বিষয় ভাগ করা অন্যান্য নোটিশ — শুধু সাধারণ কীওয়ার্ড নয়।",
     digest_match_attachment_html: "সংযুক্তিতে মিলেছে: {snippet}",

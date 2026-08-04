@@ -870,6 +870,8 @@
     notice_attachment_chip_other: "{n} منسلک فائلیں: {title}",
     notice_attachment_title_fallback: "سرکاری نوٹس کی فائل",
     notice_attachment_extract_summary: "منسلکہ سے نکالا گیا متن — مکمل متن کے لیے پھیلائیں",
+    notice_attachment_tables_summary: "منسلکہ سے نکالی گئی جدولیں — ساختہ ڈیٹا کے لیے پھیلائیں",
+    notice_attachment_table_caption: "جدول {n}",
     notice_attachment_related_heading: "منسلکہ مواد کے لحاظ سے متعلقہ",
     notice_attachment_related_lead: "سرکاری فائل کے متن سے موضوعات شیئر کرنے والے دیگر نوٹس — صرف مشترکہ کلیدی الفاظ نہیں۔",
     digest_match_attachment_html: "منسلکہ میں مماثلت: {snippet}",

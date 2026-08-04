@@ -945,6 +945,8 @@
     notice_attachment_chip_other: "{n} pièces jointes : {title}",
     notice_attachment_title_fallback: "Fichier officiel de l’avis",
     notice_attachment_extract_summary: "Texte extrait de la pièce jointe — développez pour le texte complet",
+    notice_attachment_tables_summary: "Tableaux extraits de la pièce jointe — développez pour les données structurées",
+    notice_attachment_table_caption: "Tableau {n}",
     notice_attachment_related_heading: "Liés par le contenu de la pièce jointe",
     notice_attachment_related_lead: "D’autres avis qui partagent des thèmes avec le texte du fichier officiel — pas seulement des mots-clés.",
     digest_match_attachment_html: "Correspondance dans la pièce jointe : {snippet}",

@@ -1,0 +1,58 @@
+{
+  "schema": "cityscroll.attachment_tables.receipt.v1",
+  "run_id": "att-t2-2026-08-04-352b3588-4776-4ffb-bc60-2295b5cddd76",
+  "started_at": "2026-08-04T00:42:11.900Z",
+  "finished_at": "2026-08-04T00:42:11.947Z",
+  "mode": "fixture",
+  "tier": "t2_structured_tables",
+  "inventory_seen": 2,
+  "docs_attempted": 1,
+  "docs_with_tables": 1,
+  "docs_skipped": 1,
+  "docs_failed": 0,
+  "total_tables": 2,
+  "total_cells": 58,
+  "max_docs_per_run": 25,
+  "max_extract_bytes": 5000000,
+  "binaries_stored": false,
+  "images_ocr": false,
+  "pdf_limits": "text_layer_row_recovery_only",
+  "storage_decision": {
+    "format": "json",
+    "reasons": [
+      "corpus_small",
+      "product_serves_precomputed_json",
+      "no_cross_doc_sql_yet",
+      "avoid_ci_parquet_toolchain"
+    ],
+    "scale": {
+      "docsWithTables": 1,
+      "totalTables": 2,
+      "totalCells": 58,
+      "payloadBytes": 1930
+    },
+    "parquet_threshold": {
+      "docs_with_tables": 500,
+      "total_tables": 2000,
+      "payload_bytes": 5000000,
+      "or_cross_doc_sql": true
+    }
+  },
+  "storage_adr": "docs/adr/attachment-tables-storage.md",
+  "polite_delay_s": 0,
+  "checkpoint": true,
+  "parallel_lane": {
+    "t3": "att-t3-embeddings",
+    "note": "embeddings are a separate tier; this run only writes table JSON"
+  },
+  "upload": {
+    "pushed": false,
+    "batches": 0
+  },
+  "warehouse": {
+    "skipped": true,
+    "reason": "duckdb_unavailable",
+    "format": "json",
+    "taskpolicy_or_nice_wrap": false
+  }
+}

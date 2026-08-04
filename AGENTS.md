@@ -150,19 +150,35 @@ no binaries/OCR stored). Text is stamped beside T0 rows
 (`extracted_text` / `text_preview` / `text_status`), served on
 `GET /attachment-metadata`, and merged into the D1 notices `haystack` with
 provenance marker `attachment-text`. Notice UI uses progressive disclosure
-(`.attachment-extract`, collapsed by default). **T3 embeddings (landed):**
-build-time nearest-neighbor over T1 text materializes **precomputed related
-edges** only (`docs/adr/attachment-text-embeddings.md`) — no query-time embed
-(query embedding would need a live model or client weights). Pure lib
-`warehouse/lib/attachment_embeddings.mjs` (hashed n-gram TF-IDF, local/CI-safe);
-artifact `site/data/attachment_related_notices.json` (+ Worker twin);
-UI `.attachment-related` on notice detail. Rebuild:
+(`.attachment-extract`, collapsed by default). Exemplar: notice `20240515016`
+(Cannonsville). Capture: `python3 tools/capture_attachment_text.py`.
+
+**T2 attachment structured tables:** same T0 inventory + T1 document classes.
+docx tables via native `w:tbl`; PDF text-layer row recovery only (no OCR —
+empty/image PDFs stamp an honest miss). Pure helpers
+`warehouse/lib/attachment_tables.mjs` + extractor
+`warehouse/lib/attachment_tables_extract.py`. Guarded runner
+`warehouse/.venv/bin/python warehouse/scripts/attachment_tables_run.py
+--from-fixture --limit 25`. **Storage:** JSON payloads now (lookup + D1
+`extracted_tables` text); parquet/DuckDB only after measured thresholds —
+decision record `docs/adr/attachment-tables-storage.md`. Cell text feeds
+haystack with provenance `attachment-tables`. Notice UI:
+`.attachment-tables` progressive disclosure + real HTML tables (click column
+header to sort). Golden: Cannonsville species + stand tables on
+`#notice/20240515016`. Capture: `python3 tools/capture_attachment_tables.py`.
+Verify: `node --test test/attachment_tables.test.mjs
+worker/test/attachment_metadata.test.mjs`.
+
+**T3 embeddings (landed):** build-time nearest-neighbor over T1 text materializes
+**precomputed related edges** only (`docs/adr/attachment-text-embeddings.md`) —
+no query-time embed (query embedding would need a live model or client weights).
+Pure lib `warehouse/lib/attachment_embeddings.mjs` (hashed n-gram TF-IDF,
+local/CI-safe); artifact `site/data/attachment_related_notices.json` (+ Worker
+twin); UI `.attachment-related` on notice detail. Rebuild:
 `node tools/build_attachment_related.mjs` / `--check`. Golden: Cannonsville
 `20240515016` → water-supply forest neighbors keyword “Cannonsville” misses.
 Proof: `warehouse/receipts/proof/att_t3_attachment_embeddings_latest.json`.
-Later tier (not this PR): `att-t2-structured` (tables → parquet/DuckDB).
-Exemplar: notice `20240515016` (Cannonsville). Capture:
-`python3 tools/capture_attachment_text.py`.
+T2 tables and T3 related-edges share notice chrome but not write ownership.
 
 ```bash
 python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
