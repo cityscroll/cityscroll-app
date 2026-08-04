@@ -810,6 +810,8 @@
     notice_attachment_chip_other: "{n} załączniki: {title}",
     notice_attachment_title_fallback: "Oficjalny plik ogłoszenia",
     notice_attachment_extract_summary: "Tekst wyodrębniony z załącznika — rozwiń, by zobaczyć całość",
+    notice_attachment_related_heading: "Powiązane treścią załącznika",
+    notice_attachment_related_lead: "Inne ogłoszenia o podobnej tematyce jak tekst oficjalnego pliku — nie tylko wspólne słowa kluczowe.",
     digest_match_attachment_html: "Dopasowanie w załączniku: {snippet}",
     ext_link_new_tab_sr: "(otwiera się w nowej karcie)",
     pin_unusable_note: "PIN tego ogłoszenia nie nadaje się do powiązania (<code>{pin}</code>), więc jego przyznania nie można śledzić automatycznie. Otwórz je w Rejestrze Miejskim, aby przeczytać pełny tekst.",

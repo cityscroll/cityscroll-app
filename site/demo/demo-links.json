@@ -17,6 +17,14 @@
           {
             "selector": "#ncontext .attachment-extract",
             "text": "187 MBF"
+          },
+          {
+            "selector": "#ncontext .attachment-related",
+            "text": "Related by attachment content"
+          },
+          {
+            "selector": "#ncontext .attachment-related-list",
+            "text": "Ashokan"
           }
         ],
         "notVisible": [

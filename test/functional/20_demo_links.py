@@ -153,6 +153,29 @@ CANNONSVILLE_ATTACHMENTS = {
         "text_preview": "New York City Department of Environmental Protection · Bureau of Water Supply - Natural Resources Division · CARPENTERS EDDY EAST · Forest Management Project # 5116…",
         "extracted_text": CANNONSVILLE_EXTRACT,
     }],
+    # T3 precomputed edges (mirrors site/data/attachment_related_notices.json for hermetic demos).
+    "related_by_attachment": {
+        "schema": "cityscroll.attachment_related.v1",
+        "request_id": "20240515016",
+        "method": "hashed_ngram_tfidf_v0",
+        "architecture": "precomputed_related_edges",
+        "related": [
+            {
+                "request_id": "20230612007",
+                "score": 0.5855,
+                "title": "Ashokan reservoir lands — standing timber harvest",
+                "section": "Property Disposition",
+                "basis": "attachment_text_similarity",
+            },
+            {
+                "request_id": "20210908014",
+                "score": 0.4513,
+                "title": "Pepacton basin forest management — pulp and sawtimber",
+                "section": "Property Disposition",
+                "basis": "attachment_text_similarity",
+            },
+        ],
+    },
 }
 
 
