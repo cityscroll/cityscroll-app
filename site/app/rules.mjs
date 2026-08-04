@@ -109,8 +109,17 @@ function rulesExplorerCardHTML(entry, terms){
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
+let rulesActionBandToolsPromise=null;
+function rulesActionBandTools(){
+  if(!rulesActionBandToolsPromise){
+    rulesActionBandToolsPromise=import("../rules_action_bands.mjs").catch(()=>null);
+  }
+  return rulesActionBandToolsPromise;
+}
+
 async function renderRulesExplorer(){
   const tools=await rulesExplorerTools();
+  const bandTools=await rulesActionBandTools();
   const processRail=$("#rulesprocessrail");
   const agency=$("#rulesagency")?.value||"";
   const kw=($("#ruleskw")?.value||"").trim();
@@ -184,7 +193,26 @@ async function renderRulesExplorer(){
     feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
     return;
   }
-  feedEl.innerHTML=entries.map(e=>rulesExplorerCardHTML(e, terms)).join("");
+  // Action-banded grouping: comment open / hearing / adopted / other — not date-only buckets.
+  let html="";
+  if(bandTools && typeof bandTools.groupEntriesByActionBand==="function"){
+    const groups=bandTools.groupEntriesByActionBand(entries,{ now: todayISO() });
+    for(const g of groups){
+      const label=typeof bandTools.rulesActionBandLabel==="function"
+        ? bandTools.rulesActionBandLabel({
+            band_id:g.band_id,
+            days_left:g.days_left,
+            hearing_date:g.hearing_date,
+            effective_date:g.effective_date,
+          }, (key, vars)=>t(key, vars))
+        : t(g.label_key);
+      html+=`<div class="rules-action-band" data-band="${escUiHtml(g.band_id)}" role="heading" aria-level="3">${escUiHtml(label)}<span class="band-count">${escUiHtml(t("rule_band_count",{n:String(g.count)}))}</span></div>`;
+      html+=g.entries.map(e=>rulesExplorerCardHTML(e, terms)).join("");
+    }
+  } else {
+    html=entries.map(e=>rulesExplorerCardHTML(e, terms)).join("");
+  }
+  feedEl.innerHTML=html;
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
 }
@@ -615,6 +643,104 @@ function downloadRuleEventICS(r,event){
   a.download=`rule-comment-deadline-${r.request_id}.ics`; document.body.appendChild(a); a.click(); a.remove();
 }
 
+let rulesParticipationToolsPromise=null;
+function rulesParticipationTools(){
+  if(!rulesParticipationToolsPromise){
+    rulesParticipationToolsPromise=import("../rules_participation.mjs").catch(()=>null);
+  }
+  return rulesParticipationToolsPromise;
+}
+let rulesMemberBlurbToolsPromise=null;
+function rulesMemberBlurbTools(){
+  if(!rulesMemberBlurbToolsPromise){
+    rulesMemberBlurbToolsPromise=import("../rules_member_blurb.mjs").catch(()=>null);
+  }
+  return rulesMemberBlurbToolsPromise;
+}
+
+/**
+ * Disclosure: official comment channel + what makes a comment count + neutral scaffold.
+ * Only when the comment window is open.
+ */
+function ruleParticipationHTML(path){
+  if(!path || !path.open) return "";
+  const deadline=path.comment_by_date
+    ? (path.days_left!=null && path.days_left>=0
+      ? t("rule_part_deadline_line",{date:ruleDateLabel(path.comment_by_date),n:String(path.days_left)})
+      : t("rule_part_deadline_line",{date:ruleDateLabel(path.comment_by_date),n:"—"}))
+    : t("rule_part_deadline_line_undated");
+  const channel=path.submit_url
+    ? `<p><a class="act primary" href="${escUiHtml(path.submit_url)}" ${EXT_ATTRS}>${escUiHtml(t("rule_part_channel_cta"))}${extSR()}</a>
+        <span class="muted" style="margin-inline-start:8px">${escUiHtml(t(path.channel_label_key||"rule_part_channel_nyc_rules"))}</span></p>`
+    : `<p class="muted">${escUiHtml(t("rule_guide_fallback_step"))}</p>`;
+  const counts=(path.counts_keys||[]).map(k=>`<li>${escUiHtml(t(k))}</li>`).join("");
+  const fields=(path.scaffold||[]).map(f=>`
+    <div class="rule-scaffold-field">
+      <label for="rule-scaffold-${escUiHtml(f.id)}">${escUiHtml(t(f.label_key))}</label>
+      <textarea id="rule-scaffold-${escUiHtml(f.id)}" data-scaffold-field="${escUiHtml(f.id)}" placeholder="${escUiHtml(t(f.placeholder_key))}" rows="2"></textarea>
+    </div>`).join("");
+  return `<details class="rule-participation" data-rule-participation="1" open>
+    <summary>${escUiHtml(t("rule_part_summary"))}</summary>
+    <div class="rule-participation-body">
+      <p><b>${escUiHtml(t("rule_part_channel_heading"))}</b> — ${escUiHtml(deadline)}</p>
+      ${channel}
+      <p><b>${escUiHtml(t("rule_part_counts_heading"))}</b></p>
+      <ol>${counts}</ol>
+      <p><b>${escUiHtml(t("rule_part_scaffold_heading"))}</b></p>
+      <p class="muted">${escUiHtml(t("rule_part_scaffold_lead"))}</p>
+      <div class="rule-scaffold-fields" data-rule-scaffold="1">${fields}</div>
+      <p class="muted" style="margin-top:8px">${escUiHtml(t("rule_part_scaffold_draft_label"))}</p>
+      <pre class="rule-scaffold-draft" data-scaffold-draft="" tabindex="0"></pre>
+      <button type="button" class="act" data-scaffold-copy="1">${escUiHtml(t("rule_part_scaffold_copy"))}</button>
+    </div>
+  </details>`;
+}
+
+function ruleMemberBlurbHTML(blurb){
+  if(!blurb || !blurb.text) return "";
+  return `<details class="rule-member-blurb" data-rule-member-blurb="1">
+    <summary>${escUiHtml(t("rule_member_blurb_summary"))}</summary>
+    <div class="rule-member-blurb-body">
+      <p class="muted">${escUiHtml(t("rule_member_blurb_lead"))}</p>
+      <div class="rule-member-blurb-text" data-member-blurb-text="">${escUiHtml(blurb.text)}</div>
+      <button type="button" class="act" data-member-blurb-copy="1">${escUiHtml(t("rule_member_blurb_copy"))}</button>
+    </div>
+  </details>`;
+}
+
+function bindRuleParticipationUI(root, path, assembleFn){
+  if(!root || !path) return;
+  const draftEl=root.querySelector("[data-scaffold-draft]");
+  const fields=[...root.querySelectorAll("[data-scaffold-field]")];
+  const refresh=()=>{
+    if(!draftEl || typeof assembleFn!=="function") return;
+    const values={};
+    for(const ta of fields) values[ta.dataset.scaffoldField]=ta.value;
+    draftEl.textContent=assembleFn(path, values);
+  };
+  fields.forEach(ta=>ta.addEventListener("input", refresh));
+  refresh();
+  const copyBtn=root.querySelector("[data-scaffold-copy]");
+  if(copyBtn && draftEl){
+    copyBtn.addEventListener("click",()=>{
+      copyText(draftEl.textContent||"", copyBtn);
+      copyBtn.textContent=t("rule_part_scaffold_copied");
+      setTimeout(()=>{ copyBtn.textContent=t("rule_part_scaffold_copy"); }, 1600);
+    });
+  }
+}
+
+function bindRuleMemberBlurbUI(root, blurb){
+  if(!root || !blurb?.text) return;
+  const btn=root.querySelector("[data-member-blurb-copy]");
+  if(!btn) return;
+  btn.addEventListener("click",()=>{
+    copyText(blurb.text, btn);
+    btn.textContent=t("rule_member_blurb_copied");
+    setTimeout(()=>{ btn.textContent=t("rule_member_blurb_copy"); }, 1600);
+  });
+}
+
 async function loadRuleLifecycle(r,el){
   if(!el||!r||r.section_name!=="Agency Rules") return;
   let rulesView=null;
@@ -644,8 +770,40 @@ async function loadRuleLifecycle(r,el){
     adoptionModel=await loadRulesAdoptionLagModel();
   }catch(_e){}
   if(!document.contains(el)) return;
-  el.innerHTML=ruleEventSpineHTML(rec, phaseTools, stageMap, adoptionModel);
+
+  // Prefer stitched record for open-window + blurb facts.
+  let paintRec=rec;
+  if(phaseTools && typeof phaseTools.stitchRulemakingRecord==="function"){
+    const stitched=phaseTools.stitchRulemakingRecord(rec, stageMap);
+    if(stitched) paintRec=stitched;
+  }
+
+  const partTools=await rulesParticipationTools();
+  const blurbTools=await rulesMemberBlurbTools();
+  if(!document.contains(el)) return;
+
+  let participationPath=null;
+  let assembleScaffold=null;
+  if(partTools?.buildRulesParticipationPath){
+    participationPath=partTools.buildRulesParticipationPath(paintRec, r, { now: todayISO() });
+    assembleScaffold=partTools.assembleScaffoldDraft;
+  }
+  let memberBlurb=null;
+  if(blurbTools?.buildMemberBlurb){
+    memberBlurb=blurbTools.buildMemberBlurb(r, paintRec, {
+      now: todayISO(),
+      siteBase: (typeof location!=="undefined" && location.origin) ? location.origin : "https://cityscroll.org",
+    });
+  }
+
+  const spine=ruleEventSpineHTML(rec, phaseTools, stageMap, adoptionModel);
+  const partHtml=ruleParticipationHTML(participationPath);
+  const blurbHtml=ruleMemberBlurbHTML(memberBlurb);
+  // Participation + member blurb lead the lifecycle so act-now is first; spine remains below.
+  el.innerHTML=`${partHtml}${blurbHtml}${spine}`;
   bindRulesPhaseUI(el);
+  if(participationPath) bindRuleParticipationUI(el, participationPath, assembleScaffold);
+  if(memberBlurb) bindRuleMemberBlurbUI(el, memberBlurb);
   // Comment deadline may come from a sibling’s NYC Rules join after stitch.
   let commentEvent=(rec.events||[]).find(event=>event.event_type==="comment_close");
   if(!commentEvent && phaseTools && typeof phaseTools.stitchRulemakingRecord==="function"){
@@ -785,6 +943,10 @@ globalThis.loadRulesAdoptionLagModel = loadRulesAdoptionLagModel;
 globalThis.loadSectionAgencies = loadSectionAgencies;
 globalThis.renderFeed = renderFeed;
 globalThis.renderRulesExplorer = renderRulesExplorer;
+globalThis.ruleParticipationHTML = ruleParticipationHTML;
+globalThis.ruleMemberBlurbHTML = ruleMemberBlurbHTML;
+globalThis.bindRuleParticipationUI = bindRuleParticipationUI;
+globalThis.bindRuleMemberBlurbUI = bindRuleMemberBlurbUI;
 globalThis.ruleAdoptionEstimateHTML = ruleAdoptionEstimateHTML;
 globalThis.ruleCommentAction = ruleCommentAction;
 globalThis.ruleDateLabel = ruleDateLabel;
