@@ -379,14 +379,14 @@ function summarizePlainLanguage(records) {
   };
 }
 
-const REQUIRED_UPPERCASE_TITLE_TOKENS = Object.freeze(["NY", "NYC", "DCAS", "RFP", "WNYC"]);
+const REQUIRED_UPPERCASE_TITLE_WORDS = Object.freeze(["NY", "NYC", "DCAS", "RFP", "WNYC"]);
 
 function summarizeTitleTreatment(records) {
   const eligible = records.filter((record) => record.plain_summary?.templated);
-  const tokenInvariants = Object.fromEntries(REQUIRED_UPPERCASE_TITLE_TOKENS.map((token) => {
-    const seen = eligible.filter((record) => new RegExp(`\\b${token}\\b`, "i").test(record.title || ""));
-    const mismatches = seen.filter((record) => !new RegExp(`\\b${token}\\b`).test(record.display_title || ""));
-    return [token, {
+  const uppercaseInvariants = Object.fromEntries(REQUIRED_UPPERCASE_TITLE_WORDS.map((word) => {
+    const seen = eligible.filter((record) => new RegExp(`\\b${word}\\b`, "i").test(record.title || ""));
+    const mismatches = seen.filter((record) => !new RegExp(`\\b${word}\\b`).test(record.display_title || ""));
+    return [word, {
       seen: seen.length,
       preserved: seen.length - mismatches.length,
       mismatches: mismatches.map((record) => record.request_id),
@@ -396,8 +396,8 @@ function summarizeTitleTreatment(records) {
     eligible: eligible.length,
     transformed: eligible.filter((record) => record.display_title !== record.title).length,
     fallback_original_titles: records.length - eligible.length,
-    required_uppercase_tokens: tokenInvariants,
-    uppercase_token_mismatches: Object.values(tokenInvariants)
+    required_uppercase_words: uppercaseInvariants,
+    uppercase_word_mismatches: Object.values(uppercaseInvariants)
       .reduce((sum, result) => sum + result.mismatches.length, 0),
   };
 }
@@ -580,7 +580,7 @@ export function reportAsMarkdown(report) {
     "",
     `Property lens card copy: mean grade ${lens.mean_grade}, median ${lens.median_grade}, p90 ${lens.p90_grade}; legacy raw-title lead mean grade ${legacyLens.mean_grade}; ${lens.at_or_below_grade_7}/${lens.scored} at or below grade 7.`,
     "",
-    `Legal-title treatment: ${titleTreatment.transformed}/${titleTreatment.eligible} templated titles de-shouted; ${titleTreatment.uppercase_token_mismatches} required-uppercase token mismatches; ${titleTreatment.fallback_original_titles} fallback title retained unchanged.`,
+    `Legal-title treatment: ${titleTreatment.transformed}/${titleTreatment.eligible} templated titles de-shouted; ${titleTreatment.uppercase_word_mismatches} required-uppercase word mismatches; ${titleTreatment.fallback_original_titles} fallback title retained unchanged.`,
     ...ratchetLines,
     "",
     `Typed timed events: ${extraction.typed_event_count}; bid-deadline signals ${signals.bid_deadline}, typed bid deadlines ${extraction.typed_bid_deadline}, signals without a parseable date ${extraction.bid_deadline_signal_without_parseable_date}; known cross-type false positives ${extraction.known_cross_type_false_positive_count}; honest-empty notices ${extraction.honest_empty_typed_events}.`,
