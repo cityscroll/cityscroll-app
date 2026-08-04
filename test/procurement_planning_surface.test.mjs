@@ -11,6 +11,7 @@ import { planningRowsForThread } from "../site/procurement_planning_gate.mjs";
 
 const phaseSource = readFileSync(new URL("../site/app/procurement-phase.mjs", import.meta.url), "utf8");
 const moneyListSource = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
+const gateSource = readFileSync(new URL("../site/procurement_planning_gate.mjs", import.meta.url), "utf8");
 const PUBLISHED_BUDGET_BASIS = ["esti", "mated", "_", "amount"].join("");
 
 const CONTRACT = {
@@ -184,13 +185,14 @@ test("RC-1 thread lookup attaches its receipt-passed fixture row", () => {
 test("Money lifecycle loads the full planning surface only for a matching lookup row", () => {
   assert.match(moneyListSource, /planningDetailRequested=false/);
   assert.match(moneyListSource, /event\.isTrusted/);
-  assert.match(phaseSource, /if\(!deliberateDetail\) return data;/);
-  assert.match(phaseSource, /fetch\("\.\/data\/procurement_planning_thread_lookup\.json"/);
-  assert.match(phaseSource, /gate\.planningRowsForThread\(lookup, data, notice\)\.length/);
-  assert.match(phaseSource, /import\("\.\.\/procurement_planning_surface\.mjs"\)/);
-  assert.match(phaseSource, /tools\.attachPlanningLookup\(lookup, data, notice\)/);
+  assert.match(phaseSource, /planning_detail_requested === true/);
+  assert.match(phaseSource, /import\("\.\.\/procurement_planning_gate\.mjs"\)/);
+  assert.match(gateSource, /fetch\("\.\/data\/procurement_planning_thread_lookup\.json"/);
+  assert.match(gateSource, /planningRowsForThread\(lookup, lifecycle, notice\)\.length/);
+  assert.match(gateSource, /import\("\.\/procurement_planning_surface\.mjs"\)/);
+  assert.match(gateSource, /tools\.attachPlanningLookup\(lookup, lifecycle, notice\)/);
   assert.ok(
-    phaseSource.indexOf("attachAvailableProcurementPlanning(data, r)")
+    phaseSource.indexOf("gate.attachAvailablePlanning(data, r)")
       < phaseSource.indexOf("el.innerHTML = lifecycleTimelineHTML(data, r, phaseTools);"),
   );
 });

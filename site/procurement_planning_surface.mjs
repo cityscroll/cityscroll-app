@@ -105,16 +105,15 @@ export function attachPlanningLookup(lookup, lifecycle = {}, notice = {}) {
 }
 
 /** Render a receipt-passed plan row. The eager lifecycle supplies shared UI helpers. */
-export function renderPlanningStage(entry, deps = {}) {
+export function renderPlanningStage(entry, deps = []) {
   const plan = entry?.detail?.plan;
   if (!plan) return "";
-  const t = deps.t || ((key) => key);
-  const esc = deps.esc || ((value) => String(value ?? ""));
-  const money = deps.money || ((value) => String(value ?? ""));
-  const externalLinkSuffix = deps.externalLinkSuffix || (() => "");
+  const [isCurrent, t = (key) => key, esc = (value) => String(value ?? ""),
+    money = (value) => String(value ?? ""), externalLinkAttributes = "",
+    externalLinkSuffix = () => ""] = deps;
   const sourceLabel = plan.source === "mocs_ll1" ? "MOCS LL1" : "MOCS LL63";
   const source = plan.source_url
-    ? `<a class="view" href="${esc(plan.source_url)}" ${deps.externalLinkAttributes || ""}>${sourceLabel}${externalLinkSuffix()}</a>`
+    ? `<a class="view" href="${esc(plan.source_url)}" ${externalLinkAttributes}>${sourceLabel}${externalLinkSuffix()}</a>`
     : `<span>${sourceLabel}</span>`;
   const purpose = plan.description || t("forecast_solicitation_fallback");
   const fiscalYear = entry.detail.fiscal_year;
@@ -127,7 +126,7 @@ export function renderPlanningStage(entry, deps = {}) {
   const budget = plan.budget?.amount != null
     ? `<div class="lc-pct"><span class="tag renewal">${t(["cadence", ["esti", "mate"].join(""), "tag"].join("_"))}</span> ${money(plan.budget.amount)} · ${source}</div>`
     : `<div class="lc-pct">${source}</div>`;
-  return `<div class="stage planning-stage"><div class="box matched${deps.isCurrent ? " current-stage" : ""}">
+  return `<div class="stage planning-stage"><div class="box matched${isCurrent ? " current-stage" : ""}">
     <div class="stage-name">${t("forecast_badge_mocs")}</div>
     <div class="planning-purpose"><b>${t("what_they_want")}</b> <span lang="en" dir="ltr">${esc(purpose)}</span></div>
     ${quarter ? `<div class="lc-pct">${t("forecast_expected_quarter_label", { quarter })}</div>` : ""}

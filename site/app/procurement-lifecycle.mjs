@@ -391,16 +391,7 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
   if(publicStatus === "unmatched" || publicStatus === "unknown") return "";
 
   const isCurrent = !!opts.isCurrent || entry.stage === opts.currentKey;
-  if(typeof entry.renderLifecycleStage === "function"){
-    return entry.renderLifecycleStage(entry, {
-      isCurrent,
-      t,
-      esc: escUiHtml,
-      money: lifecycleMoney,
-      externalLinkAttributes: EXT_ATTRS,
-      externalLinkSuffix: extSR,
-    });
-  }
+  if(entry.renderLifecycleStage) return entry.renderLifecycleStage(entry,[isCurrent,t,escUiHtml,lifecycleMoney,EXT_ATTRS,extSR]);
   const label = lifecycleStageLabel(entry.stage);
   const showLink = opts.showSourceLink !== false && isCurrent && publicStatus !== "passed";
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : (publicStatus === "passed" ? "" : `<div class="when">—</div>`);

@@ -1,30 +1,13 @@
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
-const MONEY_ACTION_LOCATIONS_URL="data/contract_action_address_locations.json";
-let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyActionLocationsPromise=null,moneyActionLocationToolsPromise=null;
+let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyActionLocationToolsPromise=null;
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
-function loadMoneyActionLocations(){
-  return moneyActionLocationsPromise||=(fetch(MONEY_ACTION_LOCATIONS_URL).then(r=>r.ok?r.json():null).catch(()=>null));
-}
 function moneyActionLocationTools(){
-  return moneyActionLocationToolsPromise||=import("../contract_action_location.mjs").catch(()=>null);
-}
-function syncMoneyLocationFilterFromControls(){
-  let selected=$("#moneylocationbasis")?.value||"";
-  const hasDistrict=!!($("#moneyboro")?.value||$("#moneycd")?.value||$("#moneycouncil")?.value);
-  if(!selected&&hasDistrict){ selected="contract_action_address"; $("#moneylocationbasis").value=selected; }
-  moneyLocationFilter={
-    layer:selected?"contract_action_address":"",
-    basis:selected&&selected!=="contract_action_address"?selected:"",
-    borough:$("#moneyboro")?.value||"",
-    communityDistrict:$("#moneycd")?.value||"",
-    councilDistrict:$("#moneycouncil")?.value||"",
-  };
-  return moneyLocationFilter;
+  return moneyActionLocationToolsPromise||=import("../money_action_location_ui.mjs").then(module=>(globalThis.MoneyActionLocations=module)).catch(()=>null);
 }
 async function initializeMoneyLocationFilters(){
-  const [doc,tools]=await Promise.all([loadMoneyActionLocations(),moneyActionLocationTools()]);
-  tools?.fillContractActionLocationSelects?.(doc,{councilLabel:value=>t("council_district_short",{n:value})});
+  const tools=await moneyActionLocationTools();
+  return tools?.initializeMoneyLocationFilters?.({t});
 }
 function loadMoneyDefaultSnapshot(){
   if(!moneyDefaultSnapshotPromise){
@@ -117,17 +100,8 @@ function renderMoneyActiveFilters(){
     minAmount:filter.minAmount, ...moneyNlResolved,
   });
   box.innerHTML=interpretedSearchRowHTML("money", filter, items.map(moneyActiveFilterChip));
-  if(moneyLocationFilter.layer==="contract_action_address"){
-    const labels=[
-      moneyLocationFilter.basis
-        ?t({submission_address:"money_location_basis_submission",pre_bid_venue:"money_location_basis_prebid",document_pickup:"money_location_basis_pickup"}[moneyLocationFilter.basis])
-        :t("money_location_basis_response"),
-      moneyLocationFilter.borough,
-      moneyLocationFilter.communityDistrict,
-      moneyLocationFilter.councilDistrict?t("council_district_short",{n:moneyLocationFilter.councilDistrict}):"",
-    ].filter(Boolean);
-    box.insertAdjacentHTML("beforeend",`<div class="nlunderstood money-location-filter-summary" role="status">${t("money_location_filter_interpretation")} ${labels.map(label=>`<span class="qchip"><b>${escUiHtml(label)}</b></span>`).join(" ")}</div>`);
-  }
+  const locationSummary=globalThis.MoneyActionLocations?.moneyLocationFilterSummaryHTML?.(moneyLocationFilter,{t,esc:escUiHtml});
+  if(locationSummary) box.insertAdjacentHTML("beforeend",locationSummary);
   bindClearSearchState("money", box);
 }
 function updateMoneyMoreFiltersState(){
@@ -160,7 +134,9 @@ async function search(){
   $("#minamt").disabled = mode !== "award";
   if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false"); }
   $("#moneyquick").style.display = mode === "open" ? "" : "none";
-  const locationFilter=syncMoneyLocationFilterFromControls();
+  const hasLocationFilter=!!($("#moneylocationbasis")?.value||$("#moneyboro")?.value||$("#moneycd")?.value||$("#moneycouncil")?.value);
+  const locationTools=hasLocationFilter?await moneyActionLocationTools():null;
+  const locationFilter=locationTools?locationTools.moneyLocationFilterFromControls():moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
   if(locationFilter.layer==="contract_action_address" && mode!=="allrfp"){
     mode="allrfp";
     $("#mode").value="allrfp";
@@ -170,37 +146,11 @@ async function search(){
   }
   renderMoneyActiveFilters();
   updateMoneyMoreFiltersState();
-  if(locationFilter.layer==="contract_action_address"){
+  if(locationTools){
     updateHash();
-    const [doc,tools]=await Promise.all([loadMoneyActionLocations(),moneyActionLocationTools()]);
-    await initializeMoneyLocationFilters();
-    const all=doc&&Array.isArray(doc.rows)?doc.rows:[];
-    const matches=tools&&typeof tools.rowMatchesContractActionFilter==="function"
-      ?all.filter(row=>tools.rowMatchesContractActionFilter(row,{
-          basis:locationFilter.basis||null,
-          borough:locationFilter.borough||null,
-          community_district:locationFilter.communityDistrict||null,
-          council_district:locationFilter.councilDistrict||null,
-        }))
-      :[];
-    const agency=$("#agency").value, query=$("#kw").value.trim().toLowerCase();
-    const narrowed=matches.filter(row=>(!agency||row.agency_name===agency)&&(!query||[
-      row.short_title,row.agency_name,row.pin,
-    ].some(value=>String(value||"").toLowerCase().includes(query))));
-    const rows=narrowed.map(row=>{
-      const location=(row.locations||[]).find(item=>(!locationFilter.basis||item.basis===locationFilter.basis)
-        &&(!locationFilter.borough||item.borough===locationFilter.borough)
-        &&(!locationFilter.communityDistrict||item.community_district===locationFilter.communityDistrict)
-        &&(!locationFilter.councilDistrict||String(item.council_district)===String(locationFilter.councilDistrict)))||row.locations?.[0]||null;
-      return {...row,_action_location_match:location};
+    await locationTools.paintMoneyActionLocationResults(locationFilter,{
+      t,agency:$("#agency").value,query:$("#kw").value,paintMoneyRows,
     });
-    const place=locationFilter.communityDistrict||(
-      locationFilter.councilDistrict?t("council_district_short",{n:locationFilter.councilDistrict}):locationFilter.borough
-    );
-    $("#reshead").textContent=place
-      ?t("money_response_location_heading_place",{place})
-      :t("money_response_location_heading");
-    paintMoneyRows(rows,{autoSelect:true,narrowed:false});
     return;
   }
 
@@ -377,8 +327,7 @@ function moneyRowHTML(r, i, terms){
     : deadlineTag(r.due_date);
   const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
-  const actionLocation=r._action_location_match;
-  const actionLocationChip=actionLocation?`<div class="mwbe-chiprow money-location-basis" data-money-location-basis="${escUiHtml(actionLocation.basis||"")}"><span class="tag place">${escUiHtml(actionLocation.basis_label||t("money_location_basis_response"))}</span><span class="tag">${escUiHtml([actionLocation.borough,actionLocation.community_district,actionLocation.council_district?t("council_district_short",{n:actionLocation.council_district}):null].filter(Boolean).join(" · "))}</span></div>`:"";
+  const actionLocationChip=globalThis.MoneyActionLocations?.moneyActionLocationChipHTML?.(r,{t,esc:escUiHtml})||"";
   const primaryAction=moneyListPrimaryActionHTML(r);
   return `<article class="money-row-card">
       ${primaryAction}
@@ -540,10 +489,7 @@ async function select(i, el, planningDetailRequested=false){
 
 async function hydrateMoneyActionLocationRow(r){
   if(!r?._action_location_match) return r;
-  try{
-    const rows=await soda({"$select":SELECT,"$where":`request_id='${String(r.request_id||"").replace(/'/g,"''")}'`,"$limit":"1"});
-    return rows[0]?{...rows[0],_action_location_match:r._action_location_match}:r;
-  }catch(_e){ return r; }
+  return globalThis.MoneyActionLocations?.hydrateMoneyActionLocationRow?.(r,{soda,select:SELECT})||r;
 }
 
 const RENEWAL_SUFFIX_RE = /R0\d+$/;

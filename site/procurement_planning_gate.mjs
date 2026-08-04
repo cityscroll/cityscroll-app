@@ -67,3 +67,18 @@ export function planningRowsForThread(lookup, lifecycle = {}, notice = {}) {
   const thread = procurementThreadRefs(lifecycle, notice);
   return lookup.rows.filter((row) => row?.plan && edgeBelongsToThread(row.edge, thread));
 }
+
+let lookupPromise;
+
+/** Load and attach planning detail only after an intentional thread-detail request. */
+export async function attachAvailablePlanning(lifecycle, notice) {
+  lookupPromise ||= fetch("./data/procurement_planning_thread_lookup.json", {
+    credentials: "omit",
+    cache: "no-cache",
+  }).then((response) => response?.ok ? response.json() : null).catch(() => null);
+  const lookup = await lookupPromise;
+  if (!planningRowsForThread(lookup, lifecycle, notice).length) return lifecycle;
+  return import("./procurement_planning_surface.mjs")
+    .then((tools) => tools.attachPlanningLookup(lookup, lifecycle, notice))
+    .catch(() => lifecycle);
+}
