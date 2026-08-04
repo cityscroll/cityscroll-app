@@ -17,6 +17,11 @@ import {
   isConfidentRelatedNotice,
   stitchRulemakingRecord,
 } from "./rules_phase_spine.mjs";
+import { cleanNoticeText } from "./text_clean.mjs";
+import {
+  cityRecordRuleStageRecord,
+  classifyCityRecordRuleStage,
+} from "./rule_stage.mjs";
 
 export const RULES_EXPLORER_SCHEMA_VERSION = 1;
 
@@ -29,6 +34,28 @@ export const RULES_PROCESS_STAGES = Object.freeze([
   ["effective", "rule_phase_effective"],
   ["unstaged", "rule_stage_unstaged"],
 ]);
+
+/** View model for the one interactive lifecycle/filter control. */
+export function rulesProcessControlModel(counts = {}, selected = "all") {
+  const valid = new Set(RULES_PROCESS_STAGES.map(([id]) => id));
+  const current = valid.has(selected) ? selected : "all";
+  const item = ([id, label_key]) => ({
+    id,
+    label_key,
+    count: Number(counts[id]) || 0,
+    pressed: current === id,
+  });
+  return {
+    all: item(RULES_PROCESS_STAGES[0]),
+    lifecycle: RULES_PROCESS_STAGES
+      .filter(([id]) => RULES_PHASES.includes(id))
+      .map(item),
+    // Unstaged is residue, not a lifecycle step; hide it when classification is complete.
+    unstaged: Number(counts.unstaged) > 0
+      ? item(RULES_PROCESS_STAGES.find(([id]) => id === "unstaged"))
+      : null,
+  };
+}
 
 /** Fine materialization stage → process phase. */
 export const RULE_STAGE_TO_PHASE = Object.freeze({
@@ -94,7 +121,8 @@ export function ruleStageToPhase(stage) {
  */
 export function rulesProcessStage(row) {
   const rec = row?._ruleStage || row?.rule_stage || null;
-  return ruleStageToPhase(rec?.stage || row?.stage) || null;
+  const stage = rec?.stage || row?.stage || classifyCityRecordRuleStage(row);
+  return ruleStageToPhase(stage) || null;
 }
 
 /**
@@ -260,6 +288,27 @@ export function rulesOfficialLinks(rec) {
   };
 }
 
+const RULE_EXCERPT_HEADING_RE = /^(?:statement of )?basis and purpose(?: of (?:the )?(?:proposed|final) rule)?[.:;—\s-]*/i;
+const RULE_EXCERPT_BOILERPLATE_RE = /^(?:pursuant to|in accordance with|under the authority|notice is hereby given|the authority vested|the following rule)/i;
+const RULE_EXCERPT_ACTION_RE = /\b(?:this|the|these|proposed|final|adopted)?\s*rules?\s+(?:would|will|must|requires?|amends?|updates?|establishes?|clarifies?|repeals?|prohibits?|allows?|changes?|creates?|sets?|expands?|revises?)\b|\b(?:proposes?|adopts?|amends?|requires?|establishes?|updates?|clarifies?|repeals?)\s+(?:a |the |these )?rules?\b/i;
+
+/**
+ * Select a verbatim what-the-rule-does sentence from City Record prose.
+ * No summarization or generated wording: output is always source text.
+ */
+export function rulePlainLanguageExcerpt(value) {
+  const plain = cleanNoticeText(value);
+  if (!plain) return "";
+  const sentences = (plain.match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g) || [plain])
+    .map((sentence) => sentence.trim().replace(RULE_EXCERPT_HEADING_RE, "").trim())
+    .filter(Boolean);
+  if (!sentences.length) return plain;
+  return sentences.find((sentence) => (
+    !RULE_EXCERPT_BOILERPLATE_RE.test(sentence)
+    && RULE_EXCERPT_ACTION_RE.test(sentence)
+  )) || sentences.find((sentence) => !RULE_EXCERPT_BOILERPLATE_RE.test(sentence)) || sentences[0];
+}
+
 /**
  * Build list entries for the Rules explorer.
  * Multi-notice rulemakings (high-confidence join) collapse to one entry;
@@ -281,6 +330,9 @@ export function buildRulesExplorerEntries(notices, rulesView, opts = {}) {
     if (!rid) continue;
     if (!row._ruleStage && byRequestId.has(rid)) {
       row._ruleStage = byRequestId.get(rid);
+    } else if (!row._ruleStage) {
+      const fallback = cityRecordRuleStageRecord(row);
+      if (fallback) row._ruleStage = fallback;
     }
   }
 
@@ -366,6 +418,7 @@ export function buildRulesExplorerEntries(notices, rulesView, opts = {}) {
         action_key: rulesProcessActionKey(processStage, fineStage),
         agency: rulesAgencyName(primary, stitched),
         title: rulemakingListTitle(members, stitched),
+        excerpt: rulePlainLanguageExcerpt(primary.additional_description_1),
         join_method: seed?.rulemaking_join?.method || null,
         matched_phases: matchedPhases,
         rule_url: links.rule_url,
@@ -395,6 +448,7 @@ export function buildRulesExplorerEntries(notices, rulesView, opts = {}) {
       action_key: rulesProcessActionKey(processStage, fineStage),
       agency: rulesAgencyName(row, rec),
       title: clean(row.short_title) || clean(row.title) || null,
+      excerpt: rulePlainLanguageExcerpt(row.additional_description_1),
       join_method: rec?.rulemaking_join?.method || (rec?.join?.matched ? "nyc_rules" : "single_notice"),
       matched_phases: processStage ? [processStage] : [],
       rule_url: links.rule_url,
@@ -466,20 +520,7 @@ export function filterRulesExplorerEntries(entries, opts = {}) {
   return (entries || []).filter((entry) => {
     if (!entry || !entry.primary) return false;
 
-    if (process !== "all") {
-      if (process === "unstaged") {
-        if (entry.process_filter !== "unstaged") return false;
-      } else {
-        // Keep multi-notice chains findable under earlier phases.
-        const memberHit = (entry.members || [entry.primary]).some(
-          (m) => rulesProcessStage(m) === process,
-        );
-        const matchedHit = (entry.matched_phases || []).includes(process);
-        if (!memberHit && !matchedHit && entry.process_filter !== process) {
-          return false;
-        }
-      }
-    }
+    if (!entryMatchesProcess(entry, process)) return false;
 
     if (agency) {
       const hit = (entry.members || [entry.primary]).some(
@@ -510,6 +551,17 @@ export function filterRulesExplorerEntries(entries, opts = {}) {
   });
 }
 
+function entryMatchesProcess(entry, process) {
+  if (process === "all") return true;
+  if (process === "unstaged") return entry.process_filter === "unstaged";
+  // Multi-notice chains remain findable under every lifecycle phase they contain.
+  const memberHit = (entry.members || [entry.primary]).some(
+    (member) => rulesProcessStage(member) === process,
+  );
+  const matchedHit = (entry.matched_phases || []).includes(process);
+  return memberHit || matchedHit || entry.process_filter === process;
+}
+
 /**
  * Count process-filter keys across entries (for chip badges).
  * @param {object[]} entries
@@ -521,8 +573,9 @@ export function countRulesProcessStages(entries) {
   }
   for (const entry of entries || []) {
     counts.all += 1;
-    const k = entry.process_filter || "unstaged";
-    counts[k] = (counts[k] || 0) + 1;
+    for (const [key] of RULES_PROCESS_STAGES) {
+      if (key !== "all" && entryMatchesProcess(entry, key)) counts[key] += 1;
+    }
   }
   return counts;
 }
@@ -531,6 +584,7 @@ export function countRulesProcessStages(entries) {
  * Re-export confidence helpers so list UI / tests share one import surface.
  */
 export {
+  classifyCityRecordRuleStage,
   isConfidentMultiNoticeRulemaking,
   isConfidentRelatedNotice,
   RULES_PHASES,

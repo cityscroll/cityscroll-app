@@ -1179,8 +1179,15 @@
   .rules-domain-intro{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
   .rules-domain-heading{font:700 22px/1.15 var(--font-display);margin:0 0 8px}
   .rules-domain-deck{font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:820px;margin:0 0 12px}
-  .rules-domain-stepper{margin:0 0 4px}
-  .rules-rail-label{font:600 11px/1 var(--font-sc);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+  .rules-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin:var(--space-3) 0 var(--space-2)}
+  .rules-stage-control{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-1);min-width:0}
+  .rules-stage-lifecycle{margin:0;min-width:0}
+  .rules-stage-filter{cursor:pointer;font-family:var(--font-interface);color:var(--color-text-soft);background:var(--color-canvas-subtle);border-color:var(--color-border)}
+  .rules-stage-filter .ct{margin-inline-start:var(--space-1);color:var(--color-text-muted);font-weight:500;letter-spacing:0}
+  #rulesprocessrail [aria-pressed="true"]{background:var(--color-surface);border-color:var(--color-action);color:var(--color-text);box-shadow:0 0 0 2px var(--color-action)}
+  #rulesprocessrail [aria-pressed="true"] .ct{color:var(--color-action)}
+  .rules-stage-divider{color:var(--color-text-muted);padding:0 var(--space-1)}
+  .rules-stage-unmatched{padding:var(--space-1) var(--space-2);font-size:11px}
   .rules-fcard .rules-process-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 6px}
   .rules-fcard .rules-action-lead{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);margin:0 0 6px}
   .rules-fcard .rules-mini-stepper{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px;padding:0;list-style:none}
@@ -1192,6 +1199,11 @@
   .rules-action-band .band-count{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:var(--muted);margin-inline-start:8px;font-weight:500}
   .rules-action-band[data-band="comment_open"]{border-bottom-color:var(--blue)}
   .rules-action-band[data-band="hearing"]{border-bottom-color:var(--amber,#b45309)}
+  @media(max-width:520px){
+    .rules-stage-lifecycle{flex-basis:100%;padding:2px}
+    .rules-stage-lifecycle .lc-step{font-size:9px;padding:6px 7px;letter-spacing:.04em}
+    .rules-stage-lifecycle .lc-step-arrow{font-size:13px;padding:0 1px}
+  }
   .rule-participation,.rule-member-blurb{margin:12px 0;padding:0;border:1px solid var(--rule);border-radius:10px;background:#faf6ee}
   .rule-participation > summary,.rule-member-blurb > summary{cursor:pointer;padding:12px 14px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
   .rule-participation > summary::-webkit-details-marker,.rule-member-blurb > summary::-webkit-details-marker{display:none}
@@ -1937,12 +1949,8 @@
       <p class="career-kicker" data-i18n="rules_domain_kicker">City agency rulemaking</p>
       <h2 class="rules-domain-heading" data-i18n="rules_domain_heading">Proposal, public process, adoption</h2>
       <p class="rules-domain-deck" data-i18n="rules_domain_deck">City Record Agency Rules notices are grouped by rulemaking stage — proposal, public process (comment and hearing), adoption, then effective date — so multi-notice chains collapse into one rule when the join is high-confidence.</p>
-      <ol class="lc-stepper rule-phase-stepper rules-domain-stepper" data-i18n-aria="rules_process_stepper_aria" aria-label="Rulemaking process stages">
-        <li><span class="lc-step done" data-i18n="rule_phase_proposal">Proposal</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
-        <li><span class="lc-step current" data-i18n="rule_phase_public_process">Public process</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
-        <li><span class="lc-step todo" data-i18n="rule_phase_adoption">Adoption</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
-        <li><span class="lc-step todo" data-i18n="rule_phase_effective">Effective</span></li>
-      </ol>
+      <div class="rules-rail-label lens-primary-label" id="rules-process-label" data-i18n="rules_process_rail_label">Rulemaking stage</div>
+      <div id="rulesprocessrail" role="group" aria-labelledby="rules-process-label"></div>
       <p class="rules-action-band-note muted" data-i18n="rules_action_band_rail_label">What you can do now</p>
     </div>
     <div class="controls">
@@ -1951,8 +1959,6 @@
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
-    <div class="rules-rail-label" data-i18n="rules_process_rail_label">Rulemaking stage</div>
-    <div class="chiprow" id="rulesprocessrail" role="group" aria-label="Rulemaking stage"></div>
     <div class="exportbar">
       <span class="export-band" id="rules-export-band" hidden>
         <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>

@@ -13,13 +13,16 @@ import { test } from "node:test";
 import {
   RULES_PROCESS_STAGES,
   buildRulesExplorerEntries,
+  classifyCityRecordRuleStage,
   countRulesProcessStages,
   entryCurrentProcessStage,
   filterRulesExplorerEntries,
   pickLaterRuleStage,
+  rulePlainLanguageExcerpt,
   ruleStageToPhase,
   rulesAgencyName,
   rulesOfficialLinks,
+  rulesProcessControlModel,
   rulesProcessActionKey,
   rulesProcessFilterKey,
   rulesProcessStage,
@@ -30,6 +33,11 @@ import {
 } from "../site/rules_phase_spine.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const RULES_APP_SOURCE = readFileSync(join(ROOT, "site/app/rules.mjs"), "utf8");
+const CURRENT_UNSTAGED = JSON.parse(readFileSync(
+  join(ROOT, "test/fixtures/rules_stage/20260728026.json"),
+  "utf8",
+)).record;
 
 const MULTI_PROPOSAL = {
   request_id: "20260301011",
@@ -375,7 +383,64 @@ test("filterRulesExplorerEntries respects process phase and keeps multi-notice u
   assert.equal(effective.length, 0);
   const counts = countRulesProcessStages(all);
   assert.equal(counts.all, 1);
-  assert.ok(typeof counts.public_process === "number" || typeof counts.adoption === "number");
+  assert.equal(counts.proposal, 0);
+  assert.equal(counts.public_process, 1);
+  assert.equal(counts.adoption, 1);
+  assert.equal(counts.effective, 0);
+  for (const key of ["proposal", "public_process", "adoption", "effective", "unstaged"]) {
+    assert.equal(
+      counts[key],
+      filterRulesExplorerEntries(all, { process: key }).length,
+      `count-equals-list for ${key}`,
+    );
+  }
+});
+
+test("rulesProcessControlModel keeps lifecycle stages ordered and Unstaged outside the sequence", () => {
+  const control = rulesProcessControlModel({
+    all: 166,
+    proposal: 130,
+    public_process: 20,
+    adoption: 6,
+    effective: 9,
+    unstaged: 1,
+  }, "public_process");
+  assert.deepEqual(control.lifecycle.map((item) => item.id), [
+    "proposal",
+    "public_process",
+    "adoption",
+    "effective",
+  ]);
+  assert.equal(control.all.count, 166);
+  assert.equal(control.all.pressed, false);
+  assert.equal(control.lifecycle[1].count, 20);
+  assert.equal(control.lifecycle[1].pressed, true);
+  assert.equal(control.unstaged.id, "unstaged");
+  assert.equal(control.unstaged.count, 1);
+  assert.equal(control.lifecycle.some((item) => item.id === "unstaged"), false);
+  assert.equal(rulesProcessControlModel({ all: 1, unstaged: 0 }).unstaged, null);
+});
+
+test("rulePlainLanguageExcerpt prefers a verbatim what-the-rule-does sentence", () => {
+  const source = [
+    "Pursuant to the authority vested in the Department by sections 1043 and 2903 of the New York City Charter, the Department adopts the following rule.",
+    "Statement of Basis and Purpose.",
+    "This rule requires food-delivery apps to show workers how each payment was calculated.",
+    "The rule takes effect 30 days after publication.",
+  ].join(" ");
+  assert.equal(
+    rulePlainLanguageExcerpt(source),
+    "This rule requires food-delivery apps to show workers how each payment was calculated.",
+  );
+});
+
+test("rulePlainLanguageExcerpt never paraphrases and falls back to the first source sentence", () => {
+  const source = "<p>Restaurants must post the new allergen notice.</p><p>Comments close September 1.</p>";
+  assert.equal(
+    rulePlainLanguageExcerpt(source),
+    "Restaurants must post the new allergen notice.",
+  );
+  assert.equal(rulePlainLanguageExcerpt(""), "");
 });
 
 test("rulesProcessStage / filter key map materialization stage onto process rail", () => {
@@ -397,6 +462,16 @@ test("rulesProcessStage / filter key map materialization stage onto process rail
   assert.match(links.comment_url, /#c$/);
 });
 
+test("current Unstaged regression: a read-model delta Public Hearing classifies into public process", () => {
+  assert.equal(classifyCityRecordRuleStage(CURRENT_UNSTAGED), "hearing");
+  assert.equal(rulesProcessStage(CURRENT_UNSTAGED), "public_process");
+  const entries = buildRulesExplorerEntries([structuredClone(CURRENT_UNSTAGED)], { rules: [] });
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].fine_stage, "hearing");
+  assert.equal(entries[0].process_stage, "public_process");
+  assert.equal(entries[0].process_filter, "public_process");
+});
+
 test("entryCurrentProcessStage prefers the latest matched process phase", () => {
   const stitched = stitchRulemakingRecord(MULTI_PROPOSAL, new Map([
     ["20260301011", MULTI_PROPOSAL],
@@ -414,8 +489,14 @@ test("entryCurrentProcessStage prefers the latest matched process phase", () => 
 
 test("public Rules domain mounts process rail + explorer cards", () => {
   const index = SITE_SOURCE;
-  assert.match(index, /id="rulesprocessrail"/);
+  assert.equal((index.match(/id="rulesprocessrail"/g) || []).length, 1);
   assert.match(index, /rules-domain-intro/);
+  assert.doesNotMatch(index, /rules-domain-stepper/);
+  assert.match(index, /rules-stage-lifecycle/);
+  assert.match(index, /rules-stage-unmatched/);
+  assert.match(index, /aria-pressed=/);
+  assert.match(index, /#rulesprocessrail \[aria-pressed="true"\]\{background:var\(--color-surface\);border-color:var\(--color-action\);color:var\(--color-text\);box-shadow:0 0 0 2px var\(--color-action\)\}/);
+  assert.doesNotMatch(index, /\.rules-stage-lifecycle \.lc-step-arrow\{display:none\}/);
   assert.match(index, /function rulesExplorerCardHTML/);
   assert.match(index, /buildRulesExplorerEntries/);
   assert.match(index, /rulesProcessSel/);
@@ -423,4 +504,19 @@ test("public Rules domain mounts process rail + explorer cards", () => {
   // Detail phase spine remains.
   assert.match(index, /buildRulesPhaseView|rules_phase_spine/);
   assert.match(index, /rule-phase-stepper|rule-spine-lead/);
+
+  const cardTemplate = RULES_APP_SOURCE.slice(
+    RULES_APP_SOURCE.indexOf("function rulesExplorerCardHTML"),
+    RULES_APP_SOURCE.indexOf("let rulesActionBandToolsPromise"),
+  );
+  assert.doesNotMatch(cardTemplate, /ruleStageChip\(/);
+  assert.doesNotMatch(cardTemplate, /rules-action-lead/);
+  assert.match(cardTemplate, /data-card-fact/);
+
+  const processControlTemplate = RULES_APP_SOURCE.slice(
+    RULES_APP_SOURCE.indexOf("function rulesProcessControlHTML"),
+    RULES_APP_SOURCE.indexOf("async function renderRulesExplorer"),
+  );
+  assert.match(processControlTemplate, /lc-step-arrow/);
+  assert.match(processControlTemplate, /→/);
 });
