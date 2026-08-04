@@ -22,6 +22,6 @@ hooks-help:
 	@echo "Full browser:  PREPUSH_FULL=1 make prepush"
 	@echo "Bypass push:   git push --no-verify"
 
-# Refresh the committed module-graph fingerprint after intentional site/app edits.
+# Validate the live module graph and print its check-time fingerprint.
 module-graph-digest:
-	node tools/site_module_architecture.mjs --update
+	node tools/site_module_architecture.mjs --check
