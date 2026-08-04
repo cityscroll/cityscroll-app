@@ -255,6 +255,7 @@ function enrichPending(entry, pendingPool, join, lookupStatus) {
       source_timestamp: parseUsDate(c.start_date) || null,
       date_basis: DATE_BASIS_RECEIVED,
       detail: {
+        passport_record_id: c.ctr_id || null,
         contract_id: c.contract_id || c.ctr_id || null,
         vendor: c.vendor || null,
         received_date: null,
@@ -277,6 +278,7 @@ function enrichPending(entry, pendingPool, join, lookupStatus) {
       source_timestamp: null,
       detail: {
         candidates: pendingPool.map((c) => ({
+          passport_record_id: c.ctr_id || null,
           contract_id: c.contract_id || c.ctr_id || null,
           vendor: c.vendor || null,
           amount: c.current_amount ?? c.award_amount ?? 0,
@@ -317,6 +319,7 @@ function enrichRegistered(entry, registeredPool, join, lookupStatus) {
       source_timestamp: parseUsDate(c.registration_date) || null,
       date_basis: DATE_BASIS_REGISTRATION,
       detail: {
+        passport_record_id: c.ctr_id || null,
         contract_id: c.contract_id || c.ctr_id || null,
         vendor: c.vendor || null,
         registration_date: c.registration_date || null,
@@ -343,6 +346,7 @@ function enrichRegistered(entry, registeredPool, join, lookupStatus) {
       source_timestamp: null,
       detail: {
         candidates: registeredPool.map((c) => ({
+          passport_record_id: c.ctr_id || null,
           contract_id: c.contract_id || c.ctr_id || null,
           vendor: c.vendor || null,
           registration_date: c.registration_date || null,

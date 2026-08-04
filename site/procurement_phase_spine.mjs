@@ -25,6 +25,12 @@ export const PROCUREMENT_PHASES = Object.freeze([
 ]);
 
 export const PROCUREMENT_PHASE_META = Object.freeze({
+  planning: {
+    id: "planning",
+    short: "Plan",
+    label_key: "forecast_badge_mocs",
+    action_key: null,
+  },
   solicitation: {
     id: "solicitation",
     short: "Solicit",
@@ -53,6 +59,7 @@ export const PROCUREMENT_PHASE_META = Object.freeze({
 
 /** Stage → phase id. Unknown stages fall into solicitation (earliest). */
 export const STAGE_TO_PHASE = Object.freeze({
+  planning: "planning",
   solicitation: "solicitation",
   intent_to_negotiate: "selection",
   vendor_list: "selection",
@@ -65,6 +72,7 @@ export const STAGE_TO_PHASE = Object.freeze({
 
 /** Display order of stages within a phase (matches LIFECYCLE_STAGE_ORDER). */
 export const STAGE_ORDER = Object.freeze({
+  planning: -1,
   solicitation: 0,
   intent_to_negotiate: 1,
   vendor_list: 2,
@@ -77,6 +85,7 @@ export const STAGE_ORDER = Object.freeze({
 
 /** Source family for outbound-link dedupe (one per phase). */
 export const SOURCE_FAMILY = Object.freeze({
+  "mocs-procurement-plan": "mocs-procurement-plan",
   "city-record": "city-record",
   "checkbook-contracts": "checkbook",
   "checkbook-spending": "checkbook",
@@ -263,6 +272,9 @@ export function dedupePhaseSourceLinks(entries) {
  */
 function milestoneTitle(entry) {
   const d = entry?.detail || {};
+  if (entry?.stage === "planning" && d.plan?.description) {
+    return clean(d.plan.description) || entry.stage;
+  }
   if (entry?.stage === "payment" && d.total_payments != null) {
     return `Payments (${d.total_payments})`;
   }
@@ -294,6 +306,7 @@ export function buildProcurementPhaseView(data, opts = {}) {
         (e) =>
           e &&
           (e.source === "city-record" ||
+            e.stage === "planning" ||
             e.stage === "solicitation" ||
             e.stage === "award" ||
             e.stage === "intent_to_negotiate" ||
@@ -302,7 +315,7 @@ export function buildProcurementPhaseView(data, opts = {}) {
       )
     : raw.filter((e) => e && publicStatus(e, raw) !== "not_applicable");
 
-  const byPhase = Object.fromEntries(PROCUREMENT_PHASES.map((id) => [id, []]));
+  const byPhase = Object.fromEntries(["planning", ...PROCUREMENT_PHASES].map((id) => [id, []]));
   for (const entry of timeline) {
     const phaseId = mapStageToPhase(entry.stage);
     const pub = publicStatus(entry, raw);
@@ -318,7 +331,8 @@ export function buildProcurementPhaseView(data, opts = {}) {
   }
 
   // Sort within each phase by stage order then date.
-  for (const id of PROCUREMENT_PHASES) {
+  const phaseIds = byPhase.planning.length ? ["planning", ...PROCUREMENT_PHASES] : [...PROCUREMENT_PHASES];
+  for (const id of phaseIds) {
     byPhase[id].sort((a, b) => {
       const oa = STAGE_ORDER[a.stage] ?? 99;
       const ob = STAGE_ORDER[b.stage] ?? 99;
@@ -331,7 +345,7 @@ export function buildProcurementPhaseView(data, opts = {}) {
   let currentPhaseId = stageKey ? mapStageToPhase(stageKey) : null;
   if (!currentPhaseId) {
     // Prefer first phase with matched/ambiguous material; else earliest with any entry.
-    for (const id of PROCUREMENT_PHASES) {
+    for (const id of phaseIds) {
       if ((byPhase[id] || []).some((m) => m.public_status === "ambiguous")) {
         currentPhaseId = id;
         break;
@@ -339,8 +353,8 @@ export function buildProcurementPhaseView(data, opts = {}) {
     }
   }
   if (!currentPhaseId) {
-    for (let i = PROCUREMENT_PHASES.length - 1; i >= 0; i--) {
-      const id = PROCUREMENT_PHASES[i];
+    for (let i = phaseIds.length - 1; i >= 0; i--) {
+      const id = phaseIds[i];
       if ((byPhase[id] || []).some((m) => m.public_status === "matched" || m.public_status === "passed")) {
         currentPhaseId = id;
         break;
@@ -349,11 +363,11 @@ export function buildProcurementPhaseView(data, opts = {}) {
   }
   if (!currentPhaseId) currentPhaseId = "solicitation";
 
-  const curIdx = PROCUREMENT_PHASES.indexOf(currentPhaseId);
+  const curIdx = phaseIds.indexOf(currentPhaseId);
 
   function phaseState(id) {
     if (id === currentPhaseId) return "current";
-    const idx = PROCUREMENT_PHASES.indexOf(id);
+    const idx = phaseIds.indexOf(id);
     const milestones = byPhase[id] || [];
     const hasMaterial = milestones.some(
       (m) =>
@@ -366,7 +380,7 @@ export function buildProcurementPhaseView(data, opts = {}) {
     return "future";
   }
 
-  const phases = PROCUREMENT_PHASES.map((id) => {
+  const phases = phaseIds.map((id) => {
     const state = phaseState(id);
     const all = byPhase[id] || [];
     // History/current: keep material + passed notes. Future: only matched/ambiguous

@@ -548,6 +548,25 @@ def build_public_payload_bundle(
     return manifest, files
 
 
+def build_thread_lookup(payload: dict[str, Any]) -> dict[str, Any]:
+    """Compact receipt-passed rows used to gate the deferred reader surface."""
+    plans = {  # source: normalized publisher plan rows in the receipt-backed payload
+        row.get("source_record_id"): row for row in payload["plans"]
+    }
+    rows = []  # source: materialized bridge edges paired with their publisher plan row
+    for edge in payload["bridge_edges"]:
+        plan = plans.get(edge.get("plan_source_record_id"))
+        if plan is not None:
+            rows.append({"edge": edge, "plan": plan})
+    return {
+        "schema": "cityscroll.procurement_planning.thread-lookup.v1",
+        "generated_at": payload["generated_at"],
+        "fiscal_year": payload["fiscal_year"],
+        "contract": payload["contract"],
+        "rows": rows,
+    }
+
+
 def public_payload_contract(manifest: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema": manifest["schema"],
@@ -557,6 +576,7 @@ def public_payload_contract(manifest: dict[str, Any]) -> dict[str, Any]:
         "shard_directory": "site/data/procurement_planning_payload",
         "max_shard_bytes": manifest["shard_contract"]["max_bytes"],
         "collections": manifest["collections"],
+        "thread_lookup_path": "site/data/procurement_planning_thread_lookup.json",
         "reader_surface_included": False,
         "unmatched_rows_remain_unmatched": True,
         "infer_budget_from_agency_total": False,
@@ -574,6 +594,7 @@ def publish_public_payload(payload: dict[str, Any], site_data: Path) -> dict[str
     for filename, encoded in files:
         (shard_dir / filename).write_bytes(encoded)
     write_json(site_data / "procurement_planning_payload.json", manifest)
+    write_json(site_data / "procurement_planning_thread_lookup.json", build_thread_lookup(payload))
     return manifest
 
 

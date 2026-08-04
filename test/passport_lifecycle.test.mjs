@@ -130,6 +130,7 @@ test("enrichment: Checkbook-unmatched pending filled from PASSPort In Progress",
   const filled = enriched.timeline.find((e) => e.stage === "pending");
   assert.equal(filled.status, "matched");
   assert.equal(filled.source, "passport-public-contracts");
+  assert.equal(filled.detail.passport_record_id, pp.ctr_id);
   assert.equal(filled.detail.vendor, "DELL MARKETING LP");
   assert.equal(filled.detail.passport_status, "In Progress");
 });
@@ -167,6 +168,7 @@ test("enrichment: registered stage filled from PASSPort Registered when Checkboo
   const reg = enriched.timeline.find((e) => e.stage === "registered");
   assert.equal(reg.status, "matched");
   assert.equal(reg.source, "passport-public-contracts");
+  assert.equal(reg.detail.passport_record_id, passport_contract.ctr_id);
   assert.equal(reg.detail.contract_id, "CT1-816-20278801775");
   assert.equal(reg.detail.vendor, "MAKE IT ZESTY LLC");
 });

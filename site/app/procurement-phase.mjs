@@ -645,6 +645,9 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
     if(subEl) subEl.innerHTML = "";
     return;
   }
+  if(r?.planning_detail_requested === true || (typeof location !== "undefined" && /^#notice\//.test(location.hash)))
+    data = await import("../procurement_planning_gate.mjs").then(gate => gate.attachAvailablePlanning(data,r)).catch(() => data);
+  if(el && !document.contains(el)) return;
   if(actionsEl && document.contains(actionsEl)) paintNoticeActionRail(actionsEl,r,null,data);
   if(el && Array.isArray(data.timeline) && data.timeline.length){
     const phaseTools = await ensureProcurementPhaseSpineTools();
