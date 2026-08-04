@@ -69,11 +69,12 @@ const {
 } = new Function(
   "location",
   "t",
+  "qrButtonHTML",
   extractDecl("landLink")
     + extractFn("parseLandHashSegment")
     + extractFn("landPermalinkActionHTML")
     + "\nreturn { landLink, parseLandHashSegment, landPermalinkActionHTML };",
-)(locationStub, (key) => ({ copy_link: "Copy link" })[key] || key);
+)(locationStub, (key) => ({ copy_link: "Copy link" })[key] || key, () => "");
 
 test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(parseLandHashSegment(ALLEN_STREET.project_id), ALLEN_STREET.project_id);
@@ -84,7 +85,7 @@ test("#land/<project_id> continues to resolve and lands on the renamed Zoning ta
   const landMatch = src.match(/<button class="tabbtn"[^>]*data-tab="land"[^>]*>(.*?)<\/button>/);
   assert.equal(landMatch?.[1], "Zoning");
   const applyHash = extractFn("applyHash");
-  assert.match(applyHash, /case "land":/);
+  assert.match(applyHash, /raw\.startsWith\("land\/"\)/);
   assert.match(applyHash, /showLandEntry\(parseLandHashSegment\(raw\.slice\(5\)\)\);/);
 });
 
@@ -132,6 +133,11 @@ test("cold-open loader fetches the exact real project and selects it in the exis
       const $=selector => elements[selector];
       const elements=fixture.elements;
       const showTab=name => fixture.calls.showTab.push(name);
+      const syncLandLensControls=()=>{};
+      const setLandStatus=()=>{};
+      const setLandResultCount=count=>{ elements["#lrescount"].textContent=String(count); };
+      const focusItemRouteTarget=()=>{};
+      const applyActiveHistoryRouteScroll=()=>{};
       const busyList=()=>{};
       const unbusy=()=>{};
       const listSkeleton=()=>"<div class=\\"empty skel\\"></div>";
@@ -159,7 +165,7 @@ test("cold-open loader fetches the exact real project and selects it in the exis
   assert.deepEqual(calls.selected, [{ i: 0, el: row }]);
 });
 
-test("unknown but well-formed project ids render the Land tab's explicit empty state", async () => {
+test("unknown but well-formed project ids return to the Zoning collection without an apology panel", async () => {
   const notFound = [];
   const { showLandEntry } = new Function(
     "fixture",
@@ -170,6 +176,9 @@ test("unknown but well-formed project ids render the Land tab's explicit empty s
       const t=key => key;
       const $=()=>({innerHTML:"",textContent:"",value:"",querySelector:()=>null});
       const showTab=()=>{};
+      const syncLandLensControls=()=>{};
+      const setLandStatus=()=>{};
+      const setLandResultCount=()=>{};
       const busyList=()=>{};
       const unbusy=()=>{};
       const listSkeleton=()=>"<div class=\\"empty skel\\"></div>";
