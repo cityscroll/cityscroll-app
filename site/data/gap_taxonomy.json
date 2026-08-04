@@ -29,7 +29,19 @@
         "award_date",
         "contract_amount"
       ],
-      "join_coverage": {},
+      "join_coverage": {
+        "realized": {
+          "rate": 0.02,
+          "joined": 1,
+          "total": 50,
+          "metric": "labeled_residual",
+          "observed_on": "2026-08-04",
+          "universe": null,
+          "strategy": "Exact identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical review.",
+          "verdict": "Below both gates. Keep authority-wide context, but do not materialize a notice-level ABO edge.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://data.ny.gov/",
       "delivery_tier": "edge-materialized"
     },
@@ -39,7 +51,19 @@
       "source_contract_id": "abo-local-development-corporations",
       "status": "landed",
       "join_keys": [],
-      "join_coverage": {},
+      "join_coverage": {
+        "realized": {
+          "rate": 0.02,
+          "joined": 1,
+          "total": 50,
+          "metric": "labeled_residual",
+          "observed_on": "2026-08-04",
+          "universe": null,
+          "strategy": "Exact identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical review.",
+          "verdict": "Below both gates. Keep authority-wide context, but do not materialize a notice-level ABO edge.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://data.ny.gov/d/d84c-dk28",
       "delivery_tier": "edge-materialized"
     },
@@ -49,7 +73,19 @@
       "source_contract_id": "abo-state-authorities",
       "status": "landed",
       "join_keys": [],
-      "join_coverage": {},
+      "join_coverage": {
+        "realized": {
+          "rate": 0.02,
+          "joined": 1,
+          "total": 50,
+          "metric": "labeled_residual",
+          "observed_on": "2026-08-04",
+          "universe": null,
+          "strategy": "Exact identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical review.",
+          "verdict": "Below both gates. Keep authority-wide context, but do not materialize a notice-level ABO edge.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://data.ny.gov/d/ehig-g5x3",
       "delivery_tier": "edge-materialized"
     },
@@ -2204,7 +2240,19 @@
         ]
       },
       "notices_affected_estimate": "Solicitations for ABO-mapped authorities with no fuzzy match yet.",
-      "evidence": "ABO datasets are live source contracts; empty is unresolved fuzzy join, not non-publication of authority awards."
+      "evidence": "Measured 2026-08-04 on 50 authority-stratified residual notices: 1 labeled match (2%), 50% fuzzy precision, 5 false positives, and 4 ambiguous groups. Below the 30% usefulness and 95% precision gates; no notice-level edge materialized. Authority-wide ABO context remains live.",
+      "join_measurement": {
+        "observed_on": "2026-08-04",
+        "joined": 1,
+        "total": 50,
+        "rate": 0.02,
+        "fuzzy_precision": 0.5,
+        "ambiguity": 4,
+        "usefulness_threshold": 0.3,
+        "fuzzy_precision_floor": 0.95,
+        "verdict": "stopped_below_threshold",
+        "receipt": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
+      }
     },
     {
       "id": "land-outcome-detail",
@@ -2357,7 +2405,7 @@
     "lifecycle_ambiguous_html",
     "subsidy_source_unavailable_html"
   ],
-  "verified_at": "2026-07-30",
+  "verified_at": "2026-08-04",
   "verification_notes": [
     "Open Data views 3khw-qi8f, qyyg-4tf5, 9k82-ys7w, 72mk-a8z7 returned live metadata.",
     "PASSPort Public contracts and rfx pages returned HTTP 200.",
@@ -2366,11 +2414,12 @@
     "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.",
     "Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.",
     "PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.",
-    "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
+    "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.",
+    "ABO residual join (2026-08-04): 1/50 labeled matches (2%), 50% fuzzy precision, five false positives, and four ambiguous groups; no notice-level edge materialization below the 30% usefulness and 95% precision gates."
   ],
   "depot_refresh": {
     "observed_on": "2026-08-04",
-    "source_contracts_fingerprint": "5f995bdcb030d30686a8767e193917067ec9b74f007e08b0fa9a7c21b8982a1b",
+    "source_contracts_fingerprint": "8f860e5bba731b06a5f25317d5781665f6d8e1e14a1a7be44b38d3ddeb0e886d",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 43,
     "class_changes": 0,

@@ -310,11 +310,41 @@
       "max_stale_days": 550,
       "publisher_cadence": "Approximately annual filings",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
-      "used_for": "Possible award matches for mapped local-authority profiles.",
+      "used_for": "Authority-scoped recent-award context for mapped local-authority profiles. RC-4 stopped the notice-level residual bridge below threshold.",
+      "join_measurement": {
+        "observed_on": "2026-08-04",
+        "bridge_scope": "Aggregate across the three ABO procurement tables and 50 authority-stratified City Record residual notices.",
+        "strategy": "Exact identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical review.",
+        "rates": {
+          "labeled_residual": {
+            "joined": 1,
+            "total": 50,
+            "rate": 0.02
+          },
+          "reviewed_fuzzy_precision": {
+            "true_positive": 1,
+            "reviewed_predictions": 2,
+            "rate": 0.5
+          }
+        },
+        "ambiguity": 4,
+        "usefulness_threshold": 0.3,
+        "fuzzy_precision_floor": 0.95,
+        "verdict": "Below both gates. Keep authority-wide context, but do not materialize a notice-level ABO edge.",
+        "receipt": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
+      },
       "code_references": [
         {
           "path": "external_awards.js",
           "contains": "8w5p-k45m"
+        },
+        {
+          "path": "worker/src/lib/abo_awards_join.mjs",
+          "contains": "measureAboResidualJoin"
+        },
+        {
+          "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+          "contains": "stopped_below_threshold"
         }
       ],
       "delivery_tier": "edge-materialized"
@@ -339,11 +369,41 @@
       "max_stale_days": 550,
       "publisher_cadence": "Approximately annual filings",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
-      "used_for": "Possible award matches for mapped local-development-corporation profiles.",
+      "used_for": "Authority-scoped recent-award context for mapped local-development-corporation profiles. RC-4 stopped the notice-level residual bridge below threshold.",
+      "join_measurement": {
+        "observed_on": "2026-08-04",
+        "bridge_scope": "Aggregate across the three ABO procurement tables and 50 authority-stratified City Record residual notices.",
+        "strategy": "Exact identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical review.",
+        "rates": {
+          "labeled_residual": {
+            "joined": 1,
+            "total": 50,
+            "rate": 0.02
+          },
+          "reviewed_fuzzy_precision": {
+            "true_positive": 1,
+            "reviewed_predictions": 2,
+            "rate": 0.5
+          }
+        },
+        "ambiguity": 4,
+        "usefulness_threshold": 0.3,
+        "fuzzy_precision_floor": 0.95,
+        "verdict": "Below both gates. Keep authority-wide context, but do not materialize a notice-level ABO edge.",
+        "receipt": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
+      },
       "code_references": [
         {
           "path": "external_awards.js",
           "contains": "d84c-dk28"
+        },
+        {
+          "path": "worker/src/lib/abo_awards_join.mjs",
+          "contains": "measureAboResidualJoin"
+        },
+        {
+          "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+          "contains": "stopped_below_threshold"
         }
       ],
       "delivery_tier": "edge-materialized"
@@ -368,11 +428,41 @@
       "max_stale_days": 550,
       "publisher_cadence": "Approximately annual filings",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
-      "used_for": "Possible award matches for mapped state-authority profiles, including the MTA.",
+      "used_for": "Authority-scoped recent-award context for mapped state-authority profiles, including the MTA. RC-4 stopped the notice-level residual bridge below threshold.",
+      "join_measurement": {
+        "observed_on": "2026-08-04",
+        "bridge_scope": "Aggregate across the three ABO procurement tables and 50 authority-stratified City Record residual notices.",
+        "strategy": "Exact identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical review.",
+        "rates": {
+          "labeled_residual": {
+            "joined": 1,
+            "total": 50,
+            "rate": 0.02
+          },
+          "reviewed_fuzzy_precision": {
+            "true_positive": 1,
+            "reviewed_predictions": 2,
+            "rate": 0.5
+          }
+        },
+        "ambiguity": 4,
+        "usefulness_threshold": 0.3,
+        "fuzzy_precision_floor": 0.95,
+        "verdict": "Below both gates. Keep authority-wide context, but do not materialize a notice-level ABO edge.",
+        "receipt": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
+      },
       "code_references": [
         {
           "path": "external_awards.js",
           "contains": "ehig-g5x3"
+        },
+        {
+          "path": "worker/src/lib/abo_awards_join.mjs",
+          "contains": "measureAboResidualJoin"
+        },
+        {
+          "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+          "contains": "stopped_below_threshold"
         }
       ],
       "delivery_tier": "edge-materialized"

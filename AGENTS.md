@@ -130,6 +130,16 @@ ingest: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny row
 defaults; full Socrata export only via `--bulk --ack-large` (one dataset at a
 time). Setup + fixture proof:
 
+**ABO residual bridge (RC-4):** authority mapping remains source scoping, not
+notice-level evidence. The fixed 50-notice sample produced 1 labeled match
+(2%), 50% fuzzy precision, and 4 ambiguous groups, so the 30% usefulness / 95%
+precision gates stop all edges. Do not promote broad title similarity. Guarded
+fixture proof and DuckDB materialization:
+`warehouse/.venv/bin/python warehouse/scripts/abo_awards_run.py --from-fixture
+--force-headroom`; detector: `node --test test/abo_awards_residual.test.mjs`.
+Payload contract: `site/data/abo_award_residual_lookup.json` (+ Worker twin),
+currently an honest empty match map; reader UI belongs to a separate card.
+
 **T0 attachment metadata:** City Record `document_links` is the archive source
 before 2025; it is effectively empty from 2025 onward, so the guarded host-side
 collector uses polite (at least 1.2 seconds/request) RequestDetail deltas for the
