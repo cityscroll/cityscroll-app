@@ -228,16 +228,12 @@
   .tag.amt{background:var(--paper-2);color:var(--ink-soft)}
   .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
   .tag.renewal{background:var(--paper-2);color:var(--ink-soft)}
-  /* M/WBE method chips — quiet signal (navy-tint), not urgency; color reserved for action. */
-  .tag.mwbe{background:color-mix(in srgb, var(--blue) 12%, var(--paper-2));color:var(--blue)}
-  .tag.method{background:var(--paper-2);color:var(--ink-soft)}
-  .tag.floor{background:color-mix(in srgb, var(--green) 14%, var(--paper-2));color:var(--green)}
-  .mwbe-chiprow{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-  .mwbe-sol-detail,.mwbe-sub-outreach{margin-top:14px}
-  .mwbe-sub-outreach .mwbe-sub-lead{font:14px/1.45 var(--ui,ui-sans-serif,system-ui,sans-serif);color:var(--ink-soft);margin:0 0 10px}
-  .mwbe-sub-outreach dl.mwbe-sub-facts{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font:13px/1.45 var(--ui,ui-sans-serif,system-ui,sans-serif)}
-  .mwbe-sub-outreach dl.mwbe-sub-facts dt{color:var(--muted);font-weight:600}
-  .mwbe-sub-outreach dl.mwbe-sub-facts dd{margin:0}
+  /* M/WBE method chips — brand-tint signal via the design-language token sheet (not urgency). */
+  .tag.mwbe{background:var(--cs-action-tint,color-mix(in srgb, var(--color-brand) 12%, var(--color-canvas-subtle)));color:var(--color-brand)}
+  .tag.method{background:var(--color-canvas-subtle);color:var(--color-text-soft)}
+  .tag.floor{background:var(--cs-success-tint,color-mix(in srgb, var(--color-success) 14%, var(--color-canvas-subtle)));color:var(--color-success)}
+  .mwbe-chiprow{display:flex;flex-wrap:wrap;gap:var(--space-1,4px);margin-top:var(--space-1,4px)}
+  .mwbe-sol-detail{margin-top:var(--space-4,14px)}
   /* Rule-lifecycle status chips link to the official comment/adoption page. Comment-open
      is the actionable moment, so it reuses the hot/soon/open urgency ladder; settled
      stages read as quiet ink (color is reserved for what needs acting on). */
@@ -547,7 +543,7 @@
   .sub-outreach-row{margin:10px 0 0}
   .sub-outreach-row .stage-name{font:700 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
   .sub-outreach-chips{display:flex;flex-wrap:wrap;gap:6px}
-  .sub-outreach-window{margin-top:12px;padding:10px 12px;border-left:3px solid var(--color-brand,var(--blue));background:var(--paper-2,#f7f1e4);font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .sub-outreach-window{margin-top:12px;padding:10px 12px;border-left:3px solid var(--color-brand);background:var(--color-canvas-subtle);font:14px/1.45 var(--ui,ui-sans-serif,system-ui,sans-serif);color:var(--color-text-soft)}
 
   /* Shared phase-timeline chrome (Money lifecycle + paper trail + Land/ZAP). */
   .lc-phase-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f6f7f9) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
