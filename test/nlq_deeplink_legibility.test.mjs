@@ -106,5 +106,6 @@ test("same-hash sharing resolves to a canonical absolute URL and opens a new tab
     indexSource,
     /id="nlqshare"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/,
   );
-  assert.match(indexSource, /share\.href=canonicalSearchURL\(location, hash\)/);
+  assert.match(indexSource, /share\.href=url/);
+  assert.match(indexSource, /currentLanguageURL\(canonicalSearchURL\(location, hash\)\)/);
 });

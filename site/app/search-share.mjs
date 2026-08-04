@@ -54,11 +54,11 @@ function qrLabels(){
   };
 }
 function bindQRShare(button, url){
-  if(button && window.QRShare) QRShare.bind(button, url, qrLabels);
+  if(button && window.QRShare) QRShare.bind(button, currentLanguageURL(url), qrLabels);
 }
 function renderLandingShareActions(){
   const root=$("#landing-share-actions"); if(!root) return;
-  const url=location.origin+location.pathname;
+  const url=currentLanguageURL(location.origin+location.pathname);
   root.innerHTML=`<div class="nlqactions"><button type="button" class="mini" data-landing-copy data-i18n="copy_link">${t("copy_link")}</button>${qrButtonHTML()}</div>`;
   const copy=root.querySelector("[data-landing-copy]");
   copy.addEventListener("click",()=>copyText(url, copy));
@@ -67,12 +67,12 @@ function renderLandingShareActions(){
 function searchActionsHTML(lens, hash){
   if(!hash) return "";
   const moneyIds=lens==="money";
-  return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+  return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(currentLanguageURL(canonicalSearchURL(location, hash)))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
 function bindSearchActions(root, label, hash){
   if(!root || !hash) return;
-  const url=canonicalSearchURL(location, hash);
-  const share=root.querySelector("[data-search-share]"); if(share) share.href=canonicalSearchURL(location, hash);
+  const url=currentLanguageURL(canonicalSearchURL(location, hash));
+  const share=root.querySelector("[data-search-share]"); if(share) share.href=url;
   const copy=root.querySelector("[data-search-copy]");
   if(copy) copy.addEventListener("click",()=>copyText(url, copy));
   bindQRShare(root.querySelector("[data-qr-share]"), url);

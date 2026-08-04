@@ -71,6 +71,58 @@ const SUPPORTED_LANGS = Object.keys(LANG_META);
 // the RTL wave note above for the dir/digit-policy specifics that make these two different
 // from every LTR language before them. All ten LL30 languages now ship.
 const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"];
+const SELECTABLE_LANGS = ["en"].concat(SHIPPING_LANGS);
+
+// URL language is a visit-scoped override: it wins over the saved device preference without
+// replacing that preference. Picker changes still persist and keep the address bar shareable.
+function explicitUrlLanguage(search) {
+  try {
+    const value = new URLSearchParams(typeof search === "string" ? search : "").get("lang");
+    return SELECTABLE_LANGS.includes(value) ? value : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function initialLanguage(search, saved) {
+  const explicit = explicitUrlLanguage(search);
+  if (explicit) return explicit;
+  return SELECTABLE_LANGS.includes(saved) ? saved : "en";
+}
+
+function languageURL(value, lang, baseHref) {
+  const raw = String(value || "");
+  try {
+    const base = new URL(baseHref || location.href);
+    const url = new URL(raw, base);
+    if (url.origin !== base.origin) return raw;
+    if (lang !== "en" && SELECTABLE_LANGS.includes(lang)) url.searchParams.set("lang", lang);
+    else url.searchParams.delete("lang");
+    return url.toString();
+  } catch (_error) {
+    return raw;
+  }
+}
+
+function currentLanguageURL(value) {
+  return languageURL(value, window.LANG || "en");
+}
+
+function syncLanguageURL(lang) {
+  if (typeof location === "undefined" || typeof history === "undefined") return "";
+  const next = languageURL(location.href, lang, location.href);
+  try {
+    const url = new URL(next);
+    history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+  } catch (_error) {}
+  return next;
+}
+
+window.explicitUrlLanguage = explicitUrlLanguage;
+window.initialLanguage = initialLanguage;
+window.languageURL = languageURL;
+window.currentLanguageURL = currentLanguageURL;
+window.syncLanguageURL = syncLanguageURL;
 
 // The deploy build stamps every page's i18n.js URL from the combined content of this file
 // and all shipping dictionaries. Reuse that stamp for lazy dictionary requests, so a build
@@ -2807,6 +2859,7 @@ function setLang(lang, onReady) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = "en";
   window.LANG = lang;
   try { localStorage.setItem("crol_lang", lang); } catch(e) {}
+  syncLanguageURL(lang);
   applyStrings();
   ensureLangLoaded(lang, function() {
     if (window.LANG === lang) {
@@ -2883,9 +2936,10 @@ if (typeof module !== "undefined" && module.exports !== undefined && typeof requ
 // lang/dir attributes). This only fires once, at initial load; a later in-session language
 // switch uses ensureLangLoaded()'s async <script> injection instead (setLang(), above).
 (function() {
-  var saved = "en";
-  try { saved = localStorage.getItem("crol_lang") || "en"; } catch(e) {}
-  if (!SUPPORTED_LANGS.includes(saved)) saved = "en";
+  var savedPreference = "en";
+  try { savedPreference = localStorage.getItem("crol_lang") || "en"; } catch(e) {}
+  var search = typeof location !== "undefined" ? location.search : "";
+  var saved = initialLanguage(search, savedPreference);
   window.LANG = saved;
   if (typeof document !== "undefined") {
     document.documentElement.lang = saved;
