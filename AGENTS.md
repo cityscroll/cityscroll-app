@@ -1606,6 +1606,19 @@ markers only — no default 20-day spam) + notice detail `#nmwbe` / `#dmwbe`
 `node --test test/solicitation_procurement_method.test.mjs test/notice_facts.test.mjs
 worker/test/ingest_map.test.mjs test/mwbe_goal_surface.test.mjs`.
 
+## Rules association monitor pack
+
+Curated multi-watch **templates** for association verticals (registry data, not code),
+rules **action bands** (comment open / hearing / adopted), shepherded **participation**
+scaffold on open comment windows, and **member blurbs** on Agency Rules notices.
+
+- Registry: `site/data/watch_templates.json` (add a vertical = data)
+- Pure libs: `site/watch_templates.mjs`, `site/rules_action_bands.mjs`,
+  `site/rules_participation.mjs`, `site/rules_member_blurb.mjs`
+- Subscribe instantiates each watch via existing `POST /subscribe` (one confirm per watch)
+- Capture: `python3 tools/capture_rules_association_monitor.py`
+- Verify: `node --test test/rules_association_monitor.test.mjs`
+
 ## Rules event spine
 
 NYC Rules lifecycle dates remain distinct events in `worker/src/lib/rules.mjs`:
