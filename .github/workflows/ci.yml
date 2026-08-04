@@ -162,7 +162,9 @@ jobs:
         run: node tools/validate_beta_flags.mjs
       - name: Generated source-contract docs
         if: needs.changes.outputs.unit_full == 'true'
-        run: node tools/generate_source_docs.mjs --check
+        run: |
+          node tools/generate_source_docs.mjs --check
+          node tools/data_source_graph.mjs --check
       - name: Recorded civic-data source contracts
         if: needs.changes.outputs.unit_full == 'true'
         # Pull-request CI is deterministic. The daily source-contract workflow owns live
