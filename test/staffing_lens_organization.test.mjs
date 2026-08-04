@@ -57,6 +57,7 @@ test("Staffing keeps exam format visible while secondary controls stay in one di
   assert.doesNotMatch(disclosure, /id="career-format-rail"|id="career-sort"/);
   assert.ok(staffingSection.indexOf('id="career-format-rail"') > disclosureEnd);
   assert.match(staffingSection, /id="career-result-count"[\s\S]*?id="career-sort"/);
+  assert.match(staffingSection, /id="career-format" hidden aria-hidden="true" aria-label="Exam format" data-i18n-aria="career_format_label"/);
 });
 
 test("Staffing renders one count for the exact exam list and a positive active-filter badge", () => {
