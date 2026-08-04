@@ -207,12 +207,27 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   }
 }
 async function landSearch(){
-  const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
+  let boro=$("#lboro").value, kw=$("#lkw").value.trim();
+  const status=$("#lstatus").value;
+  if(kw){
+    try{
+      const neighborhoodTools=await import("../neighborhood_search.mjs");
+      const place=await neighborhoodTools.resolveNeighborhoodQuery(kw);
+      if(place){
+        boro=place.borough||"";
+        $("#lboro").value=boro;
+        landCommunityDistrict=place.community_districts?.[0]||"";
+        $("#lkw").value="";
+        kw="";
+      }
+    }catch(_e){}
+  }
   syncLandLensControls();
   clearLandDetail();
   setLandStatus();
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
   updateHash();
+  globalThis.syncAlertsEntryHrefs?.();
   if(located){
     const areaBits=[landResolvedArea.borough];
     if(landResolvedArea.communityDistrict) areaBits.push(`CD ${Number(landResolvedArea.communityDistrict.slice(1))}`);

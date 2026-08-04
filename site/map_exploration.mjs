@@ -292,6 +292,7 @@ export function mapDrillListHash(lens, scope = {}) {
 
   if (L === "property") {
     if (boro) q.set("boro", boro);
+    if (cd) q.set("cd", cd);
     if (![...q.keys()].length) return null;
     return `#property?${q.toString()}`;
   }
@@ -380,10 +381,11 @@ export function areaFeedLinks(level, id, opts = {}) {
   if (level === "community_district" && /^(?:M|X|K|Q|R)\d{2}$/.test(id || "")) {
     const boro = boroughFromCommunityId(id);
     const scope = { boro, communityDistrict: id };
-    // Land alone has CD filter; other lenses fall back to parent borough — honest label.
+    // Land and Property share the committed CD boundary lookup; other lenses
+    // still fall back to their supported parent-borough grammar.
     push("land", scope, "district");
+    push("property", scope, "district");
     if (boro) {
-      push("property", { boro }, "borough", "map_feed_borough_property");
       push("meetings", { boro }, "borough", "map_feed_borough_meetings");
       push("rules", { boro }, "borough", "map_feed_borough_rules");
     }

@@ -271,6 +271,7 @@ export function buildPropertyExplorerEntries(properties, spines) {
  * @param {(row: object) => object|null} [opts.commercialOf]
  * @param {string|null} [opts.borough]
  * @param {string|null} [opts.neighborhood]
+ * @param {string[]} [opts.communityDistricts]
  */
 export function filterPropertyExplorerEntries(entries, opts = {}) {
   const process = opts.process || "all";
@@ -285,6 +286,11 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
     : (row) => row?.commercial || null;
   const borough = clean(opts.borough);
   const neighborhood = clean(opts.neighborhood)?.toLowerCase() || null;
+  const communityDistricts = new Set(
+    (Array.isArray(opts.communityDistricts) ? opts.communityDistricts : [])
+      .map((value) => String(value || "").toUpperCase())
+      .filter((value) => /^(?:M|X|K|Q|R)\d{2}$/.test(value)),
+  );
   const commercialActive = asset !== "all" || saleMethod !== "all" || priceBand !== "all";
 
   return (entries || []).filter((entry) => {
@@ -333,6 +339,12 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
         (m) => m._location || m.property_location || null,
       );
       const hit = locs.some((loc) => (loc?.boroughs || []).includes(borough));
+      if (!hit) return false;
+    }
+
+    if (communityDistricts.size) {
+      const hit = (entry.members || [entry.primary]).some((member) =>
+        communityDistricts.has(String(member?._communityDistrict || "").toUpperCase()));
       if (!hit) return false;
     }
 

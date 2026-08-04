@@ -1049,7 +1049,7 @@ function renderDetail(r, chain, stats){
   if(chain && chain.length > 1) paintPaperTrail($("#dchain"), r, chain).catch(()=>{});
 }
 
-// parseNL() itself lives in nl_parse.js (loaded above, plain global — same convention as
+// parseNL() itself lives in nl_parse.js (lazy plain global — same convention as
 // i18n.js), so it can be require()'d from a Node test with no DOM involved.
 // Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.AGENCY_ABBR = AGENCY_ABBR;

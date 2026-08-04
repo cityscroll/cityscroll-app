@@ -1682,6 +1682,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "<b>{name}</b>에 현재 처분 공고가 없습니다.",
+    follow_this_area: "이 지역 팔로우",
     property_cluster_summary: "{description} — 유사 항목 {n}개",
     property_cluster_fallback: "날짜가 있는 공고",
     property_cluster_show: "Show each notice",
