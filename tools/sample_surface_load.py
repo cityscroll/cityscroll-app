@@ -283,7 +283,7 @@ def breach_rows(inventory: dict[str, Any]) -> list[str]:
                 f"(threshold 1 per card)"
             )
         for card in measured.get("card_facts") or []:
-            seen: dict[str, int] = {}
+            seen: dict[str, int] = {}  # Source: rendered rule-card data-card-fact attributes.
             for fact in card.get("facts") or []:
                 key = str(fact.get("key") or "").strip().lower()
                 if key:
