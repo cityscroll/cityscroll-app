@@ -116,91 +116,71 @@ export function repeatedSameExceptFindings(entries, options = {}) {
     }));
 }
 
-const STAFFING_DISPLAY_FIELDS = [
+const STAFFING_FIELDS = [
   "role", "person", "agency", "effective_date", "salary", "title_code", "published_at",
 ];
 
-function staffingLongDate(value, ui) {
-  const match = String(value || "").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (!match) return value || "";
-  const [, month, day, year] = match;
-  return ui.fdt(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`, { dateOnly: true });
+export function groupStaffingAppointments(rows) {
+  return groupSameExcept(rows, { fields: STAFFING_FIELDS, except: ["person"], threshold: 3 });
 }
 
-function staffingGroupMemberHTML(item, ui) {
-  return `<li data-request-id="${ui.escUiHtml(item.request_id)}"><a href="${ui.REQ_URL(item.request_id)}" ${ui.EXT_ATTRS}><span lang="en" dir="ltr">${ui.escUiHtml(item.person)}</span>${ui.extSR()}</a></li>`;
-}
-
-function staffingHireGroupHTML(entry, ui) {
+export function staffingAppointmentGroupHTML(entry, helpers) {
+  const { t, escUiHtml, fmtNumber, money, fdt, fdate, REQ_URL, EXT_ATTRS, extSR } = helpers;
   const item = entry.members[0];
   const members = [...entry.members].sort((a, b) => a.person.localeCompare(b.person));
-  const role = item.role || ui.t("staffing_unknown_role", { code: ui.escUiHtml(item.title_code || "—") });
-  const salary = ui.money(item.salary);
+  const date = (value) => {
+    const match = String(value || "").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!match) return value || "";
+    const [, month, day, year] = match;
+    return fdt(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`, { dateOnly: true });
+  };
+  const role = item.role || t("staffing_unknown_role", { code: escUiHtml(item.title_code || "—") });
+  const salary = money(item.salary);
   const pay = salary
-    ? (Number(item.salary) === 1
-      ? ui.t("staffing_appointment_group_stipend", { amount: salary })
-      : ui.t("staffing_salary", { amount: salary }))
+    ? Number(item.salary) === 1
+      ? t("staffing_appointment_group_stipend", { amount: salary })
+      : t("staffing_salary", { amount: salary })
     : "";
-  const summaryFacts = [
-    ui.t("staffing_appointment_group_summary", { n: ui.fmtNumber(entry.count) }),
-    item.effective_date ? ui.t("staffing_effective_date", { date: staffingLongDate(item.effective_date, ui) }) : "",
+  const summary = [
+    t("staffing_appointment_group_summary", { n: fmtNumber(entry.count) }),
+    item.effective_date ? t("staffing_effective_date", { date: date(item.effective_date) }) : "",
     pay,
   ].filter(Boolean).join(" · ");
-  const sharedFacts = [
-    `<span class="staffing-hire-agency" lang="en" dir="ltr">${ui.escUiHtml(item.agency)}</span>`,
-    item.title_code ? `<span class="staffing-hire-fact">${ui.escUiHtml(ui.t("staffing_title_code", { code: item.title_code }))}</span>` : "",
-    item.published_at ? `<span class="staffing-hire-date">${ui.escUiHtml(ui.t("staffing_appointment_group_posted", { date: ui.fdate(item.published_at) }))}</span>` : "",
+  const facts = [
+    `<span class="staffing-hire-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</span>`,
+    item.title_code ? `<span class="staffing-hire-fact">${escUiHtml(t("staffing_title_code", { code: item.title_code }))}</span>` : "",
+    item.published_at ? `<span class="staffing-hire-date">${escUiHtml(t("staffing_appointment_group_posted", { date: fdate(item.published_at) }))}</span>` : "",
   ].filter(Boolean).join("");
+  const names = members.map(member => `<li data-request-id="${escUiHtml(member.request_id)}"><a href="${REQ_URL(member.request_id)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(member.person)}</span>${extSR()}</a></li>`).join("");
   return `<article class="staffing-hire-group" data-kind="same-except-group" data-group-count="${entry.count}">
-    <div class="staffing-hire-group-head">
-      <h4><span lang="en" dir="ltr">${ui.escUiHtml(role)}</span> — ${ui.escUiHtml(summaryFacts)}</h4>
-      <div class="staffing-hire-group-facts">${sharedFacts}</div>
-    </div>
-    <details>
-      <summary>${ui.escUiHtml(ui.t("staffing_appointment_group_names", { n: ui.fmtNumber(entry.count) }))}</summary>
-      <ul class="staffing-hire-group-names">${members.map((member) => staffingGroupMemberHTML(member, ui)).join("")}</ul>
-    </details>
+    <div class="staffing-hire-group-head"><h4><span lang="en" dir="ltr">${escUiHtml(role)}</span> — ${escUiHtml(summary)}</h4><div class="staffing-hire-group-facts">${facts}</div></div>
+    <details><summary>${escUiHtml(t("staffing_appointment_group_names", { n: fmtNumber(entry.count) }))}</summary><ul class="staffing-hire-group-names">${names}</ul></details>
   </article>`;
 }
 
-/** Render Staffing groups after the People route has loaded this module. */
-export function staffingAppointmentListHTML(items, ui = globalThis) {
-  return groupSameExcept(items, {
-    fields: STAFFING_DISPLAY_FIELDS,
-    except: ["person"],
-    threshold: 3,
-  }).map((entry) => entry.kind === "same-except-group"
-    ? staffingHireGroupHTML(entry, ui)
-    : ui.staffingHireRowHTML(entry.item)).join("");
-}
-
-const STAFFING_STYLE_ID = "staffing-consolidation-styles";
-const STAFFING_STYLES = `.staffing-hire-row{border-bottom:1px solid var(--rule);min-width:0}
-.staffing-hire-row:last-child{border-bottom:0}
-.staffing-hire-row>a{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 9px;padding:7px 12px;min-width:0;text-decoration:none;color:var(--ink);transition:background .1s}
-.staffing-hire-row>a:hover{background:var(--paper-2)}
-.staffing-hire-role{font:700 13.5px/1.3 var(--font-body);min-width:0;overflow-wrap:anywhere}
-.staffing-hire-person{font:650 12.5px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
-.staffing-hire-agency{font:12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-.staffing-hire-fact{font:12px/1.3 ui-monospace,Menlo,monospace;color:var(--muted)}
-.staffing-hire-date{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);white-space:nowrap;margin-left:auto}
-.staffing-hire-group{border-bottom:1px solid var(--rule);padding:12px;min-width:0;background:var(--paper-2)}
-.staffing-hire-group:last-child{border-bottom:0}
-.staffing-hire-group-head h4{font:700 15px/1.35 var(--font-body);margin:0;overflow-wrap:anywhere}
-.staffing-hire-group-facts{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:5px;min-width:0}
-.staffing-hire-group-facts .staffing-hire-date{margin-left:0}
-.staffing-hire-group details{margin-top:9px}
-.staffing-hire-group summary{width:max-content;max-width:100%;font:700 12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);cursor:pointer}
-.staffing-hire-group-names{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:2px 14px;list-style:none;margin:8px 0 0;padding:0;min-width:0}
-.staffing-hire-group-names li{min-width:0}
-.staffing-hire-group-names a{display:block;padding:5px 7px;border-radius:4px;font:650 12.5px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);overflow-wrap:anywhere}
-.staffing-hire-group-names a:hover{background:var(--card);color:var(--oxblood)}`;
-
-/** Install route-specific group styles once, keeping them off unrelated first paint. */
-export function installStaffingConsolidationStyles(doc = document) {
-  if (doc.getElementById(STAFFING_STYLE_ID)) return;
-  const style = doc.createElement("style");
-  style.id = STAFFING_STYLE_ID;
-  style.textContent = STAFFING_STYLES;
-  doc.head.append(style);
+export function createStaffingConsolidationUI(helpers) {
+  const { t, escUiHtml, money, fdate, REQ_URL, EXT_ATTRS, extSR } = helpers;
+  return {
+    group: groupStaffingAppointments,
+    facetHTML(kind, allKey, field, items, filters, topValues) {
+      const selected = filters[field];
+      const values = topValues(items, field, 4);
+      if (selected && !values.includes(selected)) values.unshift(selected);
+      return `<button type="button" class="chip" data-staffing-${kind}="" aria-pressed="${String(!selected)}">${t(allKey)}</button>`
+        + values.map(value => `<button type="button" class="chip" data-staffing-${kind}="${escUiHtml(value)}" aria-pressed="${String(selected === value)}"><span lang="en" dir="ltr">${escUiHtml(value)}</span></button>`).join("");
+    },
+    rowHTML(item) {
+      const role = item.role || t("staffing_unknown_role", { code: escUiHtml(item.title_code || "—") });
+      const salary = money(item.salary);
+      const facts = [
+        item.effective_date ? `<span class="staffing-hire-fact" lang="en" dir="ltr">${escUiHtml(item.effective_date)}</span>` : "",
+        salary ? `<span class="staffing-hire-fact">${salary}</span>` : "",
+        item.title_code ? `<span class="staffing-hire-fact">${escUiHtml(item.title_code)}</span>` : "",
+      ].filter(Boolean).join("");
+      return `<article class="staffing-hire-row" data-kind="hire"><a href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}>
+        <span class="staffing-hire-role" lang="en" dir="ltr">${escUiHtml(role)}</span><span class="staffing-hire-person" lang="en" dir="ltr">${escUiHtml(item.person)}</span><span class="staffing-hire-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</span>${facts}<span class="staffing-hire-date">${fdate(item.published_at)}</span>${extSR()}
+      </a></article>`;
+    },
+    groupHTML: entry => staffingAppointmentGroupHTML(entry, helpers),
+  };
 }

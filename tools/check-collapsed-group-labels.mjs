@@ -106,13 +106,12 @@ export function auditUnconsolidatedRepeatedRows(root = ROOT) {
   if (!repeats.length) return [];
 
   const renderer = readFileSync(join(root, "site/app/people.mjs"), "utf8");
-  const grouping = readFileSync(join(root, "site/same_consolidation.mjs"), "utf8");
-  const inlineRenderer = /groupSameExcept\(items\s*,/.test(renderer)
-    && /members\.map\(staffingGroupMemberHTML\)/.test(renderer);
-  const lazyRenderer = /staffingAppointmentListHTML\(items\)/.test(renderer)
-    && /groupSameExcept\(items\s*,/.test(grouping)
-    && /members\.map\(\(member\) => staffingGroupMemberHTML\(member, ui\)\)/.test(grouping);
-  if (inlineRenderer || lazyRenderer) {
+  const consolidation = readFileSync(join(root, "site/same_consolidation.mjs"), "utf8");
+  if (/loadSameConsolidation\(\)/.test(renderer)
+      && /SameConsolidation\.group\(items\)/.test(renderer)
+      && /SameConsolidation\.groupHTML\(entry\)/.test(renderer)
+      && /group:\s*groupStaffingAppointments/.test(consolidation)
+      && /groupHTML:\s*entry\s*=>\s*staffingAppointmentGroupHTML/.test(consolidation)) {
     return [];
   }
   return repeats.map((finding) => ({ ...finding, lens: "people", file: "site/app/people.mjs" }));
