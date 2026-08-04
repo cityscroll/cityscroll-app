@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.action_link_health.v1",
+  "generated_at": "2026-08-03T14:01:25.936Z",
+  "escalation_after": 2,
+  "patterns": {
+    "contracts-city-record-notice": {
+      "verdict": "broken-upstream",
+      "degraded": true,
+      "consecutive_failures": 1,
+      "first_failed_at": "2026-08-03T14:01:25.936Z",
+      "last_checked_at": "2026-08-03T14:01:25.936Z",
+      "recovered_at": null,
+      "upstream_fallback": "Keep extracted response instructions and contact fields visible.",
+      "public_note_key": "next_action_unavailable_handoff"
+    }
+  },
+  "summary": {
+    "degraded_patterns": [
+      "contracts-city-record-notice"
+    ],
+    "persistently_broken_patterns": [],
+    "newly_escalated_patterns": [],
+    "recovered_patterns": []
+  }
+}
