@@ -108,4 +108,8 @@ test("public notice detail uses franchise phase spine surface", () => {
   assert.match(index, /buildFranchisePhaseView|franchise_phase_spine/);
   assert.match(index, /franchise-phase-stepper|franchise_phase_now_html/);
   assert.match(index, /function franchiseConcessionSpineHTML/);
+  assert.match(index, /lifecycleNoticeEventsHTML\(p\.events\)/);
+  assert.match(index, /href="#notice\/\$\{escUiHtml\(id\)\}"/);
+  assert.match(index, /join_evidence_summary/);
+  assert.doesNotMatch(index, /franchise_join_matched_html/);
 });

@@ -24,6 +24,7 @@ REPO = Path(__file__).resolve().parents[2]
 SITE = REPO / "site"
 I18N = SITE / "i18n.js"
 ALLOWLIST = Path(__file__).with_name("public_surface_vocab_allowlist.txt")
+LOCALE_DIR = SITE / "i18n" / "lang"
 
 # Word / phrase patterns that should not appear on public reader surfaces.
 # Keep these mechanical and low-noise; product words like "matched" are fine.
@@ -47,6 +48,45 @@ INTERNAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("methodology: invented", re.compile(r"\b(?:(?:not|never|nothing\s+is)\s+(?:invented|fabricated)|(?:do|does)\s+not\s+invent)\b", re.I)),
     ("methodology: not venue", re.compile(r"\bnot\s+venue\b", re.I)),
     ("methodology: site virtue", re.compile(r"\b(?:we\s+do\s+not\s+(?:fabricate|guess)|honest(?:ly)?)\b", re.I)),
+]
+
+# Join provenance belongs in a disclosure, expressed in reader language. These
+# patterns guard every locale catalog because untranslated fallbacks can otherwise
+# leak the same implementation copy outside the English catalog.
+JOIN_MECHANICS_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (
+        "join mechanics: joined count",
+        re.compile(r"\bjoined\s+(?:\{[A-Za-z0-9_]+\}|\d+)(?=\s)", re.I),
+    ),
+    (
+        "join mechanics: namespaced key",
+        re.compile(
+            r"\b(?:franchise|disposition|party|solicitation|concession|plan|rules|bbl|taxlot):"
+            r"[a-z0-9][a-z0-9:_-]*\b",
+            re.I,
+        ),
+    ),
+    (
+        "join mechanics: method identifier",
+        re.compile(r"(?<![A-Za-z0-9])(?:exact|fuzzy)_[a-z0-9_]+", re.I),
+    ),
+    (
+        "join mechanics: parenthesized method placeholder",
+        re.compile(r"\(\{method\}\)", re.I),
+    ),
+]
+
+# Catch the original dynamic leak even when the catalog contains only a
+# placeholder: internal values must first pass through a reader-language label.
+DIRECT_RENDER_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (
+        "join mechanics: direct method rendering",
+        re.compile(r"escUiHtml\(\s*join\.method\b", re.I),
+    ),
+    (
+        "join mechanics: direct subject rendering",
+        re.compile(r"escUiHtml\(\s*spine\.subject_ref\b", re.I),
+    ),
 ]
 
 # Contrastive negation is especially harmful in compact naming surfaces: labels
@@ -127,6 +167,23 @@ def extract_en_strings(i18n_text: str) -> dict[str, str]:
     return en_catalog
 
 
+def extract_catalog_strings(catalog_text: str) -> dict[str, str]:
+    """Pull simple key/string pairs from one locale module."""
+    out: dict[str, str] = {}  # source: parsed key/string pairs in one locale module
+    for match in re.finditer(
+        r"([A-Za-z0-9_]+)\s*:\s*(\"([^\"\\]|\\.)*\"|'([^'\\]|\\.)*')",
+        catalog_text,
+    ):
+        key = match.group(1)
+        raw = match.group(2)
+        try:
+            value = json.loads(raw) if raw.startswith('"') else raw[1:-1]
+        except json.JSONDecodeError:
+            value = raw[1:-1]
+        out[key] = value
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -145,30 +202,59 @@ def main(argv: list[str] | None = None) -> int:
     text = I18N.read_text(encoding="utf-8")
     en = extract_en_strings(text)
 
-    # Hits against the public en catalog (key, term, excerpt). Empty until scan.
+    # Hits against the public catalogs (source, key, term, excerpt). Empty until scan.
     hits = []  # source: site/i18n.js STRINGS.en + INTERNAL_PATTERNS
-    for key, value in sorted(en.items()):
-        if not isinstance(value, str) or not value.strip():
-            continue
-        for term, pat in INTERNAL_PATTERNS:
-            if not pat.search(value):
-                continue
-            allow_token = key + ":" + term  # allowlist form key:term (not a secret)
-            if allow_token in allow or key in allow:
-                continue
-            # Allowlist may name "key:term" or whole key
-            hits.append(
-                {
-                    "key": key,
-                    "term": term,
-                    "excerpt": value[:180],
-                }
+    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS)]  # source: public i18n catalogs
+    for path in sorted(LOCALE_DIR.glob("*.js")):
+        catalogs.append(
+            (
+                str(path.relative_to(REPO)),
+                extract_catalog_strings(path.read_text(encoding="utf-8")),
+                JOIN_MECHANICS_PATTERNS,
             )
-        if LABEL_BADGE_KEY.search(key) and CONTRASTIVE_NEGATION.search(value):
-            term = "contrastive negation in label/badge"
-            allow_token = key + ":" + term
-            if allow_token not in allow and key not in allow:
-                hits.append({"key": key, "term": term, "excerpt": value[:180]})
+        )
+    for source, catalog, patterns in catalogs:
+        for key, value in sorted(catalog.items()):
+            if not isinstance(value, str) or not value.strip():
+                continue
+            for term, pat in patterns:
+                if not pat.search(value):
+                    continue
+                allow_token = key + ":" + term  # allowlist form key:term (not a secret)
+                if allow_token in allow or key in allow:
+                    continue
+                hits.append(
+                    {
+                        "source": source,
+                        "key": key,
+                        "term": term,
+                        "excerpt": value[:180],
+                    }
+                )
+            if source == "site/i18n.js:en" and LABEL_BADGE_KEY.search(key) and CONTRASTIVE_NEGATION.search(value):
+                term = "contrastive negation in label/badge"
+                allow_token = key + ":" + term
+                if allow_token not in allow and key not in allow:
+                    hits.append({"source": source, "key": key, "term": term, "excerpt": value[:180]})
+    public_render_files = [
+        *sorted((SITE / "app").glob("*.mjs")),
+        *sorted(SITE.glob("*.mjs")),
+        *sorted(SITE.glob("*.js")),
+        *sorted(SITE.glob("*.html")),
+    ]
+    for path in public_render_files:
+        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            for term, pattern in DIRECT_RENDER_PATTERNS:
+                if not pattern.search(line):
+                    continue
+                hits.append(
+                    {
+                        "source": f"{path.relative_to(REPO)}:{line_number}",
+                        "key": "rendered_source",
+                        "term": term,
+                        "excerpt": line.strip()[:180],
+                    }
+                )
     findings = hits
 
     if args.json:
@@ -176,7 +262,10 @@ def main(argv: list[str] | None = None) -> int:
     elif findings:
         print(f"public_surface_vocab: {len(findings)} internal-vocabulary hit(s) in en i18n:")
         for f in findings[:40]:
-            print(f"  - {f['key']}: term={f['term']!r} excerpt={f['excerpt']!r}")
+            print(
+                f"  - {f.get('source', 'site/i18n.js:en')}:{f['key']}: "
+                f"term={f['term']!r} excerpt={f['excerpt']!r}"
+            )
         if len(findings) > 40:
             print(f"  … +{len(findings) - 40} more")
         print(
@@ -184,7 +273,10 @@ def main(argv: list[str] | None = None) -> int:
             f"(key or key:term) in {ALLOWLIST.name}."
         )
     else:
-        print(f"public_surface_vocab OK — scanned {len(en)} en strings, 0 hits.")
+        print(
+            f"public_surface_vocab OK — scanned {len(en)} en strings, "
+            f"{len(catalogs) - 1} locale catalogs, and {len(public_render_files)} render files; 0 hits."
+        )
 
     if args.gate and findings:
         return 1

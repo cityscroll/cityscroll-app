@@ -2016,6 +2016,15 @@ usefulness threshold. Rebuild/check with
 warehouse path with
 `warehouse/.venv/bin/python warehouse/scripts/non_council_outcomes_run.py --from-fixture --limit 8 --max-docs 10`.
 
+## Franchise/concession MOCS plan bridge
+
+The production fixed sample of 100 modern franchise/concession notices against 11,566 FY2027
+MOCS LL63/LL1 rows produced 0 identifier or reviewed title/time edges, so procurement-plan
+context must not appear on the franchise timeline. Receipt:
+`site/data/franchise_concession_sources/verification_receipts/franchise_mocs_plans_2026-08-04.json`.
+Reproduce with `node tools/measure_franchise_mocs_plan_join.mjs` after collecting the staged
+MOCS plan JSONL; verify with `node --test test/franchise_mocs_plan_join.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

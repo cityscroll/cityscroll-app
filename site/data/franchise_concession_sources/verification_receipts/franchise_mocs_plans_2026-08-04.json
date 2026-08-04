@@ -1,0 +1,58 @@
+{
+  "schema": "cityscroll.franchise_mocs_plan_join_receipt.v1",
+  "observed_at_utc": "2026-08-04T13:10:10Z",
+  "mode": "production",
+  "source_contracts": [
+    "mocs-ll63-plans",
+    "mocs-ll1-plans",
+    "city-record"
+  ],
+  "sources": {
+    "mocs_plans": {
+      "indexes": [
+        "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
+        "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page"
+      ],
+      "sha256": "91868713b0f1db940574ae72f036dda3de88acc790179c4ffba3e6cb7ed20274"
+    },
+    "franchise_notices": {
+      "endpoint": "https://api.cityscroll.org/franchise-concessions",
+      "sha256": "e89eeea200ff1f230791ca642c04748213c8e2bcc82474c4feaa507ba364e068"
+    }
+  },
+  "sample": {
+    "method": "fixed_sorted_modern_franchise_notice_sample",
+    "size": 100,
+    "population": 270,
+    "sort_key": "request_id ASC"
+  },
+  "source_inventory": {
+    "mocs_plan_rows": 11566,
+    "mocs_ll63_rows": 8641,
+    "mocs_ll1_rows": 2925,
+    "plans_with_published_identifiers": 124,
+    "franchise_notices_with_identifiers": 98
+  },
+  "join_measurement": {
+    "joined": 0,
+    "total": 100,
+    "rate": 0,
+    "exact_identifier_edges": 0,
+    "reviewed_fuzzy_edges": 0,
+    "candidates": 0,
+    "review_complete": true,
+    "unreviewed_candidates": 0,
+    "usefulness_threshold": 0.3,
+    "materialize": false,
+    "gate_status": "stopped_below_threshold",
+    "verdict": "No procurement-plan context is published on franchise or concession notices."
+  },
+  "false_positive_review": {
+    "reviewed": 0,
+    "accepted": 0,
+    "rejected": 0,
+    "unreviewed": 0,
+    "cases": []
+  },
+  "edges": []
+}
