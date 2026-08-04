@@ -16,10 +16,14 @@ import {
   buildUpcomingHearingsSnapshot,
   buildMaterializationReceipt,
   hearingsFromZapApiPayload,
+  reviewZapHearingMilestones,
   enrichHearingRows,
   LAND_HEARING_MATERIALIZATION_METHOD,
+  ZAP_MILESTONE_HEARING_SOURCE,
 } from "../tools/lib/land_upcoming_hearings.mjs";
 import { loadFixtureHearings } from "../tools/build_land_upcoming_hearings.mjs";
+import { parseZapApiProject } from "../worker/src/lib/zap_outcomes.mjs";
+import { extractFn } from "./contract/site_extract.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FIX = join(ROOT, "test/fixtures/zap_hearing_logistics/2024Q0292.json");
@@ -114,6 +118,26 @@ test("detectSyntheticUpcomingHearings accepts empty real snapshot", () => {
   assert.deepEqual(result.findings, []);
 });
 
+test("milestone traceability requires the accepted class to match the exact published title", () => {
+  const milestone = baseRow({
+    source: ZAP_MILESTONE_HEARING_SOURCE,
+    milestone_id: "milestone-1",
+    milestone_title: "Post Hearing Follow-Up / Future Votes",
+    milestone_source_title: "Review Session - Post Hearing Follow-Up / Future Votes",
+    event_class: "cpc_public_hearing",
+    portal_url: "https://zap.planning.nyc.gov/projects/2024Q0292",
+    provenance: {
+      field: "dcp-reviewmeetingdate",
+      source: ZAP_MILESTONE_HEARING_SOURCE,
+      derived: [],
+    },
+  });
+  assert.equal(isTraceableHearingRow(milestone), false);
+  const detection = detectSyntheticUpcomingHearings({ hearings: [milestone] });
+  assert.equal(detection.ok, false);
+  assert.ok(detection.findings.some((finding) => finding.kind === "untraceable_row"));
+});
+
 test("buildUpcomingHearingsSnapshot strips synthetic and past rows", () => {
   const rows = [
     baseRow({ hearing_date: "2026-01-01", hearing_at: "2026-01-01T12:00:00.000Z" }),
@@ -168,6 +192,81 @@ test("2024Q0292 fixture extracts real logistics (test-scoped only)", () => {
   });
   assert.ok(snap.hearings.length >= 1);
   assert.ok(snap.hearings.every((h) => h.project_id === "2024Q0292"));
+});
+
+test("2024Q0292 fixture accepts only the two source-published CPC hearing milestone classes", () => {
+  const payload = JSON.parse(readFileSync(FIX, "utf8"));
+  const record = parseZapApiProject(payload);
+  const review = reviewZapHearingMilestones(record, {
+    project_id: "2024Q0292",
+    project_name: record.project_name,
+    public_status: record.public_status,
+    portal_url: record.portal_url,
+    borough: "Queens",
+  });
+
+  assert.deepEqual(
+    review.hearings.map((row) => row.event_class).sort(),
+    ["cpc_pre_hearing_review_session", "cpc_public_hearing"],
+  );
+  assert.ok(review.hearings.every((row) => row.source === ZAP_MILESTONE_HEARING_SOURCE));
+  assert.ok(review.hearings.every((row) => row.provenance.field === "dcp-reviewmeetingdate"));
+  assert.ok(review.hearings.every((row) => row.portal_url === record.portal_url));
+  assert.ok(review.hearings.every((row) => isTraceableHearingRow(row)));
+  assert.equal(
+    review.hearings.find((row) => row.event_class === "cpc_pre_hearing_review_session")?.hearing_at,
+    "2026-08-10T04:00:00.000Z",
+  );
+
+  const reviewedTitles = review.reviewed_false_positive_sample.map((row) => row.source_title);
+  assert.ok(reviewedTitles.includes("Review Session - Certified / Referred"));
+  assert.ok(reviewedTitles.includes("Review Session - Post Hearing Follow-Up / Future Votes"));
+  assert.ok(!review.hearings.some((row) => /Post Hearing|Future Votes/i.test(row.milestone_source_title)));
+});
+
+test("fixture measurement recovers future milestones without manufacturing logistics", () => {
+  const payload = JSON.parse(readFileSync(FIX, "utf8"));
+  const rows = hearingsFromZapApiPayload(payload, {
+    project_id: "2024Q0292",
+    borough: "Queens",
+  });
+  const snap = buildUpcomingHearingsSnapshot(rows, {
+    today: "2026-08-03",
+    mode: "fixture",
+  });
+
+  assert.equal(snap.materialization.disposition_upcoming_count, 0);
+  assert.equal(snap.materialization.milestone_upcoming_count, 2);
+  assert.equal(snap.materialization.upcoming_count, 2);
+  assert.deepEqual(
+    snap.materialization.accepted_milestone_classes,
+    {
+      cpc_pre_hearing_review_session: 1,
+      cpc_public_hearing: 1,
+    },
+  );
+  for (const row of snap.hearings) {
+    assert.equal(row.venue_address, null);
+    assert.equal(row.livestream_url, null);
+    assert.deepEqual(row.attendance_modes, []);
+    assert.ok(row.project_id);
+    assert.ok(row.hearing_date);
+    assert.match(row.portal_url, /zap\.planning\.nyc\.gov\/projects\/2024Q0292$/);
+  }
+});
+
+test("published date-only milestone timestamps render on the publisher calendar day", () => {
+  const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
+  const fdt = new Function(
+    "window",
+    `${extractFn("fdt")}; return fdt;`,
+  )(windowStub);
+  assert.equal(
+    fdt("2026-08-10T04:00:00.000Z", { dateOnly: true }),
+    "August 10, 2026",
+  );
+  const landSource = readFileSync(join(ROOT, "site/app/land.mjs"), "utf8");
+  assert.match(landSource, /dateOnly:row\.parse_status==="published_date_only"/);
 });
 
 test("loadFixtureHearings reads only test fixtures and invents nothing", () => {
