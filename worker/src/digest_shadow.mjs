@@ -2,6 +2,7 @@
 // state advancement disabled, persist rendered previews in D1, and publish structured redlines.
 
 import { runAlerts } from "./alerts.mjs";
+import { recordDigestShadowHoldState } from "./digest_shadow_hold.mjs";
 
 export const DIGEST_SHADOW_CONTRACT = "digest-shadow.v1";
 export const DIGEST_SHADOW_READY = "READY";
@@ -387,6 +388,8 @@ export async function runDigestShadow(env, { now = new Date(), runAlertsFn = run
       await persistDigestShadow(env.DB, summary);
     }
   }
+  summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at });
+  await persistDigestShadow(env.DB, summary);
   const out = { ...summary };
   delete out._rendered_previews;
   return out;

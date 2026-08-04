@@ -4,6 +4,10 @@ import assert from "node:assert/strict";
 import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob } from "../src/alerts.mjs";
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
 import { buildDigestJobs } from "../src/lib/rollup.mjs";
+import {
+  buildDigestShadowHoldState,
+  digestShadowId,
+} from "../src/digest_shadow_hold.mjs";
 
 const FIXTURE_NOW = new Date("2026-08-04T12:00:00Z");
 const FIXTURE_TODAY = FIXTURE_NOW.toISOString().slice(0, 10);
@@ -412,6 +416,87 @@ test("queue path: type=rollup with only one key still uses rollup path (no singl
     assert.equal(sentEmails.length, 1);
     assert.match(sentEmails[0].html, /your daily digest/i);
     assert.doesNotMatch(sentEmails[0].html, /^CityScroll — contract money/i);
+  });
+});
+
+test("queue producer omits only the digest named by an active shadow hold", async () => {
+  const heldKey = "sub:held";
+  const eligibleKey = "sub:eligible";
+  const subsStore = {
+    [heldKey]: JSON.stringify({
+      email: "held@example.com", lens: "money", filter: {}, freq: "daily", channel: "email", createdAt: FIXTURE_TODAY,
+    }),
+    [eligibleKey]: JSON.stringify({
+      email: "eligible@example.com", lens: "money", filter: {}, freq: "daily", channel: "email", createdAt: FIXTURE_TODAY,
+    }),
+  };
+  const queueJobs = [];
+  const env = {
+    ALERT_STATE: kv({}),
+    SUBS: kv(subsStore),
+    ALERTS_LIVE: "true",
+    QUEUE_DIGESTS: "true",
+    DIGEST_QUEUE: { send: async (job) => { queueJobs.push(job); } },
+  };
+  const heldId = await digestShadowId("digest", heldKey);
+  const shadowHoldState = buildDigestShadowHoldState({
+    summary: {
+      run_day: FIXTURE_TODAY,
+      status: "NEEDS_ATTENTION",
+      ok: false,
+      affected_digest_ids: [heldId],
+    },
+    now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+  });
+
+  const summary = await runAlerts(env, [], {
+    now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+    shadowHoldState,
+  });
+  assert.deepEqual(queueJobs.map((job) => job.key), [eligibleKey]);
+  assert.equal(summary.results.filter((result) => result.skipped === "shadow-hold").length, 1);
+  assert.equal(summary.shadowHold.active_count, 1);
+  assert.equal(summary.receipt.skipped_reason, "queue_pending");
+});
+
+test("queue consumer acknowledges a newly held digest without rendering or sending", async () => {
+  const key = "sub:held-after-enqueue";
+  const sentEmails = [];
+  const env = {
+    ALERT_STATE: kv({}),
+    SUBS: kv({
+      [key]: JSON.stringify({
+        email: "held@example.com",
+        lens: "money",
+        filter: { keywords: ["construction"] },
+        freq: "daily",
+        channel: "email",
+        createdAt: FIXTURE_TODAY,
+      }),
+    }),
+    ALERTS_LIVE: "true",
+    RESEND_API_KEY: "re-test",
+    TOKEN_SECRET: "s".repeat(32),
+  };
+  const heldId = await digestShadowId("digest", key);
+  const shadowHoldState = buildDigestShadowHoldState({
+    summary: {
+      run_day: FIXTURE_TODAY,
+      status: "NEEDS_ATTENTION",
+      ok: false,
+      affected_digest_ids: [heldId],
+    },
+    now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+  });
+
+  await withMockFetch(sentEmails, null, async () => {
+    const result = await consumeDigestJob(env, { type: "sub", key }, {
+      now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+      shadowHoldState,
+    });
+    assert.equal(result.skipped, "shadow-hold");
+    assert.equal(result.sent, false);
+    assert.equal(sentEmails.length, 0);
   });
 });
 
