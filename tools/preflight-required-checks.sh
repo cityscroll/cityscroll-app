@@ -84,6 +84,7 @@ run_and_fail python3 test/standards/outline_guard.py
 run_and_fail python3 test/standards/form_border_contrast.py
 run_and_fail python3 test/standards/nyc_copy_lint.py --gate
 run_and_fail python3 test/standards/public_surface_vocab.py --gate
+run_and_fail node tools/check-collapsed-group-labels.mjs
 run_and_fail python3 test/standards/page_metadata.py
 run_and_fail python3 test/standards/brand_identity.py
 run_and_fail python3 test/standards/no_official_marks.py

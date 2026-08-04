@@ -34,7 +34,7 @@ test("normalizeAssetFilter maps legacy chip keys to persona vocabulary", () => {
   assert.equal(normalizeAssetFilter("realty"), "real_property");
   assert.equal(normalizeAssetFilter("vehicle"), "vehicle");
   assert.equal(normalizeAssetFilter("all"), "all");
-  assert.equal(ASSET_FILTER_ALIASES.medallion, "other");
+  assert.equal(ASSET_FILTER_ALIASES.medallion, "rights_and_interests");
 });
 
 test("classifyCommercialCategory routes distinctive vocabularies", () => {
@@ -43,6 +43,9 @@ test("classifyCommercialCategory routes distinctive vocabularies", () => {
   assert.equal(classifyCommercialCategory("machine tools and heavy machinery auction").category, "equipment");
   assert.equal(classifyCommercialCategory("sale of City-owned property Disposition Area Block 100").category, "real_property");
   assert.equal(classifyCommercialCategory("ferrous scrap metal surplus materials").category, "scrap_materials");
+  assert.equal(classifyCommercialCategory("property clerk invoice pending destruction").category, "seized_property");
+  assert.equal(classifyCommercialCategory("taxi medallion upset price notice").category, "rights_and_interests");
+  assert.equal(classifyCommercialCategory("sale of an easement interest").category, "rights_and_interests");
   assert.equal(classifyCommercialCategory("something unclassifiable").category, "other");
 });
 

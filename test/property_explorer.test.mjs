@@ -13,6 +13,7 @@ import {
   buildPropertyExplorerEntries,
   clusterRepeatedEntries,
   countPropertyProcessStages,
+  describeCollapsedGroup,
   filterPropertyExplorerEntries,
   parcelLookupUrls,
   propertyProcessActionKey,
@@ -175,7 +176,7 @@ function noticeEntry({ id, title, agency = "NYPD", asset = "other", stage = "auc
     process_filter: stage,
     temporal_status: status,
     close_date: close || null,
-    primary: { request_id: id, short_title: title, agency_name: agency, _asset: asset, event_date: close || null },
+    primary: { request_id: id, short_title: title, agency_name: agency, _asset: asset, event_date: close || null, type_of_notice_description: "Property Disposition" },
   };
 }
 
@@ -196,6 +197,17 @@ test("clusterRepeatedEntries collapses >=3 near-identical single notices into on
   assert.equal(cluster.date_range.start, "2026-01-10");
   assert.equal(cluster.date_range.end, "2026-05-01");
   assert.equal(cluster.temporal_status, "closed");
+  assert.equal(cluster.description, "NYPD property clerk invoice pending destruction");
+});
+
+test("describeCollapsedGroup falls back to common agency, notice type, and then dates", () => {
+  const typed = [
+    noticeEntry({ id: "1", title: "2026-01-01 / 10001", agency: "Department of Citywide Administrative Services" }),
+    noticeEntry({ id: "2", title: "2026-02-01 / 10002", agency: "Department of Citywide Administrative Services" }),
+  ];
+  assert.equal(describeCollapsedGroup(typed), "DCAS property disposition");
+  const dated = typed.map((member) => ({ ...member, primary: { ...member.primary, agency_name: null, type_of_notice_description: null } }));
+  assert.equal(describeCollapsedGroup(dated), "Dated notices");
 });
 
 test("clusterRepeatedEntries leaves distinct notices and small runs (<3) untouched", () => {

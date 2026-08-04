@@ -748,10 +748,12 @@ const ASSET_BUCKETS=[
   ["equipment","asset_equipment"],
   ["real_property","asset_real_property"],
   ["scrap_materials","asset_scrap_materials"],
+  ["seized_property","asset_seized_property"],
+  ["rights_and_interests","asset_rights_and_interests"],
   ["other","asset_other"],
 ];
 const ASSET_LABEL=Object.fromEntries(ASSET_BUCKETS);
-const ASSET_FILTER_ALIASES={vehequip:"vehicle",forest:"timber",realty:"real_property",medallion:"other",seized:"other"};
+const ASSET_FILTER_ALIASES={vehequip:"vehicle",forest:"timber",realty:"real_property",medallion:"rights_and_interests",seized:"seized_property"};
 function normalizePropAsset(raw){
   if(raw==null||raw===""||raw==="all") return "all";
   const key=String(raw).trim().toLowerCase().replace(/-/g,"_");
@@ -771,13 +773,13 @@ function classifyAsset(rec){
   // commercial.item.category when present; this fallback only uses phrases already
   // on the stray-english allowlist or single-token dataset tokens.
   // Check medallion/seized before vehicle: "minifleet" contains the substring "fleet".
-  if(has("medallion")) return "other";
-  if(has("unauthorized","tobacco","forfeiture","pending destruction","property clerk","owners are wanted","in the custody")) return "other";
+  if(has("medallion")) return "rights_and_interests";
+  if(has("unauthorized","tobacco","forfeiture","pending destruction","property clerk","owners are wanted","in the custody")) return "seized_property";
   if(has("auto auction","govdeals","iaai","fleet auction","municipal auto")) return "vehicle";
   if(has("heavy machinery","machine tools","publicsurplus","surplus assets","furniture")) return "equipment";
   if(has("scrap","recyclable metal")) return "scrap_materials";
-  if(t.includes("easement")) return "other";
-  if(has("mortgage and note","outstanding debt") && t.includes("mortgage")) return "other";
+  if(t.includes("easement")) return "rights_and_interests";
+  if(has("mortgage and note","outstanding debt") && t.includes("mortgage")) return "rights_and_interests";
   if(has("disposition area","city-owned property","block/lot","residential property","public auction","premises","reversionary")) return "real_property";
   if(has("rfp","request for proposal","redevelopment","lease auction","lease","license")) return "real_property";
   return "other";
@@ -946,6 +948,7 @@ function propertyClusterCardHTML(cluster){
   const stageLabel=cluster.process_stage?dispositionStageLabel(cluster.process_stage):"";
   const closed=cluster.temporal_status==="closed";
   const rangeLabel=propClusterRange(cluster.date_range);
+  const description=cleanText(cluster.description)||cleanText(rep.agency_name)||cleanText(rep.type_of_notice_description)||t("property_cluster_fallback");
   const items=(cluster.members||[]).map(m=>{
     const r=m.primary; if(!r) return "";
     const title=cleanText(r.short_title)||t("untitled");
@@ -955,7 +958,7 @@ function propertyClusterCardHTML(cluster){
   }).join("");
   return `<div class="property-cluster${closed?" is-closed":""}" data-cluster="1" data-count="${cluster.count}">
     <div class="property-cluster-head">
-      <span class="property-cluster-count">${escUiHtml(t("property_cluster_summary",{n:cluster.count}))}</span>
+      <span class="property-cluster-count">${escUiHtml(t("property_cluster_summary",{description,n:cluster.count}))}</span>
       ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
       ${stageLabel?`<span class="tag">${escUiHtml(stageLabel)}</span>`:""}
       ${rangeLabel?`<span class="property-cluster-range">${escUiHtml(rangeLabel)}</span>`:""}

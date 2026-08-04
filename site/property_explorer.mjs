@@ -508,6 +508,87 @@ function titleStem(value) {
     .trim();
 }
 
+const GROUP_TITLE_GENERIC = new Set([
+  "notice", "notices", "public", "the", "of", "for", "and", "property", "disposition",
+]);
+
+/** Remove dates/identifiers while retaining the words a reader can recognize. */
+function groupTitleTokens(value) {
+  return String(value || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,?\s+\d{2,4})?\b/gi, " ")
+    .replace(/\b\d{1,4}[-/.]\d{1,2}[-/.]\d{1,4}\b/g, " ")
+    .replace(/\b\S*\d\S*\b/g, " ")
+    .toLowerCase()
+    .replace(/[^a-z' -]+/g, " ")
+    .replace(/[-']+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+/** Longest contiguous word pattern shared by every title, not only a byte prefix. */
+function longestSharedTitlePattern(tokenLists) {
+  if (!tokenLists.length || tokenLists.some((tokens) => !tokens.length)) return [];
+  const [first, ...rest] = tokenLists;
+  for (let length = first.length; length > 0; length -= 1) {
+    for (let start = 0; start + length <= first.length; start += 1) {
+      const candidate = first.slice(start, start + length);
+      const shared = rest.every((tokens) => {
+        for (let i = 0; i + length <= tokens.length; i += 1) {
+          if (candidate.every((token, j) => token === tokens[i + j])) return true;
+        }
+        return false;
+      });
+      if (shared) return candidate;
+    }
+  }
+  return [];
+}
+
+function commonMemberValue(members, field) {
+  const values = members
+    .map((member) => clean(member?.primary?.[field]))
+    .filter(Boolean);
+  if (!values.length || values.length !== members.length) return null;
+  return values.every((value) => value.toLowerCase() === values[0].toLowerCase()) ? values[0] : null;
+}
+
+function compactAgencyName(value) {
+  const agency = clean(value);
+  if (!agency) return null;
+  if (/^[A-Z0-9&.-]{2,10}$/.test(agency)) return agency;
+  const words = agency.split(/\s+/).filter((word) => !/^(?:of|the)$/i.test(word));
+  if (words.length >= 3) return words.map((word) => word[0]).join("").toUpperCase();
+  return agency;
+}
+
+/**
+ * Describe what collapsed members share. Title content leads; common agency and
+ * notice type are honest fallbacks when titles contain only dates/identifiers.
+ */
+export function describeCollapsedGroup(members) {
+  const list = Array.isArray(members) ? members.filter(Boolean) : [];
+  if (!list.length) return "Dated notices";
+  const pattern = longestSharedTitlePattern(
+    list.map((member) => groupTitleTokens(member?.primary?.short_title)),
+  );
+  const contentWords = pattern.filter((word) => !GROUP_TITLE_GENERIC.has(word));
+  const agency = compactAgencyName(commonMemberValue(list, "agency_name"));
+  const noticeType = commonMemberValue(list, "type_of_notice_description");
+
+  let subject = contentWords.length ? pattern.join(" ") : null;
+  if (!subject && noticeType) subject = noticeType.toLowerCase();
+  if (!subject) subject = "dated notices";
+
+  const normalizedSubject = subject.replace(/[^a-z]/gi, "").toLowerCase();
+  const normalizedAgency = String(agency || "").replace(/[^a-z]/gi, "").toLowerCase();
+  const prefix = agency && normalizedAgency && !normalizedSubject.startsWith(normalizedAgency)
+    ? `${agency} `
+    : "";
+  const description = `${prefix}${subject}`.trim();
+  return prefix ? description : description[0].toUpperCase() + description.slice(1);
+}
+
 /** Default cluster signature for property entries (agency + asset + stage + title stem). */
 function defaultEntrySignature(entry) {
   const row = entry && entry.primary;
@@ -533,6 +614,7 @@ function buildClusterEntry(signature, members) {
     kind: "cluster",
     count: members.length,
     members,
+    description: describeCollapsedGroup(members),
     primary: rep.primary || null,
     signature,
     process_stage: rep.process_stage || null,
