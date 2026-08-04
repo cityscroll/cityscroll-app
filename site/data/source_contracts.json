@@ -308,7 +308,7 @@
         "contract_amount"
       ],
       "max_stale_days": 550,
-      "publisher_cadence": "Approximately annual filings",
+      "publisher_cadence": "Publisher cadence not stated in dataset metadata",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
       "used_for": "Authority-scoped recent-award context for mapped local-authority profiles. RC-4 stopped the notice-level residual bridge below threshold.",
       "join_measurement": {
@@ -367,7 +367,7 @@
         "contract_amount"
       ],
       "max_stale_days": 550,
-      "publisher_cadence": "Approximately annual filings",
+      "publisher_cadence": "Publisher cadence not stated in dataset metadata",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
       "used_for": "Authority-scoped recent-award context for mapped local-development-corporation profiles. RC-4 stopped the notice-level residual bridge below threshold.",
       "join_measurement": {
@@ -426,7 +426,7 @@
         "contract_amount"
       ],
       "max_stale_days": 550,
-      "publisher_cadence": "Approximately annual filings",
+      "publisher_cadence": "Publisher cadence not stated in dataset metadata",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
       "used_for": "Authority-scoped recent-award context for mapped state-authority profiles, including the MTA. RC-4 stopped the notice-level residual bridge below threshold.",
       "join_measurement": {

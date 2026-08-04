@@ -31,7 +31,7 @@ def materialize(stage_dir: Path) -> dict:
     catalog = duckdb_path()
     catalog.parent.mkdir(parents=True, exist_ok=True)
     connection = duckdb.connect(str(catalog))
-    results = []
+    results = list()  # Derived table metadata populated from the staged JSONL files below.
     try:
         connection.execute("PRAGMA threads=1")
         for filename, table in TABLES:
