@@ -888,7 +888,7 @@ async function evaluateAwardSection(env, s, ctx, base) {
   if (typeof filter.requestId !== "string" || !filter.requestId) {
     return { ...base, skipped: "malformed-award-watch" };
   }
-  const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency);
+  const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency, ctx.nowMs);
   if (!ok) return { ...base, skipped: "award-lookup-failed" };
   const seenId = `award:${s.key}`;
   const seen = await getSeen(env, seenId);
@@ -924,7 +924,7 @@ export async function processAwardSub(env, s, ctx) {
       return { sub: maskKey(s.key), skipped: "malformed-award-watch" };
     }
 
-    const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency);
+    const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency, ctx.nowMs);
     if (!ok) return { sub: maskKey(s.key), skipped: "award-lookup-failed" };
 
     const seenId = `award:${s.key}`;
