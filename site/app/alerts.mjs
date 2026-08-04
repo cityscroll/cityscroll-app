@@ -686,9 +686,155 @@ function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 function subscribeErrorWhy(reason){
   return {"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error")}[reason]||t("generic_error");
 }
+/* ===================== WATCH TEMPLATES (association monitor packs) =====================
+   Registry: site/data/watch_templates.json — pure helpers in site/watch_templates.mjs.
+   Subscribing instantiates each watch through the existing /subscribe path (one confirm per watch). */
+let watchTemplateToolsPromise=null;
+let watchTemplateRegistry=null;
+let selectedWatchTemplate=null; // normalized template object or null
+
+function loadWatchTemplateTools(){
+  if(!watchTemplateToolsPromise){
+    watchTemplateToolsPromise=import("../watch_templates.mjs").catch(()=>null);
+  }
+  return watchTemplateToolsPromise;
+}
+
+function applyWatchFromTemplateLine(watch){
+  if(!watch) return;
+  const lens=watch.lens;
+  const f=watch.filter||{};
+  // Map lens → builder watch type used by #awatch / quiz chips.
+  let wType=lens;
+  if(lens==="money") wType=f.minAmount ? "bigaward" : "rfpkw";
+  if(lens==="land") wType="rezone";
+  if(lens==="entity") wType=f.kind==="vendor" ? "entityvendor" : "entityagency";
+  const aw=$("#awatch");
+  if(aw && [...aw.options].some(o=>o.value===wType)) aw.value=wType;
+  aWatchChange();
+  if(wType==="bigaward" && f.minAmount!=null){
+    const th=$("#athresh"); if(th) th.value=String(f.minAmount);
+  }
+  const kw=Array.isArray(f.keywords) ? f.keywords.join(" ") : (f.keywords||"");
+  if(SECTION_WATCH_LABEL[wType] || wType==="rfpkw" || wType==="rezone" || wType==="entityvendor" || wType==="entityagency"){
+    if($("#aparam")) $("#aparam").value=kw || (f.name||"");
+  }
+  if(SECTION_WATCH_LABEL[wType] && $("#aagency")){
+    $("#aagency").value=f.agency||"";
+  }
+  const qn=$("#quiznarrow"); if(qn && kw) qn.value=kw;
+  if(typeof refreshQuizDisplay==="function") refreshQuizDisplay();
+  aPreview();
+}
+
+function paintWatchTemplateDetail(tpl){
+  const detail=$("#watch-template-detail");
+  if(!detail) return;
+  if(!tpl){
+    detail.hidden=true;
+    detail.innerHTML="";
+    selectedWatchTemplate=null;
+    return;
+  }
+  selectedWatchTemplate=tpl;
+  const watches=(tpl.watches||[]).map(w=>`<li>${escUiHtml(w.label||w.lens)}</li>`).join("");
+  detail.hidden=false;
+  detail.innerHTML=`
+    <p><b>${escUiHtml(tpl.title)}</b> — ${escUiHtml(tpl.description||"")}</p>
+    <p><span class="muted">${escUiHtml(t("watch_tpl_serves_label"))}:</span> ${escUiHtml(tpl.serves||tpl.description||"")}</p>
+    <p class="muted" style="margin:0">${escUiHtml(t("watch_tpl_watches_label"))}</p>
+    <ul>${watches}</ul>
+    <p class="muted">${escUiHtml(t("watch_tpl_subscribe_note"))}</p>
+    <div class="watch-tpl-actions">
+      <span class="tag open">${escUiHtml(t("watch_tpl_selected"))}</span>
+      <button type="button" class="act" data-watch-tpl-clear="1">${escUiHtml(t("watch_tpl_clear"))}</button>
+    </div>`;
+  detail.querySelector("[data-watch-tpl-clear]")?.addEventListener("click",()=>{
+    selectedWatchTemplate=null;
+    paintWatchTemplateDetail(null);
+    listCardButtons(null).forEach(b=>{
+      b.classList.remove("on");
+      b.setAttribute("aria-pressed","false");
+    });
+  });
+  // Prefill the first watch so the single-form preview matches pack intent.
+  if(tpl.watches && tpl.watches[0]) applyWatchFromTemplateLine(tpl.watches[0]);
+}
+
+/** Card buttons inside the watch-template list (avoids a CSS-selector English literal). */
+function listCardButtons(listEl){
+  const root=listEl||document.getElementById("watch-template-list");
+  if(!root) return [];
+  return [...root.querySelectorAll("button[data-tpl-id]")];
+}
+
+async function initWatchTemplates(){
+  const list=$("#watch-template-list");
+  if(!list) return;
+  const tools=await loadWatchTemplateTools();
+  if(!tools){ list.innerHTML=""; return; }
+  watchTemplateRegistry=await tools.loadWatchTemplateRegistry();
+  const templates=watchTemplateRegistry?.templates||[];
+  if(!templates.length){ list.innerHTML=""; return; }
+  // role=group on the list container; plain buttons with aria-pressed (not listitem — axe).
+  list.setAttribute("role", "group");
+  list.setAttribute("aria-label", t("watch_tpl_heading"));
+  list.innerHTML=templates.map(tpl=>
+    `<button type="button" class="watch-tpl-card" data-tpl-id="${escUiHtml(tpl.id)}" aria-pressed="false">${escUiHtml(tpl.title)}</button>`
+  ).join("");
+  listCardButtons(list).forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const id=btn.dataset.tplId;
+      const tpl=(watchTemplateRegistry?.templates||[]).find(x=>x.id===id)||null;
+      listCardButtons(list).forEach(b=>{
+        const on=b===btn;
+        b.classList.toggle("on", on);
+        b.setAttribute("aria-pressed", String(on));
+      });
+      paintWatchTemplateDetail(tpl);
+      announce(tpl ? tpl.title : "");
+    });
+  });
+  // Deep link: #alerts?template=<id>
+  try{
+    const h=String(location.hash||"");
+    const m=h.match(/[?&]template=([^&]+)/);
+    if(m){
+      const id=decodeURIComponent(m[1]);
+      const tpl=(watchTemplateRegistry?.templates||[]).find(x=>x.id===id)||null;
+      if(tpl){
+        const btn=listCardButtons(list).find(b=>b.dataset.tplId===tpl.id);
+        if(btn) btn.click();
+      }
+    }
+  }catch(_e){}
+}
+
+async function aSubscribeTemplatePack(email, freq, lang){
+  const tools=await loadWatchTemplateTools();
+  if(!tools || !selectedWatchTemplate) return null;
+  const payloads=tools.templateSubscribePayloads(selectedWatchTemplate, { email, freq, lang });
+  if(!payloads.length) return null;
+  const msg=$("#asubmsg");
+  const n=payloads.length;
+  if(msg) msg.innerHTML=`<span class="loading"></span> ${escUiHtml(t("watch_tpl_sending",{n:String(n)}))}`;
+  let ok=0, fail=0;
+  for(const body of payloads){
+    try{
+      const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+        email:body.email, lens:body.lens, filter:body.filter, freq:body.freq, lang:body.lang,
+      })});
+      const j=await r.json().catch(()=>({}));
+      if(j.ok) ok+=1; else fail+=1;
+    }catch(_e){ fail+=1; }
+  }
+  return { ok, fail, n, email };
+}
+
 async function aSubscribe(){
   const msg=$("#asubmsg"), dest=$("#adest");
-  if($("#awatch").value==="awardwatch" && !(awardWatchTarget && awardWatchTarget.requestId)){
+  if($("#awatch").value==="awardwatch" && !(awardWatchTarget && awardWatchTarget.requestId)
+     && !selectedWatchTemplate){
     msg.innerHTML = t("award_watch_pick_notice_html"); return;
   }
   if($("#awatch").value==="examarea" && !examAreaWatchTarget?.id){ msg.textContent=t("generic_error"); return; }
@@ -696,8 +842,28 @@ async function aSubscribe(){
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
   dest.removeAttribute("aria-invalid");
   if(!API){ msg.innerHTML=t("subs_need_backend"); return; }
-  const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
-  const btn=$("#asubscribe"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
+  const freq=$("#afreq").value.toLowerCase();
+  const btn=$("#asubscribe"); btn.disabled=true;
+  // Association pack: instantiate every watch through the existing subscribe path.
+  if(selectedWatchTemplate){
+    try{
+      const result=await aSubscribeTemplatePack(email, freq, window.LANG||"en");
+      if(result){
+        const safeEmail=email.replace(/[<>&]/g," ");
+        if(result.fail===0){
+          msg.innerHTML=`<b>${escUiHtml(t("check_inbox"))}</b> ${escUiHtml(t("watch_tpl_sent_ok",{ok:String(result.ok),n:String(result.n),email:safeEmail}))}`;
+        }else if(result.ok>0){
+          msg.innerHTML=`⚠️ ${escUiHtml(t("watch_tpl_sent_partial",{ok:String(result.ok),n:String(result.n),fail:String(result.fail)}))}`;
+        }else{
+          msg.innerHTML="⚠️ "+subscribeErrorWhy("send-failed");
+        }
+        btn.disabled=false;
+        return;
+      }
+    }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); btn.disabled=false; return; }
+  }
+  msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
+  const {lens,filter}=aLensFilter();
   try{
     const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en"})});
     const j=await r.json().catch(()=>({}));
@@ -1002,6 +1168,8 @@ globalThis.fillContext = fillContext;
 globalThis.focusAlertsRollupPanel = focusAlertsRollupPanel;
 globalThis.homeCtaSubscribe = homeCtaSubscribe;
 globalThis.initAlertsRollupPrefs = initAlertsRollupPrefs;
+globalThis.initWatchTemplates = initWatchTemplates;
+globalThis.paintWatchTemplateDetail = paintWatchTemplateDetail;
 globalThis.isKeywordWatch = isKeywordWatch;
 globalThis.keywordLooksSentenceLike = keywordLooksSentenceLike;
 globalThis.loadAlertsRollupTools = loadAlertsRollupTools;
