@@ -741,6 +741,7 @@
     skip_to_content: "跳至正文",
     or_more_results: "{n} 条或以上结果",
     results_count: "{n} 条结果",
+    one_result: "1 个结果",
     event_today: "今天",
     due_today_tag: "今天截止",
     deadline_respond_by: "请在 {date} 之前回复",

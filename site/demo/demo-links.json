@@ -316,7 +316,7 @@
             "selector": "#list .row"
           },
           {
-            "selector": "#closingweek"
+            "selector": "#money-more-filters > summary"
           }
         ],
         "notVisible": [

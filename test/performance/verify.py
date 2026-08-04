@@ -357,8 +357,8 @@ def measure_contracts(
         """
         () => {
           const input = document.querySelector("#kw");
-          const controls = input.closest(".controls");
-          const toggle = controls.previousElementSibling;
+          const controls = input.closest(".lens-toolbar");
+          const toggle = controls.querySelector("#money-more-filters > summary");
           const rect = input.getBoundingClientRect();
           return {
             activeTab: document.querySelector(".tabbtn.active")?.dataset.tab || null,

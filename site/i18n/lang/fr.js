@@ -798,6 +798,7 @@
     // Announcements (sr-only)
     or_more_results: "{n} résultats ou plus",
     results_count: "{n} résultats",
+    one_result: "1 résultat",
 
     // Event countdown (eventTag)
     event_today: "aujourd'hui",
