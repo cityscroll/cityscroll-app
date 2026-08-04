@@ -55,6 +55,7 @@ import {
 import { prefsLink } from "./prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
+import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import {
   forecastSentIdentity,
   forecastIsDeliverableOn,
@@ -480,11 +481,21 @@ export async function processOneSub(env, s, ctx) {
     }
     if (!usedD1) {
       rows = await fetchRows(q.url, q.params, q.transformRows);
-      if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
+      if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter); // property needs the full parcel stream for stage transitions
     }
     const seen = await getSeen(env, s.key);
+    let propertyStageSeenIds = [];
+    if (s.lens === "property") {
+      const evaluated = evaluatePropertyWatch(rows, s.filter, seen, ctx.today);
+      rows = evaluated.rows;
+      propertyStageSeenIds = evaluated.markSeenIds;
+    }
     const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
+    reconciled.markSeenIds.push(...propertyStageSeenIds);
+    for (const row of rows) {
+      if (row.property_watch?.transition && !reconciled.fresh.some((freshRow) => freshRow.request_id === row.request_id)) reconciled.fresh.push(row);
+    }
     const fresh = dedupeFreshByContent(reconciled.fresh);
 
     // Search health: has this watch matched anything new lately? Judged from `fresh` alone (not
@@ -799,11 +810,21 @@ async function evaluateSubSection(env, s, ctx) {
     }
     if (!usedD1) {
       rows = await fetchRows(q.url, q.params, q.transformRows);
-      if (q.postFilter) rows = rows.filter(q.postFilter);
+      if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
     }
     const seen = await getSeen(env, s.key);
+    let propertyStageSeenIds = [];
+    if (s.lens === "property") {
+      const evaluated = evaluatePropertyWatch(rows, s.filter, seen, ctx.today);
+      rows = evaluated.rows;
+      propertyStageSeenIds = evaluated.markSeenIds;
+    }
     const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
     const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
+    reconciled.markSeenIds.push(...propertyStageSeenIds);
+    for (const row of rows) {
+      if (row.property_watch?.transition && !reconciled.fresh.some((freshRow) => freshRow.request_id === row.request_id)) reconciled.fresh.push(row);
+    }
     const fresh = dedupeFreshByContent(reconciled.fresh);
 
     const matched = fresh.length > 0;
@@ -1221,7 +1242,14 @@ async function processCatchUpSub(env, s, ctx) {
     }
     if (!rows) {
       rows = await fetchRows(q.url, catchUpParams, q.transformRows);
-      if (q.postFilter) rows = rows.filter(q.postFilter);
+      if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
+    }
+    let propertyStageSeenIds = [];
+    if (s.lens === "property") {
+      const seen = await getSeen(env, s.key);
+      const evaluated = evaluatePropertyWatch(rows, s.filter, seen, ctx.today);
+      rows = evaluated.rows;
+      propertyStageSeenIds = evaluated.markSeenIds;
     }
 
     const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField]));
@@ -1271,7 +1299,7 @@ async function processCatchUpSub(env, s, ctx) {
     }
 
     // Mark seen ONLY on a real send (same watermark-poisoning fix).
-    if (send && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    if (send && rows.length) await markSeen(env, s.key, [...rows.map((r) => r[q.idField]).filter(Boolean), ...propertyStageSeenIds]);
     return {
       sub: maskKey(s.key), lens: s.lens,
       queryLabel: describeFilter(s.lens, s.filter),
@@ -1776,8 +1804,12 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
+    const propertyStage = kind === "property" && r.property_watch
+      ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
+      : "";
     return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
+      ${propertyStage}
       ${temporalActionHtml(r, esc, lang, { kind, today })}
       ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
@@ -1919,8 +1951,12 @@ function rollupDigestHtml({
       const kind = sec.kind || "rfp";
       const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
       const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
+      const propertyStage = kind === "property" && r.property_watch
+        ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
+        : "";
       return `<li style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
+        ${propertyStage}
         ${temporalActionHtml(r, esc, lang, { kind, today })}
         ${evidenceLineHtml(ev, esc, lang)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;

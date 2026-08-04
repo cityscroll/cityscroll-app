@@ -822,6 +822,7 @@ function ensurePropertyCommercial(r, tools){
   return null;
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
+let propertyAuctionExportVisible=[];
 let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
 let propertyExplorerToolsPromise=null;
 function propertyExplorerTools(){
@@ -1172,6 +1173,15 @@ async function renderPropExplorer(){
   if(tools && tools.clusterRepeatedEntries){
     entries=tools.clusterRepeatedEntries(entries);
   }
+  try{
+    const savedSearchTools=await import("../property_saved_search.mjs");
+    propertyAuctionExportVisible=savedSearchTools.propertyAuctionExportRows(entries);
+  }catch(_e){ propertyAuctionExportVisible=[]; }
+  document.querySelectorAll("[data-export-property-auction]").forEach(button=>{
+    button.hidden=propertyAuctionExportVisible.length===0;
+    const count=button.querySelector("[data-property-auction-count]");
+    if(count) count.textContent=`(${propertyAuctionExportVisible.length})`;
+  });
   updatePropertyMoreFiltersState();
   const totalCount=entries.reduce((n,e)=>n+(e.kind==="cluster"?(e.count||1):1),0);
   announce(t("property_entries_announce",{n:totalCount}));
@@ -1533,6 +1543,7 @@ globalThis.normalizePropSaleMethod = normalizePropSaleMethod;
 globalThis.normalizePropPriceBand = normalizePropPriceBand;
 globalThis.normalizePropSort = normalizePropSort;
 Object.defineProperty(globalThis, "propertyExplorerToolsPromise", { configurable: true, get: () => propertyExplorerToolsPromise, set: value => { propertyExplorerToolsPromise = value; } });
+Object.defineProperty(globalThis, "propertyAuctionExportVisible", { configurable: true, get: () => propertyAuctionExportVisible, set: value => { propertyAuctionExportVisible = value; } });
 Object.defineProperty(globalThis, "propertyPhaseSpineToolsPromise", { configurable: true, get: () => propertyPhaseSpineToolsPromise, set: value => { propertyPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "taxLienLookupPromise", { configurable: true, get: () => taxLienLookupPromise, set: value => { taxLienLookupPromise = value; } });
 Object.defineProperty(globalThis, "taxLienSelectedCycle", { configurable: true, get: () => taxLienSelectedCycle, set: value => { taxLienSelectedCycle = value; } });

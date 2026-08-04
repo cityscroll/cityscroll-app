@@ -48,18 +48,19 @@ function makeFixture(){
   const NL = { alerts: { apply: (f) => { calls.nlApplyArg = f; } } };
   let noticeWatchSeed = null;
   let meetingWatchExtra = {};
+  let propertyWatchExtra = {};
   let awardWatchTarget = null;
   const SECTION_WATCH_LABEL_SRC = extractConst("SECTION_WATCH_LABEL");
   const SECTION_WATCH_LABEL = new Function(SECTION_WATCH_LABEL_SRC + "\nreturn SECTION_WATCH_LABEL;")();
   const prefillAlertFromLink = new Function(
     "$", "NL", "aWatchChange", "aPreview", "refreshQuizDisplay", "SECTION_WATCH_LABEL",
     "paintAlertContextLead", "applyNoticeWatchSeed",
-    "noticeWatchSeed", "meetingWatchExtra", "awardWatchTarget",
+    "noticeWatchSeed", "meetingWatchExtra", "propertyWatchExtra", "awardWatchTarget",
     extractFn("prefillAlertFromLink") + "\nreturn prefillAlertFromLink;"
   )(
     $, NL, aWatchChange, aPreview, refreshQuizDisplay, SECTION_WATCH_LABEL,
     paintAlertContextLead, applyNoticeWatchSeed,
-    noticeWatchSeed, meetingWatchExtra, awardWatchTarget,
+    noticeWatchSeed, meetingWatchExtra, propertyWatchExtra, awardWatchTarget,
   );
   return { prefillAlertFromLink, fields, calls };
 }
