@@ -6,7 +6,8 @@
  * versioned payload contract.
  */
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -152,6 +153,38 @@ test("RC-1 fixture run writes versioned payload and measurement receipts", () =>
     "mocs_procurement_plans",
     "procurement_plan_bridge_edges",
   ]);
+});
+
+test("RC-1 public materialization uses receipt-backed Pages-safe shards", () => {
+  const manifest = JSON.parse(readFileSync(
+    join(ROOT, "site/data/procurement_planning_payload.json"),
+    "utf8",
+  ));
+  const receipt = JSON.parse(readFileSync(
+    join(ROOT, "site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-04.json"),
+    "utf8",
+  ));
+  assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");
+  assert.equal(receipt.payload_contract.schema, manifest.schema);
+  assert.deepEqual(receipt.payload_contract.collections, manifest.collections);
+  assert.ok(manifest.shard_contract.max_bytes < 25 * 1024 * 1024);
+
+  for (const [collection, descriptor] of Object.entries(manifest.collections)) {
+    let rows = 0;
+    for (const shard of descriptor.shards) {
+      const path = join(ROOT, shard.path.replace(/^site\//, "site/"));
+      const bytes = readFileSync(path);
+      const payload = JSON.parse(bytes.toString("utf8"));
+      assert.equal(payload.schema, manifest.shard_contract.schema);
+      assert.equal(payload.collection, collection);
+      assert.ok(payload.rows.length <= manifest.shard_contract.max_rows);
+      assert.equal(statSync(path).size, shard.bytes);
+      assert.ok(shard.bytes <= manifest.shard_contract.max_bytes);
+      assert.equal(createHash("sha256").update(bytes).digest("hex"), shard.sha256);
+      rows += payload.rows.length;
+    }
+    assert.equal(rows, descriptor.rows);
+  }
 });
 
 test("RC-1 stage one publishes a fixture proof and schema without claiming production edges", () => {
