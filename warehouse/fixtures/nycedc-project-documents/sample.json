@@ -1,0 +1,82 @@
+{
+  "schema": "cityscroll.nycedc_project_fixture.v1",
+  "observed_at": "2026-08-04T11:30:00Z",
+  "documents": [
+    {
+      "authority": "nycida",
+      "document_type": "board_minutes",
+      "title": "March 24, 2026 NYCIDA Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-March-24-2026-board-meeting-minutes_0.pdf",
+      "index_url": "https://edc.nyc/nycida/financial-public-documents",
+      "text": "MINUTES OF THE MEETING OF THE BOARD OF DIRECTORS OF NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY MARCH 24, 2026\n5. Bogopa Jerome Inc.\nBogopa Jerome Inc. was presented for review and adoption of an inducement resolution for the project. There being no further questions, a motion to approve the resolution for Bogopa Jerome Inc. was made, seconded and unanimously approved.\n6. MGN 24-53 49th Street, LLC & MGN 150 Liberty, LLC\nThe companies were presented for review and adoption for the project. There being no further questions, a motion to approve the resolutions was made, seconded and unanimously approved.\n7. Outback 1, LLC & Sunnyside 1, LLC\nThe companies were presented for review and adoption for the project. There being no further questions, a motion to approve the resolutions was made, seconded and unanimously approved.\n8. Adjournment\nPROJECT NUMBER - 11268 FRESH PROGRAM PROPOSAL BOGOPA JEROME INC. PROJECT SUMMARY Bogopa Jerome Inc. seeks financial assistance for a facility located at 1941-1959 Jerome Avenue, Bronx, New York 10453. Total Project Cost: $18,000,000. Actions Requested.\nPROJECT NUMBERS - 11513, 11676 INDUSTRIAL PROGRAM PROPOSAL MGN 24-53 49TH STREET, LLC & MGN 150 LIBERTY, LLC PROJECT SUMMARY The companies seek financial assistance for facilities located at 24-53 49th Street, Astoria, New York 11103. Total Project Cost: $13,944,348. Actions Requested.\nINDUSTRIAL PROGRAM PROPOSAL OUTBACK 1, LLC & SUNNYSIDE 1, LLC PROJECT SUMMARY The companies seek assistance for a facility located at 42-36 Northern Boulevard, Long Island City, New York 11101. Total Project Cost: $45,000,000. Actions Requested."
+    },
+    {
+      "authority": "build_nyc",
+      "document_type": "board_minutes",
+      "title": "March 24, 2026 Build NYC Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-March-24-2026-board-meeting-minutes_0.pdf",
+      "index_url": "https://edc.nyc/build-nyc-financial-public-documents",
+      "text": "MINUTES OF THE MEETING OF THE BOARD OF DIRECTORS OF BUILD NYC RESOURCE CORPORATION MARCH 24, 2026\n5. AECI 2970 Third Avenue, LLC\nThe project was presented for bond approval. A motion to approve the resolution was made, seconded and unanimously approved.\n6. Brooklyn Friends School\nThe project was presented for bond approval. A motion to approve the resolution for Brooklyn Friends School was made, seconded and unanimously approved.\n7. Adjournment\nFINANCING PROPOSAL BROOKLYN FRIENDS SCHOOL PROJECT SUMMARY Brooklyn Friends School seeks financing for facilities located at 383-393 Pearl Street a/k/a 19-23 Willoughby Street, Brooklyn, New York 11201. Financing Amount: $34,000,000. Total Project Cost: $34,000,000. Actions Requested. Project Number - 11675."
+    },
+    {
+      "authority": "nycida",
+      "document_type": "board_minutes",
+      "title": "May 19, 2026 NYCIDA Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf",
+      "index_url": "https://edc.nyc/nycida/financial-public-documents",
+      "text": "MINUTES OF THE MEETING OF THE BOARD OF DIRECTORS OF NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY MAY 19, 2026\n11. F&F Hardware & Supply, Inc.\nThe project was presented for review. A motion to approve the inducement and authorizing resolution for F&F Hardware & Supply, Inc. was made, seconded and unanimously approved.\n12. Granville Stores Corp. and Granville Payne Retail LLC\nThe project was presented for review. A motion to approve the inducement and authorizing resolution for Granville Stores Corp. and Granville Payne Retail LLC was made, seconded and unanimously approved.\n13. Adjournment\nPROJECT NUMBER - 11734 INDUSTRIAL PROGRAM PROPOSAL F&F HARDWARE & SUPPLY, INC. PROJECT SUMMARY The company seeks financial assistance for a facility located at 1275 Oak Point Avenue, Bronx, New York 10474. Total Project Cost: $25,137,585. Actions Requested.\nPROJECT NUMBER - 11595 FRESH PROGRAM PROPOSAL GRANVILLE STORES CORP. AND GRANVILLE PAYNE RETAIL LLC PROJECT SUMMARY The companies seek financial assistance for a facility located at 340 Pennsylvania Avenue a/k/a 626 Sutter Avenue, Brooklyn, New York 11207. Total Project Cost: $3,077,500. Actions Requested."
+    }
+  ],
+  "notices": [
+    {
+      "request_id": "20260313008",
+      "event_date": "2026-03-19T10:00:00.000",
+      "agency_name": "Industrial Development Agency",
+      "additional_description_1": "<b>Company Name:</b> MGN 24-53 49th Street, LLC (the Company). <b>Project Description:</b> Battery storage. <b>Address:</b> 24-53 49th Street, Astoria, New York 11103. <b>Total Project Cost:</b> $13,944,348. <b>Company Name:</b> Outback 1, LLC and Sunnyside 1, LLC (the Companies). <b>Project Description:</b> Battery storage. <b>Address:</b> 42-36 Northern Boulevard, Long Island City, New York 11101. <b>Total Project Cost:</b> $45,000,000."
+    },
+    {
+      "request_id": "20260313009",
+      "event_date": "2026-03-19T10:00:00.000",
+      "agency_name": "Build NYC Resource Corporation",
+      "additional_description_1": "<b>Borrower Name:</b> Brooklyn Friends School (the Borrower). <b>Financing Amount:</b> $34,000,000. <b>Project Description:</b> School facilities. <b>Address:</b> 383-393 Pearl Street a/k/a 19-23 Willoughby Street, Brooklyn, New York 11201. <b>Total Project Cost:</b> $34,000,000."
+    },
+    {
+      "request_id": "20260414006",
+      "event_date": "2026-05-14T10:00:00.000",
+      "agency_name": "Industrial Development Agency",
+      "additional_description_1": "<b>Company Name:</b> F&amp;F Hardware &amp; Supply, Inc. (the Company). <b>Project Description:</b> Warehouse. <b>Address:</b> 1275 Oak Point Avenue, Bronx, New York 10474. <b>Total Project Cost:</b> $25,137,585. <b>Company Name:</b> Granville Stores Corp. and Granville Payne Retail LLC (the Companies). <b>Project Description:</b> Supermarket. <b>Address:</b> 340 Pennsylvania Avenue a/k/a 626 Sutter Avenue, Brooklyn, New York 11207. <b>Total Project Cost:</b> $3,077,500."
+    }
+  ],
+  "reviews": [
+    {
+      "notice_project_key": "20260313008:1",
+      "accept": true,
+      "expected_project_name": "MGN 24-53 49th Street, LLC & MGN 150 Liberty, LLC",
+      "review_note": "Company and facility address agree; board date is five days after hearing."
+    },
+    {
+      "notice_project_key": "20260313008:2",
+      "accept": true,
+      "expected_project_name": "Outback 1, LLC & Sunnyside 1, LLC",
+      "review_note": "Both company names and facility address agree; board date is five days after hearing."
+    },
+    {
+      "notice_project_key": "20260313009:1",
+      "accept": true,
+      "expected_project_name": "Brooklyn Friends School",
+      "review_note": "Borrower and Pearl Street facility agree; board date is five days after hearing."
+    },
+    {
+      "notice_project_key": "20260414006:1",
+      "accept": true,
+      "expected_project_name": "F&F Hardware & Supply, Inc.",
+      "review_note": "Company and Oak Point Avenue facility agree; board date is five days after hearing."
+    },
+    {
+      "notice_project_key": "20260414006:2",
+      "accept": true,
+      "expected_project_name": "Granville Stores Corp. and Granville Payne Retail LLC",
+      "review_note": "Company and Pennsylvania Avenue facility agree; board date is five days after hearing."
+    }
+  ]
+}

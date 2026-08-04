@@ -357,10 +357,10 @@
     {
       "id": "nycida-build-nyc-projects",
       "source_system": "nycida_build_nyc_projects",
-      "importer": "worker/src/subsidy_lifecycle.mjs#computeLifecycle",
+      "importer": "warehouse/scripts/nycedc_project_documents_run.py",
       "identity_entities": ["project", "company", "address"],
       "stable_source_key": "project_id",
-      "observation_schema": null,
+      "observation_schema": "warehouse/schemas/nycedc_project_feed.v1.schema.json",
       "dual_write": {
         "flag": null,
         "before": "gap",
@@ -375,9 +375,9 @@
         "latest_ingested_at": null,
         "measured_at": "2026-08-02T17:02:36.000Z"
       },
-      "fixture": "test/subsidy_lifecycle.test.mjs",
-      "replay_test": null,
-      "known_gap": "Fetched project rows are reduced to per-notice lifecycle cache entries without immutable project observations."
+      "fixture": "warehouse/fixtures/nycedc-project-documents/sample.json",
+      "replay_test": "test/nycedc_project_documents.test.mjs",
+      "known_gap": "Immutable warehouse project observations now exist; production source_records and the dependent timeline reader remain separate work."
     }
   ]
 }

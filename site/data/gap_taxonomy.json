@@ -511,7 +511,7 @@
       ],
       "join_coverage": {},
       "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "ocp-current-solicitations",

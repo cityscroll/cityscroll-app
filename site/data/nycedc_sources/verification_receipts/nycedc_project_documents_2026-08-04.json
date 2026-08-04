@@ -1,0 +1,183 @@
+{
+  "bridge_status": "accepted",
+  "collector": {
+    "checkpoint": "warehouse/raw/nycedc-project-documents/snapshot_date=daily/checkpoint.json",
+    "honest_user_agent": "CityScroll NYCEDC project-document collector/1.0 (+https://cityscroll.org; civic-data refresh)",
+    "host_side": true,
+    "index_403_policy": "one attempt; record blocked; no retry",
+    "polite_delay_ms": 1500,
+    "source_status": [
+      {
+        "cached_documents": 0,
+        "error": "publisher refused polite collector (HTTP 403, no retry): https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+        "last_good_at": null,
+        "status": "blocked",
+        "url": "https://edc.nyc/about-nycedc/financial-public-documents-recordings"
+      },
+      {
+        "content_sha256": "9ae7d92ca7e13550a82b340c1e50b0730651c8c446d2ab213d1b0cd6514beddd",
+        "documents": 62,
+        "mode": "live",
+        "status": "ok",
+        "url": "https://edc.nyc/nycida/financial-public-documents"
+      },
+      {
+        "content_sha256": "d862fc1a19dba1657168b38711937d09b57b5268e89a3c930427b7ec8d177ece",
+        "documents": 491,
+        "mode": "live",
+        "status": "ok",
+        "url": "https://edc.nyc/nycida/project-documents-archive"
+      },
+      {
+        "cached_documents": 0,
+        "error": "publisher refused polite collector (HTTP 403, no retry): https://edc.nyc/build-nyc-financial-public-documents",
+        "last_good_at": null,
+        "status": "blocked",
+        "url": "https://edc.nyc/build-nyc-financial-public-documents"
+      },
+      {
+        "cached_documents": 0,
+        "error": "publisher refused polite collector (HTTP 403, no retry): https://edc.nyc/build-nyc/project-documents-archive",
+        "last_good_at": null,
+        "status": "blocked",
+        "url": "https://edc.nyc/build-nyc/project-documents-archive"
+      }
+    ]
+  },
+  "counts": {
+    "documents": 7,
+    "indexed_project_documents": 492,
+    "materialized_edges": 5,
+    "notice_project_mentions": 12,
+    "projects": 459
+  },
+  "documents": [
+    {
+      "content_sha256": "a81a96f467f64f679ee43cab4fe6eaf433477d5c4eb8d58f69da6271d109caaf",
+      "document_type": "annual_project_spreadsheet",
+      "source_url": "https://edc.nyc/sites/default/files/2026-01/NYCEDC-FY2025-Project-Information-Spreadsheet.xlsx"
+    },
+    {
+      "content_sha256": "f0d13b90986db34d33bed52bfc3ee57584e63796c5748d12bd8a41f92d5fe775",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-04/NYCIDA-January-27-2026-board-meeting-minutes-APPROVED.pdf"
+    },
+    {
+      "content_sha256": "983c30ba5fa9718c09ef1acda981887a30edb3dd8e7d89e0d01a4e2840208b44",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-02/BNYC-January-27-2026-board-meeting-minutes-DRAFT.pdf"
+    },
+    {
+      "content_sha256": "fa9214c6831a2929f1a0f2b01c8dbe8c1a2694b01ebe3188bac54b75dba9d19a",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-March-24-2026-board-meeting-minutes_0.pdf"
+    },
+    {
+      "content_sha256": "0bd7d483151d2eeb98165a0b352b9c03b41fe4c918866eaf32cf2ed94da1957f",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-March-24-2026-board-meeting-minutes_0.pdf"
+    },
+    {
+      "content_sha256": "93b54bf47bf6a57cd6efe12258e55830084d05ab078da896290446a46c081e46",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf"
+    },
+    {
+      "content_sha256": "6cb0d2a028cd25afb7a54ef07a173d0ff55c7135d3a5a342fc1871d9e0348b33",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-May-19-2026-board-meeting-minutes-DRAFT.pdf"
+    }
+  ],
+  "false_positive_review": {
+    "decisions": [
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Grace Church School",
+        "notice_project_key": "20251229015:2",
+        "review_note": "The borrower, Fourth Avenue facility, January 22 hearing, and January 27 board date agree."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Xaverian High School & The Ryken Educational Center",
+        "notice_project_key": "20251229015:3",
+        "review_note": "The school, Shore Road facility, January 22 hearing, and January 27 board date agree; the minutes include the affiliated guarantor."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Brooklyn Friends School",
+        "notice_project_key": "20260313009:1",
+        "review_note": "The borrower, Pearl Street facility, March 19 hearing, and March 24 board date agree."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "F&F Hardware & Supply, Inc.",
+        "notice_project_key": "20260414006:1",
+        "review_note": "The company, Oak Point Avenue facility, May 14 hearing, and May 19 board date agree."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Granville Stores Corp. and Granville Payne Retail LLC",
+        "notice_project_key": "20260414006:2",
+        "review_note": "The company stem, Pennsylvania Avenue facility, May 14 hearing, and May 19 board date agree; the minutes identify the related project entity."
+      }
+    ],
+    "false_positives": 0,
+    "review_keys": [
+      "20251229015:2",
+      "20251229015:3",
+      "20260313009:1",
+      "20260414006:1",
+      "20260414006:2"
+    ],
+    "reviewed": 5,
+    "unreviewed_candidates": 0
+  },
+  "honest_absent": 7,
+  "kill_reason": null,
+  "mode": "live",
+  "observed_at": "2026-08-04T11:49:21Z",
+  "outcome_policy": "board outcome is emitted only from explicit motion/vote language; a scheduled hearing is never approval",
+  "payload_contract": "warehouse/schemas/nycedc_project_feed.v1.schema.json",
+  "sample": {
+    "denominator": 12,
+    "join_rate": 0.4167,
+    "kind": "fixed_notice_project_mentions",
+    "notice_request_ids": [
+      "20251229014",
+      "20251229015",
+      "20260313008",
+      "20260313009",
+      "20260414006",
+      "20260414007"
+    ],
+    "numerator": 5
+  },
+  "schema": "cityscroll.nycedc_project_join_receipt.v1",
+  "strategies": {
+    "name_address_date": {
+      "candidates": 5,
+      "rule": "unique normalized name plus address plus board date 0..45 days after hearing"
+    },
+    "request_id": {
+      "candidates": 0,
+      "rule": "exact publisher request ID only"
+    }
+  },
+  "threshold": 0.3,
+  "warehouse": {
+    "database": "warehouse/duckdb/cityscroll.duckdb",
+    "headroom_gate": true,
+    "single_job_lock": true,
+    "tables": [
+      "nycedc_documents",
+      "nycedc_projects",
+      "nycedc_project_notice_edges"
+    ],
+    "view": "nycedc_project_feed"
+  }
+}

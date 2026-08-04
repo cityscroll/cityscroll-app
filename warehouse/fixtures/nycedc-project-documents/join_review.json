@@ -1,0 +1,36 @@
+{
+  "schema": "cityscroll.nycedc_project_join_review.v1",
+  "sample_fixed_on": "2026-08-04",
+  "reviews": [
+    {
+      "notice_project_key": "20251229015:2",
+      "accept": true,
+      "expected_project_name": "Grace Church School",
+      "review_note": "The borrower, Fourth Avenue facility, January 22 hearing, and January 27 board date agree."
+    },
+    {
+      "notice_project_key": "20251229015:3",
+      "accept": true,
+      "expected_project_name": "Xaverian High School & The Ryken Educational Center",
+      "review_note": "The school, Shore Road facility, January 22 hearing, and January 27 board date agree; the minutes include the affiliated guarantor."
+    },
+    {
+      "notice_project_key": "20260313009:1",
+      "accept": true,
+      "expected_project_name": "Brooklyn Friends School",
+      "review_note": "The borrower, Pearl Street facility, March 19 hearing, and March 24 board date agree."
+    },
+    {
+      "notice_project_key": "20260414006:1",
+      "accept": true,
+      "expected_project_name": "F&F Hardware & Supply, Inc.",
+      "review_note": "The company, Oak Point Avenue facility, May 14 hearing, and May 19 board date agree."
+    },
+    {
+      "notice_project_key": "20260414006:2",
+      "accept": true,
+      "expected_project_name": "Granville Stores Corp. and Granville Payne Retail LLC",
+      "review_note": "The company stem, Pennsylvania Avenue facility, May 14 hearing, and May 19 board date agree; the minutes identify the related project entity."
+    }
+  ]
+}
