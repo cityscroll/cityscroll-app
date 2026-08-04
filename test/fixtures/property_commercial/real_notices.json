@@ -92,7 +92,7 @@
       },
       "attachments": [],
       "expect": {
-        "category": "other",
+        "category": "rights_and_interests",
         "has_price": true,
         "price_kinds": ["upset_price", "minimum_bid"],
         "deal_status": "insufficient",
