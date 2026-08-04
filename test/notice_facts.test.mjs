@@ -18,8 +18,10 @@ for (const entry of fixture.cases) {
   test(`real notice ${entry.request_id}: extracts only labeled facts`, () => {
     const facts = extractNoticeFacts(entry.row);
     assert.deepEqual(compact(facts), entry.expected);
-    for (const group of Object.values(facts)) {
-      for (const fact of group) {
+    assert.ok(facts.procurement_method);
+    assert.equal(typeof facts.procurement_method, "object");
+    for (const key of ["identifiers", "deadlines", "parties"]) {
+      for (const fact of facts[key]) {
         assert.equal(fact.source, "notice_body");
         assert.ok(fact.evidence.length >= 8);
       }

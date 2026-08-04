@@ -1,0 +1,236 @@
+{
+  "source": "NYC City Record Online (dg92-zbpx) solicitation language, reduced to extraction-relevant excerpts (no contact fields)",
+  "observed_at": "2026-08-03",
+  "cases": [
+    {
+      "request_id": "20260720022",
+      "note": "DOT REI CSP \u2014 \u00a76-129 with 30% MWBE goal",
+      "row": {
+        "request_id": "20260720022",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Proposals",
+        "additional_description_1": "<p>This procurement is subject to participation goals for Minority-Owned Business Enterprises (MBEs) as required by Section 6-129 of the New York Administrative Code. The MWBE goal for this project is 30%.</p>"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": 30,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260608045",
+      "note": "Parks bid \u2014 subject to \u00a76-129 without numeric goal",
+      "row": {
+        "request_id": "20260608045",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Bids",
+        "additional_description_1": "<p>This procurement is subject to Section 6-129 of the New York City Administrative Code. Bid submissions must be submitted in PASSPort.</p>"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260527019",
+      "note": "DOHMH RFP \u2014 participation goals for MBEs/WBEs as required by \u00a76-129",
+      "row": {
+        "request_id": "20260527019",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Proposals",
+        "additional_description_1": "<p>This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code.</p>"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260518022",
+      "note": "Parks playground \u2014 subject to \u00a76-129",
+      "row": {
+        "request_id": "20260518022",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Bids",
+        "additional_description_1": "<p>This Procurement is subject to Section 6-129 of the New York City Administrative Code. Bid Submissions must be submitted in PASSPort.</p>"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20251118032",
+      "note": "DOI OpenText \u2014 M/WBE Noncompetitive Small Purchase \u00a73-08",
+      "row": {
+        "request_id": "20251118032",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+        "additional_description_1": "<p>This solicitation is being made pursuant to the M/WBE Noncompetitive Small Purchase Method, Section 3-08 of the New York City Procurement Policy Board (PPB) Rules, this procurement is exclusively for the City Certified Minority and Woman Owned Business (M/WBEs). Contracts awarded under this method may not exceed $1,500,000.00.</p>"
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": true,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20250903006",
+      "note": "DOI Veeam \u2014 M/WBE Noncompetitive Small Purchase",
+      "row": {
+        "request_id": "20250903006",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+        "additional_description_1": "<p>This solicitation is being made pursuant to the M/WBE Noncompetitive Small Purchase Method, Section 3-08 of the New York City Procurement Policy Board (PPB) Rules, this procurement is exclusively for the City Certified Minority and Woman Owned Business (M/WBEs).</p>"
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": true,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20250717037",
+      "note": "DOI audit consulting \u2014 M/WBE Noncompetitive Small Purchase",
+      "row": {
+        "request_id": "20250717037",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+        "additional_description_1": "<p>This solicitation is being made pursuant to the M/WBE Noncompetitive Small Purchase Method, Section 3-08 of the New York City Procurement Policy Board (PPB) Rules.</p>"
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": true,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260727019",
+      "note": "Governors Island construction RFP \u2014 no \u00a76-129/NCSP",
+      "row": {
+        "request_id": "20260727019",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Request for Proposals",
+        "additional_description_1": "<p>Request for Proposals (RFP) to provide general construction services for the stabilization of Building 324 as described in the design documents.</p>"
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260720016",
+      "note": "Parks ferry concession RFP \u2014 no \u00a76-129/NCSP",
+      "row": {
+        "request_id": "20260720016",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Proposals",
+        "additional_description_1": "<p>In accordance with Section 1-13 of the Concession Rules of the City of New York, Parks is issuing a non-significant Request for Proposals (RFP) for the Operation and Maintenance of a Ferry Service.</p>"
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260724027",
+      "note": "NYCHA generator maintenance \u2014 competitive bid without \u00a76-129",
+      "row": {
+        "request_id": "20260724027",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Bids",
+        "additional_description_1": "<p>The scope of work is for the repair and service of emergency back-up generators and may include quarterly and annual preventive maintenance. This Solicitation is not subject to PLA.</p>"
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    }
+  ]
+}
