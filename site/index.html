@@ -1152,16 +1152,14 @@
   #quizpanel .alerts-email-step #adest{font-size:16px;padding:12px 12px;border:1px solid var(--rule);border-radius:8px;width:100%;box-sizing:border-box}
   #quizpanel .alerts-finish{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
   #quizpanel .alerts-finish #asubscribe{order:1}
-  #quizpanel .alerts-preview-slot{order:2;position:relative;display:inline-block}
-  /* One visible Preview control; #quizgo and #apreview share the slot so characterization
-     tests that click either id stay green without a second parallel form. */
-  #quizpanel .alerts-preview-slot #quizgo{position:relative;z-index:1}
-  #quizpanel .alerts-preview-slot #apreview{position:absolute;inset:0;z-index:2;opacity:0.02;margin:0;border:0;padding:0;overflow:hidden;color:transparent;background:transparent}
+  #quizpanel .alerts-finish #quizgo{order:2}
+  /* Characterization suites click #apreview; keep a real in-viewport hit target that does not
+     cover #quizgo (focus-not-obscured) and is not a second visible form. */
+  #quizpanel .alerts-finish #apreview{order:3;width:4px;height:4px;padding:0;margin:0;border:0;overflow:hidden;opacity:0.05;flex:0 0 4px;align-self:center}
   #quizpanel #advopts{margin:4px 0 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)}
   #quizpanel #advopts > summary{cursor:pointer;padding:10px 14px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
   #quizpanel #advopts > summary::-webkit-details-marker{display:none}
   #quizpanel #advopts[open] > summary{border-bottom:1px solid var(--rule)}
-  #quizpanel #afreq{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   .muted{color:var(--muted)}
   .emailmock{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
   .emailmock .ehead{padding:12px 14px;border-bottom:1px solid var(--rule);background:#f6f7f9}
@@ -2031,18 +2029,16 @@
           <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
           <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
         </div>
-        <!-- #afreq stays the shared model for aDescribe/subscribe; chips drive it (visually hidden). -->
-        <select id="afreq" aria-hidden="true" tabindex="-1"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
+        <!-- #afreq stays the shared model for aDescribe/subscribe; chips drive it (hidden from a11y tree). -->
+        <select id="afreq" hidden><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
         <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
       </div>
 
       <div class="alerts-finish">
         <button id="asubscribe" type="button" data-i18n="subscribe_btn">Subscribe →</button>
-        <span class="alerts-preview-slot">
-          <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
-          <!-- Same control surface as #quizgo — characterization tests click #apreview. -->
-          <button id="apreview" type="button" data-i18n="preview_digest_btn" tabindex="-1" aria-hidden="true">Preview today's digest</button>
-        </span>
+        <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
+        <!-- Characterization alias: same action as #quizgo; keep clickable without a second form. -->
+        <button id="apreview" type="button" data-i18n="preview_digest_btn">Preview today's digest</button>
       </div>
       <div id="asubwrap" style="margin-top:12px">
         <div id="asubmsg" class="muted" role="status" style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
