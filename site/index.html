@@ -670,6 +670,12 @@
   .tax-lien-card-note .tax-lien-card-deadline[data-deadline-state="closed"]{color:var(--muted);font-weight:600}
   .tax-lien-card-note .tax-lien-card-deadline[data-deadline-state="closing-soon"]{color:var(--amber)}
   .tax-lien-card-note .tax-lien-card-deadline[data-deadline-state="open"]{color:var(--green)}
+  /* Human Services award→registration dwell strip (payment-honesty framing). */
+  .award-reg-dwell{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);border-inline-start:3px solid var(--rule);padding:7px 0 7px 10px;margin:10px 0 4px}
+  .award-reg-dwell[data-reg-dwell-status="found"]{border-inline-start-color:var(--green, #34533f);color:var(--ink)}
+  .award-reg-dwell[data-reg-dwell-status="unknown"]{border-inline-start-color:var(--rule);color:var(--muted)}
+  .award-reg-dwell .award-reg-dwell-line{margin:0}
+  .award-reg-dwell .award-reg-dwell-frame{margin:4px 0 0;font-size:12px;color:var(--muted)}
   .tax-lien-cycle-context{margin:0 0 18px}
   .tax-lien-cycle-context .tax-lien-deadline-live{font:750 14px/1.4 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px}
   .tax-lien-cycle-context .tax-lien-deadline-live[data-deadline-state="open"]{color:var(--green)}

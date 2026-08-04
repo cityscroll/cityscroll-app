@@ -1362,6 +1362,14 @@ const STRINGS = {
     // Term ended with underrun: committed is a registration ceiling, not a remaining bill
     // (field case #notice/20230728114 — 57% of ceiling is complete Checkbook data).
     lifecycle_committed_ceiling_note_html: "Committed is a registration ceiling, not a remaining balance due — human-services contracts often close below the registered amount.",
+    // Human Services award → registration dwell strip (precomputed; payment-honesty framing).
+    // Never invent dwell for unknown — unknown is a quiet line, never "0 days" / instant.
+    award_reg_dwell_after_html: "Registered {days} days after the award notice ({award} → {registration}).",
+    award_reg_dwell_before_html: "Registered {days} days before the City Record award notice (PASSPort {registration} · award notice {award}).",
+    award_reg_dwell_same_day_html: "Registered the same day as the award notice ({award}).",
+    award_reg_dwell_unknown_html: "PASSPort registration date not matched for this award.",
+    award_reg_dwell_payment_frame_html: "Registration starts the payment clock — $0 paid right after registration is normal. Spending often lags invoicing.",
+    award_reg_dwell_aria: "Award to registration dwell",
     // Three-state honesty: spending feed error must not look like verified $0.
     lifecycle_payment_unavailable_html: "Payment data unavailable right now — Checkbook spending could not be checked.",
     lifecycle_dollars_paid_unavailable_html: "Unavailable right now",
