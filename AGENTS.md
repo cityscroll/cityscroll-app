@@ -1004,6 +1004,20 @@ Precompute-first — no live fetch at render. Exemplars: Police Officer `7312`
 Service Worker `7013` (EEE, experience). Verify:
 `node --test test/noe_differentiators.test.mjs`.
 
+## Exam interest-area / series taxonomy
+
+Interest areas (public safety, social services, trades, admin, IT, etc.) are a
+**data mapping**, not hard-coded rules in the build: committed file
+`site/data/exam_sources/interest_area_taxonomy.json` (title rules + optional
+`exam_overrides` / `title_code_overrides`). Pure lib:
+`site/exam_interest_taxonomy.mjs`. `tools/build_staffing_exams.mjs` tags every
+exam `interest_area` and emits `interest_taxonomy` on
+`site/data/staffing_exams.json` — area descriptors plus per-area exam lists
+with open / upcoming / closed window counts. Areas mark `subscribable` for a
+future alerts surface; that surface is a **separate gated card** (not shipped
+here). Rebuild after mapping edits: `node tools/build_staffing_exams.mjs`.
+Verify: `node --test test/exam_interest_taxonomy.test.mjs`.
+
 ## Digest watermark recovery (catch-up digests)
 
 **markSeen policy (hard rule):** `markSeen` advances the delivery-adjacent seen set

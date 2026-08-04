@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "generated_at": "2026-08-03",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
@@ -12,6 +12,611 @@
     "trades-operations",
     "other"
   ],
+  "interest_taxonomy": {
+    "schema_version": 1,
+    "id": "exam-interest-area-taxonomy",
+    "name": "Civil-service exam interest areas",
+    "mapping_source": "exam_sources/interest_area_taxonomy.json",
+    "default_area": "other",
+    "alerts_surface": "separate_gated_card",
+    "areas": [
+      {
+        "id": "public-safety",
+        "label": "Public safety",
+        "description": "Police, fire, correction, traffic enforcement, and related protective titles.",
+        "subscribable": true,
+        "order": 10,
+        "i18n_key": "career_area_public_safety"
+      },
+      {
+        "id": "health-care",
+        "label": "Health and care",
+        "description": "Clinical, public-health, therapy, and care titles.",
+        "subscribable": true,
+        "order": 20,
+        "i18n_key": "career_area_health_care"
+      },
+      {
+        "id": "engineering-construction",
+        "label": "Engineering and construction",
+        "description": "Engineering, architecture, inspection, and construction titles.",
+        "subscribable": true,
+        "order": 30,
+        "i18n_key": "career_area_engineering"
+      },
+      {
+        "id": "technology-science",
+        "label": "Technology and science",
+        "description": "IT, laboratory, research, and technical science titles.",
+        "subscribable": true,
+        "order": 40,
+        "i18n_key": "career_area_technology"
+      },
+      {
+        "id": "community-social-services",
+        "label": "Community and social services",
+        "description": "Casework, housing, youth, and community program titles.",
+        "subscribable": true,
+        "order": 50,
+        "i18n_key": "career_area_community"
+      },
+      {
+        "id": "administration-finance",
+        "label": "Administration and finance",
+        "description": "Clerical, finance, procurement, and administrative titles.",
+        "subscribable": true,
+        "order": 60,
+        "i18n_key": "career_area_administration"
+      },
+      {
+        "id": "trades-operations",
+        "label": "Trades and operations",
+        "description": "Skilled trades, facilities, fleet, and field operations titles.",
+        "subscribable": true,
+        "order": 70,
+        "i18n_key": "career_area_trades"
+      },
+      {
+        "id": "other",
+        "label": "Other City work",
+        "description": "Titles that do not yet match a named interest series. Prefer adding a title_rule or exam_override over inventing a new area casually.",
+        "subscribable": false,
+        "order": 90,
+        "i18n_key": "career_area_other"
+      }
+    ],
+    "by_area": {
+      "public-safety": {
+        "id": "public-safety",
+        "exam_count": 60,
+        "open_count": 2,
+        "upcoming_count": 42,
+        "closed_count": 16,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 44,
+        "open_exam_numbers": [
+          "7323",
+          "7331"
+        ],
+        "upcoming_exam_numbers": [
+          "7009",
+          "7058",
+          "7302",
+          "7303",
+          "7304",
+          "7305",
+          "7306",
+          "7307",
+          "7308",
+          "7309",
+          "7310",
+          "7312",
+          "7313",
+          "7314",
+          "7315",
+          "7316",
+          "7317",
+          "7318",
+          "7319",
+          "7320",
+          "7321",
+          "7322",
+          "7324",
+          "7325",
+          "7326",
+          "7327",
+          "7328",
+          "7329",
+          "7330",
+          "7332",
+          "7333",
+          "7334",
+          "7506",
+          "7509",
+          "7510",
+          "7517",
+          "7520",
+          "7528",
+          "7529",
+          "7533",
+          "7534",
+          "7535"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6301",
+          "6304",
+          "6310",
+          "6311",
+          "6312",
+          "6313",
+          "6314",
+          "6315",
+          "6316",
+          "6318",
+          "6323",
+          "6324",
+          "6325",
+          "6330",
+          "6539",
+          "7009",
+          "7058",
+          "7302",
+          "7303",
+          "7304",
+          "7305",
+          "7306",
+          "7307",
+          "7308",
+          "7309",
+          "7310",
+          "7311",
+          "7312",
+          "7313",
+          "7314",
+          "7315",
+          "7316",
+          "7317",
+          "7318",
+          "7319",
+          "7320",
+          "7321",
+          "7322",
+          "7323",
+          "7324",
+          "7325",
+          "7326",
+          "7327",
+          "7328",
+          "7329",
+          "7330",
+          "7331",
+          "7332",
+          "7333",
+          "7334",
+          "7506",
+          "7509",
+          "7510",
+          "7517",
+          "7520",
+          "7528",
+          "7529",
+          "7533",
+          "7534",
+          "7535"
+        ]
+      },
+      "health-care": {
+        "id": "health-care",
+        "exam_count": 22,
+        "open_count": 3,
+        "upcoming_count": 9,
+        "closed_count": 10,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 12,
+        "open_exam_numbers": [
+          "6125",
+          "6126",
+          "7018"
+        ],
+        "upcoming_exam_numbers": [
+          "7000",
+          "7025",
+          "7026",
+          "7031",
+          "7032",
+          "7052",
+          "7053",
+          "7054",
+          "7059"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6053",
+          "6054",
+          "6064",
+          "6078",
+          "6079",
+          "6080",
+          "6081",
+          "6082",
+          "6092",
+          "6125",
+          "6126",
+          "6550",
+          "7000",
+          "7018",
+          "7025",
+          "7026",
+          "7031",
+          "7032",
+          "7052",
+          "7053",
+          "7054",
+          "7059"
+        ]
+      },
+      "engineering-construction": {
+        "id": "engineering-construction",
+        "exam_count": 42,
+        "open_count": 1,
+        "upcoming_count": 19,
+        "closed_count": 22,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 20,
+        "open_exam_numbers": [
+          "7006"
+        ],
+        "upcoming_exam_numbers": [
+          "7020",
+          "7022",
+          "7033",
+          "7039",
+          "7040",
+          "7041",
+          "7042",
+          "7043",
+          "7056",
+          "7061",
+          "7063",
+          "7069",
+          "7508",
+          "7515",
+          "7516",
+          "7522",
+          "7523",
+          "7527",
+          "7532"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6001",
+          "6011",
+          "6012",
+          "6014",
+          "6015",
+          "6016",
+          "6021",
+          "6034",
+          "6046",
+          "6066",
+          "6074",
+          "6091",
+          "6101",
+          "6113",
+          "6501",
+          "6512",
+          "6517",
+          "6522",
+          "6533",
+          "6537",
+          "6549",
+          "7006",
+          "7007",
+          "7020",
+          "7022",
+          "7033",
+          "7039",
+          "7040",
+          "7041",
+          "7042",
+          "7043",
+          "7056",
+          "7061",
+          "7063",
+          "7069",
+          "7508",
+          "7515",
+          "7516",
+          "7522",
+          "7523",
+          "7527",
+          "7532"
+        ]
+      },
+      "technology-science": {
+        "id": "technology-science",
+        "exam_count": 7,
+        "open_count": 0,
+        "upcoming_count": 4,
+        "closed_count": 3,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 4,
+        "open_exam_numbers": [],
+        "upcoming_exam_numbers": [
+          "7062",
+          "7065",
+          "7068",
+          "7538"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6037",
+          "6076",
+          "6519",
+          "7062",
+          "7065",
+          "7068",
+          "7538"
+        ]
+      },
+      "community-social-services": {
+        "id": "community-social-services",
+        "exam_count": 23,
+        "open_count": 1,
+        "upcoming_count": 12,
+        "closed_count": 10,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 13,
+        "open_exam_numbers": [
+          "7016"
+        ],
+        "upcoming_exam_numbers": [
+          "7002",
+          "7037",
+          "7038",
+          "7071",
+          "7072",
+          "7073",
+          "7074",
+          "7301",
+          "7501",
+          "7511",
+          "7518",
+          "7541"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6002",
+          "6018",
+          "6035",
+          "6058",
+          "6063",
+          "6089",
+          "6090",
+          "6531",
+          "6532",
+          "7002",
+          "7016",
+          "7037",
+          "7038",
+          "7071",
+          "7072",
+          "7073",
+          "7074",
+          "7301",
+          "7501",
+          "7511",
+          "7514",
+          "7518",
+          "7541"
+        ]
+      },
+      "administration-finance": {
+        "id": "administration-finance",
+        "exam_count": 29,
+        "open_count": 0,
+        "upcoming_count": 20,
+        "closed_count": 9,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 20,
+        "open_exam_numbers": [],
+        "upcoming_exam_numbers": [
+          "7001",
+          "7003",
+          "7004",
+          "7005",
+          "7017",
+          "7019",
+          "7023",
+          "7024",
+          "7047",
+          "7057",
+          "7060",
+          "7067",
+          "7500",
+          "7502",
+          "7503",
+          "7504",
+          "7505",
+          "7530",
+          "7531",
+          "7537"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6022",
+          "6023",
+          "6029",
+          "6043",
+          "6068",
+          "6088",
+          "6094",
+          "6105",
+          "6502",
+          "7001",
+          "7003",
+          "7004",
+          "7005",
+          "7017",
+          "7019",
+          "7023",
+          "7024",
+          "7047",
+          "7057",
+          "7060",
+          "7067",
+          "7500",
+          "7502",
+          "7503",
+          "7504",
+          "7505",
+          "7530",
+          "7531",
+          "7537"
+        ]
+      },
+      "trades-operations": {
+        "id": "trades-operations",
+        "exam_count": 45,
+        "open_count": 1,
+        "upcoming_count": 33,
+        "closed_count": 11,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 34,
+        "open_exam_numbers": [
+          "7013"
+        ],
+        "upcoming_exam_numbers": [
+          "7008",
+          "7010",
+          "7011",
+          "7012",
+          "7014",
+          "7015",
+          "7021",
+          "7027",
+          "7028",
+          "7029",
+          "7030",
+          "7034",
+          "7035",
+          "7036",
+          "7044",
+          "7045",
+          "7046",
+          "7048",
+          "7049",
+          "7050",
+          "7051",
+          "7064",
+          "7066",
+          "7070",
+          "7507",
+          "7512",
+          "7513",
+          "7521",
+          "7525",
+          "7526",
+          "7536",
+          "7539",
+          "7540"
+        ],
+        "continuous_exam_numbers": [],
+        "exam_numbers": [
+          "6013",
+          "6024",
+          "6028",
+          "6067",
+          "6073",
+          "6086",
+          "6115",
+          "6306",
+          "6530",
+          "6551",
+          "7008",
+          "7010",
+          "7011",
+          "7012",
+          "7013",
+          "7014",
+          "7015",
+          "7021",
+          "7027",
+          "7028",
+          "7029",
+          "7030",
+          "7034",
+          "7035",
+          "7036",
+          "7044",
+          "7045",
+          "7046",
+          "7048",
+          "7049",
+          "7050",
+          "7051",
+          "7064",
+          "7066",
+          "7070",
+          "7507",
+          "7512",
+          "7513",
+          "7521",
+          "7524",
+          "7525",
+          "7526",
+          "7536",
+          "7539",
+          "7540"
+        ]
+      },
+      "other": {
+        "id": "other",
+        "exam_count": 0,
+        "open_count": 0,
+        "upcoming_count": 0,
+        "closed_count": 0,
+        "canceled_count": 0,
+        "postponed_count": 0,
+        "unscheduled_count": 0,
+        "continuous_count": 0,
+        "actionable_count": 0,
+        "open_exam_numbers": [],
+        "upcoming_exam_numbers": [],
+        "continuous_exam_numbers": [],
+        "exam_numbers": []
+      }
+    },
+    "summary": {
+      "exam_count": 228,
+      "area_count": 8,
+      "tagged_non_other": 228,
+      "open_count": 8,
+      "upcoming_count": 139
+    }
+  },
   "sources": [
     {
       "id": "dcas-open-competitive",
@@ -237,6 +842,12 @@
           "education_level"
         ]
       }
+    },
+    "interest_taxonomy": {
+      "mapping_file": "interest_area_taxonomy.json",
+      "area_count": 8,
+      "tagged_non_other": 228,
+      "exam_count": 228
     }
   },
   "outcomes": {
@@ -473,12 +1084,12 @@
       "application_end": "2025-07-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -523,12 +1134,12 @@
       "application_end": "2025-07-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -565,12 +1176,12 @@
       "application_end": "2025-08-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -607,12 +1218,12 @@
       "application_end": "2025-07-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -649,12 +1260,12 @@
       "application_end": "2025-07-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -691,12 +1302,12 @@
       "application_end": "2025-07-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -733,12 +1344,12 @@
       "application_end": "2025-07-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -783,12 +1394,12 @@
       "application_end": "2025-07-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -825,12 +1436,12 @@
       "application_end": "2025-07-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -867,12 +1478,12 @@
       "application_end": "2025-07-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -909,12 +1520,12 @@
       "application_end": "2025-07-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -951,12 +1562,12 @@
       "application_end": "2025-07-29",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -993,12 +1604,12 @@
       "application_end": "2025-08-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1035,12 +1646,12 @@
       "application_end": "2025-08-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1077,12 +1688,12 @@
       "application_end": "2025-08-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1119,12 +1730,12 @@
       "application_end": "2025-08-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1161,12 +1772,12 @@
       "application_end": "2025-08-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1203,12 +1814,12 @@
       "application_end": "2025-08-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1245,12 +1856,12 @@
       "application_end": "2025-08-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1287,12 +1898,12 @@
       "application_end": "2025-08-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1329,12 +1940,12 @@
       "application_end": "2025-08-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1371,12 +1982,12 @@
       "application_end": "2025-09-15",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1413,12 +2024,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1455,12 +2066,12 @@
       "application_end": "2025-09-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1497,12 +2108,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1539,12 +2150,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1581,12 +2192,12 @@
       "application_end": "2025-10-29",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1623,12 +2234,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1665,12 +2276,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1707,12 +2318,12 @@
       "application_end": "2025-09-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1749,12 +2360,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1791,12 +2402,12 @@
       "application_end": "2025-09-30",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1833,12 +2444,12 @@
       "application_end": "2025-09-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1875,12 +2486,12 @@
       "application_end": "2025-10-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1917,12 +2528,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -1959,12 +2570,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2001,12 +2612,12 @@
       "application_end": "2025-10-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2043,12 +2654,12 @@
       "application_end": "2025-10-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2085,12 +2696,12 @@
       "application_end": "2025-10-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2127,12 +2738,12 @@
       "application_end": "2025-10-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2169,12 +2780,12 @@
       "application_end": "2025-10-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2211,12 +2822,12 @@
       "application_end": "2025-11-17",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2253,12 +2864,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2295,12 +2906,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "technology-science",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2337,12 +2948,12 @@
       "application_end": "2025-11-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "technology-science",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2379,12 +2990,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2421,12 +3032,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2463,12 +3074,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2505,12 +3116,12 @@
       "application_end": "2025-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2547,12 +3158,12 @@
       "application_end": "2025-12-02",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2589,12 +3200,12 @@
       "application_end": "2025-12-15",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2631,12 +3242,12 @@
       "application_end": "2025-12-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2673,12 +3284,12 @@
       "application_end": "2025-12-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2715,12 +3326,12 @@
       "application_end": "2025-12-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2757,12 +3368,12 @@
       "application_end": "2025-12-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2799,12 +3410,12 @@
       "application_end": "2025-12-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2841,12 +3452,12 @@
       "application_end": "2026-01-15",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2883,12 +3494,12 @@
       "application_end": "2026-01-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2925,12 +3536,12 @@
       "application_end": "2026-01-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -2967,12 +3578,12 @@
       "application_end": "2026-01-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3009,12 +3620,12 @@
       "application_end": "2026-01-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3051,12 +3662,12 @@
       "application_end": "2026-01-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3093,12 +3704,12 @@
       "application_end": "2026-01-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3135,12 +3746,12 @@
       "application_end": "2026-02-17",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3177,12 +3788,12 @@
       "application_end": "2026-01-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3219,12 +3830,12 @@
       "application_end": "2026-02-06",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3261,12 +3872,12 @@
       "application_end": "2026-02-17",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3303,12 +3914,12 @@
       "application_end": "2026-02-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3345,12 +3956,12 @@
       "application_end": "2026-02-24",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3387,12 +3998,12 @@
       "application_end": "2026-02-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3429,12 +4040,12 @@
       "application_end": "2026-02-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3471,12 +4082,12 @@
       "application_end": "2026-02-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3513,12 +4124,12 @@
       "application_end": "2026-03-24",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3555,12 +4166,12 @@
       "application_end": "2026-03-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3597,12 +4208,12 @@
       "application_end": "2026-03-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3639,12 +4250,12 @@
       "application_end": "2026-03-24",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3681,12 +4292,12 @@
       "application_end": "2026-04-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-closed-list-depth",
         "dcas-active-civil-service-list"
       ],
       "list_depth": true,
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -3956,7 +4567,6 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
@@ -3965,6 +4575,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "engineering-construction",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf",
       "fee": 82,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
@@ -4084,12 +4695,12 @@
       "application_end": "2026-07-21",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "engineering-construction",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277007000.pdf",
       "card_leads": [
         {
@@ -4143,7 +4754,6 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
@@ -4152,6 +4762,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "trades-operations",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf",
       "fee": 61,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
@@ -4270,7 +4881,6 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
@@ -4279,6 +4889,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "community-social-services",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
       "fee": 68,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
@@ -4397,7 +5008,6 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
@@ -4406,6 +5016,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "health-care",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf",
       "fee": 68,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
@@ -4524,10 +5135,10 @@
       "application_end": "2026-07-21",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -4577,10 +5188,10 @@
       "application_end": "2026-07-21",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -4630,12 +5241,12 @@
       "application_end": "2026-07-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -4689,7 +5300,6 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
@@ -4698,6 +5308,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf",
       "fee": 61,
       "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
@@ -4808,7 +5419,6 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-open-competitive",
@@ -4817,6 +5427,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf",
       "fee": 0,
       "fee_waiver": "No application fee is charged for this exam.",
@@ -4940,7 +5551,6 @@
       "application_end": "2026-08-17",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
@@ -4949,6 +5559,7 @@
         "oasys_noe_html",
         "oasys-active-exams"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "fee_waiver": "No application fee is charged for this exam.",
       "qualifications": "By the date of appointment, you must have a four-year high school diploma or its educational equivalent, and successfully completed 24 college semester credits at an accredited college or university with at least a 2.0 cumulative index or its equivalent, or have completed two years of honorable full-time U.S. milita…",
@@ -5088,10 +5699,10 @@
       "application_end": "2026-08-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5141,10 +5752,10 @@
       "application_end": "2026-08-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5194,10 +5805,10 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5247,10 +5858,10 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5300,10 +5911,10 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5353,10 +5964,10 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5406,10 +6017,10 @@
       "application_end": "2026-10-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5459,10 +6070,10 @@
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5512,10 +6123,10 @@
       "application_end": "2026-08-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5565,10 +6176,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5618,12 +6229,12 @@
       "application_end": "2026-09-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -5677,10 +6288,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5730,10 +6341,10 @@
       "application_end": "2026-09-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5783,10 +6394,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5836,10 +6447,10 @@
       "application_end": "2026-09-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5889,10 +6500,10 @@
       "application_end": "2026-09-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5942,10 +6553,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -5995,10 +6606,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6048,10 +6659,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6101,10 +6712,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6154,10 +6765,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6207,10 +6818,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6260,10 +6871,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "technology-science",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6313,10 +6924,10 @@
       "application_end": "2026-09-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6366,10 +6977,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6419,10 +7030,10 @@
       "application_end": "2026-09-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6472,12 +7083,12 @@
       "application_end": "2026-10-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -6531,10 +7142,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6584,10 +7195,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6637,10 +7248,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6690,10 +7301,10 @@
       "application_end": "2026-10-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6743,10 +7354,10 @@
       "application_end": "2026-10-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6796,10 +7407,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6849,10 +7460,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6902,10 +7513,10 @@
       "application_end": "2026-11-18",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -6955,10 +7566,10 @@
       "application_end": "2026-11-18",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7008,10 +7619,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7061,10 +7672,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7114,10 +7725,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7167,10 +7778,10 @@
       "application_end": "2026-10-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7220,10 +7831,10 @@
       "application_end": "2026-10-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7273,12 +7884,12 @@
       "application_end": "2026-11-16",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -7332,10 +7943,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7385,10 +7996,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7438,10 +8049,10 @@
       "application_end": "2026-11-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7491,10 +8102,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7544,10 +8155,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7597,10 +8208,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7650,10 +8261,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7703,10 +8314,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7756,10 +8367,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7809,10 +8420,10 @@
       "application_end": "2026-11-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7862,10 +8473,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7915,10 +8526,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -7968,10 +8579,10 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8021,12 +8632,12 @@
       "application_end": "2026-12-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -8080,10 +8691,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8133,10 +8744,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8186,10 +8797,10 @@
       "application_end": "2026-12-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8239,10 +8850,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8292,10 +8903,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8345,10 +8956,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8398,10 +9009,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8451,10 +9062,10 @@
       "application_end": "2026-12-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8504,10 +9115,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8557,10 +9168,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8610,10 +9221,10 @@
       "application_end": "2026-12-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8663,10 +9274,10 @@
       "application_end": "2026-12-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8716,12 +9327,12 @@
       "application_end": "2027-01-19",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -8775,10 +9386,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8828,10 +9439,10 @@
       "application_end": "2027-01-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8881,10 +9492,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8934,10 +9545,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -8987,10 +9598,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9040,10 +9651,10 @@
       "application_end": "2027-01-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9093,10 +9704,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9146,10 +9757,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9199,10 +9810,10 @@
       "application_end": "2027-01-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9252,10 +9863,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9305,10 +9916,10 @@
       "application_end": "2027-01-26",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9358,10 +9969,10 @@
       "application_end": "2027-01-26",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9411,12 +10022,12 @@
       "application_end": "2027-02-16",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -9470,10 +10081,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9523,10 +10134,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9576,10 +10187,10 @@
       "application_end": "2027-02-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9629,10 +10240,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9682,10 +10293,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9735,10 +10346,10 @@
       "application_end": "2027-04-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9788,10 +10399,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9841,10 +10452,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9894,10 +10505,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -9947,10 +10558,10 @@
       "application_end": "2027-02-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10000,10 +10611,10 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10053,12 +10664,12 @@
       "application_end": "2027-03-15",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -10112,10 +10723,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10165,10 +10776,10 @@
       "application_end": "2027-03-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10218,10 +10829,10 @@
       "application_end": "2027-03-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10271,10 +10882,10 @@
       "application_end": "2027-03-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10324,10 +10935,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10377,10 +10988,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10430,10 +11041,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10483,10 +11094,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10536,10 +11147,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "technology-science",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "technology-science",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10589,10 +11200,10 @@
       "application_end": "2027-03-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10642,10 +11253,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10695,12 +11306,12 @@
       "application_end": "2027-04-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -10754,10 +11365,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10807,10 +11418,10 @@
       "application_end": "2027-04-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10860,10 +11471,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10913,10 +11524,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -10966,10 +11577,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11019,10 +11630,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11072,10 +11683,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11125,10 +11736,10 @@
       "application_end": "2027-04-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11178,10 +11789,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11231,10 +11842,10 @@
       "application_end": "2027-04-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11284,10 +11895,10 @@
       "application_end": "2027-04-27",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11337,10 +11948,10 @@
       "application_end": "2027-04-27",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11390,12 +12001,12 @@
       "application_end": "2027-05-17",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -11449,10 +12060,10 @@
       "application_end": "2027-05-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11502,10 +12113,10 @@
       "application_end": "2027-05-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11555,10 +12166,10 @@
       "application_end": "2027-05-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "engineering-construction",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11608,10 +12219,10 @@
       "application_end": "2027-06-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "health-care",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11661,10 +12272,10 @@
       "application_end": "2027-05-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11714,10 +12325,10 @@
       "application_end": "2027-05-25",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11767,10 +12378,10 @@
       "application_end": "2027-05-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11820,12 +12431,12 @@
       "application_end": "2027-06-14",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule",
         "dcas-noe",
         "dcas-noe-fee-salary-densify"
       ],
+      "interest_area": "public-safety",
       "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
       "card_leads": [
         {
@@ -11879,10 +12490,10 @@
       "application_end": "2027-06-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11932,10 +12543,10 @@
       "application_end": "2027-06-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -11985,10 +12596,10 @@
       "application_end": "2027-06-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "community-social-services",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12038,10 +12649,10 @@
       "application_end": "2027-06-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12091,10 +12702,10 @@
       "application_end": "2027-06-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12144,10 +12755,10 @@
       "application_end": "2027-06-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "public-safety",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12197,10 +12808,10 @@
       "application_end": "2027-06-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12250,10 +12861,10 @@
       "application_end": "2027-06-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12303,10 +12914,10 @@
       "application_end": "2027-06-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "trades-operations",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12356,10 +12967,10 @@
       "application_end": "2027-06-22",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",
@@ -12409,10 +13020,10 @@
       "application_end": "2027-06-22",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ],
+      "interest_area": "administration-finance",
       "card_leads": [],
       "salary_band": "unknown",
       "fee_level": "unknown",

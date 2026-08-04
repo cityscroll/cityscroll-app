@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -29,6 +30,13 @@ import {
   measureExamTemporalIncoherence,
   outcomeBelongsToExamCycle,
 } from "../site/exam_process_spine.mjs";
+import {
+  buildInterestTaxonomyIndex,
+  classifyInterest as classifyInterestFromTaxonomy,
+  compileTitleRules,
+  interestAreaIds,
+  validateInterestTaxonomy,
+} from "../site/exam_interest_taxonomy.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
@@ -48,8 +56,9 @@ const NOE_DENSIFY_FILE = "noe_fee_salary_densify.json";
 const NOE_DIFF_FILE = "noe_differentiators.json";
 const ANNUAL_HISTORY_FILE = "annual_schedule_history.json";
 const OASY_MAP_FILE = "oasys_exam_map.json";
-/** Bump when densify merge / fee-salary / OASys handoff / differentiator materialization changes. */
-export const STAFFING_EXAMS_SCHEMA_VERSION = 5;
+const INTEREST_TAXONOMY_FILE = "interest_area_taxonomy.json";
+/** Bump when densify merge / fee-salary / OASys handoff / differentiator / interest taxonomy materialization changes. */
+export const STAFFING_EXAMS_SCHEMA_VERSION = 6;
 
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
@@ -144,18 +153,54 @@ export function feeSalaryNonNullStats(exams = []) {
   };
 }
 
-const INTEREST_RULES = [
-  ["public-safety", /\b(police|correction|safety|special officer|fire|probation)\b/i],
-  ["health-care", /\b(health|hospital|medical|dental|nurse|therap|emergency medical|mortuary|addiction)\b/i],
-  ["engineering-construction", /\b(engineer|engineering|construction|architect|building|plan examiner|inspector|estim(?:ator))\b/i],
-  ["technology-science", /\b(computer|technology|data|scientist|laboratory|research|telecommunication)\b/i],
-  ["community-social-services", /\b(caseworker|social|youth|welfare|housing|community|counselor|child protective)\b/i],
-  ["administration-finance", /\b(account|auditor|administrative|contract specialist|cashier|records|management|labor relations)\b/i],
-  ["trades-operations", /\b(mechanic|electric|maintain|maintenance|operator|roofer|plaster|carpenter|machinist|blacksmith|metal|plant|deckhand|forester|exterminator)\b/i],
-];
+/** Cached taxonomy for classifyInterest(title) call sites that omit an explicit map. */
+let _taxonomyCache = null;
+let _compiledRulesCache = null;
 
-export function classifyInterest(title) {
-  return (INTEREST_RULES.find(([, pattern]) => pattern.test(title || "")) || ["other"])[0];
+/**
+ * Load the committed interest-area mapping (data, not code).
+ * Accepts a preloaded object, returns the cache, or reads the committed file
+ * synchronously so unit fixtures that call buildArtifact without a taxonomy
+ * still get the same mapping as production rebuilds.
+ * @param {object|null} [taxonomy] optional preloaded taxonomy
+ * @returns {object}
+ */
+export function loadInterestTaxonomy(taxonomy = null) {
+  if (taxonomy && typeof taxonomy === "object") {
+    const check = validateInterestTaxonomy(taxonomy);
+    assert(check.ok, `interest taxonomy invalid: ${check.errors.join("; ")}`);
+    _taxonomyCache = taxonomy;
+    _compiledRulesCache = compileTitleRules(taxonomy);
+    return taxonomy;
+  }
+  if (_taxonomyCache) return _taxonomyCache;
+  // Sync read of the committed mapping — keeps pure buildArtifact call sites
+  // (unit fixtures) aligned with production without requiring every test to
+  // thread the file through.
+  const raw = JSON.parse(readFileSync(path.join(SOURCE_DIR, INTEREST_TAXONOMY_FILE), "utf8"));
+  const check = validateInterestTaxonomy(raw);
+  assert(check.ok, `interest taxonomy invalid: ${check.errors.join("; ")}`);
+  _taxonomyCache = raw;
+  _compiledRulesCache = compileTitleRules(raw);
+  return raw;
+}
+
+/**
+ * Classify an exam title (or exam row) into an interest-area id.
+ * Mapping lives in site/data/exam_sources/interest_area_taxonomy.json.
+ * @param {string|object} titleOrExam
+ * @param {object|null} [taxonomy]
+ * @returns {string}
+ */
+export function classifyInterest(titleOrExam, taxonomy = null) {
+  const map = taxonomy || _taxonomyCache;
+  if (!map) {
+    // Offline unit fixtures may call before load — fall back to empty map → "other"
+    // only when no cache; production build always loads the committed file first.
+    return classifyInterestFromTaxonomy(titleOrExam, { default_area: "other", areas: [], title_rules: [] });
+  }
+  const rules = taxonomy ? compileTitleRules(taxonomy) : (_compiledRulesCache || compileTitleRules(map));
+  return classifyInterestFromTaxonomy(titleOrExam, map, { compiledRules: rules });
 }
 
 export function isoDate(value) {
@@ -201,11 +246,11 @@ export function examStatusFor(row, today) {
   return "closed";
 }
 
-export function normalizeAnnual(row) {
+export function normalizeAnnual(row, taxonomy = null) {
   const title = row.exam_title?.trim();
   const examNumber = String(row.exam_number || "").trim();
   assert(title && /^\d{4}$/.test(examNumber), `invalid annual exam row: ${JSON.stringify(row)}`);
-  return {
+  const exam = {
     exam_number: examNumber,
     title_code: String(row.title_code || "").trim() || null,
     title,
@@ -213,9 +258,10 @@ export function normalizeAnnual(row) {
     application_end: isoDate(row.application_period_end_date),
     eligibility: eligibilityFor(row),
     schedule_status: scheduleStatus(row),
-    interest_area: classifyInterest(title),
     sources: ["dcas-annual-schedule"],
   };
+  exam.interest_area = classifyInterest(exam, taxonomy);
+  return exam;
 }
 
 function normalizeCurrent(row) {
@@ -241,14 +287,15 @@ function normalizeCurrent(row) {
   return densified;
 }
 
-function mergeCurrent(annualRow, currentRow) {
+function mergeCurrent(annualRow, currentRow, taxonomy = null) {
   const merged = {
     ...annualRow,
     ...currentRow,
     schedule_status: currentRow.schedule_status || annualRow.schedule_status || "scheduled",
   };
   merged.sources = [...new Set([...(annualRow?.sources || []), ...(currentRow?.sources || []), CURRENT_ID, NOE_ID])];
-  merged.interest_area = currentRow.interest_area || annualRow.interest_area || classifyInterest(merged.title || "");
+  // Always re-derive from the mapping file so rule edits re-tag without manual overrides.
+  merged.interest_area = classifyInterest(merged, taxonomy);
   return merged;
 }
 
@@ -530,13 +577,13 @@ export function joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex) {
 export { measureExamTemporalIncoherence, outcomeBelongsToExamCycle, listAggregateBelongsToExamCycle };
 
 /** Closed annual rows retained so list_aggregate joins survive FY snapshot roll-forward. */
-export function normalizeListDepthClosed(row) {
+export function normalizeListDepthClosed(row, taxonomy = null) {
   const raw = String(row.exam_number || "").trim();
   const examNumber = /^\d+$/.test(raw) ? raw.padStart(4, "0") : raw;
   assert(/^\d{4}$/.test(examNumber), `invalid list-depth exam number: ${row.exam_number}`);
   const title = String(row.title || row.exam_title || "").trim();
   assert(title, `list-depth exam ${examNumber} missing title`);
-  return {
+  const exam = {
     exam_number: examNumber,
     title_code: String(row.title_code || "").trim() || null,
     title,
@@ -544,10 +591,11 @@ export function normalizeListDepthClosed(row) {
     application_end: isoDate(row.application_end || row.application_period_end_date),
     eligibility: row.eligibility || eligibilityFor(row),
     schedule_status: "scheduled",
-    interest_area: classifyInterest(title),
     sources: ["dcas-annual-closed-list-depth", "dcas-active-civil-service-list"],
     list_depth: true,
   };
+  exam.interest_area = classifyInterest(exam, taxonomy);
+  return exam;
 }
 
 function normalizeOutcomeSourceOutdatedCheck(source) {
@@ -567,10 +615,12 @@ export function buildArtifact({
   noeDensify,
   noeDifferentiators,
   oasysMap,
+  interestTaxonomy,
   priorArtifact,
   today,
 }) {
   const generatedAt = today || new Date().toISOString().slice(0, 10);
+  const taxonomy = loadInterestTaxonomy(interestTaxonomy);
   const latestSourceAt = [
     annual.source.fetched_at,
     current.source.verified_at,
@@ -595,7 +645,7 @@ export function buildArtifact({
 
   const exams = new Map();
   for (const row of annual.records) {
-    const normalized = normalizeAnnual(row);
+    const normalized = normalizeAnnual(row, taxonomy);
     exams.set(
       normalized.exam_number,
       normalized,
@@ -605,14 +655,14 @@ export function buildArtifact({
   for (const row of current.records) {
     const normalized = normalizeCurrent(row);
     const existing = exams.get(normalized.exam_number) || {};
-    const merged = mergeCurrent(existing, normalized);
+    const merged = mergeCurrent(existing, normalized, taxonomy);
     exams.set(normalized.exam_number, merged);
   }
 
   // Closed annual exams with list presence: keep post-list depth after the current
   // FY snapshot rolls forward (open 7xxx series has 0% list join by design).
   for (const row of listDepthClosed?.records || []) {
-    const normalized = normalizeListDepthClosed(row);
+    const normalized = normalizeListDepthClosed(row, taxonomy);
     if (exams.has(normalized.exam_number)) continue;
     exams.set(normalized.exam_number, normalized);
   }
@@ -722,6 +772,15 @@ export function buildArtifact({
     publicProjection: lagBacktest.scorecard.public_projection,
     generatedAt: generatedInstant,
   }));
+  // Final interest-area stamp from the mapping file (overrides retained prior tags).
+  for (let i = 0; i < records.length; i += 1) {
+    const exam = records[i];
+    records[i] = {
+      ...exam,
+      interest_area: classifyInterest(exam, taxonomy),
+    };
+  }
+
   const oasysDeepCount = records.filter((e) => e.application_handoff_mode === "deep").length;
   const formatCount = records.filter((e) => e.exam_format).length;
   const emittedPredictions = records
@@ -734,6 +793,8 @@ export function buildArtifact({
   const listSource = listAggregates?.source || activeList.source;
   const listJoinedCount = records.filter((e) => e.list_aggregate && Number(e.list_aggregate.list_count) > 0).length;
   const cycleCoherence = measureExamTemporalIncoherence(records);
+  const interestTaxonomyIndex = buildInterestTaxonomyIndex(records, taxonomy, generatedAt);
+  const areaIds = interestAreaIds(taxonomy);
   const sources = [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source];
   if (annualHistory?.source) sources.push(annualHistory.source);
   if (noeDensify?.source) sources.push(noeDensify.source);
@@ -744,10 +805,11 @@ export function buildArtifact({
     schema_version: STAFFING_EXAMS_SCHEMA_VERSION,
     generated_at: latestSourceAt,
     data_current_as_of: annual.source.data_current_as_of,
-    interest_areas: [
-      "public-safety", "health-care", "engineering-construction", "technology-science",
-      "community-social-services", "administration-finance", "trades-operations", "other",
-    ],
+    // Backward-compatible ordered id list for the Staffing interest filter.
+    interest_areas: areaIds,
+    // Full taxonomy + per-area exam lists with open-window state.
+    // Alerts-by-area is a separate gated product surface (see interest_taxonomy.alerts_surface).
+    interest_taxonomy: interestTaxonomyIndex,
     sources,
     source_checks: {
       active_list: activeList.summary,
@@ -776,6 +838,12 @@ export function buildArtifact({
         densify_applied: diffApplied,
         exams_with_format: formatCount,
         corpus: noeDifferentiators?.corpus || null,
+      },
+      interest_taxonomy: {
+        mapping_file: INTEREST_TAXONOMY_FILE,
+        area_count: areaIds.length,
+        tagged_non_other: interestTaxonomyIndex.summary.tagged_non_other,
+        exam_count: interestTaxonomyIndex.summary.exam_count,
       },
     },
     outcomes: buildOutcomes({ outcomes }),
@@ -1036,7 +1104,7 @@ async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
   if (process.argv.includes("--refresh-prediction-history")) await refreshAnnualScheduleHistory();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, noeDifferentiators, oasysMap, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, noeDifferentiators, oasysMap, interestTaxonomy, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
@@ -1048,6 +1116,7 @@ async function main() {
     readJsonOptional(NOE_DENSIFY_FILE),
     readJsonOptional(NOE_DIFF_FILE),
     readJsonOptional(OASY_MAP_FILE),
+    readJson(INTEREST_TAXONOMY_FILE),
     (async () => {
       try {
         return JSON.parse(await readFile(OUTPUT, "utf8"));
@@ -1107,6 +1176,7 @@ async function main() {
     noeDensify,
     noeDifferentiators,
     oasysMap,
+    interestTaxonomy,
     priorArtifact,
     today,
   });
