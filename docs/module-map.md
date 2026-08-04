@@ -23,6 +23,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/alerts.mjs` | Watch state, digest preview/items, rollups/preferences, flags, and address/context hydration. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |
 | `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, M/WBE solicitation detail, and prime sub-outreach mount. |
+| `site/procurement_planning_surface.mjs` | Pure receipt-gated MOCS plan-row joins that add the optional Money planning phase; an absent or edge-empty payload is inert. |
 | `site/sub_outreach.mjs` | Pure prime-win sub-outreach view + HTML from `award_prime_goal` (facts only; no goal-gap apology). |
 | `site/app/subsidy.mjs` | Subsidy eligibility, phase timeline, facts, gaps, and lifecycle loading. |
 | `site/app/authority-award.mjs` | Receipt-gated ABO award detail on eligible authority notices. |

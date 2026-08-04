@@ -240,6 +240,29 @@ const AMENDED_LIFECYCLE = {
 
 const notice = { request_id: "20250110001", agency_name: "Sanitation", pin: "08250R0001001" };
 
+const LIFECYCLE_WITH_PLAN = {
+  ...FULL_LIFECYCLE,
+  timeline: [{
+    stage: "planning",
+    status: "matched",
+    source: "mocs-procurement-plan",
+    date: null,
+    source_timestamp: "2026-08-04T12:00:00Z",
+    detail: {
+      fiscal_year: 2027,
+      plan: {
+        source_record_id: "mocs_ll1:FY27NDSNY1",
+        source: "mocs_ll1",
+        source_url: "https://www.nyc.gov/assets/mocs/dsny-ll1-fy27.xlsx",
+        description: "Organics collection services",
+        procurement_method: "Competitive Sealed Proposal",
+        quarter: 3,
+        budget: { amount: 750000, currency: "USD", basis: "estimated_amount" },
+      },
+    },
+  }, ...FULL_LIFECYCLE.timeline],
+};
+
 // ---------------------------------------------------------------------------
 // 1. FULL LIFECYCLE: all stages matched
 // ---------------------------------------------------------------------------
@@ -288,6 +311,19 @@ test("lifecycle: phase stepper groups stages; connectors only within a phase", (
   assert.match(html, /lc-phase-history/);
   // Within award_registration phase, pending + registered share a connector
   assert.ok((html.match(/class="connector"/g) || []).length >= 1);
+});
+
+test("lifecycle: receipt-passed plan renders the optional planning phase and published facts", () => {
+  const html = renderLifecycle(LIFECYCLE_WITH_PLAN, notice);
+  assert.equal((html.match(/class="lc-step /g) || []).length, 5);
+  assert.match(html, /data-lc-phase="planning"/);
+  assert.match(html, /data-lc-phase-panel="planning"/);
+  assert.match(html, /Organics collection services/);
+  assert.match(html, /Expected RFP quarter: Q3 FY2027/);
+  assert.match(html, /Competitive Sealed Proposal/);
+  assert.match(html, /Amount<\/b> \$750K/);
+  assert.match(html, /dsny-ll1-fy27\.xlsx/);
+  assert.match(html, /MOCS LL1/);
 });
 
 test("lifecycle: registered stage owns registration amount, not a second paid bar", () => {

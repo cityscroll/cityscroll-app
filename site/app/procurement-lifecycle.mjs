@@ -60,6 +60,7 @@ function checkbookSearchUrl(opts){
 }
 
 function lifecycleStageLabel(stage){
+  if(stage === "planning") return t("forecast_badge_mocs");
   if(stage === "solicitation") return t("lifecycle_stage_solicitation");
   if(stage === "intent_to_negotiate") return t("lifecycle_stage_intent_to_negotiate");
   if(stage === "vendor_list") return t("lifecycle_stage_vendor_list");
@@ -114,6 +115,7 @@ const PASSPORT_RFX_URL = "https://a0333-passportpublic.nyc.gov/rfx.html";
 const CURRENT_SOLICITATIONS_URL = "https://data.cityofnewyork.us/d/3khw-qi8f";
 
 function lifecycleSourceName(source){
+  if(source === "mocs-procurement-plan") return t("forecast_badge_mocs");
   if(source === "city-record") return t("lifecycle_source_city_record");
   if(source === "checkbook-contracts" || source === "checkbook-spending") return t("lifecycle_source_checkbook");
   if(source === "passport-public-contracts" || source === "passport-public-rfx") return t("lifecycle_source_passport");
@@ -203,7 +205,7 @@ function lifecycleSourceLink(entry, ctx){
 // Stage order for succession: when a later stage is matched, earlier gaps are "passed".
 // Intermediate City Record stages sit between solicitation and award (PIN-sibling join).
 // Keep single-line: test extractConst("LIFECYCLE_STAGE_ORDER") scrapes this declaration.
-const LIFECYCLE_STAGE_ORDER = {solicitation:0,intent_to_negotiate:1,vendor_list:2,intent_to_award:3,award:4,pending:5,registered:6,payment:7};
+const LIFECYCLE_STAGE_ORDER = {planning:-1,solicitation:0,intent_to_negotiate:1,vendor_list:2,intent_to_award:3,award:4,pending:5,registered:6,payment:7};
 
 function lifecycleHasLaterMatched(timeline, stage){
   const order = LIFECYCLE_STAGE_ORDER[stage];
@@ -401,6 +403,35 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
     pin: (notice && notice.pin) || (regDetail && regDetail.pin) || null,
     vendor: (regDetail && regDetail.vendor) || (notice && notice.vendor_name) || null,
   };
+
+  // RC-1 planning rows are already accepted at materialization time. Keep their
+  // publisher fields together in one positive planning card; no edge means this
+  // branch is never reached and no placeholder is emitted.
+  if(entry.stage === "planning" && publicStatus === "matched" && entry.detail?.plan){
+    const plan = entry.detail.plan;
+    const fiscalYear = entry.detail.fiscal_year;
+    const sourceLabel = plan.source === "mocs_ll1" ? "MOCS LL1" : "MOCS LL63";
+    const source = plan.source_url
+      ? `<a class="view" href="${escUiHtml(plan.source_url)}" ${EXT_ATTRS}>${sourceLabel}${extSR()}</a>`
+      : `<span>${sourceLabel}</span>`;
+    const purpose = plan.description || t("forecast_solicitation_fallback");
+    const quarter = plan.quarter != null
+      ? `Q${escUiHtml(String(plan.quarter))}${fiscalYear ? ` FY${escUiHtml(String(fiscalYear))}` : ""}`
+      : "";
+    const method = plan.procurement_method
+      ? `<div class="lc-pct"><b>${t("apply_method_lbl")}</b> <span lang="en" dir="ltr">${escUiHtml(plan.procurement_method)}</span></div>`
+      : "";
+    const budget = plan.budget && plan.budget.amount != null
+      ? `<div class="lc-pct"><b>${t("forecast_amount_label")}</b> ${lifecycleMoney(plan.budget.amount)} · ${source}</div>`
+      : `<div class="lc-pct">${source}</div>`;
+    return `<div class="stage planning-stage"><div class="box matched${isCurrent ? " current-stage" : ""}">
+      <div class="stage-name">${label}</div>
+      <div class="planning-purpose"><b>${t("what_they_want")}</b> <span lang="en" dir="ltr">${escUiHtml(purpose)}</span></div>
+      ${quarter ? `<div class="lc-pct">${t("forecast_expected_quarter_label", { quarter })}</div>` : ""}
+      ${method}
+      ${budget}
+    </div></div>`;
+  }
 
   // Ownership: when registration joined, payments card summarizes paid/committed and
   // links to Follow-the-Dollars — never parallel gap copy. Resolve paid-to-date with
