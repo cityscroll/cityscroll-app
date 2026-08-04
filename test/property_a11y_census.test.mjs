@@ -67,10 +67,11 @@ test("current extraction measurement reuses Property stage and participation ext
   const current = currentPropertyExtraction({
     type_of_notice_description: "Sale",
     event_date: "2026-09-01T10:00:00.000",
-    additional_description_1: "Prospective bidders are required to attend the public showing. All bid proposals must be received no later than August 20.",
+    additional_description_1: "Show Dates: Prospective bidders are required to attend the public showing which will be held on August 10, 2026. All bid proposals must be received no later than August 20, 2026.",
   });
   assert.equal(current.stage_auction_or_rfp, true);
-  assert.equal(current.event_date_as_action_deadline, true);
+  assert.equal(current.event_date_as_action_deadline, false);
+  assert.equal(current.typed_bid_deadline, true);
   assert.equal(current.bid_deadline_step, true);
   assert.equal(current.inspection_or_showing_step, true);
   assert.equal(current.objection_step, false);

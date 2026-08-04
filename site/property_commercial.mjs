@@ -14,6 +14,13 @@
  */
 
 import { plainText } from "./text_clean.mjs";
+import {
+  extractPropertyTimedEvents,
+  primaryPropertyActionDate,
+  propertyEventBand,
+  propertyEventDisplayDate,
+  propertyEventState,
+} from "./property_timed_events.mjs";
 
 export const PROPERTY_COMMERCIAL_SCHEMA = "cityscroll.property_commercial.v1";
 
@@ -386,6 +393,9 @@ export function commercialMatchesFilters(commercial, opts = {}) {
 export function commercialCloseDate(row, commercial) {
   const fromCommercial = commercial?.close_date || commercial?.glance?.close_date || null;
   if (fromCommercial) return String(fromCommercial).slice(0, 10);
+  // A current payload with typed events has made an explicit honest-empty decision.
+  // Do not fall back to an untyped event_date (often a hearing or first showing).
+  if (commercial && Array.isArray(commercial.timed_events)) return null;
   for (const key of ["event_date", "end_date", "start_date"]) {
     const v = row?.[key];
     if (!v) continue;
@@ -421,6 +431,51 @@ export function isCloseDatePast(isoDay, todayIso = civicTodayIso()) {
   const today = todayIso ? String(todayIso).slice(0, 10) : civicTodayIso();
   if (!today) return false;
   return day < today;
+}
+
+/**
+ * Reader-facing chip records. Auction windows expand to separate open/close
+ * chips so neither date is hidden behind a single ambiguous "event" value.
+ */
+export function propertyTimedEventViews(events, today = civicTodayIso()) {
+  const labels = {
+    hearing: "property_event_hearing",
+    auction_start: "property_event_auction_start",
+    auction_end: "property_event_auction_end",
+    auction: "property_event_auction",
+    sale: "property_event_sale",
+    bid_deadline: "property_event_bid",
+    inspection_showing: "property_event_showing",
+    accommodation_deadline: "property_event_accommodation",
+    objection_deadline: "property_event_objection",
+    comment_deadline: "property_event_comment",
+    result_award: "property_event_result",
+  };
+  const views = [];
+  const view = (kind, source_kind, date, event) => {
+    const state = propertyEventState(event, today);
+    const band = propertyEventBand(event, today);
+    return {
+      kind, source_kind, date, fmt: String(date).length === 10 ? `${date}T12:00:00` : date,
+      state, band, label_key: labels[kind],
+      chip_class: state === "past" ? "closed" : band === "imminent" ? "hot" : band === "approaching" ? "soon" : "open",
+    };
+  };
+  for (const event of Array.isArray(events) ? events : []) {
+    if (!event || !event.kind) continue;
+    if (event.kind === "auction_window") {
+      for (const [kind, date] of [["auction_start", event.start], ["auction_end", event.end]]) {
+        if (!date) continue;
+        const point = { kind: "auction", start: date };
+        views.push(view(kind, event.kind, date, point));
+      }
+      continue;
+    }
+    const date = propertyEventDisplayDate(event);
+    if (!date) continue;
+    views.push(view(event.kind, event.kind, date, event));
+  }
+  return views;
 }
 
 /**
@@ -977,7 +1032,7 @@ function extractPhones(text) {
  * Participation / bid steps when the notice states them.
  * @param {string} text
  */
-export function extractParticipation(text) {
+export function extractParticipation(text, timedEvents = []) {
   const body = String(text || "");
   const urls = extractUrls(body);
   const emails = extractEmails(body);
@@ -994,24 +1049,22 @@ export function extractParticipation(text) {
       evidence: evidence(depositMatch[0]),
     });
   }
-  const showMatch = body.match(/\b(?:show dates?|public showings?|prospective bidders are (?:required|encouraged) to attend)[^.]{0,200}/i);
-  if (showMatch) {
+  for (const event of timedEvents.filter((item) => item?.kind === "inspection_showing")) {
     steps.push({
       kind: "show_or_inspection",
-      text: evidence(showMatch[0]),
-      source: "notice_body",
+      text: evidence(event.source_span?.text || ""),
+      source: event.source_field,
       confidence: "high",
-      evidence: evidence(showMatch[0]),
+      evidence: evidence(event.source_span?.text || ""),
     });
   }
-  const bidDueMatch = body.match(/\b(?:all bid proposals must be received|bids? will be (?:accepted|received)|online bids will be accepted|no later than)[^.]{0,200}/i);
-  if (bidDueMatch) {
+  for (const event of timedEvents.filter((item) => item?.kind === "bid_deadline")) {
     steps.push({
       kind: "bid_deadline",
-      text: evidence(bidDueMatch[0]),
-      source: "notice_body",
+      text: evidence(event.source_span?.text || ""),
+      source: event.source_field,
       confidence: "high",
-      evidence: evidence(bidDueMatch[0]),
+      evidence: evidence(event.source_span?.text || ""),
     });
   }
   const registerMatch = body.match(/\b(?:registration is free|register(?:ing)?|open to the public)[^.]{0,120}/i);
@@ -1036,7 +1089,7 @@ export function extractParticipation(text) {
     urls,
     emails,
     phones,
-    steps: steps.slice(0, MAX_FACTS),
+    steps: uniqueBy(steps, (step) => `${step.kind}:${step.text}`).slice(0, MAX_FACTS),
     has_fields: !!(packageUrl || emails.length || phones.length || steps.length),
   };
 }
@@ -1179,14 +1232,15 @@ export function extractPropertyCommercial(row = {}, options = {}) {
   const quantities = extractQuantities(text);
   const price_facts = extractPriceFacts(text);
   const sale_method = extractSaleMethod(text);
-  const participation = extractParticipation(text);
+  const timed_events = extractPropertyTimedEvents(row);
+  const participation = extractParticipation(text, timed_events);
   const deal_signal = deriveDealSignal(price_facts);
   if (deal_signal.comparables_slot) {
     deal_signal.comparables_slot.category = categoryInfo.category;
   }
 
   const primary = primaryListPrice(price_facts);
-  const close_date = isoDate(row.event_date) || isoDate(row.end_date) || isoDate(row.start_date);
+  const close_date = primaryPropertyActionDate(timed_events);
 
   const commercial = {
     schema: PROPERTY_COMMERCIAL_SCHEMA,
@@ -1206,6 +1260,7 @@ export function extractPropertyCommercial(row = {}, options = {}) {
     primary_price: primary,
     sale_method,
     participation,
+    timed_events,
     deal_signal,
     close_date,
     glance: {
@@ -1292,11 +1347,12 @@ function emptyCommercial(row = {}) {
         note: "External market-basket comparables are not wired. Interface reserved for a category + comparables source.",
       },
     },
-    close_date: isoDate(row.event_date) || isoDate(row.end_date) || isoDate(row.start_date),
+    close_date: null,
+    timed_events: [],
     glance: {
       item: "Other",
       price: null,
-      close_date: isoDate(row.event_date) || isoDate(row.end_date) || isoDate(row.start_date),
+      close_date: null,
       deal: null,
       sale_method: null,
     },
