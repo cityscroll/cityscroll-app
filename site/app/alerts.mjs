@@ -834,7 +834,7 @@ async function initWatchTemplates(){
   list.setAttribute("role", "group");
   list.setAttribute("aria-label", t("watch_tpl_heading"));
   list.innerHTML=templates.map(tpl=>
-    `<button type="button" class="watch-tpl-card" data-tpl-id="${escUiHtml(tpl.id)}" aria-pressed="false">${escUiHtml(tpl.title)}</button>`
+    `<button type="button" class="watch-tpl-card" data-tpl-id="${escUiHtml(tpl.id)}" aria-pressed="false"><span>${escUiHtml(tpl.title)}</span><span class="watch-tpl-consequence">${escUiHtml(t("watch_tpl_creates_watches",{n:String((tpl.watches||[]).length)}))}</span></button>`
   ).join("");
   listCardButtons(list).forEach(btn=>{
     btn.addEventListener("click",()=>{
