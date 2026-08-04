@@ -280,12 +280,12 @@ export async function prewarmNycha(env, requestIds) {
 // dedupeFreshByContent(). ok:false only ever means "couldn't determine the current state" (a
 // Checkbook/proxy hiccup) — never conflate with a confirmed empty answer, which is ok:true with
 // an empty candidates array and safe to treat as "nothing new."
-export async function currentAwardCandidates(env, requestId, agency) {
+export async function currentAwardCandidates(env, requestId, agency, nowMs) {
   const entry = awardSourceFor(agency);
   if (!entry || entry.kind === "absent") return { ok: true, candidates: [] };
 
   if (entry.kind === "checkbook-nycha") {
-    const { matches, ok } = await getOrComputeNycha(env, requestId, undefined);
+    const { matches, ok } = await getOrComputeNycha(env, requestId, undefined, nowMs);
     if (!ok) return { ok: false, candidates: [] };
     return {
       ok: true,
