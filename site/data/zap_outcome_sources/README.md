@@ -30,6 +30,31 @@ document proxy (`/document/disposition|artifact|package|projectaction/…`).
    of project ids after paint.
 4. Unmatched or empty outcome slots use the class-(a) register: name the public source.
 
+Individual-project hearing logistics reuse the disposition fields already carried
+by this read model. Projects with qualifying evidence receive the shared
+`hearing_logistics` array; projects without it keep `hearing_logistics: null`.
+Review-session milestones do not become venue or livestream evidence.
+
+## Hearing-logistics coverage
+
+The fixed 50-project sell-facing sample measured on 2026-08-04 populated exact
+disposition hearing logistics for 41/50 projects (82%): 38/50 had a parsed venue,
+12/50 a livestream, and 39/50 either. Nine projects honestly remained null. No
+sampled disposition date was still upcoming on the observation date, so this is
+detail-record coverage, not evidence that the upcoming-hearings calendar is full.
+The recorded persona field case moved from 0/1 populated to 1/1. These are
+fixed-sample results only; they do not state citywide coverage.
+
+Reproduce against the same project IDs:
+
+```bash
+node tools/measure_zap_hearing_logistics.mjs --live --limit 50 \
+  --sample site/data/zap_outcome_sources/verification_receipts/zap_hearing_logistics_2026-08-04.json
+```
+
+Receipt:
+`verification_receipts/zap_hearing_logistics_2026-08-04.json`.
+
 ## Join
 
 See `worker/src/lib/zap_outcomes.mjs` and measured rates in
