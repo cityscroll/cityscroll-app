@@ -651,6 +651,31 @@
     return null;
   }
 
+  // A sign-up URL is only a sign-up URL when the surrounding notice text says so.
+  // Generic agenda, livestream, and agency links remain participation/materials links.
+  function extractTestimonySignupUrl(body) {
+    const text = String(body || "");
+    const urlPattern = /https:\/\/[^\s<>"')]+/gi;
+    for (const match of text.matchAll(urlPattern)) {
+      const url = String(match[0] || "").replace(/[.,;:)\]]+$/, "");
+      const start = Math.max(0, (match.index || 0) - 180);
+      const end = Math.min(text.length, (match.index || 0) + match[0].length + 100);
+      const context = text.slice(start, end);
+      if (/\b(?:register|registration|sign\s*up|rsvp|request\s+to\s+(?:speak|testify)|speaker\s+(?:form|card))\b/i.test(context)) {
+        return httpsUrl(url);
+      }
+    }
+    return null;
+  }
+
+  function hearingStarterCopy(title) {
+    const subject = String(title || "").trim() || "[hearing or proposal]";
+    return {
+      en: `My name is [name], and I am commenting on “${subject}.” For the public record, I would like the hearing body to consider: [fact, experience, or question]. [Add the change or clarification you want considered.]`,
+      es: `Me llamo [nombre] y presento comentarios sobre “${subject}”. Deseo que conste en el expediente público lo siguiente: [hecho, experiencia o pregunta]. [Añada el cambio o la aclaración que desea que el organismo considere.]`,
+    };
+  }
+
   function isJoinPlatformUrl(url) {
     return /\b(?:zoom|webex|teams|meet\.google)\b/i.test(String(url || ""));
   }
@@ -695,6 +720,7 @@
     const joinKind = linkUrl ? (isJoinPlatformUrl(linkUrl) ? "join" : "link") : null;
     const testimonyEmail = extractTestimonyEmail(body);
     const testimonyUntil = extractTestimonyUntil(body);
+    const testimonySignupUrl = extractTestimonySignupUrl(body);
     const bodyEmails = extractEmails(body);
     const bodyPhones = extractPhones(body);
     const emails = uniqueStrings([
@@ -753,6 +779,8 @@
       event_date: (matter && (matter.deadline || matter.event_date)) || null,
       testimony_email: testimonyEmail,
       testimony_until: testimonyUntil,
+      testimony_signup_url: testimonySignupUrl,
+      testimony_starter: (testimonyEmail || testimonySignupUrl) ? hearingStarterCopy(matter && matter.title) : null,
       contact_name: contactName,
       email: contactEmail,
       contact_phone: contactPhone,
@@ -1436,6 +1464,8 @@
         event_date: h.event_date || m.event_date || m.deadline || null,
         testimony_email: h.testimony_email,
         testimony_until: h.testimony_until,
+        testimony_signup_url: h.testimony_signup_url,
+        testimony_starter: h.testimony_starter,
         contact_name: h.contact_name,
         email: h.email,
         contact_phone: h.contact_phone,
@@ -1594,7 +1624,7 @@
         actions = [
           official(type, handoff.label_key, handoff.label, handoff.destination, actionDeadline, { guide: guidePayload }),
         ];
-        if (actionDeadline && !past) actions.push(calendar);
+        if (actionDeadline && !past) actions.push(local("calendar", "calendar_ics", "Calendar (.ics)", null, actionDeadline));
         actions.push(watch);
       } else if (handoff.has_fields) {
         const guidePayload = handoff.guide_system
@@ -1610,7 +1640,7 @@
           confirmation_required: false,
           guide: guidePayload,
         })];
-        if (actionDeadline && !past) actions.push(calendar);
+        if (actionDeadline && !past) actions.push(local("calendar", "calendar_ics", "Calendar (.ics)", null, actionDeadline));
         actions.push(watch);
       } else {
         // Honest pointer when no stage-specific fields are published.
@@ -1707,7 +1737,7 @@
         } else {
           actions = [unavailable("attend", "next_action_participation_missing", "No online participation link is published in this notice.", deadline)];
         }
-        if (deadline) actions.push(calendar);
+        if (deadline) actions.push(local("calendar", "calendar_ics", "Calendar (.ics)", null, deadline));
         actions.push(watch);
       }
     } else if (kind === "zoning") {

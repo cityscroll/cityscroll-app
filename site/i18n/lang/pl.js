@@ -554,6 +554,7 @@
     hearing_guide_attend_where_step: "Weź udział w {where}.",
     hearing_guide_join_step_html: "Dołącz online na <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (otwiera się w nowej karcie)</span></a>.",
     hearing_guide_materials_step_html: "Agenda i materiały: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (otwiera się w nowej karcie)</span></a>.",
+    hearing_guide_signup_step_html: "Zarejestruj się, aby zabrać głos: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (otwiera się w nowej karcie)</span></a>.",
     hearing_guide_testimony_step_html: "Prześlij pisemne zeznania na <a href=\"mailto:{email}\">{email}</a>.",
     hearing_guide_testimony_until_close_step_html: "Prześlij pisemne zeznania na <a href=\"mailto:{email}\">{email}</a> do zakończenia przesłuchania.",
     hearing_guide_testimony_until_date_step_html: "Prześlij pisemne zeznania na <a href=\"mailto:{email}\">{email}</a> do {date}.",
