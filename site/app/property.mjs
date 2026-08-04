@@ -1268,7 +1268,12 @@ function loadTaxLienLookup(){
 function taxLienPct(rate){ return rate==null?"—":`${Math.round(Number(rate)*100)}%`; }
 // Date-only source values are civic dates, not UTC instants. Anchor at local
 // noon so US time zones never display the prior calendar day.
-function taxLienDate(value){ const day=String(value||"").slice(0,10); return /^\d{4}-\d{2}-\d{2}$/.test(day)?fdt(`${day}T12:00:00`):fdt(value); }
+function taxLienDate(value){
+  const day=String(value||"").slice(0,10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(day)) return fdt(value);
+  const meta=(window.LANG_META||{})[window.LANG||"en"];
+  return new Date(`${day}T12:00:00`).toLocaleDateString(meta?meta.intlDate:"en-US",{year:"numeric",month:"long",day:"numeric"});
+}
 function taxLienStageLabel(stage){
   return t({notice_90:"tax_lien_stage_90",notice_60:"tax_lien_stage_60",notice_30:"tax_lien_stage_30",notice_10:"tax_lien_stage_10",sold:"tax_lien_stage_sold"}[stage]||"tax_lien_stage_90");
 }
@@ -1308,23 +1313,35 @@ function taxLienDeadlineHTML(ctx){
 }
 function taxLienStepperHTML(stepper){
   if(!Array.isArray(stepper)||!stepper.length) return "";
-  return `<ol class="tax-lien-stepper lc-stepper" aria-label="${escUiHtml(t("tax_lien_cycle_stepper_aria"))}">${
-    stepper.map((step,i)=>{
+  return `<section class="tax-lien-stages"><h3>${t("tax_lien_stage_heading")}</h3><ol class="tax-lien-stepper lc-stepper" aria-label="${escUiHtml(t("tax_lien_cycle_stepper_aria"))}">${
+    stepper.map(step=>{
       const aria=step.current?` aria-current="step"`:"";
-      const arrow=i<stepper.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
-      return `<li><span class="lc-step ${escUiHtml(step.status)}"${aria}>${escUiHtml(taxLienStageLabel(step.id))}</span>${arrow}</li>`;
+      const meaningKey={notice_90:"tax_lien_stage_90_meaning",notice_60:"tax_lien_stage_60_meaning",notice_30:"tax_lien_stage_30_meaning",notice_10:"tax_lien_stage_10_meaning",sold:"tax_lien_stage_sold_meaning"}[step.id];
+      return `<li><span class="lc-step ${escUiHtml(step.status)}"${aria}>${escUiHtml(taxLienStageLabel(step.id))}</span><span class="tax-lien-stage-meaning">${t(meaningKey)}</span></li>`;
     }).join("")
-  }</ol>`;
+  }</ol></section>`;
 }
-function taxLienActionsHTML(channels){
-  if(!channels) return "";
-  const phone=channels.phone||"311";
-  return `<div class="tax-lien-actions" data-tax-lien-actions="1">
-    ${channels.exemption_url?`<a class="act primary" href="${escUiHtml(channels.exemption_url)}" ${EXT_ATTRS}>${t("tax_lien_exemptions")}${extSR()}</a>`:""}
-    ${channels.payment_plan_url?`<a class="act" href="${escUiHtml(channels.payment_plan_url)}" ${EXT_ATTRS}>${t("tax_lien_payment_plans")}${extSR()}</a>`:""}
-    ${channels.lien_sale_help_url?`<a class="act" href="${escUiHtml(channels.lien_sale_help_url)}" ${EXT_ATTRS}>${t("tax_lien_help")}${extSR()}</a>`:""}
-    <a class="act" href="tel:${escUiHtml(phone)}">${t("tax_lien_call_311")}</a>
-  </div>`;
+function taxLienCycleStatusHTML(ctx){
+  if(ctx?.deadline?.cycle_status!=="expired") return "";
+  return `<p class="tax-lien-cycle-expired" data-tax-lien-cycle-status="expired">${t("tax_lien_cycle_expired_plain",{date:taxLienDate(ctx.deadline.sale_date)})}</p>`;
+}
+function taxLienActionsHTML(ctx){
+  const checklist=Array.isArray(ctx?.resident_checklist)?ctx.resident_checklist:[];
+  if(!checklist.length) return "";
+  const keys={
+    exemptions:["tax_lien_checklist_exemptions","tax_lien_checklist_exemptions_meaning"],
+    payment_plans:["tax_lien_checklist_payment_plans","tax_lien_checklist_payment_plans_meaning"],
+    official_guide:["tax_lien_checklist_official_guide","tax_lien_checklist_official_guide_meaning"],
+  };
+  return `<section class="tax-lien-actions" data-tax-lien-actions="1" data-tax-lien-resident-checklist="1">
+    <h3>${t("tax_lien_checklist_heading")}</h3>
+    <ol>${checklist.map(step=>{
+      const pair=keys[step.id]; if(!pair||!step.url) return "";
+      return `<li><a href="${escUiHtml(step.url)}" ${EXT_ATTRS}>${t(pair[0])}${extSR()}</a><p>${t(pair[1])}</p></li>`;
+    }).join("")}</ol>
+    <p class="tax-lien-no-tracking">${t("tax_lien_no_lot_tracking")}</p>
+    ${ctx.action_channels?.phone?`<p class="tax-lien-support"><a href="tel:${escUiHtml(ctx.action_channels.phone)}">${t("tax_lien_call_311")}</a></p>`:""}
+  </section>`;
 }
 /** Notice detail: cycle position + countdown + historical context + actions + scoped BBLs. */
 function taxLienNoticeCycleHTML(ctx){
@@ -1346,10 +1363,11 @@ function taxLienNoticeCycleHTML(ctx){
     <h2>${t("tax_lien_heading")}</h2>
     <p class="tax-lien-deck">${t("tax_lien_deck_html")}</p>
     ${lead}
-    ${taxLienStepperHTML(ctx.stepper)}
+    ${taxLienCycleStatusHTML(ctx)}
     ${taxLienDeadlineHTML(ctx)}
+    ${taxLienActionsHTML(ctx)}
+    ${taxLienStepperHTML(ctx.stepper)}
     ${parcelBlock}
-    ${taxLienActionsHTML(ctx.action_channels)}
     ${vintage}
     <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
     <div class="lc-pct"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></div>
@@ -1374,21 +1392,21 @@ function taxLienCardNoteHTML(ctx){
   }
   return `<div class="tax-lien-card-note" data-tax-lien-card-context="1" data-tax-lien-stage="${escUiHtml(ctx.stage||"")}">${t("tax_lien_card_html",{stage:escUiHtml(stage),outcome:escUiHtml(outcome),date:taxLienDate(ctx.data_vintage)})}${hist}${deadline}</div>`;
 }
-function taxLienPanelHTML(summary){
+function taxLienPanelHTML(summary,guide=null){
   const rate=summary.training.citywide.notice_90.probability_leave_before_sale;
   const cycle=summary.cycles.find(row=>row.cycle_id===(taxLienSelectedCycle||summary.latest_cycle.cycle_id))||summary.cycles.at(-1);
   taxLienSelectedCycle=cycle.cycle_id;
   const options=summary.cycles.map(row=>`<option value="${escUiHtml(row.cycle_id)}"${row.cycle_id===cycle.cycle_id?" selected":""}>${taxLienDate(row.cycle_id)}</option>`).join("");
-  const steps=["notice_90","notice_60","notice_30","notice_10","sold"];
   // Archive posture: full tables behind a disclosure so the deep link stays useful without being a lens destination.
   return `<h2>${t("tax_lien_heading")}</h2>
     <p class="tax-lien-archive-note" data-tax-lien-archive-note="1">${t("tax_lien_archive_note_html")}</p>
     <p class="tax-lien-deck">${t("tax_lien_deck_html")}</p>
     <p class="tax-lien-lead">${t("tax_lien_action_lead_html",{p:taxLienPct(rate)})}</p>
-    <p class="tax-lien-meta">${t("tax_lien_attribution",{n:String(summary.training.cycle_count)})} · ${t("tax_lien_vintage",{date:taxLienDate(summary.latest_cycle.data_vintage)})} · ${t("tax_lien_expired",{date:taxLienDate(summary.schedule.sale_date)})}</p>
-    <p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p>
-    <ol class="tax-lien-stepper">${steps.map((stage,index)=>`<li><span class="lc-step ${index<4?"done":"current"}">${escUiHtml(taxLienStageLabel(stage))}</span>${index<4?'<span class="lc-step-arrow" aria-hidden="true">→</span>':""}</li>`).join("")}</ol>
-    ${taxLienActionsHTML(summary.action_channels)}
+    <p class="tax-lien-meta">${t("tax_lien_attribution",{n:String(summary.training.cycle_count)})} · ${t("tax_lien_vintage",{date:taxLienDate(summary.latest_cycle.data_vintage)})}</p>
+    ${taxLienCycleStatusHTML(guide)}
+    ${taxLienDeadlineHTML(guide)}
+    ${taxLienActionsHTML(guide)}
+    ${taxLienStepperHTML(guide?.stepper)}
     <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
     <div class="tax-lien-lookup"><label for="tax-lien-bbl">${t("tax_lien_lookup_label")}</label><input id="tax-lien-bbl" type="text" inputmode="numeric" maxlength="10" placeholder="${escUiHtml(t("tax_lien_lookup_placeholder"))}"><button type="button" id="tax-lien-bbl-go">${t("tax_lien_lookup_button")}</button><div class="tax-lien-result" id="tax-lien-bbl-result"></div></div>
     <details class="inline-disclose tax-lien-archive-tables" data-tax-lien-archive-tables="1">
@@ -1402,9 +1420,10 @@ function taxLienPanelHTML(summary){
 }
 async function paintTaxLienSalePanel(){
   const el=$("#tax-lien-sale-panel"); if(!el) return;
-  const summary=await loadTaxLienSummary();
+  const [summary,mod]=await Promise.all([loadTaxLienSummary(),taxLienCycleContextTools()]);
   if(!summary){ el.innerHTML=`<div class="empty">${t("could_not_reach")}</div>`; return; }
-  el.innerHTML=taxLienPanelHTML(summary);
+  const guide=mod?.buildTaxLienCycleGuide?mod.buildTaxLienCycleGuide(summary,"sold"):null;
+  el.innerHTML=taxLienPanelHTML(summary,guide);
   $("#tax-lien-cycle")?.addEventListener("change",event=>{taxLienSelectedCycle=event.target.value;paintTaxLienSalePanel();});
   $("#tax-lien-bbl-go")?.addEventListener("click",async()=>{
     const input=$("#tax-lien-bbl"), result=$("#tax-lien-bbl-result");
@@ -1455,7 +1474,8 @@ async function loadTaxLienForNotice(r,el){
   // Fallback: single-BBL decode without pure module.
   if(!bbl){ el.innerHTML=""; return; }
   const row=taxLienDecode(lookup,bbl); if(!row){ el.innerHTML=""; return; }
-  el.innerHTML=`<section class="tax-lien-panel tax-lien-cycle-context" data-tax-lien-cycle-context="1"><h2>${t("tax_lien_heading")}</h2>${taxLienBblResultHTML(summary,lookup,bbl)}<p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p>${taxLienActionsHTML(summary.action_channels)}<p class="tax-lien-meta">${t("tax_lien_deck_html")}</p></section>`;
+  const guide=mod?.buildTaxLienCycleGuide?mod.buildTaxLienCycleGuide(summary,row.stage):null;
+  el.innerHTML=`<section class="tax-lien-panel tax-lien-cycle-context" data-tax-lien-cycle-context="1"><h2>${t("tax_lien_heading")}</h2>${taxLienBblResultHTML(summary,lookup,bbl)}${taxLienCycleStatusHTML(guide)}${taxLienDeadlineHTML(guide)}${taxLienStepperHTML(guide?.stepper)}${taxLienActionsHTML(guide)}<p class="tax-lien-meta">${t("tax_lien_deck_html")}</p></section>`;
 }
 
 function propertyPlaceChips(location){
