@@ -325,7 +325,9 @@ jobs:
     # Always run so the required check name reports a conclusion. Job-level skips leave
     # the merge queue waiting when a changelog-only PR never produces this check.
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Setup Playwright + multi-viewport axe + language/demo/focus gates. Keep headroom
+    # above cold browser install; cache-hit runs stay well under this.
+    timeout-minutes: 20
     steps:
       - name: Changelog-only, non-frontend, or unit-failed — report required check success
         if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'

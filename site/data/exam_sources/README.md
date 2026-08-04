@@ -63,6 +63,15 @@ Sources and refresh rules:
   `--from-text-fixtures`. Receipt:
   `verification_receipts/noe_differentiators_latest.json`. Text fixtures:
   `fixtures/noe_text/examId_*.txt`.
+- `interest_area_taxonomy.json` — **data (not code)** mapping of exam titles
+  into subscribable interest areas (public safety, social services, trades,
+  admin, IT, etc.). Pure helpers: `site/exam_interest_taxonomy.mjs`. The
+  staffing artifact stamps each exam with `interest_area` and emits
+  `interest_taxonomy` (area descriptors + per-area exam lists with
+  open/upcoming/closed window state). Edit title rules or
+  `exam_overrides` / `title_code_overrides` here, then rebuild
+  `tools/build_staffing_exams.mjs`. Alerts-by-area is a **separate gated**
+  product surface — this file only marks areas `subscribable`.
 - `active_list_summary.json` — aggregate-only counts from the daily DCAS active
   civil-service-list dataset `vx8i-nprf`. Candidate names are never copied into
   this repository.
