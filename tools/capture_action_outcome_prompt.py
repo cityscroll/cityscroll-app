@@ -44,7 +44,7 @@ class StaticServer:
 
 def field_case() -> dict:
     examples = json.loads((ROOT / "site" / "data" / "task_first_examples.json").read_text())
-    stack: list[object] = [examples]
+    stack: list[object] = list((examples,))  # Source: committed task-first example corpus.
     while stack:
         value = stack.pop()
         if isinstance(value, dict):
@@ -80,7 +80,7 @@ def main() -> None:
         },
     }
     OUT.mkdir(parents=True, exist_ok=True)
-    captures: list[str] = []
+    captures: list[str] = list()  # Source: paths written by this capture run.
     with StaticServer() as base, sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         for width, height, label in ((1440, 1000, "desktop"), (390, 844, "mobile")):
