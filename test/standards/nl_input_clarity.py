@@ -96,7 +96,7 @@ def main():
         failures.append("Money no longer uses the shared interpreted-state row")
 
     search_start = index_src.find("async function search()")
-    search_end = index_src.find("/* Selection-method facet", search_start)
+    search_end = index_src.find("function paintMoneyRows(", search_start)
     search_body = index_src[search_start:search_end] if search_start >= 0 and search_end > search_start else ""
     if "renderMoneyActiveFilters()" not in search_body:
         failures.append("search() no longer projects Money's active filters into the status row")

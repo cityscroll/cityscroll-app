@@ -1073,6 +1073,7 @@ const STRINGS = {
     // Announcements (sr-only)
     or_more_results: "{n} or more results",
     results_count: "{n} results",
+    one_result: "1 result",
 
     // Event countdown (eventTag)
     event_today: "today",

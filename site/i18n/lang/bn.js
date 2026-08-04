@@ -685,6 +685,7 @@
     skip_to_content: "মূল বিষয়বস্তুতে যান",
     or_more_results: "{n} বা তার বেশি ফলাফল",
     results_count: "{n}টি ফলাফল",
+    one_result: "১টি ফলাফল",
     event_today: "আজ",
     due_today_tag: "আজ শেষ তারিখ",
     deadline_respond_by: "{date}-এর মধ্যে সাড়া দিন",

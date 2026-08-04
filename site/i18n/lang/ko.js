@@ -685,6 +685,7 @@
     skip_to_content: "본문으로 건너뛰기",
     or_more_results: "{n}건 이상의 결과",
     results_count: "{n}건의 결과",
+    one_result: "결과 1개",
     event_today: "오늘",
     due_today_tag: "오늘 마감",
     deadline_respond_by: "{date}까지 응답",

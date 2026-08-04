@@ -693,6 +693,7 @@
     skip_to_content: "Przejdź do treści",
     or_more_results: "{n} lub więcej wyników",
     results_count: "{n} wyników",
+    one_result: "1 wynik",
     event_today: "dzisiaj",
     due_today_tag: "termin dzisiaj",
     deadline_respond_by: "Odpowiedz do {date}",

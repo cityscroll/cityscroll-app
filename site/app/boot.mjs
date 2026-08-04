@@ -37,7 +37,6 @@ soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
-$("#methodselect").addEventListener("change", ()=>{ methodSel = $("#methodselect").value; search(); });
 $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
 
 $("#staffing-query").addEventListener("input",debounce(()=>{

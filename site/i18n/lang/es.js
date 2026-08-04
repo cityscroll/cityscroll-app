@@ -685,6 +685,7 @@
     skip_to_content: "Ir al contenido",
     or_more_results: "{n} o más resultados",
     results_count: "{n} resultados",
+    one_result: "1 resultado",
     event_today: "hoy",
     due_today_tag: "vence hoy",
     deadline_respond_by: "Responder antes del {date}",

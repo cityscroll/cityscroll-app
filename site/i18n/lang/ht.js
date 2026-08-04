@@ -684,6 +684,7 @@
     skip_to_content: "Ale dirèk nan kontni an",
     or_more_results: "{n} oswa plis rezilta",
     results_count: "{n} rezilta",
+    one_result: "1 rezilta",
     event_today: "jodi a",
     due_today_tag: "delè jodi a",
     deadline_respond_by: "Reponn anvan {date}",

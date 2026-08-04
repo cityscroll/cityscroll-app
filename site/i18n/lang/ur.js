@@ -688,6 +688,7 @@
     skip_to_content: "مواد پر جائیں",
     or_more_results: "{n} یا زیادہ نتائج",
     results_count: "{n} نتائج",
+    one_result: "1 نتیجہ",
     event_today: "آج",
     event_in_n_days_one: "{n} دن میں",
     event_in_n_days_other: "{n} دنوں میں",
