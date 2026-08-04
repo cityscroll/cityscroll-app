@@ -97,6 +97,11 @@ test("merge queue policy documents train wait and apply tool", () => {
   const policy = JSON.parse(read("tools/merge_queue_policy.json"));
   assert.equal(policy.merge_queue.min_entries_to_merge_wait_minutes, 5);
   assert.equal(policy.merge_queue.grouping_strategy, "ALLGREEN");
+  assert.equal(policy.merge_queue.max_entries_to_build, 5);
+  assert.equal(policy.elder_slot.detect_and_steer_age_hours, 2);
+  assert.equal(policy.elder_slot.elder_age_hours, 6);
+  assert.equal(policy.elder_slot.rebase_churn_threshold, 3);
+  assert.equal(policy.elder_slot.reserve_next_slot_for_elder, true);
   assert.ok(fs.existsSync(path.join(ROOT, "tools", "apply_merge_queue_policy.mjs")));
 });
 
