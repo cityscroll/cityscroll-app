@@ -23,6 +23,60 @@ function franchiseStageLabel(kind){
   if(kind==="award") return t("franchise_stage_award");
   return kind || "—";
 }
+function lifecycleJoinReference(join){
+  const keys=Array.isArray(join&&join.keys)?join.keys:[];
+  const key=keys.find(k=>/^(?:solicitation|concession):/i.test(k))
+    ||keys.find(k=>/^bbl:/i.test(k))
+    ||keys.find(k=>/^taxlot:/i.test(k))
+    ||keys.find(k=>/^party:/i.test(k))
+    ||keys.find(k=>/^plan:/i.test(k))
+    ||keys.find(k=>/^rules:/i.test(k));
+  if(!key) return null;
+  const parts=String(key).split(":");
+  const kind=parts.shift().toLowerCase();
+  const value=parts.join(":");
+  if(kind==="solicitation"||kind==="concession") return t("join_reference_solicitation",{value:escUiHtml(value.toUpperCase())});
+  if(kind==="bbl") return t("join_reference_bbl",{value:escUiHtml(value)});
+  if(kind==="taxlot") return t("join_reference_taxlot",{value:escUiHtml(value.replace(/:/g," / "))});
+  if(kind==="party") return t("join_reference_party",{value:escUiHtml(value.replace(/[-_]+/g," "))});
+  if(kind==="plan") return t("join_reference_plan",{value:escUiHtml(value.toUpperCase())});
+  if(kind==="rules") return t("join_reference_rules");
+  return null;
+}
+function lifecycleJoinMethod(method){
+  const keys={
+    exact_concession_id:"join_method_solicitation",
+    exact_party:"join_method_party",
+    exact_plan_year:"join_method_plan_year",
+    exact_rules_subject:"join_method_rules_subject",
+    exact_bbl:"join_method_bbl",
+    exact_borough_block_lot:"join_method_taxlot"
+  };
+  return t(keys[method]||"join_method_shared_reference");
+}
+function lifecycleJoinDetailsHTML(join,provenance){
+  const reference=lifecycleJoinReference(join);
+  const evidence=reference
+    ?t("join_evidence_html",{reference,method:escUiHtml(lifecycleJoinMethod(join&&join.method))})
+    :t("join_evidence_singleton_html");
+  return `<details class="inline-disclose lc-how join-evidence"><summary>${t("join_evidence_summary")}</summary><div class="inline-disclose-body">${evidence}<div class="note" style="margin-top:8px">${provenance}</div></div></details>`;
+}
+function lifecycleNoticeEventsHTML(events){
+  return (Array.isArray(events)?events:[]).map(event=>{
+    const id=String(event&&event.request_id||"");
+    const title=cleanText(event&&event.title)||id||"—";
+    const when=event&&(event.time?.value||event.when)?fdate(event.time?.value||event.when):"—";
+    const titleHtml=id
+      ?`<a href="#notice/${escUiHtml(id)}">${escUiHtml(title)}</a>`
+      :escUiHtml(title);
+    const sourceUrl=event&&(event.source?.url||event.source_url);
+    return `<div class="lc-event">
+      <div class="when">${escUiHtml(when)}</div>
+      <div class="lc-pct" lang="en" dir="ltr">${titleHtml}</div>
+      ${sourceUrl?`<div class="lc-pct"><a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a></div>`:""}
+    </div>`;
+  }).join("");
+}
 /** Infer process stage from the notice type/title when the spine has not stamped yet. */
 function inferFranchiseStageFromNotice(r){
   if(!r) return null;
@@ -48,15 +102,7 @@ function franchisePhaseSpineTools(){
 function franchiseConcessionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
   const join = spine.join || {};
-  const keyNote = (join.keys && join.keys.length)
-    ? t("franchise_join_matched_html",{
-        method: escUiHtml(join.method || "—"),
-        n: String(join.notice_count || 0),
-        subject: escUiHtml(spine.subject_ref || "—")
-      })
-    : t("franchise_join_singleton_html",{
-        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
-      });
+  const how=lifecycleJoinDetailsHTML(join,t("franchise_provenance_html"));
 
   // Phase-grouped compact stepper (same pattern as property / land / rules) when the pure module loads.
   if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
@@ -83,37 +129,18 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
           })}</div>
         </div></div>`;
       }
-      const when=p.primary?.when?fdate(p.primary.when):"—";
-      const title=p.primary?.title?cleanText(p.primary.title):"";
-      const more=p.notice_count>1
-        ?` · ${t("franchise_stage_notice_count",{n:String(p.notice_count)})}`
-        :"";
-      // Aggregate verbatim-repeated titles under one line when multiple notices share wording.
-      const aggNote=(Array.isArray(p.aggregates) && p.aggregates.length===1 && p.aggregates[0].count>1)
-        ?` · ${t("franchise_stage_notice_count",{n:String(p.aggregates[0].count)})}`
-        :"";
-      const noticeLink=p.primary?.request_id
-        ?`<div class="lc-pct"><a href="#notice/${escUiHtml(p.primary.request_id)}">${escUiHtml(p.primary.request_id)}</a>${more||aggNote}</div>`
-        :((more||aggNote)?`<div class="lc-pct">${more||aggNote}</div>`:"");
-      // One outbound source family per phase (deduped).
-      const sourceLink=p.source_url
-        ?`<div class="lc-pct"><a href="${escUiHtml(p.source_url)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a></div>`
-        :"";
+      const notices=lifecycleNoticeEventsHTML(p.events);
       return `<div class="stage"><div class="box matched">
         <div class="stage-name">${franchiseStageLabel(p.id)}</div>
-        <div class="when">${escUiHtml(when)}</div>
-        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
-        ${noticeLink}
-        ${sourceLink}
+        ${notices}
       </div></div>`;
     }).join('<div class="connector" aria-hidden="true">→</div>');
     return `<section class="franchise-spine" data-franchise-spine="1" data-franchise-phase="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
       <div class="chain-h">${t("franchise_spine_heading")}</div>
-      <div class="note">${keyNote}</div>
       ${actionLead}
       ${stepper}
       <div class="chain franchise-phase-cards">${cards}</div>
-      <div class="note">${t("franchise_provenance_html")}</div>
+      ${how}
     </section>`;
   }
 
@@ -123,21 +150,10 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
   stages.forEach((stage, idx) => {
     const matched = stage && stage.matched;
     const stageEvents = Array.isArray(stage.events) ? stage.events : [];
-    const primary = stageEvents[0] || null;
-    const when = primary?.time?.value ? fdate(primary.time.value) : "—";
-    const title = primary ? (cleanText(primary.title) || "—") : "";
-    const more = stage.notice_count > 1
-      ? ` · ${t("franchise_stage_notice_count",{n:String(stage.notice_count)})}`
-      : "";
-    const noticeLink = primary?.request_id
-      ? `<div class="lc-pct"><a href="#notice/${escUiHtml(primary.request_id)}">${escUiHtml(primary.request_id)}</a>${more}</div>`
-      : (more ? `<div class="lc-pct">${more}</div>` : "");
     if(matched){
       chain += `<div class="stage"><div class="box matched">
         <div class="stage-name">${franchiseStageLabel(stage.kind)}</div>
-        <div class="when">${escUiHtml(when)}</div>
-        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
-        ${noticeLink}
+        ${lifecycleNoticeEventsHTML(stageEvents)}
       </div></div>`;
     } else {
       chain += `<div class="stage"><div class="box">
@@ -151,9 +167,8 @@ function franchiseConcessionSpineHTML(spine, notice, phaseView){
   });
   return `<section class="franchise-spine" data-franchise-spine="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
     <div class="chain-h">${t("franchise_spine_heading")}</div>
-    <div class="note">${keyNote}</div>
     <div class="chain">${chain}</div>
-    <div class="note">${t("franchise_provenance_html")}</div>
+    ${how}
   </section>`;
 }
 async function loadFranchiseConcessionSpine(r, el){
@@ -314,15 +329,7 @@ function propertyDispositionTimingHTML(estimate){
 function propertyDispositionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
   const join = spine.join || {};
-  const keyNote = (join.keys && join.keys.length)
-    ? t("disposition_join_matched_html",{
-        method: escUiHtml(join.method || "—"),
-        n: String(join.notice_count || 0),
-        subject: escUiHtml(spine.subject_ref || "—")
-      })
-    : t("disposition_join_singleton_html",{
-        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
-      });
+  const how=lifecycleJoinDetailsHTML(join,t("disposition_provenance_html"));
   const timingEstimate=phaseView && phaseView.disposition_timing_estimate
     ? propertyDispositionTimingHTML(phaseView.disposition_timing_estimate)
     : "";
@@ -351,31 +358,11 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     // (absent means absent; no per-stage "not yet shown" explainer).
     const matchedPhases=phaseView.phases.filter(p=>p.matched);
     const cards=matchedPhases.map(p=>{
-      const when=p.primary?.when?fdate(p.primary.when):"—";
-      const title=p.primary?.title?cleanText(p.primary.title):"";
-      const more=p.notice_count>1
-        ?` · ${t("disposition_stage_notice_count",{n:String(p.notice_count)})}`
-        :"";
-      // Aggregate verbatim-repeated titles under one line when multiple notices share wording.
-      const aggNote=(Array.isArray(p.aggregates) && p.aggregates.length===1 && p.aggregates[0].count>1)
-        ?` · ${t("disposition_stage_notice_count",{n:String(p.aggregates[0].count)})}`
-        :"";
-      const noticeLink=p.primary?.request_id
-        ?`<div class="lc-pct"><a href="#notice/${escUiHtml(p.primary.request_id)}">${escUiHtml(p.primary.request_id)}</a>${more||aggNote}</div>`
-        :((more||aggNote)?`<div class="lc-pct">${more||aggNote}</div>`:"");
-      // One outbound source family per phase (deduped).
-      const sourceLink=p.source_url
-        ?`<div class="lc-pct"><a href="${escUiHtml(p.source_url)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a></div>`
-        :"";
       return `<div class="stage"><div class="box matched">
         <div class="stage-name">${dispositionStageLabel(p.id)}</div>
-        <div class="when">${escUiHtml(when)}</div>
-        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
-        ${noticeLink}
-        ${sourceLink}
+        ${lifecycleNoticeEventsHTML(p.events)}
       </div></div>`;
     }).join('<div class="connector" aria-hidden="true">→</div>');
-    const how=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${keyNote}<div class="note" style="margin-top:8px">${t("disposition_provenance_html")}</div></div></details>`;
     return `<div class="chain-h">${t("disposition_spine_heading")}</div>
       ${cycleContextMark}
       ${actionLead}
@@ -390,27 +377,15 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
   let chain = "";
   stages.forEach((stage, idx) => {
     const stageEvents = Array.isArray(stage.events) ? stage.events : [];
-    const primary = stageEvents[0] || null;
-    const when = primary?.time?.value ? fdate(primary.time.value) : "—";
-    const title = primary ? (cleanText(primary.title) || "—") : "";
-    const more = stage.notice_count > 1
-      ? ` · ${t("disposition_stage_notice_count",{n:String(stage.notice_count)})}`
-      : "";
-    const noticeLink = primary?.request_id
-      ? `<div class="lc-pct"><a href="#notice/${escUiHtml(primary.request_id)}">${escUiHtml(primary.request_id)}</a>${more}</div>`
-      : (more ? `<div class="lc-pct">${more}</div>` : "");
     chain += `<div class="stage"><div class="box matched">
       <div class="stage-name">${dispositionStageLabel(stage.kind)}</div>
-      <div class="when">${escUiHtml(when)}</div>
-      ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
-      ${noticeLink}
+      ${lifecycleNoticeEventsHTML(stageEvents)}
     </div></div>`;
     if(idx < stages.length - 1) chain += '<div class="connector">→</div>';
   });
-  const howFlat=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${keyNote}<div class="note" style="margin-top:8px">${t("disposition_provenance_html")}</div></div></details>`;
   return `<div class="chain-h">${t("disposition_spine_heading")}</div>
     ${chain?`<div class="chain">${chain}</div>`:""}
-    ${howFlat}`;
+    ${how}`;
 }
 /**
  * Detail commercial panel: full extraction with provenance for the surplus-goods buyer.
