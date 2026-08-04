@@ -38,6 +38,13 @@ test("Meetings follows the shared lens hierarchy with meeting stage as the prima
   assert.match(meetingsSection, /class="lens-method meetings-method"/);
 });
 
+test("Meetings labels its exclusive facet as Current stage and keeps progress off the list", () => {
+  assert.match(meetingsSection, /id="meetings-process-label"[^>]*>Current stage</);
+  assert.match(meetingsSection, /id="meetingsprocessrail"[^>]*aria-labelledby="meetings-process-label"/);
+  assert.doesNotMatch(meetingsSection, /meetings-domain-stepper|lc-step-arrow/);
+  assert.match(meetingsSection, /class="lens-method meetings-method"/);
+});
+
 test("Meetings keeps search and stage visible while secondary controls stay in one disclosure", () => {
   const disclosureStart = meetingsSection.indexOf('id="meetings-more-filters"');
   const disclosureEnd = meetingsSection.indexOf("</details>", disclosureStart);

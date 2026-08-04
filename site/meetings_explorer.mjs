@@ -545,15 +545,10 @@ export function filterMeetingsExplorerEntries(entries, opts = {}) {
 
   return (entries || []).filter((entry) => {
     if (!entry || !entry.primary) return false;
-    if (process === "unstaged") {
-      return entry.process_filter === "unstaged";
-    }
-    // Keep multi-notice chains findable under earlier phases.
-    const memberHit = (entry.members || [entry.primary]).some(
-      (m) => meetingProcessStage(m, opts) === process,
-    );
-    const matchedHit = (entry.matched_phases || []).includes(process);
-    return memberHit || matchedHit || entry.process_filter === process;
+    // The list facet represents one current position for each collapsed card.
+    // Earlier member phases remain visible on the card/detail timeline, but do
+    // not make this mutually exclusive bucket overlap another stage.
+    return entry.process_filter === process;
   });
 }
 

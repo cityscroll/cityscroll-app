@@ -128,11 +128,11 @@ function rulesActionBandTools(){
 function rulesProcessControlHTML(model){
   if(!model) return "";
   const button=(item,cls)=>`<button type="button" class="${cls}${item.pressed?" on":""}" data-rules-process="${escUiHtml(item.id)}" aria-pressed="${item.pressed?"true":"false"}">${escUiHtml(t(item.label_key))}<span class="ct">${item.count}</span></button>`;
-  const lifecycle=model.lifecycle.map((item,index)=>`<li>${button(item,["lc-step","rules-stage-filter"].join(" "))}${index<model.lifecycle.length-1?'<span class="lc-step-arrow" aria-hidden="true">→</span>':""}</li>`).join("");
-  return `<div class="rules-stage-control">
+  const phases=model.lifecycle.map(item=>button(item,["chip","rules-stage-filter"].join(" "))).join("");
+  return `<div class="chiprow rules-stage-facets rules-stage-control">
     ${button(model.all,["chip","rules-stage-all"].join(" "))}
-    <ol class="lc-stepper rules-stage-lifecycle">${lifecycle}</ol>
-    ${model.unstaged?`<span class="rules-stage-divider" aria-hidden="true">·</span>${button(model.unstaged,["chip","rules-stage-unmatched"].join(" "))}`:""}
+    ${phases}
+    ${model.unstaged?button(model.unstaged,["chip","rules-stage-unmatched"].join(" ")):""}
   </div>`;
 }
 
