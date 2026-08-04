@@ -28,7 +28,7 @@ const moneySection = html.slice(
 
 test("Contracts follows the shared lens hierarchy with the answer and primary facet first", () => {
   const intro = moneySection.indexOf('id="money-domain-intro"');
-  const naturalLanguage = moneySection.indexOf('class="nlbox"');
+  const naturalLanguage = moneySection.indexOf('class="nlbox money-nlbox"');
   const toolbar = moneySection.indexOf('class="lens-toolbar money-toolbar"');
   const primary = moneySection.indexOf('id="money-method-primary"');
   const resultbar = moneySection.indexOf('class="lens-resultbar"');
@@ -50,6 +50,15 @@ test("Contracts keeps keyword and method visible while secondary controls stay i
   assert.doesNotMatch(disclosure, /id="sort"|id="methodfacet"/);
   assert.ok(moneySection.indexOf('id="methodfacet"') > disclosureEnd);
   assert.match(moneySection, /id="rescount"[\s\S]*?id="sort"/);
+});
+
+test("Contracts reserves token-based space for its asynchronous primary facet", () => {
+  assert.match(moneySection, /class="nlbox money-nlbox"/);
+  assert.match(moneySection, /class="money-method-slot"[\s\S]*?id="money-method-primary"/);
+  assert.match(
+    html,
+    /\.money-nlbox\{min-height:calc\(var\(--space-8\) \* 2 \+ var\(--space-5\)\)\}[\s\S]*?\.money-method-slot\{min-height:calc\(var\(--space-8\) \+ var\(--space-5\) \+ var\(--space-1\)\)\}/,
+  );
 });
 
 test("Contracts initial and zero-result detail states stay quiet", () => {

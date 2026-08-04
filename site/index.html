@@ -636,6 +636,8 @@
   .lens-more-content .property-rail-label{margin:var(--space-3) 0 var(--space-2)}
   .lens-more-content .chiprow{margin-top:0}
   .lens-primary-rail{margin-top:var(--space-2)}
+  .money-nlbox{min-height:calc(var(--space-8) * 2 + var(--space-5))}
+  .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
   .lens-resultbar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);flex-wrap:wrap;margin:var(--space-3) 0 var(--space-1)}
@@ -655,7 +657,11 @@
   .property-cluster-list .cl-date{color:var(--muted);margin-inline-start:6px}
   .property-empty-current{grid-column:1/-1;margin:var(--space-2) 0 var(--space-1);padding:var(--space-3) var(--space-4);background:var(--color-canvas-subtle);border:1px solid var(--color-border);border-radius:var(--radius-md);font:14px/1.45 var(--font-interface);color:var(--color-text-soft)}
   #propertyfeed .property-closed-section{grid-column:1/-1}
-  @media(max-width:680px){ .lens-more-content{width:min(94vw,440px)} }
+  @media(max-width:680px){
+    .lens-more-content{width:min(94vw,440px)}
+    .money-nlbox{min-height:0}
+    .money-method-slot{min-height:0}
+  }
   .tax-lien-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--oxblood);border-radius:10px;box-shadow:var(--shadow)}
   .tax-lien-panel h2{font:700 21px/1.15 var(--font-display);margin:0 0 7px}
   .tax-lien-deck,.tax-lien-lead,.tax-lien-meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px;color:var(--ink-soft)}
@@ -1454,7 +1460,7 @@
         </div>
       </details>
     </div>
-    <div class="nlbox">
+    <div class="nlbox money-nlbox">
       <div class="nlrow">
         <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
         <button id="nlgo" data-i18n="ask_btn">Ask</button>
@@ -1507,9 +1513,11 @@
         <button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Watch this search</button>
       </div>
     </div>
-    <div id="money-method-primary" hidden>
-      <div class="property-rail-label lens-primary-label" data-i18n="method_facet_label">Method:</div>
-      <div class="chiprow lens-primary-rail" id="methodfacet" role="group" aria-label="Procurement method"></div>
+    <div class="money-method-slot">
+      <div id="money-method-primary" hidden>
+        <div class="property-rail-label lens-primary-label" data-i18n="method_facet_label">Method:</div>
+        <div class="chiprow lens-primary-rail" id="methodfacet" role="group" aria-label="Procurement method"></div>
+      </div>
     </div>
     <div class="lens-search-state" id="moneyactivefilters"></div>
     <div class="lens-resultbar">
