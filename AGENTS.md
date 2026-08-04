@@ -150,8 +150,17 @@ no binaries/OCR stored). Text is stamped beside T0 rows
 (`extracted_text` / `text_preview` / `text_status`), served on
 `GET /attachment-metadata`, and merged into the D1 notices `haystack` with
 provenance marker `attachment-text`. Notice UI uses progressive disclosure
-(`.attachment-extract`, collapsed by default). Later tiers (not this PR):
-`att-t2-structured` (tables → parquet/DuckDB) and `att-t3-embeddings`.
+(`.attachment-extract`, collapsed by default). **T3 embeddings (landed):**
+build-time nearest-neighbor over T1 text materializes **precomputed related
+edges** only (`docs/adr/attachment-text-embeddings.md`) — no query-time embed
+(query embedding would need a live model or client weights). Pure lib
+`warehouse/lib/attachment_embeddings.mjs` (hashed n-gram TF-IDF, local/CI-safe);
+artifact `site/data/attachment_related_notices.json` (+ Worker twin);
+UI `.attachment-related` on notice detail. Rebuild:
+`node tools/build_attachment_related.mjs` / `--check`. Golden: Cannonsville
+`20240515016` → water-supply forest neighbors keyword “Cannonsville” misses.
+Proof: `warehouse/receipts/proof/att_t3_attachment_embeddings_latest.json`.
+Later tier (not this PR): `att-t2-structured` (tables → parquet/DuckDB).
 Exemplar: notice `20240515016` (Cannonsville). Capture:
 `python3 tools/capture_attachment_text.py`.
 

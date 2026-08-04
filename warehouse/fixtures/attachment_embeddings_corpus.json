@@ -1,0 +1,60 @@
+{
+  "schema": "cityscroll.attachment_embeddings_corpus.v1",
+  "description": "Golden + distractor corpus for T3 attachment-content similarity. Cannonsville is the source extract; related targets share water-supply forestry language without the token Cannonsville so keyword search misses them.",
+  "golden": {
+    "source_id": "20240515016",
+    "keyword_query": ["cannonsville"],
+    "must_relate_ids": ["20230612007", "20210908014"],
+    "must_not_rank_above_related": ["20240101001", "20240215022"]
+  },
+  "documents": [
+    {
+      "id": "20240515016",
+      "role": "source",
+      "title": "Cannonsville watershed basin timber sale",
+      "section": "Property Disposition",
+      "agency": "Environmental Protection",
+      "text": "New York City Department of Environmental Protection\nBureau of Water Supply - Natural Resources Division\nCARPENTERS EDDY EAST\nForest Management Project # 5116\nNOTICE OF PROJECT AVAILABILITY\nDescription: The City of New York will sell 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest Management Project #5116 in the Cannonsville watershed basin.\nSummary: This sale is comprised of mostly mature red oak and white ash. The project includes 2.5 miles of trail construction and 27 acres of shelterwood regeneration.\nProject Area: 103 ac +/-\nTotal Volume: 187 MBF +/- sawtimber & 89 cords hardwood pulp\nSpecies as a percent of total sawtimber volume: 49% Red Oak, 22% White Ash, 14% Red Maple, 9% Chestnut Oak.\nShow Dates: Prospective bidders should attend one of the public showings to receive the full bid package.\nBid Deadline: Sealed bids must be received by the date stated in the official notice."
+    },
+    {
+      "id": "20230612007",
+      "role": "target",
+      "title": "Ashokan reservoir lands — standing timber harvest",
+      "section": "Property Disposition",
+      "agency": "Environmental Protection",
+      "text": "Department of Environmental Protection, Bureau of Water Supply, Natural Resources Division. Notice of project availability for a forest management sale on water-supply lands adjacent to the Ashokan reservoir. 140 MBF of hardwood sawtimber and 60 cords of pulpwood. Shelterwood regeneration on roughly 22 acres with limited skid-trail construction. Species mix dominated by red oak and hard maple. Sealed bids; show dates for prospective purchasers of standing timber on city-owned watershed property."
+    },
+    {
+      "id": "20210908014",
+      "role": "target",
+      "title": "Pepacton basin forest management — pulp and sawtimber",
+      "section": "Property Disposition",
+      "agency": "Environmental Protection",
+      "text": "NYC DEP Bureau of Water Supply will offer hardwood pulp and sawtimber from a forest management project in the Pepacton basin of the city water-supply system. Project includes shelterwood cuts, trail work, and regeneration of mature oak-ash stands on reservoir buffer parcels. Volume reported in MBF and cords. Bidders must attend a field showing. This is an environmental land / timber disposition on water-supply holdings, not a generic surplus sale."
+    },
+    {
+      "id": "20240101001",
+      "role": "target",
+      "title": "IT professional services — cloud migration support",
+      "section": "Procurement",
+      "agency": "Technology and Innovation",
+      "text": "Request for proposals for information technology consulting services including cloud infrastructure migration, application modernization, cybersecurity assessment, and help-desk augmentation. Vendors must hold relevant cloud certifications. No forestry, watershed, timber, or reservoir content."
+    },
+    {
+      "id": "20240215022",
+      "role": "target",
+      "title": "Open competitive examination — Caseworker",
+      "section": "Changes in Personnel",
+      "agency": "Citywide Administrative Services",
+      "text": "Notice of examination for Caseworker. Application period, exam fee, minimum qualifications including a baccalaureate degree, and civil service list establishment procedures. No environmental or land disposition content."
+    },
+    {
+      "id": "20220520003",
+      "role": "target",
+      "title": "Street resurfacing — Borough of Queens",
+      "section": "Procurement",
+      "agency": "Transportation",
+      "text": "Invitation to bid for asphalt resurfacing and milling of selected streets in Queens. Traffic maintenance, night work provisions, and M/WBE goals. Unrelated to watershed forestry."
+    }
+  ]
+}
