@@ -4,6 +4,9 @@
 
 **Decision stage:** Cloudflare Pages parallel deployment; production routing unchanged
 
+**After-soak verdict:** [open the measured button page](./migration-value-verdict.html)
+or inspect the [machine-readable receipt](./migration-value-verdict.json).
+
 **Related evidence:** [fresh route parity](./cloudflare-pages-route-parity.md),
 [existing machine-readable baseline](./hosting-migration-baseline.json), and
 [dual-host measurements](./hosting-dual-host-metrics.json)

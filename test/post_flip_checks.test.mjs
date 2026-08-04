@@ -293,7 +293,7 @@ test("post-flip URL matrix includes stats endpoint and is selected only via --se
   assert.notEqual(targetsFromCli({}), POST_FLIP_TARGETS);
 });
 
-test("migration baseline scorecard is measured before-side, not asserted after", () => {
+test("migration scorecard preserves the measured before-side and labels after verdicts", () => {
   assert.equal(baseline.schema, "hosting-migration-baseline.v1");
   assert.equal(baseline.serving_shape, "github-pages-origin-via-worker-mirror");
   assert.equal(baseline.merge_to_live.tag, "measured");
@@ -308,6 +308,13 @@ test("migration baseline scorecard is measured before-side, not asserted after",
   assert.equal(silent.latency_minutes.min, 6);
   assert.equal(silent.latency_minutes.max, 10);
   assert.equal(baseline.rollback_estimate.tag, "estimated");
-  assert.equal(baseline.after_cutover.status, "not-yet-measured");
+  assert.equal(baseline.after_cutover.status, "value-partially-confirmed");
+  assert.equal(baseline.after_cutover.merge_to_live.tag, "measured");
+  assert.equal(baseline.after_cutover.merge_to_live.verdict, "confirmed");
+  assert.equal(baseline.after_cutover.merge_to_live.n, 50);
+  assert.equal(baseline.after_cutover.detection_latency.verdict, "cant-measure-yet");
+  assert.equal(baseline.after_cutover.rollback_wall_clock.verdict, "cant-measure-yet");
+  assert.equal(baseline.after_cutover.rollback_wall_clock.actual_restore_s, null);
+  assert.equal(baseline.after_cutover.rollback_wall_clock.production_mutation_performed, false);
   assert.ok(baseline.claims_to_measure_after_cutover.some((c) => c.id === "ship-faster"));
 });

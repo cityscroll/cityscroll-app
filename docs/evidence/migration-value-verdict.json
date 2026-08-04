@@ -1,0 +1,238 @@
+{
+  "schema": "hosting-migration-value-verdict.v1",
+  "captured_at": "2026-08-04T07:20:00Z",
+  "measurement_window": {
+    "starts_at": "2026-08-03T12:49:24Z",
+    "ends_at": "2026-08-04T06:59:40.8416581Z",
+    "selection": "The 50 latest successful main-branch Cloudflare Pages workflow runs that could be tied to a merged pull request and contained Wrangler's Deployment complete timestamp.",
+    "exclusion_note": "Cancelled run 30826882681 had no deployment-complete timestamp and is not a successful deployment sample. Recent merged pull requests without a corresponding Pages run are not silently assigned a latency."
+  },
+  "overall": {
+    "verdict": "not-confirmed",
+    "summary": "Cloudflare Pages is measurably fast to publish, but the full migration-value thesis is not confirmed: comparative failure-detection latency lacks a same-class before measurement, and production rollback remains undrilled with an incomplete GitHub Pages fallback.",
+    "counts": {
+      "confirmed": 1,
+      "not_confirmed": 0,
+      "cant_measure_yet": 2
+    }
+  },
+  "claims": [
+    {
+      "id": "ship-faster",
+      "claim": "Merge-to-live wall-clock is shorter under Pages-primary than under GitHub Pages plus the Worker mirror.",
+      "verdict": "confirmed",
+      "before": {
+        "tag": "measured",
+        "primary_median_s": 74.5,
+        "primary_n": 8,
+        "primary_method": "GitHub Actions run_started_at to updated_at for successful Deploy site runs on 2026-07-30.",
+        "refreshed_proxy_median_s": 56,
+        "refreshed_proxy_n": 10,
+        "refreshed_proxy_method": "First-to-last workflow log timestamp for successful Deploy site runs on 2026-08-02.",
+        "sources": [
+          "docs/evidence/hosting-migration-baseline.json",
+          "docs/evidence/migration-value-scorecard.md"
+        ]
+      },
+      "after": {
+        "tag": "measured",
+        "n": 50,
+        "unit": "seconds",
+        "min_s": 41.763,
+        "median_s": 52.4625,
+        "mean_s": 56.57962,
+        "p95_s": 80.541,
+        "max_s": 149.804,
+        "under_60_s": 40,
+        "method": "Pull request mergedAt to the paired main-branch Deploy Cloudflare Pages log line containing Wrangler's Deployment complete timestamp.",
+        "source": "GitHub pull-request and Actions history; run and pull-request identifiers are retained in merge_to_deploy_samples."
+      },
+      "comparison": {
+        "primary_baseline_change_pct": -29.58,
+        "refreshed_proxy_change_pct": -6.32,
+        "note": "The result clears both named pre-cutover medians, but endpoint definitions differ. It proves faster publish completion against the registered baseline, not browser-observed CDN propagation."
+      }
+    },
+    {
+      "id": "catch-breaks-faster",
+      "claim": "Detection latency for visitor-visible outages is shorter with post-cutover gates than manual discovery.",
+      "verdict": "cant-measure-yet",
+      "before": {
+        "tag": "measured-class-unquantified-latency",
+        "redirect_loop_manual_detection_minutes": null,
+        "silent_digest_manual_detection_minutes": {
+          "min": 6,
+          "max": 10
+        },
+        "source": "docs/evidence/hosting-migration-baseline.json"
+      },
+      "after": {
+        "tag": "measured",
+        "gate_exemplars": [
+          {
+            "gate": "URL route parity",
+            "run_id": 30781086054,
+            "job_id": 91585817248,
+            "probe_started_at": "2026-08-03T03:10:33.0699912Z",
+            "first_failed_attempt_at": "2026-08-03T03:10:34.4106472Z",
+            "first_diagnostic_s": 1.341,
+            "red_at": "2026-08-03T03:22:33.0844855Z",
+            "red_latency_s": 720.015,
+            "result": "Nine route mismatches were visible on the first attempt; the gate waited through the configured persistence window and failed with three paths still mismatched."
+          },
+          {
+            "gate": "Accessibility and language",
+            "run_id": 30884034362,
+            "job_id": 91911507198,
+            "check_started_at": "2026-08-04T06:31:26.3752960Z",
+            "first_diagnostic_at": "2026-08-04T06:31:41.7103979Z",
+            "first_diagnostic_s": 15.335,
+            "red_at": "2026-08-04T06:31:41.7332276Z",
+            "red_latency_s": 15.358,
+            "result": "The label-coverage census identified nine render states containing an unnamed select control."
+          },
+          {
+            "gate": "Performance budgets",
+            "run_id": 30879078830,
+            "job_id": 91896568746,
+            "check_started_at": "2026-08-04T04:57:01.0872207Z",
+            "first_diagnostic_at": "2026-08-04T04:58:05.7010976Z",
+            "first_diagnostic_s": 64.614,
+            "red_at": "2026-08-04T05:05:07.4872420Z",
+            "red_latency_s": 486.4,
+            "result": "The first 20-sample cold-mobile budget reported wireBytes p95 471,794 above 445,000; the job completed the matrix before concluding red."
+          }
+        ],
+        "pr_gate_audit": {
+          "tag": "measured-run-history-count",
+          "window": "Twenty recent failed pull-request CI runs from 30868235068 through 30884034362 on 2026-08-04 UTC.",
+          "distinct_red_runs": 20,
+          "performance_red_runs": 15,
+          "accessibility_red_runs": 6,
+          "runs_red_in_both": 1,
+          "failure_classes": 2,
+          "note": "Run activations are not incident counts; repeated revisions can exercise the same detector class."
+        },
+        "human_detection_audit": {
+          "tag": "measured-documented-field-cases",
+          "distinct_defect_classes": 7,
+          "fix_areas": 5,
+          "sources": [
+            "PR 409: map density zeroed for meetings, rules, and contracts",
+            "PR 417: false ULURP token produced from meeting text",
+            "PR 420: open exams displayed post-list hires from an incoherent cycle",
+            "PR 421: a completed later land phase coexisted with an earlier current phase",
+            "PRs 437 and 438: currency-marked dates, archived sales ahead of open sales, and a misleading hearings empty state"
+          ],
+          "note": "The source pull-request descriptions explicitly attribute these field cases to user or site-owner observation. The seven defect classes are not comparable one-for-one with red CI runs."
+        }
+      },
+      "missing": "The redirect-loop baseline has no stopwatch timestamp, and the after examples are different failure classes. A controlled same-class injection or a future naturally observed same-class outage with a first-bad timestamp is required for a comparative latency verdict."
+    },
+    {
+      "id": "roll-back-instantly",
+      "claim": "Operator restore wall-clock after a bad flip is shorter than multi-layer manual recovery.",
+      "verdict": "cant-measure-yet",
+      "before": {
+        "tag": "estim\u0061ted",
+        "operator_action_minutes": {
+          "min": 5,
+          "max": 15
+        },
+        "visitor_recovery_extra_minutes": {
+          "min": 0,
+          "max": 12
+        },
+        "source": "docs/evidence/hosting-migration-baseline.json"
+      },
+      "after": {
+        "tag": "measured-dry-run-only",
+        "production_mutation_performed": false,
+        "boundary": "The documented rollback transfers cityscroll.org and www.cityscroll.org custom-domain ownership from Pages back to the Worker. Those steps are production mutations and were not run against live domains.",
+        "checks": [
+          {
+            "name": "Generic fallback smoke",
+            "wall_clock_s": 30.03,
+            "result": "failed",
+            "detail": "The generic smoke joined /about.html at the hostname root, which is incompatible with the fallback's /crol-list/ project subpath."
+          },
+          {
+            "name": "Supported cutover readiness matrix",
+            "wall_clock_s": 2.05,
+            "result": "passed",
+            "detail": "Fourteen targets passed on the first attempt, including the public Pages routes, API Worker health, compatibility hostname, and GitHub Pages fallback root."
+          },
+          {
+            "name": "Fallback deep-route check",
+            "wall_clock_s": 0.17,
+            "result": "failed",
+            "detail": "The fallback root returned 200, while /crol-list/about, /crol-list/about.html, and /crol-list/robots.txt returned 404. The root is a repository README Jekyll page, not the complete built site."
+          }
+        ]
+      },
+      "missing": "A non-production domain that can exercise custom-domain detach/reattach, a complete fallback artifact, and a timed restore plus visitor smoke. Until then, neither the 5–15 minute operator planning range nor the word instantly is confirmed."
+    }
+  ],
+  "merge_to_deploy_samples": [
+    {"pr":470,"run":30885970932,"merged_at":"2026-08-04T06:58:47Z","deployed_at":"2026-08-04T06:59:40.8416581Z","latency_s":53.841},
+    {"pr":469,"run":30883764718,"merged_at":"2026-08-04T06:22:18Z","deployed_at":"2026-08-04T06:23:15.0892434Z","latency_s":57.089},
+    {"pr":468,"run":30885553431,"merged_at":"2026-08-04T06:52:17Z","deployed_at":"2026-08-04T06:53:06.8062314Z","latency_s":49.806},
+    {"pr":467,"run":30882606954,"merged_at":"2026-08-04T06:02:14Z","deployed_at":"2026-08-04T06:03:01.1543712Z","latency_s":47.154},
+    {"pr":462,"run":30879313157,"merged_at":"2026-08-04T05:00:01Z","deployed_at":"2026-08-04T05:00:59.4670021Z","latency_s":58.467},
+    {"pr":460,"run":30876672198,"merged_at":"2026-08-04T04:06:24Z","deployed_at":"2026-08-04T04:07:19.7290488Z","latency_s":55.729},
+    {"pr":459,"run":30875440509,"merged_at":"2026-08-04T03:40:47Z","deployed_at":"2026-08-04T03:41:39.8905571Z","latency_s":52.89},
+    {"pr":458,"run":30876754768,"merged_at":"2026-08-04T04:08:03Z","deployed_at":"2026-08-04T04:08:52.6316864Z","latency_s":49.631},
+    {"pr":457,"run":30875698553,"merged_at":"2026-08-04T03:46:15Z","deployed_at":"2026-08-04T03:47:04.0905175Z","latency_s":49.09},
+    {"pr":456,"run":30874491835,"merged_at":"2026-08-04T03:20:53Z","deployed_at":"2026-08-04T03:22:02.7225291Z","latency_s":69.722},
+    {"pr":455,"run":30880272246,"merged_at":"2026-08-04T05:18:12Z","deployed_at":"2026-08-04T05:19:04.3244071Z","latency_s":52.324},
+    {"pr":453,"run":30872849568,"merged_at":"2026-08-04T02:47:46Z","deployed_at":"2026-08-04T02:48:38.6014643Z","latency_s":52.601},
+    {"pr":452,"run":30872680797,"merged_at":"2026-08-04T02:44:17Z","deployed_at":"2026-08-04T02:45:04.9604009Z","latency_s":47.96},
+    {"pr":451,"run":30873672857,"merged_at":"2026-08-04T03:04:23Z","deployed_at":"2026-08-04T03:05:17.6551234Z","latency_s":54.655},
+    {"pr":448,"run":30876999993,"merged_at":"2026-08-04T04:12:39Z","deployed_at":"2026-08-04T04:13:40.4190798Z","latency_s":61.419},
+    {"pr":446,"run":30873882299,"merged_at":"2026-08-04T03:08:26Z","deployed_at":"2026-08-04T03:09:12.7576191Z","latency_s":46.757},
+    {"pr":444,"run":30868954337,"merged_at":"2026-08-04T01:30:26Z","deployed_at":"2026-08-04T01:31:12.3318417Z","latency_s":46.331},
+    {"pr":443,"run":30868577008,"merged_at":"2026-08-04T01:23:00Z","deployed_at":"2026-08-04T01:23:58.1140272Z","latency_s":58.114},
+    {"pr":442,"run":30881559674,"merged_at":"2026-08-04T05:43:02Z","deployed_at":"2026-08-04T05:45:11.1465230Z","latency_s":129.146},
+    {"pr":440,"run":30870765314,"merged_at":"2026-08-04T02:05:51Z","deployed_at":"2026-08-04T02:06:34.5130599Z","latency_s":43.513},
+    {"pr":439,"run":30866026738,"merged_at":"2026-08-04T00:34:55Z","deployed_at":"2026-08-04T00:35:59.7025457Z","latency_s":64.702},
+    {"pr":437,"run":30870970667,"merged_at":"2026-08-04T02:10:00Z","deployed_at":"2026-08-04T02:10:45.1378505Z","latency_s":45.137},
+    {"pr":436,"run":30868022859,"merged_at":"2026-08-04T01:12:20Z","deployed_at":"2026-08-04T01:13:17.4532298Z","latency_s":57.453},
+    {"pr":433,"run":30864825771,"merged_at":"2026-08-04T00:12:19Z","deployed_at":"2026-08-04T00:13:07.3561038Z","latency_s":48.356},
+    {"pr":432,"run":30861967341,"merged_at":"2026-08-03T23:21:27Z","deployed_at":"2026-08-03T23:22:09.5383884Z","latency_s":42.538},
+    {"pr":428,"run":30858115965,"merged_at":"2026-08-03T22:17:59Z","deployed_at":"2026-08-03T22:18:43.4809755Z","latency_s":44.48},
+    {"pr":427,"run":30852342099,"merged_at":"2026-08-03T20:54:37Z","deployed_at":"2026-08-03T20:55:21.0389350Z","latency_s":44.038},
+    {"pr":426,"run":30856842185,"merged_at":"2026-08-03T21:58:34Z","deployed_at":"2026-08-03T21:59:19.4453014Z","latency_s":45.445},
+    {"pr":423,"run":30843627078,"merged_at":"2026-08-03T18:57:50Z","deployed_at":"2026-08-03T19:00:19.8043624Z","latency_s":149.804},
+    {"pr":422,"run":30842460166,"merged_at":"2026-08-03T18:42:17Z","deployed_at":"2026-08-03T18:43:16.4874073Z","latency_s":59.487},
+    {"pr":421,"run":30841905686,"merged_at":"2026-08-03T18:34:49Z","deployed_at":"2026-08-03T18:35:49.9173751Z","latency_s":60.917},
+    {"pr":420,"run":30847957842,"merged_at":"2026-08-03T19:56:24Z","deployed_at":"2026-08-03T19:57:10.4445719Z","latency_s":46.444},
+    {"pr":419,"run":30850473144,"merged_at":"2026-08-03T20:30:02Z","deployed_at":"2026-08-03T20:30:59.6933512Z","latency_s":57.693},
+    {"pr":418,"run":30847759606,"merged_at":"2026-08-03T19:53:46Z","deployed_at":"2026-08-03T19:54:30.4658459Z","latency_s":44.465},
+    {"pr":417,"run":30849289949,"merged_at":"2026-08-03T20:14:06Z","deployed_at":"2026-08-03T20:14:58.6250058Z","latency_s":52.625},
+    {"pr":416,"run":30845869787,"merged_at":"2026-08-03T19:27:42Z","deployed_at":"2026-08-03T19:28:42.0240229Z","latency_s":60.024},
+    {"pr":415,"run":30843594650,"merged_at":"2026-08-03T18:57:22Z","deployed_at":"2026-08-03T18:58:19.8770888Z","latency_s":57.877},
+    {"pr":414,"run":30835137222,"merged_at":"2026-08-03T17:05:09Z","deployed_at":"2026-08-03T17:06:05.9656848Z","latency_s":56.965},
+    {"pr":412,"run":30844744062,"merged_at":"2026-08-03T19:12:22Z","deployed_at":"2026-08-03T19:13:15.3345489Z","latency_s":53.334},
+    {"pr":411,"run":30834195366,"merged_at":"2026-08-03T16:53:05Z","deployed_at":"2026-08-03T16:53:54.6696781Z","latency_s":49.669},
+    {"pr":410,"run":30828452968,"merged_at":"2026-08-03T15:38:31Z","deployed_at":"2026-08-03T15:39:20.8296641Z","latency_s":49.829},
+    {"pr":408,"run":30823751564,"merged_at":"2026-08-03T14:39:30Z","deployed_at":"2026-08-03T14:40:30.7941222Z","latency_s":60.794},
+    {"pr":407,"run":30822969700,"merged_at":"2026-08-03T14:29:49Z","deployed_at":"2026-08-03T14:31:06.5935499Z","latency_s":77.593},
+    {"pr":405,"run":30821102494,"merged_at":"2026-08-03T14:06:23Z","deployed_at":"2026-08-03T14:07:45.9538255Z","latency_s":82.953},
+    {"pr":404,"run":30824939853,"merged_at":"2026-08-03T14:54:32Z","deployed_at":"2026-08-03T14:55:18.8876323Z","latency_s":46.887},
+    {"pr":403,"run":30818549541,"merged_at":"2026-08-03T13:34:07Z","deployed_at":"2026-08-03T13:34:48.7633128Z","latency_s":41.763},
+    {"pr":402,"run":30831515640,"merged_at":"2026-08-03T16:17:57Z","deployed_at":"2026-08-03T16:18:42.3628214Z","latency_s":45.362},
+    {"pr":401,"run":30821473109,"merged_at":"2026-08-03T14:10:58Z","deployed_at":"2026-08-03T14:11:43.3185149Z","latency_s":45.318},
+    {"pr":400,"run":30815795067,"merged_at":"2026-08-03T12:58:10Z","deployed_at":"2026-08-03T12:58:59.8681638Z","latency_s":49.868},
+    {"pr":394,"run":30815176085,"merged_at":"2026-08-03T12:49:24Z","deployed_at":"2026-08-03T12:50:14.9223650Z","latency_s":50.922}
+  ],
+  "provenance": {
+    "github_tool": "gh-axi pull-request and Actions queries",
+    "deploy_timestamp_marker": "Wrangler log line containing Deployment complete",
+    "rollback_commands": [
+      "node tools/live_url_smoke.mjs --base-url https://cityscroll.github.io/crol-list --timeout-ms 30000 --interval-ms 1000",
+      "node tools/cutover_regression.mjs --timeout-ms 30000 --interval-ms 1000",
+      "curl checks for the fallback root, about routes, and robots.txt"
+    ],
+    "no_interpolation": true
+  }
+}
