@@ -117,14 +117,26 @@ function parseMilestone(item) {
   const a = item?.attributes || {};
   const actualEnd = eventTime(a["dcp-actualenddate"], "actual_end");
   const reviewMeeting = eventTime(a["dcp-reviewmeetingdate"], "review_meeting");
+  const reviewMeetingAt = reviewMeeting
+    ? isoDateTime(a["dcp-reviewmeetingdate"])
+    : null;
   const actualStart = eventTime(a["dcp-actualstartdate"], "actual_start");
   const plannedEnd = eventTime(a["dcp-plannedcompletiondate"], "planned_completion", "planned");
   // A published meeting date is the event itself; actual-end is the workflow close date.
   const time = reviewMeeting || actualEnd || actualStart || plannedEnd;
   if (!time) return null;
+  const sourceTitle = clean(a.milestonename) || clean(a["dcp-name"]);
+  const sourceTitleField = clean(a.milestonename)
+    ? "milestonename"
+    : clean(a["dcp-name"])
+      ? "dcp-name"
+      : null;
   return {
     id: item?.id || null,
     title: clean(a["display-name"]) || clean(a.milestonename) || clean(a["dcp-name"]) || "ZAP milestone",
+    source_title: sourceTitle,
+    source_title_field: sourceTitleField,
+    review_meeting_at: reviewMeetingAt,
     description: clean(a["display-description"]),
     status: clean(a.statuscode),
     outcome: clean(a.outcome),
