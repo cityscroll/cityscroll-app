@@ -486,6 +486,79 @@ function lifecycleDollarsHTML(data, notice){
     <a href="${fallbackCheckbook}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
 }
 
+
+/* ===================== M/WBE SOLICITATION CHIPS (payload surface) =====================
+   Pure models: site/mwbe_goal_surface.mjs (+ site/solicitation_procurement_method.mjs).
+   Consumes structured_facts.procurement_method or extracts from the notice body.
+   Award sub-outreach is site/sub_outreach.mjs (separate, mounted by paintSubOutreach). */
+
+let mwbeGoalSurfaceToolsPromise = null;
+function ensureMwbeGoalSurfaceTools(){
+  if(!mwbeGoalSurfaceToolsPromise){
+    mwbeGoalSurfaceToolsPromise = import("../mwbe_goal_surface.mjs").catch(() => null);
+  }
+  return mwbeGoalSurfaceToolsPromise;
+}
+
+function mwbeChipSpanHTML(chip){
+  if(!chip || !chip.i18n_key) return "";
+  const label = chip.i18n_params ? t(chip.i18n_key, chip.i18n_params) : t(chip.i18n_key);
+  const tone = chip.tone || "method";
+  return `<span class="tag ${escUiHtml(tone)}">${escUiHtml(label)}</span>`;
+}
+
+function solicitationMwbeDetailHTML(view){
+  if(!view || !view.show) return "";
+  const chips = (view.chips || []).map(mwbeChipSpanHTML).filter(Boolean).join("");
+  const chipRow = chips
+    ? `<div class="mwbe-chiprow" data-mwbe-sol-chips="1">${chips}</div>`
+    : "";
+  let goalBlock = "";
+  if(view.section_6_129?.present){
+    const pct = view.section_6_129.goal_percent;
+    goalBlock = pct != null && Number.isFinite(Number(pct))
+      ? `<div class="lc-pct"><b>${t("mwbe_sol_goal_lbl")}:</b> ${t("mwbe_sol_goal_pct_html",{pct:String(pct)})}</div>`
+      : `<div class="lc-pct"><b>${t("mwbe_sol_goal_lbl")}:</b> ${t("mwbe_sol_goal_cite_only_html")}</div>`;
+  }
+  let floorBlock = "";
+  if(view.floor && view.floor.days != null){
+    const floorChip = view.chips?.find((c) => c.kind === "response_floor");
+    const floorLabel = floorChip
+      ? (floorChip.i18n_params ? t(floorChip.i18n_key, floorChip.i18n_params) : t(floorChip.i18n_key))
+      : `${view.floor.days} ${view.floor.day_unit || "days"}`;
+    floorBlock = `<div class="lc-pct"><b>${t("mwbe_sol_floor_lbl")}:</b> ${escUiHtml(floorLabel)}
+      ${view.floor.rule_cite ? `<div class="note muted">${t("mwbe_sol_floor_cite_html",{cite:escUiHtml(view.floor.rule_cite)})}</div>` : ""}
+    </div>`;
+  }
+  const how = `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("mwbe_sol_provenance_html")}</div></details>`;
+  return `<section class="mwbe-sol-detail apply" data-mwbe-sol-detail="1" aria-label="${escUiHtml(t("mwbe_sol_heading"))}">
+    <h3 class="chain-h" style="margin-top:0">${t("mwbe_sol_heading")}</h3>
+    <p class="note" style="margin:0 0 8px">${t("mwbe_sol_persona_html")}</p>
+    ${chipRow}
+    ${goalBlock}
+    ${floorBlock}
+    ${how}
+  </section>`;
+}
+
+async function loadSolicitationMwbe(r, el){
+  if(!el || !r) return;
+  const type = String(r.type_of_notice_description || "");
+  if(!/solicitation/i.test(type)){
+    el.innerHTML = "";
+    return;
+  }
+  const tools = await ensureMwbeGoalSurfaceTools();
+  if(!document.contains(el)) return;
+  if(!tools || typeof tools.buildSolicitationMwbeView !== "function"){
+    el.innerHTML = "";
+    return;
+  }
+  const view = tools.buildSolicitationMwbeView(r);
+  el.innerHTML = view ? solicitationMwbeDetailHTML(view) : "";
+}
+
+
 // Prime-win sub-outreach card: pure helpers in site/sub_outreach.mjs.
 // Consumes lifecycle.award_prime_goal only; never invents goal % or apology empties.
 let subOutreachToolsPromise = null;
@@ -608,5 +681,8 @@ globalThis.lifecycleTimelineHTMLFlat = lifecycleTimelineHTMLFlat;
 globalThis.loadLifecycle = loadLifecycle;
 globalThis.loadAwardRegistrationDwell = loadAwardRegistrationDwell;
 globalThis.awardRegistrationDwellHTML = awardRegistrationDwellHTML;
+globalThis.loadSolicitationMwbe = loadSolicitationMwbe;
+globalThis.solicitationMwbeDetailHTML = solicitationMwbeDetailHTML;
+globalThis.ensureMwbeGoalSurfaceTools = ensureMwbeGoalSurfaceTools;
 Object.defineProperty(globalThis, "procurementPhaseSpineToolsPromise", { configurable: true, get: () => procurementPhaseSpineToolsPromise, set: value => { procurementPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "subOutreachToolsPromise", { configurable: true, get: () => subOutreachToolsPromise, set: value => { subOutreachToolsPromise = value; } });

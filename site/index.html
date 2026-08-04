@@ -228,6 +228,16 @@
   .tag.amt{background:var(--paper-2);color:var(--ink-soft)}
   .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
   .tag.renewal{background:var(--paper-2);color:var(--ink-soft)}
+  /* M/WBE method chips — quiet signal (navy-tint), not urgency; color reserved for action. */
+  .tag.mwbe{background:color-mix(in srgb, var(--blue) 12%, var(--paper-2));color:var(--blue)}
+  .tag.method{background:var(--paper-2);color:var(--ink-soft)}
+  .tag.floor{background:color-mix(in srgb, var(--green) 14%, var(--paper-2));color:var(--green)}
+  .mwbe-chiprow{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+  .mwbe-sol-detail,.mwbe-sub-outreach{margin-top:14px}
+  .mwbe-sub-outreach .mwbe-sub-lead{font:14px/1.45 var(--ui,ui-sans-serif,system-ui,sans-serif);color:var(--ink-soft);margin:0 0 10px}
+  .mwbe-sub-outreach dl.mwbe-sub-facts{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font:13px/1.45 var(--ui,ui-sans-serif,system-ui,sans-serif)}
+  .mwbe-sub-outreach dl.mwbe-sub-facts dt{color:var(--muted);font-weight:600}
+  .mwbe-sub-outreach dl.mwbe-sub-facts dd{margin:0}
   /* Rule-lifecycle status chips link to the official comment/adoption page. Comment-open
      is the actionable moment, so it reuses the hot/soon/open urgency ladder; settled
      stages read as quiet ink (color is reserved for what needs acting on). */
