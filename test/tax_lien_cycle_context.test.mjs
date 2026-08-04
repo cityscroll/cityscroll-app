@@ -13,6 +13,8 @@ import {
   PROPERTY_CYCLE_CONTEXT_SURVEY,
   TAX_LIEN_STAGES,
   buildDispositionCycleContext,
+  buildTaxLienCycleGuide,
+  buildTaxLienResidentChecklist,
   buildTaxLienCycleContext,
   buildTaxLienStepper,
   daysUntil,
@@ -79,6 +81,37 @@ test("deadlineState is civic-time open / closing-soon / closed", () => {
   assert.equal(daysUntil("2026-08-10", "2026-08-03"), 7);
 });
 
+test("resident checklist is action-ordered and honest when a DOF link is absent", () => {
+  const checklist = buildTaxLienResidentChecklist(summary.action_channels);
+  assert.deepEqual(checklist.map((step) => step.id), [
+    "exemptions",
+    "payment_plans",
+    "official_guide",
+  ]);
+  assert.ok(checklist.every((step) => step.url.startsWith("https://www.nyc.gov/")));
+
+  const withoutPaymentPlan = buildTaxLienResidentChecklist({
+    ...summary.action_channels,
+    payment_plan_url: null,
+  });
+  assert.deepEqual(withoutPaymentPlan.map((step) => step.id), [
+    "exemptions",
+    "official_guide",
+  ]);
+  assert.equal(buildTaxLienResidentChecklist(null).length, 0);
+});
+
+test("an expired cycle never exposes a live countdown", () => {
+  const expiredWithFutureDates = {
+    ...summary,
+    latest_cycle: { ...summary.latest_cycle, status: "expired" },
+    schedule: { ...summary.schedule, sale_date: "2099-06-03", action_deadline: "2099-06-02" },
+  };
+  const guide = buildTaxLienCycleGuide(expiredWithFutureDates, "notice_90", "2026-08-03");
+  assert.equal(guide.deadline.cycle_status, "expired");
+  assert.equal(guide.deadline.live, false);
+});
+
 test("buildTaxLienCycleContext scopes parcels to the notice and highlights stage", () => {
   const row = decodeTaxLienBbl(lookup, FIXTURE_BBL);
   assert.ok(row);
@@ -110,6 +143,11 @@ test("buildTaxLienCycleContext scopes parcels to the notice and highlights stage
   assert.ok(ctx.action_channels.exemption_url);
   assert.ok(ctx.action_channels.payment_plan_url);
   assert.ok(ctx.action_channels.lien_sale_help_url);
+  assert.deepEqual(ctx.resident_checklist.map((step) => step.id), [
+    "exemptions",
+    "payment_plans",
+    "official_guide",
+  ]);
 });
 
 test("buildTaxLienCycleContext returns null when no listed parcels", () => {
@@ -189,6 +227,11 @@ test("property lens demotes the standalone stats destination; notice cycle conte
   assert.match(SITE_SOURCE, /data-tax-lien-cycle-context/);
   assert.match(SITE_SOURCE, /taxLienNoticeCycleHTML/);
   assert.match(SITE_SOURCE, /buildTaxLienCycleContext/);
+  assert.match(SITE_SOURCE, /data-tax-lien-resident-checklist/);
+  assert.match(SITE_SOURCE, /data-tax-lien-cycle-status="expired"/);
+  assert.match(SITE_SOURCE, /tax_lien_stage_90_meaning/);
+  assert.match(SITE_SOURCE, /tax_lien_stage_sold_meaning/);
+  assert.match(SITE_SOURCE, /tax_lien_no_lot_tracking/);
   // Disposition generalized cycle-context marker.
   assert.match(SITE_SOURCE, /data-property-cycle-context="property_disposition"/);
   // i18n copy for inline actions + countdown.
