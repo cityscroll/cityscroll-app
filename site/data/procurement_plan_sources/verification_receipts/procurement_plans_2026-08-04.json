@@ -149,9 +149,70 @@
     "headroom_status": "ok"
   },
   "payload_contract": {
-    "schema": "cityscroll.procurement_planning.v1",
+    "schema": "cityscroll.procurement_planning.manifest.v1",
     "path": "site/data/procurement_planning_payload.json",
-    "schema_path": "site/data/procurement_planning_payload.schema.json",
+    "schema_path": "site/data/procurement_planning_manifest.schema.json",
+    "shard_schema": "cityscroll.procurement_planning.shard.v1",
+    "shard_directory": "site/data/procurement_planning_payload",
+    "max_shard_bytes": 20971520,
+    "collections": {
+      "plans": {
+        "rows": 11566,
+        "shards": [
+          {
+            "path": "site/data/procurement_planning_payload/plans-000.json",
+            "rows": 10000,
+            "bytes": 8251331,
+            "sha256": "040f9ffdc75c0bcf21089626fbbb0b58bd75ded1b0f81409259303eb5f625bab"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/plans-001.json",
+            "rows": 1566,
+            "bytes": 1589446,
+            "sha256": "e991537708e7929e21b8e8af4d5f5fb0f3aa29913437867990c84ff669f557ee"
+          }
+        ]
+      },
+      "capital_projects": {
+        "rows": 50000,
+        "shards": [
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-000.json",
+            "rows": 10000,
+            "bytes": 10843487,
+            "sha256": "b4ae0af8b41ea59429aa2f4e79e918672008c478453944ab124c2564929a5378"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-001.json",
+            "rows": 10000,
+            "bytes": 10765262,
+            "sha256": "10783c4338ad098b65c1a12a742f6f235300f8b44fa4c0e581a046606d4e88b3"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-002.json",
+            "rows": 10000,
+            "bytes": 10595771,
+            "sha256": "249cd27033dbe820dde4c695a7ab4dbadeb3cefae4e92611e9b57d76122761e1"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-003.json",
+            "rows": 10000,
+            "bytes": 10658593,
+            "sha256": "710d13887db5eeb432b2658897f65d92ef50fd5395ef7a6f1f187ed8b74b4008"
+          },
+          {
+            "path": "site/data/procurement_planning_payload/capital-projects-004.json",
+            "rows": 10000,
+            "bytes": 10619673,
+            "sha256": "0ac83d5a0fc708c9e46aa2505d98bbd4bd346202e984a6e89c6a869c2d65f429"
+          }
+        ]
+      },
+      "bridge_edges": {
+        "rows": 0,
+        "shards": []
+      }
+    },
     "reader_surface_included": false,
     "unmatched_rows_remain_unmatched": true,
     "infer_budget_from_agency_total": false,

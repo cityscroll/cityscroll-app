@@ -193,3 +193,4 @@ git:log
 .github/workflows/deploy-worker.yml
 # Official public dataset content; terms originate from the source.
 site/data/procurement_planning_payload.json
+site/data/procurement_planning_payload/*.json

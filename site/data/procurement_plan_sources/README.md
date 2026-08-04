@@ -9,8 +9,9 @@ and NYC Open Data [Capital Projects Dashboard
 The host-side collector treats the MOCS pages as manifests for changing XLSX
 files. It uses conditional checkpoints, content hashes, an honest User-Agent,
 and at least 1.2 seconds between publisher requests. A 403 stops the source
-without retrying. Raw workbooks remain gitignored. The production payload
-contains 11,566 normalized MOCS rows and 50,000 Capital Projects rows; the
+without retrying. Raw workbooks remain gitignored. The production checksum
+manifest points to deterministic, receipt-backed JSON shards containing 11,566
+normalized MOCS rows and 50,000 Capital Projects rows; the
 DuckDB catalog and raw publisher files remain local warehouse materializations.
 
 ## Bridge doctrine

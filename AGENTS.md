@@ -1997,7 +1997,8 @@ implies board approval.
 Host-side FY2027 MOCS LL63/LL1 XLSX collection plus Capital Projects Dashboard
 `fb86-vt7u` lives in `warehouse/scripts/procurement_plans_run.py`. The production
 materialization contains 11,566 MOCS rows and 50,000 capital-project rows in
-`site/data/procurement_planning_payload.json`; its dated receipt is under
+the checksum manifest `site/data/procurement_planning_payload.json` and
+10,000-row shards under `site/data/procurement_planning_payload/`; its dated receipt is under
 `site/data/procurement_plan_sources/verification_receipts/`. All six independent
 100-row City Record/PASSPort bridges measured 0%, so no edge or Money planning
 phase may render. Reviewer-labeled agency+title+time candidates remain required
