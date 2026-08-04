@@ -1,4 +1,9 @@
 /* ===================== PEOPLE ===================== */
+let SameConsolidation=null;
+const sameConsolidationReady=import("../same_consolidation.mjs").then(module=>{
+  SameConsolidation=module;
+  return module;
+});
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
 const CAREER_DATA_URL = "data/staffing_exams.json";
@@ -24,6 +29,9 @@ function prepareCareerHow(){
 }
 let staffingNotices = [], staffingLoaded = false, staffingLoadPromise = null;
 const staffingFilters = {query:"", role:"", agency:""};
+const STAFFING_DISPLAY_FIELDS=[
+  "role","person","agency","effective_date","salary","title_code","published_at",
+];
 
 const CAREER_AREA_KEYS = {
   "public-safety": "career_area_public_safety",
@@ -74,6 +82,46 @@ function staffingHireRowHTML(item){
     </a>
   </article>`;
 }
+function staffingLongDate(value){
+  const match=String(value||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(!match) return value||"";
+  const [,month,day,year]=match;
+  return fdt(`${year}-${month.padStart(2,"0")}-${day.padStart(2,"0")}`,{dateOnly:true});
+}
+function staffingGroupMemberHTML(item){
+  return `<li data-request-id="${escUiHtml(item.request_id)}"><a href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(item.person)}</span>${extSR()}</a></li>`;
+}
+function staffingHireGroupHTML(entry){
+  const item=entry.members[0];
+  const members=[...entry.members].sort((a,b)=>a.person.localeCompare(b.person));
+  const role=item.role||t("staffing_unknown_role",{code:escUiHtml(item.title_code||"—")});
+  const salary=money(item.salary);
+  const pay=salary
+    ? (Number(item.salary)===1
+      ? t("staffing_appointment_group_stipend",{amount:salary})
+      : t("staffing_salary",{amount:salary}))
+    : "";
+  const summaryFacts=[
+    t("staffing_appointment_group_summary",{n:fmtNumber(entry.count)}),
+    item.effective_date?t("staffing_effective_date",{date:staffingLongDate(item.effective_date)}):"",
+    pay,
+  ].filter(Boolean).join(" · ");
+  const sharedFacts=[
+    `<span class="staffing-hire-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</span>`,
+    item.title_code?`<span class="staffing-hire-fact">${escUiHtml(t("staffing_title_code",{code:item.title_code}))}</span>`:"",
+    item.published_at?`<span class="staffing-hire-date">${escUiHtml(t("staffing_appointment_group_posted",{date:fdate(item.published_at)}))}</span>`:"",
+  ].filter(Boolean).join("");
+  return `<article class="staffing-hire-group" data-kind="same-except-group" data-group-count="${entry.count}">
+    <div class="staffing-hire-group-head">
+      <h4><span lang="en" dir="ltr">${escUiHtml(role)}</span> — ${escUiHtml(summaryFacts)}</h4>
+      <div class="staffing-hire-group-facts">${sharedFacts}</div>
+    </div>
+    <details>
+      <summary>${escUiHtml(t("staffing_appointment_group_names",{n:fmtNumber(entry.count)}))}</summary>
+      <ul class="staffing-hire-group-names">${members.map(staffingGroupMemberHTML).join("")}</ul>
+    </details>
+  </article>`;
+}
 function syncStaffingModeUI(){
   const examDetail=!!careerSelected;
   const guide=$("#career-guide");
@@ -95,10 +143,17 @@ function renderStaffingFeed(){
   bindStaffingFacets();
   syncStaffingModeUI();
   const items=staffingVisibleItems();
+  const entries=SameConsolidation
+    ? SameConsolidation.groupSameExcept(items,{
+      fields:STAFFING_DISPLAY_FIELDS,except:["person"],threshold:3,
+    })
+    : items.map(item=>({kind:"item",item}));
   setExportBandVisibility(items.length, "people-export-band", "people-export-overflow");
   $("#staffing-result-count").textContent=t("staffing_results_count",{n:fmtNumber(items.length)});
   $("#staffing-notice-list").innerHTML=items.length
-    ? items.map(staffingHireRowHTML).join("")
+    ? entries.map(entry=>entry.kind==="same-except-group"
+      ? staffingHireGroupHTML(entry)
+      : staffingHireRowHTML(entry.item)).join("")
     : `<div class="career-empty">${t("staffing_no_results")}</div>`;
 }
 // Commit-time default APPOINTED strip (wave-2 batch precompute). Keyword search / payroll stay live.
@@ -121,6 +176,7 @@ async function loadStaffingFeed(){
       const [snap, crosswalk]=await Promise.all([
         loadStaffingHiresSnapshot(),
         fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
+        sameConsolidationReady,
       ]);
       const notices=snap&&Array.isArray(snap.notices)?snap.notices:[];
       if(notices.length){
