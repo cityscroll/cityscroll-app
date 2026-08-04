@@ -32,6 +32,8 @@ import {
   buildPropertyPlainSummary,
   propertyPlainSummarySurface,
 } from "../site/property_plain_summary.mjs";
+import { outcomePromptContext } from "../site/action_outcome_prompt.mjs";
+import { compileActionRail, OUTCOME_ENUM } from "../worker/src/lib/action_registry.mjs";
 
 export { classifyPropertyPattern };
 
@@ -186,6 +188,15 @@ export function currentPropertyExtraction(row = {}, options = {}) {
     today: options.today || null,
     events,
   });
+  const outcomeActions = reader.rail ? compileActionRail({
+    ...row,
+    kind: "property",
+    reader_actions: reader,
+    official_notice_url: row.request_id
+      ? `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(row.request_id)}`
+      : null,
+  }, { today: options.today || null }) : [];
+  const outcomeContext = outcomePromptContext(outcomeActions, OUTCOME_ENUM, { today: options.today || null });
   const actionKinds = new Set(reader.actions.map((action) => action.kind));
   return {
     stage_hearing: stage === "hearing",
@@ -221,6 +232,9 @@ export function currentPropertyExtraction(row = {}, options = {}) {
     objection_step: actionKinds.has("object"),
     comment_step: actionKinds.has("comment"),
     accommodation_deadline_step: actionKinds.has("request_accommodation"),
+    outcome_prompt_eligible: Boolean(outcomeContext),
+    outcome_prompt_passed_action: outcomeContext?.trigger === "passed_action",
+    outcome_prompt_official_handoff: outcomeContext?.trigger === "official_handoff",
   };
 }
 
@@ -483,6 +497,7 @@ export function reportAsMarkdown(report) {
     `Receipt-backed plain summaries: ${plain.templated}/${report.corpus.count} notices (${plain.coverage_pct}%); authored mean grade ${plain.authored_summary.mean_grade} versus ${plain.baseline_combined.mean_grade} for the same notices, a ${plain.mean_grade_reduction}-grade reduction; ${plain.authored_summary.at_or_below_grade_7}/${plain.authored_summary.scored} at or below grade 7.`,
     "",
     `Typed timed events: ${extraction.typed_event_count}; bid-deadline signals ${signals.bid_deadline}, typed bid deadlines ${extraction.typed_bid_deadline}, signals without a parseable date ${extraction.bid_deadline_signal_without_parseable_date}; known cross-type false positives ${extraction.known_cross_type_false_positive_count}; honest-empty notices ${extraction.honest_empty_typed_events}.`,
+    `Optional outcome prompt: ${extraction.outcome_prompt_eligible}/${extraction.source_grounded_action} source-grounded action notices eligible (${extraction.outcome_prompt_eligible}/${report.corpus.count} overall; ${extraction.outcome_prompt_passed_action} passed-action, ${extraction.outcome_prompt_official_handoff} official-handoff); ${report.corpus.count - extraction.outcome_prompt_eligible} remain honestly absent.`,
     "",
     markdownTable(report),
     "",
