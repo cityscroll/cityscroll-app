@@ -50,6 +50,10 @@ function sha256(text) {
   return createHash("sha256").update(text).digest("hex");
 }
 
+function compareText(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
 function readJson(path) {
   return JSON.parse(readFileSync(join(ROOT, path), "utf8"));
 }
@@ -299,7 +303,7 @@ export function buildDataSourceGraph({
       latest_evidence: evidence[0] || null,
       code_references: (contract.code_references || []).map((ref) => ref.path),
     };
-  }).sort((a, b) => a.body.localeCompare(b.body) || a.name.localeCompare(b.name));
+  }).sort((a, b) => compareText(a.body, b.body) || compareText(a.name, b.name));
   const bodies = [...new Map(sources.map((source) => [source.body_id, { id: source.body_id, name: source.body }])).values()];
   const surfaces = [...new Set(sources.flatMap((source) => source.surfaces))].sort();
   const sourcesHash = sha256(inputs.map((input) => `${input.path}:${input.sha256}`).join("\n"));
