@@ -152,7 +152,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -187,7 +187,7 @@
     {
       "request_id": "20260716022",
       "agency_name": "Parks and Recreation",
-      "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Caf\u00e9 and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+      "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
       "start_date": "2026-07-24T00:00:00.000",
       "event_date": "2026-08-10T14:30:00.000",
       "type_of_notice_description": "Public Hearings",
@@ -205,7 +205,7 @@
           "confidence": 0.88,
           "role": "matter",
           "evidence": [
-            "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Caf\u00e9 and Other Amenities in WNYC Transmitter Park, Brook",
+            "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brook",
             "WNYC Transmitter Park"
           ]
         },
@@ -397,9 +397,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "253 Broadway"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "253 Broadway"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -413,7 +429,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -455,9 +471,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "90 Church Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "90 Church Street"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -704,7 +736,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -848,7 +880,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -1027,7 +1059,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "body_place_omitted",
         "virtual_only": false
       }
     },
@@ -1069,9 +1101,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "5 th Floor of 90 Church Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "5 th Floor of 90 Church Street"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -1204,7 +1252,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -1501,7 +1549,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -1515,9 +1563,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "1230 5 th Avenue"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "1230 5 th Avenue"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -1530,9 +1594,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "163 East 67th Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "163 East 67th Street"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -1744,7 +1824,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -2036,9 +2116,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "90 Church Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "90 Church Street"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -2196,7 +2292,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -2308,9 +2404,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "2537 Broadway"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "2537 Broadway"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -2469,9 +2581,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "253 Broadway"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "253 Broadway"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -2485,7 +2613,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "external_board_page_needed",
         "virtual_only": false
       }
     },
@@ -2499,9 +2627,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Brooklyn"
+        ],
+        "addresses": [
+          "285 Jay Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "285 Jay Street"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -2608,7 +2752,7 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
+        "unlocated_reason": "body_place_omitted",
         "virtual_only": false
       }
     },
@@ -2680,9 +2824,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "1 Centre Street"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "1 Centre Street"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -2749,7 +2909,29 @@
       "event_date": "2026-06-03T10:00:00.000",
       "type_of_notice_description": "Meeting",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "affected_area": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "addresses": [
+          "22 Cortlandt Street, 15th Floor, New York, NY 10007"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "meeting will be held at 22 Cortlandt Street, 15th Floor, New York, NY 10007",
+            "held at 22 Cortlandt Street, 15th Floor, New York, NY 10007"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
+      }
     },
     {
       "request_id": "20260518025",
@@ -2858,9 +3040,25 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Bronx"
+        ],
+        "addresses": [
+          "1300 Morris Park Avenue"
+        ],
+        "derivation": {
+          "methods": [
+            "venue_line"
+          ],
+          "confidence": 0.7,
+          "role": "venue",
+          "evidence": [
+            "1300 Morris Park Avenue"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -3025,9 +3223,33 @@
       "section_name": "Public Hearings and Meetings",
       "source_system": "city_record",
       "affected_area": {
-        "scope": "unlocated",
-        "unlocated_reason": "no_place_signal",
-        "virtual_only": false
+        "scope": "local",
+        "boroughs": [
+          "Queens"
+        ],
+        "community_districts": [
+          "Q12"
+        ],
+        "neighborhoods": [
+          "Jamaica"
+        ],
+        "addresses": [
+          "153-10 Jamaica Avenue"
+        ],
+        "derivation": {
+          "methods": [
+            "neighborhood_place",
+            "venue_line"
+          ],
+          "confidence": 0.72,
+          "role": "venue",
+          "evidence": [
+            "Jamaica (exact)",
+            "153-10 Jamaica Avenue"
+          ]
+        },
+        "confidence_tier": "derived",
+        "source": "venue"
       }
     },
     {
@@ -3105,5 +3327,10 @@
       }
     }
   ],
-  "place_stamp_note": "affected_area stamps restored from pre-#417 snapshot after ULURP stamp cleanup dropped place densify fields; re-run tools/build_rules_meetings_domain_observations.mjs when live SODA is available to refresh."
+  "place_stamp_note": "affected_area stamps restored from pre-#417 snapshot after ULURP stamp cleanup dropped place densify fields; re-run tools/build_rules_meetings_domain_observations.mjs when live SODA is available to refresh.",
+  "location_residual": {
+    "receipt": "data/meetings_location_residual_receipt.json",
+    "fixed_rows": 24,
+    "refreshed_at": "2026-08-04T18:31:47.018Z"
+  }
 }

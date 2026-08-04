@@ -1,0 +1,319 @@
+{
+  "schema": "cityscroll.meetings_location_residual.v1",
+  "observed_on": "2026-08-04",
+  "source": {
+    "system": "city_record",
+    "dataset_id": "dg92-zbpx",
+    "fixed_request_ids": 24
+  },
+  "baseline": {
+    "measured_on": "2026-08-04",
+    "total": 24,
+    "joined": 0,
+    "no_place_signal": 24
+  },
+  "classification_counts": {
+    "body_place_omitted": 2,
+    "neighborhood_alias_missed": 1,
+    "venue_usable_weak_pin": 12,
+    "virtual_only": 0,
+    "external_board_page_needed": 9
+  },
+  "result": {
+    "joined": 13,
+    "total": 24,
+    "rate": 0.5416666666666666,
+    "honest_absent": 11,
+    "joined_by_method": {
+      "neighborhood_place": 1,
+      "venue_line": 12
+    },
+    "honest_absent_by_reason": {
+      "external_board_page_needed": 9,
+      "body_place_omitted": 2
+    }
+  },
+  "source_registry_review": {
+    "bodies_inventoried": 64,
+    "citywide_complete": false,
+    "candidate_residual_rows": 9,
+    "accepted_specific_body_matches": 0,
+    "disposition": "The generic Board Meetings rows list multiple bodies and venues without one specific board key; the partial registry therefore supplies no geography for these rows."
+  },
+  "honesty_review": {
+    "agency_headquarters_used": 0,
+    "synthetic_rows": 0,
+    "raw_notice_bodies_committed": false,
+    "partial_registry_presented_as_citywide": false
+  },
+  "cases": [
+    {
+      "request_id": "20260213011",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260213012",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260213013",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260213014",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260213015",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260504036",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260504037",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260504038",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260504039",
+      "cause": "external_board_page_needed",
+      "status": "honest_absent",
+      "method": "external_board_page_needed",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260513032",
+      "cause": "neighborhood_alias_missed",
+      "status": "joined",
+      "method": "neighborhood_place",
+      "role": "venue",
+      "confidence": 0.72,
+      "boroughs": [
+        "Queens"
+      ],
+      "community_districts": [
+        "Q12"
+      ]
+    },
+    {
+      "request_id": "20260513033",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260513034",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Brooklyn"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260513035",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260515001",
+      "cause": "body_place_omitted",
+      "status": "honest_absent",
+      "method": "body_place_omitted",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260521019",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260522019",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Bronx"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260528032",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260529027",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260605045",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260610007",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260624001",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260624005",
+      "cause": "body_place_omitted",
+      "status": "honest_absent",
+      "method": "body_place_omitted",
+      "role": null,
+      "confidence": 0,
+      "boroughs": [],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260625034",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    },
+    {
+      "request_id": "20260715002",
+      "cause": "venue_usable_weak_pin",
+      "status": "joined",
+      "method": "venue_line",
+      "role": "venue",
+      "confidence": 0.7,
+      "boroughs": [
+        "Manhattan"
+      ],
+      "community_districts": []
+    }
+  ]
+}
