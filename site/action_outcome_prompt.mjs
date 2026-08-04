@@ -33,6 +33,15 @@ const OUTCOME_LABEL_KEYS = Object.freeze({
 });
 
 const PROMPT_STATE = new WeakMap();
+const STYLE_ID = "action-outcome-prompt-styles";
+
+function ensurePromptStyles(doc = globalThis.document) {
+  if (!doc?.head || doc.getElementById(STYLE_ID)) return;
+  const style = doc.createElement("style");
+  style.id = STYLE_ID;
+  style.textContent = `.outcome-prompt{margin-top:12px;padding-top:11px;border-top:1px solid var(--rule);font:13px/1.45 ui-sans-serif,system-ui,sans-serif}.outcome-prompt h4{margin:0 0 4px;font:700 15px/1.3 var(--font-display);color:var(--ink)}.outcome-prompt p{margin:4px 0;color:var(--ink-soft)}.outcome-prompt .outcome-prompt-boundary{font-size:11px;color:var(--muted);max-width:72ch}.outcome-prompt-choices{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.outcome-prompt-choice,.outcome-prompt-dismiss{min-height:40px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);padding:8px 11px;font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer}.outcome-prompt-dismiss{border-color:transparent;background:transparent;color:var(--muted)}.outcome-prompt-thanks{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--rule);color:var(--ink-soft);font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}`;
+  doc.head.append(style);
+}
 
 function registeredOutcomes(values, outcomeEnum) {
   const registered = new Set(Array.isArray(outcomeEnum) ? outcomeEnum : []);
@@ -186,6 +195,7 @@ export function bindActionOutcomePrompt(container, actions = [], options = {}) {
   const registry = options.registry;
   if (!slot || !registry || !Array.isArray(registry.OUTCOME_ENUM)) return false;
   if (!options.analytics || typeof options.analytics.record !== "function") return false;
+  ensurePromptStyles(container.ownerDocument);
   const shared = {
     ...options,
     registry,
@@ -202,6 +212,14 @@ export function bindActionOutcomePrompt(container, actions = [], options = {}) {
         dismissed: false,
       };
   PROMPT_STATE.set(container, state);
+  if (options.officialClicked) {
+    const clicked = handoffContext(actions, registry.OUTCOME_ENUM);
+    if (clicked) {
+      recordActionOpened(shared);
+      renderPrompt(slot, clicked, shared, state);
+    }
+    return Boolean(clicked);
+  }
   const initial = outcomePromptContext(actions, registry.OUTCOME_ENUM, { today: options.today });
   if (initial?.trigger === "passed_action") renderPrompt(slot, initial, shared, state);
 

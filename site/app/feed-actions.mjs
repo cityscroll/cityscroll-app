@@ -743,17 +743,16 @@ function actionRailHTML(actions){
   return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}<div data-action-outcome-slot></div></section>`;
 }
 function bindActionOutcomePrompt(el,actions,contextKey){
-  import("../action_outcome_prompt.mjs").then(module=>{
-    if(!document.contains(el)) return;
-    module.bindActionOutcomePrompt(el,actions,{
-      registry:window.CrolActions,
-      analytics:window.crolAnalytics,
-      t,
-      escape:escUiHtml,
-      today:todayISO(),
-      contextKey,
-    });
+  const options={registry:window.CrolActions,analytics:window.crolAnalytics,t,escape:escUiHtml,today:todayISO(),contextKey};
+  const load=(selected,officialClicked=false)=>import("../action_outcome_prompt.mjs").then(module=>{
+    if(document.contains(el)) module.bindActionOutcomePrompt(el,selected,{...options,officialClicked});
   }).catch(()=>{});
+  const passedCandidate=actions.some(action=>(action?.guide?.system==="property_reader_actions"&&action.guide.mode==="historical")||action?.delivery==="unavailable");
+  if(passedCandidate){ load(actions); return; }
+  el.querySelectorAll("a[data-action-outcome-index]").forEach(link=>link.addEventListener("click",()=>{
+    const action=actions[Number(link.dataset.actionOutcomeIndex)];
+    if(action) load([action],true);
+  }));
 }
 function paintNoticeActionRail(el,r,ruleRecord,lifecycleData){
   if(!el||!window.CrolActions) return;
