@@ -30,6 +30,7 @@ let meetingWatchExtra = {};
 // "awardwatch" #awatch selection subscribes to. null until that button (or nothing, if the
 // dropdown is reached manually with no notice in context) sets it.
 let awardWatchTarget = null;
+let examAreaWatchTarget = null; // { id, label } carried from the exam taxonomy area cards
 // Seed notice/project row for context-carrying alert entry (#alerts?notice=… / project=…).
 // When set, aPreview() renders THIS item through digItemHTML (the real email-template path)
 // so the reader sees exactly what would arrive. Cleared when the watch type changes.
@@ -51,6 +52,7 @@ function aWatchChange(skipQuizSync){
     moneynlExtra = {};
     meetingWatchExtra = {};
     if(lastWatch==="awardwatch") awardWatchTarget = null; // leaving the type clears its one-notice target
+    if(lastWatch==="examarea") examAreaWatchTarget = null;
     noticeWatchSeed = null; // type switch leaves the carried notice behind
     paintAlertContextLead(null);
   }
@@ -59,7 +61,7 @@ function aWatchChange(skipQuizSync){
   $("#amoneyfields").style.display = w==="moneynl" ? "" : "none";
   if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
-  else if(w==="awardwatch"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
+  else if(w==="awardwatch" || w==="examarea"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
     if(w==="rfpkw"){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=t("param_placeholder_rfpkw"); }
@@ -90,6 +92,7 @@ function aDescribe(){
   if(w==="entityvendor") return t("desc_vendor",{freq, name:$("#aparam").value.trim()||"…"});
   if(w==="entityagency") return t("desc_agency_watch",{freq, name:$("#aparam").value.trim()||"…"});
   if(w==="awardwatch") return t("desc_awardwatch",{freq, label:(awardWatchTarget&&(awardWatchTarget.label||awardWatchTarget.agency))||"…"});
+  if(w==="examarea") return t("desc_section",{freq,what:t("career_browser_heading"),bits:` — ${examAreaWatchTarget?.label||"…"}`});
   if(SECTION_WATCH_LABEL[w]){
     const location=w==="meetings"
       ? (meetingWatchExtra.neighborhood||meetingWatchExtra.borough||(meetingWatchExtra.locationScope?t("citywide_unlocated"):""))
@@ -111,6 +114,11 @@ function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText();
 
 async function aFetch(){
   const w=$("#awatch").value;
+  if(w==="examarea"){
+    const id=examAreaWatchTarget?.id;
+    const rows=(careerData?.exams||[]).filter(exam=>exam.interest_area===id && CrolStaffing.openWindowBand(exam,careerToday()));
+    return {kind:"exam",rows:rows.slice(0,5)};
+  }
   if(w==="entityvendor"){
     const stem=vendorStem($("#aparam").value.trim());
     if(stem.length<3) return {kind:"notice", rows:[]};
@@ -314,6 +322,14 @@ function digAwarenessHTML(kind, r, tools){
   return html?`<div class="dig-awareness">${html}</div>`:"";
 }
 function digItemHTML(kind, r, keywords, awarenessTools){
+  if(kind==="exam"){
+    const band=CrolStaffing.openWindowBand(r,careerToday());
+    const meta=[t("career_exam_number",{number:r.exam_number}),r.application_start&&r.application_end?`${r.application_start}–${r.application_end}`:"",band].filter(Boolean).join(" · ");
+    return `<div class="digitem"><div class="dt"><a href="#exam/${encodeURIComponent(r.exam_number)}">${escUiHtml(r.title||"")}</a></div>
+      <div class="dm" lang="en" dir="ltr">${escUiHtml(meta)}</div>
+      ${r.notice_url?`<div class="da" lang="en" dir="ltr">NOE posted</div>`:""}
+      <div class="dc"><a href="#exam/${encodeURIComponent(r.exam_number)}">${t("view_on_crol")}</a></div></div>`;
+  }
   const aw=digAwarenessHTML(kind, r, awarenessTools);
   if(kind==="award"){
     const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords, null, matchAttachmentText(r));
@@ -470,11 +486,14 @@ async function aPreview(){
     ? (seedHtml + liveBody)
     : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}${nlChips.length ? nlTransHTML(nlChips, "#nlq-alerts", true) : ""}</div>`;
   const count = (seed ? 1 : 0) + rows.length;
+  const footer=data.kind==="exam"
+    ? `${t("career_source_details")} · ${t("career_noe_source_name")}`
+    : tn("digest_footer",count);
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
     <div class="ebody">${body}
-      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${tn("digest_footer",count)}</div>
+      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${footer}</div>
     </div></div>`;
 }
 
@@ -628,6 +647,7 @@ function aLensFilter(){
   if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
   if(w==="awardwatch") return {lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}};
+  if(w==="examarea") return {lens:"people", filter:{view:"guide",interestArea:examAreaWatchTarget?.id||null,interestLabel:examAreaWatchTarget?.label||null}};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{
     keywords:p?[p]:[], agency:$("#aagency").value.trim()||null,
     ...(w==="meetings"?meetingWatchExtra:{})
@@ -643,6 +663,7 @@ async function aSubscribe(){
   if($("#awatch").value==="awardwatch" && !(awardWatchTarget && awardWatchTarget.requestId)){
     msg.innerHTML = t("award_watch_pick_notice_html"); return;
   }
+  if($("#awatch").value==="examarea" && !examAreaWatchTarget?.id){ msg.textContent=t("generic_error"); return; }
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
   dest.removeAttribute("aria-invalid");
@@ -975,6 +996,7 @@ globalThis.yearCut = yearCut;
 Object.defineProperty(globalThis, "alertsRollupGroupBy", { configurable: true, get: () => alertsRollupGroupBy, set: value => { alertsRollupGroupBy = value; } });
 Object.defineProperty(globalThis, "alertsRollupToolsPromise", { configurable: true, get: () => alertsRollupToolsPromise, set: value => { alertsRollupToolsPromise = value; } });
 Object.defineProperty(globalThis, "awardWatchTarget", { configurable: true, get: () => awardWatchTarget, set: value => { awardWatchTarget = value; } });
+Object.defineProperty(globalThis, "examAreaWatchTarget", { configurable: true, get: () => examAreaWatchTarget, set: value => { examAreaWatchTarget = value; } });
 Object.defineProperty(globalThis, "digAwarenessToolsPromise", { configurable: true, get: () => digAwarenessToolsPromise, set: value => { digAwarenessToolsPromise = value; } });
 Object.defineProperty(globalThis, "lastWatch", { configurable: true, get: () => lastWatch, set: value => { lastWatch = value; } });
 Object.defineProperty(globalThis, "meetingWatchExtra", { configurable: true, get: () => meetingWatchExtra, set: value => { meetingWatchExtra = value; } });

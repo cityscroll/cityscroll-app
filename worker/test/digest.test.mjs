@@ -84,6 +84,14 @@ test("after: dedupeFreshByContent collapses the republished duplicate to one lin
   assert.equal(out[0].request_id, republished.request_id, "keeps the first-seen request_id");
 });
 
+test("exam alert identities remain distinct inside one interest-area digest", () => {
+  const rows=dedupeFreshByContent([
+    {alert_id:"exam:7001:scheduled",exam_number:"7001"},
+    {alert_id:"exam:7002:noe-posted",exam_number:"7002"},
+  ]);
+  assert.equal(rows.length,2);
+});
+
 test("rows differing only by an untracked field (amount, request_id) still collapse", () => {
   const amended = { ...republished, request_id: "20260601003", contract_amount: 999999 };
   const out = dedupeFreshByContent([republished, amended]);

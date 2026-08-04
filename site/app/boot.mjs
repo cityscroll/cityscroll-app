@@ -205,6 +205,13 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
     $("#awatch").value = "awardwatch";
     aWatchChange();
     filled = true;
+  } else if(lens==="people" && filter.view==="guide" && filter.interestArea){
+    examAreaWatchTarget={id:filter.interestArea,label:filter.interestLabel||filter.interestArea};
+    $("#awatch").value="examarea";
+    aWatchChange();
+    // aWatchChange only clears a prior exam-area target when leaving that type.
+    examAreaWatchTarget={id:filter.interestArea,label:filter.interestLabel||filter.interestArea};
+    filled=true;
   }
   // aWatchChange() clears noticeWatchSeed when the type changes — re-seed after fill.
   if((noticeId || projectId) && !noticeWatchSeed){
