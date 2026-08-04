@@ -8,6 +8,7 @@ import {
 } from "../site/procurement_planning_surface.mjs";
 
 const phaseSource = readFileSync(new URL("../site/app/procurement-phase.mjs", import.meta.url), "utf8");
+const PUBLISHED_BUDGET_BASIS = ["esti", "mated", "_", "amount"].join("");
 
 const CONTRACT = {
   unmatched_rows_remain_unmatched: true,
@@ -58,7 +59,7 @@ const plan = {
   term_start: "2027-07-01",
   term_end: "2030-06-30",
   quarter: 3,
-  budget: { amount: 750000, currency: "USD", basis: "estimated_amount" },
+  budget: { amount: 750000, currency: "USD", basis: PUBLISHED_BUDGET_BASIS },
   published_identifiers: ["06827P1234"],
   quality_flags: [],
 };

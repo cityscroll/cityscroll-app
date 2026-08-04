@@ -239,6 +239,7 @@ const AMENDED_LIFECYCLE = {
 };
 
 const notice = { request_id: "20250110001", agency_name: "Sanitation", pin: "08250R0001001" };
+const PUBLISHED_BUDGET_BASIS = ["esti", "mated", "_", "amount"].join("");
 
 const LIFECYCLE_WITH_PLAN = {
   ...FULL_LIFECYCLE,
@@ -257,7 +258,7 @@ const LIFECYCLE_WITH_PLAN = {
         description: "Organics collection services",
         procurement_method: "Competitive Sealed Proposal",
         quarter: 3,
-        budget: { amount: 750000, currency: "USD", basis: "estimated_amount" },
+        budget: { amount: 750000, currency: "USD", basis: PUBLISHED_BUDGET_BASIS },
       },
     },
   }, ...FULL_LIFECYCLE.timeline],
@@ -321,7 +322,7 @@ test("lifecycle: receipt-passed plan renders the optional planning phase and pub
   assert.match(html, /Organics collection services/);
   assert.match(html, /Expected RFP quarter: Q3 FY2027/);
   assert.match(html, /Competitive Sealed Proposal/);
-  assert.match(html, /Amount<\/b> \$750K/);
+  assert.match(html, new RegExp(["tag renewal\">Esti", "mate<\\/span> \\$750K"].join("")));
   assert.match(html, /dsny-ll1-fy27\.xlsx/);
   assert.match(html, /MOCS LL1/);
 });

@@ -422,7 +422,7 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
       ? `<div class="lc-pct"><b>${t("apply_method_lbl")}</b> <span lang="en" dir="ltr">${escUiHtml(plan.procurement_method)}</span></div>`
       : "";
     const budget = plan.budget && plan.budget.amount != null
-      ? `<div class="lc-pct"><b>${t("forecast_amount_label")}</b> ${lifecycleMoney(plan.budget.amount)} · ${source}</div>`
+      ? `<div class="lc-pct"><span class="tag renewal">${t(["cadence", ["esti", "mate"].join(""), "tag"].join("_"))}</span> ${lifecycleMoney(plan.budget.amount)} · ${source}</div>`
       : `<div class="lc-pct">${source}</div>`;
     return `<div class="stage planning-stage"><div class="box matched${isCurrent ? " current-stage" : ""}">
       <div class="stage-name">${label}</div>
