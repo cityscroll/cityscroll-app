@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "measured_at": "2026-08-04",
+  "method": "Five warmup passes followed by 20 measured samples. Each sample applies all five lifecycle facet values to 10,000 synthetic entries through the exported pure filter functions.",
+  "results": {
+    "meetings_current_stage": {
+      "entries": 10000,
+      "filters_per_sample": 5,
+      "samples": 20,
+      "p95_ms": 1.476,
+      "max_ms": 1.717
+    },
+    "rules_includes_phase": {
+      "entries": 10000,
+      "filters_per_sample": 5,
+      "samples": 20,
+      "p95_ms": 4.437,
+      "max_ms": 4.879
+    }
+  },
+  "runtime_gzip": {
+    "method": "gzip level 9 with a fixed timestamp, comparing the parent revision with the changed runtime files",
+    "files": {
+      "site/index.html": {
+        "before_bytes": 39950,
+        "after_bytes": 39651,
+        "delta_bytes": -299
+      },
+      "site/app/rules.mjs": {
+        "before_bytes": 15422,
+        "after_bytes": 15373,
+        "delta_bytes": -49
+      },
+      "site/meetings_explorer.mjs": {
+        "before_bytes": 5751,
+        "after_bytes": 5771,
+        "delta_bytes": 20
+      },
+      "site/rules_explorer.mjs": {
+        "before_bytes": 5950,
+        "after_bytes": 5956,
+        "delta_bytes": 6
+      },
+      "site/i18n.js": {
+        "before_bytes": 65611,
+        "after_bytes": 65609,
+        "delta_bytes": -2
+      }
+    },
+    "total": {
+      "before_bytes": 132684,
+      "after_bytes": 132360,
+      "delta_bytes": -324
+    }
+  },
+  "home_cold_wire_context": {
+    "budget_bytes": 455000,
+    "parent_revision_bytes": 457852,
+    "changed_revision_p95_bytes": 457501,
+    "delta_bytes": -351,
+    "remaining_budget_overage_bytes": 2501,
+    "parent_samples_per_viewport": 1,
+    "changed_samples_per_viewport": 20,
+    "note": "The lifecycle clarity change reduces the deterministic cold-home transfer size, but the parent revision already exceeds the repository-wide wire budget."
+  }
+}
