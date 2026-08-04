@@ -156,6 +156,9 @@ function hearingEventRow(record){
     short_title:record.title,
     street_address_1:record.venue&&record.venue.address,
     additional_description_1:record.description,
+    venue:record.venue||null,
+    participation:record.participation||null,
+    source_url:record.source_url||null,
   };
 }
 function hearingViewFilter(){
@@ -366,6 +369,7 @@ function actionRailGuideHTML(actions){
     :`<code>${escUiHtml(guide.identifier)}</code>`):"";
   let facts="";
   let steps=[];
+  let guideExtra="";
   let headingKey="bid_guide_heading";
   if(guide.system==="hearing_extracted"){
     // Attend / testify / contact — fields only when the notice published them.
@@ -396,14 +400,19 @@ function actionRailGuideHTML(actions){
         ? t("hearing_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
         : t("hearing_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}),"hearing_participation"));
     }
+    if(guide.testimony_signup_url){
+      const url=escUiHtml(guide.testimony_signup_url);
+      const host=escUiHtml(hostOf(guide.testimony_signup_url));
+      steps.push(t("hearing_guide_signup_step_html",{url,host}));
+    }
     if(guide.testimony_email){
       const email=escUiHtml(guide.testimony_email);
       if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
-        steps.push(step(t("hearing_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}),"hearing_testimony"));
+        steps.push(step(t("hearing_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}),"hearing_testimony_deadline"));
       }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
-        steps.push(step(t("hearing_guide_testimony_until_close_step_html",{email}),"hearing_testimony"));
+        steps.push(step(t("hearing_guide_testimony_until_close_step_html",{email}),"hearing_testimony_deadline"));
       }else{
-        steps.push(step(t("hearing_guide_testimony_step_html",{email}),"hearing_testimony"));
+        steps.push(step(t("hearing_guide_testimony_step_html",{email}),"hearing_testimony_method"));
       }
     }
     if(guide.contact_name || guide.email || guide.contact_phone){
@@ -411,6 +420,19 @@ function actionRailGuideHTML(actions){
       steps.push(step(t("hearing_guide_contact_step_html",{who}),"hearing_contact"));
     }
     if(!steps.length) steps.push(t("hearing_guide_fallback_step"));
+    if(guide.testimony_starter){
+      const starter=guide.testimony_starter;
+      const spanish=(window.LANG||"en")==="es";
+      const blocks=spanish
+        ? [
+            {lang:"es",label:"Texto inicial en español — edítelo",value:starter.es},
+            {lang:"en",label:"English starter — edit it",value:starter.en},
+          ]
+        : [{lang:"en",label:"Starter paragraph — edit it",value:starter.en}];
+      guideExtra=`<div class="hearing-testify-starter" data-spanish-first="${spanish?"true":"false"}">${blocks.map(block=>
+        `<div class="hearing-testify-copy" lang="${block.lang}"><b>${block.label}</b><p>${escUiHtml(block.value)}</p><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(block.value)}">${t("copy_value")}</button></div>`
+      ).join("")}</div>`;
+    }
   }
   else if(guide.system==="rules_extracted"){
     // Comment-open + hearing-day: deadline, how-to-comment, attend/testify — only published fields.
@@ -677,7 +699,7 @@ function actionRailGuideHTML(actions){
       );
     }
   }
-  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol></details>`;
+  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>${guideExtra}</details>`;
 }
 function actionRailHTML(actions){
   let primaryUsed=false;
@@ -994,9 +1016,25 @@ function meetingsExplorerCardHTML(entry){
     secondaryActions.push(`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`);
   });
   secondaryActions.push(`<button class="act" type="button" data-link="${record.request_id}">${t("copy_link_btn")}</button>`);
-  if(record.event_date) secondaryActions.push(`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("add_date_btn",{date:fdt(record.event_date)})}</button>`);
+  if(record.event_date) secondaryActions.push(`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("calendar_ics")}</button>`);
   const venue=record.venue||{};
   if(venue.address) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`);
+  const cardMatter={
+    kind:"hearing",
+    lifecycle_stage:past?"past":null,
+    deadline:record.event_date||null,
+    event_date:record.event_date||null,
+    title:entry.title||record.decides||record.title||null,
+    notice_text:record.description||"",
+    official_notice_url:REQ_URL(record.request_id),
+    agency_name:agency,
+    venue,
+    participation,
+    participation_url:((participation.links||[]).find(link=>hearingSafeURL(link.url))||{}).url||null,
+  };
+  const cardAttendPack=window.CrolActions
+    ? actionRailGuideHTML(CrolActions.compileActionRail(cardMatter,{today:todayISO()}))
+    : "";
   // Sibling notices for multi-notice event / matter chains (entity links across rows).
   let siblingsHtml="";
   if((entry.kind==="event"||entry.kind==="matter") && (entry.sibling_notices||[]).length>1){
@@ -1024,6 +1062,7 @@ function meetingsExplorerCardHTML(entry){
       </div>
       ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
+      ${cardAttendPack}
     </article>`;
 }
 function renderHearingGroup(scope, entries){
@@ -1166,6 +1205,7 @@ async function renderHearingExplorer(){
   }
   el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>copyText(noticeLink(button.dataset.link),button)));
   el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>downloadEventICS(feedRows.meetings[button.dataset.ev.split(":")[1]])));
+  el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
   announce(t("meetings_entries_announce",{n:entries.length}));
 }
 async function loadHearings(){

@@ -739,8 +739,22 @@ async function checkDemolition(r, btn){
   btn.replaceWith(span);
 }
 
-function downloadEventICS(r){
+async function downloadEventICS(r){
   if(!r||!r.event_date) return;
+  const isHearing=!!(r.venue||r.participation||r.section_name==="Public Hearings and Meetings"||r.source_section==="Public Hearings and Meetings"||/hearing/i.test(r.type_of_notice_description||r.notice_type||""));
+  if(isHearing){
+    const {hearingCalendarICS}=await import("../hearing_attend_pack.mjs");
+    const source=r.official_notice_url||r.source_url||(r.request_id?REQ_URL(r.request_id):null);
+    const hearingICS=hearingCalendarICS({...r,source_url:source});
+    if(!hearingICS) return;
+    const hearingBlob=new Blob([hearingICS],{type:"text/calendar;charset=utf-8"});
+    const hearingLink=document.createElement("a");
+    hearingLink.href=URL.createObjectURL(hearingBlob);
+    hearingLink.download=`hearing-${r.request_id||"event"}.ics`;
+    document.body.appendChild(hearingLink); hearingLink.click(); hearingLink.remove();
+    setTimeout(()=>URL.revokeObjectURL(hearingLink.href),0);
+    return;
+  }
   const d=new Date(r.event_date), pad=n=>String(n).padStart(2,"0");
   const fl=dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
   const esc=s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");

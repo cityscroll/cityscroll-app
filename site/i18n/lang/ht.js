@@ -545,6 +545,7 @@
     hearing_guide_attend_where_step: "Ale nan {where}.",
     hearing_guide_join_step_html: "Rantre sou entènèt nan <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (ouvri nan yon nouvo onglè)</span></a>.",
     hearing_guide_materials_step_html: "Ajanda ak dokiman odyans lan: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (ouvri nan yon nouvo onglè)</span></a>.",
+    hearing_guide_signup_step_html: "Enskri pou bay temwayaj sou <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (ouvri nan yon nouvo onglè)</span></a>.",
     hearing_guide_testimony_step_html: "Voye temwayaj ekri bay <a href=\"mailto:{email}\">{email}</a>.",
     hearing_guide_testimony_until_close_step_html: "Voye temwayaj ekri bay <a href=\"mailto:{email}\">{email}</a> jiskaske odyans lan fini.",
     hearing_guide_testimony_until_date_step_html: "Voye temwayaj ekri bay <a href=\"mailto:{email}\">{email}</a> anvan {date}.",
