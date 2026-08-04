@@ -137,7 +137,6 @@ with sync_playwright() as pw:
         "More ways to watch",
         "Watch for",
         "Email address",
-        "Your email",
         "Frequency",
         "Preview today",
         "Subscribe",
