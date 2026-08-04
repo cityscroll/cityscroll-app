@@ -203,6 +203,8 @@
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "opisz, czego szukasz…",
+    ask_cityscroll_action: "Zapytaj CityScroll",
+    ask_cityscroll_context: "Interpretuje Twoje zapytanie",
     ask_btn: "Szukaj",
     show_label: "Pokaż",
     mode_open: "Otwarte Zapytania ofertowe (RFP) — przyjmowane teraz",

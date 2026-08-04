@@ -195,6 +195,8 @@
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "찾으시는 내용을 설명해 주세요…",
+    ask_cityscroll_action: "CityScroll에 질문하기",
+    ask_cityscroll_context: "요청을 해석합니다",
     ask_btn: "검색",
     show_label: "표시",
     mode_open: "공개 제안요청서 (RFP) — 현재 접수 중",

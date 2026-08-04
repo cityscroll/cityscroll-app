@@ -197,6 +197,8 @@
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "بیان کریں کہ آپ کیا تلاش کر رہے ہیں…",
+    ask_cityscroll_action: "CityScroll سے پوچھیں",
+    ask_cityscroll_context: "آپ کی درخواست کی تشریح کرتا ہے",
     ask_btn: "پوچھیں",
     show_label: "دکھائیں",
     mode_open: "کھلی درخواستِ تجاویز (RFP) — ابھی قبول ہو رہی ہیں",
