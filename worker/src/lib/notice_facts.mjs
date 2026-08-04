@@ -1,8 +1,13 @@
 // Pure, evidence-carrying extraction of facts that City Record publishers sometimes
 // place only in notice prose. Patterns are deliberately label-bound: an arbitrary
 // date, number, or organization name is not a structured fact.
+//
+// Solicitation procurement-method markers (Admin Code §6-129 goals, M/WBE
+// Noncompetitive Small Purchase, accelerated timing) and the derived response
+// floor live under `procurement_method` — see solicitation_procurement_method.mjs.
 
 import { plainText } from "../../../site/text_clean.mjs";
+import { extractSolicitationProcurementMethod } from "./solicitation_procurement_method.mjs";
 
 const MONTHS = new Map([
   ["january", 1], ["february", 2], ["march", 3], ["april", 4],
@@ -155,11 +160,20 @@ function extractParties(text) {
 
 export function extractNoticeFacts(row = {}) {
   const text = noticeBody(row);
-  if (!text) return { identifiers: [], deadlines: [], parties: [] };
+  const procurement_method = extractSolicitationProcurementMethod(row);
+  if (!text) {
+    return {
+      identifiers: [],
+      deadlines: [],
+      parties: [],
+      procurement_method,
+    };
+  }
   return {
     identifiers: extractIdentifiers(text),
     deadlines: extractDeadlines(text),
     parties: extractParties(text),
+    procurement_method,
   };
 }
 
