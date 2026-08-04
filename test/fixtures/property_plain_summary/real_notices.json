@@ -1,0 +1,156 @@
+{
+  "source": "NYC Open Data City Record Online (dg92-zbpx)",
+  "source_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+  "observed_at": "2026-08-04",
+  "normalization": "HTML removed, whitespace collapsed, and long tables or contact lists reduced to the source clauses exercised by each fixture",
+  "cases": [
+    {
+      "id": "pending-destruction",
+      "pattern": "pending_destruction",
+      "row": {
+        "request_id": "20260526003",
+        "start_date": "2026-06-01T00:00:00.000",
+        "agency_name": "Police Department",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "short_title": "OFFICIAL NOTICE OF PENDING DESTRUCTION OF CERTAIN UNAUTHORIZED TOBACCO, FLAVORED E-CIGARETTE OR FLAVORED E-LIQUID PRODUCTS SEIZED DURING INSPECTIONS BY THE OFFICE OF THE NEW YORK CITY SHERIFF",
+        "additional_description_1": "One or more categories of Unauthorized Products were seized from the commercial establishments listed below. These Unauthorized Products were subject to forfeiture and will be destroyed pursuant to New York City Administrative Code sections listed in the notice. Inquiries relating to such Unauthorized Products should be made to the Civil Enforcement Unit."
+      }
+    },
+    {
+      "id": "unclaimed-property",
+      "pattern": "unclaimed_property",
+      "row": {
+        "request_id": "20200128107",
+        "start_date": "2020-01-02T00:00:00.000",
+        "agency_name": "Police Department",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "short_title": "OWNERS ARE WANTED BY THE PROPERTY CLERK DIVISION OF THE NEW YORK CITY POLICE DEPARTMENT",
+        "additional_description_1": "The following list of properties is in the custody of the Property Clerk Division without claimants. Inquiries relating to such property should be made in the Borough concerned, at the office of the Property Clerk."
+      }
+    },
+    {
+      "id": "forest-timber-sale",
+      "pattern": "forest_timber_sale",
+      "row": {
+        "request_id": "20231103014",
+        "start_date": "2023-11-03T00:00:00.000",
+        "agency_name": "Environmental Protection",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "short_title": "Bradley Forest Management Project 5181 Timber Harvest",
+        "additional_description_1": "Show Dates: Prospective bidders are encouraged to attend one of the public showings which will be held on Monday, November 20, 2023 at 1:00 PM and Tuesday, November 21, 2023 at 9:00 AM. Bid Due Date: All bid proposals must be received by Nathan Hart NO LATER THAN Wednesday, December 6, 2023 at 4:00 PM, local time."
+      }
+    },
+    {
+      "id": "lease-auction",
+      "pattern": "lease_or_real_property_rfp",
+      "row": {
+        "request_id": "20221104020",
+        "start_date": "2022-11-14T00:00:00.000",
+        "agency_name": "Citywide Administrative Services",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "short_title": "Online Public Lease Auction from December 8, 2022 at 9am through December 15, 2022 at 9pm.",
+        "additional_description_1": "Public notice is hereby given that the agency will conduct an online public lease auction under the law named in the notice. Online bids will be accepted from December 8, 2022 at 9:00 AM until December 15, 2022 at 9:00 PM. The apparent highest bidders will be identified by December 19, 2022."
+      }
+    },
+    {
+      "id": "surplus-auction",
+      "pattern": "surplus_auction",
+      "row": {
+        "request_id": "20251106024",
+        "start_date": "2025-11-14T00:00:00.000",
+        "agency_name": "Citywide Administrative Services",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "short_title": "AUTO AUCTION",
+        "additional_description_1": "The City of New York posts vehicle and heavy machinery auctions online every week. All auctions are open to the public and registration is free."
+      }
+    },
+    {
+      "id": "direct-property-sale",
+      "pattern": "direct_property_sale",
+      "row": {
+        "request_id": "20211006007",
+        "start_date": "2021-10-12T00:00:00.000",
+        "agency_name": "City University",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "short_title": "Notice of Public Sale of Residential Property located at 1 Hanson Place, Apt. 22D",
+        "event_date": "2021-10-29T16:00:00.000",
+        "additional_description_1": ""
+      }
+    },
+    {
+      "id": "medallion-result",
+      "pattern": "medallion_auction",
+      "row": {
+        "request_id": "20140403113",
+        "start_date": "2014-04-10T00:00:00.000",
+        "agency_name": "Taxi and Limousine Commission",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "short_title": "Notice of tentative winning bidders from medallion auction held March 25, 2014",
+        "additional_description_1": ""
+      }
+    },
+    {
+      "id": "udaap",
+      "pattern": "udaap",
+      "row": {
+        "request_id": "20170512106",
+        "start_date": "2017-05-19T00:00:00.000",
+        "agency_name": "Housing Preservation and Development",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Disposition",
+        "event_date": "2017-06-21T10:00:00.000",
+        "additional_description_1": "Urban Development Action Area Project. Pursuant to the laws named in the notice, notice is hereby given that the agency has sold the listed City-owned property. The appraisal and proposed Amended Land Disposition Agreement are available for public examination at the office and times listed in the notice. A public hearing will be held on June 21, 2017 at 10:00 a.m., or as soon thereafter as the matter may be reached on the calendar. Those wishing to be heard will be given an opportunity to be heard. Individuals requesting sign language interpreters should contact the Public Hearings Unit no later than seven business days prior to the public hearing."
+      }
+    },
+    {
+      "id": "acquisition",
+      "pattern": "acquisition_or_easement",
+      "row": {
+        "request_id": "20211118008",
+        "start_date": "2021-11-26T00:00:00.000",
+        "agency_name": "Economic Development Corporation",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "DECEMBER 28, 2021 PUBLIC HEARING",
+        "event_date": "2021-12-28T10:00:00.000",
+        "additional_description_1": "Notice is hereby given that a Real Property Acquisition and Disposition Public Hearing will be held on Tuesday, December 28, 2021, commencing at 10:00 AM via conference call, in the matter of a proposed amendment of lease for the city-owned properties listed in the notice."
+      }
+    },
+    {
+      "id": "disposition-hearing",
+      "pattern": "disposition",
+      "row": {
+        "request_id": "20241112003",
+        "start_date": "2024-11-15T00:00:00.000",
+        "agency_name": "Small Business Services",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "NOTICE OF VOLUNTARY PUBLIC HEARING",
+        "event_date": "2024-11-26T10:00:00.000",
+        "additional_description_1": "Public notice is hereby given that a voluntary public hearing will be held on Tuesday November 26, 2024, commencing at 10:00 am by conference call, relating to the early surrender of a lease on the property listed in the notice."
+      }
+    },
+    {
+      "id": "deviant-disposition-fallback",
+      "pattern": "disposition",
+      "templated": false,
+      "row": {
+        "request_id": "20240108007",
+        "start_date": "2024-01-16T00:00:00.000",
+        "agency_name": "Housing Preservation and Development",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Notices Regarding Housing Preservation",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions of City-Owned Property appear in the Public Hearing Section."
+      }
+    }
+  ]
+}

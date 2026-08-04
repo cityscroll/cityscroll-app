@@ -28,6 +28,10 @@ import {
   classifyPropertyPattern,
 } from "../site/property_notice_patterns.mjs";
 import { extractPropertyReaderActions } from "../site/property_reader_actions.mjs";
+import {
+  buildPropertyPlainSummary,
+  propertyPlainSummarySurface,
+} from "../site/property_plain_summary.mjs";
 
 export { classifyPropertyPattern };
 
@@ -96,10 +100,12 @@ function joinedRenderedText(row) {
 export function renderedNoticeSurfaces(row = {}) {
   const title = cleanNoticeText(row.short_title);
   const detailBody = cleanNoticeText(row.additional_description_1).slice(0, DETAIL_BODY_LIMIT);
+  const plainSummary = propertyPlainSummarySurface(buildPropertyPlainSummary(row)) || "";
   return {
     title,
     detail_body: detailBody,
     combined: [title, detailBody].filter(Boolean).join(". "),
+    plain_summary: plainSummary,
   };
 }
 
@@ -332,6 +338,22 @@ function summarizeJargon(records) {
     .filter(([, count]) => count > 0));
 }
 
+function summarizePlainLanguage(records) {
+  const templated = records.filter((record) => record.plain_summary?.templated);
+  const baseline = summarizeGrades(templated, "combined");
+  const authored = summarizeGrades(templated, "plain_summary");
+  return {
+    templated: templated.length,
+    fallback_to_official_text: records.length - templated.length,
+    coverage_pct: records.length ? round((templated.length / records.length) * 100) : null,
+    baseline_combined: baseline,
+    authored_summary: authored,
+    mean_grade_reduction: Number.isFinite(baseline.mean_grade) && Number.isFinite(authored.mean_grade)
+      ? round(baseline.mean_grade - authored.mean_grade)
+      : null,
+  };
+}
+
 export function summarizeCensus(rows, scores, { asOf = null, source = "live" } = {}) {
   const records = rows.map((row) => {
     const requestId = String(row.request_id || "");
@@ -346,6 +368,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       signals: detectPropertySignals(row),
       jargon: detectPropertyJargon(row),
       current_extraction: currentPropertyExtraction(row, { today: asOf }),
+      plain_summary: buildPropertyPlainSummary(row, { today: asOf }),
       scores: Object.fromEntries(Object.keys(surfaces).map((surface) => [
         surface,
         scores.get(`${requestId}:${surface}`) || null,
@@ -374,6 +397,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       signals: summarizeSignals(members),
       jargon: summarizeJargon(members),
       current_extraction: summarizeCurrentExtraction(members),
+      plain_language: summarizePlainLanguage(members),
       worst,
     };
   }
@@ -390,7 +414,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
   const worst = worstForSurface("combined");
   const starts = records.map((record) => record.start_date).filter(Boolean).sort();
   return {
-    schema_version: 1,
+    schema_version: 2,
     metric: {
       tool: "readable-or-else",
       preset: "nycsg7",
@@ -401,6 +425,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       title: "short_title after the shared notice-text cleaner",
       search_excerpt: `query-dependent window of up to ${SEARCH_EXCERPT_RADIUS} characters on each side of a match; absent on the default Property list`,
       detail_body: `cleaned additional_description_1 truncated to ${DETAIL_BODY_LIMIT} characters`,
+      plain_summary: "receipt-backed CityScroll-authored summary and displayed term definitions; absent when the notice fails its reader-visible pattern gate",
       excluded_body_fields: BODY_FIELDS.filter((field) => field !== "additional_description_1"),
     },
     corpus: {
@@ -417,6 +442,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       title: summarizeGrades(records, "title"),
       detail_body: summarizeGrades(records, "detail_body"),
       combined: summarizeGrades(records, "combined"),
+      plain_language: summarizePlainLanguage(records),
       signals: summarizeSignals(records),
       jargon: summarizeJargon(records),
       current_extraction: summarizeCurrentExtraction(records),
@@ -427,18 +453,19 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       title: worstForSurface("title", 10),
       detail_body: worstForSurface("detail_body", 10),
       combined: worst.slice(0, 10),
+      plain_summary: worstForSurface("plain_summary", 20),
     },
   };
 }
 
 function markdownTable(report) {
   const lines = [
-    "| Pattern | n | Mean grade | Median | p90 | ≤7 | >12 |",
+    "| Pattern | n | Templated | Official mean | Summary mean | Grade reduction | Summary ≤7 |",
     "|---|---:|---:|---:|---:|---:|---:|",
   ];
   for (const value of Object.values(report.patterns)) {
-    const score = value.combined;
-    lines.push(`| ${value.label} | ${value.count} | ${score.mean_grade ?? "—"} | ${score.median_grade ?? "—"} | ${score.p90_grade ?? "—"} | ${score.at_or_below_grade_7} | ${score.above_grade_12} |`);
+    const plain = value.plain_language;
+    lines.push(`| ${value.label} | ${value.count} | ${plain.templated} | ${plain.baseline_combined.mean_grade ?? "—"} | ${plain.authored_summary.mean_grade ?? "—"} | ${plain.mean_grade_reduction ?? "—"} | ${plain.authored_summary.at_or_below_grade_7}/${plain.authored_summary.scored} |`);
   }
   return lines.join("\n");
 }
@@ -447,10 +474,13 @@ export function reportAsMarkdown(report) {
   const score = report.overall.combined;
   const extraction = report.overall.current_extraction;
   const signals = report.overall.signals;
+  const plain = report.overall.plain_language;
   return [
     `Corpus: ${report.corpus.count} notices (${report.corpus.start_date_min} through ${report.corpus.start_date_max}); SHA-256 \`${report.corpus.sha256}\`.`,
     "",
     `Combined title + rendered detail body: mean grade ${score.mean_grade}, median ${score.median_grade}, p90 ${score.p90_grade}; ${score.at_or_below_grade_7}/${score.scored} at or below grade 7.`,
+    "",
+    `Receipt-backed plain summaries: ${plain.templated}/${report.corpus.count} notices (${plain.coverage_pct}%); authored mean grade ${plain.authored_summary.mean_grade} versus ${plain.baseline_combined.mean_grade} for the same notices, a ${plain.mean_grade_reduction}-grade reduction; ${plain.authored_summary.at_or_below_grade_7}/${plain.authored_summary.scored} at or below grade 7.`,
     "",
     `Typed timed events: ${extraction.typed_event_count}; bid-deadline signals ${signals.bid_deadline}, typed bid deadlines ${extraction.typed_bid_deadline}, signals without a parseable date ${extraction.bid_deadline_signal_without_parseable_date}; known cross-type false positives ${extraction.known_cross_type_false_positive_count}; honest-empty notices ${extraction.honest_empty_typed_events}.`,
     "",
