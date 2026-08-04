@@ -219,6 +219,9 @@ jobs:
       - name: CityScroll brand, SVG, and icon-family gate
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/brand_identity.py
+      - name: Non-affiliation gate (no official marks or claims)
+        if: needs.changes.outputs.unit_full == 'true'
+        run: python3 test/standards/no_official_marks.py
       - name: CityScroll canonical-domain contract
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/canonical_domain.py

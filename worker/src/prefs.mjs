@@ -277,29 +277,29 @@ function prefsHtmlResponse(email, watches, token, flash) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) =>
     ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const flashHtml = flash
-    ? `<p style="padding:10px 12px;border-radius:8px;background:${flash.error ? "#fde8e8" : "#e8f5e9"};color:#1a1714">${esc(flash.error || flash.message)}</p>`
+    ? `<p style="padding:10px 12px;border-radius:8px;background:${flash.error ? "#fdeaec" : "#e7f4ec"};color:#12181f">${esc(flash.error || flash.message)}</p>`
     : "";
   const rows = (watches || []).map((w) => {
     const kw = Array.isArray(w.filter?.keywords) ? w.filter.keywords.join(", ") : "";
     const status = w.paused
       ? `<span style="color:#a42;font-weight:bold">paused</span>`
       : `<span style="color:#2a6">active</span>`;
-    return `<div style="border:1px solid #cdbfa6;border-radius:10px;padding:14px 16px;margin:0 0 14px;background:#fffef9;text-align:left">
-      <div style="font-family:system-ui;font-size:13px;color:#5c5349;margin-bottom:4px">${esc(w.lens || "?")} · ${status} · ${esc(w.freq)}</div>
+    return `<div style="border:1px solid #dde1e7;border-radius:10px;padding:14px 16px;margin:0 0 14px;background:#ffffff;text-align:left">
+      <div style="font-family:system-ui;font-size:13px;color:#5b6470;margin-bottom:4px">${esc(w.lens || "?")} · ${status} · ${esc(w.freq)}</div>
       <div style="font-weight:bold;margin-bottom:10px">${esc(w.query)}</div>
       <form method="POST" action="" style="margin:0 0 8px">
         <input type="hidden" name="token" value="${esc(token)}" />
         <input type="hidden" name="key" value="${esc(w.key)}" />
         <input type="hidden" name="action" value="update" />
-        <label style="display:block;font-size:13px;color:#5c5349;margin-bottom:4px">Keywords (comma-separated)</label>
-        <input name="keywords" value="${esc(kw)}" style="width:100%;box-sizing:border-box;padding:8px;margin-bottom:8px;border:1px solid #cdbfa6;border-radius:6px;font:15px system-ui" />
-        <label style="display:block;font-size:13px;color:#5c5349;margin-bottom:4px">Frequency</label>
-        <select name="freq" style="padding:8px;margin-bottom:10px;border:1px solid #cdbfa6;border-radius:6px;font:15px system-ui">
+        <label style="display:block;font-size:13px;color:#5b6470;margin-bottom:4px">Keywords (comma-separated)</label>
+        <input name="keywords" value="${esc(kw)}" style="width:100%;box-sizing:border-box;padding:8px;margin-bottom:8px;border:1px solid #dde1e7;border-radius:6px;font:15px system-ui" />
+        <label style="display:block;font-size:13px;color:#5b6470;margin-bottom:4px">Frequency</label>
+        <select name="freq" style="padding:8px;margin-bottom:10px;border:1px solid #dde1e7;border-radius:6px;font:15px system-ui">
           <option value="daily"${w.freq === "daily" ? " selected" : ""}>daily</option>
           <option value="weekly"${w.freq === "weekly" ? " selected" : ""}>weekly</option>
         </select>
         <div>
-          <button type="submit" style="font:600 14px system-ui;background:#7a1f1f;color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer">Save</button>
+          <button type="submit" style="font:600 14px system-ui;background:#1a44e0;color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer">Save</button>
         </div>
       </form>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
@@ -307,33 +307,33 @@ function prefsHtmlResponse(email, watches, token, flash) {
           <input type="hidden" name="token" value="${esc(token)}" />
           <input type="hidden" name="key" value="${esc(w.key)}" />
           <input type="hidden" name="action" value="${w.paused ? "unpause" : "pause"}" />
-          <button type="submit" style="font:600 13px system-ui;background:#f4efe4;border:1px solid #cdbfa6;border-radius:6px;padding:6px 12px;cursor:pointer">${w.paused ? "Unpause" : "Pause"}</button>
+          <button type="submit" style="font:600 13px system-ui;background:#f6f7f9;border:1px solid #dde1e7;border-radius:6px;padding:6px 12px;cursor:pointer">${w.paused ? "Unpause" : "Pause"}</button>
         </form>
         <form method="POST" action="" style="margin:0" onsubmit="return confirm('Remove this watch?');">
           <input type="hidden" name="token" value="${esc(token)}" />
           <input type="hidden" name="key" value="${esc(w.key)}" />
           <input type="hidden" name="action" value="delete" />
-          <button type="submit" style="font:600 13px system-ui;background:#f4efe4;border:1px solid #cdbfa6;border-radius:6px;padding:6px 12px;cursor:pointer;color:#7a1f1f">Delete watch</button>
+          <button type="submit" style="font:600 13px system-ui;background:#f6f7f9;border:1px solid #dde1e7;border-radius:6px;padding:6px 12px;cursor:pointer;color:#1a44e0">Delete watch</button>
         </form>
       </div>
     </div>`;
   }).join("");
 
   const empty = !(watches && watches.length)
-    ? `<p style="color:#5c5349">No active watches for this address. Subscribe again on <a href="https://cityscroll.org">cityscroll.org</a>.</p>`
+    ? `<p style="color:#5b6470">No active watches for this address. Subscribe again on <a href="https://cityscroll.org">cityscroll.org</a>.</p>`
     : "";
 
   const body = `
     ${flashHtml}
-    <p style="color:#5c5349;font-size:14px;text-align:left">${esc(CUTOVER_COPY)}</p>
-    <p style="color:#5c5349;font-size:13px;text-align:left">Account: <b>${esc(redactEmail(email))}</b> · ${watches.length} watch${watches.length === 1 ? "" : "es"}</p>
+    <p style="color:#5b6470;font-size:14px;text-align:left">${esc(CUTOVER_COPY)}</p>
+    <p style="color:#5b6470;font-size:13px;text-align:left">Account: <b>${esc(redactEmail(email))}</b> · ${watches.length} watch${watches.length === 1 ? "" : "es"}</p>
     ${empty}
     ${rows}
     ${watches.length ? `
-    <form method="POST" action="" style="margin-top:20px;padding-top:16px;border-top:1px solid #cdbfa6" onsubmit="return confirm('Unsubscribe ALL watches for this address?');">
+    <form method="POST" action="" style="margin-top:20px;padding-top:16px;border-top:1px solid #dde1e7" onsubmit="return confirm('Unsubscribe ALL watches for this address?');">
       <input type="hidden" name="token" value="${esc(token)}" />
       <input type="hidden" name="action" value="unsub_all" />
-      <button type="submit" style="font:600 14px system-ui;background:transparent;border:1px solid #7a1f1f;color:#7a1f1f;border-radius:6px;padding:8px 14px;cursor:pointer">Unsubscribe all watches</button>
+      <button type="submit" style="font:600 14px system-ui;background:transparent;border:1px solid #1a44e0;color:#1a44e0;border-radius:6px;padding:8px 14px;cursor:pointer">Unsubscribe all watches</button>
     </form>` : ""}
   `;
 
