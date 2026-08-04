@@ -1023,21 +1023,38 @@
     .staffing-role-row{grid-template-columns:1fr}.staffing-exam-link{align-items:flex-start;max-width:none;text-align:start}
   }
 
-  /* land stub */
-  .landcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow);padding:22px;margin-top:18px}
-  .landcard h3{font:700 13px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-  .example{background:#f6f7f9;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:14px 0}
-  .example .leg{font-style:italic;color:var(--muted)}
-  .example .arrow{display:block;text-align:center;color:var(--amber);font-weight:700;margin:6px 0}
-  .roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
-  .rm{border:1px solid var(--rule);border-radius:8px;padding:13px 14px;background:#fff}
-  .rm b{display:block;margin-bottom:4px}
-  .rm.done{border-inline-start:3px solid var(--green)}
-  #landmap{display:none;height:300px;border:1px solid var(--rule);border-radius:8px;margin-top:14px;overflow:hidden;background:#eceef2}
-  .map-pan-controls{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px}
-  .map-pan-controls button{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:var(--card);color:var(--ink);border:1px solid var(--rule-strong);font:700 17px/1 ui-sans-serif,system-ui,sans-serif}
-  .map-pan-controls button:hover{border-color:var(--oxblood);color:var(--oxblood)}
-  #landmapnote{margin-top:8px}
+  /* Zoning lens template */
+  .land-method-copy{max-width:var(--measure);margin:var(--space-2) 0 0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-canvas-subtle);font:13px/1.5 var(--font-interface);color:var(--color-text-soft)}
+  #land-toolbar .field.kw{flex:1 1 320px}
+  #land-toolbar .lens-toolbar-actions{margin-inline-start:auto}
+  #land-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
+  .land-control-button{align-self:flex-end}
+  #land-status-rail .chip[aria-pressed="true"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
+  #land-resultbar{margin-top:var(--space-3)}
+  .land-result-heading{font:600 13px/1.35 var(--font-interface);color:var(--color-text-soft)}
+  #land-status:empty{display:none}
+  #land-status{margin:var(--space-2) 0;font:13px/1.4 var(--font-interface);color:var(--color-text-soft)}
+  .land-results-grid{display:grid;grid-template-columns:minmax(280px,380px) minmax(0,1fr);gap:var(--space-5);align-items:start;margin-top:var(--space-3)}
+  .land-list-panel,.land-detail-panel{min-width:0;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);box-shadow:var(--shadow)}
+  .land-list{max-height:660px;overflow:auto;border-radius:var(--radius-md)}
+  .land-list .row{border-color:var(--color-border);background:var(--color-surface)}
+  .land-list .row:hover{background:var(--color-canvas-subtle)}
+  .land-list .row.sel{background:color-mix(in srgb,var(--color-action) 8%,var(--color-surface));box-shadow:inset 3px 0 var(--color-action)}
+  .land-list .row:last-child{border-bottom:0}
+  .land-detail-panel[hidden]{display:none!important}
+  .land-detail-panel>h2{font:600 14px/1 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-soft);margin:0;padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-border)}
+  .land-detail-panel .detail{padding:var(--space-4)}
+  .landbanner{font:13px/1.5 var(--font-interface);background:var(--color-canvas-subtle);border-inline-start:3px solid var(--color-action);padding:var(--space-2) var(--space-3);color:var(--color-text-soft);margin-bottom:0}
+  #landmap{display:none;height:300px;border:1px solid var(--color-border);border-radius:var(--radius-md);margin-top:var(--space-3);overflow:hidden;background:var(--color-canvas-subtle)}
+  .map-pan-controls{display:flex;align-items:center;justify-content:center;gap:var(--space-1);margin-top:var(--space-2)}
+  .map-pan-controls[hidden]{display:none!important}
+  .map-pan-controls button{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:var(--color-surface);color:var(--color-text);border:1px solid var(--color-border-strong);font:700 17px/1 var(--font-interface)}
+  .map-pan-controls button:hover{border-color:var(--color-action);color:var(--color-action)}
+  #landmapnote{margin-top:var(--space-2)}
+  @media(max-width:820px){
+    .land-results-grid{grid-template-columns:minmax(0,1fr)}
+    #land-toolbar .lens-toolbar-actions{margin-inline-start:0}
+  }
 
   /* Meetings lens template */
   #meetings-toolbar .field.kw{flex:1 1 320px}
@@ -1119,8 +1136,6 @@
     .map-explore{grid-template-columns:minmax(0,1fr)}
     .map-svg-wrap{max-height:min(58vh,480px)}
   }
-  .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#f6f7f9;border-inline-start:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
-  .landbanner.land-methodology{border-inline-start-color:var(--rule);background:#f6f7f9;color:var(--muted)}
   .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px}
   .fcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;display:flex;flex-direction:column;gap:7px}
   .fcard .ftype{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
@@ -1718,58 +1733,82 @@
 <!-- ============ LAND ============ -->
 <section id="tab-land" class="tabpane">
   <div class="wrap">
-    <div class="controls">
-      <div class="field">
-        <label for="lboro" data-i18n="borough_label">Borough</label>
-        <select id="lboro">
-          <option value="" data-i18n="all_boroughs">All boroughs</option>
-          <option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option>
-        </select>
-      </div>
+    <div class="land-domain-intro lens-intro" id="land-domain-intro">
+      <p class="career-kicker" data-i18n="tab_land">Zoning</p>
+      <h2 class="lens-intro-heading" data-i18n="rezonings_heading">Rezonings</h2>
+      <p class="lens-intro-deck" data-i18n="pick_rezoning_empty">Pick a rezoning to see it in plain English -- applicant, what's being built, affordable units, status -- and on a map. Try "79 Rivington" or "Gowanus".</p>
+      <details class="lens-method land-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <p class="land-method-copy" data-i18n="zap_explainer_html">Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot (BBL) → MapPLUTO join ZAP Search describes. When lots cannot be matched, the map is approximate — confirm on ZoLa.</p>
+      </details>
+    </div>
+    <div class="lens-toolbar" id="land-toolbar">
       <div class="field kw">
         <label for="lkw" data-i18n="zip_addr_neighborhood">ZIP or place</label>
         <input type="text" id="lkw" placeholder="Bushwick, 79 Rivington, Gowanus…" data-i18n-placeholder="kw_placeholder_land">
       </div>
-      <div class="field">
-        <label for="lstatus" data-i18n="status_label">Status</label>
-        <select id="lstatus"><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option><option value="all" data-i18n="status_all">All</option></select>
-      </div>
-      <div class="field" id="lhearingmode-field" hidden>
-        <label for="lhearingmode" data-i18n="land_hearings_mode_label">Attendance</label>
-        <select id="lhearingmode">
-          <option value="" data-i18n="land_hearings_mode_all">Any mode</option>
-          <option value="in_person" data-i18n="land_hearings_mode_in_person">In person</option>
-          <option value="livestream" data-i18n="land_hearings_mode_livestream">Livestream</option>
-        </select>
-      </div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="landlocation" data-i18n="use_my_location">Use my location</button></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button></div>
-    </div>
-    <div class="grid">
-      <div class="panel">
-        <div class="panelbar">
-          <h2><span><span id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
-          <span class="export-actions">
-            <span class="export-band" id="land-export-band" hidden>
-              <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
-              <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-              <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
-            </span>
-            <details class="utility-overflow export-overflow" id="land-export-overflow">
-              <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
-              <div class="utility-overflow-content">
-                <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
-                <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-                <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="land-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="land-filter-badge" hidden></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field">
+                <label for="lboro" data-i18n="borough_label">Borough</label>
+                <select id="lboro">
+                  <option value="" data-i18n="all_boroughs">All boroughs</option>
+                  <option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option>
+                </select>
               </div>
-            </details>
-          </span>
-        </div>
-        <div class="list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+              <div class="field" id="lhearingmode-field" hidden>
+                <label for="lhearingmode" data-i18n="land_hearings_mode_label">Attendance</label>
+                <select id="lhearingmode">
+                  <option value="" data-i18n="land_hearings_mode_all">Any mode</option>
+                  <option value="in_person" data-i18n="land_hearings_mode_in_person">In person</option>
+                  <option value="livestream" data-i18n="land_hearings_mode_livestream">Livestream</option>
+                </select>
+              </div>
+              <div class="field land-control-button"><button type="button" id="landlocation" data-i18n="use_my_location">Use my location</button></div>
+            </div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button>
       </div>
-      <div class="panel route-item" id="land-item-card" tabindex="-1">
+    </div>
+    <select id="lstatus" hidden aria-hidden="true"><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option><option value="all" data-i18n="status_all">All</option></select>
+    <div class="property-rail-label lens-primary-label" data-i18n="status_label">Status</div>
+    <div class="chiprow lens-primary-rail" id="land-status-rail" role="group" aria-label="Status" data-i18n-aria="status_label">
+      <button type="button" class="chip" data-land-status="active" aria-pressed="true" data-i18n="status_active">In review / active</button>
+      <button type="button" class="chip" data-land-status="hearings" aria-pressed="false" data-i18n="land_status_upcoming_hearings">Upcoming hearings</button>
+      <button type="button" class="chip" data-land-status="all" aria-pressed="false" data-i18n="status_all">All</button>
+    </div>
+    <div class="lens-search-state" data-search-state="land"></div>
+    <div class="lens-resultbar" id="land-resultbar">
+      <span class="land-result-heading" id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span>
+      <span class="lens-count" id="lrescount" aria-live="polite"></span>
+    </div>
+    <div id="land-status" role="status"></div>
+    <div class="exportbar">
+      <span class="export-band" id="land-export-band" hidden>
+        <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+        <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+      </span>
+      <details class="utility-overflow export-overflow" id="land-export-overflow">
+        <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
+        <div class="utility-overflow-content">
+          <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+          <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+          <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        </div>
+      </details>
+    </div>
+    <div class="land-results-grid" id="land-results-grid">
+      <div class="land-list-panel">
+        <div class="list land-list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+      </div>
+      <div class="land-detail-panel route-item" id="land-item-card" tabindex="-1" hidden>
         <h2 data-i18n="land_listing_heading">Listing</h2>
-        <div class="detail" id="ldetail" translate="no"><div class="empty" data-i18n="pick_rezoning_empty">Pick a rezoning to see it in plain English -- applicant, what's being built, affordable units, status -- and on a map. Try "79 Rivington" or "Gowanus".</div></div>
+        <div class="detail" id="ldetail" translate="no"></div>
       </div>
     </div>
   </div>
