@@ -443,8 +443,14 @@ async function showAgency(name, initialTab){
 
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
+  // Lens-scoped follow (rules/meetings only) — hash carries agency so prefill is shareable.
   box.querySelectorAll("[data-aw]").forEach(b=>b.addEventListener("click", ()=>{
-    showTab("alerts", true); $("#awatch").value=b.dataset.aw; aWatchChange(); $("#aagency").value=nm; aPreview();
+    const lens = b.dataset.aw;
+    const filter = { keywords: [], agency: nm };
+    const params = new URLSearchParams();
+    params.set("lens", lens);
+    params.set("filter", JSON.stringify(filter));
+    location.hash = `#alerts?${params.toString()}`;
   }));
 
   if (hasForecasts) {
@@ -472,17 +478,12 @@ async function showAgency(name, initialTab){
     });
 
     box.querySelectorAll(".mini-sub-btn").forEach(b => b.addEventListener("click", () => {
-      const kind = b.dataset.watchKind;
-      const watchName = b.dataset.watchName;
-      showTab("alerts", true);
-      $("#awatch").value = "entity";
-      aWatchChange();
-      if (kind === "agency") {
-        $("#aagency").value = watchName;
-      } else {
-        $("#avendor").value = watchName;
-      }
-      aPreview();
+      const kind = b.dataset.watchKind === "agency" ? "agency" : "vendor";
+      const watchName = b.dataset.watchName || "";
+      const params = new URLSearchParams();
+      params.set("lens", "entity");
+      params.set("filter", JSON.stringify({ kind, name: watchName }));
+      location.hash = `#alerts?${params.toString()}`;
     }));
 
     if(initialTab === "forecast") btnForecast.click();
@@ -933,10 +934,12 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
       paneOverview.style.display="none"; paneForecast.style.display="block";
     });
     box.querySelectorAll(".mini-sub-btn").forEach(b=>b.addEventListener("click", ()=>{
-      showTab("alerts",true); $("#awatch").value="entity"; aWatchChange();
-      if(b.dataset.watchKind==="agency") $("#aagency").value=b.dataset.watchName;
-      else $("#avendor").value=b.dataset.watchName;
-      aPreview();
+      const kind = b.dataset.watchKind === "agency" ? "agency" : "vendor";
+      const watchName = b.dataset.watchName || "";
+      const params = new URLSearchParams();
+      params.set("lens", "entity");
+      params.set("filter", JSON.stringify({ kind, name: watchName }));
+      location.hash = `#alerts?${params.toString()}`;
     }));
     if(initialTab==="forecast") btnForecast.click();
   }

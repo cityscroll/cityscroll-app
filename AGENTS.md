@@ -1903,6 +1903,17 @@ stepper folds into a "How this list works" disclosure.
 - Verify: `node --test test/property_explorer.test.mjs`. Capture before/after:
   `python3 tools/capture_property_lens_reground.py` (`CROL_REGROUND_LABEL=before|after`).
 
+## Alerts single-subscribe re-ground
+
+`#alerts` is one subscribe flow (scope → optional refine → email → frequency → preview →
+subscribe), not a 60-second wizard plus a parallel Build-an-alert form. Advanced watch types
+and examples live in a closed “More ways to watch” disclosure; multi-watch rollup is behind
+“Manage existing alerts” (opens on `#alerts?view=rollup`). Agency/vendor Follow writes
+`#alerts?lens=entity&filter={…}` via `alerts_context_carry` (same hash contract as PR 419).
+Bare `#alerts` resets the draft. Verify: `node --test test/alerts_reground.test.mjs
+test/alerts_context_carry.test.mjs test/prefill_alert_from_link.test.mjs`. Capture:
+`python3 tools/capture_alerts_reground.py` (`CROL_REGROUND_LABEL=before|after`).
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

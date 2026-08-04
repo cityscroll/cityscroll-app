@@ -218,11 +218,12 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
     await applyNoticeWatchSeed({ noticeId, projectId, lens, filter });
   }
   refreshQuizDisplay();
+  if(typeof syncAlertsAdvDisclosure === "function") syncAlertsAdvDisclosure();
   if(filled || noticeWatchSeed){
     await aPreview();
-    // One confirm action: focus email for subscribe.
+    // One finish step: focus the single email field (context-carry and bare-topic prefills).
     const dest = $("#adest");
-    if(dest && (noticeId || projectId)) try{ dest.focus({ preventScroll: true }); }catch(_e){ try{ dest.focus(); }catch(__e){} }
+    if(dest) try{ dest.focus({ preventScroll: true }); }catch(_e){ try{ dest.focus(); }catch(__e){} }
   }
 }
 
@@ -549,8 +550,12 @@ if(!applyHash()) search(); // an incoming permalink wins over the default Money 
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
 // just because #awatch's mandatory default ("bigaward") happens to match one of its chips —
 // the quiz starts genuinely unanswered (test/functional/03_watch_quiz_feeds.py's "quiz CTA
-// without topic" probe pins this).
-aWatchChange(true);
+// without topic" probe pins this). Skip when the hash already carries alert context — applyHash
+// scheduled prefillAlertFromLink, and a second aWatchChange would race the draft fields.
+const alertsEntryHash = location.hash || "";
+const isAlertsContextEntry = (alertsEntryHash.startsWith("#alerts?")
+  && /(?:^|[?&])(?:lens|notice|project)=/.test(alertsEntryHash.slice(1)));
+if(!isAlertsContextEntry) aWatchChange(true);
 updateAWhen();
 aRenderSaved();
 initAlertsRollupPrefs();

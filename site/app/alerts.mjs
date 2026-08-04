@@ -74,6 +74,7 @@ function aWatchChange(skipQuizSync){
   // defined near the quiz's own event wiring below) -- every watch-type change, from either
   // view, must repaint the other so the two can never show a different draft.
   if(!skipQuizSync) refreshQuizDisplay();
+  syncAlertsAdvDisclosure();
 }
 function aDescribe(){
   const w=$("#awatch").value;
@@ -627,11 +628,24 @@ function initAlertsRollupPrefs(){
 function focusAlertsRollupPanel(){
   const panel = document.getElementById("alerts-rollup-prefs");
   if(!panel) return;
+  // Multi-watch is demoted behind a <details>; deep link #alerts?view=rollup must open it
+  // so demo expectations and the preference path are visible (not ambient on bare #alerts).
+  if(panel.tagName === "DETAILS") panel.open = true;
   // Deep-link contract (demo id alerts-rollup-prefs) and other item routes put
   // programmatic focus on the route target itself (tabindex="-1" route-item),
   // not an inner chip — matches career/notice/entity focus patterns.
   try{ panel.scrollIntoView({ behavior: "smooth", block: "start" }); }catch(e){ panel.scrollIntoView(true); }
   try{ panel.focus({ preventScroll: true }); }catch(e){ try{ panel.focus(); }catch(_e){} }
+}
+
+/** Open "More ways to watch" when the draft uses a type with no primary topic chip. */
+function syncAlertsAdvDisclosure(){
+  const adv = document.getElementById("advopts");
+  if(!adv) return;
+  const w = $("#awatch") && $("#awatch").value;
+  // Quiz chips cover the common topics; entity / moneynl / awardwatch live in the disclosure.
+  const needsAdv = w === "entityagency" || w === "entityvendor" || w === "moneynl" || w === "awardwatch";
+  if(needsAdv) adv.open = true;
 }
 
 // Map the alert builder to a real content-lens query the worker re-sanitizes + the cron replays.
@@ -952,6 +966,7 @@ globalThis.aSet = aSet;
 globalThis.aStore = aStore;
 globalThis.aSubscribe = aSubscribe;
 globalThis.aWatchChange = aWatchChange;
+globalThis.syncAlertsAdvDisclosure = syncAlertsAdvDisclosure;
 globalThis.aWhenText = aWhenText;
 globalThis.agencyNorms = agencyNorms;
 globalThis.alertsRollupEmailMockHTML = alertsRollupEmailMockHTML;
