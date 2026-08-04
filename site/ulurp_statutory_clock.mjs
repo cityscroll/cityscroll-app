@@ -504,6 +504,54 @@ export const ULURP_PUBLIC_REVIEW_PHASE_IDS = Object.freeze(
 );
 
 /**
+ * True when public_status (or clock status) means formal review has ended.
+ * Terminal projects must not paint "Public review — step N … days past."
+ */
+export function publicStatusIsTerminal(publicStatus, clock = null) {
+  if (clock && (clock.status === "completed" || clock.status === "withdrawn")) return true;
+  const s = String(publicStatus || "").toLowerCase();
+  return /\bcompleted\b|\bapproved\b|\bdisapproved\b|\bwithdrawn\b|\bterminated\b/.test(s);
+}
+
+/**
+ * Prefer a pure rebuild of statutory_clock when the edge stamp is stale-open
+ * (all phases open while milestones/status advanced). Safe no-op when already
+ * coherent. Keeps land detail honest even when materialization lags.
+ *
+ * @param {object} record
+ * @param {object} [opts]
+ * @returns {object} shallow-cloned record with normalized statutory_clock
+ */
+export function normalizeLandOutcomeRecord(record = {}, opts = {}) {
+  if (!record || typeof record !== "object") return record;
+  const stamped = record.statutory_clock || null;
+  const rebuilt = buildUlurpStatutoryClockView(record, {
+    generatedAt: opts.generatedAt || stamped?.generated_at || record.generated_at || null,
+  });
+  if (!rebuilt) return record;
+  // Always prefer rebuild when stamped clock is missing, ineligible, or stale-open.
+  const stale = detectStaleOpenStatutoryClock(record, stamped);
+  const stampedOpenAll =
+    stamped
+    && stamped.status === "open"
+    && Array.isArray(stamped.phases)
+    && stamped.phases.length > 0
+    && stamped.phases.every((p) => !p.status || p.status === "open");
+  const shouldReplace =
+    !stamped
+    || stale
+    || stampedOpenAll
+    || (stamped.status === "open" && projectIsCompleted(record))
+    || (stamped.status === "open" && rebuilt.status === "completed")
+    || (stamped.status === "open"
+      && Array.isArray(rebuilt.phases)
+      && rebuilt.phases.some((p) => p.status === "completed")
+      && stampedOpenAll);
+  if (!shouldReplace && stamped) return record;
+  return { ...record, statutory_clock: rebuilt };
+}
+
+/**
  * Pipeline position inside formal ULURP public review.
  *
  * Public status "In Public Review" is the OVERALL stage; Community Board /
@@ -525,10 +573,15 @@ export function buildUlurpPipelinePosition(opts = {}) {
     || null;
   const today = isoDateOnly(opts.today) || new Date().toISOString().slice(0, 10);
 
+  // Terminal projects: never claim an open public-review step or overdue window.
+  // Stale edge clocks used to make Completed projects say "step 4 of 5, N days past."
+  if (publicStatusIsTerminal(publicStatus, clock)) return null;
+
   const statusLower = (publicStatus || "").toLowerCase();
+  // Do NOT treat a bare open clock as "in public review" — Completed projects
+  // with lagging materialization still carry open clocks and certified dates.
   const overallPublicReview = /public review/i.test(statusLower)
-    || phaseView?.current?.in_public_review === true
-    || (clock && clock.status === "open" && clock.certified_date);
+    || phaseView?.current?.in_public_review === true;
 
   // Current step: prefer phase-view current when it is a statutory public-review stage.
   let stepPhaseId = clean(phaseView?.current?.phase_id) || null;
@@ -550,8 +603,7 @@ export function buildUlurpPipelinePosition(opts = {}) {
   }
   if (!overallPublicReview && !phaseView?.current?.in_public_review) {
     // Only emit the combined sentence when public review is the overall frame.
-    // Still allow when clock is open (certified) even if Open Data is stale.
-    if (!(clock && clock.status === "open" && clock.certified_date)) return null;
+    return null;
   }
 
   const stepIndex = ULURP_PUBLIC_REVIEW_PHASE_IDS.indexOf(stepPhaseId);
@@ -559,11 +611,13 @@ export function buildUlurpPipelinePosition(opts = {}) {
   const stepM = ULURP_PUBLIC_REVIEW_PHASE_IDS.length;
   const stageMeta = ULURP_STATUTORY_STAGES.find((s) => s.phase_id === stepPhaseId);
   const clockRow = statutoryDeadlineForPhase(clock, stepPhaseId);
-  const dueDate = clockRow?.due_date || null;
+  // Completed/closed phase rows must not drive an "open window / overdue" count.
+  const phaseStillOpen = !clockRow?.status || clockRow.status === "open";
+  const dueDate = phaseStillOpen ? (clockRow?.due_date || null) : null;
   const windowDays = stageMeta?.days ?? clockRow?.days ?? null;
 
   let daysLeft = null;
-  if (dueDate) {
+  if (dueDate && phaseStillOpen) {
     const dueMs = Date.parse(`${dueDate}T00:00:00Z`);
     const todayMs = Date.parse(`${today}T00:00:00Z`);
     if (Number.isFinite(dueMs) && Number.isFinite(todayMs)) {

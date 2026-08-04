@@ -1,0 +1,584 @@
+{
+  "today": "2026-08-04",
+  "checked": {
+    "land": 40,
+    "exam": 0,
+    "total": 40
+  },
+  "violation_count": 43,
+  "by_rule": {
+    "current_stage_past_deadline": 8,
+    "current_while_later_completed": 0,
+    "completion_order_violation": 11,
+    "future_dated_event": 0,
+    "exam_post_list_during_open_application": 0,
+    "statutory_clock_stale_open": 24
+  },
+  "land_class": {
+    "past_deadline_current": 8,
+    "later_completed_while_current": 0,
+    "cards_checked": 40
+  },
+  "violations": [
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2020M0385",
+      "permalink": "#land/2020M0385",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2024-03-21",
+        "later_phase": "environmental",
+        "later_first_complete": "2022-08-08"
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:P2012X0048",
+      "permalink": "#land/P2012X0048",
+      "lens": "land",
+      "detail": {
+        "current_phase": "city_council",
+        "due_date": "2014-09-19",
+        "today": "2026-08-04",
+        "days_past": 4337,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:P2012X0048",
+      "permalink": "#land/P2012X0048",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2023M0452",
+      "permalink": "#land/2023M0452",
+      "lens": "land",
+      "detail": {
+        "current_phase": "city_council",
+        "due_date": "2026-06-19",
+        "today": "2026-08-04",
+        "days_past": 46,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2023M0452",
+      "permalink": "#land/2023M0452",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2026M0218",
+      "permalink": "#land/2026M0218",
+      "lens": "land",
+      "detail": {
+        "current_phase": "cpc",
+        "due_date": "2026-05-21",
+        "today": "2026-08-04",
+        "days_past": 75,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2026M0218",
+      "permalink": "#land/2026M0218",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2020K0444",
+      "permalink": "#land/2020K0444",
+      "lens": "land",
+      "detail": {
+        "current_phase": "city_council",
+        "due_date": "2026-04-03",
+        "today": "2026-08-04",
+        "days_past": 123,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2020K0444",
+      "permalink": "#land/2020K0444",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2020K0444",
+      "permalink": "#land/2020K0444",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2024-02-08",
+        "later_phase": "environmental",
+        "later_first_complete": "2023-08-29"
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024M0193",
+      "permalink": "#land/2024M0193",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025M0395",
+      "permalink": "#land/2025M0395",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024Q0219",
+      "permalink": "#land/2024Q0219",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024K0240",
+      "permalink": "#land/2024K0240",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025Q0247",
+      "permalink": "#land/2025Q0247",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2022K0419",
+      "permalink": "#land/2022K0419",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2026-04-17",
+        "later_phase": "environmental",
+        "later_first_complete": "2026-02-13"
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2024R0332",
+      "permalink": "#land/2024R0332",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2026-04-17",
+        "later_phase": "environmental",
+        "later_first_complete": "2025-12-17"
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2023X0347",
+      "permalink": "#land/2023X0347",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2025-10-06",
+        "later_phase": "environmental",
+        "later_first_complete": "2025-09-19"
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2023X0149",
+      "permalink": "#land/2023X0149",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2022X0393",
+      "permalink": "#land/2022X0393",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2022K0302",
+      "permalink": "#land/2022K0302",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2024-04-30",
+        "later_phase": "environmental",
+        "later_first_complete": "2023-08-09"
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024Q0292",
+      "permalink": "#land/2024Q0292",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2026R0127",
+      "permalink": "#land/2026R0127",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2020Q0129",
+      "permalink": "#land/2020Q0129",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2023Q0315",
+      "permalink": "#land/2023Q0315",
+      "lens": "land",
+      "detail": {
+        "current_phase": "city_council",
+        "due_date": "2026-06-19",
+        "today": "2026-08-04",
+        "days_past": 46,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2023Q0315",
+      "permalink": "#land/2023Q0315",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2023Q0315",
+      "permalink": "#land/2023Q0315",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2024-08-09",
+        "later_phase": "environmental",
+        "later_first_complete": "2024-06-12"
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2024K0280",
+      "permalink": "#land/2024K0280",
+      "lens": "land",
+      "detail": {
+        "current_phase": "mayoral_appeals",
+        "due_date": "2026-06-10",
+        "today": "2026-08-04",
+        "days_past": 55,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024K0280",
+      "permalink": "#land/2024K0280",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024R0300",
+      "permalink": "#land/2024R0300",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024K0286",
+      "permalink": "#land/2024K0286",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2024K0286",
+      "permalink": "#land/2024K0286",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2025-10-17",
+        "later_phase": "environmental",
+        "later_first_complete": "2025-10-16"
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2024K0286",
+      "permalink": "#land/2024K0286",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "community_board",
+        "earlier_first_complete": "2026-04-14",
+        "later_phase": "borough_president",
+        "later_first_complete": "2026-04-13"
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025Q0142",
+      "permalink": "#land/2025Q0142",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025M0252",
+      "permalink": "#land/2025M0252",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025Q0304",
+      "permalink": "#land/2025Q0304",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025Q0316",
+      "permalink": "#land/2025Q0316",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "In Public Review",
+        "open_phase_count": 5,
+        "project_completed": false,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2024Q0164",
+      "permalink": "#land/2024Q0164",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2024Q0164",
+      "permalink": "#land/2024Q0164",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2025-05-05",
+        "later_phase": "environmental",
+        "later_first_complete": "2025-01-15"
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2025K0219",
+      "permalink": "#land/2025K0219",
+      "lens": "land",
+      "detail": {
+        "current_phase": "mayoral_appeals",
+        "due_date": "2026-06-10",
+        "today": "2026-08-04",
+        "days_past": 55,
+        "tolerance_days": 7
+      }
+    },
+    {
+      "rule_id": "statutory_clock_stale_open",
+      "subject_ref": "land:2025K0219",
+      "permalink": "#land/2025K0219",
+      "lens": "land",
+      "detail": {
+        "clock_status": "open",
+        "public_status": "Completed",
+        "open_phase_count": 5,
+        "project_completed": true,
+        "completed_milestone_signal": true
+      }
+    },
+    {
+      "rule_id": "completion_order_violation",
+      "subject_ref": "land:2025K0219",
+      "permalink": "#land/2025K0219",
+      "lens": "land",
+      "detail": {
+        "earlier_phase": "pre_application",
+        "earlier_first_complete": "2025-07-22",
+        "later_phase": "environmental",
+        "later_first_complete": "2025-05-06"
+      }
+    },
+    {
+      "rule_id": "current_stage_past_deadline",
+      "subject_ref": "land:2025M0261",
+      "permalink": "#land/2025M0261",
+      "lens": "land",
+      "detail": {
+        "current_phase": "city_council",
+        "due_date": "2026-07-03",
+        "today": "2026-08-04",
+        "days_past": 32,
+        "tolerance_days": 7
+      }
+    }
+  ],
+  "cards": [
+    {
+      "id": "crol-list/mf-ontology-coherence-rule-current_stage_past_deadline",
+      "title": "Resolve ontology coherence: current stage past deadline",
+      "hit_count": 8
+    },
+    {
+      "id": "crol-list/mf-ontology-coherence-rule-completion_order_violation",
+      "title": "Resolve ontology coherence: completion order violation",
+      "hit_count": 11
+    }
+  ]
+}

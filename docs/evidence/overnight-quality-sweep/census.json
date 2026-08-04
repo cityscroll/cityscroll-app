@@ -1,0 +1,353 @@
+{
+  "schema": "cityscroll.overnight_quality_census.v0",
+  "measured_at": "2026-08-04T02:44:48.966331Z",
+  "base": "https://cityscroll.org/",
+  "samplers": {
+    "surface_load": {
+      "surfaces": 15,
+      "breaches": [
+        {
+          "id": "rules-list",
+          "route": "#rules",
+          "issues": [
+            "words 8295>5000",
+            "links 1143>500",
+            "buttons 236>100"
+          ],
+          "permalink": "https://cityscroll.org/#rules"
+        },
+        {
+          "id": "property-list",
+          "route": "#property",
+          "issues": [
+            "words 5449>5000",
+            "links 742>500",
+            "buttons 207>100"
+          ],
+          "permalink": "https://cityscroll.org/#property"
+        },
+        {
+          "id": "exam-detail",
+          "route": "#exam/7016",
+          "issues": [
+            "max_verbatim_repeat 2>1",
+            "action_y 1127>900"
+          ],
+          "permalink": "https://cityscroll.org/#exam/7016"
+        },
+        {
+          "id": "agency-profile",
+          "route": "#agency/City%20Council",
+          "issues": [
+            "action_y 1632>900"
+          ],
+          "permalink": "https://cityscroll.org/#agency/City%20Council"
+        }
+      ]
+    },
+    "ontology_coherence_live_land": {
+      "sample_n": 40,
+      "before": {
+        "violation_count": 35,
+        "by_rule": {
+          "current_stage_past_deadline": 0,
+          "current_while_later_completed": 0,
+          "completion_order_violation": 11,
+          "future_dated_event": 0,
+          "exam_post_list_during_open_application": 0,
+          "statutory_clock_stale_open": 24
+        },
+        "land_class": {
+          "past_deadline_current": 0,
+          "later_completed_while_current": 0,
+          "cards_checked": 40
+        }
+      },
+      "after_normalize": {
+        "violation_count": 14,
+        "by_rule": {
+          "current_stage_past_deadline": 0,
+          "current_while_later_completed": 0,
+          "completion_order_violation": 11,
+          "future_dated_event": 0,
+          "exam_post_list_during_open_application": 0,
+          "statutory_clock_stale_open": 3
+        },
+        "land_class": {
+          "past_deadline_current": 0,
+          "later_completed_while_current": 0,
+          "cards_checked": 40
+        }
+      },
+      "remaining_after": [
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2020M0385",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-03-21",
+            "later_phase": "environmental",
+            "later_first_complete": "2022-08-08"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2020K0444",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-02-08",
+            "later_phase": "environmental",
+            "later_first_complete": "2023-08-29"
+          }
+        },
+        {
+          "rule": "statutory_clock_stale_open",
+          "permalink": "#land/2025M0395",
+          "detail": {
+            "clock_status": "open",
+            "public_status": "In Public Review",
+            "open_phase_count": 5,
+            "project_completed": false,
+            "completed_milestone_signal": true
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2022K0419",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2026-04-17",
+            "later_phase": "environmental",
+            "later_first_complete": "2026-02-13"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024R0332",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2026-04-17",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-12-17"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2023X0347",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2025-10-06",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-09-19"
+          }
+        },
+        {
+          "rule": "statutory_clock_stale_open",
+          "permalink": "#land/2022X0393",
+          "detail": {
+            "clock_status": "open",
+            "public_status": "In Public Review",
+            "open_phase_count": 5,
+            "project_completed": false,
+            "completed_milestone_signal": true
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2022K0302",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-04-30",
+            "later_phase": "environmental",
+            "later_first_complete": "2023-08-09"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2023Q0315",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2024-08-09",
+            "later_phase": "environmental",
+            "later_first_complete": "2024-06-12"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024K0286",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2025-10-17",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-10-16"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024K0286",
+          "detail": {
+            "earlier_phase": "community_board",
+            "earlier_first_complete": "2026-04-14",
+            "later_phase": "borough_president",
+            "later_first_complete": "2026-04-13"
+          }
+        },
+        {
+          "rule": "statutory_clock_stale_open",
+          "permalink": "#land/2025Q0304",
+          "detail": {
+            "clock_status": "open",
+            "public_status": "In Public Review",
+            "open_phase_count": 5,
+            "project_completed": false,
+            "completed_milestone_signal": true
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2024Q0164",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2025-05-05",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-01-15"
+          }
+        },
+        {
+          "rule": "completion_order_violation",
+          "permalink": "#land/2025K0219",
+          "detail": {
+            "earlier_phase": "pre_application",
+            "earlier_first_complete": "2025-07-22",
+            "later_phase": "environmental",
+            "later_first_complete": "2025-05-06"
+          }
+        }
+      ]
+    },
+    "public_surface_vocab": "0 hits after fix",
+    "map_granularity": {
+      "granularity_collapse": [],
+      "no_place": [
+        {
+          "kind": "map-high-no-place-signal",
+          "lens": "meetings",
+          "counted": 119,
+          "no_place_signal": 24,
+          "no_place_share": 0.20168067226890757,
+          "surface": "district_activity"
+        },
+        {
+          "kind": "map-high-no-place-signal",
+          "lens": "money",
+          "counted": 340,
+          "no_place_signal": 212,
+          "no_place_share": 0.6235294117647059,
+          "surface": "district_activity"
+        }
+      ]
+    },
+    "date_chips": "no currency-before-month hits on property walk sample",
+    "count_equals_list": "unit tests pass (map_exploration COUNT-EQUALS-LIST)",
+    "walk_routes": 47,
+    "walk_findings": 89
+  },
+  "fixed": [
+    {
+      "id": "oqs-land-completed-pipeline-overdue",
+      "class": "contradiction",
+      "status": "fixed",
+      "title": "Completed land projects no longer claim open public-review step / days-past",
+      "permalink": "https://cityscroll.org/#land/2022M0258",
+      "evidence_before": "Live #land/2022M0258: 'Public status Completed' beside 'Public review \u2014 step 4 of 5: City Council review (50-day clock, 879 days past the statutory window)'. Live API statutory_clock.status=open on Completed projects (24/40 sample stale-open).",
+      "fix": "buildUlurpPipelinePosition refuses terminal public_status; normalizeLandOutcomeRecord rebuilds stale-open clocks client-side; land paint path normalizes before spine HTML; audit skips past-deadline on terminal projects.",
+      "shot_before": "docs/evidence/overnight-quality-sweep/shots/land-2022M0258-detail.png",
+      "tests": "test/ulurp_statutory_clock.test.mjs (completed stale-open case); ontology_coherence + zap_hearing_logistics green"
+    },
+    {
+      "id": "oqs-methodology-precompute-copy",
+      "class": "methodology-narration",
+      "status": "fixed",
+      "title": "Remove reader-facing 'precomputed' methodology wording",
+      "permalink": "https://cityscroll.org/#people",
+      "evidence_before": "Staffing/exam surfaces and allowlisted i18n used 'precomputed' (methodology narration lint class).",
+      "fix": "Rewrote en i18n + HTML fallback to plain 'DCAS exam guide' / 'contract lifecycle'; cleared precompute allowlist lines.",
+      "tests": "python3 test/standards/public_surface_vocab.py"
+    }
+  ],
+  "carded": [
+    {
+      "id": "oqs-rules-surface-load",
+      "class": "surface-load",
+      "status": "carded",
+      "title": "Rules list exceeds surface-load budgets",
+      "permalink": "https://cityscroll.org/#rules",
+      "evidence": "Live sample: 8295 words / 1143 links / 236 buttons (budgets 5000/500/100); 131\u00d7 identical 'Read the proposed rule\u2026' CTA.",
+      "shot": "docs/evidence/overnight-quality-sweep/shots/landing-rules.png",
+      "suggested_fix": "Apply Property-lens cluster/collapse (clusterRepeatedEntries) or cap visible CTAs; fold secondary action links under disclosure."
+    },
+    {
+      "id": "oqs-property-surface-load",
+      "class": "surface-load",
+      "status": "carded",
+      "title": "Property list slightly over surface-load budgets",
+      "permalink": "https://cityscroll.org/#property",
+      "evidence": "Live sample: 5449 words / 742 links / 207 buttons (budgets 5000/500/100).",
+      "shot": "docs/evidence/overnight-quality-sweep/shots/landing-property.png",
+      "suggested_fix": "Audit closed-archive density after reground; ensure archive section stays collapsed and small-multiples clusters stay on."
+    },
+    {
+      "id": "oqs-money-map-unlocated",
+      "class": "location-resolution",
+      "status": "carded",
+      "title": "Money map still majority no-place-signal",
+      "permalink": "https://cityscroll.org/#map?lens=money",
+      "evidence": "Live district_activity: money located_rate\u22480.3764705882352941; 212/340 no_place_signal.",
+      "suggested_fix": "Continue money densify (agency service area / citywide phrase); keep coverage framing \u2014 do not invent pins."
+    },
+    {
+      "id": "oqs-non-council-votes-gap",
+      "class": "gap-class-b-repeat",
+      "status": "carded",
+      "title": "Non-Council hearing outcomes repeat class-(b) votes gap on walk sample",
+      "permalink": "https://cityscroll.org/#meetings",
+      "evidence": "Walk found repeated 'The city does not publish votes for this hearing' blocks on non-Council spines (intentional class-b, high visual weight).",
+      "suggested_fix": "Collapse outcome+minutes class-(b) slots into one compact note per process spine (already doctrine) \u2014 audit renders that still expand both."
+    },
+    {
+      "id": "oqs-land-completion-order-noise",
+      "class": "coherence",
+      "status": "carded",
+      "title": "Land pre_application vs environmental completion-order noise",
+      "permalink": "https://cityscroll.org/#land",
+      "evidence": "After clock normalize, remaining violations dominated by completion_order_violation (11) often environmental dated before pre_application (publisher ordering).",
+      "suggested_fix": "Treat environmental concurrent with pre-application as non-violation, or soften audit when ZAP sequences CEGR before filing complete."
+    },
+    {
+      "id": "oqs-exam-action-depth",
+      "class": "surface-load",
+      "status": "carded",
+      "title": "Exam detail first action below fold",
+      "permalink": "https://cityscroll.org/#exam/7016",
+      "evidence": "Surface-load live: first_action_y 1127 > budget 900; max_verbatim_repeat 2.",
+      "suggested_fix": "Lead exam cards with apply/NOE CTA above process spine (staffing action-first already partial)."
+    },
+    {
+      "id": "oqs-agency-action-depth",
+      "class": "surface-load",
+      "status": "carded",
+      "title": "Agency profile first action deep",
+      "permalink": "https://cityscroll.org/#agency/City%20Council",
+      "evidence": "Surface-load live: first_action_y 1632 > 900.",
+      "suggested_fix": "Promote entity action rail / watch into first viewport on profile shell."
+    }
+  ],
+  "by_class": {
+    "contradiction_fixed": 1,
+    "methodology_fixed": 1,
+    "surface_load_carded": 4,
+    "location_carded": 1,
+    "coherence_noise_carded": 1,
+    "gap_repeat_carded": 1
+  }
+}
