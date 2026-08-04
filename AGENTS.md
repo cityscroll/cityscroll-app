@@ -1979,7 +1979,10 @@ RC-2 is the host-side, checkpointed NYCEDC workbook/minutes collector at
 `warehouse/scripts/nycedc_project_documents_run.py`; its versioned reader contract is
 `warehouse/schemas/nycedc_project_feed.v1.schema.json`. Re-run the deterministic gate with
 `warehouse/.venv/bin/python warehouse/scripts/nycedc_project_documents_run.py --from-fixture --limit 25 --force-headroom`
-and `node --test test/nycedc_project_documents.test.mjs`.
+then `node tools/build_subsidy_project_lookup.mjs`; verify with
+`node tools/build_subsidy_project_lookup.mjs --check` and
+`node --test test/nycedc_project_documents.test.mjs test/subsidy_project_panel.test.mjs
+worker/test/subsidy_project_lookup.test.mjs`.
 Never materialize a City Record edge unless the fixed-sample receipt clears 30% with no false
 positives or unreviewed candidates; missing facts stay null, and hearing publication never
 implies board approval.
