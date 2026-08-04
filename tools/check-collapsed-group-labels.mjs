@@ -9,6 +9,9 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+import { repeatedSameExceptFindings } from "../site/same_consolidation.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const SOURCE_EXTENSIONS = new Set([".html", ".js", ".mjs"]);
@@ -76,15 +79,53 @@ export function auditCollapsedGroupLabels(root = join(ROOT, "site")) {
   );
 }
 
+export function findUnconsolidatedSameExceptRows(rows, options) {
+  return repeatedSameExceptFindings(rows, options);
+}
+
+const STAFFING_DISPLAY_FIELDS = [
+  "role", "person", "agency", "effective_date", "salary", "title_code", "published_at",
+];
+
+/**
+ * Census-backed wiring check for qualifying exact repeats on list surfaces.
+ * Meetings and Property already enter their lifecycle/cluster view models before
+ * rendering. The appointment feed is the current exact same-except-one activation.
+ */
+export function auditUnconsolidatedRepeatedRows(root = ROOT) {
+  const require = createRequire(import.meta.url);
+  const Staffing = require(join(root, "site/staffing.js"));
+  const snapshot = JSON.parse(readFileSync(join(root, "site/data/staffing_default_hires.json"), "utf8"));
+  const crosswalk = JSON.parse(readFileSync(join(root, "site/data/title_crosswalk.json"), "utf8"));
+  const rows = Staffing.hireNotices(snapshot.notices, crosswalk);
+  const repeats = findUnconsolidatedSameExceptRows(rows, {
+    fields: STAFFING_DISPLAY_FIELDS,
+    except: ["person"],
+    threshold: 3,
+  });
+  if (!repeats.length) return [];
+
+  const renderer = readFileSync(join(root, "site/app/people.mjs"), "utf8");
+  if (/groupSameExcept\(items\s*,/.test(renderer)
+      && /members\.map\(staffingGroupMemberHTML\)/.test(renderer)) {
+    return [];
+  }
+  return repeats.map((finding) => ({ ...finding, lens: "people", file: "site/app/people.mjs" }));
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const findings = auditCollapsedGroupLabels();
-  if (findings.length) {
-    console.error(`collapsed-group labels: ${findings.length} generic label(s) found`);
-    for (const finding of findings) {
+  const labelFindings = auditCollapsedGroupLabels();
+  const repeatFindings = auditUnconsolidatedRepeatedRows();
+  if (labelFindings.length || repeatFindings.length) {
+    console.error(`collapsed-group integrity: ${labelFindings.length} generic label(s), ${repeatFindings.length} unconsolidated repeated group(s)`);
+    for (const finding of labelFindings) {
       console.error(`  ${finding.file}:${finding.line} ${JSON.stringify(finding.label)}`);
+    }
+    for (const finding of repeatFindings) {
+      console.error(`  ${finding.file} ${finding.count} rows differ only by ${finding.differing_fields.join(", ")}`);
     }
     process.exitCode = 1;
   } else {
-    console.log("collapsed-group labels OK — every collapsed label describes shared content.");
+    console.log("collapsed-group integrity OK — labels describe shared content and qualifying repeated rows are consolidated.");
   }
 }

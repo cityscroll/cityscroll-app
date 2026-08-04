@@ -1979,6 +1979,15 @@ stepper folds into a "How this list works" disclosure.
   `site/property_explorer.mjs`) folds ≥3 near-identical single notices (agency + asset +
   stage + title-stem) into one `kind:"cluster"` card with count + date range, expandable.
   Multi-notice spines (`kind:"disposition"`) are never re-clustered.
+- **Exact same-except-k collapse:** `site/same_consolidation.mjs` is the shared pure
+  view-model utility for list rows whose declared displayed fields are identical except
+  for one or more declared differentiators. It preserves original member rows for
+  expansion and leaves exports on the raw list. The current exact activation is Staffing
+  appointments (≥3 rows, person name differs); Meetings and Property retain their richer
+  lifecycle/subject clustering. Guard labels and loose qualifying repeats with
+  `node tools/check-collapsed-group-labels.mjs`; verify count/list/export integrity with
+  `node --test test/same_consolidation.test.mjs` and
+  `python3 test/functional/22_same_consolidation.py`.
 - **Archive never leads:** when `propStageSel==="all"`, `renderPropExplorer` renders current
   (open/upcoming/undated) first, then the labeled closed block; when nothing is current it
   leads with the honest `property_nothing_current` line, not the archive.
