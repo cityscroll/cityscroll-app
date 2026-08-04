@@ -48,7 +48,7 @@ test("production Worker routes carry API domains without reclaiming Pages hosts"
   }
   assert.doesNotMatch(production, /pattern = "cityscroll\.org"/);
   assert.doesNotMatch(production, /pattern = "www\.cityscroll\.org"/);
-  assert.match(production, /crons = \["0 13 \* \* \*"\]/);
+  assert.match(production, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   // Production analytics writes must not depend on a secret that can be forgotten —
   // ANALYTICS_ENVIRONMENT=production is a vars gate (field case 2026-07-30: silent drops).
   assert.match(production, /^ANALYTICS_ENVIRONMENT = "production"$/m);
