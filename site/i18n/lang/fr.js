@@ -567,6 +567,7 @@
     hearing_guide_attend_where_step: "Assistez à {where}.",
     hearing_guide_join_step_html: "Rejoignez en ligne sur <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (s’ouvre dans un nouvel onglet)</span></a>.",
     hearing_guide_materials_step_html: "Ordre du jour et documents : <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (s’ouvre dans un nouvel onglet)</span></a>.",
+    hearing_guide_signup_step_html: "Inscrivez-vous pour témoigner sur <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (s’ouvre dans un nouvel onglet)</span></a>.",
     hearing_guide_testimony_step_html: "Envoyez un témoignage écrit à <a href=\"mailto:{email}\">{email}</a>.",
     hearing_guide_testimony_until_close_step_html: "Envoyez un témoignage écrit à <a href=\"mailto:{email}\">{email}</a> jusqu’à la fin de l’audience.",
     hearing_guide_testimony_until_date_step_html: "Envoyez un témoignage écrit à <a href=\"mailto:{email}\">{email}</a> avant le {date}.",

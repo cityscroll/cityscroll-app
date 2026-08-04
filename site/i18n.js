@@ -684,6 +684,7 @@ const STRINGS = {
     hearing_guide_attend_where_step: "Attend at {where}.",
     hearing_guide_join_step_html: "Join online at <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     hearing_guide_materials_step_html: "Hearing agenda and materials: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (opens in new tab)</span></a>.",
+    hearing_guide_signup_step_html: "Sign up to testify at <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     hearing_guide_testimony_step_html: "Submit written testimony to <a href=\"mailto:{email}\">{email}</a>.",
     hearing_guide_testimony_until_close_step_html: "Submit written testimony to <a href=\"mailto:{email}\">{email}</a> any time until the hearing ends.",
     hearing_guide_testimony_until_date_step_html: "Submit written testimony to <a href=\"mailto:{email}\">{email}</a> by {date}.",

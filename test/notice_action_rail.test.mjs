@@ -47,6 +47,14 @@ test("hearing action matter passes venue, participation, and full body for step 
   assert.match(html, /hearing_guide_heading/);
   assert.match(html, /hearing_guide_attend_step/);
   assert.match(html, /hearing_guide_testimony/);
+  assert.match(html, /testimony_signup_url/);
+  assert.match(html, /hearing-testify-starter/);
+  assert.match(html, /data-spanish-first/);
+  assert.match(html, /import\("\.\.\/hearing_attend_pack\.mjs"\)/);
+  assert.match(html, /calendar_ics/);
+  assert.match(html, /cardAttendPack/);
+  assert.match(html, /CrolActions\.compileActionRail\(cardMatter/);
+  assert.match(html, /feedRows\.meetings/);
 });
 
 test("rules action matter passes hearing_date, summary, and comment fields for guide steps", () => {

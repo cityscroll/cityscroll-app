@@ -538,6 +538,7 @@
     hearing_guide_attend_where_step: "Asista en {where}.",
     hearing_guide_join_step_html: "Únase en línea en <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (se abre en una pestaña nueva)</span></a>.",
     hearing_guide_materials_step_html: "Agenda y materiales de la audiencia: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (se abre en una pestaña nueva)</span></a>.",
+    hearing_guide_signup_step_html: "Inscríbase para testificar en <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (se abre en una pestaña nueva)</span></a>.",
     hearing_guide_testimony_step_html: "Envíe testimonio escrito a <a href=\"mailto:{email}\">{email}</a>.",
     hearing_guide_testimony_until_close_step_html: "Envíe testimonio escrito a <a href=\"mailto:{email}\">{email}</a> en cualquier momento hasta que termine la audiencia.",
     hearing_guide_testimony_until_date_step_html: "Envíe testimonio escrito a <a href=\"mailto:{email}\">{email}</a> a más tardar el {date}.",

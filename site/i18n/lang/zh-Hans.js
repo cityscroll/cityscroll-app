@@ -538,6 +538,7 @@
     hearing_guide_attend_where_step: "请到 {where} 出席。",
     hearing_guide_join_step_html: "在线加入：<a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> （在新标签页打开）</span></a>。",
     hearing_guide_materials_step_html: "听证会议程与材料：<a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> （在新标签页打开）</span></a>。",
+    hearing_guide_signup_step_html: "请在<a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\">（在新标签页打开）</span></a>注册发言。",
     hearing_guide_testimony_step_html: "将书面证词提交至 <a href=\"mailto:{email}\">{email}</a>。",
     hearing_guide_testimony_until_close_step_html: "在听证会结束前，将书面证词提交至 <a href=\"mailto:{email}\">{email}</a>。",
     hearing_guide_testimony_until_date_step_html: "请在 {date} 前将书面证词提交至 <a href=\"mailto:{email}\">{email}</a>。",

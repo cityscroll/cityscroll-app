@@ -541,6 +541,7 @@
     hearing_guide_attend_where_step: "{where} پر حاضر ہوں۔",
     hearing_guide_join_step_html: "آن لائن شامل ہوں: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (نئی ٹیب میں کھلتا ہے)</span></a>۔",
     hearing_guide_materials_step_html: "سماعت کا ایجنڈا اور مواد: <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (نئی ٹیب میں کھلتا ہے)</span></a>۔",
+    hearing_guide_signup_step_html: "گواہی دینے کے لیے <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (نئی ٹیب میں کھلتا ہے)</span></a> پر اندراج کریں۔",
     hearing_guide_testimony_step_html: "تحریری گواہی <a href=\"mailto:{email}\">{email}</a> پر بھیجیں۔",
     hearing_guide_testimony_until_close_step_html: "سماعت ختم ہونے تک کسی بھی وقت <a href=\"mailto:{email}\">{email}</a> پر تحریری گواہی بھیجیں۔",
     hearing_guide_testimony_until_date_step_html: "{date} تک <a href=\"mailto:{email}\">{email}</a> پر تحریری گواہی بھیجیں۔",
