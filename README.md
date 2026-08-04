@@ -155,6 +155,8 @@ effect on the next daily run.
 Empty lifecycle slots say **which kind of gap** they are: not yet joined from a public
 source, or not published by the city at all — never a blank “unknown.” The
 [API page](https://cityscroll.org/api.html) links the public delivery surfaces and
-describes what feeds are live and how they are used.
+describes what feeds are live and how they are used. External data products that need
+complete City Record source rows can follow the
+[bulk and incremental corpus access guide](docs/city-record-corpus-access.md).
 
 [![API and feed surfaces](docs/readme/data-page.png)](https://cityscroll.org/api.html)
