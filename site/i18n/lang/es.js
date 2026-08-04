@@ -195,6 +195,8 @@
     property_tax_lien_link: "Estadísticas de venta de gravámenes fiscales",
     property_explore_map_link: "Explorar propiedades en el mapa",
     nl_placeholder_money: "describa lo que busca…",
+    ask_cityscroll_action: "Pregúntale a CityScroll",
+    ask_cityscroll_context: "Interpreta tu solicitud",
     ask_btn: "Buscar",
     show_label: "Mostrar",
     mode_open: "Solicitudes de propuestas (RFP) abiertas — aceptando ahora",

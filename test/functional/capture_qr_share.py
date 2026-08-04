@@ -173,6 +173,7 @@ def capture(browser: Browser, tree: Path, state: str, width: int, height: int) -
         page.locator("#tab-money .nlbox").wait_for(state="visible")
 
         if state == "after":
+            open_landing_actions(page)
             # Review captures show the real public destination, never the local test server.
             page.evaluate(
                 """() => {
@@ -226,6 +227,27 @@ def assert_copy_matches_qr(page: Page, copy_selector: str, qr_selector: str) -> 
     return copied
 
 
+def open_landing_actions(page: Page):
+    """Require the landing actions to be one labeled disclosure interaction away."""
+    disclosure = page.locator('[data-ask-lens="money"]')
+    assert disclosure.count() == 1, "Contracts must expose one Ask disclosure"
+    summary = disclosure.locator(":scope > summary")
+    assert summary.count() == 1, "Ask disclosure must have a summary control"
+    assert summary.get_attribute("data-i18n") == "ask_cityscroll_action"
+    assert (summary.text_content() or "").strip() == "Ask CityScroll"
+    actions = disclosure.locator("#landing-share-actions")
+    assert actions.count() == 1, "landing actions must stay inside the Ask disclosure"
+    actions.locator("[data-landing-copy]").wait_for(state="attached")
+    actions.locator("[data-qr-share]").wait_for(state="attached")
+    assert actions.locator("[data-landing-copy]").count() == 1
+    assert actions.locator("[data-qr-share]").count() == 1
+    assert not actions.is_visible(), "landing actions should start collapsed with Ask"
+    summary.click()
+    actions.wait_for(state="visible")
+    assert disclosure.get_attribute("open") is not None
+    return actions
+
+
 def verify_interactions(browser: Browser) -> None:
     with StaticServer(ROOT / "site") as base_url:
         context = browser.new_context(
@@ -240,6 +262,7 @@ def verify_interactions(browser: Browser) -> None:
         install_routes(page)
         seed_presets(page)
         page.goto(base_url, wait_until="domcontentloaded")
+        open_landing_actions(page)
 
         copied = assert_copy_matches_qr(
             page,

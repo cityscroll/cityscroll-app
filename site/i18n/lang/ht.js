@@ -194,6 +194,8 @@
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "dekri sa w ap chèche a…",
+    ask_cityscroll_action: "Mande CityScroll",
+    ask_cityscroll_context: "Li entèprete demann ou an",
     ask_btn: "Mande",
     show_label: "Montre",
     mode_open: "Demann Pwopozisyon (RFP) louvri — l ap aksepte kounye a",

@@ -195,6 +195,8 @@
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "描述您要查找的内容…",
+    ask_cityscroll_action: "询问 CityScroll",
+    ask_cityscroll_context: "解读您的请求",
     ask_btn: "搜索",
     show_label: "显示",
     mode_open: "公开的征求建议书 (RFP) — 正在接受",
