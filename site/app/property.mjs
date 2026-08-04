@@ -483,6 +483,22 @@ function commercialSaleSignalsFallback(commercial){
   }
   return false;
 }
+async function loadPropertyPlainSummary(r, el){
+  if(!el || !r || !isPropertyDispositionEligible(r)) return;
+  try{
+    const tools=await import("../property_plain_summary.mjs");
+    const summary=tools.buildPropertyPlainSummary(r,{
+      today:todayISO(),
+      events:r.commercial?.timed_events||undefined,
+      readerActions:r.property_reader_actions||undefined,
+    });
+    r.property_plain_summary=summary;
+    if(summary?.reader_actions) r.property_reader_actions=summary.reader_actions;
+    if(document.contains(el)) el.innerHTML=tools.propertyPlainSummaryHTML(summary,{escape:escUiHtml});
+  }catch(_e){
+    if(document.contains(el)) el.innerHTML="";
+  }
+}
 async function loadPropertyCommercialDetail(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
   try{
@@ -1534,6 +1550,7 @@ globalThis.normalizePropAsset = normalizePropAsset;
 globalThis.dispositionStageLabel = dispositionStageLabel;
 globalThis.dollarBadge = dollarBadge;
 globalThis.loadPropertyCommercialDetail = loadPropertyCommercialDetail;
+globalThis.loadPropertyPlainSummary = loadPropertyPlainSummary;
 globalThis.propertyCommercialDetailHTML = propertyCommercialDetailHTML;
 globalThis.franchiseConcessionSpineHTML = franchiseConcessionSpineHTML;
 globalThis.franchisePhaseSpineTools = franchisePhaseSpineTools;

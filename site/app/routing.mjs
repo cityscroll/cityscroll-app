@@ -999,7 +999,7 @@ async function showNotice(id, watch){
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
-      <div id="ncontext"></div><div id="nactions"></div>
+      <div id="nplain"></div><div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
       <div id="naddr"></div><div id="nmwbe"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="nregdwell"></div><div id="nsuboutreach"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="naboaward"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
@@ -1038,6 +1038,9 @@ async function showNotice(id, watch){
     if(!released) externalAwardForNotice(r, $("#nexternal"));
   }).catch(()=>externalAwardForNotice(r, $("#nexternal")));
   Promise.all([
+    typeof loadPropertyPlainSummary === "function"
+      ? loadPropertyPlainSummary(r, $("#nplain"))
+      : Promise.resolve(),
     typeof loadPropertyCommercialDetail === "function"
       ? loadPropertyCommercialDetail(r, $("#ncommercial"))
       : Promise.resolve(),
