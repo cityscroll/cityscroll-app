@@ -12,6 +12,7 @@ import {
   packageUrlFromAttachments,
   validateAction,
 } from "../worker/src/lib/action_registry.mjs";
+import { hearingCalendarICS } from "../site/hearing_attend_pack.mjs";
 
 const require = createRequire(import.meta.url);
 const { normalizeHearingRow } = require("../site/hearing_location.js");
@@ -423,6 +424,70 @@ test("Zoom-style join URLs still label as Join online with a hearing guide", () 
   assert.equal(action.destination, "https://zoom.us/j/123456789");
   assert.equal(action.guide?.join_kind, "join");
   assert.equal(action.guide?.testimony_email, EXAMPLE_EMAIL);
+});
+
+test("hearing calendar is a New York-zoned importable event with venue and source", () => {
+  const ics = hearingCalendarICS({
+    request_id: "20260716022",
+    event_date: "2026-08-10T14:30:00.000",
+    short_title: "Joint public hearing",
+    agency_name: "Franchise and Concession Review Committee",
+    venue: {building: "David N. Dinkins Municipal Building", address: "1 Centre Street, New York, NY 10007"},
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
+  }, {now: "2026-08-03T12:00:00Z"});
+  assert.ok(ics.endsWith("\r\n"));
+  assert.ok(ics.split("\r\n").every(line => new TextEncoder().encode(line).length <= 75), "RFC 5545 lines stay within 75 octets");
+  const unfolded = ics.replace(/\r\n[ \t]/g, "");
+  assert.match(unfolded, /BEGIN:VTIMEZONE\r\nTZID:America\/New_York/);
+  assert.match(unfolded, /DTSTART;TZID=America\/New_York:20260810T143000/);
+  assert.match(unfolded, /DTEND;TZID=America\/New_York:20260810T153000/);
+  assert.match(unfolded, /LOCATION:David N\. Dinkins Municipal Building · 1 Centre Street\\, New York\\, NY 10007/);
+  assert.match(unfolded, /Official source: https:\/\/a856-cityrecord\.nyc\.gov\/RequestDetail\/20260716022/);
+  const components = [...unfolded.matchAll(/^(BEGIN|END):([^\r]+)$/gm)].map(match => [match[1], match[2].trim()]);
+  const stack = [];
+  for (const [kind, name] of components) {
+    if (kind === "BEGIN") stack.push(name);
+    else assert.equal(stack.pop(), name, `balanced iCalendar component ${name}`);
+  }
+  assert.deepEqual(stack, []);
+});
+
+test("explicit UTC hearing instants convert to New York while date-only hearings stay honest", () => {
+  const instant = hearingCalendarICS({event_date: "2026-08-10T14:30:00Z", request_id: "instant"}, {now: "2026-08-03T12:00:00Z"});
+  assert.match(instant, /DTSTART;TZID=America\/New_York:20260810T103000/);
+  const dateOnly = hearingCalendarICS({event_date: "2026-08-10", request_id: "day"}, {now: "2026-08-03T12:00:00Z"});
+  assert.match(dateOnly, /DTSTART;VALUE=DATE:20260810/);
+  assert.doesNotMatch(dateOnly, /DTSTART;TZID=/);
+});
+
+test("testimony pack is neutral, Spanish-first ready, and honest when participation facts are absent", () => {
+  const signup = "https://example.com/hearing/register";
+  const handoff = hearingHandoff({
+    kind: "hearing",
+    title: "Curbside management hearing",
+    event_date: "2026-08-20T10:00:00.000",
+    notice_text: `People who wish to testify must register at ${signup}. Written testimony may be submitted to ${EXAMPLE_EMAIL} until the close of the public hearing.`,
+  });
+  assert.equal(handoff.testimony_signup_url, signup);
+  assert.match(handoff.testimony_starter.en, /^My name is \[name\]/);
+  assert.match(handoff.testimony_starter.es, /^Me llamo \[nombre\]/);
+  assert.match(handoff.testimony_starter.es, /expediente público/);
+  assert.doesNotMatch(handoff.testimony_starter.en, /support|oppose|urge/i);
+
+  const absent = hearingHandoff({kind: "hearing", event_date: "2026-08-20T10:00:00.000"});
+  assert.equal(absent.testimony_signup_url, null);
+  assert.equal(absent.testimony_email, null);
+  assert.equal(absent.testimony_until, null);
+  assert.equal(absent.testimony_starter, null);
+});
+
+test("upcoming hearing rail names its one-click ICS action", () => {
+  const actions = compileActionRail({
+    kind: "hearing",
+    deadline: "2026-08-20T10:00:00.000",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
+  }, {today: "2026-08-01"});
+  assert.equal(actions.find(action => action.type === "calendar")?.label_key, "calendar_ics");
 });
 
 test("exam action windows use the OASys landing with an honest browse label when unmapped", () => {
