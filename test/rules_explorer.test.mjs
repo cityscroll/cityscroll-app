@@ -495,6 +495,8 @@ test("public Rules domain mounts process rail + explorer cards", () => {
   assert.match(index, /rules-stage-lifecycle/);
   assert.match(index, /rules-stage-unmatched/);
   assert.match(index, /aria-pressed=/);
+  assert.match(index, /#rulesprocessrail \[aria-pressed="true"\]\{background:var\(--color-surface\);border-color:var\(--color-action\);color:var\(--color-text\);box-shadow:0 0 0 2px var\(--color-action\)\}/);
+  assert.doesNotMatch(index, /\.rules-stage-lifecycle \.lc-step-arrow\{display:none\}/);
   assert.match(index, /function rulesExplorerCardHTML/);
   assert.match(index, /buildRulesExplorerEntries/);
   assert.match(index, /rulesProcessSel/);
@@ -510,4 +512,11 @@ test("public Rules domain mounts process rail + explorer cards", () => {
   assert.doesNotMatch(cardTemplate, /ruleStageChip\(/);
   assert.doesNotMatch(cardTemplate, /rules-action-lead/);
   assert.match(cardTemplate, /data-card-fact/);
+
+  const processControlTemplate = RULES_APP_SOURCE.slice(
+    RULES_APP_SOURCE.indexOf("function rulesProcessControlHTML"),
+    RULES_APP_SOURCE.indexOf("async function renderRulesExplorer"),
+  );
+  assert.match(processControlTemplate, /lc-step-arrow/);
+  assert.match(processControlTemplate, /→/);
 });

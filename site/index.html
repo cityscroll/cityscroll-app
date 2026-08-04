@@ -1178,10 +1178,8 @@
   .rules-stage-lifecycle{margin:0;min-width:0}
   .rules-stage-filter{cursor:pointer;font-family:var(--font-interface);color:var(--color-text-soft);background:var(--color-canvas-subtle);border-color:var(--color-border)}
   .rules-stage-filter .ct{margin-inline-start:var(--space-1);color:var(--color-text-muted);font-weight:500;letter-spacing:0}
-  .rules-stage-filter.on,.rules-stage-filter[aria-pressed="true"],
-  .rules-stage-all.on,.rules-stage-all[aria-pressed="true"],
-  .rules-stage-unmatched.on,.rules-stage-unmatched[aria-pressed="true"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface);box-shadow:none}
-  .rules-stage-control [aria-pressed="true"] .ct{color:var(--color-surface)}
+  #rulesprocessrail [aria-pressed="true"]{background:var(--color-surface);border-color:var(--color-action);color:var(--color-text);box-shadow:0 0 0 2px var(--color-action)}
+  #rulesprocessrail [aria-pressed="true"] .ct{color:var(--color-action)}
   .rules-stage-divider{color:var(--color-text-muted);padding:0 var(--space-1)}
   .rules-stage-unmatched{padding:var(--space-1) var(--space-2);font-size:11px}
   .rules-fcard .rules-process-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 6px}
@@ -1196,7 +1194,9 @@
   .rules-action-band[data-band="comment_open"]{border-bottom-color:var(--blue)}
   .rules-action-band[data-band="hearing"]{border-bottom-color:var(--amber,#b45309)}
   @media(max-width:520px){
-    .rules-stage-lifecycle .lc-step-arrow{display:none}
+    .rules-stage-lifecycle{flex-basis:100%;padding:2px}
+    .rules-stage-lifecycle .lc-step{font-size:9px;padding:6px 7px;letter-spacing:.04em}
+    .rules-stage-lifecycle .lc-step-arrow{font-size:13px;padding:0 1px}
   }
   .rule-participation,.rule-member-blurb{margin:12px 0;padding:0;border:1px solid var(--rule);border-radius:10px;background:#faf6ee}
   .rule-participation > summary,.rule-member-blurb > summary{cursor:pointer;padding:12px 14px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
