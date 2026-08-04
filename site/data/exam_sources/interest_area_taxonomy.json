@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "exam-interest-area-taxonomy",
+  "name": "Civil-service exam interest areas",
+  "description": "Maintainable mapping of NYC civil-service exam titles into subscribable interest areas. Rules live here (data, not code). First matching title_rule wins; exam_overrides and title_code_overrides take precedence. Areas marked subscribable are eligible for a future alerts surface — that surface is a separate gated product card.",
+  "default_area": "other",
+  "areas": [
+    {
+      "id": "public-safety",
+      "label": "Public safety",
+      "description": "Police, fire, correction, traffic enforcement, and related protective titles.",
+      "subscribable": true,
+      "order": 10,
+      "i18n_key": "career_area_public_safety"
+    },
+    {
+      "id": "health-care",
+      "label": "Health and care",
+      "description": "Clinical, public-health, therapy, and care titles.",
+      "subscribable": true,
+      "order": 20,
+      "i18n_key": "career_area_health_care"
+    },
+    {
+      "id": "engineering-construction",
+      "label": "Engineering and construction",
+      "description": "Engineering, architecture, inspection, and construction titles.",
+      "subscribable": true,
+      "order": 30,
+      "i18n_key": "career_area_engineering"
+    },
+    {
+      "id": "technology-science",
+      "label": "Technology and science",
+      "description": "IT, laboratory, research, and technical science titles.",
+      "subscribable": true,
+      "order": 40,
+      "i18n_key": "career_area_technology"
+    },
+    {
+      "id": "community-social-services",
+      "label": "Community and social services",
+      "description": "Casework, housing, youth, and community program titles.",
+      "subscribable": true,
+      "order": 50,
+      "i18n_key": "career_area_community"
+    },
+    {
+      "id": "administration-finance",
+      "label": "Administration and finance",
+      "description": "Clerical, finance, procurement, and administrative titles.",
+      "subscribable": true,
+      "order": 60,
+      "i18n_key": "career_area_administration"
+    },
+    {
+      "id": "trades-operations",
+      "label": "Trades and operations",
+      "description": "Skilled trades, facilities, fleet, and field operations titles.",
+      "subscribable": true,
+      "order": 70,
+      "i18n_key": "career_area_trades"
+    },
+    {
+      "id": "other",
+      "label": "Other City work",
+      "description": "Titles that do not yet match a named interest series. Prefer adding a title_rule or exam_override over inventing a new area casually.",
+      "subscribable": false,
+      "order": 90,
+      "i18n_key": "career_area_other"
+    }
+  ],
+  "title_rules": [
+    {
+      "area": "health-care",
+      "pattern": "\\b(health|hospital|medical|dental|nurse|nursing|therap(?:ist|y)?|emergency medical|mortuary|addiction|dietitian|nutrition|hygienist|emt)\\b"
+    },
+    {
+      "area": "public-safety",
+      "pattern": "\\b(police|correction|safety|special officer|firefighter|fire protection|fire alarm|fire marshal|probation|traffic enforcement|fingerprint|school security|park ranger|urban park ranger)\\b"
+    },
+    {
+      "area": "engineering-construction",
+      "pattern": "\\b(engineer|engineering|construction|architect|buildings?|plan examiner|inspector|estim(?:ator)|instrumentation specialist|project manager)\\b"
+    },
+    {
+      "area": "technology-science",
+      "pattern": "\\b(computer|technology|data|scientist|laboratory|research|telecommunication|media services|radio repair)\\b"
+    },
+    {
+      "area": "community-social-services",
+      "pattern": "\\b(caseworker|social|youth|welfare|housing|community|counselor|child protective|child and family|eligibility specialist|program (?:officer|evaluator)|department for the aging)\\b"
+    },
+    {
+      "area": "administration-finance",
+      "pattern": "\\b(account(?:ant|ing)?|auditor|administrative|contract specialist|cashier|records|management|labor relations|call center|customer information|public information|procurement|stenographer|legal coordinator|office machine|stock worker|program analyst)\\b"
+    },
+    {
+      "area": "trades-operations",
+      "pattern": "\\b(mechanic|electric(?:ian|al)?|maintain(?:er)?|maintenance|operator|roofer|plaster(?:er)?|carpenter|machinist|blacksmith|metal|plant|deckhand|forester|exterminator|automotive|auto body|mason(?:'s)?|bricklayer|climber|pruner|oiler|marine|mate|pilot|wiper|watershed|asbestos|lead abatement|sanitation|superintendent|deck|ferry|food service)\\b"
+    }
+  ],
+  "exam_overrides": {},
+  "title_code_overrides": {}
+}
