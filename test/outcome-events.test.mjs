@@ -19,3 +19,16 @@ test("outcome events contain no person, query, notice, process, or URL", () => {
 test("unknown outcomes are rejected", () => {
   assert.throws(() => outcomeEvent("clicked"), /unknown outcome/);
 });
+
+test("aggregate prompt completion and abandonment events have no joinable identity", () => {
+  for (const event of [
+    { event: "outcome_prompted", detail: "official-handoff", surface: "home" },
+    { event: "outcome_prompted", detail: "passed-action", surface: "home" },
+    { event: "outcome_dismissed", detail: "official-handoff", surface: "home" },
+    { event: "outcome_dismissed", detail: "passed-action", surface: "home" },
+  ]) {
+    const normalized = normalizeUsageEvent(event);
+    assert.ok(normalized);
+    assert.doesNotMatch(JSON.stringify(normalized), /person|email|query|notice|process|https?:/i);
+  }
+});

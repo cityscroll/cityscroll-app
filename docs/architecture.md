@@ -38,6 +38,7 @@ sources:
   - site/external_awards.js
   - site/staffing.js
   - site/i18n.js
+  - site/action_outcome_prompt.mjs
   - site/location_extract.mjs
   - site/property_location.mjs
   - site/rule_location.mjs
@@ -92,7 +93,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: c21229eeada4c7888a7d2e4f99cc8e9df80820b15e1a47ba1bb4160d82cdd57d
+sources_hash: c2a60ee313a4f755c1abb944e4679a370dd59316ff7f3e0ea3dfb477b8389b8d
 ---
 
 # crol-list — architecture
@@ -157,7 +158,8 @@ D1: crol-notices — mirror of recent City Record notices + ingest cursor
      + prior_cycle_matches (precomputed prior-cycle/near-match cache)
 R2: SOURCE_VAULT — content-addressed custody for approved public documents
 Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
-  events; enumerated dimensions only, with no cookies or visitor identifiers
+  and optional post-action prompt events; enumerated dimensions only, with no
+  matter ids, free text, cookies, or visitor identifiers
 
 Public review channel (Cloudflare Pages project "crol-list-beta")
   draft PR + preview:beta label → stable pr-<number> alias
@@ -179,7 +181,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **Wave-4 process-spine contracts** — required process-spine fixtures and matching code live in `test/fixtures/wave4/generated/` and `worker/src/lib/process_spine.mjs`; PR and CI tests validate confidence gates and required fields via `test/process-spine.test.mjs`.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of `site/index.html`'s matchers), and `notice_translations` (informal per-`(request_id, lang)` translations behind `GET /translate/<id>?lang=`; compute-on-miss, edge-cached, invariant-checked so amounts/dates/PINs/agencies/addresses survive verbatim or the translation is not shown). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth. English notice text remains the official record.
 - **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.
-- **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
+- **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, investigation, and optional post-action prompt events. The prompt records shown/dismissed/completed counts separately from official receipt-backed outcomes and carries no matter id or free text. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
 - **`site/data/`** — committed product data, including Staffing role chips and `staffing_exams.json`,
   a build-time view of current DCAS exam schedules, notices, and active-list totals. Wave 4
   transforms use deterministic test datasets under `test/fixtures/wave4/`; joined production

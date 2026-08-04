@@ -1,0 +1,15 @@
+{
+  "notice_id": "20260617050",
+  "source": "NYC Open Data City Record Online (dg92-zbpx)",
+  "scenario": "official solicitation handoff return",
+  "outcome_choices": 3,
+  "free_text_controls": 0,
+  "viewports": [
+    1440,
+    390
+  ],
+  "captures": [
+    "docs/screenshots/action-outcome-prompt/after-desktop.png",
+    "docs/screenshots/action-outcome-prompt/after-mobile.png"
+  ]
+}

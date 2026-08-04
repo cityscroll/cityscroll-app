@@ -1,6 +1,6 @@
 # CityScroll aggregate event taxonomy
 
-Version: **1.1.0**
+Version: **1.2.0**
 Dataset: **`crol_usage_events_v1`**
 Retention: **90 days**
 Initial measured-since boundary: **2026-07-27**
@@ -44,7 +44,9 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `saved_search_check` | One accepted batch saved-search check. | `surface=api` |
 | `investigation_share` | One read-only investigation link was created or copied. | `detail=create\|copy`; `surface=home\|api` |
 | `action_opened` | One matter action was opened. | `detail=direct\|official-handoff`; `surface=home` |
-| `outcome_recorded` | One voluntary post-deadline outcome was recorded. | `detail=submitted\|attended\|bid\|won\|not-useful`; `surface=home` |
+| `outcome_prompted` | One optional self-report prompt was shown after an official handoff or a passed source-grounded action. | `detail=official-handoff\|passed-action`; `surface=home` |
+| `outcome_dismissed` | One optional self-report prompt was explicitly dismissed without an outcome choice. | `detail=official-handoff\|passed-action`; `surface=home` |
+| `outcome_recorded` | One voluntary post-action self-report was recorded. This is analytically separate from official receipt-backed outcomes. | `detail=submitted\|attended\|bid\|won\|not-useful`; `surface=home` |
 
 ## Data that is never written
 
@@ -60,6 +62,11 @@ watches. Aggregate routing research publishes denominators and category totals.
 
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
+
+Outcome-loop completion is characterized only in aggregate: `outcome_recorded` divided by
+`outcome_prompted` for the same rolling window. Aggregate abandonment is prompted minus recorded;
+`outcome_dismissed` identifies the explicit “Not now” subset. These are unlinked counts, not a
+funnel keyed to a visitor or notice, so they cannot attribute a response to an official record.
 
 ## Development and preview traffic
 
@@ -93,8 +100,8 @@ null, empty, or `production`, so pre-traffic_class history stays continuous.
 The public Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
 builds the public cuts in `GET /stats`: 7- and 30-day activity, lens interest, search
 activity, scenario interest, deep links, exports, confirmed watches, selected borough interest,
-and daily growth. Version 1.1.0 is additive; queries include compatible 1.0.0 rows so the existing
-rolling window remains continuous.
+and daily growth. Version 1.2.0 is additive; queries include compatible 1.0.0 and 1.1.0 rows so the
+existing rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
 The public response is edge-cached for about 15 minutes — that is the documented latency from an
 accepted `POST /events` until `/stats` is expected to reflect it.
