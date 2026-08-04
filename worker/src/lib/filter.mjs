@@ -27,7 +27,7 @@ export const LENSES = {
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
-  people:   ["keywords", "lookupType", "view"],
+  people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "nearMe"],
   rules:    ["keywords", "agency", "process"],
@@ -92,6 +92,13 @@ function clampField(name, v) {
       return v === "person" ? "person" : v === "role" ? "role" : null;
     case "view":
       return v === "guide" ? "guide" : null;
+    case "interestArea":
+      return [
+        "public-safety", "health-care", "engineering-construction", "technology-science",
+        "community-social-services", "administration-finance", "trades-operations",
+      ].includes(v) ? v : null;
+    case "interestLabel":
+      return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 80) : null;
     case "name":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 120) : null;
     case "kind":

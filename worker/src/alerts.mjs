@@ -479,7 +479,7 @@ export async function processOneSub(env, s, ctx) {
       }
     }
     if (!usedD1) {
-      rows = await fetchRows(q.url, q.params);
+      rows = await fetchRows(q.url, q.params, q.transformRows);
       if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
     }
     const seen = await getSeen(env, s.key);
@@ -798,7 +798,7 @@ async function evaluateSubSection(env, s, ctx) {
       }
     }
     if (!usedD1) {
-      rows = await fetchRows(q.url, q.params);
+      rows = await fetchRows(q.url, q.params, q.transformRows);
       if (q.postFilter) rows = rows.filter(q.postFilter);
     }
     const seen = await getSeen(env, s.key);
@@ -1220,7 +1220,7 @@ async function processCatchUpSub(env, s, ctx) {
       }
     }
     if (!rows) {
-      rows = await fetchRows(q.url, catchUpParams);
+      rows = await fetchRows(q.url, catchUpParams, q.transformRows);
       if (q.postFilter) rows = rows.filter(q.postFilter);
     }
 
@@ -1673,10 +1673,11 @@ async function subWatches(env) {
   return out;
 }
 
-async function fetchRows(url, params) {
+async function fetchRows(url, params, transformRows) {
   const r = await fetch(`${url}?${new URLSearchParams(params).toString()}`);
   if (!r.ok) throw new Error(`open-data ${r.status}`);
-  return r.json();
+  const payload = await r.json();
+  return typeof transformRows === "function" ? transformRows(payload) : payload;
 }
 
 // Check whether the D1 notices mirror is fresh enough to trust for digest matching.
@@ -1731,6 +1732,17 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   // Event-clock "today" for open / closing-soon / closed — render-only; does not affect send timing.
   const today = new Date().toISOString().slice(0, 10);
   const item = (r) => {
+    if (kind === "exam") {
+      const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
+      const dates = r.application_start && r.application_end
+        ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}`
+        : "";
+      const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
+      const noe = r.notice_url ? `<span style="color:#33691e;font-size:13px">NOE posted</span><br>` : "";
+      return `<li style="margin:0 0 14px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
+        <span style="color:#555;font-size:13px">${meta}</span><br>${noe}
+        <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` &nbsp; <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
+    }
     if (kind === "rezone") {
       // ZAP rows: project_name/public_status shape. Action rail uses zoningHandoff via
       // itemAwarenessHtml (View/comment on ZAP + phase status when published).
@@ -1883,6 +1895,15 @@ function rollupDigestHtml({
     const w = sec.w || null;
     const today = new Date().toISOString().slice(0, 10);
     const items = rows.map((r) => {
+      if (sec.kind === "exam") {
+        const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
+        const dates = r.application_start && r.application_end ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}` : "";
+        const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
+        return `<li style="margin:0 0 12px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
+          <span style="color:#555;font-size:13px">${meta}</span><br>
+          ${r.notice_url ? `<span style="color:#33691e;font-size:13px">NOE posted</span><br>` : ""}
+          <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` · <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
+      }
       if (sec.kind === "rezone") {
         const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
           .filter(Boolean).map(esc).join(" · ");

@@ -2,7 +2,8 @@
 //
 // Constraints:
 //   - land/ZAP lenses are NOT in the D1 mirror; callers must return early for those.
-//   - "people" lens is not cron-replayable (compileSub already returns null for it).
+//   - exam-area "people" watches replay the staffing artifact outside D1; payroll/person
+//     watches still return null from compileSub().
 //   - The D1 mirror stores only City Record (dg92-zbpx) notices; no ZAP rows.
 //
 // Field-name mapping: D1 uses the ingest names (agency, section, type_of_notice,
@@ -15,7 +16,7 @@ import { vendorStem, monthsFromISO } from "./compile.mjs";
 
 // Lenses whose data lives outside the D1 notices mirror — always use SODA for these.
 // land (ZAP dataset hgx4-8ukb) is the primary case.
-export const OFF_MIRROR_LENSES = new Set(["land", "meetings"]);
+export const OFF_MIRROR_LENSES = new Set(["land", "meetings", "people"]);
 
 // sub: { lens, filter }. todayISO: "YYYY-MM-DD".
 // Returns buildNoticesQuery opts (for notices.mjs) or null if the lens can't be

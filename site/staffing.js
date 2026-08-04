@@ -39,6 +39,20 @@
     return Math.round((end - now) / 86400000);
   }
 
+  // Shared approved open-window bands: imminent <= 14 days, approaching <= 90,
+  // otherwise far. The same helper drives exam cards, area summaries, and alerts.
+  function openWindowBand(exam, today) {
+    const status = statusFor(exam || {}, today);
+    const boundary = status === "open" ? exam.application_end
+      : status === "upcoming" ? exam.application_start
+      : null;
+    const days = applicationDaysLeft(boundary, today);
+    if (days == null || days < 0) return null;
+    if (days <= 14) return "imminent";
+    if (days <= 90) return "approaching";
+    return "far";
+  }
+
   function isInterestArea(value) {
     return INTEREST_AREAS.includes(String(value || ""));
   }
@@ -346,6 +360,7 @@
     INTEREST_AREAS,
     statusFor,
     applicationDaysLeft,
+    openWindowBand,
     isInterestArea,
     isContinuousExam,
     filterExams,

@@ -17,6 +17,13 @@ test("describeFilter renders a person lookup with the recovered name", () => {
   );
 });
 
+test("describeFilter names an exam interest-area watch", () => {
+  assert.equal(
+    describeFilter("people", { view:"guide", interestArea:"public-safety", interestLabel:"Public safety" }),
+    "civil-service exams — Public safety"
+  );
+});
+
 test("describeFilter renders a land query with borough + status", () => {
   assert.equal(
     describeFilter("land", { boro: "Brooklyn", keywords: ["rezoning"], status: "all" }),
