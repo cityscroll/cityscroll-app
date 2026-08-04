@@ -2,11 +2,15 @@
   "schema_version": 1,
   "title": "CityScroll data-source topology",
   "description": "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
-  "sources_hash": "cba4f39141b668f2270df0976dff470047bc2e5ecf934f559f08b0a514b9daec",
+  "sources_hash": "cda8ead5b6ba474beb75f143bec530e63647956b0c64c3b66a1b80efdbf87fb5",
   "declared_inputs": [
     {
       "path": "docs/data-sources.md",
-      "sha256": "858cf9eba9d1119c1c596fdcd47db1f1a0e4db363e123441a92d90302bd8cbe6"
+      "sha256": "9bd27772b789bd1295ea8439b7de7bb136a2d9299653efd295d400c32ac7f02b"
+    },
+    {
+      "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+      "sha256": "f3a728027eb9504b40205522ef328ce092b1e984a73e8cc371be6fdd51c34daa"
     },
     {
       "path": "site/data/award_sources/verification_receipts/award_registration_dwell_latest.json",
@@ -50,7 +54,7 @@
     },
     {
       "path": "site/data/gap_taxonomy.json",
-      "sha256": "f6db4c67c9627654a3245b281ae02b7fe2263618e0caa1cdb856ef03a6530e38"
+      "sha256": "1fb5c2cf8ce7be3729edee26702bc36c923e25d68d7958a7c512efcf10a95f55"
     },
     {
       "path": "site/data/legistar_sources/verification_receipts/legistar_depth_2026-07-30.json",
@@ -98,7 +102,7 @@
     },
     {
       "path": "site/data/source_contracts.json",
-      "sha256": "78e621fc7ec2bfe2fa235c8da5af98ab59d34e36cdd53c3dd3b3a8cdfac88539"
+      "sha256": "f3dd6ab732f474010d0a9823c018f4b34de0588f1e263fa5be5c8f869950b9f9"
     },
     {
       "path": "site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-07-30.json",
@@ -110,7 +114,11 @@
     },
     {
       "path": "warehouse/datasets.v0.json",
-      "sha256": "9f802fea801c53b7a7186c541c94ee9715ec1adeb9525b54b8e857155455f6da"
+      "sha256": "1a246e53f1eece1e047b4d627d2cd3df303887816ad675af5347320220fed194"
+    },
+    {
+      "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+      "sha256": "f3a728027eb9504b40205522ef328ce092b1e984a73e8cc371be6fdd51c34daa"
     },
     {
       "path": "warehouse/receipts/proof/att01_attachment_metadata_latest.json",
@@ -1706,7 +1714,7 @@
         "identity": "8w5p-k45m · socrata",
         "url": "https://data.ny.gov/d/8w5p-k45m"
       },
-      "publisher_cadence": "Approximately annual filings",
+      "publisher_cadence": "Publisher cadence not stated in dataset metadata",
       "ingest": {
         "job": "refreshAboAwards",
         "cadence": "Every 7 days, gated inside Daily at 13:00 UTC (0 13 * * *)",
@@ -1717,6 +1725,7 @@
         ]
       },
       "surfaces": [
+        "Notices & search",
         "Money",
         "Agency profiles"
       ],
@@ -1727,10 +1736,20 @@
         "label": "abo-local-authorities in the lifecycle data wishlist",
         "href": "gap-taxonomy.md#join-graph-sources"
       },
-      "last_successful_pull": null,
-      "latest_evidence": null,
+      "last_successful_pull": {
+        "at": "2026-08-04T11:26:00Z",
+        "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+        "kind": "successful-pull"
+      },
+      "latest_evidence": {
+        "at": "2026-08-04T11:26:00Z",
+        "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+        "kind": "source-evidence"
+      },
       "code_references": [
-        "external_awards.js"
+        "external_awards.js",
+        "worker/src/lib/abo_awards_join.mjs",
+        "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
       ]
     },
     {
@@ -1744,7 +1763,7 @@
         "identity": "d84c-dk28 · socrata",
         "url": "https://data.ny.gov/d/d84c-dk28"
       },
-      "publisher_cadence": "Approximately annual filings",
+      "publisher_cadence": "Publisher cadence not stated in dataset metadata",
       "ingest": {
         "job": "refreshAboAwards",
         "cadence": "Every 7 days, gated inside Daily at 13:00 UTC (0 13 * * *)",
@@ -1755,6 +1774,7 @@
         ]
       },
       "surfaces": [
+        "Notices & search",
         "Money",
         "Agency profiles"
       ],
@@ -1765,10 +1785,20 @@
         "label": "abo-local-development-corporations in the lifecycle data wishlist",
         "href": "gap-taxonomy.md#join-graph-sources"
       },
-      "last_successful_pull": null,
-      "latest_evidence": null,
+      "last_successful_pull": {
+        "at": "2026-08-04T11:26:00Z",
+        "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+        "kind": "successful-pull"
+      },
+      "latest_evidence": {
+        "at": "2026-08-04T11:26:00Z",
+        "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+        "kind": "source-evidence"
+      },
       "code_references": [
-        "external_awards.js"
+        "external_awards.js",
+        "worker/src/lib/abo_awards_join.mjs",
+        "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
       ]
     },
     {
@@ -1782,7 +1812,7 @@
         "identity": "ehig-g5x3 · socrata",
         "url": "https://data.ny.gov/d/ehig-g5x3"
       },
-      "publisher_cadence": "Approximately annual filings",
+      "publisher_cadence": "Publisher cadence not stated in dataset metadata",
       "ingest": {
         "job": "refreshAboAwards",
         "cadence": "Every 7 days, gated inside Daily at 13:00 UTC (0 13 * * *)",
@@ -1793,6 +1823,7 @@
         ]
       },
       "surfaces": [
+        "Notices & search",
         "Money",
         "Agency profiles"
       ],
@@ -1803,10 +1834,20 @@
         "label": "abo-state-authorities in the lifecycle data wishlist",
         "href": "gap-taxonomy.md#join-graph-sources"
       },
-      "last_successful_pull": null,
-      "latest_evidence": null,
+      "last_successful_pull": {
+        "at": "2026-08-04T11:26:00Z",
+        "path": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
+        "kind": "successful-pull"
+      },
+      "latest_evidence": {
+        "at": "2026-08-04T11:26:00Z",
+        "path": "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json",
+        "kind": "source-evidence"
+      },
       "code_references": [
-        "external_awards.js"
+        "external_awards.js",
+        "worker/src/lib/abo_awards_join.mjs",
+        "site/data/abo_award_sources/verification_receipts/abo_residual_2026-08-04.json"
       ]
     },
     {
@@ -2538,6 +2579,11 @@
     },
     {
       "from": "ingest:abo-local-authorities",
+      "to": "surface:Notices & search",
+      "kind": "serves"
+    },
+    {
+      "from": "ingest:abo-local-authorities",
       "to": "surface:Money",
       "kind": "serves"
     },
@@ -2558,6 +2604,11 @@
     },
     {
       "from": "ingest:abo-local-development-corporations",
+      "to": "surface:Notices & search",
+      "kind": "serves"
+    },
+    {
+      "from": "ingest:abo-local-development-corporations",
       "to": "surface:Money",
       "kind": "serves"
     },
@@ -2575,6 +2626,11 @@
       "from": "source:abo-state-authorities",
       "to": "ingest:abo-state-authorities",
       "kind": "pulls"
+    },
+    {
+      "from": "ingest:abo-state-authorities",
+      "to": "surface:Notices & search",
+      "kind": "serves"
     },
     {
       "from": "ingest:abo-state-authorities",
