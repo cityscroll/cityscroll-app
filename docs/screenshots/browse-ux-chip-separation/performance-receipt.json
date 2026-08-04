@@ -1,0 +1,744 @@
+{
+  "version": 1,
+  "statistics": {
+    "quantile": 0.95,
+    "samples": 20,
+    "warmupSamples": 1
+  },
+  "runs": [
+    {
+      "fixture": "home.cold",
+      "viewport": "mobile",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 300,
+        "fcpMs": 1000,
+        "lcpMs": 2500,
+        "cls": 0.1,
+        "wireBytes": 455000,
+        "comment": "The 2026-08-04 main sequence starts at 442919 bytes after the Property lens and design tokens (#447; Actions run 30874441414). Per-feature deltas were: prime outreach #456 +4701; exam alerts #459 +1564; registration dwell #457 +1112; hearing pack #460 +1522; M/WBE outreach #458 +9819; unified Alerts #448 +1625; Property watches #462 +822; Rules monitors #455 +8527; district digest #464 -17250; attachment tables #442 +712; Meetings template #468 +142; Zoning template #465 +252; Contracts template #461 -4675. The current 451792-byte measurement (run 30889913232) is 8873 bytes above #447; 455000 leaves 3208 bytes (0.71%) of deterministic headroom. Next ratchet target: under 445000 by deferring non-home modules; follow-on under 435000 after splitting digest preview awareness from home boot."
+      },
+      "p95": {
+        "lcpMs": 97.20000000000002,
+        "cls": 0.0184950231819441,
+        "fcpMs": 97.20000000000002,
+        "ttfbMs": 2.6200001358985903,
+        "eventDurationMs": 0.0,
+        "wireBytes": 454497.0
+      },
+      "samples": [
+        {
+          "ttfbMs": 2,
+          "fcpMs": 64,
+          "lcpMs": 64,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 3,
+          "fcpMs": 96,
+          "lcpMs": 96,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.7000000476837158,
+          "fcpMs": 60,
+          "lcpMs": 60,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 60,
+          "lcpMs": 60,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.3999998569488525,
+          "fcpMs": 120,
+          "lcpMs": 120,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.6000001430511475,
+          "fcpMs": 92,
+          "lcpMs": 92,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.5,
+          "fcpMs": 72,
+          "lcpMs": 72,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.200000047683716,
+          "fcpMs": 64,
+          "lcpMs": 64,
+          "cls": 0.0184950231819441,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        }
+      ],
+      "failures": [],
+      "wireFiles": [
+        {
+          "path": "i18n.js",
+          "gzipBytes": 65637
+        },
+        {
+          "path": "index.html",
+          "gzipBytes": 40125
+        },
+        {
+          "path": "app/alerts.mjs",
+          "gzipBytes": 22621
+        },
+        {
+          "path": "app/property.mjs",
+          "gzipBytes": 21886
+        },
+        {
+          "path": "action_registry.js",
+          "gzipBytes": 20104
+        },
+        {
+          "path": "app/money-history.mjs",
+          "gzipBytes": 20049
+        },
+        {
+          "path": "app/land.mjs",
+          "gzipBytes": 19365
+        },
+        {
+          "path": "app/routing.mjs",
+          "gzipBytes": 18863
+        },
+        {
+          "path": "app/feed-actions.mjs",
+          "gzipBytes": 18503
+        },
+        {
+          "path": "app/people.mjs",
+          "gzipBytes": 18171
+        },
+        {
+          "path": "app/search-share.mjs",
+          "gzipBytes": 17763
+        },
+        {
+          "path": "app/entities.mjs",
+          "gzipBytes": 15491
+        },
+        {
+          "path": "app/rules.mjs",
+          "gzipBytes": 15422
+        },
+        {
+          "path": "app/boot.mjs",
+          "gzipBytes": 12553
+        },
+        {
+          "path": "app/workspace.mjs",
+          "gzipBytes": 10722
+        },
+        {
+          "path": "app/procurement-lifecycle.mjs",
+          "gzipBytes": 9329
+        },
+        {
+          "path": "app/core.mjs",
+          "gzipBytes": 9069
+        },
+        {
+          "path": "app/procurement-phase.mjs",
+          "gzipBytes": 8642
+        },
+        {
+          "path": "app/money-list.mjs",
+          "gzipBytes": 8542
+        },
+        {
+          "path": "app/subsidy.mjs",
+          "gzipBytes": 8268
+        },
+        {
+          "path": "app/meetings.mjs",
+          "gzipBytes": 7843
+        },
+        {
+          "path": "qr_share.js",
+          "gzipBytes": 6846
+        },
+        {
+          "path": "hearing_location.js",
+          "gzipBytes": 6797
+        },
+        {
+          "path": "app/map.mjs",
+          "gzipBytes": 5387
+        },
+        {
+          "path": "staffing.js",
+          "gzipBytes": 4399
+        },
+        {
+          "path": "sub_outreach.mjs",
+          "gzipBytes": 3534
+        },
+        {
+          "path": "export_workflows.js",
+          "gzipBytes": 3492
+        },
+        {
+          "path": "data/money_default_open.json",
+          "gzipBytes": 3300
+        },
+        {
+          "path": "location_awareness.js",
+          "gzipBytes": 3239
+        },
+        {
+          "path": "nl_deeplink.js",
+          "gzipBytes": 3133
+        },
+        {
+          "path": "external_awards.js",
+          "gzipBytes": 3103
+        },
+        {
+          "path": "task_first.js",
+          "gzipBytes": 3006
+        },
+        {
+          "path": "solicitation_procurement_method.mjs",
+          "gzipBytes": 2883
+        },
+        {
+          "path": "mwbe_goal_surface.mjs",
+          "gzipBytes": 2806
+        },
+        {
+          "path": "analytics.js",
+          "gzipBytes": 2130
+        },
+        {
+          "path": "clarity.js",
+          "gzipBytes": 1932
+        },
+        {
+          "path": "brand.css",
+          "gzipBytes": 1718
+        },
+        {
+          "path": "text_clean.mjs",
+          "gzipBytes": 1646
+        },
+        {
+          "path": "beta_flags.js",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "data/money_procurement_agencies.json",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "same_consolidation.mjs",
+          "gzipBytes": 1464
+        },
+        {
+          "path": "app/authority-award.mjs",
+          "gzipBytes": 1109
+        },
+        {
+          "path": "app/main.mjs",
+          "gzipBytes": 372
+        },
+        {
+          "path": "beta-flags.json",
+          "gzipBytes": 227
+        }
+      ]
+    },
+    {
+      "fixture": "home.cold",
+      "viewport": "desktop",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 300,
+        "fcpMs": 1000,
+        "lcpMs": 2500,
+        "cls": 0.1,
+        "wireBytes": 455000,
+        "comment": "The 2026-08-04 main sequence starts at 442919 bytes after the Property lens and design tokens (#447; Actions run 30874441414). Per-feature deltas were: prime outreach #456 +4701; exam alerts #459 +1564; registration dwell #457 +1112; hearing pack #460 +1522; M/WBE outreach #458 +9819; unified Alerts #448 +1625; Property watches #462 +822; Rules monitors #455 +8527; district digest #464 -17250; attachment tables #442 +712; Meetings template #468 +142; Zoning template #465 +252; Contracts template #461 -4675. The current 451792-byte measurement (run 30889913232) is 8873 bytes above #447; 455000 leaves 3208 bytes (0.71%) of deterministic headroom. Next ratchet target: under 445000 by deferring non-home modules; follow-on under 435000 after splitting digest preview awareness from home boot."
+      },
+      "p95": {
+        "lcpMs": 182.00000000000003,
+        "cls": 0.06333775870868698,
+        "fcpMs": 182.00000000000003,
+        "ttfbMs": 7.280000042915345,
+        "eventDurationMs": 0.0,
+        "wireBytes": 454497.0
+      },
+      "samples": [
+        {
+          "ttfbMs": 4.1000001430511475,
+          "fcpMs": 116,
+          "lcpMs": 116,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.1999998092651367,
+          "fcpMs": 84,
+          "lcpMs": 84,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 3.5,
+          "fcpMs": 104,
+          "lcpMs": 104,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.8999998569488525,
+          "fcpMs": 120,
+          "lcpMs": 120,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2,
+          "fcpMs": 80,
+          "lcpMs": 80,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 7.200000047683716,
+          "fcpMs": 84,
+          "lcpMs": 84,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 5.3999998569488525,
+          "fcpMs": 180,
+          "lcpMs": 180,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 4.099999904632568,
+          "fcpMs": 136,
+          "lcpMs": 136,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 8.799999952316284,
+          "fcpMs": 220,
+          "lcpMs": 220,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 7.1000001430511475,
+          "fcpMs": 164,
+          "lcpMs": 164,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 2.6999998092651367,
+          "fcpMs": 80,
+          "lcpMs": 80,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.5999999046325684,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.7999999523162842,
+          "fcpMs": 64,
+          "lcpMs": 64,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.7000000476837158,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.7000000476837158,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00843002874429334,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.7999999523162842,
+          "fcpMs": 68,
+          "lcpMs": 68,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        },
+        {
+          "ttfbMs": 1.1999998092651367,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.06333775870868698,
+          "eventDurationMs": 0,
+          "wireBytes": 454497.0
+        }
+      ],
+      "failures": [],
+      "wireFiles": [
+        {
+          "path": "i18n.js",
+          "gzipBytes": 65637
+        },
+        {
+          "path": "index.html",
+          "gzipBytes": 40125
+        },
+        {
+          "path": "app/alerts.mjs",
+          "gzipBytes": 22621
+        },
+        {
+          "path": "app/property.mjs",
+          "gzipBytes": 21886
+        },
+        {
+          "path": "action_registry.js",
+          "gzipBytes": 20104
+        },
+        {
+          "path": "app/money-history.mjs",
+          "gzipBytes": 20049
+        },
+        {
+          "path": "app/land.mjs",
+          "gzipBytes": 19365
+        },
+        {
+          "path": "app/routing.mjs",
+          "gzipBytes": 18863
+        },
+        {
+          "path": "app/feed-actions.mjs",
+          "gzipBytes": 18503
+        },
+        {
+          "path": "app/people.mjs",
+          "gzipBytes": 18171
+        },
+        {
+          "path": "app/search-share.mjs",
+          "gzipBytes": 17763
+        },
+        {
+          "path": "app/entities.mjs",
+          "gzipBytes": 15491
+        },
+        {
+          "path": "app/rules.mjs",
+          "gzipBytes": 15422
+        },
+        {
+          "path": "app/boot.mjs",
+          "gzipBytes": 12553
+        },
+        {
+          "path": "app/workspace.mjs",
+          "gzipBytes": 10722
+        },
+        {
+          "path": "app/procurement-lifecycle.mjs",
+          "gzipBytes": 9329
+        },
+        {
+          "path": "app/core.mjs",
+          "gzipBytes": 9069
+        },
+        {
+          "path": "app/procurement-phase.mjs",
+          "gzipBytes": 8642
+        },
+        {
+          "path": "app/money-list.mjs",
+          "gzipBytes": 8542
+        },
+        {
+          "path": "app/subsidy.mjs",
+          "gzipBytes": 8268
+        },
+        {
+          "path": "app/meetings.mjs",
+          "gzipBytes": 7843
+        },
+        {
+          "path": "qr_share.js",
+          "gzipBytes": 6846
+        },
+        {
+          "path": "hearing_location.js",
+          "gzipBytes": 6797
+        },
+        {
+          "path": "app/map.mjs",
+          "gzipBytes": 5387
+        },
+        {
+          "path": "staffing.js",
+          "gzipBytes": 4399
+        },
+        {
+          "path": "sub_outreach.mjs",
+          "gzipBytes": 3534
+        },
+        {
+          "path": "export_workflows.js",
+          "gzipBytes": 3492
+        },
+        {
+          "path": "data/money_default_open.json",
+          "gzipBytes": 3300
+        },
+        {
+          "path": "location_awareness.js",
+          "gzipBytes": 3239
+        },
+        {
+          "path": "nl_deeplink.js",
+          "gzipBytes": 3133
+        },
+        {
+          "path": "external_awards.js",
+          "gzipBytes": 3103
+        },
+        {
+          "path": "task_first.js",
+          "gzipBytes": 3006
+        },
+        {
+          "path": "solicitation_procurement_method.mjs",
+          "gzipBytes": 2883
+        },
+        {
+          "path": "mwbe_goal_surface.mjs",
+          "gzipBytes": 2806
+        },
+        {
+          "path": "analytics.js",
+          "gzipBytes": 2130
+        },
+        {
+          "path": "clarity.js",
+          "gzipBytes": 1932
+        },
+        {
+          "path": "brand.css",
+          "gzipBytes": 1718
+        },
+        {
+          "path": "text_clean.mjs",
+          "gzipBytes": 1646
+        },
+        {
+          "path": "beta_flags.js",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "data/money_procurement_agencies.json",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "same_consolidation.mjs",
+          "gzipBytes": 1464
+        },
+        {
+          "path": "app/authority-award.mjs",
+          "gzipBytes": 1109
+        },
+        {
+          "path": "app/main.mjs",
+          "gzipBytes": 372
+        },
+        {
+          "path": "beta-flags.json",
+          "gzipBytes": 227
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "failures": []
+}

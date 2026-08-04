@@ -422,6 +422,7 @@ const STRINGS = {
     quiz_no_account:    "No account — just an email confirmation.",
     build_alert_heading:"More ways to watch",
     quick_suggestions:  "Quick suggestions",
+    try_asking_label:   "Try asking:",
     sugg_rezone_rivington: "Find Rivington rezonings",
     sugg_awards_1m:     "Awards over $1M",
     sugg_construction_rfp: "Construction RFPs",
@@ -690,6 +691,7 @@ const STRINGS = {
     // Watch templates — association monitor packs (registry-driven)
     watch_tpl_heading: "Association monitor packs",
     watch_tpl_lead: "One-tap multi-watch bundles for industry associations. Each pack creates separate email watches through the usual confirm-link path.",
+    watch_tpl_creates_watches: "Creates {n} watches",
     watch_tpl_serves_label: "Who it serves",
     watch_tpl_watches_label: "Watches included",
     watch_tpl_select: "Use this pack",

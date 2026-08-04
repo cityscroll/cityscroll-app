@@ -1,0 +1,16 @@
+{
+  "base_revision": "origin/main",
+  "source": "deterministic local site with external requests stubbed",
+  "surfaces": [
+    "Ask teaching examples",
+    "association monitor presets"
+  ],
+  "viewports": [
+    390,
+    1440
+  ],
+  "states": [
+    "before",
+    "after"
+  ]
+}
