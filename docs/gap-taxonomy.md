@@ -28,6 +28,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | OCDS tender/numberOfTenderers · contestability package | a | Bid Tabulations (Historical) |
 | award detail enrichment beyond City Record | a | Recent Contract Awards (OCP) |
 | OCDS planning/budget and planning/rationale | b | the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data |
+| award notice · prime-win sub-outreach (data wishlist only) | b | agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id — https://comptroller.nyc.gov/reports/nyc-contracts/ |
 | subsidy lifecycle · per-stage empty slot | a | NYCIDA/Build NYC public documents |
 | subsidy lifecycle · stage outcome | b | Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released |
 | subsidy lifecycle · no project join | b | NYCIDA/Build NYC financial public documents page if a project record is released for the notice |

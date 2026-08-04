@@ -1951,6 +1951,15 @@
       "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. Capital Projects n7gv-k5yt (3,320 rows; managing_agency, client_agency, budget_forecast, current_phase, project_name) has no PIN/EPIN. Measured 2026-07-30 agency+name fuzzy join on 100 modern Procurement notices: 0% unique substring, 1% unique token Jaccard — below ~30%. Pointer upgrade only; no edge materialization. Receipt: site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json. MOCS LL63 plans remain disabled (no stable tabular endpoint)."
     },
     {
+      "id": "procurement-subcontract-goal-percent",
+      "surface": "award notice · prime-win sub-outreach (data wishlist only)",
+      "i18n_key": null,
+      "class": "not_published",
+      "would_appear_in": "agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id — https://comptroller.nyc.gov/reports/nyc-contracts/",
+      "notices_affected_estimate": "All award and registration-bearing procurement notices; public feeds publish prime M/WBE category and whether sub-vendors exist, not goal percent remaining.",
+      "evidence": "Comptroller reporting repeatedly flags missing joinable subcontractor participation and goal data. Checkbook Contracts publishes prime_vendor_mwbe_category and contract_includes_sub_vendors, not goal percent. award_prime_goal payload (cityscroll.award_prime_goal.v1) stamps subcontract_goal.status=not_published with goal_percent=null. Product rule (2026-08-04): notice cards must not render class-(b) apology copy for this slot — the wishlist inventory is the only public expression of the reporting gap."
+    },
+    {
       "id": "subsidy-stage-unmatched",
       "surface": "subsidy lifecycle · per-stage empty slot",
       "i18n_key": "subsidy_stage_unmatched_html",
@@ -2360,7 +2369,7 @@
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-03",
+    "observed_on": "2026-08-04",
     "source_contracts_fingerprint": "5f995bdcb030d30686a8767e193917067ec9b74f007e08b0fa9a7c21b8982a1b",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 43,

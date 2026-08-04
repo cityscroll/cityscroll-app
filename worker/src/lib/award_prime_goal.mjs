@@ -8,8 +8,8 @@
 // this payload carries honest-absent fields rather than inventing utilization
 // targets or remaining goal capacity.
 //
-// Persona surface (sub-outreach callouts) is a separate gated card that
-// consumes `award_prime_goal` on GET /contract-lifecycle. Do not invent UI here.
+// Sub-outreach UI: site/sub_outreach.mjs consumes this side-car on notice
+// detail. Payload only here — never invent goal % or card apology copy.
 //
 // Pure: no fetch, no env. Call sites attach after lifecycle assembly.
 
