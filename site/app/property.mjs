@@ -926,6 +926,66 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
+/** Format a cluster date range for the small-multiples card ("start – end", or one date). */
+function propClusterRange(range){
+  if(!range) return "";
+  const a=range.start?fdt(range.start):"", b=range.end?fdt(range.end):"";
+  if(a && b) return a===b ? a : `${a} – ${b}`;
+  return a||b||"";
+}
+/**
+ * Small-multiples collapse card (Tufte): a run of near-identical notices rendered as one
+ * frame carrying the count and date range, expandable to each notice. Built from a
+ * `kind:"cluster"` entry produced by clusterRepeatedEntries in property_explorer.mjs.
+ */
+function propertyClusterCardHTML(cluster){
+  const rep=cluster.primary||{};
+  const assetKey=rep._asset||null;
+  const itemLabel=assetKey && ASSET_LABEL[assetKey] ? t(ASSET_LABEL[assetKey]) : "";
+  const stageLabel=cluster.process_stage?dispositionStageLabel(cluster.process_stage):"";
+  const closed=cluster.temporal_status==="closed";
+  const rangeLabel=propClusterRange(cluster.date_range);
+  const items=(cluster.members||[]).map(m=>{
+    const r=m.primary; if(!r) return "";
+    const title=cleanText(r.short_title)||t("untitled");
+    const href=`#notice/${encodeURIComponent(r.request_id)}`;
+    const d=m.close_date||r.event_date||r.start_date||null;
+    return `<li><a href="${href}">${escUiHtml(title)}</a>${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}</li>`;
+  }).join("");
+  return `<div class="property-cluster${closed?" is-closed":""}" data-cluster="1" data-count="${cluster.count}">
+    <div class="property-cluster-head">
+      <span class="property-cluster-count">${escUiHtml(t("property_cluster_summary",{n:cluster.count}))}</span>
+      ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
+      ${stageLabel?`<span class="tag">${escUiHtml(stageLabel)}</span>`:""}
+      ${rangeLabel?`<span class="property-cluster-range">${escUiHtml(rangeLabel)}</span>`:""}
+    </div>
+    <details>
+      <summary>${escUiHtml(t("property_cluster_show"))}</summary>
+      <ul class="property-cluster-list">${items}</ul>
+    </details>
+  </div>`;
+}
+/**
+ * Badge the "More filters" summary with the count of active secondary facets so hidden
+ * state stays visible even when the disclosure is collapsed (Norman: knowledge in the
+ * world). The selected-filters summary row (data-search-state) carries the detail.
+ */
+function updatePropertyMoreFiltersState(){
+  const active=[
+    propSaleMethod!=="all",
+    propPriceBand!=="all",
+    propProcessSel!=="all",
+    propStageSel!=="all",
+    !!($("#propertyboro")?.value),
+    !!(($("#propertyneighborhood")?.value||"").trim()),
+    !!($("#propertyagency")?.value),
+  ].filter(Boolean).length;
+  const badge=$("#property-filter-badge");
+  if(badge){
+    if(active>0){ badge.textContent=t("property_filters_active",{n:active}); badge.hidden=false; }
+    else { badge.textContent=""; badge.hidden=true; }
+  }
+}
 const SALE_METHOD_BUCKETS=[
   ["online_auction","sale_method_online_auction"],
   ["public_auction","sale_method_public_auction"],
@@ -1107,16 +1167,30 @@ async function renderPropExplorer(){
       }));
   }
 
-  announce(t("property_entries_announce",{n:entries.length}));
-  setExportBandVisibility(entries.length, "property-export-band", "property-export-overflow");
+  // Small-multiples collapse (Tufte): runs of near-identical single notices → one card
+  // carrying the count + date range. Applied after stamp + sort so temporal status rides along.
+  if(tools && tools.clusterRepeatedEntries){
+    entries=tools.clusterRepeatedEntries(entries);
+  }
+  updatePropertyMoreFiltersState();
+  const totalCount=entries.reduce((n,e)=>n+(e.kind==="cluster"?(e.count||1):1),0);
+  announce(t("property_entries_announce",{n:totalCount}));
+  const countEl=$("#property-count");
+  if(countEl) countEl.textContent=t("property_entries_announce",{n:totalCount});
+  setExportBandVisibility(totalCount, "property-export-band", "property-export-overflow");
   const feedEl=$("#propertyfeed");
   if(!feedEl) return;
   const kwEl=$("#propertykw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
-  // Export/print still want notice rows (primaries of visible entries).
-  const visibleRows=entries.map(e=>e.primary).filter(Boolean);
+  // Export/print want notice rows — clusters expand back to their members.
+  const visibleRows=[];
+  entries.forEach(e=>{
+    if(e.kind==="cluster"){ (e.members||[]).forEach(m=>{ if(m.primary) visibleRows.push(m.primary); }); }
+    else if(e.primary){ visibleRows.push(e.primary); }
+  });
   feedVisible.property=visibleRows;
   if(!entries.length){
     feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
+    try{ renderSearchComponents("property"); }catch(_e){}
     return;
   }
   let parcelLinks=null;
@@ -1124,18 +1198,29 @@ async function renderPropExplorer(){
     const locTools=await propertyLocationTools();
     parcelLinks=locTools.parcelLinksFromBbl;
   }catch(_e){}
-  // Default view: open/upcoming cards first, then a labeled closed/archive block.
-  // Past sales never look like live actions at the top of #property.
+  const isClosed=(e)=> e.temporal_status==="closed"
+    || (e.close_date && daysLeft(e.close_date)!==null && daysLeft(e.close_date)<0);
+  const cardFor=(e)=> e.kind==="cluster"
+    ? propertyClusterCardHTML(e)
+    : propertyExplorerCardHTML(e, terms, parcelLinks);
   const parts=[];
-  let closedHeaderEmitted=false;
-  for(const e of entries){
-    const closed=e.temporal_status==="closed"
-      || (e.close_date && daysLeft(e.close_date)!==null && daysLeft(e.close_date)<0);
-    if(closed && !closedHeaderEmitted && propStageSel==="all"){
-      parts.push(`<div class="property-closed-section" data-closed-section="1" role="separator" aria-label="${escUiHtml(t("property_closed_section"))}"><h3 class="property-closed-section-title">${escUiHtml(t("property_closed_section"))}</h3></div>`);
-      closedHeaderEmitted=true;
+  if(propStageSel==="all"){
+    // Archive never leads: current (open/upcoming/undated) first, then a labeled closed
+    // block. When nothing is current, lead with an honest one-line note, not the archive.
+    const current=entries.filter(e=>!isClosed(e));
+    const closedEntries=entries.filter(isClosed);
+    if(current.length){
+      current.forEach(e=>parts.push(cardFor(e)));
+    } else if(closedEntries.length){
+      parts.push(`<p class="property-empty-current">${escUiHtml(t("property_nothing_current"))}</p>`);
     }
-    parts.push(propertyExplorerCardHTML(e, terms, parcelLinks));
+    if(closedEntries.length){
+      parts.push(`<div class="property-closed-section" data-closed-section="1" role="separator" aria-label="${escUiHtml(t("property_closed_section"))}"><h3 class="property-closed-section-title">${escUiHtml(t("property_closed_section"))}</h3></div>`);
+      closedEntries.forEach(e=>parts.push(cardFor(e)));
+    }
+  } else {
+    // Explicit temporal window (proposed / soon / upcoming / past): flat list as requested.
+    entries.forEach(e=>parts.push(cardFor(e)));
   }
   feedEl.innerHTML=parts.join("");
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
@@ -1143,6 +1228,8 @@ async function renderPropExplorer(){
   feedEl.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));
   const hydrate=()=>hydrateTaxLienBblSlots(feedEl).catch(()=>{});
   if("requestIdleCallback" in window) requestIdleCallback(hydrate,{timeout:2500}); else setTimeout(hydrate,250);
+  // Keep the selected-filters summary + Clear in sync (covers deep-link / initial paint).
+  try{ renderSearchComponents("property"); }catch(_e){}
 }
 
 /* ===== Tax-lien sale progression (cycle context on notices + archive panel).
