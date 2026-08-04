@@ -390,8 +390,9 @@ function lifecycleStageHTML(entry, timeline, notice, opts){
   // Future empty stages: stepper only.
   if(publicStatus === "unmatched" || publicStatus === "unknown") return "";
 
-  const label = lifecycleStageLabel(entry.stage);
   const isCurrent = !!opts.isCurrent || entry.stage === opts.currentKey;
+  if(entry.renderLifecycleStage) return entry.renderLifecycleStage(entry,[isCurrent,t,escUiHtml,lifecycleMoney,EXT_ATTRS,extSR]);
+  const label = lifecycleStageLabel(entry.stage);
   const showLink = opts.showSourceLink !== false && isCurrent && publicStatus !== "passed";
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : (publicStatus === "passed" ? "" : `<div class="when">—</div>`);
   let detailHTML = "";
