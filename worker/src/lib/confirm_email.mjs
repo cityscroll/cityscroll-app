@@ -40,6 +40,10 @@ export function describeFilter(lens, filter) {
   if (f.category) parts.push(`category “${f.category}”`);
   if (f.agency) parts.push(`agency “${f.agency}”`);
   if (f.boro) parts.push(`in ${f.boro}`);
+  if (f.borough) parts.push(`in ${f.borough}`);
+  if (f.neighborhood) parts.push(`near ${f.neighborhood}`);
+  if (f.process) parts.push(`stage “${({ hearing: "hearing", auction_or_rfp: "auction / RFP", award_or_conveyance: "award / conveyance", unstaged: "unclassified" })[f.process] || String(f.process).replace(/_/g, " ")}”`);
+  if (f.stage) parts.push(`when “${f.stage}”`);
   if (f.months) parts.push(`due within ${f.months} mo`);
   if (f.status === "all") parts.push("including closed");
   const detail = parts.length ? parts.join(" · ") : "all notices";

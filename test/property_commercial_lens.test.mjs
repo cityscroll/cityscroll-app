@@ -307,6 +307,25 @@ test("alert scope from commercial lens state carries asset + method + borough", 
   assert.match(href, /online_auction/);
 });
 
+test("property watch context carries neighborhood and disposition stage through the unified Alerts URL", () => {
+  const scope = alertScopeFromLensState("property", {
+    borough: "Brooklyn",
+    neighborhood: "Greenpoint",
+    process: "auction_or_rfp",
+  });
+  const href = alertsHref(scope);
+  assert.match(href, /#alerts\?/);
+  assert.deepEqual(scope.filter, {
+    keywords: [],
+    agency: null,
+    process: "auction_or_rfp",
+    borough: "Brooklyn",
+    neighborhood: "Greenpoint",
+  });
+  assert.match(SITE_SOURCE, /propertyWatchExtra/);
+  assert.match(SITE_SOURCE, /w==="property"\s*\?\s*propertyWatchExtra/);
+});
+
 test("alert scope from sale notice prefers commercial asset", () => {
   const auto = rows.find((r) => r.request_id === "20251106024");
   const scope = alertScopeFromNotice({
