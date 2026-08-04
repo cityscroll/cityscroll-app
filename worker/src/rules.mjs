@@ -13,14 +13,16 @@ import {
   parseRssItems,
 } from "./lib/rules.mjs";
 import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
+import { classifyCityRecordRuleStage } from "../../site/rule_stage.mjs";
 
 export const RULES_KV_KEY = "rules:materialized:v2";
 /** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds.
  *  v4: City Record Agency Rules lookback widened so multi-notice siblings co-appear.
  *  v5: demote generic Title-N / bare-sections refs; shared_reference needs exact
  *      section cite or title-core floor (false-merge hotfix).
- *  v6: normalize WordPress RSS endpoints to resident-facing NYC Rules pages. */
-export const RULES_VIEW_VERSION = 6;
+ *  v6: normalize WordPress RSS endpoints to resident-facing NYC Rules pages.
+ *  v7: classify unmatched City Record hearings/adoptions instead of defaulting to proposal. */
+export const RULES_VIEW_VERSION = 7;
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 /** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
  *  "Just a moment…" when the request has an empty or missing User-Agent
@@ -105,14 +107,6 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
   const notices = await fetchCityRecordRules(fetchImpl, now);
   const { matched, unmatchedNotices, unmatchedRules } = joinRulesToNotices(rules, notices, now);
 
-  const byStage = {};
-  for (const m of matched) {
-    byStage[m.stage] = (byStage[m.stage] || 0) + 1;
-  }
-  for (const u of unmatchedRules) {
-    byStage[u.stage] = (byStage[u.stage] || 0) + 1;
-  }
-
   // Build rows first, then stitch multi-notice rulemaking siblings (proposal /
   // hearing / adoption), promote City Record Public Hearings event_date into
   // the public_hearing spine event, then stamp subject registry so
@@ -165,7 +159,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       agency: notice.agency_name,
       title: notice.short_title,
       notice_date: notice.start_date,
-      stage: "proposed",
+      stage: classifyCityRecordRuleStage(notice) || "unknown",
       city_record: cityRecordBlock(notice),
       nyc_rules: null,
       events: [],
@@ -217,6 +211,12 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       subject_links: subjects.subject_links,
     };
   });
+
+  const byStage = {};
+  for (const record of records) {
+    const stage = record.stage || "unknown";
+    byStage[stage] = (byStage[stage] || 0) + 1;
+  }
 
   const multiNoticeRulemakings = new Set(
     records
