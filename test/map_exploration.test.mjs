@@ -31,6 +31,7 @@ import {
   BOROUGH_META,
 } from "../site/map_exploration.mjs";
 import {
+  buildContractActionBasisLayer,
   buildDistrictActivity,
   communityDistrictFromAgencyName,
   meetingPlacementsFromRow,
@@ -91,6 +92,20 @@ test("areaFeedLinks uses existing list filter grammar", () => {
   }
 });
 
+test("response-logistics Money links carry exact district scope and positive naming", () => {
+  const links = areaFeedLinks("community_district", "M01", {
+    counts: { land: 0, property: 0, rules: 0, meetings: 0, money: 3 },
+    basis: "contract_action_address",
+  });
+  const moneyLink = links.find((link) => link.lens === "money");
+  assert.equal(
+    moneyLink?.hash,
+    "#money?basis=contract_action_address&boro=Manhattan&cd=M01",
+  );
+  assert.equal(moneyLink?.label_key, "map_feed_contract_action_community");
+  assert.equal(moneyLink?.scope, "district");
+});
+
 test("detectMapFeedScopeLobby flags bare citywide links under positive district counts", () => {
   const lobby = [
     { lens: "meetings", hash: "#meetings", label_key: "tab_meetings", scope: "citywide" },
@@ -132,6 +147,57 @@ test("mapDrillListHash / parseMapDrillListHash round-trip", () => {
   assert.equal(parsed.lens, "meetings");
   assert.equal(parsed.filter.locationScope, "virtual");
   assert.equal(parsed.filter.when, "all");
+});
+
+test("map response-logistics basis round-trips without changing performance geography", () => {
+  const hash = serializeMapHash({
+    level: "council_district",
+    id: "1",
+    lens: "money",
+    basis: "contract_action_address",
+  });
+  assert.equal(hash, "#map?level=council_district&id=1&lens=money&basis=contract_action_address");
+  const parsed = parseMapHashQuery(new URLSearchParams(hash.split("?")[1]));
+  assert.equal(parsed.basis, "contract_action_address");
+
+  const primary = buildDistrictActivity({
+    boundaries,
+    moneyRows: [{ request_id: "performance", borough: "Queens" }],
+    contractActionRows: [{
+      request_id: "response",
+      addresses: [{ basis: "submission_address", normalized_address: "1 Centre Street" }],
+      locations: [{
+        basis: "submission_address",
+        basis_label: "Located by submission address",
+        borough: "Manhattan",
+        community_district: "M01",
+        council_district: "1",
+        is_place_of_performance: false,
+      }],
+    }],
+  });
+  assert.equal(primary.by_level.borough.Queens.money, 1);
+  assert.equal(primary.by_level.borough.Manhattan.money, 0);
+  assert.equal(primary.basis_layers.contract_action_address.by_level.borough.Manhattan.money, 1);
+  assert.equal(primary.basis_layers.contract_action_address.is_place_of_performance, false);
+});
+
+test("COUNT-EQUALS-LIST: response-address district counts match sidecar rows", () => {
+  const actionPath = new URL("../site/data/contract_action_address_locations.json", import.meta.url);
+  if (!existsSync(actionPath)) return;
+  const actionDoc = JSON.parse(readFileSync(actionPath, "utf8"));
+  const rows = actionDoc.rows || [];
+  const layer = buildContractActionBasisLayer(rows, boundaries);
+  const candidates = Object.entries(layer.by_level.community_district)
+    .filter(([, counts]) => Number(counts.money) > 0);
+  assert.ok(candidates.length > 0, "fixture expects at least one located response address");
+  for (const [communityDistrict, counts] of candidates) {
+    const list = rows.filter((row) => rowMatchesMapDrillFilter("money", row, {
+      basis: "contract_action_address",
+      communityDistrict,
+    }));
+    assert.equal(list.length, counts.money, communityDistrict);
+  }
 });
 
 test("COUNT-EQUALS-LIST: Virtual bag meetings match domain observations", () => {

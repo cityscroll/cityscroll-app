@@ -1540,6 +1540,28 @@
                 <label for="agency" data-i18n="agency_label">Agency</label>
                 <select id="agency"><option value="" data-i18n="all_agencies_loading">All agencies — loading…</option></select>
               </div>
+              <div class="field">
+                <label for="moneylocationbasis" data-i18n="money_location_basis_label">Response location basis</label>
+                <select id="moneylocationbasis">
+                  <option value="" data-i18n="money_location_basis_any">Any location basis</option>
+                  <option value="contract_action_address" data-i18n="money_location_basis_response">Any response address</option>
+                  <option value="submission_address" data-i18n="money_location_basis_submission">Located by submission address</option>
+                  <option value="pre_bid_venue" data-i18n="money_location_basis_prebid">Located by pre-bid venue</option>
+                  <option value="document_pickup" data-i18n="money_location_basis_pickup">Located by document-pickup address</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="moneyboro" data-i18n="borough_label">Borough</label>
+                <select id="moneyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option></select>
+              </div>
+              <div class="field">
+                <label for="moneycd" data-i18n="money_community_district_label">Community district</label>
+                <select id="moneycd"><option value="" data-i18n="money_district_any">Any district</option></select>
+              </div>
+              <div class="field">
+                <label for="moneycouncil" data-i18n="money_council_district_label">Council district</label>
+                <select id="moneycouncil"><option value="" data-i18n="money_district_any">Any district</option></select>
+              </div>
               <div class="field" id="minwrap">
                 <label for="minamt" data-i18n="min_award_label">Min award $</label>
                 <select id="minamt">
@@ -2082,6 +2104,8 @@
     </div>
     <nav class="map-crumb" id="mapCrumb" aria-label="Map location"></nav>
     <div class="map-lens-row chiprow" id="mapLensRow" role="group" aria-label="Activity lens"></div>
+    <div class="map-lens-row chiprow" id="mapMoneyBasisRow" role="group" aria-label="Contract location basis" hidden></div>
+    <p class="map-fallback-note" id="mapMoneyBasisNote" hidden></p>
     <div class="map-explore">
       <div class="map-explore-main">
         <div class="map-svg-wrap" id="mapSvgWrap">
