@@ -212,6 +212,49 @@ export function evaluateLocationResolution(input = {}) {
     }
   }
 
+  // Residual no_place_signal tail: human-derivation left a high share of a
+  // non-empty map corpus without any place signal. Distinct from zero-located
+  // wiring bugs — this is extractor coverage debt. Runs without by_level.
+  if (mapActivity) {
+    const reasons = mapActivity.unlocated_reasons && typeof mapActivity.unlocated_reasons === "object"
+      ? mapActivity.unlocated_reasons
+      : {};
+    for (const lensId of MAP_PLACE_LENSES) {
+      const src = mapSources[lensId] || {};
+      const counted = Number(src.counted) || 0;
+      if (counted < 3) continue;
+      const noPlace = Number(reasons?.[lensId]?.no_place_signal) || 0;
+      if (noPlace < 1) continue;
+      const share = noPlace / counted;
+      // Threshold: ≥25% of corpus still no_place_signal (or ≥8 absolute).
+      if (share < 0.25 && noPlace < 8) continue;
+      const finding = {
+        kind: "map-high-no-place-signal",
+        lens: lensId,
+        counted,
+        no_place_signal: noPlace,
+        no_place_share: share,
+        surface: "district_activity",
+      };
+      granularity_findings.push(finding);
+      cards.push(makeDimensionCard({
+        dimension: DIMENSION_ID,
+        slug: `map-high-no-place-signal-${lensId}`,
+        title: `Map ${lensId} corpus still has a high no_place_signal residual`,
+        rank_score: lensId === "meetings" || lensId === "money" ? 87 : 84,
+        evidence: finding,
+        verify: "node tools/build_district_activity.mjs --check",
+        demo_win: `${lensId} events either resolve to a place/citywide/virtual bag or document a more specific unlocated reason than generic no_place_signal.`,
+        context: [
+          "site/data/district_activity.json",
+          "site/location_derivation.mjs",
+          "tools/lib/district_activity.mjs",
+        ],
+        lesson_class: "spatial-no-place-residual",
+      }));
+    }
+  }
+
   const geocoded = pins.filter((pin) => hasCoordinates(pin));
   const communityResolved = geocoded.filter((pin) => clean(pin.community_district)).length;
   const councilResolved = geocoded.filter((pin) => clean(pin.council_district)).length;
@@ -279,6 +322,10 @@ export function evaluateLocationResolution(input = {}) {
     }));
   }
 
+  const no_place_findings = (granularity_findings || []).filter(
+    (f) => f?.kind === "map-high-no-place-signal",
+  );
+
   return {
     dimension: DIMENSION_ID,
     metrics: {
@@ -287,6 +334,7 @@ export function evaluateLocationResolution(input = {}) {
       district_rates,
       boundary_metrics,
       granularity_findings,
+      no_place_findings,
     },
     cards,
   };
