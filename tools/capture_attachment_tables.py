@@ -26,10 +26,10 @@ EXTRACT = (
     "CARPENTERS EDDY EAST\n"
     "Forest Management Project # 5116\n"
     "NOTICE OF PROJECT AVAILABILITY\n"
-    "Description: The City of New York will sell an estimated 187 MBF of hardwood "
+    "Description: The City of New York will sell 187 MBF of hardwood "
     "sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest "
     "Management Project #5116 in the Cannonsville watershed basin.\n"
-    "Total Volume: 187 MBF +/- sawtimber & 89 cords hardwood pulp"
+    "Total Volume: 187 MBF sawtimber and 89 cords hardwood pulp"
 )
 TABLES = [
     {

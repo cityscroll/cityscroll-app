@@ -12,7 +12,7 @@ from __future__ import annotations
 import io
 import re
 import zipfile
-from typing import Any
+from typing import Any, Dict, List, Optional
 from xml.etree import ElementTree as ET
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -31,7 +31,7 @@ def _cell_text(node: ET.Element) -> str:
     return text
 
 
-def extract_docx_tables(data: bytes) -> dict[str, Any]:
+def extract_docx_tables(data: bytes) -> Dict[str, Any]:
     try:
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             try:
@@ -61,11 +61,11 @@ def extract_docx_tables(data: bytes) -> dict[str, Any]:
             "method": None,
         }
 
-    tables: list[dict[str, Any]] = []
+    tables: List[Dict[str, Any]] = []
     for index, tbl in enumerate(root.iter(f"{{{W_NS}}}tbl")):
         if index >= MAX_TABLES:
             break
-        rows: list[list[str]] = []
+        rows: List[List[str]] = []
         for tr in tbl.findall(f"{{{W_NS}}}tr"):
             cells = [_cell_text(tc) for tc in tr.findall(f"{{{W_NS}}}tc")]
             if not cells:
@@ -115,7 +115,7 @@ def extract_docx_tables(data: bytes) -> dict[str, Any]:
     }
 
 
-def _split_columns(line: str) -> list[str] | None:
+def _split_columns(line: str) -> List[str] | None:
     """Split a text-layer line into columns when a multi-column pattern is present.
 
     Accepts tab-separated cells or runs of 2+ spaces. Rejects single-column prose.
@@ -134,7 +134,7 @@ def _split_columns(line: str) -> list[str] | None:
     return [c[:MAX_CELL_CHARS] for c in cells]
 
 
-def extract_pdf_tables(data: bytes) -> dict[str, Any]:
+def extract_pdf_tables(data: bytes) -> Dict[str, Any]:
     """Recover table-like row groups from the PDF text layer only.
 
     Limits (honest):
@@ -154,7 +154,7 @@ def extract_pdf_tables(data: bytes) -> dict[str, Any]:
 
     try:
         reader = PdfReader(io.BytesIO(data))
-        lines: list[str] = []
+        lines: List[str] = []
         for page in reader.pages:
             try:
                 text = page.extract_text() or ""
@@ -181,8 +181,8 @@ def extract_pdf_tables(data: bytes) -> dict[str, Any]:
         }
 
     # Group consecutive multi-column lines that share a column count into tables.
-    tables: list[dict[str, Any]] = []
-    current: list[list[str]] = []
+    tables: List[Dict[str, Any]] = []
+    current: List[List[str]] = []
     current_cols = 0
 
     def flush() -> None:
@@ -233,7 +233,7 @@ def extract_pdf_tables(data: bytes) -> dict[str, Any]:
     }
 
 
-def extract_tables_bytes(data: bytes, kind: str | None) -> dict[str, Any]:
+def extract_tables_bytes(data: bytes, kind: Optional[str]) -> Dict[str, Any]:
     """kind: docx | pdf | doc | unknown_high_value | None"""
     if not data:
         return {

@@ -55,4 +55,4 @@ Until then, inventing a parquet pipeline would add CI/runtime weight without a c
 
 - Notice UI can render real HTML tables from the same progressive-disclosure pattern as T1 text without a warehouse round-trip.
 - Search haystack gains an `[attachment-tables]` provenance slice (cell text), independent of T1 `[attachment-text]`.
-- When the threshold trips, migrate warehouse JSONL → parquet with a versioned schema; public API can keep JSON projection for the browser.
+- When the threshold trips, migrate warehouse JSONL → parquet with a versioned schema; the public API can keep serving browser-facing JSON rows.

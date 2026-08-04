@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.attachment_tables.receipt.v1",
-  "run_id": "att-t2-2026-08-04-352b3588-4776-4ffb-bc60-2295b5cddd76",
-  "started_at": "2026-08-04T00:42:11.900Z",
-  "finished_at": "2026-08-04T00:42:11.947Z",
+  "run_id": "att-t2-2026-08-04-5b472053-84c8-4cf9-8c29-7d7decb4c412",
+  "started_at": "2026-08-04T01:00:30.411Z",
+  "finished_at": "2026-08-04T01:00:30.484Z",
   "mode": "fixture",
   "tier": "t2_structured_tables",
   "inventory_seen": 2,
