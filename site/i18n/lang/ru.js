@@ -741,6 +741,7 @@
     skip_to_content: "Перейти к содержимому",
     or_more_results: "{n} или более результатов",
     results_count: "{n} результатов",
+    one_result: "1 результат",
     event_today: "сегодня",
     due_today_tag: "срок истекает сегодня",
     deadline_respond_by: "Ответить до {date}",
