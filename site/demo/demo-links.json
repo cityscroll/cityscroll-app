@@ -264,7 +264,7 @@
         "banner": {
           "selector": "#meetingswidening .widening-note",
           "visible": true,
-          "text": "Showing recent past meetings for “IDA” (none upcoming)."
+          "text": "Showing recent past meetings for \u201cIDA\u201d (none upcoming)."
         }
       }
     },
@@ -482,7 +482,7 @@
       "id": "rules-lifecycle-spine",
       "url": "#notice/20260714029",
       "feature": "rules-lifecycle-spine",
-      "description": "Show the phase-grouped rule lifecycle (proposal → public process → adoption → effective) on a commercial-meter parking rule notice.",
+      "description": "Show the phase-grouped rule lifecycle (proposal \u2192 public process \u2192 adoption \u2192 effective) on a commercial-meter parking rule notice.",
       "expectations": {
         "visible": [
           {
@@ -935,7 +935,7 @@
       "id": "prime-sub-outreach-award",
       "url": "#notice/20231222103",
       "feature": "prime-sub-outreach",
-      "description": "Award notice prime snapshot: vendor, agency, dollars, industry, and possible subcontract window — no goal-gap apology.",
+      "description": "Award notice prime snapshot: vendor, agency, dollars, industry, and possible subcontract window \u2014 no goal-gap apology.",
       "postDeployOnly": true,
       "expectations": {
         "visible": [
@@ -963,6 +963,31 @@
           }
         ]
       }
+    },
+    {
+      "id": "mwbe-goal-chips-solicitation",
+      "url": "#notice/20260720022",
+      "feature": "mwbe-goal-chips",
+      "description": "DOT REI solicitation with Admin Code \u00a76-129 M/WBE goal 30% and 27-day response floor chips on notice detail.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#nmwbe [data-mwbe-sol-detail]",
+            "text": "M/WBE"
+          },
+          {
+            "selector": "#nmwbe [data-mwbe-sol-chips]",
+            "text": "30"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#nmwbe .loading"
+          }
+        ],
+        "focus": "#noticeview .route-item"
+      },
+      "postDeployOnly": true
     }
   ]
 }
