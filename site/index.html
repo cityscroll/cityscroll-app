@@ -2030,8 +2030,9 @@
           <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
           <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
         </div>
-        <!-- #afreq stays the shared model for aDescribe/subscribe; chips drive it (hidden from a11y tree). -->
-        <select id="afreq" hidden><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
+        <!-- #afreq is the shared model for aDescribe/subscribe; frequency chips drive it.
+             hidden from the visual tree but still named for the label-coverage census. -->
+        <select id="afreq" hidden aria-labelledby="quizfreqlbl"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
         <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
       </div>
 
