@@ -1020,8 +1020,8 @@ function meetingsExplorerCardHTML(entry){
 function renderHearingGroup(scope, entries){
   if(!entries.length) return "";
   const label=scope==="local"?"local_hearings_group":scope==="citywide"?"citywide_hearings_group":"unlocated_hearings_group";
-  const note=scope==="local"?"local_hearings_note":scope==="citywide"?"citywide_hearings_note":"unlocated_hearings_note";
-  return `<h2 class="hearinggroup">${t(label)} <small>${t(note)}</small></h2>${entries.map(meetingsExplorerCardHTML).join("")}`;
+  const noteText=scope==="citywide"?t("citywide_hearings_note"):"";
+  return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(meetingsExplorerCardHTML).join("")}`;
 }
 async function renderHearingExplorer(){
   const seq=++hearingRenderSeq;
