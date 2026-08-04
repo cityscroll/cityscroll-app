@@ -331,8 +331,12 @@ Artifacts: `site/data/district_activity.json` (stamped with `boundary_vintage`,
 `site/map_exploration.mjs`, build lib `tools/lib/district_activity.mjs`, gazetteer
 `site/civic_address_geocode.mjs`. Deep links: `#map`,
 `#map?level=community_district&parent=Queens&lens=land`, district tap-through uses
-existing `cd=` / `council=` / `boro=` list grammar. Tax-lien statistics live at
-`#property?view=tax-lien` (not the property list masthead). The location-resolution
+existing `cd=` / `council=` / `boro=` list grammar. Tax-lien **cycle context**
+inlines on Property Disposition notices/cards whose parcel BBLs appear on a
+published DOF list (ladder + deadline countdown + leave-rate line + action
+rail — pure `site/tax_lien_cycle_context.mjs`). The aggregate tables are
+archive-only at `#property?view=tax-lien` (not linked from the property lens
+header). The location-resolution
 flywheel dimension reads `district_activity.sources` and emits
 `map-zero-located-{lens}` when a non-empty corpus lands at 0 located, plus
 `map-granularity-council-{lens}` / `map-granularity-cd-{lens}` when coarser density
@@ -1702,8 +1706,17 @@ prediction scorecard, and emits `site/data/tax_lien_sale_{summary,bbl}.json`.
 When the scorecard is below the per-property ship bar, property pages must show
 only the BBL's published stage/outcome plus borough cohort statistics. A final
 sale means the lien was sold; later foreclosure is outside this dataset and is
-never predicted. Verify:
-`node --test test/tax_lien_sale_prediction.test.mjs test/ontology_registry.test.mjs`.
+never predicted.
+
+**Product surface (demote-don't-delete):** primary UI is notice/card **cycle
+context** (`buildTaxLienCycleContext` / `loadTaxLienForNotice`) — not the
+standalone stats page. Archive deep link `#property?view=tax-lien` keeps full
+borough/NTA tables behind a disclosure. Disposition notices reuse the same
+envelope via `buildDispositionCycleContext` (phase position + timing line).
+Class survey + carded deferrals: `PROPERTY_CYCLE_CONTEXT_SURVEY` in
+`site/tax_lien_cycle_context.mjs`. Capture:
+`python3 tools/capture_tax_lien_sale_predictions.py`. Verify:
+`node --test test/tax_lien_sale_prediction.test.mjs test/tax_lien_cycle_context.test.mjs test/ontology_registry.test.mjs`.
 
 ## ZAP duration, outcome base rates, and applicant conditioning
 

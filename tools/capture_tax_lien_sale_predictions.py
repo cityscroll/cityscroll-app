@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Capture deterministic before/after evidence for tax-lien sale surfaces.
+"""Capture before/after evidence for tax-lien cycle context on notices.
 
-The page is served from ``site/`` and the Property API is replaced with one
-stable listed-BBL fixture. The before frames hide the new panel and card note,
-matching the preceding Property lens without requiring a second checkout.
+Primary surface is notice detail (cycle position, historical leave rate,
+deadline state, action rail) for a Property Disposition notice whose BBL is
+on the published DOF list. The standalone aggregate panel remains available
+via the unlinked archive deep link ``#property?view=tax-lien``.
 
   python3 tools/capture_tax_lien_sale_predictions.py
 """
@@ -21,9 +22,10 @@ from playwright.sync_api import Page, Route, sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "docs" / "screenshots" / "tax-lien-sale-predictions"
 BBL = "1000110012"
+NOTICE_ID = "20250601001"
 
 PROPERTY = {
-    "request_id": "20250601001",
+    "request_id": NOTICE_ID,
     "start_date": "2025-06-01T00:00:00.000",
     "event_date": "2025-06-15T10:00:00.000",
     "agency_name": "Department of Citywide Administrative Services",
@@ -34,6 +36,7 @@ PROPERTY = {
         "The city-owned property is in the Borough of Manhattan, Block 11, "
         "Lot 12. This deterministic record is used only for screenshot evidence."
     ),
+    "end_date": None,
     "disposition_stage": "hearing",
     "property_location": {
         "scope": "local",
@@ -58,6 +61,19 @@ PROPERTY = {
     },
 }
 
+SODA_ROW = {
+    "request_id": NOTICE_ID,
+    "short_title": PROPERTY["short_title"],
+    "agency_name": PROPERTY["agency_name"],
+    "section_name": PROPERTY["section_name"],
+    "type_of_notice_description": PROPERTY["type_of_notice_description"],
+    "start_date": PROPERTY["start_date"],
+    "event_date": PROPERTY["event_date"],
+    "additional_description_1": PROPERTY["additional_description_1"],
+    "end_date": None,
+    "street_address_1": "12 Test Street",
+}
+
 PROPERTY_PAYLOAD = {
     "generated_at": "2026-08-03T00:00:00Z",
     "properties": [PROPERTY],
@@ -65,8 +81,9 @@ PROPERTY_PAYLOAD = {
 }
 
 BEFORE_CSS = """
-#tax-lien-sale-panel,
-.tax-lien-card-slot { display: none !important; }
+#ntaxlien,
+.tax-lien-card-slot,
+#tax-lien-sale-panel { display: none !important; }
 """
 
 
@@ -94,6 +111,8 @@ def json_response(route: Route, body: object, status: int = 200) -> None:
 
 
 def install_routes(page: Page) -> None:
+    # Playwright matches the most recently registered route first.
+    # Register broad catch-alls first, then specific endpoints so they win.
     page.route(
         "https://data.cityofnewyork.us/**",
         lambda route: json_response(route, []),
@@ -106,7 +125,34 @@ def install_routes(page: Page) -> None:
         "https://crol-worker.crol-worker.workers.dev/**",
         lambda route: json_response(route, {"ok": False, "reason": "fixture"}, 404),
     )
-    # Specific routes are registered last because Playwright matches in reverse order.
+    page.route(
+        "**/contract-lifecycle**",
+        lambda route: json_response(route, {}),
+    )
+    page.route(
+        "**/subsidy-lifecycle**",
+        lambda route: json_response(route, {}),
+    )
+    page.route(
+        "**/meeting-outcomes**",
+        lambda route: json_response(route, {}),
+    )
+    page.route(
+        "**/franchise-concessions**",
+        lambda route: json_response(route, {}),
+    )
+    page.route(
+        "**/attachment-metadata**",
+        lambda route: json_response(route, {"attachments": []}),
+    )
+    page.route(
+        "**/resource/dg92-zbpx.json**",
+        lambda route: json_response(route, [SODA_ROW]),
+    )
+    page.route(
+        "**/property-locations**",
+        lambda route: json_response(route, PROPERTY_PAYLOAD),
+    )
     page.route(
         "https://api.cityscroll.org/property-locations*",
         lambda route: json_response(route, PROPERTY_PAYLOAD),
@@ -117,60 +163,81 @@ def install_routes(page: Page) -> None:
     )
 
 
-def open_property(page: Page, base: str, *, wait_for_note: bool) -> None:
+def open_property_list(page: Page, base: str, *, wait_for_note: bool) -> None:
     page.goto(f"{base}/#property", wait_until="domcontentloaded")
     page.wait_for_selector("#propertyfeed .property-fcard", timeout=20_000)
-    page.wait_for_selector("#tax-lien-sale-panel h2", timeout=20_000, state="attached")
+    header = page.locator("#property-domain-intro").inner_text()
+    if "Tax lien sale statistics" in header:
+        raise RuntimeError("tax-lien stats link still present in property lens header")
     if wait_for_note:
         page.wait_for_selector("#propertyfeed .tax-lien-card-note", timeout=20_000)
     page.wait_for_timeout(300)
 
 
-def assert_layout(page: Page) -> None:
-    overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
-    if overflow:
-        raise RuntimeError("tax-lien capture has horizontal overflow")
-    text = page.locator("#tax-lien-sale-panel").inner_text()
-    if "lien, not the property" not in text or "historical context, not a current warning" not in text:
-        raise RuntimeError("owner-protective or expired-cycle copy is missing")
-    if "observed BBL status and cohort statistics only" not in text:
-        raise RuntimeError("below-bar cohort-only copy is missing")
-    if "ended June 3, 2025" not in text or "due June 2, 2025" not in text:
-        raise RuntimeError("date-only civic dates shifted across a time-zone boundary")
-    if page.locator("#tax-lien-sale-panel .tax-lien-nta-scroll tbody tr").count() <= 12:
-        raise RuntimeError("aggregate lens did not expose the complete NTA table")
+def open_notice(page: Page, base: str) -> None:
+    page.goto(f"{base}/#notice/{NOTICE_ID}", wait_until="domcontentloaded")
+    page.wait_for_selector("#ntaxlien [data-tax-lien-cycle-context]", timeout=30_000)
+    page.wait_for_timeout(400)
+
+
+def assert_notice_context(page: Page) -> None:
+    panel = page.locator("#ntaxlien [data-tax-lien-cycle-context]")
+    text = panel.inner_text()
+    if "lien, not the property" not in text:
+        raise RuntimeError("owner-protective lien-not-property copy is missing")
+    if "historically left before sale" not in text:
+        raise RuntimeError("historical leave-rate context is missing")
+    if "Based on 3 prior cycles" not in text:
+        raise RuntimeError("prior-cycle attribution is missing")
+    if "Check exemptions" not in text or "Compare payment plans" not in text:
+        raise RuntimeError("action rail buttons are missing")
+    if "Lien sale help" not in text and "Call 311" not in text:
+        raise RuntimeError("help / 311 actions are missing")
+    if "10-day list" not in text and "10-day" not in text:
+        raise RuntimeError("cycle stage for listed BBL is missing")
+    if BBL not in text:
+        raise RuntimeError("notice-scoped BBL is missing from parcel list")
+    if page.locator("#ntaxlien .tax-lien-stepper .lc-step").count() < 5:
+        raise RuntimeError("cycle stepper does not show the full ladder")
+    if page.locator("#ntaxlien .tax-lien-stepper .lc-step.current").count() < 1:
+        raise RuntimeError("current stage is not highlighted on the stepper")
 
 
 def capture_after(page: Page, base: str, out: Path) -> None:
-    open_property(page, base, wait_for_note=True)
-    assert_layout(page)
-
-    panel = page.locator("#tax-lien-sale-panel")
-    panel.screenshot(path=str(out / "after-aggregate-view.png"))
-
-    lookup = page.locator("#tax-lien-bbl")
-    lookup.fill(BBL)
-    page.locator("#tax-lien-bbl-go").click()
-    page.wait_for_selector("#tax-lien-bbl-result .tax-lien-result-card")
-    result = page.locator("#tax-lien-bbl-result").inner_text()
-    if BBL not in result or "Latest observed stage" not in result:
-        raise RuntimeError("BBL result did not render its observed stage")
-
+    open_property_list(page, base, wait_for_note=True)
     card = page.locator("#propertyfeed .property-fcard")
     card.scroll_into_view_if_needed()
     page.wait_for_timeout(200)
     page.screenshot(path=str(out / "after-listed-property-page.png"), full_page=False)
 
+    open_notice(page, base)
+    assert_notice_context(page)
+    panel = page.locator("#ntaxlien [data-tax-lien-cycle-context]")
+    panel.scroll_into_view_if_needed()
+    page.wait_for_timeout(200)
+    panel.screenshot(path=str(out / "after-notice-cycle-context.png"))
+    page.screenshot(path=str(out / "after-notice-detail.png"), full_page=False)
+
+    page.goto(f"{base}/#property?view=tax-lien", wait_until="domcontentloaded")
+    page.wait_for_selector("#tax-lien-sale-panel h2", timeout=20_000)
+    archive = page.locator("#tax-lien-sale-panel")
+    archive_text = archive.inner_text()
+    if "Archive reference" not in archive_text and "not linked from the property list" not in archive_text:
+        raise RuntimeError("archive posture note is missing on deep-link panel")
+    archive.screenshot(path=str(out / "after-archive-panel.png"))
+
 
 def capture_before(page: Page, base: str, out: Path) -> None:
-    open_property(page, base, wait_for_note=False)
+    open_property_list(page, base, wait_for_note=False)
     page.add_style_tag(content=BEFORE_CSS)
     page.evaluate("window.scrollTo(0, 0)")
-    page.screenshot(path=str(out / "before-aggregate-view.png"), full_page=False)
-    card = page.locator("#propertyfeed .property-fcard")
-    card.scroll_into_view_if_needed()
-    page.wait_for_timeout(200)
     page.screenshot(path=str(out / "before-listed-property-page.png"), full_page=False)
+
+    page.goto(f"{base}/#notice/{NOTICE_ID}", wait_until="domcontentloaded")
+    page.wait_for_selector("#noticeview .rolename, #noticeview h2", timeout=20_000)
+    page.add_style_tag(content=BEFORE_CSS)
+    page.wait_for_timeout(300)
+    page.screenshot(path=str(out / "before-notice-detail.png"), full_page=False)
 
 
 def main() -> int:
