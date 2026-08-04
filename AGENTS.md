@@ -2034,6 +2034,13 @@ the existing community-district boundary keys, so map drill counts and list
 filters stay in parity. Rebuild with `node tools/build_neighborhood_gazetteer.mjs`;
 verify with `node --test test/neighborhood_search.test.mjs` and measure with
 `node tools/benchmark_neighborhood_search.mjs`.
+## Property typed timed events
+
+Property notice dates are typed by `site/property_timed_events.mjs`; do not reuse a bare
+`event_date` as an action deadline. Each event retains an exact source-field span, and
+accommodation boilerplate must never become a bid deadline. Verify extraction, temporal
+bands, and honest-empty behavior with `node --test test/property_timed_events.test.mjs`,
+then rerun `node tools/property_a11y_census.mjs --as-of 2026-08-04 --format markdown`.
 
 ## Maintaining this file
 

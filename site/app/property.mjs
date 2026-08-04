@@ -429,6 +429,7 @@ function propertyCommercialDetailHTML(commercial){
     contacts.push(`<span lang="en" dir="ltr">${escUiHtml(p.value)}</span>`);
   }
   const hasBid=Boolean(method || packageUrl || steps || contacts.length);
+  const timedChips=propertyTimedEventChipsHTML(commercial);
   const whatBlock=hasWhat?`<div class="property-commercial-what">
       <div class="stage-name">${t("property_commercial_what_lbl")}</div>
       <div><span class="tag asset">${escUiHtml(t(catKey))}</span>
@@ -455,6 +456,7 @@ function propertyCommercialDetailHTML(commercial){
   const how=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("property_commercial_provenance_html")}</div></details>`;
   return `<section class="property-commercial-detail" data-commercial-detail="1" data-sale-eligible="1" aria-label="${escUiHtml(t("property_commercial_heading"))}">
     <div class="chain-h">${t("property_commercial_heading")}</div>
+    ${timedChips}
     ${whatBlock}
     ${priceBlock}
     ${dealBlock}
@@ -504,6 +506,9 @@ async function loadPropertyCommercialDetail(r, el){
       commercial.sale_eligible=tools.hasCommercialSaleSignals(commercial);
     } else if(commercial && commercial.sale_eligible==null){
       commercial.sale_eligible=commercialSaleSignalsFallback(commercial);
+    }
+    if(commercial && tools && typeof tools.propertyTimedEventViews==="function"){
+      commercial.event_views=tools.propertyTimedEventViews(commercial.timed_events||[]);
     }
     if(commercial) r.commercial=commercial;
     if(!document.contains(el)) return;
@@ -791,12 +796,24 @@ function dollarBadge(r){
 }
 function ensurePropertyCommercial(r, tools){
   if(!r) return null;
-  if(r.commercial && r.commercial.glance) return r.commercial;
+  if(r.commercial && r.commercial.glance){
+    if(tools && typeof tools.propertyTimedEventViews==="function"){
+      r.commercial.event_views=tools.propertyTimedEventViews(r.commercial.timed_events||[]);
+    }
+    return r.commercial;
+  }
   if(tools && tools.extractPropertyCommercial){
     r.commercial=tools.extractPropertyCommercial(r);
+    if(typeof tools.propertyTimedEventViews==="function"){
+      r.commercial.event_views=tools.propertyTimedEventViews(r.commercial.timed_events||[]);
+    }
     return r.commercial;
   }
   return null;
+}
+function propertyTimedEventChipsHTML(commercial){
+  const chips=(commercial?.event_views||[]).filter(v=>v.date&&v.label_key).map(v=>`<time class="tag ${v.chip_class}" datetime="${escUiHtml(v.date)}" data-date-chip="1"${v.band?` data-open-window-band="${v.band}"`:""}>${escUiHtml(t(v.label_key))} · ${escUiHtml(fdt(v.fmt))}${v.band?` · <span lang="en" dir="ltr">${v.band}</span>`:""}</time>`);
+  return chips.length?`<div>${chips.join("")}</div>`:"";
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
 let propertyCommunityDistrict="", propertyResolvedNeighborhood=null;
@@ -865,7 +882,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
     ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
     ${priceLabel?`<span class="tag amt">${priceLabel}</span>`:""}
     ${methodLabel?`<span class="tag method">${escUiHtml(methodLabel)}</span>`:""}
-    ${closeLabel?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:""}
+    ${Array.isArray(commercial?.event_views)&&commercial.event_views.length?propertyTimedEventChipsHTML(commercial):(closeLabel?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:"")}
   </div>`;
   const dealLine=(!closed && glance && glance.deal)
     ? `<p class="property-deal-signal" data-deal-status="derived">${escUiHtml(glance.deal)}</p>`

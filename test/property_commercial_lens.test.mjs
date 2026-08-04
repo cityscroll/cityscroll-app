@@ -174,11 +174,20 @@ test("explorer filter + sort: closing soon and price order", () => {
   );
 
   const byPrice = sortPropertyExplorerEntries(entries, "price_desc", (r) => r.commercial);
-  const amounts = byPrice
-    .map((e) => commercialPriceAmount(e.primary.commercial))
-    .filter((n) => n != null);
-  for (let i = 1; i < amounts.length; i++) {
-    assert.ok(amounts[i - 1] >= amounts[i], "price_desc is non-increasing among priced rows");
+  // Temporal honesty outranks price: current/undated notices stay ahead of the archive.
+  // Within each temporal bucket, explicit price order remains descending.
+  const buckets = new Map();
+  for (const entry of byPrice) {
+    const close = commercialCloseDate(entry.primary, entry.primary.commercial);
+    const bucket = close && isCloseDatePast(close, "2026-08-03") ? "closed" : close ? "open" : "undated";
+    if (!buckets.has(bucket)) buckets.set(bucket, []);
+    const amount = commercialPriceAmount(entry.primary.commercial);
+    if (amount != null) buckets.get(bucket).push(amount);
+  }
+  for (const amounts of buckets.values()) {
+    for (let i = 1; i < amounts.length; i++) {
+      assert.ok(amounts[i - 1] >= amounts[i], "price_desc is non-increasing inside each temporal bucket");
+    }
   }
 
   const byClose = sortPropertyExplorerEntries(entries, "closing_soon", (r) => r.commercial, {
@@ -288,6 +297,14 @@ test("isCloseDatePast treats missing dates as not closed", () => {
   assert.equal(isCloseDatePast("2026-08-20", "2026-08-03"), false);
   assert.equal(isCloseDatePast(null, "2026-08-03"), false);
   assert.equal(commercialCloseDate({ event_date: "2014-01-01T00:00:00.000" }, null), "2014-01-01");
+
+  const hearing = extractPropertyCommercial({
+    request_id: "hearing-temporal",
+    type_of_notice_description: "Public Hearings",
+    additional_description_1: "A public hearing will be held on June 27, 2018.",
+  });
+  assert.equal(hearing.close_date, "2018-06-27");
+  assert.equal(isCloseDatePast(commercialCloseDate({}, hearing), "2026-08-03"), true);
 });
 
 test("alert scope from commercial lens state carries asset + method + borough", () => {
