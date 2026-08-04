@@ -93,10 +93,16 @@ test("T3 UI helpers render related panel and site wires fillContext", () => {
   });
   assert.match(html, /attachment-related/);
   assert.match(html, /data-attachment-related/);
+  assert.match(html, /aria-labelledby="attachment-related-h"/);
+  assert.match(html, /<h3 class="attachment-related-h"/);
   assert.match(html, /#notice\/20230612007/);
   assert.match(html, /Ashokan/);
   assert.match(SITE_SOURCE, /attachmentRelatedHTMLFor/);
   assert.match(SITE_SOURCE, /attachment_related\.mjs/);
+  assert.match(SITE_SOURCE, /related_by_attachment/);
+  // Client module must not import outside site/ (static origin cannot serve warehouse/).
+  const clientMod = readFileSync(new URL("../site/attachment_related.mjs", import.meta.url), "utf8");
+  assert.ok(!clientMod.includes("warehouse/"), "client related module must stay inside site/");
   const indexCss = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
   assert.match(indexCss, /\.attachment-related\b/);
   const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");

@@ -939,6 +939,8 @@ async function showNotice(id, watch){
     if(r && attachmentData && Array.isArray(attachmentData.attachments) && attachmentData.attachments.length){
       r.attachments=attachmentData.attachments;
       r.n_documents=Math.max(Number(r.n_documents||0),attachmentData.attachments.length);
+      // T3: precomputed related edges from /attachment-metadata when present.
+      if(attachmentData.related_by_attachment) r.related_by_attachment=attachmentData.related_by_attachment;
     }
   }catch(e){}
   if(!r){

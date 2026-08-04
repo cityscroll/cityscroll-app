@@ -854,7 +854,18 @@ async function attachmentRelatedHTMLFor(r){
   if(!hasAttach) return "";
   const tools = await attachmentRelatedTools();
   if(!tools) return "";
-  const artifact = await tools.loadAttachmentRelatedLookup();
+  // Prefer edges stamped on the notice (worker /attachment-metadata) so hermetic
+  // demos need no second fetch; fall back to the static site artifact.
+  let artifact = null;
+  if(r.related_by_attachment && Array.isArray(r.related_by_attachment.related)){
+    artifact = {
+      by_notice: {
+        [String(r.request_id)]: { related: r.related_by_attachment.related },
+      },
+    };
+  }else{
+    artifact = await tools.loadAttachmentRelatedLookup();
+  }
   if(!artifact) return "";
   return tools.attachmentRelatedHTML(artifact, r.request_id, { t, esc: escUiHtml });
 }
