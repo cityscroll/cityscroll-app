@@ -1,0 +1,253 @@
+{
+  "schema": "cityscroll.subsidy_project_lookup.v1",
+  "materialized_at": "2026-08-04T11:49:21Z",
+  "receipt": {
+    "schema": "cityscroll.nycedc_project_join_receipt.v1",
+    "observed_at": "2026-08-04T11:49:21Z",
+    "bridge_status": "accepted",
+    "join_rate": 0.4167,
+    "threshold": 0.3,
+    "false_positives": 0,
+    "unreviewed_candidates": 0
+  },
+  "row_count": 5,
+  "notice_count": 3,
+  "by_notice": {
+    "20251229015": [
+      {
+        "receipt_backed": true,
+        "join_method": "name_address_date",
+        "join_confidence": 1,
+        "authority": "build_nyc",
+        "project_id": "11599",
+        "project_name": "Grace Church School",
+        "company": "Grace Church School",
+        "address": "86 4th Avenue, New York, NY",
+        "requested_benefit": 39200000,
+        "estimated_public_cost": 2179198,
+        "project_cost": null,
+        "milestones": {
+          "application": {
+            "date": null,
+            "status": null
+          },
+          "board_decision": {
+            "date": "2026-01-27",
+            "outcome": "approved"
+          },
+          "closing": {
+            "date": null,
+            "status": null
+          },
+          "compliance": {
+            "date": null,
+            "status": null
+          }
+        },
+        "lifecycle_dates": [
+          {
+            "stage": "board_decision",
+            "date": "2026-01-27",
+            "outcome": "approved"
+          }
+        ],
+        "official_documents_url": "https://edc.nyc/sites/default/files/2026-02/BNYC-January-27-2026-board-meeting-minutes-DRAFT.pdf",
+        "provenance": {
+          "content_sha256": "983c30ba5fa9718c09ef1acda981887a30edb3dd8e7d89e0d01a4e2840208b44",
+          "document_type": "board_minutes",
+          "observed_at": "2026-08-04T11:49:21Z",
+          "source_locator": "agenda-item-3",
+          "source_url": "https://edc.nyc/sites/default/files/2026-02/BNYC-January-27-2026-board-meeting-minutes-DRAFT.pdf"
+        }
+      },
+      {
+        "receipt_backed": true,
+        "join_method": "name_address_date",
+        "join_confidence": 1,
+        "authority": "build_nyc",
+        "project_id": "minutes:983c30ba5fa9:4",
+        "project_name": "Xaverian High School & The Ryken Educational Center",
+        "company": "Xaverian High School & The Ryken Educational Center",
+        "address": "7100 Shore Road, Brooklyn, New York",
+        "requested_benefit": null,
+        "estimated_public_cost": 917664,
+        "project_cost": null,
+        "milestones": {
+          "application": {
+            "date": null,
+            "status": null
+          },
+          "board_decision": {
+            "date": "2026-01-27",
+            "outcome": "approved"
+          },
+          "closing": {
+            "date": null,
+            "status": null
+          },
+          "compliance": {
+            "date": null,
+            "status": null
+          }
+        },
+        "lifecycle_dates": [
+          {
+            "stage": "board_decision",
+            "date": "2026-01-27",
+            "outcome": "approved"
+          }
+        ],
+        "official_documents_url": "https://edc.nyc/sites/default/files/2026-02/BNYC-January-27-2026-board-meeting-minutes-DRAFT.pdf",
+        "provenance": {
+          "content_sha256": "983c30ba5fa9718c09ef1acda981887a30edb3dd8e7d89e0d01a4e2840208b44",
+          "document_type": "board_minutes",
+          "observed_at": "2026-08-04T11:49:21Z",
+          "source_locator": "agenda-item-4",
+          "source_url": "https://edc.nyc/sites/default/files/2026-02/BNYC-January-27-2026-board-meeting-minutes-DRAFT.pdf"
+        }
+      }
+    ],
+    "20260313009": [
+      {
+        "receipt_backed": true,
+        "join_method": "name_address_date",
+        "join_confidence": 1,
+        "authority": "build_nyc",
+        "project_id": "minutes:0bd7d483151d:6",
+        "project_name": "Brooklyn Friends School",
+        "company": "Brooklyn Friends School",
+        "address": "383-393 Pearl Street a/k/a 19- 23 Willoughby Street, Brooklyn, New York",
+        "requested_benefit": 34000000,
+        "estimated_public_cost": 2075796,
+        "project_cost": null,
+        "milestones": {
+          "application": {
+            "date": null,
+            "status": null
+          },
+          "board_decision": {
+            "date": "2026-03-24",
+            "outcome": "approved"
+          },
+          "closing": {
+            "date": null,
+            "status": null
+          },
+          "compliance": {
+            "date": null,
+            "status": null
+          }
+        },
+        "lifecycle_dates": [
+          {
+            "stage": "board_decision",
+            "date": "2026-03-24",
+            "outcome": "approved"
+          }
+        ],
+        "official_documents_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-March-24-2026-board-meeting-minutes_0.pdf",
+        "provenance": {
+          "content_sha256": "0bd7d483151d2eeb98165a0b352b9c03b41fe4c918866eaf32cf2ed94da1957f",
+          "document_type": "board_minutes",
+          "observed_at": "2026-08-04T11:49:21Z",
+          "source_locator": "agenda-item-6",
+          "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-March-24-2026-board-meeting-minutes_0.pdf"
+        }
+      }
+    ],
+    "20260414006": [
+      {
+        "receipt_backed": true,
+        "join_method": "name_address_date",
+        "join_confidence": 1,
+        "authority": "nycida",
+        "project_id": "minutes:93b54bf47bf6:11",
+        "project_name": "F&F Hardware & Supply, Inc.",
+        "company": "F&F Hardware & Supply, Inc.",
+        "address": "1275 Oak Point Avenue Bronx, New York 10474",
+        "requested_benefit": null,
+        "estimated_public_cost": null,
+        "project_cost": null,
+        "milestones": {
+          "application": {
+            "date": null,
+            "status": null
+          },
+          "board_decision": {
+            "date": "2026-05-19",
+            "outcome": "approved"
+          },
+          "closing": {
+            "date": null,
+            "status": null
+          },
+          "compliance": {
+            "date": null,
+            "status": null
+          }
+        },
+        "lifecycle_dates": [
+          {
+            "stage": "board_decision",
+            "date": "2026-05-19",
+            "outcome": "approved"
+          }
+        ],
+        "official_documents_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf",
+        "provenance": {
+          "content_sha256": "93b54bf47bf6a57cd6efe12258e55830084d05ab078da896290446a46c081e46",
+          "document_type": "board_minutes",
+          "observed_at": "2026-08-04T11:49:21Z",
+          "source_locator": "agenda-item-11",
+          "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf"
+        }
+      },
+      {
+        "receipt_backed": true,
+        "join_method": "name_address_date",
+        "join_confidence": 1,
+        "authority": "nycida",
+        "project_id": "11595",
+        "project_name": "Granville Stores Corp. and Granville Payne Retail LLC",
+        "company": "Granville Stores Corp. and Granville Payne Retail LLC",
+        "address": "340 Pennsylvania Avenue (a/k/a 626 Sutter Avenue) Brooklyn, New York 11207",
+        "requested_benefit": null,
+        "estimated_public_cost": null,
+        "project_cost": null,
+        "milestones": {
+          "application": {
+            "date": null,
+            "status": null
+          },
+          "board_decision": {
+            "date": "2026-05-19",
+            "outcome": "approved"
+          },
+          "closing": {
+            "date": null,
+            "status": null
+          },
+          "compliance": {
+            "date": null,
+            "status": null
+          }
+        },
+        "lifecycle_dates": [
+          {
+            "stage": "board_decision",
+            "date": "2026-05-19",
+            "outcome": "approved"
+          }
+        ],
+        "official_documents_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf",
+        "provenance": {
+          "content_sha256": "93b54bf47bf6a57cd6efe12258e55830084d05ab078da896290446a46c081e46",
+          "document_type": "board_minutes",
+          "observed_at": "2026-08-04T11:49:21Z",
+          "source_locator": "agenda-item-12",
+          "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf"
+        }
+      }
+    ]
+  }
+}

@@ -6,11 +6,19 @@
    stages collapse into one "not yet reached" indicator. Pure model:
    site/subsidy_phase_spine.mjs. */
 let subsidyPhaseSpineToolsPromise = null;
+let subsidyProjectPanelToolsPromise = null;
 function ensureSubsidyPhaseSpineTools(){
   if(!subsidyPhaseSpineToolsPromise){
     subsidyPhaseSpineToolsPromise = import("../subsidy_phase_spine.mjs").catch(() => null);
   }
   return subsidyPhaseSpineToolsPromise;
+}
+
+function ensureSubsidyProjectPanelTools(){
+  if(!subsidyProjectPanelToolsPromise){
+    subsidyProjectPanelToolsPromise = import("../subsidy_project_panel.mjs").catch(() => null);
+  }
+  return subsidyProjectPanelToolsPromise;
 }
 
 function isSubsidyEligibleNotice(r){
@@ -27,6 +35,20 @@ function subsidyStageLabel(stage){
   if(stage === "closing") return t("subsidy_stage_closing");
   if(stage === "compliance") return t("subsidy_stage_compliance");
   return stage;
+}
+
+// Date-only publisher fields are civil dates, not instants. Pin formatting to UTC
+// so New York's offset cannot shift a board date to the previous day.
+function subsidyProjectDate(value){
+  const iso = String(value || "").slice(0,10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso;
+  const meta = (window.LANG_META || {})[window.LANG || "en"];
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString(meta ? meta.intlDate : "en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
 }
 
 // Hand-synced lag table with worker/src/lib/subsidy_lifecycle.mjs SUBSIDY_STAGE_EXPECT_LAG_DAYS.
@@ -528,10 +550,19 @@ function subsidyJoinAndFieldChrome(data, notice){
   return { joinNote, feedNote, fieldGaps: fieldsWrap, howHTML };
 }
 
-function subsidyLifecycleHTML(data, notice, phaseTools){
+function subsidyLifecycleHTML(data, notice, phaseTools, projectTools){
   if(!data) return "";
   const chrome = subsidyJoinAndFieldChrome(data, notice);
   const join = data.join || {};
+  const projectPanel = projectTools && typeof projectTools.subsidyProjectPanelHTML === "function"
+    ? projectTools.subsidyProjectPanelHTML(data, {
+        t,
+        esc: escUiHtml,
+        money: lifecycleMoney,
+        date: subsidyProjectDate,
+        externalSuffixHTML: typeof extSR === "function" ? extSR : undefined,
+      })
+    : "";
 
   let body = "";
   if(join.matched && data.source_status !== "unavailable"){
@@ -548,7 +579,7 @@ function subsidyLifecycleHTML(data, notice, phaseTools){
   }
 
   // Lead = kinetic facts; feed-down is secondary (after timeline, not the headline).
-  return `<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
+  return `${projectPanel}<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
     ${chrome.joinNote?`<div class="note" data-subsidy-join-note="1">${chrome.joinNote}</div>`:""}
     ${body}
     ${chrome.feedNote?`<div class="note lc-secondary" data-subsidy-feed-secondary="1">${chrome.feedNote}</div>`:""}
@@ -574,9 +605,14 @@ async function loadSubsidyLifecycle(r, el){
       })}</div>`;
     return;
   }
-  const phaseTools = await phaseToolsP;
+  const [phaseTools, projectTools] = await Promise.all([
+    phaseToolsP,
+    data.project_identity && data.project_identity.length
+      ? ensureSubsidyProjectPanelTools()
+      : Promise.resolve(null),
+  ]);
   if(!document.contains(el)) return;
-  el.innerHTML = subsidyLifecycleHTML(data, r, phaseTools);
+  el.innerHTML = subsidyLifecycleHTML(data, r, phaseTools, projectTools);
   bindSubsidyPhaseUI(el);
 }
 
@@ -584,6 +620,7 @@ async function loadSubsidyLifecycle(r, el){
 globalThis.SUBSIDY_STAGE_EXPECT_LAG_DAYS = SUBSIDY_STAGE_EXPECT_LAG_DAYS;
 globalThis.bindSubsidyPhaseUI = bindSubsidyPhaseUI;
 globalThis.ensureSubsidyPhaseSpineTools = ensureSubsidyPhaseSpineTools;
+globalThis.ensureSubsidyProjectPanelTools = ensureSubsidyProjectPanelTools;
 globalThis.isSubsidyEligibleNotice = isSubsidyEligibleNotice;
 globalThis.loadSubsidyLifecycle = loadSubsidyLifecycle;
 globalThis.subsidyAnchorFromNotice = subsidyAnchorFromNotice;
@@ -605,3 +642,4 @@ globalThis.subsidyPreferredCostSlot = subsidyPreferredCostSlot;
 globalThis.subsidyStageHTML = subsidyStageHTML;
 globalThis.subsidyStageLabel = subsidyStageLabel;
 Object.defineProperty(globalThis, "subsidyPhaseSpineToolsPromise", { configurable: true, get: () => subsidyPhaseSpineToolsPromise, set: value => { subsidyPhaseSpineToolsPromise = value; } });
+Object.defineProperty(globalThis, "subsidyProjectPanelToolsPromise", { configurable: true, get: () => subsidyProjectPanelToolsPromise, set: value => { subsidyProjectPanelToolsPromise = value; } });

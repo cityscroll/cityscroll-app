@@ -2,7 +2,7 @@
   "schema_version": 1,
   "title": "CityScroll data-source topology",
   "description": "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
-  "sources_hash": "ff827ba3567c9dfe84f2e83989837de7edb306aa1bc8cf014855b06d6f2cacc6",
+  "sources_hash": "83deba73d42f2dfbcc69e518d6b5ce39e64196786031ff57e18a4f1f6078e9f0",
   "declared_inputs": [
     {
       "path": "docs/data-sources.md",
@@ -171,6 +171,10 @@
     {
       "path": "warehouse/receipts/proof/rc2_nycedc_project_documents_latest.json",
       "sha256": "77c9ef056e28cb0fbb7426ae5bad33cfa44457894546a10fa445d1647f403280"
+    },
+    {
+      "path": "warehouse/receipts/proof/rc2_subsidy_project_lookup_speed.json",
+      "sha256": "45c8dcb254e700edca327c00ca0a70fb44cf74047d4fedd30517d56f36876b39"
     },
     {
       "path": "warehouse/receipts/proof/rules_adoption_lag_latest.json",
