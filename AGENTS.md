@@ -608,7 +608,10 @@ joins phase view + statutory clock into one sentence on the land detail spine
 ZAP disposition `dcp-publichearinglocation` (+ `dcp-dateofpublichearing` with
 clock time) — parse in `worker/src/lib/zap_hearing_logistics.mjs`, stamp
 `hearing_logistics` on `/zap-outcomes`, and feed the land action rail (maps
-attend + watch live). Land filter `status=hearings` reads
+attend + watch live). The individual-project shape is an array only when exact
+disposition evidence exists; honest absence is `null`, and milestone review
+sessions do not become venue/livestream evidence. Fixed-sample measurement uses
+`tools/measure_zap_hearing_logistics.mjs`. Land filter `status=hearings` reads
 `site/data/land_upcoming_hearings.json`, materialized by a polite ZAP sweep of
 **all** sell-facing Open Data projects (`In Public Review` / `Noticed` /
 `Active` / `Filed`): list ids from SODA `hgx4-8ukb`, fetch each project from
@@ -621,6 +624,8 @@ Fixtures stay under `test/fixtures/zap_hearing_logistics/` only.
 node tools/build_land_upcoming_hearings.mjs --live          # production refresh
 node tools/build_land_upcoming_hearings.mjs --fixture       # test fixtures only
 node tools/build_land_upcoming_hearings.mjs --check         # synthetic-row gate
+node tools/measure_zap_hearing_logistics.mjs --live --limit 50 \
+  --sample site/data/zap_outcome_sources/verification_receipts/zap_hearing_logistics_2026-08-04.json
 node --test test/zap_hearing_logistics.test.mjs test/land_upcoming_hearings.test.mjs
 ```
 
