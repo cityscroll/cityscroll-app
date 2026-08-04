@@ -1998,10 +1998,11 @@
           <button type="button" class="chip" data-w="property" aria-pressed="false" data-i18n="quiz_property">Property sales</button>
           <button type="button" class="chip" data-w="rules" aria-pressed="false" data-i18n="quiz_rules">Rule changes</button>
           <button type="button" class="chip" data-w="meetings" aria-pressed="false" data-i18n="quiz_meetings">Hearings and meetings</button>
+          <button type="button" class="chip" data-w="district" aria-pressed="false" data-i18n="quiz_district">Follow a district</button>
         </div>
       </div>
 
-      <div class="afield">
+      <div class="afield" id="quiznarrowbox">
         <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow with a keyword (optional)</span></label>
         <input type="text" id="quiznarrow" placeholder="type what you're looking for, or pick a topic above…" data-i18n-placeholder="quiz_narrow_placeholder">
       </div>
@@ -2017,6 +2018,13 @@
         </select>
         <input type="text" id="aparam" placeholder="" style="display:none">
         <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — for example, Buildings" style="display:none;margin-top:6px">
+      </div>
+      <div class="afield" id="adistrictbox" hidden>
+        <label for="adistrict"><span class="qstep">2</span> <span data-i18n="district_pick_label">Council district</span></label>
+        <select id="adistrict" aria-describedby="districtpresetnote">
+          <option value="" data-i18n="district_pick_placeholder">Choose a council district</option>
+        </select>
+        <p id="districtpresetnote" class="muted" data-i18n="district_preset_note" style="font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;margin:6px 0 0">One weekly email groups awards, hearings, land use actions, and property dispositions for this district.</p>
       </div>
       <div id="amoneyfields" style="display:none">
         <div class="afield">
@@ -2055,6 +2063,7 @@
               <option value="property" data-i18n="watch_property">Property sale notices</option>
               <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
               <option value="meetings" data-i18n="watch_meetings">Public hearings and meetings</option>
+              <option value="district" data-i18n="watch_district">Follow a district</option>
               <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
               <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
               <option value="awardwatch" data-i18n="watch_awardwatch">The award on a notice I'm viewing</option>

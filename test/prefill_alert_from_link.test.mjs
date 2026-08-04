@@ -36,6 +36,7 @@ function makeFixture(){
     "#awatch": { value: "" },
     "#aparam": { value: "" },
     "#aagency": { value: "" },
+    "#adistrict": { value: "" },
     "#adest": { value: "", focus() {} },
   };
   const $ = (sel) => fields[sel];
@@ -95,6 +96,16 @@ test("land lens: #awatch=rezone, #aparam joins the stored keywords", async () =>
   assert.equal(fields["#awatch"].value, "rezone");
   assert.equal(fields["#aparam"].value, "rivington");
   assert.equal(calls.aPreview, 1);
+});
+
+test("district context URL fills one weekly district preset and previews it", async () => {
+  const { prefillAlertFromLink, fields, calls } = makeFixture();
+  await prefillAlertFromLink("district", { councilDistrict: "33" }, "weekly");
+  assert.equal(fields["#awatch"].value, "district");
+  assert.equal(fields["#adistrict"].value, "33");
+  assert.equal(fields["#afreq"].value, "Weekly");
+  assert.equal(calls.aPreview, 1);
+  assert.match(src, /value = "district"; aWatchChange\(true\)/);
 });
 
 test("a section lens (property/rules/meetings): #awatch=the lens itself, #aparam=keywords, #aagency=agency", async () => {

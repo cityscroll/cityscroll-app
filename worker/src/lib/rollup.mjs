@@ -139,7 +139,14 @@ export function rollupSubject({ totalNew, totalForecasts, labels = [], quiet = f
  */
 export function rollupBodySections(sections = []) {
   const list = Array.isArray(sections) ? sections : [];
-  return list.filter((s) => s && !s.error);
+  return list.filter((s) => {
+    if (!s || s.error) return false;
+    // Composite district watches use honest-absent action groups. When the
+    // materialized district list has no fresh items, omit the whole watch from
+    // a sibling-triggered rollup instead of rendering "nothing this week".
+    if (s.lens === "district") return (Number(s.new) || 0) > 0;
+    return true;
+  });
 }
 
 /**

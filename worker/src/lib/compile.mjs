@@ -15,6 +15,7 @@ export { vendorStem };
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
 const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
+const DISTRICT_WEEKLY_DIGESTS = "https://cityscroll.org/data/district_weekly_digests.json";
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
 // type_of_notice_description + address/method feed digest action rails (handoffs).
@@ -61,6 +62,24 @@ export function examOpenWindowBand(exam, todayISO) {
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
+
+  if (sub.lens === "district") {
+    const council = typeof f.councilDistrict === "string" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(f.councilDistrict)
+      ? f.councilDistrict
+      : null;
+    if (!council) return null;
+    return {
+      url: DISTRICT_WEEKLY_DIGESTS,
+      params: {},
+      idField: "district_item_id",
+      kind: "district",
+      transformRows: (payload) => {
+        const record = payload?.by_council_district?.[council];
+        const rows = Array.isArray(record?.items) ? record.items.filter((row) => row?.district_item_id) : [];
+        return record?.total === rows.length ? rows : [];
+      },
+    };
+  }
 
   if (sub.lens === "people" && f.view === "guide" && f.interestArea) {
     const area = String(f.interestArea);
