@@ -1,0 +1,85 @@
+{
+  "measured_at": "2026-08-03T23:07:51.295467+00:00",
+  "built_at": "2026-08-03T23:06:25.713Z",
+  "sources": {
+    "land": {
+      "counted": 236,
+      "located": 236,
+      "by_method": {
+        "cd_centroid_council": 231
+      }
+    },
+    "property": {
+      "counted": 133,
+      "located": 133,
+      "by_method": {
+        "coordinates_pip": 125
+      }
+    },
+    "meetings": {
+      "counted": 119,
+      "located": 95,
+      "by_method": {
+        "matter_body_borough": 14,
+        "civic_address_pip": 34,
+        "cd_centroid_council": 15,
+        "matter_title_place": 7,
+        "rule_default_citywide": 10,
+        "citywide_phrase": 1,
+        "venue_column": 6,
+        "citywide": 2,
+        "classic_affected_area": 2,
+        "virtual_only": 3,
+        "agency_hq": 1
+      }
+    },
+    "rules": {
+      "counted": 100,
+      "located": 100,
+      "by_method": {
+        "citywide": 97,
+        "matter_title_place": 3
+      }
+    },
+    "money": {
+      "counted": 3,
+      "located": 2,
+      "by_method": {
+        "civic_address_pip": 1,
+        "citywide_phrase": 1
+      }
+    }
+  },
+  "unlocated": {
+    "land": 0,
+    "property": 0,
+    "rules": 0,
+    "meetings": 24,
+    "money": 1
+  },
+  "unlocated_reasons": {
+    "land": {},
+    "property": {},
+    "meetings": {
+      "no_place_signal": 24
+    },
+    "rules": {},
+    "money": {
+      "no_place_signal": 1
+    }
+  },
+  "citywide": {
+    "land": 3,
+    "property": 0,
+    "rules": 97,
+    "meetings": 13,
+    "money": 1
+  },
+  "virtual": {
+    "land": 0,
+    "property": 0,
+    "rules": 0,
+    "meetings": 3,
+    "money": 0
+  }
+}

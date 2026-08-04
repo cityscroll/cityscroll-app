@@ -516,6 +516,34 @@ test("location-resolution emits map-zero-located when place lens is all-zero on 
   assert.equal(result.metrics.map_lens_rates.meetings.counted, 119);
 });
 
+test("location-resolution emits map-high-no-place-signal on residual unlocated tails", () => {
+  const inventory = loadJson("ontology/fixtures/dimensions/location_resolution.json");
+  const residualMap = {
+    sources: {
+      land: { corpus: "zap", counted: 10, located: 10 },
+      property: { corpus: "property", counted: 5, located: 5 },
+      meetings: { corpus: "meetings", counted: 100, located: 60 },
+      rules: { corpus: "rules", counted: 4, located: 4 },
+      money: { corpus: "ocp", counted: 8, located: 2 },
+    },
+    unlocated_reasons: {
+      meetings: { no_place_signal: 35, virtual_only: 3 },
+      money: { no_place_signal: 6 },
+    },
+    virtual: { meetings: 3 },
+  };
+  const result = evaluateLocationResolution({
+    location_resolution: inventory,
+    district_activity: residualMap,
+  });
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.kind === "map-high-no-place-signal" && c.evidence?.lens === "meetings"));
+  assert.ok(result.cards.some((c) =>
+    c.evidence?.kind === "map-high-no-place-signal" && c.evidence?.lens === "money"));
+  assert.ok(Array.isArray(result.metrics.no_place_findings));
+  assert.ok(result.metrics.no_place_findings.some((f) => f.lens === "meetings"));
+});
+
 test("location-resolution emits granularity-zero-collapse when council density is all-zero", () => {
   const inventory = loadJson("ontology/fixtures/dimensions/location_resolution.json");
   const collapsedMap = {

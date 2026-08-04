@@ -1,0 +1,95 @@
+{
+  "measured_at": "2026-08-04T00:14:48.001363+00:00",
+  "note": "Post-rebase onto origin/main after #432 money densify + #433 map drill; includes this PR meetings/rules citywide + FIX skip",
+  "built_at": "2026-08-04T00:14:09.960Z",
+  "sources": {
+    "land": {
+      "counted": 236,
+      "located": 236,
+      "by_method": {
+        "cd_centroid_council": 231
+      },
+      "corpus": "zap_projects_warehouse_lookup"
+    },
+    "property": {
+      "counted": 133,
+      "located": 133,
+      "by_method": {
+        "coordinates_pip": 125
+      },
+      "corpus": "property_domain_observations"
+    },
+    "meetings": {
+      "counted": 119,
+      "located": 95,
+      "by_method": {
+        "matter_body_borough": 14,
+        "civic_address_pip": 34,
+        "cd_centroid_council": 15,
+        "matter_title_place": 7,
+        "rule_default_citywide": 10,
+        "citywide_phrase": 1,
+        "venue_column": 6,
+        "citywide": 2,
+        "classic_affected_area": 2,
+        "virtual_only": 3,
+        "agency_hq": 1
+      },
+      "corpus": "meetings_domain_observations"
+    },
+    "rules": {
+      "counted": 100,
+      "located": 100,
+      "by_method": {
+        "citywide": 97,
+        "matter_title_place": 3
+      },
+      "corpus": "rules_domain_observations"
+    },
+    "money": {
+      "counted": 340,
+      "located": 128,
+      "by_method": {
+        "matter_title_place": 69,
+        "citywide_phrase": 42,
+        "vendor_address": 7,
+        "vendor_place": 4,
+        "matter_body_borough": 3,
+        "cd_centroid_council": 3
+      },
+      "corpus": "money_domain_observations"
+    }
+  },
+  "unlocated": {
+    "land": 0,
+    "property": 0,
+    "rules": 0,
+    "meetings": 24,
+    "money": 212
+  },
+  "unlocated_reasons": {
+    "land": {},
+    "property": {},
+    "meetings": {
+      "no_place_signal": 24
+    },
+    "rules": {},
+    "money": {
+      "no_place_signal": 212
+    }
+  },
+  "citywide": {
+    "land": 3,
+    "property": 0,
+    "rules": 97,
+    "meetings": 13,
+    "money": 42
+  },
+  "virtual": {
+    "land": 0,
+    "property": 0,
+    "rules": 0,
+    "meetings": 3,
+    "money": 0
+  }
+}

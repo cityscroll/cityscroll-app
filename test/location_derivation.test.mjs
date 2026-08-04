@@ -20,6 +20,8 @@ import {
   meetingPlacementsFromRow,
   moneyPlacementsFromRow,
   buildDistrictActivity,
+  isSyntheticWarehouseFixtureRow,
+  isAgencyRulesMeetingRow,
 } from "../tools/lib/district_activity.mjs";
 
 const boundaries = JSON.parse(
@@ -309,4 +311,82 @@ test("buildDistrictActivity emits unlocated_reasons and by_method", () => {
   assert.ok(Object.keys(activity.unlocated_reasons.meetings).length >= 1);
   assert.ok(activity.sources.money.located >= 1);
   assert.ok(Object.keys(activity.sources.meetings.by_method).length >= 1);
+});
+
+test("synthetic warehouse FIX* money rows are excluded from map density", () => {
+  assert.equal(isSyntheticWarehouseFixtureRow({ request_id: "FIX001" }), true);
+  assert.equal(isSyntheticWarehouseFixtureRow({ request_id: "20260723031" }), false);
+  const activity = buildDistrictActivity({
+    boundaries,
+    moneyRows: [
+      {
+        request_id: "FIX001",
+        agency_name: "DCAS",
+        vendor_name: "FIXTURE VENDOR A",
+        pin: "PIN-FIXTURE-1",
+        short_title: "Synthetic",
+      },
+      {
+        request_id: "20260723031",
+        agency_name: "Health",
+        short_title: "Catering",
+        vendor_address: "1880 Valentine Avenue",
+      },
+      {
+        request_id: "20260724010",
+        agency_name: "DCAS",
+        vendor_name: "Samuel17",
+        short_title: "Heat Pump Water Heaters",
+      },
+    ],
+  });
+  // FIX* skipped; real award with address located; real award without place = 1 unlocated.
+  assert.equal(activity.sources.money.counted, 2);
+  assert.equal(activity.sources.money.located, 1);
+  assert.equal(activity.unlocated.money, 1);
+  assert.equal(activity.unlocated_reasons.money.no_place_signal, 1);
+});
+
+test("Agency Rules meetings without a local pin default to citywide on the map", () => {
+  assert.equal(
+    isAgencyRulesMeetingRow({ section_name: "Agency Rules" }),
+    true,
+  );
+  assert.equal(
+    isAgencyRulesMeetingRow({ section_name: "Public Hearings and Meetings" }),
+    false,
+  );
+  const activity = buildDistrictActivity({
+    boundaries,
+    meetingsRows: [
+      {
+        request_id: "20260714029",
+        agency_name: "Transportation",
+        section_name: "Agency Rules",
+        type_of_notice_description: "Public Hearings",
+        short_title: "Notice of Public Hearing and Opportunity to Comment — FHV rules",
+        affected_area: {
+          scope: "unlocated",
+          unlocated_reason: "no_place_signal",
+        },
+      },
+      {
+        request_id: "m-mystery",
+        agency_name: "Mystery Board",
+        section_name: "Public Hearings and Meetings",
+        short_title: "Untitled meeting",
+        affected_area: {
+          scope: "unlocated",
+          unlocated_reason: "no_place_signal",
+        },
+      },
+    ],
+  });
+  assert.equal(activity.sources.meetings.counted, 2);
+  assert.ok(activity.sources.meetings.located >= 1);
+  assert.ok((activity.citywide?.meetings || 0) >= 1);
+  assert.ok((activity.sources.meetings.by_method?.rule_default_citywide || 0) >= 1);
+  // Non-rules mystery meeting stays unlocated.
+  assert.equal(activity.unlocated.meetings, 1);
+  assert.equal(activity.unlocated_reasons.meetings.no_place_signal, 1);
 });
