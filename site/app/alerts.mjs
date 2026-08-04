@@ -678,7 +678,6 @@ function initAlertsRollupPrefs(){
       });
     });
   }
-  renderAlertsRollupPrefs();
 }
 function focusAlertsRollupPanel(){
   const panel = document.getElementById("alerts-rollup-prefs");

@@ -362,16 +362,18 @@ async function currentAlertsEntryHref(){
   const hash = location.hash || "";
   // On the alerts page itself, keep the current hash (or bare).
   if(hash === "#alerts" || hash.startsWith("#alerts?")) return hash.startsWith("#alerts") ? hash : "#alerts";
-  const carry = await ensureAlertsContextCarry();
-  if(!carry) return "#alerts";
   // Notice detail → notice-scoped entry.
   if(/^#notice\//.test(hash) && lastNoticeContext && lastNoticeContext.row){
+    const carry = await ensureAlertsContextCarry();
+    if(!carry) return "#alerts";
     return carry.alertsHref(carry.alertScopeFromNotice(lastNoticeContext.row));
   }
   // Land project detail (#land/<project_id>).
   if(/^#land\//.test(hash)){
     const id = decodeURIComponent(hash.slice(6).split("?")[0] || "");
     if(id){
+      const carry = await ensureAlertsContextCarry();
+      if(!carry) return "#alerts";
       const row = (typeof lRows !== "undefined" && Array.isArray(lRows))
         ? lRows.find(r => r && String(r.project_id) === id)
         : null;
@@ -383,15 +385,16 @@ async function currentAlertsEntryHref(){
   const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
   if(tab && ["money","land","property","rules","meetings"].includes(tab)){
     const state = currentLensFilterState(tab);
-    const scope = carry.alertScopeFromLensState(tab, state);
-    if(scope){
-      // Only pre-scope when the reader has actually narrowed something; empty list = bare.
-      const f = scope.filter || {};
-      const hasBits = !!(f.agency || f.name || (f.keywords && f.keywords.length)
-        || f.minAmount || f.borough || f.boro || f.neighborhood || f.noticeType
-        || f.locationScope || f.asset || f.saleMethod || f.priceBand || f.process || f.stage
-        || (tab === "land" && f.status === "all" && f.boro));
-      if(hasBits) return carry.alertsHref(scope);
+    // Do not load the context-carry helper for the untouched home defaults. The helper is
+    // needed only after a reader narrows a lens (or enters through a detail route above).
+    const hasBits = !!(state && (state.agency || state.q || state.minAmount
+      || state.borough || state.boro || state.neighborhood || state.noticeType
+      || state.locationScope || state.asset || state.saleMethod || state.priceBand
+      || state.process || state.stage));
+    if(hasBits){
+      const carry = await ensureAlertsContextCarry();
+      const scope = carry && carry.alertScopeFromLensState(tab, state);
+      if(scope) return carry.alertsHref(scope);
     }
   }
   return "#alerts";
