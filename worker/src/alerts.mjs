@@ -26,6 +26,10 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
 import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
+import {
+  groupDigestRowsByActionBand,
+  rulesActionBandLabel,
+} from "./lib/rules_action_bands.mjs";
 import { encodeWatchFilter } from "./lib/filter.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
@@ -1772,6 +1776,14 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
     acts.push(`<a href="${noticeLink}">↗ View on CityScroll</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
+    if (kind === "rules" && r.action_band?.action_url) {
+      const bandAct = r.action_band.band_id === "comment_open"
+        ? "Comment on NYC Rules"
+        : r.action_band.band_id === "hearing"
+          ? "Hearing details"
+          : "Official rule page";
+      acts.unshift(`<a href="${esc(r.action_band.action_url)}">${esc(bandAct)}</a>`);
+    }
     const meta = [r.agency_name, usd(r.contract_amount),
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
@@ -1795,8 +1807,47 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       <ul style="list-style:none;padding:0">${fItems}</ul>`;
   }
 
-  const listHtml = rows.length > 0 ? `<ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>` : `<p style="color:#666;font-style:italic">No new active notices matching your criteria.</p>`;
-
+  // Rules digests: group by what you can do now (comment open / hearing / adopted / other).
+  let listHtml;
+  if (rows.length === 0) {
+    listHtml = `<p style="color:#666;font-style:italic">No new active notices matching your criteria.</p>`;
+  } else if (kind === "rules") {
+    try {
+      const groups = groupDigestRowsByActionBand(rows, { now: today });
+      const bandEn = {
+        rule_band_comment_open: "Comment window open",
+        rule_band_comment_open_days: (v) => `Comment window open (${v?.n ?? "?"} days left)`,
+        rule_band_hearing: "Hearing scheduled — attend",
+        rule_band_hearing_dated: (v) => `Hearing scheduled — attend on ${v?.date || ""}`,
+        rule_band_adopted: "Adopted",
+        rule_band_adopted_effective: (v) => `Adopted — takes effect ${v?.date || ""}`,
+        rule_band_other: "Other rule notices",
+      };
+      const blocks = groups.map((g) => {
+        const labelText = rulesActionBandLabel({
+          band_id: g.band_id,
+          days_left: g.days_left,
+          hearing_date: g.hearing_date,
+          effective_date: g.effective_date,
+        }, (key, vars) => {
+          const v = bandEn[key];
+          return typeof v === "function" ? v(vars) : (v || key);
+        });
+        const items = g.entries.map((e) => {
+          const row = { ...(e.primary || e) };
+          if (e.action_band) row.action_band = e.action_band;
+          return item(row);
+        }).join("");
+        return `<h3 style="margin:16px 0 8px;font-family:system-ui;font-size:14px;color:#1a1a1a;border-bottom:1px solid #ddd;padding-bottom:4px">${esc(labelText)}</h3>
+          <ul style="list-style:none;padding:0">${items}</ul>`;
+      });
+      listHtml = blocks.join("") || `<ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>`;
+    } catch {
+      listHtml = `<ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>`;
+    }
+  } else {
+    listHtml = `<ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>`;
+  }
   const itemWord = rows.length === 1
     ? emailT(lang, "digest_new_item_singular")
     : emailT(lang, "digest_new_item_plural");

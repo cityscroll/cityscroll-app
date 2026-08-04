@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "pattern": "watch_template_registry",
+  "description": "Curated one-tap multi-watch bundles. Adding a vertical is data: append a template with id, audience description, and watches [{lens, filter}] that the existing /subscribe path can replay. English title/description live here for the public surface; i18n keys are optional overrides.",
+  "templates": [
+    {
+      "id": "restaurants",
+      "title": "Restaurant & food-service rules",
+      "description": "Health-code and food-service rule changes from the Department of Health and Mental Hygiene, plus keyword matches for restaurant and food-service language in Agency Rules.",
+      "serves": "Restaurant operators, hospitality associations, and food-service managers tracking DOHMH health-code and food-service rules.",
+      "watches": [
+        {
+          "label": "DOHMH Agency Rules",
+          "lens": "rules",
+          "filter": {
+            "agency": "Health and Mental Hygiene",
+            "keywords": []
+          }
+        },
+        {
+          "label": "Food-service keywords in rules",
+          "lens": "rules",
+          "filter": {
+            "keywords": ["restaurant food service health code"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "for-hire-vehicles",
+      "title": "For-hire vehicles (TLC)",
+      "description": "Rule changes from the Taxi and Limousine Commission, plus keyword coverage for for-hire vehicle, medallion, and driver rules.",
+      "serves": "For-hire vehicle fleets, TLC licensee associations, and driver-service organizations.",
+      "watches": [
+        {
+          "label": "TLC Agency Rules",
+          "lens": "rules",
+          "filter": {
+            "agency": "Taxi and Limousine Commission",
+            "keywords": []
+          }
+        },
+        {
+          "label": "FHV / taxi keywords in rules",
+          "lens": "rules",
+          "filter": {
+            "keywords": ["for-hire taxi medallion FHV"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "construction-safety",
+      "title": "Construction safety (Buildings)",
+      "description": "Department of Buildings rule changes and construction-safety keyword matches across Agency Rules.",
+      "serves": "General contractors, construction trade associations, and site-safety managers following DOB rules.",
+      "watches": [
+        {
+          "label": "Buildings Agency Rules",
+          "lens": "rules",
+          "filter": {
+            "agency": "Buildings",
+            "keywords": []
+          }
+        },
+        {
+          "label": "Construction safety keywords in rules",
+          "lens": "rules",
+          "filter": {
+            "keywords": ["construction safety sidewalk shed scaffold"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "child-care",
+      "title": "Child care (ACS / DOHMH)",
+      "description": "Child-care and early-childhood rule changes from the Administration for Children's Services and the Department of Health and Mental Hygiene.",
+      "serves": "Child-care providers, early-childhood associations, and parent-organization staff tracking ACS and DOHMH child-care rules.",
+      "watches": [
+        {
+          "label": "ACS Agency Rules",
+          "lens": "rules",
+          "filter": {
+            "agency": "Administration for Children's Services",
+            "keywords": []
+          }
+        },
+        {
+          "label": "DOHMH child-care keywords",
+          "lens": "rules",
+          "filter": {
+            "agency": "Health and Mental Hygiene",
+            "keywords": ["child care daycare early childhood"]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -521,6 +521,82 @@
       "localOnly": true
     },
     {
+      "id": "alerts-watch-templates",
+      "url": "#alerts?template=restaurants",
+      "feature": "association-monitor-packs",
+      "description": "Open Alerts with the association monitor pack registry on the single subscribe flow.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#watch-templates",
+            "text": "Association monitor packs"
+          },
+          {
+            "selector": "#watch-template-list button[data-tpl-id]"
+          },
+          {
+            "selector": "#adest"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#watch-template-list .loading"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rules-action-bands",
+      "url": "#rules",
+      "feature": "rules-action-bands",
+      "description": "Rules lens groups notices by what you can do now (comment window, hearing, adopted) rather than date alone.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#tab-rules .rules-domain-heading"
+          },
+          {
+            "selector": "#rulesfeed"
+          },
+          {
+            "selector": ".rules-action-band-note",
+            "text": "What you can do now"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#rulesfeed .loading"
+          }
+        ]
+      },
+      "localOnly": true
+    },
+    {
+      "id": "rules-member-blurb-participation",
+      "url": "#notice/20260714029",
+      "feature": "rules-member-blurb-participation",
+      "description": "Rule notice with open public process shows shepherded comment path and a forwardable member blurb.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#nrules .chain-h",
+            "text": "Rule lifecycle"
+          },
+          {
+            "selector": "#nrules [data-rule-member-blurb]",
+            "text": "Share with your members"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#nrules .loading"
+          }
+        ],
+        "focus": "#noticeview .route-item"
+      },
+      "localOnly": true
+    },
+    {
       "id": "property-bbl-fallback",
       "url": "#notice/20241112003",
       "feature": "property-bbl-fallback",

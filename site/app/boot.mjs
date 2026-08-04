@@ -559,6 +559,7 @@ if(!isAlertsContextEntry) aWatchChange(true);
 updateAWhen();
 aRenderSaved();
 initAlertsRollupPrefs();
+if(typeof initWatchTemplates==="function") initWatchTemplates();
 
 // Language switch must also repaint DYNAMICALLY-BUILT surfaces (2026-07-13 hotfix): applyStrings()
 // only covers data-i18n chrome, so lists, dropdowns and detail panels kept their old language.
@@ -575,7 +576,9 @@ function rerenderForLang(){
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   paintEditionSpan();
   loadAgencies();
-  aWatchChange(true); updateAWhen(); aRenderSaved(); renderAlertsRollupPrefs(); renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
+  aWatchChange(true); updateAWhen(); aRenderSaved(); renderAlertsRollupPrefs();
+  if(typeof initWatchTemplates==="function") initWatchTemplates();
+  renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
   // and their chrome — built once via t() when the view was first shown — silently kept
