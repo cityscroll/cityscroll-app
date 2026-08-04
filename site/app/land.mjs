@@ -506,7 +506,7 @@ async function landShowLots(gj, n, selection){
   landMap=L.map(el);
   wireLandPanControls(landMap);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
-  const layer=L.geoJSON(gj,{style:{color:'#7a1f1f',weight:2,fillColor:'#b5781b',fillOpacity:.35}}).addTo(landMap);
+  const layer=L.geoJSON(gj,{style:{color:'#1a44e0',weight:2,fillColor:'#1b3a8f',fillOpacity:.35}}).addTo(landMap);
   try{ landMap.fitBounds(layer.getBounds(),{padding:[20,20],maxZoom:17}); }catch(e){ landMap.setView([40.71,-73.96],12); }
   setTimeout(()=>{ if(landMap) landMap.invalidateSize(); },160);
 }

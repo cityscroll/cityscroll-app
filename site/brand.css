@@ -1,31 +1,53 @@
+/* CityScroll design language — single token sheet, loaded on every page. Component CSS consumes the
+   role-based tokens below; pages must not hard-code a value a token names. Cool neutral ground + one
+   action blue + scoped status hues; every foreground token meets WCAG 2.2 AA and --rule-strong
+   clears 3:1 non-text for form controls. Full rationale + scale: docs/design-language.md. */
 :root {
-  /* CityScroll primitives: a civic navy and brick accent on warm record paper. */
-  --cs-navy-950: #102a3a;
-  --cs-navy-800: #173f55;
-  --cs-navy-650: #2f5f73;
-  --cs-brick-700: #8a302b;
-  --cs-gold-700: #755a20;
-  --cs-green-700: #34533f;
-  --cs-paper-50: #fbf8f0;
-  --cs-paper-100: #f4efe4;
-  --cs-paper-200: #e8deca;
-  --cs-paper-300: #c9bda6;
-  --cs-slate-700: #536066;
+  /* Neutral primitives (cool near-white ground → near-black ink). */
+  --cs-white: #ffffff;
+  --cs-n-25: #f5f6f8;
+  --cs-n-50: #eceef2;
+  --cs-n-100: #dde1e7;
+  --cs-n-300: #7a828f;
+  --cs-n-500: #5b6470;
+  --cs-n-700: #37414d;
+  --cs-n-900: #12181f;
 
-  /* Semantic color tokens. Existing component aliases keep every page on one theme. */
-  --color-canvas: var(--cs-paper-100);
-  --color-canvas-subtle: var(--cs-paper-200);
-  --color-surface: var(--cs-paper-50);
-  --color-text: var(--cs-navy-950);
-  --color-text-soft: #344850;
-  --color-text-muted: var(--cs-slate-700);
-  --color-border: var(--cs-paper-300);
-  --color-border-strong: #887d68;
-  --color-brand: var(--cs-navy-800);
-  --color-action: var(--cs-brick-700);
-  --color-caution: var(--cs-gold-700);
-  --color-success: var(--cs-green-700);
+  /* Action + identity blues, and their quiet tints. */
+  --cs-action: #1a44e0;
+  --cs-action-hover: #10259e;
+  --cs-action-tint: #eef2ff;
+  --cs-action-tint-border: #c9d5ff;
+  --cs-brand-navy: #1b3a8f;
 
+  /* Status: text-safe hue + tint + border, used only to mean their state. */
+  --cs-success: #1a6b34;
+  --cs-success-tint: #e7f4ec;
+  --cs-success-border: #b6ddc3;
+  --cs-caution: #8a5a00;
+  --cs-caution-tint: #fbf1d8;
+  --cs-caution-border: #e6c88a;
+  --cs-danger: #c01829;
+  --cs-danger-tint: #fdeaec;
+  --cs-danger-border: #f2b8bd;
+
+  /* Semantic color tokens — the layer component CSS should reference. */
+  --color-canvas: var(--cs-n-25);
+  --color-canvas-subtle: var(--cs-n-50);
+  --color-surface: var(--cs-white);
+  --color-text: var(--cs-n-900);
+  --color-text-soft: var(--cs-n-700);
+  --color-text-muted: var(--cs-n-500);
+  --color-border: var(--cs-n-100);
+  --color-border-strong: var(--cs-n-300);
+  --color-brand: var(--cs-brand-navy);
+  --color-action: var(--cs-action);
+  --color-action-hover: var(--cs-action-hover);
+  --color-caution: var(--cs-caution);
+  --color-success: var(--cs-success);
+  --color-danger: var(--cs-danger);
+
+  /* Compatibility aliases: existing component CSS references these short names site-wide. */
   --paper: var(--color-canvas);
   --paper-2: var(--color-canvas-subtle);
   --card: var(--color-surface);
@@ -39,25 +61,33 @@
   --rose: var(--color-action);
   --amber: var(--color-caution);
   --green: var(--color-success);
+  --shadow: none; /* flat: hairlines and spacing carry structure, nothing floats */
 
-  /* Type, spacing, and shape tokens used by the identity and available site-wide. */
-  --font-brand: "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-reading: "Spectral", Georgia, "Times New Roman", serif;
-  --font-label: "Spectral SC", "Spectral", Georgia, serif;
+  /* Type: modern-civic grotesk display + humanist sans text. Both open, one font host. */
+  --font-brand: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-reading: "Noto Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-label: var(--font-reading);
   --font-interface: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-nameplate: var(--font-brand);
   --font-display: var(--font-brand);
   --font-body: var(--font-reading);
   --font-sc: var(--font-label);
   --ui: var(--font-interface);
+
+  /* Spacing (8-based proximity scale), measure, container, and shape. */
   --space-1: .25rem;
   --space-2: .5rem;
   --space-3: .75rem;
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2rem;
-  --radius-sm: .35rem;
-  --radius-md: .55rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --measure: 72ch;
+  --maxw: 1120px;
+  --radius-sm: .375rem;
+  --radius-md: .625rem;
+  --radius-pill: 999px;
 }
 
 body {
@@ -94,15 +124,15 @@ body {
 .brand-lockup .cr-title {
   color: currentColor;
   font-family: var(--font-brand);
-  font-weight: 900;
-  letter-spacing: -.025em;
+  font-weight: 700;
+  letter-spacing: -.015em;
   text-transform: none;
 }
 
 .brand-lockup--masthead .cr-title {
   margin: 0;
-  font-size: clamp(2.7rem, 7.5vw, 4.8rem);
-  line-height: .9;
+  font-size: clamp(2.6rem, 7.2vw, 4.6rem);
+  line-height: .92;
 }
 
 .home.brand-lockup {

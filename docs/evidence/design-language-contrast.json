@@ -1,0 +1,38 @@
+{
+  "note": "CityScroll design-language contrast proof. Text AA target >=4.5:1; form-control border (rule-strong) non-text target >=3:1.",
+  "surfaces": {
+    "white": "#ffffff",
+    "canvas": "#f5f6f8"
+  },
+  "text_on_white": {
+    "ink": 17.85,
+    "text_soft": 10.37,
+    "muted": 6.0,
+    "action": 7.13,
+    "action_hover": 11.8,
+    "brand": 10.25,
+    "success": 6.57,
+    "caution": 5.93,
+    "danger": 6.17
+  },
+  "text_on_canvas": {
+    "ink": 16.51,
+    "text_soft": 9.59,
+    "muted": 5.55,
+    "action": 6.59,
+    "action_hover": 10.91,
+    "brand": 9.48,
+    "success": 6.08,
+    "caution": 5.48,
+    "danger": 5.71
+  },
+  "form_border_rule_strong": {
+    "on_white": 3.88,
+    "on_canvas": 3.58
+  },
+  "status_on_tint": {
+    "success": 5.8,
+    "caution": 5.27,
+    "danger": 5.33
+  }
+}
