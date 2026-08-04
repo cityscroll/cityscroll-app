@@ -69,6 +69,28 @@ node warehouse/lib/query.mjs \
   --sql "SELECT agency_name, COUNT(*) AS n FROM ocp_recent_contract_awards GROUP BY 1"
 ```
 
+## RC-4 ABO residual measurement
+
+The ABO collector is a measured join pipeline, separate from the existing
+authority-wide recent-award cache. It refreshes a fixed City Record residual
+sample and each mapped ABO authority with a named User-Agent, checkpoints every
+page, waits at least 250 ms between live requests, and stops without retry on
+HTTP 403. Fixture proof is offline:
+
+```bash
+warehouse/.venv/bin/python warehouse/scripts/abo_awards_run.py \
+  --from-fixture --force-headroom
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/abo_residual_verify.sql
+```
+
+Tables: `abo_residual_notice`, `abo_procurement_award`,
+`abo_residual_candidate`, `abo_residual_match`, and
+`abo_residual_measurement`. The committed proof records 1/50 joined (2%), 50%
+fuzzy precision, and zero materialized matches. The site/Worker payload twins
+therefore contain an explicit stopped bridge and an empty match map; they do not
+authorize a reader surface.
+
 Optional tiny **live** SODA slice (still capped; not full bulk):
 
 ```bash

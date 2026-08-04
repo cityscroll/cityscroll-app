@@ -1,0 +1,547 @@
+{
+  "schema": "cityscroll.abo_award_residual_receipt.v1",
+  "observed_on": "2026-08-04",
+  "observed_at_utc": "2026-08-04T11:26:00Z",
+  "source_contracts": [
+    "abo-local-authorities",
+    "abo-local-development-corporations",
+    "abo-state-authorities"
+  ],
+  "mode": "fixture-proof",
+  "access_surface": {
+    "city_record": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+    "abo_resource": "https://data.ny.gov/resource/{dataset}.json"
+  },
+  "collection": {
+    "user_agent": "CityScrollWarehouse/0.3 (+https://cityscroll.org; RC-4 ABO residual measurement)",
+    "checkpointed": true,
+    "page_size": 1000,
+    "polite_delay_ms": 0,
+    "retry_on_403": false,
+    "refusal_policy": "A 403 stops the host-side run; the collector does not retry or move scraping to the edge."
+  },
+  "source_inventory": [
+    {
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority",
+      "agency": "School Construction Authority",
+      "rows_scanned": 1742,
+      "award_date_min": "1993-08-11T00:00:00.000",
+      "award_date_max": "2024-05-06T00:00:00.000"
+    },
+    {
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation",
+      "agency": "NYC Health + Hospitals",
+      "rows_scanned": 7391,
+      "award_date_min": "2016-07-01T00:00:00.000",
+      "award_date_max": "2023-07-01T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation",
+      "agency": "Economic Development Corporation",
+      "rows_scanned": 4737,
+      "award_date_min": "1987-08-14T00:00:00.000",
+      "award_date_max": "2024-06-26T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation",
+      "agency": "Brooklyn Navy Yard Development Corp.",
+      "rows_scanned": 2407,
+      "award_date_min": "2016-02-22T00:00:00.000",
+      "award_date_max": "2029-12-01T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation",
+      "agency": "Brooklyn Bridge Park",
+      "rows_scanned": 367,
+      "award_date_min": "2003-09-05T00:00:00.000",
+      "award_date_max": "2024-06-06T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation",
+      "agency": "Trust for Governors Island",
+      "rows_scanned": 360,
+      "award_date_min": "2010-07-01T00:00:00.000",
+      "award_date_max": "2024-06-26T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City",
+      "agency": "Mayor's Fund to Advance New York City",
+      "rows_scanned": 58,
+      "award_date_min": "2016-06-01T00:00:00.000",
+      "award_date_max": "2018-10-04T00:00:00.000"
+    }
+  ],
+  "source_date_quality": {
+    "future_dated_maxima": [
+      {
+        "dataset": "d84c-dk28",
+        "authority": "Brooklyn Navy Yard Development Corporation",
+        "award_date_max": "2029-12-01T00:00:00.000"
+      }
+    ],
+    "handling": "Source dates are preserved. Candidate generation still requires award_date on/after the notice and no more than 730 days later; a future-dated source maximum is provenance, not proof of a match."
+  },
+  "fixed_sample": {
+    "selection": "50 City Record Solicitation/Intent to Award residuals, authority-stratified across seven ABO-mapped agencies and time-quantiled over 2022-01-01 through 2024-12-31",
+    "notices": 50,
+    "reviewed_candidate_groups": 10,
+    "source_rows_scanned": 17062
+  },
+  "join_measurement": {
+    "strategy": "Registry-exact authority normalization, then exact source identifier when published; otherwise exact vendor stem + amount + 0..730-day award window. Title/date candidates require clerical labels and the batch precision floor.",
+    "signal_availability": {
+      "vendor": 0,
+      "amount": 0,
+      "shared_exact_identifier": 0
+    },
+    "joined": 1,
+    "total": 50,
+    "rate": 0.02,
+    "ambiguous": 4,
+    "fuzzy_precision": 0.5,
+    "gate_status": "stopped_below_threshold",
+    "usefulness_threshold": 0.3,
+    "fuzzy_precision_floor": 0.95,
+    "per_authority": {
+      "New York City School Construction Authority": {
+        "total": 8,
+        "joined": 0,
+        "ambiguous": 2,
+        "rate": 0
+      },
+      "New York City Health and Hospitals Corporation": {
+        "total": 8,
+        "joined": 0,
+        "ambiguous": 0,
+        "rate": 0
+      },
+      "New York City Economic Development Corporation": {
+        "total": 8,
+        "joined": 0,
+        "ambiguous": 1,
+        "rate": 0
+      },
+      "Brooklyn Navy Yard Development Corporation": {
+        "total": 7,
+        "joined": 0,
+        "ambiguous": 0,
+        "rate": 0
+      },
+      "Brooklyn Bridge Park Corporation": {
+        "total": 7,
+        "joined": 0,
+        "ambiguous": 0,
+        "rate": 0
+      },
+      "Governors Island Corporation": {
+        "total": 7,
+        "joined": 1,
+        "ambiguous": 1,
+        "rate": 0.1429
+      },
+      "The Mayor's Fund to Advance New York City": {
+        "total": 5,
+        "joined": 0,
+        "ambiguous": 0,
+        "rate": 0
+      }
+    },
+    "false_positive_review": {
+      "true_match": 1,
+      "false_positive": 5,
+      "ambiguous": 4,
+      "reviewed": 10,
+      "cases": [
+        {
+          "request_id": "20220119101",
+          "label": "ambiguous",
+          "note": "Three same-description staffing awards follow the notice; the source exposes no solicitation identifier, vendor, or amount on the notice to select one or prove a multi-award relationship.",
+          "candidates": [
+            {
+              "dataset": "8w5p-k45m",
+              "authority": "New York City School Construction Authority",
+              "vendor": "Donnelly & Moore, Inc.",
+              "description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+              "award_date": "2022-05-27T00:00:00.000",
+              "amount": "$8,000,000.00",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.5,
+              "award_lag_days": 121
+            },
+            {
+              "dataset": "8w5p-k45m",
+              "authority": "New York City School Construction Authority",
+              "vendor": "Q.E.D., Inc.",
+              "description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+              "award_date": "2022-05-27T00:00:00.000",
+              "amount": "$3,000,000.00",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.5,
+              "award_lag_days": 121
+            },
+            {
+              "dataset": "8w5p-k45m",
+              "authority": "New York City School Construction Authority",
+              "vendor": "SVAM International, Inc.",
+              "description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+              "award_date": "2022-06-07T00:00:00.000",
+              "amount": "$1,000,000.00",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.5,
+              "award_lag_days": 132
+            }
+          ]
+        },
+        {
+          "request_id": "20220126105",
+          "label": "ambiguous",
+          "note": "Several different on-call design specialties fit the broad notice title; none carries the notice key.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Governors Island Corporation",
+              "vendor": "Langan Engineering, Environmental, Surveying, Landscape Architecture and Geology, D.P.C.",
+              "description": "On-call marine engineering and design services.",
+              "award_date": "2023-05-08T00:00:00.000",
+              "amount": "$29,413.49",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.5,
+              "award_lag_days": 461
+            },
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Governors Island Corporation",
+              "vendor": "KPFF, Inc.",
+              "description": "On-call civil and marine engineering and design services",
+              "award_date": "2022-10-05T00:00:00.000",
+              "amount": "$17,553.50",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.4,
+              "award_lag_days": 246
+            },
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Governors Island Corporation",
+              "vendor": "Practice For Architecture Urbanism DPC",
+              "description": "On-call master planning and urban design services",
+              "award_date": "2023-01-30T00:00:00.000",
+              "amount": "$500,000.00",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.4,
+              "award_lag_days": 363
+            }
+          ]
+        },
+        {
+          "request_id": "20220728102",
+          "label": "false_positive",
+          "note": "The notice names Berth 14A while the candidate award explicitly names Berth 17.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Brooklyn Navy Yard Development Corporation",
+              "vendor": "Luigi Caliendo & Sons, Inc.",
+              "description": "Invoice #822010 Berth 17 sinkhole repair",
+              "award_date": "2023-03-27T00:00:00.000",
+              "amount": "$30,525.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.3333,
+              "award_lag_days": 236
+            }
+          ]
+        },
+        {
+          "request_id": "20221005116",
+          "label": "ambiguous",
+          "note": "Two same-description emergency-response awards follow the notice; broad program wording cannot identify one contract edge.",
+          "candidates": [
+            {
+              "dataset": "8w5p-k45m",
+              "authority": "New York City School Construction Authority",
+              "vendor": "The McCloud Group, LLC",
+              "description": "CM MGMT & COORDINATION OF EMERGENCY RESPONSE PROG-CAMP",
+              "award_date": "2022-11-09T00:00:00.000",
+              "amount": "$2,000,000.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.2727,
+              "award_lag_days": 27
+            },
+            {
+              "dataset": "8w5p-k45m",
+              "authority": "New York City School Construction Authority",
+              "vendor": "STV CONSTRUCTION, INC.",
+              "description": "CM MGMT & COORDINATION OF EMERGENCY RESPONSE PROG-CAMP",
+              "award_date": "2022-11-28T00:00:00.000",
+              "amount": "$15,000,000.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.2727,
+              "award_lag_days": 46
+            }
+          ]
+        },
+        {
+          "request_id": "20221027121",
+          "label": "false_positive",
+          "note": "Candidates merely mention Brooklyn Navy Yard and do not describe hydrant replacement.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Brooklyn Navy Yard Development Corporation",
+              "vendor": "Sedgwick Claims Management Services, Inc.",
+              "description": "Inv. #01262024    Sedgwick CMS Inc. On Behalf of Brooklyn Navy Yard    1/26/24",
+              "award_date": "2024-01-29T00:00:00.000",
+              "amount": "$65,000.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.2727,
+              "award_lag_days": 448
+            },
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Brooklyn Navy Yard Development Corporation",
+              "vendor": "House of Tanuki,Inc.",
+              "description": "Invoice 0864    Brooklyn Navy Yard Corporate Presentation Design  Revamp:  Payment 2 of 2",
+              "award_date": "2023-06-16T00:00:00.000",
+              "amount": "$5,000.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.25,
+              "award_lag_days": 221
+            }
+          ]
+        },
+        {
+          "request_id": "20221028147",
+          "label": "false_positive",
+          "note": "The generic engineering/design award omits the notice's United Nations Esplanade subject.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "New York City Economic Development Corporation",
+              "vendor": "Matrix New World Engineering, Land Surveying and Landscape Architecture, PC",
+              "description": "Engineering and design consultant",
+              "award_date": "2022-11-21T00:00:00.000",
+              "amount": "$368,000.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.3333,
+              "award_lag_days": 14
+            },
+            {
+              "dataset": "d84c-dk28",
+              "authority": "New York City Economic Development Corporation",
+              "vendor": "Matrix New World Engineering, Land Surveying and Landscape Architecture, PC",
+              "description": "Engineering and Design Consultant",
+              "award_date": "2022-11-21T00:00:00.000",
+              "amount": "$368,000.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.3333,
+              "award_lag_days": 14
+            }
+          ]
+        },
+        {
+          "request_id": "20230406117",
+          "label": "true_match",
+          "note": "Unique post-notice row explicitly states zoning and land-use counsel; retained as a labeled positive for measurement, not materialized because the bridge fails the batch gates.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Governors Island Corporation",
+              "vendor": "BRYAN CAVE LEIGHTON PAISNER LLP",
+              "description": "Zoning and land use counsel services",
+              "award_date": "2023-07-11T00:00:00.000",
+              "amount": "$101,368.85",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.75,
+              "award_lag_days": 89
+            }
+          ]
+        },
+        {
+          "request_id": "20230703101",
+          "label": "false_positive",
+          "note": "Legal filing services are not the maritime legal counsel procurement named by the notice.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Governors Island Corporation",
+              "vendor": "Berd & Klauss, PLCC",
+              "description": "Legal filing services",
+              "award_date": "2023-09-20T00:00:00.000",
+              "amount": "$7,200.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.25,
+              "award_lag_days": 75
+            }
+          ]
+        },
+        {
+          "request_id": "20230721117",
+          "label": "ambiguous",
+          "note": "Multiple on-call design awards fit the broad title and date window; no identifier, vendor, or notice amount disambiguates them.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "New York City Economic Development Corporation",
+              "vendor": "Buro Happold Consulting Engineers, PC",
+              "description": "On-call design & engineering services",
+              "award_date": "2024-03-27T00:00:00.000",
+              "amount": "$20,000,000.00",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.75,
+              "award_lag_days": 243
+            },
+            {
+              "dataset": "d84c-dk28",
+              "authority": "New York City Economic Development Corporation",
+              "vendor": "Arup US, INC",
+              "description": "Design and Engineering Services",
+              "award_date": "2024-03-19T00:00:00.000",
+              "amount": "$20,000,000.00",
+              "method": "title_date_fuzzy",
+              "title_similarity": 0.5,
+              "award_lag_days": 235
+            },
+            {
+              "dataset": "d84c-dk28",
+              "authority": "New York City Economic Development Corporation",
+              "vendor": "AECOM USA, Inc",
+              "description": "Engineering Design and Consulting Services for Manhattan Greenway UN Esplanade",
+              "award_date": "2023-08-24T00:00:00.000",
+              "amount": "$13,168,990.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.25,
+              "award_lag_days": 27
+            }
+          ]
+        },
+        {
+          "request_id": "20240425101",
+          "label": "false_positive",
+          "note": "Generic construction contractor services do not establish the construction-management procurement.",
+          "candidates": [
+            {
+              "dataset": "d84c-dk28",
+              "authority": "Governors Island Corporation",
+              "vendor": "Topline NY RestorationsLLC",
+              "description": "General construction contractor services",
+              "award_date": "2024-05-31T00:00:00.000",
+              "amount": "$98,200.00",
+              "method": "title_date_broad",
+              "title_similarity": 0.25,
+              "award_lag_days": 30
+            }
+          ]
+        }
+      ]
+    },
+    "identifier_finding": "The sampled local-authority and local-development-corporation rows expose no contract/PIN identifier; the state-authority table has transaction_number but the fixed residual sample contains no state-authority notice counterpart.",
+    "vendor_amount_finding": "0/50 residual notices publish vendor_name and 0/50 publish contract_amount, so neither vendor identity nor amount agreement can operate on this residual.",
+    "verdict": "STOP \u2014 1/50 (2%) labeled join coverage is below the 30% usefulness threshold and measured fuzzy precision is 50%, below the 95% floor. Broad name similarity remains candidate evidence only; publish no notice-level edge."
+  },
+  "payload_contract": {
+    "schema": "cityscroll.abo_award_residual.v1",
+    "paths": [
+      "site/data/abo_award_residual_lookup.json",
+      "worker/src/data/abo_award_residual_lookup.json"
+    ],
+    "matches_materialized": 0,
+    "reader_surface_included": false
+  },
+  "warehouse": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "tables": [
+      {
+        "table": "abo_residual_notice",
+        "row_count": 50,
+        "columns": [
+          "request_id",
+          "start_date",
+          "agency_name",
+          "type_of_notice_description",
+          "short_title",
+          "pin",
+          "dataset",
+          "authority",
+          "snapshot_date"
+        ]
+      },
+      {
+        "table": "abo_procurement_award",
+        "row_count": 47,
+        "columns": [
+          "authority_name",
+          "vendor_name",
+          "procurement_description",
+          "award_date",
+          "contract_amount",
+          "fiscal_year_end_date",
+          "dataset",
+          "snapshot_date"
+        ]
+      },
+      {
+        "table": "abo_residual_candidate",
+        "row_count": 47,
+        "columns": [
+          "request_id",
+          "rank",
+          "review_label",
+          "review_note",
+          "classification",
+          "method",
+          "source_key",
+          "shared_identifiers",
+          "vendor_stem_equal",
+          "amount_equal",
+          "date_in_window",
+          "award_lag_days",
+          "title_similarity",
+          "dataset",
+          "authority_name",
+          "vendor_name",
+          "procurement_description",
+          "award_date",
+          "contract_amount",
+          "transaction_number",
+          "snapshot_date"
+        ]
+      },
+      {
+        "table": "abo_residual_match",
+        "row_count": 0,
+        "columns": [
+          "request_id",
+          "source_key",
+          "method",
+          "confidence",
+          "award"
+        ]
+      },
+      {
+        "table": "abo_residual_measurement",
+        "row_count": 1,
+        "columns": [
+          "observed_on",
+          "total",
+          "joined",
+          "join_rate",
+          "fuzzy_precision",
+          "ambiguous",
+          "gate_status",
+          "materialize",
+          "snapshot_date"
+        ]
+      }
+    ],
+    "duckdb_threads": 1,
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "taskpolicy_or_nice_wrap": false
+  }
+}

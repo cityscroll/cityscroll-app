@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs + WH-05 serve lookups + WH-07 City Record snapshot + tax-lien prediction inputs.",
+  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs + WH-05 serve lookups + WH-07 City Record snapshot + tax-lien prediction inputs + RC-4 ABO residual measurement.",
   "defaults": {
     "max_rows_default": 50,
     "max_rows_hard_cap": 10000,
@@ -74,6 +74,70 @@
         "section_name"
       ],
       "notes": "Largest Socrata surface (~1.1M rows). WH-02 queue last; prefer Mini overnight."
+    },
+    "abo-local-authorities": {
+      "id": "abo-local-authorities",
+      "source_contract_id": "abo-local-authorities",
+      "name": "NYS ABO Procurement Report for Local Authorities",
+      "kind": "socrata",
+      "domain": "https://data.ny.gov",
+      "dataset_id": "8w5p-k45m",
+      "table_name": "abo_local_authority_procurements",
+      "bulk_class": "BATCHABLE",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "soda_order": "award_date DESC",
+      "required_fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ],
+      "notes": "RC-4 source. The guarded residual runner pulls only registry authorities and materializes abo_procurement_award; generic ingest remains bounded."
+    },
+    "abo-local-development-corporations": {
+      "id": "abo-local-development-corporations",
+      "source_contract_id": "abo-local-development-corporations",
+      "name": "NYS ABO Procurement Report for Local Development Corporations",
+      "kind": "socrata",
+      "domain": "https://data.ny.gov",
+      "dataset_id": "d84c-dk28",
+      "table_name": "abo_local_development_corporation_procurements",
+      "bulk_class": "BATCHABLE",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "soda_order": "award_date DESC",
+      "required_fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ],
+      "notes": "RC-4 source. The guarded residual runner pulls only registry authorities and materializes abo_procurement_award; generic ingest remains bounded."
+    },
+    "abo-state-authorities": {
+      "id": "abo-state-authorities",
+      "source_contract_id": "abo-state-authorities",
+      "name": "NYS ABO Procurement Report for State Authorities",
+      "kind": "socrata",
+      "domain": "https://data.ny.gov",
+      "dataset_id": "ehig-g5x3",
+      "table_name": "abo_state_authority_procurements",
+      "bulk_class": "BATCHABLE",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "soda_order": "award_date DESC",
+      "required_fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount",
+        "transaction_number"
+      ],
+      "notes": "RC-4 source. transaction_number is preserved as the only explicit source identifier; no sampled state-authority notice counterpart existed."
     },
     "dof-tax-lien-sale-lists": {
       "id": "dof-tax-lien-sale-lists",
