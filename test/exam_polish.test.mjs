@@ -36,7 +36,7 @@ function explainerHarness(seen = false) {
   }, localStorage);
 }
 
-test("the exam explanation opens once for a first visit and preserves a manual toggle", () => {
+test("the exam explanation starts collapsed and preserves a manual toggle", () => {
   const harness = explainerHarness();
   const details = { open: false };
   const values = new Map();
@@ -54,11 +54,11 @@ test("the exam explanation opens once for a first visit and preserves a manual t
   )(() => details, localStorage);
 
   prepared();
-  assert.equal(details.open, true);
-  assert.equal(values.get("crol_exam_how_seen_v1"), "1");
-  details.open = false;
+  assert.equal(details.open, false);
+  assert.equal(values.has("crol_exam_how_seen_v1"), false);
+  details.open = true;
   prepared();
-  assert.equal(details.open, false, "later renders do not override the visitor's toggle");
+  assert.equal(details.open, true, "later renders do not override the visitor's toggle");
   assert.ok(harness.prepared() === false, "separate page harness remains independent");
 });
 

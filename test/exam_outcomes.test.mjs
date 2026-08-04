@@ -185,14 +185,13 @@ test("join helpers prefer the latest published_on when exam_number collides acro
   assert.equal(missing.outcome_gap.class, "not_yet_ingested");
 });
 
-test("exam cards and detail render joined, list_joined, or class-(a) not-yet-ingested", () => {
+test("exam cards render published outcomes and leave absent outcomes unpainted", () => {
   assert.match(html, /function careerOutcomeHTML\(exam/);
   assert.match(html, /function examProcessSpineHTML/);
   assert.match(html, /career-outcomes/);
   assert.match(html, /data-outcome="joined"/);
   assert.match(html, /data-outcome="list_joined"/);
-  assert.match(html, /data-outcome="not_yet_ingested"/);
-  assert.match(html, /career_outcomes_not_yet_ingested_html/);
+  assert.doesNotMatch(html, /data-outcome="not_yet_ingested"/);
   assert.match(html, /career_outcome_list_established/);
   assert.match(html, /career_outcome_hiring_pool/);
   assert.match(html, /CrolStaffing\.examOutcomeView/);
@@ -201,8 +200,9 @@ test("exam cards and detail render joined, list_joined, or class-(a) not-yet-ing
   const cardFn = html.slice(cardFnStart, cardFnStart + 5500);
   assert.ok(cardFn.includes("careerOutcomeHTML(exam"));
   assert.ok(cardFn.includes("examProcessSpineHTML"));
-  assert.match(i18n, /career_outcomes_not_yet_ingested_html:/);
-  assert.match(i18n, /Not yet shown here — post-cycle aggregates/);
+  const outcomeStart = html.indexOf("function careerOutcomeHTML(exam");
+  const outcomeEnd = html.indexOf("function careerCardHTML(exam)", outcomeStart);
+  assert.match(html.slice(outcomeStart, outcomeEnd), /return ""/);
   // Must not render the false class-(b) city-withhold register for aggregate gaps.
   assert.doesNotMatch(html, /data-outcome="not_published"/);
 });

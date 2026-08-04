@@ -51,7 +51,9 @@ $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pm
 }));
 $("#career-query").addEventListener("input",debounce(()=>{
   careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide();
+  updateHash();
 },200));
+$("#career-sort").addEventListener("change",()=>renderCareerGuide());
 
 $("#awatch").addEventListener("change", ()=>{
   aWatchChange();

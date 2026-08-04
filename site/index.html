@@ -831,8 +831,8 @@
   .tldate{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;color:var(--muted);min-width:92px}
   .tlreason{font-weight:700}
   .tlsal{font:700 13px/1 var(--font-display);color:var(--green)}
-  .staffing-ledger{border-top:3px double var(--ink);margin:30px 0 24px;padding-top:10px}
-  .staffing-ledger>summary{cursor:pointer;list-style:none;padding:10px 0;font:700 22px/1.2 var(--font-display);color:var(--oxblood)}
+  .staffing-ledger{border-top:1px solid var(--color-border);margin:var(--space-6) 0 var(--space-5);padding-top:var(--space-3)}
+  .staffing-ledger>summary{cursor:pointer;list-style:none;padding:var(--space-2) 0;font:600 16px/1.3 var(--font-interface);color:var(--color-text-soft)}
   .staffing-ledger>summary::-webkit-details-marker{display:none}
   .staffing-ledger>summary::after{content:" ▸"}
   .staffing-ledger[open]>summary::after{content:" ▾"}
@@ -841,19 +841,19 @@
   .staffing-feed-head h2{font:700 clamp(2rem,5vw,3.35rem)/1 var(--font-display);letter-spacing:-.025em;margin:0;max-width:760px}
   .staffing-feed-deck{font-size:16px;line-height:1.5;color:var(--ink-soft);max-width:710px;margin:10px 0 0}
   .staffing-feed-search label{display:block;font:700 12px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin-bottom:6px}
-  .staffing-feed-search input{width:100%;font-size:16px;background:#fff}
+  .staffing-feed-search input{width:100%;font-size:16px;background:var(--color-surface)}
   .staffing-filter-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;border-block:1px solid var(--rule);padding:12px 0;margin-bottom:14px}
   .staffing-filter-group{border:0;padding:0;margin:0;min-width:0}
   .staffing-filter-group legend{font:600 10px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:7px}
   .staffing-filter-options{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .staffing-filter-options .chip{min-height:34px;padding:6px 10px}
-  .staffing-filter-options .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .staffing-filter-options .chip[aria-pressed="true"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
   .staffing-exam-help{font:650 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
   .staffing-feed-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:9px}
   .staffing-feed-meta h3{font:700 21px/1.1 var(--font-display);margin:0}
   .staffing-feed-meta p{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
   .staffing-export-actions{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-top:10px}
-  .staffing-notice-list{display:flex;flex-direction:column;min-height:290px;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--card)}
+  .staffing-notice-list{display:flex;flex-direction:column;min-height:290px;border:1px solid var(--color-border);border-radius:var(--radius-md);overflow:hidden;background:var(--color-surface)}
   .staffing-hire-row{border-bottom:1px solid var(--rule);min-width:0}
   .staffing-hire-row:last-child{border-bottom:0}
   .staffing-hire-row>a{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 9px;padding:7px 12px;min-width:0;text-decoration:none;color:var(--ink);transition:background .1s}
@@ -863,8 +863,8 @@
   .staffing-hire-agency{font:12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .staffing-hire-fact{font:12px/1.3 ui-monospace,Menlo,monospace;color:var(--muted)}
   .staffing-hire-date{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);white-space:nowrap;margin-left:auto}
-  .staffing-notice-list:has(.staffing-notice-card){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:visible;background:transparent;border:0;padding:0}
-  .staffing-notice-card{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--blue);border-radius:8px;padding:14px;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .staffing-notice-list:has(.staffing-notice-card){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3);overflow:visible;background:transparent;border:0;padding:0}
+  .staffing-notice-card{background:var(--color-surface);border:1px solid var(--color-border);border-top:4px solid var(--color-brand);border-radius:var(--radius-md);padding:var(--space-4);min-width:0;display:flex;flex-direction:column;gap:var(--space-2)}
   .staffing-notice-card[data-kind="exam"]{border-top-color:var(--green)}
   .staffing-notice-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
   .staffing-notice-date{font:600 11.5px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);white-space:nowrap}
@@ -872,20 +872,15 @@
   .staffing-notice-agency{font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
   .staffing-notice-facts{display:flex;gap:6px 12px;flex-wrap:wrap;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .staffing-notice-card .view{margin-top:auto;padding-top:3px;font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}
-  .career-guide{margin-bottom:34px;scroll-margin-top:12px}
-  .career-kicker{font:600 11px/1 var(--font-sc);letter-spacing:.15em;text-transform:uppercase;color:var(--oxblood);margin:0 0 9px}
-  .career-intro{border-block:3px double var(--ink);padding:10px 0 12px}
+  .career-guide{margin-bottom:var(--space-6);scroll-margin-top:var(--space-3)}
+  .career-kicker{font:600 11px/1 var(--font-sc);letter-spacing:.15em;text-transform:uppercase;color:var(--color-action);margin:0 0 var(--space-2)}
   .career-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:9px}
   .career-fact{display:flex;align-items:baseline;justify-content:center;gap:5px;min-width:0;padding:4px 10px;border-inline-end:1px solid var(--rule);text-align:center}
   .career-fact:last-child{border-inline-end:0}
   .career-fact b{font:700 17px/1.1 var(--font-display);color:var(--oxblood)}
   .career-fact span{font:11.5px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-  .career-how{border:1px solid var(--rule);border-radius:7px;background:var(--card)}
-  .career-how summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none;padding:8px 11px;font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
-  .career-how summary::-webkit-details-marker{display:none}
-  .career-how summary::after{content:"▸";flex:0 0 auto;transition:transform .15s ease}
-  .career-how[open] summary::after{transform:rotate(90deg)}
-  .career-how-body{border-top:1px solid var(--rule);padding:10px 12px 12px}
+  .career-how{margin-top:var(--space-2)}
+  .career-how-body{margin-top:var(--space-2);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-canvas-subtle)}
   .career-deck{font-size:14px;line-height:1.45;color:var(--ink-soft);max-width:850px;margin:0 0 11px}
   .career-section-heading{font:700 19px/1.1 var(--font-display);margin:0 0 10px}
   .career-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:careerstep}
@@ -893,25 +888,31 @@
   .career-step::before{content:counter(careerstep);display:block;font:700 12px/1 var(--font-display);color:var(--oxblood);margin-bottom:5px}
   .career-step b{display:block;font-size:14px;line-height:1.2;margin-bottom:3px}
   .career-step span{display:block;font:12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-  .career-browser{border-block:3px double var(--ink);padding:18px 0 24px}
-  .career-browser-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .career-browser-head h2{font:700 clamp(2rem,5vw,3.35rem)/1 var(--font-display);letter-spacing:-.025em;margin:0;max-width:760px}
-  .career-browser-head p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
-  .career-controls{display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(3,minmax(145px,.7fr));gap:10px;margin:14px 0 12px}
+  .career-browser{padding:var(--space-2) 0 var(--space-5)}
+  .career-browser-head{display:block}
+  .career-browser-head h2{max-width:760px}
+  .career-controls{margin:0}
   .career-controls .field{min-width:0}
-  .career-source{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:#f6f7f9;border-inline-start:4px solid var(--green);padding:10px 12px;margin:0 0 14px;font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
-  .career-source.stale{border-inline-start-color:var(--rose);background:#eef2ff}
-  .career-source details{flex:0 0 auto}
-  .career-source summary{cursor:pointer;color:var(--oxblood);font-weight:700}
-  .career-results{min-height:360px}
+  .career-toolbar{justify-content:flex-end}
+  .career-toolbar .lens-toolbar-actions{margin-inline-start:auto}
+  .career-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
+  #career-format-rail .chip[aria-pressed="true"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
+  #career-format-rail .chip[aria-pressed="true"] .ct{color:var(--color-surface)}
+  .career-source{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3);background:var(--color-surface);border-inline-start:4px solid var(--color-success);padding:var(--space-2) var(--space-3);margin:var(--space-3) 0 0;font:12.5px/1.5 var(--font-interface);color:var(--color-text-soft)}
+  .career-source.stale{border-inline-start-color:var(--color-danger);background:var(--color-surface)}
+  .career-source-detail{flex:0 0 min(42%,320px)}
+  .career-source-detail b{color:var(--color-text);font-weight:700}
+  .career-source-detail ul{margin:var(--space-1) 0;padding-inline-start:var(--space-4)}
+  .career-source-detail p{margin:var(--space-1) 0 0}
+  .career-results{min-height:0}
   .career-result-group{margin-top:20px}
   .career-result-group:first-child{margin-top:0}
   .career-result-group h3{font:700 22px/1.15 var(--font-display);margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid var(--rule-strong)}
   .career-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
-  .career-card{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--blue);border-radius:8px;padding:15px;min-width:0;display:flex;flex-direction:column;gap:9px}
+  .career-card{background:var(--color-surface);border:1px solid var(--color-border);border-top:4px solid var(--color-brand);border-radius:var(--radius-md);padding:var(--space-4);min-width:0;display:flex;flex-direction:column;gap:var(--space-2)}
   .career-card[data-status="open"]{border-top-color:var(--green)}
   .career-card[data-status="closed"],.career-card[data-status="canceled"]{border-top-color:var(--rule-strong)}
-  .career-card.selected{grid-column:1/-1;max-width:900px;outline:3px solid #1a44e033;outline-offset:2px}
+  .career-card.selected{grid-column:1/-1;max-width:900px;outline:3px solid color-mix(in srgb,var(--color-action) 20%,transparent);outline-offset:2px}
   .route-item:focus{outline:3px solid var(--blue);outline-offset:3px}
   .career-deadline-lead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
   .career-deadline-primary{font:700 18px/1.15 var(--font-display);color:var(--ink);margin:0}
@@ -928,10 +929,10 @@
   .career-action-fact b{display:block;font:750 13px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
   .career-action-fact span{display:block;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px}
   .career-diff-leads{display:flex;flex-wrap:wrap;gap:6px;margin:0}
-  .career-diff-chip{display:inline-flex;align-items:center;gap:4px;font:650 12px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--wash,#f6f7f9);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;max-width:100%}
+  .career-diff-chip{display:inline-flex;align-items:center;gap:4px;font:650 12px/1.25 var(--font-interface);color:var(--color-text);background:var(--color-canvas-subtle);border:1px solid var(--color-border);border-radius:var(--radius-pill);padding:4px 10px;max-width:100%}
   .career-diff-chip[data-diff="exam_format"]{border-color:var(--blue);color:var(--blue)}
   .career-diff-chip[data-diff="fee"]{border-color:var(--green);color:var(--green)}
-  .career-diff-chip[data-diff="no_experience_required"],.career-diff-chip[data-diff="experience_required"]{border-color:var(--amber,#8a5a00);color:var(--amber,#8a5a00)}
+  .career-diff-chip[data-diff="no_experience_required"],.career-diff-chip[data-diff="experience_required"]{border-color:var(--color-caution);color:var(--color-caution)}
   .career-diff-quals{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);margin:0}
   .career-diff-quals b{color:var(--ink)}
   .career-card>.note[data-staffing-list-prediction]{margin-top:0}
@@ -939,7 +940,7 @@
   .career-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border-block:1px solid var(--rule);padding:9px 0}
   .career-metric b{display:block;font:700 19px/1.05 var(--font-display);color:var(--green)}
   .career-metric span{display:block;font:11px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px}
-  .career-outcomes{border:1px solid var(--rule);border-radius:6px;padding:10px 12px;background:var(--canvas,#f6f7f9)}
+  .career-outcomes{border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:var(--space-2) var(--space-3);background:var(--color-canvas-subtle)}
   .career-outcomes-heading{font:750 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:0 0 8px;text-transform:uppercase;letter-spacing:.02em}
   .career-outcomes-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .career-outcomes-metrics .career-metric b{color:var(--ink)}
@@ -949,10 +950,10 @@
   .career-detail-line b{color:var(--ink)}
   .career-card .actions{margin-top:auto;padding-top:4px;display:flex;gap:7px;flex-wrap:wrap}
   .career-card .actions .act{font-size:12px;padding:8px 11px;min-height:40px;display:inline-flex;align-items:center}
-  .career-card .actions .primary{background:var(--oxblood);color:#fff;border-color:var(--oxblood)}
+  .career-card .actions .primary{background:var(--color-action);color:var(--color-surface);border-color:var(--color-action)}
   .career-empty{grid-column:1/-1;border:1px dashed var(--rule-strong);padding:32px;text-align:center;color:var(--muted)}
   .career-more{grid-column:1/-1;text-align:center;padding:6px 0}
-  .career-more button{background:#fff;color:var(--oxblood);border-color:var(--rule-strong)}
+  .career-more button{background:var(--color-surface);color:var(--color-action);border-color:var(--color-border-strong)}
   .career-english-note{font:11.5px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
   .career-hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
   .career-hero-actions .act{display:inline-flex;align-items:center;min-height:40px}
@@ -990,7 +991,7 @@
     .career-fact{display:block;padding:4px 5px}.career-fact b,.career-fact span{display:block}.career-fact b{font-size:15px}.career-fact span{font-size:10px}
     .career-controls,.career-result-grid{grid-template-columns:1fr}
     .career-action-facts{grid-template-columns:1fr}
-    .career-source{display:block}.career-source details{margin-top:7px}
+    .career-source{display:block}.career-source-detail{margin-top:var(--space-2)}
     .career-card-head{display:block}.career-exam-number{display:block;margin-top:5px}
     .contract-example-list{grid-template-columns:1fr}
     .staffing-role-row{grid-template-columns:1fr}.staffing-exam-link{align-items:flex-start;max-width:none;text-align:start}
@@ -1455,92 +1456,17 @@
   <div class="wrap">
     <div class="career-guide" id="career-guide">
       <section class="career-browser" aria-labelledby="career-browser-heading">
-        <div class="career-browser-head">
-          <div>
-            <p class="career-kicker" data-i18n="staffing_pathways_kicker">City careers</p>
-            <h2 id="career-browser-heading" data-i18n="career_browser_heading">Find an exam you can act on</h2>
-          </div>
-          <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
-        </div>
-        <div class="career-controls">
-          <div class="field">
-            <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
-            <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder">
-          </div>
-          <div class="field">
-            <label for="career-interest" data-i18n="career_interest_label">Interest area</label>
-            <select id="career-interest"><option value="all" data-i18n="career_all_interests">All interests</option></select>
-          </div>
-          <div class="field">
-            <label for="career-eligibility" data-i18n="career_eligibility_label">Who can apply</label>
-            <select id="career-eligibility">
-              <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
-              <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
-              <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="career-window" data-i18n="career_window_label">Application window</label>
-            <select id="career-window">
-              <option value="actionable" data-i18n="career_actionable_option">Open and upcoming</option>
-              <option value="open" data-i18n="career_open_option">Open now</option>
-              <option value="upcoming" data-i18n="career_upcoming_option">Upcoming</option>
-              <option value="all" data-i18n="career_all_windows_option">All scheduled exams</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="career-format" data-i18n="career_format_label">Exam format</label>
-            <select id="career-format">
-              <option value="all" data-i18n="career_format_all">Any format</option>
-              <option value="education_experience" data-i18n="career_format_eee">Education and experience</option>
-              <option value="multiple_choice" data-i18n="career_format_mc">Multiple choice</option>
-              <option value="physical" data-i18n="career_format_physical">Physical</option>
-              <option value="mixed" data-i18n="career_format_mixed">Mixed / multi-part</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="career-salary-band" data-i18n="career_salary_band_label">Starting salary</label>
-            <select id="career-salary-band">
-              <option value="all" data-i18n="career_salary_band_all">Any salary</option>
-              <option value="under_45k" data-i18n="career_salary_under_45k">Under $45,000</option>
-              <option value="45k_60k" data-i18n="career_salary_45k_60k">$45,000–$60,000</option>
-              <option value="60k_80k" data-i18n="career_salary_60k_80k">$60,000–$80,000</option>
-              <option value="80k_plus" data-i18n="career_salary_80k_plus">$80,000+</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="career-fee-level" data-i18n="career_fee_level_label">Application fee</label>
-            <select id="career-fee-level">
-              <option value="all" data-i18n="career_fee_level_all">Any fee</option>
-              <option value="none" data-i18n="career_fee_none">No fee</option>
-              <option value="low" data-i18n="career_fee_low">$1–$40</option>
-              <option value="mid" data-i18n="career_fee_mid">$41–$70</option>
-              <option value="high" data-i18n="career_fee_high">$71+</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="career-no-experience" data-i18n="career_no_experience_label">Experience</label>
-            <select id="career-no-experience">
-              <option value="all" data-i18n="career_experience_all">Any requirements</option>
-              <option value="yes" data-i18n="career_no_experience_yes">No prior experience required</option>
-              <option value="no" data-i18n="career_experience_required">Experience required</option>
-            </select>
-          </div>
-        </div>
-        <div class="career-source" id="career-source" role="status">
-          <span data-i18n="career_loading">Loading the DCAS exam guide…</span>
-        </div>
-        <div class="career-results" id="career-results" aria-live="polite"></div>
-      </section>
-
-      <div class="career-intro">
-        <details class="career-how" id="career-how-details">
-          <summary data-i18n="staffing_exam_help">New to civil-service exams? How it works</summary>
+        <div class="career-browser-head lens-intro">
+          <p class="career-kicker" data-i18n="staffing_pathways_kicker">City careers</p>
+          <h2 class="lens-intro-heading" id="career-browser-heading" data-i18n="career_browser_heading">Find an exam you can act on</h2>
+          <p class="lens-intro-deck" data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area to focus the search on the work.</p>
+          <details class="lens-method career-how" id="career-how-details">
+            <summary class="lens-method-summary" data-i18n="staffing_exam_help">New to civil-service exams? How it works</summary>
           <div class="career-how-body">
             <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
               <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
               <div class="career-fact"><b id="career-upcoming-count">—</b><span data-i18n="career_upcoming_count_label">open-competitive exams scheduled next</span></div>
-              <div class="career-fact"><b data-i18n="career_no_account_fact">No account here</b><span data-i18n="career_no_account_label">Applications happen in the City's OASys system</span></div>
+              <div class="career-fact"><b data-i18n="career_oasys_action">Apply in OASys</b><span data-i18n="career_oasys_action_label">Applications happen in the City's OASys system</span></div>
             </div>
             <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
             <section aria-labelledby="career-how-heading">
@@ -1552,9 +1478,98 @@
                 <div class="career-step"><b data-i18n="career_step4_title">Join the eligible list</b><span data-i18n="career_step4_body">If you pass, your score places you on a list agencies use when they hire for that title.</span></div>
               </div>
             </section>
+            <div class="career-source" id="career-source" role="status">
+              <span data-i18n="career_loading">Loading the DCAS exam guide…</span>
+            </div>
           </div>
-        </details>
-      </div>
+          </details>
+        </div>
+
+        <div class="lens-toolbar career-toolbar" id="career-toolbar">
+          <div class="lens-toolbar-actions">
+            <details class="utility-overflow lens-more-filters" id="staffing-more-filters">
+              <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="staffing-filter-badge" hidden></span></summary>
+              <div class="utility-overflow-content lens-more-content">
+                <div class="career-controls lens-controls-grid">
+                  <div class="field">
+                    <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
+                    <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder">
+                  </div>
+                  <div class="field">
+                    <label for="career-interest" data-i18n="career_interest_label">Interest area</label>
+                    <select id="career-interest"><option value="all" data-i18n="career_all_interests">All interests</option></select>
+                  </div>
+                  <div class="field">
+                    <label for="career-eligibility" data-i18n="career_eligibility_label">Who can apply</label>
+                    <select id="career-eligibility">
+                      <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
+                      <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
+                      <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="career-window" data-i18n="career_window_label">Application window</label>
+                    <select id="career-window">
+                      <option value="actionable" data-i18n="career_actionable_option">Open and upcoming</option>
+                      <option value="open" data-i18n="career_open_option">Open now</option>
+                      <option value="upcoming" data-i18n="career_upcoming_option">Upcoming</option>
+                      <option value="all" data-i18n="career_all_windows_option">All scheduled exams</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="career-salary-band" data-i18n="career_salary_band_label">Starting salary</label>
+                    <select id="career-salary-band">
+                      <option value="all" data-i18n="career_salary_band_all">Any salary</option>
+                      <option value="under_45k" data-i18n="career_salary_under_45k">Under $45,000</option>
+                      <option value="45k_60k" data-i18n="career_salary_45k_60k">$45,000–$60,000</option>
+                      <option value="60k_80k" data-i18n="career_salary_60k_80k">$60,000–$80,000</option>
+                      <option value="80k_plus" data-i18n="career_salary_80k_plus">$80,000+</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="career-fee-level" data-i18n="career_fee_level_label">Application fee</label>
+                    <select id="career-fee-level">
+                      <option value="all" data-i18n="career_fee_level_all">Any fee</option>
+                      <option value="none" data-i18n="career_fee_none">No fee</option>
+                      <option value="low" data-i18n="career_fee_low">$1–$40</option>
+                      <option value="mid" data-i18n="career_fee_mid">$41–$70</option>
+                      <option value="high" data-i18n="career_fee_high">$71+</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="career-no-experience" data-i18n="career_no_experience_label">Experience</label>
+                    <select id="career-no-experience">
+                      <option value="all" data-i18n="career_experience_all">Any requirements</option>
+                      <option value="yes" data-i18n="career_entry_level_welcome">Entry-level applicants welcome</option>
+                      <option value="no" data-i18n="career_experience_required">Experience required</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+        <select id="career-format" hidden aria-hidden="true">
+          <option value="all" data-i18n="career_format_all">Any format</option>
+          <option value="education_experience" data-i18n="career_format_eee">Education and experience</option>
+          <option value="multiple_choice" data-i18n="career_format_mc">Multiple choice</option>
+          <option value="physical" data-i18n="career_format_physical">Physical</option>
+          <option value="mixed" data-i18n="career_format_mixed">Mixed / multi-part</option>
+        </select>
+        <div class="property-rail-label lens-primary-label" id="career-format-label" data-i18n="career_format_label">Exam format</div>
+        <div class="chiprow lens-primary-rail" id="career-format-rail" role="group" aria-label="Exam format" data-i18n-aria="career_format_label"></div>
+        <div class="lens-resultbar" id="career-resultbar">
+          <span class="lens-count" id="career-result-count" aria-live="polite"></span>
+          <div class="field lens-sort">
+            <label for="career-sort" data-i18n="sort_label">Sort by</label>
+            <select id="career-sort">
+              <option value="deadline" data-i18n="sort_deadline">Deadline: soonest</option>
+              <option value="salary" data-i18n="career_salary_band_label">Starting salary</option>
+            </select>
+          </div>
+        </div>
+        <div class="career-results" id="career-results" aria-live="polite"></div>
+      </section>
     </div>
 
     <details class="staffing-ledger" id="staffing-ledger">
