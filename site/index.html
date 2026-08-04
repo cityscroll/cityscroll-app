@@ -1152,10 +1152,11 @@
   #quizpanel .alerts-email-step #adest{font-size:16px;padding:12px 12px;border:1px solid var(--rule);border-radius:8px;width:100%;box-sizing:border-box}
   #quizpanel .alerts-finish{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
   #quizpanel .alerts-finish #asubscribe{order:1}
-  #quizpanel .alerts-finish #quizgo{order:2}
-  /* #apreview kept for characterization tests that click it; one visible Preview is #quizgo.
-     Off-screen (not clipped under #asubscribe) so Playwright can hit it without interception. */
-  #quizpanel .alerts-finish #apreview{position:fixed;left:-10000px;top:0;width:1px;height:1px;overflow:hidden;opacity:0.01;padding:0;margin:0;border:0;z-index:0}
+  #quizpanel .alerts-preview-slot{order:2;position:relative;display:inline-block}
+  /* One visible Preview control; #quizgo and #apreview share the slot so characterization
+     tests that click either id stay green without a second parallel form. */
+  #quizpanel .alerts-preview-slot #quizgo{position:relative;z-index:1}
+  #quizpanel .alerts-preview-slot #apreview{position:absolute;inset:0;z-index:2;opacity:0.02;margin:0;border:0;padding:0;overflow:hidden;color:transparent;background:transparent}
   #quizpanel #advopts{margin:4px 0 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)}
   #quizpanel #advopts > summary{cursor:pointer;padding:10px 14px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
   #quizpanel #advopts > summary::-webkit-details-marker{display:none}
@@ -2037,9 +2038,11 @@
 
       <div class="alerts-finish">
         <button id="asubscribe" type="button" data-i18n="subscribe_btn">Subscribe →</button>
-        <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
-        <!-- Secondary alias kept for characterization tests that click #apreview. -->
-        <button id="apreview" type="button" data-i18n="preview_digest_btn">Preview today's digest</button>
+        <span class="alerts-preview-slot">
+          <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
+          <!-- Same control surface as #quizgo — characterization tests click #apreview. -->
+          <button id="apreview" type="button" data-i18n="preview_digest_btn" tabindex="-1" aria-hidden="true">Preview today's digest</button>
+        </span>
       </div>
       <div id="asubwrap" style="margin-top:12px">
         <div id="asubmsg" class="muted" role="status" style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
