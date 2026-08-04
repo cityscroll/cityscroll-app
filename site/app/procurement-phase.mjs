@@ -411,18 +411,73 @@ function lifecycleDollarsHTML(data, notice){
     <a href="${fallbackCheckbook}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
 }
 
+// Prime-win sub-outreach card: pure helpers in site/sub_outreach.mjs.
+// Consumes lifecycle.award_prime_goal only; never invents goal % or apology empties.
+let subOutreachToolsPromise = null;
+function ensureSubOutreachTools(){
+  if(!subOutreachToolsPromise){
+    subOutreachToolsPromise = import("../sub_outreach.mjs").catch(() => null);
+  }
+  return subOutreachToolsPromise;
+}
+
+/**
+ * Paint the sub-outreach surface from award_prime_goal. Empty string when
+ * nothing allowlisted exists — including when goal_percent is not_published.
+ * @param {object} r notice row
+ * @param {object|null} data /contract-lifecycle payload
+ * @param {HTMLElement|null|undefined} subEl
+ */
+async function paintSubOutreach(r, data, subEl){
+  if(!subEl) return;
+  if(!document.contains(subEl)) return;
+  // Clear first so prior notice paint never lingers on wrong-universe routes.
+  subEl.innerHTML = "";
+  if(!data || !data.award_prime_goal) return;
+  if(!/^(Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"")){
+    // Still allow registration-matched solicitations when the side-car is eligible
+    // and stamps an open_candidate window or prime facts.
+    if(String(r.type_of_notice_description||"") !== "Solicitation") return;
+  }
+  const tools = await ensureSubOutreachTools();
+  if(!tools || typeof tools.subOutreachHTML !== "function") return;
+  if(!document.contains(subEl)) return;
+  const moneyFn = typeof lifecycleMoney === "function"
+    ? (n) => lifecycleMoney(n)
+    : (typeof money === "function" ? money : undefined);
+  const html = tools.subOutreachHTML(data.award_prime_goal, {
+    t,
+    esc: typeof escUiHtml === "function" ? escUiHtml : undefined,
+    money: moneyFn,
+  });
+  // Final empty-state axe: refuse apology copy even if a future helper drifts.
+  if(html && typeof tools.detectSubOutreachApologyCopy === "function"){
+    if(tools.detectSubOutreachApologyCopy(html).length) {
+      subEl.innerHTML = "";
+      return;
+    }
+  }
+  subEl.innerHTML = html || "";
+}
+
 // Fetches the precomputed lifecycle from the worker and renders the timeline + dollars
 // panel. Fail-soft on network: says nothing rather than inventing a gap. The read model is
 // fully precomputed server-side (worker/src/checkbook_lifecycle.mjs) — no live upstream.
 // Category gate first: non-procurement notices never fetch or paint contract modules.
-async function loadLifecycle(r, el, dollarsEl, actionsEl){
-  if((!el && !dollarsEl) || !r.request_id) return;
+// Optional subOutreachEl: prime-win sub-outreach card (award_prime_goal side-car).
+async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
+  const subEl = subOutreachEl
+    || (typeof document !== "undefined" && (document.getElementById("nsuboutreach") || document.getElementById("dsuboutreach")))
+    || null;
+  if((!el && !dollarsEl && !subEl) || !r.request_id) return;
   if(!isContractLifecycleEligible(r)){
     if(el) el.innerHTML = "";
     if(dollarsEl) dollarsEl.innerHTML = "";
+    if(subEl) subEl.innerHTML = "";
     return;
   }
   const phaseToolsP = ensureProcurementPhaseSpineTools();
+  const subToolsP = ensureSubOutreachTools();
   let data = null;
   try{
     const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
@@ -436,10 +491,12 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
       el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div><div class="note">${t("lifecycle_no_pin_note_html")}</div>`;
     }
     // Network / total failure: say nothing — never "Could not reach" as a data gap.
+    if(subEl) subEl.innerHTML = "";
     return;
   }
   if(data.ok === false && !Array.isArray(data.timeline)){
     // Unresolvable precompute without a timeline: fail soft (no transient-error card).
+    if(subEl) subEl.innerHTML = "";
     return;
   }
   if(actionsEl && document.contains(actionsEl)) paintNoticeActionRail(actionsEl,r,null,data);
@@ -452,6 +509,9 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
   if(dollarsEl && /^(Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"")){
     dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
   }
+  // Sub-outreach rides the same precomputed lifecycle; paint only allowlisted facts.
+  await subToolsP;
+  await paintSubOutreach(r, data, subEl);
   // Honor #notice/<id>?focus=follow-the-dollars after the panel is in the DOM.
   scrollToLifecycleFocus();
 }
@@ -459,6 +519,8 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
 // Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.bindProcurementPhaseUI = bindProcurementPhaseUI;
 globalThis.ensureProcurementPhaseSpineTools = ensureProcurementPhaseSpineTools;
+globalThis.ensureSubOutreachTools = ensureSubOutreachTools;
+globalThis.paintSubOutreach = paintSubOutreach;
 globalThis.lifecycleDollarsHTML = lifecycleDollarsHTML;
 globalThis.lifecyclePhaseActionHTML = lifecyclePhaseActionHTML;
 globalThis.lifecyclePhaseAggregateHTML = lifecyclePhaseAggregateHTML;
@@ -470,3 +532,4 @@ globalThis.lifecycleTimelineHTML = lifecycleTimelineHTML;
 globalThis.lifecycleTimelineHTMLFlat = lifecycleTimelineHTMLFlat;
 globalThis.loadLifecycle = loadLifecycle;
 Object.defineProperty(globalThis, "procurementPhaseSpineToolsPromise", { configurable: true, get: () => procurementPhaseSpineToolsPromise, set: value => { procurementPhaseSpineToolsPromise = value; } });
+Object.defineProperty(globalThis, "subOutreachToolsPromise", { configurable: true, get: () => subOutreachToolsPromise, set: value => { subOutreachToolsPromise = value; } });

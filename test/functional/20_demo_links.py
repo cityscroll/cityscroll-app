@@ -178,6 +178,92 @@ CANNONSVILLE_ATTACHMENTS = {
     },
 }
 
+# Prime-win sub-outreach demo (award_prime_goal side-car → #nsuboutreach).
+# source: City Record award 20231222103 / HNTB CORPORATION (characterization fixture).
+HNTB_AWARD_NOTICE = {
+    "request_id": "20231222103",
+    "start_date": "2023-12-22T00:00:00.000",
+    "agency_name": "Design and Construction",
+    "type_of_notice_description": "Award",
+    "section_name": "Procurement",
+    "short_title": "Construction Management Services",
+    "pin": "07123E0076001",
+    "vendor_name": "HNTB CORPORATION",
+    "contract_amount": "4020000",
+    "category_description": "Construction/Construction Services",
+    "additional_description_1": "Award of construction management services.",
+}
+
+HNTB_AWARD_LIFECYCLE = {
+    "ok": True,
+    "pin": "07123E0076001",
+    "pin_strategy": "exact",
+    "assembly_version": 3,
+    "timeline": [
+        {
+            "stage": "award",
+            "status": "matched",
+            "detail": {
+                "request_id": "20231222103",
+                "vendor": "HNTB CORPORATION",
+                "amount": 4020000,
+                "date": "2023-12-22",
+            },
+        }
+    ],
+    "award_prime_goal": {
+        "schema": "cityscroll.award_prime_goal.v1",
+        "method": "award_prime_goal_v1",
+        "method_version": "1.0.0",
+        "request_id": "20231222103",
+        "notice_type": "Award",
+        "eligible": True,
+        "prime": {
+            "display_name": "HNTB CORPORATION",
+            "stem": "HNTB",
+            "subject_ref": "vendor:name:hntb",
+            "mwbe_category": None,
+            "sources": ["city-record"],
+        },
+        "agency": {
+            "display_name": "Design and Construction",
+            "canonical_id": "ddc",
+            "canonical_name": "Design and Construction",
+            "subject_ref": "agency:ddc",
+            "source": "city-record",
+        },
+        "dollars": {
+            "amount": 4020000,
+            "source": "city-record",
+            "basis": "contract_amount",
+        },
+        "industry_chips": [
+            {
+                "key": "construction_construction_services",
+                "label": "Construction/Construction Services",
+                "source": "city-record",
+                "field": "category_description",
+            }
+        ],
+        "subcontract_goal": {
+            "status": "not_published",
+            "class": "not_published",
+            "goals": None,
+            "goal_percent": None,
+            "remaining_percent": None,
+        },
+        "possible_subcontract_window": {
+            "status": "open_candidate",
+            "basis": "award_or_registration_with_prime",
+            "has_prime": True,
+            "has_dollars": True,
+            "goal_data": "honest_absent",
+        },
+        "pin": "07123E0076001",
+        "contract_id": None,
+    },
+}
+
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_args: object) -> None:
@@ -196,6 +282,13 @@ def install_demo_routes(page) -> None:
             )
         elif path == "/attachment-metadata" and (query.get("id") or [""])[0] == "20240515016":
             route.fulfill(status=200, content_type="application/json", body=json.dumps(CANNONSVILLE_ATTACHMENTS))
+        elif path == "/contract-lifecycle" and (query.get("id") or [""])[0] == "20231222103":
+            # Prime-win sub-outreach demo: hermetic award_prime_goal side-car.
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(HNTB_AWARD_LIFECYCLE),
+            )
         elif path == "/zap-outcomes":
             # Notice-level land spine demo: hermetic full record for Timbale Terrace.
             project_id = (query.get("id") or [""])[0]
@@ -236,6 +329,8 @@ def install_demo_routes(page) -> None:
         exact_request = re.search(r"\brequest_id='([^']+)'", where)
         if exact_request and exact_request.group(1) == "20240515016":
             route.fulfill(status=200, content_type="application/json", body=json.dumps([CANNONSVILLE_NOTICE]))
+        elif exact_request and exact_request.group(1) == "20231222103":
+            route.fulfill(status=200, content_type="application/json", body=json.dumps([HNTB_AWARD_NOTICE]))
         elif exact_pin and exact_pin.group(1) in MATTER_PINS:
             pin = exact_pin.group(1)
             rows = [
