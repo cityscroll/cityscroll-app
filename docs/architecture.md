@@ -31,7 +31,6 @@ summary: >-
 updated: 2026-08-03
 sources:
   - README.md
-  - MISSION.md
   - site/index.html
   - site/app/main.mjs
   - docs/module-map.md
