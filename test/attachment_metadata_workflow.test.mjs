@@ -20,3 +20,10 @@ test("scheduled attachment jobs also run the T1 inline-text extract", () => {
   assert.match(workflow, /--limit 25/);
   assert.match(workflow, /attachment_text_latest\.json/);
 });
+
+test("scheduled attachment jobs also run the T2 structured-tables extract", () => {
+  assert.match(workflow, /attachment_tables_run\.py/);
+  assert.match(workflow, /--limit 25/);
+  assert.match(workflow, /attachment_tables_latest\.json/);
+  assert.match(workflow, /attachment-tables-storage/);
+});

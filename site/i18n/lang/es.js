@@ -870,6 +870,8 @@
     notice_attachment_chip_other: "{n} archivos adjuntos: {title}",
     notice_attachment_title_fallback: "Archivo oficial del aviso",
     notice_attachment_extract_summary: "Texto extraído del adjunto — expanda para el texto completo",
+    notice_attachment_tables_summary: "Tablas extraídas del archivo adjunto — expanda para los datos estructurados",
+    notice_attachment_table_caption: "Tabla {n}",
     notice_attachment_related_heading: "Relacionados por el contenido del adjunto",
     notice_attachment_related_lead: "Otros avisos que comparten temas con el texto del archivo oficial — no solo palabras clave.",
     digest_match_attachment_html: "Coincidencia en el adjunto: {snippet}",

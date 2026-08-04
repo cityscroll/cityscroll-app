@@ -1285,6 +1285,8 @@ const STRINGS = {
     notice_attachment_chip_other: "{n} attachments: {title}",
     notice_attachment_title_fallback: "Official notice file",
     notice_attachment_extract_summary: "Extracted text from attachment — expand for full text",
+    notice_attachment_tables_summary: "Extracted tables from attachment — expand for structured data",
+    notice_attachment_table_caption: "Table {n}",
     notice_attachment_related_heading: "Related by attachment content",
     notice_attachment_related_lead: "Other notices that share themes with the official file text — not just shared keywords.",
     digest_match_attachment_html: "Matched in attachment: {snippet}",

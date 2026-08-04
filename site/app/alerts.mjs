@@ -285,6 +285,9 @@ function matchEvidence(title, description, terms, contextTerms, attachmentText){
       hit:attach.slice(inAttach.index, inAttach.index+inAttach.term.length),
       after:attach.slice(inAttach.index+inAttach.term.length, end)+(end<attach.length?"…":"") };
   }
+  // T2: structured table cell text (same progressive path; provenance attachment-tables).
+  // attachmentText may already include joined table cells from matchAttachmentText when
+  // the caller passes a combined string; when only tables matched, field stays tables.
   if(!words.length) return null;
   return {field:"unknown", term:words[0]};
 }
@@ -300,7 +303,16 @@ function matchText(r){
 function matchAttachmentText(r){
   if(r.attachment_text) return cleanText(r.attachment_text);
   const attachments = Array.isArray(r.attachments) ? r.attachments : [];
-  return attachments.map(a=>cleanText(a && a.extracted_text)).filter(Boolean).join(" ");
+  const textParts = attachments.map(a=>cleanText(a && a.extracted_text)).filter(Boolean);
+  // T2: table cells also feed keyword match evidence (search index parity with haystack).
+  const tableParts = attachments.flatMap(a=>{
+    const tables = Array.isArray(a && a.extracted_tables) ? a.extracted_tables : [];
+    return tables.flatMap(t=>{
+      const cells = [...(t.headers||[]), ...(t.rows||[]).flat()];
+      return cells.map(c=>cleanText(c)).filter(Boolean);
+    });
+  });
+  return [...textParts, ...tableParts].join(" ");
 }
 // digTitleHTML: the item's title, term <mark>-highlighted when the TITLE is what matched.
 // ev.index is an offset into the cleaned (decoded) title. Escape text slices once so a notice
@@ -317,7 +329,7 @@ function digEvidenceHTML(ev){
   if(!ev || ev.field==="title") return "";
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
   if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
-  if(ev.field==="attachment-text") return `<div class="dev" data-match-provenance="attachment-text">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  if(ev.field==="attachment-text" || ev.field==="attachment-tables") return `<div class="dev" data-match-provenance="${esc(ev.field)}">${t("digest_match_attachment_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
   return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
 }
 function digContact(r){
@@ -1083,6 +1095,27 @@ function attachmentExtractHTML(attachment){
   </details>`;
 }
 
+// T2 tables UI is notice-detail only — dynamic import keeps it off home cold wireBytes.
+let attachmentTablesToolsPromise = null;
+async function attachmentTablesTools(){
+  if(!attachmentTablesToolsPromise){
+    attachmentTablesToolsPromise = import("../attachment_tables_ui.mjs").catch(()=>null);
+  }
+  return attachmentTablesToolsPromise;
+}
+function attachmentHasTablesHint(attachment){
+  const tables = Array.isArray(attachment?.extracted_tables) ? attachment.extracted_tables : [];
+  return tables.length > 0 && (!attachment.tables_status || attachment.tables_status === "ok");
+}
+async function attachmentTablesHTMLFor(r){
+  const attachments = Array.isArray(r?.attachments) ? r.attachments : [];
+  const first = attachments.find(a=>a && a.url) || null;
+  if(!first || !attachmentHasTablesHint(first)) return "";
+  const tools = await attachmentTablesTools();
+  if(!tools) return "";
+  return tools.attachmentTablesHTML(first, { t, esc: escUiHtml });
+}
+
 function attachmentChipHTML(r){
   if((r.section_name || r.section) === "Changes in Personnel") return "";
   const attachments = Array.isArray(r.attachments) ? r.attachments.filter(a=>a && a.url) : [];
@@ -1092,13 +1125,17 @@ function attachmentChipHTML(r){
   const title = rawTitle.length > 108 ? rawTitle.slice(0,105).trimEnd()+"…" : rawTitle;
   const label = tn("notice_attachment_chip", attachments.length, {title});
   const extract = attachmentExtractHTML(first);
-  // Always keep the original-document link; text extract is optional progressive disclosure.
+  // Tables mount async into #ncontext via fillContext (deferred module; not home cold).
+  const tablesHost = attachmentHasTablesHint(first)
+    ? `<div class="attachment-tables-host" data-attachment-tables-host="1"></div>`
+    : "";
+  // Always keep the original-document link; text extract is progressive disclosure.
   return `<div class="attachment-panel" style="margin:6px 0 4px">
     <a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a>
     ${extract}
+    ${tablesHost}
   </div>`;
 }
-
 // T3: precomputed attachment-content related notices (no query-time embedding).
 let attachmentRelatedToolsPromise = null;
 async function attachmentRelatedTools(){
@@ -1135,10 +1172,11 @@ async function fillContext(r, el){
   if(!el) return;
   const attachmentHTML = attachmentChipHTML(r);
   if(attachmentHTML) el.innerHTML = attachmentHTML;
-  const [flags, ctx, relatedHTML] = await Promise.all([
+  const [flags, ctx, relatedHTML, tablesHTML] = await Promise.all([
     noticeFlags(r),
     awardContext(r),
     attachmentRelatedHTMLFor(r),
+    attachmentTablesHTMLFor(r),
   ]);
   if(!document.contains(el)) return; // a newer selection replaced this panel
   let html = attachmentHTML;
@@ -1146,6 +1184,14 @@ async function fillContext(r, el){
   if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
   html += ctx;
   if(html) el.innerHTML = html;
+  // Paint deferred table disclosure into the host (or append if host was dropped).
+  if(tablesHTML && document.contains(el)){
+    const host = el.querySelector("[data-attachment-tables-host]");
+    if(host) host.outerHTML = tablesHTML;
+    else if(el.querySelector(".attachment-panel")) el.querySelector(".attachment-panel").insertAdjacentHTML("beforeend", tablesHTML);
+    const tools = await attachmentTablesTools();
+    if(tools && document.contains(el)) tools.bindAttachmentTableSort(el);
+  }
 }
 
 /* ===================== FOLLOW THE DOLLARS =====================
@@ -1224,6 +1270,7 @@ globalThis.matchAttachmentText = matchAttachmentText;
 globalThis.attachmentChipHTML = attachmentChipHTML;
 globalThis.attachmentExtractHTML = attachmentExtractHTML;
 globalThis.attachmentRelatedHTMLFor = attachmentRelatedHTMLFor;
+globalThis.attachmentTablesHTMLFor = attachmentTablesHTMLFor;
 globalThis.matchText = matchText;
 globalThis.noticeFlags = noticeFlags;
 globalThis.ordinal = ordinal;
