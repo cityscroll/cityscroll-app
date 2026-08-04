@@ -1,7 +1,7 @@
 // tools/changelog_extract.mjs — pure extraction of a PR's user-impact line from its body,
 // plus the gate that decides whether that PR clears the changelog's editorial bar.
 //
-// Convention (documented in CONTRIBUTING.md): a PR states its user impact in a
+// Convention: a PR states its user impact in a
 // "## What this means for you" section (any heading level, case-insensitive). That alone
 // no longer earns a changelog.html entry — every PR in this project's workflow carries that
 // section by internal convention, whether the change is a major feature or an invisible
@@ -16,7 +16,7 @@
 // default.
 //
 // Accepted marker headings (same section semantics; any heading level, case-insensitive):
-//   - "What this means for you" (canonical, CONTRIBUTING.md)
+//   - "What this means for you" (canonical)
 //   - "What readers see" / "What users can now see" (common plain-language variants)
 //   - "Changelog" (short alias used on some major feature PRs)
 // The `changelog:major` label remains the significance gate; these aliases only keep the

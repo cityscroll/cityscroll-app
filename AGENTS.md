@@ -762,9 +762,8 @@ Team data contract: `site/changelog-data.json` (not repo-root). Workflow:
 `.github/workflows/update-changelog.yml` → `tools/prepare-changelog-base.sh` →
 `tools/gen_changelog.mjs`. Editorial bar: `changelog:major` **and** an accepted user-impact
 heading (canonical `## What this means for you`; aliases in `tools/changelog_extract.mjs`).
-**Vacuity tripwire:** a major label with nothing extractable fails the job. Convention:
-`CONTRIBUTING.md` “Changelog entries”. Characterization: `test/changelog_*.test.mjs`,
-`test/changelog_entry_gate.test.mjs`.
+**Vacuity tripwire:** a major label with nothing extractable fails the job. Characterization:
+`test/changelog_*.test.mjs`, `test/changelog_entry_gate.test.mjs`.
 
 The workflow publishes only that file to the existing `bot/changelog-update` branch. It does
 not generate `site/changelog.html`, open a pull request, or enter the merge queue. Path guard:

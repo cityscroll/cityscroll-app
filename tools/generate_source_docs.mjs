@@ -5,12 +5,9 @@ import { pathToFileURL } from "node:url";
 import { AWARD_SOURCE_REGISTRY } from "../site/external_awards.js";
 import {
   DOC_PATH,
-  README_PATH,
   awardCoverage,
   loadSourceContracts,
-  renderReadmeSourceBlock,
   renderSourceDocument,
-  replaceReadmeSourceBlock,
   validateSourceContracts,
 } from "./source_contracts.mjs";
 
@@ -19,10 +16,8 @@ export function generatedSourceFiles() {
   const errors = validateSourceContracts(registry);
   if (errors.length) throw new Error(errors.join("\n"));
   const coverage = awardCoverage(AWARD_SOURCE_REGISTRY);
-  const block = renderReadmeSourceBlock(registry, coverage);
   return {
     [DOC_PATH]: renderSourceDocument(registry, coverage),
-    [README_PATH]: replaceReadmeSourceBlock(readFileSync(README_PATH, "utf8"), block),
   };
 }
 
