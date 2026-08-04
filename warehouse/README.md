@@ -365,6 +365,33 @@ Pure lib: `warehouse/lib/er_batch.mjs` (imports `entity_resolution/` +
 `worker/src/lib/entity_link.mjs` exact-stem builder). Identity is never
 reimplemented in SQL.
 
+## NYCEDC project documents (RC-2)
+
+The host-side collector reads the annual NYCEDC project workbook plus NYCIDA and
+Build NYC board minutes. It checkpoints downloads, records content hashes and
+source locators, and writes `nycedc_documents`, `nycedc_projects`,
+`nycedc_project_notice_edges`, plus the `nycedc_project_feed` view. Publisher
+index pages receive one polite request; an HTTP 403 is recorded without retry.
+
+```bash
+# Deterministic parser, join, and DuckDB proof
+warehouse/.venv/bin/python warehouse/scripts/nycedc_project_documents_run.py \
+  --from-fixture --limit 25 --force-headroom
+
+# Capped live refresh; requires a green headroom gate
+warehouse/.venv/bin/python warehouse/scripts/nycedc_project_documents_run.py \
+  --limit 25
+
+node --test test/nycedc_project_documents.test.mjs
+```
+
+The versioned payload is
+`warehouse/schemas/nycedc_project_feed.v1.schema.json`. City Record edges are
+materialized only when the committed fixed-sample receipt clears the 30% join
+threshold with every candidate reviewed and no false positives. Missing facts
+and unmatched projects remain null/unmatched. A public hearing is never treated
+as a board approval without explicit motion and vote language in the minutes.
+
 ## Roadmap
 
 | Card | Scope |

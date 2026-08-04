@@ -161,6 +161,31 @@
         "organization_name"
       ],
       "notes": "ER batch (WH-04) target. Small (~11k); optional pack after primary queue."
+    },
+    "nycedc-project-documents": {
+      "id": "nycedc-project-documents",
+      "source_contract_id": "nycida-build-nyc-projects",
+      "name": "NYCEDC annual project and authority board documents",
+      "kind": "publisher_documents",
+      "domain": "https://edc.nyc",
+      "table_name": "nycedc_projects",
+      "bulk_class": "BATCHABLE",
+      "default_limit": 25,
+      "wh02_full_export": false,
+      "required_fields": [
+        "authority",
+        "project_id",
+        "project_name",
+        "company",
+        "address",
+        "request_id",
+        "requested_benefit",
+        "estimated_public_cost",
+        "project_cost",
+        "milestones",
+        "provenance"
+      ],
+      "notes": "Host-side, checkpointed document collector. Publisher index pages get one polite attempt; direct official documents remain hash-addressed and unmatched notice rows remain unmatched."
     }
   }
 }

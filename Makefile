@@ -7,7 +7,6 @@ prepush:
 	@args=""; \
 	if [ "$${PREPUSH_FULL:-0}" = "1" ]; then args="--full"; fi; \
 	if [ -n "$${PREPUSH_EXTRA_ARGS:-}" ]; then args="$$args $$PREPUSH_EXTRA_ARGS"; fi; \
-	# shellcheck disable=SC2086 \
 	./tools/preflight-required-checks.sh $$args
 
 # Point this clone's hooks at the versioned tools/git-hooks directory.
