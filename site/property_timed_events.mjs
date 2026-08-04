@@ -29,32 +29,32 @@ const MONTH = "(?:January|February|March|April|May|June|July|August|September|Oc
 const DAY = "(?:0?[1-9]|[12]\\d|3[01])(?:st|nd|rd|th)?";
 const YEAR = "(?:19|20)\\d{2}";
 const CLOCK = "(?:\\s*(?:at|,)\\s*|\\s+)(?:0?[1-9]|1[0-2])(?::[0-5]\\d)?\\s*(?:a\\.?m\\.?|p\\.?m\\.?)";
-const WORD_DATE_TOKEN = `${MONTH}\\s+${DAY},?\\s+${YEAR}`;
-const NUMERIC_DATE_TOKEN = "(?:0?[1-9]|1[0-2])[/-](?:0?[1-9]|[12]\\d|3[01])[/-](?:\\d{2}|(?:19|20)\\d{2})";
-const DATE_TOKEN = `(?:${WORD_DATE_TOKEN}|${NUMERIC_DATE_TOKEN})(?:${CLOCK})?`;
-const DATE_RE = new RegExp(`\\b(${DATE_TOKEN})`, "gi");
+const WORD_DATE_PATTERN = `${MONTH}\\s+${DAY},?\\s+${YEAR}`;
+const NUMERIC_DATE_PATTERN = "(?:0?[1-9]|1[0-2])[/-](?:0?[1-9]|[12]\\d|3[01])[/-](?:\\d{2}|(?:19|20)\\d{2})";
+const DATE_PATTERN = `(?:${WORD_DATE_PATTERN}|${NUMERIC_DATE_PATTERN})(?:${CLOCK})?`;
+const DATE_RE = new RegExp(`\\b(${DATE_PATTERN})`, "gi");
 const PARSE_DATE_RE = new RegExp(
   `^(${MONTH})\\s+(${DAY}),?\\s+(${YEAR})(?:${CLOCK})?$`,
   "i",
 );
 const BID_DUE_BLOCK_RE = new RegExp(
-  `\\b(?:bid due date|all bid proposals? must be received)[\\s\\S]{0,520}?\\bno later than\\b[\\s\\S]{0,70}?${DATE_TOKEN}`,
+  `\\b(?:bid due date|all bid proposals? must be received)[\\s\\S]{0,520}?\\bno later than\\b[\\s\\S]{0,70}?${DATE_PATTERN}`,
   "gi",
 );
 const RESPONSE_DUE_BLOCK_RE = new RegExp(
-  `\\bresponses? are due no later than\\b[\\s\\S]{0,120}?${DATE_TOKEN}`,
+  `\\bresponses? are due no later than\\b[\\s\\S]{0,120}?${DATE_PATTERN}`,
   "gi",
 );
 const SHOW_DATES_BLOCK_RE = new RegExp(
-  `\\bshow dates?\\s*:[\\s\\S]{0,300}?${DATE_TOKEN}[\\s\\S]{0,100}?${DATE_TOKEN}`,
+  `\\bshow dates?\\s*:[\\s\\S]{0,300}?${DATE_PATTERN}[\\s\\S]{0,100}?${DATE_PATTERN}`,
   "gi",
 );
 const SHOW_DATE_SINGLE_RE = new RegExp(
-  `\\bshow dates?\\s*:[\\s\\S]{0,300}?${DATE_TOKEN}`,
+  `\\bshow dates?\\s*:[\\s\\S]{0,300}?${DATE_PATTERN}`,
   "gi",
 );
 const ALL_BIDS_SUBMIT_RE = new RegExp(
-  `\\ball bids must be submitted by\\b[\\s\\S]{0,90}?${DATE_TOKEN}`,
+  `\\ball bids must be submitted by\\b[\\s\\S]{0,90}?${DATE_PATTERN}`,
   "gi",
 );
 
@@ -132,16 +132,16 @@ function searchableText(rawValue) {
     "&#39;": "'", "&apos;": "'", "&ldquo;": "\"", "&rdquo;": "\"",
     "&lsquo;": "'", "&rsquo;": "'", "&ndash;": "–", "&mdash;": "—",
   };
-  const tokenRe = /<[^>]*>|&(?:#\d+|[a-z]+);|\s+|[^<&\s]+/gi;
-  for (const match of raw.matchAll(tokenRe)) {
-    const token = match[0];
+  const partRe = /<[^>]*>|&(?:#\d+|[a-z]+);|\s+|[^<&\s]+/gi;
+  for (const match of raw.matchAll(partRe)) {
+    const part = match[0];
     const start = match.index;
-    const end = start + token.length;
-    if (token.startsWith("<")) append(" ", start, end);
-    else if (token.startsWith("&")) append(entities[token.toLowerCase()] || " ", start, end);
-    else if (/^\s+$/.test(token)) append(" ", start, end);
+    const end = start + part.length;
+    if (part.startsWith("<")) append(" ", start, end);
+    else if (part.startsWith("&")) append(entities[part.toLowerCase()] || " ", start, end);
+    else if (/^\s+$/.test(part)) append(" ", start, end);
     else {
-      for (let index = 0; index < token.length; index += 1) append(token[index], start + index, start + index + 1);
+      for (let index = 0; index < part.length; index += 1) append(part[index], start + index, start + index + 1);
     }
   }
   if (text.endsWith(" ")) {

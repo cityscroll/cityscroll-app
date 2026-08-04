@@ -2,7 +2,7 @@
   "source": "NYC Open Data City Record Online (dg92-zbpx)",
   "source_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
   "observed_at": "2026-08-04",
-  "normalization": "HTML removed and whitespace collapsed, matching the reader-visible notice-text cleaner",
+  "normalization": "HTML removed, whitespace collapsed, and irrelevant contact details omitted",
   "cases": [
     {
       "id": "disposition-hearing",
@@ -12,7 +12,7 @@
         "section_name": "Property Disposition",
         "type_of_notice_description": "Public Hearings",
         "short_title": "NOTICE OF VOLUNTARY PUBLIC HEARING",
-        "additional_description_1": "PUBLIC NOTICE IS HEREBY GIVEN THAT a voluntary public hearing will be held on Tuesday November 26, 2024, commencing at 10:00 am via Conference Call No. 1-646-992-2010. In order to access the Public Hearing and testify, please call no later than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024."
+        "additional_description_1": "PUBLIC NOTICE IS HEREBY GIVEN THAT a voluntary public hearing will be held on Tuesday November 26, 2024, commencing at 10:00 am. In order to access the Public Hearing and testify, please call no later than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024."
       }
     },
     {
