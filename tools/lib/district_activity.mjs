@@ -136,6 +136,22 @@ function coordsFromPropertyRow(row) {
   return null;
 }
 
+/** Property placement shared by map density and the district weekly preset. */
+export function propertyPlacementsFromRow(row, boundaries) {
+  const coords = coordsFromPropertyRow(row);
+  let community = null;
+  let council = null;
+  let borough = boroughsFromPropertyRow(row)[0] || null;
+  if (coords) {
+    community = resolveCommunityDistrict(coords.lat, coords.lon, boundaries);
+    council = resolveCouncilDistrict(coords.lat, coords.lon, boundaries);
+    if (!borough && community) borough = boroughFromCommunityId(community);
+  }
+  return borough || community || council
+    ? [{ borough, community, council, method: coords ? "coordinates_pip" : null }]
+    : [];
+}
+
 function boroughsFromPropertyRow(row) {
   const loc = row?.property_location || row?._location || row?.location || null;
   const list = Array.isArray(loc?.boroughs) ? loc.boroughs : [];
@@ -976,16 +992,9 @@ export function buildDistrictActivity(opts = {}) {
 
   // Property — geometry → point-in-polygon; else borough-only.
   for (const row of opts.propertyRows || []) {
-    const coords = coordsFromPropertyRow(row);
-    let community = null;
-    let council = null;
-    let borough = boroughsFromPropertyRow(row)[0] || null;
-    if (coords) {
-      community = resolveCommunityDistrict(coords.lat, coords.lon, boundaries);
-      council = resolveCouncilDistrict(coords.lat, coords.lon, boundaries);
-      if (!borough && community) borough = boroughFromCommunityId(community);
-    }
-    place("property", { borough, community, council, method: coords ? "coordinates_pip" : null });
+    const placements = propertyPlacementsFromRow(row, boundaries);
+    if (placements.length) place("property", placements[0]);
+    else place("property", {});
   }
 
   const placeOpts = { cdCouncilIndex };

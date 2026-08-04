@@ -10,10 +10,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildDistrictActivity, DISTRICT_ACTIVITY_SCHEMA } from "./lib/district_activity.mjs";
+import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE_OUT = join(ROOT, "site/data/district_activity.json");
 const WORKER_OUT = join(ROOT, "worker/src/data/district_activity.json");
+const DIGEST_OUT = join(ROOT, "site/data/district_weekly_digests.json");
 
 const PATHS = {
   boundaries: join(ROOT, "site/data/district_boundaries.json"),
@@ -32,7 +34,7 @@ function loadJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
-function build() {
+function loadInputs() {
   const boundaries = loadJson(PATHS.boundaries);
   if (!boundaries?.boundary_vintage) {
     throw new Error("missing site/data/district_boundaries.json with boundary_vintage");
@@ -43,15 +45,23 @@ function build() {
   const rules = loadJson(PATHS.rules);
   const money = loadJson(PATHS.money) || loadJson(PATHS.moneyFallback);
 
-  return buildDistrictActivity({
+  return {
     boundaries,
     zapRows: Array.isArray(zap?.rows) ? zap.rows : [],
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: Array.isArray(meetings?.rows) ? meetings.rows : [],
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
-    builtAt: new Date().toISOString(),
-  });
+  };
+}
+
+function build() {
+  const inputs = loadInputs();
+  const builtAt = new Date().toISOString();
+  return {
+    activity: buildDistrictActivity({ ...inputs, builtAt }),
+    digest: buildDistrictWeeklyDigests({ ...inputs, builtAt }),
+  };
 }
 
 function check(doc) {
@@ -127,6 +137,24 @@ function writeTwin(doc) {
   writeFileSync(WORKER_OUT, text);
 }
 
+function checkDigest(doc) {
+  if (doc?.schema !== "district_weekly_digests.v1") throw new Error("district weekly digest schema mismatch");
+  if (Object.keys(doc.by_council_district || {}).length !== 51) throw new Error("district weekly digest requires 51 districts");
+  for (const [id, record] of Object.entries(doc.by_council_district || {})) {
+    const items = Array.isArray(record?.items) ? record.items : [];
+    if (record.total !== items.length) throw new Error(`district ${id} count/list drift`);
+    if (items.length > (doc.performance?.max_items_per_district || 100)) throw new Error(`district ${id} exceeds item cap`);
+  }
+  if ((doc.performance?.measured_bytes || Infinity) > (doc.performance?.ceiling_bytes || 0)) {
+    throw new Error("district weekly digest exceeds payload ceiling");
+  }
+}
+
+function writeDigest(doc) {
+  mkdirSync(dirname(DIGEST_OUT), { recursive: true });
+  writeFileSync(DIGEST_OUT, JSON.stringify(doc) + "\n");
+}
+
 const args = process.argv.slice(2);
 const checkOnly = args.includes("--check");
 
@@ -138,9 +166,12 @@ if (checkOnly) {
   }
   check(existing);
   // Rebuild and compare shape invariants (not full byte equality — built_at moves).
+  const existingDigest = loadJson(DIGEST_OUT);
+  checkDigest(existingDigest);
   const fresh = build();
-  check(fresh);
-  if (existing.boundary_vintage !== fresh.boundary_vintage) {
+  check(fresh.activity);
+  checkDigest(fresh.digest);
+  if (existing.boundary_vintage !== fresh.activity.boundary_vintage) {
     console.error("boundary_vintage drift vs boundary layer");
     process.exit(1);
   }
@@ -151,14 +182,18 @@ if (checkOnly) {
     meetings_located: existing.sources?.meetings?.located,
     rules_located: existing.sources?.rules?.located,
     money_located: existing.sources?.money?.located,
+    district_digest_bytes: existingDigest.performance?.measured_bytes,
   });
   process.exit(0);
 }
 
-const doc = build();
+const { activity: doc, digest } = build();
 check(doc);
+checkDigest(digest);
 writeTwin(doc);
+writeDigest(digest);
 console.log("wrote", SITE_OUT, {
   boundary_vintage: doc.boundary_vintage,
   sources: doc.sources,
+  district_digest_bytes: digest.performance.measured_bytes,
 });

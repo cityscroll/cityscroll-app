@@ -32,6 +32,7 @@ export const LENSES = {
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
+  district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/

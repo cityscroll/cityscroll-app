@@ -16,7 +16,7 @@ import { vendorStem, monthsFromISO } from "./compile.mjs";
 
 // Lenses whose data lives outside the D1 notices mirror — always use SODA for these.
 // land (ZAP dataset hgx4-8ukb) is the primary case.
-export const OFF_MIRROR_LENSES = new Set(["land", "meetings", "people"]);
+export const OFF_MIRROR_LENSES = new Set(["land", "meetings", "people", "district"]);
 
 // sub: { lens, filter }. todayISO: "YYYY-MM-DD".
 // Returns buildNoticesQuery opts (for notices.mjs) or null if the lens can't be
