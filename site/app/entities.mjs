@@ -312,8 +312,8 @@ function agencyProfileBar(stats, rfpCount, agencyName){
 function forecastItemHTML(f){
   const isCheckbook = f.source === "checkbook";
   const badgeText = isCheckbook ? t("forecast_badge_checkbook") : t("forecast_badge_mocs");
-  const badgeColor = isCheckbook ? "#e3f2fd" : "#f1f8e9";
-  const badgeTextCol = isCheckbook ? "#0d47a1" : "#33691e";
+  const badgeColor = isCheckbook ? "#eef2ff" : "#e7f4ec";
+  const badgeTextCol = isCheckbook ? "#10259e" : "#1a6b34";
   const title = isCheckbook ? (f.vendor_name || t("forecast_vendor_fallback")) : (f.description || t("forecast_solicitation_fallback"));
   const sub = isCheckbook ? `${f.agency_name} · ${t("forecast_amount_label")} ${money(f.amount) || "—"}` : `${f.agency} · ${t("forecast_value_band_label")} ${f.value_band}`;
   const dateText = isCheckbook ? t("forecast_predicted_expiration_label",{date:f.expiration_date}) : t("forecast_expected_quarter_label",{quarter:f.release_quarter});
@@ -326,8 +326,8 @@ function forecastItemHTML(f){
       <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
       <span style="font-size:12px;color:var(--muted)">${dateText}</span>
     </div>
-    <div style="font-weight:600;font-size:14px;color:#111">${escUiHtml(title)}</div>
-    <div style="font-size:13px;color:#555;margin-bottom:8px">${escUiHtml(sub)}</div>
+    <div style="font-weight:600;font-size:14px;color:#12181f">${escUiHtml(title)}</div>
+    <div style="font-size:13px;color:#5b6470;margin-bottom:8px">${escUiHtml(sub)}</div>
     <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${escUiHtml(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">${t("mini_subscribe_btn")}</button>
   </div>`;
 }
@@ -411,7 +411,7 @@ async function showAgency(name, initialTab){
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
       ${agencyProfileBar(stats, rfps.length, nm)}
 
-      ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
+      ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #dde1e7;margin:16px 0 20px">
         <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">${t("forecast_overview_tab")}</button>
         <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">${t("forecast_subtab_label",{n:forecasts.length})}</button>
       </div>` : ""}
@@ -527,7 +527,7 @@ function doingBusinessCardHTML(db){
     : "";
   const facts = [structure, phone, start].filter(Boolean)
     .map(line => `<div class="sub" style="margin-top:2px">${line}</div>`).join("");
-  return `<div style="margin:14px 0 0;padding:12px 14px;border:1px solid #c8bfb0;border-radius:8px;background:#fbf8f0">
+  return `<div style="margin:14px 0 0;padding:12px 14px;border:1px solid #dde1e7;border-radius:8px;background:#f6f7f9">
       <div class="chain-h" style="margin:0 0 6px">${t("vendor_doing_business_heading")}</div>
       <div style="font-size:14px;font-weight:700">${t("vendor_doing_business_listed")}</div>
       ${listedAs}
@@ -876,7 +876,7 @@ function vendorProfileHTML(profile, details, hydrating){
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       ${vendorProfileHeaderHTML(profile)}
 
-      ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
+      ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #dde1e7;margin:16px 0 20px">
         <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">${t("forecast_overview_tab")}</button>
         <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">${t("forecast_subtab_label",{n:forecasts.length})}</button>
       </div>` : ""}

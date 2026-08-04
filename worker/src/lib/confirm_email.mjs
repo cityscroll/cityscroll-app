@@ -49,14 +49,14 @@ export function confirmSubject(lang = "en") {
 
 export function confirmEmailHtml({ confirmUrl, lens, filter, freq = "daily", lang = "en" }) {
   const desc = esc(describeFilter(lens, filter));
-  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a1714">
+  return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#12181f">
     <h2 style="font-family:system-ui">${esc(emailT(lang, "confirm_heading"))}</h2>
     <p>${esc(emailT(lang, "confirm_someone_asked"))}</p>
-    <p style="background:#faf6ee;border:1px solid #cdbfa6;border-radius:8px;padding:12px 14px;font-weight:bold">${desc}<br>
-      <span style="font-weight:normal;color:#5c5349">${esc(freq)} · by email</span></p>
-    <p><a href="${esc(confirmUrl)}" style="display:inline-block;background:#7a1f1f;color:#fff;text-decoration:none;font-family:system-ui;font-weight:bold;padding:13px 24px;border-radius:8px">${esc(emailT(lang, "confirm_btn"))}</a></p>
-    <p style="color:#5c5349;font-size:13px">${esc(emailT(lang, "confirm_expires"))}</p>
-    <p style="color:#5c5349;font-size:12px;border-top:1px solid #cdbfa6;padding-top:10px">${esc(emailT(lang, "confirm_didnt_ask"))}</p>
+    <p style="background:#f6f7f9;border:1px solid #dde1e7;border-radius:8px;padding:12px 14px;font-weight:bold">${desc}<br>
+      <span style="font-weight:normal;color:#5b6470">${esc(freq)} · by email</span></p>
+    <p><a href="${esc(confirmUrl)}" style="display:inline-block;background:#1a44e0;color:#fff;text-decoration:none;font-family:system-ui;font-weight:bold;padding:13px 24px;border-radius:8px">${esc(emailT(lang, "confirm_btn"))}</a></p>
+    <p style="color:#5b6470;font-size:13px">${esc(emailT(lang, "confirm_expires"))}</p>
+    <p style="color:#5b6470;font-size:12px;border-top:1px solid #dde1e7;padding-top:10px">${esc(emailT(lang, "confirm_didnt_ask"))}</p>
   </div>`;
 }
 
@@ -65,11 +65,11 @@ export function confirmEmailHtml({ confirmUrl, lens, filter, freq = "daily", lan
 export function htmlPage(title, message) {
   return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)} · CityScroll</title>
-<body style="margin:0;background:#f4efe4;color:#1a1714;font:17px/1.6 Georgia,serif">
+<body style="margin:0;background:#f6f7f9;color:#12181f;font:17px/1.6 Georgia,serif">
 <div style="max-width:520px;margin:14vh auto;padding:0 24px;text-align:center">
-  <div style="font:700 13px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#7a1f1f">CityScroll</div>
+  <div style="font:700 13px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#1a44e0">CityScroll</div>
   <h1 style="font-size:28px;margin:14px 0 8px">${esc(title)}</h1>
-  <p style="color:#3b342c">${message}</p>
-  <p style="margin-top:24px"><a href="https://cityscroll.org" style="color:#7a1f1f">← cityscroll.org</a></p>
+  <p style="color:#37414d">${message}</p>
+  <p style="margin-top:24px"><a href="https://cityscroll.org" style="color:#1a44e0">← cityscroll.org</a></p>
 </div>`;
 }

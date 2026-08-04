@@ -114,12 +114,12 @@ function notifyHtml(r, label) {
     ["When", r.at],
     ["IP", r.ip || "(unknown)"],
     ["UA", r.ua || "(unknown)"],
-  ].map(([k, val]) => `<tr><td style="padding:2px 12px 2px 0;color:#5c5349;vertical-align:top">${k}</td><td>${escHtml(val)}</td></tr>`).join("");
-  return `<div style="font:15px/1.6 Georgia,serif;color:#1a1714;max-width:640px">
+  ].map(([k, val]) => `<tr><td style="padding:2px 12px 2px 0;color:#5b6470;vertical-align:top">${k}</td><td>${escHtml(val)}</td></tr>`).join("");
+  return `<div style="font:15px/1.6 Georgia,serif;color:#12181f;max-width:640px">
     <h2 style="font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px">New CityScroll feedback</h2>
     <table style="font:13px/1.6 ui-sans-serif,system-ui,sans-serif;border-collapse:collapse;margin:0 0 14px">${rows}</table>
-    <div style="white-space:pre-wrap;border-left:3px solid #cdbfa6;padding-left:12px">${escHtml(r.message)}</div>
-    ${r.email ? `<p style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5c5349">Reply directly to this email to respond to the sender.</p>` : ""}
+    <div style="white-space:pre-wrap;border-left:3px solid #dde1e7;padding-left:12px">${escHtml(r.message)}</div>
+    ${r.email ? `<p style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5b6470">Reply directly to this email to respond to the sender.</p>` : ""}
   </div>`;
 }
 function escHtml(s) {

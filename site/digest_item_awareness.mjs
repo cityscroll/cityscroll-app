@@ -581,7 +581,7 @@ export function itemAwarenessHtml(row, esc, lang = "en", opts = {}) {
   const lagLine = adoptionLagAwarenessLine(row, opts);
   if (lagLine) {
     parts.push(
-      `<div style="color:#5c564c;font-size:12px;margin:4px 0 2px">${esc(lagLine)}</div>`,
+      `<div style="color:#5b6470;font-size:12px;margin:4px 0 2px">${esc(lagLine)}</div>`,
     );
   }
 

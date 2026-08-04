@@ -23,11 +23,14 @@ social-card PNGs are generated from the same vector source.
 
 ## Theme
 
-The theme uses role-based CSS custom properties, with a civic navy for identity and wayfinding, a
-brick red reserved for actions, and warm record paper as the reading surface. Typography keeps the
-existing editorial link to *The City Record*: Playfair Display for the identity and display
-headings, Spectral for reading, and the system sans stack for controls. Shared spacing tokens keep
-the identity consistent without turning the site into a promotional landing page.
+The theme uses role-based CSS custom properties: a cool neutral ground, a single confident action
+blue for anywhere a user can act, a quieter navy for identity and wayfinding, and a small, scoped set
+of status hues. Typography pairs a modern-civic grotesk (Space Grotesk) for the identity and display
+headings with a humanist sans (Noto Sans) for reading and controls, both chosen for legibility across
+the languages the product must serve. Shared spacing tokens keep the identity consistent without
+turning the site into a promotional landing page. The full palette, type scale, spacing, measure, and
+non-affiliation rules are documented in [design-language.md](design-language.md); the tokens that
+express them live in `site/brand.css`, which every page consumes.
 
 ## Research basis
 
@@ -42,13 +45,9 @@ the identity consistent without turning the site into a promotional landing page
   source.
 - [USWDS design-token guidance](https://designsystem.digital.gov/design-tokens/) treats color,
   spacing, typography, and measure as a limited, reusable system instead of one-off values.
-- The [NYC Digital Design System brand principles](https://designsystem.nyc.gov/brand/index.html)
-  prioritize experiences that are easy, trustworthy, and recognizably civic. Its
-  [brand-architecture guidance](https://designsystem.nyc.gov/brand/brand-architecture.html) also
-  frames consistent identity as digital wayfinding.
 - [GOV.UK's brand guidance](https://brand.design-system.service.gov.uk/introduction/) places the web
   at the informative end of its expression range. CityScroll follows that restrained register:
   the record and the task remain visually primary.
 
-These references are principles, not claims of government affiliation. CityScroll remains an
-unofficial, independent interface to public data.
+These references are general design-methodology sources, not claims of government affiliation.
+CityScroll remains an unofficial, independent interface to public data.
