@@ -190,6 +190,7 @@ const DEEPLINK_LENSES = {
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
+  district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
   award:    ["requestId", "agency"],

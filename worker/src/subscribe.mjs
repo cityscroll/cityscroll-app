@@ -18,7 +18,7 @@ import { overActorLimit } from "./lib/meter.mjs";
 
 // Subscribable lenses = the content tabs + entity follows. "alerts" is the delivery wrapper.
 // "award" is the one-notice award-arrival watch (see lib/filter.mjs's LENSES.award comment).
-const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings", "entity", "award"]);
+const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings", "district", "entity", "award"]);
 const CONFIRM_TTL = 24 * 3600;       // confirm link lifetime (s)
 const MAX_SUB_PER_IP_DAY = 20;
 const MAX_SUB_PER_ADDR_DAY = 5;

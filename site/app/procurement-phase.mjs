@@ -624,8 +624,6 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
     if(subEl) subEl.innerHTML = "";
     return;
   }
-  const phaseToolsP = ensureProcurementPhaseSpineTools();
-  const subToolsP = ensureSubOutreachTools();
   let data = null;
   try{
     const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
@@ -649,7 +647,7 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
   }
   if(actionsEl && document.contains(actionsEl)) paintNoticeActionRail(actionsEl,r,null,data);
   if(el && Array.isArray(data.timeline) && data.timeline.length){
-    const phaseTools = await phaseToolsP;
+    const phaseTools = await ensureProcurementPhaseSpineTools();
     if(el && !document.contains(el)) return;
     el.innerHTML = lifecycleTimelineHTML(data, r, phaseTools);
     bindProcurementPhaseUI(el);
@@ -658,8 +656,10 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
     dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
   }
   // Sub-outreach rides the same precomputed lifecycle; paint only allowlisted facts.
-  await subToolsP;
-  await paintSubOutreach(r, data, subEl);
+  if(subEl){
+    await ensureSubOutreachTools();
+    await paintSubOutreach(r, data, subEl);
+  }
   // Honor #notice/<id>?focus=follow-the-dollars after the panel is in the DOM.
   scrollToLifecycleFocus();
 }

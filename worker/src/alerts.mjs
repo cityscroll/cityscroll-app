@@ -60,6 +60,7 @@ import { prefsLink } from "./prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
+import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
 import {
   forecastSentIdentity,
   forecastIsDeliverableOn,
@@ -83,6 +84,12 @@ export function digestRunDayKey(day) {
   return `digest:run:${day}`;
 }
 export { digestDayLogKey };
+
+/** District presets are honest-absent: no all-empty weekly filler email. */
+export function subDigestDecision({ lens, freshCount, freq, lastSentDate, today, heartbeatDays } = {}) {
+  if (lens === "district") return { action: Number(freshCount) > 0 ? "match" : "none" };
+  return digestDecision({ freshCount, freq, lastSentDate, today, heartbeatDays });
+}
 
 // Collapse one cron (or queue-consumer aggregate) into a public, low-cardinality receipt.
 // A silent skip must leave a non-null skipped_reason — never an empty "looks like nothing ran."
@@ -516,7 +523,7 @@ export async function processOneSub(env, s, ctx) {
     // last emailed this sub (falls back to signup), rendered as "since <date>".
     const since = (await getLastSent(env, s.key)) || s.createdAt || null;
     const effectiveCount = fresh.length + forecasts.length;
-    const decision = digestDecision({ freshCount: effectiveCount, freq: s.freq, lastSentDate: since, today: ctx.today, heartbeatDays: ctx.heartbeatDays });
+    const decision = subDigestDecision({ lens: s.lens, freshCount: effectiveCount, freq: s.freq, lastSentDate: since, today: ctx.today, heartbeatDays: ctx.heartbeatDays });
 
     const { allow: underCap, capped } = capDecision({
       want: (decision.action !== "none" || forecasts.length > 0) && !!s.email,
@@ -838,7 +845,8 @@ async function evaluateSubSection(env, s, ctx) {
 
     const since = (await getLastSent(env, s.key)) || s.createdAt || null;
     const effectiveCount = fresh.length + forecasts.length;
-    const decision = digestDecision({
+    const decision = subDigestDecision({
+      lens: s.lens,
       freshCount: effectiveCount,
       freq: s.freq,
       lastSentDate: since,
@@ -1752,6 +1760,15 @@ function maskKey(n) {
   return String(n).replace(/^(sub:)([^@:]{0,2})[^@:]*/, "$1$2***");
 }
 
+function districtGroupedListHtml(rows, renderItem, esc) {
+  return groupDistrictDigestRows(rows).map((section) => (
+    `<section class="district-action-section" data-district-section="${esc(section.id)}" style="margin:20px 0 0">`
+      + `<h3 style="font-family:system-ui;margin:0 0 10px">${esc(section.label)}</h3>`
+      + `<ul style="list-style:none;padding:0;margin:0">${section.items.map(renderItem).join("")}</ul>`
+      + "</section>"
+  )).join("");
+}
+
 // Digest for a self-serve sub — award / rfp (City Record) or rezone (ZAP) items.
 // keywords: the sub's filter.keywords (money/property/rules/meetings lenses only -- entity
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
@@ -1764,23 +1781,25 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   // Event-clock "today" for open / closing-soon / closed — render-only; does not affect send timing.
   const today = new Date().toISOString().slice(0, 10);
   const item = (r) => {
-    if (kind === "exam") {
+    const itemKind = kind === "district" ? r.district_kind : kind;
+    const itemClass = kind === "district" ? ' class="district-item"' : "";
+    if (itemKind === "exam") {
       const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
       const dates = r.application_start && r.application_end
         ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}`
         : "";
       const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
       const noe = r.notice_url ? `<span style="color:#33691e;font-size:13px">NOE posted</span><br>` : "";
-      return `<li style="margin:0 0 14px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
+      return `<li${itemClass} style="margin:0 0 14px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>${noe}
         <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` &nbsp; <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
     }
-    if (kind === "rezone") {
+    if (itemKind === "rezone") {
       // ZAP rows: project_name/public_status shape. Action rail uses zoningHandoff via
       // itemAwarenessHtml (View/comment on ZAP + phase status when published).
       const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant, /^[ty1]/i.test(String(r.mih_flag || "")) ? "affordable housing" : ""]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
+      return `<li${itemClass} style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
@@ -1801,7 +1820,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const qs = [];
     if (sessionTok) qs.push(`s=${encodeURIComponent(sessionTok)}`);
     if (w) qs.push(`w=${w}`);
-    const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
+    const noticeLink = `${base}/r/${encodeURIComponent(itemKind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
     acts.push(`<a href="${noticeLink}">↗ View on CityScroll</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     if (kind === "rules" && r.action_band?.action_url) {
@@ -1816,13 +1835,13 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
-    const propertyStage = kind === "property" && r.property_watch
+    const propertyStage = itemKind === "property" && r.property_watch
       ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
       : "";
-    return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+    return `<li${itemClass} style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
       ${propertyStage}
-      ${temporalActionHtml(r, esc, lang, { kind, today })}
+      ${temporalActionHtml(r, esc, lang, { kind: itemKind, today })}
       ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
@@ -1843,6 +1862,8 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   let listHtml;
   if (rows.length === 0) {
     listHtml = `<p style="color:#666;font-style:italic">No new active notices matching your criteria.</p>`;
+  } else if (kind === "district") {
+    listHtml = districtGroupedListHtml(rows, item, esc);
   } else if (kind === "rules") {
     try {
       const groups = groupDigestRowsByActionBand(rows, { now: today });
@@ -1977,20 +1998,22 @@ function rollupDigestHtml({
     const keywords = sec.keywords || [];
     const w = sec.w || null;
     const today = new Date().toISOString().slice(0, 10);
-    const items = rows.map((r) => {
-      if (sec.kind === "exam") {
+    const renderRow = (r) => {
+      const itemKind = sec.kind === "district" ? r.district_kind : sec.kind;
+      const itemClass = sec.kind === "district" ? ' class="district-item"' : "";
+      if (itemKind === "exam") {
         const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
         const dates = r.application_start && r.application_end ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}` : "";
         const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
-        return `<li style="margin:0 0 12px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
+        return `<li${itemClass} style="margin:0 0 12px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
           ${r.notice_url ? `<span style="color:#33691e;font-size:13px">NOE posted</span><br>` : ""}
           <span style="font-size:13px"><a href="${link}">↗ View exam on CityScroll</a>${r.notice_url ? ` · <a href="${esc(r.notice_url)}">Official NOE</a>` : ""}</span></li>`;
       }
-      if (sec.kind === "rezone") {
+      if (itemKind === "rezone") {
         const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
           .filter(Boolean).map(esc).join(" · ");
-        return `<li style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
+        return `<li${itemClass} style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
           ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}</li>`;
       }
@@ -1999,19 +2022,20 @@ function rollupDigestHtml({
       const qs = [];
       if (sessionTok) qs.push(`s=${encodeURIComponent(sessionTok)}`);
       if (w) qs.push(`w=${w}`);
-      const kind = sec.kind || "rfp";
-      const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
+      const rowKind = itemKind || "rfp";
+      const noticeLink = `${base}/r/${encodeURIComponent(rowKind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
       const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
-      const propertyStage = kind === "property" && r.property_watch
+      const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";
-      return `<li style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+      return `<li${itemClass} style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${propertyStage}
-        ${temporalActionHtml(r, esc, lang, { kind, today })}
+        ${temporalActionHtml(r, esc, lang, { kind: rowKind, today })}
         ${evidenceLineHtml(ev, esc, lang)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
-    }).join("");
+    };
+    const items = rows.map(renderRow).join("");
 
     let forecastsHtml = "";
     if (forecasts.length) {
@@ -2023,7 +2047,7 @@ function rollupDigestHtml({
     const quiet = rows.length === 0 && forecasts.length === 0;
     const body = quiet
       ? `<p style="color:#666;font-style:italic;margin:0">Nothing new for this watch.</p>${sec.healthNote || ""}`
-      : `<ul style="list-style:none;padding:0;margin:0">${items}</ul>${forecastsHtml}${sec.healthNote || ""}`;
+      : `${sec.kind === "district" ? districtGroupedListHtml(rows, renderRow, esc) : `<ul style="list-style:none;padding:0;margin:0">${items}</ul>`}${forecastsHtml}${sec.healthNote || ""}`;
 
     return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
       <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
