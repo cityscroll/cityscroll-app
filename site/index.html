@@ -601,6 +601,50 @@
   .property-fcard.is-closed{border-color:var(--rule,#ccc);background:#faf7f0}
   .property-closed-section{margin:18px 0 8px;padding-top:12px;border-top:1px solid var(--rule,#ddd)}
   .property-closed-section-title{margin:0;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft,#3f3930);letter-spacing:.02em;text-transform:uppercase}
+  /* ===== Lens filter template (reference instance: Property). Progressive disclosure:
+     one primary rail visible, secondary facets behind "More filters"; selected-filters
+     summary + count line; small-multiples collapse card. See docs/design-principles-lens.md. */
+  .lens-method{margin:2px 0 0}
+  .lens-method-summary{display:inline-flex;align-items:center;gap:6px;font:600 11px/1.2 var(--font-sc);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;list-style:none}
+  .lens-method-summary::-webkit-details-marker{display:none}
+  .lens-method-summary::before{content:"▸";font-size:10px}
+  .lens-method[open] .lens-method-summary::before{content:"▾"}
+  .lens-method .property-domain-stepper{margin:8px 0 2px}
+  .lens-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:16px}
+  .lens-toolbar .field.kw{flex:2 1 260px}
+  .lens-toolbar-actions{display:flex;gap:8px;align-items:flex-end;flex:0 0 auto}
+  .lens-more-filters{position:relative}
+  .lens-more-summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+  .lens-more-summary::after{content:"▾";font-size:10px;color:var(--muted)}
+  .lens-more-filters[open] .lens-more-summary::after{content:"▴"}
+  .lens-filter-badge{background:var(--oxblood);color:#fff;border-radius:999px;padding:1px 7px;font:600 10px/1.4 var(--font-sc)}
+  .lens-more-content{position:absolute;z-index:20;inset-inline-start:0;top:calc(100% + 6px);width:min(92vw,440px);max-height:70vh;overflow:auto;padding:12px 14px;border:1px solid var(--rule-strong,var(--rule));border-radius:10px;background:var(--card);box-shadow:0 8px 28px rgba(0,0,0,.14)}
+  .lens-more-filters[open] .lens-more-content{display:block}
+  .lens-more-content .lens-controls-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .lens-more-content .lens-controls-grid .field{flex:1 1 46%}
+  .lens-more-content .property-rail-label{margin:12px 0 6px}
+  .lens-more-content .chiprow{margin-top:0}
+  .lens-primary-rail{margin-top:10px}
+  .lens-search-state{margin:10px 0 0}
+  .lens-search-state:empty{display:none}
+  .lens-resultbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 4px}
+  .lens-count{font:600 13px/1.3 var(--font-sc);letter-spacing:.02em;color:var(--ink-soft)}
+  .lens-count:empty{display:none}
+  .lens-sort{flex:0 0 auto;flex-direction:row;align-items:center;gap:8px;margin:0}
+  .lens-sort label{margin:0}
+  /* Small-multiples collapse card (Tufte): one frame carrying the count + date range. */
+  .property-cluster{background:var(--card);border:1px solid var(--rule);border-inline-start:4px solid var(--muted);border-radius:8px;padding:12px 14px}
+  .property-cluster-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+  .property-cluster-count{font:700 15px/1.2 var(--font-display);color:var(--ink)}
+  .property-cluster-range{font:13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .property-cluster details{margin-top:8px}
+  .property-cluster summary{font:600 12px/1.3 var(--font-sc);letter-spacing:.03em;color:var(--oxblood);cursor:pointer}
+  .property-cluster-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .property-cluster-list li{font:13px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .property-cluster-list .cl-date{color:var(--muted);margin-inline-start:6px}
+  .property-empty-current{grid-column:1/-1;margin:8px 0 4px;padding:12px 14px;background:#f6f2e8;border:1px solid var(--rule);border-radius:8px;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  #propertyfeed .property-closed-section{grid-column:1/-1}
+  @media(max-width:680px){ .lens-more-content{width:min(94vw,440px)} }
   .tax-lien-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--oxblood);border-radius:10px;box-shadow:var(--shadow)}
   .tax-lien-panel h2{font:800 21px/1.15 var(--font-display);margin:0 0 7px}
   .tax-lien-deck,.tax-lien-lead,.tax-lien-meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px;color:var(--ink-soft)}
@@ -1183,7 +1227,7 @@
     html,body{background:#fff!important;color:#000!important}
     body{font:11pt/1.4 Georgia,"Times New Roman",serif}
     body::before{content:attr(data-print-meta);display:block;padding:0 0 8pt;margin:0 0 12pt;border-bottom:1pt solid #000;font:9pt/1.35 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
-    header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions,.home-cta,.lang-switcher{display:none!important}
+    header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions,.home-cta,.lang-switcher,.lens-toolbar,.lens-resultbar,.lens-search-state,.lens-method{display:none!important}
     .tabpane:not(.active){display:none!important}
     .tabpane.active{display:block!important;padding:0}
     main,.wrap{max-width:none!important;margin:0!important;padding:0!important}
@@ -1640,48 +1684,64 @@
 <!-- ============ PROPERTY / RULES / MEETINGS (feed lenses) ============ -->
 <section id="tab-property" class="tabpane">
   <div class="wrap">
-    <div class="property-domain-intro" id="property-domain-intro">
+    <div class="property-domain-intro lens-intro" id="property-domain-intro">
       <p class="career-kicker" data-i18n="property_domain_kicker">City property disposition</p>
       <h2 class="property-domain-heading" data-i18n="property_domain_heading">Hearings, sales, and awards</h2>
       <p class="property-domain-deck" data-i18n="property_domain_deck">City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot.</p>
       <p class="property-tax-lien-link"><a href="#map?lens=property" data-i18n="property_explore_map_link">Explore property on the map</a></p>
-      <ol class="lc-stepper disposition-phase-stepper property-domain-stepper" data-i18n-aria="property_process_stepper_aria" aria-label="Disposition process stages">
-        <li><span class="lc-step done" data-i18n="disposition_stage_hearing">Hearing</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
-        <li><span class="lc-step current" data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
-        <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
-      </ol>
+      <details class="lens-method property-method">
+        <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <ol class="lc-stepper disposition-phase-stepper property-domain-stepper" data-i18n-aria="property_process_stepper_aria" aria-label="Disposition process stages">
+          <li><span class="lc-step done" data-i18n="disposition_stage_hearing">Hearing</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
+          <li><span class="lc-step current" data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
+          <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
+        </ol>
+      </details>
     </div>
     <!-- Archive/reference only: deep link #property?view=tax-lien. Not a property lens destination. -->
     <section class="tax-lien-panel tax-lien-archive-panel" id="tax-lien-sale-panel" aria-live="polite" hidden data-tax-lien-archive="1">
       <div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div>
     </section>
-    <div class="controls">
-      <div class="field"><label for="propertyboro" data-i18n="borough_label">Borough</label><select id="propertyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
-      <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="propertylocation" data-i18n="use_my_location">Use my location</button></div>
-      <div class="field"><label for="propertyagency" data-i18n="agency_label">Agency</label><select id="propertyagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+    <div class="lens-toolbar">
       <div class="field kw"><label for="propertykw" data-i18n="search_label">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…" data-i18n-placeholder="kw_placeholder_property"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button></div>
+      <div class="lens-toolbar-actions">
+        <details class="utility-overflow lens-more-filters" id="property-more-filters">
+          <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="property-filter-badge" hidden></span></summary>
+          <div class="utility-overflow-content lens-more-content">
+            <div class="lens-controls-grid">
+              <div class="field"><label for="propertyboro" data-i18n="borough_label">Borough</label><select id="propertyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
+              <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
+              <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="propertylocation" data-i18n="use_my_location">Use my location</button></div>
+              <div class="field"><label for="propertyagency" data-i18n="agency_label">Agency</label><select id="propertyagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+            </div>
+            <div class="property-rail-label" data-i18n="property_sale_method_rail_label">Sale method</div>
+            <div class="chiprow" id="salerail" role="group" aria-label="Sale method"></div>
+            <div class="property-rail-label" data-i18n="property_price_rail_label">Price</div>
+            <div class="chiprow" id="pricerail" role="group" aria-label="Price"></div>
+            <div class="property-rail-label" data-i18n="property_process_rail_label">Disposition stage</div>
+            <div class="chiprow" id="processrail" role="group" aria-label="Disposition stage"></div>
+            <div class="property-rail-label" data-i18n="property_temporal_rail_label">When</div>
+            <div class="chiprow" id="liferail" role="group" aria-label="When"></div>
+          </div>
+        </details>
+        <button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button>
+      </div>
     </div>
-    <div class="property-rail-label" data-i18n="property_asset_rail_label">Item type</div>
-    <div class="chiprow" id="assettabs" role="group" aria-label="Item type"></div>
-    <div class="property-rail-label" data-i18n="property_sale_method_rail_label">Sale method</div>
-    <div class="chiprow" id="salerail" role="group" aria-label="Sale method"></div>
-    <div class="property-rail-label" data-i18n="property_price_rail_label">Price</div>
-    <div class="chiprow" id="pricerail" role="group" aria-label="Price"></div>
-    <div class="field" style="max-width:240px;margin:8px 0 4px">
-      <label for="propsort" data-i18n="property_sort_label">Sort by</label>
-      <select id="propsort">
-        <option value="closing_soon" data-i18n="property_sort_closing_soon">Closing soonest</option>
-        <option value="newest" data-i18n="property_sort_newest">Newest posted</option>
-        <option value="price_desc" data-i18n="property_sort_price_desc">Price: high to low</option>
-        <option value="price_asc" data-i18n="property_sort_price_asc">Price: low to high</option>
-      </select>
+    <div class="property-rail-label lens-primary-label" data-i18n="property_asset_rail_label">Item type</div>
+    <div class="chiprow lens-primary-rail" id="assettabs" role="group" aria-label="Item type"></div>
+    <div class="lens-search-state" data-search-state="property"></div>
+    <div class="lens-resultbar">
+      <span class="lens-count" id="property-count" aria-hidden="true"></span>
+      <div class="field lens-sort">
+        <label for="propsort" data-i18n="property_sort_label">Sort by</label>
+        <select id="propsort">
+          <option value="closing_soon" data-i18n="property_sort_closing_soon">Closing soonest</option>
+          <option value="newest" data-i18n="property_sort_newest">Newest posted</option>
+          <option value="price_desc" data-i18n="property_sort_price_desc">Price: high to low</option>
+          <option value="price_asc" data-i18n="property_sort_price_asc">Price: low to high</option>
+        </select>
+      </div>
     </div>
-    <div class="property-rail-label" data-i18n="property_process_rail_label">Disposition stage</div>
-    <div class="chiprow" id="processrail" role="group" aria-label="Disposition stage"></div>
-    <div class="property-rail-label" data-i18n="property_temporal_rail_label">When</div>
-    <div class="chiprow" id="liferail" style="margin-top:4px" role="group" aria-label="When"></div>
     <div class="exportbar">
       <span class="export-band" id="property-export-band" hidden>
         <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>

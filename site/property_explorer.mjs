@@ -494,6 +494,98 @@ export function countPropertyProcessStages(entries) {
 }
 
 /**
+ * Normalize a notice title to a grouping stem: lowercase, drop digits and
+ * punctuation, collapse whitespace. So "PROPERTY CLERK INVOICE 1234 — PENDING
+ * DESTRUCTION" and "…INVOICE 5678…" share a stem — the small-multiples signal.
+ * @param {string} value
+ */
+function titleStem(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[0-9]+/g, " ")
+    .replace(/[^a-z ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Default cluster signature for property entries (agency + asset + stage + title stem). */
+function defaultEntrySignature(entry) {
+  const row = entry && entry.primary;
+  if (!row) return null;
+  const stem = titleStem(row.short_title);
+  if (!stem) return null;
+  const agency = clean(row.agency_name) || "";
+  const asset = clean(row._asset) || "";
+  const stage = clean(entry.process_filter) || "unstaged";
+  return `${agency}${asset}${stage}${stem}`;
+}
+
+function buildClusterEntry(signature, members) {
+  const dates = members
+    .map((m) => m.close_date || (m.primary && (m.primary.event_date || m.primary.start_date)) || null)
+    .map((d) => (d ? String(d).slice(0, 10) : null))
+    .filter(Boolean)
+    .sort();
+  const allClosed = members.every((m) => m.temporal_status === "closed");
+  const anyOpen = members.some((m) => m.temporal_status === "open");
+  const rep = members[0] || {};
+  return {
+    kind: "cluster",
+    count: members.length,
+    members,
+    primary: rep.primary || null,
+    signature,
+    process_stage: rep.process_stage || null,
+    process_filter: rep.process_filter || "unstaged",
+    date_range: dates.length ? { start: dates[0], end: dates[dates.length - 1] } : null,
+    temporal_status: allClosed ? "closed" : (anyOpen ? "open" : (rep.temporal_status || "undated")),
+    close_date: rep.close_date || null,
+  };
+}
+
+/**
+ * Collapse runs of near-identical single-notice entries into one "cluster" entry —
+ * Tufte small multiples: one frame, the varying datum is the date. Only single-notice
+ * entries are eligible (multi-notice spines are already collapsed). A cluster forms when
+ * >= minCount entries share a signature; it takes the list position of its earliest
+ * member, and the rest are absorbed (expandable in the UI). Lens-neutral: pass
+ * `opts.signatureOf` to reuse the collapse for another lens.
+ *
+ * @param {object[]} entries — already stamped + sorted explorer entries
+ * @param {{minCount?: number, signatureOf?: (e: object) => string|null}} [opts]
+ * @returns {object[]} entries with clusters spliced in (order preserved)
+ */
+export function clusterRepeatedEntries(entries, opts = {}) {
+  const list = Array.isArray(entries) ? entries : [];
+  const minCount = Number.isFinite(opts.minCount) ? opts.minCount : 3;
+  const signatureOf = typeof opts.signatureOf === "function" ? opts.signatureOf : defaultEntrySignature;
+  const eligible = (e) => e && e.kind === "notice" && (e.notice_count || 1) === 1;
+  const bySig = new Map();
+  list.forEach((entry, index) => {
+    if (!eligible(entry)) return;
+    const sig = signatureOf(entry);
+    if (!sig) return;
+    if (!bySig.has(sig)) bySig.set(sig, []);
+    bySig.get(sig).push(index);
+  });
+  const clusterAt = new Map();
+  const absorbed = new Set();
+  for (const [sig, indices] of bySig) {
+    if (indices.length < minCount) continue;
+    indices.forEach((i) => absorbed.add(i));
+    clusterAt.set(indices[0], buildClusterEntry(sig, indices.map((i) => list[i])));
+  }
+  if (!clusterAt.size) return list;
+  const out = [];
+  list.forEach((entry, index) => {
+    if (clusterAt.has(index)) { out.push(clusterAt.get(index)); return; }
+    if (absorbed.has(index)) return;
+    out.push(entry);
+  });
+  return out;
+}
+
+/**
  * Parcel lookup URLs for a 10-digit BBL (entity-link affordances on list cards).
  * Reuses site/property_location.mjs so ZoLa / ACRIS / Who Owns What stay one owner.
  * @param {string} bbl

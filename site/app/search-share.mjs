@@ -571,6 +571,21 @@ function searchFilterChips(lens, filter){
     if(filter.councilDistrict && !filter.locationArea) chips.push(`<span class="qchip">${t("council_district_short",{n:filter.councilDistrict})}</span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     if(filter.status==="all") chips.push(`<span class="qchip">${t("nl_chip_land_status_all")}</span>`);
+  } else if(lens==="property"){
+    // Active-only (like money): the selected-filters summary hides when nothing is set.
+    const methodKeys={online_auction:"sale_method_online_auction",public_auction:"sale_method_public_auction",sealed_bid:"sale_method_sealed_bid",rfp:"sale_method_rfp",lease_auction:"sale_method_lease_auction"};
+    const bandKeys={priced:"price_band_priced",under_10k:"price_band_under_10k","10k_100k":"price_band_10k_100k","100k_plus":"price_band_100k_plus"};
+    if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
+    const method=filter.saleMethod||filter.method;
+    if(method && method!=="all") chips.push(`<span class="qchip">${t("property_sale_method_rail_label")} <b>${t(methodKeys[method]||"sale_method_unknown")}</b></span>`);
+    const band=filter.priceBand||filter.price;
+    if(band && band!=="all") chips.push(`<span class="qchip">${t("property_price_rail_label")} <b>${t(bandKeys[band]||"price_band_priced")}</b></span>`);
+    if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("property_process_label")} <b>${t(([["hearing","disposition_stage_hearing"],["auction_or_rfp","disposition_stage_auction_or_rfp"],["award_or_conveyance","disposition_stage_award_or_conveyance"],["unstaged","disposition_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
+    if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
+    if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
+    if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+    return chips;
   } else {
     chips.push(`<span class="qchip">${tSection(SECTIONS[lens].section)}</span>`);
     if(filter.agency) chips.push(`<span class="qchip">${t("agency_label")} <b>${enTitle(filter.agency)}</b></span>`);
@@ -591,13 +606,6 @@ function searchFilterChips(lens, filter){
       if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
       if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("rules_process_label")} <b>${t(([["proposal","rule_phase_proposal"],["public_process","rule_phase_public_process"],["adoption","rule_phase_adoption"],["effective","rule_phase_effective"],["unstaged","rule_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
     }
-  }
-  if(lens==="property"){
-    if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
-    if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
-    if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
-    if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("property_process_label")} <b>${t(([["hearing","disposition_stage_hearing"],["auction_or_rfp","disposition_stage_auction_or_rfp"],["award_or_conveyance","disposition_stage_award_or_conveyance"],["unstaged","disposition_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
-    if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
   }
   return chips;
 }
