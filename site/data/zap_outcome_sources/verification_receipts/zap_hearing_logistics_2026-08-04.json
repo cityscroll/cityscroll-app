@@ -1,0 +1,631 @@
+{
+  "schema_version": 1,
+  "kind": "zap_individual_project_hearing_logistics_coverage",
+  "source_contract_id": "zap-api-outcomes",
+  "observed_at": "2026-08-04T19:20:05.214Z",
+  "observed_on": "2026-08-04",
+  "source": "zap-api-dispositions",
+  "sample_definition": {
+    "universe": "sell-facing Open Data projects",
+    "statuses": [
+      "In Public Review",
+      "Noticed",
+      "Active",
+      "Filed"
+    ],
+    "ordering": "status priority, then current_milestone_date DESC",
+    "fixed_after_measurement": true,
+    "citywide_inference_allowed": false
+  },
+  "sample_project_ids": [
+    "2026Y0360",
+    "2026X0362",
+    "2024K0240",
+    "2025M0449",
+    "2020Q0129",
+    "2023Q0315",
+    "2026K0395",
+    "2024K0280",
+    "2024K0286",
+    "2024R0300",
+    "2025M0291",
+    "2025Q0316",
+    "2025Q0142",
+    "2025M0252",
+    "2024Q0164",
+    "2025K0219",
+    "2025M0261",
+    "2024Q0232",
+    "2025K0419",
+    "2022M0251",
+    "2025M0350",
+    "2025R0137",
+    "2026M0118",
+    "2026X0130",
+    "2022Q0449",
+    "2023M0116",
+    "2024M0244",
+    "2023M0213",
+    "2024X0132",
+    "2025K0154",
+    "2023K0183",
+    "2022K0430",
+    "2026R0186",
+    "2025K0284",
+    "2024Q0419",
+    "2024Q0113",
+    "2024K0196",
+    "2023R0153",
+    "2024K0358",
+    "2025K0287",
+    "2025R0320",
+    "2021X0247",
+    "2019K0190",
+    "2025R0257",
+    "2023Q0125",
+    "2025Q0155",
+    "2026Q0210",
+    "2024K0437",
+    "2023K0126",
+    "2024Q0292"
+  ],
+  "measurement": {
+    "fixed_sample_total": 50,
+    "projects_fetched": 50,
+    "projects_failed": 0,
+    "join_mismatches": 0,
+    "logistics_rows": 65,
+    "invalid_logistics_rows": 0,
+    "honest_absent": 9,
+    "rates": {
+      "hearing_logistics": {
+        "joined": 41,
+        "total": 50,
+        "rate": 0.82
+      },
+      "dated": {
+        "joined": 41,
+        "total": 50,
+        "rate": 0.82
+      },
+      "venue": {
+        "joined": 38,
+        "total": 50,
+        "rate": 0.76
+      },
+      "livestream": {
+        "joined": 12,
+        "total": 50,
+        "rate": 0.24
+      },
+      "venue_or_livestream": {
+        "joined": 39,
+        "total": 50,
+        "rate": 0.78
+      },
+      "upcoming_date": {
+        "joined": 0,
+        "total": 50,
+        "rate": 0
+      }
+    },
+    "projects": [
+      {
+        "project_id": "2026Y0360",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2026X0362",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024K0240",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025M0449",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2020Q0129",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023Q0315",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2026K0395",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024K0280",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024K0286",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024R0300",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025M0291",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025Q0316",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025Q0142",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025M0252",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024Q0164",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025K0219",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025M0261",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024Q0232",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": false,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025K0419",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2022M0251",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025M0350",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025R0137",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2026M0118",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2026X0130",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2022Q0449",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023M0116",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024M0244",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023M0213",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024X0132",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025K0154",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023K0183",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2022K0430",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2026R0186",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025K0284",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024Q0419",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024Q0113",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024K0196",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023R0153",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024K0358",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025K0287",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025R0320",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2021X0247",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2019K0190",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025R0257",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023Q0125",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2025Q0155",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2026Q0210",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024K0437",
+        "status": "ok",
+        "hearing_logistics": false,
+        "logistics_rows": 0,
+        "dated": false,
+        "venue": false,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2023K0126",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 1,
+        "dated": true,
+        "venue": true,
+        "livestream": false,
+        "upcoming_date": false
+      },
+      {
+        "project_id": "2024Q0292",
+        "status": "ok",
+        "hearing_logistics": true,
+        "logistics_rows": 2,
+        "dated": true,
+        "venue": true,
+        "livestream": true,
+        "upcoming_date": false
+      }
+    ]
+  },
+  "field_case": {
+    "project_id": "2024Q0292",
+    "baseline_report": "data/flywheel-reeval-persona/report.md#3-hearing-attender-land--meetings-logistics",
+    "baseline_hearing_logistics_populated": 0,
+    "current_hearing_logistics_populated": 1,
+    "incremental_projects_populated": 1
+  },
+  "honesty": {
+    "absent_shape": null,
+    "accepted_source_fields": [
+      "dcp-publichearinglocation",
+      "dcp-dateofpublichearing"
+    ],
+    "milestone_review_sessions_count_as_logistics": false,
+    "note": "This is fixed-sample coverage, not a citywide rate."
+  }
+}

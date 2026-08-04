@@ -338,11 +338,15 @@ export function parseZapApiProject(payload) {
   };
   // Precompute hearing logistics (venue + livestream + datetime) from disposition
   // free text — never invent when the fragment cannot be parsed confidently.
-  shell.hearing_logistics = extractZapHearingLogistics(shell, {
+  const hearingLogistics = extractZapHearingLogistics(shell, {
     project_id: projectId,
     portal_url: portalUrl,
     borough: clean(attrs["dcp-borough"]),
   });
+  // Honest absence is a first-class state on the individual-project read model.
+  // An empty array looks like a completed collection with zero rows; null means
+  // the publisher supplied no qualifying disposition hearing evidence.
+  shell.hearing_logistics = hearingLogistics.length ? hearingLogistics : null;
   return shell;
 }
 

@@ -83,6 +83,30 @@ test("2024Q0292 fixture: BP disposition yields address + youtube + datetime", ()
   assert.ok(disp.hearing_at);
 });
 
+test("individual project keeps honest null when only a review session exists", () => {
+  const payload = {
+    data: {
+      type: "projects",
+      id: "2026M0366",
+      attributes: {
+        "dcp-name": "2026M0366",
+        "dcp-publicstatus": "In Public Review",
+      },
+    },
+    included: [{
+      type: "milestones",
+      id: "review-only",
+      attributes: {
+        "display-name": "Review Session - General Review",
+        "dcp-reviewmeetingdate": "2026-09-01T04:00:00.000Z",
+      },
+    }],
+  };
+  const record = parseZapApiProject(payload);
+  assert.equal(record.milestones.length, 1);
+  assert.equal(record.hearing_logistics, null);
+});
+
 test("filterHearingLogistics supports borough + attendance mode", () => {
   const rows = [
     {
