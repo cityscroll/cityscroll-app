@@ -68,7 +68,7 @@ const {
   matchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window",
+  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -112,7 +112,7 @@ const {
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +
   "return { matchEvidence, matchText, digTitleHTML, digEvidenceHTML, moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML };"
-)(t, tn, fmtNumber, windowStub);
+)(t, tn, fmtNumber, windowStub, () => "");
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
 // is genuinely blank on this row -- other_info_1 carries all the real text.

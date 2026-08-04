@@ -258,6 +258,38 @@ function solicitationListChipsHTML(r){
     return `<span class="tag ${escUiHtml(tone)}">${escUiHtml(label)}</span>`;
   }).join("")}</div>`;
 }
+// List presentation adapter over the one existing procurement interpretation path.
+// noticeActionMatter owns notice classification and compileActionRail owns deadline /
+// destination rules; this function only chooses whether that primary rail action is
+// eligible for the compact Money-row surface.
+function moneyListPrimaryAction(r, today=todayISO()){
+  if(!globalThis.CrolActions || typeof CrolActions.compileActionRail!=="function") return null;
+  if(typeof globalThis.noticeActionMatter!=="function") return null;
+  try{
+    const matter=globalThis.noticeActionMatter(r);
+    if(!matter || (matter.kind!=="solicitation"&&matter.kind!=="award")) return null;
+    const action=(CrolActions.compileActionRail(matter,{today})||[])[0]||null;
+    if(!action || action.delivery==="unavailable") return null;
+    if(matter.kind==="solicitation" && action.type!=="official_application" && action.type!=="bid_checklist") return null;
+    if(matter.kind==="award" && (!action.guide||action.guide.system!=="award_lifecycle")) return null;
+    const external=action.delivery==="official_handoff"&&!!action.destination;
+    return {
+      kind:matter.kind,
+      action,
+      external,
+      href:external?action.destination:`#notice/${encodeURIComponent(r.request_id)}`,
+      label_key:matter.kind==="solicitation"?"respond_lbl":"award_guide_heading",
+    };
+  }catch(_e){ return null; }
+}
+function moneyListPrimaryActionHTML(r, today=todayISO()){
+  const presentation=moneyListPrimaryAction(r,today);
+  if(!presentation) return "";
+  const label=t(presentation.label_key);
+  const title=cleanText(r.short_title)||t("untitled_notice");
+  const attrs=presentation.external?` ${EXT_ATTRS}`:"";
+  return `<a class="act primary money-row-action" data-money-row-action="${presentation.kind}" data-action-delivery="${presentation.action.delivery}" href="${escUiHtml(presentation.href)}"${attrs}>${escUiHtml(label)}<span class="sr-only" lang="en" dir="ltr"> — ${escUiHtml(title)}</span>${presentation.external?extSR():""}</a>`;
+}
 function moneyRowHTML(r, i, terms){
   const isAward = r.type_of_notice_description === "Award";
   const lead = isAward
@@ -265,14 +297,18 @@ function moneyRowHTML(r, i, terms){
     : deadlineTag(r.due_date);
   const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
-  return `<div class="row" data-i="${i}" tabindex="0" role="button">
+  const primaryAction=moneyListPrimaryActionHTML(r);
+  return `<article class="money-row-card">
+      ${primaryAction}
+      <div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${title ? digTitleHTML(title, ev) : t("untitled_notice")}</p>
       <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
       ${mwbeChips}
       ${digEvidenceHTML(ev)}
-    </div>`;
+      </div>
+    </article>`;
 }
 async function ensureMwbeListChipsReady(){
   const tools = await moneyListMwbeSurfaceTools();
@@ -451,6 +487,8 @@ globalThis.loadMoneyAgenciesSnapshot = loadMoneyAgenciesSnapshot;
 globalThis.isDefaultMoneySearchState = isDefaultMoneySearchState;
 globalThis.filterStillOpenMoneyNotices = filterStillOpenMoneyNotices;
 globalThis.moneyActiveFilterChip = moneyActiveFilterChip;
+globalThis.moneyListPrimaryAction = moneyListPrimaryAction;
+globalThis.moneyListPrimaryActionHTML = moneyListPrimaryActionHTML;
 globalThis.moneyRowIsClosed = moneyRowIsClosed;
 globalThis.moneyRowHTML = moneyRowHTML;
 globalThis.paintMoneyRows = paintMoneyRows;
