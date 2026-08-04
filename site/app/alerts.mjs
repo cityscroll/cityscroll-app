@@ -34,6 +34,19 @@ let propertyWatchExtra = {};
 // dropdown is reached manually with no notice in context) sets it.
 let awardWatchTarget = null;
 let examAreaWatchTarget = null; // { id, label } carried from the exam taxonomy area cards
+let districtDigestToolsPromise = null;
+let districtDigestPayloadPromise = null;
+function districtDigestTools(){
+  if(!districtDigestToolsPromise) districtDigestToolsPromise=import("../district_weekly_digest.mjs").catch(()=>null);
+  return districtDigestToolsPromise;
+}
+function loadDistrictDigestPayload(){
+  if(!districtDigestPayloadPromise){
+    districtDigestPayloadPromise=fetch("data/district_weekly_digests.json",{cache:"no-cache"})
+      .then(r=>r.ok?r.json():null).catch(()=>null);
+  }
+  return districtDigestPayloadPromise;
+}
 // Seed notice/project row for context-carrying alert entry (#alerts?notice=… / project=…).
 // When set, aPreview() renders THIS item through digItemHTML (the real email-template path)
 // so the reader sees exactly what would arrive. Cleared when the watch type changes.
@@ -61,8 +74,14 @@ function aWatchChange(skipQuizSync){
     paintAlertContextLead(null);
   }
   lastWatch = w;
+  $("#aparambox").style.display = w==="district" ? "none" : "";
+  $("#adistrictbox").hidden = w!=="district";
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
   $("#amoneyfields").style.display = w==="moneynl" ? "" : "none";
+  if(w==="district"){
+    $("#afreq").value="Weekly";
+    updateAWhen();
+  }
   if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
   else if(w==="awardwatch" || w==="examarea"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
@@ -83,6 +102,7 @@ function aWatchChange(skipQuizSync){
 function aDescribe(){
   const w=$("#awatch").value;
   const freq=t($("#afreq").value.toLowerCase()==="weekly" ? "freq_weekly_lc" : "freq_daily_lc");
+  if(w==="district") return t("desc_district",{district:$("#adistrict").value||"…"});
   if(w==="bigaward") return t("desc_bigaward",{freq, amt:money($("#athresh").value)});
   if(w==="rfpkw") return t("desc_rfpkw",{freq, kw:$("#aparam").value||"…"});
   if(w==="moneynl"){
@@ -122,6 +142,11 @@ function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText();
 
 async function aFetch(){
   const w=$("#awatch").value;
+  if(w==="district"){
+    const [tools,payload]=await Promise.all([districtDigestTools(),loadDistrictDigestPayload()]);
+    const rows=tools&&payload?tools.districtDigestRows(payload,$("#adistrict").value):[];
+    return {kind:"district",rows};
+  }
   if(w==="examarea"){
     const id=examAreaWatchTarget?.id;
     const rows=(careerData?.exams||[]).filter(exam=>exam.interest_area===id && CrolStaffing.openWindowBand(exam,careerToday()));
@@ -381,9 +406,22 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     <div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
 }
 
+async function districtPreviewBodyHTML(rows, awarenessTools){
+  const tools=await districtDigestTools();
+  if(!tools) return "";
+  return tools.groupDistrictDigestRows(rows).map(section=>`<section class="district-action-section" data-district-section="${escUiHtml(section.id)}">
+    <h3>${escUiHtml(section.label)}</h3>
+    ${section.items.map(row=>digItemHTML(
+      row.district_kind==="property"||row.district_kind==="meetings"?"notice":row.district_kind,
+      row,[],awarenessTools,
+    )).join("")}
+  </section>`).join("");
+}
+
 function feedURLs(){
   if(!API) return null;
   const {lens,filter}=aLensFilter();
+  if(lens==="district") return null;
   const q=new URLSearchParams({lens});
   if(filter.keywords && filter.keywords.length) q.set("q", filter.keywords.join(" "));
   if(filter.agency) q.set("agency", filter.agency);
@@ -495,7 +533,11 @@ async function aPreview(){
   // same fix as the Money tab's own ask flow (field evidence 2026-07-14: a silent empty
   // result read as "the ask button is broken").
   const nlChips = (!rows.length && !seed && $("#awatch").value === "moneynl") ? NL.alerts.chips(aLensFilter().filter).filter(Boolean) : [];
-  const liveBody = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords,awarenessTools)).join("") : "";
+  const liveBody = rows.length
+    ? data.kind==="district"
+      ? await districtPreviewBodyHTML(rows,awarenessTools)
+      : rows.map(r=>digItemHTML(data.kind,r,previewKeywords,awarenessTools)).join("")
+    : "";
   const body = (seedHtml || liveBody)
     ? (seedHtml + liveBody)
     : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}${nlChips.length ? nlTransHTML(nlChips, "#nlq-alerts", true) : ""}</div>`;
@@ -636,7 +678,6 @@ function initAlertsRollupPrefs(){
       });
     });
   }
-  renderAlertsRollupPrefs();
 }
 function focusAlertsRollupPanel(){
   const panel = document.getElementById("alerts-rollup-prefs");
@@ -675,6 +716,7 @@ function aLensFilter(){
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
   if(w==="awardwatch") return {lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}};
   if(w==="examarea") return {lens:"people", filter:{view:"guide",interestArea:examAreaWatchTarget?.id||null,interestLabel:examAreaWatchTarget?.label||null}};
+  if(w==="district") return {lens:"district", filter:{councilDistrict:$("#adistrict").value||null}};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{
     keywords:p?[p]:[], agency:$("#aagency").value.trim()||null,
     ...(w==="meetings"?meetingWatchExtra:{}),
@@ -838,6 +880,9 @@ async function aSubscribe(){
     msg.innerHTML = t("award_watch_pick_notice_html"); return;
   }
   if($("#awatch").value==="examarea" && !examAreaWatchTarget?.id){ msg.textContent=t("generic_error"); return; }
+  if($("#awatch").value==="district" && !/^(?:[1-9]|[1-4]\d|5[01])$/.test($("#adistrict").value)){
+    msg.textContent=t("district_pick_required"); $("#adistrict").focus(); return;
+  }
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
   dest.removeAttribute("aria-invalid");

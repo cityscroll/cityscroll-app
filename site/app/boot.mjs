@@ -60,6 +60,20 @@ $("#awatch").addEventListener("change", ()=>{
   aWatchChange();
   announce(t("sync_watch_announce", {what: $("#awatch").selectedOptions[0].textContent.trim()}));
 });
+const districtSelect=$("#adistrict");
+if(districtSelect){
+  for(let id=1;id<=51;id++){
+    const option=document.createElement("option"); option.value=String(id); option.textContent=`Council District ${id}`;
+    districtSelect.appendChild(option);
+  }
+  districtSelect.addEventListener("change",async()=>{
+    if(!districtSelect.value) return;
+    const tools=await import("../district_weekly_digest.mjs").catch(()=>null);
+    const href=tools&&tools.districtDigestAlertsHref?tools.districtDigestAlertsHref(districtSelect.value):"#alerts";
+    if(location.hash!==href) location.hash=href;
+    else aPreview();
+  });
+}
 $("#afreq").addEventListener("change", ()=>{
   updateAWhen();
   refreshQuizDisplay();
@@ -187,6 +201,13 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
     $("#awatch").value = "rezone"; aWatchChange();
     $("#aparam").value = (filter.keywords||[]).join(" ");
     filled = true;
+  } else if(lens==="district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(filter.councilDistrict||""))){
+    // Initial hash routing can invoke this hoisted function before the quiz's
+    // later const-backed state is initialized. Defer that repaint until below.
+    $("#awatch").value = "district"; aWatchChange(true);
+    $("#adistrict").value = String(filter.councilDistrict);
+    $("#afreq").value = "Weekly";
+    filled = true;
   } else if(SECTION_WATCH_LABEL[lens]){
     $("#awatch").value = lens; aWatchChange();
     $("#aparam").value = (filter.keywords||[]).join(" ");
@@ -225,7 +246,8 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
   if((noticeId || projectId) && !noticeWatchSeed){
     await applyNoticeWatchSeed({ noticeId, projectId, lens, filter });
   }
-  refreshQuizDisplay();
+  try{ refreshQuizDisplay(); }
+  catch(_e){ queueMicrotask(()=>{ try{ refreshQuizDisplay(); }catch(__e){} }); }
   if(typeof syncAlertsAdvDisclosure === "function") syncAlertsAdvDisclosure();
   if(filled || noticeWatchSeed){
     await aPreview();
@@ -340,16 +362,18 @@ async function currentAlertsEntryHref(){
   const hash = location.hash || "";
   // On the alerts page itself, keep the current hash (or bare).
   if(hash === "#alerts" || hash.startsWith("#alerts?")) return hash.startsWith("#alerts") ? hash : "#alerts";
-  const carry = await ensureAlertsContextCarry();
-  if(!carry) return "#alerts";
   // Notice detail → notice-scoped entry.
   if(/^#notice\//.test(hash) && lastNoticeContext && lastNoticeContext.row){
+    const carry = await ensureAlertsContextCarry();
+    if(!carry) return "#alerts";
     return carry.alertsHref(carry.alertScopeFromNotice(lastNoticeContext.row));
   }
   // Land project detail (#land/<project_id>).
   if(/^#land\//.test(hash)){
     const id = decodeURIComponent(hash.slice(6).split("?")[0] || "");
     if(id){
+      const carry = await ensureAlertsContextCarry();
+      if(!carry) return "#alerts";
       const row = (typeof lRows !== "undefined" && Array.isArray(lRows))
         ? lRows.find(r => r && String(r.project_id) === id)
         : null;
@@ -361,15 +385,16 @@ async function currentAlertsEntryHref(){
   const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
   if(tab && ["money","land","property","rules","meetings"].includes(tab)){
     const state = currentLensFilterState(tab);
-    const scope = carry.alertScopeFromLensState(tab, state);
-    if(scope){
-      // Only pre-scope when the reader has actually narrowed something; empty list = bare.
-      const f = scope.filter || {};
-      const hasBits = !!(f.agency || f.name || (f.keywords && f.keywords.length)
-        || f.minAmount || f.borough || f.boro || f.neighborhood || f.noticeType
-        || f.locationScope || f.asset || f.saleMethod || f.priceBand || f.process || f.stage
-        || (tab === "land" && f.status === "all" && f.boro));
-      if(hasBits) return carry.alertsHref(scope);
+    // Do not load the context-carry helper for the untouched home defaults. The helper is
+    // needed only after a reader narrows a lens (or enters through a detail route above).
+    const hasBits = !!(state && (state.agency || state.q || state.minAmount
+      || state.borough || state.boro || state.neighborhood || state.noticeType
+      || state.locationScope || state.asset || state.saleMethod || state.priceBand
+      || state.process || state.stage));
+    if(hasBits){
+      const carry = await ensureAlertsContextCarry();
+      const scope = carry && carry.alertScopeFromLensState(tab, state);
+      if(scope) return carry.alertsHref(scope);
     }
   }
   return "#alerts";
@@ -400,7 +425,7 @@ let quizW=null;
 // The quiz's 6 topic chips are a curated subset of #awatch's 9 "watch for" options -- no chip
 // exists for moneynl/entityvendor/entityagency, so a builder-side pick of one of those leaves
 // no quiz chip lit (an honest "the quiz has no button for this" state, not a bug).
-const QUIZ_TOPICS = new Set(["rfpkw","bigaward","rezone","property","rules","meetings"]);
+const QUIZ_TOPICS = new Set(["rfpkw","bigaward","rezone","property","rules","meetings","district"]);
 // The one narrowing text field a watch type actually reads: moneynl reads #amoneykw,
 // everything else that has a keyword/place field at all reads #aparam.
 function narrowFieldSel(){ return $("#awatch").value==="moneynl" ? "#amoneykw" : "#aparam"; }
@@ -409,6 +434,8 @@ function narrowFieldSel(){ return $("#awatch").value==="moneynl" ? "#amoneykw" :
 // it after any of those fields changes (from either the quiz or the builder side) can't loop.
 function refreshQuizDisplay(){
   const w = $("#awatch").value;
+  const narrowBox = $("#quiznarrowbox");
+  if(narrowBox) narrowBox.hidden = w==="district";
   quizW = QUIZ_TOPICS.has(w) ? w : null;
   $("#quizwhat").querySelectorAll(".chip").forEach(x=>{
     const on = x.dataset.w===w;
@@ -416,11 +443,12 @@ function refreshQuizDisplay(){
   });
   $("#quiznarrow").value = $(narrowFieldSel()).value;
   $("#quiznarrow").placeholder = QUIZ_PLACEHOLDER[w] ? t(QUIZ_PLACEHOLDER[w]) : t("quiz_narrow_placeholder");
-  $("#quiznarrow").disabled = w==="bigaward";
+  $("#quiznarrow").disabled = w==="bigaward" || w==="district";
   const freq = $("#afreq").value;
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>{
     const on = x.dataset.f===freq;
     x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on));
+    x.disabled = w==="district" && x.dataset.f!=="Weekly";
   });
 }
 $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
@@ -435,6 +463,7 @@ $("#quiznarrow").addEventListener("input", ()=>{ $(narrowFieldSel()).value = $("
 $("#aparam").addEventListener("input", ()=>{ if($("#awatch").value!=="moneynl") $("#quiznarrow").value = $("#aparam").value; });
 $("#amoneykw").addEventListener("input", ()=>{ if($("#awatch").value==="moneynl") $("#quiznarrow").value = $("#amoneykw").value; });
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+  if($("#awatch").value==="district" && b.dataset.f!=="Weekly") return;
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
   if($("#afreq").value !== b.dataset.f){ $("#afreq").value = b.dataset.f; updateAWhen(); }
   announce(t("sync_freq_announce", {freq: b.textContent.trim()}));
@@ -457,7 +486,7 @@ $("#quizgo").addEventListener("click", async ()=>{
   $("#awatch").value=quizW; aWatchChange();
   // Always assign — every topic gets the same treatment: your narrowing, or the topic's
   // own "all notices" default. Never a value left over from a previous topic.
-  if(quizW!=="bigaward") $("#aparam").value=$("#quiznarrow").value.trim();
+  if(quizW!=="bigaward" && quizW!=="district") $("#aparam").value=$("#quiznarrow").value.trim();
   const f=$("#quizfreq").querySelector(".chip.on"); if(f) $("#afreq").value=f.dataset.f;
   updateAWhen();
   if(!(await resolveMoneyNarrow())) aPreview();

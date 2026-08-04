@@ -11,6 +11,7 @@ const LENS_LABEL = {
   property: "property notices",
   rules: "rules & notices",
   meetings: "public meetings",
+  district: "council district",
 };
 const usd = (n) => "$" + Number(n).toLocaleString("en-US");
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
@@ -18,6 +19,9 @@ const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": 
 // A stored lens filter → one human-readable line.
 export function describeFilter(lens, filter) {
   const f = filter || {};
+  if (lens === "district") {
+    return `Council District ${f.councilDistrict || "?"} — weekly civic actions`;
+  }
   if (lens === "people" && f.view === "guide" && f.interestArea) {
     return `civil-service exams — ${f.interestLabel || f.interestArea}`;
   }

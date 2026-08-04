@@ -48,7 +48,7 @@ export function dedupeFreshByContent(rows) {
   const seen = new Set();
   const out = [];
   for (const r of rows) {
-    const key = r.alert_id || ["pin", "agency_name", "short_title", "vendor_name", "start_date"].map((k) => r[k] ?? "").join("|");
+    const key = r.district_item_id || r.alert_id || ["pin", "agency_name", "short_title", "vendor_name", "start_date"].map((k) => r[k] ?? "").join("|");
     if (seen.has(key)) continue;
     seen.add(key);
     out.push(r);

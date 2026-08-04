@@ -1,7 +1,7 @@
 /* ===== Map exploration (cs-geo-04): SVG district choropleth from precomputed
    district_activity + district_boundaries. No proprietary map SDK; list remains
    the fallback. Coordinates never ride share links. ===== */
-let mapToolsPromise=null, mapBoundaries=null, mapActivity=null, mapPainted=false;
+let mapToolsPromise=null, mapDistrictDigestToolsPromise=null, mapBoundaries=null, mapActivity=null, mapPainted=false;
 let mapState={ level:"borough", id:null, parent:null, lens:"all" };
 let mapViewBox=null;
 function mapExplorationTools(){
@@ -9,6 +9,12 @@ function mapExplorationTools(){
     mapToolsPromise=import("../map_exploration.mjs").catch(()=>null);
   }
   return mapToolsPromise;
+}
+function mapDistrictDigestTools(){
+  if(!mapDistrictDigestToolsPromise){
+    mapDistrictDigestToolsPromise=import("../district_weekly_digest.mjs").catch(()=>null);
+  }
+  return mapDistrictDigestToolsPromise;
 }
 async function loadMapData(){
   if(mapBoundaries && mapActivity) return { boundaries:mapBoundaries, activity:mapActivity };
@@ -266,6 +272,10 @@ async function paintMapExploration(){
       const cwLinks=cwTotal>0 && typeof tools.bucketFeedLinks==="function"
         ? tools.bucketFeedLinks("citywide", { counts:cw, onlyPositive:true })
         : [];
+      const districtTools=sel.level==="council_district"?await mapDistrictDigestTools():null;
+      const districtFollowHref=districtTools?.districtDigestAlertsHref
+        ? districtTools.districtDigestAlertsHref(sel.id)
+        : "#alerts";
       detail.innerHTML=`<h3>${mapEsc(sel.label)}</h3>
         <p class="map-fallback-note">${t("map_detail_lead",{n:String(sel.total), lens:mapEsc(mapLensLabel(mapState.lens))})}</p>
         <div class="map-detail-counts">
@@ -285,6 +295,7 @@ async function paintMapExploration(){
             const count=l.count!=null?` (${l.count})`:"";
             return `<a class="${cls}" href="${mapEsc(l.hash)}" data-map-feed-scope="${mapEsc(scope)}" data-map-feed-lens="${mapEsc(l.lens||"")}">${mapEsc(label)}${count}</a>`;
           }).join("")}
+          ${sel.level==="council_district"?`<a class="act primary" href="${mapEsc(districtFollowHref)}" data-follow-district="${mapEsc(sel.id)}">${t("map_follow_district")}</a>`:""}
           ${sel.level==="borough"?`<button type="button" class="act primary" data-map-drill="${mapEsc(sel.id)}">${t("map_drill_community")}</button>`:""}
           ${sel.level==="borough"?`<button type="button" class="act" data-map-council="1">${t("map_show_council")}</button>`:""}
         </div>
