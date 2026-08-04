@@ -1222,7 +1222,7 @@
       ],
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
       "product_freshness": "The FY2027 production snapshot contains 2,925 normalized rows from 32 workbooks. Re-run after in-year agency workbook updates.",
-      "used_for": "Committed cityscroll.procurement_planning.v1 source rows with publisher-supplied purpose, term, method, industry, quarter, and estimated amount. The dated production receipt measured both 100-row notice/PASSPort paths at 0%, so no product edge is enabled and no agency-total budget is inferred.",
+      "used_for": "Committed cityscroll.procurement_planning.v1 source rows with publisher-supplied purpose, term, method, industry, quarter, and amount field. The dated production receipt measured both 100-row notice/PASSPort paths at 0%, so no product edge is enabled and no agency-total budget is inferred.",
       "join_keys": [
         "published PIN/EPIN when present",
         "agency + description + term (reviewed candidate only)"
