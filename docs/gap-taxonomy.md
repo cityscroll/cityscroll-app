@@ -51,7 +51,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 
 | Source | Status | Join keys | Predicted grade | Realized coverage |
 |---|---|---|---|---|
-| `abo-local-authorities` | landed | authority_name, vendor_name, award_date, contract_amount | — | — |
+| `abo-local-authorities` | landed | authority_name, vendor_name, award_date, contract_amount | — | 2% (labeled_residual) |
 | `active-civil-service-list` | live-only | exam_no | — | 44.5% (closed_exams_list_presence) |
 | `bid-tabulations-historical` | disabled | bid_number, PIN, bid_title, bid_opening_date | high-risk | 0% (modern_notices_strict) |
 | `capital-projects` | disabled | project_name, managing_agency, client_agency, pid | — | 0% (modern_procurement_substring_unique) |
@@ -166,7 +166,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - **CLASS CHANGE** `exam-salary-fee-not-published`: not_published → not_yet_ingested — Open-competitive NOE path is a landed public source; schedule-only nulls are never-ingested, not withheld
 
 
-## Verification notes (2026-07-30)
+## Verification notes (2026-08-04)
 
 - Open Data views 3khw-qi8f, qyyg-4tf5, 9k82-ys7w, 72mk-a8z7 returned live metadata.
 - PASSPort Public contracts and rfx pages returned HTTP 200.
@@ -176,6 +176,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.
 - PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.
 - Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.
+- ABO residual join (2026-08-04): 1/50 labeled matches (2%), 50% fuzzy precision, five false positives, and four ambiguous groups; no notice-level edge materialization below the 30% usefulness and 95% precision gates.
 
 ## UI copy keys (two registers)
 
@@ -192,4 +193,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `5f995bdcb030…` · materialized 11 · candidates 43 · class changes 0.
+Last refresh fingerprint: `8f860e5bba73…` · materialized 11 · candidates 43 · class changes 0.

@@ -1,0 +1,1046 @@
+{
+  "schema": "cityscroll.abo_award_residual_fixture.v1",
+  "observed_on": "2026-08-04",
+  "observed_at_utc": "2026-08-04T11:26:00Z",
+  "selection": "50 City Record Solicitation/Intent to Award residuals, authority-stratified across seven ABO-mapped agencies and time-quantiled over 2022-01-01 through 2024-12-31",
+  "source_contracts": [
+    "abo-local-authorities",
+    "abo-local-development-corporations",
+    "abo-state-authorities"
+  ],
+  "source_inventory": [
+    {
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority",
+      "agency": "School Construction Authority",
+      "rows_scanned": 1742,
+      "award_date_min": "1993-08-11T00:00:00.000",
+      "award_date_max": "2024-05-06T00:00:00.000"
+    },
+    {
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation",
+      "agency": "NYC Health + Hospitals",
+      "rows_scanned": 7391,
+      "award_date_min": "2016-07-01T00:00:00.000",
+      "award_date_max": "2023-07-01T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation",
+      "agency": "Economic Development Corporation",
+      "rows_scanned": 4737,
+      "award_date_min": "1987-08-14T00:00:00.000",
+      "award_date_max": "2024-06-26T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation",
+      "agency": "Brooklyn Navy Yard Development Corp.",
+      "rows_scanned": 2407,
+      "award_date_min": "2016-02-22T00:00:00.000",
+      "award_date_max": "2029-12-01T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation",
+      "agency": "Brooklyn Bridge Park",
+      "rows_scanned": 367,
+      "award_date_min": "2003-09-05T00:00:00.000",
+      "award_date_max": "2024-06-06T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation",
+      "agency": "Trust for Governors Island",
+      "rows_scanned": 360,
+      "award_date_min": "2010-07-01T00:00:00.000",
+      "award_date_max": "2024-06-26T00:00:00.000"
+    },
+    {
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City",
+      "agency": "Mayor's Fund to Advance New York City",
+      "rows_scanned": 58,
+      "award_date_min": "2016-06-01T00:00:00.000",
+      "award_date_max": "2018-10-04T00:00:00.000"
+    }
+  ],
+  "notices": [
+    {
+      "request_id": "20220119101",
+      "start_date": "2022-01-26T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Information technology services in connection with contingent & temporary staffing",
+      "pin": "22-00056R",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20220516101",
+      "start_date": "2022-05-23T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Roofs/Exterior Masonry - PS 15 (Bronx)",
+      "pin": "SCA22-20681D-1",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20221005116",
+      "start_date": "2022-10-13T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "RFP 23-00034R Construction Management Services in Connection with Management and Coordination of the SCA\u001as Emergency Response Program",
+      "pin": "RFP 23-00034R",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20230421112",
+      "start_date": "2023-04-28T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "STH-SBHC ROOM CONVERSION/ELECTRICAL SYSTEMS/INTRUSION ALARM SYSTEM",
+      "pin": "SCA23-21257D-1",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20230524111",
+      "start_date": "2023-05-31T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "COVID Ventilation/Fire Alarm System/Auditorium Seating/POT",
+      "pin": "SCA23-026324-1",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20240118107",
+      "start_date": "2024-01-25T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "EXTERIOR MASONRY/PARAPETS/ROOFS",
+      "pin": "SCA24-21629D-1",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20240521101",
+      "start_date": "2024-05-28T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Elevator Modernization / Fire Alarm Replacement / Electrical Systems",
+      "pin": "24-21706D-1",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20241220035",
+      "start_date": "2024-12-30T00:00:00.000",
+      "agency_name": "School Construction Authority",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Architecture & Engineering Services in Connection with Architecture and Engineering Services in Connection with AutoCAD Training Consulting and Customization Services",
+      "pin": "25-00049R",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City School Construction Authority"
+    },
+    {
+      "request_id": "20220103101",
+      "start_date": "2022-01-10T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Correction: CRAN RFP",
+      "pin": "2589",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20220331141",
+      "start_date": "2022-04-08T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Coney Island Hospital: Lead Cabinet",
+      "pin": "CIH-CP6-04",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20220316117",
+      "start_date": "2022-06-02T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Correction: BELLEVUE (RE-BID) STANDPIPE REPLACEMENT  600K - 700K",
+      "pin": "BELL- RE-BID) STANDP",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20221020124",
+      "start_date": "2022-10-27T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Bid Extension: Fresh Food Produce Services",
+      "pin": "2663",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20230628105",
+      "start_date": "2023-07-06T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Bid Extension: Architectural/Engineering AND Mechanical, Electrical, and Plumbing Professional Services - All Firms",
+      "pin": "2682b",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20231204105",
+      "start_date": "2023-12-11T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Bid Extension: Preventative Maintenance Life Safety Services",
+      "pin": "2739",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20240522101",
+      "start_date": "2024-05-29T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Bid Extension: Contact Center Technical Implementation & Support Services",
+      "pin": "2762",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20241211044",
+      "start_date": "2024-12-18T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Correction: RFP 2780- Medical Necessity Denial Services",
+      "pin": "2780",
+      "dataset": "8w5p-k45m",
+      "authority": "New York City Health and Hospitals Corporation"
+    },
+    {
+      "request_id": "20211230122",
+      "start_date": "2022-01-07T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Request for Proposals, Parking Garage Operator at New York Wheel Adjacent to the Staten Island Ballpark/Stadium",
+      "pin": "4907",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20220707103",
+      "start_date": "2022-07-13T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "DOWNTOWN MANHATTAN HELIPORT OPERATOR REQUEST FOR PROPOSALS",
+      "pin": "9702",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20221028147",
+      "start_date": "2022-11-07T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Design Consultant Services, United Nations Esplanade",
+      "pin": "9820-0001",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20230721117",
+      "start_date": "2023-07-28T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Consultant Services, On-Call Design and Engineering Services",
+      "pin": "104280001",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20231023103",
+      "start_date": "2023-10-27T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "NYCIDA and BUILD NYC APPLICATION SOFTWARE DEVELOPMENT RFP",
+      "pin": "10447",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20240403108",
+      "start_date": "2024-04-10T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Audit Services - The Trust for Cultural Resources, The City of New York",
+      "pin": "10818",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20240701142",
+      "start_date": "2024-07-09T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Gateway to Hunts Point FDC: Freight Electric Vehicle Charging Hub and Welcome Center",
+      "pin": "10693",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20241220030",
+      "start_date": "2024-12-30T00:00:00.000",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Economic Mobility Network",
+      "pin": "11077",
+      "dataset": "d84c-dk28",
+      "authority": "New York City Economic Development Corporation"
+    },
+    {
+      "request_id": "20220118105",
+      "start_date": "2022-01-25T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Façade Renovation at Building 77",
+      "pin": "000202",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20220728102",
+      "start_date": "2022-08-03T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Brooklyn Navy Yard Berth 14A Sinkhole Repair",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20221027121",
+      "start_date": "2022-11-07T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Brooklyn Navy Yard Hydrant Replacement",
+      "pin": "000212",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20230822111",
+      "start_date": "2023-08-30T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "RESTORATION of SUBSTATIONs  AT bUILDING 292 & bUILDING 542",
+      "pin": "000217",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20240405110",
+      "start_date": "2024-04-15T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Intent to Award",
+      "short_title": "Correction: Climate Solutions & Infrastructure at Scale RFEI",
+      "pin": "000221",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20240805110",
+      "start_date": "2024-08-12T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Uniform Contract",
+      "pin": "000224",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20241029030",
+      "start_date": "2024-11-06T00:00:00.000",
+      "agency_name": "Brooklyn Navy Yard Development Corp.",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Roof Replacement at Building 132 - Brooklyn Navy Yard",
+      "pin": "000229",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Navy Yard Development Corporation"
+    },
+    {
+      "request_id": "20220331135",
+      "start_date": "2022-04-06T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "334 Furman Brick Repointing Project",
+      "pin": "334 Furman",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20220831117",
+      "start_date": "2022-09-06T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Smokestack Building / Food Concession",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20221221101",
+      "start_date": "2022-12-23T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Brooklyn Bridge Park Corporation, Information Technology and Related Services",
+      "pin": "BBP IT",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20230802101",
+      "start_date": "2023-08-07T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "FULTON FERRY LANDING DECK REPLACEMENT PROJECT \u001a PHASE 2",
+      "pin": "DECKING",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20240118106",
+      "start_date": "2024-02-01T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "ANNUAL FINANCIAL AUDIT AND RELATED SERVICES",
+      "pin": "Annual Financial Aud",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20240722105",
+      "start_date": "2024-08-01T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "BROOKLYN BRIDGE PARK \u001a RFP \u001a HISTORIC FIREBOAT STATION CONCESSION",
+      "pin": "Historic Fireboat St",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20241223015",
+      "start_date": "2024-12-24T00:00:00.000",
+      "agency_name": "Brooklyn Bridge Park",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Correction: General Marine Contractor Services for Pier 2/3 Wharf and Pie r2 Floating Dock Repairs",
+      "pin": "Wharf 2/3 Pier 2 Doc",
+      "dataset": "d84c-dk28",
+      "authority": "Brooklyn Bridge Park Corporation"
+    },
+    {
+      "request_id": "20220126105",
+      "start_date": "2022-02-01T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "ON-CALL DESIGN SERVICES",
+      "pin": "ONCALLDESIGN",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20220512116",
+      "start_date": "2022-05-19T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "IT Managed Services Provider",
+      "pin": "2022-05-11",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20230406117",
+      "start_date": "2023-04-13T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Request for Proposals: Land Use Counsel",
+      "pin": "2023-04-05",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20230703101",
+      "start_date": "2023-07-07T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Maritime Legal Counsel Services",
+      "pin": "2023-06-30",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20240326119",
+      "start_date": "2024-04-03T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "SEAWALL REHABILITATION",
+      "pin": "TGI-SEAWALL-2024",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20240425101",
+      "start_date": "2024-05-01T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "CONSTRUCTION MANAGEMENT SERVICES",
+      "pin": "TGI-CRMG-2024",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20241112021",
+      "start_date": "2024-11-18T00:00:00.000",
+      "agency_name": "Trust for Governors Island",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Bid Extension: On-Call Public Art Fabrication, Installation, and Exhibition Services",
+      "pin": "TGI-Art-OnCall-Insta",
+      "dataset": "d84c-dk28",
+      "authority": "Governors Island Corporation"
+    },
+    {
+      "request_id": "20220106116",
+      "start_date": "2022-01-10T00:00:00.000",
+      "agency_name": "Mayor's Fund to Advance New York City",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Request for proposals: Designed by Community",
+      "pin": "202201",
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City"
+    },
+    {
+      "request_id": "20220301113",
+      "start_date": "2022-03-11T00:00:00.000",
+      "agency_name": "Mayor's Fund to Advance New York City",
+      "type_of_notice_description": "Intent to Award",
+      "short_title": "Correction: Independent Financial Audit and Tax Services",
+      "pin": "MF20223",
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City"
+    },
+    {
+      "request_id": "20221208102",
+      "start_date": "2022-12-09T00:00:00.000",
+      "agency_name": "Mayor's Fund to Advance New York City",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Building Healthy Communities Food Action Grant for Community-Led Food Projects",
+      "pin": "MF202212",
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City"
+    },
+    {
+      "request_id": "20230901112",
+      "start_date": "2023-09-06T00:00:00.000",
+      "agency_name": "Mayor's Fund to Advance New York City",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Assessing Child Care Needs of Families and Providers",
+      "pin": "MF20231",
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City"
+    },
+    {
+      "request_id": "20240215101",
+      "start_date": "2024-02-16T00:00:00.000",
+      "agency_name": "Mayor's Fund to Advance New York City",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Program Evaluation Research Vendor",
+      "pin": "MF20242",
+      "dataset": "d84c-dk28",
+      "authority": "The Mayor's Fund to Advance New York City"
+    }
+  ],
+  "awards": [
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "PRECISION ENVIRONMENTAL INC.",
+      "procurement_description": "ERC IEH CONTINGENT & TEMPORARY STAFFING (LARGE)",
+      "award_date": "2024-01-05T00:00:00.000",
+      "contract_amount": "$6,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "CONTAMINATION CONTROL ENG., INC.",
+      "procurement_description": "ERC IEH CONTINGENT & TEMPORARY STAFFING (LARGE)",
+      "award_date": "2023-12-28T00:00:00.000",
+      "contract_amount": "$2,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "ATHENICA ENVIRONMENTAL SVCS, INC.",
+      "procurement_description": "ERC IEH CONTINGENT & TEMPORARY STAFFING (LARGE)",
+      "award_date": "2023-10-03T00:00:00.000",
+      "contract_amount": "$2,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "Enovate Consulting, LLC",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING SMALL",
+      "award_date": "2023-09-14T00:00:00.000",
+      "contract_amount": "$4,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "KC Engineering and Land Surveying, P.C.",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING SMALL",
+      "award_date": "2023-09-01T00:00:00.000",
+      "contract_amount": "$1,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "A.G. CONSULTING ENGINEERING,  P.C.",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-08-24T00:00:00.000",
+      "contract_amount": "$4,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "Naik Consulting Group, P.C.",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING SMALL",
+      "award_date": "2023-07-12T00:00:00.000",
+      "contract_amount": "$1,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "Haydan-Gannett Fleming JV",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-06-27T00:00:00.000",
+      "contract_amount": "$7,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "Bradford Construction Corp. of New York",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-06-23T00:00:00.000",
+      "contract_amount": "$7,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "LiRo Program & Cnstr Mgmt PE, PC / Hill Int'l, Inc: JV",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-06-22T00:00:00.000",
+      "contract_amount": "$20,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "GILBANE BUILDING COMPANY",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-06-02T00:00:00.000",
+      "contract_amount": "$30,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "WSP USA Inc.",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-06-01T00:00:00.000",
+      "contract_amount": "$20,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "AECOM USA, INC.",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-05-12T00:00:00.000",
+      "contract_amount": "$30,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "STV CONSTRUCTION, INC.",
+      "procurement_description": "CM SVS IN CONN W CONTINGENT & TEMPORARY STAFFING LARGE",
+      "award_date": "2023-05-12T00:00:00.000",
+      "contract_amount": "$20,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "PruTech Solutions, Inc.",
+      "procurement_description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+      "award_date": "2022-08-25T00:00:00.000",
+      "contract_amount": "$2,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "SVAM International, Inc.",
+      "procurement_description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+      "award_date": "2022-06-07T00:00:00.000",
+      "contract_amount": "$1,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "SVAM International, Inc.",
+      "procurement_description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+      "award_date": "2022-06-07T00:00:00.000",
+      "contract_amount": "$3,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "Q.E.D., Inc.",
+      "procurement_description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+      "award_date": "2022-05-27T00:00:00.000",
+      "contract_amount": "$3,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "Donnelly & Moore, Inc.",
+      "procurement_description": "IT SVS IN CONN W CONTINGENT & TEMPORARY STAFFING",
+      "award_date": "2022-05-27T00:00:00.000",
+      "contract_amount": "$8,000,000.00",
+      "fiscal_year_end_date": "2022-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "STV CONSTRUCTION, INC.",
+      "procurement_description": "CM MGMT & COORDINATION OF EMERGENCY RESPONSE PROG-CAMP",
+      "award_date": "2022-11-28T00:00:00.000",
+      "contract_amount": "$15,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City School Construction Authority",
+      "vendor_name": "The McCloud Group, LLC",
+      "procurement_description": "CM MGMT & COORDINATION OF EMERGENCY RESPONSE PROG-CAMP",
+      "award_date": "2022-11-09T00:00:00.000",
+      "contract_amount": "$2,000,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "8w5p-k45m"
+    },
+    {
+      "authority_name": "New York City Economic Development Corporation",
+      "vendor_name": "Matrix New World Engineering, Land Surveying and Landscape Architecture, PC",
+      "procurement_description": "Engineering and design consultant",
+      "award_date": "2022-11-21T00:00:00.000",
+      "contract_amount": "$368,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "New York City Economic Development Corporation",
+      "vendor_name": "Matrix New World Engineering, Land Surveying and Landscape Architecture, PC",
+      "procurement_description": "Engineering and Design Consultant",
+      "award_date": "2022-11-21T00:00:00.000",
+      "contract_amount": "$368,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "New York City Economic Development Corporation",
+      "vendor_name": "Buro Happold Consulting Engineers, PC",
+      "procurement_description": "On-call design & engineering services",
+      "award_date": "2024-03-27T00:00:00.000",
+      "contract_amount": "$20,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "New York City Economic Development Corporation",
+      "vendor_name": "Arup US, INC",
+      "procurement_description": "Design and Engineering Services",
+      "award_date": "2024-03-19T00:00:00.000",
+      "contract_amount": "$20,000,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "New York City Economic Development Corporation",
+      "vendor_name": "AECOM USA, Inc",
+      "procurement_description": "Contract for a Design Consultant for the Seaport Coastal Resiliency Contract",
+      "award_date": "2024-01-31T00:00:00.000",
+      "contract_amount": "$18,879,434.66",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "New York City Economic Development Corporation",
+      "vendor_name": "AECOM USA, Inc",
+      "procurement_description": "Engineering Design and Consulting Services for Manhattan Greenway UN Esplanade",
+      "award_date": "2023-08-24T00:00:00.000",
+      "contract_amount": "$13,168,990.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Brooklyn Navy Yard Development Corporation",
+      "vendor_name": "Luigi Caliendo & Sons, Inc.",
+      "procurement_description": "Invoice #822010 Berth 17 sinkhole repair",
+      "award_date": "2023-03-27T00:00:00.000",
+      "contract_amount": "$30,525.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Brooklyn Navy Yard Development Corporation",
+      "vendor_name": "Sedgwick Claims Management Services, Inc.",
+      "procurement_description": "Inv. #01262024    Sedgwick CMS Inc. On Behalf of Brooklyn Navy Yard    1/26/24",
+      "award_date": "2024-01-29T00:00:00.000",
+      "contract_amount": "$65,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Brooklyn Navy Yard Development Corporation",
+      "vendor_name": "House of Tanuki,Inc.",
+      "procurement_description": "Invoice 0864    Brooklyn Navy Yard Corporate Presentation Design  Revamp:  Payment 2 of 2",
+      "award_date": "2023-06-16T00:00:00.000",
+      "contract_amount": "$5,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Marvel Architects",
+      "procurement_description": "Architecture design services",
+      "award_date": "2023-11-20T00:00:00.000",
+      "contract_amount": "$500,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Jaklitsch/Gardner Architects, P.C.",
+      "procurement_description": "Architecture and design services (Building 19)",
+      "award_date": "2023-08-30T00:00:00.000",
+      "contract_amount": "$423,093.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Smith-Miller & Hawkinson Architects LLP",
+      "procurement_description": "Architecture design services",
+      "award_date": "2023-06-27T00:00:00.000",
+      "contract_amount": "$500,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Almstead Tree & Shrub Care Company, LLC",
+      "procurement_description": "On-call arbor care services",
+      "award_date": "2023-05-31T00:00:00.000",
+      "contract_amount": "$360,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Langan Engineering, Environmental, Surveying, Landscape Architecture and Geology, D.P.C.",
+      "procurement_description": "On-call marine engineering and design services.",
+      "award_date": "2023-05-08T00:00:00.000",
+      "contract_amount": "$29,413.49",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Jacobs Civil Consultants, Inc",
+      "procurement_description": "Engineering and design services",
+      "award_date": "2023-04-10T00:00:00.000",
+      "contract_amount": "$500,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Management Services LLC dba Venator Advisors",
+      "procurement_description": "Software design and implementation services",
+      "award_date": "2023-02-09T00:00:00.000",
+      "contract_amount": "$65,600.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "WXY Architecture and Urban Design",
+      "procurement_description": "On-call master planning and urban design services",
+      "award_date": "2023-02-03T00:00:00.000",
+      "contract_amount": "$11,200.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Practice For Architecture Urbanism DPC",
+      "procurement_description": "On-call master planning and urban design services",
+      "award_date": "2023-01-30T00:00:00.000",
+      "contract_amount": "$56,337.50",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Practice For Architecture Urbanism DPC",
+      "procurement_description": "On-call master planning and urban design services",
+      "award_date": "2023-01-30T00:00:00.000",
+      "contract_amount": "$500,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "KPFF, Inc.",
+      "procurement_description": "On-call civil and marine engineering and design services",
+      "award_date": "2022-10-05T00:00:00.000",
+      "contract_amount": "$17,553.50",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Indigo River Architecture and Engineering D.P.C.",
+      "procurement_description": "On-call consultant agreement for civil and marine engineering and design services",
+      "award_date": "2022-09-07T00:00:00.000",
+      "contract_amount": "$14,053.34",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Torvalsen Consulting LLC Dba TMS Waterfront",
+      "procurement_description": "Maritime engineering and design services",
+      "award_date": "2022-08-01T00:00:00.000",
+      "contract_amount": "$325,000.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Torvalsen Consulting LLC dba TMS Waterfront",
+      "procurement_description": "Maritime engineering and design services",
+      "award_date": "2022-07-29T00:00:00.000",
+      "contract_amount": "$325,000.00",
+      "fiscal_year_end_date": "2023-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "BRYAN CAVE LEIGHTON PAISNER LLP",
+      "procurement_description": "Zoning and land use counsel services",
+      "award_date": "2023-07-11T00:00:00.000",
+      "contract_amount": "$101,368.85",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Berd & Klauss, PLCC",
+      "procurement_description": "Legal filing services",
+      "award_date": "2023-09-20T00:00:00.000",
+      "contract_amount": "$7,200.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    },
+    {
+      "authority_name": "Governors Island Corporation",
+      "vendor_name": "Topline NY RestorationsLLC",
+      "procurement_description": "General construction contractor services",
+      "award_date": "2024-05-31T00:00:00.000",
+      "contract_amount": "$98,200.00",
+      "fiscal_year_end_date": "2024-06-30T00:00:00.000",
+      "dataset": "d84c-dk28"
+    }
+  ],
+  "reviews": [
+    {
+      "request_id": "20220119101",
+      "label": "ambiguous",
+      "note": "Three same-description staffing awards follow the notice; the source exposes no solicitation identifier, vendor, or amount on the notice to select one or prove a multi-award relationship."
+    },
+    {
+      "request_id": "20220126105",
+      "label": "ambiguous",
+      "note": "Several different on-call design specialties fit the broad notice title; none carries the notice key."
+    },
+    {
+      "request_id": "20220728102",
+      "label": "false_positive",
+      "note": "The notice names Berth 14A while the candidate award explicitly names Berth 17."
+    },
+    {
+      "request_id": "20221005116",
+      "label": "ambiguous",
+      "note": "Two same-description emergency-response awards follow the notice; broad program wording cannot identify one contract edge."
+    },
+    {
+      "request_id": "20221027121",
+      "label": "false_positive",
+      "note": "Candidates merely mention Brooklyn Navy Yard and do not describe hydrant replacement."
+    },
+    {
+      "request_id": "20221028147",
+      "label": "false_positive",
+      "note": "The generic engineering/design award omits the notice's United Nations Esplanade subject."
+    },
+    {
+      "request_id": "20230406117",
+      "label": "true_match",
+      "note": "Unique post-notice row explicitly states zoning and land-use counsel; retained as a labeled positive for measurement, not materialized because the bridge fails the batch gates."
+    },
+    {
+      "request_id": "20230703101",
+      "label": "false_positive",
+      "note": "Legal filing services are not the maritime legal counsel procurement named by the notice."
+    },
+    {
+      "request_id": "20230721117",
+      "label": "ambiguous",
+      "note": "Multiple on-call design awards fit the broad title and date window; no identifier, vendor, or notice amount disambiguates them."
+    },
+    {
+      "request_id": "20240425101",
+      "label": "false_positive",
+      "note": "Generic construction contractor services do not establish the construction-management procurement."
+    }
+  ]
+}
