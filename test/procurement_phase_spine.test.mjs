@@ -80,6 +80,7 @@ const FULL = {
 };
 
 test("mapStageToPhase: intermediate City Record stages land in selection", () => {
+  assert.equal(mapStageToPhase("planning"), "planning");
   assert.equal(mapStageToPhase("solicitation"), "solicitation");
   assert.equal(mapStageToPhase("intent_to_negotiate"), "selection");
   assert.equal(mapStageToPhase("vendor_list"), "selection");
@@ -89,6 +90,25 @@ test("mapStageToPhase: intermediate City Record stages land in selection", () =>
   assert.equal(mapStageToPhase("registered"), "award_registration");
   assert.equal(mapStageToPhase("payment"), "payments");
   assert.equal(mapStageToPhase("nope"), "solicitation");
+});
+
+test("buildProcurementPhaseView: planning is absent until a matched plan row exists", () => {
+  const withoutPlan = buildProcurementPhaseView(FULL);
+  assert.equal(withoutPlan.phases.some((phase) => phase.id === "planning"), false);
+
+  const withPlan = buildProcurementPhaseView({
+    ...FULL,
+    timeline: [{
+      stage: "planning",
+      status: "matched",
+      source: "mocs-procurement-plan",
+      date: null,
+      detail: { plan: { description: "Collection services plan" } },
+    }, ...FULL.timeline],
+  });
+  assert.deepEqual(withPlan.phases.map((phase) => phase.id), ["planning", ...PROCUREMENT_PHASES]);
+  assert.equal(withPlan.phases[0].event_count, 1);
+  assert.equal(withPlan.phases[0].state, "passed");
 });
 
 test("buildProcurementPhaseView: groups under four canonical phases", () => {

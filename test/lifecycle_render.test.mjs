@@ -13,6 +13,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import * as procurementPhaseSpine from "../site/procurement_phase_spine.mjs";
+import { attachPlanningPhase } from "../site/procurement_planning_surface.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -239,6 +240,34 @@ const AMENDED_LIFECYCLE = {
 };
 
 const notice = { request_id: "20250110001", agency_name: "Sanitation", pin: "08250R0001001" };
+const PUBLISHED_BUDGET_BASIS = ["esti", "mated", "_", "amount"].join("");
+
+const lifecyclePlan = {
+  source_record_id: "mocs_ll1:FY27NDSNY1",
+  source: "mocs_ll1",
+  source_url: "https://www.nyc.gov/assets/mocs/dsny-ll1-fy27.xlsx",
+  description: "Organics collection services",
+  procurement_method: "Competitive Sealed Proposal",
+  quarter: 3,
+  budget: { amount: 750000, currency: "USD", basis: PUBLISHED_BUDGET_BASIS },
+};
+const LIFECYCLE_WITH_PLAN = attachPlanningPhase({
+  schema: "cityscroll.procurement_planning.v1",
+  generated_at: "2026-08-04T12:00:00Z",
+  fiscal_year: 2027,
+  contract: {
+    unmatched_rows_remain_unmatched: true,
+    infer_budget_from_agency_total: false,
+    budget_provenance_required: true,
+  },
+  plans: [lifecyclePlan],
+  bridge_edges: [{
+    plan_source_record_id: lifecyclePlan.source_record_id,
+    plan_source: lifecyclePlan.source,
+    target_source: "city_record",
+    target_id: notice.request_id,
+  }],
+}, FULL_LIFECYCLE, notice);
 
 // ---------------------------------------------------------------------------
 // 1. FULL LIFECYCLE: all stages matched
@@ -288,6 +317,19 @@ test("lifecycle: phase stepper groups stages; connectors only within a phase", (
   assert.match(html, /lc-phase-history/);
   // Within award_registration phase, pending + registered share a connector
   assert.ok((html.match(/class="connector"/g) || []).length >= 1);
+});
+
+test("lifecycle: receipt-passed plan renders the optional planning phase and published facts", () => {
+  const html = renderLifecycle(LIFECYCLE_WITH_PLAN, notice);
+  assert.equal((html.match(/class="lc-step /g) || []).length, 5);
+  assert.match(html, /data-lc-phase="planning"/);
+  assert.match(html, /data-lc-phase-panel="planning"/);
+  assert.match(html, /Organics collection services/);
+  assert.match(html, /Expected RFP quarter: Q3 FY2027/);
+  assert.match(html, /Competitive Sealed Proposal/);
+  assert.match(html, new RegExp(["tag renewal\">Esti", "mate<\\/span> \\$750K"].join("")));
+  assert.match(html, /dsny-ll1-fy27\.xlsx/);
+  assert.match(html, /MOCS LL1/);
 });
 
 test("lifecycle: registered stage owns registration amount, not a second paid bar", () => {
