@@ -73,6 +73,118 @@ AWARD_ROW = {
 # hardcoded English words via _spellNum() (a separate, pre-existing i18n gap, out of this
 # hotfix's class-focused scope) which would make this fixture fail the guard for an
 # unrelated reason if due_date landed inside that window.
+# M/WBE goal-chip solicitation demo (#notice/20260720022) — §6-129 + 30% goal body.
+# Hand-checked live City Record sample from solicitation_procurement_method fixtures.
+MWBE_SOLICITATION_ROW = {
+    "request_id": "20260720022",
+    "start_date": _iso(-5),
+    "agency_name": "Transportation",
+    "type_of_notice_description": "Solicitation",
+    "section_name": "Procurement",
+    "category_description": "Construction/Construction Services",
+    "short_title": "RESIDENT ENGINEERING INSPECTION SERVICES — DOT",
+    "pin": "84126MBTR746",
+    "due_date": _iso(20),
+    "selection_method_description": "Competitive Sealed Proposals",
+    "additional_description_1": (
+        "This procurement is subject to participation goals for Minority-Owned Business "
+        "Enterprises (MBEs) as required by Section 6-129 of the New York Administrative Code. "
+        "The MWBE goal for this project is 30%."
+    ),
+}
+# Award sub-outreach demo (#notice/20231222103) — prime vendor for award_prime_goal card.
+MWBE_AWARD_ROW = {
+    "request_id": "20231222103",
+    "start_date": _iso(-30),
+    "agency_name": "Design and Construction",
+    "type_of_notice_description": "Award",
+    "section_name": "Procurement",
+    "category_description": "Construction/Construction Services",
+    "short_title": "CONSTRUCTION MANAGEMENT SERVICES",
+    "pin": "07123E0076001",
+    "contract_amount": "4020000",
+    "vendor_name": "HNTB CORPORATION",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "additional_description_1": "Award of construction management services contract.",
+}
+MWBE_AWARD_LIFECYCLE = {
+    "ok": True,
+    "request_id": "20231222103",
+    "pin": "07123E0076001",
+    "pin_strategy": "exact",
+    "timeline": [
+        {
+            "stage": "award",
+            "status": "matched",
+            "source": "city-record",
+            "detail": {
+                "vendor": "HNTB CORPORATION",
+                "amount": 4020000,
+                "request_id": "20231222103",
+            },
+        },
+        {
+            "stage": "registered",
+            "status": "matched",
+            "source": "checkbook-contracts",
+            "detail": {
+                "vendor": "HNTB Corp",
+                "mwbe": "Non-M/WBE",
+                "contract_id": "CT107120248803393",
+                "current_amount": 4020000,
+                "original_amount": 4020000,
+                "registration_date": "2024-02-01",
+                "start_date": "2024-01-15",
+                "end_date": "2026-01-14",
+            },
+        },
+        {"stage": "payment", "status": "unmatched", "source": "checkbook-spending"},
+    ],
+    "award_prime_goal": {
+        "schema": "cityscroll.award_prime_goal.v1",
+        "eligible": True,
+        "prime": {
+            "display_name": "HNTB CORPORATION",
+            "stem": "HNTB",
+            "subject_ref": "vendor:name:hntb%20corporation",
+            "mwbe_category": "Non-M/WBE",
+            "sources": ["city-record", "checkbook-contracts"],
+        },
+        "agency": {
+            "display_name": "Design and Construction",
+            "canonical_id": "design-and-construction",
+            "canonical_name": "Design and Construction",
+            "subject_ref": "agency:design-and-construction",
+        },
+        "dollars": {"amount": 4020000, "source": "city-record", "basis": "contract_amount"},
+        "industry_chips": [
+            {
+                "key": "construction_construction_services",
+                "label": "Construction/Construction Services",
+                "source": "city-record",
+                "field": "category_description",
+            }
+        ],
+        "subcontract_goal": {
+            "status": "not_published",
+            "class": "not_published",
+            "goals": None,
+            "goal_percent": None,
+            "remaining_percent": None,
+            "would_appear_in": "agency or Comptroller subcontract-utilization reports",
+            "public_pointer": "https://comptroller.nyc.gov/reports/nyc-contracts/",
+        },
+        "possible_subcontract_window": {
+            "status": "open_candidate",
+            "basis": "award_or_registration_with_prime",
+            "has_prime": True,
+            "has_dollars": True,
+            "goal_data": "honest_absent",
+        },
+        "pin": "07123E0076001",
+        "contract_id": "CT107120248803393",
+    },
+}
 NOTICE_PERMALINK_ROW = {
     "request_id": "20260701099", "start_date": _iso(-1), "agency_name": "Housing Preservation and Development",
     "type_of_notice_description": "Solicitation", "category_description": "Construction Services",
@@ -846,6 +958,8 @@ def _soda_response(url):
             RFP_OPEN_2,
             AWARD_ROW,
             NOTICE_PERMALINK_ROW,
+            MWBE_SOLICITATION_ROW,
+            MWBE_AWARD_ROW,
             RULES_LIFECYCLE_NOTICE,
             PROPERTY_BBL_FALLBACK_NOTICE,
             NOTICE_LAND_ZAP_SPINE_NOTICE,
@@ -911,10 +1025,23 @@ def install_routes(page):
     # ...and /rules (Agency Rules lifecycle spine). Without a matched record the notice
     # detail fail-softs and never mounts #nrules — the public demo needs a joined spine.
     page.route("https://api.cityscroll.org/rules*", fixed(RULES_VIEW))
+    # Award sub-outreach demo needs award_prime_goal on /contract-lifecycle.
+    def contract_lifecycle(route):
+        url = route.request.url
+        if "id=20231222103" in url or "id%3D20231222103" in url:
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(MWBE_AWARD_LIFECYCLE),
+            )
+            return
+        route.fulfill(status=200, content_type="application/json", body=json.dumps({"ok": False}))
+    page.route("https://api.cityscroll.org/contract-lifecycle*", contract_lifecycle)
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
     page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     page.route("https://crol-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))
     page.route("https://crol-worker.crol-worker.workers.dev/rules*", fixed(RULES_VIEW))
+    page.route("https://crol-worker.crol-worker.workers.dev/contract-lifecycle*", contract_lifecycle)
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())
     page.route("https://unpkg.com/**", lambda r: r.abort())

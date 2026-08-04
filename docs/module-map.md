@@ -14,10 +14,12 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, hearing explorer, and notice/land action rails. |
 | `site/app/property.mjs` | Franchise and property-disposition spines, surplus-buyer commercial glance, property explorer, and tax-lien context. |
 | `site/property_commercial.mjs` | Pure Property commercial extraction (item/qty/price/deal/participation) for list + detail. |
+| `site/solicitation_procurement_method.mjs` | Pure solicitation method extract (§6-129 / NCSP / accelerated / response floor). |
+| `site/mwbe_goal_surface.mjs` | Pure solicitation M/WBE / method chips over procurement_method (list + notice detail). |
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, and generic feed-card rendering. |
 | `site/app/alerts.mjs` | Watch state, digest preview/items, rollups/preferences, flags, and address/context hydration. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |
-| `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, and prime sub-outreach mount. |
+| `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, M/WBE solicitation detail, and prime sub-outreach mount. |
 | `site/sub_outreach.mjs` | Pure prime-win sub-outreach view + HTML from `award_prime_goal` (facts only; no goal-gap apology). |
 | `site/app/subsidy.mjs` | Subsidy eligibility, phase timeline, facts, gaps, and lifecycle loading. |
 | `site/app/meetings.mjs` | Meeting outcomes, roll calls, matter phase spine, and outcome loading. |

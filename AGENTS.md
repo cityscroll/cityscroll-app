@@ -738,8 +738,8 @@ Precompute-first on the notice page: never live Checkbook proxy; never render `l
 
 **Award action rail (no watch-only punt):** Award notices already carry vendor, amount, PIN, and `/contract-lifecycle` registration/spending. Primary CTA is dollars/vendor/registration-aware (`awardHandoff` → `system: award_lifecycle`) — e.g. awarded-to, registered date, pending registration, Checkbook handoff — never “Watch this notice” as the only next step. **Intent to Award / Intent to Negotiate / Vendor List** are selection-phase guides (not a solicitation bid CTA). Closed awards never say “bid.” Fields only when present; empty lifecycle degrades to notice + watch. Verify: `node --test test/action-rail.test.mjs test/notice_action_rail.test.mjs`.
 
-**Award → prime → M/WBE-goal join (payload):** `GET /contract-lifecycle` stamps
-`award_prime_goal` (`cityscroll.award_prime_goal.v1`) via pure
+**Award → prime → M/WBE-goal join + sub-outreach surface:** `GET /contract-lifecycle`
+stamps `award_prime_goal` (`cityscroll.award_prime_goal.v1`) via pure
 `worker/src/lib/award_prime_goal.mjs` — prime identity (`vendorStem` +
 `subject_ref`), canonical agency, dollars, industry chips (City Record
 `category_description` + PASSPort industry/commodity when present), and an
@@ -754,6 +754,7 @@ apology / “data unavailable” box). The reporting gap lives only in gap
 taxonomy id `procurement-subcontract-goal-percent`. Verify:
 `node --test worker/test/award_prime_goal.test.mjs worker/test/checkbook_lifecycle.test.mjs
 test/sub_outreach.test.mjs`.
+
 
 **Hearing action rail (no online-link punt):** for `kind === "hearing"`, extract attend / testify / contact steps from ingested City Record body + `hearing_location.js` participation (URLs/emails/phones) and venue fields. `hearingHandoff` in `site/action_registry.js`; `noticeActionMatter` passes full body + `venue` / `participation`. Present as a “How to participate” step list — never “No online participation link…” when venue or testimony is published. Field cases: `20260716022` (FCRC/Parks), `20260709028` (FCRC/NYPD).
 
@@ -1590,17 +1591,20 @@ the source excerpt for every fact. Ingest stores the full result in `structured_
 only a unique PIN/EPIN or unique submission deadline may fill an absent source column,
 so existing alert and contract-spine paths can consume it. Publisher columns always win.
 
-**Solicitation procurement-method payload** (nested under
+**Solicitation procurement-method + M/WBE chips** (nested under
 `structured_facts.procurement_method`): pure
-`worker/src/lib/solicitation_procurement_method.mjs` extracts Admin Code §6-129
+`site/solicitation_procurement_method.mjs` (worker re-export
+`worker/src/lib/solicitation_procurement_method.mjs`) extracts Admin Code §6-129
 M/WBE goal citations, M/WBE Noncompetitive Small Purchase (PPB §3-08), and
 accelerated-procurement markers (PPB §3-07), then derives a response floor with
 rule source — 20 calendar days (competitive default), 27 calendar days (§6-129),
 or 3 business days (accelerated). Priority: accelerated → §6-129 → default for
-Procurement solicitations only. Label-bound (no calendar math on start/due). UI
-chips are a separate gated surface. Verify:
+Procurement solicitations only. Label-bound (no calendar math on start/due).
+Surface: `site/mwbe_goal_surface.mjs` chips on Money list rows (distinctive
+markers only — no default 20-day spam) + notice detail `#nmwbe` / `#dmwbe`
+(`loadSolicitationMwbe`). Verify:
 `node --test test/solicitation_procurement_method.test.mjs test/notice_facts.test.mjs
-worker/test/ingest_map.test.mjs`.
+worker/test/ingest_map.test.mjs test/mwbe_goal_surface.test.mjs`.
 
 ## Rules event spine
 

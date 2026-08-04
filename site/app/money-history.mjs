@@ -1069,7 +1069,8 @@ function renderDetail(r, chain, stats){
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
   else html += glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
-  html += `<div id="drules"></div><div id="dlifecycle"></div><div id="dsuboutreach"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
+  // M/WBE solicitation chips + prime sub-outreach (award_prime_goal) mount points.
+  html += `<div id="dmwbe"></div><div id="drules"></div><div id="dlifecycle"></div><div id="dsuboutreach"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
 
   html += pending
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
@@ -1095,6 +1096,7 @@ function renderDetail(r, chain, stats){
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
   mountNoticeActionRail($("#dactions"),r);
+  if(typeof loadSolicitationMwbe === "function") loadSolicitationMwbe(r, $("#dmwbe"));
   loadRuleLifecycle(r, $("#drules"));
   loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"), $("#dsuboutreach"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
