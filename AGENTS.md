@@ -1727,6 +1727,29 @@ Artifacts: `site/data/rules_adoption_lag_model.json`,
 comment_close (`site/rules_adoption_lag_view.mjs`); digest line on band
 transitions only (`adoptionLagDigestItem`).
 
+## Award → registration dwell (Human Services)
+
+Build-time dwell from City Record Online Human Services/Client Services **Award**
+notices to a joined registration day (PASSPort Public `registration_date` via
+strict PIN↔EPIN join; Checkbook-shaped side-car accepted in fixtures). Pure lib:
+`worker/src/lib/award_registration_dwell.mjs`. **Honesty:** unfound registration
+is `registration_status: unknown` with `dwell_days: null` — never a zero that
+reads as instant. Same-day registration is `found` with `dwell_days: 0`.
+Registration before City Record award publication is kept as a signed (negative)
+dwell. Notice-strip UI is a separate gated card.
+
+```bash
+node tools/build_award_registration_dwell.mjs --fixture
+node tools/build_award_registration_dwell.mjs --fetch-awards --fetch-passport
+node tools/build_award_registration_dwell.mjs --check
+node --test test/award_registration_dwell.test.mjs
+```
+
+Artifacts: `site/data/award_registration_dwell.json` (summary + distribution),
+`site/data/award_registration_dwell_observations.json` (per-award found/unknown),
+`docs/formulas/award-registration-dwell.md`,
+`warehouse/receipts/proof/award_registration_dwell_latest.json`.
+
 ## Tax-lien sale progression predictions
 
 DOF Tax Lien Sale Lists (`9rz4-mjek`) drive a BBL-exact 90 → 60 → 30 → 10 →
