@@ -17,6 +17,7 @@
  *   --window D  look-back days (default 180)
  *   --skip-people  do not refresh people snapshot (rules/meetings only)
  *   --people-only  refresh only people (from meeting-outcomes roll_call densify)
+ *   --residual-only  re-stamp only IDs in the dated Meetings location receipt
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
@@ -39,6 +40,9 @@ const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
 const OUT_PEOPLE = path.join(ROOT, "site/data/people_domain_observations.json");
 const OUT_PERSON_VOTES = path.join(ROOT, "site/data/person_votes_lookup.json");
+const NEIGHBORHOOD_GAZETTEER = JSON.parse(
+  readFileSync(path.join(ROOT, "site/data/neighborhood_gazetteer.json"), "utf8"),
+);
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 /** Product API used only for by_person extract (already-materialized votes). */
 const MEETING_OUTCOMES_API =
@@ -72,12 +76,14 @@ function parseArgs(argv) {
     windowDays: 180,
     skipPeople: false,
     peopleOnly: false,
+    residualOnly: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--check") out.check = true;
     else if (a === "--skip-people") out.skipPeople = true;
     else if (a === "--people-only") out.peopleOnly = true;
+    else if (a === "--residual-only") out.residualOnly = true;
     else if (a === "--limit" && argv[i + 1]) {
       const n = Number.parseInt(argv[++i], 10);
       if (Number.isFinite(n) && n > 0) {
@@ -90,6 +96,7 @@ function parseArgs(argv) {
     }
   }
   if (out.peopleOnly) out.skipPeople = false;
+  if (out.residualOnly) out.skipPeople = true;
   return out;
 }
 
@@ -317,7 +324,9 @@ function cleanHearing(row) {
   if (landRefs.zap_project_ids.length) out.zap_project_ids = landRefs.zap_project_ids;
   // Place stamp for map choropleth: human derivation (matter → venue → agency HQ).
   // Scope + district bags + method/confidence only — never raw body text.
-  const place = compactPlaceStamp(meetingPlaceFromRow(fullRow));
+  const place = compactPlaceStamp(meetingPlaceFromRow(fullRow, {
+    neighborhoodGazetteer: NEIGHBORHOOD_GAZETTEER,
+  }));
   if (place) out.affected_area = place;
   // Measured Council demo join (notice → Legistar event 22526).
   if (out.request_id === "20260706036") {
@@ -502,6 +511,49 @@ async function main() {
     }
     const { rows: peopleRows, seedNotices } = await fetchPeopleRows(meetingRows);
     writePeopleDoc(peopleRows, seedNotices, retrievedAt);
+    return;
+  }
+
+  if (args.residualOnly) {
+    const receiptPath = path.join(ROOT, "site/data/meetings_location_residual_receipt.json");
+    if (!existsSync(receiptPath) || !existsSync(OUT_MEETINGS)) {
+      throw new Error("residual-only requires the Meetings snapshot and location receipt");
+    }
+    const receipt = JSON.parse(readFileSync(receiptPath, "utf8"));
+    const ids = (receipt.cases || []).map((row) => String(row.request_id));
+    if (ids.length !== 24) throw new Error(`residual-only expected 24 ids, got ${ids.length}`);
+    const residualRaw = await sodaFetch(
+      `request_id in (${ids.map((id) => `'${id}'`).join(",")})`,
+      ids.length,
+    );
+    const replacements = new Map(
+      residualRaw.map(cleanHearing).filter(Boolean).map((row) => [row.request_id, row]),
+    );
+    if (replacements.size !== ids.length) {
+      throw new Error(`residual-only fetched ${replacements.size}/${ids.length} source rows`);
+    }
+    const current = JSON.parse(readFileSync(OUT_MEETINGS, "utf8"));
+    let replaced = 0;
+    const rows = (current.rows || []).map((row) => {
+      const replacement = replacements.get(String(row.request_id));
+      if (!replacement) return row;
+      replaced += 1;
+      return { ...row, affected_area: replacement.affected_area };
+    });
+    if (replaced !== ids.length) {
+      throw new Error(`residual-only matched ${replaced}/${ids.length} committed rows`);
+    }
+    const next = {
+      ...current,
+      location_residual: {
+        receipt: "data/meetings_location_residual_receipt.json",
+        fixed_rows: ids.length,
+        refreshed_at: retrievedAt,
+      },
+      rows,
+    };
+    writeFileSync(OUT_MEETINGS, `${JSON.stringify(next, null, 2)}\n`);
+    console.log(`wrote ${path.relative(ROOT, OUT_MEETINGS)} residual_rows=${replaced}`);
     return;
   }
 

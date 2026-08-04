@@ -29,7 +29,7 @@
   "map_aggregates": {
     "schema": "cityscroll.district_activity.v1",
     "boundary_vintage": "2026-05-26",
-    "built_at": "2026-08-04T00:14:09.960Z",
+    "built_at": "2026-08-04T18:12:53.771Z",
     "path": "site/data/district_activity.json",
     "sources": {
       "land": {
@@ -53,14 +53,15 @@
       "meetings": {
         "corpus": "meetings_domain_observations",
         "counted": 119,
-        "located": 95,
-        "located_rate": 0.7983193277310925,
+        "located": 108,
+        "located_rate": 0.907563025210084,
         "by_method": {
           "matter_body_borough": 14,
-          "civic_address_pip": 34,
-          "cd_centroid_council": 15,
+          "civic_address_pip": 37,
+          "cd_centroid_council": 16,
           "matter_title_place": 7,
           "rule_default_citywide": 10,
+          "venue_line": 9,
           "citywide_phrase": 1,
           "venue_column": 6,
           "citywide": 2,
@@ -98,14 +99,15 @@
       "land": 0,
       "property": 0,
       "rules": 0,
-      "meetings": 24,
+      "meetings": 11,
       "money": 212
     },
     "unlocated_reasons": {
       "land": {},
       "property": {},
       "meetings": {
-        "no_place_signal": 24
+        "external_board_page_needed": 9,
+        "body_place_omitted": 2
       },
       "rules": {},
       "money": {

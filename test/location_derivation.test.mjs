@@ -27,6 +27,9 @@ import {
 const boundaries = JSON.parse(
   readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"),
 );
+const neighborhoodGazetteer = JSON.parse(
+  readFileSync(new URL("../site/data/neighborhood_gazetteer.json", import.meta.url), "utf8"),
+);
 
 test("borough-of phrases catch disposition geography, not held-in venue rooms", () => {
   const matter = boroughOfPhrases(
@@ -264,6 +267,83 @@ test("unlocated virtual-only meeting records reason", () => {
   }
   const { unlocated_reason } = deriveLocationCandidates(row);
   assert.ok(unlocated_reason === "virtual_only" || unlocated_reason === "no_place_signal");
+});
+
+test("residual source: Jamaica venue uses the committed neighborhood resolver as a weak pin", () => {
+  const row = {
+    request_id: "20260513032",
+    agency_name: "Rent Guidelines Board",
+    short_title: "JUNE 4, 2026 PUBLIC HEARING",
+    additional_description_1:
+      "The Rent Guidelines Board will hold a public hearing on June 4, 2026 "
+      + "at the Jamaica Performing Arts Center, Auditorium, 153-10 Jamaica Avenue, "
+      + "Jamaica, NY from 5:00 P.M. to 8:00 P.M.",
+  };
+  const place = meetingPlaceFromRow(row, { neighborhoodGazetteer });
+  assert.equal(place.scope, "local");
+  assert.ok(place.boroughs.includes("Queens"));
+  assert.ok(place.community_districts.includes("Q12"));
+  assert.ok(place.derivation?.methods?.includes("neighborhood_place"));
+  assert.equal(place.derivation?.role, "venue");
+  assert.ok(place.derivation?.confidence < 0.8);
+});
+
+test("residual source: NYCHA meeting address is a venue pin, never matter or agency HQ", () => {
+  const row = {
+    request_id: "20260624001",
+    agency_name: "Housing Authority",
+    short_title: "New York City Housing Authority Board Meeting",
+    additional_description_1:
+      "The next Board Meeting of the New York City Housing Authority is scheduled "
+      + "for Wednesday, July 29, 2026 at 10:00 A.M. in the Ceremonial Room on the "
+      + "5th Floor of 90 Church Street, New York, New York 10007.",
+  };
+  const place = meetingPlaceFromRow(row, { neighborhoodGazetteer });
+  assert.equal(place.scope, "local");
+  assert.ok(place.boroughs.includes("Manhattan"));
+  assert.ok(place.derivation?.methods?.includes("venue_line"));
+  assert.equal(place.derivation?.role, "venue");
+  assert.ok(!place.derivation?.methods?.includes("agency_hq"));
+  assert.ok(place.derivation?.confidence < 0.8);
+  assert.deepEqual(place.addresses, [{ label: "90 Church Street" }]);
+});
+
+test("residual source: named room before a Broadway address remains venue-only", () => {
+  const place = meetingPlaceFromRow({
+    request_id: "20260529027",
+    agency_name: "Charter Revision Commission",
+    short_title: "Initial Public Meeting of the Charter Revision Commission",
+    additional_description_1:
+      "The meeting will be held at the Landmarks Preservation Commission Public "
+      + "Hearing Room, 253 Broadway, 2nd Floor, New York, NY 10007.",
+  }, { neighborhoodGazetteer });
+  assert.equal(place.scope, "local");
+  assert.ok(place.boroughs.includes("Manhattan"));
+  assert.deepEqual(place.derivation?.methods, ["venue_line"]);
+  assert.equal(place.derivation?.role, "venue");
+});
+
+test("residual source: generic multi-board listings remain honestly unlocated", () => {
+  const place = meetingPlaceFromRow({
+    request_id: "20260213011",
+    agency_name: "Board Meetings",
+    short_title: "BOARD MEETINGS",
+    additional_description_1:
+      "City Planning Commission meets at 120 Broadway. City Council meets at City Hall. "
+      + "Civilian Complaint Review Board meets at 40 Rector Street.",
+  }, { neighborhoodGazetteer });
+  assert.equal(place.scope, "unlocated");
+  assert.equal(place.unlocated_reason, "external_board_page_needed");
+});
+
+test("residual source: missing publisher body records a specific honest-absence reason", () => {
+  const place = meetingPlaceFromRow({
+    request_id: "20260515001",
+    agency_name: "Citywide Administrative Services",
+    short_title: "Correction: Department of Cultural Affairs - Executive and Information Technology Titles",
+  }, { neighborhoodGazetteer });
+  assert.equal(place.scope, "unlocated");
+  assert.equal(place.unlocated_reason, "body_place_omitted");
 });
 
 test("committed district_activity advances located rates and records methods", () => {

@@ -19,6 +19,7 @@ import {
   plainText,
   unique,
 } from "./location_extract.mjs";
+import { resolveNeighborhood } from "./neighborhood_search.mjs";
 
 /** Confidence tiers — higher wins when merging into a single place stamp. */
 export const LOCATION_CONFIDENCE = Object.freeze({
@@ -164,7 +165,7 @@ function evidence(value) {
   return plainText(value).replace(/\s+/g, " ").trim().slice(0, 280);
 }
 
-function hit({ method, confidence, role, boroughs = [], community_boards = [], community_districts = [], addresses = [], evidence: ev, citywide = false }) {
+function hit({ method, confidence, role, boroughs = [], community_boards = [], community_districts = [], neighborhoods = [], addresses = [], evidence: ev, citywide = false }) {
   return {
     method,
     confidence,
@@ -172,6 +173,7 @@ function hit({ method, confidence, role, boroughs = [], community_boards = [], c
     boroughs: unique(boroughs.filter(Boolean)),
     community_boards: unique(community_boards.filter(Boolean)),
     community_districts: unique(community_districts.filter(Boolean)),
+    neighborhoods: unique(neighborhoods.filter(Boolean)),
     addresses: unique(addresses.filter(Boolean)),
     citywide: !!citywide,
     evidence: evidence(ev || ""),
@@ -183,6 +185,10 @@ export function noticeProse(row = {}) {
     row.short_title,
     ...BODY_FIELDS.map((field) => row[field]),
   ].filter(Boolean).join(" "));
+}
+
+export function noticeBodyProse(row = {}) {
+  return plainText(BODY_FIELDS.map((field) => row[field]).filter(Boolean).join(" "));
 }
 
 export function noticeTitle(row = {}) {
@@ -240,7 +246,52 @@ export function venueHeldAtSpans(text) {
       if (addr) spans.push({ address: addr, evidence: match[0] });
     }
   }
+  // Some publishers put a named room or facility between the event cue and
+  // the street address ("hearing at Symphony Space, 2537 Broadway"). Keep the
+  // fallback bounded to the first address in an explicit event/location clause;
+  // arbitrary body addresses are not meeting venues.
+  if (!spans.length) {
+    for (const span of addressSpansIn(text)) {
+      const index = text.indexOf(span.evidence);
+      if (index < 0) continue;
+      const context = text.slice(Math.max(0, index - 240), index + span.evidence.length + 80);
+      if (!/\b(?:public\s+hearing|board\s+meeting|committee\s+meeting|public\s+meeting|meeting\s+of|meeting\s+will|hearing\s+will|scheduled\s+for|location\s*:|will\s+hold)\b/i.test(context)) {
+        continue;
+      }
+      const exactStreet = [...span.address.matchAll(
+        /(?=(\b[1-9]\d{0,4}(?:-\d{1,5})?\s+(?:[A-Z0-9][A-Za-z0-9.'’/-]*\s+){0,5}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway)\b))/gi,
+      )][0]?.[1];
+      spans.push({
+        address: normalizeAddress(exactStreet || span.address),
+        evidence: normalizeAddress(exactStreet || span.address),
+      });
+      break;
+    }
+  }
   return spans;
+}
+
+function venueContext(text, span) {
+  const evidenceText = plainText(span?.evidence || "");
+  const address = plainText(span?.address || "");
+  let index = evidenceText ? text.indexOf(evidenceText) : -1;
+  if (index < 0 && address) index = text.indexOf(address);
+  if (index < 0) return evidenceText || address;
+  return text.slice(Math.max(0, index - 120), index + Math.max(evidenceText.length, address.length) + 120);
+}
+
+function neighborhoodFromVenueContext(context, gazetteer) {
+  if (!gazetteer) return null;
+  for (const match of plainText(context).matchAll(/,\s*([A-Z][A-Za-z.'’ -]{2,40}),\s*(?:NY|New\s+York)\b/g)) {
+    const place = resolveNeighborhood(match[1], gazetteer, { fuzzy: false });
+    if (place) return place;
+  }
+  return null;
+}
+
+function genericBoardDirectoryRow(row = {}) {
+  return /^board meetings$/i.test(plainText(row.agency_name || ""))
+    && /^board meetings$/i.test(plainText(row.short_title || ""));
 }
 
 /**
@@ -267,6 +318,12 @@ export function addressSpansIn(text) {
   for (const match of text.matchAll(
     /\b(\d{1,5})\s+(West|East|North|South|W\.?|E\.?)\s+(\d{1,3})(?:st|nd|rd|th)?\b/gi,
   )) {
+    const label = normalizeAddress(match[0]);
+    if (label && !spans.some((s) => s.address === label)) {
+      spans.push({ address: label, evidence: match[0] });
+    }
+  }
+  for (const match of text.matchAll(/\b\d{1,5}\s+Broadway\b/gi)) {
     const label = normalizeAddress(match[0]);
     if (label && !spans.some((s) => s.address === label)) {
       spans.push({ address: label, evidence: match[0] });
@@ -329,9 +386,16 @@ export function venueFromPublisherColumns(row = {}) {
 export function deriveLocationCandidates(row = {}, opts = {}) {
   const title = noticeTitle(row);
   const body = noticeProse(row);
+  const bodyOnly = noticeBodyProse(row);
   const agency = plainText(row.agency_name || "");
   const vendor = plainText(row.vendor_name || "");
   const hits = [];
+
+  // The publisher's BOARD MEETINGS rows are multi-body directories with many
+  // venues, not one event. Selecting the first address would manufacture a pin.
+  if (["matter", "meetings"].includes(opts.forLens) && genericBoardDirectoryRow(row)) {
+    return { hits, unlocated_reason: "external_board_page_needed", virtual_only: false };
+  }
 
   // Citywide explicit phrases (matter scope).
   if (/\b(?:citywide(?! (?:administrative|personnel) services)|throughout\s+(?:new\s+york\s+)?city|all\s+five\s+boroughs)\b/i.test(body)) {
@@ -456,7 +520,10 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
   ]);
   for (const entry of PLACE_GAZETTEER) {
     const inTitle = entry.pattern.test(title);
-    const inBody = entry.pattern.test(body);
+    const bodyIndex = body.search(entry.pattern);
+    const bodyContext = bodyIndex < 0 ? "" : body.slice(Math.max(0, bodyIndex - 180), bodyIndex + 180);
+    const inVenueClause = /\b(?:hearing|meeting|held|location|scheduled)\b/i.test(bodyContext);
+    const inBody = bodyIndex >= 0 && !inVenueClause;
     if (inTitle || (inBody && !VENUE_ONLY_LABELS.has(entry.label))) {
       hits.push(hit({
         method: "matter_title_place",
@@ -509,14 +576,31 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
 
   // Venue held-at lines in body.
   for (const span of venueHeldAtSpans(body)) {
-    const boros = boroughsIn(span.evidence + " " + span.address);
+    const context = venueContext(body, span);
+    const neighborhood = neighborhoodFromVenueContext(context, opts.neighborhoodGazetteer);
+    if (neighborhood) {
+      hits.push(hit({
+        method: "neighborhood_place",
+        confidence: LOCATION_CONFIDENCE.neighborhood_place,
+        role: "venue",
+        boroughs: [neighborhood.borough],
+        community_districts: neighborhood.community_districts || [],
+        neighborhoods: [neighborhood.name],
+        addresses: [span.address],
+        evidence: `${neighborhood.name} (${neighborhood.match_method})`,
+      }));
+    }
+    let boros = boroughsIn(context + " " + span.address);
+    if (!boros.length && /\bNew\s+York\s*,?\s*(?:New\s+York|NY)\b/i.test(context)) {
+      boros = ["Manhattan"];
+    }
     hits.push(hit({
       method: "venue_line",
       confidence: LOCATION_CONFIDENCE.venue_line,
       role: "venue",
       addresses: [span.address],
       boroughs: boros,
-      evidence: span.evidence,
+      evidence: span.evidence || span.address,
     }));
   }
 
@@ -588,7 +672,12 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
     || h.community_districts.length
     || h.addresses.length);
   if (!placeHits.length) {
-    unlocated_reason = virtualOnly ? "virtual_only" : "no_place_signal";
+    const noPublisherPlaceText = !bodyOnly && !venueFromPublisherColumns(row);
+    unlocated_reason = virtualOnly
+      ? "virtual_only"
+      : opts.forLens === "meetings" && noPublisherPlaceText
+        ? "body_place_omitted"
+        : "no_place_signal";
   }
 
   return { hits, unlocated_reason, virtual_only: virtualOnly };
@@ -604,6 +693,8 @@ export function deriveLocationCandidates(row = {}, opts = {}) {
 export function placeFromDerivations(row = {}, opts = {}) {
   const { hits, unlocated_reason, virtual_only } = deriveLocationCandidates(row, {
     includeAgencyHq: opts.forLens === "meetings",
+    forLens: opts.forLens,
+    neighborhoodGazetteer: opts.neighborhoodGazetteer,
   });
   if (!hits.length) {
     return {
@@ -677,6 +768,7 @@ export function placeFromDerivations(row = {}, opts = {}) {
   const boroughs = unique(peer.flatMap((h) => h.boroughs));
   const community_boards = unique(peer.flatMap((h) => h.community_boards));
   const community_districts = unique(peer.flatMap((h) => h.community_districts));
+  const neighborhoods = unique(peer.flatMap((h) => h.neighborhoods));
   const addresses = unique(peer.flatMap((h) => h.addresses)).map((label) => ({ label }));
   const confidence = Math.max(...peer.map((h) => h.confidence || 0));
   const methods = unique(peer.map((h) => h.method));
@@ -713,7 +805,7 @@ export function placeFromDerivations(row = {}, opts = {}) {
     community_boards,
     community_districts,
     addresses,
-    neighborhoods: [],
+    neighborhoods,
     districts: [],
     derivation: {
       methods,
