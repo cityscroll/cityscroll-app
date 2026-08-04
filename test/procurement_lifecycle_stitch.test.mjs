@@ -561,7 +561,7 @@ test("meeting outcomes: matter-centric agenda shows badge, summary, and vote cou
   assert.doesNotMatch(html, /Agenda item[\s\S]*Council matter[\s\S]*Outcome[\s\S]*Attachments/);
 });
 
-test("meeting outcomes: tallies without by_person use not-yet-shown person register", () => {
+test("meeting outcomes: tallies without by_person show the tally without a gap panel", () => {
   // Production shape for notice 20260706036 / event 22526: counts only, no person rows.
   const html = meetingOutcomesHTML({
     request_id: "20260706036",
@@ -595,13 +595,12 @@ test("meeting outcomes: tallies without by_person use not-yet-shown person regis
     section_name: "Public Hearings and Meetings",
   });
   assert.match(html, /Vote: Pass \(aye 4 · nay 0\)/);
-  assert.match(html, /data-person-votes-gap="not_yet_ingested"/);
-  assert.match(html, /Not yet shown here — person-level roll-call votes live in NYC Council Legistar/);
+  assert.doesNotMatch(html, /data-person-votes-gap|meeting_outcomes_no_person_votes_html/);
   assert.doesNotMatch(html, /data-official-votes/);
   assert.doesNotMatch(html, /meeting-roll-call-person/);
 });
 
-test("meeting outcomes: unmatched renders the specific join reason", () => {
+test("meeting outcomes: unmatched records stay absent", () => {
   const html = meetingOutcomesHTML({
     request_id: "20260714002",
     join: {
@@ -611,9 +610,7 @@ test("meeting outcomes: unmatched renders the specific join reason", () => {
     council_event: null,
     agenda_items: [],
   });
-  assert.match(html, /Council meeting outcomes/);
-  assert.match(html, /Not yet shown here — Council outcomes live in NYC Council Legistar/);
-  assert.match(html, /date \+ body|strict date|hearing date and committee/i);
+  assert.equal(html, "");
 });
 
 // ---------------------------------------------------------------------------

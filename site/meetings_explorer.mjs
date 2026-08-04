@@ -57,7 +57,7 @@ export const MEETINGS_PROCESS_STAGES = Object.freeze([
   ["agenda", "meeting_stage_agenda"],
   ["held", "meeting_stage_held"],
   ["outcomes", "meeting_stage_outcomes"],
-  ["unstaged", "meeting_stage_unstaged"],
+  ["unstaged", "rule_sibling_role_notice"],
 ]);
 
 const PHASE_ORDER = new Map(MEETING_PROCESS_PHASES.map((id, i) => [id, i]));

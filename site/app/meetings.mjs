@@ -86,37 +86,16 @@ function nonCouncilHearingOutcomesHTML(notice){
   const pub = notice && notice.start_date ? String(notice.start_date).slice(0,10) : "";
   const hearing = notice && notice.event_date ? String(notice.event_date).slice(0,10) : "";
   const title = cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—";
-  const where = nonCouncilWhereHTML(notice);
   const stages = [
     { kind: "notice_published", matched: Boolean(pub), when: pub, title },
     { kind: "hearing", matched: Boolean(hearing), when: hearing, title },
-    { kind: "outcome", matched: false, gap: "not_published" },
-    { kind: "minutes", matched: false, gap: "not_published" },
-  ];
-  let chain = "";
-  stages.forEach((stage, idx) => {
-    if(stage.matched){
-      chain += `<div class="stage"><div class="box matched">
+  ].filter(stage=>stage.matched);
+  if(!stages.length) return "";
+  const chain=stages.map(stage=>`<div class="stage"><div class="box matched">
         <div class="stage-name">${nonCouncilStageLabel(stage.kind)}</div>
         <div class="when">${escUiHtml(stage.when ? fdate(stage.when) : "—")}</div>
         ${stage.title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(stage.title)}</div>`:""}
-      </div></div>`;
-    } else if(stage.gap === "not_published"){
-      // Class-(b): no citywide machine feed for votes/minutes; name where with HTTPS links.
-      chain += `<div class="stage"><div class="box">
-        <div class="stage-name">${nonCouncilStageLabel(stage.kind)}</div>
-        <div class="lc-norecord" data-gap-class="not_published">${t("meeting_outcomes_non_council_not_published_html",{ where })}</div>
-      </div></div>`;
-    } else {
-      chain += `<div class="stage"><div class="box">
-        <div class="stage-name">${nonCouncilStageLabel(stage.kind)}</div>
-        <div class="lc-norecord" data-gap-class="not_yet_ingested">${t("non_council_stage_not_yet_ingested_html",{
-          source:`<span lang="en" dir="ltr">${t("non_council_source_city_record")}</span>`
-        })}</div>
-      </div></div>`;
-    }
-    if(idx < stages.length - 1) chain += '<div class="connector" aria-hidden="true">→</div>';
-  });
+      </div></div>`).join('<div class="connector" aria-hidden="true">→</div>');
   return `<section class="non-council-spine" data-non-council-spine="1" aria-label="${escUiHtml(t("meeting_outcomes_heading_non_council"))}">
     <div class="chain-h">${t("meeting_outcomes_heading_non_council")}</div>
     <div class="note">${t("non_council_spine_join_html",{
@@ -124,7 +103,6 @@ function nonCouncilHearingOutcomesHTML(notice){
       agency: escUiHtml(cleanText(notice && notice.agency_name) || "—")
     })}</div>
     <div class="chain">${chain}</div>
-    <div class="note">${t("non_council_spine_provenance_html")}</div>
   </section>`;
 }
 
@@ -318,10 +296,7 @@ function meetingRollCallTableHTML(people, ctx){
   </table>`;
 }
 
-/** Vote tallies only when aye/nay are non-zero or a person roll call exists.
- * Person-level roll call only when production retained officials. When tallies
- * exist but by_person is empty, use class-(a) not-yet-shown — never imply
- * person-level "who voted" is live when the payload has none. */
+/** Vote tallies and named roll calls render from the fields present in the record. */
 function meetingVotesHTML(votes, ctx){
   if(!Array.isArray(votes) || !votes.length) return "";
   return votes.map(v => {
@@ -342,8 +317,6 @@ function meetingVotesHTML(votes, ctx){
     }
     if(people.length){
       html += `<div class="meeting-roll-call" data-official-votes data-official-count="${people.length}">${meetingRollCallTableHTML(people, ctx)}</div>`;
-    } else if(meaningful){
-      html += `<div class="lc-norecord" data-person-votes-gap="not_yet_ingested">${t("meeting_outcomes_no_person_votes_html")}</div>`;
     }
     return html;
   }).join("");
@@ -375,20 +348,6 @@ function meetingPhaseLabel(phase){
 }
 
 function meetingPhaseGapHTML(phase){
-  if(!phase || phase.matched || !phase.gap_class) return "";
-  const source=`<span lang="en" dir="ltr">${escUiHtml(t("meeting_phase_source_legistar"))}</span>`;
-  if(phase.id==="decision"){
-    return `<div class="lc-norecord" data-gap-class="not_yet_ingested">${t("meeting_outcomes_no_action_html")}</div>`;
-  }
-  if(phase.id==="record"){
-    return `<div class="lc-norecord" data-gap-class="not_yet_ingested">${t("meeting_outcomes_no_attachments_html")}</div>`;
-  }
-  if(phase.id==="agenda"){
-    return `<div class="lc-norecord" data-gap-class="not_yet_ingested">${t("meeting_phase_gap_agenda_html",{source})}</div>`;
-  }
-  if(phase.id==="matter"){
-    return `<div class="lc-norecord" data-gap-class="not_yet_ingested">${t("meeting_phase_gap_matter_html",{source})}</div>`;
-  }
   return "";
 }
 
@@ -399,24 +358,21 @@ function meetingPhasePanelHTML(phase, view, voteCtx){
     :phase.state==="passed"?t("meeting_phase_done")
     :t("meeting_phase_future");
   let summary="";
-  if(phase.state==="future" && !phase.matched){
-    summary=t("meeting_phase_empty");
-  }else if(phase.id==="decision"){
+  if(phase.state==="future" && !phase.matched) return "";
+  if(phase.id==="decision"){
     const label=phase.action_name||phase.vote_result||"";
     const multi=(phase.aggregates||[]).filter(a=>a.count>=2);
     const multiNote=multi.length
       ? multi.map(a=>`${a.title} ×${a.count}`).join(" · ")
       : "";
-    summary=[label, multiNote].filter(Boolean).join(" · ") || t("meeting_phase_empty");
+    summary=[label, multiNote].filter(Boolean).join(" · ");
   }else if(phase.id==="record"){
     const n=(phase.documents||[]).length;
-    summary=n?t("meeting_phase_docs_count",{n:String(n)}):t("meeting_phase_empty");
+    summary=n?t("meeting_phase_docs_count",{n:String(n)}):"";
   }else if(phase.id==="matter"){
-    summary=phase.matter_file||phase.matter_title||t("meeting_phase_empty");
+    summary=phase.matter_file||phase.matter_title||"";
   }else if(phase.id==="agenda"){
-    summary=phase.agenda_title||(phase.agenda_number?("#"+phase.agenda_number):t("meeting_phase_empty"));
-  }else{
-    summary=t("meeting_phase_empty");
+    summary=phase.agenda_title||(phase.agenda_number?("#"+phase.agenda_number):"");
   }
 
   let body="";
@@ -441,32 +397,29 @@ function meetingPhasePanelHTML(phase, view, voteCtx){
       const voteHTML=meetingVotesHTML(votes, voteCtx);
       if(voteHTML) body+=voteHTML;
     }
-    if(!body && phase.gap_class) body=meetingPhaseGapHTML(phase);
   }else if(phase.id==="record"){
     const docs=phase.documents||[];
     if(docs.length){
       body=`<div class="meeting-phase-docs">${docs.slice(0,8).map(d=>
         `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name||d.document_id||t("meeting_outcomes_document_lbl"))}${extSR()}</a>`
       ).join("")}</div>`;
-    }else{
-      body=meetingPhaseGapHTML(phase);
     }
   }else if(phase.id==="matter"){
     const bits=[];
     if(phase.matter_title) bits.push(`<div lang="en" dir="ltr">${escUiHtml(phase.matter_title)}</div>`);
     if(phase.matter_status) bits.push(`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(phase.matter_status)}</div>`);
-    if(phase.matter_url||view.official_url){
+    if(phase.matter_url||(phase.matched&&view.official_url)){
       const href=phase.matter_url||view.official_url;
       bits.push(`<a class="view" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("meeting_phase_open_legislation")}${extSR()}</a>`);
     }
-    body=bits.join("")||meetingPhaseGapHTML(phase);
+    body=bits.join("");
   }else if(phase.id==="agenda"){
     const bits=[];
     if(phase.agenda_number) bits.push(`<div class="lc-pct">#${escUiHtml(phase.agenda_number)}</div>`);
     if(phase.agenda_title) bits.push(`<div lang="en" dir="ltr">${escUiHtml(phase.agenda_title)}</div>`);
-    body=bits.join("")||meetingPhaseGapHTML(phase);
+    body=bits.join("");
   }
-  if(!body) body=`<div class="lc-phase-summary">${t("meeting_phase_empty")}</div>`;
+  if(!body) return "";
 
   return `<details class="lc-phase${phase.state==="current"?" current-phase":""}"${open} id="meeting-phase-${escUiHtml((view.matter_id||"x")+"-"+phase.id)}" data-meeting-phase-panel="${escUiHtml(phase.id)}">
     <summary>
@@ -565,18 +518,7 @@ function bindMeetingPhaseUI(root){
 function meetingOutcomesHTML(record, notice, phaseTools){
   if(!record) return "";
   const join = record.join || {};
-  if(!join.matched){
-    // Non-Council hearings: reconstruct notice → hearing → outcome → minutes as a
-    // process spine. Outcome/minutes stay class-(b) with real HTTPS landings — never
-    // invent votes. Keep this branch self-contained for extractFn hermetic suites.
-    if(notice && !isCityCouncilNotice(notice)){
-      return nonCouncilHearingOutcomesHTML(notice);
-    }
-    return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
-      <div class="note">${t("meeting_outcomes_unmatched_html",{
-        reason: escUiHtml(join.reason || t("meeting_outcomes_unmatched_default"))
-      })}</div>`;
-  }
+  if(!join.matched) return "";
   const event = record.council_event || {};
   const items = Array.isArray(record.agenda_items) ? record.agenda_items : [];
   const eventDocs = Array.isArray(event.documents) ? event.documents : [];
@@ -592,6 +534,7 @@ function meetingOutcomesHTML(record, notice, phaseTools){
   let approved = 0, held = 0, referred = 0, other = 0;
   for(const entry of matters){
     const label = entry.finalOutcome || entry.finalPassed || entry.status || (entry.actions[entry.actions.length - 1] || "");
+    if(!label) continue;
     const bucket = meetingOutcomeBucket(label);
     if(bucket === "approved") approved += 1;
     else if(bucket === "held") held += 1;
@@ -600,11 +543,11 @@ function meetingOutcomesHTML(record, notice, phaseTools){
   }
 
   const chips = [];
-  chips.push(`<span class="meeting-chip meeting-chip--ok"><strong>${approved}</strong> ${t("meeting_outcomes_chip_approved")}</span>`);
-  chips.push(`<span class="meeting-chip meeting-chip--mid"><strong>${held}</strong> ${t("meeting_outcomes_chip_held")}</span>`);
+  if(approved > 0) chips.push(`<span class="meeting-chip meeting-chip--ok"><strong>${approved}</strong> ${t("meeting_outcomes_chip_approved")}</span>`);
+  if(held > 0) chips.push(`<span class="meeting-chip meeting-chip--mid"><strong>${held}</strong> ${t("meeting_outcomes_chip_held")}</span>`);
   if(referred > 0) chips.push(`<span class="meeting-chip"><strong>${referred}</strong> ${t("meeting_outcomes_chip_referred")}</span>`);
   if(other > 0) chips.push(`<span class="meeting-chip"><strong>${other}</strong> ${t("meeting_outcomes_chip_other")}</span>`);
-  chips.push(`<span class="meeting-chip"><strong>${matters.length}</strong> ${t("meeting_outcomes_chip_matters")}${collapsed.actionRows > matters.length ? ` · <strong>${collapsed.actionRows}</strong> ${t("meeting_outcomes_chip_actions_collapsed")}` : ""}</span>`);
+  if(matters.length) chips.push(`<span class="meeting-chip"><strong>${matters.length}</strong> ${t("meeting_outcomes_chip_matters")}${collapsed.actionRows > matters.length ? ` · <strong>${collapsed.actionRows}</strong> ${t("meeting_outcomes_chip_actions_collapsed")}` : ""}</span>`);
   if(collapsed.procedural > 0){
     chips.push(`<span class="meeting-chip"><strong>${collapsed.procedural}</strong> ${t("meeting_outcomes_chip_procedural_hidden")}</span>`);
   }
@@ -619,19 +562,19 @@ function meetingOutcomesHTML(record, notice, phaseTools){
   let listHTML = "";
   for(const entry of matters){
     const finalLabel = entry.finalOutcome || entry.finalPassed || entry.status || (entry.actions[entry.actions.length - 1] || "");
-    const bucket = meetingOutcomeBucket(finalLabel);
+    const bucket = finalLabel?meetingOutcomeBucket(finalLabel):"";
     const badgeKey = bucket === "approved" ? "meeting_outcomes_badge_approved"
       : bucket === "held" ? "meeting_outcomes_badge_held"
       : bucket === "referred" ? "meeting_outcomes_badge_referred"
       : "meeting_outcomes_badge_other";
     const shortTitle = meetingMatterShortTitle(entry);
-    const fileLine = entry.matter_file || entry.matter_id || "—";
+    const fileLine = entry.matter_file || entry.matter_id || "";
     const matterHref = entry.matter_url || matterDetailUrl(entry.matter_id) || "";
     // Outbound Legistar legislation when MatterId is numeric; plain text otherwise
     // (never invent a link for non-numeric / missing ids).
-    const fileHTML = matterHref
+    const fileHTML = matterHref&&fileLine
       ? `<a class="meeting-file meeting-matter-link" lang="en" dir="ltr" href="${escUiHtml(matterHref)}" ${EXT_ATTRS} data-matter-id="${escUiHtml(entry.matter_id || "")}">${escUiHtml(fileLine)}${extSR()}</a>`
-      : `<div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>`;
+      : (fileLine?`<div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>`:"");
     const subBits = [];
     if(entry.agendaNumber) subBits.push("#" + entry.agendaNumber);
     if(entry.title && entry.title !== shortTitle) subBits.push(entry.title);
@@ -649,10 +592,6 @@ function meetingOutcomesHTML(record, notice, phaseTools){
       if(finalLabel){
         voteHTML = `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{
           outcome: escUiHtml(finalLabel)
-        })}</div>`;
-      } else {
-        voteHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_votes_html",{
-          matter: escUiHtml(entry.title || entry.matter_file || entry.matter_id || "—")
         })}</div>`;
       }
     }
@@ -679,6 +618,21 @@ function meetingOutcomesHTML(record, notice, phaseTools){
       ? t("meeting_outcomes_details_summary_phase")
       : t("meeting_outcomes_details_summary");
 
+    const finalOutcomeDetail=finalLabel
+      ? `<dt>${t("meeting_outcomes_final_outcome_lbl")}</dt><dd lang="en" dir="ltr">${escUiHtml(finalLabel)}</dd>`
+      : "";
+    const matterTitle=entry.title||entry.matter_id||"";
+    const matterTitleDetail=matterTitle
+      ? `<dt>${t("meeting_outcomes_matter_title_lbl")}</dt><dd lang="en" dir="ltr">${escUiHtml(matterTitle)}</dd>`
+      : "";
+    const voteDetail=voteHTML
+      ? `<dt>${t("meeting_outcomes_outcome_lbl")}</dt><dd>${voteHTML}</dd>`
+      : "";
+    const detailRows=`${finalOutcomeDetail}${history}${matterTitleDetail}${agendaText}${voteDetail}${matterDocs}`;
+    const details=detailRows
+      ? `<details class="meeting-more"><summary>${detailsSummary}</summary><div class="meeting-detail"><dl>${detailRows}</dl></div></details>`
+      : "";
+
     listHTML += `<li class="meeting-matter" data-meeting-spine data-meeting-matter data-outcome-bucket="${bucket}">
       <div class="meeting-matter-main">
         <div>
@@ -687,46 +641,31 @@ function meetingOutcomesHTML(record, notice, phaseTools){
           ${subBits.length ? `<p class="meeting-sub" lang="en" dir="ltr">${escUiHtml(subBits.join(" · "))}</p>` : ""}
           ${rollCallChip}
         </div>
-        <span class="meeting-badge meeting-badge--${bucket}">${t(badgeKey)}</span>
+        ${bucket?`<span class="meeting-badge meeting-badge--${bucket}">${t(badgeKey)}</span>`:""}
       </div>
       ${phaseHTML}
-      <details class="meeting-more">
-        <summary>${detailsSummary}</summary>
-        <div class="meeting-detail">
-          <dl>
-            <dt>${t("meeting_outcomes_final_outcome_lbl")}</dt>
-            <dd lang="en" dir="ltr">${escUiHtml(finalLabel || "—")}</dd>
-            ${history}
-            <dt>${t("meeting_outcomes_matter_title_lbl")}</dt>
-            <dd lang="en" dir="ltr">${escUiHtml(entry.title || entry.matter_id || "—")}</dd>
-            ${agendaText}
-            <dt>${t("meeting_outcomes_outcome_lbl")}</dt>
-            <dd>${voteHTML}</dd>
-            ${matterDocs}
-          </dl>
-        </div>
-      </details>
+      ${details}
     </li>`;
   }
 
-  if(!listHTML){
-    listHTML = `<div class="note">${t("meeting_outcomes_no_matters_html")}</div>`;
-  } else {
+  if(listHTML){
     listHTML = `<ol class="meeting-agenda">${listHTML}</ol>`;
   }
 
-  const eventLink = event.event_url
-    ? `<a class="view" href="${escUiHtml(event.event_url)}" ${EXT_ATTRS}>${escUiHtml(event.body_name || event.title || event.event_id || "—")}${extSR()}</a>`
-    : escUiHtml(event.body_name || event.title || event.event_id || "—");
+  const eventName=event.body_name||event.title||event.event_id||"";
+  const eventDate=event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date || "");
+  const eventLink = event.event_url&&eventName
+    ? `<a class="view" href="${escUiHtml(event.event_url)}" ${EXT_ATTRS}>${escUiHtml(eventName)}${extSR()}</a>`
+    : escUiHtml(eventName);
+  const matchedNote=eventLink&&eventDate
+    ? `<div class="note">${t("meeting_outcomes_matched_html",{event:eventLink,date:eventDate})}</div>`
+    : "";
   const how = usePhase
     ? `<details class="inline-disclose lc-how"><summary>${t("meeting_phase_how_summary")}</summary><div class="inline-disclose-body">${t("meeting_phase_how_html")}</div></details>`
     : "";
   return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
-    <div class="note">${t("meeting_outcomes_matched_html",{
-      event: eventLink,
-      date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date || "—")
-    })}</div>
-    <div class="meeting-summary" role="group" aria-label="${escUiHtml(t("meeting_outcomes_summary_lbl"))}">${chips.join("")}</div>
+    ${matchedNote}
+    ${chips.length?`<div class="meeting-summary" role="group" aria-label="${escUiHtml(t("meeting_outcomes_summary_lbl"))}">${chips.join("")}</div>`:""}
     ${eventDocHTML}
     ${listHTML}
     ${how}
