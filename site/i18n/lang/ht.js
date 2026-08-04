@@ -397,7 +397,7 @@
     rule_phase_action_effective: "This rule is in effect — read the official text for requirements.",
     rule_phase_action_attend_hearing: "Hearing details on the official rule page",
     rule_phase_how_summary: "How this timeline works",
-    rule_phase_how_html: "Phases follow the city’s rulemaking path: proposal, public process (hearing and comment deadline), adoption, then effective date. Dates come from NYC Rules when a City Record notice can be joined. Identical official links appear once per phase. Empty phases mean the city has not published that date yet — CityScroll does not invent intermediate stages.",
+    rule_phase_how_html: "Phases follow the city’s rulemaking path: proposal, public process (hearing and comment deadline), adoption, then effective date. Dates shown come from NYC Rules for matched City Record notices. Each phase carries one official link.",
     rule_siblings_heading: "Same rulemaking",
     rule_siblings_count: "{n} City Record notices for this rule",
     rule_sibling_this_notice: "this notice",
@@ -405,7 +405,7 @@
     rule_sibling_role_hearing: "Public hearing",
     rule_sibling_role_adoption: "Adoption",
     rule_sibling_role_notice: "Notice",
-    rule_phase_how_multi_html: "When several City Record notices confidently belong to one rulemaking (proposal, hearing, adoption), this timeline stitches them into one path. Only high-confidence joins appear here — ambiguous notices stay separate. Dates still come from NYC Rules when joined. CityScroll does not invent stages.",
+    rule_phase_how_multi_html: "City Record notices with a high-confidence rulemaking match (proposal, hearing, adoption) form one timeline. Dates shown come from the matched NYC Rules record.",
     // Rules domain explorer (list ontology — process rail + multi-notice collapse)
     rules_domain_kicker: "City agency rulemaking",
     rules_domain_heading: "Proposal, public process, adoption",

@@ -23,9 +23,9 @@ test("Agency Rules notice detail mounts and renders the event spine", () => {
   }
 });
 
-test("rule event gaps use both lifecycle taxonomy registers", () => {
-  assert.match(html, /rule_event_not_yet_ingested_html/);
-  assert.match(html, /rule_event_not_published_html/);
+test("rule event gaps stay absent from the lifecycle surface", () => {
+  assert.doesNotMatch(html, /rule_event_not_yet_ingested_html/);
+  assert.doesNotMatch(html, /rule_event_not_published_html/);
 });
 
 test("comment-close detail keeps the official action and calendar affordance", () => {

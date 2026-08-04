@@ -604,7 +604,7 @@ function searchFilterChips(lens, filter){
     if(lens==="rules"){
       if(filter.locationScope==="citywide") chips.push(`<span class="qchip">${t("map_bucket_citywide")}</span>`);
       if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
-      if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("rules_process_label")} <b>${t(([["proposal","rule_phase_proposal"],["public_process","rule_phase_public_process"],["adoption","rule_phase_adoption"],["effective","rule_phase_effective"],["unstaged","rule_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
+      if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("rules_process_label")} <b>${t(([["proposal","rule_phase_proposal"],["public_process","rule_phase_public_process"],["adoption","rule_phase_adoption"],["effective","rule_phase_effective"],["unstaged","rule_sibling_role_notice"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
     }
   }
   return chips;
@@ -846,7 +846,7 @@ async function loadValidatedSuggestions(){
 }
 
 function injectNLBoxes(){
-  const tabs={people:["#tab-people",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules",".controls"],meetings:["#tab-meetings",".controls"],alerts:["#tab-alerts",".grid"]};
+  const tabs={people:["#tab-people",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules","#rules-toolbar"],meetings:["#tab-meetings",".controls"],alerts:["#tab-alerts",".grid"]};
   Object.entries(tabs).forEach(([lens,[sel,anchorSel]])=>{
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;

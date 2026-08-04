@@ -27,7 +27,7 @@ export const RULES_PROCESS_STAGES = Object.freeze([
   ["public_process", "rule_phase_public_process"],
   ["adoption", "rule_phase_adoption"],
   ["effective", "rule_phase_effective"],
-  ["unstaged", "rule_stage_unstaged"],
+  ["unstaged", "rule_sibling_role_notice"],
 ]);
 
 /** Fine materialization stage → process phase. */
