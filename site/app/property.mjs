@@ -838,6 +838,65 @@ let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessS
 let propertyCommunityDistrict="", propertyResolvedNeighborhood=null;
 let propertyAuctionExportVisible=[];
 let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
+let dcasFleetInventoryPromise=null, dcasFleetToolsPromise=null;
+function dcasFleetTools(){
+  if(!dcasFleetToolsPromise){
+    dcasFleetToolsPromise=import("../dcas_vehicle_auctions.mjs").catch(()=>null);
+  }
+  return dcasFleetToolsPromise;
+}
+function loadDcasFleetInventory(){
+  if(!dcasFleetInventoryPromise){
+    dcasFleetInventoryPromise=fetch("data/dcas_vehicle_auctions.json",{cache:"no-cache"})
+      .then(response=>response.ok?response.json():null)
+      .catch(()=>null);
+  }
+  return dcasFleetInventoryPromise;
+}
+function dcasFleetVehicleLabel(vehicle){
+  return [vehicle?.year,vehicle?.make,vehicle?.model].filter(Boolean).join(" ")||"—";
+}
+function dcasFleetInventoryHTML(snapshot,tools){
+  const surface=tools.selectDcasVehicleAuctionSurface(snapshot,{today:todayISO()});
+  let status=t("dcas_fleet_empty");
+  if(surface.status==="open") status=t("dcas_fleet_open",{n:surface.count});
+  else if(surface.status==="closed") status=t("dcas_fleet_closed",{date:fdt(surface.latest_close_date,{dateOnly:true})});
+  const batches=(surface.batches||[]).slice(0,5).map(batch=>{
+    const vehicles=(batch.vehicles||[]).slice(0,50).map(vehicle=>`<li lang="en" dir="ltr"><strong>${escUiHtml(dcasFleetVehicleLabel(vehicle))}</strong>${vehicle.vin?` <span class="muted">· ${escUiHtml(t("dcas_fleet_vin",{vin:vehicle.vin}))}</span>`:""}</li>`).join("");
+    return `<details class="inline-disclose dcas-fleet-batch"><summary>${escUiHtml(t("dcas_fleet_batch_summary",{n:batch.count,date:fdt(batch.close_date,{dateOnly:true})}))}</summary><div class="inline-disclose-body"><ul class="ei-list">${vehicles}</ul></div></details>`;
+  }).join("");
+  const sourceUpdated=snapshot?.vintage?.source_updated_at
+    ? `<br><span class="muted">${escUiHtml(t("dcas_fleet_source_updated",{date:fdt(snapshot.vintage.source_updated_at)}))}</span>`
+    : "";
+  return `<div class="fcard property-fleet-source-card" data-source-basis="goods_surplus" data-real-property="0">
+    <div class="ftype">${escUiHtml(t("dcas_fleet_heading"))}</div>
+    <h3>${escUiHtml(status)}</h3>
+    <p>${escUiHtml(t("dcas_fleet_basis"))}</p>
+    ${batches}
+    <p class="note">${escUiHtml(t("dcas_fleet_source_note"))}${sourceUpdated}</p>
+    <div class="factions">${compactCardActions(
+      `<a class="act primary" href="${escUiHtml(snapshot.source.official_guide)}" ${EXT_ATTRS}>${escUiHtml(t("dcas_fleet_open_guide"))}${extSR()}</a>`,
+      [`<a class="act" href="${escUiHtml(snapshot.source.marketplace)}" ${EXT_ATTRS}>${escUiHtml(t("dcas_fleet_open_marketplace"))}${extSR()}</a>`]
+    )}</div>
+  </div>`;
+}
+async function renderDcasFleetInventory(){
+  const el=$("#dcas-fleet-inventory");
+  if(!el) return;
+  if(propAsset!=="vehicle"){
+    el.hidden=true;
+    el.innerHTML="";
+    return;
+  }
+  const [snapshot,tools]=await Promise.all([loadDcasFleetInventory(),dcasFleetTools()]);
+  if(!snapshot||!tools||!tools.selectDcasVehicleAuctionSurface){
+    el.hidden=true;
+    el.innerHTML="";
+    return;
+  }
+  el.innerHTML=dcasFleetInventoryHTML(snapshot,tools);
+  el.hidden=false;
+}
 let propertyExplorerToolsPromise=null;
 function propertyExplorerTools(){
   if(!propertyExplorerToolsPromise){
@@ -1112,6 +1171,7 @@ async function renderPropExplorer(){
       `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
     assetEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=normalizePropAsset(b.dataset.a); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
   }
+  await renderDcasFleetInventory();
   const saleEl=$("#salerail");
   if(saleEl){
     saleEl.innerHTML=[["all","sale_method_all"],...SALE_METHOD_BUCKETS].map(([k,l])=>

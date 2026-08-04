@@ -45,6 +45,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | staffing exam card · fee or salary null **CLASS CHANGE** | a | DCAS open-competitive exam schedule and Notices of Examination |
 | agency awards empty state · verified absent | b | NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset |
 | notice external-award empty after ABO check | a | NYS Authorities Budget Office procurement datasets |
+| Property commercial watch · non-fleet surplus goods | b | a DCAS-hosted item-level feed or an authorized GovDeals client API/export if DCAS and GovDeals release one |
 | land / ZAP · final decision documents beyond status | a | Zoning Application Portal projects |
 
 ## Join graph (sources)
@@ -196,4 +197,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `05941dde3eb8…` · materialized 11 · candidates 44 · class changes 0.
+Last refresh fingerprint: `23ee16a57688…` · materialized 11 · candidates 44 · class changes 0.

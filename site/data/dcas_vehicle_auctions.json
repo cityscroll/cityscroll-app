@@ -1,0 +1,1070 @@
+{
+  "schema": "cityscroll.dcas_vehicle_auctions.v1",
+  "schema_version": 1,
+  "delivery_tier": "inline-at-build",
+  "source": {
+    "id": "dcas-vehicle-auction-list",
+    "name": "DCAS Vehicle Auction List",
+    "owner": "NYC Department of Citywide Administrative Services",
+    "dataset": "ynic-uz5i",
+    "landing_page": "https://data.cityofnewyork.us/d/ynic-uz5i",
+    "official_guide": "https://www.nyc.gov/site/dcas/business/vehicle-auction.page",
+    "marketplace": "https://www.govdeals.com/en/nyc-dcas-fleet"
+  },
+  "taxonomy": {
+    "domain": "goods_surplus",
+    "asset_class": "goods",
+    "commercial_category": "vehicle",
+    "real_property": false,
+    "include_in_parcel_chains": false,
+    "include_in_map_counts": false,
+    "include_in_parcel_exports": false
+  },
+  "vintage": {
+    "observed_at": "2026-08-04T23:47:05.690Z",
+    "source_updated_at": "2026-07-22T13:41:16.000Z",
+    "as_of": "2026-08-04"
+  },
+  "query": {
+    "window_start": "2026-05-06",
+    "as_of": "2026-08-04",
+    "select": "auction_close_date,year,make,model,vin",
+    "where": "auction_close_date >= '2026-05-06T00:00:00.000'",
+    "order": "auction_close_date DESC,make,model,vin",
+    "limit": 500
+  },
+  "checkpoint": {
+    "checkpointed": true,
+    "pages": 2,
+    "bounded_limit": 500,
+    "truncated": false
+  },
+  "counts": {
+    "source_total": 12316,
+    "bounded_rows": 100,
+    "batches": 3,
+    "open_rows": 0,
+    "open_batches": 0,
+    "recent_rows": 100
+  },
+  "batches": [
+    {
+      "close_date": "2026-07-23",
+      "count": 24,
+      "vehicles": [
+        {
+          "close_date": "2026-07-23",
+          "year": 2015,
+          "make": "CHEVROLET",
+          "model": "SILVERADO",
+          "vin": "1GC2KUEG4FZ553559",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2007,
+          "make": "CHRYSLER",
+          "model": "TOWN & COUNTRY",
+          "vin": "1A4GJ45R67B155963",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 1990,
+          "make": "FINN",
+          "model": "T60TD",
+          "vin": "RS290",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 1995,
+          "make": "FORD",
+          "model": "1620",
+          "vin": "UJ22688",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2009,
+          "make": "FORD",
+          "model": "E-250",
+          "vin": "1FTNS24W99DA57104",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2003,
+          "make": "FORD",
+          "model": "WINDSTAR",
+          "vin": "2FMZA51413BB01498",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2016,
+          "make": "GMC",
+          "model": "TERRAIN",
+          "vin": "2GKFLSEK3G6234369",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2017,
+          "make": "GMC",
+          "model": "TERRAIN",
+          "vin": "2GKFLSEK3H6309069",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2013,
+          "make": "JOHN DEERE",
+          "model": "4520",
+          "vin": "1LV4520HHDH946449",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2013,
+          "make": "JOHN DEERE",
+          "model": "4520",
+          "vin": "1LV4520HPDH946179",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2007,
+          "make": "JOHN DEERE",
+          "model": "X700",
+          "vin": "M0X700A040506",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2016,
+          "make": "JOHN DEERE",
+          "model": "XUV 625I",
+          "vin": "1M0625GSVGM110600",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2015,
+          "make": "KENWORTH",
+          "model": "T370",
+          "vin": "2NKHHM8A5FM445196",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2015,
+          "make": "NISSAN",
+          "model": "LEAF",
+          "vin": "1N4AZ0CP1FC332352",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2013,
+          "make": "NISSAN",
+          "model": "LEAF",
+          "vin": "1N4AZ0CP5DC410306",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2001,
+          "make": "SEAGRAVE",
+          "model": "JP06DA",
+          "vin": "1F9F038J71CST2073",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2007,
+          "make": "TENNANT",
+          "model": "7300",
+          "vin": "07TEN7300EL",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2009,
+          "make": "TOYOTA",
+          "model": "HIGHLANDER HYBRID",
+          "vin": "JTEEW41A092036996",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2007,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKB20U173251409",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2007,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKB20U377633935",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2007,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKB20U873252976",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2009,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKB20UX93519912",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU9D5682071",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-23",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "SIENNA",
+          "vin": "5TDKK3DC3DS365302",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        }
+      ]
+    },
+    {
+      "close_date": "2026-07-14",
+      "count": 32,
+      "vehicles": [
+        {
+          "close_date": "2026-07-14",
+          "year": 2016,
+          "make": "FALCON",
+          "model": "P4D2XID",
+          "vin": "1F9P41725GM339309",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2016,
+          "make": "FALCON",
+          "model": "P4D2XID",
+          "vin": "1F9P41726GM339271",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2014,
+          "make": "FORD",
+          "model": "ESCAPE",
+          "vin": "1FMCU9GX5EUC01235",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2015,
+          "make": "FORD",
+          "model": "EXPLORER",
+          "vin": "1FM5K8AR0FGB98988",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2016,
+          "make": "FORD",
+          "model": "EXPLORER",
+          "vin": "1FM5K8AR2GGB65024",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2016,
+          "make": "FORD",
+          "model": "EXPLORER",
+          "vin": "1FM5K8AR6GGB65088",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2017,
+          "make": "FORD",
+          "model": "EXPLORER",
+          "vin": "1FM5K8AR8HGD66718",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2016,
+          "make": "FORD",
+          "model": "EXPLORER",
+          "vin": "1FM5K8D87GGB54278",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2019,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT1KEE28278",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2019,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT3KEE93083",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2017,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT9HEE07591",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2021,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT9MEC13394",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2016,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FDUF5HT9GED17098",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2014,
+          "make": "FORD",
+          "model": "FUSION HYBRID",
+          "vin": "3FA6P0LU3ER242847",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2014,
+          "make": "FORD",
+          "model": "FUSION HYBRID",
+          "vin": "3FA6P0LU5ER242848",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2019,
+          "make": "FORD",
+          "model": "POLICE INTERCEPTOR UTILITY",
+          "vin": "1FM5K8AR1KGB22951",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2019,
+          "make": "FORD",
+          "model": "POLICE INTERCEPTOR UTILITY",
+          "vin": "1FM5K8AR2KGB22991",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2019,
+          "make": "FORD",
+          "model": "POLICE INTERCEPTOR UTILITY",
+          "vin": "1FM5K8AR7KGA19856",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2019,
+          "make": "FORD",
+          "model": "RESPONDER",
+          "vin": "3FA6P0AU7KR203225",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2014,
+          "make": "FORD",
+          "model": "TAURUS NGPI",
+          "vin": "1FAHP2MK5EG175208",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2014,
+          "make": "FORD",
+          "model": "TAURUS NGPI",
+          "vin": "1FAHP2MK6EG175248",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2004,
+          "make": "MACK",
+          "model": "CV713",
+          "vin": "1M1AG11Y34M009770",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2004,
+          "make": "MACK",
+          "model": "CV713",
+          "vin": "1M1AG11YX4M009782",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2017,
+          "make": "MACK",
+          "model": "LR613",
+          "vin": "1M2LR02C4HM001596",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2017,
+          "make": "MACK",
+          "model": "LR613",
+          "vin": "1M2LR02CXHM001747",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2001,
+          "make": "SEAGRAVE",
+          "model": "JP06DA",
+          "vin": "1F9F038J51CST2105",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2001,
+          "make": "SEAGRAVE",
+          "model": "JP06DA",
+          "vin": "1F9F038J91CST2043",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2010,
+          "make": "SEAGRAVE",
+          "model": "TB70CM",
+          "vin": "1F9E128T6ACST2022",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2013,
+          "make": "SEAGRAVE",
+          "model": "TV0HCX",
+          "vin": "1F9F538TXDCST2026",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2008,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKB20U387789278",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2011,
+          "make": "VERMEER",
+          "model": "SC802",
+          "vin": "1VR2151JXB1001051",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-07-14",
+          "year": 2015,
+          "make": "VERMEER",
+          "model": "SC802",
+          "vin": "IVR2151J2F1002006",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        }
+      ]
+    },
+    {
+      "close_date": "2026-06-08",
+      "count": 44,
+      "vehicles": [
+        {
+          "close_date": "2026-06-08",
+          "year": 2014,
+          "make": "DOOSAN",
+          "model": "DL220-3",
+          "vin": "DWGCWLBQHE1010023",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2008,
+          "make": "FORD",
+          "model": "E-350",
+          "vin": "1FBSS31LX8DB31216",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2009,
+          "make": "FORD",
+          "model": "ESCAPE HYBRID",
+          "vin": "1FMCU59319KB92974",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2012,
+          "make": "FORD",
+          "model": "ESCAPE HYBRID",
+          "vin": "1FMCU5K33CKB20482",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2014,
+          "make": "FORD",
+          "model": "F-150",
+          "vin": "1FTFW1EF1EFC01325",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2014,
+          "make": "FORD",
+          "model": "F-350 XLT",
+          "vin": "1FDRF3HT4EEA94671",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2017,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT1HEE87324",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2017,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT2HED81058",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2019,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT3KEG79061",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2017,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FD0X5HT5HED73066",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2005,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FDAF56P15EA59018",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2016,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FDUF5HT0GED17099",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2016,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FDUF5HT3GED17100",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2016,
+          "make": "FORD",
+          "model": "F-550 XL",
+          "vin": "1FDUF5HT9GED17103",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2017,
+          "make": "FORD",
+          "model": "FUSION ENERGI",
+          "vin": "3FA6P0PU7HR358096",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "FORD",
+          "model": "FUSION HYBRID",
+          "vin": "3FA6P0LU0DR283046",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "FORD",
+          "model": "FUSION HYBRID",
+          "vin": "3FA6P0LU7DR283044",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "FORD",
+          "model": "FUSION HYBRID",
+          "vin": "3FA6P0LU9DR283045",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2016,
+          "make": "KUBOTA",
+          "model": "L6060HSTC",
+          "vin": "L6060HSTC 42422",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2011,
+          "make": "MACK",
+          "model": "GU713",
+          "vin": "1M2AX03C6BM009203",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2016,
+          "make": "MACK",
+          "model": "LEU613",
+          "vin": "1M2AU02C4GM010156",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2017,
+          "make": "MACK",
+          "model": "LR613",
+          "vin": "1M2LR02C6HM001681",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 1997,
+          "make": "MACK",
+          "model": "MR688P",
+          "vin": "1M2K190C4VM009915",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2011,
+          "make": "MACK",
+          "model": "MRU613",
+          "vin": "1M2AV02C0BM006756",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2003,
+          "make": "MITSUBISHI",
+          "model": "FD45K",
+          "vin": "AF19C80047",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1230385",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1230814",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1231299",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1231423",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1231429",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1231896",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2001,
+          "make": "NEW HOLLAND",
+          "model": "TN65D",
+          "vin": "1232160",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2020,
+          "make": "POLARIS",
+          "model": "SPORTSMAN 450 H.O.",
+          "vin": "4XASEE506LA250851",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2009,
+          "make": "TORO",
+          "model": "PRO 5040",
+          "vin": "290000453",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2016,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKBRFU8G3011287",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU3D5619581",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU5D0348004",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU5D0348178",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU5D5619517",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2010,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU6A0121609",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU6D0347136",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU6D0348142",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2013,
+          "make": "TOYOTA",
+          "model": "PRIUS",
+          "vin": "JTDKN3DU7D0348117",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        },
+        {
+          "close_date": "2026-06-08",
+          "year": 2017,
+          "make": "TOYOTA",
+          "model": "RAV4 HYBRID",
+          "vin": "JTMRJREV7HD123103",
+          "basis": "goods_surplus",
+          "commercial_category": "vehicle",
+          "real_property": false
+        }
+      ]
+    }
+  ]
+}

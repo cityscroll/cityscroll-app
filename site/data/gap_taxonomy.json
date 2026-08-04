@@ -378,6 +378,16 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "dcas-vehicle-auction-list",
+      "name": "DCAS Vehicle Auction List",
+      "source_contract_id": "dcas-vehicle-auction-list",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/ynic-uz5i",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "dob-now-job-filings",
       "name": "DOB NOW job filings",
       "source_contract_id": "dob-now-job-filings",
@@ -2321,6 +2331,15 @@
       }
     },
     {
+      "id": "dcas-nonfleet-surplus-listings",
+      "surface": "Property commercial watch · non-fleet surplus goods",
+      "i18n_key": null,
+      "class": "not_published",
+      "would_appear_in": "a DCAS-hosted item-level feed or an authorized GovDeals client API/export if DCAS and GovDeals release one",
+      "notices_affected_estimate": "Unknown — not estimated. The DCAS surplus page names office equipment, furniture, building supplies, machine tools, HVAC/plumbing/electrical equipment, lab equipment, and marine equipment but publishes no item count.",
+      "evidence": "Measured 2026-08-04: the official DCAS Vehicle Auction List (ynic-uz5i) publishes 12,316 fleet rows with close date, year, make, model, and VIN, so fleet is separately ingested. No NYC Open Data catalog result or NYC-hosted item export was found for non-fleet goods. GovDeals User Agreement section 2 prohibits spiders/crawlers/robots and data mining; its documented API is for registered GovDeals clients only. Do not scrape. Keep the DCAS surplus-sales page as the public pointer and request an authorized seller export/API. Receipt: site/data/property_sources/verification_receipts/dcas_surplus_frontier_2026-08-04.json."
+    },
+    {
       "id": "land-outcome-detail",
       "surface": "land / ZAP · final decision documents beyond status",
       "i18n_key": "land_outcomes_unmatched_html",
@@ -2485,7 +2504,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-04",
-    "source_contracts_fingerprint": "05941dde3eb8f126d57a625d97244ae1ad77746ed490e71309aab0ac8212b38e",
+    "source_contracts_fingerprint": "23ee16a5768863dc85538e8ffaaade5268680267e0fb791d8d8fa9a2724cbc54",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 44,
     "class_changes": 0,

@@ -399,6 +399,16 @@ test("meeting-community-board-votes class (b) names borough president and commun
   assert.match(gap.evidence, /40\/40|non-Council/i);
 });
 
+test("DCAS non-fleet surplus stays partnership-blocked while fleet uses official Open Data", () => {
+  const gap = registry.gaps.find((g) => g.id === "dcas-nonfleet-surplus-listings");
+  assert.ok(gap);
+  assert.equal(gap.class, "not_published");
+  assert.match(gap.would_appear_in, /authorized GovDeals client API|DCAS-hosted/i);
+  assert.match(gap.evidence, /ynic-uz5i/);
+  assert.match(gap.evidence, /prohibits spiders\/crawlers\/robots/);
+  assert.doesNotMatch(gap.evidence, /scrape GovDeals/i);
+});
+
 test("unmatched package-documents sub-slot uses not-published register with RequestDetail deep link", () => {
   const html = lifecycleTimelineHTML({
     ok: true,
