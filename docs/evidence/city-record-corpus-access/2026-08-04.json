@@ -1,0 +1,82 @@
+{
+  "schema_version": "cityscroll.city_record_corpus_access_receipt.v1",
+  "verified_at": "2026-08-04T20:14:51Z",
+  "source": {
+    "publisher": "NYC Department of Citywide Administrative Services",
+    "dataset_id": "dg92-zbpx",
+    "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
+    "json_endpoint": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+    "bulk_csv_endpoint": "https://data.cityofnewyork.us/api/views/dg92-zbpx/rows.csv?accessType=DOWNLOAD",
+    "metadata_endpoint": "https://data.cityofnewyork.us/api/views/dg92-zbpx.json",
+    "publisher_rows_updated_at": "2026-08-04T12:25:51Z"
+  },
+  "corpus_probe": {
+    "query": "$select=count(*) as rows,count(distinct request_id) as request_ids,min(start_date) as first_date,max(start_date) as last_date",
+    "row_count": 1098994,
+    "distinct_request_id_count": 1098994,
+    "start_date_min": "2003-01-02T00:00:00.000",
+    "start_date_max": "2026-08-04T00:00:00.000"
+  },
+  "schema_probe": {
+    "publisher_column_count": 37,
+    "text_fields": [
+      "additional_description_1",
+      "additional_description_2",
+      "additional_description_3",
+      "other_info_1",
+      "other_info_2",
+      "other_info_3",
+      "printout_1",
+      "printout_2",
+      "printout_3"
+    ],
+    "bulk_header_note": {
+      "field_name": "additional_description_2",
+      "display_name": "AdditionalDesctription2"
+    },
+    "null_json_fields_are_omitted": true
+  },
+  "full_row_probe": {
+    "select": ":*,*",
+    "request_id": "20201005107",
+    "system_id": "row-ghnn_m58p~79rf",
+    "updated_at": "2026-08-04T12:25:32.056Z",
+    "additional_description_1_length": 667,
+    "other_info_1_length": 29
+  },
+  "incremental_probe": {
+    "cursor_fields": [
+      ":updated_at",
+      ":id"
+    ],
+    "order": ":updated_at ASC,:id ASC",
+    "page_size": 3,
+    "page_1_ids": [
+      "row-t5qp~5awi.pj78",
+      "row-26pn~axej~s4ia",
+      "row-9x5f~kdcf_hf3j"
+    ],
+    "page_2_ids": [
+      "row-kgth~zbic.dpqk",
+      "row-rfwu_ex75_i933",
+      "row-nn8t-h6um.4hji"
+    ],
+    "overlap_count": 0
+  },
+  "bulk_probe": {
+    "http_status": 200,
+    "content_type": "text/csv; charset=utf-8",
+    "last_modified": "Tue, 04 Aug 2026 12:25:32 GMT"
+  },
+  "surface_audit": {
+    "official_soda": "complete publisher rows, bulk export, and system-field change cursor",
+    "cityscroll_feeds": "filtered feed items, not a corpus export",
+    "cityscroll_batch": "bounded vendor cross-reference, not a corpus export",
+    "cityscroll_mcp": "recent D1 mirror with snippets and display records, not raw publisher rows",
+    "cityscroll_warehouse": "build infrastructure, not a hosted public endpoint"
+  },
+  "limitations": [
+    "Publisher full-replace operations can mark the complete dataset updated.",
+    "SODA row queries do not expose deletion tombstones; deletion fidelity requires periodic full-export reconciliation."
+  ]
+}
