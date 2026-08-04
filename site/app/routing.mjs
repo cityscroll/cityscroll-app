@@ -999,7 +999,7 @@ async function showNotice(id, watch){
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
-      <div id="naddr"></div><div id="nmwbe"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="nregdwell"></div><div id="nsuboutreach"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nmwbe"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="nregdwell"></div><div id="nsuboutreach"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="naboaward"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -1029,6 +1029,11 @@ async function showNotice(id, watch){
     loadAwardRegistrationDwell(r, $("#nregdwell"));
   }
   loadSubsidyLifecycle(r, $("#nsubsidy"));
+  // A released RC-4 edge supersedes the older candidate-level external-award panel.
+  // Unresolved notices retain that existing surface; a receipt-backed award appears once.
+  Promise.resolve(loadAboAuthorityAward(r, $("#naboaward"))).then((released)=>{
+    if(!released) externalAwardForNotice(r, $("#nexternal"));
+  }).catch(()=>externalAwardForNotice(r, $("#nexternal")));
   Promise.all([
     typeof loadPropertyCommercialDetail === "function"
       ? loadPropertyCommercialDetail(r, $("#ncommercial"))
@@ -1044,7 +1049,6 @@ async function showNotice(id, watch){
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
   loadNoticeLandSpine(r, $("#nland"));
   loadMeetingOutcomes(r, $("#nmeet"));
-  externalAwardForNotice(r, $("#nexternal"));
   priorCycleAwards(r, $("#nprior"));
   agencyForecastTeaser(r, $("#nforecast"));
   mountUnofficialTranslation($("#nxlate"), r);
