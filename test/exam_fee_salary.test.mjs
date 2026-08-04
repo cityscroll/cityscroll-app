@@ -118,13 +118,13 @@ test("fee 0 (no application fee) is retained and renders as joined, not not-publ
   assert.equal(Staffing.examFeeSalaryView(retained).fee, 0);
 });
 
-test("UI careerMoney uses class-a copy for never-ingested fee/salary nulls", () => {
+test("UI careerMoney renders unpublished fee/salary nulls as honest-absent", () => {
   assert.match(html, /function careerMoney\s*\(/);
-  assert.match(html, /career_fee_salary_not_yet_ingested_html/);
+  assert.doesNotMatch(html, /career_fee_salary_not_yet_ingested_html/);
+  assert.match(html, /function careerMoney[\s\S]*?return "";/);
   assert.match(html, /examFeeSalaryView/);
   assert.match(html, /data-fee-salary=/);
   assert.match(html, /function careerSalaryHTML/);
-  assert.match(i18n, /career_fee_salary_not_yet_ingested_html:\s*"Not yet shown here/);
   assert.match(i18n, /career_noe_source_name:/);
 });
 

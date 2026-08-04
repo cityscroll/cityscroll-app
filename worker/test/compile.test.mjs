@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { compileSub } from "../src/lib/compile.mjs";
+import { compileSub, examOpenWindowBand } from "../src/lib/compile.mjs";
 
 test("money + minAmount → City Record award query (request_id diff)", () => {
   const q = compileSub({ lens: "money", filter: { minAmount: 1000000 } }, "2026-06-30");
@@ -125,6 +125,22 @@ test("section-lens select carries event_date + street_address_1 for the digest",
 test("an un-offered lens compiles to null (cron skips it)", () => {
   assert.equal(compileSub({ lens: "people", filter: { lookupType: "person", keywords: ["rodriguez"] } }, "2026-06-30"), null);
   assert.equal(compileSub({ lens: "nonsense", filter: {} }, "2026-06-30"), null);
+});
+
+test("exam interest-area watch replays the staffing artifact and keys NOE-posted transitions", () => {
+  const q=compileSub({lens:"people",filter:{view:"guide",interestArea:"public-safety"}},"2026-08-03");
+  assert.equal(q.kind,"exam");
+  assert.equal(q.idField,"alert_id");
+  assert.match(q.url,/staffing_exams\.json/);
+  const rows=q.transformRows({exams:[
+    {exam_number:"7001",title:"Officer",interest_area:"public-safety",application_start:"2026-08-10",application_end:"2026-08-20",notice_url:"https://example.test/noe"},
+    {exam_number:"7002",title:"Nurse",interest_area:"health-care",application_start:"2026-08-10",application_end:"2026-08-20"},
+  ]});
+  assert.equal(rows.length,1);
+  assert.equal(rows[0].alert_id,"exam:7001:noe-posted");
+  assert.equal(rows[0].open_window_band,"imminent");
+  assert.equal(examOpenWindowBand({application_start:"2026-11-02",application_end:"2026-11-16"},"2026-08-03"),"far");
+  assert.equal(examOpenWindowBand({application_start:"2026-10-01",application_end:"2026-10-15"},"2026-08-03"),"approaching");
 });
 
 test("entity/vendor → full-text stem query + exact-stem postFilter", () => {

@@ -873,6 +873,12 @@
   .staffing-notice-facts{display:flex;gap:6px 12px;flex-wrap:wrap;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .staffing-notice-card .view{margin-top:auto;padding-top:3px;font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   .career-guide{margin-bottom:34px;scroll-margin-top:12px}
+  .career-area-watches{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin:12px 0 18px}
+  .career-area-watch{min-width:0;border:1px solid var(--rule);border-radius:8px;background:var(--card);padding:11px;display:flex;flex-direction:column;gap:7px}
+  .career-area-watch-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .career-area-watch-title{font:700 15px/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink);text-decoration:none}
+  .career-area-watch-meta{display:flex;gap:5px;flex-wrap:wrap;min-height:22px}
+  .career-area-watch .act{align-self:flex-start;font-size:11px;padding:5px 8px}
   .career-kicker{font:600 11px/1 var(--font-sc);letter-spacing:.15em;text-transform:uppercase;color:var(--oxblood);margin:0 0 9px}
   .career-intro{border-block:3px double var(--ink);padding:10px 0 12px}
   .career-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:9px}
@@ -1453,6 +1459,7 @@
           </div>
           <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
         </div>
+        <div id="career-area-watches" class="career-area-watches"></div>
         <div class="career-controls">
           <div class="field">
             <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
@@ -1962,6 +1969,7 @@
               <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
               <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
               <option value="awardwatch" data-i18n="watch_awardwatch">The award on a notice I'm viewing</option>
+              <option value="examarea">A civil-service exam interest area</option>
             </select>
           </div>
           <div class="afield">

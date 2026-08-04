@@ -2,6 +2,16 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { processOneSub, subDigestHtml } from "../src/alerts.mjs";
+
+test("exam interest digest names approved band and positive NOE state", () => {
+  const html=subDigestHtml("civil-service exams — Public safety","exam",[{
+    exam_number:"7001",title:"Police Officer",application_start:"2026-08-01",application_end:"2026-08-20",
+    open_window_band:"imminent",notice_url:"https://example.test/noe",
+  }],"https://example.test/unsub",null);
+  assert.match(html,/imminent/);
+  assert.match(html,/NOE posted/);
+  assert.doesNotMatch(html,/no NOE|NOE.*not available/i);
+});
 import { RULES_KV_KEY } from "../src/rules.mjs";
 import {
   commentCloseValidAt,
