@@ -43,11 +43,13 @@
         "request_id",
         "project_id",
         "project_name",
-        "company_name",
-        "project_address",
-        "requested_benefit_amount",
+        "company",
+        "address",
+        "requested_benefit",
         "estimated_public_cost",
-        "application_status"
+        "project_cost",
+        "milestones",
+        "provenance"
       ],
       "landing_probe": "bot_blocked"
     },

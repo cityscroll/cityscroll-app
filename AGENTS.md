@@ -1963,6 +1963,17 @@ sections are positive and honest-absent. Verify: `node tools/build_district_acti
 --check` and `node --test test/district_weekly_digest.test.mjs
 worker/test/district_weekly_digest.test.mjs`.
 
+## NYCEDC project-document feed
+
+RC-2 is the host-side, checkpointed NYCEDC workbook/minutes collector at
+`warehouse/scripts/nycedc_project_documents_run.py`; its versioned reader contract is
+`warehouse/schemas/nycedc_project_feed.v1.schema.json`. Re-run the deterministic gate with
+`warehouse/.venv/bin/python warehouse/scripts/nycedc_project_documents_run.py --from-fixture --limit 25 --force-headroom`
+and `node --test test/nycedc_project_documents.test.mjs`.
+Never materialize a City Record edge unless the fixed-sample receipt clears 30% with no false
+positives or unreviewed candidates; missing facts stay null, and hearing publication never
+implies board approval.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

@@ -1,0 +1,137 @@
+{
+  "bridge_status": "accepted",
+  "collector": {
+    "checkpoint": "warehouse/raw/nycedc-project-documents/snapshot_date=daily/checkpoint.json",
+    "honest_user_agent": "CityScroll NYCEDC project-document collector/1.0 (+https://cityscroll.org; civic-data refresh)",
+    "host_side": true,
+    "index_403_policy": "one attempt; record blocked; no retry",
+    "polite_delay_ms": 0,
+    "source_status": [
+      {
+        "status": "fixture",
+        "url": "https://edc.nyc/nycida/financial-public-documents"
+      },
+      {
+        "status": "fixture",
+        "url": "https://edc.nyc/build-nyc-financial-public-documents"
+      },
+      {
+        "status": "fixture",
+        "url": "https://edc.nyc/nycida/financial-public-documents"
+      }
+    ]
+  },
+  "counts": {
+    "documents": 3,
+    "indexed_project_documents": 0,
+    "materialized_edges": 5,
+    "notice_project_mentions": 5,
+    "projects": 7
+  },
+  "documents": [
+    {
+      "content_sha256": "4e5d62f257721d9df0343ea5038c50511d60a6c766480062bab9bb0767b93060",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-March-24-2026-board-meeting-minutes_0.pdf"
+    },
+    {
+      "content_sha256": "1650e776879584f3c23614caf5da692507a7313e256fd97bb532d0ebd0e6aa95",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-March-24-2026-board-meeting-minutes_0.pdf"
+    },
+    {
+      "content_sha256": "45f683c96d9f8f23b1a3387831f1cfae0d7c498f5ef33b50e607496c6314f693",
+      "document_type": "board_minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf"
+    }
+  ],
+  "false_positive_review": {
+    "decisions": [
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "MGN 24-53 49th Street, LLC & MGN 150 Liberty, LLC",
+        "notice_project_key": "20260313008:1",
+        "review_note": "Company and facility address agree; board date is five days after hearing."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Outback 1, LLC & Sunnyside 1, LLC",
+        "notice_project_key": "20260313008:2",
+        "review_note": "Both company names and facility address agree; board date is five days after hearing."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Brooklyn Friends School",
+        "notice_project_key": "20260313009:1",
+        "review_note": "Borrower and Pearl Street facility agree; board date is five days after hearing."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "F&F Hardware & Supply, Inc.",
+        "notice_project_key": "20260414006:1",
+        "review_note": "Company and Oak Point Avenue facility agree; board date is five days after hearing."
+      },
+      {
+        "accept": true,
+        "expected_project_id": null,
+        "expected_project_name": "Granville Stores Corp. and Granville Payne Retail LLC",
+        "notice_project_key": "20260414006:2",
+        "review_note": "Company and Pennsylvania Avenue facility agree; board date is five days after hearing."
+      }
+    ],
+    "false_positives": 0,
+    "review_keys": [
+      "20260313008:1",
+      "20260313008:2",
+      "20260313009:1",
+      "20260414006:1",
+      "20260414006:2"
+    ],
+    "reviewed": 5,
+    "unreviewed_candidates": 0
+  },
+  "honest_absent": 0,
+  "kill_reason": null,
+  "mode": "fixture",
+  "observed_at": "2026-08-04T11:30:00Z",
+  "outcome_policy": "board outcome is emitted only from explicit motion/vote language; a scheduled hearing is never approval",
+  "payload_contract": "warehouse/schemas/nycedc_project_feed.v1.schema.json",
+  "sample": {
+    "denominator": 5,
+    "join_rate": 1.0,
+    "kind": "fixed_notice_project_mentions",
+    "notice_request_ids": [
+      "20260313008",
+      "20260313009",
+      "20260414006"
+    ],
+    "numerator": 5
+  },
+  "schema": "cityscroll.nycedc_project_join_receipt.v1",
+  "strategies": {
+    "name_address_date": {
+      "candidates": 5,
+      "rule": "unique normalized name plus address plus board date 0..45 days after hearing"
+    },
+    "request_id": {
+      "candidates": 0,
+      "rule": "exact publisher request ID only"
+    }
+  },
+  "threshold": 0.3,
+  "warehouse": {
+    "database": "warehouse/duckdb/cityscroll.duckdb",
+    "headroom_gate": true,
+    "single_job_lock": true,
+    "tables": [
+      "nycedc_documents",
+      "nycedc_projects",
+      "nycedc_project_notice_edges"
+    ],
+    "view": "nycedc_project_feed"
+  }
+}

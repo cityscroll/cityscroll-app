@@ -99,31 +99,33 @@
       "name": "NYCIDA/Build NYC subsidy project records",
       "owner": "NYC Economic Development Corporation",
       "status": "live",
-      "scope": "runtime",
-      "delivery_tier": "edge-materialized",
+      "scope": "warehouse",
+      "delivery_tier": "inline-at-build",
       "kind": "html",
       "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
       "required_fields": [
         "request_id",
         "project_id",
         "project_name",
-        "company_name",
-        "project_address",
-        "requested_benefit_amount",
+        "company",
+        "address",
+        "requested_benefit",
         "estimated_public_cost",
-        "application_status"
+        "project_cost",
+        "milestones",
+        "provenance"
       ],
-      "publisher_cadence": "Daily",
-      "product_freshness": "Worker fetches the EDC documents page and treats Cloudflare challenge HTML as a feed failure (notice-derived hearing fallback). Live monitor marks the landing as known bot-blocked for CI runners.",
-      "used_for": "City Record \u2194 Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
+      "publisher_cadence": "Annual project workbook plus authority board-document publication cadence",
+      "product_freshness": "A checkpointed host collector records document hashes and provenance. Index pages receive one rate-limited attempt; HTTP 403 is recorded without retry, while known direct official documents remain collectible.",
+      "used_for": "A versioned NYCEDC project payload and evidence-gated City Record join bridge for a separate subsidy timeline reader.",
       "code_references": [
         {
-          "path": "worker/src/subsidy_lifecycle.mjs",
-          "contains": "SUBSIDY_SOURCE"
+          "path": "warehouse/scripts/nycedc_project_documents_run.py",
+          "contains": "nycedc_project_feed"
         },
         {
-          "path": "worker/src/lib/subsidy_lifecycle.mjs",
-          "contains": "assembleSubsidyLifecycle"
+          "path": "warehouse/schemas/nycedc_project_feed.v1.schema.json",
+          "contains": "cityscroll.nycedc_project_feed.v1"
         }
       ],
       "landing_probe": "bot_blocked"

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "collector": "nycedc-project-documents",
+  "user_agent": "CityScroll NYCEDC project-document collector/1.0 (+https://cityscroll.org; civic-data refresh)",
+  "polite_delay_ms": 1500,
+  "index_pages": [
+    {
+      "authority": "nycedc",
+      "url": "https://edc.nyc/about-nycedc/financial-public-documents-recordings"
+    },
+    {
+      "authority": "nycida",
+      "url": "https://edc.nyc/nycida/financial-public-documents"
+    },
+    {
+      "authority": "nycida",
+      "url": "https://edc.nyc/nycida/project-documents-archive"
+    },
+    {
+      "authority": "build_nyc",
+      "url": "https://edc.nyc/build-nyc-financial-public-documents"
+    },
+    {
+      "authority": "build_nyc",
+      "url": "https://edc.nyc/build-nyc/project-documents-archive"
+    }
+  ],
+  "seed_documents": [
+    {
+      "authority": "nycedc",
+      "document_type": "annual_project_spreadsheet",
+      "title": "FY2025 Project Info Spreadsheet",
+      "source_url": "https://edc.nyc/sites/default/files/2026-01/NYCEDC-FY2025-Project-Information-Spreadsheet.xlsx",
+      "index_url": "https://edc.nyc/about-nycedc/financial-public-documents-recordings"
+    },
+    {
+      "authority": "nycida",
+      "document_type": "board_minutes",
+      "title": "January 27, 2026 NYCIDA Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-04/NYCIDA-January-27-2026-board-meeting-minutes-APPROVED.pdf",
+      "index_url": "https://edc.nyc/nycida/financial-public-documents"
+    },
+    {
+      "authority": "build_nyc",
+      "document_type": "board_minutes",
+      "title": "January 27, 2026 Build NYC Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-02/BNYC-January-27-2026-board-meeting-minutes-DRAFT.pdf",
+      "index_url": "https://edc.nyc/build-nyc-financial-public-documents"
+    },
+    {
+      "authority": "nycida",
+      "document_type": "board_minutes",
+      "title": "March 24, 2026 NYCIDA Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-March-24-2026-board-meeting-minutes_0.pdf",
+      "index_url": "https://edc.nyc/nycida/financial-public-documents"
+    },
+    {
+      "authority": "build_nyc",
+      "document_type": "board_minutes",
+      "title": "March 24, 2026 Build NYC Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-March-24-2026-board-meeting-minutes_0.pdf",
+      "index_url": "https://edc.nyc/build-nyc-financial-public-documents"
+    },
+    {
+      "authority": "nycida",
+      "document_type": "board_minutes",
+      "title": "May 19, 2026 NYCIDA Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/NYCIDA-May-19-2026-board-meeting-minutes-DRAFT.pdf",
+      "index_url": "https://edc.nyc/nycida/financial-public-documents"
+    },
+    {
+      "authority": "build_nyc",
+      "document_type": "board_minutes",
+      "title": "May 19, 2026 Build NYC Board Meeting Minutes",
+      "source_url": "https://edc.nyc/sites/default/files/2026-06/BNYC-May-19-2026-board-meeting-minutes-DRAFT.pdf",
+      "index_url": "https://edc.nyc/build-nyc-financial-public-documents"
+    }
+  ],
+  "fixed_notice_request_ids": [
+    "20251229014",
+    "20251229015",
+    "20260313008",
+    "20260313009",
+    "20260414006",
+    "20260414007"
+  ]
+}
