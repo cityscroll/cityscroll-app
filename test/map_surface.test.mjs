@@ -32,6 +32,23 @@ test("map hash grammar and keyboard district paths exist", () => {
   assert.match(index, /id="mapAreaList"/);
 });
 
+test("map drill-throughs carry scope into list hashes (not bare lens tabs)", () => {
+  // Map detail uses pure bucketFeedLinks / areaFeedLinks (dynamic import).
+  assert.match(source, /bucketFeedLinks\(bucketSel\.kind/);
+  assert.match(source, /areaFeedLinks\(sel\.level, sel\.id/);
+  assert.match(source, /map-count-link/);
+  // Virtual bag must not link to bare #meetings.
+  assert.doesNotMatch(source, /bucketSel\.kind==="virtual"\?`<a class="act" href="#meetings"/);
+  // Scope tokens land in meetings / rules list grammar.
+  assert.match(index, /value="virtual"/);
+  assert.match(index, /id="rulesboro"/);
+  assert.match(source, /scopePlaces|locationScope.*virtual|place==="virtual"/);
+  const pure = readFileSync(new URL("../site/map_exploration.mjs", import.meta.url), "utf8");
+  assert.match(pure, /export function mapDrillListHash/);
+  assert.match(pure, /export function bucketFeedLinks/);
+  assert.match(pure, /scope=virtual|locationScope === "virtual"/);
+});
+
 test("precomputed district_activity artifact is present and loadable", () => {
   const path = new URL("../site/data/district_activity.json", import.meta.url);
   assert.ok(existsSync(path));

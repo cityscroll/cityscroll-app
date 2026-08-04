@@ -231,45 +231,323 @@ export function panViewBox(viewBox, dxFrac, dyFrac) {
 }
 
 /**
- * Live-feed filter hashes for a selected area (existing URL grammar).
- * Coordinates never ride share links.
+ * Location scopes that ride list hashes (same grammar as alerts context-carry).
+ * - virtual: virtual/online-only meetings (map Virtual bag)
+ * - citywide: city-scale items (map Citywide bag)
+ * - unlocated: no place signal (map Unlocated bag — not virtual)
+ * - citywide-unlocated: legacy combined meetings filter
  */
-export function areaFeedLinks(level, id) {
+export const MAP_LIST_SCOPES = Object.freeze([
+  "virtual",
+  "citywide",
+  "unlocated",
+  "citywide-unlocated",
+]);
+
+/**
+ * Build a list-lens hash that carries map drill scope.
+ * Coordinates never ride share links — only declarative filters.
+ *
+ * @param {string} lens land|property|rules|meetings|money
+ * @param {{
+ *   boro?: string|null,
+ *   communityDistrict?: string|null,
+ *   councilDistrict?: string|null,
+ *   locationScope?: string|null,
+ *   when?: string|null,
+ * }} scope
+ * @returns {string|null} hash or null when the lens cannot express the scope
+ */
+export function mapDrillListHash(lens, scope = {}) {
+  const L = String(lens || "");
+  const boro = scope.boro && BOROUGH_META[scope.boro] ? scope.boro : null;
+  const cd = /^(?:M|X|K|Q|R)\d{2}$/.test(scope.communityDistrict || "")
+    ? String(scope.communityDistrict).toUpperCase()
+    : null;
+  const council = /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(scope.councilDistrict || ""))
+    ? String(scope.councilDistrict)
+    : null;
+  const locationScope = MAP_LIST_SCOPES.includes(scope.locationScope)
+    ? scope.locationScope
+    : null;
+  const q = new URLSearchParams();
+
+  if (L === "land") {
+    if (boro) q.set("boro", boro);
+    if (cd) q.set("cd", cd);
+    if (council) q.set("council", council);
+    // Land has no citywide/virtual bag grammar — refuse empty scopes.
+    if (![...q.keys()].length) return null;
+    return `#land?${q.toString()}`;
+  }
+
+  if (L === "property") {
+    if (boro) q.set("boro", boro);
+    if (![...q.keys()].length) return null;
+    return `#property?${q.toString()}`;
+  }
+
+  if (L === "meetings") {
+    if (
+      locationScope === "virtual"
+      || locationScope === "citywide"
+      || locationScope === "unlocated"
+      || locationScope === "citywide-unlocated"
+    ) {
+      q.set("scope", locationScope);
+    } else if (boro) {
+      q.set("boro", boro);
+    }
+    // Map counts span the full domain window; show past + upcoming so
+    // count-equals-list holds for the Virtual bag (often past event dates).
+    const when = ["week", "month", "upcoming", "past", "all"].includes(scope.when)
+      ? scope.when
+      : "all";
+    if (when !== "week") q.set("when", when);
+    if (![...q.keys()].length || (!locationScope && !boro)) return null;
+    return `#meetings?${q.toString()}`;
+  }
+
+  if (L === "rules") {
+    if (locationScope === "citywide") q.set("scope", "citywide");
+    else if (boro) q.set("boro", boro);
+    if (![...q.keys()].length) return null;
+    return `#rules?${q.toString()}`;
+  }
+
+  if (L === "money") {
+    // Money has no borough polygon filter yet; citywide / unlocated bags carry
+    // shareable scope tokens for map drill-through.
+    if (locationScope === "citywide" || locationScope === "unlocated") {
+      q.set("scope", locationScope);
+      return `#money?${q.toString()}`;
+    }
+    return null;
+  }
+
+  return null;
+}
+
+/**
+ * Per-lens drill links for a selected polygon area.
+ * Only emits lenses whose hash can express the area (COUNT-EQUALS-LIST contract).
+ *
+ * @param {"borough"|"community_district"|"council_district"} level
+ * @param {string} id
+ * @param {{ counts?: object, onlyPositive?: boolean }} [opts]
+ */
+export function areaFeedLinks(level, id, opts = {}) {
+  const counts = opts.counts && typeof opts.counts === "object" ? opts.counts : null;
+  const onlyPositive = opts.onlyPositive !== false && counts;
   const links = [];
+  const push = (lens, scope) => {
+    const n = counts ? Number(counts[lens]) || 0 : null;
+    if (onlyPositive && n != null && n <= 0) return;
+    const hash = mapDrillListHash(lens, scope);
+    if (!hash) return;
+    links.push({
+      lens,
+      hash,
+      label_key: `tab_${lens === "money" ? "money" : lens}`,
+      count: n,
+    });
+  };
+
   if (level === "borough" && BOROUGH_META[id]) {
-    const boro = id;
-    links.push({ lens: "land", hash: `#land?boro=${encodeURIComponent(boro)}`, label_key: "tab_land" });
-    links.push({ lens: "property", hash: `#property?boro=${encodeURIComponent(boro)}`, label_key: "tab_property" });
-    links.push({ lens: "meetings", hash: `#meetings?boro=${encodeURIComponent(boro)}`, label_key: "tab_meetings" });
-    links.push({ lens: "rules", hash: `#rules`, label_key: "tab_rules" });
-    links.push({ lens: "money", hash: `#money`, label_key: "tab_money" });
+    const scope = { boro: id };
+    push("land", scope);
+    push("property", scope);
+    push("meetings", scope);
+    push("rules", scope);
     return links;
   }
   if (level === "community_district" && /^(?:M|X|K|Q|R)\d{2}$/.test(id || "")) {
     const boro = boroughFromCommunityId(id);
-    const landQ = new URLSearchParams();
-    if (boro) landQ.set("boro", boro);
-    landQ.set("cd", id);
-    links.push({ lens: "land", hash: `#land?${landQ.toString()}`, label_key: "tab_land" });
+    const scope = { boro, communityDistrict: id };
+    // Land alone has CD filter; other lenses fall back to parent borough.
+    push("land", scope);
     if (boro) {
-      links.push({ lens: "property", hash: `#property?boro=${encodeURIComponent(boro)}`, label_key: "tab_property" });
-      links.push({ lens: "meetings", hash: `#meetings?boro=${encodeURIComponent(boro)}`, label_key: "tab_meetings" });
+      push("property", { boro });
+      push("meetings", { boro });
+      push("rules", { boro });
     }
-    links.push({ lens: "rules", hash: `#rules`, label_key: "tab_rules" });
-    links.push({ lens: "money", hash: `#money`, label_key: "tab_money" });
     return links;
   }
   if (level === "council_district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(id || ""))) {
-    const landQ = new URLSearchParams();
-    landQ.set("council", String(id));
-    links.push({ lens: "land", hash: `#land?${landQ.toString()}`, label_key: "tab_land" });
-    links.push({ lens: "property", hash: `#property`, label_key: "tab_property" });
-    links.push({ lens: "meetings", hash: `#meetings`, label_key: "tab_meetings" });
-    links.push({ lens: "rules", hash: `#rules`, label_key: "tab_rules" });
-    links.push({ lens: "money", hash: `#money`, label_key: "tab_money" });
+    // Council district is first-class on Land only today.
+    push("land", { councilDistrict: String(id) });
     return links;
   }
   return links;
+}
+
+/**
+ * Per-lens drill links for first-class non-polygon bags (citywide / virtual / unlocated).
+ *
+ * @param {"citywide"|"virtual"|"unlocated"} kind
+ * @param {{ counts?: object, onlyPositive?: boolean }} [opts]
+ */
+export function bucketFeedLinks(kind, opts = {}) {
+  const counts = opts.counts && typeof opts.counts === "object" ? opts.counts : null;
+  const onlyPositive = opts.onlyPositive !== false && counts;
+  const links = [];
+  const push = (lens, locationScope) => {
+    const n = counts ? Number(counts[lens]) || 0 : null;
+    if (onlyPositive && n != null && n <= 0) return;
+    const hash = mapDrillListHash(lens, { locationScope, when: "all" });
+    if (!hash) return;
+    links.push({
+      lens,
+      hash,
+      label_key: `tab_${lens === "money" ? "money" : lens}`,
+      count: n,
+    });
+  };
+
+  if (kind === "virtual") {
+    push("meetings", "virtual");
+    return links;
+  }
+  if (kind === "citywide") {
+    push("rules", "citywide");
+    push("meetings", "citywide");
+    push("money", "citywide");
+    return links;
+  }
+  if (kind === "unlocated") {
+    push("meetings", "unlocated");
+    push("money", "unlocated");
+    return links;
+  }
+  return links;
+}
+
+/**
+ * Whether a domain-observation row matches a map drill list filter.
+ * Used for COUNT-EQUALS-LIST tests against the same corpora that built map bags.
+ *
+ * @param {"meetings"|"rules"|"property"|"land"|"money"} lens
+ * @param {object} row domain observation or hearing record
+ * @param {{
+ *   boro?: string|null,
+ *   communityDistrict?: string|null,
+ *   councilDistrict?: string|null,
+ *   locationScope?: string|null,
+ * }} filter
+ */
+export function rowMatchesMapDrillFilter(lens, row, filter = {}) {
+  if (!row || typeof row !== "object") return false;
+  const locationScope = filter.locationScope || null;
+  const boro = filter.boro || null;
+  const area =
+    row.affected_area
+    || row.rule_location
+    || row.place
+    || row.location
+    || null;
+
+  if (lens === "meetings") {
+    if (locationScope === "virtual") {
+      return !!(
+        area?.virtual_only
+        || area?.unlocated_reason === "virtual_only"
+        || row.virtual_only
+        || row.venue?.mode === "virtual"
+      );
+    }
+    if (locationScope === "citywide") {
+      return area?.scope === "citywide";
+    }
+    if (locationScope === "unlocated") {
+      // Unlocated bag excludes virtual-only (those live in the Virtual bag).
+      if (
+        area?.virtual_only
+        || area?.unlocated_reason === "virtual_only"
+        || row.virtual_only
+        || row.venue?.mode === "virtual"
+      ) return false;
+      return area?.scope === "unlocated" || !area?.scope;
+    }
+    if (locationScope === "citywide-unlocated") {
+      return area?.scope === "citywide" || area?.scope === "unlocated";
+    }
+    if (boro) {
+      if (area?.scope === "citywide") return true;
+      const boroughs = area?.boroughs || (row.borough ? [row.borough] : []);
+      return boroughs.some((b) => String(b).toLowerCase() === String(boro).toLowerCase());
+    }
+    return true;
+  }
+
+  if (lens === "rules") {
+    if (locationScope === "citywide") {
+      return area?.scope === "citywide" || (!area?.boroughs?.length && area?.scope !== "local");
+    }
+    if (boro) {
+      if (area?.scope === "citywide") return false; // citywide is its own bag
+      const boroughs = area?.boroughs || [];
+      return boroughs.some((b) => String(b).toLowerCase() === String(boro).toLowerCase());
+    }
+    return true;
+  }
+
+  if (lens === "property") {
+    if (boro) {
+      const boroughs = area?.boroughs || (row.borough ? [row.borough] : []);
+      return boroughs.some((b) => String(b).toLowerCase() === String(boro).toLowerCase());
+    }
+    return true;
+  }
+
+  if (lens === "land") {
+    if (filter.communityDistrict) {
+      const cds = String(row.community_district || "")
+        .split(/[,;/|]+/)
+        .map((s) => s.trim().toUpperCase())
+        .filter(Boolean);
+      return cds.includes(String(filter.communityDistrict).toUpperCase());
+    }
+    if (filter.councilDistrict) {
+      const c = String(
+        row.cc_district || row.council_district || row.city_council_district || "",
+      ).trim();
+      return c === String(filter.councilDistrict);
+    }
+    if (boro) {
+      return String(row.borough || "").toLowerCase() === String(boro).toLowerCase()
+        || String(row.borough || "").includes(boro);
+    }
+    return true;
+  }
+
+  if (lens === "money") {
+    if (locationScope === "citywide") {
+      return area?.scope === "citywide"
+        || /throughout new york city|citywide/i.test(String(row.title || row.short_title || ""));
+    }
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Parse a list hash produced by mapDrillListHash back into a filter bag.
+ * @param {string} hash e.g. "#meetings?scope=virtual&when=all"
+ */
+export function parseMapDrillListHash(hash) {
+  const raw = String(hash || "");
+  const m = raw.match(/^#([a-z]+)(?:\?(.*))?$/i);
+  if (!m) return null;
+  const lens = m[1].toLowerCase();
+  const q = new URLSearchParams(m[2] || "");
+  const filter = {};
+  if (q.get("boro")) filter.boro = q.get("boro");
+  if (q.get("cd")) filter.communityDistrict = q.get("cd");
+  if (q.get("council")) filter.councilDistrict = q.get("council");
+  if (MAP_LIST_SCOPES.includes(q.get("scope"))) filter.locationScope = q.get("scope");
+  if (q.get("when")) filter.when = q.get("when");
+  return { lens, filter, hash: raw };
 }
 
 /**

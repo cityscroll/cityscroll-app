@@ -272,10 +272,28 @@ function hearingParticipationFromBody(body, source) {
     source_url: source,
   };
 }
+function hearingIsVirtualOnly(record, area) {
+  var a = area || (record && record.affected_area) || {};
+  if (a.virtual_only || a.unlocated_reason === "virtual_only") return true;
+  if (record && record.virtual_only) return true;
+  var venue = record && record.venue;
+  if (venue && venue.mode === "virtual") return true;
+  return false;
+}
 function hearingMatchesArea(record, filter) {
   var f = filter || {}, area = record.affected_area || {}, borough = String(f.borough || "").toLowerCase();
   var neighborhood = String(f.neighborhood || "").trim().toLowerCase();
-  if (f.locationScope === "citywide-unlocated") {
+  // Map drill scopes (and list chips): virtual / citywide / legacy citywide-unlocated.
+  if (f.locationScope === "virtual") {
+    return hearingIsVirtualOnly(record, area);
+  }
+  if (f.locationScope === "citywide") {
+    if (area.scope !== "citywide") return false;
+  } else if (f.locationScope === "unlocated") {
+    // Unlocated bag excludes virtual-only (those live in the Virtual bag).
+    if (hearingIsVirtualOnly(record, area)) return false;
+    if (area.scope !== "unlocated") return false;
+  } else if (f.locationScope === "citywide-unlocated") {
     if (area.scope !== "citywide" && area.scope !== "unlocated") return false;
   } else if (borough && area.scope !== "citywide"
       && !(area.boroughs || []).some(function (value) { return String(value).toLowerCase() === borough; })) return false;
@@ -298,6 +316,7 @@ function hearingDateWindowEnd(today, windowName) {
 // supplies past rows when it reaches the final rung, so normal upcoming views keep their
 // one-request path.
 function hearingScopeLadder(requested) {
+  if (requested === "all") return ["all"];
   if (requested === "week") return ["week", "month", "upcoming", "past"];
   if (requested === "month") return ["month", "upcoming", "past"];
   if (requested === "past") return ["past"];
@@ -311,7 +330,9 @@ function hearingRowsInScope(records, filter, scope, today) {
   return (records || []).filter(function (record) {
     var date = String(record.event_date || "").slice(0, 10);
     if (!date) return false;
-    if (scope === "past") {
+    if (scope === "all") {
+      // No date window — map drill count-equals-list over the full corpus.
+    } else if (scope === "past") {
       if (date >= start) return false;
     } else if (date < start || (end && date > end)) {
       return false;
@@ -349,6 +370,7 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     chooseHearingScope: chooseHearingScope,
     hearingAffectedArea: hearingAffectedArea,
     hearingDateWindowEnd: hearingDateWindowEnd,
+    hearingIsVirtualOnly: hearingIsVirtualOnly,
     hearingMatchesArea: hearingMatchesArea,
     hearingPlainText: hearingPlainText,
     hearingRowsInScope: hearingRowsInScope,

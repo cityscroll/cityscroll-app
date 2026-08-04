@@ -164,6 +164,7 @@
     map_citywide_detail_lead: "{n} eventos a nivel ciudad en la lente actual ({lens}). Aplican en todos los distritos — no están fijados a un solo lugar.",
     map_virtual_detail_lead: "{n} reuniones solo virtuales en la lente actual ({lens}). No se publicó sede presencial.",
     map_citywide_also_applies: "también aplican elementos a escala de ciudad (no contados dentro de los polígonos de este distrito).",
+    map_drill_when_all: "Todas las fechas",
     property_tax_lien_link: "Estadísticas de venta de gravámenes fiscales",
     property_explore_map_link: "Explorar propiedades en el mapa",
     nl_placeholder_money: "describa lo que busca…",

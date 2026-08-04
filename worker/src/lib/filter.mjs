@@ -85,7 +85,7 @@ function clampField(name, v) {
     case "neighborhood":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 80) : null;
     case "locationScope":
-      return v === "citywide-unlocated" ? v : null;
+      return v === "citywide-unlocated" || v === "citywide" || v === "virtual" || v === "unlocated" ? v : null;
     case "dateWindow":
       return ["week", "month", "upcoming"].includes(v) ? v : null;
     case "lookupType":

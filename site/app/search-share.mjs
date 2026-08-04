@@ -478,7 +478,9 @@ function nlFeed(key, placeholder){
     apply:f=>{
       if(key==='meetings'){
         if(f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
-        if(f.borough) $("#meetingsboro").value=f.borough;
+        if(f.locationScope==="virtual"||f.locationScope==="citywide"||f.locationScope==="citywide-unlocated"||f.locationScope==="unlocated"){
+          $("#meetingsboro").value=f.locationScope;
+        } else if(f.borough) $("#meetingsboro").value=f.borough;
         if(f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
         if(f.process && ["scheduled","agenda","held","outcomes","unstaged"].includes(f.process)){
           meetingsProcessSel=f.process;
@@ -508,6 +510,11 @@ function nlFeed(key, placeholder){
         if(f.process && ["proposal","public_process","adoption","effective","unstaged"].includes(f.process)){
           rulesProcessSel=f.process;
         }
+        const rb=$("#rulesboro");
+        if(rb){
+          if(f.locationScope==="citywide") rb.value="citywide";
+          else if(f.borough) rb.value=f.borough;
+        }
       }
       forceSelect("#"+key+"agency", f.agency);
       $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
@@ -525,10 +532,10 @@ function searchFilterFromHash(lens, hash){
   if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), councilDistrict:q.get("council"), keywords, status:q.get("status")==="all"?"all":"active"};
   const filter={agency:q.get("agency"), keywords};
   if(lens==="meetings"){
-    filter.when=["week","month","upcoming","past"].includes(q.get("when"))?q.get("when"):"week";
+    filter.when=["week","month","upcoming","past","all"].includes(q.get("when"))?q.get("when"):"week";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
-    filter.locationScope=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":null;
+    filter.locationScope=["citywide-unlocated","citywide","virtual","unlocated"].includes(q.get("scope"))?q.get("scope"):null;
     filter.process=q.get("process")||"all";
   }
   if(lens==="property"){
@@ -540,6 +547,11 @@ function searchFilterFromHash(lens, hash){
     filter.stage=q.get("stage")||"all";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
+  }
+  if(lens==="rules"){
+    filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
+    filter.locationScope=q.get("scope")==="citywide"?"citywide":null;
+    filter.process=q.get("process")||"all";
   }
   return filter;
 }
@@ -564,12 +576,20 @@ function searchFilterChips(lens, filter){
     if(filter.agency) chips.push(`<span class="qchip">${t("agency_label")} <b>${enTitle(filter.agency)}</b></span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     if(lens==="meetings"){
-      const whenKey=filter.when==="week"?"this_week":filter.when==="month"?"next_30_days":filter.when==="past"?"recent_past":"all_upcoming";
+      const whenKey=filter.when==="week"?"this_week":filter.when==="month"?"next_30_days":filter.when==="past"?"recent_past":filter.when==="all"?"map_drill_when_all":"all_upcoming";
       chips.push(`<span class="qchip"><b>${t(whenKey)}</b></span>`);
       if(filter.borough) chips.push(`<span class="qchip">${t("affected_area_label")} <b>${filter.borough}</b></span>`);
       if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
-      if(filter.locationScope) chips.push(`<span class="qchip">${t("citywide_unlocated")}</span>`);
+      if(filter.locationScope==="virtual") chips.push(`<span class="qchip">${t("map_bucket_virtual")}</span>`);
+      else if(filter.locationScope==="citywide") chips.push(`<span class="qchip">${t("map_bucket_citywide")}</span>`);
+      else if(filter.locationScope==="unlocated") chips.push(`<span class="qchip">${t("map_bucket_unlocated")}</span>`);
+      else if(filter.locationScope) chips.push(`<span class="qchip">${t("citywide_unlocated")}</span>`);
       if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("meetings_process_label")} <b>${t(([["scheduled","meeting_stage_scheduled"],["agenda","meeting_stage_agenda"],["held","meeting_stage_held"],["outcomes","meeting_stage_outcomes"],["unstaged","meeting_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
+    }
+    if(lens==="rules"){
+      if(filter.locationScope==="citywide") chips.push(`<span class="qchip">${t("map_bucket_citywide")}</span>`);
+      if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
+      if(filter.process && filter.process!=="all") chips.push(`<span class="qchip">${t("rules_process_label")} <b>${t(([["proposal","rule_phase_proposal"],["public_process","rule_phase_public_process"],["adoption","rule_phase_adoption"],["effective","rule_phase_effective"],["unstaged","rule_stage_unstaged"]].find(([key])=>key===filter.process)||[])[1]||"stage_all")}</b></span>`);
     }
   }
   if(lens==="property"){
@@ -623,7 +643,7 @@ function bindClearSearchState(lens, root){
       const sortEl=$("#propsort"); if(sortEl) sortEl.value="closing_soon";
       $("#propertyboro").value=""; $("#propertyneighborhood").value="";
     }
-    if(lens==="rules"){ rulesProcessSel="all"; }
+    if(lens==="rules"){ rulesProcessSel="all"; const rb=$("#rulesboro"); if(rb) rb.value=""; }
     $("#nltrans-"+lens).innerHTML="";
     loadSection(lens);
   });
