@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "measurement": "exact same-except-name grouping on the committed 80-row Staffing snapshot",
+  "viewports": [
+    {
+      "viewport": 390,
+      "ready_ms_from_navigation_start": 563.9,
+      "individual_row_nodes": 28,
+      "group_nodes": 2,
+      "grouping_benchmark": {
+        "source_rows": 80,
+        "rendered_entries": 30,
+        "iterations": 2000,
+        "total_ms": 104.2,
+        "mean_ms": 0.0521
+      }
+    },
+    {
+      "viewport": 1440,
+      "ready_ms_from_navigation_start": 420.6,
+      "individual_row_nodes": 28,
+      "group_nodes": 2,
+      "grouping_benchmark": {
+        "source_rows": 80,
+        "rendered_entries": 30,
+        "iterations": 2000,
+        "total_ms": 103.8,
+        "mean_ms": 0.0519
+      }
+    }
+  ]
+}
