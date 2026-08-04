@@ -799,6 +799,7 @@ function ensurePropertyCommercial(r, tools){
   return null;
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
+let propertyCommunityDistrict="", propertyResolvedNeighborhood=null;
 let propertyAuctionExportVisible=[];
 let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
 let propertyExplorerToolsPromise=null;
@@ -1076,6 +1077,16 @@ async function renderPropExplorer(){
     lifeEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
   }
 
+  const neighborhoodInput=(($("#propertyneighborhood")?.value)||"").trim();
+  const neighborhoodState=await import("../neighborhood_search.mjs")
+    .then(tools=>tools.resolvePropertyNeighborhoodState(neighborhoodInput,propertyResolvedNeighborhood,propAll))
+    .catch(()=>({place:null,communityDistrict:""}));
+  propertyResolvedNeighborhood=neighborhoodState.place;
+  propertyCommunityDistrict=neighborhoodState.communityDistrict;
+  if(propertyResolvedNeighborhood){
+    $("#propertyboro").value=propertyResolvedNeighborhood.borough||"";
+    $("#propertyneighborhood").value=propertyResolvedNeighborhood.name;
+  }
   const tools=await propertyExplorerTools();
   const processRail=$("#processrail");
   const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
@@ -1092,7 +1103,8 @@ async function renderPropExplorer(){
       assetOf: (r)=>r._asset||classifyAsset(r),
       commercialOf: (r)=>r.commercial||null,
       borough: borough||null,
-      neighborhood: neighborhood||null,
+      neighborhood: propertyCommunityDistrict?null:(neighborhood||null),
+      communityDistricts: propertyCommunityDistrict?[propertyCommunityDistrict]:[],
     });
     if(tools.stampPropertyExplorerTemporal){
       entries=tools.stampPropertyExplorerTemporal(entries,{
@@ -1127,7 +1139,8 @@ async function renderPropExplorer(){
         if((propAsset!=="all"||propSaleMethod!=="all"||propPriceBand!=="all")
           && r.commercial && r.commercial.sale_eligible===false) return false;
         if(borough && !(r._location?.boroughs||[]).includes(borough)) return false;
-        if(neighborhood && ![
+        if(propertyCommunityDistrict && r._communityDistrict!==propertyCommunityDistrict) return false;
+        if(neighborhood && !propertyCommunityDistrict && ![
           ...(r._location?.neighborhoods||[]),
           ...(r._location?.addresses||[]).map(address=>address.label),
         ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())) return false;
@@ -1177,7 +1190,13 @@ async function renderPropExplorer(){
   });
   feedVisible.property=visibleRows;
   if(!entries.length){
-    feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
+    if(propertyResolvedNeighborhood){
+      feedEl.innerHTML=`<div class="empty property-neighborhood-empty"><p>${t("property_neighborhood_empty_html",{name:escUiHtml(propertyResolvedNeighborhood.name)})}</p><button type="button" class="act primary" data-follow-resolved-neighborhood>${t("follow_this_area")}</button></div>`;
+      const follow=feedEl.querySelector("[data-follow-resolved-neighborhood]");
+      if(follow) follow.addEventListener("click",()=>watchFromFilters("property"));
+    } else {
+      feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
+    }
     try{ renderSearchComponents("property"); }catch(_e){}
     return;
   }
@@ -1200,7 +1219,11 @@ async function renderPropExplorer(){
     if(current.length){
       current.forEach(e=>parts.push(cardFor(e)));
     } else if(closedEntries.length){
-      parts.push(`<p class="property-empty-current">${escUiHtml(t("property_nothing_current"))}</p>`);
+      if(propertyResolvedNeighborhood){
+        parts.push(`<div class="property-empty-current"><p>${t("property_neighborhood_empty_html",{name:escUiHtml(propertyResolvedNeighborhood.name)})}</p><button type="button" class="act primary" data-follow-resolved-neighborhood>${t("follow_this_area")}</button></div>`);
+      } else {
+        parts.push(`<p class="property-empty-current">${escUiHtml(t("property_nothing_current"))}</p>`);
+      }
     }
     if(closedEntries.length){
       parts.push(`<div class="property-closed-section" data-closed-section="1" role="separator" aria-label="${escUiHtml(t("property_closed_section"))}"><h3 class="property-closed-section-title">${escUiHtml(t("property_closed_section"))}</h3></div>`);
@@ -1211,6 +1234,8 @@ async function renderPropExplorer(){
     entries.forEach(e=>parts.push(cardFor(e)));
   }
   feedEl.innerHTML=parts.join("");
+  const followResolved=feedEl.querySelector("[data-follow-resolved-neighborhood]");
+  if(followResolved) followResolved.addEventListener("click",()=>watchFromFilters("property"));
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
   feedEl.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));
@@ -1541,6 +1566,8 @@ globalThis.normalizePropSaleMethod = normalizePropSaleMethod;
 globalThis.normalizePropPriceBand = normalizePropPriceBand;
 globalThis.normalizePropSort = normalizePropSort;
 Object.defineProperty(globalThis, "propertyExplorerToolsPromise", { configurable: true, get: () => propertyExplorerToolsPromise, set: value => { propertyExplorerToolsPromise = value; } });
+Object.defineProperty(globalThis, "propertyCommunityDistrict", { configurable: true, get: () => propertyCommunityDistrict, set: value => { propertyCommunityDistrict = value || ""; } });
+Object.defineProperty(globalThis, "propertyResolvedNeighborhood", { configurable: true, get: () => propertyResolvedNeighborhood, set: value => { propertyResolvedNeighborhood = value || null; } });
 Object.defineProperty(globalThis, "propertyAuctionExportVisible", { configurable: true, get: () => propertyAuctionExportVisible, set: value => { propertyAuctionExportVisible = value; } });
 Object.defineProperty(globalThis, "propertyPhaseSpineToolsPromise", { configurable: true, get: () => propertyPhaseSpineToolsPromise, set: value => { propertyPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "taxLienLookupPromise", { configurable: true, get: () => taxLienLookupPromise, set: value => { taxLienLookupPromise = value; } });

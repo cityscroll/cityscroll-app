@@ -1680,6 +1680,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "<b>{name}</b>目前没有物业处置公告。",
+    follow_this_area: "关注此区域",
     property_cluster_summary: "{description} — {n} 条类似公告",
     property_cluster_fallback: "有日期的公告",
     property_cluster_show: "Show each notice",

@@ -1689,6 +1689,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "لا توجد تصرفات عقارية حالية في <b>{name}</b>.",
+    follow_this_area: "تابع هذه المنطقة",
     property_cluster_summary: "{description} — {n} similar",
     property_cluster_fallback: "Dated notices",
     property_cluster_show: "Show each notice",

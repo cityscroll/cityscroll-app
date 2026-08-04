@@ -1,0 +1,16 @@
+{
+  "schema": "cityscroll.neighborhood_search_performance.v1",
+  "measured_at": "2026-08-04T14:05:32.570Z",
+  "runtime": "v26.6.0",
+  "gazetteer_entries": 188,
+  "query_count": 58,
+  "iterations": 100,
+  "resolutions": 5800,
+  "resolved": 5800,
+  "mean_ms": 0.0607,
+  "p95_ms": 0.1163,
+  "p99_ms": 0.6968,
+  "max_ms": 1.01,
+  "budget_p95_ms": 2,
+  "within_budget": true
+}

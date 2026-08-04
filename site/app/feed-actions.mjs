@@ -40,10 +40,21 @@ function buildRulesStageMap(view){
   return m;
 }
 
+async function resolveFeedNeighborhood(key, query){
+  return import("../neighborhood_search.mjs")
+    .then(tools=>tools.resolveFeedNeighborhood(key,query))
+    .catch(()=>null);
+}
+
 async function loadSection(key){
   const cfg=SECTIONS[key];
-  const kw=($("#"+key+"kw").value||"").trim();
-  updateHash();
+  const keepHash=hashLock;
+  let kw=($("#"+key+"kw").value||"").trim();
+  const resolvedNeighborhood=await resolveFeedNeighborhood(key, kw);
+  if(resolvedNeighborhood) kw="";
+  else if(key==="property" && kw){ propertyResolvedNeighborhood=null; propertyCommunityDistrict=""; }
+  if(!keepHash || resolvedNeighborhood) updateHash();
+  globalThis.syncAlertsEntryHrefs?.();
   renderSearchComponents(key);
   if(key==="meetings") return loadHearings();
   const whenSel=$("#"+key+"when");
