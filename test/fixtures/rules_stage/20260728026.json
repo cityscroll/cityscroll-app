@@ -1,0 +1,13 @@
+{
+  "source": "NYC Open Data dg92-zbpx, fetched 2026-08-04",
+  "note": "This newly published City Record row was the sole Unstaged item in the 200-row Rules list while the daily /rules materialization still reflected 2026-08-03.",
+  "record": {
+    "request_id": "20260728026",
+    "start_date": "2026-08-04T00:00:00.000",
+    "event_date": "2026-09-09T11:00:00.000",
+    "agency_name": "Buildings",
+    "type_of_notice_description": "Public Hearings",
+    "section_name": "Agency Rules",
+    "short_title": "Proposed Rule - Rule relating to Incomplete Inspections"
+  }
+}

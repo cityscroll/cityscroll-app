@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
@@ -25,6 +26,11 @@ import {
   RULEMAKING_SIBLING_WINDOW_DAYS,
   titleOverlap,
 } from "../src/lib/rules.mjs";
+
+const CURRENT_UNSTAGED = JSON.parse(readFileSync(
+  new URL("../../test/fixtures/rules_stage/20260728026.json", import.meta.url),
+  "utf8",
+)).record;
 
 // ---------------------------------------------------------------------------
 // RSS fixture helpers
@@ -320,7 +326,7 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
 
   assert.equal(view.schema_version, RULES_VIEW_VERSION);
-  assert.equal(view.schema_version, 6);
+  assert.equal(view.schema_version, 7);
   assert.equal(view.source.primary.lookback_days, CITY_RECORD_RULES_LOOKBACK_DAYS);
   assert.equal(view.source.primary.limit, CITY_RECORD_RULES_LIMIT);
   // Lookback must cover the sibling stitch window so months-apart rulemakings can co-appear.
@@ -376,6 +382,19 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   assert.equal(unmatchedRule.subject_refs.notice, undefined);
   assert.equal(unmatchedRule.subject_refs.rules, "rules:https://rules.cityofnewyork.us/rule/energy-code/");
   assert.equal(unmatchedRule.subject_links.length, 0);
+});
+
+test("buildRuleView classifies a newly published City Record hearing before the daily read model catches up", async () => {
+  const view = await buildRuleView(
+    multiSourceFetch(rssFeed([]), [CURRENT_UNSTAGED]),
+    new Date("2026-08-04T12:00:00Z"),
+  );
+  const record = view.rules.find((row) => row.request_id === CURRENT_UNSTAGED.request_id);
+  assert.ok(record);
+  assert.equal(record.join.matched, false);
+  assert.equal(record.stage, "hearing");
+  assert.equal(record.city_record.notice_type, "Public Hearings");
+  assert.ok(record.events.some((event) => event.event_type === "public_hearing"));
 });
 
 test("buildRuleView stitches months-apart proposal/adoption siblings within the lookback window", async () => {
@@ -487,6 +506,9 @@ test("buildRuleView stitches proposal/hearing/adoption City Record siblings into
   assert.notEqual(byId["20260320099"].rulemaking_subject_ref, subject);
   assert.equal(byId["20260301011"].related_notices.length, 2);
   assert.equal(byId["20260320099"].related_notices.length, 0);
+  assert.equal(byId["20260301011"].stage, "proposed");
+  assert.equal(byId["20260415011"].stage, "hearing");
+  assert.equal(byId["20260701011"].stage, "adopted");
 
   // Subject registry same_rulemaking edges connect sibling notices (link-not-merge).
   const siblingLinks = byId["20260301011"].subject_links.filter((l) => l.type === "same_rulemaking");
@@ -713,18 +735,18 @@ test("rulesViewNeedsRefresh retries young views whose RSS enrichment is still st
   const nowMs = Date.parse("2026-08-01T18:00:00.000Z");
   assert.equal(rulesViewNeedsRefresh(null, nowMs), true);
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 6,
+    schema_version: 7,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), false);
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 6,
+    schema_version: 7,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "stale", error: "NYC Rules RSS 403" } },
   }, nowMs), true);
   // Older than MAX_AGE_MS (~36h) even when enrichment is ok.
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 6,
+    schema_version: 7,
     generated_at: "2026-07-30T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
@@ -756,8 +778,14 @@ test("rulesViewNeedsRefresh rebuilds young KV written under an older schema_vers
     generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
+  // Pre-City-Record-stage-classification materialization must rebuild.
   assert.equal(rulesViewNeedsRefresh({
     schema_version: 6,
+    generated_at: "2026-08-02T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), true);
+  assert.equal(rulesViewNeedsRefresh({
+    schema_version: 7,
     generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), false);

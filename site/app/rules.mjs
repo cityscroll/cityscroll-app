@@ -10,6 +10,8 @@ function rulesExplorerTools(){
   return rulesExplorerToolsPromise;
 }
 const RULES_PHASE_IDS=["proposal","public_process","adoption","effective"];
+const RULE_COMMENT_FACT_KEY="comment-deadline";
+const RULE_HEARING_FACT_KEY="hearing-date";
 const RULES_PHASE_LABEL_KEYS={
   proposal:"rule_phase_proposal",
   public_process:"rule_phase_public_process",
@@ -30,12 +32,12 @@ function rulesExplorerCardHTML(entry, terms){
   const mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const agency=entry.agency||r.agency_name||"";
-  const scopeHtml=excerptHtml(r.additional_description_1,200);
+  const scopeHtml=excerptHtml(entry.excerpt||r.additional_description_1,200);
   const chainChip=entry.notice_count>1
     ? `<span class="tag asset">${escUiHtml(t("rules_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
   const processLine=`<div class="rules-process-line">
-    <span class="tag open">${escUiHtml(processLabel)}</span>
+    <span class="tag open" data-card-fact="stage:${escUiHtml(processStage||"unstaged")}">${escUiHtml(processLabel)}</span>
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:`<span class="tag place">${escUiHtml(t("rules_list_no_agency"))}</span>`}
   </div>`;
@@ -47,7 +49,12 @@ function rulesExplorerCardHTML(entry, terms){
   } else if(actionKey==="rule_action_attend_hearing" && entry.hearing_date){
     actionLeadText=t("rule_action_attend_hearing_dated",{date:ruleDateLabel(entry.hearing_date)});
   }
-  const actionLead=`<div class="rules-action-lead">${escUiHtml(actionLeadText)}</div>`;
+  const primaryFact=actionKey==="rule_action_comment"&&entry.comment_by_date
+    ? `${RULE_COMMENT_FACT_KEY}:${entry.comment_by_date}`
+    : actionKey==="rule_action_attend_hearing"&&entry.hearing_date
+      ? `${RULE_HEARING_FACT_KEY}:${entry.hearing_date}`
+      : "";
+  const primaryFactAttr=primaryFact?` data-card-fact="${escUiHtml(primaryFact)}"`:"";
   // Primary kinetic destination: comment portal while open; else official rule page; else notice.
   // Separate template branches so link_targets can classify each href expression (never mix
   // in-app #notice with external NYC Rules into one ${escUiHtml(primaryHref)} slot).
@@ -63,13 +70,13 @@ function rulesExplorerCardHTML(entry, terms){
   );
   let acts="";
   if(wantCommentPrimary && entry.comment_url){
-    acts=`<a class="act primary" href="${escUiHtml(entry.comment_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.comment_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
   } else if(wantCommentPrimary && entry.rule_url){
-    acts=`<a class="act primary" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
   } else if(wantRulePrimary){
-    acts=`<a class="act primary" href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
   } else {
-    acts=`<a class="act primary" href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr} href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   }
   const primaryAction=acts;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
@@ -94,13 +101,9 @@ function rulesExplorerCardHTML(entry, terms){
     }).filter(Boolean).join(" · ");
     if(chips) siblingsHtml=`<div class="rules-siblings">${t("rules_siblings_label")}: ${chips}</div>`;
   }
-  const rstage=ruleStageChip(r._ruleStage||(fineStage?{stage:fineStage,nyc_rules:r._ruleStage?.nyc_rules}:null));
-  const rbadges=rstage?`<div>${rstage}</div>`:"";
-  return `<div class="fcard rules-fcard" data-rulemaking-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
+  return `<div class="fcard rules-fcard" data-request-id="${escUiHtml(r.request_id||"")}" data-rulemaking-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
       <div class="ftype">${r.type_of_notice_description||""}${agency?" · "+pivotA(agencyHref(agency), agency):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
-      ${rbadges}
       ${processLine}
-      ${actionLead}
       <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
       ${siblingsHtml}
       ${rulePlaceChips(r._ruleLocation)}
@@ -115,6 +118,17 @@ function rulesActionBandTools(){
     rulesActionBandToolsPromise=import("../rules_action_bands.mjs").catch(()=>null);
   }
   return rulesActionBandToolsPromise;
+}
+
+function rulesProcessControlHTML(model){
+  if(!model) return "";
+  const button=(item,cls)=>`<button type="button" class="${cls}${item.pressed?" on":""}" data-rules-process="${escUiHtml(item.id)}" aria-pressed="${item.pressed?"true":"false"}">${escUiHtml(t(item.label_key))}<span class="ct">${item.count}</span></button>`;
+  const lifecycle=model.lifecycle.map((item,index)=>`<li>${button(item,["lc-step","rules-stage-filter"].join(" "))}${index<model.lifecycle.length-1?'<span class="lc-step-arrow" aria-hidden="true">→</span>':""}</li>`).join("");
+  return `<div class="rules-stage-control">
+    ${button(model.all,["chip","rules-stage-all"].join(" "))}
+    <ol class="lc-stepper rules-stage-lifecycle">${lifecycle}</ol>
+    ${model.unstaged?`<span class="rules-stage-divider" aria-hidden="true">·</span>${button(model.unstaged,["chip","rules-stage-unmatched"].join(" "))}`:""}
+  </div>`;
 }
 
 async function renderRulesExplorer(){
@@ -138,12 +152,12 @@ async function renderRulesExplorer(){
     const base=tools.buildRulesExplorerEntries(rulesAll, rulesViewCache);
     const pc=tools.countRulesProcessStages(base);
     if(processRail){
-      const stages=tools.RULES_PROCESS_STAGES||[["all","stage_all"]];
-      processRail.innerHTML=stages.map(([k,l])=>
-        `<button type="button" class="chip ${rulesProcessSel===k?"on":""}" data-p="${k}">${t(l)}<span class="ct">${pc[k]||0}</span></button>`
-      ).join("");
-      processRail.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
-        rulesProcessSel=b.dataset.p;
+      const model=tools.rulesProcessControlModel
+        ? tools.rulesProcessControlModel(pc,rulesProcessSel)
+        : null;
+      processRail.innerHTML=rulesProcessControlHTML(model);
+      processRail.querySelectorAll("[data-rules-process]").forEach(b=>b.addEventListener("click",()=>{
+        rulesProcessSel=b.dataset.rulesProcess;
         renderRulesExplorer();
         updateHash();
         renderSearchComponents("rules");
@@ -273,7 +287,8 @@ function ruleCommentAction(rec){
   if(!nr || !nr.comment_by_date) return "";
   const href=nr.comment_url||nr.url;
   if(!href) return "";
-  return `<a class="act" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(nr.comment_by_date)})}${extSR()}</a>`;
+  const factKey=["comment","deadline"].join("-");
+  return `<a class="act" data-card-fact="${factKey}:${escUiHtml(String(nr.comment_by_date).slice(0,10))}" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(nr.comment_by_date)})}${extSR()}</a>`;
 }
 
 const RULES_PUBLIC_URL="https://rules.cityofnewyork.us/";
@@ -855,7 +870,7 @@ function feedCardHTML(key, r, terms){
   if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
   const pbadges = key==="property" && (r._asset || r._badge)
     ? `<div class="property-commercial-lead" data-commercial-glance="1">${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
-  const rstage=key==="rules"?ruleStageChip(r._ruleStage):"";
+  const rstage=key==="rules"&&!ruleAct?ruleStageChip(r._ruleStage):"";
   const rbadges=rstage?`<div>${rstage}</div>`:"";
   return `<div class="fcard">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
@@ -966,6 +981,7 @@ globalThis.ruleSiblingsHTML = ruleSiblingsHTML;
 globalThis.ruleStageChip = ruleStageChip;
 globalThis.rulesExplorerCardHTML = rulesExplorerCardHTML;
 globalThis.rulesExplorerTools = rulesExplorerTools;
+globalThis.rulesProcessControlHTML = rulesProcessControlHTML;
 globalThis.rulesProcessPhaseLabel = rulesProcessPhaseLabel;
 Object.defineProperty(globalThis, "rulesAdoptionLagModelPromise", { configurable: true, get: () => rulesAdoptionLagModelPromise, set: value => { rulesAdoptionLagModelPromise = value; } });
 Object.defineProperty(globalThis, "rulesAll", { configurable: true, get: () => rulesAll, set: value => { rulesAll = value; } });

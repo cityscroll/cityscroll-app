@@ -167,6 +167,19 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
           const firstAction = actions
             .map(el => ({ el, y: el.getBoundingClientRect().top + scrollY }))
             .sort((a, b) => a.y - b.y)[0];
+          const card_facts = [...root.querySelectorAll('.fcard, [data-card]')]
+            .filter(visible)
+            .map((card, index) => ({
+              card_id: card.getAttribute('data-request-id') || card.id || `card-${index + 1}`,
+              facts: [...card.querySelectorAll('[data-card-fact]')]
+                .filter(visible)
+                .map(el => ({
+                  key: normalize(el.getAttribute('data-card-fact')),
+                  text: normalize(el.innerText || el.getAttribute('aria-label')),
+                }))
+                .filter(fact => fact.key),
+            }))
+            .filter(card => card.facts.length);
           // Empty-state / apology density: count visible blocks that apologize for
           // missing facts vs data-bearing blocks (wackness sampler).
           const apologyPhrases = [
@@ -218,6 +231,7 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
             empty_blocks,
             content_blocks,
             empty_state_blocks: empty_state_blocks.slice(0, 40),
+            card_facts: card_facts.slice(0, 80),
             visible_text: normalize(root.innerText).slice(0, 4000),
           };
         }""",
@@ -268,6 +282,18 @@ def breach_rows(inventory: dict[str, Any]) -> list[str]:
                 f"{surface['id']}: apology phrases x{apology_hits} "
                 f"(threshold 1 per card)"
             )
+        for card in measured.get("card_facts") or []:
+            seen: dict[str, int] = {}
+            for fact in card.get("facts") or []:
+                key = str(fact.get("key") or "").strip().lower()
+                if key:
+                    seen[key] = seen.get(key, 0) + 1
+            for key, count in seen.items():
+                if count > 1:
+                    rows.append(
+                        f"{surface['id']}: card {card.get('card_id', 'unknown')} "
+                        f"repeats fact {key} x{count}"
+                    )
     return rows
 
 

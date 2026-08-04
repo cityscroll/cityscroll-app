@@ -38,6 +38,28 @@ const number = (value) => value == null || value === ""
   : Number.isFinite(Number(value)) ? Number(value) : null;
 
 /**
+ * Detect semantic facts repeated inside one rendered card. Renderers expose
+ * stable `data-card-fact` keys so wording differences do not hide duplication.
+ */
+export function findDuplicateCardFacts(cards = []) {
+  const findings = [];
+  for (const [index, card] of (Array.isArray(cards) ? cards : []).entries()) {
+    const card_id = String(card?.card_id || card?.id || `card-${index + 1}`);
+    const grouped = new Map();
+    for (const fact of (Array.isArray(card?.facts) ? card.facts : [])) {
+      const key = String(fact?.key || "").trim().toLowerCase();
+      if (!key) continue;
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(String(fact?.text || "").trim());
+    }
+    for (const [key, texts] of grouped) {
+      if (texts.length > 1) findings.push({ card_id, key, count: texts.length, texts });
+    }
+  }
+  return { ok: findings.length === 0, findings };
+}
+
+/**
  * Count apology-phrase hits in free text (case-insensitive).
  * @param {string} text
  * @returns {{ total: number, by_phrase: Record<string, number>, phrases_hit: string[] }}
@@ -178,6 +200,18 @@ export function surfaceLoadBreaches(surface = {}) {
     });
   }
 
+  const duplicateFacts = findDuplicateCardFacts(measured.card_facts);
+  if (!duplicateFacts.ok) {
+    breaches.push({
+      kind: "duplicate-card-fact",
+      metric: "duplicate_card_facts",
+      actual: duplicateFacts.findings.length,
+      maximum: 0,
+      findings: duplicateFacts.findings.slice(0, 8),
+      reason: "one card presents the same semantic fact in more than one position",
+    });
+  }
+
   if (surface.action_required !== false) {
     const actionY = number(measured.first_action_y);
     const actionMaximum = number(budgets.max_first_action_y);
@@ -287,6 +321,7 @@ export function evaluateSurfaceLoad(input = {}) {
     surfaces_over_budget: 0,
     action_position_flags: 0,
     duplication_flags: 0,
+    duplicate_fact_flags: 0,
     empty_state_flags: 0,
     chip_format_flags: 0,
     temporal_sanity_flags: 0,
@@ -305,9 +340,10 @@ export function evaluateSurfaceLoad(input = {}) {
     if (breaches.some((breach) => breach.kind === "action-position")) {
       metrics.action_position_flags += 1;
     }
-    if (breaches.some((breach) => breach.kind === "verbatim-duplication")) {
+    if (breaches.some((breach) => breach.kind === "verbatim-duplication" || breach.kind === "duplicate-card-fact")) {
       metrics.duplication_flags += 1;
     }
+    if (breaches.some((breach) => breach.kind === "duplicate-card-fact")) metrics.duplicate_fact_flags += 1;
     if (breaches.some((breach) => breach.kind === "empty-state-density")) {
       metrics.empty_state_flags += 1;
     }
@@ -321,6 +357,7 @@ export function evaluateSurfaceLoad(input = {}) {
     const emptyHeavy = breaches.some((breach) => breach.kind === "empty-state-density");
     const chipFormat = breaches.some((breach) => breach.kind === "chip-format-currency-before-month");
     const temporalBad = breaches.some((breach) => breach.kind === "default-view-past-deadline");
+    const duplicateFact = breaches.some((breach) => breach.kind === "duplicate-card-fact");
     const worstRatio = Math.max(1, ...breaches
       .filter((breach) => breach.actual != null && breach.maximum > 0)
       .map((breach) => breach.actual / breach.maximum));
@@ -329,6 +366,8 @@ export function evaluateSurfaceLoad(input = {}) {
       slug: `surface-${id}`,
       title: actionFirst
         ? `Restore an action-first opening on ${surface.label || id}`
+        : duplicateFact
+          ? `Remove repeated card facts on ${surface.label || id}`
         : temporalBad
           ? `Keep past-dated closes out of the default open head on ${surface.label || id}`
           : chipFormat
@@ -337,6 +376,7 @@ export function evaluateSurfaceLoad(input = {}) {
             ? `Remove empty-state apology density on ${surface.label || id}`
             : `Reduce measured interface load on ${surface.label || id}`,
       rank_score: actionFirst ? 96
+        : duplicateFact ? 95
         : temporalBad ? 95
         : chipFormat ? 94
         : emptyHeavy ? 94
@@ -344,6 +384,8 @@ export function evaluateSurfaceLoad(input = {}) {
       evidence: {
         kind: temporalBad
           ? "default-view-past-deadline"
+          : duplicateFact
+            ? "duplicate-card-fact"
           : chipFormat
             ? "chip-format-currency-before-month"
             : emptyHeavy ? "empty-state-density" : "surface-load-regression",
@@ -359,6 +401,8 @@ export function evaluateSurfaceLoad(input = {}) {
       verify: `python3 tools/sample_surface_load.py --live --only ${id} --gate`,
       demo_win: actionFirst
         ? `The ${surface.label || id} surface presents a resident-serving action within its opening viewport.`
+        : duplicateFact
+          ? `Each card on ${surface.label || id} presents each semantic fact once, in its strongest position.`
         : temporalBad
           ? `The ${surface.label || id} default open head shows only upcoming/current closes; past sales sit under a closed archive section.`
           : chipFormat
@@ -374,6 +418,8 @@ export function evaluateSurfaceLoad(input = {}) {
       ],
       lesson_class: actionFirst
         ? "action-first-surface"
+        : duplicateFact
+          ? "duplicate-card-fact"
         : temporalBad
           ? "default-view-temporal-sanity"
           : chipFormat
