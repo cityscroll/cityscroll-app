@@ -288,7 +288,7 @@ async function paintMapExploration(){
           ${sel.level==="borough"?`<button type="button" class="act primary" data-map-drill="${mapEsc(sel.id)}">${t("map_drill_community")}</button>`:""}
           ${sel.level==="borough"?`<button type="button" class="act" data-map-council="1">${t("map_show_council")}</button>`:""}
         </div>
-        <p class="map-fallback-note"><a href="#property?view=tax-lien">${t("property_tax_lien_link")}</a></p>`;
+        <p class="map-fallback-note"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></p>`;
       detail.querySelector("[data-map-drill]")?.addEventListener("click",()=>{
         mapState={ level:"community_district", id:null, parent:sel.id, lens:mapState.lens };
         mapViewBox=null;
