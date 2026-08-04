@@ -744,6 +744,7 @@
     skip_to_content: "تخطَّ إلى المحتوى",
     or_more_results: "{n} نتيجة أو أكثر",
     results_count: "{n} نتيجة",
+    one_result: "نتيجة واحدة",
     event_today: "اليوم",
     event_in_n_days_one: "خلال {n} يوم",
     event_in_n_days_other: "خلال {n} يومًا",

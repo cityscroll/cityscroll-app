@@ -1,13 +1,4 @@
-/* ===================== PRIOR-CYCLE AWARDS (recurring-bid heuristic) =====================
-   chainHTML()/loadChain() above answer "what happened to THIS PIN" — but NYC procurement
-   doesn't guarantee a stable PIN across a renewal/rebid cycle, so "was this a yearly bid, and
-   who won it last time" needs a cross-PIN match: same agency, same recurring need, an earlier
-   cycle. Measured against 53k live City Record award notices before writing this: a naive
-   agency+title match is only ~48% precise, because NYC commonly makes several SIMULTANEOUS
-   awards from one RFP (concurrent siblings, easy to mistake for sequential cycles). Requiring
-   the two award dates be >=180 days apart removes almost all of that noise — ~92-96% precise
-   on a fresh sample. Never presented as a certain link: every match is labeled a heuristic, and
-   the empty state says so explicitly rather than just disappearing. */
+/* Cross-PIN prior-cycle matches require a 180-day gap and remain labeled as heuristic. */
 const PRIOR_CYCLE_MIN_GAP_DAYS = 180;
 const PRIOR_CYCLE_MAX_MATCHES = 3;
 const PRIOR_CYCLE_STOPWORDS = new Set("the a an of for and to in on with by at services service contract contracts renewal option year years extension citywide fiscal".split(" "));
@@ -26,9 +17,6 @@ function daysBetween(a, b){
   return Math.abs(da - db) / 86400000;
 }
 
-// Pure filter/rank step — unit-tested against the real patterns the research turned up:
-// concurrent-cohort awards (same RFP, days apart) must be excluded; an explicit renewal-suffix
-// PIN (…R001) far apart in time from the same agency+title must be kept.
 function rankPriorCycleCandidates(r, candidates, opts){
   const maxN = (opts && opts.maxN) || PRIOR_CYCLE_MAX_MATCHES;
   const minGapDays = (opts && opts.minGapDays) || PRIOR_CYCLE_MIN_GAP_DAYS;
@@ -68,12 +56,6 @@ function priorCycleHTML(matches){
     <div class="note">${t("prior_cycle_heuristic_note")}</div>`;
 }
 
-// Resolves the disjunctive "we found nothing" case into the three specific reasons
-// priorCycleAwards can distinguish, plus the pre-loaded near-match reveal when the endpoint
-// already found near matches for this notice. Phase 1b: eligibleCount comes straight from the
-// /priorcycle endpoint (priorCycleEligibleCount over the strict-tier rows, computed server-side)
-// rather than a local recompute, and the reveal is shown only when the endpoint returned near
-// matches (near.length > 0) — no lazy second fetch, no spin-then-nothing dead end.
 function priorCycleNoneHTML(r, eligibleCount, near){
   let key;
   if(priorCycleTitleWords(r.short_title).length < 2) key = "prior_cycle_none_generic";
@@ -101,41 +83,7 @@ async function priorCycleAwards(r, el){
   wireNearMatchReveal(el, data.near);
 }
 
-/* ===================== NEAR-MATCH PRIOR CYCLES (exploratory, w12-18) =====================
-   The strict matcher above requires a MAJORITY title-word overlap (score>=0.5) specifically to
-   avoid surfacing concurrent-RFP siblings as false "renewals" -- but that same precision bar
-   silently drops a real prior round that was simply retitled between cycles (an address or a
-   permit code swapped into the title, "Renewal" dropped, etc). Real example: HPD's "IMMEDIATE
-   EMERGENCY DEMOLITION OF 28 W 130th St, MANHATTAN (DM00121 E-6038R)" (2022, PIN 80622E0016001)
-   scores only 0.43 against its real prior round "IMMEDIATE EMERGENCY DEMOLITION" (2019, PIN
-   80619E0021001, same vendor Granite Environmental) -- 3 of 7 significant title words recur,
-   just short of the strict bar, even though the two notices are 994 days apart, comfortably
-   clear of the concurrent-sibling gap floor.
-   This tier surfaces candidates like that one -- explicitly, as caveated maybes, hidden behind a
-   reveal -- WITHOUT touching the confident chain/cadence/past-winners/lineage surfaces above,
-   which all read chainHTML()'s own pinBase()-widened chain, never this function's output
-   (honest-data convention). Same >=180-day gap floor as the strict matcher (a weak title match at
-   a short gap still reads as a same-round sibling, not a prior cycle) -- what loosens is the
-   title-overlap bar, corroborated by two signals a title-only match can't offer: how much of the
-   (renewal-suffix-stripped) PIN's prefix the two notices share, and whether their contract
-   amounts are in the same ballpark. A weak title score ALONE is too noisy to show on its own --
-   same-agency, unrelated-topic pairs routinely share one location/facility word (e.g. two
-   completely different Correction contracts both mentioning "Rikers Island"), a known limitation
-   inherited from PRIOR_CYCLE_STOPWORDS/priorCycleTitleWords() above, not something this tier
-   tries to fix -- so a near-match candidate needs the title score AND at least one corroborating
-   signal.
-   Cost: ONE additional SODA call. Phase 1b moved that fetch server-side — the /priorcycle
-   endpoint (worker/src/prior_cycle.mjs) runs both tiers together and returns { strict, near,
-   eligibleCount }, so the near set arrives PRE-LOADED with the strict set on a single
-   workerFetch and the reveal shows only when near.length > 0 (no lazy second fetch, no
-   spin-then-nothing dead end). The ranking heuristics below stay dual-implemented with the
-   worker's port (source of truth here; see lib/prior_cycle.mjs's header). The worker's near
-   query widens $q to this notice's own top 2 significant words -- broad enough to survive a
-   title starved by the strict search's own 6-word $q down to a self-match only (verified live:
-   the HPD example above returns zero OTHER rows under the strict 6-word $q, but the true prior
-   round is row 12 of 50 under a 2-word $q bounded to start_date < this notice's own date) -- and
-   orders by date so the 50-row cap lands on the candidates closest in time to this notice, not
-   the 50 most recent system-wide uses of an evergreen word like "demolition". */
+/* Near matches require title overlap plus PIN-prefix or amount corroboration. */
 const NEAR_MATCH_MIN_SCORE = 0.34; // "at least a third of this notice's significant title words recur" — looser than the strict majority bar, still real overlap, not one coincidental shared word
 const NEAR_MATCH_MAX_MATCHES = 3;
 const NEAR_MATCH_PIN_PREFIX_MIN_LEN = 8; // shared leading chars of the renewal-suffix-stripped PIN -- deliberately deeper than a same-agency PIN scheme's own common stem (a 2000s-era Correction PIN's first 6 chars, e.g. "072200", are shared by nearly every contract that agency issued that decade and prove nothing on their own — verified live against 700+ same-agency pairs)
@@ -149,9 +97,6 @@ function pinPrefixShared(a, b){
   return n;
 }
 
-// A candidate needs the required title overlap PLUS at least one of these two corroborating
-// signals (rankNearMatchCandidates() below enforces that) — agency+title alone is too noisy on
-// its own, see the file header.
 function nearMatchReasons(r, c, overlapWords){
   const reasons = [{kind:"agency"}, {kind:"title", words:overlapWords}];
   if(usablePin(r.pin) && usablePin(c.pin) && pinPrefixShared(r.pin, c.pin) >= NEAR_MATCH_PIN_PREFIX_MIN_LEN){
@@ -164,11 +109,6 @@ function nearMatchReasons(r, c, overlapWords){
   return reasons;
 }
 
-// Pure filter/rank step, mirroring rankPriorCycleCandidates() above but for the looser tier --
-// same gap floor, lower title-overlap floor, hard requirement for PIN or amount corroboration.
-// strictMatches is whatever rankPriorCycleCandidates() already found for this notice (today's
-// only call site only ever reaches this function when that was empty, but the parameter is kept
-// so a confident match can never ALSO resurface here as a "maybe", regardless of caller).
 function rankNearMatchCandidates(r, candidates, strictMatches, opts){
   const maxN = (opts && opts.maxN) || NEAR_MATCH_MAX_MATCHES;
   const minGapDays = (opts && opts.minGapDays) || PRIOR_CYCLE_MIN_GAP_DAYS;
