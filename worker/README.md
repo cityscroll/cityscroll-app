@@ -66,13 +66,30 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/admin/ops-contract` | GET | **Versioned ops contract** (`ops-contract.v1`) — digest modes, daylog actions/fields, stats metrics (incl. developer-traffic exclusion), admin routes + auth classes, KV key prefixes, feature flags. No secrets. Desk panels pin `min_compatible_version` against this document (or the committed fixture `worker/ops-contract.v1.json`). Never served on public `/stats` | `ADMIN_KEY` → 404 if unset |
 | `/admin/possibly-same` | GET | Read-only desk review of candidates blocked from recent `source_records`, excluding pairs already joined to one canonical entity; `Accept: application/json` returns the shaped cards | `ADMIN_KEY` → 404 if unset; `DB` |
 | `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
+| `/admin/digest-shadow` | GET/POST | **06:00 ET digest rehearsal**. GET returns the latest/dated machine-readable run summary; `?digest=` adds one rendered HTML preview. `NEEDS_ATTENTION` returns HTTP 503 with structured redlines. POST re-runs the delivery-free build after a repair | `ADMIN_KEY` → 404 if unset; `DB` |
 | `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
 | `/board-hook` | POST | **Board notifications** — see below | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
 | `/` `/health` | GET | liveness | none |
 
-## The daily digest (cron `0 13 * * *` ≈ 9am ET; LIVE since 2026-07-01)
+## The daily digest (shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
+
+The 06:00 ET shadow run forces the real account digest builders inline against live data with
+delivery, queue fan-out, watermarks, send counters, and search-health state advancement disabled.
+Every email that would be eligible under the production queue/day-cap semantics is fully rendered
+and stored in D1. The private `/admin/digest-shadow` contract reports digest/item/watch counts,
+deltas from the prior send, rendered-preview metadata, and structured redlines (`code`, masked
+digest/watch id, reason, evidence). Render failures, historically-active watches going to zero,
+aggregate collapse/explosion, count/list mismatch, and malformed unsubscribe/context links all
+produce `NEEDS_ATTENTION` and HTTP 503.
+
+The scheduled `digest-shadow-monitor.yml` poll runs after the rehearsal and opens or updates a
+repair issue when the run is redlined, missing, or stale. The same redline also uses the existing
+operator-notification email path (`FEEDBACK_TO` via Resend). The repair protocol is machine-readable:
+diagnose the listed `affected_digest_ids`, apply the repair, then authenticated `POST
+/admin/digest-shadow` re-renders the full set before 09:00. The 09:00 send path is intentionally
+unchanged and does not auto-hold.
 
 Before the digest run, the same cron refreshes the D1 notices mirror from Socrata
 (`ingest.mjs`, cursored, fail-soft) and pre-warms prior-cycle match sets for the
@@ -151,7 +168,8 @@ count rather than an event count, written by the cron job, not incremented — s
 
 D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + ingest cursor
 (daily cron, `ingest.mjs`; Socrata stays the source of truth) and `prior_cycle_matches` (the
-`/priorcycle` precompute cache). Schema detail lives in `../docs/architecture.md`.
+`/priorcycle` precompute cache), plus private `digest_shadow_runs` summaries and
+`digest_shadow_previews` rendered email buffers. Schema detail lives in `../docs/architecture.md`.
 
 Analytics Engine (`crol_usage_events_v1`) holds the rolling 90-day interaction taxonomy described
 in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. `/stats`
@@ -211,8 +229,9 @@ secrets are optional — see "Board notifications" above. Vars (in `wrangler.tom
 digest and logs the full HTML + headers, but never calls Resend and never bumps send
 counters / last-sent clocks), `ALERTS_FROM`, `ALERTS_REPLY_TO`, `MAX_PER_RUN`,
 `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`, `BOARD_PROJECT_IDS`, `BOARD_ORG`,
-`BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire the cron
-locally by hitting `/__scheduled` under `wrangler dev`.
+`BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire a cron
+locally by hitting `/__scheduled?cron=0+10+*+*+*` or `/__scheduled?cron=0+13+*+*+*` under
+`wrangler dev`.
 
 ### Automatic deploys
 

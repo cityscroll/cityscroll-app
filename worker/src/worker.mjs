@@ -23,6 +23,7 @@ import {
   handleAdminPossiblySame,
   handleAdminOpsContract,
   handleAdminDigestRollup,
+  handleAdminDigestShadow,
   handleAdminDigestSendTest,
   handleAdminDigestCatchUp,
   handleAdminPassportIngest,
@@ -65,6 +66,7 @@ import { handleEntityDossier } from "./entity_dossier.mjs";
 import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
 import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
+import { runDigestShadow } from "./digest_shadow.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -120,6 +122,7 @@ export default {
     if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
+    if (pathname === "/admin/digest-shadow") return handleAdminDigestShadow(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/meeting-outcomes-refresh") return handleAdminMeetingOutcomesRefresh(request, env);
@@ -134,6 +137,25 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    // 06:00 ET rehearsal: the real digest builders run inline against live data, but delivery,
+    // watermarks, send counters, and the 09:00 queue path remain untouched.
+    if (event.cron === "0 10 * * *") {
+      try {
+        // Match the send cron's source freshness: refresh the notices mirror first, then let
+        // runAlerts use the same D1/SODA selection logic it will use at 09:00.
+        try {
+          const result = await ingestNotices(env);
+          console.log("digest shadow ingest:", JSON.stringify(result));
+        } catch (error) {
+          console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
+        }
+        const summary = await runDigestShadow(env);
+        console.log("digest shadow:", JSON.stringify(summary));
+      } catch (error) {
+        console.error("digest shadow failed:", String(error?.message || error));
+      }
+      return;
+    }
     // Refresh the D1 notices mirror first (fail-soft: an ingest failure must never
     // block the digest run — alerts fall back to querying Socrata live anyway).
     let ingestResult = null;

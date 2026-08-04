@@ -1,0 +1,228 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+
+import {
+  DIGEST_SHADOW_ATTENTION,
+  DIGEST_SHADOW_READY,
+  buildDigestShadowSummary,
+  runDigestShadow,
+} from "../src/digest_shadow.mjs";
+import { handleAdminDigestShadow } from "../src/admin.mjs";
+
+const NOW = new Date("2026-08-04T10:00:00.000Z");
+
+function itemHtml(count, { unsubscribe = true, context = true, badHref = null } = {}) {
+  const items = Array.from({ length: count }, (_, index) =>
+    `<li data-digest-item="1">item ${index + 1}</li>`).join("");
+  const links = [
+    context ? '<a href="https://cityscroll.org/#notice/1">View</a>' : "",
+    unsubscribe ? '<a href="https://api.cityscroll.org/unsubscribe?example=1">Unsubscribe</a>' : "",
+    badHref != null ? `<a href="${badHref}">Broken</a>` : "",
+  ].join("");
+  return `<ul>${items}</ul>${links}`;
+}
+
+function result({ id = "sub:ab***", previewId = null, count = 1, html = itemHtml(count), sections = null } = {}) {
+  return {
+    sub: id,
+    ...(previewId ? { previewId } : {}),
+    lens: "money",
+    emailRedacted: "ab***@example.com",
+    new: count,
+    forecasts: 0,
+    action: count ? "match" : "heartbeat",
+    dryRun: true,
+    ...(sections ? { sections } : {}),
+    preview: { subject: "CityScroll preview", html, listUnsubscribe: "<https://api.cityscroll.org/unsubscribe?example=1>" },
+  };
+}
+
+function summary(results, history = []) {
+  return buildDigestShadowSummary({ run: { results }, history, now: NOW });
+}
+
+test("render errors are structured redlines with digest id, reason, and evidence", () => {
+  const out = summary([{ sub: "sub:er***", error: "template exploded" }]);
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+  assert.deepEqual(out.redlines[0], {
+    code: "render_error",
+    digest_id: "sub:er***",
+    watch_id: null,
+    reason: "The digest build path returned an error.",
+    evidence: { error: "template exploded" },
+  });
+});
+
+test("a zero-item watch with trailing item history redlines", () => {
+  const sections = [{ sub: "sub:wa***", previewId: "watch:opaque", lens: "rules", new: 0, forecasts: 0 }];
+  const history = [{
+    day: "2026-08-03",
+    totalNotices: 3,
+    sentCount: 1,
+    entries: [{ id: "acct:ab***", sections: [{ sub: "sub:wa***", new: 3, forecasts: 0 }] }],
+  }];
+  const out = summary([result({ id: "acct:ab***", count: 0, html: itemHtml(0), sections })], history);
+  const warning = out.redlines.find((item) => item.code === "historical_watch_zero");
+  assert.equal(warning.digest_id, "acct:ab***");
+  assert.equal(warning.watch_id, "watch:opaque");
+  assert.equal(warning.evidence.trailing_max_item_count, 3);
+});
+
+test("aggregate item-count collapse versus trailing average redlines", () => {
+  const history = [20, 24, 16].map((total, index) => ({ day: `2026-08-0${3 - index}`, totalNotices: total, entries: [] }));
+  const out = summary([result({ count: 1 })], history);
+  const warning = out.redlines.find((item) => item.code === "aggregate_count_collapse");
+  assert.ok(warning);
+  assert.equal(warning.digest_id, "run");
+  assert.equal(warning.evidence.current_item_count, 1);
+});
+
+test("aggregate item-count explosion versus trailing average redlines", () => {
+  const history = [10, 10, 10].map((total, index) => ({ day: `2026-08-0${3 - index}`, totalNotices: total, entries: [] }));
+  const out = summary([result({ count: 50, html: itemHtml(50) })], history);
+  assert.ok(out.redlines.some((item) => item.code === "aggregate_count_explosion"));
+});
+
+test("declared count must equal the rendered digest item list", () => {
+  const out = summary([result({ count: 2, html: itemHtml(1) })]);
+  const warning = out.redlines.find((item) => item.code === "count_list_mismatch");
+  assert.deepEqual(warning.evidence, { declared_item_count: 2, rendered_item_count: 1 });
+});
+
+test("missing or malformed unsubscribe/context links redline", () => {
+  const out = summary([result({ count: 1, html: itemHtml(1, { unsubscribe: false, context: false, badHref: "#" }) })]);
+  const warning = out.redlines.find((item) => item.code === "broken_digest_link");
+  assert.ok(warning);
+  assert.deepEqual(warning.evidence.invalid_hrefs, ["#"]);
+  assert.equal(warning.evidence.unsubscribe_present, false);
+  assert.equal(warning.evidence.context_present, false);
+});
+
+test("clean summary exposes counts, prior-send deltas, and repair contract", () => {
+  const history = [{ day: "2026-08-03", totalNotices: 1, sentCount: 1, entries: [] }];
+  const out = summary([result()], history);
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+  assert.equal(out.ok, true);
+  assert.equal(out.digest_count, 1);
+  assert.equal(out.total_items, 1);
+  assert.deepEqual(out.delta_vs_yesterday_send, { digest_count: 0, item_count: 0, yesterday_present: true });
+  assert.deepEqual(out.redlines, []);
+  assert.equal(out.repair.rerun_method, "POST /admin/digest-shadow");
+});
+
+test("opaque preview ids keep masked-recipient collisions independently addressable", () => {
+  const out = summary([
+    result({ id: "account:ab***", previewId: "digest:111", count: 1 }),
+    result({ id: "account:ab***", previewId: "digest:222", count: 1 }),
+  ]);
+  assert.equal(out.digest_count, 2);
+  assert.deepEqual(out.previews.map((preview) => preview.digest_id), ["digest:111", "digest:222"]);
+});
+
+function writeOnlyDb() {
+  const batches = [];
+  return {
+    batches,
+    prepare(sql) {
+      return { bind: (...args) => ({ sql, args }) };
+    },
+    async batch(statements) {
+      batches.push(statements);
+      return statements.map(() => ({ success: true }));
+    },
+  };
+}
+
+test("shadow invocation uses the shared runAlerts path inline and cannot deliver or advance state", async () => {
+  const DB = writeOnlyDb();
+  const calls = [];
+  let notified = false;
+  const out = await runDigestShadow({
+    DB,
+    ALERT_STATE: { get: async () => null },
+    ALERTS_LIVE: "true",
+    QUEUE_DIGESTS: "true",
+    DIGEST_QUEUE: { send: async () => { throw new Error("queue must not be used"); } },
+  }, {
+    now: NOW,
+    runAlertsFn: async (...args) => {
+      calls.push(args);
+      return { results: [result()] };
+    },
+    notifyFn: async () => { notified = true; },
+  });
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+  assert.equal(notified, false);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0][0].ALERTS_LIVE, "false");
+  assert.equal(calls[0][0].QUEUE_DIGESTS, "false");
+  assert.deepEqual(calls[0][2], {
+    now: NOW,
+    live: false,
+    forceInline: true,
+    queueCapSemantics: true,
+    capturePreviews: true,
+    advanceState: false,
+    persist: false,
+    simulateDryRunCounters: true,
+  });
+  assert.equal(DB.batches.length, 1);
+});
+
+test("operator notification failure becomes its own structured redline", async () => {
+  const DB = writeOnlyDb();
+  const out = await runDigestShadow({
+    DB,
+    ALERT_STATE: { get: async () => null },
+  }, {
+    now: NOW,
+    runAlertsFn: async () => ({ results: [{ sub: "sub:er***", previewId: "digest:error", error: "render failed" }] }),
+    notifyFn: async () => { throw new Error("mail unavailable"); },
+  });
+  const warning = out.redlines.find((item) => item.code === "owner_notification_failed");
+  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+  assert.equal(warning.digest_id, "run");
+  assert.equal(warning.evidence.error, "mail unavailable");
+  assert.equal(out.notification.status, "failed");
+  assert.equal(DB.batches.length, 2);
+});
+
+function readDb(summaryJson, preview = null) {
+  return {
+    prepare(sql) {
+      const query = { sql, args: [] };
+      query.bind = (...args) => { query.args = args; return query; };
+      query.first = async () => {
+        if (sql.includes("digest_shadow_runs")) return { summary_json: JSON.stringify(summaryJson) };
+        return preview;
+      };
+      return query;
+    },
+  };
+}
+
+test("admin shadow endpoint fails closed and returns non-ok HTTP for machine pollers", async () => {
+  assert.equal((await handleAdminDigestShadow(new Request("https://w/admin/digest-shadow"), {})).status, 404);
+  const redlined = summary([{ sub: "sub:er***", error: "boom" }]);
+  const response = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer secret" } }),
+    { ADMIN_KEY: "secret", DB: readDb(redlined) },
+  );
+  assert.equal(response.status, 503);
+  const body = await response.json();
+  assert.equal(body.summary.status, DIGEST_SHADOW_ATTENTION);
+  assert.equal(body.summary.redlines[0].digest_id, "sub:er***");
+});
+
+test("cron, D1 migration, and scheduled wake monitor are wired", () => {
+  const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
+  const migration = readFileSync(new URL("../migrations/0014_digest_shadow.sql", import.meta.url), "utf8");
+  const workflow = readFileSync(new URL("../../.github/workflows/digest-shadow-monitor.yml", import.meta.url), "utf8");
+  assert.match(wrangler, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
+  assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
+  assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
+  assert.match(workflow, /cron: "10 10 \* \* \*"/);
+  assert.match(workflow, /Wake the repair loop/);
+  assert.match(workflow, /issues\.create/);
+});
