@@ -25,6 +25,9 @@ let moneynlExtra = {};
 // Location carried by a Meetings lens "Watch this search" handoff. It is declarative watch
 // state (affected borough/neighborhood), never inferred or retained visitor coordinates.
 let meetingWatchExtra = {};
+// Property saved-search fields carried by the same unified Alerts URL and /subscribe payload.
+// Kept separate from the two visible keyword/agency inputs so stage/place do not disappear.
+let propertyWatchExtra = {};
 // Set by the "Email me when the award registers" button on a covered-agency notice's empty
 // award state (see awardWatchOfferHTML()/externalAwardForNotice()) — the one-notice target an
 // "awardwatch" #awatch selection subscribes to. null until that button (or nothing, if the
@@ -51,6 +54,7 @@ function aWatchChange(skipQuizSync){
     $("#amoneykw").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
     moneynlExtra = {};
     meetingWatchExtra = {};
+    propertyWatchExtra = {};
     if(lastWatch==="awardwatch") awardWatchTarget = null; // leaving the type clears its one-notice target
     if(lastWatch==="examarea") examAreaWatchTarget = null;
     noticeWatchSeed = null; // type switch leaves the carried notice behind
@@ -97,8 +101,11 @@ function aDescribe(){
   if(SECTION_WATCH_LABEL[w]){
     const location=w==="meetings"
       ? (meetingWatchExtra.neighborhood||meetingWatchExtra.borough||(meetingWatchExtra.locationScope?t("citywide_unlocated"):""))
+      : w==="property" ? (propertyWatchExtra.neighborhood||propertyWatchExtra.borough||"") : "";
+    const propertyStage=w==="property"&&propertyWatchExtra.process
+      ? t(([["hearing","disposition_stage_hearing"],["auction_or_rfp","disposition_stage_auction_or_rfp"],["award_or_conveyance","disposition_stage_award_or_conveyance"],["unstaged","disposition_stage_unstaged"]].find(([key])=>key===propertyWatchExtra.process)||[])[1]||"stage_all")
       : "";
-    const bits=[$("#aparam").value.trim()?t("desc_matching",{kw:$("#aparam").value.trim()}):"", $("#aagency").value.trim()?t("desc_from_agency",{agency:$("#aagency").value.trim()}):"", location?t("desc_affecting_area",{area:location}):""].filter(Boolean).join("");
+    const bits=[$("#aparam").value.trim()?t("desc_matching",{kw:$("#aparam").value.trim()}):"", $("#aagency").value.trim()?t("desc_from_agency",{agency:$("#aagency").value.trim()}):"", location?t("desc_affecting_area",{area:location}):"", propertyStage?` · ${t("property_process_label")}: ${propertyStage}`:""].filter(Boolean).join("");
     return t("desc_section",{freq, what:t(SECTION_WATCH_LABEL[w]), bits});
   }
   const place=$("#aparam").value.trim();
@@ -150,6 +157,12 @@ async function aFetch(){
     let rows=await soda(p);
     if(w==="meetings"&&(meetingWatchExtra.borough||meetingWatchExtra.neighborhood||meetingWatchExtra.locationScope)){
       rows=rows.filter(row=>hearingMatchesArea(normalizeHearingRow(row),meetingWatchExtra));
+    }
+    if(w==="property" && Object.keys(propertyWatchExtra).length){
+      try{
+        const tools=await import("../property_saved_search.mjs");
+        rows=rows.filter(row=>tools.propertyRowMatchesSavedSearch(row,propertyWatchExtra,todayISO()));
+      }catch(_e){}
     }
     return { kind:"notice", rows };
   }
@@ -664,7 +677,8 @@ function aLensFilter(){
   if(w==="examarea") return {lens:"people", filter:{view:"guide",interestArea:examAreaWatchTarget?.id||null,interestLabel:examAreaWatchTarget?.label||null}};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{
     keywords:p?[p]:[], agency:$("#aagency").value.trim()||null,
-    ...(w==="meetings"?meetingWatchExtra:{})
+    ...(w==="meetings"?meetingWatchExtra:{}),
+    ...(w==="property"?propertyWatchExtra:{})
   }};
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
@@ -1015,6 +1029,7 @@ Object.defineProperty(globalThis, "examAreaWatchTarget", { configurable: true, g
 Object.defineProperty(globalThis, "digAwarenessToolsPromise", { configurable: true, get: () => digAwarenessToolsPromise, set: value => { digAwarenessToolsPromise = value; } });
 Object.defineProperty(globalThis, "lastWatch", { configurable: true, get: () => lastWatch, set: value => { lastWatch = value; } });
 Object.defineProperty(globalThis, "meetingWatchExtra", { configurable: true, get: () => meetingWatchExtra, set: value => { meetingWatchExtra = value; } });
+Object.defineProperty(globalThis, "propertyWatchExtra", { configurable: true, get: () => propertyWatchExtra, set: value => { propertyWatchExtra = value; } });
 Object.defineProperty(globalThis, "moneynlExtra", { configurable: true, get: () => moneynlExtra, set: value => { moneynlExtra = value; } });
 Object.defineProperty(globalThis, "noticeWatchSeed", { configurable: true, get: () => noticeWatchSeed, set: value => { noticeWatchSeed = value; } });
 globalThis.paintAlertContextLead = paintAlertContextLead;
