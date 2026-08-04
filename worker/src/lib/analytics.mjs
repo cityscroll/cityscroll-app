@@ -10,8 +10,8 @@
 
 import { normalizeUsageTrafficClass } from "./ops_contract.mjs";
 
-export const TAXONOMY_VERSION = "1.1.0";
-export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", TAXONOMY_VERSION]);
+export const TAXONOMY_VERSION = "1.2.0";
+export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", "1.1.0", TAXONOMY_VERSION]);
 export const DEFAULT_ANALYTICS_DATASET = "crol_usage_events_v1";
 export const ANALYTICS_RETENTION_DAYS = 90;
 export { normalizeUsageTrafficClass };
@@ -93,6 +93,14 @@ const EVENT_SPECS = Object.freeze({
   },
   action_opened: {
     details: ["direct", "official-handoff"],
+    surfaces: ["home"],
+  },
+  outcome_prompted: {
+    details: ["official-handoff", "passed-action"],
+    surfaces: ["home"],
+  },
+  outcome_dismissed: {
+    details: ["official-handoff", "passed-action"],
     surfaces: ["home"],
   },
   outcome_recorded: {

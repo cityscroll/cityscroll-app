@@ -91,6 +91,21 @@ test("current extraction measurement reuses Property stage and participation ext
   assert.equal(current.objection_step, false);
   assert.equal(current.bid_action, true);
   assert.equal(current.source_receipted_action, true);
+  assert.equal(current.outcome_prompt_eligible, false);
+});
+
+test("current extraction measures passed-action outcome prompts without inventing a handoff", () => {
+  const current = currentPropertyExtraction({
+    request_id: "20260601001",
+    start_date: "2026-06-01T00:00:00.000",
+    type_of_notice_description: "Sale",
+    short_title: "Timber sale",
+    additional_description_1: "Sealed bids must be submitted no later than July 1, 2026.",
+  }, { today: "2026-08-04" });
+  assert.equal(current.source_receipted_action, true);
+  assert.equal(current.outcome_prompt_eligible, true);
+  assert.equal(current.outcome_prompt_passed_action, true);
+  assert.equal(current.outcome_prompt_official_handoff, false);
 });
 
 test("current extraction reports future source-grounded objection and comment support", () => {
