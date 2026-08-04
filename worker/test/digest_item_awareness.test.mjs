@@ -111,12 +111,13 @@ const award = {
   pin: "PIN-FIXTURE-0001",
 };
 
-test("award awareness: phase Award + awarded-to action (no bid CTA)", () => {
+test("award awareness: phase Award + terse record action (no bid CTA)", () => {
   const a = digestItemAwareness(award, { kind: "award", today: TODAY });
   assert.equal(a.phase, "Award");
   assert.equal(a.deadline.state, "none");
   assert.equal(a.pointer_only, false);
-  assert.match(a.action.label, /Awarded to Acme/i);
+  assert.equal(a.action.label, "Open Checkbook");
+  assert.match(a.action.guide?.label || "", /Awarded to Acme/i);
   assert.doesNotMatch(a.action.label || "", /\bbid\b/i);
   assert.ok(a.steps.some((s) => s.label === "Vendor"));
 });

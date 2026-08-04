@@ -50,7 +50,7 @@ test("awardWatchOfferHTML: renders the offer button when a real notice is given"
   const { awardWatchOfferHTML } = build(null);
   const html = awardWatchOfferHTML({ request_id: "20260701001" });
   assert.match(html, /data-award-watch-offer/);
-  assert.match(html, />Email me when the award registers</);
+  assert.match(html, />Watch award</);
 });
 
 test("awardWatchOfferHTML: renders nothing without a notice, or a notice with no request_id — the agency-profile call site (no single notice) must never grow this button", () => {

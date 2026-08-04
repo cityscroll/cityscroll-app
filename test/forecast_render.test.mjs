@@ -75,7 +75,7 @@ test("forecastItemHTML: checkbook item — badge, title, subtitle, subscribe but
   assert.match(html, /Sanitation · Amount \$250K/);
   assert.match(html, /data-watch-kind="vendor"/);
   assert.match(html, /data-watch-name="Acme Snow &amp; Ice LLC"/);
-  assert.match(html, /class="act mini-sub-btn"[^>]*>Subscribe to Alert<\/button>/);
+  assert.match(html, /class="act mini-sub-btn"[^>]*>Subscribe<\/button>/);
 });
 
 test("forecastItemHTML: MOCS-plan item — badge, title, subtitle, watch-kind agency", () => {

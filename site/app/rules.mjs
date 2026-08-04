@@ -36,8 +36,12 @@ function rulesExplorerCardHTML(entry, terms){
   const chainChip=entry.notice_count>1
     ? `<span class="tag asset">${escUiHtml(t("rules_chain_notice_count",{n:String(entry.notice_count)}))}</span>`
     : "";
+  const commentEnded=fineStage==="comment-closed"
+    ? `<span class="tag closed" role="status">${escUiHtml(t("rule_stage_comment_closed"))}${entry.comment_by_date?` · ${escUiHtml(ruleDateLabel(entry.comment_by_date))}`:""}</span>`
+    : "";
   const processLine=`<div class="rules-process-line">
     <span class="tag open" data-card-fact="stage:${escUiHtml(processStage||"unstaged")}">${escUiHtml(processLabel)}</span>
+    ${commentEnded}
     ${chainChip}
     ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:`<span class="tag place">${escUiHtml(t("rules_list_no_agency"))}</span>`}
   </div>`;
@@ -55,6 +59,7 @@ function rulesExplorerCardHTML(entry, terms){
       ? `${RULE_HEARING_FACT_KEY}:${entry.hearing_date}`
       : "";
   const primaryFactAttr=primaryFact?` data-card-fact="${escUiHtml(primaryFact)}"`:"";
+  const primaryAria=` aria-label="${escUiHtml(`${actionLeadText}: ${title||t("untitled")}`)}"`;
   // Primary kinetic destination: comment portal while open; else official rule page; else notice.
   // Separate template branches so link_targets can classify each href expression (never mix
   // in-app #notice with external NYC Rules into one ${escUiHtml(primaryHref)} slot).
@@ -70,13 +75,13 @@ function rulesExplorerCardHTML(entry, terms){
   );
   let acts="";
   if(wantCommentPrimary && entry.comment_url){
-    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.comment_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr}${primaryAria} href="${escUiHtml(entry.comment_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
   } else if(wantCommentPrimary && entry.rule_url){
-    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr}${primaryAria} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
   } else if(wantRulePrimary){
-    acts=`<a class="act primary"${primaryFactAttr} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr}${primaryAria} href="${escUiHtml(entry.rule_url)}" ${EXT_ATTRS}>${escUiHtml(actionLeadText)}${extSR()}</a>`;
   } else {
-    acts=`<a class="act primary"${primaryFactAttr} href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
+    acts=`<a class="act primary"${primaryFactAttr}${primaryAria} href="${noticeHref}">${escUiHtml(actionLeadText)}</a>`;
   }
   const primaryAction=acts;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
@@ -240,7 +245,7 @@ async function renderRulesExplorer(){
 const RULE_STAGE_CFG = {
   "proposed":       { key: "rule_stage_proposed",       cls: "asset",  dateField: null },
   "comment-open":   { key: "rule_stage_comment_open",   cls: "urgency",dateField: "comment_by_date" },
-  "comment-closed": { key: "rule_stage_comment_closed", cls: "closed", dateField: null },
+  "comment-closed": { key: "rule_stage_comment_closed", cls: "closed", dateField: "comment_by_date" },
   "hearing":        { key: "rule_stage_hearing",        cls: "open",   dateField: "hearing_date" },
   "adopted":        { key: "rule_stage_adopted",        cls: "asset",  dateField: "adoption_published_at" },
   "effective":      { key: "rule_stage_effective",      cls: "asset",  dateField: "effective_date" },
@@ -272,7 +277,8 @@ function ruleStageChip(rec){
     cls=(dl!==null && dl>=0 && dl<=3)?"hot":(dl!==null && dl>=0 && dl<=14)?"soon":"open";
   }
   const dateVal=(cfg.dateField && nr && nr[cfg.dateField])?nr[cfg.dateField]:null;
-  const label=dateVal?t(cfg.key,{date:ruleDateLabel(dateVal)}):t(cfg.key);
+  let label=dateVal?t(cfg.key,{date:ruleDateLabel(dateVal)}):t(cfg.key);
+  if(stage==="comment-closed"&&dateVal) label+=` · ${ruleDateLabel(dateVal)}`;
   // Official page: comment page while comments are open, the rule/adoption record otherwise.
   const href=nr?(stage==="comment-open"?(nr.comment_url||nr.url||null):(nr.url||null)):null;
   return href
@@ -288,7 +294,8 @@ function ruleCommentAction(rec){
   const href=nr.comment_url||nr.url;
   if(!href) return "";
   const factKey=["comment","deadline"].join("-");
-  return `<a class="act" data-card-fact="${factKey}:${escUiHtml(String(nr.comment_by_date).slice(0,10))}" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(nr.comment_by_date)})}${extSR()}</a>`;
+  const date=ruleDateLabel(nr.comment_by_date);
+  return `<a class="act" aria-label="${escUiHtml(`${t("rule_comment_btn")} — ${date}`)}" data-card-fact="${factKey}:${escUiHtml(String(nr.comment_by_date).slice(0,10))}" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn")}${extSR()}</a>`;
 }
 
 const RULES_PUBLIC_URL="https://rules.cityofnewyork.us/";
@@ -353,7 +360,7 @@ function ruleEventCardHTML(type, event, rec, opts){
     : "";
   const href=nr?(nr.comment_url||nr.url):official;
   const commentAction=type==="comment_close"&&scheduled&&href
-    ? `<a class="act primary" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(event.valid_at)})}${extSR()}</a>`
+    ? `<a class="act primary" aria-label="${escUiHtml(`${t("rule_comment_btn")} — ${ruleDateLabel(event.valid_at)}`)}" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn")}${extSR()}</a>`
     : "";
   const calendarAction=type==="comment_close"
     ? `<button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(event.valid_at)})}</button>`
@@ -470,7 +477,7 @@ function rulePhaseLeadHTML(view, rec){
   if(cur.lead_action==="comment" && (view.comment_url||nr?.comment_url||nr?.url)){
     const href=view.comment_url||nr.comment_url||nr.url;
     const date=cur.since||nr?.comment_by_date;
-    actionHTML=`<a class="act primary" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(date)})}${extSR()}</a>`
+    actionHTML=`<a class="act primary"${date?` aria-label="${escUiHtml(`${t("rule_comment_btn")} — ${ruleDateLabel(date)}`)}"`:""} href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn")}${extSR()}</a>`
       + (date?` <button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(date)})}</button>`:"");
   }else if(cur.lead_action==="hearing" && (view.official_url||nr?.url)){
     const official=view.official_url||nr.url;

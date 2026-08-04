@@ -71,7 +71,7 @@ const T = (key, vars) => {
     agency_awards_none_open_data_html: "The city does not publish this agency's awards in an open dataset — they would appear in NYS Authorities Budget Office filings or Checkbook NYC if released. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
-    award_watch_offer_btn: "Email me when the award registers",
+    award_watch_offer_btn: "Watch award",
   }[key]) || key;
   return vars ? s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? vars[k] : "")) : s;
 };

@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Optional, Sequence
 
 from . import SUITE_MEMBERS
-from . import genai_disclosure, heading_punctuation, i18n_keys, link_text
+from . import control_labels, genai_disclosure, heading_punctuation, i18n_keys, link_text
 from . import nyc_copy_lint, page_metadata, reading_level
 
 
@@ -26,6 +26,8 @@ class GateVerdict:
 def _runner(name: str, site_root: Path, **opts) -> int:
     if name == "link_text":
         return link_text.run(site_root, pages=opts.get("pages"))
+    if name == "control_labels":
+        return control_labels.run(site_root)
     if name == "i18n_keys":
         return i18n_keys.run(site_root)
     if name == "nyc_copy_lint":

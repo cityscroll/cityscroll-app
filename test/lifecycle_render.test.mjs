@@ -315,7 +315,7 @@ test("lifecycle: payment stage shows payment count, summary, and dollars link", 
 test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {
   const html = renderLifecycle(FULL_LIFECYCLE, notice);
   // Methodology is demoted to a disclosure — names sources without duplicating outbound links
-  assert.match(html, /How this timeline works/);
+  assert.match(html, /Explain timeline/);
   assert.match(html, /This timeline joins/);
   assert.match(html, /City Record/);
   assert.match(html, /Checkbook NYC/);
