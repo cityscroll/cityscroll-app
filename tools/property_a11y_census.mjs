@@ -22,6 +22,7 @@ import { fileURLToPath } from "node:url";
 import { cleanNoticeText } from "../site/text_clean.mjs";
 import { extractPropertyCommercial } from "../site/property_commercial.mjs";
 import { classifyDispositionStage } from "../site/property_disposition_stage.mjs";
+import { extractPropertyTimedEvents } from "../site/property_timed_events.mjs";
 
 export const PROPERTY_SECTION = "Property Disposition";
 export const DETAIL_BODY_LIMIT = 6000;
@@ -165,7 +166,7 @@ export function detectPropertySignals(row = {}) {
     structured_event_date: Boolean(String(row.event_date || "").slice(0, 10)),
     hearing: /public hearing|opportunity to be heard|wishing to be heard/i.test(text),
     auction_window: /auction.{0,100}(?:from|begin|start|open)|(?:from|between).{0,100}auction/i.test(text),
-    bid_deadline: /(?:bid|proposal)s?.{0,100}(?:due|deadline|must be received|will be accepted|no later than)|(?:due|deadline|no later than).{0,100}(?:bid|proposal)/i.test(text),
+    bid_deadline: /(?:bid|proposal)s?.{0,100}(?:due|deadline|must be received|must be submitted|will be accepted|no later than)|(?:due|deadline|no later than).{0,100}(?:bid|proposal)|responses? are due no later than/i.test(text),
     objection_deadline: /(?:object|objection).{0,140}(?:within|before|by |no later than|days)|(?:within|before|by |no later than).{0,140}(?:object|objection)/i.test(text),
     comment_or_testimony: /written comments?|submit comments?|testif(?:y|ies|ied)|testimony/i.test(text),
     inspection_or_showing: /show dates?|public showings?|inspection.{0,80}(?:date|time)|prospective bidders are (?:required|encouraged) to attend/i.test(text),
@@ -209,13 +210,34 @@ export function detectPropertyJargon(row = {}) {
 export function currentPropertyExtraction(row = {}) {
   const stage = classifyDispositionStage(row);
   const commercial = extractPropertyCommercial(row);
+  const events = extractPropertyTimedEvents(row);
+  const eventKinds = new Set(events.map((event) => event.kind));
+  const signals = detectPropertySignals(row);
   const stepKinds = new Set((commercial?.participation?.steps || []).map((step) => step.kind));
+  const receiptsValid = events.every((event) => {
+    const source = String(row[event.source_field] || "");
+    return source.slice(event.source_span?.start, event.source_span?.end) === event.source_span?.text;
+  });
   return {
     stage_hearing: stage === "hearing",
     stage_auction_or_rfp: stage === "auction_or_rfp",
     stage_award_or_conveyance: stage === "award_or_conveyance",
     stage_unstaged: stage == null,
-    event_date_as_action_deadline: Boolean(String(row.event_date || "").slice(0, 10)),
+    event_date_as_action_deadline: false,
+    typed_event_count: events.length,
+    typed_hearing_event: eventKinds.has("hearing"),
+    typed_auction_window: eventKinds.has("auction_window"),
+    typed_sale_or_auction_event: eventKinds.has("sale") || eventKinds.has("auction"),
+    typed_bid_deadline: eventKinds.has("bid_deadline"),
+    typed_inspection_or_showing: eventKinds.has("inspection_showing"),
+    typed_accommodation_deadline: eventKinds.has("accommodation_deadline"),
+    typed_objection_deadline: eventKinds.has("objection_deadline"),
+    typed_comment_deadline: eventKinds.has("comment_deadline"),
+    typed_result_or_award: eventKinds.has("result_award"),
+    source_receipts_valid: receiptsValid,
+    known_cross_type_false_positive_count: events.some((event) => event.kind === "bid_deadline") && !signals.bid_deadline ? 1 : 0,
+    bid_deadline_signal_without_parseable_date: signals.bid_deadline && !eventKinds.has("bid_deadline"),
+    honest_empty_typed_events: events.length === 0,
     bid_deadline_step: stepKinds.has("bid_deadline"),
     inspection_or_showing_step: stepKinds.has("show_or_inspection"),
     registration_step: stepKinds.has("registration"),
@@ -324,7 +346,13 @@ function summarizeSignals(records) {
 
 function summarizeCurrentExtraction(records) {
   const keys = Object.keys(currentPropertyExtraction({}));
-  return Object.fromEntries(keys.map((key) => [key, records.filter((record) => record.current_extraction[key]).length]));
+  return Object.fromEntries(keys.map((key) => {
+    const values = records.map((record) => record.current_extraction[key]);
+    if (values.every((value) => typeof value === "number")) {
+      return [key, values.reduce((sum, value) => sum + value, 0)];
+    }
+    return [key, values.filter(Boolean).length];
+  }));
 }
 
 function summarizeJargon(records) {
@@ -447,10 +475,14 @@ function markdownTable(report) {
 
 export function reportAsMarkdown(report) {
   const score = report.overall.combined;
+  const extraction = report.overall.current_extraction;
+  const signals = report.overall.signals;
   return [
     `Corpus: ${report.corpus.count} notices (${report.corpus.start_date_min} through ${report.corpus.start_date_max}); SHA-256 \`${report.corpus.sha256}\`.`,
     "",
     `Combined title + rendered detail body: mean grade ${score.mean_grade}, median ${score.median_grade}, p90 ${score.p90_grade}; ${score.at_or_below_grade_7}/${score.scored} at or below grade 7.`,
+    "",
+    `Typed timed events: ${extraction.typed_event_count}; bid-deadline signals ${signals.bid_deadline}, typed bid deadlines ${extraction.typed_bid_deadline}, signals without a parseable date ${extraction.bid_deadline_signal_without_parseable_date}; known cross-type false positives ${extraction.known_cross_type_false_positive_count}; honest-empty notices ${extraction.honest_empty_typed_events}.`,
     "",
     markdownTable(report),
     "",

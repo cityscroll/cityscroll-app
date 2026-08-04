@@ -1,0 +1,119 @@
+{
+  "source": "NYC Open Data City Record Online (dg92-zbpx)",
+  "source_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+  "observed_at": "2026-08-04",
+  "normalization": "HTML removed and whitespace collapsed, matching the reader-visible notice-text cleaner",
+  "cases": [
+    {
+      "id": "disposition-hearing",
+      "row": {
+        "request_id": "20241112003",
+        "start_date": "2024-11-12T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "NOTICE OF VOLUNTARY PUBLIC HEARING",
+        "additional_description_1": "PUBLIC NOTICE IS HEREBY GIVEN THAT a voluntary public hearing will be held on Tuesday November 26, 2024, commencing at 10:00 am via Conference Call No. 1-646-992-2010. In order to access the Public Hearing and testify, please call no later than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024."
+      }
+    },
+    {
+      "id": "lease-auction-window",
+      "row": {
+        "request_id": "20221104020",
+        "start_date": "2022-11-04T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "short_title": "Online Public Lease Auction from December 8, 2022 at 9am through December 15, 2022 at 9pm.",
+        "additional_description_1": "Online bids will be accepted via the DCAS auction webpage at nyc.gov/auctions from December 8, 2022 at 9:00 AM until December 15, 2022 at 9:00 PM. The apparent highest bidders will be identified by December 19, 2022 and such bids will be subject to review."
+      }
+    },
+    {
+      "id": "lease-rfp-numeric-deadline",
+      "row": {
+        "request_id": "20251209013",
+        "start_date": "2025-07-01T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Request for Proposals",
+        "short_title": "LEASING OPPORTUNITIES FOR SOLAR PV SYSTEM DEVELOPMENTS AT CERTAIN SITES IN BRONX, NEW YORK",
+        "additional_description_1": "LEASING OPPORTUNITIES FOR SOLAR PV SYSTEM DEVELOPMENTS AT CERTAIN SITES IN BRONX, NEW YORK - Request for Proposals - PIN# 11203 - Due 7-24-25 at 11:59 P.M. New York City Economic Development Corporation invites developers to submit proposals."
+      }
+    },
+    {
+      "id": "forest-showings-and-bid",
+      "row": {
+        "request_id": "20231103014",
+        "start_date": "2023-11-03T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "short_title": "Bradley Forest Management Project 5181 Timber Harvest",
+        "additional_description_1": "Show Dates: Prospective bidders are encouraged to attend one of the public showings which will be held on Monday, November 20, 2023 at 1:00 PM and Tuesday, November 21, 2023 at 9:00 AM. Bid Due Date: All bid proposals must be received by Nathan Hart NO LATER THAN Wednesday, December 6, 2023 at 4:00 PM, local time."
+      }
+    },
+    {
+      "id": "hearing-accommodation-relative",
+      "row": {
+        "request_id": "20180518115",
+        "start_date": "2018-05-18T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Disposition",
+        "additional_description_1": "PLEASE TAKE NOTICE that a public hearing will be held on June 27, 2018 at 1 Centre Street, Manhattan, Mezzanine at 10:00 a.m. Individuals requesting sign language interpreters should contact the Mayor's Office of Contract Services, Public Hearings Unit, no later than seven (7) business days prior to the public hearing."
+      }
+    },
+    {
+      "id": "lease-offer-response-deadline",
+      "row": {
+        "request_id": "20170525104",
+        "start_date": "2017-05-25T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Request for Proposals",
+        "short_title": "Lease Offers",
+        "additional_description_1": "RESPONSES ARE DUE NO LATER THAN 4:00 p.m. on Friday, July 14, 2017. Please submit three (3) sets of your Lease Offer proposal to NYCEDC."
+      }
+    },
+    {
+      "id": "direct-property-sale",
+      "row": {
+        "request_id": "20150915102",
+        "start_date": "2015-09-15T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "short_title": "Notice of Public Auction on 10/28/15",
+        "additional_description_1": "PROPOSED SALE OF CERTAIN NEW YORK CITY REAL PROPERTY PARCELS BY PUBLIC AUCTION. These properties will be offered at public auction on October 28, 2015."
+      }
+    },
+    {
+      "id": "direct-property-sale-structured",
+      "row": {
+        "request_id": "20211006007",
+        "start_date": "2021-10-06T00:00:00.000",
+        "event_date": "2021-10-29T16:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Sale",
+        "short_title": "Notice of Public Sale of Residential Property located at 1 Hanson Place, Apt. 22D",
+        "additional_description_1": ""
+      }
+    },
+    {
+      "id": "result-notice-without-result-date",
+      "row": {
+        "request_id": "20140403113",
+        "start_date": "2014-04-03T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Award",
+        "short_title": "Notice of tentative winning bidders from medallion auction held March 25, 2014",
+        "additional_description_1": ""
+      }
+    },
+    {
+      "id": "honest-empty",
+      "row": {
+        "request_id": "20240108007",
+        "start_date": "2024-01-08T00:00:00.000",
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Public Hearings",
+        "short_title": "Notices Regarding Housing Preservation",
+        "additional_description_1": "All Notices Regarding Housing Preservation and Development Dispositions of City-Owned Property appear in the Public Hearing Section."
+      }
+    }
+  ]
+}
