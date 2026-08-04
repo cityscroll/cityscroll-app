@@ -1,3 +1,14 @@
+let nlParserPromise;
+function loadNlParser(){
+  return nlParserPromise ||= new Promise(resolve=>{
+    const script=document.createElement("script");
+    script.src="nl_parse.js";
+    script.onload=()=>resolve(typeof parseNL==="function");
+    script.onerror=()=>resolve(false);
+    document.head.append(script);
+  });
+}
+
 async function nlResolve(text, lens){
   lens = lens || "money";
   // Prefer the model-backed worker when API is set; fall back to the on-device heuristic.
@@ -6,6 +17,9 @@ async function nlResolve(text, lens){
       const r=await workerFetch("/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})}, 12000);
       if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return enrichNeighborhoodFilter(text,lens,{source:"model",...withPersonName(text, lens, j.filter)});}
     }catch(e){}
+  }
+  if(typeof parseNL!=="function" && !await loadNlParser()){
+    return enrichNeighborhoodFilter(text,lens,{source:"device",keywords:[text]});
   }
   return enrichNeighborhoodFilter(text,lens,{source:"device",...deviceParse(text, lens)});
 }
@@ -435,7 +449,9 @@ const NL = {
 async function resolveMoneyNarrow(){
   if($("#awatch").value !== "rfpkw") return false;
   const text = $("#aparam").value.trim();
-  if(!text || isLiteralKeyword(text)) return false;
+  if(!text) return false;
+  if(typeof isLiteralKeyword!=="function" && !await loadNlParser()) return false;
+  if(isLiteralKeyword(text)) return false;
   const buttons=[$("#quizgo"), $("#apreview")].filter(Boolean);
   buttons.forEach(b=>b.disabled=true);
   const parsed = await nlResolve(text, "alerts");

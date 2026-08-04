@@ -100,6 +100,11 @@ test("deviceParse: every lens returns a usable keywords array (never throws/empt
   }
 });
 
+test("the deterministic NL parser stays off the home cold path", () => {
+  assert.doesNotMatch(src, /<script[^>]+src=["']nl_parse\.js["']/);
+  assert.match(src, /function loadNlParser\(\)/);
+});
+
 test("nlResolve: no worker configured -> device parse", async () => {
   const { nlResolve } = make("", null);
   const f = await nlResolve("rezonings in Brooklyn", "land");
