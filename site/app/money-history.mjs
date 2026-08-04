@@ -1069,7 +1069,7 @@ function renderDetail(r, chain, stats){
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
   else html += glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
-  html += `<div id="drules"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
+  html += `<div id="drules"></div><div id="dlifecycle"></div><div id="dsuboutreach"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
 
   html += pending
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
@@ -1096,7 +1096,7 @@ function renderDetail(r, chain, stats){
   fillContext(r, $("#dcontext"));
   mountNoticeActionRail($("#dactions"),r);
   loadRuleLifecycle(r, $("#drules"));
-  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"));
+  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"), $("#dsuboutreach"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));
   externalAwardForNotice(r, $("#dexternal"));

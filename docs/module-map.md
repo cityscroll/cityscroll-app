@@ -17,7 +17,8 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, and generic feed-card rendering. |
 | `site/app/alerts.mjs` | Watch state, digest preview/items, rollups/preferences, flags, and address/context hydration. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |
-| `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, and lifecycle loading. |
+| `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, and prime sub-outreach mount. |
+| `site/sub_outreach.mjs` | Pure prime-win sub-outreach view + HTML from `award_prime_goal` (facts only; no goal-gap apology). |
 | `site/app/subsidy.mjs` | Subsidy eligibility, phase timeline, facts, gaps, and lifecycle loading. |
 | `site/app/meetings.mjs` | Meeting outcomes, roll calls, matter phase spine, and outcome loading. |
 | `site/app/entities.mjs` | Official, agency, and vendor profiles; vendor phase timeline and forecasts. |

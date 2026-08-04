@@ -744,10 +744,16 @@ Precompute-first on the notice page: never live Checkbook proxy; never render `l
 `subject_ref`), canonical agency, dollars, industry chips (City Record
 `category_description` + PASSPort industry/commodity when present), and an
 honest-absent subcontract-goal slot (`status: not_published`, never invents
-goal %). `possible_subcontract_window` is the interface for a separate
-sub-outreach surface card (not rendered here). Assembly version **v3** requires
-the side-car on cache hits. Verify:
-`node --test worker/test/award_prime_goal.test.mjs worker/test/checkbook_lifecycle.test.mjs`.
+goal %). Assembly version **v3** requires the side-car on cache hits.
+**Sub-outreach surface (notice card):** pure `site/sub_outreach.mjs` + mount
+from `loadLifecycle` into `#nsuboutreach` / `#dsuboutreach`. Renders only
+prime / agency / dollars / industry chips / `possible_subcontract_window`
+callout when `status=open_candidate`. **Hard rule:** when
+`subcontract_goal` is `not_published`, paint **nothing** for goals (no
+apology / “data unavailable” box). The reporting gap lives only in gap
+taxonomy id `procurement-subcontract-goal-percent`. Verify:
+`node --test worker/test/award_prime_goal.test.mjs worker/test/checkbook_lifecycle.test.mjs
+test/sub_outreach.test.mjs`.
 
 **Hearing action rail (no online-link punt):** for `kind === "hearing"`, extract attend / testify / contact steps from ingested City Record body + `hearing_location.js` participation (URLs/emails/phones) and venue fields. `hearingHandoff` in `site/action_registry.js`; `noticeActionMatter` passes full body + `venue` / `participation`. Present as a “How to participate” step list — never “No online participation link…” when venue or testimony is published. Field cases: `20260716022` (FCRC/Parks), `20260709028` (FCRC/NYPD).
 

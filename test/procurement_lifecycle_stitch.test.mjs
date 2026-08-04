@@ -622,17 +622,19 @@ test("meeting outcomes: unmatched renders the specific join reason", () => {
 
 test("detail templates host lifecycle, subsidy, meeting, and prior-award slots", () => {
   assert.match(src, /id="dlifecycle"/);
+  assert.match(src, /id="dsuboutreach"/);
   assert.match(src, /id="dsubsidy"/);
   assert.match(src, /id="dmeet"/);
   assert.match(src, /id="dprior"/);
   assert.match(src, /id="nlifecycle"/);
+  assert.match(src, /id="nsuboutreach"/);
   assert.match(src, /id="nsubsidy"/);
   assert.match(src, /id="nmeet"/);
   assert.match(src, /id="nprior"/);
   assert.match(src, /loadSubsidyLifecycle/);
   assert.match(src, /loadMeetingOutcomes/);
-  assert.match(src, /loadLifecycle\(r, \$\("#dlifecycle"\), \$\("#ddollars"\), \$\("#dactions"\)\)/);
-  assert.match(src, /loadLifecycle\(r, \$\("#nlifecycle"\), \$\("#ndollars"\), \$\("#nactions"\)\)/);
+  assert.match(src, /loadLifecycle\(r, \$\("#dlifecycle"\), \$\("#ddollars"\), \$\("#dactions"\), \$\("#dsuboutreach"\)\)/);
+  assert.match(src, /loadLifecycle\(r, \$\("#nlifecycle"\), \$\("#ndollars"\), \$\("#nactions"\), \$\("#nsuboutreach"\)\)/);
 });
 
 test("precompute-first: notice dollars and matter timeline use /contract-lifecycle, not live /checkbook", () => {
