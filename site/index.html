@@ -1153,8 +1153,9 @@
   #quizpanel .alerts-finish{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
   #quizpanel .alerts-finish #asubscribe{order:1}
   #quizpanel .alerts-finish #quizgo{order:2}
-  /* #apreview kept for characterization tests that click it; one visible Preview is #quizgo. */
-  #quizpanel .alerts-finish #apreview{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  /* #apreview kept for characterization tests that click it; one visible Preview is #quizgo.
+     Off-screen (not clipped under #asubscribe) so Playwright can hit it without interception. */
+  #quizpanel .alerts-finish #apreview{position:fixed;left:-10000px;top:0;width:1px;height:1px;overflow:hidden;opacity:0.01;padding:0;margin:0;border:0;z-index:0}
   #quizpanel #advopts{margin:4px 0 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)}
   #quizpanel #advopts > summary{cursor:pointer;padding:10px 14px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
   #quizpanel #advopts > summary::-webkit-details-marker{display:none}
