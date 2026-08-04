@@ -773,6 +773,90 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
 }
 
 /**
+ * Supplemental contract response-logistics layer. These counts stay separate
+ * from Money performance-place density: an agency office, pre-bid venue, or
+ * document-pickup counter does not say where contract work occurs.
+ */
+export function buildContractActionBasisLayer(rows = [], boundaries = null) {
+  const byBorough = Object.create(null);
+  const byCommunity = Object.create(null);
+  const byCouncil = Object.create(null);
+  const unlocated = emptyLensCounts();
+  const byBasis = Object.create(null);
+  const source = {
+    corpus: "contract_action_address_locations",
+    counted: 0,
+    with_address: 0,
+    located: 0,
+    by_basis: byBasis,
+  };
+  const bumpMoney = (bag, key) => {
+    if (!key) return;
+    if (!bag[key]) bag[key] = emptyLensCounts();
+    bag[key].money = (bag[key].money || 0) + 1;
+  };
+
+  for (const row of rows || []) {
+    source.counted += 1;
+    const addresses = Array.isArray(row?.addresses) ? row.addresses : [];
+    if (addresses.length) source.with_address += 1;
+    const boroughs = new Set();
+    const communities = new Set();
+    const councils = new Set();
+    const bases = new Set();
+    for (const location of Array.isArray(row?.locations) ? row.locations : []) {
+      if (location?.is_place_of_performance !== false || !location?.basis) continue;
+      const borough = canonBorough(location.borough);
+      const community = normalizeCommunityDistrictId(location.community_district);
+      const council = normalizeCouncilDistrictId(location.council_district);
+      if (borough) boroughs.add(borough);
+      if (community) communities.add(community);
+      if (council) councils.add(council);
+      bases.add(location.basis);
+    }
+    if (!boroughs.size && !communities.size && !councils.size) {
+      unlocated.money += 1;
+      continue;
+    }
+    source.located += 1;
+    for (const basis of bases) byBasis[basis] = (byBasis[basis] || 0) + 1;
+    for (const borough of boroughs) bumpMoney(byBorough, borough);
+    for (const community of communities) bumpMoney(byCommunity, community);
+    for (const council of councils) bumpMoney(byCouncil, council);
+  }
+
+  for (const borough of ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"]) {
+    if (!byBorough[borough]) byBorough[borough] = emptyLensCounts();
+  }
+  for (const district of boundaries?.community_districts || []) {
+    const id = normalizeCommunityDistrictId(district?.id || district?.boro_cd);
+    if (!id || Number(id.slice(1)) > 18) continue;
+    if (!byCommunity[id]) byCommunity[id] = emptyLensCounts();
+  }
+  for (const district of boundaries?.council_districts || []) {
+    const id = normalizeCouncilDistrictId(district?.id);
+    if (id && !byCouncil[id]) byCouncil[id] = emptyLensCounts();
+  }
+
+  return {
+    basis: "contract_action_address",
+    basis_label: "Located by contract response address",
+    is_place_of_performance: false,
+    by_level: {
+      borough: byBorough,
+      community_district: byCommunity,
+      council_district: byCouncil,
+    },
+    citywide: emptyLensCounts(),
+    virtual: emptyLensCounts(),
+    unlocated,
+    sources: { money: source },
+    note:
+      "Response logistics only. Counts name their submission, pre-bid, or document-pickup basis and are never merged into performance-place density.",
+  };
+}
+
+/**
  * Build the full district_activity document from committed corpora.
  *
  * @param {object} opts
@@ -782,6 +866,7 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
  * @param {object[]} [opts.meetingsRows]
  * @param {object[]} [opts.rulesRows]
  * @param {object[]} [opts.moneyRows]
+ * @param {object[]} [opts.contractActionRows]
  * @param {string} [opts.builtAt]
  */
 export function buildDistrictActivity(opts = {}) {
@@ -1017,6 +1102,11 @@ export function buildDistrictActivity(opts = {}) {
     placeSlots("money", moneyPlacementsFromRow(row, boundaries, placeOpts));
   }
 
+  const contractActionBasis = buildContractActionBasisLayer(
+    opts.contractActionRows || [],
+    boundaries,
+  );
+
   // Ensure every borough / regular CD / council id has a counts bag (zeros OK).
   for (const b of ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"]) {
     if (!byBorough[b]) byBorough[b] = emptyLensCounts();
@@ -1059,6 +1149,9 @@ export function buildDistrictActivity(opts = {}) {
     unlocated: { ...unlocated },
     unlocated_reasons: unlocatedReasons,
     sources,
+    basis_layers: {
+      contract_action_address: contractActionBasis,
+    },
     note: "Precomputed per-district per-lens activity for the map exploration surface. Counts use committed corpora + human-derivation extractors + offline civic-address gazetteer PIP against the boundary layer (method + confidence). Citywide and virtual are first-class buckets, not invented district pins. Unlocated items stay in unlocated with a reason.",
   };
 }

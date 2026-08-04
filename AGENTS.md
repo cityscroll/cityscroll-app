@@ -393,6 +393,17 @@ flywheel dimension reads `district_activity.sources` and emits
 `map-granularity-council-{lens}` / `map-granularity-cd-{lens}` when coarser density
 collapses to all-zero at a finer level (`granularityCollapseFindings`).
 
+## Contract response-address geography
+
+Contract action-rail destinations materialize in
+`site/data/contract_action_address_locations.json` through
+`node tools/build_contract_action_locations.mjs`; validate with `--check` and
+`node --test test/contract_action_location.test.mjs test/map_exploration.test.mjs`.
+This is a supplemental procurement-logistics basis only: submission offices,
+pre-bid venues, and document-pickup counters retain `is_place_of_performance: false`
+and must never merge into Money performance-place counts. Map district counts and
+Money list filters share the sidecar's exact location predicate.
+
 ## District boundary layer (cs-geo-01 + cs-geo-02)
 
 Community districts and City Council districts resolve from **one committed
