@@ -1,41 +1,24 @@
-/* ===================== COUNCIL MEETING OUTCOMES (MEET-001) =====================
-   Related Council event / matter / votes for hearing notices. Precomputed read model
-   from GET /meeting-outcomes?id= — no live Legistar fetch from the client. */
 function isMeetingOutcomesEligible(r){
   const section = r.section_name || "";
   if(section === "Public Hearings and Meetings") return true;
   if(section === "Agency Rules" && r.type_of_notice_description === "Public Hearings") return true;
-  // Procurement notices can still be referenced by Council matters (title/PIN); offer the
-  // slot when the materialized view has a row, so loadMeetingOutcomes always tries for awards
-  // that may appear on a council calendar.
   return false;
 }
 
-/** City Council notices join Legistar; other hearing bodies have no machine vote feed. */
 function isCityCouncilNotice(r){
-  // Match publisher agency labels (e.g. "City Council") via regex so the
-  // English phrase is not a new user-facing string literal for stray-english.
   const agency = String(r && r.agency_name || "").trim();
   if(!agency) return false;
   return /\bcity council\b/i.test(agency);
 }
 
-/**
- * Deep-link a Council matter from a numeric Legistar MatterId.
- * Gateway M=L resolves MatterId → LegislationDetail (ID+GUID). Non-numeric ids
- * return null so we never invent a destination.
- */
 function matterDetailUrl(matterId){
   const id = String(matterId == null ? "" : matterId).trim();
   if(!/^\d+$/.test(id)) return null;
   return "https://nyc.legistar.com/Gateway.aspx?M=L&ID=" + encodeURIComponent(id);
 }
 
-/** Map a non-Council hearing agency to ≥1 outbound HTTPS landing (never invent votes).
- * Constants live inside the function so extractFn hermetic suites stay self-contained. */
 function nonCouncilBodyLinks(notice){
   const CB_URL = "https://www.nyc.gov/site/cau/community-boards/community-boards.page";
-  // Prefer an agency-mapped borough president site when the notice names one.
   const BP_LINKS = [
     { re: /\bmanhattan\b/i, url: "https://www.manhattanbp.nyc.gov/", label: "Manhattan Borough President" },
     { re: /\bbrooklyn\b/i, url: "https://www.brooklynbp.nyc.gov/", label: "Brooklyn Borough President" },
@@ -51,24 +34,19 @@ function nonCouncilBodyLinks(notice){
       break;
     }
   }
-  // Community boards and unmapped agencies still get the official CB directory.
   links.push({ url: CB_URL, label: "NYC community boards" });
-  // When no borough BP mapped, include one verified BP home so "borough president
-  // websites" is not a text-only claim with zero outbound.
   if(links.length === 1){
     links.unshift({ url: "https://bronxboropres.nyc.gov/", label: "Borough president websites" });
   }
   return links;
 }
 
-/** HTML for the class-(b) non-Council "where" slot — real HTTPS links, not bare text. */
 function nonCouncilWhereHTML(notice){
   return nonCouncilBodyLinks(notice).map(l =>
     `<a class="view" href="${escUiHtml(l.url)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(l.label)}</span>${extSR()}</a>`
   ).join(" · ");
 }
 
-/** Stage labels for the non-Council hearing process spine. */
 function nonCouncilStageLabel(kind){
   if(kind==="notice_published") return t("non_council_stage_notice_published");
   if(kind==="hearing") return t("non_council_stage_hearing");
@@ -77,11 +55,6 @@ function nonCouncilStageLabel(kind){
   return kind || "—";
 }
 
-/**
- * Non-Council hearing outcomes as a process spine (notice → hearing → outcome → minutes).
- * Fills notice/hearing from City Record fields; outcome and minutes stay class-(b)
- * with real HTTPS landings — never invent votes. Self-contained for extractFn suites.
- */
 function nonCouncilHearingOutcomesHTML(notice){
   const pub = notice && notice.start_date ? String(notice.start_date).slice(0,10) : "";
   const hearing = notice && notice.event_date ? String(notice.event_date).slice(0,10) : "";
@@ -106,18 +79,15 @@ function nonCouncilHearingOutcomesHTML(notice){
   </section>`;
 }
 
-/** Map a Legistar action/outcome string to a scan badge bucket. */
 function meetingOutcomeBucket(text){
   const s = String(text || "").toLowerCase();
   if(!s) return "other";
   if(/\b(approved|adopted|confirm(ed)?|favorably|pass(ed)?)\b/.test(s)) return "approved";
   if(/\bre-?refer|\breferred\b/.test(s)) return "referred";
-  // Intermediate or held hearings (not a final approval).
   if(/\b(hearing held|held by|deferred|laid over|postponed|tabled|hearing on)\b/.test(s)) return "held";
   return "other";
 }
 
-/** Short scan-line title: matter name or parenthetical, not the full legal dump. */
 function meetingMatterShortTitle(entry){
   const matter = String(entry.title || "").replace(/\.\s*$/, "").trim();
   const landmarks = matter.match(/^Landmarks,\s*(.+)$/i);
@@ -134,10 +104,6 @@ function meetingMatterShortTitle(entry){
   return agenda || "—";
 }
 
-/**
- * Collapse Legistar action-grain agenda rows into one entry per matter_file.
- * Intermediate hearing actions become history; the last action is the badge source.
- */
 function collapseMeetingAgenda(items){
   const byKey = new Map();
   let procedural = 0;
@@ -191,7 +157,6 @@ function collapseMeetingAgenda(items){
   return { matters: Array.from(byKey.values()), procedural, actionRows };
 }
 
-/** Normalize official id from by_person row (official:7801 or bare 7801). */
 function officialIdFromPerson(p){
   if(!p || typeof p !== "object") return "";
   const raw = (p.official && p.official.id) || p.person_id || "";
@@ -200,7 +165,6 @@ function officialIdFromPerson(p){
   return s.startsWith("official:") ? s.slice("official:".length) : s;
 }
 
-/** Deep link to event-scoped official skim (never invent when id missing). */
 function officialHref(personId, ctx){
   const id = String(personId || "").trim();
   if(!id) return "";
@@ -211,7 +175,6 @@ function officialHref(personId, ctx){
   return `#official/${encodeURIComponent(id)}${qs ? `?${qs}` : ""}`;
 }
 
-/** Collect by_person rows from finalVotes / vote payloads (roll_call only). */
 function collectRollCallPeople(votes){
   if(!Array.isArray(votes) || !votes.length) return [];
   const out = [];
@@ -232,21 +195,15 @@ function collectRollCallPeople(votes){
   return out;
 }
 
-/**
- * One-line roll-call chip on the matter card when by_person is non-empty.
- * Not only buried under collapsed Decision / Earlier phases.
- */
 function meetingRollCallChipHTML(votes, ctx){
   const people = collectRollCallPeople(votes);
   if(!people.length) return "";
   const n = people.length;
-  // Compact: up to 4 named links, then "+N more"
   const show = people.slice(0, 4);
   const more = n - show.length;
   const names = show.map(p => {
     const id = officialIdFromPerson(p);
     const name = (p.official && p.official.display_name) || p.person_name || id;
-    // officialLink is an in-app hash route (#official/…) — own navigation, not EXT_ATTRS.
     const officialLink = officialHref(id, ctx);
     const label = escUiHtml(name);
     return officialLink
@@ -265,10 +222,6 @@ function meetingRollCallChipHTML(votes, ctx){
   </div>`;
 }
 
-/**
- * Accessible full roll-call table (member + vote) with clickable officials.
- * Chip stays compact on the matter card; this is the complete named list.
- */
 function meetingRollCallTableHTML(people, ctx){
   if(!Array.isArray(people) || !people.length) return "";
   const rows = people.map(p => {
@@ -296,7 +249,6 @@ function meetingRollCallTableHTML(people, ctx){
   </table>`;
 }
 
-/** Vote tallies and named roll calls render from the fields present in the record. */
 function meetingVotesHTML(votes, ctx){
   if(!Array.isArray(votes) || !votes.length) return "";
   return votes.map(v => {
@@ -322,8 +274,6 @@ function meetingVotesHTML(votes, ctx){
   }).join("");
 }
 
-/* Council matter phase spine (agenda → matter → decision → record). Pure model:
-   site/meeting_phase_spine.mjs — same lead → stepper → panels shape as rules/land. */
 let meetingPhaseSpineToolsPromise=null;
 function ensureMeetingPhaseSpineTools(){
   if(!meetingPhaseSpineToolsPromise){
@@ -474,7 +424,6 @@ function meetingPhaseLeadHTML(view){
   </div>`;
 }
 
-/** Phase-grouped matter timeline for one collapsed matter (uses server spines[]). */
 function meetingMatterPhaseHTML(view, voteCtx){
   if(!view || view.empty) return "";
   const lead=meetingPhaseLeadHTML(view);
@@ -525,7 +474,6 @@ function meetingOutcomesHTML(record, notice, phaseTools){
   const collapsed = collapseMeetingAgenda(items);
   const matters = collapsed.matters;
   const usePhase = phaseTools && typeof phaseTools.buildPhaseViewForMatter === "function";
-  // Deep-link context for roll-call names → event-scoped official skim.
   const voteCtx = {
     eventId: event.event_id || null,
     noticeId: record.request_id || (notice && notice.request_id) || null,
@@ -552,7 +500,6 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     chips.push(`<span class="meeting-chip"><strong>${collapsed.procedural}</strong> ${t("meeting_outcomes_chip_procedural_hidden")}</span>`);
   }
 
-  // Event-level documents once; matter-only attachments stay on the record phase / detail.
   const eventDocHTML = eventDocs.length
     ? `<div class="meeting-event-docs"><span class="meeting-docs-lbl">${t("meeting_outcomes_docs_lbl")}</span>${eventDocs.map(d =>
         `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || d.document_id || t("meeting_outcomes_document_lbl"))}${extSR()}</a>`
@@ -570,8 +517,6 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     const shortTitle = meetingMatterShortTitle(entry);
     const fileLine = entry.matter_file || entry.matter_id || "";
     const matterHref = entry.matter_url || matterDetailUrl(entry.matter_id) || "";
-    // Outbound Legistar legislation when MatterId is numeric; plain text otherwise
-    // (never invent a link for non-numeric / missing ids).
     const fileHTML = matterHref&&fileLine
       ? `<a class="meeting-file meeting-matter-link" lang="en" dir="ltr" href="${escUiHtml(matterHref)}" ${EXT_ATTRS} data-matter-id="${escUiHtml(entry.matter_id || "")}">${escUiHtml(fileLine)}${extSR()}</a>`
       : (fileLine?`<div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>`:"");
@@ -586,7 +531,6 @@ function meetingOutcomesHTML(record, notice, phaseTools){
       phaseHTML = meetingMatterPhaseHTML(view, voteCtx);
     }
 
-    // Detail disclosure keeps full action history + tallies (and is the flat fallback).
     let voteHTML = meetingVotesHTML(entry.finalVotes, voteCtx);
     if(!voteHTML){
       if(finalLabel){
@@ -596,8 +540,6 @@ function meetingOutcomesHTML(record, notice, phaseTools){
       }
     }
 
-    // Surface roll call on the matter card when by_person is live — not only
-    // inside collapsed Decision under "Earlier phases" when current=Record.
     const rollCallChip = meetingRollCallChipHTML(entry.finalVotes, voteCtx);
 
     const history = entry.actions.length
@@ -674,29 +616,31 @@ function meetingOutcomesHTML(record, notice, phaseTools){
 
 async function loadMeetingOutcomes(r, el){
   if(!el || !r.request_id) return;
-  // Always try for hearing-eligible notices; for other notices only show when the join
-  // lands (so a procurement notice that Council actually voted on still surfaces).
   const eligible = isMeetingOutcomesEligible(r);
+  const nonCouncil = r.section_name === "Public Hearings and Meetings" && !isCityCouncilNotice(r);
+  const panelHTMLPromise = nonCouncil
+    ? import("../non_council_outcome_panel.mjs").then((tools) => tools.loadNonCouncilOutcomePanel(r.request_id, {
+        lang: window.LANG, esc: escUiHtml, date: fdate, externalSuffixHTML: extSR,
+      })).catch(() => "")
+    : Promise.resolve("");
   let data = null;
   try{
     const resp = await workerFetch("/meeting-outcomes?id=" + encodeURIComponent(r.request_id), null, 8000);
     if(resp && resp.ok) data = await resp.json();
   }catch(e){}
+  const panelHTML = await panelHTMLPromise;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    if(eligible){
-      el.innerHTML = meetingOutcomesHTML({ join: { matched: false } }, r);
-    }
+    if(panelHTML) el.innerHTML = panelHTML;
     return;
   }
   if(!eligible && !(data.record.join && data.record.join.matched)) return;
   const phaseTools = await ensureMeetingPhaseSpineTools();
   if(!document.contains(el)) return;
-  el.innerHTML = meetingOutcomesHTML(data.record, r, phaseTools);
+  el.innerHTML = [meetingOutcomesHTML(data.record, r, phaseTools), panelHTML].filter(Boolean).join("");
   bindMeetingPhaseUI(el);
 }
 
-// Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.bindMeetingPhaseUI = bindMeetingPhaseUI;
 globalThis.collapseMeetingAgenda = collapseMeetingAgenda;
 globalThis.collectRollCallPeople = collectRollCallPeople;

@@ -23,7 +23,8 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/sub_outreach.mjs` | Pure prime-win sub-outreach view + HTML from `award_prime_goal` (facts only; no goal-gap apology). |
 | `site/app/subsidy.mjs` | Subsidy eligibility, phase timeline, facts, gaps, and lifecycle loading. |
 | `site/app/authority-award.mjs` | Receipt-gated ABO award detail on eligible authority notices. |
-| `site/app/meetings.mjs` | Meeting outcomes, roll calls, matter phase spine, and outcome loading. |
+| `site/non_council_outcome_panel.mjs` | Pure receipt-gated community-board decision view, static lookup loader, and notice-panel HTML. |
+| `site/app/meetings.mjs` | Meeting outcomes, roll calls, matter phase spine, receipt-backed community-board decisions, and outcome loading. |
 | `site/app/entities.mjs` | Official, agency, and vendor profiles; vendor phase timeline and forecasts. |
 | `site/app/workspace.mjs` | Investigation storage/sync/share and matter timeline. |
 | `site/app/map.mjs` | District choropleth map exploration (borough → CD → council), precomputed activity density, and area feed deep links. |
