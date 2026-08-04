@@ -1755,17 +1755,24 @@ strict PIN↔EPIN join; Checkbook-shaped side-car accepted in fixtures). Pure li
 is `registration_status: unknown` with `dwell_days: null` — never a zero that
 reads as instant. Same-day registration is `found` with `dwell_days: 0`.
 Registration before City Record award publication is kept as a signed (negative)
-dwell. Notice-strip UI is a separate gated card.
+dwell.
+
+**Notice strip:** pure `site/award_registration_dwell_view.mjs` + compact
+`site/data/award_registration_dwell_lookup.json`; mounts `#nregdwell` on HS
+award notices (payment-honesty frame when found; quiet unmatched line or clean
+absence when unknown / out of corpus). Loader: `loadAwardRegistrationDwell` in
+`site/app/procurement-phase.mjs`.
 
 ```bash
 node tools/build_award_registration_dwell.mjs --fixture
 node tools/build_award_registration_dwell.mjs --fetch-awards --fetch-passport
 node tools/build_award_registration_dwell.mjs --check
-node --test test/award_registration_dwell.test.mjs
+node --test test/award_registration_dwell.test.mjs test/award_registration_dwell_view.test.mjs
 ```
 
 Artifacts: `site/data/award_registration_dwell.json` (summary + distribution),
 `site/data/award_registration_dwell_observations.json` (per-award found/unknown),
+`site/data/award_registration_dwell_lookup.json` (compact by-id for the strip),
 `docs/formulas/award-registration-dwell.md`,
 `warehouse/receipts/proof/award_registration_dwell_latest.json`.
 

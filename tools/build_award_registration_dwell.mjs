@@ -21,6 +21,7 @@
  * Writes:
  *   site/data/award_registration_dwell.json          (summary + stats; slim)
  *   site/data/award_registration_dwell_observations.json  (per-award rows)
+ *   site/data/award_registration_dwell_lookup.json   (compact by-id for notice strip)
  *   docs/evidence/award-registration-dwell/summary.json
  *   warehouse/receipts/proof/award_registration_dwell_latest.json
  *   site/data/award_sources/verification_receipts/award_registration_dwell_latest.json
@@ -38,6 +39,7 @@ import {
   HUMAN_SERVICES_CATEGORY,
   AWARD_TYPE,
 } from "../worker/src/lib/award_registration_dwell.mjs";
+import { buildCompactDwellLookup } from "../site/award_registration_dwell_view.mjs";
 import { parseContractsDump } from "../worker/src/lib/passport_parse.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -51,6 +53,7 @@ const FIX_REG = join(
 );
 const OUT_SUMMARY = join(ROOT, "site/data/award_registration_dwell.json");
 const OUT_OBS = join(ROOT, "site/data/award_registration_dwell_observations.json");
+const OUT_LOOKUP = join(ROOT, "site/data/award_registration_dwell_lookup.json");
 const OUT_EVIDENCE = join(
   ROOT,
   "docs/evidence/award-registration-dwell/summary.json",
@@ -109,6 +112,12 @@ function stableStringify(value) {
 function writeJson(path, value) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, stableStringify(value));
+}
+
+/** Compact single-line JSON for large by-id lookups (keeps the strip payload small). */
+function writeCompactJson(path, value) {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, `${JSON.stringify(value)}\n`);
 }
 
 function loadJsonArray(path) {
@@ -405,6 +414,7 @@ async function main() {
     found,
     unknown,
   };
+  const lookupDoc = buildCompactDwellLookup(observationsDoc);
   const receipt = buildReceipt(report, awardMeta, regMeta);
 
   if (args.check) {
@@ -449,6 +459,29 @@ async function main() {
         process.exit(1);
       }
     }
+    if (existsSync(OUT_LOOKUP)) {
+      const lookup = JSON.parse(readFileSync(OUT_LOOKUP, "utf8"));
+      if (lookup.honesty?.unknown_never_zero !== true) {
+        console.error("lookup honesty.unknown_never_zero must be true");
+        process.exit(1);
+      }
+      const foundKeys = Object.keys(lookup.found || {});
+      const unknownKeys = Object.keys(lookup.unknown || {});
+      for (const id of foundKeys) {
+        const row = lookup.found[id];
+        if (!Array.isArray(row) || row[0] == null || !Number.isFinite(Number(row[0]))) {
+          console.error(`lookup found[${id}] must be [dwell_days, award_date, registration_date]`);
+          process.exit(1);
+        }
+      }
+      if (foundKeys.length + unknownKeys.length < 1) {
+        console.error("lookup must contain at least one award id");
+        process.exit(1);
+      }
+    } else {
+      console.error("award_registration_dwell_lookup.json missing — run build without --check");
+      process.exit(1);
+    }
     // Fixture pure-path smoke (offline).
     const fixAwards = loadJsonArray(FIX_AWARDS);
     const fixReg = buildRegistrationIndex(loadJsonArray(FIX_REG));
@@ -481,6 +514,7 @@ async function main() {
 
   writeJson(OUT_SUMMARY, summary);
   writeJson(OUT_OBS, observationsDoc);
+  writeCompactJson(OUT_LOOKUP, lookupDoc);
   writeJson(OUT_EVIDENCE, summary);
   writeJson(OUT_RECEIPT, receipt);
   writeJson(OUT_SRC_RECEIPT, receipt);
@@ -497,7 +531,7 @@ async function main() {
         dwell_days_non_negative: report.stats.dwell_days_non_negative,
         dwell_days_registration_prior: report.stats.dwell_days_registration_prior,
         honesty_violations: report.stats.honesty_violations,
-        out: [OUT_SUMMARY, OUT_OBS, OUT_EVIDENCE, OUT_RECEIPT],
+        out: [OUT_SUMMARY, OUT_OBS, OUT_LOOKUP, OUT_EVIDENCE, OUT_RECEIPT],
       },
       null,
       2,
