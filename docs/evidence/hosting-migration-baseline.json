@@ -159,11 +159,46 @@
     "note": "Not a stopwatch trial. After cutover, record an actual timed rollback drill into after_cutover.rollback_wall_clock."
   },
   "after_cutover": {
-    "status": "not-yet-measured",
-    "merge_to_live": null,
-    "detection_latency": null,
-    "rollback_wall_clock": null,
-    "instructions": "After an authorized flip + soak: (1) re-run dual-host metrics with `node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json`; (2) fill merge_to_live, detection_latency, and rollback_wall_clock from deploy history and timed drills. Do not invent improvements. dual_host_live_metrics may be re-measured independently of the scorecard fields.",
+    "status": "value-partially-confirmed",
+    "overall_verdict": "not-confirmed",
+    "verdict_page": "docs/evidence/migration-value-verdict.html",
+    "evidence_record": "docs/evidence/migration-value-verdict.json",
+    "merge_to_live": {
+      "tag": "measured",
+      "verdict": "confirmed",
+      "method": "Pull request mergedAt to Wrangler Deployment complete log timestamp for 50 successful main-branch Cloudflare Pages runs.",
+      "n": 50,
+      "min_s": 41.763,
+      "median_s": 52.4625,
+      "mean_s": 56.57962,
+      "p95_s": 80.541,
+      "max_s": 149.804,
+      "note": "Endpoint definitions differ from the registered run_started_at-to-updated_at baseline. This measures publish completion, not browser-observed propagation."
+    },
+    "detection_latency": {
+      "tag": "measured-after-comparative-baseline-missing",
+      "verdict": "cant-measure-yet",
+      "url_route_parity_first_diagnostic_s": 1.341,
+      "url_route_parity_red_s": 720.015,
+      "accessibility_first_diagnostic_s": 15.335,
+      "accessibility_red_s": 15.358,
+      "performance_first_diagnostic_s": 64.614,
+      "performance_red_s": 486.4,
+      "missing": "The pre-cutover redirect-loop discovery latency was not stopwatch-quantified, so different failure classes are not used as a substitute comparison."
+    },
+    "rollback_wall_clock": {
+      "tag": "measured-dry-run-only",
+      "verdict": "cant-measure-yet",
+      "actual_restore_s": null,
+      "production_mutation_performed": false,
+      "readiness_matrix_s": 2.05,
+      "generic_fallback_smoke_s": 30.03,
+      "generic_fallback_smoke_result": "failed",
+      "fallback_deep_route_check_s": 0.17,
+      "fallback_deep_route_result": "failed",
+      "missing": "A disposable custom domain, a complete fallback artifact, and a timed detach/reattach plus visitor smoke."
+    },
+    "instructions": "The measured after-side is recorded in migration-value-verdict.json. Re-run the dual-host harness independently if fresh TTFB and payload-parity data are needed; do not overwrite the merge, detection, or rollback evidence with planning figures.",
     "dual_host_live_metrics": null,
     "re_run": {
       "dual_host_command": "node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json",
