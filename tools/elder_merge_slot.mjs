@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /**
- * Repo-side policy helpers for oldest-first (elder) merge-slot reservation.
+ * Repo-side policy helpers for readiness-drain elder merge-slot reservation.
  *
- * The one-at-a-time merge-when-ready seat cap lives outside this repository
+ * The merge-when-ready train seater lives outside this repository
  * (see tools/merge_queue_policy.json notes). This module is the pure policy
  * surface the external seater should import or re-implement:
  *
- *   - when a ready PR exceeds elder_age_hours (or rebase churn threshold),
- *     reserve the next free seat for that PR
- *   - younger ready PRs must not take a seat while an eligible elder is waiting
+ *   - detect and steer work toward an aging PR after the soft threshold without
+ *     holding a ready train
+ *   - when a ready PR reaches the hard age or rebase-churn threshold, reserve
+ *     the lead slot of the next train for that PR
  *
  * Usage:
  *   node tools/elder_merge_slot.mjs --check          # validate policy JSON shape
@@ -25,11 +26,12 @@ const POLICY_PATH = path.join(ROOT, "tools", "merge_queue_policy.json");
 
 export const DEFAULT_ELDER = {
   enabled: true,
+  detect_and_steer_age_hours: 2,
   elder_age_hours: 6,
   rebase_churn_threshold: 3,
   reserve_next_slot_for_elder: true,
   note:
-    "External merge-when-ready seater should call pickElderSeatHolder() before seating a younger PR.",
+    "External merge-when-ready seater should drain by readiness and call pickElderSeatHolder() only for the next train after a hard threshold trips.",
 };
 
 export function loadElderPolicy(policyPath = POLICY_PATH) {
@@ -81,8 +83,18 @@ function main(argv) {
   const args = argv.slice(2);
   if (args.includes("--check")) {
     const elder = loadElderPolicy();
+    if (!elder.detect_and_steer_age_hours || elder.detect_and_steer_age_hours < 1) {
+      console.error("elder_slot.detect_and_steer_age_hours must be >= 1");
+      process.exit(1);
+    }
     if (!elder.elder_age_hours || elder.elder_age_hours < 1) {
       console.error("elder_slot.elder_age_hours must be >= 1");
+      process.exit(1);
+    }
+    if (elder.detect_and_steer_age_hours >= elder.elder_age_hours) {
+      console.error(
+        "elder_slot.detect_and_steer_age_hours must be below elder_age_hours",
+      );
       process.exit(1);
     }
     console.log(JSON.stringify({ ok: true, elder_slot: elder }, null, 2));
