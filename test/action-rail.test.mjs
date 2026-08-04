@@ -62,7 +62,7 @@ test("a recovered City Record pattern restores its notice handoff without a code
     agency_name: "Housing Authority",
     pin: "517992",
     title: "Elevator Rehabilitation",
-    notice_text: "Upload the bid in iSupplier. Contact bids@example.com for response instructions.",
+    notice_text: "Upload the bid in iSupplier. Contact example@example.com for response instructions.",
     official_notice_url: officialNoticeUrl,
     action_link_health: {
       patterns: {
@@ -727,7 +727,7 @@ test("franchise solicitation cannot reintroduce a degraded City Record notice as
     pin: "FRANCHISE-42",
     package_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
     official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260706006",
-    email: "bids@example.com",
+    email: "example@example.com",
   });
   assert.equal(handoff.destination, null);
   assert.equal(handoff.package_url, null);
