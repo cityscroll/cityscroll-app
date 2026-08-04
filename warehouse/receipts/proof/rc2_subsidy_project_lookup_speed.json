@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.subsidy_project_lookup_speed.v1",
+  "measured_at": "2026-08-04T12:38:14.824Z",
+  "samples": 1000,
+  "lookup_p50_ms": 0.0003,
+  "lookup_p95_ms": 0.0007,
+  "payload_bytes": 8545,
+  "rows": 5,
+  "notices": 3,
+  "path": "Worker in-process receipt-backed materialization; no publisher request on hit"
+}

@@ -233,21 +233,21 @@ export function subOutreachHTML(awardPrimeGoalOrView, opts = {}) {
   const rows = [];
 
   if (view.prime) {
-    rows.push(`<div class="sub-outreach-row" data-field="prime">
+    rows.push(`<div class="notice-fact-row sub-outreach-row" data-field="prime">
       <div class="stage-name">${esc(t("sub_outreach_prime_lbl"))}</div>
       <div lang="en" dir="ltr"><strong>${esc(view.prime.display_name)}</strong></div>
     </div>`);
   }
 
   if (view.agency) {
-    rows.push(`<div class="sub-outreach-row" data-field="agency">
+    rows.push(`<div class="notice-fact-row sub-outreach-row" data-field="agency">
       <div class="stage-name">${esc(t("sub_outreach_agency_lbl"))}</div>
       <div lang="en" dir="ltr">${esc(view.agency.display_name)}</div>
     </div>`);
   }
 
   if (view.dollars) {
-    rows.push(`<div class="sub-outreach-row" data-field="dollars">
+    rows.push(`<div class="notice-fact-row sub-outreach-row" data-field="dollars">
       <div class="stage-name">${esc(t("sub_outreach_dollars_lbl"))}</div>
       <div><span class="tag amt">${esc(moneyFmt(view.dollars.amount))}</span></div>
     </div>`);
@@ -260,7 +260,7 @@ export function subOutreachHTML(awardPrimeGoalOrView, opts = {}) {
           `<span class="tag" data-industry-key="${esc(c.key)}" lang="en" dir="ltr">${esc(c.label)}</span>`,
       )
       .join(" ");
-    rows.push(`<div class="sub-outreach-row" data-field="industry">
+    rows.push(`<div class="notice-fact-row sub-outreach-row" data-field="industry">
       <div class="stage-name">${esc(t("sub_outreach_industry_lbl"))}</div>
       <div class="sub-outreach-chips">${chips}</div>
     </div>`);
@@ -278,7 +278,7 @@ export function subOutreachHTML(awardPrimeGoalOrView, opts = {}) {
     ? `<details class="inline-disclose lc-how"><summary>${esc(t("sub_outreach_how_summary"))}</summary><div class="inline-disclose-body">${t("sub_outreach_provenance_html")}</div></details>`
     : "";
 
-  const html = `<section class="sub-outreach-detail" data-sub-outreach="1" aria-label="${esc(t("sub_outreach_heading"))}">
+  const html = `<section class="notice-fact-detail sub-outreach-detail" data-sub-outreach="1" aria-label="${esc(t("sub_outreach_heading"))}">
     <div class="chain-h">${esc(t("sub_outreach_heading"))}</div>
     ${rows.join("\n")}
     ${callout}
