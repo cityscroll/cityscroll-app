@@ -1,0 +1,208 @@
+Skip to content
+English
+Español
+中文（简体）
+Русский
+বাংলা
+Kreyòl ayisyen
+한국어
+Français
+Polski
+العربية
+اردو
+CityScroll
+
+Subscribe to NYC contracts, rezonings, and hearings that interest you.
+
+Want email updates?
+
+Email address
+Sign up
+
+or pick topics
+
+We'll email a link to confirm.
+CONTRACTS
+STAFFING
+ZONING
+PROPERTY
+RULES
+MEETINGS
+MAP
+ALERTS
+Ask
+rezonings in Queens
+79 Rivington
+rezonings in the Bronx
+BOROUGH
+All boroughs
+Manhattan
+Brooklyn
+Queens
+Bronx
+Staten Island
+ZIP OR PLACE
+STATUS
+In review / active
+Upcoming hearings
+All
+ATTENDANCE
+Any mode
+In person
+Livestream
+ 
+Use my location
+ 
+Watch this search
+RECENT REZONINGS 1
+Share / export
+Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot (BBL) → MapPLUTO join ZAP Search describes. When lots cannot be matched, the map is approximate — confirm on ZoLa.
+
+Timbale Terrace
+
+Manhattan · CD M11 · Council District 9 · Completed
+HA - Project Completed · 2024-03-13
+
+LISTING
+
+← Browse CityScroll
+
+TIMBALE TERRACE
+Completed
+HPD - NYC Dept of Housing Preservation & Development
+APPLICANT
+Manhattan · CD M11 · Council District 9
+WHERE
+IN PLAIN ENGLISH
+HPD seeks approval of a UDAAP Designation, Project and Disposition (HA) and DCAS and NYPD for the Acquisition of city-owned property (PQ) for a replacement-in-kind of the NYPD parking lot. These actions would facilitate the development of a 19-story building, containing approximately 341 affordable housing units, located in East Harlem, Community District 11, Manhattan.
+Actions: Disposition (HPD) · Acquisition
+What can I do now?
+Public comment is not open now.
+Full project on Zoning Application Portal (ZAP)
+zap.planning.nyc.gov
+(opens in new tab)
+Watch this rezoning
+Copy link
+QR code
+Full project on Zoning Application Portal (ZAP)
+(opens in new tab)
+Alert me about this area
+This rezoning's notice in the City Record
+(opens in new tab)
+LAND-USE OUTCOMES
+Public status Completed · 28 decision document(s) from the Zoning Application Portal. Open full ZAP project
+(opens in new tab)
+PROJECT TIMELINE
+Full project on ZAP
+(opens in new tab)
+WHERE THIS PROJECT IS NOW
+
+Public review — step 4 of 5: City Council review (50-day clock, 879 days past the statutory window)
+
+HA - Project Completed · since 2024-03-13
+
+What’s next: Mayoral / Appeals Board
+
+FILING
+→
+CEQR
+→
+NOTICE
+→
+CERTIFY
+→
+CB
+→
+BP
+→
+CPC
+→
+COUNCIL
+→
+MAYOR
+Pre-application and filing
+DONE
+3 milestones · 2023-07-26 → 2024-03-12 · Land Use Application Filed ×2
+Environmental review (CEQR)
+NOT STARTED
+No dated milestones yet
+Pre-certification notice
+NOT STARTED
+No dated milestones yet
+Certification
+DONE
+1 milestones · 2023-08-21 → 2023-08-21
+Community Board review
+DONE
+2 milestones · 2023-10-24 → 2023-10-26
+Borough President review
+DONE
+1 milestones · 2023-11-24 → 2023-11-24
+City Planning Commission
+DONE
+4 milestones · 2023-11-27 → 2024-01-03
+City Council review
+CURRENT
+1 milestones · 2024-03-07 → 2024-03-07 · Statutory deadline 2024-03-08
+Statutory deadline: City Council review must conclude within 50 days (City Charter §197-c) — by 2024-03-08. The hearing before this deadline is usually the last chance to testify. Estimate
+City Council Review
+2024-03-07 · Adopted
+Mayoral / Appeals Board
+NOT STARTED
+Statutory deadline 2024-03-13
+WHAT PAST CASES SHOW
+
+Based on 376 past land-use cases since 2018. 96% were approved. Final action usually came 1.9–6 months after certification.
+
+Past results: 96% approved · 3% modified · 1% disapproved.
+
+Based on 610 applications by this applicant since 1977: 99% approved, vs 96% overall. Shown as history only — conditioning did not beat the overall rate out of sample.Strong link
+
+Applicant match uses public name links. How applicant rates are counted
+
+Legal deadlines still control. This past range is context only. How we count and test this
+
+Show all dates (chronological)
+How this timeline works
+NYC Open Data (2024-03-13) is at least as current as the live ZAP portal milestone (2024-03-13).
+No City Record notice matching this project's ULURP numbers has been published yet. If one is released, it will appear in City Record Online.
+LAND-USE ACTION
+Approved
+HA · C240046HAM
+LAND-USE ACTION
+Approved
+PQ · C240047PQM
+BOARD DISPOSITION
+—
+HAPQ
+Borough President
+Recommendation: Conditional Favorable
+BOARD DISPOSITION
+2023-10-24
+HAPQ
+Community Board
+Recommendation: Conditional Favorable · for 28 · against 2
+Decision documents
+Borough President Recommendation.pdf
+(opens in new tab)
+MBP Levine Recommendation - Timbale Terrace - 2023-10-31.pdf
+(opens in new tab)
+CB Rec_ C 240046 HAM and C 240047 PQM - Timbale Terrace.pdf
+(opens in new tab)
+Community -Borough Board Recommendation.pdf
+(opens in new tab)
+Decision documents
+Related DOB NOW filings on project tax lots
+Outcomes join Open Data project rows to the public ZAP project API (exact project_id) and optional DOB NOW filings (exact BBL). The browser only reads a worker cache.
++
+−
+ Leaflet | © OpenStreetMap © CARTO · lots © NYC MapPLUTO
+←
+↑
+↓
+→
+Showing 1 rezoned tax lot (NYC MapPLUTO). Confirm on ZoLa
+(opens in new tab)
+.
+
+CityScroll searches the City Record Open Data — January 2, 2003 – August 3, 2026, 1M+ notices. About · Feedback · My investigation · API and feeds · Stats · Standards

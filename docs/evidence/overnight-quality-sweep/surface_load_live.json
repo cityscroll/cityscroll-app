@@ -1,0 +1,2013 @@
+{
+  "schema": "cityscroll.surface_load_inventory.v0",
+  "methodology": {
+    "source": "UI cognitive-load study, 2026-08-03",
+    "viewport": "1440x900",
+    "scope": "visible rendered DOM after content readiness and skeleton clearance",
+    "duplication": "exact normalized visible strings of six or more words",
+    "action_position": "first configured resident-serving action relative to the visible surface root"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "definitions": [
+    {
+      "id": "money-list",
+      "label": "Money list",
+      "route": "#money",
+      "root_selector": "#tab-money",
+      "ready_selector": "#list .row",
+      "action_selector": "#tab-money .next-action-rail, #tab-money .apply, #tab-money .watchbtn",
+      "budgets": {
+        "words": 2500,
+        "links": 100,
+        "buttons": 60,
+        "max_verbatim_repeat": 25,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "notice-award",
+      "label": "Award notice",
+      "route": "#notice/20260724018",
+      "root_selector": "#noticeview",
+      "ready_selector": "#noticeview .next-action-rail",
+      "action_selector": "#noticeview .next-action-rail",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "notice-rules",
+      "label": "Rules notice",
+      "route": "#notice/20260714029",
+      "root_selector": "#noticeview",
+      "ready_selector": "#noticeview .next-action-rail",
+      "action_selector": "#noticeview .next-action-rail",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "notice-meeting",
+      "label": "Meeting notice",
+      "route": "#notice/20260706036",
+      "root_selector": "#noticeview",
+      "ready_selector": "#noticeview .next-action-rail",
+      "action_selector": "#noticeview .next-action-rail",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "notice-property",
+      "label": "Property notice",
+      "route": "#notice/20241112003",
+      "root_selector": "#noticeview",
+      "ready_selector": "#noticeview .next-action-rail",
+      "action_selector": "#noticeview .next-action-rail",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "land-list",
+      "label": "Land list",
+      "route": "#land",
+      "root_selector": "#tab-land",
+      "ready_selector": "#llist > :not(.empty)",
+      "action_selector": "#tab-land .watchbtn, #llist .primary",
+      "budgets": {
+        "words": 2500,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "land-detail",
+      "label": "Land project detail",
+      "route": "#land/2022M0258",
+      "root_selector": "#tab-land",
+      "ready_selector": "#tab-land .next-action-rail, #ldetail .panel",
+      "action_selector": "#tab-land .next-action-rail",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "rules-list",
+      "label": "Rules list",
+      "route": "#rules",
+      "root_selector": "#tab-rules",
+      "ready_selector": "#rulesfeed > :not(.empty)",
+      "action_selector": "#tab-rules .watchbtn, #rulesfeed .primary",
+      "budgets": {
+        "words": 5000,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "meetings-list",
+      "label": "Meetings list",
+      "route": "#meetings",
+      "root_selector": "#tab-meetings",
+      "ready_selector": "#meetingsfeed > :not(.empty)",
+      "action_selector": "#tab-meetings .watchbtn, #meetingsfeed .primary",
+      "budgets": {
+        "words": 2500,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "property-list",
+      "label": "Property list",
+      "route": "#property",
+      "root_selector": "#tab-property",
+      "ready_selector": "#propertyfeed > :not(.empty)",
+      "action_selector": "#tab-property .watchbtn, #propertyfeed .primary",
+      "budgets": {
+        "words": 5000,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "staffing",
+      "label": "Staffing",
+      "route": "#people",
+      "root_selector": "#tab-people",
+      "ready_selector": "#career-results .career-card",
+      "action_selector": "#career-browser, #career-results .primary",
+      "budgets": {
+        "words": 2500,
+        "links": 150,
+        "buttons": 80,
+        "max_verbatim_repeat": 25,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "exam-detail",
+      "label": "Exam detail",
+      "route": "#exam/7016",
+      "root_selector": "#tab-people",
+      "ready_selector": "#career-exam-7016",
+      "action_selector": "#career-exam-7016 .primary, #career-exam-7016 a[href*='nyc.gov']",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "vendor-profile",
+      "label": "Vendor profile",
+      "route": "#vendor/Camba%20Inc.",
+      "root_selector": "#entityview",
+      "ready_selector": "#entityview .vendor-variant-item",
+      "action_selector": "#entityview .next-action-rail, #entityview a.act",
+      "budgets": {
+        "words": 1500,
+        "links": 100,
+        "buttons": 60,
+        "max_verbatim_repeat": 2,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "agency-profile",
+      "label": "Agency profile",
+      "route": "#agency/City%20Council",
+      "root_selector": "#entityview",
+      "ready_selector": "#entityview .panel, #entityview .entity-dossier",
+      "action_selector": "#entityview .next-action-rail, #entityview a.act",
+      "budgets": {
+        "words": 1500,
+        "links": 100,
+        "buttons": 60,
+        "max_verbatim_repeat": 2,
+        "max_first_action_y": 900
+      }
+    },
+    {
+      "id": "alerts",
+      "label": "Alerts builder",
+      "route": "#alerts",
+      "root_selector": "#tab-alerts",
+      "ready_selector": "#quizpanel",
+      "action_selector": "#quizgo",
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 60,
+        "max_verbatim_repeat": 2,
+        "max_first_action_y": 900
+      }
+    }
+  ],
+  "fixture": false,
+  "base_url": "https://cityscroll.org/",
+  "measured_at": "2026-08-04T02:35:07.189774Z",
+  "surfaces": [
+    {
+      "id": "money-list",
+      "label": "Money list",
+      "route": "#money",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 2500,
+        "links": 100,
+        "buttons": 60,
+        "max_verbatim_repeat": 25,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 1527,
+        "links": 9,
+        "buttons": 23,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 3,
+        "first_action_y": 236,
+        "first_action_document_y": 598,
+        "document_height": 1960,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 47,
+        "empty_state_blocks": [
+          {
+            "text": "closes in one dayNYC Health + Hospitals · 2026-07-27 · Construction/Construction Services PIN NCB-24202204-A-OTxHU",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in one dayDesign and Construction · 2026-06-29 · Construction Related Services PIN 85026I0004",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in one dayInformation Technology and Telecommunications · 2026-06-25 · Goods PIN 85826P0003",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in two daysCitywide Administrative Services · 2026-06-30 · Goods PIN 85726B0060",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in two daysHousing Authority · 2026-06-30 · Construction/Construction Services PIN 517992",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in two daysHousing Authority · 2026-07-07 · Goods PIN 523212",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in two daysBrooklyn Bridge Park · 2026-07-15 · Construction Related Services PIN BBP Pier 1 LED Insta",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in three daysHousing Authority · 2026-07-23 · Goods PIN 523233",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in three daysEconomic Development Corporation · 2026-06-24 · Goods and Services PIN 10872",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysBrooklyn Navy Yard Development Corp. · 2026-06-09 · Services (other than human services) PIN 000348",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysHousing Authority · 2026-07-17 · Goods PIN 523232",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysHousing Preservation and Development · 2026-07-17 · Construction/Construction Services PIN 80626B0060",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysHousing Authority · 2026-06-10 · Construction Related Services no linkable PIN",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysHousing Authority · 2026-06-05 · Goods and Services no linkable PIN",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysPublic Library - Queens · 2026-07-23 · Goods and Services PIN 0726-2",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysEconomic Development Corporation · 2026-06-17 · Goods and Services PIN 11281",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in four daysTrust for Governors Island · 2026-07-09 · Services (other than human services) PIN TGI-OPS-GutterMainte",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in seven daysDesign and Construction · 2026-07-10 · Construction Related Services PIN 85026B0103",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in seven daysHousing Authority · 2026-07-07 · Construction/Construction Services PIN 517907",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in eight daysEnvironmental Protection · 2026-05-29 · Construction Related Services PIN 82626B0018",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in eight daysNYC Health + Hospitals · 2026-06-22 · Construction/Construction Services PIN HAR-13202301",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysCitywide Administrative Services · 2026-04-28 · Construction/Construction Services PIN 85624B0012",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysEnvironmental Protection · 2026-07-13 · Services (other than human services) PIN 82626B0045",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysCitywide Administrative Services · 2026-07-14 · Goods PIN 85726B0066",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysPolice Department · 2026-07-09 · Goods PIN ES#056-14-2026",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysHousing Authority · 2026-07-08 · Construction Related Services no linkable PIN",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysDesign and Construction · 2026-06-04 · Construction/Construction Services PIN 85026Q0001",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysHousing Authority · 2026-07-14 · Services (other than human services) PIN PROP/TERR26-27",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in nine daysEnvironmental Protection · 2026-07-07 · Human Services/Client Services PIN 4932",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 10 daysCitywide Administrative Services · 2026-05-20 · Construction/Construction Services PIN 85624B0007",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 10 daysHomeless Services · 2026-07-16 · Services (other than human services) PIN 07125B0006",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 10 daysFire Department · 2026-07-20 · Construction/Construction Services PIN 05726B0008",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 10 daysHousing Authority · 2026-06-30 · Construction/Construction Services PIN 522185",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 10 daysHousing Authority · 2026-07-13 · Services (other than human services) PIN 523221",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 10 daysEducation · 2026-03-05 · Goods and Services PIN B5700040",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 11 daysHousing Preservation and Development · 2026-07-21 · Human Services/Client Services no linkable PIN",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 11 daysHousing Authority · 2026-06-22 · Construction Related Services no linkable PIN",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 11 daysTrust for Governors Island · 2026-07-01 · Services (other than human services) PIN TGI-D&C-NolanParkDes",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "closes in 14 daysFinance · 2026-07-17 · Services (other than human services) PIN 83627Y0147",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "open · 15 days leftDesign and Construction · 2026-07-15 · Construction Related Services PIN 85026I0005",
+            "className": "rmeta",
+            "role": "content"
+          }
+        ],
+        "visible_text": "Ask shelter services contracts Includes contracts with forecast data construction contracts over $500k IT consulting RFPs Copy link QR code SHOW Open Requests for Proposals (RFPs) — accepting now All RFPs Recent Awards ($) AGENCY All agencies Administration for Children's Services Administrative Trials and Hearings Aging Battery Park City Authority Board of Correction Board of Education Retirement System Board of Elections Borough Of Manhattan Community College Borough President - Bronx Borough President - Brooklyn Borough President - Manhattan Borough President - Queens Brooklyn Bridge Park Brooklyn Navy Yard Development Corp. Buildings Business Integrity Commission Campaign Finance Board Chief Medical Examiner City Clerk City Council City Planning City University City University Of NY Central Office Citywide Administrative Services Civilian Complaint Review Board Commission on Human Rights Commission on Racial Equity Comptroller Consumer and Worker Protection Correction Cultural Affairs Department Of Employment Dept. of Social Svcs/Human Resources Administration Design and Construction District Attorney - Bronx County District Attorney - Kings County District Attorney - New York County District Attorney - Queens County District Attorney - Richmond County Economic Development Corporation Education Educational Construction Fund Emergency Management Employees' Retirement System Environmental Protection Finance Financial Information Services Agency Fire Department Health and Mental Hygiene Homeless Services Housing Authority Housing Preservation and Development Hudson River Park Trust Human Resources Administration Independent Budget Office Information Technology and Telecommunications Investigation Juvenile Justice Kingsborough Community College Landmarks Preservation Commission Law Department Management and Budget Marketing Development Corp Mayor's Fund to Advance New York City Mayor's Office of Contract Services Mayor's Office of Criminal Justice Metropolitan Transportation Authority New York City Fire Pension Fund New York City Police Pension Fund NYC & Company NYC Health + Hospitals Off Track Betting Corp. Office of Collective Bargaining Office of Labor Relations Office of Special Narcotics Prose Office of The Actuary Office of the Mayor Office of the Special Narcotics Prosecutor Parks and Recreation Payroll Administration Police Department Port Authority of New York and New Jersey Probation Public Administrator - Kings County Public Administrator - New York County Public Administrator - Queens County Public Advocate Public Housing Preservation Trust Public Library - Queens Records and Information Services Sanitation School Construction Authority Small Business Services Staten Island Rapid Transit Operating Authority Tax Commission Taxi and Limousine Commission Teachers' Retirement System Technology Development Corporation Transportation Triborough Bridge and Tunnel Authority Trust for Governors Island Upper Manhattan Empowerment Zone Veterans' Services Water Board Youth and Community Development KEYWORD SORT BY Deadline: soonest Newest posted Largest $ METHOD: Any Competitive Sealed Bids Request for Qualifications Competitive Sealed Proposals/Pre-Qualified List Request for Proposals Competitive Sealed Proposals Request for Information Competitive Sealed Bids/Pre-Qualified List Watch this search Closing this week Follow a real contract OPEN REQUESTS FOR PROPOSALS (RFPS) 40+ Export CSV Export Excel (.xlsx) Print / Save as PDF Correction: 24202204-A: NYC H+H / North Central Bronx OTxHU Decant Ph. II closes in one dayNYC Health + Hospitals · 2026-07-27 · Construction/Construction Services PIN NCB-24202204-A-OTxHU 85026I0004-LQSHRN-23 - CM-Build, South Hollis Library Renovation RFQ closes in one dayDesign and Construction · 2026-06-29 · Construction Related Services PIN 85026I0004 Correction: 85826P0003-Unified Communications System closes in one dayInformation Technology and Telecommunications · 2026-06-25 · Goods PIN 85826P00"
+      }
+    },
+    {
+      "id": "notice-award",
+      "label": "Award notice",
+      "route": "#notice/20260724018",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 142,
+        "links": 11,
+        "buttons": 6,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 151,
+        "first_action_document_y": 422,
+        "document_height": 1180,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 4,
+        "empty_state_blocks": [
+          {
+            "text": "What can I do now? Awarded to Community Mediation Services, Inc. · $81,424,178 www.checkbooknyc.com (opens in new tab) Read official notice a856-cityrecord.nyc.gov (opens in new tab) Watch this notice Follow this award Vendor Community Medi",
+            "className": "next-action-rail",
+            "role": "content"
+          },
+          {
+            "text": "Do not bid — this stage is past the solicitation response window.",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Open the contract record on Checkbook: www.checkbooknyc.com (opens in new tab) .",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Permalink: https://cityscroll.org/#notice/20260724018 · request ID 20260724018 · from NYC Open Data (opens in new tab)",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "← Browse CityScroll Award · Procurement · Homeless Services INTEGRATED COMMERCIAL HOTELS PROGRAM What can I do now? Awarded to Community Mediation Services, Inc. · $81,424,178 www.checkbooknyc.com (opens in new tab) Read official notice a856-cityrecord.nyc.gov (opens in new tab) Watch this notice Follow this award Vendor Community Mediation Services, Inc. Award amount $81,424,178 PIN 07125P0010010Copy Do not bid — this stage is past the solicitation response window. Open the contract record on Checkbook: www.checkbooknyc.com (opens in new tab) . WHO Homeless Services (DHS) WHAT Award — Human Services/Client Services WHEN published July 30, 2026 ACT lhinds@dhs.nyc.gov · Lorna Hinds Copy link QR code Email Export Excel (.xlsx) Print / Save as PDF Pin View in City Record (opens in new tab) Read the full notice (original City Record text) Permalink: https://cityscroll.org/#notice/20260724018 · request ID 20260724018 · from NYC Open Data (opens in new tab)"
+      }
+    },
+    {
+      "id": "notice-rules",
+      "label": "Rules notice",
+      "route": "#notice/20260714029",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 123,
+        "links": 8,
+        "buttons": 6,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 165,
+        "first_action_document_y": 436,
+        "document_height": 1045,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 2,
+        "empty_state_blocks": [
+          {
+            "text": "What can I do now? Open the official rule page a856-cityrecord.nyc.gov (opens in new tab) Add deadline to calendar Watch this notice How to comment and participate Public hearing September 1, 2026 at 10:00 AM",
+            "className": "next-action-rail",
+            "role": "content"
+          },
+          {
+            "text": "Permalink: https://cityscroll.org/#notice/20260714029 · request ID 20260714029 · from NYC Open Data (opens in new tab)",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "← Browse CityScroll Public Hearings · Agency Rules · Transportation NOTICE OF PUBLIC HEARING AND OPPORTUNITY TO COMMENT- FHV AND TAXI PARKING AT COMMERCIAL METERS AND COMMERCIAL VEHICLE MARKINGS What can I do now? Open the official rule page a856-cityrecord.nyc.gov (opens in new tab) Add deadline to calendar Watch this notice How to comment and participate Public hearing September 1, 2026 at 10:00 AM WHO Transportation (DOT) WHAT Public Hearings — Agency Rules WHEN published July 22, 2026 · event SEPTEMBER 1, 2026 AT 10:00 AM in 29 days Copy link QR code Email Export Excel (.xlsx) Print / Save as PDF Pin View in City Record (opens in new tab) Permalink: https://cityscroll.org/#notice/20260714029 · request ID 20260714029 · from NYC Open Data (opens in new tab)"
+      }
+    },
+    {
+      "id": "notice-meeting",
+      "label": "Meeting notice",
+      "route": "#notice/20260706036",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 106,
+        "links": 8,
+        "buttons": 5,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 165,
+        "first_action_document_y": 436,
+        "document_height": 995,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 2,
+        "empty_state_blocks": [
+          {
+            "text": "What can I do now? This event has passed. Read official notice a856-cityrecord.nyc.gov (opens in new tab) Watch this notice",
+            "className": "next-action-rail",
+            "role": "content"
+          },
+          {
+            "text": "Permalink: https://cityscroll.org/#notice/20260706036 · request ID 20260706036 · from NYC Open Data (opens in new tab)",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "← Browse CityScroll Public Hearings · Public Hearings and Meetings · City Council CORRECTION: 7-14-26 SUBCOMMITTEE ON LANDMARKS, PUBLIC SITINGS, RESILIENCY, AND DISPOSITIONS MEETING What can I do now? This event has passed. Read official notice a856-cityrecord.nyc.gov (opens in new tab) Watch this notice WHO City Council WHAT Public Hearings — Public Hearings and Meetings WHEN published July 8, 2026 · event JULY 14, 2026 AT 10:30 AM ACT 250 Broadway, 8th Floor Copy link QR code Email Export Excel (.xlsx) Print / Save as PDF Pin View in City Record (opens in new tab) Permalink: https://cityscroll.org/#notice/20260706036 · request ID 20260706036 · from NYC Open Data (opens in new tab)"
+      }
+    },
+    {
+      "id": "notice-property",
+      "label": "Property notice",
+      "route": "#notice/20241112003",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 265,
+        "links": 15,
+        "buttons": 5,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 151,
+        "first_action_document_y": 422,
+        "document_height": 1749,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 16,
+        "empty_state_blocks": [
+          {
+            "text": "What can I do now? This event has passed. Read official notice a856-cityrecord.nyc.gov (opens in new tab)",
+            "className": "next-action-rail",
+            "role": "content"
+          },
+          {
+            "text": "WHAT IS FOR SALE What Real property · Real property …The City of New York (the City ) on Block 644, Lot 1 (the Property ) in… When / how to bid …than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024 disabilityaffairs@mo",
+            "className": "property-commercial-detail",
+            "role": "content"
+          },
+          {
+            "text": "WHAT IS FOR SALE",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "What Real property · Real property …The City of New York (the City ) on Block 644, Lot 1 (the Property ) in…",
+            "className": "property-commercial-what",
+            "role": "content"
+          },
+          {
+            "text": "…The City of New York (the City ) on Block 644, Lot 1 (the Property ) in…",
+            "className": "note muted",
+            "role": "content"
+          },
+          {
+            "text": "When / how to bid …than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024 disabilityaffairs@mocs.nyc.gov · 1-646-992-2010 · 233-931-6443",
+            "className": "property-commercial-bid",
+            "role": "content"
+          },
+          {
+            "text": "THIS PARCEL ACROSS DOMAINS",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Tax lot BBL 1006440001",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "LAND USE (ZAP) Timbale Terrace Completed · exact BBL 1006440001",
+            "className": "property-xd-land",
+            "role": "content"
+          },
+          {
+            "text": "Timbale Terrace Completed · exact BBL 1006440001",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "OWNER → CONTRACTS Make it Zesty LLC · winning_bidder Fixture parks catering award · PIN PIN-ZESTY Catering Services · PIN 81626W0043001 Catering Services · PIN 81626W0043001",
+            "className": "property-xd-owners",
+            "role": "content"
+          },
+          {
+            "text": "Fixture parks catering award · PIN PIN-ZESTY",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Catering Services · PIN 81626W0043001",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Catering Services · PIN 81626W0043001",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "BBL → ZAP uses exact tax-lot match on zap-bbl. Owner → contracts uses vendor stem only when a winning bidder is labeled in the notice. Empty slots are corpus gaps, not proof the city withheld a source.",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Permalink: https://cityscroll.org/#notice/20241112003 · request ID 20241112003 · from NYC Open Data (opens in new tab)",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "← Browse CityScroll Public Hearings · Property Disposition · Small Business Services NOTICE OF VOLUNTARY PUBLIC HEARING What can I do now? This event has passed. Read official notice a856-cityrecord.nyc.gov (opens in new tab) WHO Small Business Services (SBS) WHAT Public Hearings — Property Disposition WHEN published November 15, 2024 · event NOVEMBER 26, 2024 AT 10:00 AM Manhattan Block 644, Lot 1 BBL 1006440001 This parcel elsewhere: ZoLa zoning (opens in new tab) · ACRIS deeds (opens in new tab) · Who Owns What portfolio (opens in new tab) · lot 1006440001 from this notice's tax-lot text — verify the match WHAT IS FOR SALE What Real property · Real property …The City of New York (the City ) on Block 644, Lot 1 (the Property ) in… When / how to bid …than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024 disabilityaffairs@mocs.nyc.gov · 1-646-992-2010 · 233-931-6443 How this timeline works THIS PARCEL ACROSS DOMAINS Tax lot BBL 1006440001 LAND USE (ZAP) Timbale Terrace Completed · exact BBL 1006440001 OWNER → CONTRACTS Make it Zesty LLC · winning_bidder Fixture parks catering award · PIN PIN-ZESTY Catering Services · PIN 81626W0043001 Catering Services · PIN 81626W0043001 BBL → ZAP uses exact tax-lot match on zap-bbl. Owner → contracts uses vendor stem only when a winning bidder is labeled in the notice. Empty slots are corpus gaps, not proof the city withheld a source. Copy link QR code Email Export Excel (.xlsx) Print / Save as PDF Pin View in City Record (opens in new tab) Read the full notice (original City Record text) Permalink: https://cityscroll.org/#notice/20241112003 · request ID 20241112003 · from NYC Open Data (opens in new tab)"
+      }
+    },
+    {
+      "id": "land-list",
+      "label": "Land list",
+      "route": "#land",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 2500,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 802,
+        "links": 4,
+        "buttons": 16,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 200,
+        "first_action_document_y": 562,
+        "document_height": 1600,
+        "visible_loading_placeholders": 2,
+        "empty_blocks": 0,
+        "content_blocks": 43,
+        "empty_state_blocks": [
+          {
+            "text": "Queens · CD Q07 · Completed MM - Final Letter Sent",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M05 · Completed EAS - Final Letter Sent",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Bronx · CD X04 · Completed",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M03 · Completed MM - Final Letter Sent",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M05 · Completed ZS - Final Letter Sent",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Brooklyn · CD K01 · Completed EAS - Final Letter Sent",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q02 · Completed EAS - Final Letter Sent",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M05 · Noticed ZR - Review Filed Land Use Application · 2026-04-24",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M05 · Filed ZS - Review Filed Land Use Application · 2026-04-23",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M08 · Filed ZC - Prepare Filed Land Use Application · 2026-04-22",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q10 · Noticed EAS - Project Readiness · 2026-04-22",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Brooklyn · CD K01 · In Public Review EAS - Community Board Referral · 2026-04-22",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q06 · Noticed ZM - Review Filed Land Use Application · 2026-04-21",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingBrooklyn · CD K11 · Filed ZM - Review Filed Land Use Application · 2026-04-20",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Staten Island · CD R03,R01 · Filed ZM - Review Filed Land Use Application · 2026-04-20",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Bronx · CD X09 · Filed MM - Prepare Filed Land Use Application · 2026-04-20",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Bronx · CD X06 · Noticed EAS - Project Readiness · 2026-04-20",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Brooklyn · CD K12 · Filed ZM - Prepare Filed Land Use Application · 2026-04-20",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingManhattan · CD M11 · Filed ZM - Review Filed Land Use Application · 2026-04-20",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Bronx · CD X01 · Noticed ZS - Review Filed Land Use Application · 2026-04-17",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingBrooklyn · CD K03 · Filed ZM - Prepare Filed Land Use Application · 2026-04-17",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q06 · Noticed EAS - Project Readiness · 2026-04-17",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q07 · Filed ZM - Review Filed Land Use Application · 2026-04-16",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Staten Island · CD R01 · Noticed PQ - Review Filed Land Use Application · 2026-04-16",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingManhattan · CD M08 · Filed ZM - Prepare Filed Land Use Application · 2026-04-16",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingQueens · CD Q07 · In Public Review EAS - City Council Review · 2026-04-16",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q11 · In Public Review EAS - City Council Review · 2026-04-16",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Brooklyn · CD K06 · In Public Review EAS - City Council Review · 2026-04-15",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Staten Island · CD R01 · In Public Review EAS - Review Session - Post Hearing Follow-Up / Future Votes · 2026-04-15",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Staten Island · CD R03 · Noticed PS - Project Readiness · 2026-04-15",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Brooklyn · CD K01 · In Public Review EAS - Borough President Referral · 2026-04-15",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Brooklyn · CD K10 · Filed ZM - Review Draft Land Use Application · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingQueens · CD Q07 · Noticed ZM - Review Filed Land Use Application · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q04 · In Public Review EAS - Borough President Referral · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M05 · In Public Review MC - Borough President Referral · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q02 · Filed ZM - Prepare Filed Land Use Application · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Queens · CD Q02 · In Public Review PC - Borough President Referral · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingQueens · CD Q08 · In Public Review EAS - Review Session - Pre-Hearing Review / Post Referral · 2026-04-14",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "affordable housingBrooklyn · CD K10 · In Public Review EAS - City Council Review · 2026-04-11",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "Manhattan · CD M05 · In Public Review EAS - City Council Review · 2026-04-11",
+            "className": "rmeta",
+            "role": "content"
+          }
+        ],
+        "visible_text": "Ask rezonings in Queens 79 Rivington rezonings in the Bronx BOROUGH All boroughs Manhattan Brooklyn Queens Bronx Staten Island ZIP OR PLACE STATUS In review / active Upcoming hearings All ATTENDANCE Any mode In person Livestream Use my location Watch this search REZONINGS 40+ Export CSV Export Excel (.xlsx) Print / Save as PDF Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot (BBL) → MapPLUTO join ZAP Search describes. When lots cannot be matched, the map is approximate — confirm on ZoLa. Willets Point Phase II Mapping Actions Queens · CD Q07 · Completed MM - Final Letter Sent 1325 Ave of the Americas-Text Amendment/Cert Manhattan · CD M05 · Completed EAS - Final Letter Sent GRANT PARK MAPPING Bronx · CD X04 · Completed Allen Street Mall Demapping Manhattan · CD M03 · Completed MM - Final Letter Sent 343 Madison Ave Non-ULURP Modification Manhattan · CD M05 · Completed ZS - Final Letter Sent 20 Berry Street Brooklyn · CD K01 · Completed EAS - Final Letter Sent 23-10 Queens Plaza South Queens · CD Q02 · Completed EAS - Final Letter Sent Studio 54 Rehabilitation and Text Amendment Manhattan · CD M05 · Noticed ZR - Review Filed Land Use Application · 2026-04-24 Herald Center Signage Text Amendment and SP Manhattan · CD M05 · Filed ZS - Review Filed Land Use Application · 2026-04-23 301 E 71st Street Transit Easement Certification Manhattan · CD M08 · Filed ZC - Prepare Filed Land Use Application · 2026-04-22 135-27 Sapphire Street Rezoning Queens · CD Q10 · Noticed EAS - Project Readiness · 2026-04-22 289 Kent Avenue Rezoning Brooklyn · CD K01 · In Public Review EAS - Community Board Referral · 2026-04-22 69-67 108th Street Rezoning Queens · CD Q06 · Noticed ZM - Review Filed Land Use Application · 2026-04-21 7502 New Utrecht Avenue Rezoning affordable housingBrooklyn · CD K11 · Filed ZM - Review Filed Land Use Application · 2026-04-20 5801 Amboy Road Commercial Overlay Staten Island · CD R03,R01 · Filed ZM - Review Filed Land Use Application · 2026-04-20 Norton Avenue Demapping Bronx · CD X09 · Filed MM - Prepare Filed Land Use Application · 2026-04-20 Sojourner Truth - Mapes Rezoning Bronx · CD X06 · Noticed EAS - Project Readiness · 2026-04-20 900 60th Street Rezoning Brooklyn · CD K12 · Filed ZM - Prepare Filed Land Use Application · 2026-04-20 58-62 East 125th Street Rezoning affordable housingManhattan · CD M11 · Filed ZM - Review Filed Land Use Application · 2026-04-20 110 East 138th Street/63 Exterior Street Bronx · CD X01 · Noticed ZS - Review Filed Land Use Application · 2026-04-17 1381 Atlantic Avenue Rezoning affordable housingBrooklyn · CD K03 · Filed ZM - Prepare Filed Land Use Application · 2026-04-17 108-05 68th Road Rezoning Queens · CD Q06 · Noticed EAS - Project Readiness · 2026-04-17 Bud Place Rezoning Queens · CD Q07 · Filed ZM - Review Filed Land Use Application · 2026-04-16 FDNY Cont' Use of WTC Unit 1688 Victory Blvd Staten Island · CD R01 · Noticed PQ - Review Filed Land Use Application · 2026-04-16 1097 First Avenue Rezoning affordable housingManhattan · CD M08 · Filed ZM - Prepare Filed Land Use Application · 2026-04-16 147-14 Northern Boulevard Rezoning affordable housingQueens · CD Q07 · In Public Review EAS - City Council Review · 2026-04-16 St. Mary's Hospital Demapping Queens · CD Q11 · In Public Review EAS - City Council Review · 2026-04-16 46 Nelson Street Rezoning II Brooklyn · CD K06 · In Public Review EAS - City Council Review · 2026-04-15 198-208 Richmond Terrace Staten Island · CD R01 · In Public Review EAS - Review Session - Post Hearing Follow-Up / Future Votes · 2026-04-15 Veterans Road West- DOT Site Selection/Acq Staten Island · CD R03 · Noticed PS - Project Readiness · 2026-04-15 200 Kent Avenue Rezoning Brooklyn · CD K01 · In Public Review EAS - Borough President Referral · 2026-04-15 6418 8th Avenue Rezoning Brooklyn · "
+      }
+    },
+    {
+      "id": "land-detail",
+      "label": "Land project detail",
+      "route": "#land/2022M0258",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 710,
+        "links": 41,
+        "buttons": 26,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 775,
+        "first_action_document_y": 1137,
+        "document_height": 4051,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 27,
+        "empty_state_blocks": [
+          {
+            "text": "Manhattan · CD M11 · Council District 9 · Completed HA - Project Completed · 2024-03-13",
+            "className": "rmeta",
+            "role": "content"
+          },
+          {
+            "text": "What can I do now? Public comment is not open now. Full project on Zoning Application Portal (ZAP) zap.planning.nyc.gov (opens in new tab) Watch this rezoning",
+            "className": "next-action-rail",
+            "role": "content"
+          },
+          {
+            "text": "LAND-USE OUTCOMES",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Public status Completed · 28 decision document(s) from the Zoning Application Portal. Open full ZAP project (opens in new tab)",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "PROJECT TIMELINE",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Public review — step 4 of 5: City Council review (50-day clock, 879 days past the statutory window)",
+            "className": "land-pipeline-position",
+            "role": "content"
+          },
+          {
+            "text": "HA - Project Completed · since 2024-03-13",
+            "className": "land-spine-now-detail",
+            "role": "content"
+          },
+          {
+            "text": "What’s next: Mayoral / Appeals Board",
+            "className": "land-spine-next",
+            "role": "content"
+          },
+          {
+            "text": "FILING →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "NOTICE →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "CERTIFY →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "COUNCIL →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Statutory deadline: City Council review must conclude within 50 days (City Charter §197-c) — by 2024-03-08. The hearing before this deadline is usually the last chance to testify. Estimate",
+            "className": "note land-statutory-deadline",
+            "role": "content"
+          },
+          {
+            "text": "Based on 376 past land-use cases since 2018. 96% were approved. Final action usually came 1.9–6 months after certification.",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Past results: 96% approved · 3% modified · 1% disapproved.",
+            "className": "base-rate-outcomes",
+            "role": "content"
+          },
+          {
+            "text": "Based on 610 applications by this applicant since 1977: 99% approved, vs 96% overall. Shown as history only — conditioning did not beat the overall rate out of sample.Strong link",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Applicant match uses public name links. How applicant rates are counted",
+            "className": "base-rate-authority",
+            "role": "content"
+          },
+          {
+            "text": "Legal deadlines still control. This past range is context only. How we count and test this",
+            "className": "base-rate-authority",
+            "role": "content"
+          },
+          {
+            "text": "NYC Open Data (2024-03-13) is at least as current as the live ZAP portal milestone (2024-03-13).",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "No City Record notice matching this project's ULURP numbers has been published yet. If one is released, it will appear in City Record Online.",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "LAND-USE ACTION Approved HA · C240046HAM",
+            "className": "box matched",
+            "role": "content"
+          },
+          {
+            "text": "LAND-USE ACTION Approved PQ · C240047PQM",
+            "className": "box matched",
+            "role": "content"
+          },
+          {
+            "text": "BOARD DISPOSITION — HAPQ Borough President Recommendation: Conditional Favorable",
+            "className": "box matched",
+            "role": "content"
+          },
+          {
+            "text": "BOARD DISPOSITION 2023-10-24 HAPQ Community Board Recommendation: Conditional Favorable · for 28 · against 2",
+            "className": "box matched",
+            "role": "content"
+          },
+          {
+            "text": "Decision documents Borough President Recommendation.pdf (opens in new tab) MBP Levine Recommendation - Timbale Terrace - 2023-10-31.pdf (opens in new tab) CB Rec_ C 240046 HAM and C 240047 PQM - Timbale Terrace.pdf (opens in new tab) Commun",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Outcomes join Open Data project rows to the public ZAP project API (exact project_id) and optional DOB NOW filings (exact BBL). The browser only reads a worker cache.",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Showing 1 rezoned tax lot (NYC MapPLUTO). Confirm on ZoLa (opens in new tab) .",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "Ask rezonings in Queens 79 Rivington rezonings in the Bronx BOROUGH All boroughs Manhattan Brooklyn Queens Bronx Staten Island ZIP OR PLACE STATUS In review / active Upcoming hearings All ATTENDANCE Any mode In person Livestream Use my location Watch this search REZONINGS 1 Export CSV Export Excel (.xlsx) Print / Save as PDF Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot (BBL) → MapPLUTO join ZAP Search describes. When lots cannot be matched, the map is approximate — confirm on ZoLa. Timbale Terrace Manhattan · CD M11 · Council District 9 · Completed HA - Project Completed · 2024-03-13 LISTING ← Browse CityScroll TIMBALE TERRACE Completed HPD - NYC Dept of Housing Preservation & Development APPLICANT Manhattan · CD M11 · Council District 9 WHERE IN PLAIN ENGLISH HPD seeks approval of a UDAAP Designation, Project and Disposition (HA) and DCAS and NYPD for the Acquisition of city-owned property (PQ) for a replacement-in-kind of the NYPD parking lot. These actions would facilitate the development of a 19-story building, containing approximately 341 affordable housing units, located in East Harlem, Community District 11, Manhattan. Actions: Disposition (HPD) · Acquisition What can I do now? Public comment is not open now. Full project on Zoning Application Portal (ZAP) zap.planning.nyc.gov (opens in new tab) Watch this rezoning Copy link QR code Full project on Zoning Application Portal (ZAP) (opens in new tab) Alert me about this area Search the City Record (opens in new tab) LAND-USE OUTCOMES Public status Completed · 28 decision document(s) from the Zoning Application Portal. Open full ZAP project (opens in new tab) PROJECT TIMELINE Full project on ZAP (opens in new tab) WHERE THIS PROJECT IS NOW Public review — step 4 of 5: City Council review (50-day clock, 879 days past the statutory window) HA - Project Completed · since 2024-03-13 What’s next: Mayoral / Appeals Board FILING → CEQR → NOTICE → CERTIFY → CB → BP → CPC → COUNCIL → MAYOR Pre-application and filing DONE 3 milestones · 2023-07-26 → 2024-03-12 · Land Use Application Filed ×2 Environmental review (CEQR) NOT STARTED No dated milestones yet Pre-certification notice NOT STARTED No dated milestones yet Certification DONE 1 milestones · 2023-08-21 → 2023-08-21 Community Board review DONE 2 milestones · 2023-10-24 → 2023-10-26 Borough President review DONE 1 milestones · 2023-11-24 → 2023-11-24 City Planning Commission DONE 4 milestones · 2023-11-27 → 2024-01-03 City Council review CURRENT 1 milestones · 2024-03-07 → 2024-03-07 · Statutory deadline 2024-03-08 Statutory deadline: City Council review must conclude within 50 days (City Charter §197-c) — by 2024-03-08. The hearing before this deadline is usually the last chance to testify. Estimate City Council Review 2024-03-07 · Adopted Mayoral / Appeals Board NOT STARTED Statutory deadline 2024-03-13 WHAT PAST CASES SHOW Based on 376 past land-use cases since 2018. 96% were approved. Final action usually came 1.9–6 months after certification. Past results: 96% approved · 3% modified · 1% disapproved. Based on 610 applications by this applicant since 1977: 99% approved, vs 96% overall. Shown as history only — conditioning did not beat the overall rate out of sample.Strong link Applicant match uses public name links. How applicant rates are counted Legal deadlines still control. This past range is context only. How we count and test this Show all dates (chronological) How this timeline works NYC Open Data (2024-03-13) is at least as current as the live ZAP portal milestone (2024-03-13). No City Record notice matching this project's ULURP numbers has been published yet. If one is released, it will appear in City Record Online. LAND-USE ACTION Approved HA · C240046HAM LAND-USE ACTION Approved PQ · C240047PQM BOARD DISPOSITION — HAPQ Borough President Recommen"
+      }
+    },
+    {
+      "id": "rules-list",
+      "label": "Rules list",
+      "route": "#rules",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 5000,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 8295,
+        "links": 1143,
+        "buttons": 236,
+        "max_verbatim_repeat": 131,
+        "verbatim_duplicates": [
+          {
+            "text": "Read the proposed rule on the official NYC Rules page.",
+            "count": 131
+          },
+          {
+            "text": "Comment closed (opens in new tab)",
+            "count": 11
+          },
+          {
+            "text": "Public comment is closed for this rule (opens in new tab)",
+            "count": 11
+          },
+          {
+            "text": "This rule is in effect — read the official text for requirements. (opens in new tab)",
+            "count": 9
+          },
+          {
+            "text": "Read the adoption record on the official NYC Rules page. (opens in new tab)",
+            "count": 6
+          },
+          {
+            "text": "Notice of Public Hearing and Opportunity to Comment on Proposed Rules",
+            "count": 3
+          },
+          {
+            "text": "Mayor's Office of Media and Entertainment",
+            "count": 2
+          },
+          {
+            "text": "MAYOR'S OFFICE OF MEDIA AND ENTERTAINMENT",
+            "count": 2
+          }
+        ],
+        "action_candidates": 167,
+        "first_action_y": 353,
+        "first_action_document_y": 715,
+        "document_height": 22551,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 5,
+        "empty_state_blocks": [
+          {
+            "text": "CITY AGENCY RULEMAKING",
+            "className": "career-kicker",
+            "role": "content"
+          },
+          {
+            "text": "City Record Agency Rules notices are grouped by rulemaking stage — proposal, public process (comment and hearing), adoption, then effective date — so multi-notice chains collapse into one rule when the join is high-confidence.",
+            "className": "rules-domain-deck",
+            "role": "content"
+          },
+          {
+            "text": "PROPOSAL →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "PUBLIC PROCESS →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "ADOPTION →",
+            "className": "",
+            "role": "content"
+          }
+        ],
+        "visible_text": "CITY AGENCY RULEMAKING Proposal, public process, adoption City Record Agency Rules notices are grouped by rulemaking stage — proposal, public process (comment and hearing), adoption, then effective date — so multi-notice chains collapse into one rule when the join is high-confidence. PROPOSAL → PUBLIC PROCESS → ADOPTION → EFFECTIVE Ask taxi rules buildings rules sanitation rules AGENCY All agencies Administration for Children's Services Administrative Tax Appeals Administrative Trials and Hearings Aging Board of Correction Board of Standards and Appeals Buildings Business Integrity Commission Campaign Finance Board City Clerk City Planning City Planning Commission Citywide Administrative Services Civic Engagement Commission Civilian Complaint Review Board Civil Service Commission Commission on Human Rights Comptroller Conflicts of Interest Board Consumer and Worker Protection Correction Cultural Affairs Dept. of Social Svcs/Human Resources Administration Emergency Management Environmental Control Board Environmental Protection Environmental Remediation Finance Fire Department Franchise and Concession Review Committee Health and Mental Hygiene Homeless Services Housing Preservation and Development Human Resources Administration Information Technology and Telecommunications Landmarks Preservation Commission Loft Board Mayor's Office of Contract Services Mayor's Office of Environmental Coordination Mayor's Office of Media and Entertainment Mayor's Office of Special Enforcement NYC Workforce Development Board Office of Collective Bargaining Office of the Mayor Parks and Recreation Police Department Procurement Policy Board Records and Information Services Rent Guidelines Board Sanitation Small Business Services Tax Commission Taxi and Limousine Commission Transportation BOROUGH All boroughs Manhattan Bronx Brooklyn Queens Staten Island Citywide SEARCH Watch this search RULEMAKING STAGE All stages166 Proposal131 Public process20 Adoption6 Effective9 Unstaged0 Export CSV Export Excel (.xlsx) Print / Save as PDF NOTICE · RENT GUIDELINES BOARD Proposed Proposal Rent Guidelines Board Read the proposed rule on the official NYC Rules page. 2026 RGB Orders and Explanatory Statements and Findings Citywide Read the proposed rule on the official NYC Rules page. Actions PUBLIC HEARINGS · BUILDINGS · AUGUST 27, 2026 AT 11:00 AM IN 24 DAYS Comment open · August 27, 2026 (opens in new tab) Public process Buildings Comment by August 27, 2026 Amendments to Rules Relating to the Energy Conservation Code Unstaged Comment by August 27, 2026 (opens in new tab) Actions PUBLIC HEARINGS · TRANSPORTATION · SEPTEMBER 1, 2026 AT 10:00 AM IN 29 DAYS Comment open · September 1, 2026 (opens in new tab) Public process Transportation Comment by September 1, 2026 Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings Unstaged Comment by September 1, 2026 (opens in new tab) Actions NOTICE · FINANCE Proposed Proposal Finance Read the proposed rule on the official NYC Rules page. Notice of Adoption of Amendment of Rules Relating to Utility Company Properties Citywide Read the proposed rule on the official NYC Rules page. Actions NOTICE · CONSUMER AND WORKER PROTECTION Comment open · August 19, 2026 (opens in new tab) Public process Consumer and Worker Protection Comment by August 19, 2026 Notice of Change of Effective Date for SHIELD rules Citywide Comment by August 19, 2026 (opens in new tab) Actions PUBLIC HEARINGS · CITY PLANNING COMMISSION · SEPTEMBER 9, 2026 AT 10:00 AM IN 37 DAYS Comment open · September 9, 2026 (opens in new tab) Public process City Planning Commission Comment by September 9, 2026 CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board Unstaged Comment by September 9, 2026 (opens in new tab) Actions PUBLIC HEARINGS · CONSUMER AND WORKER PROTECTION · AUGUST 19, 2026 AT 11:00 AM IN 16 DAYS Comment open · August 7, 2026 (opens in "
+      }
+    },
+    {
+      "id": "meetings-list",
+      "label": "Meetings list",
+      "route": "#meetings",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 2500,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 1174,
+        "links": 63,
+        "buttons": 32,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 10,
+        "first_action_y": 491,
+        "first_action_document_y": 853,
+        "document_height": 3152,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 4,
+        "empty_state_blocks": [
+          {
+            "text": "PUBLIC HEARINGS AND MEETINGS",
+            "className": "career-kicker",
+            "role": "content"
+          },
+          {
+            "text": "City Record hearing notices follow a meeting arc — scheduled, agenda materials, held, then outcomes — with next steps when the notice publishes how to attend or testify. Same-board same-day notices collapse into one card. Affected place sti",
+            "className": "meetings-domain-deck",
+            "role": "content"
+          },
+          {
+            "text": "SCHEDULED →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "AGENDA →",
+            "className": "",
+            "role": "content"
+          }
+        ],
+        "visible_text": "PUBLIC HEARINGS AND MEETINGS Scheduled, agenda, held, outcomes City Record hearing notices follow a meeting arc — scheduled, agenda materials, held, then outcomes — with next steps when the notice publishes how to attend or testify. Same-board same-day notices collapse into one card. Affected place still drives near-me. Venue is shown separately. SCHEDULED → AGENDA → HELD → OUTCOMES Affected place drives “near me.” The venue is shown separately, because a Manhattan hearing can decide a Queens matter. Citywide and unlocated notices stay visible. Ask what can I comment on this week recent landmarks hearings recent city council hearings DATE WINDOW This week Next 30 days All upcoming Recent past AFFECTED AREA All areas Manhattan Bronx Brooklyn Queens Staten Island Citywide Virtual / online only No place signal Citywide / unlocated NEIGHBORHOOD Use my location AGENCY All agencies SEARCH Watch this search MEETING STAGE All stages9 Scheduled4 Agenda5 Held0 Outcomes0 Unstaged0 LIST LAYOUT Single list Group by place 9 hearings · 3 place-specific · 0 citywide · 6 unlocated Share / export PUBLIC HEARING / MEETING · LANDMARKS PRESERVATION COMMISSION · AUGUST 4, 2026 AT 9:00 AM IN 1 DAY Agenda Landmarks Preservation Commission Attend or follow on August 4, 2026 at 9:00 AM August 4, 2026, Public Hearing Agenda CR AFFECTED AREA No affected area identified in this notice VENUE In person · 253 Broadway, 2nd Floor, New York, NY, 10007 WHO IT AFFECTS Not stated in the notice Attend or follow on August 4, 2026 at 9:00 AM Actions RULE HEARING · HOUSING PRESERVATION AND DEVELOPMENT · AUGUST 4, 2026 AT 2:00 PM IN 1 DAY Scheduled Housing Preservation and Development Attend or follow on August 4, 2026 at 2:00 PM Proposed Amendment to 421-a(16) Workbook Rules AFFECTED AREA No affected area identified in this notice VENUE Venue not stated WHO IT AFFECTS Not stated in the notice Attend or follow on August 4, 2026 at 2:00 PM Actions RULE HEARING · CONSUMER AND WORKER PROTECTION · AUGUST 5, 2026 AT 11:00 AM IN 2 DAYS Scheduled Consumer and Worker Protection Attend or follow on August 5, 2026 at 11:00 AM DCWP NOH Requirements for HVFHV Services and Protections for Drivers AFFECTED AREA No affected area identified in this notice VENUE Venue not stated WHO IT AFFECTS Not stated in the notice Attend or follow on August 5, 2026 at 11:00 AM Actions PUBLIC HEARING / MEETING · ENVIRONMENTAL CONTROL BOARD · AUGUST 6, 2026 AT 9:30 AM IN 3 DAYS Agenda Environmental Control Board Attend or follow on August 6, 2026 at 9:30 AM New York City Environmental Control Board Meeting August 6, 2026 AFFECTED AREA No affected area identified in this notice VENUE In person and online · 100 Church Street, 12th Floor, New York, NY, 10007 WHO IT AFFECTS Not stated in the notice The New York City Environmental Control Board ( Board ) meeting scheduled for Thursday, August 6, 2026 , at 9:30 A.M., will be accessible both in person and remotely. The meeting will be held in person at the Office of Administrative Trials and Hearings ( OATH… Attend or follow on August 6, 2026 at 9:30 AM Actions PUBLIC HEARING / MEETING · TRANSPORTATION · AUGUST 6, 2026 AT 11:00 AM IN 3 DAYS Scheduled Transportation Attend or follow on August 6, 2026 at 11:00 AM Dining Out NYC Public Hearing AFFECTED AREA Greenpoint · Upper West Side · East Village · St. George · Prospect Heights · Ridgewood · Williamsburg · Upper East Side · Manhattan · Brooklyn · Queens · Staten Island · 142 Driggs Ave · 335 Columbus Ave · 23 2nd Ave · 128 Central Ave · 635 Vanderbilt Ave · 7120 Fresh Pond Road · 544 Union Ave · 626 Vanderbilt Ave · 1335 Lexington Ave VENUE Online or by phone WHO IT AFFECTS Restaurant operators, diners, nearby residents, and street users NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent has been scheduled for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by s… Attend or "
+      }
+    },
+    {
+      "id": "property-list",
+      "label": "Property list",
+      "route": "#property",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 5000,
+        "links": 500,
+        "buttons": 100,
+        "max_verbatim_repeat": 149,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 5449,
+        "links": 742,
+        "buttons": 207,
+        "max_verbatim_repeat": 2,
+        "verbatim_duplicates": [
+          {
+            "text": "OWNERS ARE WANTED BY THE PROPERTY CLERK DIVISION OF THE NEW YORK CITY POLICE DEPARTMENT",
+            "count": 2
+          }
+        ],
+        "action_candidates": 1,
+        "first_action_y": 241,
+        "first_action_document_y": 603,
+        "document_height": 16188,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 3,
+        "empty_state_blocks": [
+          {
+            "text": "CITY PROPERTY DISPOSITION",
+            "className": "career-kicker",
+            "role": "content"
+          },
+          {
+            "text": "City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot.",
+            "className": "property-domain-deck",
+            "role": "content"
+          },
+          {
+            "text": "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+            "className": "property-empty-current",
+            "role": "content"
+          }
+        ],
+        "visible_text": "CITY PROPERTY DISPOSITION Hearings, sales, and awards City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot. Explore property on the map HOW THIS LIST WORKS SEARCH More filters Watch this search ITEM TYPE All types243 Vehicles6 Timber43 Equipment8 Real property160 Scrap / materials0 Other26 209 dispositions SORT BY Closing soonest Newest posted Price: high to low Price: low to high Export CSV Export Excel (.xlsx) Print / Save as PDF Nothing closing soon or upcoming right now. Recent closed notices are below. CLOSED / ARCHIVE Timber / firewood closed July 22, 2026 SALE · ENVIRONMENTAL PROTECTION ✓ Past / decided CARPENTERS EDDY WEST FOREST MANAGEMENT PROJECT #5202 NOTICE OF PROJECT AVAILABILITY No location identified in this notice Closed — view notice Actions 11 near-identical notices Other September 15, 2024 – May 31, 2026 Show each notice Real property RFP closed December 17, 2025 NOTICE · ECONOMIC DEVELOPMENT CORPORATION ✓ Past / decided BBL 2027810500 SUPPLEMENT TO CITY RECORD ADVERTISEMENT TO ADD THE DATE, TIME AND PLACE TO PUBLICLY DISCLOSE PROPOSALS IN RESPONSE TO THE RFP FOR LEASING OPPORTUNITIES FOR SOLAR PV SYSTEM DEVELOPMENTS AT CERTAIN SITES IN THE BRONX, NEW YORK 600 Food Center Drive 1625 Bathgate Avenue 1701 Bathgate Avenue Bronx BBL 2027810500 Closed — view notice Actions 3 near-identical notices Vehicles Auction / RFP September 3, 2019 – November 13, 2025 Show each notice Timber / firewood closed August 20, 2025 NOTICE · ENVIRONMENTAL PROTECTION ✓ Past / decided NOTICE OF PROJECT AVAILABILITY: Old Sholam Forest Management Project #5211 No location identified in this notice Closed — view notice Actions Timber / firewood closed August 12, 2025 NOTICE · ENVIRONMENTAL PROTECTION ✓ Past / decided Notice of Project Availability: Tonche Gap Forest Management Project #5207 No location identified in this notice Closed — view notice Actions Real property closed August 5, 2025 NOTICE · CITYWIDE ADMINISTRATIVE SERVICES ✓ Past / decided Public notice that the Department of Citywide Administrative Services, Real Estate Services will be conducting online public lease auctions in accordance with Section 384 of the New York City Charter No location identified in this notice Closed — view notice Actions Timber / firewood closed May 4, 2025 NOTICE · ENVIRONMENTAL PROTECTION ✓ Past / decided REQUEST FOR BID Forest Management Project # 5263 'Sugarloaf Ravine' No location identified in this notice Closed — view notice Actions Real property closed January 20, 2025 NOTICE · CITYWIDE ADMINISTRATIVE SERVICES ✓ Past / decided Public notice that the Department of Citywide Administrative Services will be conducting online public lease auctions in accordance with Section 384 of the New York City Charter No location identified in this notice Closed — view notice Actions Timber / firewood closed December 18, 2024 SALE · ENVIRONMENTAL PROTECTION ✓ Past / decided Notice of Project Availability Highland Forest Management Project #5221 No location identified in this notice Closed — view notice Actions Real property closed November 25, 2024 PUBLIC HEARINGS · SMALL BUSINESS SERVICES ✓ Past / decided BBL 1006440001 NOTICE OF VOLUNTARY PUBLIC HEARING Manhattan Block 644, Lot 1 BBL 1006440001 Closed — view notice Actions Timber / firewood closed November 6, 2024 NOTICE · ENVIRONMENTAL PROTECTION ✓ Past / decided Bungalow Brook Forest Management Project Notice of Availability No location identified in this notice Closed — view notice Actions Vehicles Online auction closed October 28, 2024 PUBLIC HEARINGS · CITYWIDE ADMINISTRATIVE SERVICES ✓ Past / decided AUTO AUCTION No location identified in this notice Closed — view notice Actions Seized / unclaimed property closed October 20, 2024 PUBLIC HEARINGS · POLICE DEPARTMENT ✓ Past / decided OFFICIAL NOTICE OF PENDING DESTRUCTION OF CERTAIN UNAUTH"
+      }
+    },
+    {
+      "id": "staffing",
+      "label": "Staffing",
+      "route": "#people",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 2500,
+        "links": 150,
+        "buttons": 80,
+        "max_verbatim_repeat": 25,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 1648,
+        "links": 137,
+        "buttons": 14,
+        "max_verbatim_repeat": 10,
+        "verbatim_duplicates": [
+          {
+            "text": "Read the official NOE (opens in new tab)",
+            "count": 10
+          },
+          {
+            "text": "Apply in OASys (opens in new tab)",
+            "count": 9
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "count": 6
+          },
+          {
+            "text": "Check the official schedule (opens in new tab)",
+            "count": 6
+          },
+          {
+            "text": "Applications open August 5, 2026 at 8:00 AM",
+            "count": 5
+          },
+          {
+            "text": "Apply by August 7, 2026 at 8:00 AM",
+            "count": 2
+          },
+          {
+            "text": "Who may qualify A bachelor's degree from an accredited college or university.",
+            "count": 2
+          }
+        ],
+        "action_candidates": 9,
+        "first_action_y": 723,
+        "first_action_document_y": 1085,
+        "document_height": 4932,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 2,
+        "content_blocks": 44,
+        "empty_state_blocks": [
+          {
+            "text": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile. JOB OR EXAM NUMBER INTERE",
+            "className": "career-browser",
+            "role": "empty"
+          },
+          {
+            "text": "CITY CAREERS",
+            "className": "career-kicker",
+            "role": "content"
+          },
+          {
+            "text": "Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Apply now Open now Apply by August 7, 2026 at 8:00 AM 3 days left Emergency Medical Specialist - EMT (Fire) Exam 6125 $30 application fee $39,386 minimum salary in the NOE From $39,386 Education and experience review Who may qualify A high ",
+            "className": "career-result-group",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 7, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A high school diploma or equivalent plus a valid New York State EMT-Basic or EMT-Paramedic certificate by the deadline stated in the NOE.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 7, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A high school diploma or equivalent plus one of the work, military, college-credit, or approved EMS-coursework paths listed in the NOE.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 17, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify By the date of appointment, you must have a four-year high school diploma or its educational equivalent, and successfully completed 24 college semester credits at an accredited college or university with at least a 2.0 cumul",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify Two years of automotive maintenance experience, relevant trade or technical education, an associate degree in automotive technology, or an allowed combination.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A bachelor's degree from an accredited college or university.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A bachelor's degree from an accredited college or university.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A high school diploma or equivalent. The NOE also lists age, citizenship, residency, screening, and appointment requirements.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A high school diploma or equivalent, plus the license, medical, psychological, and screening requirements in the NOE.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Coming up Upcoming Applications open August 5, 2026 at 8:00 AM in 1 day Contract Specialist Exam 7023 Not yet shown here — fee and salary live in the DCAS Notice of Examination. application fee Not yet shown here — fee and salary live in th",
+            "className": "career-result-group",
+            "role": "empty"
+          },
+          {
+            "text": "Applications open August 5, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Applications open August 5, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Applications open August 5, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Applications open August 5, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All exam types APPLICATION WINDOW Open and upcoming Open now Upcoming All scheduled exams EXAM FORMAT Any format Education and experience Multiple choice Physical Mixed / multi-part STARTING SALARY Any salary Under $45,000 $45,000–$60,000 $60,000–$80,000 $80,000+ APPLICATION FEE Any fee No fee $1–$40 $41–$70 $71+ EXPERIENCE Any requirements No prior experience required Experience required Precomputed from official DCAS sources. Open exams checked July 28, 2026 at 8:00 AM. Annual schedule current through July 22, 2026 at 8:00 AM. Sources and refresh rules Apply now Open now Apply by August 7, 2026 at 8:00 AM 3 days left Emergency Medical Specialist - EMT (Fire) Exam 6125 $30 application fee $39,386 minimum salary in the NOE From $39,386 Education and experience review Who may qualify A high school diploma or equivalent plus a valid New York State EMT-Basic or EMT-Paramedic certificate by the deadline stated in the NOE. Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated Apply in OASys (opens in new tab) Read the official NOE (opens in new tab) Open now Apply by August 7, 2026 at 8:00 AM 3 days left Emergency Medical Specialist Trainee Exam 6126 $30 application fee $36,330 minimum salary in the NOE From $36,330 Education and experience review Who may qualify A high school diploma or equivalent plus one of the work, military, college-credit, or approved EMS-coursework paths listed in the NOE. Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated Apply in OASys (opens in new tab) Read the official NOE (opens in new tab) Open now Apply by August 17, 2026 at 8:00 AM 13 days left Police Officer Exam 7312 $0 application fee $55,942 – $109,352 minimum salary in the NOE Multiple-choice test No application fee No prior experience required Residency required $55,942–$109,352 Who may qualify By the date of appointment, you must have a four-year high school diploma or its educational equivalent, and successfully completed 24 college semester credits at an accredited college or university with at least a 2.0 cumulative index or its equivalent, or have completed two years of honorable full-time U.S. milita… Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated Apply in OASys (opens in new tab) Read the official NOE (opens in new tab) Open now Apply by August 25, 2026 at 8:00 AM 21 days left Assistant Civil Engineer Exam 7006 $82 application fee $66,330 minimum salary in the NOE Experience required From $66,330 Education and experience review Who may qualify The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study. Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated Apply in OASys (opens in new tab) Read the official NOE (opens in new tab) Open now Apply by August 25, 2026 at 8:00 AM 21 days left Automotive Service Worker Exam 7013 $61 application fee $42,387 minimum salary in the NOE Experience required From $42,387 Education and experience review Who may qualify Two years of automotive maintenance experience, relevant trade or technical education, an associate degree in automotive technology, or an allowed combination. Predicted based on 307 eligible lists esta"
+      }
+    },
+    {
+      "id": "exam-detail",
+      "label": "Exam detail",
+      "route": "#exam/7016",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 50,
+        "max_verbatim_repeat": 1,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 619,
+        "links": 7,
+        "buttons": 1,
+        "max_verbatim_repeat": 2,
+        "verbatim_duplicates": [
+          {
+            "text": "Read the official NOE (opens in new tab)",
+            "count": 2
+          }
+        ],
+        "action_candidates": 3,
+        "first_action_y": 1127,
+        "first_action_document_y": 1489,
+        "document_height": 2385,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 23,
+        "empty_state_blocks": [
+          {
+            "text": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile. JOB OR EXAM NUMBER INTERE",
+            "className": "career-browser",
+            "role": "content"
+          },
+          {
+            "text": "CITY CAREERS",
+            "className": "career-kicker",
+            "role": "content"
+          },
+          {
+            "text": "Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Apply by August 25, 2026 at 8:00 AM",
+            "className": "career-deadline-primary",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify A bachelor's degree from an accredited college or university.",
+            "className": "career-diff-quals",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Connect New Yorkers with public benefits, health care, housing, and other social services.",
+            "className": "career-summary",
+            "role": "content"
+          },
+          {
+            "text": "How it is scored: Education and experience exam",
+            "className": "career-detail-line",
+            "role": "content"
+          },
+          {
+            "text": "Who may qualify: A bachelor's degree from an accredited college or university.",
+            "className": "career-detail-line",
+            "role": "content"
+          },
+          {
+            "text": "Residency required City residency is not required for this position.",
+            "className": "career-detail-line",
+            "role": "content"
+          },
+          {
+            "text": "Fee help: Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+            "className": "career-detail-line",
+            "role": "content"
+          },
+          {
+            "text": "Job details above summarize the official English NOE. Read the full NOE before applying. OASys can translate NOEs into more than 190 languages.",
+            "className": "career-english-note",
+            "role": "content"
+          },
+          {
+            "text": "EXAM HIRING TIMELINE Process chain for exam 7016 (Caseworker). Now: Application window — Apply during the open window or read the Notice of Examination · Next: Eligible list APPLY → LIST → CERTIFY → HIRE APPLICATION WINDOW 2026-07-01 – 2026",
+            "className": "career-exam-spine",
+            "role": "content"
+          },
+          {
+            "text": "EXAM HIRING TIMELINE",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Process chain for exam 7016 (Caseworker).",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Now: Application window — Apply during the open window or read the Notice of Examination · Next: Eligible list",
+            "className": "land-spine-status exam-phase-lead",
+            "role": "content"
+          },
+          {
+            "text": "CERTIFY →",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "APPLICATION WINDOW 2026-07-01 – 2026-08-25 Read the official NOE (opens in new tab)",
+            "className": "box matched",
+            "role": "content"
+          },
+          {
+            "text": "ELIGIBLE LIST Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "box",
+            "role": "content"
+          },
+          {
+            "text": "Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Timeline joins the DCAS exam schedule / Notice of Examination, Civil Service List open data, and the DCAS annual outcomes publication by exam number. Empty stages mean those aggregates are not yet in the precomputed guide — not that the cit",
+            "className": "note",
+            "role": "content"
+          },
+          {
+            "text": "Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.",
+            "className": "career-deck",
+            "role": "content"
+          },
+          {
+            "text": "What a civil-service exam does Find an exam Open-competitive exams are available to anyone who meets the requirements. Read the NOE The Notice of Examination is the official guide to the job, qualifications, fee, and test. Apply in the wind",
+            "className": "",
+            "role": "content"
+          }
+        ],
+        "visible_text": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All exam types APPLICATION WINDOW Open and upcoming Open now Upcoming All scheduled exams EXAM FORMAT Any format Education and experience Multiple choice Physical Mixed / multi-part STARTING SALARY Any salary Under $45,000 $45,000–$60,000 $60,000–$80,000 $80,000+ APPLICATION FEE Any fee No fee $1–$40 $41–$70 $71+ EXPERIENCE Any requirements No prior experience required Experience required Precomputed from official DCAS sources. Open exams checked July 28, 2026 at 8:00 AM. Annual schedule current through July 22, 2026 at 8:00 AM. Sources and refresh rules Open now Apply by August 25, 2026 at 8:00 AM 21 days left Caseworker Exam 7016 $68 application fee $48,206 minimum salary in the NOE No prior experience required From $48,206 Education and experience review Who may qualify A bachelor's degree from an accredited college or university. Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated Connect New Yorkers with public benefits, health care, housing, and other social services. $68 application fee $48,206 minimum salary in the NOE How it is scored: Education and experience exam Who may qualify: A bachelor's degree from an accredited college or university. Residency required City residency is not required for this position. Fee help: Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify. Job details above summarize the official English NOE. Read the full NOE before applying. OASys can translate NOEs into more than 190 languages. EXAM HIRING TIMELINE Process chain for exam 7016 (Caseworker). Now: Application window — Apply during the open window or read the Notice of Examination · Next: Eligible list APPLY → LIST → CERTIFY → HIRE APPLICATION WINDOW 2026-07-01 – 2026-08-25 Read the official NOE (opens in new tab) → ELIGIBLE LIST Predicted based on 307 eligible lists established since 2018 — median 8 months after the filing period closed. How this range is calculated Timeline joins the DCAS exam schedule / Notice of Examination, Civil Service List open data, and the DCAS annual outcomes publication by exam number. Empty stages mean those aggregates are not yet in the precomputed guide — not that the city withheld a public source. Individual scores stay private. Apply in OASys (opens in new tab) Read the official NOE (opens in new tab) Copy link Back to all exams New to civil-service exams? How it works 9 open to applications now 99 open-competitive exams scheduled next No account here Applications happen in the City's OASys system Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window. What a civil-service exam does Find an exam Open-competitive exams are available to anyone who meets the requirements. Read the NOE The Notice of Examination is the official guide to the job, qualifications, fee, and test. Apply in the window Create an OASys account, submit the application, and request a fee waiver if you qualify. Join the eligible list If you pass, your score places you on a list agencies use when they hire for that title. What happened: recent appointments"
+      }
+    },
+    {
+      "id": "vendor-profile",
+      "label": "Vendor profile",
+      "route": "#vendor/Camba%20Inc.",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1500,
+        "links": 100,
+        "buttons": 60,
+        "max_verbatim_repeat": 2,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 153,
+        "links": 2,
+        "buttons": 4,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 667,
+        "first_action_document_y": 1058,
+        "document_height": 1393,
+        "visible_loading_placeholders": 3,
+        "empty_blocks": 0,
+        "content_blocks": 4,
+        "empty_state_blocks": [
+          {
+            "text": "ON THE RECORD — NOTICES NAMING THIS VENDOR",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "MENTIONED IN OTHER NOTICES (TEXT MATCH)",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "PREDICTED EXPIRATIONS AND PLANNED SCHEDULES",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above. Distinct companies sharing a name stem would be merged, so treat totals as “published under this name,” not a legal entity. Awards are a",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "← Browse CityScroll Vendor profile · 9 name variants resolved which? CAMBA · 3 · $11.80M Camba Inc. · 135 · $1.11B Camba, Inc · 7 · $85.95M CAMBA Inc · 10 · $148.39M CAMBA Inc · 17 · $141.42M CAMBA, Inc. · 92 · $352.56M CAMBA, Inc., · 4 · $9.50M CAMBA. Inc. · 2 · $61.06M CAMBA., Inc. · 2 · $30.03M CAMBA INC. $1.95B TOTAL AWARDED, ON RECORD 272 AWARD NOTICES 2007-09-14 – 2026-08-03 FIRST / LATEST AWARD PUBLISHED ON THE RECORD — NOTICES NAMING THIS VENDOR MENTIONED IN OTHER NOTICES (TEXT MATCH) PREDICTED EXPIRATIONS AND PLANNED SCHEDULES Follow this vendor Copy link QR code Pin RSS Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above. Distinct companies sharing a name stem would be merged, so treat totals as “published under this name,” not a legal entity. Awards are as published in the City Record. Registered contracts and payments live on Checkbook NYC. The timeline lead carries one search for this vendor name, not a link on every award."
+      }
+    },
+    {
+      "id": "agency-profile",
+      "label": "Agency profile",
+      "route": "#agency/City%20Council",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1500,
+        "links": 100,
+        "buttons": 60,
+        "max_verbatim_repeat": 2,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 426,
+        "links": 24,
+        "buttons": 6,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 1632,
+        "first_action_document_y": 2022,
+        "document_height": 2319,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 26,
+        "empty_state_blocks": [
+          {
+            "text": "Joined from NYC Open Data: NYC Agencies and Governance Organizations (t3jq-9nkf) (opens in new tab) and Expense Budget (mwzb-yiwb) (opens in new tab) . Static snapshot as of 2026-07-27.",
+            "className": "aidprov",
+            "role": "content"
+          },
+          {
+            "text": "ACROSS CITYSCROLL DOMAINS",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Everything linked to City Council from published sources — not siloed lists. 2 of 7 domains have linked objects.",
+            "className": "ei-lead",
+            "role": "content"
+          },
+          {
+            "text": "MONEY 0 NONE IN THIS CORPUS No money objects in the linked corpus resolved to this entity.",
+            "className": "ei-domain",
+            "role": "content"
+          },
+          {
+            "text": "No money objects in the linked corpus resolved to this entity.",
+            "className": "ei-empty",
+            "role": "content"
+          },
+          {
+            "text": "LAND 0 NONE IN THIS CORPUS No land objects in the linked corpus resolved to this entity.",
+            "className": "ei-domain",
+            "role": "content"
+          },
+          {
+            "text": "No land objects in the linked corpus resolved to this entity.",
+            "className": "ei-empty",
+            "role": "content"
+          },
+          {
+            "text": "PROPERTY 0 NONE IN THIS CORPUS No property objects in the linked corpus resolved to this entity.",
+            "className": "ei-domain",
+            "role": "content"
+          },
+          {
+            "text": "No property objects in the linked corpus resolved to this entity.",
+            "className": "ei-empty",
+            "role": "content"
+          },
+          {
+            "text": "RULES 0 NONE IN THIS CORPUS No rules objects in the linked corpus resolved to this entity.",
+            "className": "ei-domain",
+            "role": "content"
+          },
+          {
+            "text": "No rules objects in the linked corpus resolved to this entity.",
+            "className": "ei-empty",
+            "role": "content"
+          },
+          {
+            "text": "MEETINGS 6 LINKED 7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-22 city_record · city_record:20260707022 7-21-26 Subcommittee on Zoning and Franchises meeting2026-07-21 city_record · city_rec",
+            "className": "ei-domain",
+            "role": "content"
+          },
+          {
+            "text": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-22 city_record · city_record:20260707022",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "7-21-26 Subcommittee on Zoning and Franchises meeting2026-07-21 city_record · city_record:20260707021",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-14 city_record · city_record:20260706036",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-09 city_record · city_record:20260625040",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "PEOPLE 6 LINKED Christopher Marte · Affirmative · LU 0112-20262026-07-14 legistar · legistar:person:7801:matter:79193:event:22526 Alexa Avilés · Affirmative · LU 0091-20262026-07-09 legistar · legistar:person:7825:matter:79062:event:22567 F",
+            "className": "ei-domain",
+            "role": "content"
+          },
+          {
+            "text": "Christopher Marte · Affirmative · LU 0112-20262026-07-14 legistar · legistar:person:7801:matter:79193:event:22526",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "Alexa Avilés · Affirmative · LU 0091-20262026-07-09 legistar · legistar:person:7825:matter:79062:event:22567",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "Farah N. Louis · Affirmative · LU 0056-20262026-05-19 legistar · legistar:person:7785:matter:78605:event:22375",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "David M. Carr · Affirmative · LU 0058-20262026-04-22 legistar · legistar:person:7833:matter:78682:event:22342",
+            "className": "ei-obj",
+            "role": "content"
+          },
+          {
+            "text": "Each link names its source record. Domains with no matching records appear empty.",
+            "className": "aidprov ei-method",
+            "role": "content"
+          },
+          {
+            "text": "NOTICES BY SECTION — CLICK TO BROWSE THAT LENS, FILTERED TO THIS AGENCY",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "TOP VENDORS BY AWARDED $ (CLICK TO PIVOT)",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "OPEN SOLICITATIONS",
+            "className": "chain-h",
+            "role": "content"
+          },
+          {
+            "text": "Figures are what this agency has published in the City Record (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.",
+            "className": "note",
+            "role": "content"
+          }
+        ],
+        "visible_text": "← Browse CityScroll Agency profile · City Record on record CITY COUNCIL $4.99M TOTAL AWARDED, ON RECORD 13 CONTRACT AWARDS PUBLISHED 1 OPEN RFPS RIGHT NOW New York City Council NYCC JOINED FROM NYC OPEN DATA LED BY Speaker · Julie Menin TYPE Elected Office ADOPTED BUDGET, FY2027 $115.0M BUDGET CODE 102 WEBSITE Official agency website (opens in new tab) Joined from NYC Open Data: NYC Agencies and Governance Organizations (t3jq-9nkf) (opens in new tab) and Expense Budget (mwzb-yiwb) (opens in new tab) . Static snapshot as of 2026-07-27. ACROSS CITYSCROLL DOMAINS Everything linked to City Council from published sources — not siloed lists. 2 of 7 domains have linked objects. MONEY 0 NONE IN THIS CORPUS No money objects in the linked corpus resolved to this entity. LAND 0 NONE IN THIS CORPUS No land objects in the linked corpus resolved to this entity. PROPERTY 0 NONE IN THIS CORPUS No property objects in the linked corpus resolved to this entity. RULES 0 NONE IN THIS CORPUS No rules objects in the linked corpus resolved to this entity. MEETINGS 6 LINKED 7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-22 city_record · city_record:20260707022 7-21-26 Subcommittee on Zoning and Franchises meeting2026-07-21 city_record · city_record:20260707021 Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-14 city_record · city_record:20260706036 7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting2026-07-09 city_record · city_record:20260625040 PEOPLE 6 LINKED Christopher Marte · Affirmative · LU 0112-20262026-07-14 legistar · legistar:person:7801:matter:79193:event:22526 Alexa Avilés · Affirmative · LU 0091-20262026-07-09 legistar · legistar:person:7825:matter:79062:event:22567 Farah N. Louis · Affirmative · LU 0056-20262026-05-19 legistar · legistar:person:7785:matter:78605:event:22375 David M. Carr · Affirmative · LU 0058-20262026-04-22 legistar · legistar:person:7833:matter:78682:event:22342 Each link names its source record. Domains with no matching records appear empty. NOTICES BY SECTION — CLICK TO BROWSE THAT LENS, FILTERED TO THIS AGENCY Public Hearings and Meetings384 Procurement47 TOP VENDORS BY AWARDED $ (CLICK TO PIVOT) VISIONARY INTEGRATION PROFESSIONALS, LLC $2.26M Lockheed Martin Desktop Solutions, Inc. $571K Dell Marketing L.P. $482K Hewlett Packard Company $449K Nexus Consortium, Inc. $313K Maureen Data Systems Inc. $257K Uneed Solutions Inc., DBA Noviant $183K IP Logic, Inc. $139K OPEN SOLICITATIONS due 2026-08-20 OVERFLOW MAIL FULFILLMENT SERVICES open · 17 days left Follow: anything new from them Copy link QR code Pin Watch rules only Watch meetings only RSS Figures are what this agency has published in the City Record (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature."
+      }
+    },
+    {
+      "id": "alerts",
+      "label": "Alerts builder",
+      "route": "#alerts",
+      "file": "site/index.html",
+      "status": "ok",
+      "action_required": true,
+      "budgets": {
+        "words": 1200,
+        "links": 80,
+        "buttons": 60,
+        "max_verbatim_repeat": 2,
+        "max_first_action_y": 900
+      },
+      "measured": {
+        "words": 400,
+        "links": 1,
+        "buttons": 21,
+        "max_verbatim_repeat": 1,
+        "verbatim_duplicates": [],
+        "action_candidates": 1,
+        "first_action_y": 549,
+        "first_action_document_y": 911,
+        "document_height": 2921,
+        "visible_loading_placeholders": 0,
+        "empty_blocks": 0,
+        "content_blocks": 7,
+        "empty_state_blocks": [
+          {
+            "text": "When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.",
+            "className": "rollup-lead",
+            "role": "content"
+          },
+          {
+            "text": "contract money — about \"construction\" · agency \"Department of Education\" · Daily",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "land & rezonings — about \"Lower East Side\" · including closed · Daily",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "agency \"Department of Transportation\" — every new City Record notice naming them · Weekly",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "3 of 3 watches with updates",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer.",
+            "className": "",
+            "role": "content"
+          },
+          {
+            "text": "Preference changes take effect on the next daily digest run (~9am Eastern).",
+            "className": "muted",
+            "role": "content"
+          }
+        ],
+        "visible_text": "Ask education contracts over $200K due in 3 months rezonings near 79 Rivington sanitation contract awards GET YOUR DIGEST IN 60 SECONDS 1 WHAT SHOULD WE WATCH FOR YOU? City contracts and RFPs Big contract awards Rezonings near me Property sales Rule changes Hearings and meetings 2 DESCRIBE WHAT YOU WANT — PLAIN ENGLISH OR KEYWORDS (OPTIONAL) 3 HOW OFTEN? Daily (around 9 a.m.) Weekly (Mondays) Preview my digest → No account — just an email confirmation. BUILD AN ALERT QUICK SUGGESTIONS Rezonings near 79 Rivington Awards over $1M Construction RFPs WATCH FOR Contract awards over a threshold Open RFPs matching a keyword Contracts or awards by description Rezonings near a neighborhood Property sale notices Rule changes (Agency Rules) Public hearings and meetings A vendor — anything naming them An agency — anything they publish The award on a notice I'm viewing MINIMUM AWARD $1M+ $5M+ $10M+ $50M+ EMAIL ADDRESS FREQUENCY Daily Weekly New matches are emailed each morning, around 9 a.m. New York time (8 a.m. Nov–Mar). Preview today's digest Subscribe → We'll email a link to confirm. PREVIEW Build an alert and hit Preview to see the digest, populated with today's real notices. HOW MULTI-WATCH DIGESTS ARRIVE When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster. GROUP RELATED WATCHES BY Topic Agency Geography Contracts & awards (1) contract money — about \"construction\" · agency \"Department of Education\" · Daily Rezonings & land use (1) land & rezonings — about \"Lower East Side\" · including closed · Daily Vendor or agency name (1) agency \"Department of Transportation\" — every new City Record notice naming them · Weekly Consolidated digest (demo) CityScroll → multi-watch demo CityScroll: 3 new — 3 watches 3 of 3 watches with updates contract money — about \"construction\" · agency \"Department of Education\" School construction services Department of Education · $2,000,000 land & rezonings — about \"Lower East Side\" · including closed Lower East Side mixed-use Manhattan · In Public Review agency \"Department of Transportation\" — every new City Record notice naming them Street reconstruction — Brooklyn Department of Transportation · $850,000 Manage watches · Unsubscribe all (one-click). Preference changes take effect on the next daily run (~9am Eastern). Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer. Manage watches Preference changes take effect on the next daily digest run (~9am Eastern)."
+      }
+    }
+  ]
+}

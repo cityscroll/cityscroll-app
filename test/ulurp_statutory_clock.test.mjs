@@ -15,8 +15,10 @@ import {
   ULURP_STATUTORY_STAGES,
   ULURP_STATUTORY_TOTAL_DAYS,
   addCalendarDays,
+  buildUlurpPipelinePosition,
   buildUlurpStatutoryClockView,
   detectStaleOpenStatutoryClock,
+  normalizeLandOutcomeRecord,
   projectStatutoryDeadlines,
   resolveCertificationDate,
 } from "../site/ulurp_statutory_clock.mjs";
@@ -264,4 +266,64 @@ test("in-progress project closes only completed statutory phases", () => {
   assert.ok(cbPred.status === "resolved_hit" || cbPred.status === "resolved_miss");
   const bpPred = predictions.find((p) => p.model_name === stageModelName("borough_president"));
   assert.equal(bpPred.status, "open");
+});
+
+test("completed project with stale-open edge clock does not claim overdue public-review step", () => {
+  const record = JSON.parse(
+    readFileSync(join(ROOT, "test/fixtures/ulurp_statutory_clock/completed_project.json"), "utf8"),
+  );
+  // Simulate lagging materialization: all phases still open on a Completed project.
+  const staleClock = {
+    status: "open",
+    certified_date: "2023-08-21",
+    phases: [
+      { phase_id: "community_board", status: "open", due_date: "2023-10-20", days: 60 },
+      { phase_id: "borough_president", status: "open", due_date: "2023-11-19", days: 30 },
+      { phase_id: "cpc", status: "open", due_date: "2024-01-18", days: 60 },
+      { phase_id: "city_council", status: "open", due_date: "2024-03-08", days: 50 },
+      { phase_id: "mayoral_appeals", status: "open", due_date: "2024-03-13", days: 5 },
+    ],
+  };
+  const bad = buildUlurpPipelinePosition({
+    phaseView: { current: { phase_id: "city_council", public_status: "Completed" } },
+    clock: staleClock,
+    publicStatus: "Completed",
+    today: "2026-08-04",
+  });
+  assert.equal(bad, null, "terminal public_status must not emit public-review pipeline sentence");
+
+  const normalized = normalizeLandOutcomeRecord({ ...record, statutory_clock: staleClock });
+  assert.equal(normalized.statutory_clock.status, "completed");
+  assert.ok(normalized.statutory_clock.phases.every((p) => p.status === "completed"));
+  const good = buildUlurpPipelinePosition({
+    phaseView: { current: { phase_id: "city_council", public_status: "Completed" } },
+    clock: normalized.statutory_clock,
+    publicStatus: "Completed",
+    today: "2026-08-04",
+  });
+  assert.equal(good, null);
+
+  // Still in public review with a real open step keeps days-left.
+  const openPos = buildUlurpPipelinePosition({
+    phaseView: {
+      current: { phase_id: "borough_president", public_status: "In Public Review", in_public_review: true },
+    },
+    clock: {
+      status: "open",
+      certified_date: "2026-05-11",
+      phases: [
+        { phase_id: "community_board", status: "completed", due_date: "2026-07-10", days: 60 },
+        { phase_id: "borough_president", status: "open", due_date: "2026-08-09", days: 30 },
+        { phase_id: "cpc", status: "open", due_date: "2026-10-08", days: 60 },
+        { phase_id: "city_council", status: "open", due_date: "2026-11-27", days: 50 },
+        { phase_id: "mayoral_appeals", status: "open", due_date: "2026-12-02", days: 5 },
+      ],
+    },
+    publicStatus: "In Public Review",
+    today: "2026-08-04",
+  });
+  assert.ok(openPos);
+  assert.equal(openPos.step_phase_id, "borough_president");
+  assert.equal(openPos.step_n, 2);
+  assert.ok(Number.isFinite(openPos.days_left));
 });

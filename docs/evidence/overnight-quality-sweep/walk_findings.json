@@ -1,0 +1,1349 @@
+{
+  "schema": "cityscroll.overnight_quality_walk.v0",
+  "measured_at": "2026-08-04T02:39:16.434336Z",
+  "base": "https://cityscroll.org/",
+  "route_count": 47,
+  "finding_count": 89,
+  "findings": [
+    {
+      "route_id": "landing-home",
+      "route": "#",
+      "permalink": "https://cityscroll.org/#",
+      "hits": [
+        {
+          "class": "apology",
+          "phrase": "the city does not publish",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Ask shelter services contracts Includes contracts with forecast data construction contracts over $500k IT consulting RFPs Copy link QR code SHOW Open Requests for Proposals (RFPs) \u2014 accepting now All RFPs Recent Awards ($) AGENCY All agencies Administration for Children's Services Administrative Trials and Hearings Aging Battery Park City Authority Board of Correction Board of Education Retirement System Board of Elections Borough Of Manhattan Community College Borough President - Bronx Borough ",
+      "word_count": 1777
+    },
+    {
+      "route_id": "landing-home",
+      "route": "#",
+      "permalink": "https://cityscroll.org/#",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "SOLICITATION\n2026-06-30\nPASSPort solicitation (RFx)\nDue 8/5/2026 1\nStatus: Released\nMethod: Competitive Sealed Bid\nResponses due 2026-08-05\nThe city does not publish package documents as an open feed ",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "SOLICITATION\n2026-06-30\nPASSPort solicitation (RFx)\nDue 8/5/2026 1\nStatus: Released\nMethod: Competitive Sealed Bid\nResponses due 2026-08-05\nThe city does not publish package documents as an open feed \u2014 see City Record\n(opens in new tab)\n.\nCity Record\n(opens in new tab)",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-home",
+      "route": "#",
+      "permalink": "https://cityscroll.org/#",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-money",
+      "route": "#money",
+      "permalink": "https://cityscroll.org/#money",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-money",
+      "route": "#money",
+      "permalink": "https://cityscroll.org/#money",
+      "hits": [
+        {
+          "class": "scaffold",
+          "phrase": "visible skeletons 3",
+          "count": 3
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-land",
+      "route": "#land",
+      "permalink": "https://cityscroll.org/#land",
+      "hits": [
+        {
+          "class": "apology",
+          "phrase": "could not reach",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Ask rezonings in Queens 79 Rivington rezonings in the Bronx BOROUGH All boroughs Manhattan Brooklyn Queens Bronx Staten Island ZIP OR PLACE STATUS In review / active Upcoming hearings All ATTENDANCE Any mode In person Livestream Use my location Watch this search REZONINGS 40+ Export CSV Export Excel (.xlsx) Print / Save as PDF Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to a",
+      "word_count": 1389
+    },
+    {
+      "route_id": "landing-land",
+      "route": "#land",
+      "permalink": "https://cityscroll.org/#land",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-rules",
+      "route": "#rules",
+      "permalink": "https://cityscroll.org/#rules",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "warehouse",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY AGENCY RULEMAKING Proposal, public process, adoption City Record Agency Rules notices are grouped by rulemaking stage \u2014 proposal, public process (comment and hearing), adoption, then effective date \u2014 so multi-notice chains collapse into one rule when the join is high-confidence. PROPOSAL \u2192 PUBLIC PROCESS \u2192 ADOPTION \u2192 EFFECTIVE Ask taxi rules buildings rules sanitation rules AGENCY All agencies Administration for Children's Services Administrative Tax Appeals Administrative Trials and Hearin",
+      "word_count": 8327
+    },
+    {
+      "route_id": "landing-rules",
+      "route": "#rules",
+      "permalink": "https://cityscroll.org/#rules",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-meetings",
+      "route": "#meetings",
+      "permalink": "https://cityscroll.org/#meetings",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-property",
+      "route": "#property",
+      "permalink": "https://cityscroll.org/#property",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-staffing",
+      "route": "#people",
+      "permalink": "https://cityscroll.org/#people",
+      "hits": [
+        {
+          "class": "apology",
+          "phrase": "not yet shown here",
+          "count": 12
+        },
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 1661
+    },
+    {
+      "route_id": "landing-staffing",
+      "route": "#people",
+      "permalink": "https://cityscroll.org/#people",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "landing-map",
+      "route": "#map",
+      "permalink": "https://cityscroll.org/#map",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-award",
+      "route": "#notice/20260724018",
+      "permalink": "https://cityscroll.org/#notice/20260724018",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-rules",
+      "route": "#notice/20260714029",
+      "permalink": "https://cityscroll.org/#notice/20260714029",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-meeting",
+      "route": "#notice/20260706036",
+      "permalink": "https://cityscroll.org/#notice/20260706036",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-property-bbl",
+      "route": "#notice/20241112003",
+      "permalink": "https://cityscroll.org/#notice/20241112003",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-property-destruction",
+      "route": "#notice/20260526003",
+      "permalink": "https://cityscroll.org/#notice/20260526003",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-hearing-fcrc",
+      "route": "#notice/20260716022",
+      "permalink": "https://cityscroll.org/#notice/20260716022",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-land-ulurp",
+      "route": "#notice/20230912001",
+      "permalink": "https://cityscroll.org/#notice/20230912001",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-ida-subsidy",
+      "route": "#notice/20220525018",
+      "permalink": "https://cityscroll.org/#notice/20220525018",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "notice-solicitation",
+      "route": "#notice/20260716009",
+      "permalink": "https://cityscroll.org/#notice/20260716009",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "land-stranded",
+      "route": "#land/2019K0190",
+      "permalink": "https://cityscroll.org/#land/2019K0190",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "land-stranded",
+      "route": "#land/2019K0190",
+      "permalink": "https://cityscroll.org/#land/2019K0190",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "land-stranded",
+      "route": "#land/2019K0190",
+      "permalink": "https://cityscroll.org/#land/2019K0190",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "land-hearing",
+      "route": "#land/2024Q0292",
+      "permalink": "https://cityscroll.org/#land/2024Q0292",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "land-hearing",
+      "route": "#land/2024Q0292",
+      "permalink": "https://cityscroll.org/#land/2024Q0292",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "land-hearing",
+      "route": "#land/2024Q0292",
+      "permalink": "https://cityscroll.org/#land/2024Q0292",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-caseworker",
+      "route": "#exam/7016",
+      "permalink": "https://cityscroll.org/#exam/7016",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 2
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 631
+    },
+    {
+      "route_id": "exam-caseworker",
+      "route": "#exam/7016",
+      "permalink": "https://cityscroll.org/#exam/7016",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-caseworker",
+      "route": "#exam/7016",
+      "permalink": "https://cityscroll.org/#exam/7016",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-caseworker",
+      "route": "#exam/7016",
+      "permalink": "https://cityscroll.org/#exam/7016",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-police",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 2
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 735
+    },
+    {
+      "route_id": "exam-police",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-police",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-police",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "exam-police",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "agency-council",
+      "route": "#agency/City%20Council",
+      "permalink": "https://cityscroll.org/#agency/City%20Council",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "agency-council",
+      "route": "#agency/City%20Council",
+      "permalink": "https://cityscroll.org/#agency/City%20Council",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "agency-council",
+      "route": "#agency/City%20Council",
+      "permalink": "https://cityscroll.org/#agency/City%20Council",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "agency-council",
+      "route": "#agency/City%20Council",
+      "permalink": "https://cityscroll.org/#agency/City%20Council",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "vendor-camba",
+      "route": "#vendor/Camba%20Inc.",
+      "permalink": "https://cityscroll.org/#vendor/Camba%20Inc.",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "vendor-camba",
+      "route": "#vendor/Camba%20Inc.",
+      "permalink": "https://cityscroll.org/#vendor/Camba%20Inc.",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "vendor-camba",
+      "route": "#vendor/Camba%20Inc.",
+      "permalink": "https://cityscroll.org/#vendor/Camba%20Inc.",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "vendor-camba",
+      "route": "#vendor/Camba%20Inc.",
+      "permalink": "https://cityscroll.org/#vendor/Camba%20Inc.",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "official-demo",
+      "route": "#official/7801",
+      "permalink": "https://cityscroll.org/#official/7801",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "official-demo",
+      "route": "#official/7801",
+      "permalink": "https://cityscroll.org/#official/7801",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "official-demo",
+      "route": "#official/7801",
+      "permalink": "https://cityscroll.org/#official/7801",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "official-demo",
+      "route": "#official/7801",
+      "permalink": "https://cityscroll.org/#official/7801",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "map-queens-land",
+      "route": "#map?level=community_district&parent=Queens&lens=land",
+      "permalink": "https://cityscroll.org/#map?level=community_district&parent=Queens&lens=land",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "map-queens-land",
+      "route": "#map?level=community_district&parent=Queens&lens=land",
+      "permalink": "https://cityscroll.org/#map?level=community_district&parent=Queens&lens=land",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "map-queens-land",
+      "route": "#map?level=community_district&parent=Queens&lens=land",
+      "permalink": "https://cityscroll.org/#map?level=community_district&parent=Queens&lens=land",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "map-queens-land",
+      "route": "#map?level=community_district&parent=Queens&lens=land",
+      "permalink": "https://cityscroll.org/#map?level=community_district&parent=Queens&lens=land",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "property-taxlien-archive",
+      "route": "#property?view=tax-lien",
+      "permalink": "https://cityscroll.org/#property?view=tax-lien",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "property-taxlien-archive",
+      "route": "#property?view=tax-lien",
+      "permalink": "https://cityscroll.org/#property?view=tax-lien",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "property-taxlien-archive",
+      "route": "#property?view=tax-lien",
+      "permalink": "https://cityscroll.org/#property?view=tax-lien",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "property-taxlien-archive",
+      "route": "#property?view=tax-lien",
+      "permalink": "https://cityscroll.org/#property?view=tax-lien",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "alerts",
+      "route": "#alerts",
+      "permalink": "https://cityscroll.org/#alerts",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "alerts",
+      "route": "#alerts",
+      "permalink": "https://cityscroll.org/#alerts",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as op",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Outcome / votes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "alerts",
+      "route": "#alerts",
+      "permalink": "https://cityscroll.org/#alerts",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "alerts",
+      "route": "#alerts",
+      "permalink": "https://cityscroll.org/#alerts",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Minutes\n        The city does not publish votes for this hearing. They would appear on Borough president websites (opens in new tab) \u00b7 NYC community boards (opens in new tab) if released as open data.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-rules-0",
+      "route": "#notice/20260715005",
+      "permalink": "https://cityscroll.org/#notice/20260715005",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-rules-1",
+      "route": "#notice/20260715041",
+      "permalink": "https://cityscroll.org/#notice/20260715041",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-rules-2",
+      "route": "#notice/20260714029",
+      "permalink": "https://cityscroll.org/#notice/20260714029",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-rules-3",
+      "route": "#notice/20260714024",
+      "permalink": "https://cityscroll.org/#notice/20260714024",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-rules-4",
+      "route": "#notice/20260715045",
+      "permalink": "https://cityscroll.org/#notice/20260715045",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-meetings-0",
+      "route": "#notice/20260714001",
+      "permalink": "https://cityscroll.org/#notice/20260714001",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-meetings-1",
+      "route": "#notice/20260618036",
+      "permalink": "https://cityscroll.org/#notice/20260618036",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-meetings-2",
+      "route": "#notice/20260626034",
+      "permalink": "https://cityscroll.org/#notice/20260626034",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-meetings-3",
+      "route": "#notice/20260716025",
+      "permalink": "https://cityscroll.org/#notice/20260716025",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-meetings-4",
+      "route": "#notice/20260716009",
+      "permalink": "https://cityscroll.org/#notice/20260716009",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-property-0",
+      "route": "#notice/20260604044",
+      "permalink": "https://cityscroll.org/#notice/20260604044",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-property-1",
+      "route": "#notice/20260526003",
+      "permalink": "https://cityscroll.org/#notice/20260526003",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-property-2",
+      "route": "#notice/20260313019",
+      "permalink": "https://cityscroll.org/#notice/20260313019",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-property-3",
+      "route": "#notice/20260212016",
+      "permalink": "https://cityscroll.org/#notice/20260212016",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-property-4",
+      "route": "#notice/20251230008",
+      "permalink": "https://cityscroll.org/#notice/20251230008",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-0",
+      "route": "#exam/6125",
+      "permalink": "https://cityscroll.org/#exam/6125",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 2
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 666
+    },
+    {
+      "route_id": "sample-staffing-0",
+      "route": "#exam/6125",
+      "permalink": "https://cityscroll.org/#exam/6125",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-0",
+      "route": "#exam/6125",
+      "permalink": "https://cityscroll.org/#exam/6125",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-1",
+      "route": "#exam/6126",
+      "permalink": "https://cityscroll.org/#exam/6126",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 2
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 689
+    },
+    {
+      "route_id": "sample-staffing-1",
+      "route": "#exam/6126",
+      "permalink": "https://cityscroll.org/#exam/6126",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-1",
+      "route": "#exam/6126",
+      "permalink": "https://cityscroll.org/#exam/6126",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-2",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 2
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 735
+    },
+    {
+      "route_id": "sample-staffing-2",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-2",
+      "route": "#exam/7312",
+      "permalink": "https://cityscroll.org/#exam/7312",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-3",
+      "route": "#exam/7006",
+      "permalink": "https://cityscroll.org/#exam/7006",
+      "hits": [
+        {
+          "class": "methodology",
+          "phrase": "precompute",
+          "count": 2
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "CITY CAREERS Find an exam you can act on Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area \u2014 never a personal profile. JOB OR EXAM NUMBER INTEREST AREA All interests Public safety Health and care Engineering and construction Technology and science Community and social services Administration and finance Trades and operations Other City work WHO CAN APPLY Anyone who qualifies Current City employees All",
+      "word_count": 656
+    },
+    {
+      "route_id": "sample-staffing-3",
+      "route": "#exam/7006",
+      "permalink": "https://cityscroll.org/#exam/7006",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Could not reach City Record Online to check for land-use notices.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Could not reach City Record Online to check for land-use notices.",
+      "word_count": null
+    },
+    {
+      "route_id": "sample-staffing-3",
+      "route": "#exam/7006",
+      "permalink": "https://cityscroll.org/#exam/7006",
+      "hits": [
+        {
+          "class": "apology_block",
+          "phrase": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+          "count": 1
+        }
+      ],
+      "shot": null,
+      "text_excerpt": "Not yet shown here \u2014 parcel joins need a 10-digit BBL from the notice tax lot or geocode.",
+      "word_count": null
+    }
+  ]
+}

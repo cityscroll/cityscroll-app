@@ -1,0 +1,46 @@
+[
+  {
+    "id": "2022M0258",
+    "public_status": "Completed",
+    "before_pipeline": null,
+    "after_pipeline": null,
+    "clock_before": "open",
+    "clock_after": "completed",
+    "audit_before": [
+      "statutory_clock_stale_open"
+    ],
+    "audit_after": []
+  },
+  {
+    "id": "P2012X0048",
+    "public_status": "Completed",
+    "before_pipeline": null,
+    "after_pipeline": null,
+    "clock_before": "open",
+    "clock_after": "completed",
+    "audit_before": [
+      "statutory_clock_stale_open"
+    ],
+    "audit_after": []
+  },
+  {
+    "id": "2024Q0292",
+    "public_status": "In Public Review",
+    "before_pipeline": {
+      "step": 2,
+      "days_left": 5,
+      "phase": "borough_president"
+    },
+    "after_pipeline": {
+      "step": 2,
+      "days_left": 5,
+      "phase": "borough_president"
+    },
+    "clock_before": "open",
+    "clock_after": "open",
+    "audit_before": [
+      "statutory_clock_stale_open"
+    ],
+    "audit_after": []
+  }
+]
