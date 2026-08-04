@@ -481,14 +481,19 @@ export function adoptionLagAwarenessLine(row, opts = {}) {
   const median = pattern.median_days;
   const lo = pattern.middle_half_low;
   const hi = pattern.middle_half_high;
+  const halfUseful = lo != null && hi != null && lo !== hi;
+  const halfPhrase = halfUseful ? ` middle half ${lo}–${hi} days` : "";
   if (pattern.projection === "cohort_statistic_only" || median == null) {
-    const half = (lo != null && hi != null) ? ` middle half ${lo}–${hi} days.` : ".";
+    const half = halfUseful ? `${halfPhrase}.` : ".";
     const med = median != null ? ` typically ${median} days to adoption,` : "";
     return `${closed}Predicted based on ${n} similar rule adoptions since ${year} —${med}${half}`
       .replace(/\s+/g, " ")
       .trim();
   }
-  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — median ${median} days to adoption, middle half ${lo}–${hi}.`;
+  const tail = halfUseful
+    ? `median ${median} days to adoption,${halfPhrase}.`
+    : `median ${median} days to adoption.`;
+  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — ${tail}`;
 }
 
 export function itemAwarenessHtml(row, esc, lang = "en", opts = {}) {

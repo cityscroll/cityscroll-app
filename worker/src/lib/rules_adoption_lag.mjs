@@ -556,13 +556,18 @@ export function fitCohortDistribution(observations = [], opts = {}) {
 }
 
 /**
- * Fit citywide + per-agency cohorts. Agency cohorts require n >= EARLY_SAMPLE;
- * thinner agencies back off to citywide at prediction time.
+ * Fit citywide + per-agency cohorts.
+ *
+ * Agency timing cohorts require both observation count and realized adoption
+ * count ≥ EARLY_SAMPLE. Counting only rows (mostly censored) let thin agencies
+ * (e.g. DOB with 122 rows / 3 adoptions) ship degenerate "middle half 43–43"
+ * per-matter dates — back off those to citywide at select time.
  */
 export function fitAdoptionLagModel(observations = [], opts = {}) {
   const rows = Array.isArray(observations) ? observations : [];
   const trainFrom = isoDay(opts.trainFrom) || (rows[0]?.comment_close ?? null);
   const trainTo = isoDay(opts.trainTo) || null;
+  const minEvents = Number.isSafeInteger(opts.minEvents) ? opts.minEvents : EARLY_SAMPLE;
 
   const citywide = fitCohortDistribution(rows, {
     agency: "citywide",
@@ -580,6 +585,8 @@ export function fitAdoptionLagModel(observations = [], opts = {}) {
   const agencies = {};
   for (const [agency, list] of [...byAgency.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
     if (list.length < EARLY_SAMPLE) continue;
+    const nEvents = list.filter((r) => !r.censored).length;
+    if (nEvents < minEvents) continue;
     agencies[agency] = fitCohortDistribution(list, {
       agency,
       trainFrom,
@@ -603,9 +610,56 @@ export function fitAdoptionLagModel(observations = [], opts = {}) {
   };
 }
 
+/**
+ * True when an agency timing cohort is thick enough for per-agency attribution.
+ * Requires realized adoption events (n_events), not merely censored rows.
+ */
+export function agencyCohortIsEligible(cohort, minEvents = EARLY_SAMPLE) {
+  if (!cohort || !cohort.quantiles_complete) return false;
+  const nEvents = Number(cohort.n_events);
+  if (Number.isFinite(nEvents) && nEvents < minEvents) return false;
+  // Degenerate middle half (p25===p75) is a thin-sample fingerprint even when
+  // n_events clears the floor after a bad fit — still back off to citywide.
+  if (
+    Number.isFinite(cohort.p25_days)
+    && Number.isFinite(cohort.p75_days)
+    && cohort.p25_days === cohort.p75_days
+    && Number.isFinite(cohort.p50_days)
+    && cohort.p50_days === cohort.p25_days
+  ) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Detector: open public prediction views where overdue+open share is extreme,
+ * or thin-agency cohorts would have been selected under the old observation floor.
+ */
+export function detectPredictionLifecycleWackness(view = {}, opts = {}) {
+  const items = Array.isArray(view?.items) ? view.items : [];
+  if (!items.length) return null;
+  const overdueOpen = items.filter(
+    (i) => i?.band === "overdue" && (i?.assertion?.status || "open") === "open",
+  ).length;
+  const rate = overdueOpen / items.length;
+  const threshold = opts.overdueOpenRateThreshold ?? 0.5;
+  if (rate < threshold) return null;
+  return {
+    rule_id: "prediction_overdue_open_rate",
+    detail: {
+      item_count: items.length,
+      overdue_open_count: overdueOpen,
+      overdue_open_rate: Math.round(rate * 1000) / 1000,
+      threshold,
+      model_name: view.model_name || null,
+    },
+  };
+}
+
 export function selectCohort(model, agency) {
   const abbr = agencyAbbr(agency) || String(agency || "").toUpperCase() || null;
-  if (abbr && model?.agencies?.[abbr]?.quantiles_complete) {
+  if (abbr && agencyCohortIsEligible(model?.agencies?.[abbr])) {
     return { cohort: model.agencies[abbr], source: "agency" };
   }
   return { cohort: model?.citywide || null, source: "citywide" };
@@ -733,18 +787,22 @@ export function adoptionLagPatternLine(pattern, opts = {}) {
   const median = pattern.median_days;
   const lo = pattern.middle_half_low;
   const hi = pattern.middle_half_high;
+  // Omit a collapsed middle-half band (thin sample / identical quantiles).
+  const halfUseful = lo != null && hi != null && lo !== hi;
+  const halfPhrase = halfUseful ? ` middle half ${lo}–${hi} days` : "";
 
   if (pattern.projection === "cohort_statistic_only" || median == null) {
-    const half = (lo != null && hi != null)
-      ? ` middle half ${lo}–${hi} days.`
-      : ".";
+    const half = halfUseful ? `${halfPhrase}.` : ".";
     const med = median != null ? ` typically ${median} days to adoption,` : "";
     const closed = date ? `Comment period closed ${date}. ` : "";
     return `${closed}Predicted based on ${n} similar rule adoptions since ${year} —${med}${half}`.replace(/\s+/g, " ").trim();
   }
 
   const closed = date ? `Comment period closed ${date}. ` : "";
-  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — median ${median} days to adoption, middle half ${lo}–${hi}.`;
+  const tail = halfUseful
+    ? `median ${median} days to adoption,${halfPhrase}.`
+    : `median ${median} days to adoption.`;
+  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — ${tail}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -1326,32 +1384,72 @@ function median(values) {
 }
 
 /**
+ * Close open adoption assertions past the occurrence horizon (comment_close + N).
+ * Still-waiting matters past the horizon become expired so digests stop treating
+ * them as open overdue band transitions forever.
+ */
+export function expireAdoptionPrediction(assertion, commentClose, opts = {}) {
+  if (!assertion || assertion.status !== "open") return assertion;
+  const close = isoDay(commentClose);
+  if (!close) return assertion;
+  const horizonDays = Number.isSafeInteger(opts.horizonDays)
+    ? opts.horizonDays
+    : OCCURRENCE_HORIZON_DAYS;
+  const nowDay = isoDay(opts.now) || new Date().toISOString().slice(0, 10);
+  const horizonEnd = addDays(close, horizonDays);
+  if (horizonEnd && nowDay > horizonEnd) {
+    return {
+      ...assertion,
+      status: "expired",
+      resolved_by_event_id: null,
+    };
+  }
+  return assertion;
+}
+
+/**
  * Materialize a precomputed prediction view (fc:* style) for open comment periods.
  */
 export function materializePredictionView(openMatters = [], model, opts = {}) {
   const generatedAt = opts.generatedAt || new Date().toISOString();
   const shipBarPassed = opts.shipBarPassed !== false;
+  const now = opts.now || generatedAt;
   const items = [];
   for (const matter of openMatters) {
     const emitted = emitAdoptionPrediction(matter, model, {
       ...opts,
       generatedAt,
       shipBarPassed,
+      now,
     });
     if (!emitted) continue;
+    let assertion = emitted.assertion;
+    if (assertion) {
+      assertion = expireAdoptionPrediction(assertion, matter.comment_close, {
+        now,
+        horizonDays: model?.occurrence_horizon_days || OCCURRENCE_HORIZON_DAYS,
+      });
+      // Recompute band/delivery against the possibly-expired assertion.
+    }
+    const band = assertion && assertion.status === "open"
+      ? predictionBand(assertion, { now })
+      : null;
+    const delivery_key = assertion && assertion.status === "open"
+      ? predictionDeliveryKey(assertion, { now })
+      : null;
     items.push({
       subject_ref: matter.subject_ref || (matter.request_id ? `notice:${matter.request_id}` : null),
       request_id: matter.request_id || null,
       agency: matter.agency || null,
       comment_close: isoDay(matter.comment_close),
-      assertion: emitted.assertion,
+      assertion,
       pattern: emitted.pattern,
       pattern_line: adoptionLagPatternLine(emitted.pattern, {
         commentClose: matter.comment_close,
       }),
       cohort_source: emitted.cohort_source,
-      band: emitted.band || null,
-      delivery_key: emitted.delivery_key || null,
+      band,
+      delivery_key,
     });
   }
   return {
