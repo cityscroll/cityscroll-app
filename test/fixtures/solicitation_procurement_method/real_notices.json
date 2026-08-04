@@ -1,0 +1,246 @@
+{
+  "source": "NYC City Record Online dataset dg92-zbpx; solicitation bodies retained for procurement-method extraction characterization",
+  "observed_at": "2026-08-03",
+  "cases": [
+    {
+      "request_id": "20260720022",
+      "note": "84126P0018-Resident Engineering Inspection Services for Component Rehabilitation of 9 Bridges",
+      "row": {
+        "request_id": "20260720022",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Proposals",
+        "additional_description_1": "<p>In the Boroughs of the Bronx, Brooklyn, Manhattan and Queens. This procurement is subject to participation goals for Minority-Owned Business Enterprises (MBEs) as required by Section 6-129 of the New York Administrative Code. The MWBE goal for this project is 30%. A Pre-Proposal Conference (Optional) has been scheduled for August 5, 2026, Time: 10:00 AM through Zoom. Proposers who wish to attend the Teams Meeting/Conference can access by using the Teams Link provided in the RFX' Section - SETUP Tab - Pre-Proposal/Pre-Bid Conference Section in PASSPort. This Request for Proposals (RFP) is released through PASSPort, New York City\u001as online procurement portal. Responses to this RFP must be submitted via PASSPort. To access the RFP, vendors should visit the PASSPort public Portal at https://a0333-passportpublic.nyc.gov/rfx.html Read the DISCLAIMER and Click on LOG IN link provided within the DISCLAIMER instructions to respond to a Released solicitation (RFx), Log in to PASSPort, go to the RFx tab, and choose Browse My RFx Responses or Browse Public RFx to locate the RFx to which you are looking to respond. Enter the EPIN 84126P0018 or Procurement Name in the keywords search to find the RFx. Then, click the pencil icon next to the Procurement Name of the RFx you are interested in viewing.</p>",
+        "other_info_1": "Pre bid conference location -Teams Link: https://teams.microsoft.com/meet/274828443055097?p=09IfSihz6dwpLXx83f Meeting ID: 274 828 443 055 097  Passcode: we3o2Nk9 Mandatory: noDate/Time - 2026-08-05 10:00:00"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": 30,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260608045",
+      "note": "MG-40550-117MA Mannahatta Park Recon",
+      "row": {
+        "request_id": "20260608045",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Bids",
+        "additional_description_1": "<p>This procurement is subject to Section 6-129 of the New York City Administrative Code.</p><p>Bid submissions must be submitted in PASSPort..Bid Opening will be held on July 10, 2026 at 11:30am via Zoom Link. Bid documents are available online for free through NYC PASSPort System https://www.nyc.gov/site/mocs/passport/about-passport.page</p><p>To download the bid solicitation documents (including drawings if any) you must have a NYC ID Account and Login.</p>",
+        "other_info_1": "Pre bid conference location -See zoom link doc in PASSPortMandatory: noDate/Time - 2026-06-30 10:00:00"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260527019",
+      "note": "The Development of the Public Health Community Leadership Sector",
+      "row": {
+        "request_id": "20260527019",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Proposals",
+        "additional_description_1": "<p>The New York City (NYC) Department of Health and Mental Hygiene (\u001aNYC Health Department\u001a or the \u001aAgency\u001a) is seeking up to six (6) qualified Contractors who will each lead a Community Emergency Network (\u001aCEN\u001a) that will enhance the Agency\u001as ability to mitigate the public health impacts of emergencies in NYC. The CENs will be networks that use models inspired by Voluntary Organizations Active in Disaster (VOAD), such as Community Organizations Active in Disaster (COAD) and Long-Term Recovery Groups (LTRG). They will demonstrate focus on hyperlocal preparedness and response planning within their community (e.g. information sharing, identifying needs and gaps in services and offering a structure for community-based emergency collaboration during all phases of emergencies). Additionally, they will coordinate community-based service providers (i.e. nonprofits, businesses, congregations, clinics, associations, individual leaders, and other nongovernmental providers) in the preparedness, response, recovery, and/or mitigation phases of emergency management. The contract term is anticipated to be for six (6) years from March 1, 2027, to February 28, 2033, with no renewal options.</p><p>There will be a Pre-Proposal Conference at 1:00 P.M., ET, on June 16, 2026, via teleconference. Attendance by proposers is optional but strongly recommended by the NYC Health Department. To register for the teleconference, please RSVP for the conference by 2:00 P.M. ET on June 15, 2026, by emailing the name, title, affiliation, and email address of each attendee to RFP@health.nyc.gov. Please state \u001aCEN Leader\u001a in the subject line of the email. Proposers who submit an RSVP will be provided an invitation via email to attend the teleconference. All questions must be submitted in writing to the Authorized Agency Contact person via Discussion with Buyer tab in PASSPort, or preferably by e-mail at RFP@health.nyc.gov. Questions submitted by June 9, 2026, will be addressed at the pre-proposal teleconference. Answers to all questions received by the question deadline of June 23, 2026, will be provided in an addendum released through PASSPort. Please note that this procurement is released via PASSPort.</p><p>Please visit PASSPort to respond to this solicitation. Responses are due on July 15, 2026, at 2:00 P.M. ET. Link to PASSPort Public Portal: https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public. This procurement is subject to participation goals for MBEs and/or WBEs as required by Section 6-129 of the New York City Administrative Code. If you require assistance with creating a PASSPort account or responding to the RFP, please submit an inquiry to the MOCS Service Desk.</p>",
+        "other_info_1": "Pre bid conference location -Contact RFP@health.nyc.gov to RSVP Provide Name, Title, Organization, MWBE status, and E-mail AddressMandatory: noDate/Time - 2026-06-16 13:00:00"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260518022",
+      "note": "M186-122M Brig Gen Charles Young Playground Restroom Recons",
+      "row": {
+        "request_id": "20260518022",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Bids",
+        "additional_description_1": "<p>This Procurement is subject to Section 6-129 of the New York City Administrative Code. Bid Submissions must be submitted in PASSPort. Bid Opening will be held on June 17, 2026 at 11:30am via Zoom Link. Bid documents are available online for free through NYC PASSPortSystem https://www.nyc.gov/site/mocs/passport/about-passport.page. To download the bid solicitation documents (including drawings if any) you must have a NYC ID Account and Login.</p>",
+        "other_info_1": "Pre bid conference location -See document for zoom details. Mandatory: noDate/Time - 2026-06-08 10:00:00"
+      },
+      "expected": {
+        "section_6_129_present": true,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "section_6_129_27_calendar_days",
+          "days": 27,
+          "day_unit": "calendar_days",
+          "rule_source": "admin_code_6_129_extended_27_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20251118032",
+      "note": "03226Y0068-2026272 - OpenText eDOCS Support Renewal",
+      "row": {
+        "request_id": "20251118032",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+        "additional_description_1": "<h3><span style='font-size:14px'><span style='font-family:Times New Roman,Times,serif'>This solicitation is being made pursuant to the M/WBE Noncompetitive Small Purchase Method, Section 3-08 of the New York City Procurement Policy Board (PPB) Rules, this procurement is exclusively for the City Certified Minority and Woman Owned Business (M/WBEs). Contracts awarded under this method may not exceed $1,500,000.00, inclusive of any and all change orders, overruns, amendments, renewals and extensions. The Department of Investigation is seeking to procure annual license/support for OpenText Document Management, eDOCS Edition (eDOCS DM). OpenText eDOCS is an enterprise content management system that allows organizations to securely manage and collaborate on sensitive legal and investigative work products.</span></span></h3><h3><span style='font-size:14px'><span style='font-family:Times New Roman,Times,serif'>Any vendor who is capable of providing these services to DOI may express their interests<strong> </strong>no later than December 4, 2025 by 2:00PM. </span></span></h3><h3><span style='font-size:14px'><span style='font-family:Times New Roman,Times,serif'>If you need assistance with PASSPort, please contact MOCS Service Desk at Link: https://mocssupport.atlassian.net/servicedesk/customer/portal/8.</span></span></h3><p> </p>",
+        "other_info_1": null
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": true,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20250903006",
+      "note": "03226Y0061-Renewal of Enterprise Veeam Backup System",
+      "row": {
+        "request_id": "20250903006",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+        "additional_description_1": "<p><span style='font-size:11pt'><span style='font-family:Aptos,sans-serif'>This solicitation is being made pursuant to the M/WBE Noncompetitive Small Purchase Method, Section 3-08 of the New York City Procurement Policy Board (PPB) Rules, this procurement is exclusively for the City Certified Minority and Woman Owned Business (M/WBEs). Contracts awarded under this method may not exceed $1,500,000.00, inclusive of any and all change orders, overruns, amendments, renewals and extensions. NYC Department of Investigation (DOI) is seeking to procure to renew its Enterprise Veeam Backup System for a two-year term from December 31,2025 through December 30,2027. The Enterprise Veeam Backup System protects the agency's Microsoft Azure Cloud applications, including Office 365 and Share Veeam Backup for Microsoft 365 reduces the risk of data loss from Microsoft 365, including the Exchange Online, SharePoint Online, OneDrive for Business, and Microsoft Teams. This ensures consistent protection and accessibility of the agency's data. The Veeam Universal License (YUL) offers a straightforward and flexible per-workload licensing mode that secures all workloads across on-premises, hybrid, and multi-cloud environments.</span></span></p><p><span style='font-size:11pt'><span style='font-family:Aptos,sans-serif'>Any vendor who is capable of providing this goods/services to DOI may express their interests in PASSPORT No - 03226Y0061 no later than September 19, 2025 by 2:00 P.M. </span></span></p><p><span style='font-size:11pt'><span style='font-family:Aptos,sans-serif'>If you need additional assistance with PASSPort, please contact MOCS Service Desk at https://mocssupport.atlassian.net/servicedesk/customer/portal/8.</span></span></p><p><span style='font-size:11pt'><span style='font-family:Aptos,sans-serif'>Link: https://www1.nyc.gov/site/mocs/systems/passport-user-materials.page </span></span></p>",
+        "other_info_1": null
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": true,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20250717037",
+      "note": "Construction and Engineering Audit Consulting Services.",
+      "row": {
+        "request_id": "20250717037",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "M/WBE Noncompetitive Small Purchase",
+        "additional_description_1": "<h3><span style='font-family:Times New Roman,Times,serif'>This solicitation is being made pursuant to the M/WBE Noncompetitive Small Purchase Method, Section 3-08 of the New York City Procurement Policy Board (PPB) Rules, this procurement is exclusively for the City Certified Minority and Woman Owned Business (M/WBEs). Contracts awarded under this method may not exceed $1,500,000.00, inclusive of any and all change orders, overruns, amendments, renewals and extensions. The Department of Investigation seeks a professional services firm with significant knowledge of public sector investigative and law enforcement agencies in New York City ('Contractor'), to provide expert technical, consulting, audit and investigative expertise in the fields of construction, construction management and construction engineering, ('Services').  Services include, but are not limited to, providing specialized expertise in mechanical, civil, and industrial engineering as they relate to large capital construction projects, and as otherwise identified, in and around New York City, and capabilities, resources and personnel for technical, financial, audit, field investigations and oversight. </span></h3><h3><span style='font-family:Times New Roman,Times,serif'>Any vendor who is capable of providing this goods/services to DOI may express their interests<strong> </strong>no later than August 1, 2025 by 2:00PM. </span></h3><h3>If you need additional assistance with PASSPort, please contact MOCS Service Desk at https://mocssupport.atlassian.net/servicedesk/customer/portal/8.</h3><h3>Link: https://www1.nyc.gov/site/mocs/systems/passport-user-materials.page </h3>",
+        "other_info_1": null
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": true,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260727019",
+      "note": "General construction services for the stabilization of Building 324",
+      "row": {
+        "request_id": "20260727019",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Request for Proposals",
+        "additional_description_1": "<p><span style='font-size:11pt'><span style='font-family:Aptos,sans-serif'>Governors Island Corporation d/b/a The Trust for Governors Island (\u001athe Trust\u001a) is pleased to issue this Request for Proposals (\u001aRFP\u001a) to provide general construction services for the stabilization of Building 324 as described in the design documents prepared by the architect of record, Marble Fairbanks Architects. The Trust requests proposals that cover the full scope of services as outlined in Exhibit F \u001a Design Documents, and Exhibit D \u001a Contract Template including, but not limited to, hazardous material abatement, selective demolition, masonry replacement and restoration, structural repairs and site work.</span></span></p>",
+        "other_info_1": null
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260720016",
+      "note": "RFP For the Operation and Maintenance of a Ferry Service at Randall's Island Park, Manhattan",
+      "row": {
+        "request_id": "20260720016",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Proposals",
+        "additional_description_1": "<p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>In accordance with Section 1-13 of the Concession Rules of the City of New York, the New York City Department of Parks and Recreation (\u001aParks\u001a) is issuing, as of the date of this notice, a non-significant Request for Proposals (\u001aRFP\u001a) for the Operation and Maintenance of a Ferry Service, Randall\u001as Island Park, Manhattan.</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>There will be a recommended remote proposer meeting on Thursday, August 6, 2026 12:00pm. If you are considering responding to this RFP, please make every effort to attend this recommended remote proposer meeting.</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Microsoft Teams meeting   Join on your computer, mobile app or room device:</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>https://teams.microsoft.com/meet/211699762586367?p=ffCvMZHCo0HMXEYGZy  </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Meeting ID: 211 699 762 586 367 </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Passcode: nk7JA6DU </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Or call in (audio only)</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>+1 646-893-7101,,105270512# United States, New York City </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Phone Conference ID: 105 270 512#  </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Subject to availability and by appointment only, we may set up a meeting at the proposed concession site, (Block #1819 & Lot #203) (\u001aLicensed Premises\u001a), at Randall\u001as Island Park, Manhattan. </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>All proposals submitted in response to this RFP must be submitted no later than Friday, September 4, 2026 at 3:00 pm.</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Hard copies of the RFP can be obtained at no cost, commencing Friday, July 31, 2026 through Friday, September 4, 2026 by contacting Andrew Coppola, Deputy Director of Concessions at (212) 360-3454 or at Andrew.Coppola@parks.nyc.gov. </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>The RFP is also available for download, Friday, July 31, 2026 through Friday, September 4, 2026, on Parks\u001a website. To download the RFP, visit  http://www.nyc.gov/parks/businessopportunities and click on the \u001aConcessions Opportunities at Parks\u001a link. Once you have logged in, click on the \u001adownload\u001a link that appears adjacent to the RFP\u001as description.</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>For more information or if you cannot attend the remote proposer meeting, prospective proposers may contact Andrew Coppola, Deputy Director of Concessions at (212) 360-3454 or at Andrew.Coppola@parks.nyc.gov.</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Deaf, hard-of-hearing, deaf-blind, speech-disabled, or late-deafened people who use text telephones (TTYs) or voice carry-over (VCO) phones can dial 711 to reach a free relay service, where specially trained operators will relay a conversation between a TTY/VCO user and a standard telephone user.</span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>Alternatively, a message can be left on the Telecommunications Device for the Deaf (TDD). </span></span></span></p><p><span style='font-size:9pt'><span style='font-family:Georgia,serif'><span style='font-size:11.0pt'>The TDD number is 212-New York (212-639-9675).</span></span></span></p>",
+        "other_info_1": null
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    },
+    {
+      "request_id": "20260724027",
+      "note": "SMD_Services_IDIQ Contract for Maintenance, Service & Repair of Emergency Backup Generators, Citywide",
+      "row": {
+        "request_id": "20260724027",
+        "section_name": "Procurement",
+        "type_of_notice_description": "Solicitation",
+        "selection_method_description": "Competitive Sealed Bids",
+        "additional_description_1": "<p><span style='font-size:12pt'><span style='font-size:10.0pt'>Contract Term: 3 years from the award date on NYCHA\u001as Purchase Order.  NYCHA, in its sole discretion, shall have the option to extend the Term of this Contract for up to 2 one-year renewals.</span></span></p><p style='text-align:justify'><span style='font-size:13.3333px'>This is a re-bid of RFQ 512437.</span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Scope of Work: The scope of work is for the repair and service of emergency back-up generators and may include </span></span><span style='font-size:12pt'><span style='font-size:10.0pt'>quarterly and annual preventive maintenance. NYCHA currently operates ninety-three (93) </span></span><span style='font-size:12pt'><span style='font-size:10.0pt'>generators across our portfolio and will add one hundred and eighty-nine (189) generators over the </span></span><span style='font-size:12pt'><span style='font-size:10.0pt'>course of the next two to three years.  Quarterly and annual preventive maintenance and repair work. </span></span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Labor Law 220i Public Work Registration Certificate/Certification: Pursuant to Article 8, Section 220-i of the New York State Labor Law .The Bidder and each subcontractor must be registered with the New York State Department of Labor. See https://dol.ny.gov/contractor-and-subcontractor-landing.  For additional information refer to the \u001aImportant Bid Notice\u001a document attachment included in this RFQ.  </span></span></p><p><span style='font-size:12pt'><span style='font-size:10.0pt'>This Solicitation is not subject to PLA.  This solicitation does not require PQL.</span></span></p><p style='text-align:justify'><span style='font-size:12pt'><u><span style='font-size:10.0pt'>Section 3 Resident Economic Opportunity Plan</span></u><span style='font-size:10.0pt'>: Section 3 Resident Economic Opportunity (REO) Plan must be submitted via eComply, https://nycha.ecomply.us/. Do not include Section 3 documentation within bid submission via iSupplier. For eComply log-in assistance contact eComply Tech support, support@ecomplysolutions.com. For Section 3 submission assistance contact NYCHA\u001as SMP Vendor Support team at eComply.support@nycha.nyc.gov</span><span style='color:blue'><u><span style='font-size:10.0pt'>.</span></u></span> </span></p><p><span style='font-size:12pt'><span style='font-size:10.0pt'>Pre-Bid Conference:  </span><span style='font-size:10.0pt'>A non-mandatory virtual Pre-Bid Meeting will be held on August 12, 2026, at 11:00 AM, and will be conducted remotely via Microsoft Teams meeting.  Although attendance is not mandatory, it is strongly recommended that all interested Bidders attend, and that Bidders thoroughly review bid documents in advance of the meeting.  </span></span></p><p><span style='font-size:12pt'><span style='font-size:10.0pt'>To join us, please follow the instructions below:</span></span></p><ul>\t<li><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'>Option 1: </span></strong></span></span></li></ul><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'>Click the following link or copy, and \u001apaste and go\u001a it into a new web browser:</span></strong></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'>https://teams.microsoft.com/meet/27218285659940?p=Mr97wfg4Je6QAspRKP. </span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'>Meeting ID: 272 182 856 599 40 Passcode: mw6Gm2mu</span></strong></span></span></p><ul>\t<li><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'>Option 2: </span></strong></span></span></li></ul><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'>Dial in by phone</span></strong> </span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'>+1 646-838-1534,,705397271# </span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><span style='font-size:10.0pt'>United States, New York City</span></span></span></p><p><span style='font-size:11pt'><span style='font-family:Calibri,sans-serif'><strong><span style='font-size:10.0pt'>Phone conference ID: 705397271</span></strong></span></span></p><p><span style='font-size:12pt'><span style='font-size:10.0pt'>RFQ Question Submission Deadline: 8/19/2026</span></span></p><p><span style='font-size:12pt'><span style='font-size:10.0pt'>Questions regarding this RFQ should only be sent to the following email address: construction.procurement@nycha.nyc.gov.  </span></span></p><p><span style='font-size:12pt'><span style='font-size:10.0pt'>Question & Answer Release Date: 8/28/2026</span> </span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Bidders are directed to review the Special Notices and Conditions, Instructions to Bidders, and General Conditions prior to submitting a bid. </span></span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Prior to submitting a bid, confirm the bid response includes all required forms and documentation and that all are properly completed, signed, and notarized, where applicable. It is the bidder\u001as sole responsibility to complete and submit its bid via iSupplier to the corresponding RFQ prior the RFQ Bid Submission Deadline. NYCHA is not responsible for delays caused by technical difficulty or caused by any other occurrence. </span></span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Only electronic bids submitted online via iSupplier will be accepted. For assistance regarding iSupplier please email NYCHA Procurement at procurement@nycha.nyc.gov<span style='color:#000000'>.</span></span><span style='color:#000000'> </span></span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Please note that if NYCHA receives no responses to this RFQ, the bid submission deadline shall be automatically extended for seven (7) days. This does not limit NYCHA's right to extend the bid deadline for any other reason. </span></span></p><p style='text-align:justify'><span style='font-size:12pt'><span style='font-size:10.0pt'>Current Prevailing Wage Links are posted on iSupplier under the Quick Links Section of Sourcing Supplier.  The vendors are responsible for remaining informed of all updates to the Prevailing Wage Schedule.</span></span></p>",
+        "other_info_1": "Interested vendors are invited to obtain a copy of the opportunity at NYCHA\u001as website by going to http://www.nyc.gov/nychabusiness. On the left side, click on \u001aiSupplier Vendor Registration/Login\u001a link. (1) If you have an iSupplier account, then click on the \u001a Login for registered vendors\u001a link and sign into your iSupplier account. (2) If you do not have an iSupplier account you can request an account by clicking on \u001aNew suppliers register in iSupplier\u001a to apply for log-in credentials. Once you have accessed your iSupplier account, log into your account, then choose under the Oracle Financials home page, the menu option \u001aSourcing Supplier\u001a, then choose \u001aSourcing\u001a, then choose Sourcing Homepage\u001a; and conduct a search in the \u001aSearch Open Negotiations\u001a box for RFQ 525302.?Note: NYCHA only accepts electronic bids submitted online via iSupplier. Paper bids will not be accepted or considered. Please contact NYCHA Procurement at construction.procurement@nycha.nyc.gov for assistance."
+      },
+      "expected": {
+        "section_6_129_present": false,
+        "goal_percent": null,
+        "ncsp_present": false,
+        "accelerated_present": false,
+        "response_floor": {
+          "kind": "default_competitive_20_calendar_days",
+          "days": 20,
+          "day_unit": "calendar_days",
+          "rule_source": "ppb_competitive_default_20_calendar_days"
+        }
+      }
+    }
+  ]
+}

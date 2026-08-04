@@ -1559,7 +1559,17 @@ PIN/EPIN values, submission/testimony deadlines, and applicant/owner parties, re
 the source excerpt for every fact. Ingest stores the full result in `structured_facts`;
 only a unique PIN/EPIN or unique submission deadline may fill an absent source column,
 so existing alert and contract-spine paths can consume it. Publisher columns always win.
-Characterization and real-notice metrics: `node --test test/notice_facts.test.mjs
+
+**Solicitation procurement-method payload** (nested under
+`structured_facts.procurement_method`): pure
+`worker/src/lib/solicitation_procurement_method.mjs` extracts Admin Code §6-129
+M/WBE goal citations, M/WBE Noncompetitive Small Purchase (PPB §3-08), and
+accelerated-procurement markers (PPB §3-07), then derives a response floor with
+rule source — 20 calendar days (competitive default), 27 calendar days (§6-129),
+or 3 business days (accelerated). Priority: accelerated → §6-129 → default for
+Procurement solicitations only. Label-bound (no calendar math on start/due). UI
+chips are a separate gated surface. Verify:
+`node --test test/solicitation_procurement_method.test.mjs test/notice_facts.test.mjs
 worker/test/ingest_map.test.mjs`.
 
 ## Rules event spine
