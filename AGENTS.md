@@ -2084,8 +2084,11 @@ then rerun `node tools/property_a11y_census.mjs --as-of 2026-08-04 --format mark
 
 Property detail summaries come from `site/property_plain_summary.mjs`. A classifier match alone
 must never force a template: each generated fact needs an exact reader-visible source receipt,
-and deviations fall back to the original City Record text. Verify the real-notice fixtures with
-`node --test test/property_plain_summary.test.mjs`, then rerun the Property accessibility census.
+and deviations fall back to the original City Record text. Property lens cards compose their
+one-sentence lead from those accepted facts; do not add a second list-only extractor, and keep
+fallback titles unchanged. The census ratchets authored-summary grade, lens-view grade, and
+template coverage together. Verify the real-notice fixtures with `node --test
+test/property_plain_summary.test.mjs`, then rerun the Property accessibility census.
 
 ## Maintaining this file
 

@@ -251,3 +251,21 @@ test("renderPropExplorer splits current-first then a labeled closed block (archi
   assert.match(index, /clusterRepeatedEntries/);
   assert.match(index, /propertyClusterCardHTML/);
 });
+
+test("Property cards lead with the cached plain variant and disclose the exact legal title", () => {
+  const source = readFileSync(join(ROOT, "site/app/property.mjs"), "utf8");
+  const summarySource = readFileSync(join(ROOT, "site/property_plain_summary.mjs"), "utf8");
+  const cardTemplate = source.slice(
+    source.indexOf("function propertyExplorerCardHTML"),
+    source.indexOf("function propClusterRange"),
+  );
+  assert.match(source, /ensurePropertyCardPlainSummary/);
+  assert.match(cardTemplate, /property-card-summary/);
+  assert.match(summarySource, /property-card-title-source/);
+  assert.match(summarySource, /property-card-original-title/);
+  assert.match(cardTemplate, /data-card-fact/);
+  assert.ok(
+    cardTemplate.indexOf("property-card-summary") < cardTemplate.indexOf("propertyCardTitleDisclosureHTML"),
+    "plain summary call leads the title-disclosure call",
+  );
+});

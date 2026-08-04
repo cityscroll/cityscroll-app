@@ -1,7 +1,7 @@
 # Property accessibility census — August 2026
 
-This is the measured baseline for the Property accessibility program. It describes the
-City Record notice prose a reader encounters on `#property`; it does not change the site.
+This is the measured baseline and ratchet for the Property accessibility program. It describes
+the City Record notice prose and CityScroll-authored card copy a reader encounters on `#property`.
 The target is seventh-grade understanding or below for CityScroll-authored explanations.
 Official notice text remains available verbatim and is measured here as the source-language
 reference that those explanations must clarify.
@@ -47,8 +47,14 @@ for the same notices' official title and detail text. Exact fixture wording, coh
 and the one-off rationale are recorded in
 `docs/evidence/property-a11y-template-fallbacks/verdicts.json`.
 
-The census now ratchets two measures together: authored-summary mean grade may not rise,
-and `templated_fraction` may not fall. The committed baseline is
+The same receipt-backed facts now compose a one-sentence card lead without a second
+extraction. Across all 243 cards, the lens-copy mean fell from **16.72** for the legacy raw
+title lead to **6.62** for the default card lead; **167 of 243** card leads are at or below
+grade 7. The one permanent fallback remains in both the numerator and the lens score with
+its original title.
+
+The census now ratchets three measures together: authored-summary and lens-view mean grade
+may not rise, and `templated_fraction` may not fall. The committed baseline is
 `site/property-a11y-ratchet.json`; the Reading-level job runs the live census so a new
 unsupported notice pattern becomes a coverage regression rather than an invisible fallback.
 Reproduce both checks with:
@@ -71,7 +77,8 @@ as visible prose:
 
 | Surface | What is measured |
 |---|---|
-| Property card title | Cleaned `short_title`, which is always shown. |
+| Legacy Property card title | Cleaned `short_title`, retained as the before-change diagnostic and as the fallback card lead. Templated cards now place it behind title disclosure. |
+| Property lens view | The default one-sentence, receipt-backed card lead. De-shouted and exact legal titles are available in a collapsed disclosure and are excluded from the default-view score. The permanent fallback keeps and scores its original title. |
 | Search-match excerpt | A query-dependent window of up to 70 characters on each side of the matching term. The default Property list has no excerpt, so there is no single stable excerpt document to score separately. Its text comes from the same body pool measured below. |
 | Notice detail body | Cleaned `additional_description_1`, truncated to the first 6,000 characters, exactly as the full-notice disclosure renders it. |
 | Combined baseline | Title plus rendered detail body. This is the primary per-notice score. |
@@ -263,6 +270,7 @@ hash when the source changes, and report both coverage and precision:
 
 - official title/body grade distribution by pattern;
 - authored-summary grade distribution, once summaries exist;
+- default Property lens-view grade distribution;
 - templated fraction, with every fallback retained in the denominator;
 - source signals versus extracted typed events;
 - source-grounded actions versus surfaced actions;

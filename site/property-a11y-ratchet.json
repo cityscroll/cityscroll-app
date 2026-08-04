@@ -12,6 +12,12 @@
       "surface": "plain_summary",
       "statistic": "mean_grade"
     },
+    "lens_grade_level": {
+      "direction": "max",
+      "baseline": 6.62,
+      "surface": "lens_view",
+      "statistic": "mean_grade"
+    },
     "templated_fraction": {
       "direction": "min",
       "baseline": 0.995885,

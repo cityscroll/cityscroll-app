@@ -14,9 +14,10 @@ import {
   searchExcerptForTerm,
 } from "../tools/property_a11y_census.mjs";
 
-function ratchetReport(gradeLevel, templatedFraction) {
+function ratchetReport(gradeLevel, templatedFraction, lensGradeLevel) {
   return {
     overall: {
+      lens_view: { mean_grade: lensGradeLevel },
       plain_language: {
         authored_summary: { mean_grade: gradeLevel },
         templated_fraction: templatedFraction,
@@ -54,6 +55,7 @@ test("rendered surfaces mirror the title and detail-body boundaries", () => {
   assert.equal(surfaces.detail_body.length, DETAIL_BODY_LIMIT);
   assert.doesNotMatch(surfaces.combined, /fetched but not rendered/);
   assert.equal(surfaces.plain_summary, "", "an unrelated notice honestly has no forced template");
+  assert.equal(surfaces.lens_view, "A & B", "fallback cards retain the original title");
 });
 
 test("the census scores the receipt-backed authored summary separately from official prose", () => {
@@ -67,6 +69,8 @@ test("the census scores the receipt-backed authored summary separately from offi
   assert.match(surfaces.plain_summary, /This notice is about a public hearing on a property matter\./);
   assert.match(surfaces.plain_summary, /The hearing is on November 26, 2024\./);
   assert.doesNotMatch(surfaces.plain_summary, /voluntary/);
+  assert.equal(surfaces.lens_view, "This is a public hearing about property; hearing November 26, 2024.");
+  assert.doesNotMatch(surfaces.lens_view, /Notice of voluntary public hearing/);
 });
 
 test("query excerpts use the same 70-character radius and are absent without a term", () => {
@@ -151,26 +155,35 @@ test("corpus fingerprint is deterministic and source-field sensitive", () => {
   assert.equal(corpusSha256([row]), corpusSha256([{ ...row, ignored_field: "not in the source contract" }]));
 });
 
-test("the census ratchet tracks templated fraction beside authored grade level", () => {
+test("the census ratchet tracks lens grade beside authored grade and template coverage", () => {
   const baseline = {
     metrics: {
       grade_level: { direction: "max", baseline: 5.2 },
+      lens_grade_level: { direction: "max", baseline: 7.1 },
       templated_fraction: { direction: "min", baseline: 0.99 },
     },
   };
-  assert.deepEqual(propertyA11yRatchetMetrics(ratchetReport(5.1, 0.995)), {
+  assert.deepEqual(propertyA11yRatchetMetrics(ratchetReport(5.1, 0.995, 7.0)), {
     grade_level: 5.1,
+    lens_grade_level: 7,
     templated_fraction: 0.995,
   });
-  assert.equal(evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.995), baseline).pass, true);
+  assert.equal(evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.995, 7.0), baseline).pass, true);
 
-  const coverageDrop = evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.98), baseline);
+  const coverageDrop = evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.98, 7.0), baseline);
   assert.equal(coverageDrop.pass, false);
   assert.equal(coverageDrop.metrics.grade_level.pass, true);
+  assert.equal(coverageDrop.metrics.lens_grade_level.pass, true);
   assert.equal(coverageDrop.metrics.templated_fraction.pass, false);
 
-  const gradeRegression = evaluatePropertyA11yRatchet(ratchetReport(5.3, 0.995), baseline);
+  const gradeRegression = evaluatePropertyA11yRatchet(ratchetReport(5.3, 0.995, 7.0), baseline);
   assert.equal(gradeRegression.pass, false);
   assert.equal(gradeRegression.metrics.grade_level.pass, false);
+  assert.equal(gradeRegression.metrics.lens_grade_level.pass, true);
   assert.equal(gradeRegression.metrics.templated_fraction.pass, true);
+
+  const lensRegression = evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.995, 7.2), baseline);
+  assert.equal(lensRegression.pass, false);
+  assert.equal(lensRegression.metrics.grade_level.pass, true);
+  assert.equal(lensRegression.metrics.lens_grade_level.pass, false);
 });
