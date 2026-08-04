@@ -58,6 +58,14 @@ test("MEETINGS_PROCESS_STAGES is the ops-ontology rail (not the date window)", (
   ]);
 });
 
+test("place groups use positive headings without methodology notes", () => {
+  assert.match(
+    SITE_SOURCE,
+    /const noteText=scope==="citywide"\?t\("citywide_hearings_note"\):"";/,
+  );
+  assert.doesNotMatch(SITE_SOURCE, /local_hearings_note|unlocated_hearings_note/);
+});
+
 test("meetingProcessStage classifies upcoming scheduled vs agenda from notice signals", () => {
   const bare = hearing({ event_date: "2026-08-15", description: "A hearing will be held." });
   assert.equal(meetingProcessStage(bare, { now: NOW }), "scheduled");

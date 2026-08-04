@@ -3,8 +3,9 @@
 
 Flags reader-facing i18n English strings (and optional HTML data-i18n fallbacks)
 that leak internal engineering terms — warehouse join language, pipeline/payload
-jargon, edge-materialization, etc. Owner discovery of "warehouse join resolves"
-on a notice card is the standing failure this gate is meant to catch earlier.
+jargon, edge-materialization, or narration of the site's own data-handling
+methodology. Owner discovery of "warehouse join resolves" on a notice card is
+the standing failure this gate is meant to catch earlier.
 
 Allowlist (public_surface_vocab_allowlist.txt) is the explicit tracked register
 of remaining known product phrasing that still uses a listed term intentionally
@@ -40,7 +41,18 @@ INTERNAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("SODA", re.compile(r"\bSODA\b")),
     ("KV ", re.compile(r"\bKV\b")),
     ("prebuilt ZAP warehouse", re.compile(r"prebuilt\s+ZAP\s+warehouse", re.I)),
+    ("methodology: kept visible", re.compile(r"\bkept\s+visible\b", re.I)),
+    ("methodology: guessed", re.compile(r"\b(?:instead\s+of|rather\s+than)\s+(?:guess(?:ed|ing)?|dropp(?:ed|ing))\b", re.I)),
+    ("methodology: guesses", re.compile(r"\bguesses\b", re.I)),
+    ("methodology: invented", re.compile(r"\b(?:(?:not|never|nothing\s+is)\s+(?:invented|fabricated)|(?:do|does)\s+not\s+invent)\b", re.I)),
+    ("methodology: not venue", re.compile(r"\bnot\s+venue\b", re.I)),
+    ("methodology: site virtue", re.compile(r"\b(?:we\s+do\s+not\s+(?:fabricate|guess)|honest(?:ly)?)\b", re.I)),
 ]
+
+# Contrastive negation is especially harmful in compact naming surfaces: labels
+# and badges should say what a thing is, not what alternative the site rejected.
+LABEL_BADGE_KEY = re.compile(r"(?:^|_)(?:label|lbl|badge|tag)(?:_|$)", re.I)
+CONTRASTIVE_NEGATION = re.compile(r"\b(?:not\s+\w+|instead\s+of|rather\s+than)\b", re.I)
 
 
 def load_allowlist(path: Path) -> set[str]:
@@ -152,6 +164,11 @@ def main(argv: list[str] | None = None) -> int:
                     "excerpt": value[:180],
                 }
             )
+        if LABEL_BADGE_KEY.search(key) and CONTRASTIVE_NEGATION.search(value):
+            term = "contrastive negation in label/badge"
+            allow_token = key + ":" + term
+            if allow_token not in allow and key not in allow:
+                hits.append({"key": key, "term": term, "excerpt": value[:180]})
     findings = hits
 
     if args.json:
