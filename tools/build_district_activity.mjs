@@ -27,6 +27,7 @@ const PATHS = {
   // place stamps). Fall back to the slim OCP warehouse lookup when missing.
   money: join(ROOT, "site/data/money_domain_observations.json"),
   moneyFallback: join(ROOT, "site/data/ocp_awards_warehouse_lookup.json"),
+  contractActions: join(ROOT, "site/data/contract_action_address_locations.json"),
 };
 
 function loadJson(path) {
@@ -44,6 +45,7 @@ function loadInputs() {
   const meetings = loadJson(PATHS.meetings);
   const rules = loadJson(PATHS.rules);
   const money = loadJson(PATHS.money) || loadJson(PATHS.moneyFallback);
+  const contractActions = loadJson(PATHS.contractActions);
 
   return {
     boundaries,
@@ -52,6 +54,7 @@ function loadInputs() {
     meetingsRows: Array.isArray(meetings?.rows) ? meetings.rows : [],
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
+    contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],
   };
 }
 
@@ -125,6 +128,15 @@ function check(doc) {
     }
     if (moneyUnloc < 1 && moneyLocated === (doc.sources?.money?.counted || 0)) {
       // Allow all-located corpora; only fail when framing metadata is missing.
+    }
+  }
+  const actionLayer = doc.basis_layers?.contract_action_address;
+  if (actionLayer?.sources?.money?.counted > 0) {
+    if (actionLayer.is_place_of_performance !== false) {
+      throw new Error("contract action-address layer must remain non-performance geography");
+    }
+    if ((actionLayer.sources.money.with_address || 0) > 0 && (actionLayer.sources.money.located || 0) < 1) {
+      throw new Error("contract action-address corpus has addresses but no resolved locations");
     }
   }
 }

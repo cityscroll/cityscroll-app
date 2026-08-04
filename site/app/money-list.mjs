@@ -1,7 +1,31 @@
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
-let moneyDefaultSnapshotPromise=null;
-let moneyAgenciesSnapshotPromise=null;
+const MONEY_ACTION_LOCATIONS_URL="data/contract_action_address_locations.json";
+let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyActionLocationsPromise=null,moneyActionLocationToolsPromise=null;
+let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
+function loadMoneyActionLocations(){
+  return moneyActionLocationsPromise||=(fetch(MONEY_ACTION_LOCATIONS_URL).then(r=>r.ok?r.json():null).catch(()=>null));
+}
+function moneyActionLocationTools(){
+  return moneyActionLocationToolsPromise||=import("../contract_action_location.mjs").catch(()=>null);
+}
+function syncMoneyLocationFilterFromControls(){
+  let selected=$("#moneylocationbasis")?.value||"";
+  const hasDistrict=!!($("#moneyboro")?.value||$("#moneycd")?.value||$("#moneycouncil")?.value);
+  if(!selected&&hasDistrict){ selected="contract_action_address"; $("#moneylocationbasis").value=selected; }
+  moneyLocationFilter={
+    layer:selected?"contract_action_address":"",
+    basis:selected&&selected!=="contract_action_address"?selected:"",
+    borough:$("#moneyboro")?.value||"",
+    communityDistrict:$("#moneycd")?.value||"",
+    councilDistrict:$("#moneycouncil")?.value||"",
+  };
+  return moneyLocationFilter;
+}
+async function initializeMoneyLocationFilters(){
+  const [doc,tools]=await Promise.all([loadMoneyActionLocations(),moneyActionLocationTools()]);
+  tools?.fillContractActionLocationSelects?.(doc,{councilLabel:value=>t("council_district_short",{n:value})});
+}
 function loadMoneyDefaultSnapshot(){
   if(!moneyDefaultSnapshotPromise){
     moneyDefaultSnapshotPromise=fetch(MONEY_DEFAULT_SNAPSHOT_URL)
@@ -93,6 +117,17 @@ function renderMoneyActiveFilters(){
     minAmount:filter.minAmount, ...moneyNlResolved,
   });
   box.innerHTML=interpretedSearchRowHTML("money", filter, items.map(moneyActiveFilterChip));
+  if(moneyLocationFilter.layer==="contract_action_address"){
+    const labels=[
+      moneyLocationFilter.basis
+        ?t({submission_address:"money_location_basis_submission",pre_bid_venue:"money_location_basis_prebid",document_pickup:"money_location_basis_pickup"}[moneyLocationFilter.basis])
+        :t("money_location_basis_response"),
+      moneyLocationFilter.borough,
+      moneyLocationFilter.communityDistrict,
+      moneyLocationFilter.councilDistrict?t("council_district_short",{n:moneyLocationFilter.councilDistrict}):"",
+    ].filter(Boolean);
+    box.insertAdjacentHTML("beforeend",`<div class="nlunderstood money-location-filter-summary" role="status">${t("money_location_filter_interpretation")} ${labels.map(label=>`<span class="qchip"><b>${escUiHtml(label)}</b></span>`).join(" ")}</div>`);
+  }
   bindClearSearchState("money", box);
 }
 function updateMoneyMoreFiltersState(){
@@ -106,6 +141,10 @@ function updateMoneyMoreFiltersState(){
     nl.maxAmount!=null,
     nl.months!=null,
     !!nl.excludeSpecial,
+    moneyLocationFilter.layer==="contract_action_address",
+    !!moneyLocationFilter.borough,
+    !!moneyLocationFilter.communityDistrict,
+    !!moneyLocationFilter.councilDistrict,
   ].filter(Boolean).length;
   const badge=$("#money-filter-badge");
   if(!badge) return;
@@ -121,8 +160,49 @@ async function search(){
   $("#minamt").disabled = mode !== "award";
   if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false"); }
   $("#moneyquick").style.display = mode === "open" ? "" : "none";
+  const locationFilter=syncMoneyLocationFilterFromControls();
+  if(locationFilter.layer==="contract_action_address" && mode!=="allrfp"){
+    mode="allrfp";
+    $("#mode").value="allrfp";
+    $("#moneyquick").style.display="none";
+    $("#minwrap").style.display="none";
+    $("#minamt").disabled=true;
+  }
   renderMoneyActiveFilters();
   updateMoneyMoreFiltersState();
+  if(locationFilter.layer==="contract_action_address"){
+    updateHash();
+    const [doc,tools]=await Promise.all([loadMoneyActionLocations(),moneyActionLocationTools()]);
+    await initializeMoneyLocationFilters();
+    const all=doc&&Array.isArray(doc.rows)?doc.rows:[];
+    const matches=tools&&typeof tools.rowMatchesContractActionFilter==="function"
+      ?all.filter(row=>tools.rowMatchesContractActionFilter(row,{
+          basis:locationFilter.basis||null,
+          borough:locationFilter.borough||null,
+          community_district:locationFilter.communityDistrict||null,
+          council_district:locationFilter.councilDistrict||null,
+        }))
+      :[];
+    const agency=$("#agency").value, query=$("#kw").value.trim().toLowerCase();
+    const narrowed=matches.filter(row=>(!agency||row.agency_name===agency)&&(!query||[
+      row.short_title,row.agency_name,row.pin,
+    ].some(value=>String(value||"").toLowerCase().includes(query))));
+    const rows=narrowed.map(row=>{
+      const location=(row.locations||[]).find(item=>(!locationFilter.basis||item.basis===locationFilter.basis)
+        &&(!locationFilter.borough||item.borough===locationFilter.borough)
+        &&(!locationFilter.communityDistrict||item.community_district===locationFilter.communityDistrict)
+        &&(!locationFilter.councilDistrict||String(item.council_district)===String(locationFilter.councilDistrict)))||row.locations?.[0]||null;
+      return {...row,_action_location_match:location};
+    });
+    const place=locationFilter.communityDistrict||(
+      locationFilter.councilDistrict?t("council_district_short",{n:locationFilter.councilDistrict}):locationFilter.borough
+    );
+    $("#reshead").textContent=place
+      ?t("money_response_location_heading_place",{place})
+      :t("money_response_location_heading");
+    paintMoneyRows(rows,{autoSelect:true,narrowed:false});
+    return;
+  }
 
   let where = mode === "award" ? "type_of_notice_description='Award'" : "type_of_notice_description='Solicitation'";
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
@@ -297,6 +377,8 @@ function moneyRowHTML(r, i, terms){
     : deadlineTag(r.due_date);
   const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
+  const actionLocation=r._action_location_match;
+  const actionLocationChip=actionLocation?`<div class="mwbe-chiprow money-location-basis" data-money-location-basis="${escUiHtml(actionLocation.basis||"")}"><span class="tag place">${escUiHtml(actionLocation.basis_label||t("money_location_basis_response"))}</span><span class="tag">${escUiHtml([actionLocation.borough,actionLocation.community_district,actionLocation.council_district?t("council_district_short",{n:actionLocation.council_district}):null].filter(Boolean).join(" · "))}</span></div>`:"";
   const primaryAction=moneyListPrimaryActionHTML(r);
   return `<article class="money-row-card">
       ${primaryAction}
@@ -306,6 +388,7 @@ function moneyRowHTML(r, i, terms){
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
       ${mwbeChips}
+      ${actionLocationChip}
       ${digEvidenceHTML(ev)}
       </div>
     </article>`;
@@ -444,9 +527,22 @@ async function select(i, el){
   const r = currentRows[i];
   selectedRFP = r;
   renderDetail(r, null, null);
-  const [chain, stats] = await Promise.all([ loadChain(r), loadAgencyStats(r.agency_name) ]);
+  const [hydrated, chain, stats] = await Promise.all([
+    hydrateMoneyActionLocationRow(r),
+    loadChain(r),
+    loadAgencyStats(r.agency_name),
+  ]);
   if(selectedRFP !== r) return;
-  renderDetail(r, chain, stats);
+  selectedRFP=hydrated;
+  renderDetail(hydrated, chain, stats);
+}
+
+async function hydrateMoneyActionLocationRow(r){
+  if(!r?._action_location_match) return r;
+  try{
+    const rows=await soda({"$select":SELECT,"$where":`request_id='${String(r.request_id||"").replace(/'/g,"''")}'`,"$limit":"1"});
+    return rows[0]?{...rows[0],_action_location_match:r._action_location_match}:r;
+  }catch(_e){ return r; }
 }
 
 const RENEWAL_SUFFIX_RE = /R0\d+$/;
@@ -484,6 +580,7 @@ globalThis.loadLineageBadges = loadLineageBadges;
 globalThis.loadMethodFacet = loadMethodFacet;
 globalThis.loadMoneyDefaultSnapshot = loadMoneyDefaultSnapshot;
 globalThis.loadMoneyAgenciesSnapshot = loadMoneyAgenciesSnapshot;
+globalThis.initializeMoneyLocationFilters = initializeMoneyLocationFilters;
 globalThis.isDefaultMoneySearchState = isDefaultMoneySearchState;
 globalThis.filterStillOpenMoneyNotices = filterStillOpenMoneyNotices;
 globalThis.moneyActiveFilterChip = moneyActiveFilterChip;
@@ -506,4 +603,5 @@ Object.defineProperty(globalThis, "methodSel", { configurable: true, get: () => 
 Object.defineProperty(globalThis, "mode", { configurable: true, get: () => mode, set: value => { mode = value; } });
 Object.defineProperty(globalThis, "moneyLoaded", { configurable: true, get: () => moneyLoaded, set: value => { moneyLoaded = value; } });
 Object.defineProperty(globalThis, "moneyNlResolved", { configurable: true, get: () => moneyNlResolved, set: value => { moneyNlResolved = value; } });
+Object.defineProperty(globalThis, "moneyLocationFilter", { configurable: true, get: () => moneyLocationFilter, set: value => { moneyLocationFilter = value; } });
 Object.defineProperty(globalThis, "selectedRFP", { configurable: true, get: () => selectedRFP, set: value => { selectedRFP = value; } });

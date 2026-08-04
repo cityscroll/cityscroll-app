@@ -2,7 +2,7 @@
    district_activity + district_boundaries. No proprietary map SDK; list remains
    the fallback. Coordinates never ride share links. ===== */
 let mapToolsPromise=null, mapDistrictDigestToolsPromise=null, mapBoundaries=null, mapActivity=null, mapPainted=false;
-let mapState={ level:"borough", id:null, parent:null, lens:"all" };
+let mapState={ level:"borough", id:null, parent:null, lens:"all", basis:"performance" };
 let mapViewBox=null;
 function mapExplorationTools(){
   if(!mapToolsPromise){
@@ -73,9 +73,9 @@ async function paintMapExploration(){
     document.querySelectorAll("[data-map-level]").forEach(btn=>{
       btn.addEventListener("click",()=>{
         const level=btn.dataset.mapLevel;
-        if(level==="borough") mapState={ level:"borough", id:null, parent:null, lens:mapState.lens };
-        else if(level==="community_district") mapState={ level:"community_district", id:null, parent:mapState.parent||null, lens:mapState.lens };
-        else if(level==="council_district") mapState={ level:"council_district", id:null, parent:null, lens:mapState.lens };
+        if(level==="borough") mapState={ level:"borough", id:null, parent:null, lens:mapState.lens, basis:mapState.basis };
+        else if(level==="community_district") mapState={ level:"community_district", id:null, parent:mapState.parent||null, lens:mapState.lens, basis:mapState.basis };
+        else if(level==="council_district") mapState={ level:"council_district", id:null, parent:null, lens:mapState.lens, basis:mapState.basis };
         mapViewBox=null;
         paintMapExploration(); updateHash();
       });
@@ -108,17 +108,45 @@ async function paintMapExploration(){
     lensRow.querySelectorAll("[data-map-lens]").forEach(btn=>{
       btn.addEventListener("click",()=>{
         mapState.lens=btn.dataset.mapLens;
+        if(mapState.lens!=="money") mapState.basis="performance";
         paintMapExploration(); updateHash();
       });
     });
   }
+  const basisRow=$("#mapMoneyBasisRow"), basisNote=$("#mapMoneyBasisNote");
+  if(basisRow){
+    const show=mapState.lens==="money";
+    basisRow.hidden=!show;
+    if(show){
+      basisRow.innerHTML=[
+        ["performance",t("map_money_basis_performance")],
+        ["contract_action_address",t("map_money_basis_response")],
+      ].map(([basis,label])=>`<button type="button" class="chip ${mapState.basis===basis?"on":""}" data-map-money-basis="${basis}" aria-pressed="${mapState.basis===basis}">${mapEsc(label)}</button>`).join("");
+      basisRow.querySelectorAll("[data-map-money-basis]").forEach(btn=>btn.addEventListener("click",()=>{
+        mapState={...mapState,basis:btn.dataset.mapMoneyBasis,id:null};
+        mapViewBox=null;
+        paintMapExploration(); updateHash();
+      }));
+    }
+  }
+  if(basisNote){
+    const show=mapState.lens==="money"&&mapState.basis==="contract_action_address";
+    basisNote.hidden=!show;
+    basisNote.textContent=show?t("map_money_response_basis_note"):"";
+  }
+  const viewActivity=mapState.lens==="money"&&mapState.basis==="contract_action_address"
+    ?(activity.basis_layers&&activity.basis_layers.contract_action_address)||{}
+    :activity;
   // Features for current level + first-class citywide / virtual bags
   const { features, max }=tools.mapFeatures(boundaries, activity, {
     level: mapState.level,
     parent: mapState.parent,
     lens: mapState.lens,
+    basis: mapState.basis,
   });
-  const buckets=typeof tools.nonPolygonBuckets==="function"?tools.nonPolygonBuckets(activity):[];
+  const buckets=mapState.lens==="money"&&mapState.basis==="contract_action_address"
+    ?[]
+    :(typeof tools.nonPolygonBuckets==="function"?tools.nonPolygonBuckets(viewActivity):[]);
   // ViewBox
   if(!mapViewBox){
     if(mapState.parent && mapState.level==="community_district" && tools.BOROUGH_HULLS[mapState.parent]){
@@ -164,10 +192,14 @@ async function paintMapExploration(){
   // read as broken when most awards are citywide / unlocated.
   let framingHtml="";
   if(mapState.lens==="money" && typeof tools.moneyCoverageFraming==="function"){
-    const frame=tools.moneyCoverageFraming(activity);
+    const frame=tools.moneyCoverageFraming(viewActivity);
     if(frame && frame.counted>0){
-      framingHtml=`<li class="map-framing map-framing-money" role="note"><p>${mapEsc(t("map_money_framing",{
+      const framingKey=mapState.basis==="contract_action_address"
+        ?"map_money_response_framing"
+        :"map_money_framing";
+      framingHtml=`<li class="map-framing map-framing-money" role="note"><p>${mapEsc(t(framingKey,{
         counted:String(frame.counted),
+        located:String(frame.located),
         local:String(frame.local),
         citywide:String(frame.citywide),
         unlocated:String(frame.unlocated),
@@ -204,8 +236,8 @@ async function paintMapExploration(){
         const i=Number(btn.dataset.mapCrumb);
         const c=crumbs[i];
         if(!c) return;
-        if(c.level==="borough" && !c.id) mapState={ level:"borough", id:null, parent:null, lens:mapState.lens };
-        else mapState={ level:c.level, id:c.id, parent:c.parent, lens:mapState.lens };
+        if(c.level==="borough" && !c.id) mapState={ level:"borough", id:null, parent:null, lens:mapState.lens, basis:mapState.basis };
+        else mapState={ level:c.level, id:c.id, parent:c.parent, lens:mapState.lens, basis:mapState.basis };
         mapViewBox=null;
         paintMapExploration(); updateHash();
       });
@@ -261,13 +293,17 @@ async function paintMapExploration(){
     } else {
       detail.hidden=false;
       const counts=sel.counts||{};
-      const links=tools.areaFeedLinks(sel.level, sel.id, { counts, onlyPositive:true });
+      const links=tools.areaFeedLinks(sel.level, sel.id, {
+        counts,
+        onlyPositive:true,
+        basis:mapState.basis,
+      });
       const byLens=mapLinksFromDrill(links);
       // When viewing a district, also surface citywide bag chips so city-scale
       // rules/meetings remain visible (labeled citywide — never fabricated into the polygon).
       const cw=typeof tools.citywideBucketCounts==="function"
-        ? tools.citywideBucketCounts(activity)
-        : (activity.citywide||null);
+        ? tools.citywideBucketCounts(viewActivity)
+        : (viewActivity.citywide||null);
       const cwTotal=cw?tools.totalForLens(cw, mapState.lens==="all"?"all":mapState.lens):0;
       const cwLinks=cwTotal>0 && typeof tools.bucketFeedLinks==="function"
         ? tools.bucketFeedLinks("citywide", { counts:cw, onlyPositive:true })
@@ -301,12 +337,12 @@ async function paintMapExploration(){
         </div>
         <p class="map-fallback-note"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></p>`;
       detail.querySelector("[data-map-drill]")?.addEventListener("click",()=>{
-        mapState={ level:"community_district", id:null, parent:sel.id, lens:mapState.lens };
+        mapState={ level:"community_district", id:null, parent:sel.id, lens:mapState.lens, basis:mapState.basis };
         mapViewBox=null;
         paintMapExploration(); updateHash();
       });
       detail.querySelector("[data-map-council]")?.addEventListener("click",()=>{
-        mapState={ level:"council_district", id:null, parent:null, lens:mapState.lens };
+        mapState={ level:"council_district", id:null, parent:null, lens:mapState.lens, basis:mapState.basis };
         mapViewBox=null;
         paintMapExploration(); updateHash();
       });
@@ -320,7 +356,7 @@ function selectMapFeature(id, level, tools, features){
   if(!feature) return;
   // Borough tap drills in; district tap selects for feed links
   if(level==="borough"){
-    mapState=tools.drillInto(feature, mapState);
+    mapState={...tools.drillInto(feature, mapState),basis:mapState.basis};
     mapViewBox=null;
   } else {
     mapState={ ...mapState, level: feature.level, id: feature.id, parent: feature.parent || mapState.parent };

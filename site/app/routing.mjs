@@ -74,6 +74,13 @@ function serializeState(){
     if(moneyNlResolved.excludeSpecial) q.set("standard", "1");
     if(closingWeek) q.set("closing", "week");
     if(methodSel) q.set("m", methodSel);
+    if(moneyLocationFilter?.layer==="contract_action_address"){
+      q.set("basis","contract_action_address");
+      if(moneyLocationFilter.basis) q.set("actionBasis",moneyLocationFilter.basis);
+      if(moneyLocationFilter.borough) q.set("boro",moneyLocationFilter.borough);
+      if(moneyLocationFilter.communityDistrict) q.set("cd",moneyLocationFilter.communityDistrict);
+      if(moneyLocationFilter.councilDistrict) q.set("council",moneyLocationFilter.councilDistrict);
+    }
   } else if(tab === "people"){
     if($("#staffing-query").value.trim()) q.set("q", $("#staffing-query").value.trim());
     if(staffingFilters.role) q.set("role", staffingFilters.role);
@@ -140,6 +147,7 @@ function serializeState(){
     if(mapState.id) q.set("id", mapState.id);
     if(mapState.parent) q.set("parent", mapState.parent);
     if(mapState.lens && mapState.lens !== "all") q.set("lens", mapState.lens);
+    if(mapState.lens === "money" && mapState.basis === "contract_action_address") q.set("basis", "contract_action_address");
   }
   if(tab === "property"){
     const taxPanel=$("#tax-lien-sale-panel");
@@ -735,6 +743,24 @@ function applyHash(){
       $("#closingweek").classList.toggle("on", closingWeek);
       $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
       methodSel = q.get("m") || "";
+      $("#moneylocationbasis").value="";
+      $("#moneyboro").value="";
+      $("#moneycd").value="";
+      $("#moneycouncil").value="";
+      const actionBasis=["submission_address","pre_bid_venue","document_pickup"].includes(q.get("actionBasis"))?q.get("actionBasis"):"";
+      const hasActionLocation=q.get("basis")==="contract_action_address";
+      forceSelect("#moneylocationbasis",hasActionLocation?(actionBasis||"contract_action_address"):"");
+      forceSelect("#moneyboro",hasActionLocation&&DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
+      forceSelect("#moneycd",hasActionLocation&&/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"");
+      forceSelect("#moneycouncil",hasActionLocation&&/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"");
+      moneyLocationFilter={
+        layer:hasActionLocation?"contract_action_address":"",
+        basis:actionBasis,
+        borough:hasActionLocation&&DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"",
+        communityDistrict:hasActionLocation&&/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"",
+        councilDistrict:hasActionLocation&&/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"",
+      };
+      if(hasActionLocation) $("#mode").value="allrfp";
       showTab("money"); search();
     } else if(tab === "people"){
       const legacyExamRoute=q.get("type")==="exam";
@@ -910,7 +936,8 @@ function applyHash(){
       const level=["borough","community_district","council_district"].includes(levelRaw)?levelRaw:"borough";
       const lensRaw=q.get("lens")||"all";
       const lens=["all","land","property","rules","meetings","money"].includes(lensRaw)?lensRaw:"all";
-      mapState={ level, id:q.get("id")||null, parent:q.get("parent")||null, lens };
+      const basis=lens==="money"&&q.get("basis")==="contract_action_address"?"contract_action_address":"performance";
+      mapState={ level, id:q.get("id")||null, parent:q.get("parent")||null, lens, basis };
       mapViewBox=null;
       showTab("map");
     } else {

@@ -38,7 +38,11 @@ function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ e
 soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r[0]){ editionRange=r[0]; paintEditionSpan(); } }).catch(()=>{});
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
-["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
+["#mode","#agency","#sort","#minamt","#moneyboro","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", search));
+$("#moneylocationbasis").addEventListener("change",async()=>{
+  if($("#moneylocationbasis").value) await initializeMoneyLocationFilters();
+  search();
+});
 $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
 
 $("#staffing-query").addEventListener("input",debounce(()=>{
