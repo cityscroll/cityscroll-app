@@ -55,10 +55,22 @@ node --test test/award_registration_dwell.test.mjs
 
 - `site/data/award_registration_dwell.json` — summary + distribution
 - `site/data/award_registration_dwell_observations.json` — per-award rows
+- `site/data/award_registration_dwell_lookup.json` — compact by-id map for the notice strip
 - `docs/evidence/award-registration-dwell/summary.json`
 - `warehouse/receipts/proof/award_registration_dwell_latest.json`
 
-## Out of scope
+## Notice strip (Human Services awards)
 
-Notice-strip UI for these numbers is a separate gated card. This materialization
-is build-time only.
+On eligible award notices, `#nregdwell` paints a quiet strip from the compact
+lookup (pure `site/award_registration_dwell_view.mjs`):
+
+| Status | Reader-facing |
+|---|---|
+| `found`, dwell &gt; 0 | “Registered N days after the award notice …” + payment-clock frame |
+| `found`, dwell = 0 | “Registered the same day …” (never phrased as unknown) |
+| `found`, dwell &lt; 0 | “Registered N days before the City Record award notice …” |
+| `unknown` | One quiet unmatched line — never “0 days” / instant |
+| Not in corpus / not HS award | Clean absence (no strip) |
+
+Payment-honesty framing: registration starts the payment clock; $0 paid right
+after registration is normal (same register as `lifecycle_payment_zero_lag_html`).

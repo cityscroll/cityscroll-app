@@ -10,6 +10,81 @@ function ensureProcurementPhaseSpineTools(){
   return procurementPhaseSpineToolsPromise;
 }
 
+/* Human Services award → registration dwell strip (precompute-first).
+   Pure model: site/award_registration_dwell_view.mjs; payload from the
+   award_registration_dwell materialization
+   (lookup: site/data/award_registration_dwell_lookup.json). */
+let awardRegDwellViewPromise = null;
+let awardRegDwellLookupPromise = null;
+function ensureAwardRegDwellView(){
+  if(!awardRegDwellViewPromise){
+    awardRegDwellViewPromise = import("../award_registration_dwell_view.mjs").catch(() => null);
+  }
+  return awardRegDwellViewPromise;
+}
+function loadAwardRegDwellLookup(){
+  if(!awardRegDwellLookupPromise){
+    awardRegDwellLookupPromise = fetch("./data/award_registration_dwell_lookup.json", {
+      credentials: "omit",
+      cache: "no-cache",
+    })
+      .then((r) => (r && r.ok ? r.json() : null))
+      .catch(() => null);
+  }
+  return awardRegDwellLookupPromise;
+}
+function awardRegistrationDwellHTML(formatted){
+  if(!formatted || !formatted.line) return "";
+  const daysAttr = formatted.dwell_days != null && Number.isFinite(formatted.dwell_days)
+    ? ` data-dwell-days="${escUiHtml(String(formatted.dwell_days))}"`
+    : "";
+  const frame = formatted.frame
+    ? `<p class="award-reg-dwell-frame">${formatted.frame}</p>`
+    : "";
+  return `<div class="award-reg-dwell" data-reg-dwell-status="${escUiHtml(formatted.status||"")}"${daysAttr} role="status" aria-label="${escUiHtml(t("award_reg_dwell_aria"))}">
+    <p class="award-reg-dwell-line">${formatted.line}</p>
+    ${frame}
+  </div>`;
+}
+/** Mount the dwell strip on Human Services award notices only. Clean absence otherwise. */
+async function loadAwardRegistrationDwell(r, el){
+  if(!el || !r) return;
+  try{
+    const view = await ensureAwardRegDwellView();
+    if(!view || typeof view.isHumanServicesAwardNotice !== "function"){
+      if(document.contains(el)) el.innerHTML = "";
+      return;
+    }
+    if(!view.isHumanServicesAwardNotice(r)){
+      if(document.contains(el)) el.innerHTML = "";
+      return;
+    }
+    const [lookup, tools] = await Promise.all([
+      loadAwardRegDwellLookup(),
+      ensureAwardRegDwellView(),
+    ]);
+    if(!document.contains(el)) return;
+    if(!tools || !lookup){
+      el.innerHTML = "";
+      return;
+    }
+    const strip = tools.buildAwardRegistrationDwellStrip(r, lookup);
+    if(!strip){
+      el.innerHTML = "";
+      return;
+    }
+    // Honesty: never paint unknown as 0 / instant.
+    if(strip.status === "unknown" && strip.dwell_days != null){
+      el.innerHTML = "";
+      return;
+    }
+    const formatted = tools.formatAwardRegistrationDwellStrip(strip, t);
+    el.innerHTML = awardRegistrationDwellHTML(formatted);
+  }catch(_e){
+    if(document.contains(el)) el.innerHTML = "";
+  }
+}
+
 function lifecyclePhaseLabel(phase){
   if(!phase) return "—";
   if(phase.label_key) return t(phase.label_key);
@@ -531,5 +606,7 @@ globalThis.lifecyclePhaseTimelineHTML = lifecyclePhaseTimelineHTML;
 globalThis.lifecycleTimelineHTML = lifecycleTimelineHTML;
 globalThis.lifecycleTimelineHTMLFlat = lifecycleTimelineHTMLFlat;
 globalThis.loadLifecycle = loadLifecycle;
+globalThis.loadAwardRegistrationDwell = loadAwardRegistrationDwell;
+globalThis.awardRegistrationDwellHTML = awardRegistrationDwellHTML;
 Object.defineProperty(globalThis, "procurementPhaseSpineToolsPromise", { configurable: true, get: () => procurementPhaseSpineToolsPromise, set: value => { procurementPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "subOutreachToolsPromise", { configurable: true, get: () => subOutreachToolsPromise, set: value => { subOutreachToolsPromise = value; } });
