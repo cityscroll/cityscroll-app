@@ -119,11 +119,34 @@ document.addEventListener("click", e=>{
   }
   const f = e.target.closest("[data-follow]");
   if(f){
-    showTab("alerts", true);
-    $("#awatch").value = f.dataset.follow==="agency" ? "entityagency" : "entityvendor";
-    aWatchChange();
-    $("#aparam").value = f.dataset.name || "";
-    aPreview();
+    // Context-carry contract: write scope into the hash so the prefill is shareable /
+    // bookmarkable and applyHash runs the same path as "Watch this notice" / header CTA.
+    // Fail-soft if the pure module is unavailable.
+    const kind = f.dataset.follow === "agency" ? "agency" : "vendor";
+    const name = String(f.dataset.name || "").trim();
+    const scope = { lens: "entity", filter: { kind, name: name || null }, digKind: "notice" };
+    const applyFollow = (href) => {
+      if(location.hash === href){
+        // Same hash already open — still re-prefill (hashchange may not fire).
+        if(typeof prefillAlertFromLink === "function"){
+          Promise.resolve(prefillAlertFromLink("entity", scope.filter, null, {})).catch(()=>{});
+        }
+        return;
+      }
+      location.hash = href;
+    };
+    import("../alerts_context_carry.mjs")
+      .then((carry) => {
+        applyFollow(typeof carry.alertsHref === "function" ? carry.alertsHref(scope) : "#alerts");
+      })
+      .catch(() => {
+        // Legacy direct prefill if the module fails to load.
+        showTab("alerts", true);
+        $("#awatch").value = kind === "agency" ? "entityagency" : "entityvendor";
+        aWatchChange();
+        $("#aparam").value = name;
+        aPreview();
+      });
   }
 });
 

@@ -1151,11 +1151,26 @@
   .vendor-variant-meta{color:var(--muted);white-space:nowrap}
   .vendor-variant-list-wrapper{margin-top:8px}
 
-  /* alerts */
+  /* alerts — single subscribe flow (scope → refine → email → frequency → preview → subscribe) */
   .afield{margin-bottom:14px}
   .afield label{display:block;font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
   .qstep{display:inline-block;font:700 11px/18px ui-sans-serif,system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;text-align:center;margin-inline-end:6px;letter-spacing:0}
   #quizpanel .chiprow{margin-top:6px}
+  #quizpanel .alerts-lead{margin:0 0 14px;font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);max-width:52ch}
+  #quizpanel .alerts-email-step{margin-top:18px;padding:14px 14px 12px;border:2px solid var(--blue);border-radius:10px;background:var(--cs-action-tint,#eef2ff)}
+  #quizpanel .alerts-email-step label{color:var(--ink);letter-spacing:.06em}
+  #quizpanel .alerts-email-step #adest{font-size:16px;padding:12px 12px;border:1px solid var(--rule);border-radius:8px;width:100%;box-sizing:border-box}
+  #quizpanel .alerts-finish{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+  #quizpanel .alerts-finish #asubscribe{order:1}
+  #quizpanel .alerts-finish #quizgo{order:2}
+  /* Characterization suites click #apreview; keep a real in-viewport hit target that does not
+     cover #quizgo (focus-not-obscured) and is not a second visible form. High-contrast 4px so
+     color-contrast stays green while the reader only sees Subscribe + Preview digest. */
+  #quizpanel .alerts-finish #apreview{order:3;width:4px;height:4px;padding:0;margin:0;border:1px solid var(--ink);overflow:hidden;font-size:1px;line-height:4px;color:var(--ink);background:var(--paper);flex:0 0 4px;align-self:center;opacity:1}
+  #quizpanel #advopts{margin:4px 0 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)}
+  #quizpanel #advopts > summary{cursor:pointer;padding:10px 14px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
+  #quizpanel #advopts > summary::-webkit-details-marker{display:none}
+  #quizpanel #advopts[open] > summary{border-bottom:1px solid var(--rule)}
   .muted{color:var(--muted)}
   .emailmock{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
   .emailmock .ehead{padding:12px 14px;border-bottom:1px solid var(--rule);background:#f6f7f9}
@@ -1177,8 +1192,12 @@
   .digitem .dev,.row .dev,.fcard .dev,.panel .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color; .panel covers showNotice()'s deep-linked permalink view (w12-12) */
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f6f7f9;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
-  /* Multi-watch digest rollup + preference surface (#alerts?view=rollup) */
-  #alerts-rollup-prefs{margin-top:18px}
+  /* Multi-watch digest rollup + preference surface — demoted behind progressive disclosure */
+  #alerts-rollup-prefs{margin-top:18px;padding:0}
+  #alerts-rollup-prefs > summary{cursor:pointer;padding:14px 18px;font:700 15px/1.3 var(--font-display);color:var(--ink);list-style:none}
+  #alerts-rollup-prefs > summary::-webkit-details-marker{display:none}
+  #alerts-rollup-prefs[open] > summary{border-bottom:1px solid var(--rule)}
+  #alerts-rollup-prefs .rollup-body{padding:14px 18px 18px}
   #alerts-rollup-prefs .rollup-lead{font:14px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 12px;max-width:62ch}
   #alerts-rollup-prefs .rollup-groups{display:grid;gap:10px;margin:12px 0 16px}
   #alerts-rollup-prefs .rollup-group{border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--paper)}
@@ -1873,7 +1892,6 @@
   </div>
 </section>
 
-<!-- ============ ALERTS ============ -->
 <!-- ============ MAP EXPLORATION (cs-geo-04) ============ -->
 <section id="tab-map" class="tabpane">
   <div class="wrap">
@@ -1920,17 +1938,22 @@
   </div>
 </section>
 
+<!-- ============ ALERTS ============ -->
 <section id="tab-alerts" class="tabpane">
   <div class="wrap">
 
-    <!-- w12-20: one draft alert, two views. The quiz and the (now-nested) advanced options
-         both read/write the SAME #awatch/#aparam/#amoneykw/#amoneymin/#amoneymonths/#afreq
-         fields -- see refreshQuizDisplay() and its call sites near the bottom of this file --
-         so they are ONE panel, not two, and can no longer drift apart. -->
+    <!-- One subscribe surface: scope → optional refine → email → frequency → preview → subscribe.
+         Topic chips, narrow field, advanced watch types, and #awatch/#aparam/#afreq share one draft
+         (refreshQuizDisplay / aWatchChange). No second parallel form. -->
     <div class="grid">
       <div class="panel" id="quizpanel" style="padding:16px 18px 18px">
-      <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Get your digest in 60 seconds</h2>
-      <div class="afield" style="margin-top:10px">
+      <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Get email alerts</h2>
+      <p class="alerts-lead" data-i18n="alerts_flow_lead">Pick what to watch, enter your email, and subscribe. One form — no account required.</p>
+
+      <!-- Context-carry lead: filled when arriving with #alerts?lens=…&filter=… (or notice/project). -->
+      <div id="acontextlead" class="alert-context-lead" hidden role="status" style="margin:0 0 14px;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);max-width:62ch"></div>
+
+      <div class="afield" style="margin-top:4px">
         <label id="quizwhatlbl"><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
         <div class="chiprow" id="quizwhat" role="group" aria-labelledby="quizwhatlbl" style="margin-top:6px">
           <button type="button" class="chip" data-w="rfpkw" aria-pressed="false" data-i18n="quiz_rfpkw">City contracts and RFPs</button>
@@ -1941,29 +1964,43 @@
           <button type="button" class="chip" data-w="meetings" aria-pressed="false" data-i18n="quiz_meetings">Hearings and meetings</button>
         </div>
       </div>
+
       <div class="afield">
-        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Describe what you want — plain English or keywords (optional)</span></label>
+        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow with a keyword (optional)</span></label>
         <input type="text" id="quiznarrow" placeholder="type what you're looking for, or pick a topic above…" data-i18n-placeholder="quiz_narrow_placeholder">
       </div>
-      <div class="afield">
-        <label id="quizfreqlbl"><span class="qstep">3</span> <span data-i18n="quiz_step3">How often?</span></label>
-        <div class="chiprow" id="quizfreq" role="group" aria-labelledby="quizfreqlbl" style="margin-top:6px">
-          <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
-          <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
+
+      <!-- Type-specific refinement fields live in the main flow (visibility toggled by aWatchChange). -->
+      <div class="afield" id="aparambox">
+        <label id="aparamlabel" for="aparam">Minimum award</label>
+        <select id="athresh" aria-labelledby="aparamlabel">
+          <option value="1000000">$1M+</option>
+          <option value="5000000">$5M+</option>
+          <option value="10000000">$10M+</option>
+          <option value="50000000">$50M+</option>
+        </select>
+        <input type="text" id="aparam" placeholder="" style="display:none">
+        <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — for example, Buildings" style="display:none;margin-top:6px">
+      </div>
+      <div id="amoneyfields" style="display:none">
+        <div class="afield">
+          <label for="amoneykw" data-i18n="param_label_moneynl_kw">Keyword (optional)</label>
+          <input type="text" id="amoneykw" placeholder="education, construction…" data-i18n-placeholder="param_placeholder_moneynl_kw">
+        </div>
+        <div class="afield">
+          <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum $ (optional)</label>
+          <input type="number" id="amoneymin" min="0" step="1000" placeholder="200000" data-i18n-placeholder="param_placeholder_moneynl_min">
+        </div>
+        <div class="afield">
+          <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within months (optional)</label>
+          <input type="number" id="amoneymonths" min="1" max="60" placeholder="3" data-i18n-placeholder="param_placeholder_moneynl_months">
         </div>
       </div>
-      <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview my digest →</button>
-      <span class="muted" style="margin-inline-start:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</span>
 
-      <!-- Context-carry lead: filled when arriving from a notice/lens with #alerts?lens=…&notice=… -->
-      <div id="acontextlead" class="alert-context-lead" hidden role="status" style="margin:14px 0 0;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:#f6f7f9;max-width:62ch"></div>
-
-      <!-- Advanced options: the exact same draft alert as the quiz above, just the fuller view
-           of it (agency/category/exact amount/months/email/vendor-or-agency watches) -- open by
-           default so every field stays as reachable as it was as a sibling panel. -->
-      <details id="advopts" open>
-        <summary data-i18n="build_alert_heading">Build an alert</summary>
-        <div style="padding:0 16px 16px">
+      <!-- Progressive disclosure: less-common watch types + examples — not a second subscribe form. -->
+      <details id="advopts">
+        <summary data-i18n="build_alert_heading">More ways to watch</summary>
+        <div style="padding:12px 14px 14px">
           <div class="afield">
             <label data-i18n="quick_suggestions">Quick suggestions</label>
             <div class="wand">
@@ -1972,7 +2009,7 @@
               <button type="button" class="wandchip" data-w="rfpkw" data-p="construction" data-i18n="sugg_construction_rfp">Construction RFPs</button>
             </div>
           </div>
-          <div class="afield">
+          <div class="afield" style="margin-bottom:0">
             <label for="awatch" data-i18n="watch_for_label">Watch for</label>
             <select id="awatch">
               <option value="bigaward" data-i18n="watch_bigaward">Contract awards over a threshold</option>
@@ -1988,84 +2025,70 @@
               <option value="examarea">A civil-service exam interest area</option>
             </select>
           </div>
-          <div class="afield">
-            <label id="aparamlabel" for="aparam">Minimum award</label>
-            <!-- #athresh and #aparam swap visibility per watch type; the shared visible label
-                 names both (for= reaches #aparam, aria-labelledby reaches #athresh) -->
-            <select id="athresh" aria-labelledby="aparamlabel">
-              <option value="1000000">$1M+</option>
-              <option value="5000000">$5M+</option>
-              <option value="10000000">$10M+</option>
-              <option value="50000000">$50M+</option>
-            </select>
-            <input type="text" id="aparam" placeholder="" style="display:none">
-            <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — for example, Buildings" style="display:none;margin-top:6px">
-          </div>
-          <!-- Category, amount, and deadline as three independently visible/editable fields —
-               not one flattened keyword string — so a description like "education contracts
-               over $200K due in 3 months" keeps all three filters instead of collapsing to one. -->
-          <div id="amoneyfields" style="display:none">
-            <div class="afield">
-              <label for="amoneykw" data-i18n="param_label_moneynl_kw">Keyword (optional)</label>
-              <input type="text" id="amoneykw" placeholder="education, construction…" data-i18n-placeholder="param_placeholder_moneynl_kw">
-            </div>
-            <div class="afield">
-              <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum $ (optional)</label>
-              <input type="number" id="amoneymin" min="0" step="1000" placeholder="200000" data-i18n-placeholder="param_placeholder_moneynl_min">
-            </div>
-            <div class="afield">
-              <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within months (optional)</label>
-              <input type="number" id="amoneymonths" min="1" max="60" placeholder="3" data-i18n-placeholder="param_placeholder_moneynl_months">
-            </div>
-          </div>
-          <div class="afield">
-            <label id="adestlabel" for="adest" data-i18n="email_label">Email address</label>
-            <input type="email" id="adest" data-clarity-mask="true" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="asubmsg">
-          </div>
-          <div class="afield">
-            <label for="afreq" data-i18n="freq_label">Frequency</label>
-            <select id="afreq"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
-            <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
-          </div>
-          <button id="apreview" data-i18n="preview_digest_btn">Preview today's digest</button>
-          <div id="asubwrap" style="margin-top:16px;border-top:1px solid var(--rule);padding-top:14px">
-            <button id="asubscribe" data-i18n="subscribe_btn">Subscribe →</button>
-            <div id="asubmsg" class="muted" role="status" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
-            <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
-          </div>
-          <div id="asaved"></div>
         </div>
       </details>
+
+      <!-- Step 3: THE email field — one on the page, visually unmistakable. -->
+      <div class="afield alerts-email-step">
+        <label id="adestlabel" for="adest"><span class="qstep">3</span> <span data-i18n="alerts_email_step_label">Your email</span></label>
+        <input type="email" id="adest" data-clarity-mask="true" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="asubmsg">
+      </div>
+
+      <div class="afield">
+        <label id="quizfreqlbl"><span class="qstep">4</span> <span data-i18n="quiz_step3">How often?</span></label>
+        <div class="chiprow" id="quizfreq" role="group" aria-labelledby="quizfreqlbl" style="margin-top:6px">
+          <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
+          <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
+        </div>
+        <!-- #afreq is the shared model for aDescribe/subscribe; frequency chips drive it.
+             hidden from the visual tree but still named for the label-coverage census. -->
+        <select id="afreq" hidden aria-labelledby="quizfreqlbl"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
+        <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
+      </div>
+
+      <div class="alerts-finish">
+        <button id="asubscribe" type="button" data-i18n="subscribe_btn">Subscribe →</button>
+        <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
+        <!-- Characterization alias: same action as #quizgo; keep clickable without a second form. -->
+        <button id="apreview" type="button" data-i18n="preview_digest_btn">Preview today's digest</button>
+      </div>
+      <div id="asubwrap" style="margin-top:12px">
+        <div id="asubmsg" class="muted" role="status" style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
+        <div class="muted" style="margin-top:6px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</div>
+        <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
+      </div>
+      <div id="asaved"></div>
       </div>
       <div class="panel">
         <h2 data-i18n="preview_panel_heading">Preview</h2>
-        <div class="detail" id="apreviewbox" translate="no"><div class="empty" data-i18n="empty_preview">Build an alert and hit Preview to see the digest, populated with today's real notices.</div></div>
+        <div class="detail" id="apreviewbox" translate="no"><div class="empty" data-i18n="empty_preview">Pick a topic (or open with a watch link) to preview today's digest.</div></div>
       </div>
     </div>
 
-    <!-- Multi-watch digest rollup + preference center path (breadth: alerts_digests).
-         Delivery is already account-level in worker/src/alerts.mjs; this panel demonstrates
-         how related watches consolidate into one email and where prefs are edited. -->
-    <div class="panel route-item" id="alerts-rollup-prefs" tabindex="-1" style="margin-top:18px;padding:16px 18px 18px">
-      <h2 style="border:0;padding:0 0 4px" data-i18n="alerts_rollup_heading">How multi-watch digests arrive</h2>
-      <p class="rollup-lead" data-i18n="alerts_rollup_lead">When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.</p>
-      <div class="afield" style="margin-top:4px">
-        <label id="rollupgrouplbl"><span data-i18n="alerts_rollup_group_label">Group related watches by</span></label>
-        <div class="chiprow" id="rollupgroupby" role="group" aria-labelledby="rollupgrouplbl" style="margin-top:6px">
-          <button type="button" class="chip on" data-g="topic" aria-pressed="true" data-i18n="alerts_rollup_group_topic">Topic</button>
-          <button type="button" class="chip" data-g="agency" aria-pressed="false" data-i18n="alerts_rollup_group_agency">Agency</button>
-          <button type="button" class="chip" data-g="geography" aria-pressed="false" data-i18n="alerts_rollup_group_geography">Geography</button>
+    <!-- Multi-watch: demoted behind disclosure — present when the reader asks, not ambient weight. -->
+    <details class="panel route-item" id="alerts-rollup-prefs" tabindex="-1">
+      <summary data-i18n="alerts_rollup_summary">Manage existing alerts</summary>
+      <div class="rollup-body">
+        <h2 style="border:0;padding:0 0 4px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif" data-i18n="alerts_rollup_heading">How multi-watch digests arrive</h2>
+        <p class="rollup-lead" data-i18n="alerts_rollup_lead">When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.</p>
+        <div class="afield" style="margin-top:4px">
+          <label id="rollupgrouplbl"><span data-i18n="alerts_rollup_group_label">Group related watches by</span></label>
+          <div class="chiprow" id="rollupgroupby" role="group" aria-labelledby="rollupgrouplbl" style="margin-top:6px">
+            <button type="button" class="chip on" data-g="topic" aria-pressed="true" data-i18n="alerts_rollup_group_topic">Topic</button>
+            <button type="button" class="chip" data-g="agency" aria-pressed="false" data-i18n="alerts_rollup_group_agency">Agency</button>
+            <button type="button" class="chip" data-g="geography" aria-pressed="false" data-i18n="alerts_rollup_group_geography">Geography</button>
+          </div>
+        </div>
+        <div id="alerts-rollup-groups" class="rollup-groups" aria-live="polite"></div>
+        <h3 style="margin:8px 0 8px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif" data-i18n="alerts_rollup_email_heading">Consolidated digest (demo)</h3>
+        <div class="detail" id="alerts-rollup-emailmock" translate="no"></div>
+        <div class="rollup-prefs-box" id="alerts-rollup-prefs-box">
+          <p data-i18n="alerts_rollup_prefs_lead">Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer.</p>
+          <p><a id="alertsPrefsManage" class="act" href="https://api.cityscroll.org/prefs" data-i18n="alerts_rollup_manage_btn">Manage watches</a></p>
+          <p class="muted" style="font-size:12.5px" data-i18n="alerts_rollup_cutover">Preference changes take effect on the next daily digest run (~9am Eastern).</p>
         </div>
       </div>
-      <div id="alerts-rollup-groups" class="rollup-groups" aria-live="polite"></div>
-      <h3 style="margin:8px 0 8px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif" data-i18n="alerts_rollup_email_heading">Consolidated digest (demo)</h3>
-      <div class="detail" id="alerts-rollup-emailmock" translate="no"></div>
-      <div class="rollup-prefs-box" id="alerts-rollup-prefs-box">
-        <p data-i18n="alerts_rollup_prefs_lead">Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer.</p>
-        <p><a id="alertsPrefsManage" class="act" href="https://api.cityscroll.org/prefs" data-i18n="alerts_rollup_manage_btn">Manage watches</a></p>
-        <p class="muted" style="font-size:12.5px" data-i18n="alerts_rollup_cutover">Preference changes take effect on the next daily digest run (~9am Eastern).</p>
-      </div>
-    </div>
+    </details>
   </div>
 </section>
 

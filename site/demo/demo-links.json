@@ -657,14 +657,20 @@
       "id": "alerts-builder",
       "url": "#alerts",
       "feature": "alert-builder",
-      "description": "Open the alert builder with its topic, schedule, and preview controls ready.",
+      "description": "Open the single alert subscribe flow with topic chips, email step, schedule, and preview ready.",
       "expectations": {
         "visible": [
           {
-            "selector": "#awatch"
+            "selector": "#quizwhat"
           },
           {
-            "selector": "#afreq"
+            "selector": "#adest"
+          },
+          {
+            "selector": "#quizfreq"
+          },
+          {
+            "selector": "#quizgo"
           },
           {
             "selector": "#apreview"

@@ -331,10 +331,11 @@ const STRINGS = {
     person_name_label:   "Name",
     agency_filter_label: "Agency (optional)",
 
-    // Alerts / quiz section
-    quiz_heading:       "Get your digest in 60 seconds",
+    // Alerts — one subscribe flow (scope → refine → email → frequency → preview → subscribe)
+    quiz_heading:       "Get email alerts",
+    alerts_flow_lead:   "Pick what to watch, enter your email, and subscribe. One form — no account required.",
     quiz_step1:         "What should we watch for you?",
-    quiz_step2:         "Describe what you want — plain English or keywords (optional)",
+    quiz_step2:         "Narrow with a keyword (optional)",
     quiz_step3:         "How often?",
     quiz_rfpkw:         "City contracts and RFPs",
     quiz_bigaward:      "Big contract awards",
@@ -344,9 +345,9 @@ const STRINGS = {
     quiz_meetings:      "Hearings and meetings",
     quiz_daily:         "Daily (around 9 a.m.)",
     quiz_weekly:        "Weekly (Mondays)",
-    quiz_preview_btn:   "Preview my digest →",
+    quiz_preview_btn:   "Preview digest",
     quiz_no_account:    "No account — just an email confirmation.",
-    build_alert_heading:"Build an alert",
+    build_alert_heading:"More ways to watch",
     quick_suggestions:  "Quick suggestions",
     sugg_rezone_rivington: "Rezonings near 79 Rivington",
     sugg_awards_1m:     "Awards over $1M",
@@ -363,6 +364,7 @@ const STRINGS = {
     watch_entityagency: "An agency — anything they publish",
     watch_awardwatch:   "The award on a notice I'm viewing",
     email_label:        "Email address",
+    alerts_email_step_label: "Your email",
     email_placeholder:  "you@example.com",
     freq_label:         "Frequency",
     freq_daily:         "Daily",
@@ -379,7 +381,7 @@ const STRINGS = {
     alert_context_confirm: "Confirm with your email below — one step.",
     home_cta_submit:    "Sign up",
     home_cta_topics:     "or pick topics",
-    empty_preview:      "Build an alert and hit Preview to see the digest, populated with today's real notices.",
+    empty_preview:      "Pick a topic (or open with a watch link) to preview today's digest.",
 
     // Time/schedule strings (9 a.m. form per NYC style guide T-01/T-02)
     when_daily:  "New matches are emailed each morning, around 9 a.m. New York time (8 a.m. Nov–Mar).",
@@ -2135,6 +2137,7 @@ const STRINGS = {
     calendar_ics: "Calendar (.ics)",
     saved_alerts_heading: "Saved alerts (demo)",
     // Multi-watch digest rollup + preference center surface (#alerts?view=rollup)
+    alerts_rollup_summary: "Manage existing alerts",
     alerts_rollup_heading: "How multi-watch digests arrive",
     alerts_rollup_lead: "When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.",
     alerts_rollup_group_label: "Group related watches by",
