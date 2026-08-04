@@ -1995,12 +1995,14 @@ implies board approval.
 ## Procurement planning infrastructure (RC-1)
 
 Host-side FY2027 MOCS LL63/LL1 XLSX collection plus Capital Projects Dashboard
-`fb86-vt7u` lives in `warehouse/scripts/procurement_plans_run.py`. The staged
-framework defines four DuckDB tables and `cityscroll.procurement_planning.v1`;
-every City Record/PASSPort bridge is independently fixed-sample gated at 30%,
-and reviewer-labeled agency+title+time candidates are required before an edge
-can land. Production materialization is a separate run, and the Money reader is
-a later surface. Verify with
+`fb86-vt7u` lives in `warehouse/scripts/procurement_plans_run.py`. The production
+materialization contains 11,566 MOCS rows and 50,000 capital-project rows in
+the checksum manifest `site/data/procurement_planning_payload.json` and
+10,000-row shards under `site/data/procurement_planning_payload/`; its dated receipt is under
+`site/data/procurement_plan_sources/verification_receipts/`. All six independent
+100-row City Record/PASSPort bridges measured 0%, so no edge or Money planning
+phase may render. Reviewer-labeled agency+title+time candidates remain required
+before a future edge can land. Verify with
 `node --test test/procurement_plans.test.mjs`.
 
 ## Non-Council minutes and vote registry

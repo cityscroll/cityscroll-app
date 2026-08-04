@@ -190,6 +190,12 @@ commits the fixture receipt and `site/data/procurement_planning_payload.schema.j
 it enables no production rows or edges. The dependent Money reader is a later
 delivery unit after the production measurement lands.
 
+The public materialization uses `site/data/procurement_planning_payload.json`
+as a checksum manifest over deterministic 10,000-row JSON shards in
+`site/data/procurement_planning_payload/`. The collector rejects any shard over
+20 MiB, leaving deployment headroom below the static-host asset limit while the
+raw warehouse payload remains a single resumable build artifact.
+
 ## ZAP milestone and disposition statistics
 
 The ZAP bulk receipt profiles milestone/status-date coverage used by the land
