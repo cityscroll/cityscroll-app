@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "model_name": "award_registration_dwell",
+  "model_version": "1.0.0",
+  "generated_at": "2026-08-04T02:27:32.315Z",
+  "category": "Human Services/Client Services",
+  "award_type": "Award",
+  "honesty": {
+    "unknown_never_zero": true,
+    "unknown_label": "unknown",
+    "note": "dwell_days is null when registration is unfound — never 0 for unknown. A true same-day registration is status=found with dwell_days=0."
+  },
+  "corpus": {
+    "awards_mode": "soda_live",
+    "awards_path": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+    "awards_n_input": 16280,
+    "registrations_mode": "passport_live",
+    "registrations_path": "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+    "registrations_n_input": 60971,
+    "city_record_dataset": "dg92-zbpx",
+    "registration_join": "passport_epin_via_pin"
+  },
+  "stats": {
+    "n_awards": 16280,
+    "n_found": 5463,
+    "n_unknown": 10817,
+    "join_rate": 0.3356,
+    "unknown_rate": 0.6644,
+    "dwell_days_non_negative": {
+      "n": 24,
+      "min": 44,
+      "p10": 68,
+      "p25": 70,
+      "p50": 112,
+      "p75": 679,
+      "p90": 1113,
+      "max": 1441,
+      "mean": 403.13
+    },
+    "dwell_days_registration_prior": {
+      "n": 5439,
+      "min": 6,
+      "p10": 7,
+      "p25": 7,
+      "p50": 7,
+      "p75": 7,
+      "p90": 8,
+      "max": 1773,
+      "mean": 15.03
+    },
+    "dwell_days_all_signed": {
+      "n": 5463,
+      "min": -1773,
+      "p10": -8,
+      "p25": -7,
+      "p50": -7,
+      "p75": -7,
+      "p90": -7,
+      "max": 1441,
+      "mean": -13.2
+    },
+    "by_join_method": {
+      "exact": 5433,
+      "pin_prefix_of_epin": 28,
+      "pin_strip_suffix": 2
+    },
+    "by_registration_source": {
+      "passport": 5463
+    },
+    "honesty_violations": 0
+  }
+}
