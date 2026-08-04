@@ -59,11 +59,15 @@ test("precomputed district_activity artifact is present and loadable", () => {
   assert.ok(Object.keys(doc.by_level.council_district).length >= 51);
 });
 
-test("Row 4 retirements: tax-lien panel is not the property list masthead", () => {
+test("Row 4 retirements: tax-lien panel is archive-only, not the property list masthead", () => {
   assert.match(index, /id="tax-lien-sale-panel"[^>]*\bhidden\b/);
-  assert.match(index, /property\?view=tax-lien/);
-  assert.match(index, /property_tax_lien_link/);
+  assert.match(index, /data-tax-lien-archive="1"/);
+  // Stats link removed from property lens header (demote-don't-delete); map explore remains.
+  assert.doesNotMatch(index, /property-tax-lien-link"><a href="#property\?view=tax-lien"/);
   assert.match(index, /property_explore_map_link/);
+  // Deep link route still paints the archive panel when requested.
+  assert.match(source, /["']tax-lien["']/);
+  assert.match(source, /paintTaxLienSalePanel|tax-lien-sale-panel/);
 });
 
 test("Row 4 retirements: list cards no longer emit per-card mini-steppers", () => {

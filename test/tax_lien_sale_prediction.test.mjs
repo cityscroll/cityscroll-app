@@ -128,8 +128,16 @@ test("public read models stay action-first and degrade to cohort statistics", ()
   assert.match(summary.action_channels.exemption_url, /nyc\.gov/);
   assert.match(summary.action_channels.payment_plan_url, /nyc\.gov/);
   assert.match(index, /id="tax-lien-sale-panel"/);
+  assert.match(index, /data-tax-lien-archive="1"/);
+  // Standalone stats is no longer a property lens navigation destination.
+  assert.doesNotMatch(
+    index,
+    /property-tax-lien-link"><a href="#property\?view=tax-lien"/,
+  );
   assert.match(copy, /Properties on the 90-day list historically left the list before sale/);
   assert.match(copy, /A lien sale sells the <b>lien<\/b>, not the property/);
-  assert.match(index, /tax_lien_action_deadline/);
+  assert.match(copy, /tax_lien_action_deadline/);
+  // Notice-inline cycle context (position + actions) lives in the property module.
+  assert.match(index, /taxLienNoticeCycleHTML|data-tax-lien-cycle-context/);
   assert.match(about, /does not mean the property was sold, foreclosed, or transferred/);
 });

@@ -621,6 +621,19 @@
   .tax-lien-table th,.tax-lien-table td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:start;white-space:nowrap}
   .tax-lien-table th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
   .tax-lien-card-note{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);border-inline-start:3px solid var(--amber);padding:6px 0 6px 9px;margin:7px 0}
+  .tax-lien-card-note .tax-lien-card-deadline{font-weight:700;color:var(--ink)}
+  .tax-lien-card-note .tax-lien-card-deadline[data-deadline-state="closed"]{color:var(--muted);font-weight:600}
+  .tax-lien-card-note .tax-lien-card-deadline[data-deadline-state="closing-soon"]{color:var(--amber)}
+  .tax-lien-card-note .tax-lien-card-deadline[data-deadline-state="open"]{color:var(--green)}
+  .tax-lien-cycle-context{margin:0 0 18px}
+  .tax-lien-cycle-context .tax-lien-deadline-live{font:750 14px/1.4 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px}
+  .tax-lien-cycle-context .tax-lien-deadline-live[data-deadline-state="open"]{color:var(--green)}
+  .tax-lien-cycle-context .tax-lien-deadline-live[data-deadline-state="closing-soon"]{color:var(--amber)}
+  .tax-lien-cycle-context .tax-lien-deadline-live[data-deadline-state="closed"]{color:var(--muted);font-weight:600}
+  .tax-lien-cycle-context .tax-lien-parcel-list{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:8px 0 10px;padding:0;list-style:none}
+  .tax-lien-cycle-context .tax-lien-parcel-list li{padding:4px 0;border-bottom:1px solid var(--rule)}
+  .tax-lien-archive-note{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 12px}
+  .disposition-cycle-context-chip{margin:6px 0 10px}
   @media(max-width:760px){.tax-lien-areas{grid-template-columns:minmax(0,1fr)}.tax-lien-lookup{grid-template-columns:minmax(0,1fr)}.tax-lien-lookup button{width:100%}}
   /* Meetings domain explorer — process ontology on the list; place groups are opt-in. */
   .meetings-domain-intro{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
@@ -1623,14 +1636,15 @@
       <p class="career-kicker" data-i18n="property_domain_kicker">City property disposition</p>
       <h2 class="property-domain-heading" data-i18n="property_domain_heading">Hearings, sales, and awards</h2>
       <p class="property-domain-deck" data-i18n="property_domain_deck">City Record Property Disposition notices are grouped by parcel and process stage — hearing, auction or RFP, then award or conveyance — so repeated titles collapse into one disposition chain when they share a tax lot.</p>
-      <p class="property-tax-lien-link"><a href="#property?view=tax-lien" data-i18n="property_tax_lien_link">Tax lien sale statistics</a> · <a href="#map?lens=property" data-i18n="property_explore_map_link">Explore property on the map</a></p>
+      <p class="property-tax-lien-link"><a href="#map?lens=property" data-i18n="property_explore_map_link">Explore property on the map</a></p>
       <ol class="lc-stepper disposition-phase-stepper property-domain-stepper" data-i18n-aria="property_process_stepper_aria" aria-label="Disposition process stages">
         <li><span class="lc-step done" data-i18n="disposition_stage_hearing">Hearing</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
         <li><span class="lc-step current" data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span><span class="lc-step-arrow" aria-hidden="true">→</span></li>
         <li><span class="lc-step todo" data-i18n="disposition_stage_award_or_conveyance">Award / conveyance</span></li>
       </ol>
     </div>
-    <section class="tax-lien-panel" id="tax-lien-sale-panel" aria-live="polite" hidden>
+    <!-- Archive/reference only: deep link #property?view=tax-lien. Not a property lens destination. -->
+    <section class="tax-lien-panel tax-lien-archive-panel" id="tax-lien-sale-panel" aria-live="polite" hidden data-tax-lien-archive="1">
       <div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div>
     </section>
     <div class="controls">

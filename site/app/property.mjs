@@ -326,6 +326,11 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
   const timingEstimate=phaseView && phaseView.disposition_timing_estimate
     ? propertyDispositionTimingHTML(phaseView.disposition_timing_estimate)
     : "";
+  // Generalized cycle-context marker (same shape as tax-lien): position is the
+  // phase stepper; historical context is the attributed timing line when present.
+  const cycleContextMark=phaseView
+    ?`<div class="disposition-cycle-context-chip" data-property-cycle-context="property_disposition" data-cycle-current="${escUiHtml(phaseView.current&&phaseView.current.id||"")}" hidden></div>`
+    :"";
 
   // Phase-grouped compact stepper (same pattern as land / money) when the pure module loads.
   if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
@@ -372,6 +377,7 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     }).join('<div class="connector" aria-hidden="true">→</div>');
     const how=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${keyNote}<div class="note" style="margin-top:8px">${t("disposition_provenance_html")}</div></div></details>`;
     return `<div class="chain-h">${t("disposition_spine_heading")}</div>
+      ${cycleContextMark}
       ${actionLead}
       ${stepper}
       ${timingEstimate}
@@ -602,6 +608,7 @@ async function loadPropertyDispositionSpine(r, el){
     ? phaseTools.buildPropertyPhaseView(spine)
     : null;
   // Cohort timing estimate (precomputed model) — only when hearing matched & auction not yet published.
+  // Also stamp the shared property cycle-context envelope (survey class: property_disposition).
   if(phaseView){
     try{
       const timingMod = await import("../property_disposition_timing.mjs");
@@ -609,6 +616,14 @@ async function loadPropertyDispositionSpine(r, el){
       if(modelRes && modelRes.ok){
         const model = await modelRes.json();
         phaseView = timingMod.attachDispositionTimingEstimate(phaseView, model) || phaseView;
+      }
+    }catch(_e){}
+    try{
+      const cycleMod = await taxLienCycleContextTools();
+      if(cycleMod && cycleMod.buildDispositionCycleContext){
+        r._disposition_cycle_context = cycleMod.buildDispositionCycleContext(phaseView, {
+          subject_ref: spine.subject_ref || null,
+        });
       }
     }catch(_e){}
   }
@@ -1130,11 +1145,21 @@ async function renderPropExplorer(){
   if("requestIdleCallback" in window) requestIdleCallback(hydrate,{timeout:2500}); else setTimeout(hydrate,250);
 }
 
-/* ===== Tax-lien sale progression: historical BBL status + cohort statistics.
-   The generic calibration gate currently selects cohort_statistic_only, so no
-   property-specific probability is rendered. The final-sale stage means the
-   lien was sold; it never claims the property itself was sold or foreclosed. ===== */
+/* ===== Tax-lien sale progression (cycle context on notices + archive panel).
+   Primary product surface: inline on Property Disposition notices whose parcels
+   appear on a DOF list (cycle position, deadline countdown, cohort leave rate,
+   action rail). Standalone aggregate panel is archive-only via
+   #property?view=tax-lien — not linked from the property lens header.
+   Calibration stays cohort_statistic_only (no per-property probability).
+   Final-sale stage = lien on the sale list, never foreclosure/title transfer. ===== */
 let taxLienSummaryPromise=null, taxLienLookupPromise=null, taxLienSelectedCycle=null;
+let taxLienCycleContextModPromise=null;
+function taxLienCycleContextTools(){
+  if(!taxLienCycleContextModPromise){
+    taxLienCycleContextModPromise=import("../tax_lien_cycle_context.mjs").catch(()=>null);
+  }
+  return taxLienCycleContextModPromise;
+}
 function loadTaxLienSummary(){
   if(!taxLienSummaryPromise) taxLienSummaryPromise=fetch("data/tax_lien_sale_summary.json",{cache:"force-cache"}).then(r=>r.ok?r.json():null).catch(()=>null);
   return taxLienSummaryPromise;
@@ -1168,28 +1193,115 @@ function taxLienBblResultHTML(summary,lookup,bbl){
 function taxLienAreaTable(rows,areaLabel){
   return `<table class="tax-lien-table"><thead><tr><th>${escUiHtml(areaLabel)}</th><th>${t("tax_lien_table_listed")}</th><th>${t("tax_lien_table_sold")}</th><th>${t("tax_lien_table_left")}</th></tr></thead><tbody>${rows.map(row=>`<tr><td>${escUiHtml(row.name)}</td><td>${Number(row.listed_90).toLocaleString()}</td><td>${Number(row.sold_lien).toLocaleString()}</td><td>${taxLienPct(row.left_before_sale_share)}</td></tr>`).join("")}</tbody></table>`;
 }
+/** Live or historical countdown line for exemption / payment-plan deadline. */
+function taxLienDeadlineHTML(ctx){
+  if(!ctx||!ctx.deadline) return "";
+  const d=ctx.deadline;
+  const date=taxLienDate(d.action_deadline);
+  if(d.live && d.days_left!=null){
+    if(d.state==="closing-soon"){
+      return `<p class="tax-lien-deadline-live" data-deadline-state="closing-soon">${t("tax_lien_deadline_closing_soon",{date,n:String(d.days_left)})}</p>`;
+    }
+    return `<p class="tax-lien-deadline-live" data-deadline-state="open">${t("tax_lien_deadline_open",{date,n:String(d.days_left)})}</p>`;
+  }
+  if(d.state==="closed"||d.cycle_status==="expired"){
+    return `<p class="tax-lien-deadline-live" data-deadline-state="closed">${t("tax_lien_deadline_closed",{date})}</p>`;
+  }
+  return date?`<p class="tax-lien-meta">${t("tax_lien_action_deadline",{date})}</p>`:"";
+}
+function taxLienStepperHTML(stepper){
+  if(!Array.isArray(stepper)||!stepper.length) return "";
+  return `<ol class="tax-lien-stepper lc-stepper" aria-label="${escUiHtml(t("tax_lien_cycle_stepper_aria"))}">${
+    stepper.map((step,i)=>{
+      const aria=step.current?` aria-current="step"`:"";
+      const arrow=i<stepper.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
+      return `<li><span class="lc-step ${escUiHtml(step.status)}"${aria}>${escUiHtml(taxLienStageLabel(step.id))}</span>${arrow}</li>`;
+    }).join("")
+  }</ol>`;
+}
+function taxLienActionsHTML(channels){
+  if(!channels) return "";
+  const phone=channels.phone||"311";
+  return `<div class="tax-lien-actions" data-tax-lien-actions="1">
+    ${channels.exemption_url?`<a class="act primary" href="${escUiHtml(channels.exemption_url)}" ${EXT_ATTRS}>${t("tax_lien_exemptions")}${extSR()}</a>`:""}
+    ${channels.payment_plan_url?`<a class="act" href="${escUiHtml(channels.payment_plan_url)}" ${EXT_ATTRS}>${t("tax_lien_payment_plans")}${extSR()}</a>`:""}
+    ${channels.lien_sale_help_url?`<a class="act" href="${escUiHtml(channels.lien_sale_help_url)}" ${EXT_ATTRS}>${t("tax_lien_help")}${extSR()}</a>`:""}
+    <a class="act" href="tel:${escUiHtml(phone)}">${t("tax_lien_call_311")}</a>
+  </div>`;
+}
+/** Notice detail: cycle position + countdown + historical context + actions + scoped BBLs. */
+function taxLienNoticeCycleHTML(ctx){
+  if(!ctx) return "";
+  const hist=ctx.historical_context;
+  const lead=hist
+    ?`<p class="tax-lien-lead" data-tax-lien-historical="1">${escUiHtml(hist.line)}</p>`
+    :"";
+  const parcels=(ctx.parcels||[]).map(p=>
+    `<li><strong>BBL ${escUiHtml(p.bbl)}</strong> · ${escUiHtml(taxLienStageLabel(p.stage))} · ${escUiHtml(taxLienOutcomeLabel(p.outcome))}${p.nta_name?` · ${escUiHtml(p.nta_name)}`:""}</li>`
+  ).join("");
+  const parcelBlock=parcels
+    ?`<ul class="tax-lien-parcel-list" data-tax-lien-parcels="1">${parcels}</ul>`
+    :"";
+  const vintage=ctx.data_vintage
+    ?`<p class="tax-lien-meta">${t("tax_lien_vintage",{date:taxLienDate(ctx.data_vintage)})}</p>`
+    :"";
+  return `<section class="tax-lien-panel tax-lien-cycle-context" data-tax-lien-cycle-context="1" data-tax-lien-stage="${escUiHtml(ctx.stage||"")}" aria-label="${escUiHtml(t("tax_lien_heading"))}">
+    <h2>${t("tax_lien_heading")}</h2>
+    <p class="tax-lien-deck">${t("tax_lien_deck_html")}</p>
+    ${lead}
+    ${taxLienStepperHTML(ctx.stepper)}
+    ${taxLienDeadlineHTML(ctx)}
+    ${parcelBlock}
+    ${taxLienActionsHTML(ctx.action_channels)}
+    ${vintage}
+    <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
+    <div class="lc-pct"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></div>
+  </section>`;
+}
+/** Compact list-card note: stage + leave rate + deadline state. */
+function taxLienCardNoteHTML(ctx){
+  if(!ctx) return "";
+  const stage=taxLienStageLabel(ctx.stage);
+  const outcome=taxLienOutcomeLabel(ctx.outcome);
+  const pct=ctx.historical_context&&ctx.historical_context.leave_pct!=null
+    ?`${ctx.historical_context.leave_pct}%`
+    :null;
+  const hist=pct
+    ?` · ${t("tax_lien_card_leave_rate",{p:pct})}`
+    :"";
+  let deadline="";
+  if(ctx.deadline&&ctx.deadline.live&&ctx.deadline.days_left!=null){
+    deadline=` <span class="tax-lien-card-deadline" data-deadline-state="${escUiHtml(ctx.deadline.state)}">${t("tax_lien_card_deadline_live",{n:String(ctx.deadline.days_left),date:taxLienDate(ctx.deadline.action_deadline)})}</span>`;
+  } else if(ctx.deadline&&(ctx.deadline.state==="closed"||ctx.deadline.cycle_status==="expired")){
+    deadline=` <span class="tax-lien-card-deadline" data-deadline-state="closed">${t("tax_lien_card_deadline_closed",{date:taxLienDate(ctx.deadline.action_deadline)})}</span>`;
+  }
+  return `<div class="tax-lien-card-note" data-tax-lien-card-context="1" data-tax-lien-stage="${escUiHtml(ctx.stage||"")}">${t("tax_lien_card_html",{stage:escUiHtml(stage),outcome:escUiHtml(outcome),date:taxLienDate(ctx.data_vintage)})}${hist}${deadline}</div>`;
+}
 function taxLienPanelHTML(summary){
   const rate=summary.training.citywide.notice_90.probability_leave_before_sale;
   const cycle=summary.cycles.find(row=>row.cycle_id===(taxLienSelectedCycle||summary.latest_cycle.cycle_id))||summary.cycles.at(-1);
   taxLienSelectedCycle=cycle.cycle_id;
   const options=summary.cycles.map(row=>`<option value="${escUiHtml(row.cycle_id)}"${row.cycle_id===cycle.cycle_id?" selected":""}>${taxLienDate(row.cycle_id)}</option>`).join("");
   const steps=["notice_90","notice_60","notice_30","notice_10","sold"];
+  // Archive posture: full tables behind a disclosure so the deep link stays useful without being a lens destination.
   return `<h2>${t("tax_lien_heading")}</h2>
+    <p class="tax-lien-archive-note" data-tax-lien-archive-note="1">${t("tax_lien_archive_note_html")}</p>
     <p class="tax-lien-deck">${t("tax_lien_deck_html")}</p>
     <p class="tax-lien-lead">${t("tax_lien_action_lead_html",{p:taxLienPct(rate)})}</p>
     <p class="tax-lien-meta">${t("tax_lien_attribution",{n:String(summary.training.cycle_count)})} · ${t("tax_lien_vintage",{date:taxLienDate(summary.latest_cycle.data_vintage)})} · ${t("tax_lien_expired",{date:taxLienDate(summary.schedule.sale_date)})}</p>
     <p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p>
     <ol class="tax-lien-stepper">${steps.map((stage,index)=>`<li><span class="lc-step ${index<4?"done":"current"}">${escUiHtml(taxLienStageLabel(stage))}</span>${index<4?'<span class="lc-step-arrow" aria-hidden="true">→</span>':""}</li>`).join("")}</ol>
-    <div class="tax-lien-actions">
-      <a class="act primary" href="${escUiHtml(summary.action_channels.exemption_url)}" ${EXT_ATTRS}>${t("tax_lien_exemptions")}${extSR()}</a>
-      <a class="act" href="${escUiHtml(summary.action_channels.payment_plan_url)}" ${EXT_ATTRS}>${t("tax_lien_payment_plans")}${extSR()}</a>
-      <a class="act" href="${escUiHtml(summary.action_channels.lien_sale_help_url)}" ${EXT_ATTRS}>${t("tax_lien_help")}${extSR()}</a>
-      <a class="act" href="tel:311">${t("tax_lien_call_311")}</a>
-    </div>
+    ${taxLienActionsHTML(summary.action_channels)}
     <p class="tax-lien-meta">${t("tax_lien_cohort_only")}</p>
     <div class="tax-lien-lookup"><label for="tax-lien-bbl">${t("tax_lien_lookup_label")}</label><input id="tax-lien-bbl" type="text" inputmode="numeric" maxlength="10" placeholder="${escUiHtml(t("tax_lien_lookup_placeholder"))}"><button type="button" id="tax-lien-bbl-go">${t("tax_lien_lookup_button")}</button><div class="tax-lien-result" id="tax-lien-bbl-result"></div></div>
-    <div class="field" style="max-width:260px"><label for="tax-lien-cycle">${t("tax_lien_cycle_label")}</label><select id="tax-lien-cycle">${options}</select></div>
-    <div class="tax-lien-areas"><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_borough_heading")}</h3>${taxLienAreaTable(cycle.boroughs,t("borough_label"))}</div><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_nta_heading")}</h3><div class="tax-lien-nta-scroll" role="region" tabindex="0" aria-label="${escUiHtml(t("tax_lien_nta_heading"))}">${taxLienAreaTable(cycle.ntas,"NTA")}</div></div></div>`;
+    <details class="inline-disclose tax-lien-archive-tables" data-tax-lien-archive-tables="1">
+      <summary>${t("tax_lien_archive_tables_summary")}</summary>
+      <div class="inline-disclose-body">
+        <div class="field" style="max-width:260px;margin-top:10px"><label for="tax-lien-cycle">${t("tax_lien_cycle_label")}</label><select id="tax-lien-cycle">${options}</select></div>
+        <div class="tax-lien-areas"><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_borough_heading")}</h3>${taxLienAreaTable(cycle.boroughs,t("borough_label"))}</div><div class="tax-lien-area" tabindex="0"><h3>${t("tax_lien_nta_heading")}</h3><div class="tax-lien-nta-scroll" role="region" tabindex="0" aria-label="${escUiHtml(t("tax_lien_nta_heading"))}">${taxLienAreaTable(cycle.ntas,"NTA")}</div></div></div>
+      </div>
+    </details>
+    <div class="lc-pct" style="margin-top:10px"><a href="about.html#tax-lien-sale-predictions">${t("tax_lien_formula_link")}</a></div>`;
 }
 async function paintTaxLienSalePanel(){
   const el=$("#tax-lien-sale-panel"); if(!el) return;
@@ -1208,20 +1320,45 @@ async function paintTaxLienSalePanel(){
 }
 async function hydrateTaxLienBblSlots(root=document){
   const slots=[...root.querySelectorAll("[data-tax-lien-bbl]")]; if(!slots.length) return;
-  const [summary,lookup]=await Promise.all([loadTaxLienSummary(),loadTaxLienLookup()]); if(!summary||!lookup) return;
+  const [summary,lookup,mod]=await Promise.all([loadTaxLienSummary(),loadTaxLienLookup(),taxLienCycleContextTools()]);
+  if(!summary||!lookup) return;
   slots.forEach(slot=>{
-    const row=taxLienDecode(lookup,slot.dataset.taxLienBbl); if(!row) return;
+    const bbl=slot.dataset.taxLienBbl;
+    let ctx=null;
+    if(mod&&mod.buildTaxLienCycleContext){
+      ctx=mod.buildTaxLienCycleContext({ summary, lookup, bbl });
+    }
+    if(ctx){ slot.innerHTML=taxLienCardNoteHTML(ctx); return; }
+    const row=taxLienDecode(lookup,bbl); if(!row) return;
     slot.innerHTML=`<div class="tax-lien-card-note">${t("tax_lien_card_html",{stage:escUiHtml(taxLienStageLabel(row.stage)),outcome:escUiHtml(taxLienOutcomeLabel(row.outcome)),date:taxLienDate(summary.latest_cycle.data_vintage)})}</div>`;
   });
 }
 async function loadTaxLienForNotice(r,el){
   if(!el) return;
+  let location=r?.property_location||null;
   let bbl=r?._property_bbl||null;
-  if(!bbl){ try{const tools=await propertyLocationTools();bbl=tools.primaryPropertyBbl(tools.propertyLocationFromRow(r));}catch(_e){} }
-  if(!bbl){el.innerHTML="";return;}
-  const [summary,lookup]=await Promise.all([loadTaxLienSummary(),loadTaxLienLookup()]);
-  const row=taxLienDecode(lookup,bbl); if(!summary||!row){el.innerHTML="";return;}
-  el.innerHTML=`<section class="tax-lien-panel"><h2>${t("tax_lien_heading")}</h2>${taxLienBblResultHTML(summary,lookup,bbl)}<p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p><div class="tax-lien-actions"><a class="act primary" href="${escUiHtml(summary.action_channels.exemption_url)}" ${EXT_ATTRS}>${t("tax_lien_exemptions")}${extSR()}</a><a class="act" href="${escUiHtml(summary.action_channels.payment_plan_url)}" ${EXT_ATTRS}>${t("tax_lien_payment_plans")}${extSR()}</a></div><p class="tax-lien-meta">${t("tax_lien_deck_html")}</p></section>`;
+  if(!bbl||!location){
+    try{
+      const tools=await propertyLocationTools();
+      location=location||tools.propertyLocationFromRow(r);
+      bbl=bbl||tools.primaryPropertyBbl(location);
+      if(bbl) r._property_bbl=bbl;
+    }catch(_e){}
+  }
+  const [summary,lookup,mod]=await Promise.all([loadTaxLienSummary(),loadTaxLienLookup(),taxLienCycleContextTools()]);
+  if(!summary||!lookup){ el.innerHTML=""; return; }
+  let ctx=null;
+  if(mod&&mod.buildTaxLienCycleContext){
+    ctx=mod.buildTaxLienCycleContext({ summary, lookup, notice:r, location, bbl });
+  }
+  if(ctx){
+    el.innerHTML=taxLienNoticeCycleHTML(ctx);
+    return;
+  }
+  // Fallback: single-BBL decode without pure module.
+  if(!bbl){ el.innerHTML=""; return; }
+  const row=taxLienDecode(lookup,bbl); if(!row){ el.innerHTML=""; return; }
+  el.innerHTML=`<section class="tax-lien-panel tax-lien-cycle-context" data-tax-lien-cycle-context="1"><h2>${t("tax_lien_heading")}</h2>${taxLienBblResultHTML(summary,lookup,bbl)}<p class="tax-lien-meta">${t("tax_lien_action_deadline",{date:taxLienDate(summary.schedule.action_deadline)})}</p>${taxLienActionsHTML(summary.action_channels)}<p class="tax-lien-meta">${t("tax_lien_deck_html")}</p></section>`;
 }
 
 function propertyPlaceChips(location){
@@ -1282,14 +1419,20 @@ globalThis.propertyPhaseSpineTools = propertyPhaseSpineTools;
 globalThis.propertyPlaceChips = propertyPlaceChips;
 globalThis.renderPropExplorer = renderPropExplorer;
 globalThis.rulePlaceChips = rulePlaceChips;
+globalThis.taxLienActionsHTML = taxLienActionsHTML;
 globalThis.taxLienAreaTable = taxLienAreaTable;
 globalThis.taxLienBblResultHTML = taxLienBblResultHTML;
+globalThis.taxLienCardNoteHTML = taxLienCardNoteHTML;
+globalThis.taxLienCycleContextTools = taxLienCycleContextTools;
 globalThis.taxLienDate = taxLienDate;
+globalThis.taxLienDeadlineHTML = taxLienDeadlineHTML;
 globalThis.taxLienDecode = taxLienDecode;
+globalThis.taxLienNoticeCycleHTML = taxLienNoticeCycleHTML;
 globalThis.taxLienOutcomeLabel = taxLienOutcomeLabel;
 globalThis.taxLienPanelHTML = taxLienPanelHTML;
 globalThis.taxLienPct = taxLienPct;
 globalThis.taxLienStageLabel = taxLienStageLabel;
+globalThis.taxLienStepperHTML = taxLienStepperHTML;
 Object.defineProperty(globalThis, "franchisePhaseSpineToolsPromise", { configurable: true, get: () => franchisePhaseSpineToolsPromise, set: value => { franchisePhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "propAll", { configurable: true, get: () => propAll, set: value => { propAll = value; } });
 Object.defineProperty(globalThis, "propAsset", { configurable: true, get: () => propAsset, set: value => { propAsset = value; } });
