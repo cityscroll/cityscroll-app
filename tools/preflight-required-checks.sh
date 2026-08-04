@@ -97,6 +97,7 @@ run_and_fail python3 test/standards/demo_links.py
 run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + joins" \
   "node tools/generate_source_docs.mjs --check"
 run_and_fail node tools/generate_source_docs.mjs --check
+run_and_fail node tools/data_source_graph.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
