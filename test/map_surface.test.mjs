@@ -49,6 +49,20 @@ test("map drill-throughs carry scope into list hashes (not bare lens tabs)", () 
   assert.match(pure, /scope=virtual|locationScope === "virtual"/);
 });
 
+test("contract response geography is visibly distinct from performance geography", () => {
+  assert.match(index, /id="mapMoneyBasisRow"/);
+  assert.match(index, /id="mapMoneyBasisNote"/);
+  assert.match(index, /id="moneylocationbasis"/);
+  assert.match(index, /value="submission_address"/);
+  assert.match(index, /value="pre_bid_venue"/);
+  assert.match(index, /value="document_pickup"/);
+  assert.match(i18n, /map_money_basis_performance:\s*"Where work may affect a district"/);
+  assert.match(i18n, /money_location_basis_submission:\s*"Located by submission address"/);
+  assert.match(i18n, /not where the contracted work will happen/);
+  assert.match(source, /basis_layers\.contract_action_address/);
+  assert.match(source, /basis:\s*mapState\.basis/);
+});
+
 test("precomputed district_activity artifact is present and loadable", () => {
   const path = new URL("../site/data/district_activity.json", import.meta.url);
   assert.ok(existsSync(path));

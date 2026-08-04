@@ -27,6 +27,11 @@ export const MAP_LEVELS = Object.freeze([
   "council_district",
 ]);
 
+export const MAP_MONEY_BASES = Object.freeze([
+  "performance",
+  "contract_action_address",
+]);
+
 /** NYC WGS84 extent used for the default SVG viewBox (lon/lat degrees). */
 export const NYC_BOUNDS = Object.freeze({
   minLon: -74.26,
@@ -264,6 +269,7 @@ export const MAP_FEED_SCOPES = Object.freeze(["district", "borough", "bag", "cit
  *   councilDistrict?: string|null,
  *   locationScope?: string|null,
  *   when?: string|null,
+ *   basis?: string|null,
  * }} scope
  * @returns {string|null} hash or null when the lens cannot express the scope
  */
@@ -326,8 +332,16 @@ export function mapDrillListHash(lens, scope = {}) {
   }
 
   if (L === "money") {
-    // Money has no borough polygon filter yet; citywide / unlocated bags carry
-    // shareable scope tokens for map drill-through.
+    if (scope.basis === "contract_action_address") {
+      q.set("basis", "contract_action_address");
+      if (boro) q.set("boro", boro);
+      if (cd) q.set("cd", cd);
+      if (council) q.set("council", council);
+      if (scope.actionBasis) q.set("actionBasis", String(scope.actionBasis));
+      return [...q.keys()].length > 1 ? `#money?${q.toString()}` : null;
+    }
+    // Performance-place Money has no polygon list filter yet; citywide /
+    // unlocated bags retain the existing shareable scope tokens.
     if (locationScope === "citywide" || locationScope === "unlocated") {
       q.set("scope", locationScope);
       return `#money?${q.toString()}`;
@@ -376,6 +390,9 @@ export function areaFeedLinks(level, id, opts = {}) {
     push("property", scope, "district");
     push("meetings", scope, "district");
     push("rules", scope, "district");
+    if (opts.basis === "contract_action_address") {
+      push("money", { ...scope, basis: opts.basis, actionBasis: opts.actionBasis }, "district", "map_feed_contract_action_borough");
+    }
     return links;
   }
   if (level === "community_district" && /^(?:M|X|K|Q|R)\d{2}$/.test(id || "")) {
@@ -389,12 +406,22 @@ export function areaFeedLinks(level, id, opts = {}) {
       push("meetings", { boro }, "borough", "map_feed_borough_meetings");
       push("rules", { boro }, "borough", "map_feed_borough_rules");
     }
+    if (opts.basis === "contract_action_address") {
+      push("money", { ...scope, basis: opts.basis, actionBasis: opts.actionBasis }, "district", "map_feed_contract_action_community");
+    }
     return links;
   }
   if (level === "council_district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(id || ""))) {
     // Council district is first-class on Land only today — omit other lenses rather than
     // emitting a citywide lobby under a district count.
     push("land", { councilDistrict: String(id) }, "district");
+    if (opts.basis === "contract_action_address") {
+      push("money", {
+        councilDistrict: String(id),
+        basis: opts.basis,
+        actionBasis: opts.actionBasis,
+      }, "district", "map_feed_contract_action_council");
+    }
     return links;
   }
   return links;
@@ -542,6 +569,16 @@ export function rowMatchesMapDrillFilter(lens, row, filter = {}) {
   }
 
   if (lens === "money") {
+    if (filter.basis === "contract_action_address") {
+      const locations = Array.isArray(row.locations) ? row.locations : [];
+      return locations.some((location) => {
+        if (filter.actionBasis && location.basis !== filter.actionBasis) return false;
+        if (boro && location.borough !== boro) return false;
+        if (filter.communityDistrict && location.community_district !== filter.communityDistrict) return false;
+        if (filter.councilDistrict && String(location.council_district) !== String(filter.councilDistrict)) return false;
+        return true;
+      });
+    }
     if (locationScope === "citywide") {
       return area?.scope === "citywide"
         || /throughout new york city|citywide/i.test(String(row.title || row.short_title || ""));
@@ -605,12 +642,14 @@ export function parseMapDrillListHash(hash) {
   if (q.get("council")) filter.councilDistrict = q.get("council");
   if (MAP_LIST_SCOPES.includes(q.get("scope"))) filter.locationScope = q.get("scope");
   if (q.get("when")) filter.when = q.get("when");
+  if (q.get("basis") === "contract_action_address") filter.basis = "contract_action_address";
+  if (q.get("actionBasis")) filter.actionBasis = q.get("actionBasis");
   return { lens, filter, hash: raw };
 }
 
 /**
  * Drill hash for the map surface itself.
- * @param {{level?:string,id?:string|null,lens?:string,parent?:string|null}} state
+ * @param {{level?:string,id?:string|null,lens?:string,parent?:string|null,basis?:string|null}} state
  */
 export function serializeMapHash(state = {}) {
   const q = new URLSearchParams();
@@ -620,6 +659,9 @@ export function serializeMapHash(state = {}) {
   if (state.parent) q.set("parent", String(state.parent));
   if (state.lens && state.lens !== "all" && MAP_LENSES.includes(state.lens)) {
     q.set("lens", state.lens);
+  }
+  if (state.lens === "money" && state.basis === "contract_action_address") {
+    q.set("basis", "contract_action_address");
   }
   const qs = q.toString();
   return "#map" + (qs ? `?${qs}` : "");
@@ -638,6 +680,9 @@ export function parseMapHashQuery(searchParams) {
     id: q.get("id") || null,
     parent: q.get("parent") || null,
     lens,
+    basis: lens === "money" && q.get("basis") === "contract_action_address"
+      ? "contract_action_address"
+      : "performance",
   };
 }
 
@@ -646,13 +691,16 @@ export function parseMapHashQuery(searchParams) {
  *
  * @param {object} boundaries — district_boundaries.v1
  * @param {object} activity — district_activity.v1
- * @param {{level:string, parent?:string|null, lens?:string}} opts
+ * @param {{level:string, parent?:string|null, lens?:string, basis?:string|null}} opts
  */
 export function mapFeatures(boundaries, activity, opts = {}) {
   const level = MAP_LEVELS.includes(opts.level) ? opts.level : "borough";
   const lens = MAP_LENSES.includes(opts.lens) ? opts.lens : "all";
   const parent = opts.parent || null;
-  const activityRoot = activity && typeof activity === "object" ? activity : {};
+  const mainRoot = activity && typeof activity === "object" ? activity : {};
+  const activityRoot = lens === "money" && opts.basis === "contract_action_address"
+    ? (mainRoot.basis_layers?.contract_action_address || {})
+    : mainRoot;
   const byLevel = activityRoot.by_level || {};
 
   if (level === "borough") {

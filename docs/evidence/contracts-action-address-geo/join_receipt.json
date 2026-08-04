@@ -1,0 +1,65 @@
+{
+  "schema": "cityscroll.contract_action_address_geo_receipt.v1",
+  "measured_at": "2026-08-04T19:45:30.855Z",
+  "cohort": "40 notices in the committed default open-contract snapshot",
+  "sources": {
+    "notices": {
+      "name": "City Record Online",
+      "dataset_id": "dg92-zbpx",
+      "endpoint": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+      "join_key": "request_id"
+    },
+    "geocoder": {
+      "name": "NYC GeoSearch",
+      "endpoint": "https://geosearch.planninglabs.nyc/v2/search",
+      "selection": "strict street identity plus borough; ambiguous matches abstain"
+    },
+    "districts": {
+      "community_dataset_id": "5crt-au7u",
+      "council_dataset_id": "872g-cjhh",
+      "boundary_vintage": "2026-05-26",
+      "method": "point_in_polygon"
+    }
+  },
+  "basis_rule": "Action locations describe response logistics, not where contract work is performed. The UI must name the basis and must not merge these counts into performance-place counts.",
+  "metrics": {
+    "rows_with_raw_submission_destination": 31,
+    "raw_submission_destinations_rejected": 5,
+    "by_rejection_reason": {
+      "placeholder": 2,
+      "portal_or_web_destination": 2,
+      "outside_nyc": 1
+    },
+    "cohort_rows": 40,
+    "rows_with_action_address": 26,
+    "action_address_count": 30,
+    "resolved_address_count": 30,
+    "unresolved_address_count": 0,
+    "rows_with_resolved_action_location": 26,
+    "resolved_fraction": 1,
+    "by_basis_address": {
+      "submission_address": 26,
+      "pre_bid_venue": 4
+    },
+    "by_basis_rows": {
+      "submission_address": 26,
+      "pre_bid_venue": 4,
+      "document_pickup": 0
+    },
+    "by_basis_resolved": {
+      "submission_address": 26,
+      "pre_bid_venue": 4
+    },
+    "by_resolution_status": {
+      "resolved": 30
+    },
+    "money_location_residual_baseline": 212,
+    "residual_rows_with_supplemental_action_location": 15,
+    "residual_if_action_location_is_shown_separately": 197,
+    "performance_place_residual_after_join": 212
+  },
+  "interpretation": {
+    "supplemental_location": "Resolved action addresses support a separately labeled office/meeting/pickup map layer.",
+    "performance_residual": "Submission and response-logistics addresses do not reduce the place-of-performance residual."
+  }
+}
