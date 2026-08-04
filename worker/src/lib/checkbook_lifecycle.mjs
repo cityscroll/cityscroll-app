@@ -31,6 +31,7 @@ import {
   SOLICITATION_RECOVERY_SOURCES,
 } from "./lifecycle_coherence.mjs";
 import { linksFromLifecycle } from "./subject_registry.mjs";
+import { attachAwardPrimeGoal } from "./award_prime_goal.mjs";
 
 export { usablePin, pinBase };
 export { CURRENT_SOLICITATIONS_SOURCE };
@@ -519,7 +520,11 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       sources_checked: SOLICITATION_RECOVERY_SOURCES.slice(),
     };
     // Orphan / amount / date coherence counters (metric + side-car).
-    return attachLifecycleCoherence(partial);
+    const coherentPartial = attachLifecycleCoherence(partial);
+    return attachAwardPrimeGoal(coherentPartial, r, {
+      passport: opts.passport || null,
+      goals: opts.subcontractGoals || null,
+    });
   }
 
   // Collapse Checkbook Contracts slices (Prime Vendor + Sub Vendor rows, etc.) to
@@ -562,6 +567,8 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     end_date: registeredRows[0].end || null,
     duration: registeredRows[0].duration || null,
     mwbe: registeredRows[0].mwbe || null,
+    // Related Checkbook fact for the award→prime→goal payload (not a goal %).
+    contract_includes_sub_vendors: registeredRows[0].subs || null,
   } : regStatus === "ambiguous" ? {
     candidates: registeredRows.map((c) => ({
       contract_id: c.id, vendor: c.vendor,
@@ -709,7 +716,12 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   };
   // Coherence side-car: orphaned award, payment > commitment, out-of-order dates.
   // Named metrics: procurement_lifecycle_coherence_rate, award_solicitation_recovery_rate.
-  return attachLifecycleCoherence(out);
+  const coherent = attachLifecycleCoherence(out);
+  // Award → prime → M/WBE-goal join (payload only; persona surface is a separate card).
+  return attachAwardPrimeGoal(coherent, r, {
+    passport: opts.passport || null,
+    goals: opts.subcontractGoals || null,
+  });
 }
 
 // ---------------------------------------------------------------------------
