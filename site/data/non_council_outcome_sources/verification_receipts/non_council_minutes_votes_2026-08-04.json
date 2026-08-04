@@ -1,0 +1,129 @@
+{
+  "schema": "cityscroll.non_council_outcomes.verification_receipt.v1",
+  "observed_on": "2026-08-04",
+  "usefulness_threshold": 0.3,
+  "source_inventory": {
+    "bodies_inventoried": 64,
+    "community_boards": 59,
+    "borough_presidents": 5,
+    "explicitly_collectable_pages": 8,
+    "citywide_complete": false
+  },
+  "join_measurement": {
+    "universe": "City Record Community Boards notices with event_date and a body resolvable from the published notice text (469 rows observed).",
+    "sample": "Latest two body-resolvable notices per borough, fixed before source-page review; exact body and meeting date plus a conservative matter token.",
+    "sample_by_borough": {
+      "Bronx": 2,
+      "Brooklyn": 2,
+      "Manhattan": 2,
+      "Queens": 2,
+      "Staten Island": 2
+    },
+    "cases": [
+      {
+        "request_id": "20260618032",
+        "borough": "Bronx",
+        "body_id": "bronx-cb-01",
+        "event_date": "2026-06-25",
+        "disposition": "no_document_on_event_date",
+        "source_page": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page"
+      },
+      {
+        "request_id": "20260610003",
+        "borough": "Brooklyn",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20260528031",
+        "borough": "Brooklyn",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20260603044",
+        "borough": "Bronx",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20260527036",
+        "borough": "Queens",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10",
+        "disposition": "same_date_document_missing_conservative_matter_token",
+        "source_page": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
+        "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf"
+      },
+      {
+        "request_id": "20260429022",
+        "borough": "Queens",
+        "body_id": "queens-cb-11",
+        "event_date": "2026-05-04",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20250909023",
+        "borough": "Manhattan",
+        "body_id": "manhattan-cb-06",
+        "event_date": "2025-09-30",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20250328003",
+        "borough": "Manhattan",
+        "body_id": "manhattan-cb-06",
+        "event_date": "2025-04-09",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20180926111",
+        "borough": "Staten Island",
+        "body_id": "staten-island-cb-01",
+        "event_date": "2018-10-09",
+        "disposition": "source_inventory_only"
+      },
+      {
+        "request_id": "20150714108",
+        "borough": "Staten Island",
+        "body_id": "staten-island-cb-01",
+        "event_date": "2015-07-21",
+        "disposition": "source_inventory_only"
+      }
+    ],
+    "rates": {
+      "strict_body_date_matter": {
+        "joined": 0,
+        "total": 10,
+        "rate": 0
+      }
+    }
+  },
+  "false_positive_review": {
+    "reviewed_pairs": 1,
+    "accepted": 0,
+    "rejected": 1,
+    "rejection_reasons": {
+      "matter_token_absent_from_notice": 1
+    },
+    "note": "Queens CB8 published same-date minutes for 20260527036, but the City Record notice exposed no conservative matter token. A date-only match was rejected."
+  },
+  "verdict": "Below usefulness threshold (0%): stop the notice-to-minutes outcome bridge. Continue source inventory and metadata/text collection only; publish no outcome edge until a new dated receipt clears 30%.",
+  "adapter_decisions": {
+    "html_document_index_v1": "metadata_and_text_only_for_explicit_registry_rows",
+    "strict_body_date_matter_join": "killed_below_threshold",
+    "guessed_url_or_universal_parser": "killed",
+    "reason": "Page layouts and publication practices are heterogeneous; no source URL or outcome is inferred."
+  },
+  "collection_policy": {
+    "host_side": true,
+    "checkpointed": true,
+    "minimum_delay_seconds": 1.2,
+    "honest_user_agent": true,
+    "stop_on_403": true,
+    "document_text": "PDF/DOCX text layer only; no OCR; binaries are not retained."
+  }
+}

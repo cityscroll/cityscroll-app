@@ -1,0 +1,33 @@
+{
+  "source_page": {
+    "source": {
+      "body_id": "manhattan-cb-03",
+      "body_type": "community_board",
+      "borough": "Manhattan",
+      "name": "Manhattan Community Board 3",
+      "source_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page"
+    },
+    "html": "<nav><a href='/site/manhattancb3/calendar/calendar.page'>Calendar</a></nav><main><a href='/assets/manhattancb3/downloads/votereso/votereso2026-06.pdf'>June 23, 2026 Vote Sheet</a><a href='/assets/manhattancb3/downloads/minutes/2026/minutes2026-05.pdf'>May 24, 2026 Full Board Minutes</a></main>"
+  },
+  "notices": [
+    {"request_id":"sample-bx-accepted","body_id":"bronx-cb-01","borough":"Bronx","event_date":"2026-06-25","matter_tokens":["260190ZSX"]},
+    {"request_id":"sample-bx-date-miss","body_id":"bronx-cb-06","borough":"Bronx","event_date":"2026-06-09","matter_tokens":["240206ZMX"]},
+    {"request_id":"sample-bk-accepted","body_id":"brooklyn-cb-08","borough":"Brooklyn","event_date":"2026-06-17","matter_tokens":["ATLANTIC-REZONING"]},
+    {"request_id":"sample-bk-topic-miss","body_id":"brooklyn-cb-14","borough":"Brooklyn","event_date":"2026-06-15","matter_tokens":["260115ZMK"]},
+    {"request_id":"sample-mn-accepted","body_id":"manhattan-cb-03","borough":"Manhattan","event_date":"2026-06-23","matter_tokens":["C240001ZMM"]},
+    {"request_id":"sample-mn-date-miss","body_id":"manhattan-cb-04","borough":"Manhattan","event_date":"2026-06-10","matter_tokens":["W42ST-PLAN"]},
+    {"request_id":"sample-qn-accepted","body_id":"queens-cb-08","borough":"Queens","event_date":"2026-06-10","matter_tokens":["HILLSIDE-AVE"]},
+    {"request_id":"sample-qn-no-document","body_id":"queens-cb-13","borough":"Queens","event_date":"2026-06-08","matter_tokens":["SPRINGFIELD-GARDENS"]},
+    {"request_id":"sample-si-topic-miss","body_id":"staten-island-cb-03","borough":"Staten Island","event_date":"2026-05-26","matter_tokens":["HYLAN-REZONING"]},
+    {"request_id":"sample-si-no-document","body_id":"staten-island-cb-01","borough":"Staten Island","event_date":"2026-05-14","matter_tokens":["BAY-STREET"]}
+  ],
+  "documents": [
+    {"document_id":"bx1-2026-06-25","body_id":"bronx-cb-01","meeting_date":"2026-06-25","title":"June 25, 2026 Full Board Minutes","page_url":"https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page","document_url":"https://www.nyc.gov/assets/bronxcb1/pdf/minutes/June-2026.pdf","text_status":"ok","extracted_text":"260190ZSX. Motion approved 21-0-0."},
+    {"document_id":"bk8-2026-06-17","body_id":"brooklyn-cb-08","meeting_date":"2026-06-17","title":"June 17, 2026 Minutes","page_url":"https://www.brooklyncb8.org/downloads/minutes/","document_url":"https://www.brooklyncb8.org/wp-content/uploads/2026/06/june-minutes.pdf","text_status":"ok","extracted_text":"ATLANTIC-REZONING. Motion adopted 31-2-1."},
+    {"document_id":"bk14-2026-06-15","body_id":"brooklyn-cb-14","meeting_date":"2026-06-15","title":"June 15, 2026 Board Minutes","page_url":"https://cb14brooklyn.com/board-meeting-minutes/","document_url":"https://cb14brooklyn.com/files/june-2026-minutes.pdf","text_status":"ok","extracted_text":"Different application N250099ZRK. Motion approved 22-4-0."},
+    {"document_id":"mn3-2026-06-23","body_id":"manhattan-cb-03","meeting_date":"2026-06-23","title":"June 2026 Vote Sheet","page_url":"https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page","document_url":"https://www.nyc.gov/assets/manhattancb3/downloads/votereso/votereso2026-06.pdf","text_status":"ok","extracted_text":"C240001ZMM. Resolution approved 34-2-1."},
+    {"document_id":"mn4-2026-06-17","body_id":"manhattan-cb-04","meeting_date":"2026-06-17","title":"June 17, 2026 Minutes","page_url":"https://cbmanhattan.cityofnewyork.us/cb4/archives/","document_url":"https://cbmanhattan.cityofnewyork.us/cb4/files/june-2026.pdf","text_status":"ok","extracted_text":"W42ST-PLAN. Motion approved 29-0-2."},
+    {"document_id":"qn8-2026-06-10","body_id":"queens-cb-08","meeting_date":"2026-06-10","title":"June 10, 2026 Board Meeting Minutes","page_url":"https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page","document_url":"https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf","text_status":"ok","extracted_text":"HILLSIDE-AVE. Motion approved 27-1-0."},
+    {"document_id":"si3-2026-05-26","body_id":"staten-island-cb-03","meeting_date":"2026-05-26","title":"May 26, 2026 General Board Minutes","page_url":"https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page","document_url":"https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2026/2026.05.26-GB-MINUTES.pdf","text_status":"ok","extracted_text":"Tottenville drainage presentation. Motion approved 30-0-0."}
+  ]
+}
