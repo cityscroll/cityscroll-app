@@ -974,7 +974,7 @@ async function showNotice(id, watch){
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
-      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="nsuboutreach"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -998,7 +998,7 @@ async function showNotice(id, watch){
   fillContext(r, $("#ncontext"));
   mountNoticeActionRail($("#nactions"),r);
   loadRuleLifecycle(r, $("#nrules"));
-  loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"));
+  loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"), $("#nsuboutreach"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
   Promise.all([
     typeof loadPropertyCommercialDetail === "function"
