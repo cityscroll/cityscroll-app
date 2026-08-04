@@ -3,6 +3,18 @@ import test from "node:test";
 
 import { pickElderSeatHolder, DEFAULT_ELDER } from "../tools/elder_merge_slot.mjs";
 
+test("policy separates soft steering from hard reservation", () => {
+  assert.equal(DEFAULT_ELDER.detect_and_steer_age_hours, 2);
+  assert.equal(DEFAULT_ELDER.elder_age_hours, 6);
+  assert.equal(DEFAULT_ELDER.rebase_churn_threshold, 3);
+
+  const result = pickElderSeatHolder(
+    [{ number: 410, ready: true, age_hours: 2.5, rebase_count: 0 }],
+    DEFAULT_ELDER,
+  );
+  assert.equal(result.seat, null, "soft-tier PR must not hold a ready train");
+});
+
 test("younger ready PRs do not overtake an eligible elder", () => {
   const now = Date.parse("2026-08-03T18:00:00Z");
   const result = pickElderSeatHolder(
