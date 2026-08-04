@@ -149,11 +149,15 @@ test("scheduled attachment jobs run T2 after T1", () => {
 });
 
 test("notice chrome exposes progressive attachment table disclosure", () => {
-  assert.match(SITE_SOURCE, /function attachmentTablesHTML/);
-  assert.match(SITE_SOURCE, /class="[^"]*attachment-tables/);
-  assert.match(SITE_SOURCE, /attachment-table/);
-  assert.match(SITE_SOURCE, /notice_attachment_tables_summary/);
-  assert.match(SITE_SOURCE, /bindAttachmentTableSort/);
+  // Table HTML lives in a deferred module (off home cold path); alerts only hosts + dynamic-imports.
+  const tablesUi = readFileSync(new URL("../site/attachment_tables_ui.mjs", import.meta.url), "utf8");
+  assert.match(tablesUi, /export function attachmentTablesHTML/);
+  assert.match(tablesUi, /class="[^"]*attachment-tables/);
+  assert.match(tablesUi, /attachment-table/);
+  assert.match(tablesUi, /notice_attachment_tables_summary/);
+  assert.match(tablesUi, /export function bindAttachmentTableSort/);
+  assert.match(SITE_SOURCE, /attachment-tables-host|attachmentTablesHTMLFor/);
+  assert.match(SITE_SOURCE, /import\("\.\.\/attachment_tables_ui\.mjs"\)/);
   const cannonsville = lookup.notices["20240515016"][0];
   assert.equal(cannonsville.tables_status, "ok");
   assert.equal(cannonsville.tables_count, 2);

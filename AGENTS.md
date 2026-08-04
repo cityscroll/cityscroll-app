@@ -163,10 +163,12 @@ empty/image PDFs stamp an honest miss). Pure helpers
 `extracted_tables` text); parquet/DuckDB only after measured thresholds —
 decision record `docs/adr/attachment-tables-storage.md`. Cell text feeds
 haystack with provenance `attachment-tables`. Notice UI:
-`.attachment-tables` progressive disclosure + real HTML tables (click column
-header to sort). Golden: Cannonsville species + stand tables on
-`#notice/20240515016`. Capture: `python3 tools/capture_attachment_tables.py`.
-Verify: `node --test test/attachment_tables.test.mjs
+`site/attachment_tables_ui.mjs` (dynamic-import from `fillContext` only — not
+on home cold wireBytes) → `.attachment-tables` progressive disclosure + real
+HTML tables (click column header to sort). Golden: Cannonsville species +
+stand tables on `#notice/20240515016`. Capture:
+`python3 tools/capture_attachment_tables.py`. Verify:
+`node --test test/attachment_tables.test.mjs
 worker/test/attachment_metadata.test.mjs`.
 
 **T3 embeddings (landed):** build-time nearest-neighbor over T1 text materializes

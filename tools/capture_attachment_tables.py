@@ -154,6 +154,8 @@ def capture(page: Page, base: str, filename: str, with_tables: bool) -> None:
     page.locator("#noticeview .route-item").wait_for(state="visible")
     page.locator("#ncontext .attachment-chip").wait_for(state="visible")
     if with_tables:
+        page.locator("#ncontext .attachment-tables, #ncontext [data-attachment-tables-host]").wait_for(state="visible")
+        # Deferred module paints real tables into the host.
         page.locator("#ncontext .attachment-tables").wait_for(state="visible")
         page.locator("#ncontext .attachment-tables > summary").click()
         page.locator("#ncontext table.attachment-table").first.wait_for(state="visible")

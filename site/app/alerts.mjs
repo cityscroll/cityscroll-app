@@ -1050,79 +1050,25 @@ function attachmentExtractHTML(attachment){
   </details>`;
 }
 
-function attachmentTableCellHTML(value){
-  return `<td style="border:1px solid var(--line,#d0d4dc);padding:6px 8px;vertical-align:top">${escUiHtml(String(value ?? ""))}</td>`;
+// T2 tables UI is notice-detail only — dynamic import keeps it off home cold wireBytes.
+let attachmentTablesToolsPromise = null;
+async function attachmentTablesTools(){
+  if(!attachmentTablesToolsPromise){
+    attachmentTablesToolsPromise = import("../attachment_tables_ui.mjs").catch(()=>null);
+  }
+  return attachmentTablesToolsPromise;
 }
-
-function attachmentOneTableHTML(table, tableIndex){
-  const headers = Array.isArray(table?.headers) ? table.headers : [];
-  const rows = Array.isArray(table?.rows) ? table.rows : [];
-  if(!headers.length && !rows.length) return "";
-  const head = headers.length
-    ? `<thead><tr>${headers.map((h,i)=>`<th scope="col" data-col="${i}" tabindex="0" role="columnheader" style="border:1px solid var(--line,#d0d4dc);padding:6px 8px;background:var(--panel-2,#f4f5f7);text-align:left;cursor:pointer;user-select:none">${escUiHtml(String(h ?? ""))}</th>`).join("")}</tr></thead>`
-    : "";
-  const body = rows.map(row=>{
-    const cells = Array.isArray(row) ? row : [];
-    return `<tr>${(headers.length?headers:cells).map((_,i)=>attachmentTableCellHTML(cells[i] ?? "")).join("")}</tr>`;
-  }).join("");
-  const caption = table?.caption
-    ? `<caption style="caption-side:top;text-align:left;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding:0 0 6px">${escUiHtml(table.caption)}</caption>`
-    : (headers.length
-      ? `<caption style="caption-side:top;text-align:left;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding:0 0 6px">${escUiHtml(t("notice_attachment_table_caption",{n:tableIndex+1}))}</caption>`
-      : "");
-  // Real HTML table; th click sorts client-side (cheap; no library).
-  return `<table class="attachment-table" data-table-index="${tableIndex}" style="width:100%;border-collapse:collapse;font:12px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 12px">
-    ${caption}${head}<tbody>${body}</tbody>
-  </table>`;
-}
-
-function attachmentTablesHTML(attachment){
+function attachmentHasTablesHint(attachment){
   const tables = Array.isArray(attachment?.extracted_tables) ? attachment.extracted_tables : [];
-  if(!tables.length || (attachment.tables_status && attachment.tables_status !== "ok")) return "";
-  const preview = String(attachment.tables_preview || `${tables.length} table${tables.length===1?"":"s"}`).trim();
-  const previewShort = preview.length > 280 ? preview.slice(0,277).trimEnd()+"…" : preview;
-  const body = tables.map((table,i)=>attachmentOneTableHTML(table,i)).filter(Boolean).join("");
-  if(!body) return "";
-  return `<details class="attachment-tables inline-disclose attachment-extract" style="margin:6px 0 2px">
-    <summary class="attachment-tables-summary attachment-extract-summary" style="font:12px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted);cursor:pointer">
-      <span class="attachment-tables-label">${escUiHtml(t("notice_attachment_tables_summary"))}</span>
-      <span class="attachment-tables-preview attachment-extract-preview" lang="en" dir="ltr" style="display:block;margin-top:2px;color:var(--ink)">“${escUiHtml(previewShort)}”</span>
-    </summary>
-    <div class="attachment-tables-body inline-disclose-body scope" lang="en" dir="ltr" style="margin-top:8px;max-height:28rem;overflow:auto">${body}</div>
-  </details>`;
+  return tables.length > 0 && (!attachment.tables_status || attachment.tables_status === "ok");
 }
-
-function bindAttachmentTableSort(root){
-  if(!root) return;
-  root.querySelectorAll("table.attachment-table").forEach(table=>{
-    const heads = table.querySelectorAll("th[data-col]");
-    heads.forEach(th=>{
-      const sortCol = ()=>{
-        const col = Number(th.getAttribute("data-col"));
-        const tbody = table.tBodies[0];
-        if(!tbody || !Number.isInteger(col)) return;
-        const dir = th.getAttribute("data-sort-dir") === "asc" ? "desc" : "asc";
-        heads.forEach(other=>other.removeAttribute("data-sort-dir"));
-        th.setAttribute("data-sort-dir", dir);
-        const rows = [...tbody.rows];
-        rows.sort((a,b)=>{
-          const av = (a.cells[col]?.textContent || "").trim();
-          const bv = (b.cells[col]?.textContent || "").trim();
-          const an = Number(av.replace(/[%,$]/g,""));
-          const bn = Number(bv.replace(/[%,$]/g,""));
-          let cmp = 0;
-          if(Number.isFinite(an) && Number.isFinite(bn) && av !== "" && bv !== "") cmp = an - bn;
-          else cmp = av.localeCompare(bv, undefined, { numeric:true, sensitivity:"base" });
-          return dir === "asc" ? cmp : -cmp;
-        });
-        rows.forEach(row=>tbody.appendChild(row));
-      };
-      th.addEventListener("click", sortCol);
-      th.addEventListener("keydown", ev=>{
-        if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); sortCol(); }
-      });
-    });
-  });
+async function attachmentTablesHTMLFor(r){
+  const attachments = Array.isArray(r?.attachments) ? r.attachments : [];
+  const first = attachments.find(a=>a && a.url) || null;
+  if(!first || !attachmentHasTablesHint(first)) return "";
+  const tools = await attachmentTablesTools();
+  if(!tools) return "";
+  return tools.attachmentTablesHTML(first, { t, esc: escUiHtml });
 }
 
 function attachmentChipHTML(r){
@@ -1134,15 +1080,17 @@ function attachmentChipHTML(r){
   const title = rawTitle.length > 108 ? rawTitle.slice(0,105).trimEnd()+"…" : rawTitle;
   const label = tn("notice_attachment_chip", attachments.length, {title});
   const extract = attachmentExtractHTML(first);
-  const tables = attachmentTablesHTML(first);
-  // Always keep the original-document link; text + tables are progressive disclosure.
+  // Tables mount async into #ncontext via fillContext (deferred module; not home cold).
+  const tablesHost = attachmentHasTablesHint(first)
+    ? `<div class="attachment-tables-host" data-attachment-tables-host="1"></div>`
+    : "";
+  // Always keep the original-document link; text extract is progressive disclosure.
   return `<div class="attachment-panel" style="margin:6px 0 4px">
     <a class="tag attachment-chip" href="${escUiHtml(first.url)}" target="_blank" rel="noopener">${escUiHtml(label)} · ${escUiHtml(t("view_in_city_record"))}</a>
     ${extract}
-    ${tables}
+    ${tablesHost}
   </div>`;
 }
-
 // T3: precomputed attachment-content related notices (no query-time embedding).
 let attachmentRelatedToolsPromise = null;
 async function attachmentRelatedTools(){
@@ -1178,23 +1126,26 @@ async function attachmentRelatedHTMLFor(r){
 async function fillContext(r, el){
   if(!el) return;
   const attachmentHTML = attachmentChipHTML(r);
-  if(attachmentHTML){
-    el.innerHTML = attachmentHTML;
-    bindAttachmentTableSort(el);
-  }
-  const [flags, ctx, relatedHTML] = await Promise.all([
+  if(attachmentHTML) el.innerHTML = attachmentHTML;
+  const [flags, ctx, relatedHTML, tablesHTML] = await Promise.all([
     noticeFlags(r),
     awardContext(r),
     attachmentRelatedHTMLFor(r),
+    attachmentTablesHTMLFor(r),
   ]);
   if(!document.contains(el)) return; // a newer selection replaced this panel
   let html = attachmentHTML;
   if(relatedHTML) html += relatedHTML;
   if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
   html += ctx;
-  if(html){
-    el.innerHTML = html;
-    bindAttachmentTableSort(el);
+  if(html) el.innerHTML = html;
+  // Paint deferred table disclosure into the host (or append if host was dropped).
+  if(tablesHTML && document.contains(el)){
+    const host = el.querySelector("[data-attachment-tables-host]");
+    if(host) host.outerHTML = tablesHTML;
+    else if(el.querySelector(".attachment-panel")) el.querySelector(".attachment-panel").insertAdjacentHTML("beforeend", tablesHTML);
+    const tools = await attachmentTablesTools();
+    if(tools && document.contains(el)) tools.bindAttachmentTableSort(el);
   }
 }
 
@@ -1274,8 +1225,7 @@ globalThis.matchAttachmentText = matchAttachmentText;
 globalThis.attachmentChipHTML = attachmentChipHTML;
 globalThis.attachmentExtractHTML = attachmentExtractHTML;
 globalThis.attachmentRelatedHTMLFor = attachmentRelatedHTMLFor;
-globalThis.attachmentTablesHTML = attachmentTablesHTML;
-globalThis.bindAttachmentTableSort = bindAttachmentTableSort;
+globalThis.attachmentTablesHTMLFor = attachmentTablesHTMLFor;
 globalThis.matchText = matchText;
 globalThis.noticeFlags = noticeFlags;
 globalThis.ordinal = ordinal;
