@@ -209,7 +209,7 @@ test("matterDetailUrl only accepts numeric Legistar MatterIds", () => {
   assert.equal(matterDetailUrl(null), null);
 });
 
-test("non-Council unmatched outcomes render real HTTPS landings", () => {
+test("non-Council unmatched outcomes stay absent", () => {
   const html = meetingOutcomesHTML(
     { join: { matched: false } },
     {
@@ -221,17 +221,7 @@ test("non-Council unmatched outcomes render real HTTPS landings", () => {
       short_title: "Manhattan Borough President public hearing",
     },
   );
-  assert.match(html, /manhattanbp\.nyc\.gov/);
-  assert.match(html, /community-boards/);
-  assert.match(html, /href="https:\/\//);
-  // No longer a bare text-only "where" with zero outbound
-  assert.doesNotMatch(html, /where: t\("meeting_outcomes_non_council_where"\)/);
-  // Process spine: notice → hearing → outcome → minutes with chain presentation
-  assert.match(html, /data-non-council-spine="1"/);
-  assert.match(html, /class="chain"/);
-  assert.match(html, /aria-hidden="true"/); // connectors are decorative
-  assert.match(html, /data-gap-class="not_published"/);
-  assert.equal((html.match(/data-gap-class="not_published"/g) || []).length, 2);
+  assert.equal(html, "");
 });
 
 test("nonCouncilHearingOutcomesHTML fills notice+hearing dates when present", () => {
@@ -244,7 +234,8 @@ test("nonCouncilHearingOutcomesHTML fills notice+hearing dates when present", ()
   });
   assert.match(html, /2026-06-20|06\/20\/2026|Jun/); // fdate stub is ISO slice
   assert.match(html, /2026-07-01/);
-  assert.match(html, /Notice published|Hearing|Outcome|Minutes/i);
+  assert.match(html, /Notice published|Hearing/i);
+  assert.doesNotMatch(html, /data-gap-class|stage-name">(?:Outcome|Minutes)</i);
 });
 
 test("phase tools render lead → stepper → panels on fixture spines", () => {

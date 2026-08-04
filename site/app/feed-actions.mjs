@@ -130,8 +130,8 @@ const MEETING_PHASE_LABEL_KEYS={
   outcomes:"meeting_stage_outcomes",
 };
 function meetingStageLabel(stage){
-  if(!stage) return t("meeting_stage_unstaged");
-  return t(MEETING_PHASE_LABEL_KEYS[stage]||"meeting_stage_unstaged");
+  if(!stage) return t("rule_sibling_role_notice");
+  return t(MEETING_PHASE_LABEL_KEYS[stage]||"rule_sibling_role_notice");
 }
 function hearingWindowEnd(){
   return hearingDateWindowEnd(todayISO(), $("#meetingswhen").value);
@@ -925,7 +925,7 @@ function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
 function hearingAreaText(record){
   const area=record.affected_area||{};
   if(area.scope==="citywide") return t("citywide");
-  if(area.scope==="unlocated") return t("affected_not_stated");
+  if(area.scope==="unlocated") return "";
   const values=[
     ...(area.neighborhoods||[]),
     ...(area.boroughs||[]),
@@ -936,13 +936,13 @@ function hearingAreaText(record){
     ...(area.tax_lots||[]).map(lot=>lot.label),
     ...(area.project_names||[]),
   ].filter(Boolean);
-  return [...new Set(values)].join(" · ") || t("affected_not_stated");
+  return [...new Set(values)].join(" · ");
 }
 function hearingVenueText(record){
   const venue=record.venue||{}, labels={
-    "virtual":"venue_virtual","in-person":"venue_in_person","hybrid":"venue_hybrid","not-stated":"venue_not_stated"
+    "virtual":"venue_virtual","in-person":"venue_in_person","hybrid":"venue_hybrid"
   };
-  return [t(labels[venue.mode]||"venue_not_stated"), venue.building, venue.address].filter(Boolean).join(" · ");
+  return [labels[venue.mode]?t(labels[venue.mode]):"", venue.building, venue.address].filter(Boolean).join(" · ");
 }
 function hearingCardHTML(record){
   // Flat fallback when the explorer module fails to load.
@@ -992,7 +992,7 @@ function meetingsExplorerCardHTML(entry){
   const processLine=`<div class="meetings-process-line">
     <span class="tag open">${escUiHtml(processLabel)}</span>
     ${chainChip}
-    ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:`<span class="tag place">${escUiHtml(t("meetings_list_no_agency"))}</span>`}
+    ${agency?`<span class="tag place">${pivotA(agencyHref(agency), agency)}</span>`:""}
   </div>`;
   // Next-action lead: concrete attend / join / testimony when data supports it.
   const actionKey=entry.action_key||"meeting_action_open_notice";
@@ -1049,17 +1049,25 @@ function meetingsExplorerCardHTML(entry){
     if(chips) siblingsHtml=`<div class="meetings-siblings">${t("meetings_siblings_label")}: ${chips}</div>`;
   }
   const title=entry.title||record.decides||record.title||t("untitled");
+  const areaText=hearingAreaText(record);
+  const venueText=hearingVenueText(record);
+  const areaFact=areaText
+    ? `<div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(areaText)}</span></div>`
+    : "";
+  const venueFact=venueText
+    ? `<div class="hfact"><b>${t("venue_label")}</b><span>${escUiHtml(venueText)}</span></div>`
+    : "";
+  const affectsFact=record.affects&&record.affects.length
+    ? `<div class="hfact"><b>${t("who_affected_label")}</b><span>${escUiHtml(record.affects.map(value=>t(value)).join(" · "))}</span></div>`
+    : "";
+  const factsHTML=`${areaFact}${venueFact}${affectsFact}`;
   return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
-      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${agency?" · "+pivotA(agencyHref(agency),agency):""}${record.event_date?` · <b style="color:var(--ink)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
+      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${agency?" · "+pivotA(agencyHref(agency),agency):""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       ${processLine}
       ${actionLead}
       <div class="ftitle"><a href="${noticeHref}">${excerptHtml(title,400)}</a></div>
       ${siblingsHtml}
-      <div class="hfacts">
-        <div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(hearingAreaText(record))}</span></div>
-        <div class="hfact"><b>${t("venue_label")}</b><span>${escUiHtml(hearingVenueText(record))}</span></div>
-      <div class="hfact"><b>${t("who_affected_label")}</b><span>${record.affects&&record.affects.length?escUiHtml(record.affects.map(value=>t(value)).join(" · ")):t("who_affected_not_stated")}</span></div>
-      </div>
+      ${factsHTML?`<div class="hfacts">${factsHTML}</div>`:""}
       ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
       ${cardAttendPack}
@@ -1070,6 +1078,21 @@ function renderHearingGroup(scope, entries){
   const label=scope==="local"?"local_hearings_group":scope==="citywide"?"citywide_hearings_group":"unlocated_hearings_group";
   const noteText=scope==="citywide"?t("citywide_hearings_note"):"";
   return `<h2 class="hearinggroup">${t(label)}${noteText?` <small>${noteText}</small>`:""}</h2>${entries.map(meetingsExplorerCardHTML).join("")}`;
+}
+function updateMeetingsMoreFiltersState(){
+  const badge=$("#meetings-filter-badge");
+  if(!badge) return;
+  const active=Number(($("#meetingswhen")?.value||"week")!=="week")
+    +Number(!!$("#meetingsboro")?.value)
+    +Number(!!$("#meetingsneighborhood")?.value.trim())
+    +Number(!!$("#meetingsagency")?.value)
+    +Number(meetingsPlaceGroupSel==="place");
+  badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
+  badge.hidden=active===0;
+}
+function setMeetingsResultCount(count){
+  const element=$("#meetings-count");
+  if(element) element.textContent=t("results_count",{n:fmtNumber(count)});
 }
 async function renderHearingExplorer(){
   const seq=++hearingRenderSeq;
@@ -1112,7 +1135,7 @@ async function renderHearingExplorer(){
     if(processRail){
       const stages=tools.MEETINGS_PROCESS_STAGES||[["all","stage_all"]];
       processRail.innerHTML=stages.map(([k,l])=>
-        `<button type="button" class="chip ${meetingsProcessSel===k?"on":""}" data-p="${k}">${t(l)}<span class="ct">${pc[k]||0}</span></button>`
+        `<button type="button" class="chip ${meetingsProcessSel===k?"on":""}" data-p="${k}" aria-pressed="${meetingsProcessSel===k?"true":"false"}">${t(l)}<span class="ct">${pc[k]||0}</span></button>`
       ).join("");
       processRail.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
         meetingsProcessSel=b.dataset.p;
@@ -1125,7 +1148,7 @@ async function renderHearingExplorer(){
     if(placeRail){
       const modes=tools.MEETINGS_PLACE_GROUP_MODES||[["flat","meetings_place_group_flat"],["place","meetings_place_group_place"]];
       placeRail.innerHTML=modes.map(([k,l])=>
-        `<button type="button" class="chip ${meetingsPlaceGroupSel===k?"on":""}" data-g="${k}">${t(l)}</button>`
+        `<button type="button" class="chip ${meetingsPlaceGroupSel===k?"on":""}" data-g="${k}" aria-pressed="${meetingsPlaceGroupSel===k?"true":"false"}">${t(l)}</button>`
       ).join("");
       placeRail.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
         meetingsPlaceGroupSel=b.dataset.g==="place"?"place":"flat";
@@ -1176,17 +1199,12 @@ async function renderHearingExplorer(){
     return true;
   });
   feedVisible.meetings=uniqueRows.map(hearingEventRow);
-  const placeCounts={local:0,citywide:0,unlocated:0};
-  entries.forEach(e=>{ placeCounts[e.place_scope||"unlocated"]=(placeCounts[e.place_scope||"unlocated"]||0)+1; });
-  $("#hearingssummary").textContent=t("hearing_results_summary",{
-    n:entries.length,
-    local:placeCounts.local||0,
-    citywide:placeCounts.citywide||0,
-    unlocated:placeCounts.unlocated||0,
-  });
+  updateMeetingsMoreFiltersState();
+  setMeetingsResultCount(entries.length);
   const el=$("#meetingsfeed");
   if(!entries.length){
-    el.innerHTML=`<div class="empty">${t(allowWidening?"no_hearings_after_widening":"no_hearings_window")}</div>`;
+    widening.innerHTML="";
+    el.innerHTML="";
     announce(t("meetings_entries_announce",{n:0})); return;
   }
   const groupByPlace=tools&&typeof tools.meetingsPlaceGroupEnabled==="function"
@@ -1231,7 +1249,7 @@ async function loadHearings(){
     unbusy("#meetingsfeed");
     await renderHearingExplorer();
   }catch(e){
-    if(!stale()){ unbusy("#meetingsfeed"); $("#meetingsfeed").innerHTML=`<div class="empty">${t("could_not_reach")}</div>`; }
+    if(!stale()){ unbusy("#meetingsfeed"); $("#meetingsfeed").innerHTML=""; }
   }
 }
 
