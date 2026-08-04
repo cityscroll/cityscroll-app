@@ -134,7 +134,13 @@
   .wand{display:flex;flex-wrap:wrap;gap:7px}
   .wandchip{font-family:var(--font-sc);font-weight:600;letter-spacing:.04em;font-size:12px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .wandchip:hover{border-color:var(--oxblood);color:var(--oxblood)}
-  .nlbox{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:18px;box-shadow:var(--shadow)}
+  .nlbox{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-md);padding:var(--space-4);margin-top:var(--space-4);box-shadow:var(--shadow)}
+  .ask-cityscroll{padding:0;box-shadow:none}
+  .ask-cityscroll>summary{padding:var(--space-3) var(--space-4);font:600 13px/1.35 var(--font-interface);color:var(--ink-soft);cursor:pointer}
+  .ask-cityscroll>summary:hover{color:var(--oxblood)}
+  .ask-cityscroll[open]>summary{border-bottom:1px solid var(--rule)}
+  .ask-cityscroll-body{padding:var(--space-4)}
+  .ask-cityscroll-context{margin:var(--space-2) var(--space-4) 0;font:12px/1.4 var(--font-interface);color:var(--muted)}
   .nllabel{font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.13em;font-size:12px;color:var(--ink-soft);display:block;margin-bottom:8px}
   .nlworking{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--oxblood)}
   .nltry{display:grid;gap:var(--space-2);margin-top:var(--space-3)}
@@ -663,7 +669,6 @@
   .lens-more-content .property-rail-label{margin:var(--space-3) 0 var(--space-2)}
   .lens-more-content .chiprow{margin-top:0}
   .lens-primary-rail{margin-top:var(--space-2)}
-  .money-nlbox{min-height:calc(var(--space-8) * 2 + var(--space-5))}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
@@ -686,7 +691,6 @@
   #propertyfeed .property-closed-section{grid-column:1/-1}
   @media(max-width:680px){
     .lens-more-content{width:min(94vw,440px)}
-    .money-nlbox{min-height:0}
     .money-method-slot{min-height:0}
   }
   .tax-lien-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--oxblood);border-radius:10px;box-shadow:var(--shadow)}
@@ -1489,17 +1493,6 @@
         </div>
       </details>
     </div>
-    <div class="nlbox money-nlbox">
-      <div class="nlrow">
-        <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
-        <button id="nlgo" data-i18n="ask_btn">Ask</button>
-      </div>
-      <div id="nltry" class="nltry"></div>
-      <div id="nltrans"></div>
-      <div id="landing-share-actions"></div>
-      <div id="nlpresets" data-search-presets></div>
-    </div>
-
     <div class="lens-toolbar money-toolbar">
       <div class="field kw">
         <label for="kw" data-i18n="keyword_label">Keyword</label>
@@ -1570,6 +1563,20 @@
         <div class="chiprow lens-primary-rail" id="methodfacet" role="group" aria-label="Procurement method"></div>
       </div>
     </div>
+    <details class="nlbox ask-cityscroll" data-ask-lens="money">
+      <summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary>
+      <div class="ask-cityscroll-body">
+        <div class="nlrow">
+          <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
+          <button id="nlgo" data-i18n="ask_btn">Ask</button>
+        </div>
+        <div id="nltry" class="nltry"></div>
+        <div id="nltrans"></div>
+        <div id="landing-share-actions"></div>
+        <div id="nlpresets" data-search-presets></div>
+      </div>
+    </details>
+    <p class="ask-cityscroll-context" data-i18n="ask_cityscroll_context">Interprets your request</p>
     <div class="lens-search-state" id="moneyactivefilters"></div>
     <div class="lens-resultbar">
       <span class="lens-count" id="rescount" aria-live="polite"></span>

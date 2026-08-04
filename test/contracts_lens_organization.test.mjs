@@ -26,16 +26,16 @@ const moneySection = html.slice(
   html.indexOf("<!-- ============ PEOPLE"),
 );
 
-test("Contracts follows the shared lens hierarchy with the answer and primary facet first", () => {
+test("Contracts follows the shared lens hierarchy with exact search and its primary facet first", () => {
   const intro = moneySection.indexOf('id="money-domain-intro"');
-  const naturalLanguage = moneySection.indexOf('class="nlbox money-nlbox"');
+  const naturalLanguage = moneySection.indexOf('class="nlbox ask-cityscroll"');
   const toolbar = moneySection.indexOf('class="lens-toolbar money-toolbar"');
   const primary = moneySection.indexOf('id="money-method-primary"');
   const resultbar = moneySection.indexOf('class="lens-resultbar"');
   const results = moneySection.indexOf('class="grid"');
-  assert.ok(intro >= 0 && intro < naturalLanguage);
-  assert.ok(naturalLanguage < toolbar && toolbar < primary);
-  assert.ok(primary < resultbar && resultbar < results);
+  assert.ok(intro >= 0 && intro < toolbar);
+  assert.ok(toolbar < primary && primary < naturalLanguage);
+  assert.ok(naturalLanguage < resultbar && resultbar < results);
   assert.match(moneySection, /class="lens-method money-method"[\s\S]*?class="contract-example-list"/);
 });
 
@@ -52,13 +52,14 @@ test("Contracts keeps keyword and method visible while secondary controls stay i
   assert.match(moneySection, /id="rescount"[\s\S]*?id="sort"/);
 });
 
-test("Contracts reserves token-based space for its asynchronous primary facet", () => {
-  assert.match(moneySection, /class="nlbox money-nlbox"/);
+test("Contracts reserves token-based space only for its asynchronous primary facet", () => {
+  assert.match(moneySection, /class="nlbox ask-cityscroll"/);
   assert.match(moneySection, /class="money-method-slot"[\s\S]*?id="money-method-primary"/);
   assert.match(
     html,
-    /\.money-nlbox\{min-height:calc\(var\(--space-8\) \* 2 \+ var\(--space-5\)\)\}[\s\S]*?\.money-method-slot\{min-height:calc\(var\(--space-8\) \+ var\(--space-5\) \+ var\(--space-1\)\)\}/,
+    /\.ask-cityscroll\{padding:0;box-shadow:none\}[\s\S]*?\.money-method-slot\{min-height:calc\(var\(--space-8\) \+ var\(--space-5\) \+ var\(--space-1\)\)\}/,
   );
+  assert.doesNotMatch(html, /\.money-nlbox\{/);
 });
 
 test("Contracts initial and zero-result detail states stay quiet", () => {

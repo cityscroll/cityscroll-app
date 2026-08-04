@@ -111,6 +111,7 @@ function bindNLQResolvedActions(label, hash){
 }
 async function nlTranslate(){
   const text=$("#nlq").value.trim(); if(!text) return;
+  activateAskSearch("money");
   const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
   const p=await nlResolve(text, "money");
   // Entity/forecast intents leave the list surface for the agency (or vendor) profile.
@@ -721,6 +722,7 @@ async function nlTranslateLens(lens, opts){
   const inpSel=(opts&&opts.inputSel)||("#nlq-"+lens);
   const text=(opts&&opts.text!=null)?opts.text:($(inpSel)?.value.trim()||"");
   if(!text) return;
+  if(inpSel==="#nlq-"+lens) activateAskSearch(lens);
   const btn=$("#nlgo-"+lens); if(btn) btn.disabled=true;
   $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
   const f=await nlResolve(text, lens);
@@ -854,23 +856,72 @@ async function loadValidatedSuggestions(){
   }catch(e){ /* stays on the static fallback */ }
 }
 
+const exactSearchSelectors={
+  money:"#kw",
+  people:"#pkw",
+  land:"#lkw",
+  property:"#propertykw",
+  rules:"#ruleskw",
+  meetings:"#meetingskw",
+  alerts:"#quiznarrow",
+};
+
+function askInput(lens){ return $(lens==="money"?"#nlq":"#nlq-"+lens); }
+function askPanel(lens){ return document.querySelector(`[data-ask-lens="${lens}"]`); }
+function askTranslation(lens){ return $(lens==="money"?"#nltrans":"#nltrans-"+lens); }
+
+function activateAskSearch(lens){
+  const panel=askPanel(lens);
+  if(panel){ panel.open=true; panel.dataset.askActive="true"; }
+}
+
+// Exact search is the primary list control. Once a reader types there, the prior interpreted
+// request must not remain as a second, contradictory visible value or as hidden Money-only
+// constraints. Facets that Ask populated remain inspectable in their ordinary controls.
+function deactivateAskSearch(lens){
+  const input=askInput(lens);
+  const panel=askPanel(lens);
+  const translation=askTranslation(lens);
+  if(input) input.value="";
+  if(panel){ panel.open=false; delete panel.dataset.askActive; }
+  if(translation) translation.innerHTML="";
+  if(lens==="money") moneyNlResolved={};
+}
+
+function bindAskSearchHierarchy(){
+  Object.entries(exactSearchSelectors).forEach(([lens,selector])=>{
+    const input=$(selector); if(!input) return;
+    input.addEventListener("input",()=>deactivateAskSearch(lens));
+  });
+}
+
 function injectNLBoxes(){
   const tabs={people:["#tab-people",".controls"],land:["#tab-land","#land-toolbar"],property:["#tab-property",".controls"],rules:["#tab-rules",".controls"],meetings:["#tab-meetings","#meetings-toolbar"],alerts:["#tab-alerts",".grid"]};
   Object.entries(tabs).forEach(([lens,[sel,anchorSel]])=>{
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
-    const box=document.createElement("div"); box.className="nlbox";
-    const searchTools=lens==="alerts"?"":'<div id="searchstate-'+lens+'" data-search-state="'+lens+'"></div>'+
-      '<div id="searchactions-'+lens+'" data-search-actions="'+lens+'"></div>'+
-      '<div id="nlpresets-'+lens+'" data-search-presets></div>';
-    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" aria-label="'+t("nl_aria")+'" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
+    const box=document.createElement("details"); box.className="nlbox ask-cityscroll"; box.dataset.askLens=lens;
+    box.innerHTML='<summary data-i18n="ask_cityscroll_action">'+t("ask_cityscroll_action")+'</summary><div class="ask-cityscroll-body">'+
+      '<div class="nlrow"><input type="text" id="nlq-'+lens+'" aria-label="'+t("nl_aria")+'" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
       '<button id="nlgo-'+lens+'" data-i18n="ask_btn">Ask</button></div>'+
-      '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>'+searchTools;
-    anchor.parentNode.insertBefore(box, anchor);
+      '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div></div>';
+    if(lens==="alerts") anchor.parentNode.insertBefore(box, anchor);
+    else anchor.insertAdjacentElement("afterend", box);
     $("#nlgo-"+lens).addEventListener("click",()=>nlTranslateLens(lens));
     $("#nlq-"+lens).addEventListener("keydown",e=>{ if(e.key==="Enter") nlTranslateLens(lens); });
+    const context=document.createElement("p"); context.className="ask-cityscroll-context";
+    context.dataset.i18n="ask_cityscroll_context"; context.textContent=t("ask_cityscroll_context");
+    box.insertAdjacentElement("afterend", context);
+    if(lens!=="alerts"){
+      const tools=document.createElement("div"); tools.className="search-scope-tools";
+      const state=wrap.querySelector(`[data-search-state="${lens}"]`)?"":'<div id="searchstate-'+lens+'" data-search-state="'+lens+'"></div>';
+      tools.innerHTML=state+'<div id="searchactions-'+lens+'" data-search-actions="'+lens+'"></div>'+
+        '<div id="nlpresets-'+lens+'" data-search-presets></div>';
+      context.insertAdjacentElement("afterend", tools);
+    }
     renderNLSamples(lens, $("#nltry-"+lens));
   });
+  bindAskSearchHierarchy();
 }
 
 function exportSpec(lens){

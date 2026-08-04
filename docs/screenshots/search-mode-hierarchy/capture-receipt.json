@@ -1,0 +1,12 @@
+{
+  "base_revision": "origin/main",
+  "fixture": "contracts.keyword-housing.json",
+  "viewports": [
+    1440,
+    390
+  ],
+  "scenarios": [
+    "default hierarchy",
+    "Ask followed by exact-search takeover"
+  ]
+}
