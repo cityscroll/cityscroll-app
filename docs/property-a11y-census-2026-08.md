@@ -24,6 +24,40 @@ The current Property corpus is far above the target:
 The source census was bounded at 2026-08-04. Its canonical selected-field SHA-256 is
 `99e9d655e63d9c31af53500f1d7a1e72ba93cfb8d3be742505fe7ed961989a67`.
 
+## Template coverage tail audit
+
+The first template pass summarized 234 of 243 notices (96.30%). The nine original-text
+fallbacks resolve into two recurring source patterns and one genuine one-off:
+
+| Request ID | Evidence-backed verdict |
+|---|---|
+| `20240108007` | Recurring HPD pointer: the notice sends readers to the Public Hearing section. |
+| `20220103008` | Recurring HPD pointer: the notice sends readers to the Public Hearing section. |
+| `20201229007` | Recurring HPD pointer: the notice sends readers to the Public Hearing section. |
+| `20200102102` | Recurring HPD pointer: the notice sends readers to the Public Hearing section. |
+| `20190108114` | Recurring HPD pointer: the notice sends readers to the Public Hearing section. |
+| `20180628112` | Recurring HPD pointer: the notice sends readers to the Public Hearing section. |
+| `20150915102` | Recurring direct-sale notice: real-property parcels offered by public auction. |
+| `20131023104` | Recurring direct-sale notice: real-property parcels offered by public auction. |
+| `20131113103` | Permanent honest fallback: the only future-interest deed-amendment notice in the corpus; a generic acquisition sentence would erase its conditional legal effect. |
+
+The narrow templates raise coverage to **242 of 243 notices (99.59%)**. All 242 authored
+summaries score at or below grade 7. Their mean grade is **5.03**, compared with **15.15**
+for the same notices' official title and detail text. Exact fixture wording, cohort sizes,
+and the one-off rationale are recorded in
+`docs/evidence/property-a11y-template-fallbacks/verdicts.json`.
+
+The census now ratchets two measures together: authored-summary mean grade may not rise,
+and `templated_fraction` may not fall. The committed baseline is
+`site/property-a11y-ratchet.json`; the Reading-level job runs the live census so a new
+unsupported notice pattern becomes a coverage regression rather than an invisible fallback.
+Reproduce both checks with:
+
+```bash
+node tools/property_a11y_census.mjs --limit 50000 \
+  --ratchet-baseline site/property-a11y-ratchet.json --format markdown
+```
+
 ## Method and rendering boundary
 
 The census uses the repository's established reading-level tool,
@@ -229,6 +263,7 @@ hash when the source changes, and report both coverage and precision:
 
 - official title/body grade distribution by pattern;
 - authored-summary grade distribution, once summaries exist;
+- templated fraction, with every fallback retained in the denominator;
 - source signals versus extracted typed events;
 - source-grounded actions versus surfaced actions;
 - known cross-type false positives;

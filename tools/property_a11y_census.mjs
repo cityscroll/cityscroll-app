@@ -345,12 +345,41 @@ function summarizePlainLanguage(records) {
   return {
     templated: templated.length,
     fallback_to_official_text: records.length - templated.length,
+    templated_fraction: records.length ? round(templated.length / records.length, 6) : null,
     coverage_pct: records.length ? round((templated.length / records.length) * 100) : null,
     baseline_combined: baseline,
     authored_summary: authored,
     mean_grade_reduction: Number.isFinite(baseline.mean_grade) && Number.isFinite(authored.mean_grade)
       ? round(baseline.mean_grade - authored.mean_grade)
       : null,
+  };
+}
+
+/** Metrics that can only improve in the declared direction across census runs. */
+export function propertyA11yRatchetMetrics(report) {
+  return {
+    grade_level: report?.overall?.plain_language?.authored_summary?.mean_grade ?? null,
+    templated_fraction: report?.overall?.plain_language?.templated_fraction ?? null,
+  };
+}
+
+/** Compare the census with a committed two-metric baseline. */
+export function evaluatePropertyA11yRatchet(report, baseline = {}) {
+  const measured = propertyA11yRatchetMetrics(report);
+  const definitions = baseline?.metrics || {};
+  const results = Object.fromEntries(["grade_level", "templated_fraction"].map((name) => {
+    const definition = definitions[name] || {};
+    const direction = definition.direction;
+    const limit = definition.baseline;
+    const value = measured[name];
+    const valid = Number.isFinite(value) && Number.isFinite(limit) && new Set(["max", "min"]).has(direction);
+    const pass = valid && (direction === "max" ? value <= limit : value >= limit);
+    return [name, { value, baseline: limit ?? null, direction: direction || null, pass }];
+  }));
+  return {
+    schema_version: 1,
+    pass: Object.values(results).every((result) => result.pass),
+    metrics: results,
   };
 }
 
@@ -420,6 +449,10 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       preset: "nycsg7",
       primary_formula: "flesch_kincaid_grade",
       target_max_grade: 7,
+      tracked_metrics: {
+        grade_level: { direction: "max", surface: "plain_summary", statistic: "mean_grade" },
+        templated_fraction: { direction: "min", numerator: "templated notices", denominator: "all notices" },
+      },
     },
     renderer_contract: {
       title: "short_title after the shared notice-text cleaner",
@@ -475,12 +508,17 @@ export function reportAsMarkdown(report) {
   const extraction = report.overall.current_extraction;
   const signals = report.overall.signals;
   const plain = report.overall.plain_language;
+  const ratchetLines = report.ratchet ? [
+    "",
+    `Census ratchet: ${report.ratchet.pass ? "PASS" : "FAIL"}; grade_level ${report.ratchet.metrics.grade_level.value} (maximum ${report.ratchet.metrics.grade_level.baseline}); templated_fraction ${report.ratchet.metrics.templated_fraction.value} (minimum ${report.ratchet.metrics.templated_fraction.baseline}).`,
+  ] : [];
   return [
     `Corpus: ${report.corpus.count} notices (${report.corpus.start_date_min} through ${report.corpus.start_date_max}); SHA-256 \`${report.corpus.sha256}\`.`,
     "",
     `Combined title + rendered detail body: mean grade ${score.mean_grade}, median ${score.median_grade}, p90 ${score.p90_grade}; ${score.at_or_below_grade_7}/${score.scored} at or below grade 7.`,
     "",
     `Receipt-backed plain summaries: ${plain.templated}/${report.corpus.count} notices (${plain.coverage_pct}%); authored mean grade ${plain.authored_summary.mean_grade} versus ${plain.baseline_combined.mean_grade} for the same notices, a ${plain.mean_grade_reduction}-grade reduction; ${plain.authored_summary.at_or_below_grade_7}/${plain.authored_summary.scored} at or below grade 7.`,
+    ...ratchetLines,
     "",
     `Typed timed events: ${extraction.typed_event_count}; bid-deadline signals ${signals.bid_deadline}, typed bid deadlines ${extraction.typed_bid_deadline}, signals without a parseable date ${extraction.bid_deadline_signal_without_parseable_date}; known cross-type false positives ${extraction.known_cross_type_false_positive_count}; honest-empty notices ${extraction.honest_empty_typed_events}.`,
     "",
@@ -517,7 +555,7 @@ function inputRows(payload) {
 }
 
 function parseArgs(argv) {
-  const options = { asOf: null, input: null, format: "json", limit: DEFAULT_LIMIT, executable: "readable-or-else" };
+  const options = { asOf: null, input: null, format: "json", limit: DEFAULT_LIMIT, executable: "readable-or-else", ratchetBaseline: null };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") return { ...options, help: true };
@@ -526,6 +564,7 @@ function parseArgs(argv) {
     else if (arg === "--format") options.format = argv[++index];
     else if (arg === "--limit") options.limit = Number(argv[++index]);
     else if (arg === "--readable-or-else") options.executable = argv[++index];
+    else if (arg === "--ratchet-baseline") options.ratchetBaseline = argv[++index];
     else throw new Error(`Unknown argument: ${arg}`);
   }
   if (options.asOf && !/^\d{4}-\d{2}-\d{2}$/.test(options.asOf)) throw new Error("--as-of must be YYYY-MM-DD");
@@ -535,7 +574,7 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  return `Usage: node tools/property_a11y_census.mjs [options]\n\nOptions:\n  --as-of YYYY-MM-DD       Bound the live City Record corpus by start_date\n  --input FILE              Score a saved JSON corpus instead of fetching live data\n  --format json|markdown    Output format (default: json)\n  --limit N                 Maximum live rows (default: ${DEFAULT_LIMIT})\n  --readable-or-else PATH   Override the readability executable\n`;
+  return `Usage: node tools/property_a11y_census.mjs [options]\n\nOptions:\n  --as-of YYYY-MM-DD       Bound the live City Record corpus by start_date\n  --input FILE              Score a saved JSON corpus instead of fetching live data\n  --format json|markdown    Output format (default: json)\n  --limit N                 Maximum live rows (default: ${DEFAULT_LIMIT})\n  --readable-or-else PATH   Override the readability executable\n  --ratchet-baseline FILE  Fail if grade level rises or templated fraction falls\n`;
 }
 
 export async function main(argv = process.argv.slice(2)) {
@@ -554,8 +593,12 @@ export async function main(argv = process.argv.slice(2)) {
   }
   const scores = await scoreSurfaces(rows, options.executable);
   const report = summarizeCensus(rows, scores, { asOf: options.asOf, source });
+  if (options.ratchetBaseline) {
+    const baseline = JSON.parse(await readFile(options.ratchetBaseline, "utf8"));
+    report.ratchet = evaluatePropertyA11yRatchet(report, baseline);
+  }
   process.stdout.write(options.format === "markdown" ? `${reportAsMarkdown(report)}\n` : `${JSON.stringify(report, null, 2)}\n`);
-  return 0;
+  return report.ratchet?.pass === false ? 1 : 0;
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
