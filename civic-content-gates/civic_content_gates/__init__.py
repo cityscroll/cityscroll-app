@@ -13,6 +13,7 @@ __version__ = "0.1.0"
 
 SUITE_MEMBERS = (
     "link_text",
+    "control_labels",
     "i18n_keys",
     "nyc_copy_lint",
     "heading_punctuation",

@@ -1,0 +1,14 @@
+{
+  "base_revision": "origin/main",
+  "fixture": "20260804001",
+  "source": "deterministic City Record and NYC Rules fixture",
+  "viewports": [
+    390,
+    1440
+  ],
+  "states": [
+    "before",
+    "after",
+    "after-es"
+  ]
+}

@@ -155,6 +155,12 @@ test("public Property domain mounts process rail + explorer cards; temporal rail
   assert.match(index, /id="processrail"/);
   assert.match(index, /property-domain-intro/);
   assert.match(index, /function propertyExplorerCardHTML/);
+  const cardTemplate = index.slice(
+    index.indexOf("function propertyExplorerCardHTML"),
+    index.indexOf("function propertyClusterCardHTML"),
+  );
+  assert.match(cardTemplate, /closed \? "property_action_open_notice"/);
+  assert.doesNotMatch(cardTemplate, /t\("property_action_closed"\)/);
   assert.match(index, /buildPropertyExplorerEntries/);
   assert.match(index, /const PROP_STAGES=\[\["all","stage_all"\],\["proposed"/);
   assert.match(index, /function propStage\(r\)/);

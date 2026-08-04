@@ -2,9 +2,10 @@
 //
 // Field cases pin the real gate behaviours that must not drift under extraction:
 //   1. link_text flags a naked "click here"
-//   2. i18n_keys fails when a shipping language is missing an English key
-//   3. reading_level.py accepts the card-style `--max-grade 7 about.html` path
-//   4. suite runner reports per-gate VERDICT lines for before/after comparison
+//   2. control_labels separates terse actions from status/context copy
+//   3. i18n_keys fails when a shipping language is missing an English key
+//   4. reading_level.py accepts the card-style `--max-grade 7 about.html` path
+//   5. suite runner reports per-gate VERDICT lines for before/after comparison
 //
 // Hermetic fixtures — never mutates site/.
 
@@ -109,6 +110,60 @@ test("link_text: field case — flags naked 'click here', passes descriptive tex
       "--root", dir, "--page", "about.html",
     ]);
     assert.equal(good.status, 0, `expected pass; stderr=${good.stderr}`);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("control_labels: rejects long/status controls while allowing full accessible names", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-controls-"));
+  try {
+    writeMinimalI18n(dir, {
+      en: {
+        long_action: "Attend or follow the public hearing",
+        status_action: "Public comment is closed",
+        terse_action: "Follow hearing",
+      },
+      shipping: ["es"],
+      langFiles: {
+        es: {
+          long_action: "Asistir o seguir la audiencia pública",
+          status_action: "Los comentarios están cerrados",
+          terse_action: "Seguir audiencia",
+        },
+      },
+    });
+
+    writeFileSync(
+      join(dir, "index.html"),
+      `<button class="act" data-i18n="long_action">Attend or follow the public hearing</button>\n`,
+    );
+    const long = runPython([
+      "-m", "civic_content_gates", "check", "control_labels", "--root", dir,
+    ]);
+    assert.notEqual(long.status, 0, "five-plus visible words must fail");
+    assert.match(long.stderr + long.stdout, /6 words/);
+
+    writeFileSync(
+      join(dir, "index.html"),
+      `<button class="act" data-i18n="status_action">Public comment is closed</button>\n`,
+    );
+    const status = runPython([
+      "-m", "civic_content_gates", "check", "control_labels", "--root", dir,
+    ]);
+    assert.notEqual(status.status, 0, "status phrasing must not masquerade as a control");
+    assert.match(status.stderr + status.stdout, /status phrasing/);
+
+    writeFileSync(
+      join(dir, "index.html"),
+      `<button class="act" data-i18n="terse_action" ` +
+        `aria-label="Attend or follow the public hearing">Follow hearing</button>` +
+        `<span role="status">Public comment is closed</span>\n`,
+    );
+    const good = runPython([
+      "-m", "civic_content_gates", "check", "control_labels", "--root", dir,
+    ]);
+    assert.equal(good.status, 0, `terse visible action plus separate status should pass: ${good.stderr}`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -257,7 +312,7 @@ test("suite runner: machine VERDICT lines cover every default member (minus read
     ]);
     assert.equal(result.status, 0, `suite should pass fixture; out=${result.stdout}\nerr=${result.stderr}`);
     for (const name of [
-      "link_text", "i18n_keys", "nyc_copy_lint",
+      "link_text", "control_labels", "i18n_keys", "nyc_copy_lint",
       "heading_punctuation", "page_metadata", "genai_disclosure",
     ]) {
       assert.match(result.stdout, new RegExp(`VERDICT ${name} exit=0`));
@@ -273,6 +328,7 @@ test("house wrappers: test/standards paths still invoke the package (live site, 
   // the pre-extraction green baseline committed under docs/evidence/civic-content-gates/.
   const gates = [
     ["link_text.py"],
+    ["control_labels.py"],
     ["i18n_keys.py"],
     ["heading_punctuation.py"],
     ["page_metadata.py"],

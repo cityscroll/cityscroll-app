@@ -305,8 +305,9 @@
   .next-action-rail h3{margin:0 0 10px;font:700 17px/1.2 var(--font-display);color:var(--ink)}
   .next-action-list{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
   .next-action-list .act{margin:0;min-height:44px}
+  .next-action-item{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
   .next-action-list .act.primary{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
-  .next-action-list .act-official{display:block;margin-top:4px;font:500 10px/1.2 ui-monospace,SFMono-Regular,monospace;opacity:.78;overflow-wrap:anywhere}
+  .next-action-list .act-official{font:500 10px/1.2 ui-monospace,SFMono-Regular,monospace;color:var(--muted);overflow-wrap:anywhere}
   .next-action-unavailable{flex:1 1 220px;padding:9px 11px;border:1px dashed var(--rule-strong);border-radius:7px;color:var(--muted);font:600 13px/1.35 ui-sans-serif,system-ui,sans-serif;background:var(--paper-2)}
   .next-action-guide-lead{flex:1 1 220px;padding:9px 11px;border:1px solid var(--rule-strong);border-radius:7px;color:var(--ink);font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;background:var(--paper-2);min-height:44px;display:flex;align-items:center}
   .bid-guide{margin-top:12px;border-top:1px solid var(--rule);padding-top:10px}
@@ -1611,15 +1612,15 @@
           <span class="export-actions">
             <span class="export-band" id="money-export-band" hidden>
               <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
-              <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-              <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
+              <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel</button>
+              <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print</button>
             </span>
             <details class="utility-overflow export-overflow" id="money-export-overflow">
               <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
               <div class="utility-overflow-content">
                 <button class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
-                <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-                <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
+                <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel</button>
+                <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print</button>
               </div>
             </details>
           </span>
@@ -1720,7 +1721,7 @@
 
       <div class="career-intro">
         <details class="career-how" id="career-how-details">
-          <summary data-i18n="staffing_exam_help">New to civil-service exams? How it works</summary>
+          <summary data-i18n="staffing_exam_help">Learn about exams</summary>
           <div class="career-how-body">
             <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
               <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
@@ -1781,15 +1782,15 @@
       <div class="staffing-export-actions export-actions">
         <span class="export-band" id="people-export-band" hidden>
           <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
-          <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-          <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print</button>
         </span>
         <details class="utility-overflow export-overflow" id="people-export-overflow">
           <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
           <div class="utility-overflow-content">
             <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
-            <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-            <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
+            <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel</button>
+            <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print</button>
           </div>
         </details>
       </div>
@@ -1876,15 +1877,15 @@
     <div class="exportbar">
       <span class="export-band" id="land-export-band" hidden>
         <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
-        <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-        <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print</button>
       </span>
       <details class="utility-overflow export-overflow" id="land-export-overflow">
         <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
-          <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-          <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print</button>
         </div>
       </details>
     </div>
@@ -1965,16 +1966,16 @@
       <span class="export-band" id="property-export-band" hidden>
         <button class="mini export-control" data-export-property-auction hidden><span data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span> · <span data-i18n="export_csv">Export CSV</span> <span data-property-auction-count></span></button>
         <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
-        <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-        <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print</button>
       </span>
       <details class="utility-overflow export-overflow" id="property-export-overflow">
         <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-property-auction hidden><span data-i18n="disposition_stage_auction_or_rfp">Auction / RFP</span> · <span data-i18n="export_csv">Export CSV</span> <span data-property-auction-count></span></button>
           <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
-          <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-          <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print</button>
         </div>
       </details>
     </div>
@@ -2001,15 +2002,15 @@
     <div class="exportbar">
       <span class="export-band" id="rules-export-band" hidden>
         <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
-        <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-        <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print</button>
       </span>
       <details class="utility-overflow export-overflow" id="rules-export-overflow" hidden>
         <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
-          <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-          <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print</button>
         </div>
       </details>
     </div>
@@ -2064,15 +2065,15 @@
     <div class="exportbar">
       <span class="export-band" id="meetings-export-band" hidden>
         <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
-        <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-        <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
+        <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel</button>
+        <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print</button>
       </span>
       <details class="utility-overflow export-overflow" id="meetings-export-overflow" hidden>
         <summary class="act mini" data-i18n="share_export_btn">Share / export</summary>
         <div class="utility-overflow-content">
           <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
-          <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-          <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel</button>
+          <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print</button>
         </div>
       </details>
     </div>
@@ -2210,7 +2211,7 @@
           <div class="afield">
             <label data-i18n="quick_suggestions">Quick suggestions</label>
             <div class="wand">
-              <button type="button" class="wandchip" data-w="rezone" data-p="79 Rivington" data-i18n="sugg_rezone_rivington">Rezonings near 79 Rivington</button>
+              <button type="button" class="wandchip" data-w="rezone" data-p="79 Rivington" data-i18n="sugg_rezone_rivington">Find Rivington rezonings</button>
               <button type="button" class="wandchip" data-w="bigaward" data-p="1000000" data-i18n="sugg_awards_1m">Awards over $1M</button>
               <button type="button" class="wandchip" data-w="rfpkw" data-p="construction" data-i18n="sugg_construction_rfp">Construction RFPs</button>
             </div>
@@ -2244,7 +2245,7 @@
       <div class="afield">
         <label id="quizfreqlbl"><span class="qstep">4</span> <span data-i18n="quiz_step3">How often?</span></label>
         <div class="chiprow" id="quizfreq" role="group" aria-labelledby="quizfreqlbl" style="margin-top:6px">
-          <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
+          <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Send daily</button>
           <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
         </div>
         <!-- #afreq is the shared model for aDescribe/subscribe; frequency chips drive it.
@@ -2254,7 +2255,7 @@
       </div>
 
       <div class="alerts-finish">
-        <button id="asubscribe" type="button" data-i18n="subscribe_btn">Subscribe →</button>
+        <button id="asubscribe" type="button" data-i18n="subscribe_btn">Subscribe</button>
         <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
         <!-- Characterization alias: same action as #quizgo; keep clickable without a second form. -->
         <button id="apreview" type="button" data-i18n="preview_digest_btn">Preview today's digest</button>
