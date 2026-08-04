@@ -627,7 +627,7 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
       },
     },
     cache: {
-      // Seed must include assembly_version + ocp_award + civic_events so cacheGet treats it as complete.
+      // Seed must include assembly_version + ocp_award + civic_events + award_prime_goal so cacheGet treats it as complete.
       "ALREADY": {
         lifecycle: JSON.stringify({
           timeline: [],
@@ -635,6 +635,7 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
           ok: true,
           ocp_award: { status: "unmatched", source: "ocp-recent-awards" },
           civic_events: [],
+          award_prime_goal: { schema: "cityscroll.award_prime_goal.v1", eligible: false },
           assembly_version: CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
         }),
       },
@@ -669,6 +670,11 @@ const CURRENT_ASSEMBLY = {
   assembly_version: CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
   coherence: { version: "lifecycle_coherence_v2", issues: [] },
   solicitation_recovery: { status: "matched", source: "city-record", sources_checked: [] },
+  award_prime_goal: {
+    schema: "cityscroll.award_prime_goal.v1",
+    eligible: true,
+    subcontract_goal: { status: "not_published", goal_percent: null },
+  },
   timeline: [
     { stage: "solicitation", status: "matched", source: "city-record", date: "2024-11-01" },
     { stage: "award", status: "matched", source: "city-record", date: "2025-01-10" },
@@ -689,7 +695,7 @@ test("contractLifecycleCacheIsCurrent rejects missing/old assembly_version", () 
   assert.equal(contractLifecycleCacheIsCurrent(CURRENT_ASSEMBLY), true);
 });
 
-test("contractLifecycleCacheIsCurrent still requires ocp_award + civic_events", () => {
+test("contractLifecycleCacheIsCurrent still requires ocp_award + civic_events + award_prime_goal", () => {
   assert.equal(
     contractLifecycleCacheIsCurrent({
       ...CURRENT_ASSEMBLY,
@@ -701,6 +707,13 @@ test("contractLifecycleCacheIsCurrent still requires ocp_award + civic_events", 
     contractLifecycleCacheIsCurrent({
       ...CURRENT_ASSEMBLY,
       civic_events: undefined,
+    }),
+    false,
+  );
+  assert.equal(
+    contractLifecycleCacheIsCurrent({
+      ...CURRENT_ASSEMBLY,
+      award_prime_goal: null,
     }),
     false,
   );
