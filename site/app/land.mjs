@@ -110,6 +110,7 @@ function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
 }
 function landHearingRowHTML(row, i){
   const when=row.hearing_at||row.hearing_date||"";
+  const whenLabel=fdt(when,{dateOnly:row.parse_status==="published_date_only"});
   const modes=(row.attendance_modes||[]).map(mode=>{
     if(mode==="in_person") return t("land_hearings_mode_list_in_person");
     if(mode==="livestream") return t("land_hearings_mode_list_livestream");
@@ -129,7 +130,7 @@ function landHearingRowHTML(row, i){
   return `<div class="row land-hearing-row" data-i="${i}" data-project-id="${escUiHtml(row.project_id||"")}" tabindex="0" role="button">
     <p class="rtitle">${escUiHtml(row.project_name||row.project_id||t("unnamed_project"))}</p>
     <p class="rmeta"><span class="ragency">${escUiHtml(row.borough||"")}${row.representing?` · ${escUiHtml(row.representing)}`:""}</span>
-      · ${t("land_hearings_card_when",{date:fdt(when)})}${modeTxt?` · ${escUiHtml(modeTxt)}`:""}
+      · ${t("land_hearings_card_when",{date:whenLabel})}${modeTxt?` · ${escUiHtml(modeTxt)}`:""}
       ${venue?`<br>${venue}`:""}
       ${row.hearing_location_raw&&!row.venue_address?`<br lang="en" dir="ltr">${escUiHtml(row.hearing_location_raw)}`:""}
     </p>

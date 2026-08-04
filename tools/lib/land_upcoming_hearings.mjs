@@ -22,8 +22,25 @@ export const LAND_HEARING_SWEEP_STATUSES = Object.freeze([
   "Filed",
 ]);
 
-export const LAND_UPCOMING_HEARINGS_SCHEMA_VERSION = 1;
-export const LAND_HEARING_MATERIALIZATION_METHOD = "zap_disposition_sweep_v1";
+export const LAND_UPCOMING_HEARINGS_SCHEMA_VERSION = 2;
+export const LAND_HEARING_MATERIALIZATION_METHOD = "zap_published_hearing_sweep_v2";
+export const ZAP_MILESTONE_HEARING_SOURCE = "zap-api-milestones";
+
+export const ZAP_HEARING_MILESTONE_CLASSES = Object.freeze({
+  cpc_pre_hearing_review_session: Object.freeze({
+    representing: "City Planning Commission",
+    source_titles: Object.freeze([
+      "Review Session - Pre-Hearing Review / Post Referral",
+    ]),
+  }),
+  cpc_public_hearing: Object.freeze({
+    representing: "City Planning Commission",
+    source_titles: Object.freeze([
+      "CPC Public Meeting - Public Hearing",
+      "City Planning Commission Public Hearing",
+    ]),
+  }),
+});
 
 /** Fabricated project names from the pre-materialization demo pad — never ship. */
 const KNOWN_SYNTHETIC_PROJECT_NAMES = new Set([
@@ -70,13 +87,26 @@ export function isTraceableHearingRow(row) {
   const day = String(row.hearing_date || row.hearing_at || "").slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return false;
   const src = String(row.source || row.provenance?.source || "");
-  if (src && src !== ZAP_HEARING_LOGISTICS_SOURCE && src !== "zap-api-dispositions") {
-    // Unknown source family — still require project_id + date, but flag below.
-  }
-  // Prefer explicit disposition provenance when present.
   const field = row.provenance?.field || row.provenance?.hearing_at?.field;
-  if (field && !/dcp-publichearinglocation|dcp-dateofpublichearing/i.test(String(field))) {
-    // Non-ZAP field label is not automatically synthetic, but lacks preferred trace.
+  if (src === ZAP_MILESTONE_HEARING_SOURCE) {
+    if (field !== "dcp-reviewmeetingdate") return false;
+    if (!Object.hasOwn(ZAP_HEARING_MILESTONE_CLASSES, String(row.event_class || ""))) {
+      return false;
+    }
+    const classification = classifyZapHearingMilestone({
+      source_title: row.milestone_source_title,
+      title: row.milestone_title,
+      time: { basis: "review_meeting" },
+    });
+    if (classification?.event_class !== row.event_class) return false;
+    if (!String(row.milestone_id || "").trim()) return false;
+    if (!String(row.portal_url || "").startsWith("https://zap.planning.nyc.gov/projects/")) {
+      return false;
+    }
+  } else if (src && src !== ZAP_HEARING_LOGISTICS_SOURCE && src !== "zap-api-dispositions") {
+    return false;
+  } else if (field && !/dcp-publichearinglocation|dcp-dateofpublichearing/i.test(String(field))) {
+    return false;
   }
   return true;
 }
@@ -147,24 +177,194 @@ export function enrichHearingRows(logistics, meta = {}) {
   }));
 }
 
+function normalizedMilestoneTitle(value) {
+  return String(value || "")
+    .replace(/[–—]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+/** Return the accepted published milestone class, or null outside the narrow contract. */
+export function classifyZapHearingMilestone(milestone) {
+  if (milestone?.time?.basis !== "review_meeting") return null;
+  const titles = [milestone.source_title, milestone.title]
+    .map(normalizedMilestoneTitle)
+    .filter(Boolean);
+  for (const [eventClass, contract] of Object.entries(ZAP_HEARING_MILESTONE_CLASSES)) {
+    const accepted = contract.source_titles.map(normalizedMilestoneTitle);
+    if (titles.some((title) => accepted.includes(title))) {
+      return { event_class: eventClass, representing: contract.representing };
+    }
+  }
+  return null;
+}
+
+function isHearingShapedMilestone(milestone) {
+  if (milestone?.time?.basis !== "review_meeting") return false;
+  const publishedText = [milestone.source_title, milestone.title, milestone.description]
+    .filter(Boolean)
+    .join(" ");
+  return /\bhearing\b|\breview session\b|\bpublic meeting\b/i.test(publishedText);
+}
+
+function milestoneHearingRow(milestone, classification, meta = {}) {
+  const hearingDate = String(milestone?.time?.value || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(hearingDate)) return null;
+  const hearingAt = String(milestone?.review_meeting_at || hearingDate);
+  const projectId = String(meta.project_id || "").trim();
+  if (!projectId) return null;
+  const portalUrl = meta.portal_url
+    || `https://zap.planning.nyc.gov/projects/${encodeURIComponent(projectId)}`;
+  return {
+    schema_version: ZAP_HEARING_LOGISTICS_SCHEMA_VERSION,
+    source: ZAP_MILESTONE_HEARING_SOURCE,
+    project_id: projectId,
+    project_name: meta.project_name || null,
+    public_status: meta.public_status || null,
+    portal_url: portalUrl,
+    borough: meta.borough || null,
+    milestone_id: milestone.id || null,
+    milestone_title: milestone.title || null,
+    milestone_source_title: milestone.source_title || null,
+    event_class: classification.event_class,
+    representing: classification.representing,
+    phase_id: "cpc",
+    hearing_date: hearingDate,
+    hearing_at: hearingAt,
+    hearing_location_raw: null,
+    venue_address: null,
+    livestream_url: null,
+    vote_location: null,
+    attendance_modes: [],
+    maps_url: null,
+    parse_status: "published_date_only",
+    provenance: {
+      field: "dcp-reviewmeetingdate",
+      source: ZAP_MILESTONE_HEARING_SOURCE,
+      value: hearingAt,
+      title: {
+        field: milestone.source_title_field || "display-name",
+        value: milestone.source_title || milestone.title || null,
+      },
+      classification: {
+        method: "exact_published_title_v1",
+        event_class: classification.event_class,
+      },
+      derived: [],
+    },
+  };
+}
+
 /**
- * Extract enriched hearing logistics from one ZAP API project payload + SODA meta.
+ * Evaluate source-published ZAP meeting milestones against the accepted hearing-title contract.
+ * Rows outside the contract are retained only as a bounded review sample, never as product data.
  */
-export function hearingsFromZapApiPayload(apiPayload, meta = {}) {
+export function reviewZapHearingMilestones(record, meta = {}) {
+  const hearings = [];
+  const reviewedFalsePositiveSample = [];
+  let publishedMeetingDatesEvaluated = 0;
+  let hearingShapedCandidatesReviewed = 0;
+  const acceptedByClass = {};
+
+  for (const milestone of record?.milestones || []) {
+    if (milestone?.time?.basis !== "review_meeting") continue;
+    publishedMeetingDatesEvaluated += 1;
+    const classification = classifyZapHearingMilestone(milestone);
+    if (isHearingShapedMilestone(milestone)) hearingShapedCandidatesReviewed += 1;
+    if (classification) {
+      const row = milestoneHearingRow(milestone, classification, meta);
+      if (row) {
+        hearings.push(row);
+        acceptedByClass[classification.event_class] =
+          (acceptedByClass[classification.event_class] || 0) + 1;
+      }
+      continue;
+    }
+    if (isHearingShapedMilestone(milestone) && reviewedFalsePositiveSample.length < 12) {
+      reviewedFalsePositiveSample.push({
+        project_id: meta.project_id || record?.project_id || null,
+        milestone_id: milestone.id || null,
+        source_title: milestone.source_title || milestone.title || null,
+        display_title: milestone.title || null,
+        meeting_date: milestone.time?.value || null,
+        status: milestone.status || null,
+        review_result: "outside_exact_title_contract",
+      });
+    }
+  }
+  return {
+    hearings,
+    published_meeting_dates_evaluated: publishedMeetingDatesEvaluated,
+    hearing_shaped_candidates_reviewed: hearingShapedCandidatesReviewed,
+    accepted_by_class: acceptedByClass,
+    reviewed_false_positive_sample: reviewedFalsePositiveSample,
+  };
+}
+
+/** Parse one ZAP API payload once and return disposition + accepted milestone rows. */
+export function materializationRowsFromZapApiPayload(apiPayload, meta = {}) {
   const record = parseZapApiProject(apiPayload);
-  if (!record?.project_id && !meta.project_id) return [];
-  const logistics = extractZapHearingLogistics(record, {
-    project_id: record.project_id || meta.project_id,
-    portal_url: record.portal_url || meta.portal_url,
-    borough: meta.borough || record.open_data?.borough || null,
-  });
-  return enrichHearingRows(logistics, {
+  if (!record?.project_id && !meta.project_id) {
+    return {
+      hearings: [],
+      milestone_review: reviewZapHearingMilestones(null),
+    };
+  }
+  const enrichedMeta = {
     project_id: record.project_id || meta.project_id,
     project_name: record.project_name || meta.project_name,
     public_status: record.public_status || meta.public_status,
     portal_url: record.portal_url || meta.portal_url,
-    borough: meta.borough,
-  });
+    borough: meta.borough || record.open_data?.borough || null,
+  };
+  const dispositionRows = enrichHearingRows(
+    extractZapHearingLogistics(record, enrichedMeta),
+    enrichedMeta,
+  );
+  const milestoneReview = reviewZapHearingMilestones(record, enrichedMeta);
+  return {
+    hearings: [...dispositionRows, ...milestoneReview.hearings],
+    milestone_review: milestoneReview,
+  };
+}
+
+/**
+ * Extract enriched hearing logistics from one ZAP API project payload + SODA meta.
+ */
+export function hearingsFromZapApiPayload(apiPayload, meta = {}) {
+  return materializationRowsFromZapApiPayload(apiPayload, meta).hearings;
+}
+
+function countRowsByEventClass(rows) {
+  const counts = {};
+  for (const row of rows || []) {
+    if (!row?.event_class) continue;
+    counts[row.event_class] = (counts[row.event_class] || 0) + 1;
+  }
+  return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
+}
+
+function dedupeUpcomingHearings(rows) {
+  const byProjectDay = new Map();
+  for (const row of rows || []) {
+    const key = `${String(row.project_id || "").toUpperCase()}|${String(
+      row.hearing_date || row.hearing_at || "",
+    ).slice(0, 10)}`;
+    const previous = byProjectDay.get(key);
+    if (!previous || (
+      previous.source === ZAP_MILESTONE_HEARING_SOURCE
+      && row.source !== ZAP_MILESTONE_HEARING_SOURCE
+    )) {
+      byProjectDay.set(key, row);
+    }
+  }
+  return [...byProjectDay.values()].sort((a, b) =>
+    String(a.hearing_at || a.hearing_date || "").localeCompare(
+      String(b.hearing_at || b.hearing_date || ""),
+    )
+    || String(a.project_id || "").localeCompare(String(b.project_id || ""))
+  );
 }
 
 /**
@@ -175,12 +375,21 @@ export function hearingsFromZapApiPayload(apiPayload, meta = {}) {
  */
 export function buildUpcomingHearingsSnapshot(allHearings, opts = {}) {
   const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
-  const upcoming = filterHearingLogistics(allHearings, {
+  const traceable = (allHearings || []).filter(
+    (row) => !isSyntheticHearingRow(row) && isTraceableHearingRow(row),
+  );
+  const dispositionRows = traceable.filter((row) => row.source !== ZAP_MILESTONE_HEARING_SOURCE);
+  const milestoneRows = traceable.filter((row) => row.source === ZAP_MILESTONE_HEARING_SOURCE);
+  const dispositionUpcoming = filterHearingLogistics(dispositionRows, {
     today,
     upcoming_only: true,
   });
-  // Fail closed: never emit synthetic rows even if a caller passed them.
-  const clean = upcoming.filter((row) => !isSyntheticHearingRow(row) && isTraceableHearingRow(row));
+  const milestoneUpcoming = filterHearingLogistics(milestoneRows, {
+    today,
+    upcoming_only: true,
+  });
+  const clean = dedupeUpcomingHearings([...dispositionUpcoming, ...milestoneUpcoming]);
+  const dispositionOnly = dedupeUpcomingHearings(dispositionUpcoming);
   const materialization = {
     method: LAND_HEARING_MATERIALIZATION_METHOD,
     mode: opts.mode || "unknown",
@@ -188,7 +397,17 @@ export function buildUpcomingHearingsSnapshot(allHearings, opts = {}) {
     projects_listed: opts.projects_listed ?? null,
     projects_fetched: opts.projects_fetched ?? null,
     projects_failed: opts.projects_failed ?? null,
-    hearings_extracted: Array.isArray(allHearings) ? allHearings.length : 0,
+    hearings_extracted: traceable.length,
+    disposition_hearings_extracted: dispositionRows.length,
+    milestone_hearings_extracted: milestoneRows.length,
+    disposition_upcoming_count: dispositionOnly.length,
+    milestone_upcoming_count: milestoneUpcoming.length,
+    incremental_milestone_count: Math.max(0, clean.length - dispositionOnly.length),
+    accepted_milestone_classes: countRowsByEventClass(milestoneUpcoming),
+    published_meeting_dates_evaluated:
+      opts.milestone_review?.published_meeting_dates_evaluated ?? null,
+    hearing_shaped_candidates_reviewed:
+      opts.milestone_review?.hearing_shaped_candidates_reviewed ?? null,
     upcoming_count: clean.length,
     statuses: opts.statuses || LAND_HEARING_SWEEP_STATUSES.slice(),
     polite_delay_ms: opts.polite_delay_ms ?? null,
@@ -196,13 +415,14 @@ export function buildUpcomingHearingsSnapshot(allHearings, opts = {}) {
   return {
     schema_version: LAND_UPCOMING_HEARINGS_SCHEMA_VERSION,
     generated_at: opts.generated_at || new Date().toISOString(),
-    source: ZAP_HEARING_LOGISTICS_SOURCE,
+    sources: [ZAP_HEARING_LOGISTICS_SOURCE, ZAP_MILESTONE_HEARING_SOURCE],
     note:
       "Precomputed land-use hearing logistics for the Land → Upcoming hearings filter. "
       + "Derived from ZAP disposition dcp-publichearinglocation + dcp-dateofpublichearing "
+      + "and exact hearing-shaped ZAP milestone titles with dcp-reviewmeetingdate "
       + "across sell-facing Open Data project statuses. Synthetic rows are forbidden; "
       + "an empty list means no future hearing dates were published at materialization time. "
-      + "Unparsed free text stays on hearing_location_raw.",
+      + "Unparsed free text stays on hearing_location_raw; absent venue and remote-mode fields remain null.",
     materialization,
     hearings: clean,
   };
@@ -214,8 +434,12 @@ export function buildUpcomingHearingsSnapshot(allHearings, opts = {}) {
 export function buildMaterializationReceipt(snapshot, extra = {}) {
   const mat = snapshot?.materialization || {};
   const detection = detectSyntheticUpcomingHearings(snapshot);
+  const {
+    milestone_review: milestoneReview = null,
+    ...receiptExtra
+  } = extra;
   return {
-    schema_version: 1,
+    schema_version: 2,
     kind: "land_upcoming_hearings_materialization",
     observed_at: snapshot?.generated_at || new Date().toISOString(),
     method: mat.method || LAND_HEARING_MATERIALIZATION_METHOD,
@@ -224,15 +448,24 @@ export function buildMaterializationReceipt(snapshot, extra = {}) {
     projects_fetched: mat.projects_fetched,
     projects_failed: mat.projects_failed,
     hearings_extracted: mat.hearings_extracted,
+    disposition_hearings_extracted: mat.disposition_hearings_extracted,
+    milestone_hearings_extracted: mat.milestone_hearings_extracted,
+    before_upcoming_count: mat.disposition_upcoming_count,
+    milestone_upcoming_count: mat.milestone_upcoming_count,
+    incremental_milestone_count: mat.incremental_milestone_count,
+    accepted_milestone_classes: mat.accepted_milestone_classes,
+    published_meeting_dates_evaluated: mat.published_meeting_dates_evaluated,
+    hearing_shaped_candidates_reviewed: mat.hearing_shaped_candidates_reviewed,
     upcoming_count: mat.upcoming_count ?? snapshot?.hearings?.length ?? 0,
     statuses: mat.statuses,
     detector_ok: detection.ok,
     detector_findings: detection.findings,
-    sample_project_ids: (snapshot?.hearings || [])
-      .map((h) => h.project_id)
-      .filter(Boolean)
-      .slice(0, 12),
-    ...extra,
+    sample_project_ids: [...new Set(
+      (snapshot?.hearings || []).map((h) => h.project_id).filter(Boolean),
+    )].slice(0, 12),
+    reviewed_false_positive_sample:
+      milestoneReview?.reviewed_false_positive_sample || [],
+    ...receiptExtra,
   };
 }
 
