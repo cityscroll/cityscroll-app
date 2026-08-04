@@ -1679,6 +1679,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "Pa gen dispozisyon aktyèl nan <b>{name}</b>.",
+    follow_this_area: "Swiv zòn sa a",
     property_cluster_summary: "{description} — {n} menm jan",
     property_cluster_fallback: "Avi ki gen dat",
     property_cluster_show: "Show each notice",

@@ -218,6 +218,7 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
     };
     if(lens==="property") propertyWatchExtra={
       borough:filter.borough||null, neighborhood:filter.neighborhood||null,
+      communityDistrict:filter.communityDistrict||null,
       process:filter.process||null, stage:filter.stage||null,
       asset:filter.asset||null, saleMethod:filter.saleMethod||null,
       priceBand:filter.priceBand||null, sort:filter.sort||null,
@@ -350,6 +351,9 @@ function currentLensFilterState(tab){
       if(boro) state.borough = boro;
       if($("#propertyneighborhood") && $("#propertyneighborhood").value.trim()){
         state.neighborhood = $("#propertyneighborhood").value.trim();
+      }
+      if(typeof propertyCommunityDistrict!=="undefined" && propertyCommunityDistrict){
+        state.communityDistrict=propertyCommunityDistrict;
       }
     }
     return state;

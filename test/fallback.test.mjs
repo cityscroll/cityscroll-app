@@ -44,7 +44,7 @@ const make = (API, fetchImpl) =>
     ["const API_FALLBACK = API; let apiBase = API;", // fallback base mirrors the injected one in tests
      nlParseSrc,
      extractFn("workerFetch"), extractFn("personName"), extractFn("withPersonName"),
-     extractFn("deviceParse"), extractFn("nlResolve"),
+     extractFn("deviceParse"), extractFn("enrichNeighborhoodFilter"), extractFn("nlResolve"),
      "return { parseNL, deviceParse, nlResolve };"].join("\n")
   )(API, fetchImpl);
 
@@ -64,6 +64,13 @@ test("deviceParse: land — pulls the borough", () => {
 test("deviceParse: land — council district filter", () => {
   const f = deviceParse("rezonings in council district 33", "land");
   assert.equal(f.councilDistrict, "33");
+});
+
+test("deviceParse: normalization handles ordinals and agency word order", () => {
+  const district = deviceParse("rezonings in Queens community district 3rd", "land");
+  assert.equal(district.communityDistrict, "Q03");
+  const rules = deviceParse("rules from recreation and parks department", "rules");
+  assert.equal(rules.agency, "Parks and Recreation");
 });
 
 test("deviceParse: rules — open for comment process rail", () => {
@@ -91,6 +98,11 @@ test("deviceParse: every lens returns a usable keywords array (never throws/empt
     const f = deviceParse(text, lens);
     assert.ok(Array.isArray(f.keywords) && f.keywords.length > 0, `${lens}: "${text}" -> ${JSON.stringify(f)}`);
   }
+});
+
+test("the deterministic NL parser stays off the home cold path", () => {
+  assert.doesNotMatch(src, /<script[^>]+src=["']nl_parse\.js["']/);
+  assert.match(src, /function loadNlParser\(\)/);
 });
 
 test("nlResolve: no worker configured -> device parse", async () => {

@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.neighborhood_gazetteer_receipt.v1",
+  "dataset_id": "9nt8-h7nd",
+  "source_url": "https://data.cityofnewyork.us/d/9nt8-h7nd",
+  "source_updated_at": "2026-05-28T15:11:19.000Z",
+  "source_row_count": 262,
+  "residential_nta_count": 197,
+  "neighborhood_count": 188,
+  "curated_alias_count": 38,
+  "promise_fixture_count": 55,
+  "artifact_sha256": "40b8810e07829e946c509b7d68aff894b3bf460a3136ee273e394ae936a68ebc"
+}

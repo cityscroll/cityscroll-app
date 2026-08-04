@@ -80,8 +80,8 @@ test("areaFeedLinks uses existing list filter grammar", () => {
   assert.ok(!boro.some((l) => l.lens === "money"));
   const cd = areaFeedLinks("community_district", "Q04", { onlyPositive: false });
   assert.ok(cd.some((l) => l.hash.includes("cd=Q04")));
-  assert.equal(cd.find((l) => l.lens === "property")?.scope, "borough");
-  assert.match(String(cd.find((l) => l.lens === "property")?.label_key || ""), /borough/i);
+  assert.equal(cd.find((l) => l.lens === "property")?.hash, "#property?boro=Queens&cd=Q04");
+  assert.equal(cd.find((l) => l.lens === "property")?.scope, "district");
   const council = areaFeedLinks("council_district", "25", { onlyPositive: false });
   assert.ok(council.some((l) => l.hash === "#land?council=25"));
   assert.equal(council.find((l) => l.lens === "land")?.scope, "district");

@@ -848,7 +848,7 @@ const STRINGS = {
     // Keyword placeholders
     kw_placeholder_money:   "shelter, IT, construction, security…",
     kw_placeholder_land:    "Bushwick, 79 Rivington, Gowanus…",
-    kw_placeholder_property: "address, neighborhood…",
+    kw_placeholder_property: "address or neighborhood…",
     kw_placeholder_rules:   "sanitation, licensing, rent, sidewalk…",
     kw_placeholder_meetings: "Community Board, Brooklyn, landmark…",
     kw_placeholder_people_role:   "emergency medical, attorney, engineer…",
@@ -2217,6 +2217,8 @@ const STRINGS = {
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "No current dispositions in <b>{name}</b>.",
+    follow_this_area: "Follow this area",
     property_cluster_summary: "{description} — {n} similar",
     property_cluster_fallback: "Dated notices",
     property_cluster_show: "Show each notice",

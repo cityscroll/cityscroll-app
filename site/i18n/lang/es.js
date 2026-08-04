@@ -1680,6 +1680,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "No hay disposiciones actuales en <b>{name}</b>.",
+    follow_this_area: "Seguir esta zona",
     property_cluster_summary: "{description} — {n} similares",
     property_cluster_fallback: "Avisos con fecha",
     property_cluster_show: "Show each notice",

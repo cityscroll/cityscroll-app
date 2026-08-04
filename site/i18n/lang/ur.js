@@ -1689,6 +1689,8 @@
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",
     property_nothing_current: "Nothing closing soon or upcoming right now. Recent closed notices are below.",
+    property_neighborhood_empty_html: "<b>{name}</b> میں فی الحال جائیداد کی منتقلی کے نوٹس نہیں ہیں۔",
+    follow_this_area: "اس علاقے کو فالو کریں",
     property_cluster_summary: "{description} — {n} ملتے جلتے",
     property_cluster_fallback: "تاریخ والے نوٹس",
     property_cluster_show: "Show each notice",
