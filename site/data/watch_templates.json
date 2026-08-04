@@ -2,6 +2,7 @@
   "schema_version": 1,
   "pattern": "watch_template_registry",
   "description": "Curated one-tap multi-watch bundles. Adding a vertical is data: append a template with id, audience description, and watches [{lens, filter}] that the existing /subscribe path can replay. English title/description live here for the public surface; i18n keys are optional overrides.",
+  "source": "Editorial product registry for association monitor packs. Agency names match City Record Online section Agency Rules values (e.g. Health and Mental Hygiene, Taxi and Limousine Commission, Buildings, Administration for Children's Services). Keywords are product-curated full-text seeds, not a publisher table dump.",
   "templates": [
     {
       "id": "restaurants",
