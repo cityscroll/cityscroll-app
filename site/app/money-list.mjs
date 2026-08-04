@@ -240,17 +240,19 @@ async function loadMethodFacet(where, kw){
 //
 // Solicitation M/WBE chips: pure extract from list fields (selection_method + body chunk).
 // Default 20-day floors stay off the list; only distinctive method/goal markers show.
-let mwbeGoalSurfaceToolsPromise = null;
-function mwbeGoalSurfaceTools(){
-  if(!mwbeGoalSurfaceToolsPromise){
-    mwbeGoalSurfaceToolsPromise = import("../mwbe_goal_surface.mjs").catch(() => null);
+// Named distinctly from procurement-phase ensureMwbeGoalSurfaceTools so the
+// reconstructed inline script (module-dom-equivalence) does not double-declare.
+let moneyListMwbeSurfacePromise = null;
+function moneyListMwbeSurfaceTools(){
+  if(!moneyListMwbeSurfacePromise){
+    moneyListMwbeSurfacePromise = import("../mwbe_goal_surface.mjs").catch(() => null);
   }
-  return mwbeGoalSurfaceToolsPromise;
+  return moneyListMwbeSurfacePromise;
 }
 function solicitationListChipsHTML(r){
   // Sync path uses cached module when already loaded; otherwise empty until async patch.
-  const tools = mwbeGoalSurfaceToolsPromise && mwbeGoalSurfaceToolsPromise._value
-    ? mwbeGoalSurfaceToolsPromise._value
+  const tools = moneyListMwbeSurfacePromise && moneyListMwbeSurfacePromise._value
+    ? moneyListMwbeSurfacePromise._value
     : null;
   if(!tools || typeof tools.buildSolicitationListChips !== "function") return "";
   const chips = tools.buildSolicitationListChips(r) || [];
@@ -278,8 +280,8 @@ function moneyRowHTML(r, i, terms){
     </div>`;
 }
 async function ensureMwbeListChipsReady(){
-  const tools = await mwbeGoalSurfaceTools();
-  if(tools) mwbeGoalSurfaceToolsPromise._value = tools;
+  const tools = await moneyListMwbeSurfaceTools();
+  if(tools) moneyListMwbeSurfacePromise._value = tools;
   return tools;
 }
 function renderList(autoSelect){
