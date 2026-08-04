@@ -1,6 +1,9 @@
 node_modules/
 .DS_Store
 __pycache__/
+.generated/
+docs/data-source-graph.json
+docs/data-source-graph.html
 
 # Local notes and planning dirs (not part of the product tree)
 internal/

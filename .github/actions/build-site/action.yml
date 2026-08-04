@@ -1,6 +1,11 @@
 name: Build verified site artifact
 description: Build the site once, derive its i18n stamp, and verify the public artifact.
 
+outputs:
+  data-source-graph-dir:
+    description: Directory containing the generated authenticated-desk graph artifacts.
+    value: ${{ steps.data-source-graph.outputs.path }}
+
 inputs:
   source-dir:
     description: Repository checkout to build (supports the current site/ tree and legacy root layouts).
@@ -39,10 +44,26 @@ runs:
     # corpora + boundary layer; no live GIS.
     # Node 22+: wrangler 4.x (pages deploy in the same job) requires >=22.
     # setup-node persists on PATH for later steps — do not pin Node 20 here.
-    - name: Setup Node for map density rebuild
+    - name: Setup Node for generated artifacts
       uses: actions/setup-node@v4
       with:
         node-version: 22
+    - name: Build authenticated-desk data-source graph
+      id: data-source-graph
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        if [ -f "$SOURCE_DIR/tools/data_source_graph.mjs" ]; then
+          source_root="$(cd "$SOURCE_DIR" && pwd)"
+          graph_dir="$source_root/docs"
+          node "$source_root/tools/data_source_graph.mjs" --output-dir "$graph_dir"
+          node "$source_root/tools/data_source_graph.mjs" --check --output-dir "$graph_dir"
+          echo "path=$graph_dir" >> "$GITHUB_OUTPUT"
+        else
+          echo "skip data-source graph build (tool missing)"
+        fi
     - name: Rebuild district activity (map density)
       shell: bash
       env:

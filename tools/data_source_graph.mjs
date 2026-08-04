@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, isAbsolute, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
-export const JSON_OUTPUT = "docs/data-source-graph.json";
-export const HTML_OUTPUT = "docs/data-source-graph.html";
+export const DEFAULT_OUTPUT_DIR = "docs";
+export const JSON_OUTPUT = "data-source-graph.json";
+export const HTML_OUTPUT = "data-source-graph.html";
 
 const CORE_INPUTS = [
   "docs/data-sources.md",
@@ -78,7 +79,7 @@ export function declaredInputPaths() {
   return [...new Set([...CORE_INPUTS, ...receipts])].sort();
 }
 
-function inputManifest(paths = declaredInputPaths()) {
+export function inputManifest(paths = declaredInputPaths()) {
   return paths.map((path) => {
     const text = readFileSync(join(ROOT, path), "utf8");
     return { path, sha256: sha256(text) };
@@ -374,8 +375,7 @@ function setView(view){const isGraph=view==="graph";document.getElementById("gra
 </script></body></html>\n`;
 }
 
-export function generatedGraphFiles() {
-  const inputs = inputManifest();
+export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
   const registry = readJson("site/data/source_contracts.json");
   const receiptPaths = inputs.map((input) => input.path).filter((path) => path.includes("receipts/") || path.includes("verification_receipts/"));
   const graph = buildDataSourceGraph({
@@ -394,26 +394,55 @@ export function generatedGraphFiles() {
   };
 }
 
-export function checkGeneratedGraphFiles() {
-  const files = generatedGraphFiles();
-  return Object.entries(files).filter(([path, expected]) => {
-    try { return readFileSync(join(ROOT, path), "utf8") !== expected; } catch { return true; }
-  }).map(([path]) => path);
+function outputDirectory(path = DEFAULT_OUTPUT_DIR) {
+  return isAbsolute(path) ? path : join(ROOT, path);
+}
+
+export function writeGeneratedGraphFiles({ outputDir = DEFAULT_OUTPUT_DIR, inputs } = {}) {
+  const directory = outputDirectory(outputDir);
+  const files = generatedGraphFiles({ inputs });
+  mkdirSync(directory, { recursive: true });
+  for (const [filename, contents] of Object.entries(files)) {
+    writeFileSync(join(directory, filename), contents);
+  }
+  return files;
+}
+
+export function checkGraphBuild({ outputDir = DEFAULT_OUTPUT_DIR, inputs } = {}) {
+  const directory = outputDirectory(outputDir);
+  const files = generatedGraphFiles({ inputs });
+  return Object.entries(files).filter(([filename, expected]) => {
+    try { return readFileSync(join(directory, filename), "utf8") !== expected; } catch { return true; }
+  }).map(([filename]) => filename);
+}
+
+function parseArgs(argv) {
+  const args = { check: false, outputDir: DEFAULT_OUTPUT_DIR };
+  for (let index = 0; index < argv.length; index += 1) {
+    if (argv[index] === "--check") args.check = true;
+    else if (argv[index] === "--output-dir") {
+      if (!argv[index + 1]) throw new Error("--output-dir requires a path");
+      args.outputDir = argv[index + 1];
+      index += 1;
+    } else throw new Error(`unknown argument: ${argv[index]}`);
+  }
+  return args;
 }
 
 function main() {
-  const check = process.argv.includes("--check");
+  const args = parseArgs(process.argv.slice(2));
   const files = generatedGraphFiles();
-  if (check) {
-    const mismatches = checkGeneratedGraphFiles();
+  const directory = outputDirectory(args.outputDir);
+  if (args.check) {
+    const mismatches = checkGraphBuild({ outputDir: args.outputDir });
     if (mismatches.length) {
-      for (const path of mismatches) console.error(`out of date: ${path}`);
+      for (const filename of mismatches) console.error(`out of date: ${join(directory, filename)}`);
       process.exitCode = 1;
-    } else console.log(`data-source graph current (${Object.keys(files).length} files)`);
+    } else console.log(`data-source graph current (${Object.keys(files).length} files in ${relative(ROOT, directory)})`);
     return;
   }
-  for (const [path, contents] of Object.entries(files)) writeFileSync(join(ROOT, path), contents);
-  console.log(`generated ${Object.keys(files).length} data-source graph files`);
+  writeGeneratedGraphFiles({ outputDir: args.outputDir });
+  console.log(`generated ${Object.keys(files).length} data-source graph files in ${relative(ROOT, directory)}`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || "").href) main();
