@@ -459,6 +459,10 @@ jobs:
             --baseline site/reading-level-baseline.json \
             --format gh-annotations \
             about.html api.html changelog.html data.html index.html stats.html standards.html
+          node tools/property_a11y_census.mjs \
+            --limit 50000 \
+            --ratchet-baseline site/property-a11y-ratchet.json \
+            --format markdown
       # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
       # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs
       # READABLE_OR_ELSE_LLM_BASE / READABLE_OR_ELSE_LLM_KEY / READABLE_OR_ELSE_LLM_MODEL

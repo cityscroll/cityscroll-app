@@ -8,9 +8,22 @@ import {
   currentPropertyExtraction,
   detectPropertyJargon,
   detectPropertySignals,
+  evaluatePropertyA11yRatchet,
+  propertyA11yRatchetMetrics,
   renderedNoticeSurfaces,
   searchExcerptForTerm,
 } from "../tools/property_a11y_census.mjs";
+
+function ratchetReport(gradeLevel, templatedFraction) {
+  return {
+    overall: {
+      plain_language: {
+        authored_summary: { mean_grade: gradeLevel },
+        templated_fraction: templatedFraction,
+      },
+    },
+  };
+}
 
 test("property census classifies specific patterns before the disposition catch-all", () => {
   const cases = [
@@ -136,4 +149,28 @@ test("corpus fingerprint is deterministic and source-field sensitive", () => {
   assert.equal(corpusSha256([row]), corpusSha256([{ short_title: "Disposition", request_id: "1" }]));
   assert.notEqual(corpusSha256([row]), corpusSha256([{ ...row, short_title: "Auction" }]));
   assert.equal(corpusSha256([row]), corpusSha256([{ ...row, ignored_field: "not in the source contract" }]));
+});
+
+test("the census ratchet tracks templated fraction beside authored grade level", () => {
+  const baseline = {
+    metrics: {
+      grade_level: { direction: "max", baseline: 5.2 },
+      templated_fraction: { direction: "min", baseline: 0.99 },
+    },
+  };
+  assert.deepEqual(propertyA11yRatchetMetrics(ratchetReport(5.1, 0.995)), {
+    grade_level: 5.1,
+    templated_fraction: 0.995,
+  });
+  assert.equal(evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.995), baseline).pass, true);
+
+  const coverageDrop = evaluatePropertyA11yRatchet(ratchetReport(5.1, 0.98), baseline);
+  assert.equal(coverageDrop.pass, false);
+  assert.equal(coverageDrop.metrics.grade_level.pass, true);
+  assert.equal(coverageDrop.metrics.templated_fraction.pass, false);
+
+  const gradeRegression = evaluatePropertyA11yRatchet(ratchetReport(5.3, 0.995), baseline);
+  assert.equal(gradeRegression.pass, false);
+  assert.equal(gradeRegression.metrics.grade_level.pass, false);
+  assert.equal(gradeRegression.metrics.templated_fraction.pass, true);
 });

@@ -10,6 +10,7 @@ import {
 } from "../site/property_plain_summary.mjs";
 
 const fixture = JSON.parse(await readFile(new URL("./fixtures/property_plain_summary/real_notices.json", import.meta.url)));
+const fallbackVerdicts = JSON.parse(await readFile(new URL("../docs/evidence/property-a11y-template-fallbacks/verdicts.json", import.meta.url)));
 const expectedLead = new Map([
   ["pending-destruction", "The listed products were seized and may be destroyed."],
   ["unclaimed-property", "The Property Clerk has listed items with no one claiming ownership."],
@@ -21,6 +22,7 @@ const expectedLead = new Map([
   ["udaap", "This notice is about an Urban Development Action Area Project (UDAAP)."],
   ["acquisition", "This notice is about getting a property right."],
   ["disposition-hearing", "This notice is about a public hearing on a property matter."],
+  ["public-hearing-section-pointer", "These notices are in the Public Hearing section."],
 ]);
 
 function receiptSource(row, receipt) {
@@ -70,15 +72,44 @@ test("golden summaries use only extracted actions and typed event dates", () => 
   assert.ok(hearing.definitions.some((item) => /hearing may start late/i.test(item.text)));
 });
 
-test("a notice that deviates from its classified pattern falls back to official text", () => {
-  const item = fixture.cases.find((entry) => entry.id === "deviant-disposition-fallback");
+test("a recurring section-pointer notice gets its narrow source-backed template", () => {
+  const item = fixture.cases.find((entry) => entry.id === "public-hearing-section-pointer");
   const summary = buildPropertyPlainSummary(item.row, { today: "2026-08-04" });
   assert.equal(summary.pattern, "disposition");
-  assert.equal(summary.templated, false);
-  assert.equal(summary.fallback_reason, "no_reader_visible_pattern_anchor");
-  assert.equal(summary.text, cleanNoticeText(item.row.additional_description_1));
-  assert.equal(propertyPlainSummarySurface(summary), null);
-  assert.equal(propertyPlainSummaryHTML(summary), "");
+  assert.equal(summary.templated, true);
+  assert.equal(summary.facts[0].text, "These notices are in the Public Hearing section.");
+  summary.facts[0].sources.forEach((receipt) => assertReceipt(item.row, receipt));
+});
+
+test("all nine landed fallbacks have an evidence-backed recurring-template or permanent-fallback verdict", () => {
+  assert.equal(fallbackVerdicts.verdicts.length, 9);
+  assert.deepEqual(
+    Object.fromEntries([...new Set(fallbackVerdicts.verdicts.map((item) => item.cohort))].map((cohort) => [
+      cohort,
+      fallbackVerdicts.verdicts.filter((item) => item.cohort === cohort).length,
+    ])),
+    {
+      hpd_public_hearing_section_pointer: 6,
+      real_property_parcel_public_auction: 2,
+      unique_future_interest_deed_amendment: 1,
+    },
+  );
+
+  for (const item of fallbackVerdicts.verdicts) {
+    const row = { request_id: item.request_id, section_name: "Property Disposition", ...item.row };
+    const summary = buildPropertyPlainSummary(row, { today: "2026-08-04" });
+    assert.equal(summary.pattern, item.expected_pattern, item.request_id);
+    if (item.verdict === "recurring_template") {
+      assert.equal(summary.templated, true, item.request_id);
+      assert.equal(summary.facts[0].text, item.expected_lead, item.request_id);
+      summary.facts[0].sources.forEach((receipt) => assertReceipt(row, receipt));
+    } else {
+      assert.equal(item.verdict, "permanent_honest_fallback", item.request_id);
+      assert.equal(summary.templated, false, item.request_id);
+      assert.equal(summary.fallback_reason, "no_reader_visible_pattern_anchor", item.request_id);
+      assert.ok(item.rationale.length > 80, `${item.request_id}: the permanent fallback has a recorded rationale`);
+    }
+  }
 });
 
 test("hidden-field pattern words cannot force a template", () => {
