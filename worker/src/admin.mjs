@@ -27,6 +27,11 @@ import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.m
 import { buildOpsContract } from "./lib/ops_contract.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
+import {
+  DigestShadowHoldInputError,
+  overrideDigestShadowHold,
+  resolveDigestShadowHold,
+} from "./digest_shadow_hold.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -517,8 +522,34 @@ export async function handleAdminDigestShadow(req, env) {
   if (!env.DB) return json({ error: "no-store" }, 503);
   if (req.method === "POST") {
     try {
+      let body = {};
+      const raw = await req.text();
+      if (raw) {
+        try {
+          body = JSON.parse(raw);
+        } catch {
+          return json({ error: "invalid-json" }, 400);
+        }
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return json({ error: "invalid-json" }, 400);
+        }
+      }
+      if (body.action === "override-hold") {
+        try {
+          const hold = await overrideDigestShadowHold(env.DB, {
+            day: body.day,
+            digestIds: body.digest_ids,
+            reason: body.reason,
+          });
+          return json({ hold }, 200);
+        } catch (error) {
+          const status = error instanceof DigestShadowHoldInputError ? 400 : 503;
+          return json({ error: "hold-override-failed", detail: String(error?.message || error) }, status);
+        }
+      }
+      if (body.action && body.action !== "rerun") return json({ error: "invalid-action" }, 400);
       const summary = await runDigestShadow(env);
-      return json({ summary }, summary.ok ? 200 : 503);
+      return json({ summary, hold: summary.hold }, summary.ok ? 200 : 503);
     } catch (error) {
       return json({ error: "shadow-rerun-failed", detail: String(error?.message || error) }, 503);
     }
@@ -531,7 +562,8 @@ export async function handleAdminDigestShadow(req, env) {
     const out = await readDigestShadow(env.DB, { day, digestId });
     if (!out) return json({ error: "not-run" }, 404);
     if (digestId && !out.preview) return json({ ...out, error: "preview-not-found" }, 404);
-    return json(out, out.summary?.ok === false ? 503 : 200);
+    const hold = day ? null : await resolveDigestShadowHold(env.DB);
+    return json({ ...out, hold }, out.summary?.ok === false ? 503 : 200);
   } catch (error) {
     return json({ error: "shadow-read-failed", detail: String(error?.message || error) }, 503);
   }

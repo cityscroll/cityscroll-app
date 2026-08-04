@@ -1,0 +1,32 @@
+{
+  "contract": "digest-shadow-hold-evidence.v1",
+  "measured_at": "2026-08-04T18:12:53Z",
+  "fixture_observation": {
+    "kind": "deterministic_unit_fixture",
+    "command": "node --test worker/test/digest_shadow.test.mjs worker/test/digest_shadow_hold.test.mjs worker/test/digest_rollup.test.mjs worker/test/ops_contract.test.mjs",
+    "tests_passed": 38,
+    "tests_failed": 0,
+    "scoped_delivery_case": {
+      "affected_digests": 1,
+      "held_digests": 1,
+      "unrelated_digests_queued": 1,
+      "held_queue_messages_sent": 0
+    }
+  },
+  "performance_observation": {
+    "kind": "local_microbenchmark",
+    "runtime": "Node.js v26.6.0 on arm64 macOS 26.5.2",
+    "repetitions": 7,
+    "median_policy_build_10000_ms": 8.519,
+    "median_sha256_identity_10000_ms": 78.1,
+    "median_sha256_identity_per_digest_ms": 0.00781,
+    "median_queue_partition_400_by_25_ms": 81.817
+  },
+  "production_observation": {
+    "status": "honest_absent_predeployment",
+    "holds_evaluated": null,
+    "digests_held": null,
+    "unrelated_digests_delivered": null,
+    "reason": "The hold contract does not exist in production before this change is deployed. The first live 06:00 rehearsal and 09:00 delivery cycle must be reported separately; fixture results are not presented as production behavior."
+  }
+}

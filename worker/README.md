@@ -66,7 +66,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/admin/ops-contract` | GET | **Versioned ops contract** (`ops-contract.v1`) — digest modes, daylog actions/fields, stats metrics (incl. developer-traffic exclusion), admin routes + auth classes, KV key prefixes, feature flags. No secrets. Desk panels pin `min_compatible_version` against this document (or the committed fixture `worker/ops-contract.v1.json`). Never served on public `/stats` | `ADMIN_KEY` → 404 if unset |
 | `/admin/possibly-same` | GET | Read-only desk review of candidates blocked from recent `source_records`, excluding pairs already joined to one canonical entity; `Accept: application/json` returns the shaped cards | `ADMIN_KEY` → 404 if unset; `DB` |
 | `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
-| `/admin/digest-shadow` | GET/POST | **06:00 ET digest rehearsal**. GET returns the latest/dated machine-readable run summary; `?digest=` adds one rendered HTML preview. `NEEDS_ATTENTION` returns HTTP 503 with structured redlines. POST re-runs the delivery-free build after a repair | `ADMIN_KEY` → 404 if unset; `DB` |
+| `/admin/digest-shadow` | GET/POST | **06:00 ET digest rehearsal**. GET returns the latest/dated machine-readable run summary, scoped hold state, and optional `?digest=` preview. `NEEDS_ATTENTION` returns HTTP 503 with structured redlines. POST re-runs the delivery-free build after a repair; `{ "action":"override-hold", "digest_ids":[…], "reason":"…" }` releases only named affected digests | `ADMIN_KEY` → 404 if unset; `DB` |
 | `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
@@ -88,8 +88,17 @@ The scheduled `digest-shadow-monitor.yml` poll runs after the rehearsal and open
 repair issue when the run is redlined, missing, or stale. The same redline also uses the existing
 operator-notification email path (`FEEDBACK_TO` via Resend). The repair protocol is machine-readable:
 diagnose the listed `affected_digest_ids`, apply the repair, then authenticated `POST
-/admin/digest-shadow` re-renders the full set before 09:00. The 09:00 send path is intentionally
-unchanged and does not auto-hold.
+/admin/digest-shadow` re-renders the full set before 09:00. At 12:45 UTC (15 minutes before the
+configured 13:00 UTC delivery cron), any digest IDs still named by a redlined run receive a
+`digest-shadow-hold.v1` delivery lease. The producer and queue consumer both enforce that lease;
+unrelated digests remain eligible. A `READY` rerun releases all leases and clears overrides.
+
+The failure boundary is deliberately narrow: a redline is fail-closed only for its
+`affected_digest_ids`. A missing run, unavailable hold store, or run-level redline with no named
+digest scope is fail-open and recorded distinctly rather than becoming a global email stop. Holds
+expire at 14:00 UTC; a queue message found held is acknowledged as `skipped:shadow-hold`, never
+retried into an accidental later send. The authenticated override body above requires a reason and
+can release only IDs named by that day's run.
 
 Before the digest run, the same cron refreshes the D1 notices mirror from Socrata
 (`ingest.mjs`, cursored, fail-soft) and pre-warms prior-cycle match sets for the
