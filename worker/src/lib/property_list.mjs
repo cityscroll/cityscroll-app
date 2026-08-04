@@ -42,6 +42,9 @@ export function slimCommercial(commercial) {
             : 0,
         }
       : null,
+    // The card summary composes the already-receipted event records. Keeping
+    // them in the slim view avoids a second client-side date extraction.
+    timed_events: Array.isArray(commercial.timed_events) ? commercial.timed_events : [],
     deal_signal: commercial.deal_signal
       ? {
           status: commercial.deal_signal.status,

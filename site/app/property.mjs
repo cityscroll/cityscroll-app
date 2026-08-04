@@ -829,8 +829,9 @@ function ensurePropertyCommercial(r, tools){
   }
   return null;
 }
-function propertyTimedEventChipsHTML(commercial){
-  const chips=(commercial?.event_views||[]).filter(v=>v.date&&v.label_key).map(v=>`<time class="tag ${v.chip_class}" datetime="${escUiHtml(v.date)}" data-date-chip="1"${v.band?` data-open-window-band="${v.band}"`:""}>${escUiHtml(t(v.label_key))} · ${escUiHtml(fdt(v.fmt))}${v.band?` · <span lang="en" dir="ltr">${v.band}</span>`:""}</time>`);
+function propertyTimedEventChipsHTML(commercial,omitSourceKinds=[]){
+  const omitted=new Set(omitSourceKinds);
+  const chips=(commercial?.event_views||[]).filter(v=>v.date&&v.label_key&&!omitted.has(v.source_kind)).map(v=>`<time class="tag ${v.chip_class}" datetime="${escUiHtml(v.date)}" data-date-chip="1" data-card-fact="event:${escUiHtml(v.kind)}:${escUiHtml(v.date)}"${v.band?` data-open-window-band="${v.band}"`:""}>${escUiHtml(t(v.label_key))} · ${escUiHtml(fdt(v.fmt))}${v.band?` · <span lang="en" dir="ltr">${v.band}</span>`:""}</time>`);
   return chips.length?`<div>${chips.join("")}</div>`:"";
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
@@ -851,10 +852,33 @@ function propertyCommercialTools(){
   }
   return propertyCommercialToolsPromise;
 }
-function propertyExplorerCardHTML(entry, terms, parcelLinks){
+let propertyPlainSummaryToolsPromise=null;
+function propertyPlainSummaryTools(){
+  if(!propertyPlainSummaryToolsPromise){
+    propertyPlainSummaryToolsPromise=import("../property_plain_summary.mjs").catch(()=>null);
+  }
+  return propertyPlainSummaryToolsPromise;
+}
+function ensurePropertyCardCopy(r, tools){
+  if(!r||!tools?.buildPropertyPlainSummary||!tools?.propertyCardPlainSummary) return null;
+  if(!r.property_plain_summary){
+    r.property_plain_summary=tools.buildPropertyPlainSummary(r,{
+      today:todayISO(),
+      events:r.commercial?.timed_events||undefined,
+      readerActions:r.property_reader_actions||undefined,
+    });
+    if(r.property_plain_summary?.reader_actions) r.property_reader_actions=r.property_plain_summary.reader_actions;
+  }
+  if(!Object.prototype.hasOwnProperty.call(r,"property_card_plain_summary")){
+    r.property_card_plain_summary=tools.propertyCardPlainSummary(r.property_plain_summary);
+  }
+  return r.property_card_plain_summary;
+}
+function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
   const r=entry.primary;
   if(!r) return "";
   const commercial=r.commercial||null;
+  const cardCopy=ensurePropertyCardCopy(r,plainTools);
   const glance=commercial && commercial.glance ? commercial.glance : null;
   const ev=r.event_date || (glance && glance.close_date) || null;
   const closeDate=entry.close_date
@@ -866,7 +890,8 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
     || (closeDate && daysLeft(closeDate)!==null && daysLeft(closeDate)<0);
   const propertyAddress=r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
-  const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
+  const title=cleanText(r.short_title), displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
+  const mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
@@ -900,7 +925,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
     ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
     ${priceLabel?`<span class="tag amt">${priceLabel}</span>`:""}
     ${methodLabel?`<span class="tag method">${escUiHtml(methodLabel)}</span>`:""}
-    ${Array.isArray(commercial?.event_views)&&commercial.event_views.length?propertyTimedEventChipsHTML(commercial):(closeLabel?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:"")}
+    ${Array.isArray(commercial?.event_views)&&commercial.event_views.length?propertyTimedEventChipsHTML(commercial,cardCopy?.event_kind?[cardCopy.event_kind]:[]):(closeLabel&&!cardCopy?.event_kind?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:"")}
   </div>`;
   const dealLine=(!closed && glance && glance.deal)
     ? `<p class="property-deal-signal" data-deal-status="derived">${escUiHtml(glance.deal)}</p>`
@@ -910,7 +935,8 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
     ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:``}
   </div>`;
-  const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(actionKey)}: ${title||t("untitled")}`)}" href="${noticeHref}">${t(actionKey)}</a>`;
+  const primaryActionKey=!closed&&cardCopy?.action_kind?"property_action_open_notice":actionKey;
+  const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title||t("untitled")}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
@@ -928,13 +954,17 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks){
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
-  return `<div class="fcard property-fcard${closed?" is-closed":""}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${closed?"closed":(entry.temporal_status||"open")}" data-closed="${closed?"1":"0"}">
+  const titleBlock=cardCopy
+    ? `<div class="ftitle property-card-summary" data-card-fact="${escUiHtml(cardCopy.fact_key||"")}" lang="en" dir="ltr"><a href="${noticeHref}">${escUiHtml(cardCopy.text)}</a></div>
+      <details class="inline-disclose property-card-title-source"${mev?.field==="title"?" open":""}><summary lang="en" dir="ltr">Legal title</summary><div class="inline-disclose-body property-card-title-body"><div class="property-card-display-title" lang="en" dir="ltr">${displayTitle?digTitleHTML(displayTitle,mev):t("untitled")}</div><div class="property-card-original-title"><b>Official title:</b> <q lang="en" dir="ltr">${escUiHtml(title)}</q></div></div></details>`
+    : `<div class="ftitle"><a href="${noticeHref}">${title?digTitleHTML(title,mev):t("untitled")}</a></div>`;
+  return `<div class="fcard property-fcard${closed?" is-closed":""}" data-request-id="${escUiHtml(r.request_id||"")}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${closed?"closed":(entry.temporal_status||"open")}" data-closed="${closed?"1":"0"}">
       ${commercialLead}
       ${dealLine}
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       ${processLine}
       ${entry.bbl?`<div class="tax-lien-card-slot" data-tax-lien-bbl="${escUiHtml(entry.bbl)}"></div>`:""}
-      <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
+      ${titleBlock}
       ${propertyPlaceChips(r._location)}
       ${digEvidenceHTML(mev)}
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
@@ -952,7 +982,7 @@ function propClusterRange(range){
  * frame carrying the count and date range, expandable to each notice. Built from a
  * `kind:"cluster"` entry produced by clusterRepeatedEntries in property_explorer.mjs.
  */
-function propertyClusterCardHTML(cluster){
+function propertyClusterCardHTML(cluster,plainTools){
   const rep=cluster.primary||{};
   const assetKey=rep._asset||null;
   const itemLabel=assetKey && ASSET_LABEL[assetKey] ? t(ASSET_LABEL[assetKey]) : "";
@@ -963,9 +993,12 @@ function propertyClusterCardHTML(cluster){
   const items=(cluster.members||[]).map(m=>{
     const r=m.primary; if(!r) return "";
     const title=cleanText(r.short_title)||t("untitled");
+    const cardCopy=ensurePropertyCardCopy(r,plainTools);
+    const displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
     const href=`#notice/${encodeURIComponent(r.request_id)}`;
     const d=m.close_date||r.event_date||r.start_date||null;
-    return `<li><a href="${href}">${escUiHtml(title)}</a>${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}</li>`;
+    const source=cardCopy?`<details class="inline-disclose property-card-title-source"><summary lang="en" dir="ltr">Legal title${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}</summary><div class="inline-disclose-body property-card-title-body"><div class="property-card-display-title" lang="en" dir="ltr">${escUiHtml(displayTitle)}</div><div class="property-card-original-title"><b>Official title:</b> <q lang="en" dir="ltr">${escUiHtml(title)}</q> · <a href="${href}">${t("open_notice_btn")}</a></div></div></details>`:`<a href="${href}">${escUiHtml(title)}</a>${d?`<span class="cl-date">${escUiHtml(fdt(d))}</span>`:""}`;
+    return `<li>${source}</li>`;
   }).join("");
   return `<div class="property-cluster${closed?" is-closed":""}" data-cluster="1" data-count="${cluster.count}">
     <div class="property-cluster-head">
@@ -1061,6 +1094,7 @@ async function renderPropExplorer(){
     });
   }
   const commercialTools=await propertyCommercialTools();
+  const plainTools=await propertyPlainSummaryTools();
   propAll.forEach(r=>{
     ensurePropertyCommercial(r, commercialTools);
     if(!r._asset){
@@ -1243,8 +1277,8 @@ async function renderPropExplorer(){
   const isClosed=(e)=> e.temporal_status==="closed"
     || (e.close_date && daysLeft(e.close_date)!==null && daysLeft(e.close_date)<0);
   const cardFor=(e)=> e.kind==="cluster"
-    ? propertyClusterCardHTML(e)
-    : propertyExplorerCardHTML(e, terms, parcelLinks);
+    ? propertyClusterCardHTML(e,plainTools)
+    : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools);
   const parts=[];
   if(propStageSel==="all"){
     // Archive never leads: current (open/upcoming/undated) first, then a labeled closed

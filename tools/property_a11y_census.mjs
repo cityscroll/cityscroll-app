@@ -30,6 +30,8 @@ import {
 import { extractPropertyReaderActions } from "../site/property_reader_actions.mjs";
 import {
   buildPropertyPlainSummary,
+  deShoutPropertyTitle,
+  propertyCardPlainSummary,
   propertyPlainSummarySurface,
 } from "../site/property_plain_summary.mjs";
 import { outcomePromptContext } from "../site/action_outcome_prompt.mjs";
@@ -94,20 +96,28 @@ function joinedRenderedText(row) {
 /**
  * Exact stable notice surfaces from the current renderer.
  *
- * Property cards always render the title. A keyword search can add a query-centered
- * excerpt, but there is no excerpt when no term is active and therefore no single
- * corpus-wide excerpt string. Detail renders only additional_description_1, cleaned
- * and truncated to 6,000 characters (site/app/routing.mjs: showNotice).
+ * Property cards lead with a receipt-backed card summary when the notice has an
+ * accepted template; permanent and future honest fallbacks keep the source title.
+ * A keyword search can add a query-centered excerpt, but there is no excerpt when no
+ * term is active and therefore no single corpus-wide excerpt string. Detail renders
+ * only additional_description_1, cleaned and truncated to 6,000 characters
+ * (site/app/routing.mjs: showNotice).
  */
-export function renderedNoticeSurfaces(row = {}) {
+export function renderedNoticeSurfaces(row = {}, options = {}) {
   const title = cleanNoticeText(row.short_title);
   const detailBody = cleanNoticeText(row.additional_description_1).slice(0, DETAIL_BODY_LIMIT);
-  const plainSummary = propertyPlainSummarySurface(buildPropertyPlainSummary(row)) || "";
+  const summary = options.summary || buildPropertyPlainSummary(row, { today: options.today });
+  const plainSummary = propertyPlainSummarySurface(summary) || "";
+  const cardSummary = propertyCardPlainSummary(summary);
+  const lensView = cardSummary
+    ? cardSummary.text
+    : title;
   return {
     title,
     detail_body: detailBody,
     combined: [title, detailBody].filter(Boolean).join(". "),
     plain_summary: plainSummary,
+    lens_view: lensView,
   };
 }
 
@@ -252,13 +262,13 @@ function escapeHtml(text) {
   })[char]);
 }
 
-async function scoreSurfaces(rows, executable = "readable-or-else") {
+async function scoreSurfaces(rows, executable = "readable-or-else", options = {}) {
   const dir = await mkdtemp(path.join(tmpdir(), "property-a11y-census-"));
   const index = new Map();
   try {
     for (const row of rows) {
       const id = String(row.request_id || "unknown").replace(/[^a-z0-9_-]/gi, "_");
-      const surfaces = renderedNoticeSurfaces(row);
+      const surfaces = renderedNoticeSurfaces(row, options);
       for (const [surface, text] of Object.entries(surfaces)) {
         if (!text.trim()) continue;
         const filename = `${id}--${surface}.html`;
@@ -369,19 +379,43 @@ function summarizePlainLanguage(records) {
   };
 }
 
+const REQUIRED_UPPERCASE_TITLE_TOKENS = Object.freeze(["NY", "NYC", "DCAS", "RFP", "WNYC"]);
+
+function summarizeTitleTreatment(records) {
+  const eligible = records.filter((record) => record.plain_summary?.templated);
+  const tokenInvariants = Object.fromEntries(REQUIRED_UPPERCASE_TITLE_TOKENS.map((token) => {
+    const seen = eligible.filter((record) => new RegExp(`\\b${token}\\b`, "i").test(record.title || ""));
+    const mismatches = seen.filter((record) => !new RegExp(`\\b${token}\\b`).test(record.display_title || ""));
+    return [token, {
+      seen: seen.length,
+      preserved: seen.length - mismatches.length,
+      mismatches: mismatches.map((record) => record.request_id),
+    }];
+  }));
+  return {
+    eligible: eligible.length,
+    transformed: eligible.filter((record) => record.display_title !== record.title).length,
+    fallback_original_titles: records.length - eligible.length,
+    required_uppercase_tokens: tokenInvariants,
+    uppercase_token_mismatches: Object.values(tokenInvariants)
+      .reduce((sum, result) => sum + result.mismatches.length, 0),
+  };
+}
+
 /** Metrics that can only improve in the declared direction across census runs. */
 export function propertyA11yRatchetMetrics(report) {
   return {
     grade_level: report?.overall?.plain_language?.authored_summary?.mean_grade ?? null,
+    lens_grade_level: report?.overall?.lens_view?.mean_grade ?? null,
     templated_fraction: report?.overall?.plain_language?.templated_fraction ?? null,
   };
 }
 
-/** Compare the census with a committed two-metric baseline. */
+/** Compare the census with the committed summary, lens, and coverage baseline. */
 export function evaluatePropertyA11yRatchet(report, baseline = {}) {
   const measured = propertyA11yRatchetMetrics(report);
   const definitions = baseline?.metrics || {};
-  const results = Object.fromEntries(["grade_level", "templated_fraction"].map((name) => {
+  const results = Object.fromEntries(["grade_level", "lens_grade_level", "templated_fraction"].map((name) => {
     const definition = definitions[name] || {};
     const direction = definition.direction;
     const limit = definition.baseline;
@@ -400,18 +434,20 @@ export function evaluatePropertyA11yRatchet(report, baseline = {}) {
 export function summarizeCensus(rows, scores, { asOf = null, source = "live" } = {}) {
   const records = rows.map((row) => {
     const requestId = String(row.request_id || "");
-    const surfaces = renderedNoticeSurfaces(row);
+    const plainSummary = buildPropertyPlainSummary(row, { today: asOf });
+    const surfaces = renderedNoticeSurfaces(row, { today: asOf, summary: plainSummary });
     return {
       request_id: requestId,
       start_date: String(row.start_date || "").slice(0, 10) || null,
       agency_name: cleanNoticeText(row.agency_name) || null,
       notice_type: cleanNoticeText(row.type_of_notice_description) || null,
       title: surfaces.title || null,
+      display_title: plainSummary.templated ? deShoutPropertyTitle(surfaces.title) : surfaces.title || null,
       pattern: classifyPropertyPattern(row),
       signals: detectPropertySignals(row),
       jargon: detectPropertyJargon(row),
       current_extraction: currentPropertyExtraction(row, { today: asOf }),
-      plain_summary: buildPropertyPlainSummary(row, { today: asOf }),
+      plain_summary: plainSummary,
       scores: Object.fromEntries(Object.keys(surfaces).map((surface) => [
         surface,
         scores.get(`${requestId}:${surface}`) || null,
@@ -437,6 +473,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       title: summarizeGrades(members, "title"),
       detail_body: summarizeGrades(members, "detail_body"),
       combined: summarizeGrades(members, "combined"),
+      lens_view: summarizeGrades(members, "lens_view"),
       signals: summarizeSignals(members),
       jargon: summarizeJargon(members),
       current_extraction: summarizeCurrentExtraction(members),
@@ -457,7 +494,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
   const worst = worstForSurface("combined");
   const starts = records.map((record) => record.start_date).filter(Boolean).sort();
   return {
-    schema_version: 2,
+    schema_version: 3,
     metric: {
       tool: "readable-or-else",
       preset: "nycsg7",
@@ -465,6 +502,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       target_max_grade: 7,
       tracked_metrics: {
         grade_level: { direction: "max", surface: "plain_summary", statistic: "mean_grade" },
+        lens_grade_level: { direction: "max", surface: "lens_view", statistic: "mean_grade" },
         templated_fraction: { direction: "min", numerator: "templated notices", denominator: "all notices" },
       },
     },
@@ -473,6 +511,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       search_excerpt: `query-dependent window of up to ${SEARCH_EXCERPT_RADIUS} characters on each side of a match; absent on the default Property list`,
       detail_body: `cleaned additional_description_1 truncated to ${DETAIL_BODY_LIMIT} characters`,
       plain_summary: "receipt-backed CityScroll-authored summary and displayed term definitions; absent when the notice fails its reader-visible pattern gate",
+      lens_view: "default-card Property lead: one-sentence receipt-backed card summary; the de-shouted and exact legal titles are collapsed, and localized UI chrome is excluded; fallback cards retain and score only the original title",
       excluded_body_fields: BODY_FIELDS.filter((field) => field !== "additional_description_1"),
     },
     corpus: {
@@ -489,7 +528,9 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       title: summarizeGrades(records, "title"),
       detail_body: summarizeGrades(records, "detail_body"),
       combined: summarizeGrades(records, "combined"),
+      lens_view: summarizeGrades(records, "lens_view"),
       plain_language: summarizePlainLanguage(records),
+      title_treatment: summarizeTitleTreatment(records),
       signals: summarizeSignals(records),
       jargon: summarizeJargon(records),
       current_extraction: summarizeCurrentExtraction(records),
@@ -501,6 +542,7 @@ export function summarizeCensus(rows, scores, { asOf = null, source = "live" } =
       detail_body: worstForSurface("detail_body", 10),
       combined: worst.slice(0, 10),
       plain_summary: worstForSurface("plain_summary", 20),
+      lens_view: worstForSurface("lens_view", 20),
     },
   };
 }
@@ -522,9 +564,12 @@ export function reportAsMarkdown(report) {
   const extraction = report.overall.current_extraction;
   const signals = report.overall.signals;
   const plain = report.overall.plain_language;
+  const lens = report.overall.lens_view;
+  const legacyLens = report.overall.title;
+  const titleTreatment = report.overall.title_treatment;
   const ratchetLines = report.ratchet ? [
     "",
-    `Census ratchet: ${report.ratchet.pass ? "PASS" : "FAIL"}; grade_level ${report.ratchet.metrics.grade_level.value} (maximum ${report.ratchet.metrics.grade_level.baseline}); templated_fraction ${report.ratchet.metrics.templated_fraction.value} (minimum ${report.ratchet.metrics.templated_fraction.baseline}).`,
+    `Census ratchet: ${report.ratchet.pass ? "PASS" : "FAIL"}; grade_level ${report.ratchet.metrics.grade_level.value} (maximum ${report.ratchet.metrics.grade_level.baseline}); lens_grade_level ${report.ratchet.metrics.lens_grade_level.value} (maximum ${report.ratchet.metrics.lens_grade_level.baseline}); templated_fraction ${report.ratchet.metrics.templated_fraction.value} (minimum ${report.ratchet.metrics.templated_fraction.baseline}).`,
   ] : [];
   return [
     `Corpus: ${report.corpus.count} notices (${report.corpus.start_date_min} through ${report.corpus.start_date_max}); SHA-256 \`${report.corpus.sha256}\`.`,
@@ -532,6 +577,10 @@ export function reportAsMarkdown(report) {
     `Combined title + rendered detail body: mean grade ${score.mean_grade}, median ${score.median_grade}, p90 ${score.p90_grade}; ${score.at_or_below_grade_7}/${score.scored} at or below grade 7.`,
     "",
     `Receipt-backed plain summaries: ${plain.templated}/${report.corpus.count} notices (${plain.coverage_pct}%); authored mean grade ${plain.authored_summary.mean_grade} versus ${plain.baseline_combined.mean_grade} for the same notices, a ${plain.mean_grade_reduction}-grade reduction; ${plain.authored_summary.at_or_below_grade_7}/${plain.authored_summary.scored} at or below grade 7.`,
+    "",
+    `Property lens card copy: mean grade ${lens.mean_grade}, median ${lens.median_grade}, p90 ${lens.p90_grade}; legacy raw-title lead mean grade ${legacyLens.mean_grade}; ${lens.at_or_below_grade_7}/${lens.scored} at or below grade 7.`,
+    "",
+    `Legal-title treatment: ${titleTreatment.transformed}/${titleTreatment.eligible} templated titles de-shouted; ${titleTreatment.uppercase_token_mismatches} required-uppercase token mismatches; ${titleTreatment.fallback_original_titles} fallback title retained unchanged.`,
     ...ratchetLines,
     "",
     `Typed timed events: ${extraction.typed_event_count}; bid-deadline signals ${signals.bid_deadline}, typed bid deadlines ${extraction.typed_bid_deadline}, signals without a parseable date ${extraction.bid_deadline_signal_without_parseable_date}; known cross-type false positives ${extraction.known_cross_type_false_positive_count}; honest-empty notices ${extraction.honest_empty_typed_events}.`,
@@ -606,7 +655,7 @@ export async function main(argv = process.argv.slice(2)) {
   } else {
     ({ rows, source } = await fetchCorpus(options));
   }
-  const scores = await scoreSurfaces(rows, options.executable);
+  const scores = await scoreSurfaces(rows, options.executable, { today: options.asOf });
   const report = summarizeCensus(rows, scores, { asOf: options.asOf, source });
   if (options.ratchetBaseline) {
     const baseline = JSON.parse(await readFile(options.ratchetBaseline, "utf8"));

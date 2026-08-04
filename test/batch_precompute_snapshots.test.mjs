@@ -87,12 +87,27 @@ test("slimPropertyListView drops body dumps and keeps list fields", () => {
         other_info_1: "print",
         printout_1: "dump",
         property_location: { scope: "local" },
+        commercial: {
+          glance: { item: "Property" },
+          timed_events: [{
+            kind: "hearing",
+            start: "2026-08-10T10:00:00",
+            source_field: "additional_description_1",
+            source_span: { start: 0, end: 5, text: "Block" },
+          }],
+        },
       },
     ],
   });
   assert.equal(view.view, "list");
   assert.equal(view.properties[0].additional_description_1, "Block 1 Lot 2");
   assert.equal(view.properties[0].property_location.scope, "local");
+  assert.deepEqual(view.properties[0].commercial.timed_events, [{
+    kind: "hearing",
+    start: "2026-08-10T10:00:00",
+    source_field: "additional_description_1",
+    source_span: { start: 0, end: 5, text: "Block" },
+  }]);
   for (const key of PROPERTY_LIST_DROP_FIELDS) {
     assert.equal(view.properties[0][key], undefined, key);
   }
