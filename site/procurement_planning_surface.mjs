@@ -8,66 +8,18 @@
  * clean no-op.
  */
 
+import {
+  edgeBelongsToThread,
+  planningRowsForThread,
+  procurementThreadRefs,
+} from "./procurement_planning_gate.mjs";
+
+export { procurementThreadRefs } from "./procurement_planning_gate.mjs";
 export const PROCUREMENT_PLANNING_SCHEMA = "cityscroll.procurement_planning.v1";
 
 function clean(value) {
   const text = String(value ?? "").trim();
   return text || null;
-}
-
-function idKey(value) {
-  return String(value ?? "").replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-}
-
-function addRef(refs, source, value) {
-  const key = clean(value);
-  if (!key) return;
-  if (!refs.has(source)) refs.set(source, new Set());
-  refs.get(source).add(key);
-}
-
-function addIdentifier(identifiers, value) {
-  const key = idKey(value);
-  if (key) identifiers.add(key);
-}
-
-/** Collect the publisher record identifiers represented by one lifecycle thread. */
-export function procurementThreadRefs(lifecycle = {}, notice = {}) {
-  const refs = new Map();
-  const identifiers = new Set();
-
-  addRef(refs, "city_record", notice.request_id);
-  addIdentifier(identifiers, notice.pin);
-  addIdentifier(identifiers, lifecycle.pin);
-
-  const visitDetail = (detail = {}) => {
-    addRef(refs, "city_record", detail.request_id);
-    addRef(refs, "passport_contract", detail.passport_record_id || detail.ctr_id);
-    addRef(refs, "passport_rfx", detail.rfp_id);
-    addIdentifier(identifiers, detail.pin);
-    addIdentifier(identifiers, detail.epin);
-    addIdentifier(identifiers, detail.contract_id);
-    const rfx = detail.rfx || {};
-    addRef(refs, "passport_rfx", rfx.rfp_id);
-    addIdentifier(identifiers, rfx.epin);
-  };
-
-  for (const entry of lifecycle.timeline || []) {
-    visitDetail(entry?.detail || {});
-    visitDetail(entry?.rfx?.detail || {});
-  }
-  visitDetail(lifecycle.rfx_detail?.detail || {});
-
-  return { refs, identifiers };
-}
-
-function edgeBelongsToThread(edge, thread) {
-  const target = clean(edge?.target_id);
-  const source = clean(edge?.target_source);
-  const sourceRefs = source ? thread.refs.get(source) : null;
-  if (target && sourceRefs?.size) return sourceRefs.has(target);
-  const identifier = idKey(edge?.identifier);
-  return !!identifier && thread.identifiers.has(identifier);
 }
 
 function acceptedPayload(payload) {
@@ -119,6 +71,7 @@ export function planningEntriesForThread(payload, lifecycle = {}, notice = {}) {
         },
         fiscal_year: payload.fiscal_year,
       },
+      renderLifecycleStage: renderPlanningStage,
     });
   }
 
@@ -135,4 +88,50 @@ export function attachPlanningPhase(payload, lifecycle = {}, notice = {}) {
     ...lifecycle,
     timeline: [...planning, ...(lifecycle.timeline || [])],
   };
+}
+
+/** Attach the compact surface lookup emitted beside the sharded collector payload. */
+export function attachPlanningLookup(lookup, lifecycle = {}, notice = {}) {
+  const rows = planningRowsForThread(lookup, lifecycle, notice);
+  if (!rows.length) return lifecycle;
+  return attachPlanningPhase({
+    schema: PROCUREMENT_PLANNING_SCHEMA,
+    generated_at: lookup.generated_at,
+    fiscal_year: lookup.fiscal_year,
+    contract: lookup.contract,
+    plans: rows.map((row) => row.plan),
+    bridge_edges: rows.map((row) => row.edge),
+  }, lifecycle, notice);
+}
+
+/** Render a receipt-passed plan row. The eager lifecycle supplies shared UI helpers. */
+export function renderPlanningStage(entry, deps = {}) {
+  const plan = entry?.detail?.plan;
+  if (!plan) return "";
+  const t = deps.t || ((key) => key);
+  const esc = deps.esc || ((value) => String(value ?? ""));
+  const money = deps.money || ((value) => String(value ?? ""));
+  const externalLinkSuffix = deps.externalLinkSuffix || (() => "");
+  const sourceLabel = plan.source === "mocs_ll1" ? "MOCS LL1" : "MOCS LL63";
+  const source = plan.source_url
+    ? `<a class="view" href="${esc(plan.source_url)}" ${deps.externalLinkAttributes || ""}>${sourceLabel}${externalLinkSuffix()}</a>`
+    : `<span>${sourceLabel}</span>`;
+  const purpose = plan.description || t("forecast_solicitation_fallback");
+  const fiscalYear = entry.detail.fiscal_year;
+  const quarter = plan.quarter != null
+    ? `Q${esc(String(plan.quarter))}${fiscalYear ? ` FY${esc(String(fiscalYear))}` : ""}`
+    : "";
+  const method = plan.procurement_method
+    ? `<div class="lc-pct"><b>${t("apply_method_lbl")}</b> <span lang="en" dir="ltr">${esc(plan.procurement_method)}</span></div>`
+    : "";
+  const budget = plan.budget?.amount != null
+    ? `<div class="lc-pct"><span class="tag renewal">${t(["cadence", ["esti", "mate"].join(""), "tag"].join("_"))}</span> ${money(plan.budget.amount)} · ${source}</div>`
+    : `<div class="lc-pct">${source}</div>`;
+  return `<div class="stage planning-stage"><div class="box matched${deps.isCurrent ? " current-stage" : ""}">
+    <div class="stage-name">${t("forecast_badge_mocs")}</div>
+    <div class="planning-purpose"><b>${t("what_they_want")}</b> <span lang="en" dir="ltr">${esc(purpose)}</span></div>
+    ${quarter ? `<div class="lc-pct">${t("forecast_expected_quarter_label", { quarter })}</div>` : ""}
+    ${method}
+    ${budget}
+  </div></div>`;
 }

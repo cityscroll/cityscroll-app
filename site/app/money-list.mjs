@@ -444,7 +444,7 @@ function renderList(autoSelect){
       if(rmeta) rmeta.insertAdjacentHTML("afterend", chips);
     });
   }).catch(()=>{});
-  document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
+  document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>select(+el.dataset.i, el, event.isTrusted)));
   if(autoSelect===false&&keepId){
     const idx=currentRows.findIndex(r=>r&&r.request_id===keepId);
     if(idx>=0){
@@ -521,10 +521,11 @@ async function loadLineageBadges(){
   });
 }
 
-async function select(i, el){
+async function select(i, el, planningDetailRequested=false){
   document.querySelectorAll("#list .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const r = currentRows[i];
+  if(planningDetailRequested) r.planning_detail_requested = true;
   selectedRFP = r;
   renderDetail(r, null, null);
   const [hydrated, chain, stats] = await Promise.all([

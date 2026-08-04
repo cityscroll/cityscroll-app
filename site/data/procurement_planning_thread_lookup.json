@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.procurement_planning.thread-lookup.v1",
+  "generated_at": "2026-08-04T16:09:54Z",
+  "fiscal_year": 2027,
+  "contract": {
+    "unmatched_rows_remain_unmatched": true,
+    "infer_budget_from_agency_total": false,
+    "reader_surface_included": false,
+    "budget_provenance_required": true
+  },
+  "rows": []
+}

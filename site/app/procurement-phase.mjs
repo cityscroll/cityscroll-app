@@ -90,7 +90,6 @@ function lifecyclePhaseLabel(phase){
   if(phase.label_key) return t(phase.label_key);
   if(typeof phase === "string"){
     const meta = {
-      planning: "forecast_badge_mocs",
       solicitation: "lifecycle_phase_solicitation",
       selection: "lifecycle_phase_selection",
       award_registration: "lifecycle_phase_award_registration",
@@ -101,36 +100,30 @@ function lifecyclePhaseLabel(phase){
   return phase.short || "—";
 }
 
-let procurementPlanningToolsPromise = null;
-let procurementPlanningPayloadPromise = null;
-function ensureProcurementPlanningTools(){
-  if(!procurementPlanningToolsPromise){
-    procurementPlanningToolsPromise = import("../procurement_planning_surface.mjs").catch(() => null);
-  }
-  return procurementPlanningToolsPromise;
-}
-function loadProcurementPlanningPayload(){
-  if(!procurementPlanningPayloadPromise){
-    procurementPlanningPayloadPromise = fetch("./data/procurement_planning_payload.json", {
-      credentials: "omit",
-      cache: "no-cache",
-    }).then(r => r && r.ok ? r.json() : null).catch(() => null);
-  }
-  return procurementPlanningPayloadPromise;
-}
-async function attachProcurementPlanning(data, notice){
-  const [tools, payload] = await Promise.all([
-    ensureProcurementPlanningTools(),
-    loadProcurementPlanningPayload(),
+let procurementPlanningGatePromise = null;
+let procurementPlanningLookupPromise = null;
+async function attachAvailableProcurementPlanning(data, notice){
+  const deliberateDetail = notice?.planning_detail_requested === true
+    || (typeof location !== "undefined" && /^#notice\//.test(location.hash));
+  if(!deliberateDetail) return data;
+  procurementPlanningGatePromise ||= import("../procurement_planning_gate.mjs").catch(() => null);
+  procurementPlanningLookupPromise ||= fetch("./data/procurement_planning_thread_lookup.json", {
+    credentials: "omit",
+    cache: "no-cache",
+  }).then(response => response?.ok ? response.json() : null).catch(() => null);
+  const [gate, lookup] = await Promise.all([
+    procurementPlanningGatePromise,
+    procurementPlanningLookupPromise,
   ]);
-  if(!tools || !payload || typeof tools.attachPlanningPhase !== "function") return data;
-  return tools.attachPlanningPhase(payload, data, notice);
+  if(!gate || !gate.planningRowsForThread(lookup, data, notice).length) return data;
+  return import("../procurement_planning_surface.mjs")
+    .then(tools => tools.attachPlanningLookup(lookup, data, notice))
+    .catch(() => data);
 }
 
 function lifecyclePhaseActionHTML(view, notice){
   const cur = view && view.current;
   if(!cur) return "";
-  if(cur.phase_id === "planning") return "";
   const key = cur.action_key || "lifecycle_phase_action_respond";
   if(key === "lifecycle_phase_action_follow_money"){
     return t(key, { href: lifecycleDollarsFocusHref(notice && notice.request_id) });
@@ -673,7 +666,7 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl, subOutreachEl){
     if(subEl) subEl.innerHTML = "";
     return;
   }
-  data = await attachProcurementPlanning(data, r);
+  data = await attachAvailableProcurementPlanning(data, r);
   if(el && !document.contains(el)) return;
   if(dollarsEl && !document.contains(dollarsEl)) return;
   if(actionsEl && document.contains(actionsEl)) paintNoticeActionRail(actionsEl,r,null,data);
@@ -701,7 +694,6 @@ globalThis.ensureProcurementPhaseSpineTools = ensureProcurementPhaseSpineTools;
 globalThis.ensureSubOutreachTools = ensureSubOutreachTools;
 globalThis.paintSubOutreach = paintSubOutreach;
 globalThis.lifecycleDollarsHTML = lifecycleDollarsHTML;
-globalThis.attachProcurementPlanning = attachProcurementPlanning;
 globalThis.lifecyclePhaseActionHTML = lifecyclePhaseActionHTML;
 globalThis.lifecyclePhaseAggregateHTML = lifecyclePhaseAggregateHTML;
 globalThis.lifecyclePhaseLabel = lifecyclePhaseLabel;

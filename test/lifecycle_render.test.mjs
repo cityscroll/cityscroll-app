@@ -13,6 +13,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import * as procurementPhaseSpine from "../site/procurement_phase_spine.mjs";
+import { attachPlanningPhase } from "../site/procurement_planning_surface.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -241,28 +242,32 @@ const AMENDED_LIFECYCLE = {
 const notice = { request_id: "20250110001", agency_name: "Sanitation", pin: "08250R0001001" };
 const PUBLISHED_BUDGET_BASIS = ["esti", "mated", "_", "amount"].join("");
 
-const LIFECYCLE_WITH_PLAN = {
-  ...FULL_LIFECYCLE,
-  timeline: [{
-    stage: "planning",
-    status: "matched",
-    source: "mocs-procurement-plan",
-    date: null,
-    source_timestamp: "2026-08-04T12:00:00Z",
-    detail: {
-      fiscal_year: 2027,
-      plan: {
-        source_record_id: "mocs_ll1:FY27NDSNY1",
-        source: "mocs_ll1",
-        source_url: "https://www.nyc.gov/assets/mocs/dsny-ll1-fy27.xlsx",
-        description: "Organics collection services",
-        procurement_method: "Competitive Sealed Proposal",
-        quarter: 3,
-        budget: { amount: 750000, currency: "USD", basis: PUBLISHED_BUDGET_BASIS },
-      },
-    },
-  }, ...FULL_LIFECYCLE.timeline],
+const lifecyclePlan = {
+  source_record_id: "mocs_ll1:FY27NDSNY1",
+  source: "mocs_ll1",
+  source_url: "https://www.nyc.gov/assets/mocs/dsny-ll1-fy27.xlsx",
+  description: "Organics collection services",
+  procurement_method: "Competitive Sealed Proposal",
+  quarter: 3,
+  budget: { amount: 750000, currency: "USD", basis: PUBLISHED_BUDGET_BASIS },
 };
+const LIFECYCLE_WITH_PLAN = attachPlanningPhase({
+  schema: "cityscroll.procurement_planning.v1",
+  generated_at: "2026-08-04T12:00:00Z",
+  fiscal_year: 2027,
+  contract: {
+    unmatched_rows_remain_unmatched: true,
+    infer_budget_from_agency_total: false,
+    budget_provenance_required: true,
+  },
+  plans: [lifecyclePlan],
+  bridge_edges: [{
+    plan_source_record_id: lifecyclePlan.source_record_id,
+    plan_source: lifecyclePlan.source,
+    target_source: "city_record",
+    target_id: notice.request_id,
+  }],
+}, FULL_LIFECYCLE, notice);
 
 // ---------------------------------------------------------------------------
 // 1. FULL LIFECYCLE: all stages matched

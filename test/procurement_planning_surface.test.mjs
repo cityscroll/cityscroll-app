@@ -2,12 +2,15 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
+  attachPlanningLookup,
   attachPlanningPhase,
   planningEntriesForThread,
   procurementThreadRefs,
 } from "../site/procurement_planning_surface.mjs";
+import { planningRowsForThread } from "../site/procurement_planning_gate.mjs";
 
 const phaseSource = readFileSync(new URL("../site/app/procurement-phase.mjs", import.meta.url), "utf8");
+const moneyListSource = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
 const PUBLISHED_BUDGET_BASIS = ["esti", "mated", "_", "amount"].join("");
 
 const CONTRACT = {
@@ -146,11 +149,48 @@ test("a different publisher target never attaches through a reused identifier", 
   assert.deepEqual(planningEntriesForThread(fixture, lifecycle, { request_id: "cr-1" }), []);
 });
 
-test("Money lifecycle reads the versioned payload and attaches before phase rendering", () => {
-  assert.match(phaseSource, /fetch\("\.\/data\/procurement_planning_payload\.json"/);
-  assert.match(phaseSource, /data = await attachProcurementPlanning\(data, r\);/);
+test("edge-empty RC-1 thread lookup remains exactly inert", () => {
+  const lookup = {
+    schema: "cityscroll.procurement_planning.thread-lookup.v1",
+    contract: CONTRACT,
+    rows: [],
+  };
+  assert.deepEqual(planningRowsForThread(lookup, lifecycle, { request_id: "cr-1" }), []);
+  assert.equal(attachPlanningLookup(lookup, lifecycle, { request_id: "cr-1" }), lifecycle);
+});
+
+test("RC-1 thread lookup attaches its receipt-passed fixture row", () => {
+  const edge = {
+    plan_source_record_id: plan.source_record_id,
+    plan_source: plan.source,
+    target_source: "passport_rfx",
+    target_id: "pp-1",
+    method: "deterministic_identifier",
+    identifier: "06827P1234",
+    score: 1,
+  };
+  const lookup = {
+    schema: "cityscroll.procurement_planning.thread-lookup.v1",
+    generated_at: "2026-08-04T16:09:54Z",
+    fiscal_year: 2027,
+    contract: CONTRACT,
+    rows: [{ edge, plan }],
+  };
+  const joined = attachPlanningLookup(lookup, lifecycle, { request_id: "cr-1" });
+  assert.equal(joined.timeline[0].detail.plan, plan);
+  assert.equal(joined.timeline[0].detail.bridge.target_id, "pp-1");
+});
+
+test("Money lifecycle loads the full planning surface only for a matching lookup row", () => {
+  assert.match(moneyListSource, /planningDetailRequested=false/);
+  assert.match(moneyListSource, /event\.isTrusted/);
+  assert.match(phaseSource, /if\(!deliberateDetail\) return data;/);
+  assert.match(phaseSource, /fetch\("\.\/data\/procurement_planning_thread_lookup\.json"/);
+  assert.match(phaseSource, /gate\.planningRowsForThread\(lookup, data, notice\)\.length/);
+  assert.match(phaseSource, /import\("\.\.\/procurement_planning_surface\.mjs"\)/);
+  assert.match(phaseSource, /tools\.attachPlanningLookup\(lookup, data, notice\)/);
   assert.ok(
-    phaseSource.indexOf("data = await attachProcurementPlanning(data, r);")
+    phaseSource.indexOf("attachAvailableProcurementPlanning(data, r)")
       < phaseSource.indexOf("el.innerHTML = lifecycleTimelineHTML(data, r, phaseTools);"),
   );
 });

@@ -103,6 +103,8 @@ test("RC-1 collector is checkpointed, polite, host-side, and creates the warehou
   assert.match(runner, /mocs_procurement_plans/);
   assert.match(runner, /capital_projects_dashboard/);
   assert.match(runner, /procurement_plan_bridge_edges/);
+  assert.match(runner, /procurement_planning_thread_lookup\.json/);
+  assert.match(runner, /build_thread_lookup\(payload\)/);
   assert.doesNotMatch(runner, /wrangler|document\.querySelector|innerHTML/);
 });
 
@@ -167,6 +169,12 @@ test("RC-1 public materialization uses receipt-backed Pages-safe shards", () => 
   assert.equal(manifest.schema, "cityscroll.procurement_planning.manifest.v1");
   assert.equal(receipt.payload_contract.schema, manifest.schema);
   assert.deepEqual(receipt.payload_contract.collections, manifest.collections);
+  const lookup = JSON.parse(readFileSync(
+    join(ROOT, "site/data/procurement_planning_thread_lookup.json"),
+    "utf8",
+  ));
+  assert.equal(lookup.schema, "cityscroll.procurement_planning.thread-lookup.v1");
+  assert.equal(receipt.payload_contract.production_bridge_edges, lookup.rows.length);
   assert.ok(manifest.shard_contract.max_bytes < 25 * 1024 * 1024);
 
   for (const [collection, descriptor] of Object.entries(manifest.collections)) {
