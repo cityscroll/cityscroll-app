@@ -357,6 +357,8 @@ const STRINGS = {
 
     // Money lens controls
     nl_placeholder_money: "describe what you're looking for…",
+    ask_cityscroll_action: "Ask CityScroll",
+    ask_cityscroll_context: "Interprets your request",
     ask_btn:          "Ask",
     show_label:       "Show",
     mode_open:        "Open Requests for Proposals (RFPs) — accepting now",

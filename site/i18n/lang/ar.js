@@ -197,6 +197,8 @@
     property_tax_lien_link: "Tax lien sale statistics",
     property_explore_map_link: "Explore property on the map",
     nl_placeholder_money: "صف ما تبحث عنه…",
+    ask_cityscroll_action: "اسأل CityScroll",
+    ask_cityscroll_context: "يفسّر طلبك",
     ask_btn: "اسأل",
     show_label: "عرض",
     mode_open: "طلبات تقديم عروض (RFP) مفتوحة — يُقبل التقديم الآن",

@@ -202,6 +202,8 @@
     property_explore_map_link: "Explorer la propriété sur la carte",
     // Money lens controls
     nl_placeholder_money: "décrivez ce que vous recherchez…",
+    ask_cityscroll_action: "Demander à CityScroll",
+    ask_cityscroll_context: "Interprète votre demande",
     ask_btn:          "Demander",
     show_label:       "Afficher",
     mode_open:        "Demandes de propositions (RFP) ouvertes — acceptées actuellement",
