@@ -47,6 +47,45 @@ export { DISTRICT_ACTIVITY_SCHEMA };
 
 const LENSES = ["land", "property", "rules", "meetings", "money"];
 
+/**
+ * Synthetic warehouse fixture rows (WH-01 sample / ER offline seed) must not
+ * pollute map density. Product demos use real City Record request_ids; FIX* ids
+ * are offline-only and have no place signal by construction.
+ *
+ * @param {object} row
+ * @returns {boolean}
+ */
+export function isSyntheticWarehouseFixtureRow(row = {}) {
+  const id = String(row?.request_id || row?.id || "").trim();
+  if (/^FIX\d+/i.test(id)) return true;
+  const vendor = String(row?.vendor_name || "").trim();
+  if (/^FIXTURE\s+VENDOR\b/i.test(vendor)) return true;
+  const pin = String(row?.pin || "").trim();
+  if (/^PIN-FIXTURE-/i.test(pin)) return true;
+  return false;
+}
+
+/**
+ * Agency Rules public hearings that land in the meetings domain without a local
+ * pin follow the same citywide default as the rules lens — the rule applies
+ * city-scale unless the notice states a local geography.
+ *
+ * @param {object} row
+ * @returns {boolean}
+ */
+export function isAgencyRulesMeetingRow(row = {}) {
+  const section = String(row?.section_name || "").trim().toLowerCase();
+  if (section === "agency rules") return true;
+  // Some densified rows only carry type without section.
+  const type = String(row?.type_of_notice_description || "").trim().toLowerCase();
+  const title = String(row?.short_title || row?.title || "");
+  if (section.includes("agency rules")) return true;
+  if (type === "public hearings" && /\b(?:rules?|noh|noa|rcny)\b/i.test(title) && section !== "public hearings and meetings") {
+    return false; // ambiguous — require section
+  }
+  return false;
+}
+
 const BOROUGH_CANON = Object.freeze({
   manhattan: "Manhattan",
   bronx: "Bronx",
@@ -452,6 +491,22 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
     ),
     ...(s.borough === "Citywide" || s.method === "citywide" ? { bucket: "citywide" } : {}),
   }));
+
+  // Agency Rules rows in the meetings domain: no local pin → citywide (parity
+  // with rulePlacementsFromRow / placeFromDerivations forLens=rules). Honors
+  // stamped unlocated Agency Rules densify fields without inventing a borough.
+  if (!slots.length && isAgencyRulesMeetingRow(row)) {
+    return [{
+      borough: "Citywide",
+      community: null,
+      council: null,
+      method: "rule_default_citywide",
+      confidence: 0.8,
+      confidence_tier: "strong",
+      bucket: "citywide",
+    }];
+  }
+
   if (!slots.length) {
     slots.unlocated_reason = meta.unlocated_reason
       || area?.unlocated_reason
@@ -946,7 +1001,10 @@ export function buildDistrictActivity(opts = {}) {
   }
 
   // Money — publisher geo, coords/gazetteer PIP, citywide phrase, service borough.
+  // Skip synthetic warehouse FIX* sample rows so offline ER fixtures do not
+  // inflate map unlocated / no_place_signal accounting.
   for (const row of opts.moneyRows || []) {
+    if (isSyntheticWarehouseFixtureRow(row)) continue;
     placeSlots("money", moneyPlacementsFromRow(row, boundaries, placeOpts));
   }
 

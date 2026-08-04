@@ -11,9 +11,14 @@ import { affectedAreaFromRow } from "../worker/src/lib/hearings.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "ontology/fixtures/dimensions/location_resolution.json");
-const MEASURED_AT = "2026-08-02";
 
 const readJson = (path) => JSON.parse(readFileSync(join(ROOT, path), "utf8"));
+
+function measuredAtIsoDate() {
+  // Pin to UTC calendar day so --check is stable within a day; rebuild still
+  // advances map_aggregates.built_at from district_activity.
+  return new Date().toISOString().slice(0, 10);
+}
 
 function measureLens({ lens, label, corpus, extractor }) {
   const fixture = readJson(corpus);
@@ -123,6 +128,7 @@ function mapAggregates() {
       counted,
       located,
       located_rate: counted > 0 ? located / counted : null,
+      by_method: src?.by_method || null,
     };
   }
   return {
@@ -131,14 +137,20 @@ function mapAggregates() {
     built_at: doc?.built_at || null,
     path,
     sources: lenses,
+    // Mirror residual accounting so inventory stays a live-check surface, not
+    // a stale zero-located-only snapshot.
+    unlocated: doc?.unlocated || null,
+    unlocated_reasons: doc?.unlocated_reasons || null,
+    citywide: doc?.citywide || null,
+    virtual: doc?.virtual || null,
   };
 }
 
 function buildInventory() {
   return {
     schema: "cityscroll.location_resolution_inventory.v0",
-    measured_at: MEASURED_AT,
-    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources so a zero-located map lens emits a flywheel card.",
+    measured_at: measuredAtIsoDate(),
+    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources (located rates, unlocated_reasons, citywide/virtual bags) so zero-located and high no_place_signal map lenses emit flywheel cards.",
     lenses: [
       measureLens({
         lens: "meetings-hearings",
