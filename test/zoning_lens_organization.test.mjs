@@ -46,7 +46,7 @@ test("Zoning keeps review view visible while place controls stay in one disclosu
   }
   assert.doesNotMatch(disclosure, /id="lkw"|id="land-status-rail"/);
   assert.match(zoningSection, /id="lkw"[\s\S]*?id="land-more-filters"/);
-  assert.match(zoningSection, /id="lstatus" hidden aria-hidden="true"/);
+  assert.match(zoningSection, /id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"/);
 });
 
 test("Zoning paints an exact count and keeps absent list data unpainted", () => {
