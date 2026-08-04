@@ -28,7 +28,7 @@ summary: >-
   A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
   and an owner-triggered pointer to one exact reviewed commit without changing
   the stable GitHub Pages host.
-updated: 2026-08-03
+updated: 2026-08-04
 sources:
   - README.md
   - site/index.html
@@ -70,6 +70,7 @@ sources:
   - worker/src/events.mjs
   - worker/src/worker.mjs
   - worker/src/alerts.mjs
+  - worker/src/digest_shadow_hold.mjs
   - worker/src/checkbook.mjs
   - worker/src/lib/analytics.mjs
   - worker/src/inv.mjs
@@ -91,7 +92,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 6f18382aa30ee21f9b44ef4bcf59f4bde5c0bcf793b7197428ea4e4f25209ed2
+sources_hash: c21229eeada4c7888a7d2e4f99cc8e9df80820b15e1a47ba1bb4160d82cdd57d
 ---
 
 # crol-list — architecture
@@ -189,7 +190,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - The public tree under `site/` is built as a GitHub Pages artifact whose origin hostname remains `crol-list.org` (from `site/CNAME`). The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The Pages workflow derives one cache stamp from `site/i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
 - Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.cityscroll.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
 - Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
-- Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domains `api.cityscroll.org` and `www.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
+- Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domains `api.cityscroll.org` and `www.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron triggers run the delivery-free digest shadow at `0 10 * * *` and delivery at `0 13 * * *` (~9am ET). The versioned D1 shadow-hold lease gates only redlined `affected_digest_ids` from 12:45–14:00 UTC and fails open when no digest-specific scope exists. D1 schema is versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts (custom-domain routes in `worker/wrangler.toml`). The Worker normally reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`). Origin redirects are manual; a redirect back to CityScroll trips a circuit breaker and retries through GitHub's public repository source seam.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query. The mirror's independent redirect-loop failover keeps the canonical site available if an origin fetch is redirected back at the Worker. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org` with Reply-To `alerts@crol-list.org` (still-routable). Public feedback notifies `feedback@cityscroll.org` (`FEEDBACK_TO`); subscribe-by-email inbound remains on `subscribe@crol-list.org` until inbound routing is migrated.

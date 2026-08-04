@@ -122,10 +122,19 @@ test("opaque preview ids keep masked-recipient collisions independently addressa
 
 function writeOnlyDb() {
   const batches = [];
+  const runs = [];
   return {
     batches,
+    runs,
     prepare(sql) {
-      return { bind: (...args) => ({ sql, args }) };
+      return {
+        bind: (...args) => ({
+          sql,
+          args,
+          all: async () => ({ results: [] }),
+          run: async () => { runs.push({ sql, args }); return { success: true }; },
+        }),
+      };
     },
     async batch(statements) {
       batches.push(statements);
@@ -167,7 +176,8 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
     persist: false,
     simulateDryRunCounters: true,
   });
-  assert.equal(DB.batches.length, 1);
+  assert.equal(DB.batches.length, 2);
+  assert.equal(DB.runs.length, 2);
 });
 
 test("operator notification failure becomes its own structured redline", async () => {
@@ -185,7 +195,8 @@ test("operator notification failure becomes its own structured redline", async (
   assert.equal(warning.digest_id, "run");
   assert.equal(warning.evidence.error, "mail unavailable");
   assert.equal(out.notification.status, "failed");
-  assert.equal(DB.batches.length, 2);
+  assert.equal(DB.batches.length, 3);
+  assert.equal(DB.runs.length, 1);
 });
 
 function readDb(summaryJson, preview = null) {
@@ -198,6 +209,38 @@ function readDb(summaryJson, preview = null) {
         return preview;
       };
       return query;
+    },
+  };
+}
+
+function holdDb(summaryJson) {
+  const overrides = new Set();
+  const persistedStates = [];
+  return {
+    overrides,
+    persistedStates,
+    prepare(sql) {
+      return {
+        bind: (...args) => ({
+          sql,
+          args,
+          first: async () => (sql.includes("digest_shadow_runs")
+            ? { summary_json: JSON.stringify(summaryJson) }
+            : null),
+          all: async () => ({ results: [...overrides].sort().map((digest_id) => ({ digest_id })) }),
+          run: async () => {
+            if (sql.includes("DELETE FROM digest_shadow_hold_overrides")) overrides.clear();
+            if (sql.includes("digest_shadow_hold_states")) persistedStates.push(JSON.parse(args.at(-1)));
+            return { success: true };
+          },
+        }),
+      };
+    },
+    async batch(statements) {
+      for (const statement of statements) {
+        if (statement.sql.includes("digest_shadow_hold_overrides")) overrides.add(statement.args[1]);
+      }
+      return statements.map(() => ({ success: true }));
     },
   };
 }
@@ -215,13 +258,48 @@ test("admin shadow endpoint fails closed and returns non-ok HTTP for machine pol
   assert.equal(body.summary.redlines[0].digest_id, "sub:er***");
 });
 
+test("authenticated operator override releases only a digest named by the redlined run", async () => {
+  const redlined = summary([{ sub: "sub:er***", error: "boom" }]);
+  const DB = holdDb(redlined);
+  const response = await handleAdminDigestShadow(new Request("https://w/admin/digest-shadow", {
+    method: "POST",
+    headers: { authorization: "Bearer secret", "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "override-hold",
+      day: redlined.run_day,
+      digest_ids: ["sub:er***"],
+      reason: "Reviewed source output and approved delivery",
+    }),
+  }), { ADMIN_KEY: "secret", DB });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.deepEqual(body.hold.overridden_digest_ids, ["sub:er***"]);
+  assert.deepEqual([...DB.overrides], ["sub:er***"]);
+
+  const invalid = await handleAdminDigestShadow(new Request("https://w/admin/digest-shadow", {
+    method: "POST",
+    headers: { authorization: "Bearer secret", "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "override-hold",
+      day: redlined.run_day,
+      digest_ids: ["digest:unrelated"],
+      reason: "Not actually affected",
+    }),
+  }), { ADMIN_KEY: "secret", DB });
+  assert.equal(invalid.status, 400);
+  assert.equal((await invalid.json()).error, "hold-override-failed");
+});
+
 test("cron, D1 migration, and scheduled wake monitor are wired", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
   const migration = readFileSync(new URL("../migrations/0014_digest_shadow.sql", import.meta.url), "utf8");
+  const holdMigration = readFileSync(new URL("../migrations/0015_digest_shadow_hold.sql", import.meta.url), "utf8");
   const workflow = readFileSync(new URL("../../.github/workflows/digest-shadow-monitor.yml", import.meta.url), "utf8");
   assert.match(wrangler, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
+  assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_states/);
+  assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_overrides/);
   assert.match(workflow, /cron: "10 10 \* \* \*"/);
   assert.match(workflow, /Wake the repair loop/);
   assert.match(workflow, /issues\.create/);

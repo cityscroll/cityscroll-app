@@ -46,6 +46,11 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/digest-shadow"));
   assert.equal(doc.digest_shadow.contract, "digest-shadow.v1");
+  assert.equal(doc.digest_shadow.hold.contract, "digest-shadow-hold.v1");
+  assert.equal(doc.digest_shadow.hold.cutoff_utc, "12:45");
+  assert.equal(doc.digest_shadow.hold.delivery_boundary_utc, "13:00");
+  assert.equal(doc.digest_shadow.hold.expires_utc, "14:00");
+  assert.ok(doc.daylog.skip_reasons.includes("shadow-hold"));
   assert.deepEqual(doc.digest_shadow.redline_fields, ["code", "digest_id", "watch_id", "reason", "evidence"]);
   assert.ok(doc.auth_classes.some((a) => a.id === "ADMIN_KEY"));
   assert.ok(doc.auth_classes.some((a) => a.id === "USAGE_KEY"));
