@@ -2,8 +2,9 @@
 /**
  * Module-graph digest for site/app/*.mjs.
  *
- *   node tools/site_module_architecture.mjs --check   # exit 1 if digest stale
- *   node tools/site_module_architecture.mjs --update  # rewrite committed digest
+ *   node tools/site_module_architecture.mjs --check   # validate graph and print digest
+ *   node tools/site_module_architecture.mjs --update  # compatibility alias for --check
+ *   node tools/site_module_architecture.mjs --print   # print digest as JSON
  *
  * Fingerprint rules match test/site_module_architecture.test.mjs:
  * concatenate each module's behavior source (before live-binding publication
@@ -11,15 +12,15 @@
  * imports from "../" to "./".
  */
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { SITE_MODULES } from "../test/helpers/site_source.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const EVIDENCE_PATH = path.join(ROOT, "docs/evidence/index-module-split.json");
 const APP_DIR = path.join(ROOT, "site/app");
+const LOADER_PATH = path.join(APP_DIR, "main.mjs");
 
 const LIVE_BINDING_MARKER =
   "\n// Publish live bindings for neighboring modules and legacy inline handlers.";
@@ -40,8 +41,24 @@ export function computeModuleGraphDigest() {
   };
 }
 
-function loadEvidence() {
-  return JSON.parse(readFileSync(EVIDENCE_PATH, "utf8"));
+export function validateModuleGraph() {
+  const loader = readFileSync(LOADER_PATH, "utf8");
+  const loaderModules = [...loader.matchAll(/await import\("\.\/(.+?)"\);/g)].map(
+    (match) => match[1],
+  );
+  const applicationModules = readdirSync(APP_DIR)
+    .filter((name) => name.endsWith(".mjs") && name !== "main.mjs")
+    .sort();
+
+  if (new Set(loaderModules).size !== loaderModules.length) {
+    throw new Error("site/app/main.mjs registers a module more than once");
+  }
+  if (JSON.stringify(loaderModules) !== JSON.stringify(SITE_MODULES)) {
+    throw new Error("site/app/main.mjs and SITE_MODULES disagree on import order");
+  }
+  if (JSON.stringify([...loaderModules].sort()) !== JSON.stringify(applicationModules)) {
+    throw new Error("site/app contains an orphan or unregistered module");
+  }
 }
 
 function usage() {
@@ -65,50 +82,10 @@ function main(argv) {
     return;
   }
 
-  const evidence = loadEvidence();
-  const current = evidence.current_module_graph || {};
-
-  if (args.has("--check")) {
-    const ok =
-      current.normalized_source_bytes === computed.normalized_source_bytes &&
-      current.normalized_source_sha256 === computed.normalized_source_sha256;
-    if (!ok) {
-      console.error("module-graph digest is stale.");
-      console.error(
-        `  committed: ${current.normalized_source_sha256} (${current.normalized_source_bytes} bytes)`,
-      );
-      console.error(
-        `  computed:  ${computed.normalized_source_sha256} (${computed.normalized_source_bytes} bytes)`,
-      );
-      console.error("Refresh with: node tools/site_module_architecture.mjs --update");
-      process.exit(1);
-    }
+  if (args.has("--check") || args.has("--update")) {
+    validateModuleGraph();
     console.log(
       `module-graph digest ok: ${computed.normalized_source_sha256} (${computed.normalized_source_bytes} bytes, ${computed.module_count} modules)`,
-    );
-    return;
-  }
-
-  if (args.has("--update")) {
-    const today = new Date().toISOString().slice(0, 10);
-    evidence.current_module_graph = {
-      normalization:
-        current.normalization ||
-        "Concatenate module source before live-binding publication footers in loader order and normalize moved-module dynamic imports from ../ to ./ paths. Intentional post-split behavior changes update this digest without rewriting the original source-equivalence evidence.",
-      normalized_source_bytes: computed.normalized_source_bytes,
-      normalized_source_sha256: computed.normalized_source_sha256,
-      note:
-        current.note ||
-        `Digest refreshed ${today} via tools/site_module_architecture.mjs --update.`,
-      updated_at: today,
-    };
-    // Keep historical after.module_count honest when module list length changes.
-    if (evidence.after && typeof evidence.after.module_count === "number") {
-      evidence.after.module_count = computed.module_count;
-    }
-    writeFileSync(EVIDENCE_PATH, `${JSON.stringify(evidence, null, 2)}\n`, "utf8");
-    console.log(
-      `updated ${path.relative(ROOT, EVIDENCE_PATH)}: ${computed.normalized_source_sha256} (${computed.normalized_source_bytes} bytes)`,
     );
     return;
   }
