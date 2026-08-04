@@ -95,14 +95,14 @@ test("English land methodology is the approved note verbatim", () => {
   );
 });
 
-test("successful Land list reuses zap_explainer_html (no forked methodology copy)", () => {
-  assert.match(indexSrc, /id="land-methodology"\s*>\$\{t\("zap_explainer_html"\)\}/);
+test("Land methodology lives once in progressive disclosure, outside list and empty states", () => {
   assert.match(
     indexSrc,
-    /t\("zap_project_index_html"\)\s*\} \$\{t\("zap_explainer_html"\)\}/
+    /class="lens-method land-method"[\s\S]*?class="land-method-copy" data-i18n="zap_explainer_html"/
   );
-  // Methodology key appears for the success note and the empty-state composition only —
-  // not a second independent English string literal in index.html.
-  const methodologyLiterals = indexSrc.match(/refreshes about monthly/g) || [];
-  assert.equal(methodologyLiterals.length, 0, "do not hardcode methodology in index.html");
+  const list = indexSrc.slice(
+    indexSrc.indexOf("function landRenderList("),
+    indexSrc.indexOf("async function geocode(")
+  );
+  assert.doesNotMatch(list, /zap_explainer_html|zap_project_index_html|no_zap/);
 });
