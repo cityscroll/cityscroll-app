@@ -427,7 +427,12 @@ warehouse/.venv/bin/python warehouse/scripts/nycedc_project_documents_run.py \
 warehouse/.venv/bin/python warehouse/scripts/nycedc_project_documents_run.py \
   --limit 25
 
-node --test test/nycedc_project_documents.test.mjs
+# Materialize accepted receipt-backed joins for the Worker notice panel
+node tools/build_subsidy_project_lookup.mjs --bench
+
+node tools/build_subsidy_project_lookup.mjs --check
+node --test test/nycedc_project_documents.test.mjs \
+  test/subsidy_project_panel.test.mjs worker/test/subsidy_project_lookup.test.mjs
 ```
 
 The versioned payload is
@@ -436,6 +441,8 @@ materialized only when the committed fixed-sample receipt clears the 30% join
 threshold with every candidate reviewed and no false positives. Missing facts
 and unmatched projects remain null/unmatched. A public hearing is never treated
 as a board approval without explicit motion and vote language in the minutes.
+`site/data/subsidy_project_lookup.json` and its Worker twin contain only accepted
+edges; unmatched notice IDs are absent, so the notice page stays unchanged.
 
 ## Roadmap
 

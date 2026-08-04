@@ -10,6 +10,10 @@ import {
   assembleSubsidyLifecycle,
   stampSubsidyFeedUnavailable,
 } from "./lib/subsidy_lifecycle.mjs";
+import {
+  lookupSubsidyProjects,
+  subsidyProjectReceipt,
+} from "./lib/subsidy_project_lookup.mjs";
 
 const CITY_RECORD_NOTICE_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const SUBSIDY_SOURCE = "https://edc.nyc/about-nycedc/financial-public-documents-recordings";
@@ -20,7 +24,35 @@ const PREWARM_MAX = 40;
  * assembled under the old parser recompute instead of serving forever.
  * Missing or mismatched parser_version on a cached row is a cache miss.
  */
-export const SUBSIDY_PARSER_VERSION = 2;
+export const SUBSIDY_PARSER_VERSION = 3;
+
+function rc2ProjectToLifecycleRow(project, requestId) {
+  const milestones = project?.milestones || {};
+  const application = milestones.application || {};
+  const board = milestones.board_decision || {};
+  const closing = milestones.closing || {};
+  const compliance = milestones.compliance || {};
+  return {
+    request_id: requestId,
+    project_id: project.project_id,
+    project_name: project.project_name,
+    company_name: project.company,
+    project_address: project.address,
+    requested_benefit_amount: project.requested_benefit,
+    estimated_public_cost: project.estimated_public_cost,
+    application_date: application.date,
+    application_status: application.status,
+    board_decision_date: board.date,
+    board_decision_outcome: board.outcome,
+    board_decision_url: board.date ? project.official_documents_url : null,
+    closing_date: closing.date,
+    closing_status: closing.status,
+    closing_url: closing.date ? project.official_documents_url : null,
+    compliance_date: compliance.date,
+    compliance_status: compliance.status,
+    compliance_report_url: compliance.date ? project.official_documents_url : null,
+  };
+}
 
 function sq(s) {
   return String(s || "").replace(/'/g, "''");
@@ -174,6 +206,28 @@ async function cachePut(env, requestId, agency, lifecycle) {
 export async function computeLifecycle(env, requestId, noticeRow) {
   const notice = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
   if (!notice) return { lifecycle: null, ok: false, sourceUnavailable: false };
+  const projectIdentity = lookupSubsidyProjects(requestId);
+  if (projectIdentity.length) {
+    const projects = parseNYCIDAProjects(
+      projectIdentity.map((project) => rc2ProjectToLifecycleRow(project, requestId)),
+    );
+    const [lifecycle] = assembleSubsidyLifecycle([notice], projects);
+    if (!lifecycle) return { lifecycle: null, ok: false, sourceUnavailable: false };
+    const receipt = subsidyProjectReceipt();
+    lifecycle.project_identity = projectIdentity;
+    lifecycle.join = {
+      ...lifecycle.join,
+      method: `receipt-backed-${String(projectIdentity[0].join_method).replace(/_/g, "-")}`,
+      source: "NYCEDC/NYCIDA/Build NYC project records",
+      confidence: projectIdentity[0].join_confidence,
+      receipt: receipt ? {
+        observed_at: receipt.observed_at,
+        join_rate: receipt.join_rate,
+        threshold: receipt.threshold,
+      } : null,
+    };
+    return { lifecycle, ok: true, sourceUnavailable: false };
+  }
   const { projects, ok } = await fetchSubsidyProjects();
   // assembleSubsidyLifecycle derives a City Record hearing project for IDA notices when
   // the Build NYC feed is empty or blocked — that is a real public join, not "unavailable".
