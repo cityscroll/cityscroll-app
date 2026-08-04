@@ -83,3 +83,8 @@ test("Rules lens chrome consumes the shared design-language tokens", () => {
   assert.match(css, /var\(--radius-md\)/);
   assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b|rgba?\(/i);
 });
+
+test("Hidden rail controls retain localized programmatic names", () => {
+  assert.match(html, /<select id="career-format"[^>]*aria-label="Exam format"[^>]*data-i18n-aria="career_format_label"/);
+  assert.match(html, /<select id="lstatus"[^>]*aria-label="Status"[^>]*data-i18n-aria="status_label"/);
+});
