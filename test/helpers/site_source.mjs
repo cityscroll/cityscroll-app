@@ -19,6 +19,7 @@ export const SITE_MODULES = [
   "entities.mjs",
   "workspace.mjs",
   "map.mjs",
+  "now.mjs",
   "routing.mjs",
   "boot.mjs",
 ];

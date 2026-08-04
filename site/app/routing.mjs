@@ -718,6 +718,10 @@ function applyHash(){
     showTaskFirst(parsed.task, parsed.id);
     return true;
   }
+  if(raw === "now"){
+    showNow();
+    return true;
+  }
   focusedItemRouteHash="";
   if(raw === "investigation"){ showInvestigation(); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
