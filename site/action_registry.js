@@ -1862,6 +1862,7 @@
     } else if (kind === "property") {
       // Disposition process next-step from stage + commercial bid steps + parcel affordances (no punt).
       const disp = String(matter.disposition_stage || stage || "").toLowerCase();
+      const readerHandoff = matter.reader_actions?.rail ? { ...matter.reader_actions.rail } : null;
       const fields = noticeFieldGuidance(matter);
       // Commercial participation (GovDeals / sealed-bid / show dates) extracted from the body.
       const commercial = matter.commercial || null;
@@ -1884,7 +1885,9 @@
       };
       const parcelActs = parcelLookupActions(matter, deadline);
       const past = isPast(deadline, today);
-      if (disp === "hearing" || (!disp && /hearing|meeting/i.test(String(matter.type_of_notice_description || "")))) {
+      if (readerHandoff) {
+        actions = readerHandoff.build_actions(readerHandoff, matter, { watch, official, local, validateAction, hearingHandoff });
+      } else if (disp === "hearing" || (!disp && /hearing|meeting/i.test(String(matter.type_of_notice_description || "")))) {
         actions = past
           ? [unavailable("attend", "next_action_event_passed", "This event has passed.", deadline)]
           : matter.participation_url
