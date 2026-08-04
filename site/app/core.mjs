@@ -290,6 +290,8 @@ function showTab(name, push){
     }
   }
   if(name==="map") paintMapExploration();
+  // Monitor-pack code and data are Alerts-only; keep both off the home cold path.
+  if(name==="alerts" && typeof initWatchTemplates==="function") initWatchTemplates();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
   // Header alert CTA carries the active lens/filter (or clears to bare #alerts).
   if(typeof syncAlertsEntryHrefs === "function"){

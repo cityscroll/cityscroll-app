@@ -137,7 +137,9 @@
   .nlbox{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:18px;box-shadow:var(--shadow)}
   .nllabel{font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.13em;font-size:12px;color:var(--ink-soft);display:block;margin-bottom:8px}
   .nlworking{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--oxblood)}
-  .nltry{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .nltry{display:grid;gap:var(--space-2);margin-top:var(--space-3)}
+  .teaching-examples-label{font:600 11px/1.2 var(--font-interface);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted)}
+  .teaching-example-list{display:flex;flex-wrap:wrap;gap:var(--space-2)}
   .nlrow{display:flex;gap:10px;flex-wrap:wrap}
   .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink)}
   .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft);cursor:default}
@@ -172,8 +174,10 @@
   .nlunderstood-weak{background:#eceef2;border-inline-start:3px solid var(--amber);padding:8px 10px;border-start-end-radius:6px;border-end-end-radius:6px;color:var(--ink-soft)}
   .qcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;white-space:pre-wrap;color:var(--ink-soft);margin-top:4px}
   .tryrow{margin-top:12px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--muted)}
-  .trychip{font-family:var(--font-sc);font-weight:600;letter-spacing:.03em;font-size:12px;padding:6px 11px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer;margin:0 4px 6px 6px;text-transform:none}
-  .trychip:hover{border-color:var(--oxblood);color:var(--oxblood)}
+  .trychip{font-family:var(--font-interface);font-weight:600;letter-spacing:0;font-size:12px;color:var(--color-action);cursor:pointer;text-transform:none;text-align:start}
+  .teaching-example{padding:var(--space-2) var(--space-3);border:1px dashed var(--color-border-strong);border-radius:var(--radius-sm);background:transparent}
+  .teaching-example::before{content:"↳";margin-inline-end:var(--space-1);color:var(--color-text-muted)}
+  .teaching-example:hover{border-color:var(--color-action);background:var(--color-action-tint,#eef2ff);color:var(--color-action-hover)}
   /* w12-17: a SUBTLE, honest-data indicator — a 1px border tint, nothing louder — on a
      suggestion chip whose own live results were found (at cron-validation time, not by the
      client) to conspicuously carry prior award-cycle history and/or agency forecast data. Two
@@ -1213,8 +1217,10 @@
   .watch-tpl-heading{margin:0 0 4px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif;border:0;padding:0}
   .watch-tpl-lead{margin:0 0 10px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;max-width:56ch}
   .watch-tpl-list{display:flex;flex-wrap:wrap;gap:8px}
-  .watch-tpl-card{text-align:start;font:600 12px/1.35 ui-sans-serif,system-ui,sans-serif;padding:9px 12px;border:1px solid var(--rule);border-radius:8px;background:#faf6ee;color:var(--ink);cursor:pointer;max-width:100%}
+  .watch-tpl-card{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-1);text-align:start;font:600 12px/1.35 var(--font-interface);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text);cursor:pointer;max-width:100%}
+  .watch-tpl-consequence{font:600 11px/1.3 var(--font-interface);color:var(--color-action)}
   .watch-tpl-card[aria-pressed="true"],.watch-tpl-card.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .watch-tpl-card[aria-pressed="true"] .watch-tpl-consequence,.watch-tpl-card.on .watch-tpl-consequence{color:var(--color-surface)}
   .watch-tpl-detail{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);font:13px/1.5 ui-sans-serif,system-ui,sans-serif}
   .watch-tpl-detail ul{margin:6px 0 10px;padding-inline-start:1.2rem}
   .watch-tpl-detail .watch-tpl-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
