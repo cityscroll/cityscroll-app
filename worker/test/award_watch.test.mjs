@@ -34,6 +34,7 @@ function fakeDB(seed = {}) {
   };
 }
 const FIXTURE_CACHE_AT = "2026-08-03T12:00:00.000Z";
+const FIXTURE_NOW_MS = Date.parse(FIXTURE_CACHE_AT);
 function seedNychaCache(db, requestId, matches) {
   // computed_at is required for empty matches: nychaCacheFresh treats legacy
   // rows without a timestamp as keep-only-if-non-empty (empty → miss → live).
@@ -59,7 +60,7 @@ const NYCHA_MATCH = { key: "nycha:C1", vendor: "NELLIGAN WHITE ARCHITECTS PLLC",
 test("currentAwardCandidates: NYCHA exact match, fingerprinted by contract id", async () => {
   const DB = fakeDB();
   seedNychaCache(DB, "20250110001", [{ id: "C1", pin: "337474", vendor: "NELLIGAN WHITE ARCHITECTS PLLC", amount: 7310000, approved: "2025-03-01" }]);
-  const r = await currentAwardCandidates({ DB }, "20250110001", "Housing Authority");
+  const r = await currentAwardCandidates({ DB }, "20250110001", "Housing Authority", FIXTURE_NOW_MS);
   assert.equal(r.ok, true);
   assert.deepEqual(r.candidates, [{ key: "nycha:C1", kind: "exact", vendor: "NELLIGAN WHITE ARCHITECTS PLLC", amount: 7310000, date: "2025-03-01" }]);
 });
@@ -67,8 +68,14 @@ test("currentAwardCandidates: NYCHA exact match, fingerprinted by contract id", 
 test("currentAwardCandidates: NYCHA with no cached match yet — confirmed empty, not a failure", async () => {
   const DB = fakeDB();
   seedNychaCache(DB, "20250110001", []);
-  const r = await currentAwardCandidates({ DB }, "20250110001", "Housing Authority");
-  assert.deepEqual(r, { ok: true, candidates: [] });
+  const orig = globalThis.fetch;
+  let fetchCalls = 0;
+  globalThis.fetch = async () => { fetchCalls++; throw new Error("fresh fixture cache must prevent network access"); };
+  try {
+    const r = await currentAwardCandidates({ DB }, "20250110001", "Housing Authority", FIXTURE_NOW_MS);
+    assert.deepEqual(r, { ok: true, candidates: [] });
+    assert.equal(fetchCalls, 0, "fresh fixture cache must not depend on network timing");
+  } finally { globalThis.fetch = orig; }
 });
 
 const SODA_NOTICE_ROW = [{ request_id: "20250110001", start_date: "2025-01-10", agency_name: "Housing Authority", type_of_notice_description: "Solicitation", pin: "337474" }];
@@ -80,7 +87,7 @@ test("currentAwardCandidates: NYCHA Checkbook/WAF failure (no D1 cache, live loo
     : { ok: true, json: async () => SODA_NOTICE_ROW });
   try {
     const DB = fakeDB(); // no cache entry -> getOrComputeNycha must compute live, and the live lookup fails
-    const r = await currentAwardCandidates({ DB }, "20250110001", "Housing Authority");
+    const r = await currentAwardCandidates({ DB }, "20250110001", "Housing Authority", FIXTURE_NOW_MS);
     assert.deepEqual(r, { ok: false, candidates: [] });
   } finally { globalThis.fetch = orig; }
 });
@@ -110,6 +117,7 @@ test("currentAwardCandidates: verified-absent and unknown agencies both resolve 
 function baseCtx(today) {
   return {
     FROM: "CityScroll <alerts@crol-list.org>", LIVE: true, heartbeatDays: 14, today, isMonday: true,
+    nowMs: FIXTURE_NOW_MS,
     counts: () => ({ "per-run": 0, daily: 0 }), caps: { "per-run": 25, daily: 50 }, onSent: async () => {},
   };
 }
