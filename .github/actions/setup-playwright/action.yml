@@ -34,6 +34,11 @@ runs:
         else
           pip install playwright
         fi
-        # --with-deps is needed once per runner image; cache hits still re-run
-        # the install command but skip the multi-hundred-MB download.
-        playwright install --with-deps chromium
+        # Always ensure the Chromium build is present (cache hit skips the large
+        # download). System deps via apt are only needed when the browser cache
+        # missed — re-running `install --with-deps` on every job can burn the
+        # whole a11y timeout on slow mirror font packages before axe starts.
+        playwright install chromium
+        if [ "${{ steps.pw-cache.outputs.cache-hit }}" != "true" ]; then
+          playwright install-deps chromium
+        fi

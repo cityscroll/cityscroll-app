@@ -72,7 +72,13 @@ test("browser jobs use the Playwright cache composite action", () => {
   const action = read(".github/actions/setup-playwright/action.yml");
   assert.match(action, /actions\/cache@v4/);
   assert.match(action, /~\/\.cache\/ms-playwright/);
-  assert.match(action, /playwright install --with-deps chromium/);
+  // Browser binary always; system deps only on cache miss so a11y does not burn
+  // its budget re-running apt fonts on every warm runner.
+  assert.match(action, /playwright install chromium/);
+  assert.match(action, /steps\.pw-cache\.outputs\.cache-hit/);
+  assert.match(action, /playwright install-deps chromium/);
+  // Cold Playwright install + multi-gate axe suite needs headroom above 10m.
+  assert.match(ci, /a11y-pr:[\s\S]*?timeout-minutes:\s*20/);
 });
 
 test("runtime multi-locale stray-English is not a CI job; static lint is the gate", () => {
