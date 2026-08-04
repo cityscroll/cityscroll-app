@@ -237,25 +237,72 @@ async function loadMethodFacet(where, kw){
 // matchEvidence()/digTitleHTML()/digEvidenceHTML() as the Alerts-page ask preview's digItemHTML().
 // terms is [] for plain browsing (no #kw typed), so matchEvidence returns null and the row
 // renders exactly as it did before this existed.
+//
+// Solicitation M/WBE chips: pure extract from list fields (selection_method + body chunk).
+// Default 20-day floors stay off the list; only distinctive method/goal markers show.
+// Named distinctly from procurement-phase ensureMwbeGoalSurfaceTools so the
+// reconstructed inline script (module-dom-equivalence) does not double-declare.
+let moneyListMwbeSurfacePromise = null;
+function moneyListMwbeSurfaceTools(){
+  if(!moneyListMwbeSurfacePromise){
+    moneyListMwbeSurfacePromise = import("../mwbe_goal_surface.mjs").catch(() => null);
+  }
+  return moneyListMwbeSurfacePromise;
+}
+function solicitationListChipsHTML(r){
+  // Sync path uses cached module when already loaded; otherwise empty until async patch.
+  const tools = moneyListMwbeSurfacePromise && moneyListMwbeSurfacePromise._value
+    ? moneyListMwbeSurfacePromise._value
+    : null;
+  if(!tools || typeof tools.buildSolicitationListChips !== "function") return "";
+  const chips = tools.buildSolicitationListChips(r) || [];
+  if(!chips.length) return "";
+  return `<div class="mwbe-chiprow" data-mwbe-list-chips="1">${chips.map(c => {
+    const label = c.i18n_params ? t(c.i18n_key, c.i18n_params) : t(c.i18n_key);
+    const tone = c.tone || "method";
+    return `<span class="tag ${escUiHtml(tone)}">${escUiHtml(label)}</span>`;
+  }).join("")}</div>`;
+}
 function moneyRowHTML(r, i, terms){
   const isAward = r.type_of_notice_description === "Award";
   const lead = isAward
     ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
     : deadlineTag(r.due_date);
   const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
+  const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
   return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${title ? digTitleHTML(title, ev) : t("untitled_notice")}</p>
       <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
+      ${mwbeChips}
       ${digEvidenceHTML(ev)}
     </div>`;
+}
+async function ensureMwbeListChipsReady(){
+  const tools = await moneyListMwbeSurfaceTools();
+  if(tools) moneyListMwbeSurfacePromise._value = tools;
+  return tools;
 }
 function renderList(autoSelect){
   if(!currentRows.length){ $("#list").innerHTML = '<div class="empty">' + t("nothing_found") + '</div>'; return; }
   const kw = ($("#kw").value||"").trim(), terms = kw ? [kw] : [];
   // Preserve selection across hybrid refresh (snapshot → live) when the notice is still present.
   const keepId=autoSelect===false&&selectedRFP?selectedRFP.request_id:null;
+  // Prefetch M/WBE chip tools and inject chips in place — never replace the whole list
+  // (that would race loadLineageBadges and wipe .lineage-slot markers).
+  ensureMwbeListChipsReady().then((tools)=>{
+    if(!tools || !document.querySelector("#list .row")) return;
+    document.querySelectorAll("#list .row").forEach((el)=>{
+      if(el.querySelector("[data-mwbe-list-chips]")) return;
+      const r = currentRows[+el.dataset.i];
+      if(!r || /award/i.test(r.type_of_notice_description||"")) return;
+      const chips = solicitationListChipsHTML(r);
+      if(!chips) return;
+      const rmeta = el.querySelector(".rmeta");
+      if(rmeta) rmeta.insertAdjacentHTML("afterend", chips);
+    });
+  }).catch(()=>{});
   $("#list").innerHTML = currentRows.map((r,i)=>moneyRowHTML(r,i,terms)).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
   if(autoSelect===false&&keepId){
