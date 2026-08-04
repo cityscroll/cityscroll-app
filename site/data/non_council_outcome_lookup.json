@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.non_council_outcome_lookup.v1",
+  "generated_at": "2026-08-04T12:00:00.000Z",
+  "coverage": {
+    "scope": "fixed_sample_not_citywide",
+    "presentation": "board_level",
+    "notices_seen": 10,
+    "notices_matched": 0,
+    "match_rate": 0,
+    "honest_absent": true,
+    "join_bridge_enabled": false
+  },
+  "notices": {}
+}
