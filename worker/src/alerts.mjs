@@ -65,6 +65,12 @@ import {
   forecastSentIdentity,
   forecastIsDeliverableOn,
 } from "./lib/contract_forecast_predictions.mjs";
+import {
+  digestShadowId,
+  isDigestHeld,
+  partitionDigestJobsByHold,
+  resolveDigestShadowHold,
+} from "./digest_shadow_hold.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -80,17 +86,6 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
 // stats:page_view, stats:catday:*, stats:alert_confirmed) so a list-prefix scan or
 // exact get can never confuse a page-view counter with a send cap or last-sent clock.
 export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
-
-async function shadowDigestId(kind, value, enabled) {
-  if (!enabled) return null;
-  const input = new TextEncoder().encode(String(value || ""));
-  const digest = await crypto.subtle.digest("SHA-256", input);
-  const hex = Array.from(
-    new Uint8Array(digest),
-    (byte) => byte.toString(16).padStart(2, "0"),
-  ).join("");
-  return `${kind}:${hex.slice(0, 24)}`;
-}
 
 export function digestRunDayKey(day) {
   return `digest:run:${day}`;
@@ -143,7 +138,7 @@ export function summarizeDigestRun({ ranAt, day, live, mode, sentThisRun, sentTo
   const sent = Number.isFinite(sentThisRun) ? sentThisRun : tallies.sent;
   const matched = tallies.matched;
   let skipped_reason = null;
-  if (mode === "queue" && tallies.enqueued > 0 && sent === 0 && tallies.errors === 0 && tallies.matched === 0 && results.every((r) => r?.mode === "queue" || r?.watch)) {
+  if (mode === "queue" && tallies.enqueued > 0 && sent === 0 && tallies.errors === 0 && tallies.matched === 0) {
     // Cron only enqueued — consumers have not reported final outcomes yet.
     skipped_reason = "queue_pending";
   } else if (sent > 0) {
@@ -325,6 +320,10 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const heartbeatDays = Number(env.HEARTBEAT_DAYS) || 14;     // quiet days before a daily sub gets a liveness ping
   const now = options.now == null ? new Date() : new Date(options.now);
   const day = now.toISOString().slice(0, 10);
+  const shadowHold = options.shadowHoldState || (options.capturePreviews
+    ? null
+    : await resolveDigestShadowHold(env.DB, { now, persist: true }));
+  const heldDigestIds = new Set(shadowHold?.active_digest_ids || []);
   let sentToday = await getSendCount(env, day);
   let sentThisRun = 0;
   const results = [];
@@ -340,6 +339,18 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 
 
   for (const w of watches) {
+    const watchDigestId = `watch:${w.id}`;
+    if (heldDigestIds.has(watchDigestId)) {
+      results.push({
+        watch: w.id,
+        kind: "config_watch",
+        skipped: "shadow-hold",
+        action: "none",
+        sent: false,
+        holdContract: shadowHold.contract,
+      });
+      continue;
+    }
     try {
       const rows = await runWatch(w);
       const seen = await getSeen(env, w.id);
@@ -399,7 +410,11 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         ...(preview ? { preview } : {}),
       });
     } catch (e) {
-      results.push({ watch: w.id, error: String(e?.message || e) });
+      results.push({
+        watch: w.id,
+        ...(options.capturePreviews ? { previewId: watchDigestId } : {}),
+        error: String(e?.message || e),
+      });
     }
   }
 
@@ -422,6 +437,8 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
     onDryRun: options.simulateDryRunCounters ? async () => { sentThisRun++; sentToday++; } : null,
     capturePreviews: options.capturePreviews === true,
     advanceState: options.advanceState,
+    heldDigestIds,
+    holdContract: shadowHold?.contract || null,
   };
   let mode = "inline";
   let enqueued = 0;
@@ -429,9 +446,20 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   if (!options.forceInline && env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
     const jobs = buildDigestJobs(allSubs);
-    for (const job of jobs) {
+    const partition = await partitionDigestJobsByHold(jobs, shadowHold);
+    for (const job of partition.eligible) {
       await env.DIGEST_QUEUE.send(job);
       enqueued++;
+    }
+    for (const held of partition.held) {
+      results.push({
+        sub: "digest:held",
+        kind: held.job.type === "rollup" ? "rollup" : "subscription",
+        skipped: "shadow-hold",
+        action: "none",
+        sent: false,
+        holdContract: shadowHold.contract,
+      });
     }
     results.push({ mode: "queue", enqueued });
   } else {
@@ -464,7 +492,22 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
       await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results: [] }));
     }
   }
-  const summary = { ranAt, live: LIVE, sentThisRun, sentToday, caps: { perRun: maxPerRun, perDay: maxPerDay }, receipt, results };
+  const summary = {
+    ranAt,
+    live: LIVE,
+    sentThisRun,
+    sentToday,
+    caps: { perRun: maxPerRun, perDay: maxPerDay },
+    shadowHold: shadowHold ? {
+      contract: shadowHold.contract,
+      source_status: shadowHold.source_status,
+      delivery_policy: shadowHold.delivery_policy,
+      active_count: heldDigestIds.size,
+      expires_at: shadowHold.expires_at,
+    } : null,
+    receipt,
+    results,
+  };
   const logSummary = options.capturePreviews
     ? { ...summary, results: results.map(({ preview: _preview, ...result }) => result) }
     : summary;
@@ -478,7 +521,18 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 //
 // For multi-watch accounts use processAccountRollup() instead — one email, one send unit.
 export async function processOneSub(env, s, ctx) {
-  const previewId = await shadowDigestId("digest", s.key, ctx.capturePreviews);
+  const digestId = await digestShadowId("digest", s.key);
+  const previewId = ctx.capturePreviews ? digestId : null;
+  if (ctx.heldDigestIds?.has(digestId)) {
+    return {
+      sub: maskKey(s.key),
+      kind: "subscription",
+      skipped: "shadow-hold",
+      action: "none",
+      sent: false,
+      holdContract: ctx.holdContract,
+    };
+  }
   try {
     if (s.paused) return { sub: maskKey(s.key), skipped: "paused", kind: "subscription" };
     if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly", kind: "subscription" };
@@ -664,7 +718,19 @@ export async function processOneSub(env, s, ctx) {
 export async function processAccountRollup(env, subs, ctx) {
   const email = normalizeEmail(subs?.[0]?.email || "");
   const accountId = accountLogId(email);
-  const previewId = await shadowDigestId("digest", (subs || []).map((sub) => sub.key).sort().join("|"), ctx.capturePreviews);
+  const digestId = await digestShadowId("digest", (subs || []).map((sub) => sub.key).sort().join("|"));
+  const previewId = ctx.capturePreviews ? digestId : null;
+  if (ctx.heldDigestIds?.has(digestId)) {
+    return {
+      sub: accountId,
+      kind: "rollup",
+      emailRedacted: redactEmail(email),
+      skipped: "shadow-hold",
+      action: "none",
+      sent: false,
+      holdContract: ctx.holdContract,
+    };
+  }
   if (!email || !subs?.length) {
     return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", skipped: "empty", emailRedacted: redactEmail(email) };
   }
@@ -820,7 +886,7 @@ export async function processAccountRollup(env, subs, ctx) {
 async function evaluateSubSection(env, s, ctx) {
   const base = {
     sub: maskKey(s.key),
-    ...((ctx.capturePreviews && s.key) ? { previewId: await shadowDigestId("watch", s.key, true) } : {}),
+    ...((ctx.capturePreviews && s.key) ? { previewId: await digestShadowId("watch", s.key) } : {}),
     subKey: s.key,
     lens: s.lens,
     queryLabel: describeFilter(s.lens, s.filter),
@@ -962,7 +1028,7 @@ async function evaluateAwardSection(env, s, ctx, base) {
 // just under a distinct key namespace (`award:<sub key>`) so it can never collide with a notices
 // "seen" set even if a (email,lens,filter) hash were ever reused across lenses.
 export async function processAwardSub(env, s, ctx) {
-  const previewId = await shadowDigestId("digest", s.key, ctx.capturePreviews);
+  const previewId = ctx.capturePreviews ? await digestShadowId("digest", s.key) : null;
   try {
     const filter = s.filter || {};
     if (typeof filter.requestId !== "string" || !filter.requestId) {
@@ -1077,6 +1143,7 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     : (jobOrKey && typeof jobOrKey === "object" ? jobOrKey : {});
   const now = options.now == null ? new Date() : new Date(options.now);
   const day = now.toISOString().slice(0, 10);
+  const shadowHold = options.shadowHoldState || await resolveDigestShadowHold(env.DB, { now });
   let daily = await getSendCount(env, day);
   const ctx = {
     FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
@@ -1088,6 +1155,8 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     counts: () => ({ "per-run": 0, daily }),
     caps: { "per-run": Number(env.MAX_PER_RUN) || 25, daily: Number(env.MAX_SENDS_PER_DAY) || 50 },
     onSent: async () => { daily++; await setSendCount(env, day, daily); },
+    heldDigestIds: new Set(shadowHold.active_digest_ids || []),
+    holdContract: shadowHold.contract,
   };
 
   let r;

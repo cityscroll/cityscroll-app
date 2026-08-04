@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.1.0";
+export const OPS_CONTRACT_VERSION = "1.2.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -53,6 +53,8 @@ export const DIGEST_SHADOW = Object.freeze({
     binding: "DB",
     run_table: "digest_shadow_runs",
     preview_table: "digest_shadow_previews",
+    hold_state_table: "digest_shadow_hold_states",
+    hold_override_table: "digest_shadow_hold_overrides",
   },
   redline_fields: ["code", "digest_id", "watch_id", "reason", "evidence"],
   redline_codes: [
@@ -68,7 +70,18 @@ export const DIGEST_SHADOW = Object.freeze({
     poll_status: "HTTP 200 only when READY; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
     wake: "Scheduled repository monitor opens or updates a repair issue for redlines or missing runs.",
     rerun: "Authenticated POST /admin/digest-shadow rebuilds all previews after a repair; affected_digest_ids scopes diagnosis.",
-    delivery_effect: "none; the 13:00 UTC queue/send path is unchanged",
+    delivery_effect: "At 12:45 UTC, only affected_digest_ids still redlined are held from the 13:00 UTC delivery path; unrelated digests remain eligible.",
+  },
+  hold: {
+    contract: "digest-shadow-hold.v1",
+    cutoff_utc: "12:45",
+    delivery_boundary_utc: "13:00",
+    expires_utc: "14:00",
+    missing_run_policy: "fail open because no digest-specific scope exists",
+    redline_policy: "fail closed only for affected_digest_ids",
+    expiry_policy: "fail open after the bounded delivery window",
+    override: "Authenticated POST with action=override-hold, digest_ids, and reason",
+    successful_rerun: "Authenticated READY rerun clears overrides and releases every digest",
   },
 });
 
@@ -100,6 +113,7 @@ export const DAYLOG_SKIP_REASONS = Object.freeze([
   "no-watermark",
   "malformed-award-watch",
   "award-lookup-failed",
+  "shadow-hold",
   "lens:people",
   "lens:money",
   "lens:land",
@@ -297,7 +311,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/digest-shadow",
     methods: ["GET", "POST"],
     auth: "ADMIN_KEY",
-    description: "GET reads the rehearsal or rendered preview; POST reruns the delivery-free build after repair.",
+    description: "GET reads the rehearsal, hold state, or rendered preview; POST reruns after repair or overrides named affected digest holds.",
   },
   {
     path: "/admin/digest-send-test",

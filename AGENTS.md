@@ -45,6 +45,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Cloudflare Pages owns `cityscroll.org` and `www.cityscroll.org`; the Worker custom-domain
   routes are only `api.cityscroll.org` and the `api.crol-list.org` compatibility alias.
 
+## Digest shadow delivery holds
+
+- `worker/src/digest_shadow_hold.mjs` is the single policy layer for scoped 09:00 delivery
+  holds. It may hold only the shadow run's `affected_digest_ids`; missing runs, store failures,
+  and run-level redlines without digest scope remain fail-open. The D1 migration is
+  `worker/migrations/0015_digest_shadow_hold.sql`.
+- The repair cutoff is 12:45 UTC, the configured delivery boundary is 13:00 UTC, and leases
+  expire at 14:00 UTC. Producer and queue-consumer paths both enforce the same opaque digest
+  identity. Verify with `node --test worker/test/digest_shadow_hold.test.mjs
+  worker/test/digest_shadow.test.mjs worker/test/digest_rollup.test.mjs`.
+
 ## CI path fast paths and merge queue
 
 - Required checks always report a conclusion (never stay missing). Fast paths:
