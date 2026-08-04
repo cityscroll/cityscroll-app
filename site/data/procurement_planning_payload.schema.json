@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/data/procurement_planning_payload.schema.json",
+  "title": "CityScroll procurement planning payload",
+  "description": "Infrastructure contract for publisher-supplied procurement plans. The reader surface is intentionally separate.",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at",
+    "fiscal_year",
+    "contract",
+    "sources",
+    "plans",
+    "capital_projects",
+    "bridge_edges"
+  ],
+  "properties": {
+    "schema": {
+      "const": "cityscroll.procurement_planning.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fiscal_year": {
+      "type": "integer",
+      "minimum": 2027
+    },
+    "contract": {
+      "type": "object",
+      "required": [
+        "unmatched_rows_remain_unmatched",
+        "infer_budget_from_agency_total",
+        "reader_surface_included",
+        "budget_provenance_required"
+      ],
+      "properties": {
+        "unmatched_rows_remain_unmatched": {
+          "const": true
+        },
+        "infer_budget_from_agency_total": {
+          "const": false
+        },
+        "reader_surface_included": {
+          "const": false
+        },
+        "budget_provenance_required": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "url", "sha256"],
+        "properties": {
+          "source": {"type": "string"},
+          "url": {"type": "string", "format": "uri"},
+          "label": {"type": "string"},
+          "sha256": {"type": "string"},
+          "plan_rows": {"type": "integer", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    },
+    "plans": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/plan"}
+    },
+    "capital_projects": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/plan"}
+    },
+    "bridge_edges": {
+      "type": "array",
+      "description": "Empty unless the edge's source-target path clears the production 30% and review gates.",
+      "items": {"$ref": "#/$defs/edge"}
+    }
+  },
+  "$defs": {
+    "budget": {
+      "type": ["object", "null"],
+      "properties": {
+        "amount": {"type": "number"},
+        "currency": {"const": "USD"},
+        "basis": {"enum": ["estimated_amount", "total_budget"]},
+        "spend_to_date": {"type": ["number", "null"]}
+      },
+      "required": ["amount", "currency", "basis"],
+      "additionalProperties": false
+    },
+    "plan": {
+      "type": "object",
+      "required": [
+        "source_record_id",
+        "source",
+        "source_url",
+        "agency",
+        "description",
+        "procurement_method",
+        "industry",
+        "term_start",
+        "term_end",
+        "quarter",
+        "budget",
+        "published_identifiers",
+        "quality_flags"
+      ],
+      "properties": {
+        "source_record_id": {"type": "string"},
+        "source": {"enum": ["mocs_ll63", "mocs_ll1", "capital_projects_dashboard"]},
+        "source_url": {"type": "string", "format": "uri"},
+        "agency": {"type": ["string", "null"]},
+        "description": {"type": ["string", "null"]},
+        "procurement_method": {"type": ["string", "null"]},
+        "industry": {"type": ["string", "null"]},
+        "term_start": {"type": ["string", "null"], "format": "date"},
+        "term_end": {"type": ["string", "null"], "format": "date"},
+        "quarter": {"type": ["integer", "null"], "minimum": 1, "maximum": 4},
+        "budget": {"$ref": "#/$defs/budget"},
+        "published_identifiers": {"type": "array", "items": {"type": "string"}},
+        "quality_flags": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "plan_source_record_id",
+        "plan_source",
+        "target_source",
+        "target_id",
+        "method",
+        "score",
+        "provenance"
+      ],
+      "properties": {
+        "plan_source_record_id": {"type": "string"},
+        "plan_source": {"type": "string"},
+        "target_source": {"type": "string"},
+        "target_id": {"type": "string"},
+        "method": {"enum": ["deterministic_identifier", "agency_title_time_reviewed"]},
+        "identifier": {"type": ["string", "null"]},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "provenance": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

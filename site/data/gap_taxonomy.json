@@ -182,6 +182,19 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "capital-projects-dashboard",
+      "name": "Capital Projects Dashboard - Citywide Budget and Schedule",
+      "source_contract_id": "capital-projects-dashboard",
+      "status": "landed",
+      "join_keys": [
+        "fms_id",
+        "managing_agency_+_agency_project_name_+_phase_time_(reviewed_candidate_only)"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "checkbook-contracts",
       "name": "Checkbook NYC Contracts",
       "source_contract_id": "checkbook-contracts",
@@ -454,14 +467,30 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "mocs-ll1-plans",
+      "name": "MOCS Local Law 1 M/WBE procurement plans",
+      "source_contract_id": "mocs-ll1-plans",
+      "status": "landed",
+      "join_keys": [
+        "published_PIN/EPIN_when_present",
+        "agency_+_description_+_term_(reviewed_candidate_only)"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "mocs-ll63-plans",
       "name": "MOCS Local Law 63 procurement plans",
       "source_contract_id": "mocs-ll63-plans",
-      "status": "disabled",
-      "join_keys": [],
+      "status": "landed",
+      "join_keys": [
+        "published_PIN/EPIN_when_present",
+        "agency_+_description_+_term_(reviewed_candidate_only)"
+      ],
       "join_coverage": {},
       "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
-      "delivery_tier": "live-only"
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "nyc-agencies",
@@ -1812,6 +1841,21 @@
       "gaps_would_close": [],
       "score": 0,
       "evidence": "Shared keys BBL; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mocs-ll1-plans-x-mocs-ll63-plans-via-agency_+_description_+_term_(reviewed_candidate_only)+published_PIN/EPIN_when_present",
+      "source_a": "mocs-ll1-plans",
+      "source_b": "mocs-ll63-plans",
+      "key_path": [
+        "published_PIN/EPIN_when_present",
+        "agency_+_description_+_term_(reviewed_candidate_only)"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only); 0 taxonomy gap(s) could close."
     }
   ],
   "gaps": [
@@ -1984,7 +2028,7 @@
       "class": "not_published",
       "would_appear_in": "the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data",
       "notices_affected_estimate": "All procurement processes in the OCDS gap table.",
-      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. Capital Projects n7gv-k5yt (3,320 rows; managing_agency, client_agency, budget_forecast, current_phase, project_name) has no PIN/EPIN. Measured 2026-07-30 agency+name fuzzy join on 100 modern Procurement notices: 0% unique substring, 1% unique token Jaccard — below ~30%. Pointer upgrade only; no edge materialization. Receipt: site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json. MOCS LL63 plans remain disabled (no stable tabular endpoint)."
+      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. Capital Projects n7gv-k5yt (3,320 rows; managing_agency, client_agency, budget_forecast, current_phase, project_name) has no PIN/EPIN. Measured 2026-07-30 agency+name fuzzy join on 100 modern Procurement notices: 0% unique substring, 1% unique token Jaccard — below ~30%. Pointer upgrade only; no edge materialization. Receipt: site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json. The MOCS collector framework is staged, but no production plan rows are enabled."
     },
     {
       "id": "procurement-subcontract-goal-percent",
@@ -2419,9 +2463,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-04",
-    "source_contracts_fingerprint": "8f860e5bba731b06a5f25317d5781665f6d8e1e14a1a7be44b38d3ddeb0e886d",
+    "source_contracts_fingerprint": "8d7eb4edb4aa5847bcc24b620013b5f1ee6eac7733f60f279666f64ce1c5e336",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 43,
+    "candidate_crosswalks": 44,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

@@ -355,12 +355,54 @@
     },
     {
       "id": "mocs-ll63-plans",
-      "kind": "mocs-disabled",
-      "identifier": "egea-b8r5|whpb-ebtd",
-      "configured_asset_type": "href",
-      "configured_status": 403,
-      "documented_status": 404,
-      "fields": []
+      "kind": "html",
+      "identifier": "standard-prof-services-ll63.page",
+      "response_type": "text/html",
+      "fields": [
+        "plan_id",
+        "agency",
+        "description",
+        "term_start",
+        "term_end",
+        "procurement_method",
+        "quarter"
+      ]
+    },
+    {
+      "id": "mocs-ll1-plans",
+      "kind": "html",
+      "identifier": "m-wbe-ll1.page",
+      "response_type": "text/html",
+      "fields": [
+        "plan_id",
+        "agency",
+        "description",
+        "term_start",
+        "term_end",
+        "procurement_method",
+        "industry",
+        "estimated_amount",
+        "quarter"
+      ]
+    },
+    {
+      "id": "capital-projects-dashboard",
+      "kind": "socrata",
+      "identifier": "fb86-vt7u",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "reporting_period",
+        "managing_agency",
+        "sponsor_agency",
+        "pid",
+        "fms_id",
+        "total_budget",
+        "spend_to_date",
+        "agency_project_name",
+        "agency_project_description",
+        "current_phase"
+      ]
     },
     {
       "id": "nyc-rules-rss",
