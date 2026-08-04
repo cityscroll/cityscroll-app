@@ -1,16 +1,18 @@
 /* ===================== PEOPLE ===================== */
 let SameConsolidation=null;
+let sameConsolidationPromise=null;
+function loadSameConsolidation(){
+  return sameConsolidationPromise||(sameConsolidationPromise=import("../same_consolidation.mjs").then(module=>SameConsolidation=module.createStaffingConsolidationUI({t,escUiHtml,fmtNumber,money,fdt,fdate,REQ_URL,EXT_ATTRS,extSR})));
+}
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
 const CAREER_DATA_URL = "data/staffing_exams.json";
-// Source: site/data/staffing_exams.json schema contract, built by tools/build_staffing_exams.mjs.
+// Built from site/data/staffing_exams.json.
 const CAREER_DATA_SCHEMA_VERSION = 4;
-// Source: bounded loader-recovery policy in this module. One retry after 250 ms
-// bridges a transient module/edge race without extending navigation indefinitely.
+// One bounded retry bridges transient module/edge races.
 const CAREER_LOAD_ATTEMPTS = 2;
 const CAREER_RETRY_DELAY_MS = 250;
-// Declared guide filters from the hash (interest/eligibility/window) applied after the
-// precomputed artifact loads so options exist. Never stores a person identity.
+// Route filters apply after artifact options load; no identity is stored.
 let careerRouteFilters = null;
 let careerHowPrepared = false;
 const CAREER_HOW_SEEN_KEY = "crol_exam_how_seen_v1";
@@ -25,7 +27,6 @@ function prepareCareerHow(){
 }
 let staffingNotices = [], staffingLoaded = false, staffingLoadPromise = null;
 const staffingFilters = {query:"", role:"", agency:""};
-
 const CAREER_AREA_KEYS = {
   "public-safety": "career_area_public_safety",
   "health-care": "career_area_health_care",
@@ -40,12 +41,7 @@ function staffingVisibleItems(){
   return CrolStaffing.filterHireNotices(staffingNotices,staffingFilters);
 }
 function staffingFacetHTML(kind, allKey, field){
-  const items=staffingNotices;
-  const selected=staffingFilters[field];
-  const values=CrolStaffing.topValues(items,field,4);
-  if(selected&&!values.includes(selected)) values.unshift(selected);
-  return `<button type="button" class="chip" data-staffing-${kind}="" aria-pressed="${String(!selected)}">${t(allKey)}</button>`
-    +values.map(value=>`<button type="button" class="chip" data-staffing-${kind}="${escUiHtml(value)}" aria-pressed="${String(selected===value)}"><span lang="en" dir="ltr">${escUiHtml(value)}</span></button>`).join("");
+  return SameConsolidation.facetHTML(kind,allKey,field,staffingNotices,staffingFilters,CrolStaffing.topValues);
 }
 function bindStaffingFacets(){
   $("#staffing-role-filters").querySelectorAll("[data-staffing-role]").forEach(button=>button.addEventListener("click",()=>{
@@ -57,33 +53,13 @@ function bindStaffingFacets(){
     renderStaffingFeed(); updateHash();
   }));
 }
-function staffingHireRowHTML(item){
-  const role=item.role||t("staffing_unknown_role",{code:escUiHtml(item.title_code||"—")});
-  const salary=money(item.salary);
-  const facts=[
-    item.effective_date?`<span class="staffing-hire-fact" lang="en" dir="ltr">${escUiHtml(item.effective_date)}</span>`:"",
-    salary?`<span class="staffing-hire-fact">${salary}</span>`:"",
-    item.title_code?`<span class="staffing-hire-fact">${escUiHtml(item.title_code)}</span>`:"",
-  ].filter(Boolean).join("");
-  return `<article class="staffing-hire-row" data-kind="hire">
-    <a href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}>
-      <span class="staffing-hire-role" lang="en" dir="ltr">${escUiHtml(role)}</span>
-      <span class="staffing-hire-person" lang="en" dir="ltr">${escUiHtml(item.person)}</span>
-      <span class="staffing-hire-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</span>
-      ${facts}
-      <span class="staffing-hire-date">${fdate(item.published_at)}</span>${extSR()}
-    </a>
-  </article>`;
-}
 function syncStaffingModeUI(){
   const examDetail=!!careerSelected;
   const guide=$("#career-guide");
   const feed=$("#staffing-feed");
-  const feedMetaHeading=$("#staffing-feed-meta-heading");
-  // Deep-linked #exam/<id>: hide the staffing list so first paint is the detail card,
-  // not a "civil-service exams list only" surface above the fold.
+  const heading=$("#staffing-feed-meta-heading");
   if(feed) feed.hidden=examDetail;
-  if(feedMetaHeading) feedMetaHeading.textContent=t("staffing_appointments_heading");
+  if(heading) heading.textContent=t("staffing_appointments_heading");
   if(guide){
     guide.hidden=false;
     if(examDetail) prepareCareerHow();
@@ -96,10 +72,15 @@ function renderStaffingFeed(){
   bindStaffingFacets();
   syncStaffingModeUI();
   const items=staffingVisibleItems();
+  const entries=SameConsolidation
+    ? SameConsolidation.group(items)
+    : items.map(item=>({kind:"item",item}));
   setExportBandVisibility(items.length, "people-export-band", "people-export-overflow");
   $("#staffing-result-count").textContent=t("staffing_results_count",{n:fmtNumber(items.length)});
   $("#staffing-notice-list").innerHTML=items.length
-    ? (SameConsolidation?SameConsolidation.staffingAppointmentListHTML(items):items.map(staffingHireRowHTML).join(""))
+     ? entries.map(entry=>entry.kind==="same-except-group"
+       ? SameConsolidation.groupHTML(entry)
+       : SameConsolidation.rowHTML(entry.item)).join("")
     : `<div class="career-empty">${t("staffing_no_results")}</div>`;
 }
 // Commit-time default APPOINTED strip (wave-2 batch precompute). Keyword search / payroll stay live.
@@ -122,10 +103,7 @@ async function loadStaffingFeed(){
       const [snap, crosswalk]=await Promise.all([
         loadStaffingHiresSnapshot(),
         fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
-        import("../same_consolidation.mjs").then(module=>{
-          SameConsolidation=module;
-          module.installStaffingConsolidationStyles();
-        }),
+        loadSameConsolidation(),
       ]);
       const notices=snap&&Array.isArray(snap.notices)?snap.notices:[];
       if(notices.length){
@@ -182,10 +160,7 @@ function careerFormatLabel(format){
     other:"career_diff_format_other",
   }[format] || "career_diff_format_other");
 }
-/**
- * Lead with what makes THIS exam different (format, fee surprise, salary, quals).
- * Boilerplate fee-waiver copy is compressed when expanded detail shows it.
- */
+// Lead with exam-specific format, fee, salary, and qualification facts.
 function careerDiffLeadsHTML(exam, feeSalary){
   const view=CrolStaffing.examDifferentiatorView
     ? CrolStaffing.examDifferentiatorView(exam)
@@ -285,10 +260,7 @@ function careerSourceHTML(){
 function careerCount(value){
   return Number.isFinite(Number(value)) ? fmtNumber(Number(value)) : t("career_not_published");
 }
-/* ===== Exam process spine (application → list → certification → appointment).
-   Distinct from the static career-guide teaching steps and from the metrics grid
-   below — this is the multi-stage process chain for one exam_number.
-   Phase-grouped with compact stepper (same shape as franchise / property / land). ===== */
+// One-exam process spine: application → list → certification → appointment.
 let examProcessSpineToolsPromise=null;
 function ensureExamProcessSpineTools(){
   if(!examProcessSpineToolsPromise){
@@ -496,10 +468,7 @@ function careerOutcomeHTML(exam, options={}){
       })}</p>
     </section>`;
   }
-  // Class-(a): public annual + Civil Service List sources exist; empty slot is incomplete
-  // join or cycle pending — never a false class-(b) "city does not publish" for aggregates.
-  // When the process spine is mounted above, skip the redundant single-line gap — the
-  // spine already names each empty stage with class-(a) source copy.
+  // Published sources exist; an empty slot means incomplete join or pending cycle.
   if(options.spineMounted) return "";
   const stageKey={
     list_establishment:"career_outcome_stage_list",
@@ -524,8 +493,7 @@ function careerCardHTML(exam){
   const notice=exam.notice_url
     ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
     : `<a class="act" href="${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
-  // Prefer build-time OASys per-exam NOE deep link (examId ≠ DCAS exam number); unmapped
-  // open exams keep the examsforjobs landing with an honest browse label.
+  // Prefer a build-time OASys NOE deep link; otherwise label the browse landing honestly.
   const applyUrl=(window.CrolActions && CrolActions.examApplyUrl)
     ? CrolActions.examApplyUrl(exam)
     : (exam.official_application_url || CrolStaffing.OASY_APPLY_URL);
@@ -839,7 +807,7 @@ function paintExamDetailShell(examNumber){
   if(guide) guide.hidden=false;
   prepareCareerHow();
   syncStaffingModeUI();
-  // If the artifact is already warm, paint the full card (fee/salary/spine) synchronously.
+  // Warm artifacts paint the full detail synchronously.
   if(careerData){
     renderCareerGuide();
     return;
@@ -863,8 +831,7 @@ function showExam(examNumber){
   careerSelected=id; careerLimit=16;
   staffingFilters.query=""; staffingFilters.role=""; staffingFilters.agency="";
   showTab("people");
-  // First paint must mount the exam DETAIL shell (not the staffing list). Do this
-  // before the async fetch so #exam/7016 never looks like "list only" on a cold load.
+  // Mount detail before fetching so a cold deep link never looks list-only.
   paintExamDetailShell(id);
   requestAnimationFrame(()=>{
     const shell=$("#career-exam-"+CSS.escape(id))||$("#career-guide");
@@ -904,11 +871,7 @@ function parsePersonnel(desc){
   };
 }
 
-/* Bare #people, like bare Money, should teach the tab by example: pre-select the city's
-   highest-headcount title so the salary-band/career-ladder pane renders with zero clicks —
-   same "auto-open the first result" instinct as select()/landSelect(), one step earlier
-   because a role search needs a term to search FOR. Computed live (never hardcoded) so it
-   can't rot; skipped whenever a deep link or the user's own typing already claimed #pkw. */
+// Bare #people teaches by example with the live highest-headcount title.
 let peopleDefaulted = false;
 async function defaultRoleTitle(){
   try{
@@ -930,8 +893,7 @@ async function applyPeopleDefault(){
   try{ await pSearch(); } finally { hashLock = false; }
 }
 
-/* Committed seed data (data/people_examples.json + data/title_crosswalk.json): example chips
-   and an instant answer card render before any network call; the live search then overwrites. */
+// Committed examples paint before the live search replaces them.
 let peopleSeeded = false, pExamples = [];
 async function seedPeople(){
   if(peopleSeeded) return; peopleSeeded = true;
@@ -987,9 +949,7 @@ async function pSearch(keepDetail){
   catch(e){ if(!stale()){ unbusy("#plist"); $("#plist").innerHTML = '<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
-// roleRowHTML: one Staffing role row. The LIKE query that produced r already guarantees kw is
-// a substring of title_description, so ev's field is always "title" -- comp2 (competitive-exam
-// status) is precomputed by the caller since it needs the module-level competitiveSet.
+// The LIKE query guarantees title evidence; the caller supplies competitive status.
 function roleRowHTML(r, i, terms, comp2, exam){
   const ev = matchEvidence(r.title_description, "", terms);
   const status=exam?CrolStaffing.statusFor(exam,careerToday()):null;
@@ -1067,10 +1027,7 @@ function pSelectRole(i, el){
   $("#pdetail").innerHTML = html;
 }
 
-// personRowHTML: one Staffing (Changes in Personnel) row. The row shown is a PERSON, aggregated
-// across possibly-many notices, so evidence isn't computed against a single title+description --
-// it walks p.actions (each carrying its own notice's text, see the .push() below) for the first
-// one that actually explains the kw hit, preferring a non-"unknown" field over the fallback.
+// Aggregate person evidence uses the first underlying notice that explains the match.
 function personRowHTML(p, i, terms){
   let ev = null;
   for(const a of p.actions){ const e = matchEvidence(p.name, a.text, terms); if(!ev) ev = e; if(e.field !== "unknown"){ ev = e; break; } }
@@ -1090,9 +1047,7 @@ async function pSearchPeople(kw, stale){
     if(!p.name) return;
     const key = p.name.toUpperCase() + "|" + r.agency_name;
     if(!people.has(key)) people.set(key, {name:p.name, agency:r.agency_name, actions:[]});
-    // text: the underlying notice's own title+description -- kept per action (not just on the
-    // grouped person) since the row shown is the PERSON's name, not any one notice's title, so
-    // match evidence has to be located in whichever action actually carried the kw hit.
+    // Keep notice text per action so grouped-person evidence stays attributable.
     people.get(key).actions.push({date:r.start_date, reason:p.reason||cleanText(r.short_title), salary:p.salary, code:p.code, req:r.request_id, text:cleanText(r.short_title)+" "+matchText(r)});
   });
   pRows = [...people.values()].sort((a,b)=>b.actions.length-a.actions.length);
@@ -1196,7 +1151,6 @@ globalThis.seedPeople = seedPeople;
 globalThis.showExam = showExam;
 globalThis.staffingFacetHTML = staffingFacetHTML;
 globalThis.staffingFilters = staffingFilters;
-globalThis.staffingHireRowHTML = staffingHireRowHTML;
 globalThis.staffingVisibleItems = staffingVisibleItems;
 globalThis.syncStaffingModeUI = syncStaffingModeUI;
 Object.defineProperty(globalThis, "careerData", { configurable: true, get: () => careerData, set: value => { careerData = value; } });

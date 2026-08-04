@@ -12,17 +12,17 @@
     "wire_bytes": 455000
   },
   "mobile_p95": {
-    "ttfb_ms": 5.555,
-    "fcp_ms": 264.4,
-    "lcp_ms": 264.4,
+    "ttfb_ms": 5.76,
+    "fcp_ms": 125.6,
+    "lcp_ms": 125.6,
     "cls": 0.016911,
-    "wire_bytes": 452098
+    "wire_bytes": 452764
   },
   "desktop_p95": {
-    "ttfb_ms": 4.625,
-    "fcp_ms": 256.2,
-    "lcp_ms": 256.2,
+    "ttfb_ms": 7.475,
+    "fcp_ms": 173.4,
+    "lcp_ms": 173.4,
     "cls": 0.008823,
-    "wire_bytes": 452098
+    "wire_bytes": 452764
   }
 }

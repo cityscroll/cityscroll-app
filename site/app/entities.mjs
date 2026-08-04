@@ -430,7 +430,7 @@ async function showAgency(name, initialTab){
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}" aria-label="${escUiHtml(`${t("agency_follow_btn")}: ${nm}`)}">${t("agency_follow_btn")}</button>
+        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">${t("agency_follow_btn")}</button>
         <button class="act" type="button" id="ecopy">${t("copy_link")}</button>
         ${qrButtonHTML("eqr","act")}
         ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
