@@ -185,7 +185,7 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
-  people:   ["keywords", "lookupType", "view"],
+  people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "nearMe"],
   rules:    ["keywords", "agency", "process"],
@@ -216,6 +216,8 @@ function deeplinkClampField(name, v){
     case "dateWindow": return ["week","month","upcoming"].includes(v)?v:null;
     case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
     case "view": return v==="guide" ? "guide" : null;
+    case "interestArea": return ["public-safety","health-care","engineering-construction","technology-science","community-social-services","administration-finance","trades-operations"].includes(v)?v:null;
+    case "interestLabel": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
     case "name": return typeof v==="string" && v.trim() ? v.replace(/\s+/g," ").trim().slice(0,120) : null;
     case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
     case "watchType": return v==="rezone" ? "rezone" : null;

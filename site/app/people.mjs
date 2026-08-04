@@ -156,11 +156,7 @@ function careerDate(value){ return value ? fdt(value+"T12:00:00Z") : t("career_d
 function careerMoney(value, gapClass){
   if(value === 0) return "$0";
   if(value != null) return "$"+Number(value).toLocaleString("en-US");
-  // Schedule-only / never-ingested NOE → class (a). True omit on a linked NOE → class (b).
-  if(gapClass === "not_published") return t("career_not_published");
-  return t("career_fee_salary_not_yet_ingested_html",{
-    source:t("career_noe_source_name")
-  });
+  return "";
 }
 /** Structured salary: min only, or min–max range when NOE densify captured an upper bound. */
 function careerSalaryHTML(feeSalary, exam, gapClass){
@@ -515,6 +511,7 @@ function careerOutcomeHTML(exam, options={}){
 }
 function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
+  const openBand=CrolStaffing.openWindowBand(exam,careerToday());
   const title=escUiHtml(exam.title);
   const selected=careerSelected===exam.exam_number;
   const countdown=careerCountdownText(exam,status);
@@ -535,30 +532,32 @@ function careerCardHTML(exam){
     ? `<a class="act primary" href="${escUiHtml(applyUrl)}" ${EXT_ATTRS} data-oasys-handoff="${applyDeep?"deep":"landing"}">${applyLabel}${extSR()}</a>`:"";
   const gapClass=feeSalary.class || (feeSalary.kind==="not_published"?"not_published":"not_yet_ingested");
   const diffLeads=careerDiffLeadsHTML(exam, feeSalary);
-  const actionFacts=`<div class="career-action-facts">
-    <div class="career-action-fact"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>
-    <div class="career-action-fact"><b>${careerSalaryHTML(feeSalary, exam, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
-  </div>${diffLeads}${examListForecastHTML(exam)}`;
+  const feeText=careerMoney(feeSalary.fee ?? exam.fee, gapClass);
+  const salaryText=careerSalaryHTML(feeSalary, exam, gapClass);
+  const factRows=[
+    feeText?`<div class="career-action-fact"><b>${feeText}</b><span>${t("career_application_fee")}</span></div>`:"",
+    salaryText?`<div class="career-action-fact"><b>${salaryText}</b><span>${t("career_starting_salary")}</span></div>`:"",
+  ].filter(Boolean).join("");
+  const actionFacts=`${factRows?`<div class="career-action-facts">${factRows}</div>`:""}${diffLeads}${examListForecastHTML(exam)}`;
   const expanded=selected;
   const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || exam.qualifications || exam.test_method || exam.exam_format);
   const feeWaiverLine=exam.fee_waiver_is_boilerplate
     ? t("career_fee_waiver_boilerplate")
     : (exam.fee_waiver || "");
   const details=hasNoeDetail ? `
-    <div class="career-metrics" data-fee-salary="${feeSalary.kind}">
-      <div class="career-metric"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>
-      <div class="career-metric"><b>${careerSalaryHTML(feeSalary, exam, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
-    </div>
+    ${factRows?`<div class="career-metrics" data-fee-salary="${feeSalary.kind}">${factRows.replaceAll("career-action-fact","career-metric")}</div>`:""}
     ${exam.test_method||exam.exam_format?`<p class="career-detail-line"><b>${t("career_test_method")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.test_method||careerFormatLabel(exam.exam_format))}</span></p>`:""}
     ${exam.qualifications?`<p class="career-detail-line"><b>${t("career_qualifications")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.qualifications)}</span></p>`:""}
     ${exam.residency?`<p class="career-detail-line"><b>${t("career_diff_residency")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.residency)}</span></p>`:""}
     ${feeWaiverLine?`<p class="career-detail-line"><b>${t("career_fee_waiver")}</b> <span lang="en" dir="ltr">${escUiHtml(feeWaiverLine)}</span></p>`:""}
     ${exam.amendment?`<p class="note warn" lang="en" dir="ltr">${escUiHtml(exam.amendment)}</p>`:""}
     <p class="career-english-note">${t("career_official_english_note")}</p>`
-    : `<p class="note" data-fee-salary="not_yet_ingested">${t("career_noe_pending")}</p>`;
+    : "";
   return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" data-exam-format="${escUiHtml(exam.exam_format||"")}" data-salary-band="${escUiHtml(exam.salary_band||"")}" data-fee-level="${escUiHtml(exam.fee_level||"")}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
     <div class="career-deadline-lead">
       <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
+      ${openBand?`<span class="tag" data-open-window-band="${openBand}" lang="en" dir="ltr">${openBand}</span>`:""}
+      ${exam.notice_url?`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted</span>`:""}
       ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}
       <p class="career-deadline-primary">${careerWindowText(exam,status)}</p>
       ${countdown?`<span class="career-deadline-countdown">${countdown}</span>`:""}
@@ -586,6 +585,26 @@ function careerCardHTML(exam){
       ${careerSelected===exam.exam_number?routeBackHTML("#people?view=guide",t("career_back_all"),"act"):""}
     </div>
   </article>`;
+}
+function careerAreaWatchesHTML(){
+  const index=careerData?.interest_taxonomy;
+  if(!index || !Array.isArray(index.areas)) return "";
+  const today=careerToday();
+  return index.areas.filter(area=>area.subscribable).map(area=>{
+    const rows=careerData.exams.filter(exam=>exam.interest_area===area.id);
+    const bands={far:0,approaching:0,imminent:0};
+    rows.forEach(exam=>{ const band=CrolStaffing.openWindowBand(exam,today); if(band) bands[band]+=1; });
+    const noe=rows.filter(exam=>exam.notice_url).length;
+    const label=t(CAREER_AREA_KEYS[area.id]||"career_area_other");
+    const chips=["far","approaching","imminent"].filter(band=>bands[band]>0)
+      .map(band=>`<span class="tag" data-open-window-band="${band}" lang="en" dir="ltr">${band} ${bands[band]}</span>`);
+    if(noe>0) chips.push(`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted ${noe}</span>`);
+    return `<article class="career-area-watch" data-interest-area="${escUiHtml(area.id)}">
+      <div class="career-area-watch-head"><a class="career-area-watch-title" href="#people?view=guide&interest=${encodeURIComponent(area.id)}">${escUiHtml(label)}</a></div>
+      <div class="career-area-watch-meta">${chips.join("")}</div>
+      <button class="act" type="button" data-follow-exam-area="${escUiHtml(area.id)}" data-follow-exam-label="${escUiHtml(label)}">${t("mini_subscribe_btn")}</button>
+    </article>`;
+  }).join("");
 }
 function careerActionGroup(exam, today){
   const status=CrolStaffing.statusFor(exam,today);
@@ -631,6 +650,18 @@ function renderCareerGuide(){
   $("#career-open-count").textContent=fmtNumber(open);
   $("#career-upcoming-count").textContent=fmtNumber(upcoming);
   careerSourceHTML();
+  const areaWatches=$("#career-area-watches");
+  if(areaWatches){
+    areaWatches.innerHTML=careerAreaWatchesHTML();
+    areaWatches.querySelectorAll("[data-follow-exam-area]").forEach(button=>button.addEventListener("click",async()=>{
+      const carry=await import("../alerts_context_carry.mjs");
+      location.hash=carry.alertsHref({lens:"people",filter:{
+        view:"guide",
+        interestArea:button.dataset.followExamArea,
+        interestLabel:button.dataset.followExamLabel,
+      },freq:"daily"});
+    }));
+  }
   let exams;
   if(careerSelected){
     const selected=careerData.exams.find(exam=>exam.exam_number===careerSelected);

@@ -78,6 +78,18 @@ test("continuous and walk-in exams follow open and upcoming windows", () => {
   assert.equal(Staffing.isContinuousExam(fixture[2]), true);
 });
 
+test("exam cards reuse the approved open-window bands and thresholds", () => {
+  const today="2026-08-03";
+  assert.equal(Staffing.openWindowBand({application_start:"2026-08-10",application_end:"2026-08-20"},today),"imminent");
+  assert.equal(Staffing.openWindowBand({application_start:"2026-10-01",application_end:"2026-10-15"},today),"approaching");
+  assert.equal(Staffing.openWindowBand({application_start:"2026-11-02",application_end:"2026-11-16"},today),"far");
+  assert.match(html,/data-open-window-band/);
+  assert.match(html,/data-noe-state="posted"/);
+  assert.match(html,/data-follow-exam-area/);
+  assert.doesNotMatch(html,/career_noe_pending/);
+  assert.doesNotMatch(html,/no NOE|NOE.*not available/i);
+});
+
 test("new-hire notices parse, sort newest-first, and refine without a gatekeeping search", () => {
   const rows = [
     {

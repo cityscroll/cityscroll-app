@@ -14,6 +14,7 @@ export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
+const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
 // type_of_notice_description + address/method feed digest action rails (handoffs).
@@ -40,12 +41,48 @@ export function monthsFromISO(iso, months) {
   return d.toISOString().slice(0, 10);
 }
 
+export function examOpenWindowBand(exam, todayISO) {
+  const boundary = exam?.application_start && todayISO < exam.application_start
+    ? exam.application_start
+    : exam?.application_end && todayISO <= exam.application_end
+      ? exam.application_end
+      : null;
+  if (!boundary) return null;
+  const days = Math.round((Date.parse(`${boundary}T12:00:00Z`) - Date.parse(`${todayISO}T12:00:00Z`)) / 86400000);
+  if (!Number.isFinite(days) || days < 0) return null;
+  if (days <= 14) return "imminent";
+  if (days <= 90) return "approaching";
+  return "far";
+}
+
 // sub: { lens, filter }. todayISO: "YYYY-MM-DD" (for the RFP due-date floor). Returns
 // { url, params, idField, kind, postFilter? } or null for a lens the cron can't replay yet.
 // postFilter (when present) refines fetched rows — the caller applies it after fetching.
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
+
+  if (sub.lens === "people" && f.view === "guide" && f.interestArea) {
+    const area = String(f.interestArea);
+    return {
+      url: STAFFING_EXAMS,
+      params: {},
+      idField: "alert_id",
+      kind: "exam",
+      transformRows: (payload) => (Array.isArray(payload?.exams) ? payload.exams : [])
+        .filter((exam) => exam?.interest_area === area)
+        .filter((exam) => {
+          const continuous = /continuous|walk[- ]?in/i.test(`${exam?.application_mode || ""} ${exam?.filing_method || ""}`);
+          return continuous || (exam?.application_end && exam.application_end >= todayISO);
+        })
+        .map((exam) => ({
+          ...exam,
+          open_window_band: examOpenWindowBand(exam, todayISO),
+          // A posted NOE is a positive, actionable state transition and gets one delivery.
+          alert_id: `exam:${exam.exam_number}:${exam.notice_url ? "noe-posted" : exam.application_start || "scheduled"}`,
+        })),
+    };
+  }
 
   if (sub.lens === "money") {
     // Verbatim dataset values; single-quote-escaped for SODA. These two clauses are shared
@@ -198,5 +235,5 @@ export function compileSub(sub, todayISO) {
     return { url: ZAP, idField: "project_id", kind: "rezone", params };
   }
 
-  return null; // people isn't cron-replayable yet (payroll diffs need different plumbing)
+  return null; // payroll/person-name watches still need a separate replay source
 }
