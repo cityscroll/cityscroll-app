@@ -1,0 +1,799 @@
+{
+  "schema": "cityscroll.procurement_planning.manifest.v1",
+  "generated_at": "2026-08-04T16:09:54Z",
+  "fiscal_year": 2027,
+  "contract": {
+    "unmatched_rows_remain_unmatched": true,
+    "infer_budget_from_agency_total": false,
+    "reader_surface_included": false,
+    "budget_provenance_required": true
+  },
+  "sources": [
+    {
+      "source": "mocs_ll63_index",
+      "url": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
+      "sha256": "056adde69531b1f49e30eb67c7892fd42c29e5130d401a00bdce0169ed95535e"
+    },
+    {
+      "source": "mocs_ll1_index",
+      "url": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page",
+      "sha256": "f68f9884dcbc693a6d5ad3b57e65dc18c9db4652ee536b48608b0a7f55021946"
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_New.xlsx",
+      "label": "New ACS Procurement Plan",
+      "sha256": "78e0f7d5553fe5a6bac490fdc79e32ab1cf00e395e8e18d8965cd6e29d7825e3",
+      "plan_rows": 11
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/ACS_LL63_FY27_RE.xlsx",
+      "label": "ACS Renewal/Amendment Plan",
+      "sha256": "4d47c14c8301b4605f324e734a5cebd31d3da0411a156d6d1d335a837a99a2df",
+      "plan_rows": 32
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CFB_LL63_FY27_New.xlsx",
+      "label": "New CFB Procurement Plan",
+      "sha256": "d715819ad889cab25af9a018b424da7cc186966404ea62511f1f1247e9e39bca",
+      "plan_rows": 21
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CFB_LL63_FY27_RE.xlsx",
+      "label": "CFB Renewal/Amendment Plan",
+      "sha256": "19fe95ac359d5f5e93de0b590516dc7f5ddd1a39d01fd9839b83af5af6a9270c",
+      "plan_rows": 4
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CORE_LL63_FY27_New.xlsx",
+      "label": "New CORE Procurement Plan",
+      "sha256": "ac3c4575f7f8c672c453069dd9da569676483e9576d5f3ea077e37aa81f56347",
+      "plan_rows": 1
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CORE_LL63_FY27_RE.xlsx",
+      "label": "CORE Renewal/Amendment Plan",
+      "sha256": "3d53ba27fa3a9dc6501e036dee04f3caba417a1ed40b2a4bc9c5df0cf8d8d566",
+      "plan_rows": 1
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/CityHall_LL63_FY27_New.xlsx",
+      "label": "New City Hall Procurement Plan",
+      "sha256": "c07e65a70086cc919e77bc2edf525525cf5134ccaebc2a5a87175235228e10bf",
+      "plan_rows": 1
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_LL63_FY27_New.xlsx",
+      "label": "New Comptroller Procurement Plan",
+      "sha256": "0db5c33f36b82e77bf4008a507cc3183e3f8b1fcc8b55d1f9429647e0adcda9f",
+      "plan_rows": 38
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Comptroller_LL63_FY27_RE.xlsx",
+      "label": "Comptroller Renewal/Amendment Plan",
+      "sha256": "437da393f5e1921bc0d167fb7b341fbe7afc65abe927db665f69bab72573db82",
+      "plan_rows": 36
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_LL63_FY27_New.xlsx",
+      "label": "New DCAS Procurement Plan",
+      "sha256": "ff8f90dad9686f2cec4c755ab2ec9ec313379ae5ac0873ab25efb76d4671ab87",
+      "plan_rows": 97
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCAS_LL63_FY27_RE.xlsx",
+      "label": "DCAS Renewal/Amendment Plan",
+      "sha256": "64f907fbd936a9af4e60fb069a91d7b8716edac7f1229a92a5c4ca7cc0c1a726",
+      "plan_rows": 20
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCP_LL63_FY27_New.xlsx",
+      "label": "New DCP Procurement Plan",
+      "sha256": "28296b5566da27f06ed4ed3ef980896336623aaa667783bb3824faf37f0ebaa1",
+      "plan_rows": 64
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCP_LL63_FY27_RE.xlsx",
+      "label": "DCP Renewal/Amendment Plan",
+      "sha256": "84eeb23e62f8fae46ec32fc04f9803976476ced54eeb1f6371255d9fb246a475",
+      "plan_rows": 12
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCWP_LL63_FY27_New.xlsx",
+      "label": "New DCWP Procurement Plan",
+      "sha256": "94701a9515735a6e812817cb14ece7fe749a848b83578811135c46d15cdb2d38",
+      "plan_rows": 2
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DCWP_LL63_FY27_RE.xlsx",
+      "label": "DCWP Renewal/Amendment Plan",
+      "sha256": "1d22a044c5b7256e42ccf99cc30686e603a2194bbd244f820b07d203bc1b72f8",
+      "plan_rows": 1
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_LL63_FY27_New.xlsx",
+      "label": "New DDC Procurement Plan",
+      "sha256": "307efdd4d02186653bbc2520605fa5643be8bcf898a29c7081cdf778cc41a3bf",
+      "plan_rows": 788
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DDC_LL63_FY27_RE.xlsx",
+      "label": "DDC Renewal/Amendment Plan",
+      "sha256": "4fe97a6963bc95dfcb4b861da135b45296df445902a535f48fc03147bd183cf5",
+      "plan_rows": 15
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_New.xlsx",
+      "label": "New DEP Procurement Plan",
+      "sha256": "b1417dc88fc38b442d776ac9d478c6829bb47b261945c0a6ca88416d3c97048c",
+      "plan_rows": 93
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DEP_LL63_FY27_RE.xlsx",
+      "label": "DEP Renewal/Amendment Plan",
+      "sha256": "dbb750f9703f5a5edd709a619da49ba8467560bd2fca4b3009093dcef70707e7",
+      "plan_rows": 142
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_LL63_FY27_New.xlsx",
+      "label": "New DHS Procurement Plan",
+      "sha256": "4128be46d9cd7de07832ba92c03e33fa061391b6a09295fa77ea25312a5a0ff6",
+      "plan_rows": 18
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DHS_LL63_FY27_RE.xlsx",
+      "label": "DHS Renewal/Amendment Plan",
+      "sha256": "40b9eaea3f7648dc1fba4bb8e7f4bdcff00fe2b860b0a7d9803c6b0056c2ea1a",
+      "plan_rows": 16
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOB_LL63_FY27_New.xlsx",
+      "label": "New DOB Procurement Plan",
+      "sha256": "0c82ac24f7255314505c4344878c5d6636a7ffc8ffd20464607dd381b80e9288",
+      "plan_rows": 15
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOB_LL63_FY27_RE.xlsx",
+      "label": "DOB Renewal/Amendment Plan",
+      "sha256": "4bedb3d6d344fabaf165f359308be73b3ea2a52a362aee3f7df8d64a46b9e6ec",
+      "plan_rows": 6
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_LL63_FY27_New.xlsx",
+      "label": "New DOC Procurement Plan",
+      "sha256": "bd4e5343a39c226981a5d1999508ab4f9f9d29dde64be04bf4e3cc5b55f3c38d",
+      "plan_rows": 35
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOC_LL63_FY27_RE.xlsx",
+      "label": "DOC Renewal/Amendment Plan",
+      "sha256": "211c638b26726f172bcd6356159303120b404f1f36c2de89e53feb444b98484d",
+      "plan_rows": 6
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_LL63_FY27_New.xlsx",
+      "label": "New DOF Procurement Plan",
+      "sha256": "56578413ce5eb0634b05bf2ae09b2650965bd2a8a1f954374f4cabfc1ff9e73e",
+      "plan_rows": 13
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOF_LL63_FY27_RE.xlsx",
+      "label": "DOF Renewal/Amendment Plan",
+      "sha256": "4b7a8f42606a7a474d0f7518ae2f1d5765f378a9490acc74d14617fe8bd1a977",
+      "plan_rows": 8
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_New.xlsx",
+      "label": "New DOHMH Procurement Plan",
+      "sha256": "4ca56a9130f7aee2e4ab4f9ca37062ae9e53b74ca82eecad4a0c08db2c907971",
+      "plan_rows": 174
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOHMH_LL63_FY27_RE.xlsx",
+      "label": "DOHMH Renewal/Amendment Plan",
+      "sha256": "c9c4c31b898a0753f449f272e9b8931b75382347b43474ecf9b573bd33b08957",
+      "plan_rows": 25
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOI_LL63_FY27_New.xlsx",
+      "label": "New DOI Procurement Plan",
+      "sha256": "3bd486d808fb643c71a03a08ef2ff374b890ab82a85d15b70839cb1a5a80aa93",
+      "plan_rows": 2
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOP_LL63_FY27_New.xlsx",
+      "label": "New DOP Procurement Plan",
+      "sha256": "b72fc85ec710dad7495beaab0819ab00a74e5a4dc2d74ed5926a557384dc78b0",
+      "plan_rows": 3
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DORIS_LL63_FY27_New.xlsx",
+      "label": "New DORIS Procurement Plan",
+      "sha256": "eb5f42e478501cea3b1536267f014e76326519b7ef63290b45bd976540164432",
+      "plan_rows": 2
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_New.xlsx",
+      "label": "New DOT Procurement Plan",
+      "sha256": "61b1cfba5ff30bfeb491dd101fec0339a874ca43439ebd4f3786e26f587ea349",
+      "plan_rows": 2533
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DOT_LL63_FY27_RE.xlsx",
+      "label": "DOT Renewal/Amendment Plan",
+      "sha256": "1c1175dc5e75a0f339caf89eb967ea398ed25f326ca01b6d56befa1097f293e0",
+      "plan_rows": 93
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_LL63_FY27_New.xlsx",
+      "label": "New DPR-C Procurement Plan",
+      "sha256": "4000c9544f624a6b2e265384651415a55e0c02d44f6066fba6771220182a7ce9",
+      "plan_rows": 1508
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DPRC_LL63_FY27_RE.xlsx",
+      "label": "DPR-C Renewal/Amendment Plan",
+      "sha256": "d5aae8aa89bb0713ad1fd7069a0b3943c4d6755f668cf40786156f21c9b1e717",
+      "plan_rows": 71
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_New.xlsx",
+      "label": "New DSNY Procurement Plan",
+      "sha256": "ae9df628d99215570d4411903ed90cf74ad97f0155abf6aafc5181c6e8d4efb6",
+      "plan_rows": 24
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DSNY_LL63_FY27_RE.xlsx",
+      "label": "DSNY Renewal/Amendment Plan",
+      "sha256": "81e73b8b31c8d530d95df55b4699405bc2f158523599e49cf111ba5c9befeb11",
+      "plan_rows": 28
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_New.xlsx",
+      "label": "New DYCD Procurement Plan",
+      "sha256": "3eb477aa64a9d71bd877a75afb421c01f69ee69a849dc819f0e451d4de6bf71f",
+      "plan_rows": 35
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/DYCD_LL63_FY27_RE.xlsx",
+      "label": "DYCD Renewal/Amendment Plan",
+      "sha256": "ad38a280c731b512bcd82d87730861ced1279fa53156cb45f094cbaba9f70b2c",
+      "plan_rows": 6
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_New.xlsx",
+      "label": "New FDNY Procurement Plan",
+      "sha256": "1177f78f2dd4f564b5600bed5bb2f5c2af3d3edc1e5f79b0f5afcb657e690602",
+      "plan_rows": 59
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FDNY_LL63_FY27_RE.xlsx",
+      "label": "FDNY Renewal/Amendment Plan",
+      "sha256": "06dcad6812cefef2e5843e878966762bb0b3c438eccecbfe5a48873e9ae91e41",
+      "plan_rows": 14
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FISA_LL63_FY27_New.xlsx",
+      "label": "New FISA Procurement Plan",
+      "sha256": "a0651f8d2e5e9115e0497796ed8c1990e8b47e18ba3449367d8cba618e0d56eb",
+      "plan_rows": 49
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/FISA_LL63_FY27_RE.xlsx",
+      "label": "FISA Renewal/Amendment Plan",
+      "sha256": "67a8b1afbb533cbfc53a2bf678399bca4646747d2ff804fef0f05e3f285bce59",
+      "plan_rows": 2
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_New.xlsx",
+      "label": "New HPD Procurement Plan",
+      "sha256": "28f08855b6e0d41ef3ad244740a1fdd46eb20470109955cd24015106f174260c",
+      "plan_rows": 26
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HPD_LL63_FY27_RE.xlsx",
+      "label": "HPD Renewal/Amendment Plan",
+      "sha256": "599152aa661b74168ee2d8d746cea437b311a31c5e81abba21c445275083e016",
+      "plan_rows": 7
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_LL63_FY27_New.xlsx",
+      "label": "New HRA Procurement Plan",
+      "sha256": "ecc510f2f2b21df0e028e56874a84d59e11a59283bb63ebe57850d0dde20d0d7",
+      "plan_rows": 28
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/HRA_LL63_FY27_RE.xlsx",
+      "label": "HRA Renewal/Amendment Plan",
+      "sha256": "846a6288c556640f4f4b8b4439bace7b53d30b394cd2ef5cf69c60361df27e79",
+      "plan_rows": 40
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Law_LL63_FY27_New.xlsx",
+      "label": "New LAW Procurement Plan",
+      "sha256": "36d4dd9acb2b69d2b4417a7ee6b8e07033802fbbf9986c9a6f3bce4f57e211f7",
+      "plan_rows": 15
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/Law_LL63_FY27_RE.xlsx",
+      "label": "LAW Renewal/Amendment Plan",
+      "sha256": "c69c3d2844d4f035a8b5bb7ebd9aecfc1456a1561ea6b5742de68879602cf64b",
+      "plan_rows": 4
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/MOCS_LL63_FY27_New.xlsx",
+      "label": "New MOCS Procurement Plan",
+      "sha256": "3e3d6e549ca8bff53b4ba34076076b1ebbfe639b442da7a4df19516053edcbfc",
+      "plan_rows": 2
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYCEM_LL63_FY27_New.xlsx",
+      "label": "New NYCEM Procurement Plan",
+      "sha256": "94fe2b5e367065e0bb103b76ad5c7139bd3d18e395b3215d8db82d620e6e6ddc",
+      "plan_rows": 3
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYCEM_LL63_FY27_RE.xlsx",
+      "label": "NYCEM Renewal/Amendment Plan",
+      "sha256": "fd8c728bf0f708638c61f82cbbe1c4395d6243a2f0f3a91d7ca874ee8ad79973",
+      "plan_rows": 4
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_New.xlsx",
+      "label": "New NYPD Procurement Plan",
+      "sha256": "bbf1a927c2067ad163f265ddd274d89137033df0f3a36fc904f3a254dfb5ded6",
+      "plan_rows": 1796
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/NYPD_LL63_FY27_RE.xlsx",
+      "label": "NYPD Renewal/Amendment Plan",
+      "sha256": "86e8311bff04840dc04f4ace69825aec157d0f845041eff039557576bc3577c5",
+      "plan_rows": 25
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OATH_LL63_FY27_RE.xlsx",
+      "label": "OATH Renewal/Amendment Plan",
+      "sha256": "ac139ad8b948b084b70925af952816e6be3fcd20a2f78692d3df95ae4dbec24b",
+      "plan_rows": 3
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OCME_LL63_FY27_New.xlsx",
+      "label": "New OCME Procurement Plan",
+      "sha256": "802072da2a4d45e725fb4f338f9a595aa2ec70d83993c4772b6e8c1c521501fa",
+      "plan_rows": 5
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OCME_LL63_FY27_RE.xlsx",
+      "label": "OCME Renewal/Amendment Plan",
+      "sha256": "9976d278c97a008056bb3fe525a32be60c96caefb401e1db08147a5cf259c623",
+      "plan_rows": 2
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OLR_LL63_FY27_New.xlsx",
+      "label": "New OLR Procurement Plan",
+      "sha256": "d6c9ed553ebf41320d9541923f70affd098c51cd90758f790d07e71bf5c79916",
+      "plan_rows": 47
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OLR_LL63_FY27_RE.xlsx",
+      "label": "OLR Renewal/Amendment Plan",
+      "sha256": "ea3dbff231a64627ccd299fb72693f345273dea1f6e79378d6157d739e3aa0f1",
+      "plan_rows": 1
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_New.xlsx",
+      "label": "New OMB Procurement Plan",
+      "sha256": "97d68fc02cc6a574ea1ed2a30385b19a4065dd01face5a10802568b06b392155",
+      "plan_rows": 43
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OMB_LL63_FY27_RE.xlsx",
+      "label": "OMB Renewal/Amendment Plan",
+      "sha256": "c5fe948f2899c87a519dfdbda085779e6394a5dcb94ced4832be7e17c13a0dbe",
+      "plan_rows": 15
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OPA_LL63_FY27_RE.xlsx",
+      "label": "OPA Renewal/Amendment Plan",
+      "sha256": "a09cb52df15897058aa73cb2791d2bc5e959a89703b8ae941b1c4033232f9a8c",
+      "plan_rows": 1
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_LL63_FY27_New.xlsx",
+      "label": "New OTI Procurement Plan",
+      "sha256": "6e53e3f674e68b22c81e9585b45d0ea83e886930a48afa994999981da044440f",
+      "plan_rows": 378
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/OTI_LL63_FY27_RE.xlsx",
+      "label": "OTI Renewal/Amendment Plan",
+      "sha256": "d2dae42cbfd7126883b57154912d84b09b4ab56d088ece419c379814f640ac3c",
+      "plan_rows": 21
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_New.xlsx",
+      "label": "New SBS Procurement Plan",
+      "sha256": "420589c6057e772c63455e5592ca0d7cdd16a463dc97300dbcb7c78bc0833b6c",
+      "plan_rows": 22
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/SBS_LL63_FY27_RE.xlsx",
+      "label": "SBS Renewal/Amendment Plan",
+      "sha256": "a86724e09e52961ade18325fb6c3122801c23aabc3d773becc015ab7c57df98d",
+      "plan_rows": 21
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/TLC_LL63_FY27_New.xlsx",
+      "label": "New TLC Procurement Plan",
+      "sha256": "b7da3f41d1f0f79577731790bbd14320578d0d7cac0b3112b52d6be270632371",
+      "plan_rows": 4
+    },
+    {
+      "source": "mocs_ll63",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/ll63/2027fy/TLC_LL63_FY27_RE.xlsx",
+      "label": "TLC Renewal/Amendment Plan",
+      "sha256": "2ea79fe862f0a019fd709a2a6480bca4916fbc193aadadafe5946afb0082912d",
+      "plan_rows": 4
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/ACS_LL1_FY27.xlsx",
+      "label": "Administration for Children's Services",
+      "sha256": "0da53b3456137734a082585fe86c7048f4d6386c88752c15882168d885f94f90",
+      "plan_rows": 8
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/CCHR_LL1_FY27.xlsx",
+      "label": "City Commission on Human Rights",
+      "sha256": "e781378a80558d197d54efd6224e37e852cf32f494e7c8339a9fbeb6072c8db6",
+      "plan_rows": 6
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/CCRB_LL1_FY27.xlsx",
+      "label": "Civilian Complaint Review Board",
+      "sha256": "c06d987ea8e07838266f5ea61f2955dbd80b1e2a6a30d805b420a4553ae19ec5",
+      "plan_rows": 7
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DCAS_LL1_FY27.xlsx",
+      "label": "Department of Citywide Administrative Services",
+      "sha256": "a85501cd8f36c859d19c551a44d4e9f2f879f325b068921efdac8f8659d03b1a",
+      "plan_rows": 121
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DCP_LL1_FY27.xlsx",
+      "label": "Department of City Planning",
+      "sha256": "dac0d3c5ee1738ff59325de28994f2f250f4cba0e2665bd1d37aaf10d1229ddf",
+      "plan_rows": 33
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DCWP_LL1_FY27.xlsx",
+      "label": "Department of Consumer and Worker Protection",
+      "sha256": "e2544545307ce4e43826d04e0d2da14ea7c69189340fcd7799ed7799f4a09de4",
+      "plan_rows": 8
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DDC_LL1_FY27.xlsx",
+      "label": "Department of Design and Construction",
+      "sha256": "ba2f176dd6f8794d884b1548fe31f37007c65689e030ef2e4e3664246d514159",
+      "plan_rows": 153
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DEP_LL1_FY27.xlsx",
+      "label": "Department of Environmental Protection",
+      "sha256": "c63b8c1f105d2af76d9a90eccdec365d588e5174e6e67cf8ed9f0b4d247f39ab",
+      "plan_rows": 136
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DHS_LL1_FY27.xlsx",
+      "label": "Department of Homeless Services",
+      "sha256": "a64c9682d612c2fe55031985446938b41a15e06bd11e964cfe8fa129b5a9b625",
+      "plan_rows": 21
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOC_LL1_FY27.xlsx",
+      "label": "Department of Correction",
+      "sha256": "f2570d37b5c59050b1dff40d910b98fc34f6d9ae97244bdc17da4a2f71b78cbe",
+      "plan_rows": 34
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOF_LL1_FY27.xlsx",
+      "label": "Department of Finance",
+      "sha256": "02465508e8f2807468c333ffe88c07365ca6b570d17f3af98fdb3519bfaa8607",
+      "plan_rows": 14
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOHMH_LL1_FY27.xlsx",
+      "label": "Department of Health and Mental Hygiene",
+      "sha256": "27672036636e697451537a3e770cb5c67caad115a72f72bebf8c288fd254ae7d",
+      "plan_rows": 11
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOI_LL1_FY27.xlsx",
+      "label": "Department of Investigation",
+      "sha256": "83d359641d46ed0fa2e0bea5ce0afa437993d144cb38d02300c5727817b9213d",
+      "plan_rows": 18
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DORIS_LL1_FY27.xlsx",
+      "label": "Department of Records and Information Services",
+      "sha256": "a12b2e71293f4abdde7fb706ffea30cd3e7d7481257e97ba7fcc80c3d7ad76b9",
+      "plan_rows": 13
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DOT_LL1_FY27.xlsx",
+      "label": "Department of Transportation",
+      "sha256": "f1087bc296e7d26c8adc3a45de0cf40e04ee9020b6f17e731490da2b258d0f84",
+      "plan_rows": 91
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DPR_LL1_FY27.xlsx",
+      "label": "Department of Parks and Recreation",
+      "sha256": "2ab60f0c22aeca58b8794404cc7707df1eeea271a63a0fd22f07324e2e7a29b8",
+      "plan_rows": 1609
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DSNY_LL1_FY27.xlsx",
+      "label": "Department of Sanitation",
+      "sha256": "9b5d814ab08b14a0eefd69a97c527054f4761f832137bfdb13fc7351c0e13ed5",
+      "plan_rows": 40
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/DYCD_LL1_FY27.xlsx",
+      "label": "Department of Youth and Community Development",
+      "sha256": "5e33ab1d95a32d89c2d45bda38e8254e4d4a71ed46d6f933d2527585a718b54e",
+      "plan_rows": 39
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/FDNY_LL1_FY27.xlsx",
+      "label": "Fire Department of New York",
+      "sha256": "34d7f1bea6843433239221756183278fa63ecb6fcb86c85523930c28c099ce74",
+      "plan_rows": 62
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/HPD_LL1_FY27.xlsx",
+      "label": "Housing Preservation and Development",
+      "sha256": "45e2373b565e8a30ae5ae3a38ab0451b67a22088ca61cf5fc7cdc8fcbd96d2b6",
+      "plan_rows": 37
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/HRA_LL1_FY27.xlsx",
+      "label": "Human Resources Administration",
+      "sha256": "d1f54eb76081b98f54941ec55c5b2c87b1e856f845b0d92c8f16c4854a9b8c15",
+      "plan_rows": 20
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/Law_LL1_FY27.xlsx",
+      "label": "Law Department",
+      "sha256": "0bebfa39b9e32335cbebd0297f522a0cfb187d90186ab3af7c5f977af5fb1092",
+      "plan_rows": 27
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/MOCJ_LL1_FY27.xlsx",
+      "label": "Mayor's Office of Criminal Justice",
+      "sha256": "f5a91a4faba31a8d0b88a0340716275ddd3b28fb1c9785511e26e27a47b1afc0",
+      "plan_rows": 7
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/Mayoralty_LL1_FY27.xlsx",
+      "label": "Mayor's Office",
+      "sha256": "f6fbcda3c4e703a183c9cf5d70f11c000647f49447b8f07127bace4c42b87a7e",
+      "plan_rows": 6
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/NYCEM_LL1_FY27.xlsx",
+      "label": "New York City Emergency Management Department",
+      "sha256": "0bad237479d07f8a68c6600e14eabd401ed843c24b796fb04cc7a763371e8e1f",
+      "plan_rows": 15
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/NYPD_LL1_FY27.xlsx",
+      "label": "New York Police Department",
+      "sha256": "a9f63713ea7798018a3c3ffef572bec9ea1891190627d67ff3d6c63aa63d63ca",
+      "plan_rows": 35
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OCME_LL1_FY27.xlsx",
+      "label": "Office of Chief Medical Examiner",
+      "sha256": "fe907d5c5eddf179267080b42f6a03e7b3083a415333983f9057b9bdaf9c5228",
+      "plan_rows": 6
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OLR_LL1_FY27.xlsx",
+      "label": "Office of Labor Relations",
+      "sha256": "ac1309615070c37b2923ae94baedcd9535858fc8aa710538f16ff5f6bacd64ca",
+      "plan_rows": 43
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OMB_LL1_FY27.xlsx",
+      "label": "Mayor's Office of Management and Budget",
+      "sha256": "7b0cc280b42c12fe90f8342a2feede24734d2b79a1a15d1e1cbc529a3bbc7977",
+      "plan_rows": 45
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/OTI_LL1_FY27.xlsx",
+      "label": "Office of Technology and Innovation",
+      "sha256": "d71ee118ef85530688cda1e474ab9311560317937a0848cdc62826c6dcd00a27",
+      "plan_rows": 248
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/SBS_LL1_FY27.xlsx",
+      "label": "Department of Small Business Services",
+      "sha256": "fd9c3c93aebc755f9021e4a24139e59e2d6e28421bbf63a67076d14ff6c7a4cd",
+      "plan_rows": 4
+    },
+    {
+      "source": "mocs_ll1",
+      "url": "https://www.nyc.gov/assets/mocs/downloads/Resources/mwbe-LL1/fy27/TLC_LL1_FY27.xlsx",
+      "label": "Taxi and Limousine Commission",
+      "sha256": "9245c1c3799e719efb9f7a21b5d83cf5ee48c5f86f94caa7bc1ef5ccae9453bb",
+      "plan_rows": 8
+    },
+    {
+      "source": "capital_projects_dashboard",
+      "url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "sha256": "fe7a94606f0602d0bbf79ffc4390afbe8c380389bc0db48ffe935f6ac2f014e6",
+      "plan_rows": 50000
+    }
+  ],
+  "collections": {
+    "plans": {
+      "rows": 11566,
+      "shards": [
+        {
+          "path": "site/data/procurement_planning_payload/plans-000.json",
+          "rows": 10000,
+          "bytes": 8251331,
+          "sha256": "040f9ffdc75c0bcf21089626fbbb0b58bd75ded1b0f81409259303eb5f625bab"
+        },
+        {
+          "path": "site/data/procurement_planning_payload/plans-001.json",
+          "rows": 1566,
+          "bytes": 1589446,
+          "sha256": "e991537708e7929e21b8e8af4d5f5fb0f3aa29913437867990c84ff669f557ee"
+        }
+      ]
+    },
+    "capital_projects": {
+      "rows": 50000,
+      "shards": [
+        {
+          "path": "site/data/procurement_planning_payload/capital-projects-000.json",
+          "rows": 10000,
+          "bytes": 10843487,
+          "sha256": "b4ae0af8b41ea59429aa2f4e79e918672008c478453944ab124c2564929a5378"
+        },
+        {
+          "path": "site/data/procurement_planning_payload/capital-projects-001.json",
+          "rows": 10000,
+          "bytes": 10765262,
+          "sha256": "10783c4338ad098b65c1a12a742f6f235300f8b44fa4c0e581a046606d4e88b3"
+        },
+        {
+          "path": "site/data/procurement_planning_payload/capital-projects-002.json",
+          "rows": 10000,
+          "bytes": 10595771,
+          "sha256": "249cd27033dbe820dde4c695a7ab4dbadeb3cefae4e92611e9b57d76122761e1"
+        },
+        {
+          "path": "site/data/procurement_planning_payload/capital-projects-003.json",
+          "rows": 10000,
+          "bytes": 10658593,
+          "sha256": "710d13887db5eeb432b2658897f65d92ef50fd5395ef7a6f1f187ed8b74b4008"
+        },
+        {
+          "path": "site/data/procurement_planning_payload/capital-projects-004.json",
+          "rows": 10000,
+          "bytes": 10619673,
+          "sha256": "0ac83d5a0fc708c9e46aa2505d98bbd4bd346202e984a6e89c6a869c2d65f429"
+        }
+      ]
+    },
+    "bridge_edges": {
+      "rows": 0,
+      "shards": []
+    }
+  },
+  "shard_contract": {
+    "schema": "cityscroll.procurement_planning.shard.v1",
+    "max_rows": 10000,
+    "max_bytes": 20971520
+  }
+}

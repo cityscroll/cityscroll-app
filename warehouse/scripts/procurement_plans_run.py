@@ -50,6 +50,8 @@ PASSPORT_CONTRACTS = "https://a0333-passportpublic.nyc.gov/dataJs/contractData.j
 PASSPORT_RFX = "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js"
 
 MINIMUM_DELAY_MS = 1_200
+PUBLIC_SHARD_ROWS = 10_000
+PUBLIC_SHARD_MAX_BYTES = 20 * 1024 * 1024
 USER_AGENT = (
     "Mozilla/5.0 (compatible; CityScrollProcurementPlans/1.0; "
     "+https://cityscroll.org; official procurement-plan materialization)"
@@ -491,6 +493,90 @@ def build_payload(
     }
 
 
+def build_public_payload_bundle(
+    payload: dict[str, Any],
+) -> tuple[dict[str, Any], list[tuple[str, bytes]]]:
+    """Split the public payload into deterministic, Pages-safe JSON shards."""
+    collections: dict[str, Any] = {}  # source: collected payload arrays below
+    files: list[tuple[str, bytes]] = []  # source: encoded payload shards below
+    for collection, filename_stem in (
+        ("plans", "plans"),
+        ("capital_projects", "capital-projects"),
+        ("bridge_edges", "bridge-edges"),
+    ):
+        rows = payload[collection]
+        shards = []  # source: one descriptor per encoded payload slice
+        for index, start in enumerate(range(0, len(rows), PUBLIC_SHARD_ROWS)):
+            shard_payload = {
+                "schema": "cityscroll.procurement_planning.shard.v1",
+                "collection": collection,
+                "index": index,
+                "rows": rows[start:start + PUBLIC_SHARD_ROWS],
+            }
+            encoded = (json.dumps(shard_payload, indent=2, sort_keys=False) + "\n").encode("utf-8")
+            if len(encoded) > PUBLIC_SHARD_MAX_BYTES:
+                raise ValueError(
+                    f"public shard {collection}[{index}] is {len(encoded)} bytes; "
+                    f"limit is {PUBLIC_SHARD_MAX_BYTES}"
+                )
+            filename = f"{filename_stem}-{index:03d}.json"
+            path = f"site/data/procurement_planning_payload/{filename}"
+            shards.append({
+                "path": path,
+                "rows": len(shard_payload["rows"]),
+                "bytes": len(encoded),
+                "sha256": sha256_bytes(encoded),
+            })
+            files.append((filename, encoded))
+        collections[collection] = {  # source: current collected payload row counts
+            "rows": len(rows), "shards": shards,
+        }
+
+    manifest = {
+        "schema": "cityscroll.procurement_planning.manifest.v1",
+        "generated_at": payload["generated_at"],
+        "fiscal_year": payload["fiscal_year"],
+        "contract": payload["contract"],
+        "sources": payload["sources"],
+        "collections": collections,
+        "shard_contract": {
+            "schema": "cityscroll.procurement_planning.shard.v1",
+            "max_rows": PUBLIC_SHARD_ROWS,
+            "max_bytes": PUBLIC_SHARD_MAX_BYTES,
+        },
+    }
+    return manifest, files
+
+
+def public_payload_contract(manifest: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema": manifest["schema"],
+        "path": "site/data/procurement_planning_payload.json",
+        "schema_path": "site/data/procurement_planning_manifest.schema.json",
+        "shard_schema": manifest["shard_contract"]["schema"],
+        "shard_directory": "site/data/procurement_planning_payload",
+        "max_shard_bytes": manifest["shard_contract"]["max_bytes"],
+        "collections": manifest["collections"],
+        "reader_surface_included": False,
+        "unmatched_rows_remain_unmatched": True,
+        "infer_budget_from_agency_total": False,
+    }
+
+
+def publish_public_payload(payload: dict[str, Any], site_data: Path) -> dict[str, Any]:
+    manifest, files = build_public_payload_bundle(payload)
+    shard_dir = site_data / "procurement_planning_payload"
+    shard_dir.mkdir(parents=True, exist_ok=True)
+    expected = {filename for filename, _ in files}  # source: current bundle output
+    for stale in shard_dir.glob("*.json"):
+        if stale.name not in expected:
+            stale.unlink()
+    for filename, encoded in files:
+        (shard_dir / filename).write_bytes(encoded)
+    write_json(site_data / "procurement_planning_payload.json", manifest)
+    return manifest
+
+
 def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Collect and measure FY2027 procurement plans")
     parser.add_argument("--from-fixture", action="store_true")
@@ -558,6 +644,7 @@ def main(argv: list[str] | None = None) -> int:
         )
         payload_path = args.output_dir / "procurement_planning_payload.json"
         write_json(payload_path, payload)
+        public_manifest, _ = build_public_payload_bundle(payload)
         receipt = {
             "schema": "cityscroll.procurement_plans.receipt.v1",
             "proof_scope": "fixture_framework" if args.from_fixture else "production_materialization",
@@ -603,12 +690,7 @@ def main(argv: list[str] | None = None) -> int:
                 "headroom_status": headroom.get("status"),
             },
             "payload_contract": {
-                "schema": payload["schema"],
-                "path": "site/data/procurement_planning_payload.json",
-                "schema_path": "site/data/procurement_planning_payload.schema.json",
-                "reader_surface_included": False,
-                "unmatched_rows_remain_unmatched": True,
-                "infer_budget_from_agency_total": False,
+                **public_payload_contract(public_manifest),
                 "production_materialized": not args.from_fixture,
                 "production_bridge_edges": len(edges) if not args.from_fixture else 0,
                 "fixture_bridge_edges": len(edges) if args.from_fixture else 0,
@@ -618,14 +700,15 @@ def main(argv: list[str] | None = None) -> int:
         write_json(receipt_path, receipt)
 
         if args.publish:
-            public_payload = REPO_ROOT / "site" / "data" / "procurement_planning_payload.json"
+            site_data = REPO_ROOT / "site" / "data"
+            public_payload = site_data / "procurement_planning_payload.json"
             public_receipt = (
                 REPO_ROOT / "site" / "data" / "procurement_plan_sources" /
                 "verification_receipts" / f"procurement_plans_{args.receipt_date}.json"
             )
             public_payload.parent.mkdir(parents=True, exist_ok=True)
             public_receipt.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(payload_path, public_payload)
+            publish_public_payload(payload, site_data)
             shutil.copyfile(receipt_path, public_receipt)
             print(f"published {public_payload.relative_to(REPO_ROOT)}")
             print(f"published {public_receipt.relative_to(REPO_ROOT)}")

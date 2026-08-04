@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/data/procurement_planning_manifest.schema.json",
+  "title": "CityScroll procurement planning shard manifest",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at",
+    "fiscal_year",
+    "contract",
+    "sources",
+    "collections",
+    "shard_contract"
+  ],
+  "properties": {
+    "schema": {"const": "cityscroll.procurement_planning.manifest.v1"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "fiscal_year": {"type": "integer", "minimum": 2027},
+    "contract": {"type": "object"},
+    "sources": {"type": "array"},
+    "collections": {
+      "type": "object",
+      "required": ["plans", "capital_projects", "bridge_edges"],
+      "additionalProperties": {"$ref": "#/$defs/collection"}
+    },
+    "shard_contract": {
+      "type": "object",
+      "required": ["schema", "max_rows", "max_bytes"],
+      "properties": {
+        "schema": {"const": "cityscroll.procurement_planning.shard.v1"},
+        "max_rows": {"type": "integer", "minimum": 1},
+        "max_bytes": {"type": "integer", "minimum": 1, "maximum": 26214400}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "collection": {
+      "type": "object",
+      "required": ["rows", "shards"],
+      "properties": {
+        "rows": {"type": "integer", "minimum": 0},
+        "shards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "rows", "bytes", "sha256"],
+            "properties": {
+              "path": {"type": "string"},
+              "rows": {"type": "integer", "minimum": 1},
+              "bytes": {"type": "integer", "minimum": 1, "maximum": 26214400},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
