@@ -1059,9 +1059,7 @@ async function showNotice(id, watch){
     loadAwardRegistrationDwell(r, $("#nregdwell"));
   }
   loadSubsidyLifecycle(r, $("#nsubsidy"));
-  // A released RC-4 edge supersedes the older candidate-level external-award panel.
-  // Unresolved notices retain that existing surface; a receipt-backed award appears once.
-  Promise.resolve(loadAboAuthorityAward(r, $("#naboaward"))).then((released)=>{
+  import("./authority-award.mjs").then(()=>loadAboAuthorityAward(r,$("#naboaward"))).then((released)=>{
     if(!released) externalAwardForNotice(r, $("#nexternal"));
   }).catch(()=>externalAwardForNotice(r, $("#nexternal")));
   Promise.all([

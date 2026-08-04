@@ -5,6 +5,10 @@ import test from "node:test";
 import { cleanNoticeText } from "../site/text_clean.mjs";
 import {
   buildPropertyPlainSummary,
+  deShoutPropertyTitle,
+  ensurePropertyCardPlainSummary,
+  propertyCardPlainSummary,
+  propertyCardTitleDisclosureHTML,
   propertyPlainSummaryHTML,
   propertyPlainSummarySurface,
 } from "../site/property_plain_summary.mjs";
@@ -49,6 +53,11 @@ test("every census pattern has a deterministic real-notice template with exact s
       summary.text,
       ...summary.definitions.map((definition) => definition.text),
     ].join(" "), item.id);
+    const card = propertyCardPlainSummary(summary);
+    assert.ok(card, `${item.id}: templated notice has card copy`);
+    assert.equal((card.text.match(/[.!?](?:\s|$)/g) || []).length, 1, `${item.id}: card copy is one sentence`);
+    assert.ok(card.sources.length > 0, `${item.id}: card copy is source-backed`);
+    card.sources.forEach((receipt) => assertReceipt(item.row, receipt));
     for (const fact of [...summary.facts, ...summary.definitions]) {
       assert.ok(fact.sources.length > 0, `${item.id}: ${fact.kind} is source-backed`);
       assert.ok(["source_template", "typed_event", "reader_action", "census_plain_equivalent"].includes(fact.basis));
@@ -70,6 +79,76 @@ test("golden summaries use only extracted actions and typed event dates", () => 
   assert.match(hearing.text, /You can attend and speak at the hearing\./);
   assert.match(hearing.text, /You can ask for a sign language interpreter\./);
   assert.ok(hearing.definitions.some((item) => /hearing may start late/i.test(item.text)));
+});
+
+test("card summaries compose one receipted what-plus-key-event sentence without re-extraction", () => {
+  const item = fixture.cases.find((entry) => entry.id === "forest-timber-sale");
+  const summary = buildPropertyPlainSummary(item.row, { today: "2019-04-16" });
+  const card = propertyCardPlainSummary(summary);
+
+  assert.equal(
+    card.text,
+    "This is a forest project; bids due December 6, 2023 at 4:00 PM.",
+  );
+  assert.equal(card.key_fact_kind, "event_bid_deadline");
+  assert.equal(card.event_kind, "bid_deadline");
+  assert.deepEqual(card.fact_kinds, ["what", "event_bid_deadline"]);
+  assert.ok(card.sources.length > 0);
+  card.sources.forEach((receipt) => assertReceipt(item.row, receipt));
+  assert.equal((card.text.match(/[.!?](?:\s|$)/g) || []).length, 1, "the card variant is one sentence");
+});
+
+test("card summaries use a receipted action when no timed event exists and preserve honest fallback", () => {
+  const unclaimed = fixture.cases.find((entry) => entry.id === "unclaimed-property");
+  const summary = buildPropertyPlainSummary(unclaimed.row, { today: "2026-08-04" });
+  const card = propertyCardPlainSummary(summary);
+  assert.match(card.text, /^No one has claimed these items; you can ask/);
+  assert.equal(card.key_fact_kind, "action_inquire_claim");
+  assert.equal(card.action_kind, "inquire_claim");
+
+  const fallback = fallbackVerdicts.verdicts.find((entry) => entry.verdict === "permanent_honest_fallback");
+  assert.equal(propertyCardPlainSummary(buildPropertyPlainSummary({
+    request_id: fallback.request_id,
+    section_name: "Property Disposition",
+    ...fallback.row,
+  })), null);
+});
+
+test("card variant caches the landed detail facts and preserves the exact legal title", () => {
+  const row = structuredClone(fixture.cases.find((entry) => entry.id === "forest-timber-sale").row);
+  const card = ensurePropertyCardPlainSummary(row, { today: "2019-04-16" });
+  assert.equal(card, row.property_card_plain_summary);
+  assert.equal(card, ensurePropertyCardPlainSummary(row, { today: "2099-01-01" }));
+  assert.ok(row.property_plain_summary?.templated);
+
+  const title = "NYC DCAS <RFP>";
+  const html = propertyCardTitleDisclosureHTML({
+    display_title_html: "NYC DCAS &lt;RFP&gt;",
+    original_title: title,
+  });
+  assert.match(html, /<summary[^>]*>Legal title<\/summary>/);
+  assert.match(html, /<q[^>]*>NYC DCAS &lt;RFP&gt;<\/q>/);
+});
+
+test("legal-title de-shouting preserves mixed case, proper names, acronyms, and roman numerals", () => {
+  assert.equal(
+    deShoutPropertyTitle("OFFICIAL NOTICE FROM NYC DCAS: WNYC RFP FOR EAST NEW YORK — PHASE II"),
+    "Official notice from NYC DCAS: WNYC RFP for East New York — phase II",
+  );
+  assert.equal(
+    deShoutPropertyTitle("CARPENTERS EDDY WEST FOREST MANAGEMENT PROJECT #5202 NOTICE OF PROJECT AVAILABILITY"),
+    "Carpenters Eddy West forest management project #5202 notice of project availability",
+  );
+  assert.equal(
+    deShoutPropertyTitle("Notice of Public Auction on 10/28/15"),
+    "Notice of Public Auction on 10/28/15",
+    "already mixed-case source titles are not rewritten",
+  );
+  assert.equal(
+    deShoutPropertyTitle("SALE IN KENT, NY. TBX907B WILL BE OFFERED"),
+    "Sale in Kent, NY. TBX907B will be offered",
+    "state abbreviations, source identifiers, and sentence boundaries survive the transform",
+  );
 });
 
 test("a recurring section-pointer notice gets its narrow source-backed template", () => {

@@ -317,6 +317,229 @@ export function propertyPlainSummarySurface(summary) {
   return [summary.text, ...(summary.definitions || []).map((item) => item.text)].filter(Boolean).join(" ");
 }
 
+const CARD_KEY_FACT_PRIORITY = Object.freeze([
+  "event_bid_deadline",
+  "event_hearing",
+  "event_auction_window",
+  "event_auction",
+  "event_sale",
+  "event_comment_deadline",
+  "event_objection_deadline",
+  "event_inspection_showing",
+  "event_result_award",
+  "event_accommodation_deadline",
+  "action_bid",
+  "action_attend",
+  "action_comment",
+  "action_object",
+  "action_inspect",
+  "action_inquire_claim",
+  "action_review_result",
+  "action_review_documents",
+  "action_request_accommodation",
+]);
+
+function sentenceClauses(text) {
+  return String(text || "")
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-Z])/)
+    .map((part) => part.replace(/[.!?]+$/, "").trim())
+    .filter(Boolean);
+}
+
+const CARD_WHAT_VARIANTS = Object.freeze(new Map([
+  ["The listed products were seized and may be destroyed.", "Seized products may be destroyed"],
+  ["The Property Clerk has listed items with no one claiming ownership.", "No one has claimed these items"],
+  ["This is a forest management project.", "This is a forest project"],
+  ["This is a sale of timber and firewood.", "This is a timber and firewood sale"],
+  ["This notice asks for proposals about a property lease.", "This asks for property lease proposals"],
+  ["This notice asks for proposals.", "This asks for proposals"],
+  ["This notice is about a public auction for a property lease.", "This is a public property lease auction"],
+  ["This is a vehicle auction.", "This is a vehicle auction"],
+  ["This notice is about an equipment auction.", "This is an equipment auction"],
+  ["This notice is about a sale of surplus items.", "This is a surplus-item sale"],
+  ["This notice is about the sale of a mortgage or note.", "This is a mortgage or note sale"],
+  ["This notice is about a public sale of real property.", "This is a public property sale"],
+  ["A taxi medallion auction was held. This notice lists the winning bidders.", "This lists the taxi medallion auction winners"],
+  ["This is an auction of taxi medallions.", "This is a taxi medallion auction"],
+  ["This notice is about an Urban Development Action Area Project (UDAAP).", "This is a property project (UDAAP)"],
+  ["This notice is about a government acquisition through eminent domain.", "The government may get this property through eminent domain"],
+  ["This notice is about a legal right to use part of a property.", "This is a legal right to use part of a property"],
+  ["This notice is about getting a property right.", "This is about getting a property right"],
+  ["These notices are in the Public Hearing section.", "The notices are in the Public Hearing section"],
+  ["This notice is about a public hearing on a property matter.", "This is a public hearing about property"],
+  ["This notice is about a transfer of the stated property right.", "This is a property-right transfer"],
+]));
+
+function cardFactClauses(fact) {
+  if (fact?.kind === "what") {
+    return [CARD_WHAT_VARIANTS.get(fact.text) || sentenceClauses(fact.text).join("; ")];
+  }
+  const clauses = sentenceClauses(fact?.text);
+  if (!clauses.length) return [];
+  const compact = clauses.join("; ")
+    .replace(/^The hearing is on /, "hearing ")
+    .replace(/^The auction runs from /, "auction from ")
+    .replace(/^The auction is on /, "auction ")
+    .replace(/^The sale is on /, "sale ")
+    .replace(/^Bids are due by /, "bids due ")
+    .replace(/^A site visit is on /, "site visit ")
+    .replace(/^Ask for an interpreter by /, "interpreter requests due ")
+    .replace(/^Objections are due by /, "objections due ")
+    .replace(/^Comments are due by /, "comments due ")
+    .replace(/^The notice gives (.+) for the result$/, "result date $1");
+  return [compact];
+}
+
+function lowerClauseStart(text) {
+  return String(text || "").replace(/^(["'“‘(]*)([A-Z])/, (_match, prefix, letter) => (
+    `${prefix}${letter.toLocaleLowerCase("en-US")}`
+  ));
+}
+
+function uniqueFactReceipts(facts) {
+  const seen = new Set();
+  return facts.flatMap((item) => item?.sources || []).filter((receipt) => {
+    const key = `${receipt.field}:${receipt.start}:${receipt.end}:${receipt.text}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function selectedEvent(summary, kind) {
+  return (summary?.events || []).find((event) => event?.kind === kind) || null;
+}
+
+function cardFactKey(summary, fact) {
+  if (!fact?.kind) return null;
+  if (fact.kind.startsWith("event_")) {
+    const kind = fact.kind.slice("event_".length);
+    const event = selectedEvent(summary, kind);
+    const dates = [event?.start, event?.end, event?.deadline].filter(Boolean).join(":");
+    return `event:${kind}${dates ? `:${dates}` : ""}`;
+  }
+  if (fact.kind.startsWith("action_")) return `action:${fact.kind.slice("action_".length)}`;
+  return `summary:${fact.kind}`;
+}
+
+/**
+ * Compose the Property-card lead from facts the detail template already accepted.
+ * This deliberately performs no extraction: the selected facts and every receipt
+ * are references into the supplied summary's typed event/action structures.
+ */
+export function propertyCardPlainSummary(summary) {
+  if (!summary?.templated) return null;
+  const lead = (summary.facts || []).find((item) => item?.kind === "what");
+  if (!lead?.text) return null;
+  const keyFact = CARD_KEY_FACT_PRIORITY
+    .map((kind) => (summary.facts || []).find((item) => item?.kind === kind))
+    .find(Boolean) || null;
+  const facts = [lead, keyFact].filter(Boolean);
+  const clauses = facts.flatMap((item) => cardFactClauses(item));
+  const text = clauses
+    .map((clause, index) => (index === 0 ? clause : lowerClauseStart(clause)))
+    .join("; ") + ".";
+  const eventKind = keyFact?.kind?.startsWith("event_")
+    ? keyFact.kind.slice("event_".length)
+    : null;
+  const actionKind = keyFact?.kind?.startsWith("action_")
+    ? keyFact.kind.slice("action_".length)
+    : null;
+  return {
+    text,
+    fact_kinds: facts.map((item) => item.kind),
+    key_fact_kind: keyFact?.kind || null,
+    fact_key: cardFactKey(summary, keyFact || lead),
+    event_kind: eventKind,
+    action_kind: actionKind,
+    sources: uniqueFactReceipts(facts),
+  };
+}
+
+/** Cache the detail template and its card variant on one list row. */
+export function ensurePropertyCardPlainSummary(row, options = {}) {
+  if (!row) return null;
+  if (!row.property_plain_summary) {
+    row.property_plain_summary = buildPropertyPlainSummary(row, options);
+    if (row.property_plain_summary?.reader_actions) {
+      row.property_reader_actions = row.property_plain_summary.reader_actions;
+    }
+  }
+  if (!Object.prototype.hasOwnProperty.call(row, "property_card_plain_summary")) {
+    row.property_card_plain_summary = propertyCardPlainSummary(row.property_plain_summary);
+  }
+  return row.property_card_plain_summary;
+}
+
+/** Shared collapsed legal-title disclosure for single cards and clustered rows. */
+export function propertyCardTitleDisclosureHTML(options = {}, helpers = {}) {
+  const escape = helpers.escape || defaultEscape;
+  const open = options.open ? " open" : "";
+  return `<details class="inline-disclose property-card-title-source"${open}><summary lang="en" dir="ltr">Legal title${options.summary_suffix_html || ""}</summary><div class="inline-disclose-body property-card-title-body"><div class="property-card-display-title" lang="en" dir="ltr">${options.display_title_html || ""}</div><div class="property-card-original-title"><b>Official title:</b> <q lang="en" dir="ltr">${escape(options.original_title)}</q>${options.body_suffix_html || ""}</div></div></details>`;
+}
+
+const TITLE_ACRONYMS = Object.freeze(new Set([
+  "ACRIS", "DCAS", "DEP", "DOT", "DPR", "EDC", "FCRC", "HDC", "HPD",
+  "IFB", "LLC", "LP", "MOCS", "MTA", "NY", "NYC", "NYCHA", "NYPD", "PIN",
+  "PV", "RFEI", "RFP", "RFQ", "SBS", "UDAAP", "URA", "WNYC",
+]));
+
+const TITLE_PROPER_PHRASES = Object.freeze([
+  "Department of Citywide Administrative Services",
+  "Office of the New York City Sheriff",
+  "Office of Citywide Procurement",
+  "New York City Police Department",
+  "Housing Preservation and Development",
+  "NYC Department of Housing Preservation and Development",
+  "Urban Development Action Area Project",
+  "Carpenters Eddy West",
+  "East New York",
+  "Neversink Flats",
+  "City Record",
+  "Property Clerk",
+  "Industry Road",
+  "New York City",
+  "New York",
+  "Brooklyn",
+  "Bronx",
+  "Kortright",
+  "Kent",
+  "Livonia",
+]);
+
+function escapedPattern(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function isShoutedTitle(title) {
+  const letters = String(title || "").match(/[A-Za-z]/g) || [];
+  if (letters.length < 4) return false;
+  return letters.filter((letter) => letter === letter.toUpperCase()).length / letters.length >= 0.8;
+}
+
+/** Sentence-case a shouted legal title while preserving known civic acronyms and names. */
+export function deShoutPropertyTitle(value) {
+  const title = cleanNoticeText(value);
+  if (!title || !isShoutedTitle(title)) return title;
+  const sourceCodes = [...title.matchAll(/\b(?=[A-Z0-9-]*[A-Z])(?=[A-Z0-9-]*\d)[A-Z0-9-]+\b/g)]
+    .map((match) => match[0]);
+  let output = title.toLocaleLowerCase("en-US");
+  for (const phrase of TITLE_PROPER_PHRASES) {
+    output = output.replace(new RegExp(`\\b${escapedPattern(phrase)}\\b`, "gi"), phrase);
+  }
+  for (const acronym of TITLE_ACRONYMS) {
+    output = output.replace(new RegExp(`\\b${escapedPattern(acronym)}\\b`, "gi"), acronym);
+  }
+  for (const sourceCode of sourceCodes) {
+    output = output.replace(new RegExp(`\\b${escapedPattern(sourceCode)}\\b`, "gi"), sourceCode);
+  }
+  output = output.replace(/\b(?:ii|iii|iv|v|vi|vii|viii|ix|x)\b/gi, (roman) => roman.toUpperCase());
+  return output.replace(/(^|[.!?]\s+)(["'“‘(]*)([a-z])/g, (_match, boundary, prefix, letter) => (
+    `${boundary}${prefix}${letter.toLocaleUpperCase("en-US")}`
+  ));
+}
+
 function defaultEscape(value) {
   return String(value || "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
