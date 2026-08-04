@@ -14,9 +14,13 @@ routes = [
 # so older cached pages and any in-flight confirm links (24h TTL) don't break.
 workers_dev = true
 
-# Daily alerts digest. Dry-run until ALERTS_LIVE="true". 13:00 UTC ≈ 9am ET.
+# Daily alerts digest at 13:00 UTC (09:00 ET) plus a delivery-free rehearsal at
+# 10:00 UTC (06:00 ET). The rehearsal renders inline and persists private D1 previews.
 [triggers]
-crons = ["0 13 * * *"]
+crons = [
+  "0 10 * * *",
+  "0 13 * * *",
+]
 
 # Non-secret config. Secrets go via `wrangler secret put` (see worker/README.md).
 # USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s.

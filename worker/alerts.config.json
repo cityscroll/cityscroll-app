@@ -1,5 +1,5 @@
 {
-  "_comment": "Each watch is one saved slice of the City Record. The scheduled function (netlify/functions/alerts.mjs) re-runs each query daily, diffs against last run, and emails NEW notices to `email`. Leave `email` empty to skip sending. Nothing sends until the ALERTS_LIVE env var is set to \"true\".",
+  "_comment": "Each watch is one saved slice of the City Record. The Worker shadow cron renders the real digest path at 10:00 UTC without delivery; the 13:00 UTC send cron re-runs each query, diffs against last delivery, and emails NEW notices to `email`. Leave `email` empty to skip sending. Nothing sends until ALERTS_LIVE is \"true\".",
   "watches": [
     {
       "id": "awards-1m",
