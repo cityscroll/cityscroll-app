@@ -189,10 +189,16 @@ def assert_notice_context(page: Page) -> None:
         raise RuntimeError("historical leave-rate context is missing")
     if "Based on 3 prior cycles" not in text:
         raise RuntimeError("prior-cycle attribution is missing")
-    if "Check exemptions" not in text or "Compare payment plans" not in text:
-        raise RuntimeError("action rail buttons are missing")
-    if "Lien sale help" not in text and "Call 311" not in text:
-        raise RuntimeError("help / 311 actions are missing")
+    if "Check exemptions you may qualify for" not in text:
+        raise RuntimeError("exemption checklist step is missing")
+    if "Review payment plan options" not in text:
+        raise RuntimeError("payment-plan checklist step is missing")
+    if "Read the official DOF lien sale guide" not in text:
+        raise RuntimeError("official-guide checklist step is missing")
+    if "This published cycle ended" not in text or "deadlines have passed" not in text:
+        raise RuntimeError("expired-cycle label is missing")
+    if "do not track what happened to a specific lot" not in text:
+        raise RuntimeError("no-lot-tracking disclaimer is missing")
     if "10-day list" not in text and "10-day" not in text:
         raise RuntimeError("cycle stage for listed BBL is missing")
     if BBL not in text:
@@ -201,6 +207,10 @@ def assert_notice_context(page: Page) -> None:
         raise RuntimeError("cycle stepper does not show the full ladder")
     if page.locator("#ntaxlien .tax-lien-stepper .lc-step.current").count() < 1:
         raise RuntimeError("current stage is not highlighted on the stepper")
+    if page.locator("#ntaxlien .tax-lien-stage-meaning").count() != 5:
+        raise RuntimeError("plain-language meaning is missing from a cycle stage")
+    if page.locator("#ntaxlien [data-tax-lien-resident-checklist] li").count() != 3:
+        raise RuntimeError("resident checklist does not contain three published actions")
 
 
 def capture_after(page: Page, base: str, out: Path) -> None:

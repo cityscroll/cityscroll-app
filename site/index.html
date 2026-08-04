@@ -667,9 +667,21 @@
   .tax-lien-deck,.tax-lien-lead,.tax-lien-meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px;color:var(--ink-soft)}
   .tax-lien-lead{font-weight:750;color:var(--ink);font-size:15px}
   .tax-lien-meta{font-size:12px;color:var(--muted)}
-  .tax-lien-actions{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
-  .tax-lien-stepper{margin:10px 0;padding:0;display:flex;flex-wrap:wrap;gap:4px;list-style:none}
-  .tax-lien-stepper .lc-step{font-size:11px;padding:3px 8px}
+  .tax-lien-actions{margin:14px 0;padding:14px;background:var(--color-canvas-subtle);border:1px solid var(--rule);border-radius:8px}
+  .tax-lien-actions h3{font:750 16px/1.25 var(--font-display);margin:0 0 10px}
+  .tax-lien-actions ol{margin:0;padding-inline-start:24px;display:grid;gap:10px}
+  .tax-lien-actions li{padding-inline-start:4px;font:14px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .tax-lien-actions li a{font-weight:750}
+  .tax-lien-actions li p{margin:2px 0 0;color:var(--ink-soft)}
+  .tax-lien-no-tracking{margin:12px 0 0;font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .tax-lien-support{margin:7px 0 0;font:700 13px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .tax-lien-stages{margin:14px 0}
+  .tax-lien-stages h3{font:750 16px/1.25 var(--font-display);margin:0 0 9px}
+  .tax-lien-stepper{margin:12px 0;padding:0;display:grid;gap:7px;list-style:none}
+  .tax-lien-stepper li{display:grid;grid-template-columns:minmax(92px,auto) minmax(0,1fr);gap:9px;align-items:start}
+  .tax-lien-stepper .lc-step{font-size:11px;padding:3px 8px;text-align:center}
+  .tax-lien-stage-meaning{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .tax-lien-cycle-expired{margin:10px 0;padding:9px 11px;border:1px solid var(--amber);border-radius:7px;background:var(--paper-2);font:700 14px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
   .tax-lien-lookup{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end;margin:14px 0}
   .tax-lien-lookup label{grid-column:1/-1;font:700 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .tax-lien-result{grid-column:1/-1;min-width:0}
