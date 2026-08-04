@@ -57,6 +57,37 @@ function landHearingModeFieldSync(){
   const status=$("#lstatus")?$("#lstatus").value:"";
   if(field) field.hidden=status!=="hearings";
 }
+function syncLandLensControls(){
+  const status=$("#lstatus")?.value||"active";
+  $("#land-status-rail").querySelectorAll("[data-land-status]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.landStatus===status));
+  });
+  landHearingModeFieldSync();
+  const active=[
+    !!$("#lboro")?.value,
+    status==="hearings"&&!!$("#lhearingmode")?.value,
+    !!landResolvedArea,
+  ].filter(Boolean).length;
+  const badge=$("#land-filter-badge");
+  if(badge){
+    badge.hidden=active===0;
+    badge.textContent=active?t("property_filters_active",{n:fmtNumber(active)}):"";
+  }
+}
+function clearLandDetail(){
+  const card=$("#land-item-card");
+  if(card) card.hidden=true;
+  const detail=$("#ldetail");
+  if(detail) detail.innerHTML="";
+}
+function setLandStatus(message=""){
+  const status=$("#land-status");
+  if(status) status.textContent=message;
+}
+function setLandResultCount(count){
+  const element=$("#lrescount");
+  if(element) element.textContent=t("results_count",{n:fmtNumber(count)});
+}
 function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
   const day=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
   const b=(boro||"").toLowerCase();
@@ -126,32 +157,13 @@ async function landSearchHearings(stale){
       _hearing:r,
     }));
     unbusy("#llist");
-    $("#lrescount").textContent=String(lRows.length);
+    setLandStatus();
+    setLandResultCount(lRows.length);
+    setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
     announce(t("land_hearings_heading")+`: ${lRows.length}`);
     if(!lRows.length){
-      // Honest empty: filters vs zero future published dates (persona: hearing attender).
-      let emptyKind="empty";
-      let extracted=0;
-      let generatedAt=null;
-      try{
-        const mod=await import("../land_hearings_empty.mjs");
-        const st=mod.landHearingsEmptyState(snap,{allCount:all.length,filteredCount:rows.length});
-        emptyKind=st.kind||"empty";
-        extracted=st.extracted||0;
-        generatedAt=st.generated_at||null;
-      }catch(_){ /* pure helper optional at runtime */ }
-      let emptyHtml=`<div class="empty land-hearings-empty" data-empty-kind="${escUiHtml(emptyKind)}">${t("land_hearings_empty")}`;
-      if(emptyKind==="none_future"){
-        const when=generatedAt?fdt(generatedAt):t("land_hearings_empty_as_of_unknown");
-        emptyHtml+=`<p class="note muted">${t("land_hearings_empty_none_future",{
-          n:String(extracted),
-          when,
-        })}</p>`;
-      }else if(emptyKind==="filters"){
-        emptyHtml+=`<p class="note muted">${t("land_hearings_empty_filters")}</p>`;
-      }
-      emptyHtml+=`<p class="note">${t("land_hearings_empty_next_steps_html")}</p></div>`;
-      $("#llist").innerHTML=emptyHtml;
+      $("#llist").innerHTML="";
+      clearLandDetail();
       return;
     }
     $("#llist").innerHTML=lRows.map((r,i)=>landHearingRowHTML(r._hearing||r,i)).join("");
@@ -162,7 +174,9 @@ async function landSearchHearings(stale){
   }catch(e){
     if(!stale()){
       unbusy("#llist");
-      $("#llist").innerHTML=`<div class="empty">${t("could_not_reach")}</div>`;
+      $("#llist").innerHTML="";
+      clearLandDetail();
+      setLandStatus(t("could_not_reach"));
     }
   }
 }
@@ -172,11 +186,12 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   const selectedId=(!autoSelect && Array.isArray(lRows))
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
-  lRows=rows; landBanner=banner||"";
+  lRows=Array.isArray(rows)?rows:[]; landBanner=banner||"";
   setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
-  $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
-  announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));
+  setLandStatus();
+  setLandResultCount(lRows.length);
+  announce(t("rezonings_announce",{n:lRows.length}));
   // A resolved block/nearby lookup doesn't filter rows by kw as TEXT (it's a BBL join) --
   // match evidence would misrepresent that as a keyword hit, so only pass kw through when
   // it actually became the $q text filter below. boro is always a structured filter -- passed
@@ -193,7 +208,9 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
 }
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
-  landHearingModeFieldSync();
+  syncLandLensControls();
+  clearLandDetail();
+  setLandStatus();
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
   updateHash();
   if(located){
@@ -255,7 +272,9 @@ async function landSearch(){
   }catch(e){
     if(!stale() && !paintedFromSnapshot){
       unbusy("#llist");
-      $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>';
+      $("#llist").innerHTML="";
+      setLandResultCount(0);
+      setLandStatus(t("could_not_reach"));
     }
   }
 }
@@ -282,10 +301,9 @@ function landRowHTML(r, i, terms, contextTerms){
 }
 function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
-  // Same methodology string on empty and successful searches (zap_explainer_html) — do not fork.
-  const methodology=`<div class="landbanner land-methodology" id="land-methodology">${t("zap_explainer_html")}</div>`;
   if(!lRows.length){
-    $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_project_index_html")} ${t("zap_explainer_html")}</div>`;
+    $("#llist").innerHTML="";
+    clearLandDetail();
     return;
   }
   // A resolved block/nearby lookup filters rows by a BBL join, not kw as text -- only pass kw
@@ -295,7 +313,7 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   // matchEvidence() can still surface it when a project_brief happens to name the borough in its
   // own text (common in ZAP data), without ever guessing a fallback "unknown" match for it.
   const contextTerms = boro ? [boro] : [];
-  $("#llist").innerHTML=head+methodology+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
+  $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
   // Warm outcomes for the visible list (edge KV prewarm + session cache) so the first
   // select paints decision docs without the cold multi-second spinner.
@@ -314,6 +332,9 @@ async function geocode(q){
 
 async function landSelect(i, el){
   const selection=++landSelectionSeq;
+  const itemCard=$("#land-item-card");
+  if(itemCard) itemCard.hidden=false;
+  setLandStatus();
   document.querySelectorAll("#llist .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const r=lRows[i];
@@ -344,7 +365,7 @@ async function landSelect(i, el){
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
   <div id="land-outcomes" class="land-outcomes"><div class="note"><span class="loading"></span> ${t("land_outcomes_loading")}</div></div>
-  <div id="landmap"></div>
+  <div id="landmap" style="display:none"></div>
   <div id="landpan" class="map-pan-controls" role="group" aria-label="${t("map_pan_group_aria")}" hidden>
     <button type="button" data-map-pan="west" aria-controls="landmap" aria-label="${t("map_pan_west")}">←</button>
     <button type="button" data-map-pan="north" aria-controls="landmap" aria-label="${t("map_pan_north")}">↑</button>
@@ -408,12 +429,11 @@ function landPermalinkActionHTML(r){
 function renderLandEntryNotFound(id){
   unbusy("#llist");
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
-  const safeId=String(id||"").replace(/[<>&]/g,"");
-  const suffix=safeId?`: <code>${safeId}</code>`:"";
-  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br>${routeBackHTML("#land")}</div>`;
-  $("#llist").innerHTML=html;
-  $("#ldetail").innerHTML=html;
-  $("#lrescount").textContent="0";
+  $("#llist").innerHTML="";
+  const card=$("#land-item-card");
+  if(card) card.hidden=false;
+  $("#ldetail").innerHTML=`<p>${routeBackHTML("#land")}</p>`;
+  setLandResultCount(0);
 }
 
 async function showLandEntry(id){
@@ -423,8 +443,10 @@ async function showLandEntry(id){
   $("#lboro").value="";
   $("#lkw").value="";
   $("#lstatus").value="active";
+  syncLandLensControls();
   $("#lreshead").textContent=t("rezonings_heading");
   $("#lrescount").textContent="";
+  setLandStatus();
   landBanner="";
   const stale=staleGuard("land");
   if(!id){ renderLandEntryNotFound(id); return; }
@@ -436,9 +458,9 @@ async function showLandEntry(id){
   }catch(e){
     if(!stale()){
       unbusy("#llist");
-      const html=`<div class="empty">${t("could_not_reach")}</div>`;
-      $("#llist").innerHTML=html;
-      $("#ldetail").innerHTML=html;
+      $("#llist").innerHTML="";
+      clearLandDetail();
+      setLandStatus(t("could_not_reach"));
     }
     return;
   }
@@ -446,7 +468,7 @@ async function showLandEntry(id){
   unbusy("#llist");
   if(!rows.length){ renderLandEntryNotFound(id); return; }
   lRows=rows;
-  $("#lrescount").textContent="1";
+  setLandResultCount(1);
   landRenderList("", true, "", false);
   const row=$("#llist").querySelector(".row");
   if(row){
@@ -482,11 +504,15 @@ function wireLandPanControls(map){
   });
 }
 async function landShowMap(lat, lon, label, selection){
-  const el=$("#landmap"); if(!el) return; el.style.display="block";
+  const el=$("#landmap"); if(!el) return; el.style.display="none";
   $("#landmapnote").innerHTML=t("map_approx_note_html",{label});
   try{ await loadLeaflet(); }catch(e){}
   if(selection!==undefined && selection!==landSelectionSeq) return;
-  if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
+  if(typeof L==="undefined"){
+    const controls=$("#landpan"); if(controls) controls.hidden=true;
+    return;
+  }
+  el.style.display="block";
   landMap=L.map(el).setView([lat,lon],15);
   wireLandPanControls(landMap);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
@@ -498,11 +524,15 @@ async function landShowMap(lat, lon, label, selection){
 }
 
 async function landShowLots(gj, n, selection){
-  const el=$("#landmap"); if(!el) return; el.style.display="block";
+  const el=$("#landmap"); if(!el) return; el.style.display="none";
   $("#landmapnote").innerHTML=t("showing_lots_note_html",{n, s:n===1?"":"s"});
   try{ await loadLeaflet(); }catch(e){}
   if(selection!==undefined && selection!==landSelectionSeq) return;
-  if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
+  if(typeof L==="undefined"){
+    const controls=$("#landpan"); if(controls) controls.hidden=true;
+    return;
+  }
+  el.style.display="block";
   landMap=L.map(el);
   wireLandPanControls(landMap);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
@@ -592,16 +622,9 @@ function landSpineLagHTML(lag){
   }
   return `<div class="note">${t("land_spine_lag_unknown")}</div>`;
 }
-function landSpineGapsHTML(gaps){
-  const gapKey={
-    not_yet_ingested:"land_spine_gap_not_yet_ingested_html",
-    not_published:"land_spine_gap_not_published_html",
-    source_unavailable:"land_spine_gap_unavailable_html"
-  };
-  return (Array.isArray(gaps)?gaps:[]).map(gap=>{
-    const key=gapKey[gap.class] || "land_spine_gap_unavailable_html";
-    return `<div class="note">${t(key,{source:escUiHtml(gap.source || "—")})}</div>`;
-  }).join("");
+function landSpineGapsHTML(_gaps){
+  // Source gaps are metadata, not reader-facing content. Unpublished phases stay absent.
+  return "";
 }
 /** Per-event row for chronological disclosure — never repeats the project portal URL. */
 function landSpineEventRowHTML(event, portalUrl, isPortalUrl){
@@ -769,7 +792,7 @@ function landPipelinePositionHTML(view, record){
   return `<p class="land-pipeline-position" data-land-pipeline-step="${escUiHtml(String(pos.step_n))}" data-land-pipeline-total="${escUiHtml(String(pos.step_m))}" data-land-pipeline-phase="${escUiHtml(pos.step_phase_id||"")}">${sentence}</p>`;
 }
 function landPhaseSpineHTML(view, tools, record){
-  if(!view) return "";
+  if(!view || !view.event_count) return "";
   const isPortalUrl=tools?.isProjectPortalUrl;
   record=normalizeLandRecord(record);
   const clock=record?.statutory_clock || null;
@@ -861,6 +884,7 @@ function landSpineHTMLFlat(spine, record){
   if(!spine) return "";
   const portalUrl=record?.portal_url || null;
   const events=Array.isArray(spine.events)?spine.events:[];
+  if(!events.length) return "";
   const portal=portalUrl
     ? `<a class="view land-spine-portal" href="${escUiHtml(portalUrl)}" ${EXT_ATTRS}>${t("land_spine_portal_link")}${extSR()}</a>`
     : "";
@@ -909,22 +933,11 @@ function bindLandSpineUI(root){
 }
 
 function landOutcomesHTML(record, phaseTools){
-  if(!record){
-    return `<div class="chain-h">${t("land_outcomes_heading")}</div>
-      <div class="note">${t("land_outcomes_unmatched_html",{
-        reason: escUiHtml(t("land_outcomes_unmatched_default"))
-      })}</div>`;
-  }
+  if(!record) return "";
   record=normalizeLandRecord(record);
   const spineHTML=landSpineHTML(record.spine, record, phaseTools);
   const join = record.join || {};
-  if(!join.matched || !record.filled){
-    const reason = join.reason || t("land_outcomes_unmatched_default");
-    return `<div class="chain-h">${t("land_outcomes_heading")}</div>
-      <div class="note">${t("land_outcomes_unmatched_html",{
-        reason: escUiHtml(reason)
-      })}</div>${spineHTML}`;
-  }
+  if(!join.matched || !record.filled) return spineHTML;
   const actions = Array.isArray(record.approved_actions) ? record.approved_actions : [];
   const dispositions = Array.isArray(record.dispositions) ? record.dispositions : [];
   const documents = Array.isArray(record.documents) ? record.documents : [];
@@ -974,8 +987,6 @@ function landOutcomesHTML(record, phaseTools){
       const extraDocs = docLinks.length > 4 ? `<details><summary>${t("land_outcomes_documents_lbl")}</summary><div class="zap-docs-list">${docLinks.slice(4).join("")}</div></details>` : "";
       docsHTML = `<div class="note"><b>${t("land_outcomes_documents_lbl")}</b><div class="zap-docs-list">${visibleDocs}</div>${extraDocs}</div>`;
     }
-  } else {
-    docsHTML = `<div class="note">${t("land_outcomes_documents_gap_html")}</div>`;
   }
   let dobHTML = "";
   const dob = record.dob || {};
@@ -984,8 +995,6 @@ function landOutcomesHTML(record, phaseTools){
       `<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(f.job_type || "—")} · ${escUiHtml(f.filing_status || "—")}${f.filing_date?` · ${fdate(f.filing_date)}`:""}${f.job_filing_number?` · ${escUiHtml(f.job_filing_number)}`:""}</div>`
     ).join("");
     dobHTML = `<details class="note"><summary><b>${t("land_outcomes_dob_lbl")}</b></summary>${rows}</details>`;
-  } else if(dob.reason){
-    dobHTML = `<div class="note">${t("land_outcomes_dob_gap_html",{ reason: escUiHtml(dob.reason) })}</div>`;
   }
   const portal = record.portal_url
     ? `<a class="view" href="${escUiHtml(record.portal_url)}" ${EXT_ATTRS}>${t("land_outcomes_portal_link")}${extSR()}</a>`
@@ -1075,10 +1084,7 @@ async function loadZapOutcomes(r, el, selection){
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    el.innerHTML = `<div class="chain-h">${t("land_outcomes_heading")}</div>
-      <div class="note">${t("land_outcomes_unmatched_html",{
-        reason: escUiHtml(t("land_outcomes_unmatched_default"))
-      })}</div>`;
+    el.innerHTML = "";
     return;
   }
   const record = normalizeLandRecord(data.record);

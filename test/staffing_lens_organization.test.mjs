@@ -83,7 +83,7 @@ test("Staffing publishes one load status instead of stacked apology panels", () 
 
 test("Staffing lens chrome consumes the shared design-language tokens", () => {
   const start = html.indexOf(".staffing-ledger{");
-  const end = html.indexOf("/* land stub */", start);
+  const end = html.indexOf("/* Zoning lens template */", start);
   const css = html.slice(start, end);
   assert.match(css, /var\(--color-action\)/);
   assert.match(css, /var\(--color-surface\)/);
