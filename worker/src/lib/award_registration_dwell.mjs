@@ -267,7 +267,8 @@ export function buildAwardRegistrationDwellReport(
     if (nextDay >= prevDay) byId.set(id, row);
   }
 
-  const observations = [...byId.values()]
+  // Per-award dwell rows derived from City Record awards (dg92-zbpx) + registration index.
+  const observations = Array.from(byId.values())
     .map((row) => observeAwardRegistrationDwell(row, regIndex))
     .sort(
       (a, b) =>
