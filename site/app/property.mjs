@@ -800,29 +800,6 @@ function ensurePropertyCommercial(r, tools){
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
 let propertyCommunityDistrict="", propertyResolvedNeighborhood=null;
-let propertyDistrictToolsPromise=null;
-
-async function stampPropertyCommunityDistricts(rows){
-  if(!propertyCommunityDistrict || !(rows||[]).length) return;
-  if(!propertyDistrictToolsPromise){
-    propertyDistrictToolsPromise=Promise.all([
-      import("../council_district_lookup.mjs"),
-      fetch("data/district_boundaries.json",{cache:"force-cache"}).then(r=>r.ok?r.json():null),
-    ]).catch(()=>null);
-  }
-  const loaded=await propertyDistrictToolsPromise;
-  if(!loaded) return;
-  const [tools,boundaries]=loaded;
-  if(!boundaries||typeof tools.resolveCommunityDistrict!=="function") return;
-  for(const row of rows||[]){
-    if(row._communityDistrict) continue;
-    const loc=row._location||row.property_location||{};
-    const geometry=loc.geometry||((loc.addresses||[]).find(a=>Number.isFinite(Number(a?.latitude))&&Number.isFinite(Number(a?.longitude)))||null);
-    if(!geometry) continue;
-    const lat=Number(geometry.latitude), lon=Number(geometry.longitude);
-    if(Number.isFinite(lat)&&Number.isFinite(lon)) row._communityDistrict=tools.resolveCommunityDistrict(lat,lon,boundaries)||null;
-  }
-}
 let propertyAuctionExportVisible=[];
 let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
 let propertyExplorerToolsPromise=null;
@@ -1101,21 +1078,15 @@ async function renderPropExplorer(){
   }
 
   const neighborhoodInput=(($("#propertyneighborhood")?.value)||"").trim();
-  if(neighborhoodInput && (!propertyResolvedNeighborhood || propertyResolvedNeighborhood.name!==neighborhoodInput)){
-    try{
-      const neighborhoodTools=await import("../neighborhood_search.mjs");
-      propertyResolvedNeighborhood=await neighborhoodTools.resolveNeighborhoodQuery(neighborhoodInput);
-      propertyCommunityDistrict=propertyResolvedNeighborhood?.community_districts?.[0]||"";
-      if(propertyResolvedNeighborhood){
-        $("#propertyboro").value=propertyResolvedNeighborhood.borough||"";
-        $("#propertyneighborhood").value=propertyResolvedNeighborhood.name;
-      }
-    }catch(_e){ propertyResolvedNeighborhood=null; propertyCommunityDistrict=""; }
-  } else if(!neighborhoodInput && propertyResolvedNeighborhood){
-    propertyResolvedNeighborhood=null;
-    propertyCommunityDistrict="";
+  const neighborhoodState=await import("../neighborhood_search.mjs")
+    .then(tools=>tools.resolvePropertyNeighborhoodState(neighborhoodInput,propertyResolvedNeighborhood,propAll))
+    .catch(()=>({place:null,communityDistrict:""}));
+  propertyResolvedNeighborhood=neighborhoodState.place;
+  propertyCommunityDistrict=neighborhoodState.communityDistrict;
+  if(propertyResolvedNeighborhood){
+    $("#propertyboro").value=propertyResolvedNeighborhood.borough||"";
+    $("#propertyneighborhood").value=propertyResolvedNeighborhood.name;
   }
-  await stampPropertyCommunityDistricts(propAll);
   const tools=await propertyExplorerTools();
   const processRail=$("#processrail");
   const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();

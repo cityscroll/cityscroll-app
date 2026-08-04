@@ -133,3 +133,75 @@ export async function resolveNeighborhoodQuery(query, fetchImpl = globalThis.fet
     return null;
   }
 }
+
+export async function enrichNeighborhoodFilter(text, lens, filter) {
+  const place = await resolveNeighborhoodQuery(text);
+  if (!place) return filter;
+  const aliases = [place.name, ...(place.aliases || []), ...(place.official_names || [])].map(normalizeSearchText);
+  const keywords = (filter.keywords || []).filter((keyword) => {
+    const normalized = normalizeSearchText(keyword);
+    return normalized && !aliases.some((alias) => alias === normalized || alias.includes(normalized) || normalized.includes(alias));
+  });
+  const enriched = {
+    ...filter,
+    keywords,
+    borough: place.borough,
+    neighborhood: place.name,
+    communityDistrict: place.community_districts?.[0] || null,
+    neighborhoodMatch: place.match_method,
+  };
+  if (lens === "land") enriched.boro = place.borough;
+  return enriched;
+}
+
+export async function resolveFeedNeighborhood(key, query) {
+  if (!query || !["property", "rules", "meetings"].includes(key)) return null;
+  const place = await resolveNeighborhoodQuery(query);
+  if (!place) return null;
+  document.querySelector(`#${key}kw`).value = "";
+  const borough = document.querySelector(`#${key}boro`);
+  if (borough) borough.value = place.borough || "";
+  const neighborhood = document.querySelector(`#${key}neighborhood`);
+  if (neighborhood) neighborhood.value = place.name;
+  if (key === "property") {
+    globalThis.propertyResolvedNeighborhood = place;
+    globalThis.propertyCommunityDistrict = place.community_districts?.[0] || "";
+  }
+  return place;
+}
+
+let districtToolsPromise = null;
+
+export async function stampPropertyCommunityDistricts(rows, communityDistrict, fetchImpl = globalThis.fetch) {
+  if (!communityDistrict || !rows?.length) return;
+  if (!districtToolsPromise) {
+    districtToolsPromise = Promise.all([
+      import("./council_district_lookup.mjs"),
+      fetchImpl("data/district_boundaries.json", { cache: "force-cache" }).then((response) => response.ok ? response.json() : null),
+    ]).catch(() => null);
+  }
+  const loaded = await districtToolsPromise;
+  if (!loaded) return;
+  const [tools, boundaries] = loaded;
+  if (!boundaries || typeof tools.resolveCommunityDistrict !== "function") return;
+  for (const row of rows) {
+    if (row._communityDistrict) continue;
+    const location = row._location || row.property_location || {};
+    const geometry = location.geometry || (location.addresses || []).find((address) =>
+      Number.isFinite(Number(address?.latitude)) && Number.isFinite(Number(address?.longitude)));
+    if (!geometry) continue;
+    const latitude = Number(geometry.latitude);
+    const longitude = Number(geometry.longitude);
+    if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+      row._communityDistrict = tools.resolveCommunityDistrict(latitude, longitude, boundaries) || null;
+    }
+  }
+}
+
+export async function resolvePropertyNeighborhoodState(query, currentPlace, rows) {
+  if (!query) return { place: null, communityDistrict: "" };
+  const place = currentPlace?.name === query ? currentPlace : await resolveNeighborhoodQuery(query);
+  const communityDistrict = place?.community_districts?.[0] || "";
+  await stampPropertyCommunityDistricts(rows, communityDistrict);
+  return { place, communityDistrict };
+}

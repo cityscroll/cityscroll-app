@@ -11,21 +11,8 @@ async function nlResolve(text, lens){
 }
 
 async function enrichNeighborhoodFilter(text,lens,filter){
-  if(!["land","property","rules","meetings"].includes(lens)) return filter;
-  try{
-    const tools=await import("../neighborhood_search.mjs");
-    const place=await tools.resolveNeighborhoodQuery(text);
-    if(!place) return filter;
-    const aliases=[place.name,...(place.aliases||[]),...(place.official_names||[])].map(tools.normalizeSearchText);
-    const keywords=(filter.keywords||[]).filter(keyword=>{
-      const normalized=tools.normalizeSearchText(keyword);
-      return normalized && !aliases.some(alias=>alias===normalized||alias.includes(normalized)||normalized.includes(alias));
-    });
-    const enriched={...filter,keywords,borough:place.borough,neighborhood:place.name,
-      communityDistrict:place.community_districts?.[0]||null,neighborhoodMatch:place.match_method};
-    if(lens==="land") enriched.boro=place.borough;
-    return enriched;
-  }catch(_e){ return filter; }
+  if(!/^(?:land|property|rules|meetings)$/.test(lens)) return filter;
+  return import("../neighborhood_search.mjs").then(m=>m.enrichNeighborhoodFilter(text,lens,filter)).catch(()=>filter);
 }
 
 const NLQ_PRESET_KEY = "crd_nlq_presets_v1";

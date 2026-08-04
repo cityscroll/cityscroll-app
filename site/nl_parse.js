@@ -65,9 +65,7 @@ var NOTICE_TYPE_AWARD_RE = /\b(awards?|awarded|winners?)\b/;
 var NOTICE_TYPE_SOLICITATION_RE = /\b(rfps?|solicitations?|bids?|proposals?)\b/;
 
 function normalizeNaturalLanguageText(value) {
-  var text = String(value || "");
-  if (typeof text.normalize === "function") text = text.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
-  return (" " + text.toLowerCase()
+  return (" " + String(value || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
     .replace(/&/g, " and ")
     .replace(/\b(\d+)(?:st|nd|rd|th)\b/g, "$1")
     .replace(/\bst[.]?(?=\s+[a-z])/g, "saint")
@@ -78,11 +76,10 @@ function normalizeNaturalLanguageText(value) {
 
 function containsAliasWords(text, alias) {
   var normalized = normalizeNaturalLanguageText(alias);
-  if (text.indexOf(normalized) !== -1) return true;
-  var noise = { the: true, of: true, and: true, department: true };
-  var words = normalized.trim().split(/\s+/).filter(function(word) { return word && !noise[word]; });
+  if (text.includes(normalized)) return true;
+  var words = normalized.trim().split(/\s+/).filter(word => !/^(?:the|of|and|department)$/.test(word));
   if (!words.length) return false;
-  return words.every(function(word) { return text.indexOf(" " + word + " ") !== -1; });
+  return words.every(word => text.includes(" " + word + " "));
 }
 
 function extractAgency(t) {
