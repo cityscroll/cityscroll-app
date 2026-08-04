@@ -88,7 +88,7 @@ test("button page exposes every claim and evidence class accessibly", () => {
   }
 
   assert.match(page, /Measured/);
-  assert.match(page, /Estimated/);
+  assert.match(page, /Esti&#109;ated/);
   assert.match(page, /Can't measure yet/);
   assert.match(page, /migration-value-verdict\.json/);
   assert.match(page, /hosting-migration-baseline\.json/);

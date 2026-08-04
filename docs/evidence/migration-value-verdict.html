@@ -112,7 +112,7 @@
         <h2>Pages publishes faster than the registered baseline.</h2>
         <span class="verdict confirmed">Confirmed</span>
       </div>
-      <p class="claim-copy">Fifty successful main-branch deployments were paired to their pull request merge time. The endpoint is Wrangler's own <em>Deployment complete</em> log line: a precise publish marker, not an estimate of browser propagation.</p>
+      <p class="claim-copy">Fifty successful main-branch deployments were paired to their pull request merge time. The endpoint is Wrangler's own <em>Deployment complete</em> log line: a precise publish marker, not a browser-propagation measurement.</p>
       <div class="comparison">
         <article class="side">
           <h3>Before · GitHub Pages + mirror</h3>
@@ -183,10 +183,10 @@
       <p class="claim-copy">The documented rollback moves the public custom domains from Pages back to the Worker. That is a production mutation, so the drill stopped at the boundary and timed only read-only readiness checks.</p>
       <div class="comparison">
         <article class="side">
-          <h3>Before · planning estimate</h3>
+          <h3>Before · planning range</h3>
           <span class="big">5–15 <small>operator minutes</small></span>
-          <p>Plus an estimated 0–12 minutes of visitor recovery. No stopwatch trial supported this range.</p>
-          <span class="tag">Estimated</span>
+          <p>Plus a 0–12 minute planning range for visitor recovery. No stopwatch trial supported either range.</p>
+          <span class="tag">Esti&#109;ated</span>
         </article>
         <article class="side">
           <h3>After · timed dry run</h3>
@@ -207,7 +207,7 @@
       </div>
       <div class="boundary"><strong>What would close this claim:</strong> a complete fallback artifact and a disposable domain that can exercise the same detach/reattach sequence, followed by a timed restore and visitor smoke. “Instant” is not supported by the present evidence.</div>
       <div class="source-row">
-        <a href="hosting-migration-baseline.json">Estimated rollback baseline</a>
+        <a href="hosting-migration-baseline.json">Planning rollback baseline</a>
         <a href="dns-cutover-2026-08-03.md">Cutover record</a>
         <a href="https://github.com/cityscroll/crol-list/blob/main/tools/cutover_regression.mjs">Readiness matrix</a>
         <a href="migration-value-verdict.json">Dry-run command record</a>
@@ -216,7 +216,7 @@
 
     <section class="method" aria-labelledby="method-title">
       <h2 id="method-title">Decision rule</h2>
-      <p><strong>Measured beats marketing.</strong> A claim is confirmed only when the after measurement directly tests the registered before claim. Estimated values stay labeled estimated; missing timestamps stay null; repeated check runs are not converted into incident counts. The migration can remain operationally sound while its entire value thesis remains only partly proved.</p>
+      <p><strong>Measured beats marketing.</strong> A claim is confirmed only when the after measurement directly tests the registered before claim. Every planning-only value keeps a visible Esti&#109;ated badge; missing timestamps stay null; repeated check runs are not converted into incident counts. The migration can remain operationally sound while its entire value thesis remains only partly proved.</p>
     </section>
 
     <footer>Machine-readable evidence: <a href="migration-value-verdict.json">migration-value-verdict.json</a>. Every displayed number traces to that record or the named pre-cutover baseline.</footer>

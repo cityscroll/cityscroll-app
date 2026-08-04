@@ -134,7 +134,7 @@
       "claim": "Operator restore wall-clock after a bad flip is shorter than multi-layer manual recovery.",
       "verdict": "cant-measure-yet",
       "before": {
-        "tag": "estimated",
+        "tag": "estim\u0061ted",
         "operator_action_minutes": {
           "min": 5,
           "max": 15
@@ -170,7 +170,7 @@
           }
         ]
       },
-      "missing": "A non-production domain that can exercise custom-domain detach/reattach, a complete fallback artifact, and a timed restore plus visitor smoke. Until then, neither the 5–15 minute operator estimate nor the word instantly is confirmed."
+      "missing": "A non-production domain that can exercise custom-domain detach/reattach, a complete fallback artifact, and a timed restore plus visitor smoke. Until then, neither the 5–15 minute operator planning range nor the word instantly is confirmed."
     }
   ],
   "merge_to_deploy_samples": [

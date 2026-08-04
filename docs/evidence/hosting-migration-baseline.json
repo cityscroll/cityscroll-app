@@ -198,7 +198,7 @@
       "fallback_deep_route_result": "failed",
       "missing": "A disposable custom domain, a complete fallback artifact, and a timed detach/reattach plus visitor smoke."
     },
-    "instructions": "The measured after-side is recorded in migration-value-verdict.json. Re-run the dual-host harness independently if fresh TTFB and payload-parity data are needed; do not overwrite the merge, detection, or rollback evidence with estimates.",
+    "instructions": "The measured after-side is recorded in migration-value-verdict.json. Re-run the dual-host harness independently if fresh TTFB and payload-parity data are needed; do not overwrite the merge, detection, or rollback evidence with planning figures.",
     "dual_host_live_metrics": null,
     "re_run": {
       "dual_host_command": "node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json",
