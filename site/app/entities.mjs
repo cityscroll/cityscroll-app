@@ -1,3 +1,5 @@
+import { noticeDisplayTitle } from "../display_title.mjs";
+
 /* ===================== ENTITY PAGES (vendor / agency) =====================
    The pivot layer: every agency or vendor mention links here, and each page is a hub of
    further pivots — the search → entity → pivot loop. Vendor identity is resolved at read
@@ -426,9 +428,9 @@ async function showAgency(name, initialTab){
     return lens ? `<a class="chip" style="text-decoration:none" href="#${lens}?agency=${encodeURIComponent(nm)}">${label}</a>` : `<span class="chip" style="cursor:default">${label}</span>`;
   }).join("");
   const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">${isRollingDeadline(r.due_date)?"":"due "+fdate(r.due_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${deadlineTag(r.due_date)}</div>`).join("");
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>${deadlineTag(r.due_date)}</div>`).join("");
   const evItems = events.map(r=>`<div class="tl"><span class="tldate">${fdate(r.event_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${eventTag(r.event_date)}</div>`).join("");
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>${eventTag(r.event_date)}</div>`).join("");
 
   const forecasts = forecastData ? (forecastData.forecasts || []) : [];
   const hasForecasts = forecasts.length > 0;
@@ -619,7 +621,7 @@ async function paintVendorFootprint(box, response){
 
 function vendorMentionItemsHTML(mentions){
   return mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>
       <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
 }
 
@@ -636,7 +638,7 @@ function ensureVendorPhaseSpineTools(){
 
 function vendorTimelineFlatHTML(rows){
   return (rows || []).map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>
       <span class="rmeta" style="margin:0">${escUiHtml(r.type_of_notice_description||"")} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
       ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
 }
@@ -797,7 +799,7 @@ function vendorChronoRowHTML(m){
   const date = m.date ? fdate(m.date) : "—";
   let label = "";
   if(m.kind === "notice" && m.request_id){
-    label = `<b>${escUiHtml(m.notice_type || t("lifecycle_stage_award"))}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), cleanText(m.title)||"(untitled)")}`;
+    label = `<b>${escUiHtml(m.notice_type || t("lifecycle_stage_award"))}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), noticeDisplayTitle({title:m.title,request_id:m.request_id}))}`;
   } else {
     label = `<b>${escUiHtml(m.title || m.stage || "—")}</b>`;
   }

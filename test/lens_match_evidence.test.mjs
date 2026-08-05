@@ -25,6 +25,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { landProjectDisplayTitle, noticeDisplayTitle } from "../site/display_title.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
@@ -68,7 +69,7 @@ const {
   matchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML",
+  "t", "tn", "fmtNumber", "window", "moneyListPrimaryActionHTML", "landProjectDisplayTitle", "noticeDisplayTitle",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -112,7 +113,7 @@ const {
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +
   "return { matchEvidence, matchText, digTitleHTML, digEvidenceHTML, moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML };"
-)(t, tn, fmtNumber, windowStub, () => "");
+)(t, tn, fmtNumber, windowStub, () => "", landProjectDisplayTitle, noticeDisplayTitle);
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
 // is genuinely blank on this row -- other_info_1 carries all the real text.
@@ -176,9 +177,10 @@ test("moneyRowHTML: a title-field match highlights inline, no separate evidence 
   assert.doesNotMatch(html, /class="dev"/);
 });
 
-test("moneyRowHTML: an untitled row still falls back to untitled_notice, unaffected by evidence", () => {
+test("moneyRowHTML: an identified untitled row falls back to its notice ID", () => {
   const html = moneyRowHTML({ ...compassNotice, short_title: "" }, 0, ["childcare"]);
-  assert.match(html, new RegExp(t("untitled_notice")));
+  assert.match(html, /Notice 20260709010/);
+  assert.doesNotMatch(html, /untitled/i);
 });
 
 // ---- Land -----------------------------------------------------------------------------------
@@ -200,6 +202,25 @@ test("landRowHTML: a description-field match (not in the title) shows the eviden
 test("landRowHTML: a resolved geocode block lookup passes no text-match terms (kwIsTextMatch=false upstream)", () => {
   const html = landRowHTML(rezoning, 0, []);
   assert.doesNotMatch(html, /<mark/);
+});
+
+test("landRowHTML: the three legacy field reports render evidenced titles, never placeholders", () => {
+  const rows = [
+    {project_id:"P1985Q0956",project_brief:"DISPOSITION OF CITY-OWNED PROPERTY",borough:"Queens",community_district:"Q09"},
+    {project_id:"P1985Q0958",project_brief:"DISPOSITION OF CITY-OWNED PROPERTY, 11 PARCELS",borough:"Queens",community_district:"Q13"},
+    {project_id:"P1985Q1002",project_brief:"DISPOSITION OF CITY-OWNED PROPERTY, 19 PARCELS",borough:"Queens",community_district:"Q12"},
+  ];
+  for (const [index, row] of rows.entries()) {
+    const html=landRowHTML(row,index,[]);
+    assert.match(html,/Property disposition — Queens, Community District (?:9|12|13)/);
+    assert.doesNotMatch(html,/(?:unnamed|untitled|null)/i);
+  }
+});
+
+test("landRowHTML: an ID-only project mirrors ZAP's naming convention", () => {
+  const html=landRowHTML({project_id:"P1985Q9999"},0,[]);
+  assert.match(html,/Project P1985Q9999/);
+  assert.doesNotMatch(html,/(?:unnamed|untitled|null)/i);
 });
 
 // w12-09 field report (site owner, production): following the Land suggestion "rezonings in
@@ -272,6 +293,21 @@ test("feedCardHTML: plain browsing (no keyword) renders with no match markup", (
   const html = feedCardHTML("rules", rulesNotice, []);
   assert.doesNotMatch(html, /<mark/);
   assert.doesNotMatch(html, /class="dev"/);
+});
+
+test("rendered-card detector: stable identifiers prevent placeholder-class titles across lenses", () => {
+  const placeholder=/(?:\(\s*(?:unnamed|untitled)[^)]*\)|>\s*(?:unnamed|untitled|null)\s*<)/i;
+  const cards=[
+    moneyRowHTML({...compassNotice,short_title:"null"},0,[]),
+    landRowHTML({project_id:"P1985Q9999",project_name:"(unnamed)"},0,[]),
+    feedCardHTML("rules",{...rulesNotice,short_title:"(untitled)"},[]),
+  ];
+  for(const html of cards){
+    assert.doesNotMatch(html,placeholder);
+  }
+  assert.match(cards[0],/Notice 20260709010/);
+  assert.match(cards[1],/Project P1985Q9999/);
+  assert.match(cards[2],/Notice 20260710099/);
 });
 
 // ---- Staffing ---------------------------------------------------------------------------------

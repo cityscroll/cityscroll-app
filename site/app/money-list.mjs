@@ -1,3 +1,5 @@
+import { noticeDisplayTitle } from "../display_title.mjs";
+
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyActionLocationToolsPromise=null;
@@ -316,7 +318,7 @@ function moneyListPrimaryActionHTML(r, today=todayISO()){
   const presentation=moneyListPrimaryAction(r,today);
   if(!presentation) return "";
   const label=t(presentation.label_key);
-  const title=cleanText(r.short_title)||t("untitled_notice");
+  const title=noticeDisplayTitle(r);
   const attrs=presentation.external?` ${EXT_ATTRS}`:"";
   return `<a class="act primary money-row-action" data-money-row-action="${presentation.kind}" data-action-delivery="${presentation.action.delivery}" href="${escUiHtml(presentation.href)}"${attrs}>${escUiHtml(label)}<span class="sr-only" lang="en" dir="ltr"> — ${escUiHtml(title)}</span>${presentation.external?extSR():""}</a>`;
 }
@@ -325,14 +327,14 @@ function moneyRowHTML(r, i, terms){
   const lead = isAward
     ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
     : deadlineTag(r.due_date);
-  const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
+  const title = noticeDisplayTitle(r), ev = matchEvidence(title, matchText(r), terms);
   const mwbeChips = !isAward ? solicitationListChipsHTML(r) : "";
   const actionLocationChip=globalThis.MoneyActionLocations?.moneyActionLocationChipHTML?.(r,{t,esc:escUiHtml})||"";
   const primaryAction=moneyListPrimaryActionHTML(r);
   return `<article class="money-row-card">
       ${primaryAction}
       <div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${title ? digTitleHTML(title, ev) : t("untitled_notice")}</p>
+      <p class="rtitle">${digTitleHTML(title, ev)}</p>
       <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>

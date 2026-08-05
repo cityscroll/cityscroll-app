@@ -1,3 +1,5 @@
+import { noticeDisplayTitle } from "../display_title.mjs";
+
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
    Detail timeline remains site/rules_phase_spine.mjs. ===== */
@@ -133,7 +135,7 @@ function rulesExplorerCardHTML(entry, terms){
   return `<div class="fcard rules-fcard" data-request-id="${escUiHtml(r.request_id||"")}" data-rulemaking-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
       <div class="ftype">${r.type_of_notice_description||""}${agency?" · "+pivotA(agencyHref(agency), agency):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${processLine}
-      <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
+      <div class="ftitle"><a href="${noticeHref}">${digTitleHTML(title, mev)}</a></div>
       ${siblingsHtml}
       ${rulePlaceChips(r._ruleLocation)}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
@@ -874,7 +876,7 @@ function feedCardHTML(key, r, terms){
   // excerptHtml owns decode→truncate→escape; raw slice of cleanText left entities double-escaped
   // when a later path escaped again, and could cut inside "&ldquo;".
   const scopeHtml=excerptHtml(r.additional_description_1,200);
-  const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
+  const title=noticeDisplayTitle(r), mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   // Comment-open is the actionable moment: lead with the official comment-page CTA so the
   // primary action sits first in the row (matches the hearing-card join/participation lead).
@@ -899,7 +901,7 @@ function feedCardHTML(key, r, terms){
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       ${rbadges}
-      <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
+      <div class="ftitle"><a href="${noticeHref}">${digTitleHTML(title, mev)}</a></div>
       ${key==="property"?propertyPlaceChips(r._location):addr?`<div class="faddr">${addr}</div>`:""}
       ${key==="rules"?rulePlaceChips(r._ruleLocation):""}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
