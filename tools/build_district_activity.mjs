@@ -55,6 +55,20 @@ function loadInputs() {
     rulesRows: Array.isArray(rules?.rows) ? rules.rows : [],
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],
+    districtCorpora: {
+      property: {
+        path: "data/property_domain_observations.json",
+        collection: "property_rows",
+        stamp_field: "generated_at",
+        stamp_value: property?.generated_at || null,
+      },
+      meetings: {
+        path: "data/meetings_domain_observations.json",
+        collection: "rows",
+        stamp_field: "retrieved_at",
+        stamp_value: meetings?.retrieved_at || null,
+      },
+    },
   };
 }
 
@@ -74,6 +88,46 @@ function check(doc) {
   if (!doc.boundary_vintage) throw new Error("missing boundary_vintage");
   if (!doc.by_level?.borough || !doc.by_level?.community_district || !doc.by_level?.council_district) {
     throw new Error("missing by_level bags");
+  }
+  const itemIndex = doc.district_items;
+  if (
+    itemIndex?.schema !== "cityscroll.district_items.v1"
+    || itemIndex.boundary_vintage !== doc.boundary_vintage
+    || itemIndex.built_at !== doc.built_at
+  ) throw new Error("district item index stamp mismatch");
+  for (const lens of ["property", "meetings"]) {
+    const corpus = itemIndex.corpora?.[lens];
+    if (!corpus?.path || !corpus?.collection || !corpus?.stamp_field || !corpus?.stamp_value) {
+      throw new Error(`${lens} district item corpus descriptor missing`);
+    }
+    const sourceDoc = loadJson(join(ROOT, "site", corpus.path));
+    if (sourceDoc?.[corpus.stamp_field] !== corpus.stamp_value) {
+      throw new Error(`${lens} district item corpus stamp mismatch`);
+    }
+    const sourceRows = Array.isArray(sourceDoc?.[corpus.collection])
+      ? sourceDoc[corpus.collection]
+      : [];
+    const sourceIds = new Set(sourceRows.map((row) => String(row?.request_id || "")).filter(Boolean));
+    if ((doc.sources?.[lens]?.indexed || 0) !== (doc.sources?.[lens]?.counted || 0)) {
+      throw new Error(`${lens} item index does not cover its counted corpus`);
+    }
+    for (const level of ["borough", "community_district", "council_district"]) {
+      for (const [id, counts] of Object.entries(doc.by_level[level] || {})) {
+        const special = level === "borough" && id === "Citywide"
+          ? itemIndex.citywide?.[lens]
+          : level === "borough" && id === "Virtual"
+            ? itemIndex.virtual?.[lens]
+            : itemIndex.by_level?.[level]?.[id]?.[lens];
+        if ((counts?.[lens] || 0) !== (special?.length || 0)) {
+          throw new Error(`${lens} ${level} ${id} count/list drift`);
+        }
+        for (const requestId of special || []) {
+          if (!sourceIds.has(String(requestId))) {
+            throw new Error(`${lens} ${level} ${id} member missing from stamped corpus`);
+          }
+        }
+      }
+    }
   }
   const boroughKeys = Object.keys(doc.by_level.borough);
   if (boroughKeys.length < 5) throw new Error("expected 5 boroughs");

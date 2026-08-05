@@ -12,6 +12,8 @@
  * - notice / project: seed for the real digItemHTML email-template preview
  */
 
+import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
+
 export const SECTION_TO_LENS = Object.freeze({
   Procurement: "money",
   "Public Hearings and Meetings": "meetings",
@@ -301,7 +303,9 @@ export function alertsHref(scope, opts) {
       return "#alerts";
     }
   }
-  const filter = compactFilter(scope.filter || {});
+  const canonical = scopeFromWatch(scope, { language: o.language || scope.language || "en" });
+  const adapted = watchFromScope(canonical, { lens });
+  const filter = compactFilter(adapted.filter);
   const params = new URLSearchParams();
   params.set("lens", lens);
   params.set("filter", JSON.stringify(filter));
@@ -338,9 +342,11 @@ export function parseAlertsEntryParams(hashOrQuery) {
   let filter = {};
   try { filter = JSON.parse(q.get("filter") || "{}") || {}; } catch (_e) { filter = {}; }
   if (typeof filter !== "object" || Array.isArray(filter)) filter = {};
+  const lens = q.get("lens") || null;
+  const adapted = lens ? watchFromScope(scopeFromWatch({ lens, filter }), { lens }) : { filter };
   return {
-    lens: q.get("lens") || null,
-    filter,
+    lens,
+    filter: adapted.filter,
     freq: q.get("freq") || null,
     noticeId: cleanId(q.get("notice")),
     projectId: cleanId(q.get("project")),

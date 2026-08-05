@@ -74,7 +74,7 @@ test("the shared component pair is mounted and rendered on every non-Alerts sear
 test("preset replay uses the hash router, so a saved lens opens from any other lens", () => {
   assert.match(
     indexSource,
-    /if\(location\.hash===preset\.hash\) applyHash\(\); else location\.hash=preset\.hash;/,
+    /const hash=adaptedScopeHash\(presetLens\(preset\),preset\.hash\);\s*if\(location\.hash===hash\) applyHash\(\); else location\.hash=hash;/,
   );
   assert.match(indexSource, /presetLens\(preset\)/);
 });

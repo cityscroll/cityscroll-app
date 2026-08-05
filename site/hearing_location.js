@@ -225,8 +225,8 @@ function normalizeHearingRow(row) {
     agency: row.agency_name || null, notice_type: row.type_of_notice_description || null,
     title: hearingPlainText(row.short_title) || "Untitled hearing", event_date: row.event_date || null,
     published_at: row.start_date || null, decides: hearingDecision(row, body),
-    affects: audience ? [audience[1]] : [], affected_area: hearingAffectedArea(row),
-    venue: hearingVenue(row),
+    affects: audience ? [audience[1]] : [], affected_area: row.affected_area || hearingAffectedArea(row),
+    venue: row.venue || hearingVenue(row),
     participation: hearingParticipationFromBody(body, source),
     source_url: source, description: body.slice(0, 1200),
   };
@@ -329,7 +329,7 @@ function hearingRowsInScope(records, filter, scope, today) {
   var keyword = String(filter.keyword || "").trim().toLowerCase();
   return (records || []).filter(function (record) {
     var date = String(record.event_date || "").slice(0, 10);
-    if (!date) return false;
+    if (!date && scope !== "all") return false;
     if (scope === "all") {
       // No date window — map drill count-equals-list over the full corpus.
     } else if (scope === "past") {
@@ -349,6 +349,8 @@ function hearingRowsInScope(records, filter, scope, today) {
     return true;
   }).sort(function (a, b) {
     var av = String(a.event_date || ""), bv = String(b.event_date || "");
+    if (scope === "all" && !av) return 1;
+    if (scope === "all" && !bv) return -1;
     return scope === "past" ? bv.localeCompare(av) : av.localeCompare(bv);
   });
 }

@@ -166,6 +166,11 @@ export async function resolveFeedNeighborhood(key, query) {
   if (key === "property") {
     globalThis.propertyResolvedNeighborhood = place;
     globalThis.propertyCommunityDistrict = place.community_districts?.[0] || "";
+    globalThis.propertyCouncilDistrict = "";
+  }
+  if (key === "meetings") {
+    globalThis.meetingsCommunityDistrict = place.community_districts?.[0] || "";
+    globalThis.meetingsCouncilDistrict = place.council_districts?.[0] || "";
   }
   return place;
 }

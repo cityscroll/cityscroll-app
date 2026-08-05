@@ -1,4 +1,5 @@
 import { buildNowSurface } from "./now_surface.mjs";
+import { nowItemMatchesScope } from "./scope_now_adapter.mjs";
 
 let nowSourcesPromise = null;
 
@@ -162,7 +163,8 @@ export async function showNow(options = {}) {
   const sources = await loadNowSources();
   if (!box.isConnected || !box.closest(".tabpane.active")) return;
   renderNowSurface(buildNowSurface(sources, {
-    today: todayISO(), scope: options.scope || null, matchesScope: options.matchesScope,
+    today: todayISO(), scope: options.scope || null,
+    matchesScope: options.matchesScope || nowItemMatchesScope,
     compileActionRail: window.CrolActions?.compileActionRail,
   }));
 }

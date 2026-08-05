@@ -837,7 +837,7 @@ function propertyTimedEventChipsHTML(commercial,omitSourceKinds=[]){
   return chips.length?`<div>${chips.join("")}</div>`:"";
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
-let propertyCommunityDistrict="", propertyResolvedNeighborhood=null;
+let propertyCommunityDistrict="", propertyCouncilDistrict="", propertyResolvedNeighborhood=null;
 let propertyAuctionExportVisible=[];
 let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
 let dcasFleetInventoryPromise=null, dcasFleetToolsPromise=null;
@@ -1071,6 +1071,8 @@ function updatePropertyMoreFiltersState(){
     propProcessSel!=="all",
     propStageSel!=="all",
     !!($("#propertyboro")?.value),
+    !!propertyCommunityDistrict,
+    !!propertyCouncilDistrict,
     !!(($("#propertyneighborhood")?.value||"").trim()),
     !!($("#propertyagency")?.value),
   ].filter(Boolean).length;
@@ -1194,11 +1196,18 @@ async function renderPropExplorer(){
   }
 
   const neighborhoodInput=(($("#propertyneighborhood")?.value)||"").trim();
-  const neighborhoodState=await import("../neighborhood_search.mjs")
-    .then(tools=>tools.resolvePropertyNeighborhoodState(neighborhoodInput,propertyResolvedNeighborhood,propAll))
-    .catch(()=>({place:null,communityDistrict:""}));
-  propertyResolvedNeighborhood=neighborhoodState.place;
-  propertyCommunityDistrict=neighborhoodState.communityDistrict;
+  const neighborhoodState=neighborhoodInput
+    ?await import("../neighborhood_search.mjs")
+      .then(tools=>tools.resolvePropertyNeighborhoodState(neighborhoodInput,propertyResolvedNeighborhood,propAll))
+      .catch(()=>({place:null,communityDistrict:""}))
+    :null;
+  if(neighborhoodState){
+    propertyResolvedNeighborhood=neighborhoodState.place;
+    propertyCommunityDistrict=neighborhoodState.communityDistrict;
+  }else if(propertyResolvedNeighborhood){
+    propertyResolvedNeighborhood=null;
+    propertyCommunityDistrict="";
+  }
   if(propertyResolvedNeighborhood){
     $("#propertyboro").value=propertyResolvedNeighborhood.borough||"";
     $("#propertyneighborhood").value=propertyResolvedNeighborhood.name;
@@ -1220,7 +1229,7 @@ async function renderPropExplorer(){
       commercialOf: (r)=>r.commercial||null,
       borough: borough||null,
       neighborhood: propertyCommunityDistrict?null:(neighborhood||null),
-      communityDistricts: propertyCommunityDistrict?[propertyCommunityDistrict]:[],
+      communityDistricts: propertyResolvedNeighborhood&&propertyCommunityDistrict?[propertyCommunityDistrict]:[],
     });
     if(tools.stampPropertyExplorerTemporal){
       entries=tools.stampPropertyExplorerTemporal(entries,{
@@ -1255,7 +1264,7 @@ async function renderPropExplorer(){
         if((propAsset!=="all"||propSaleMethod!=="all"||propPriceBand!=="all")
           && r.commercial && r.commercial.sale_eligible===false) return false;
         if(borough && !(r._location?.boroughs||[]).includes(borough)) return false;
-        if(propertyCommunityDistrict && r._communityDistrict!==propertyCommunityDistrict) return false;
+        if(propertyResolvedNeighborhood&&propertyCommunityDistrict && r._communityDistrict!==propertyCommunityDistrict) return false;
         if(neighborhood && !propertyCommunityDistrict && ![
           ...(r._location?.neighborhoods||[]),
           ...(r._location?.addresses||[]).map(address=>address.label),
@@ -1290,21 +1299,35 @@ async function renderPropExplorer(){
     if(count) count.textContent=`(${propertyAuctionExportVisible.length})`;
   });
   updatePropertyMoreFiltersState();
-  const totalCount=entries.reduce((n,e)=>n+(e.kind==="cluster"?(e.count||1):1),0);
+  const feedEl=$("#propertyfeed");
+  if(!feedEl) return;
+  const kwEl=$("#propertykw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
+  // Export, print, and the result counter use request-id membership. Both
+  // disposition cards and repeated-notice clusters expand back to every notice,
+  // preserving the same cardinality as the stamped district bag.
+  const visibleRows=[];
+  entries.forEach(e=>{
+    if(e.kind==="cluster"){
+      (e.members||[]).forEach(member=>{
+        (member?.members||[member?.primary]).forEach(row=>{ if(row) visibleRows.push(row); });
+      });
+    }else{
+      (e.members||[e.primary]).forEach(row=>{ if(row) visibleRows.push(row); });
+    }
+  });
+  const visibleRequestIds=new Set();
+  feedVisible.property=visibleRows.filter(row=>{
+    const requestId=String(row?.request_id||"");
+    if(!requestId) return true;
+    if(visibleRequestIds.has(requestId)) return false;
+    visibleRequestIds.add(requestId);
+    return true;
+  });
+  const totalCount=feedVisible.property.length;
   announce(t("property_entries_announce",{n:totalCount}));
   const countEl=$("#property-count");
   if(countEl) countEl.textContent=t("property_entries_announce",{n:totalCount});
   setExportBandVisibility(totalCount, "property-export-band", "property-export-overflow");
-  const feedEl=$("#propertyfeed");
-  if(!feedEl) return;
-  const kwEl=$("#propertykw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
-  // Export/print want notice rows — clusters expand back to their members.
-  const visibleRows=[];
-  entries.forEach(e=>{
-    if(e.kind==="cluster"){ (e.members||[]).forEach(m=>{ if(m.primary) visibleRows.push(m.primary); }); }
-    else if(e.primary){ visibleRows.push(e.primary); }
-  });
-  feedVisible.property=visibleRows;
   if(!entries.length){
     if(propertyResolvedNeighborhood){
       feedEl.innerHTML=`<div class="empty property-neighborhood-empty"><p>${t("property_neighborhood_empty_html",{name:escUiHtml(propertyResolvedNeighborhood.name)})}</p><button type="button" class="act primary" data-follow-resolved-neighborhood>${t("follow_this_area")}</button></div>`;
@@ -1684,6 +1707,7 @@ globalThis.normalizePropPriceBand = normalizePropPriceBand;
 globalThis.normalizePropSort = normalizePropSort;
 Object.defineProperty(globalThis, "propertyExplorerToolsPromise", { configurable: true, get: () => propertyExplorerToolsPromise, set: value => { propertyExplorerToolsPromise = value; } });
 Object.defineProperty(globalThis, "propertyCommunityDistrict", { configurable: true, get: () => propertyCommunityDistrict, set: value => { propertyCommunityDistrict = value || ""; } });
+Object.defineProperty(globalThis, "propertyCouncilDistrict", { configurable: true, get: () => propertyCouncilDistrict, set: value => { propertyCouncilDistrict = value || ""; } });
 Object.defineProperty(globalThis, "propertyResolvedNeighborhood", { configurable: true, get: () => propertyResolvedNeighborhood, set: value => { propertyResolvedNeighborhood = value || null; } });
 Object.defineProperty(globalThis, "propertyAuctionExportVisible", { configurable: true, get: () => propertyAuctionExportVisible, set: value => { propertyAuctionExportVisible = value; } });
 Object.defineProperty(globalThis, "propertyPhaseSpineToolsPromise", { configurable: true, get: () => propertyPhaseSpineToolsPromise, set: value => { propertyPhaseSpineToolsPromise = value; } });

@@ -1,4 +1,5 @@
 await import("./core.mjs");
+globalThis.CrolScope = await import("../scope_v0.mjs");
 await import("./money-list.mjs");
 await import("./money-history.mjs");
 await import("./search-share.mjs");

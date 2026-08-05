@@ -6,12 +6,13 @@ Start here for JavaScript work on the main site. Read the named module and `core
 |---|---|
 | `site/app/main.mjs` | Ordered module loading; read for boot-order or module-registration changes. |
 | `site/app/core.mjs` | API clients, shared formatting, skeletons, tabs, and common DOM helpers. |
+| `site/scope_v0.mjs` | Pure scope v0 narrow-waist adapter across routes, filters, map/Now state, presets, sharing, and watches; owns no mutable state. `scope_now_adapter.mjs` keeps the Now matcher on that surface's lazy graph. |
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
 | `site/app/land.mjs` | Land search/detail/map, ZAP outcomes, ULURP timeline, and notice-to-ZAP joins. |
-| `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, hearing explorer, and notice/land action rails. |
+| `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, stamped district-bag filtering, hearing explorer, and notice/land action rails. |
 | `site/action_outcome_prompt.mjs` | Optional post-handoff/passed-action self-report UI over the registered outcome vocabulary; aggregate analytics only, with no matter identifier or free text. |
 | `site/app/property.mjs` | Franchise and property-disposition spines, surplus-buyer commercial glance, property explorer, and tax-lien context. |
 | `site/property_commercial.mjs` | Pure Property commercial extraction (item/qty/price/deal/participation) for list + detail. |
@@ -20,6 +21,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/solicitation_procurement_method.mjs` | Pure solicitation method extract (§6-129 / NCSP / accelerated / response floor). |
 | `site/mwbe_goal_surface.mjs` | Pure solicitation M/WBE / method chips over procurement_method (list + notice detail). |
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, and generic feed-card rendering. |
+| `site/map_exploration.mjs` | Pure map geometry, canonical scope drill hashes, and exact Property/Meetings request-ID membership from `district_activity.district_items`. |
 | `site/app/alerts.mjs` | Watch state, digest preview/items, rollups/preferences, flags, and address/context hydration. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |
 | `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, M/WBE solicitation detail, and prime sub-outreach mount. |
