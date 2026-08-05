@@ -15,8 +15,8 @@ not discard the list's search and filters.
 Broadened ruling (crol-extlinks2-y8): the product owner extended the new-tab treatment from a
 named allowlist (City Record / PASSPort / Checkbook NYC / NYC Open Data) to EVERY external
 destination — only CityScroll's own resources (crol-list.org, api.cityscroll.org, in-app hash
-routes, the project's own GitHub repo) stay same-tab now. About's NYC Charter/amlegal
-citation — previously the gate's own "stays same-tab" control fixture — is a perfect example:
+routes, the project's own GitHub repo) stay same-tab now. About's Open Contracting guide
+link is one example:
 BEFORE crol-extlinks2-y8 it was a deliberate same-tab exception (an external destination
 outside the then-narrow allowlist); AFTER, it gets the same new-tab treatment as every other
 external link, so this gate now asserts the OPPOSITE of what it asserted before. The former
@@ -25,7 +25,7 @@ own api.cityscroll.org link (CityScroll's own resource, must never acquire targe
 
 This gate proves it on real rendered output: the notice-detail links (City Record, PASSPort)
 and the Staffing feed's City Record link get the new-tab treatment, the broadened case (the
-NYC Charter citation, previously same-tab) now also gets it, an ordinary in-app link does not
+Open Contracting guide, previously same-tab) now also gets it, an ordinary in-app link does not
 regress into acquiring target="_blank", and CityScroll's own api.cityscroll.org link stays
 same-tab.
 """
@@ -130,28 +130,28 @@ with sync_playwright() as pw:
 
     browser.close()
 
-    # --- Broadened case (crol-extlinks2-y8): About's NYC Charter citation now opens in a new
+    # --- Broadened case (crol-extlinks2-y8): About's Open Contracting guide opens in a new
     # tab too — BEFORE this ruling it was the gate's own "stays same-tab" negative control;
     # AFTER, every external destination gets the same treatment as City Record/PASSPort. -----
     browser = pw.chromium.launch()
     page2 = browser.new_context().new_page()
     page2.goto(f"{BASE}about.html", timeout=30000)
     page2.wait_for_load_state("load")
-    info = page2.locator('a[href*="codelibrary.amlegal.com"]').first.evaluate("""el => ({
+    info = page2.locator('a[href*="open-contracting.org"]').first.evaluate("""el => ({
         target: el.getAttribute("target"),
         rel: el.getAttribute("rel"),
         srText: (el.querySelector(".sr-only") || {}).textContent || null,
     })""")
     if info["target"] != "_blank":
-        failures.append(f'about.html\'s NYC Charter citation: target={info["target"]!r}, want '
+        failures.append(f'about.html\'s Open Contracting guide: target={info["target"]!r}, want '
                          '"_blank" (crol-extlinks2-y8 broadened the new-tab rule to every '
                          "external destination)")
     elif not info["rel"] or "noopener" not in info["rel"] or "noreferrer" not in info["rel"]:
-        failures.append(f"about.html's NYC Charter citation: rel={info['rel']!r}, want noopener+noreferrer")
+        failures.append(f"about.html's Open Contracting guide: rel={info['rel']!r}, want noopener+noreferrer")
     elif not info["srText"] or not info["srText"].strip():
-        failures.append("about.html's NYC Charter citation: no accessible new-tab marking (.sr-only child)")
+        failures.append("about.html's Open Contracting guide: no accessible new-tab marking (.sr-only child)")
     else:
-        step("OK", "about.html's NYC Charter citation opens in a new tab (crol-extlinks2-y8)", f"rel={info['rel']!r}")
+        step("OK", "about.html's Open Contracting guide opens in a new tab (crol-extlinks2-y8)", f"rel={info['rel']!r}")
 
     # --- Control: an in-app hash link on the same page must NOT acquire target="_blank" ----
     home_target2 = page2.locator('a.backhome[href="index.html"]').first.get_attribute("target")

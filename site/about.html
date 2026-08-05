@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CityScroll</title>
-<meta name="description" content="What CityScroll is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
+<meta name="description" content="What CityScroll does, how it uses public records and past patterns, and how its content and accessibility checks work for New Yorkers.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://cityscroll.org/about.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CityScroll">
 <meta property="og:title" content="About · CityScroll">
-<meta property="og:description" content="How CityScroll makes the City Record searchable, with honest-data, privacy, and accessibility commitments.">
+<meta property="og:description" content="How CityScroll organizes public city records by time, place, and next action.">
 <meta property="og:url" content="https://cityscroll.org/about.html">
 <meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
 <meta property="og:image:alt" content="CityScroll — the City Record, made legible">
@@ -43,8 +43,15 @@
   .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
   .backhome:hover{text-decoration:underline}
   h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:34px 0 8px;border-top:1px solid var(--rule);padding-top:18px}
+  h3{font-family:var(--font-nameplate);font-size:18px;line-height:1.25;margin:0 0 8px}
   p{margin:10px 0}
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  .pattern-grid{display:grid;gap:12px;margin-top:14px}
+  .pattern-card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+  .pattern-card .src{margin:0}
+  .pattern-card details{border-top:1px solid var(--rule);margin-top:12px;padding-top:10px;font:14px/1.6 var(--ui);color:var(--ink-soft)}
+  .pattern-card summary{color:var(--oxblood);cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+  .pattern-card details p{margin:6px 0 0}
   /* form */
   .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:12px}
   label{display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
@@ -70,6 +77,10 @@
   .skip:focus{left:0}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  @media (max-width:560px){
+    .lang-switcher{position:static;margin:12px 0 4px;justify-content:center}
+    .lang-select{min-height:44px}
+  }
 </style>
 <link rel="stylesheet" href="brand.css">
 </head>
@@ -109,49 +120,7 @@
 
 <main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
-<p data-i18n-html="about_p_what_html">CityScroll is a search tool for <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a>. That is the
-City of New York's official daily paper. In it, <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113" target="_blank" rel="noopener noreferrer">every agency must publish<span class="sr-only"> (opens in new tab)</span></a> its
-contracts, hearings, rule changes, rezonings, and staff moves. CityScroll lets you search the record
-by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.
-CityScroll is independent and unofficial: it is not the City of New York, and it is not affiliated with or endorsed by any government agency.</p>
-
-<h2 data-i18n="about_h_source">Where the data comes from</h2>
-<p class="src" data-i18n-html="about_p_source_html">All of it comes from public, official data:
-<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">City Record Online (dg92-zbpx)<span class="sr-only"> (opens in new tab)</span></a> ·
-<a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener noreferrer">Citywide Payroll (k397-673e)<span class="sr-only"> (opens in new tab)</span></a> ·
-<a href="https://data.cityofnewyork.us/resource/vx8i-nprf" target="_blank" rel="noopener noreferrer">Civil Service List (vx8i-nprf)<span class="sr-only"> (opens in new tab)</span></a> ·
-<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener noreferrer">ZAP Projects (hgx4-8ukb)<span class="sr-only"> (opens in new tab)</span></a> ·
-<a href="https://a0333-passportpublic.nyc.gov/" target="_blank" rel="noopener noreferrer">PASSPort<span class="sr-only"> (opens in new tab)</span></a> ·
-<a href="https://www.checkbooknyc.com/" target="_blank" rel="noopener noreferrer">Checkbook NYC<span class="sr-only"> (opens in new tab)</span></a>.</p>
-
-<h2 id="data" data-i18n="about_h_honest">Data notes</h2>
-<p data-i18n-html="about_p_honest_intro_html">The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it
-looks like at first glance. Our team's exploratory analysis of the full dataset found quirks
-that would silently mislead if we didn't correct for them, so here is exactly what we do:</p>
-<ul data-i18n-html="about_li_honest_html">
-  <li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Each
-    stat on this site is counted within its own section — a "global" City Record number
-    would really be a personnel-file number.</li>
-  <li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or
-    more, topping out at <a href="index.html#notice/20210524108">$96 trillion, a housing-services
-    award whose amount field is plainly a typo</a> (the largest verified real award is
-    <a href="index.html#notice/20180109010">about $6.68 billion, the city's 10-year electricity contract with NYPA</a>).
-    Money filters and digests exclude amounts of $10 billion or more. One typo
-    can't dominate every ranking.</li>
-  <li><b>Some "due dates" aren't deadlines.</b> Notices for pre-qualified lists use fake dates
-    in the year 2090 or later. We mark these as "no fixed deadline (rolling)" so no one puts a
-    date on their calendar that isn't real.</li>
-  <li><b>Agency names come in two conventions</b> (old ALL-CAPS and Title Case — 312 raw
-    strings for about 150 real agencies). Our name tool treats them as one.</li>
-  <li id="external-awards-sources"><b>Some agencies file contract awards outside the City Record
-    entirely</b> — for those, we check Checkbook NYC (for the Housing Authority) and the NYS Authorities Budget
-    Office's open procurement datasets (for other public authorities), and say so plainly when
-    neither source covers an agency.</li>
-</ul>
-<p class="src" data-i18n-html="about_p_agency_crosswalk_html">The <a href="api.html#agency-crosswalk">agency-name crosswalk</a> shows each source name and every spelling linked to it. Its data guide explains the limits and links to JSON and CSV files.</p>
-<p class="src" data-i18n-html="about_p_honest_footer_html">Searches on this site always show live data from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>. Email alerts check
-for new matches once a day. Want the numbers themselves?
-<a href="about.html#data"><b>About</b> (data notes)</a> show these same rules in one place.</p>
+<p data-i18n-html="about_p_what_html">CityScroll helps you find what is happening in New York City government and what you can do next. Start with <b>Now</b> for urgent dates, <b>Near you</b> for local changes, <b>Following</b> for saved watches, or <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. It is built from official city publications. CityScroll is independent and is not part of New York City government.</p>
 
 <h2 id="context" data-i18n="about_h_flags">Flags and context, explained</h2>
 <p class="src" data-i18n-html="about_p_flags_intro_html">Procurement notices carry two kinds of computed notes. Both are <b>statistical context, not
@@ -179,48 +148,39 @@ really happen. Some markets are specialized and have few bidders. Name matching 
   confirmed date. Full formula:
   <a href="https://github.com/cityscroll/crol-list/blob/main/docs/formulas/rules-adoption-lag.md" target="_blank" rel="noopener noreferrer">rules adoption lag<span class="sr-only"> (opens in new tab)</span></a>.</li>
 </ul>
-<h3 id="staffing-list-establishment-formula" data-i18n="about_staffing_formula_heading">Civil-service eligible-list timing</h3>
-<p class="src" data-i18n-html="about_staffing_formula_html">We make an exact match between an exam number in the DCAS annual schedule and the same number in the exam-level Civil Service List totals. Each gap runs from <b>the close of filing to the date the list was set up</b>. We group exams as open competitive or promotion. A group needs at least 20 exams. Smaller groups use all city exams. For each group, we sort the gaps and take the p10, median, and p90 by nearest rank. We test old results on later data. The test learns from lists set up by the end of 2024 and scores lists set up in 2025 and 2026. A page may show an exam date only when 50 or more test cases resolve, p10–p90 coverage is 70% to 90%, and each scored group rises from low to high. If the test falls short, pages show only the group median. Results can be wrong when the schedule changes, an exam number is used again, a list is late, or an active-list record has no set-up date. We never use applicant rows, names, scores, or ranks.</p>
 <p class="src" data-i18n-html="about_p_flags_footer_html">All numbers come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">City Record Open Data<span class="sr-only"> (opens in new tab)</span></a>
 when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract
 registration and real payment. Nothing here says anyone did wrong. It just saves you the math.</p>
 
-<h2 id="property-disposition-timing-formula">Property sale timing pattern</h2>
-<p class="src">Some City property notices have a hearing but no sale date yet. On those pages you may see a short pattern line with an Estimate label. It is <b>not a due date</b>. It does not say a sale will happen.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px">
-  <li><b>Where the numbers come from</b> — City Record Online Property Disposition notices. The public set is small (a few hundred rows, back to 2013).</li>
-  <li><b>What we wanted to measure</b> — time from hearing to auction on the same tax lot and agency. That link is rare here. Auction notices almost never share lot keys with earlier hearings.</li>
-  <li><b>What we show instead</b> — for auction notices that do name a sale date, how many weeks after the notice the sale usually falls (middle half of past cases). Citywide only.</li>
-  <li><b>Why there is no date on one lot</b> — we only show a dated range when enough past cases clear a fixed check. This set does not. You get the “typically” line only.</li>
-  <li><b>When a real sale date exists</b> — the normal soon/urgent chips own it. The pattern line only appears before that date is published.</li>
-</ul>
-<p class="src">The site's property timing data file holds the current numbers.</p>
-
-<h3 id="tax-lien-sale-predictions" data-i18n="about_h_tax_lien_formula">Tax lien sale progression</h3>
-<p class="src" data-i18n-html="about_p_tax_lien_formula_html">Method: <b>borough base rate plus the announced sale date</b>. For each 90-, 60-, 30-, or 10-day stage, the rate is the number of distinct cycle-and-BBL pairs that also appear on that cycle's final sale list, divided by all distinct cycle-and-BBL pairs at that stage. Training requires at least three earlier cycles. A cycle-based holdout runs through the public prediction scorecard. Below the bar, CityScroll shows cohort statistics and observed BBL status, not a property-specific probability. False-positive modes include payment, payment plans, exemptions, corrections, and cancellation of an entire sale cycle. The dataset cannot identify which reason removed a BBL. A final-list match means the <b>lien</b> appeared on the sale list. It does not mean the property was sold, foreclosed, or transferred.</p>
-
-<h2 id="zoning-base-rates">What past zoning cases show</h2>
-<p class="src">This line uses past
-<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener noreferrer">ZAP Project Data<span class="sr-only"> (opens in new tab)</span></a>
-and public action results. The base line does not use the applicant's name. It does not change a legal deadline.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px">
-  <li><b>Pick a group.</b> We start with the action type and borough. A group needs at least 20 cases. If it is too small, we use that action type across the city. Next we use all action types in the borough. Last, we use all city cases.</li>
-  <li><b>Count the time.</b> We count days from certification to final action. We sort those day counts and take p25 and p75 by nearest rank. We divide by 30.4375 to show months. The date range uses p10, p50, and p90. We leave out gaps over 730 days.</li>
-  <li><b>Count the result.</b> All approved actions make an approved case. All disapproved actions make a disapproved case. A mix is modified. We leave out cases that only show withdrawal or closure. Each rate is its count divided by the total of those three results.</li>
-  <li><b>Test the dates.</b> The model learns from final actions before 2024. It then checks later final actions for projects certified before 2024. It resolved 63 cases. The date range held 77.78% of results. Its target was 80%. The middle date missed by 35 days. A date range needs at least 50 results and coverage from 70% to 90%.</li>
-</ul>
-<p class="src"><b>Legal dates still control.</b> NYC Charter §197-c sets the deadlines. The past range is context only.</p>
-
-<h2 id="applicant-conditioned-ulurp">Applicant history on ULURP outcomes</h2>
-<p class="src">When the same applicant has enough past ZAP projects, CityScroll also shows that applicant's historical approval rate <b>next to</b> the unconditioned base rate above. The conditioned number never appears alone.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px">
-  <li><b>Method.</b> Join each project's main applicant through entity resolution. Known city agencies map to a stable agency id (including common ZAP acronyms such as HPD and LPC). Private applicants map to a vendor stem. Cohorts need at least <b>20</b> terminal outcomes (approved, modified, or disapproved). Below that floor, nothing conditioned is shown.</li>
-  <li><b>Rate.</b> For an applicant entity, approved count ÷ (approved + modified + disapproved). Withdrawals and administrative terminations stay out of the denominator.</li>
-  <li><b>Presentation.</b> One line names the sample and both percentages. Example: “Based on 40 applications by this applicant since 2019: 75% approved, vs 68% overall.” Match confidence uses the public strong / tentative link band.</li>
-  <li><b>Backtest.</b> A time split (train before 2024) compares Brier scores for the applicant-conditioned probability against the unconditioned base rate on later dispositions. If conditioning does not beat the base rate out of sample, pages label the line as <b>descriptive history</b> and do not emit a predictive occurrence claim.</li>
-  <li><b>False-positive modes.</b> (1) Entity-resolution mislinks — distinct applicants collapsed onto one stem, or one firm split across stems. (2) Small-cohort noise at the n=20 floor. (3) Era effects — practice or policy shifts between the training window and a live application.</li>
-</ul>
-<p class="src">The site's zoning statistics file holds the current applicant comparisons. Legal deadlines still control. This is public-record history and context, not a claim that a named party will win or lose a review.</p>
+<h2 id="past-patterns">How past patterns are used</h2>
+<p class="src">Some pages use past public records to add context. These patterns do not replace official dates or predict what will happen.</p>
+<div class="pattern-grid">
+  <article class="pattern-card" id="staffing-list-establishment-formula">
+    <h3 data-i18n="about_staffing_formula_heading">Civil-service eligible-list timing</h3>
+    <p class="src" data-i18n-html="about_staffing_formula_html">CityScroll compares past exams to show how long it may take DCAS to set up an eligible list. This is a past pattern, not a promised date, and it never uses applicant names, scores, or ranks.</p>
+    <details><summary>How this works</summary><p>We match exams by exam number and measure from the filing deadline to the date the list was set up. If a group is too small or its test results are weak, CityScroll shows only the citywide middle value.</p></details>
+  </article>
+  <article class="pattern-card" id="property-disposition-timing-formula">
+    <h3>Property sale timing pattern</h3>
+    <p class="src">Some city property notices announce a hearing before they name a sale date. CityScroll may show how many weeks auctions have followed past notices, but it does not predict that a sale will happen.</p>
+    <details><summary>How this works</summary><p>The public set is small, and earlier hearings rarely share the same lot number as later auction notices. A real sale date always replaces the pattern.</p></details>
+  </article>
+  <article class="pattern-card" id="tax-lien-sale-predictions">
+    <h3 data-i18n="about_h_tax_lien_formula">Tax lien sale progression</h3>
+    <p class="src" data-i18n-html="about_p_tax_lien_formula_html">CityScroll shows how often tax liens at the same stage reached a past cycle's final sale list. It does not predict that a property will be sold or foreclosed.</p>
+    <details><summary>How this works</summary><p>A lien may leave the list after payment, a payment plan, an exemption, a correction, or a canceled sale. When the evidence is too weak, the site shows only group totals and the lot's current status.</p></details>
+  </article>
+  <article class="pattern-card" id="zoning-base-rates">
+    <h3>What past zoning cases show</h3>
+    <p class="src">CityScroll uses past zoning cases to show a usual time range and results for similar cases. These are past patterns, not a forecast. Legal deadlines still control.</p>
+    <details><summary>How this works</summary><p>We start with the same action type and borough, then use a wider group if there are fewer than 20 cases. Long or unfinished cases stay out of the time range.</p></details>
+  </article>
+  <article class="pattern-card" id="applicant-conditioned-ulurp">
+    <h3>Applicant history</h3>
+    <p class="src">When an applicant has at least 20 past zoning results, CityScroll may show that history next to the overall result rate. It is context, not a claim that the applicant will win or lose.</p>
+    <details><summary>How this works</summary><p>We compare approved, modified, and disapproved cases. If name matches or past test results are weak, the site labels the result as descriptive history or does not show it.</p></details>
+  </article>
+</div>
 
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
@@ -242,15 +202,14 @@ and public action results. The base line does not use the applicant's name. It d
 
   <button class="btn" id="fbsend" data-i18n="about_btn_send">Send feedback →</button>
   <div id="fbmsg" role="status"></div>
-  <p class="note" data-i18n-html="about_note_feedback_html">If you add your email, we only use it to reply. Each submission also saves some basic info — your IP address and browser. We keep this info for a short time to stop spam. See <a href="#privacy">Privacy</a>.</p>
+  <p class="note" data-i18n-html="about_note_feedback_html">If you add your email, we only use it to reply. Each submission also saves your IP address and browser for a short time to stop spam.</p>
 </div>
 
-<h2 id="privacy" data-i18n="about_h_privacy">Privacy</h2>
-<p class="src" data-i18n="about_p_privacy_intro">CityScroll has no password accounts and no ad tech. It does not track you across other sites.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_privacy_html"><li><b>Searches and filters</b> use NYC Open Data.</li><li><b>The "Ask" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Email links, pins, and watches</b> — clicking a link from your alert email signs you in on that device. The banner names the signed-in email and lets you manage its watches, sync pinned items, or sign out ("Not you?"). You do not need a second email link to manage watches while signed in.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li><li><b>Click and scroll maps</b> (Microsoft Clarity, when turned on) show where people tap or scroll so we can fix hard-to-use spots. Typed text and form fields — including email — are masked and never sent as plain text. Clarity does not load if your browser signals Do Not Track or Global Privacy Control. It is not used for ads or personal profiles.</li></ul>
+<h2 id="accessibility" data-i18n="std_h_self_conformance">Accessibility</h2>
+<p data-i18n-html="std_self_target_html">CityScroll targets <b>WCAG 2.2 Level AA</b> today. Automated checks cover every public page at phone and desktop sizes.</p>
 
 <h2 data-i18n="about_h_content">About our content</h2>
-<p data-i18n-html="about_p_content_html">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>, unedited.</p>
+<p data-i18n-html="about_p_content_html">CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.</p>
 
 </main>
 <footer class="foot" data-i18n-html="about_foot_html">CityScroll · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="stats.html">Stats</a> · <a href="mailto:feedback%40cityscroll.org">Feedback</a> · <a href="index.html">Home</a></footer>

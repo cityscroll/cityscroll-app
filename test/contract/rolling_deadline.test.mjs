@@ -41,8 +41,6 @@ test("the site's rolling-deadline tag text is byte-identical to the worker's due
   assert.equal(t("rolling_deadline_tag"), workerDueLabel("2099-01-01"));
 });
 
-test("about.html already promises this exact phrase to readers — the label must match it", () => {
-  const about = readFileSync(join(ROOT, "site", "about.html"), "utf8");
-  assert.match(about, /no fixed deadline \(rolling\)/, "about.html's honesty-rule copy uses a different phrase than the shipped label");
+test("the public label keeps the established plain-language phrase", () => {
   assert.equal(t("rolling_deadline_tag"), "no fixed deadline (rolling)");
 });
