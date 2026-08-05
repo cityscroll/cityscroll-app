@@ -13,6 +13,7 @@ import {
   nearYouUrlFromScope,
   scopeWithPlace,
 } from "./near_you_scope.mjs";
+import { followingUrlFromWatch } from "./following_view.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -174,10 +175,9 @@ function scopeSummary(scope, lens) {
   return chips;
 }
 
-function watchHref(scope, lens) {
+function watchHref(scope, lens, matchCount) {
   const watch = watchFromScope(scope, { lens });
-  const params = new URLSearchParams({ lens: watch.lens, filter: JSON.stringify(watch.filter) });
-  return `/#alerts?${params.toString()}`;
+  return followingUrlFromWatch(watch, { matchCount });
 }
 
 function recordSort(a, b) {
@@ -260,7 +260,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     bags,
     activity: activityRoot,
     browseHref: siteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
-    watchHref: siteHref(watchHref(scope, lens)),
+    watchHref: watchHref(scope, lens, resultIds.length),
     shareHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
     canonicalBase,
     siteBase,
@@ -426,7 +426,7 @@ export function renderNearYouDocument(view, options = {}) {
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active scope.">
 <link rel="canonical" href="${esc(view.shareHref)}"><style>${STYLES}</style></head>
 <body><a class="skip" href="#main">Skip to content</a>
-<header class="near-mast"><div class="near-mast-inner"><a class="near-brand" href="${esc(view.siteBase || "/")}">CityScroll</a><nav aria-label="Primary"><a href="${esc(`${view.siteBase}/#now`)}">Now</a><a aria-current="page" href="${esc(`${view.siteBase}/near-you/`)}">Near you</a><a href="${esc(`${view.siteBase}/#alerts`)}">Following</a><a href="${esc(view.siteBase || "/")}">Browse</a></nav></div></header>
+<header class="near-mast"><div class="near-mast-inner"><a class="near-brand" href="${esc(view.siteBase || "/")}">CityScroll</a><nav aria-label="Primary"><a href="${esc(`${view.siteBase}/#now`)}">Now</a><a aria-current="page" href="${esc(`${view.siteBase}/near-you/`)}">Near you</a><a href="${esc(`${view.siteBase}/following/`)}">Following</a><a href="${esc(view.siteBase || "/")}">Browse</a></nav></div></header>
 ${renderNearYouBody(view)}
 <footer class="near-footer">Counts and place labels come from the built district data. Check each record with the linked official source.</footer>
 <script type="module" src="${esc(prefix)}app/map.mjs"></script></body></html>`;

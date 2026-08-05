@@ -13,6 +13,7 @@
  */
 
 import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
+import { followingUrlFromWatch } from "./following_view.mjs";
 
 export const SECTION_TO_LENS = Object.freeze({
   Procurement: "money",
@@ -290,32 +291,26 @@ export function alertScopeFromLensState(lens, state) {
 }
 
 /**
- * Build #alerts?... hash from a scope object. Omits empty filter keys.
- * Neutral / empty scope → bare #alerts.
+ * Build the server-rendered Following preview URL from a scope object.
+ * Neutral / empty scope → the common static Following document.
  */
 export function alertsHref(scope, opts) {
   const o = opts || {};
-  if (!scope || !scope.lens) return "#alerts";
+  if (!scope || !scope.lens) return "/following/";
   const lens = String(scope.lens);
   if (!CONTENT_LENSES.includes(lens) && lens !== "people") {
     // Fail soft: only known product lenses get prefilled params.
     if (!SECTION_TO_LENS[lens] && !["money", "land", "entity", "award"].includes(lens)) {
-      return "#alerts";
+      return "/following/";
     }
   }
   const filter = watchFromScope(scopeFromWatch(scope, { language: o.language || scope.language || "en" })).filter;
-  const params = new URLSearchParams();
-  params.set("lens", lens);
-  params.set("filter", JSON.stringify(filter));
   const freq = o.freq || scope.freq;
-  if (freq === "weekly" || freq === "daily") params.set("freq", freq);
-  const noticeId = cleanId(o.noticeId || scope.noticeId);
-  if (noticeId) params.set("notice", noticeId);
-  const projectId = cleanId(o.projectId || scope.projectId);
-  if (projectId) params.set("project", projectId);
   const matchCount = cleanMatchCount(o.matchCount ?? scope.matchCount);
-  if (matchCount != null) params.set("count", String(matchCount));
-  return `#alerts?${params.toString()}`;
+  return followingUrlFromWatch({ lens, filter, freq, matchCount }, {
+    frequency: freq,
+    matchCount,
+  });
 }
 
 function cleanMatchCount(value) {
@@ -390,6 +385,7 @@ export function alertScopeDescriptor(scope, seed) {
  * Whether a hash is a prefilled alerts entry (not bare #alerts / rollup-only).
  */
 export function isContextAlertsHash(hash) {
+  if (!String(hash || "").startsWith("#alerts?")) return false;
   const p = parseAlertsEntryParams(hash);
   return !!(p.lens || p.noticeId || p.projectId);
 }

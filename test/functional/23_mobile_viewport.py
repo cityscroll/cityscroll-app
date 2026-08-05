@@ -31,6 +31,7 @@ SURFACES = (
     ("rules", "#rules", "#rulesfeed .fcard"),
     ("meetings", "#meetings", "#meetingsfeed .fcard"),
     ("near you", "near-you/", ".near-area-list a"),
+    ("following", "following/", "[data-following-preview-form]"),
     ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
     ("reader action", "#notice/20260701099", "#noticeview .panel"),
 )
@@ -213,6 +214,21 @@ def run(base: str) -> None:
         assert no_js_contract["count"] == len(set(no_js_contract["ids"])), no_js_contract
         assert no_js_contract["bags"] == ["citywide", "virtual", "unlocated"], no_js_contract
         assert no_js_contract["controlsHidden"], no_js_contract
+
+        no_js_page.goto(f"{base}following/", wait_until="domcontentloaded", timeout=30_000)
+        no_js_page.locator("[data-following-preview-form]").wait_for(state="visible", timeout=20_000)
+        assert_mobile_surface(no_js_page, "following without JavaScript")
+        following_contract = no_js_page.evaluate(
+            """() => ({
+              scopeCount: Number(document.querySelector('[data-scope-count]')?.dataset.scopeCount || 0),
+              previewRows: document.querySelectorAll('[data-following-preview-panel] [data-record-id]').length,
+              criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
+              emptyPrompt: Boolean(document.querySelector('[data-following-empty]')),
+            })"""
+        )
+        assert following_contract["scopeCount"] == following_contract["previewRows"], following_contract
+        assert following_contract["criteriaMethod"] == "get", following_contract
+        assert following_contract["emptyPrompt"], following_contract
         no_js.close()
         browser.close()
 

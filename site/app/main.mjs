@@ -6,6 +6,8 @@ await import("./search-share.mjs");
 await import("./people.mjs");
 await import("./land.mjs");
 await import("./feed-actions.mjs");
+await import("./result-match.mjs");
+await import("./notice-context.mjs");
 
 // Property is the largest route-only lens on the default Money landing. Keep its registration
 // in the ordered graph, but fetch it only for Property and notice routes. Routing itself remains
@@ -44,7 +46,6 @@ globalThis.CrolRouteModules=Object.freeze({
 });
 await ensureRouteModulesForHash(location.hash);
 await import("./rules.mjs");
-await import("./alerts.mjs");
 await import("./procurement-lifecycle.mjs");
 await import("./procurement-phase.mjs");
 await import("./subsidy.mjs");

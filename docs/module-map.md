@@ -13,6 +13,8 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
 | `site/app/land.mjs` | Land search/detail/map, ZAP outcomes, ULURP timeline, and notice-to-ZAP joins. |
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, stamped district-bag filtering, hearing explorer, and notice/land action rails. |
+| `site/app/result-match.mjs` | Shared list and digest match evidence plus digest-item presentation used by reading routes without loading watch management. |
+| `site/app/notice-context.mjs` | Notice-detail context, attachment, parcel, and external-award hydration shared by reading routes. |
 | `site/franchise_notice.mjs` | Route-independent franchise eligibility and stage classification shared by the Money action rail and Property renderer. |
 | `site/action_outcome_prompt.mjs` | Optional post-handoff/passed-action self-report UI over the registered outcome vocabulary; aggregate analytics only, with no matter identifier or free text. |
 | `site/app/property.mjs` | Franchise and property-disposition spines, surplus-buyer commercial glance, property explorer, and tax-lien context. |
@@ -24,7 +26,9 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, and generic feed-card rendering. |
 | `site/map_exploration.mjs` | Pure map geometry, canonical scope drill hashes, and exact all-lens request-ID membership from `district_activity.district_items`. |
 | `site/near_you_view.mjs` | Shared static/edge Near-you view model and HTML renderer over versioned scope, district activity, and boundaries. |
-| `site/app/alerts.mjs` | Watch state, digest preview/items, rollups/preferences, flags, and address/context hydration. |
+| `site/following_view.mjs` | Shared static/edge Following view model and HTML renderer. The saved scope drives the summary, count, preview, and subscription form. |
+| `site/app/following.mjs` | Following-only personal island plus preview, duplicate-warning, and submission enhancements. Public reading and forms do not depend on it. |
+| `site/app/alerts.mjs` | Legacy hash-route watch UI retained for source characterization only; it is not in the home loader graph. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |
 | `site/app/procurement-phase.mjs` | Procurement phase grouping, stepper, dollars panel, lifecycle loading, M/WBE solicitation detail, and prime sub-outreach mount. |
 | `site/procurement_planning_surface.mjs` | Pure receipt-gated MOCS plan-row joins that add the optional Money planning phase; an absent or edge-empty payload is inert. |

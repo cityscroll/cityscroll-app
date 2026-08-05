@@ -139,15 +139,13 @@ def run_journey(base: str, timeout_ms: int = 45_000) -> dict:
         except Exception as exc:  # noqa: BLE001
             step(steps, False, "deeplink-notice", str(exc)[:300])
 
-        # --- subscribe surface ---
+        # --- Following surface ---
         try:
-            # Alerts tab hosts the subscribe form (#asubscribe)
-            if page.locator('.tabbtn[data-tab="alerts"]').count():
-                page.click('.tabbtn[data-tab="alerts"]')
-                page.wait_for_timeout(500)
-            page.wait_for_selector("#asubscribe", timeout=timeout_ms)
-            visible = page.is_visible("#asubscribe")
-            label = page.inner_text("#asubscribe")[:80] if visible else ""
+            page.goto(f"{base.rstrip('/')}/following/", wait_until="domcontentloaded", timeout=timeout_ms)
+            selector = "[data-following-preview-form]"
+            page.wait_for_selector(selector, timeout=timeout_ms)
+            visible = page.is_visible(selector)
+            label = page.inner_text(selector)[:80] if visible else ""
             step(
                 steps,
                 visible and len(label) > 0,

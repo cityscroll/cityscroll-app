@@ -1561,9 +1561,8 @@
   }
 
   /**
-   * Context-carrying alert entry: watch CTAs land on #alerts pre-scoped to the
-   * matter's natural lens/agency (and seed notice/project id for the email-template
-   * preview). Same hash-param shape as saved-search health fix links.
+   * Context-carrying Following entry: watch CTAs land on the server preview with
+   * the matter's natural saved scope.
    */
   function watchDestination(matter) {
     const m = matter || {};
@@ -1612,14 +1611,12 @@
     } else {
       if (agency) filter.agency = agency;
     }
-    // No id and no filter bits → bare alerts (neutral).
-    if (!noticeId && !projectId && !Object.keys(filter).length) return "#alerts";
+    // No id and no filter bits → common static Following page.
+    if (!noticeId && !projectId && !Object.keys(filter).length) return "/following/";
     const params = new URLSearchParams();
     params.set("lens", lens);
     params.set("filter", JSON.stringify(filter));
-    if (noticeId) params.set("notice", noticeId);
-    if (projectId) params.set("project", projectId);
-    return "#alerts?" + params.toString();
+    return "https://api.cityscroll.org/following?" + params.toString();
   }
 
   function compileActionRail(matter, options) {
