@@ -690,7 +690,7 @@ function bindClearSearchState(lens, root){
       landResolvedArea=null;
       landCommunityDistrict="";
       landCouncilDistrict="";
-      $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="active";
+      $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="all";
       $("#nltrans-land").innerHTML=""; landSearch(); return;
     }
     forceSelect("#"+lens+"agency", "");

@@ -33,16 +33,28 @@
         <a href="https://api.cityscroll.org/near-you?v=0&amp;lens=rules">Share this scope</a>
       </nav>
     </section>
-    <form class="near-form" method="get" action="https://api.cityscroll.org/near-you">
+    <section class="near-place-guide" aria-labelledby="near-place-heading">
+      <p class="near-kicker">Start here</p>
+      <h2 id="near-place-heading">Set what “near you” means</h2>
+      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser and are not saved or sent with the scope.</p>
+      <div class="near-place-actions">
+        <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
+        <a href="#near-place-fields">Choose a place</a>
+        <a href="#near-area-list">Browse the area list</a>
+      </div>
+      <p class="near-map-status" data-map-status aria-live="polite"></p>
+    </section>
+    <form class="near-form" id="near-place-fields" method="get" action="https://api.cityscroll.org/near-you">
       <input type="hidden" name="v" value="0">
       <label>Lens<select name="lens"><option value="meetings">Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules" selected>Rules</option><option value="money">Contracts</option><option value="people">Staffing</option></select></label>
       <label>Agency<input name="agency" value="" placeholder="Any agency"></label>
       <label>Type<input name="type" value="" placeholder="Any record type"></label>
       <label>Borough<select name="boro"><option value="">All mapped areas</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></label>
+      <label>Neighborhood<input name="neighborhood" value="" placeholder="e.g. Elmhurst"></label>
+      <label>Community district<input name="cd" value="" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
+      <label>Council district<input name="council" value="" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
 
       <button type="submit">Apply scope</button>
-      <button type="button" class="js-only" data-use-location hidden>Use my location</button>
-      <p class="near-map-status" data-map-status aria-live="polite"></p>
     </form>
 
 
@@ -83,7 +95,7 @@
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Boundary layer: 2026-05-26</p>
         </div>
-        <div class="near-area-panel">
+        <div class="near-area-panel" id="near-area-list">
           <h3>Equivalent area list</h3>
           <p>These links work without JavaScript. They keep the active scope.</p>
           <ol class="near-area-list"><li><a data-map-area="Brooklyn" data-count="3" href="/near-you/borough/brooklyn/rules/"><span>Brooklyn</span><strong>3</strong></a></li><li><a data-map-area="Manhattan" data-count="3" href="/near-you/borough/manhattan/rules/"><span>Manhattan</span><strong>3</strong></a></li><li><a data-map-area="Queens" data-count="1" href="/near-you/borough/queens/rules/"><span>Queens</span><strong>1</strong></a></li><li><a data-map-area="Bronx" data-count="0" href="/near-you/borough/bronx/rules/"><span>Bronx</span><strong>0</strong></a></li><li><a data-map-area="Staten Island" data-count="0" href="/near-you/borough/staten-island/rules/"><span>Staten Island</span><strong>0</strong></a></li></ol>

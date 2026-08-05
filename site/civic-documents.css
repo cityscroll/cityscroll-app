@@ -103,6 +103,7 @@ select {
 }
 
 .near-hero,
+.near-place-guide,
 .near-form,
 .near-map-section,
 .near-results,
@@ -179,6 +180,7 @@ select {
 }
 
 .near-actions,
+.near-place-actions,
 .following-hero nav {
   display: flex;
   flex-wrap: wrap;
@@ -190,6 +192,8 @@ select {
 }
 
 .near-actions a,
+.near-place-actions a,
+.near-place-actions button,
 .following-hero nav a,
 .following-pack > a {
   display: inline-flex;
@@ -205,6 +209,8 @@ select {
 }
 
 .near-actions a:hover,
+.near-place-actions a:hover,
+.near-place-actions button:hover,
 .following-hero nav a:hover,
 .following-pack > a:hover {
   border-color: var(--color-action-hover);
@@ -218,9 +224,32 @@ select {
 
 .near-form {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-3);
   padding-block: var(--space-5) var(--space-6);
+}
+
+.near-place-guide {
+  padding-block: var(--space-5);
+  border-block: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.near-place-guide h2 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.near-place-guide > p:not(.near-kicker, .near-map-status) {
+  max-width: var(--measure);
+  margin-block: 0 var(--space-4);
+  color: var(--color-text-soft);
+}
+
+.near-location-action {
+  cursor: pointer;
 }
 
 .near-form label,
@@ -676,6 +705,8 @@ select {
   }
 
   .near-actions a,
+  .near-place-actions a,
+  .near-place-actions button,
   .near-form button,
   .following-hero nav a,
   .following-pack > a,

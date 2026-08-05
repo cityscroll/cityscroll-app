@@ -287,6 +287,10 @@
 
   .detail{padding:18px 18px 22px;min-height:320px}
   .empty{color:var(--muted);font-style:italic;padding:40px 18px;text-align:center}
+  .land-empty-state{grid-column:1/-1;margin:var(--space-3) 0;padding:var(--space-5);border:2px solid var(--color-action);border-radius:var(--radius-md);background:var(--color-surface);box-shadow:var(--shadow-sm)}
+  .land-empty-state h3{margin:0 0 var(--space-2);font:700 20px/1.2 var(--font-display)}
+  .land-empty-state p{max-width:58ch;margin:0 0 var(--space-4);color:var(--color-text-soft);font:14px/1.5 var(--font-interface)}
+  .land-empty-state [data-land-widen]{min-height:44px;font-weight:750}
   .agencybar{display:flex;gap:22px;flex-wrap:wrap;align-items:baseline;padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:#f6f7f9;margin-top:16px}
   .agencybar .big{font:700 24px/1.05 var(--font-display);color:var(--amber)}
   /* Agency-identity join card: an agency's canonical identity from NYC Open Data. */
@@ -1908,12 +1912,12 @@
         <a class="act mini" href="/near-you/lens/land/" data-near-you-link data-lens="land" data-i18n="near_you_map_scope">See on map</a>
       </div>
     </div>
-    <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option><option value="all" data-i18n="status_all">All</option></select>
+    <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
     <div class="property-rail-label lens-primary-label" data-i18n="status_label">Status</div>
     <div class="chiprow lens-primary-rail" id="land-status-rail" role="group" aria-label="Status" data-i18n-aria="status_label">
-      <button type="button" class="chip" data-land-status="active" aria-pressed="true" data-i18n="status_active">In review / active</button>
+      <button type="button" class="chip" data-land-status="all" aria-pressed="true" data-i18n="status_all">All</button>
+      <button type="button" class="chip" data-land-status="active" aria-pressed="false" data-i18n="status_active">In review / active</button>
       <button type="button" class="chip" data-land-status="hearings" aria-pressed="false" data-i18n="land_status_upcoming_hearings">Upcoming hearings</button>
-      <button type="button" class="chip" data-land-status="all" aria-pressed="false" data-i18n="status_all">All</button>
     </div>
     <div class="lens-search-state" data-search-state="land"></div>
     <div class="lens-resultbar" id="land-resultbar">
