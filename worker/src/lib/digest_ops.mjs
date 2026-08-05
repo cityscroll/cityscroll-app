@@ -82,7 +82,7 @@ export function isCatchUpDayLogEntry(entry, dayLog = null) {
 
 /** Public site deep link for a City Record request id (no PII). */
 export function noticeDeepLink(requestId) {
-  return `https://cityscroll.org/#notice/${encodeURIComponent(String(requestId))}`;
+  return `https://cityscroll.org/notices/${encodeURIComponent(String(requestId))}`;
 }
 
 /**

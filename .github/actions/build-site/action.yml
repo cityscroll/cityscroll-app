@@ -93,6 +93,15 @@ runs:
         set -euo pipefail
         node "$SOURCE_DIR/tools/build_following_page.mjs"
         node "$SOURCE_DIR/tools/build_following_page.mjs" --check
+    - name: Build static-first Now and Browse documents
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        node "$SOURCE_DIR/tools/build_primary_documents.mjs"
+        node "$SOURCE_DIR/tools/build_primary_documents.mjs" --check
+        node "$SOURCE_DIR/tools/build_url_migration_map.mjs" --check
     # Land upcoming-hearings payload: production rows must be ZAP-traceable.
     # Live sweep is scheduled separately; deploy only re-checks the committed
     # snapshot so synthetic padding cannot re-enter the public site.

@@ -1,5 +1,6 @@
 import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
 import { normalizeWatchTemplateRegistry } from "./watch_templates.mjs";
+import { migrateLegacyUrl } from "./route_migration.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const LENSES = Object.freeze(["money", "people", "land", "property", "rules", "meetings", "district", "entity"]);
@@ -160,7 +161,8 @@ function scopeHtml(view) {
 }
 
 function previewItem(item) {
-  return `<li data-preview-id="${esc(item.id)}"><a href="${esc(item.url)}">${esc(item.title || "Untitled record")}</a>${item.summary ? `<p>${esc(item.summary)}</p>` : ""}</li>`;
+  const mapped = migrateLegacyUrl(item.url || "/browse/");
+  return `<li data-preview-id="${esc(item.id)}"><a href="${esc(mapped.target)}">${esc(item.title || "Untitled record")}</a>${item.summary ? `<p>${esc(item.summary)}</p>` : ""}</li>`;
 }
 
 function previewHtml(view) {
@@ -268,7 +270,7 @@ export function renderFollowingDocument(view, options = {}) {
 <title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches, monitor packs, digests, and district updates.">
 <link rel="canonical" href="https://cityscroll.org/following/"><style>${STYLES}</style></head>
 <body><a class="skip" href="#main">Skip to content</a>
-<header class="following-mast"><div class="following-mast-inner"><a class="following-brand" href="${esc(home)}">CityScroll</a><nav aria-label="Primary"><a href="${esc(`${siteBase}/#now`)}">Now</a><a href="${esc(`${siteBase}/near-you/`)}">Near you</a><a aria-current="page" href="${esc(`${siteBase}/following/`)}">Following</a><a href="${esc(home)}">Browse</a></nav></div></header>
+<header class="following-mast"><div class="following-mast-inner"><a class="following-brand" href="${esc(home)}">CityScroll</a><nav aria-label="Primary"><a href="${esc(`${siteBase}/now/`)}">Now</a><a href="${esc(`${siteBase}/near-you/`)}">Near you</a><a aria-current="page" href="${esc(`${siteBase}/following/`)}">Following</a><a href="${esc(`${siteBase}/browse/`)}">Browse</a></nav></div></header>
 ${renderFollowingBody(view)}
 <footer class="following-footer">The preview and each email use the same saved terms. Check each item at its source.</footer>
 <script type="module" src="${esc(prefix)}app/following.mjs"></script></body></html>`.replace(/[ \t]+$/gm, "");

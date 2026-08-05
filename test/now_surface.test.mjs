@@ -213,7 +213,7 @@ test("closed actions never enter Act by and every item retains route, domain, so
 
   assert.equal(all.some((item) => item.id.includes("closed")), false);
   for (const item of all) {
-    assert.ok(item.route.startsWith("#"), item.id);
+    assert.ok(item.route.startsWith("/"), item.id);
     assert.ok(item.domain, item.id);
     assert.ok(item.source?.label, item.id);
     assert.ok(item.time?.basis, item.id);
@@ -292,7 +292,7 @@ test("meeting records that are not hearings carry the Meeting event kind", () =>
   assert.equal(surface.happening_soon.items.find((item) => item.id === "meetings:meeting-next")?.kind, "meeting");
 });
 
-test("#now is an additive entry route and does not take ownership from current lens navigation", () => {
+test("Now is promoted as a document route while source lenses remain Browse facets", () => {
   const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
   const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
   const main = readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8");
@@ -300,7 +300,7 @@ test("#now is an additive entry route and does not take ownership from current l
   const nowView = readFileSync(new URL("../site/now_view.mjs", import.meta.url), "utf8");
   const model = readFileSync(new URL("../site/now_surface.mjs", import.meta.url), "utf8");
 
-  assert.match(html, /href="#now"/);
+  assert.match(html, /href="\/now\/"/);
   assert.match(html, /id="tab-now" class="tabpane"/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="now"/);
   for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
@@ -309,7 +309,8 @@ test("#now is an additive entry route and does not take ownership from current l
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
   assert.match(html, /href="\/following\/"/);
   assert.doesNotMatch(html, /data-tab="map"/);
-  assert.match(html, /href="\/near-you\/"[^>]+data-near-you-link/);
+  assert.match(html, /href="\/near-you\/"/);
+  assert.match(html, /href="\/browse\/"/);
   assert.match(routing, /raw === "now" \|\| raw\.startsWith\("now\?"\)/);
   assert.match(routing, /scopeFromRouteHash\("#"\+raw/);
   assert.match(routing, /showNow\(\{scope:CrolScope\.scopeHasConstraints\(scope\)\?scope:null\}\)/);

@@ -25,6 +25,11 @@ function response(status, body, headers = {}) {
 
 function healthyFetch(url) {
   const parsed = new URL(url);
+  if (parsed.hostname === "api.cityscroll.org" && parsed.pathname === "/stats") {
+    return Promise.resolve(response(200, JSON.stringify({
+      digests: { sent_last7d: 4 }, nl_search: { calls_last7d: 2 }, history: { digests: { by_day: {} } },
+    }), { server: "cloudflare", "content-type": "application/json" }));
+  }
   if (parsed.hostname === "api.cityscroll.org") {
     return Promise.resolve(response(200, "crol-worker ok", { server: "cloudflare" }));
   }
@@ -50,6 +55,7 @@ test("cutover target matrix covers every public route and each retained service"
     "pages-www-home",
     "pages-dev-home",
     "api-worker-health",
+    "api-worker-stats",
     "legacy-origin",
     "github-pages-fallback",
   ]) assert.ok(ids.has(id));
@@ -108,10 +114,21 @@ test("architecture checks require Pages headers and the GitHub fallback header",
     result("pages-www-home", pagesHeaders),
     result("pages-dev-home", pagesHeaders),
     result("github-pages-fallback", { server: "cloudflare" }),
+    { ...result("api-worker-stats", {}), body: '{"digests":{"sent_last7d":1},"nl_search":{},"history":{}}' },
   ]);
   assert.deepEqual(failures, [
     "github-pages-fallback: expected GitHub Pages origin headers",
   ]);
+});
+
+test("scheduled production monitor rejects a changed Stats API schema", () => {
+  const failures = architectureFailures([{
+    id: "api-worker-stats",
+    classification: { ok: true },
+    body: '{"digests":{}}',
+    finalHeaders: new Headers({ "content-type": "application/json" }),
+  }]);
+  assert.match(failures.join("\n"), /required public schema fields/);
 });
 
 test("scheduled monitor is dispatchable but never a pull-request or merge-queue check", () => {

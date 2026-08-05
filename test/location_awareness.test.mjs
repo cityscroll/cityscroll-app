@@ -377,7 +377,7 @@ test("a located Land view emits only its resolved coarse area", () => {
   );
 
   assert.equal(hash, "#land?boro=Queens&cd=Q04&council=25");
-  assert.equal(url, "https://cityscroll.org/#land?boro=Queens&cd=Q04&council=25");
+  assert.equal(url, "https://cityscroll.org/browse/zoning/?boro=Queens&cd=Q04&council=25");
   assert.doesNotMatch(url, /(?:lat|latitude|lon|longitude|40\.7473|-73\.8832|4014930012)/i);
 });
 

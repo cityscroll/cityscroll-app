@@ -38,8 +38,9 @@ def land_opens_on_a_populated_example(pw):
         failures.append(f"bare #land still shows the empty prompt instead of an example — got: {text!r}")
     if "example street rezoning" not in text.lower():  # fixture's most-recent ZAP row (current_milestone_date DESC), enTitle() uppercases it
         failures.append(f"bare #land did not pre-select the most-recent fixture project — got: {text!r}")
-    if page.evaluate("location.hash") != "#land":
-        failures.append("bare #land's default selection decorated the address bar")
+    route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
+    if route != {"pathname": "/browse/zoning/", "search": "", "hash": ""}:
+        failures.append(f"bare #land did not forward to the clean Zoning route — got: {route!r}")
     browser.close()
     return failures
 
@@ -63,8 +64,9 @@ def people_opens_on_a_populated_example(pw):
         failures.append("bare #people opened the appointments ledger above the action path")
     if page.locator("#staffing-notice-list .staffing-hire-row").count() != 4:
         failures.append("bare #people did not retain all four appointment fixtures in the ledger")
-    if page.evaluate("location.hash") != "#people":
-        failures.append("bare #people's default feed decorated the address bar")
+    route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
+    if route != {"pathname": "/browse/staffing/", "search": "", "hash": ""}:
+        failures.append(f"bare #people did not forward to the clean Staffing route — got: {route!r}")
     if page.locator("#career-query").input_value():
         failures.append("bare #people unexpectedly requires or injects an exam search")
     browser.close()
@@ -87,8 +89,9 @@ def deep_link_still_overrides_the_default(pw):
     rows = page.locator("#staffing-notice-list .staffing-hire-row")
     if rows.count() != 1 or "RODRIGUEZ,LUIS A." not in rows.first.inner_text():
         failures.append("the query permalink did not refine the appointment list to Rodriguez")
-    if page.evaluate("location.hash") != "#people?q=RODRIGUEZ":
-        failures.append(f"#people?q=RODRIGUEZ permalink was rewritten — got: {page.evaluate('location.hash')!r}")
+    route = page.evaluate("({ pathname: location.pathname, query: new URLSearchParams(location.search).get('q'), hash: location.hash })")
+    if route != {"pathname": "/browse/staffing/", "query": "RODRIGUEZ", "hash": ""}:
+        failures.append(f"#people?q=RODRIGUEZ did not forward to its clean equivalent — got: {route!r}")
     browser.close()
     return failures
 
@@ -98,7 +101,9 @@ def main():
     server = None
     if not BASE:
         import http.server, threading, functools
-        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT / "site"))
+        sys.path.insert(0, str(ROOT))
+        from tools.local_site_server import QuietHandler
+        handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
         threading.Thread(target=server.serve_forever, daemon=True).start()
         BASE = f"http://127.0.0.1:{server.server_address[1]}/"

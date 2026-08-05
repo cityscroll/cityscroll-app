@@ -29,7 +29,7 @@ test("feedItems: City Record rows → CityScroll permalinks, titles cleaned, dat
   const items = feedItems("rules", [CR_ROW]);
   assert.equal(items.length, 1);
   assert.equal(items[0].id, "20260630012");
-  assert.equal(items[0].url, "https://cityscroll.org/#notice/20260630012");
+  assert.equal(items[0].url, "https://cityscroll.org/notices/20260630012");
   assert.ok(!items[0].title.includes("<b>"), "html stripped from title");
   assert.equal(items[0].date, "2026-06-30T00:00:00");
   assert.match(items[0].summary, /Buildings/);
@@ -56,7 +56,7 @@ test("atomFeed: well-formed, escaped, one entry per item", () => {
   assert.match(xml, /<feed xmlns="http:\/\/www\.w3\.org\/2005\/Atom">/);
   assert.match(xml, /&amp;q=scaffold/, "self link query escaped");
   assert.match(xml, /<entry>/);
-  assert.match(xml, /href="https:\/\/cityscroll\.org\/#notice\/20260630012"/);
+  assert.match(xml, /href="https:\/\/cityscroll\.org\/notices\/20260630012"/);
   assert.ok(!/<b>/.test(xml), "no raw html leaks");
   assert.match(xml, /scaffold certification &amp; fees/, "title text escaped");
 });
@@ -70,7 +70,7 @@ test("jsonFeed: valid JSON Feed 1.1 with items", () => {
   assert.equal(j.version, "https://jsonfeed.org/version/1.1");
   assert.equal(j.items.length, 1);
   assert.equal(j.items[0].id, "20260630012");
-  assert.match(j.items[0].url, /#notice\/20260630012/);
+  assert.match(j.items[0].url, /\/notices\/20260630012/);
 });
 
 test("icsFeed: canonical flip preserves existing UID namespace to avoid duplicate calendars", () => {
