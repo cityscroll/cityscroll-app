@@ -137,6 +137,11 @@ describe("GET /entity-intelligence", () => {
     assert.equal(body.root.ref, "vendor:stem:CAMBA");
     assert.equal(body.vendor_footprint.qualifier_required, true);
     assert.ok(body.vendor_footprint.award_coverage.eligible > 0);
+    assert.equal(body.vendor_footprint.census.strategy, "full_corpus_vendor_profile_aggregate");
+    assert.equal(
+      body.vendor_footprint.census.survival.published,
+      body.vendor_footprint.census.survival.scored,
+    );
     assert.match(
       body.vendor_footprint.award_coverage.label,
       /^showing \d+ of \d+ known awards linked so far \([\d.]+%\)$/,

@@ -60,6 +60,7 @@ export function vendorFootprintModel(response = {}) {
     root: response.root,
     qualifier_required: footprint.qualifier_required !== false,
     award_coverage: footprint.award_coverage || null,
+    census: footprint.census || null,
     promotion: footprint.promotion || null,
     provenance: footprint.provenance || null,
     groups: GROUPS.map((group) => {

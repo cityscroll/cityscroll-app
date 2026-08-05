@@ -62,6 +62,7 @@ function vendorFootprintEvidence(doc) {
     sections: footprint.sections,
     excluded_confidence: footprint.excluded_confidence,
     summary: footprint.summary,
+    census: footprint.census,
     promotion: footprint.promotion,
     provenance: footprint.provenance,
   };
