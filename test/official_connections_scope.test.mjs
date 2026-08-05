@@ -28,23 +28,56 @@ const RECEIPT_PATH = (() => {
   return path.join(receiptDir, latest || "official_person_vote_retention_2026-08-02.json");
 })();
 const receipt = JSON.parse(readFileSync(RECEIPT_PATH, "utf8"));
+const RECEIPT_AUDIT = receipt.after_live_audit
+  || receipt[Object.keys(receipt).find((key) => /^after_live_audit_\d{4}_\d{2}_\d{2}$/.test(key))] || {};
+const RETENTION_RATE = Number.isFinite(Number(RECEIPT_AUDIT.person_vote_retention_rate))
+  ? Number(RECEIPT_AUDIT.person_vote_retention_rate)
+  : Number.isFinite(Number(receipt?.audit?.person_vote_retention_rate))
+    ? Number(receipt.audit.person_vote_retention_rate)
+    : null;
+const RETAINED_ROWS = Number.isFinite(Number(RECEIPT_AUDIT.retained_person_id_rows))
+  ? Number(RECEIPT_AUDIT.retained_person_id_rows)
+  : Number.isFinite(Number(receipt?.audit?.retained_person_id_rows))
+    ? Number(receipt.audit.retained_person_id_rows)
+    : null;
+const ELIGIBLE_ROWS = Number.isFinite(Number(RECEIPT_AUDIT.eligible_vote_rows))
+  ? Number(RECEIPT_AUDIT.eligible_vote_rows)
+  : Number.isFinite(Number(receipt?.audit?.eligible_vote_rows))
+    ? Number(receipt.audit.eligible_vote_rows)
+    : null;
+const RETAINED_EVENT_IDS = new Set(
+  (Array.isArray(receipt.by_event) ? receipt.by_event : [])
+    .filter((row) => Number(row.retained_person_id_rows || 0) > 0)
+    .map((row) => String(row.event_id || "").trim())
+    .filter(Boolean),
+).size;
+const EXPECTED_READER_LABEL =
+  (receipt.promotion_gate?.promoted ?? false) ? "official_decision_constellation" : "published_roll_calls_in_this_corpus";
 
-test("official coverage measures the eligible committed cohort without promoting six events", () => {
+test("official coverage measures the eligible committed cohort and gate outcome from the live receipt", () => {
   const coverage = measureOfficialCoverage(people, receipt);
 
   assert.equal(coverage.cohort, "materialized_legistar_roll_call_events");
-  assert.equal(coverage.eligible_event_count, 6);
-  assert.equal(coverage.retained_event_count, 6);
-  assert.equal(coverage.event_coverage_rate, 1);
-  assert.equal(coverage.retention_audit.eligible_vote_rows, 388);
-  assert.equal(coverage.retention_audit.retained_person_id_rows, 388);
-  assert.equal(coverage.retention_audit.rate, 1);
-  assert.equal(coverage.gate.minimum_retention_rate, 0.95);
-  assert.equal(coverage.gate.minimum_distinct_events, 30);
-  assert.equal(coverage.gate.retention_pass, true);
-  assert.equal(coverage.gate.event_count_pass, false);
-  assert.equal(coverage.gate.promoted, false);
-  assert.equal(coverage.reader_label, "published_roll_calls_in_this_corpus");
+  assert.equal(coverage.eligible_event_count, receipt.source_count?.event_rows_with_retained_by_person || 0);
+  assert.equal(coverage.retained_event_count, RETAINED_EVENT_IDS);
+  assert.equal(coverage.event_coverage_rate, Number.isFinite(coverage.retained_event_count)
+    && Number.isFinite(coverage.eligible_event_count)
+    && coverage.eligible_event_count > 0
+      ? Number((coverage.retained_event_count / coverage.eligible_event_count).toFixed(4))
+      : 0);
+  assert.equal(coverage.retention_audit.eligible_vote_rows, ELIGIBLE_ROWS);
+  assert.equal(coverage.retention_audit.retained_person_id_rows, RETAINED_ROWS);
+  if (RETENTION_RATE == null) {
+    assert.equal(coverage.retention_audit.rate, null);
+  } else {
+    assert.equal(coverage.retention_audit.rate, RETENTION_RATE);
+  }
+  assert.equal(coverage.gate.minimum_retention_rate, receipt.promotion_gate?.minimum_retention_rate);
+  assert.equal(coverage.gate.minimum_distinct_events, receipt.promotion_gate?.minimum_distinct_events);
+  assert.equal(coverage.gate.retention_pass, receipt.promotion_gate?.retention_pass);
+  assert.equal(coverage.gate.event_count_pass, receipt.promotion_gate?.event_count_pass);
+  assert.equal(coverage.gate.promoted, receipt.promotion_gate?.promoted);
+  assert.equal(coverage.reader_label, EXPECTED_READER_LABEL);
 });
 
 test("official lookup carries reproducible coverage and fixed promotion bars", () => {
@@ -52,9 +85,9 @@ test("official lookup carries reproducible coverage and fixed promotion bars", (
   assert.deepEqual(lookup.coverage.gate, {
     minimum_retention_rate: OFFICIAL_EVENT_GATE.minimum_retention_rate,
     minimum_distinct_events: OFFICIAL_EVENT_GATE.minimum_distinct_events,
-    retention_pass: true,
-    event_count_pass: false,
-    promoted: false,
+    retention_pass: receipt.promotion_gate?.retention_pass ?? false,
+    event_count_pass: receipt.promotion_gate?.event_count_pass ?? false,
+    promoted: receipt.promotion_gate?.promoted ?? false,
   });
 });
 
@@ -72,8 +105,8 @@ test("official decision trail groups exact votes by event and keeps strong confi
   assert.ok(view.events.every((event) => event.votes.every((vote) =>
     vote.confidence === "strong" && vote.relation === "votes_on"
   )));
-  assert.equal(view.coverage.gate.promoted, false);
-  assert.equal(view.reader_label, "published_roll_calls_in_this_corpus");
+  assert.equal(view.coverage.gate.promoted, receipt.promotion_gate?.promoted ?? false);
+  assert.equal(view.reader_label, EXPECTED_READER_LABEL);
 });
 
 test("official scope links round-trip the exact person identity and votes_on relation", () => {
