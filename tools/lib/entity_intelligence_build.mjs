@@ -41,6 +41,7 @@ export const VENDOR_FOOTPRINT_PROMOTION_GATES = Object.freeze({
 
 const VENDOR_FOOTPRINT_SECTIONS = Object.freeze([
   "awards",
+  "contracts",
   "payments",
   "land",
   "property",
