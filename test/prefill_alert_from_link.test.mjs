@@ -56,12 +56,12 @@ function makeFixture(){
   const prefillAlertFromLink = new Function(
     "$", "NL", "aWatchChange", "aPreview", "refreshQuizDisplay", "SECTION_WATCH_LABEL",
     "paintAlertContextLead", "applyNoticeWatchSeed",
-    "noticeWatchSeed", "meetingWatchExtra", "propertyWatchExtra", "awardWatchTarget",
+    "noticeWatchSeed", "meetingWatchExtra", "propertyWatchExtra", "awardWatchTarget", "alertEntryMatchCount",
     extractFn("prefillAlertFromLink") + "\nreturn prefillAlertFromLink;"
   )(
     $, NL, aWatchChange, aPreview, refreshQuizDisplay, SECTION_WATCH_LABEL,
     paintAlertContextLead, applyNoticeWatchSeed,
-    noticeWatchSeed, meetingWatchExtra, propertyWatchExtra, awardWatchTarget,
+    noticeWatchSeed, meetingWatchExtra, propertyWatchExtra, awardWatchTarget, null,
   );
   return { prefillAlertFromLink, fields, calls };
 }

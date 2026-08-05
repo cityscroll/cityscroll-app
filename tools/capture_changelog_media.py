@@ -417,7 +417,7 @@ def capture_quiz_nl_recording(browser, after_tree: Path, scenario: dict, output:
         page.locator("#quiznarrow").click()
         page.locator("#quiznarrow").fill(scenario["query_text"])
         page.wait_for_timeout(1500)
-        page.locator("#quizgo").click()
+        page.locator("#apreview").click()
         page.locator("#apreviewbox .emailmock").wait_for(state="visible")
         page.wait_for_timeout(3500)
         video = page.video

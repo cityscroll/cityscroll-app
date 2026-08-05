@@ -51,6 +51,18 @@ function loadDistrictDigestPayload(){
 // When set, aPreview() renders THIS item through digItemHTML (the real email-template path)
 // so the reader sees exactly what would arrive. Cleared when the watch type changes.
 let noticeWatchSeed = null; // { row, digKind, lens, filter }
+// Immutable receipt from the list that launched this builder. It travels in the URL and
+// confirms the preview represents the list without becoming another source of query state.
+let alertEntryMatchCount = null;
+function syncAlertConditionalFields(){
+  const moneyFields=$("#amoneyfields"), minBox=$("#amoneyminbox"), monthsBox=$("#amoneymonthsbox");
+  if(!moneyFields || !minBox || !monthsBox) return;
+  const isMoneyDescription=$("#awatch").value==="moneynl";
+  const noticeType=moneynlExtra.noticeType||null;
+  moneyFields.hidden=!isMoneyDescription;
+  minBox.hidden=!isMoneyDescription || noticeType==="solicitation";
+  monthsBox.hidden=!isMoneyDescription || noticeType==="award";
+}
 // skipQuizSync: true only for the two bookkeeping call sites (page-init, language re-render)
 // that run before/without any real user choice -- those must NOT manufacture a "topic
 // picked" look in the quiz above by highlighting whichever chip happens to match #awatch's
@@ -64,7 +76,7 @@ function aWatchChange(skipQuizSync){
   // parallel: "all matching notices", with the placeholder suggesting how to narrow.
   if(lastWatch !== null && lastWatch !== w){
     $("#aparam").value=""; $("#aagency").value="";
-    $("#amoneykw").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
+    $("#quiznarrow").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
     moneynlExtra = {};
     meetingWatchExtra = {};
     propertyWatchExtra = {};
@@ -74,10 +86,10 @@ function aWatchChange(skipQuizSync){
     paintAlertContextLead(null);
   }
   lastWatch = w;
-  $("#aparambox").style.display = w==="district" ? "none" : "";
+  $("#aparambox").style.display = ["district","moneynl","awardwatch","examarea"].includes(w) ? "none" : "";
   $("#adistrictbox").hidden = w!=="district";
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
-  $("#amoneyfields").style.display = w==="moneynl" ? "" : "none";
+  syncAlertConditionalFields();
   if(w==="district"){
     $("#afreq").value="Weekly";
     updateAWhen();
@@ -106,13 +118,19 @@ function aDescribe(){
   if(w==="bigaward") return t("desc_bigaward",{freq, amt:money($("#athresh").value)});
   if(w==="rfpkw") return t("desc_rfpkw",{freq, kw:$("#aparam").value||"…"});
   if(w==="moneynl"){
-    const kw=$("#amoneykw").value.trim(), minRaw=$("#amoneymin").value.trim(), moRaw=$("#amoneymonths").value.trim();
+    const kw=$("#quiznarrow").value.trim(), minRaw=$("#amoneymin").value.trim(), moRaw=$("#amoneymonths").value.trim();
+    const {agency=null,noticeType=null}=moneynlExtra;
+    const what=noticeType==="award"?t("watch_scope_awards")
+      :noticeType==="solicitation"?t("watch_scope_solicitations")
+      :t("watch_scope_contracts");
     const bits=[
       kw ? t("desc_moneynl_about",{kw}) : "",
       minRaw ? t("desc_moneynl_over",{amt:money(Number(minRaw))||minRaw}) : "",
       moRaw ? tn("desc_moneynl_due", Number(moRaw)||1) : "",
     ].filter(Boolean).join("");
-    return t("desc_moneynl", {freq, bits: bits || t("desc_moneynl_any")});
+    const scoped=agency?`${agency} ${what}`:what;
+    const hasScope=!!(agency||noticeType||kw||minRaw||moRaw);
+    return t("desc_moneynl_scoped", {freq, scope:scoped, bits:bits||(hasScope?"":t("desc_moneynl_any"))});
   }
   if(w==="entityvendor") return t("desc_vendor",{freq, name:$("#aparam").value.trim()||"…"});
   if(w==="entityagency") return t("desc_agency_watch",{freq, name:$("#aparam").value.trim()||"…"});
@@ -203,7 +221,7 @@ async function aFetch(){
   if(w==="moneynl"){
     // Mirrors the worker's compileSub() money-lens branch exactly (same field set, same
     // award-vs-solicitation rule), so the preview matches the digest a subscriber gets.
-    const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||0, months=Number($("#amoneymonths").value)||0;
+    const kw=$("#quiznarrow").value.trim(), minAmt=Number($("#amoneymin").value)||0, months=Number($("#amoneymonths").value)||0;
     const {agency=null, category=null, maxAmount=null, noticeType=null} = moneynlExtra;
     const catClause = category ? ` AND category_description='${category.replace(/'/g,"''")}'` : "";
     const agClause = agency ? ` AND agency_name='${agency.replace(/'/g,"''")}'` : "";
@@ -472,7 +490,14 @@ function paintAlertContextLead(seedMeta){
   const digKind = (noticeWatchSeed && noticeWatchSeed.digKind)
     || (seedMeta && seedMeta.digKind)
     || "notice";
-  const scopeBits = aDescribe();
+  let scopeBits = aDescribe();
+  if($("#awatch").value==="moneynl"){
+    const {agency=null,noticeType=null}=moneynlExtra;
+    const what=noticeType==="award"?t("watch_scope_awards")
+      :noticeType==="solicitation"?t("watch_scope_solicitations")
+      :null;
+    if(agency&&what) scopeBits=`${agency} ${what}`;
+  }
   const title = seed
     ? cleanText(seed.short_title || seed.project_name || seed.title || "")
     : "";
@@ -488,11 +513,19 @@ function paintAlertContextLead(seedMeta){
   }
   const parts = [];
   parts.push(`<p class="alert-context-lead-main">${t("alert_context_scope",{scope:escUiHtml(scopeBits)})}</p>`);
+  if(alertEntryMatchCount!=null){
+    parts.push(`<p class="alert-context-count">${tn("alert_context_count",alertEntryMatchCount)}</p>`);
+  }
   if(title) parts.push(`<p class="alert-context-seed">${t("alert_context_from_notice",{title:escUiHtml(title)})}</p>`);
   if(nextStep) parts.push(`<p class="alert-context-next">${t("alert_context_next_step",{step:escUiHtml(nextStep)})}</p>`);
   parts.push(`<p class="alert-context-confirm muted">${t("alert_context_confirm")}</p>`);
   el.innerHTML = parts.join("");
   el.hidden = false;
+}
+
+function alertPreviewScopeCountHTML(){
+  if(alertEntryMatchCount==null) return "";
+  return `<p class="alert-preview-scope-count" data-scope-count="${alertEntryMatchCount}">${tn("alert_preview_scope_count",alertEntryMatchCount)}</p>`;
 }
 
 async function aPreview(){
@@ -520,7 +553,7 @@ async function aPreview(){
   try{ data = await aFetch(); }catch(e){
     if(seedHtml){
       const dest=$("#adest").value.trim() || t("email_placeholder");
-      $("#apreviewbox").innerHTML = `<div class="emailmock">
+      $("#apreviewbox").innerHTML = `${alertPreviewScopeCountHTML()}<div class="emailmock">
         <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
         <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
         <div class="ebody">${seedHtml}
@@ -557,7 +590,7 @@ async function aPreview(){
   const footer=data.kind==="exam"
     ? `${t("career_source_details")} · ${t("career_noe_source_name")}`
     : tn("digest_footer",count);
-  $("#apreviewbox").innerHTML = `<div class="emailmock">
+  $("#apreviewbox").innerHTML = `${alertPreviewScopeCountHTML()}<div class="emailmock">
     <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
     <div class="ebody">${body}
@@ -710,7 +743,7 @@ function syncAlertsAdvDisclosure(){
   if(!adv) return;
   const w = $("#awatch") && $("#awatch").value;
   // Quiz chips cover the common topics; entity / moneynl / awardwatch live in the disclosure.
-  const needsAdv = w === "entityagency" || w === "entityvendor" || w === "moneynl" || w === "awardwatch";
+  const needsAdv = w === "entityagency" || w === "entityvendor" || w === "awardwatch";
   if(needsAdv) adv.open = true;
 }
 
@@ -721,7 +754,7 @@ function aLensFilter(){
   if(w==="bigaward") return {lens:"money", filter:{minAmount:Number($("#athresh").value)||1000000}};
   if(w==="rfpkw")    return {lens:"money", filter:{keywords:p?[p]:[]}};
   if(w==="moneynl"){
-    const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||null, months=Number($("#amoneymonths").value)||null;
+    const kw=$("#quiznarrow").value.trim(), minAmt=Number($("#amoneymin").value)||null, months=Number($("#amoneymonths").value)||null;
     const {agency=null, category=null, maxAmount=null, noticeType=null} = moneynlExtra;
     return {lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months, agency, category, maxAmount, noticeType}};
   }
@@ -1295,4 +1328,6 @@ Object.defineProperty(globalThis, "meetingWatchExtra", { configurable: true, get
 Object.defineProperty(globalThis, "propertyWatchExtra", { configurable: true, get: () => propertyWatchExtra, set: value => { propertyWatchExtra = value; } });
 Object.defineProperty(globalThis, "moneynlExtra", { configurable: true, get: () => moneynlExtra, set: value => { moneynlExtra = value; } });
 Object.defineProperty(globalThis, "noticeWatchSeed", { configurable: true, get: () => noticeWatchSeed, set: value => { noticeWatchSeed = value; } });
+Object.defineProperty(globalThis, "alertEntryMatchCount", { configurable: true, get: () => alertEntryMatchCount, set: value => { alertEntryMatchCount = value; } });
 globalThis.paintAlertContextLead = paintAlertContextLead;
+globalThis.syncAlertConditionalFields = syncAlertConditionalFields;
