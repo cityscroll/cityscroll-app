@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
+import path from "node:path";
 
 import {
   OFFICIAL_EVENT_GATE,
@@ -16,15 +17,17 @@ const people = JSON.parse(
 const lookup = JSON.parse(
   readFileSync(new URL("../site/data/person_votes_lookup.json", import.meta.url), "utf8"),
 );
-const receipt = JSON.parse(
-  readFileSync(
-    new URL(
-      "../site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
-      import.meta.url,
-    ),
-    "utf8",
-  ),
-);
+const RECEIPT_PATH = (() => {
+  const receiptDir = path.resolve(
+    new URL("../site/data/legistar_sources/verification_receipts/", import.meta.url).pathname,
+  );
+  const candidates = readdirSync(receiptDir)
+    .filter((name) => typeof name === "string" && name.startsWith("official_person_vote_retention_") && name.endsWith(".json"))
+    .sort();
+  const latest = candidates.at(-1);
+  return path.join(receiptDir, latest || "official_person_vote_retention_2026-08-02.json");
+})();
+const receipt = JSON.parse(readFileSync(RECEIPT_PATH, "utf8"));
 
 test("official coverage measures the eligible committed cohort without promoting six events", () => {
   const coverage = measureOfficialCoverage(people, receipt);
@@ -33,8 +36,8 @@ test("official coverage measures the eligible committed cohort without promoting
   assert.equal(coverage.eligible_event_count, 6);
   assert.equal(coverage.retained_event_count, 6);
   assert.equal(coverage.event_coverage_rate, 1);
-  assert.equal(coverage.retention_audit.eligible_vote_rows, 49);
-  assert.equal(coverage.retention_audit.retained_person_id_rows, 49);
+  assert.equal(coverage.retention_audit.eligible_vote_rows, 388);
+  assert.equal(coverage.retention_audit.retained_person_id_rows, 388);
   assert.equal(coverage.retention_audit.rate, 1);
   assert.equal(coverage.gate.minimum_retention_rate, 0.95);
   assert.equal(coverage.gate.minimum_distinct_events, 30);

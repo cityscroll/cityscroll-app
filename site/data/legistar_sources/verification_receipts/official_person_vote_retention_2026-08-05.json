@@ -1,0 +1,201 @@
+{
+  "schema": "cityscroll.metric_receipt.v1",
+  "metric": "official_roll_call_event_coverage",
+  "related_metric": "official_votes_on_edge_rate",
+  "measured_at": "2026-08-05",
+  "subject": "City Council roll-call person rows on meeting-outcomes materialization",
+  "audit": {
+    "source": "GET /meeting-outcomes on public materialization",
+    "eligible_scope": "roll-call vote rows that include by_person entries",
+    "basis": "Count each by_person vote row and retain where exact numeric person_id + non-empty name are present.",
+    "sample": "records=327, events=6, eligible_vote_rows=388, retained_rows=388",
+    "finding": "Public meeting-outcomes materialization remains limited to six roll-call events with by_person rows.",
+    "sample_event_id": "22526",
+    "sample_notice_id": "20260706036",
+    "sample_event_item_id": null,
+    "raw_person_fields_present": [
+      "VotePersonId",
+      "VotePersonName"
+    ],
+    "raw_person_fields_absent": [
+      "PersonId",
+      "PersonName"
+    ],
+    "person_vote_retention_rate": 1,
+    "official_votes_on_edge_rate": 1,
+    "retained_person_id_rows": 388,
+    "eligible_vote_rows": 388
+  },
+  "after_live_audit": {
+    "person_vote_retention_rate": 1,
+    "official_votes_on_edge_rate": 1,
+    "sample": "events=6, eligible_rows=388, retained_rows=388",
+    "basis": "Public materialization row scan and by_person normalization; no authenticated Legistar EventItems/Votes pull in this environment.",
+    "samples": [
+      {
+        "request_id": "20260706036",
+        "event_id": "22526",
+        "eligible_vote_rows": 84,
+        "retained_person_id_rows": 84,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260625040",
+        "event_id": "22567",
+        "eligible_vote_rows": 70,
+        "retained_person_id_rows": 70,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260428021",
+        "event_id": "22375",
+        "eligible_vote_rows": 72,
+        "retained_person_id_rows": 72,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260408025",
+        "event_id": "22342",
+        "eligible_vote_rows": 54,
+        "retained_person_id_rows": 54,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260331028",
+        "event_id": "22365",
+        "eligible_vote_rows": 72,
+        "retained_person_id_rows": 72,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      }
+    ]
+  },
+  "after_live_audit_2026_08_05": {
+    "person_vote_retention_rate": 1,
+    "official_votes_on_edge_rate": 1,
+    "sample": "events=6, eligible_rows=388, retained_rows=388",
+    "basis": "Public materialization row scan and by_person normalization; no authenticated Legistar EventItems/Votes pull in this environment.",
+    "samples": [
+      {
+        "request_id": "20260706036",
+        "event_id": "22526",
+        "eligible_vote_rows": 84,
+        "retained_person_id_rows": 84,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260625040",
+        "event_id": "22567",
+        "eligible_vote_rows": 70,
+        "retained_person_id_rows": 70,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260428021",
+        "event_id": "22375",
+        "eligible_vote_rows": 72,
+        "retained_person_id_rows": 72,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260408025",
+        "event_id": "22342",
+        "eligible_vote_rows": 54,
+        "retained_person_id_rows": 54,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      },
+      {
+        "request_id": "20260331028",
+        "event_id": "22365",
+        "eligible_vote_rows": 72,
+        "retained_person_id_rows": 72,
+        "person_vote_retention_rate": 1,
+        "first_person": "present"
+      }
+    ]
+  },
+  "entity_family": "official",
+  "primary_key_pattern": "official:{person_id}",
+  "link_type": "votes_on",
+  "product_surfaces": [
+    "worker/src/lib/legistar_client.mjs#summarizeLegistarVotes",
+    "worker/src/lib/meeting_outcomes.mjs"
+  ],
+  "promotion_gate": {
+    "minimum_retention_rate": 0.95,
+    "minimum_distinct_events": 30,
+    "retention_pass": true,
+    "event_count_pass": false,
+    "promoted": false
+  },
+  "by_event": [
+    {
+      "request_id": "20260706036",
+      "event_id": "22526",
+      "event_date": "2026-07-14",
+      "eligible_vote_rows": 84,
+      "retained_person_id_rows": 84,
+      "person_vote_retention_rate": 1,
+      "sample_matter_id": "79193"
+    },
+    {
+      "request_id": "20260625040",
+      "event_id": "22567",
+      "event_date": "2026-07-09",
+      "eligible_vote_rows": 70,
+      "retained_person_id_rows": 70,
+      "person_vote_retention_rate": 1,
+      "sample_matter_id": "79062"
+    },
+    {
+      "request_id": "20260428021",
+      "event_id": "22375",
+      "event_date": "2026-05-19",
+      "eligible_vote_rows": 72,
+      "retained_person_id_rows": 72,
+      "person_vote_retention_rate": 1,
+      "sample_matter_id": "78605"
+    },
+    {
+      "request_id": "20260408025",
+      "event_id": "22342",
+      "event_date": "2026-04-22",
+      "eligible_vote_rows": 54,
+      "retained_person_id_rows": 54,
+      "person_vote_retention_rate": 1,
+      "sample_matter_id": "78682"
+    },
+    {
+      "request_id": "20260331028",
+      "event_id": "22365",
+      "event_date": "2026-04-14",
+      "eligible_vote_rows": 72,
+      "retained_person_id_rows": 72,
+      "person_vote_retention_rate": 1,
+      "sample_matter_id": "78537"
+    },
+    {
+      "request_id": "20260304007",
+      "event_id": "22300",
+      "event_date": "2026-03-18",
+      "eligible_vote_rows": 36,
+      "retained_person_id_rows": 36,
+      "person_vote_retention_rate": 1,
+      "sample_matter_id": "78409"
+    }
+  ],
+  "source_count": {
+    "total_records": 327,
+    "event_rows_with_retained_by_person": 6
+  },
+  "remaining_gap": "Need 24 additional retained roll-call events and 24 eligible events to promote official constellation.",
+  "verified_at": "2026-08-05T20:55:29.331Z"
+}
