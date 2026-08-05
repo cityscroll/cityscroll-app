@@ -11,6 +11,7 @@ import {
 } from "../site/scope_v0.mjs";
 import {
   entityChipHTML,
+  entityFromHref,
   entityHref,
   parseEntityRef,
   reconcileAgencyIdentity,
@@ -20,6 +21,7 @@ import { buildSubjectEntityIndex } from "../tools/lib/entity_intelligence_build.
 
 const CAMBA = "vendor:stem:CAMBA";
 const DSS = "agency:id:homeless-services";
+const TIMBALE = "project:2022M0258";
 
 test("typed entity refs fail closed and mint canonical document routes", () => {
   assert.deepEqual(parseEntityRef(CAMBA), {
@@ -32,10 +34,16 @@ test("typed entity refs fail closed and mint canonical document routes", () => {
     id: "7801",
     ref: "entity:official:7801",
   });
+  assert.deepEqual(parseEntityRef(TIMBALE), {
+    kind: "project",
+    id: "2022M0258",
+    ref: TIMBALE,
+  });
   assert.equal(parseEntityRef("notice:20260706036"), null);
   assert.equal(parseEntityRef("vendor:stem:CAM BA"), null);
 
   assert.equal(entityHref({ ref: CAMBA, label: "CAMBA" }), "/vendors/CAMBA/");
+  assert.equal(entityHref({ ref: TIMBALE, label: "Timbale Terrace" }), "#land/2022M0258");
   assert.equal(
     entityHref({ ref: DSS, label: "Homeless Services" }, { tab: "forecast" }),
     "/agencies/homeless-services/?tab=forecast",
@@ -48,6 +56,11 @@ test("typed entity refs fail closed and mint canonical document routes", () => {
     "/officials/7801/?event=22526&notice=20260706036",
   );
   assert.equal(entityHref({ ref: "notice:1", label: "not an entity" }), "");
+  assert.deepEqual(entityFromHref("#land/2022M0258", "Timbale Terrace"), {
+    ref: TIMBALE,
+    label: "Timbale Terrace",
+    options: { tab: "", eventId: "", noticeId: "" },
+  });
 });
 
 test("entity chips link accepted refs, band tentative matches, and suppress review candidates", () => {
@@ -130,6 +143,11 @@ test("scopeWithEntity is normalized, idempotent, and ignores invalid refs", () =
   assert.deepEqual(once, twice);
   assert.deepEqual(once.facets.values.entity_refs_all, [CAMBA]);
   assert.deepEqual(scopeWithEntity(once, "notice:1"), once);
+
+  const project = scopeWithEntity(emptyScope(), TIMBALE);
+  project.facets.domains = ["land"];
+  const projectHash = routeHashFromScope(project, { surface: "land" });
+  assert.deepEqual(scopeFromRouteHash(projectHash).facets.values.entity_refs_all, [TIMBALE]);
 });
 
 test("structured scope intersection is commutative, idempotent, and closed", () => {

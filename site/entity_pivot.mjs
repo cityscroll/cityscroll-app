@@ -3,7 +3,8 @@
  *
  * Entity refs are the truth boundary; display labels never create links by
  * themselves. Generated links use canonical entity documents; legacy hashes
- * remain parseable for links already in the wild.
+ * remain parseable for links already in the wild. Projects retain the Land
+ * detail hash until they gain a standalone canonical document.
  */
 
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
@@ -47,6 +48,8 @@ export function parseEntityRef(value) {
     const id = ref.slice("entity:official:".length);
     return id ? { kind: "official", id, ref } : null;
   }
+  const project = ref.match(/^project:([A-Za-z0-9][A-Za-z0-9_-]{2,24})$/);
+  if (project) return { kind: "project", id: project[1], ref };
   const parcel = ref.match(/^bbl:(\d{10})$/);
   if (parcel) return { kind: "parcel", id: parcel[1], ref };
   return null;
@@ -62,6 +65,9 @@ export function entityRouteRef(kind, value) {
   if (kind === "agency") return `agency:id:${resolveAgencyIdentity(label).canonical_id}`;
   if (kind === "vendor") return `vendor:stem:${encodeURIComponent(vendorStem(label))}`;
   if (kind === "official") return `entity:official:${encodeURIComponent(label)}`;
+  if (kind === "project" && /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(label)) {
+    return `project:${label}`;
+  }
   return "";
 }
 
@@ -82,6 +88,7 @@ export function entityHref(entity = {}, options = {}) {
     const composed = scopeTools.intersectScopes(base, parcel);
     return scopeTools.routeHashFromScope(composed, { surface: options.surface || "property" });
   }
+  if (parsed.kind === "project") return `#land/${encodeURIComponent(parsed.id)}`;
   const query = new URLSearchParams();
   let route = "";
   if (parsed.kind === "official") {
@@ -107,10 +114,10 @@ export function entityHref(entity = {}, options = {}) {
 /** Recover a typed descriptor from an existing entity hash route. */
 export function entityFromHref(href, label = "") {
   const raw = clean(href, 1_000);
-  const match = raw.match(/^#(agency|vendor|official)\/([^?]+)(?:\?(.*))?$/)
+  const match = raw.match(/^#(agency|vendor|official|land)\/([^?]+)(?:\?(.*))?$/)
     || raw.match(/^\/(agencies|vendors|officials)\/([^/?#]+)\/?(?:\?(.*))?$/);
   if (!match) return null;
-  const kind = ({ agencies: "agency", vendors: "vendor", officials: "official" })[match[1]] || match[1];
+  const kind = ({ agencies: "agency", vendors: "vendor", officials: "official", land: "project" })[match[1]] || match[1];
   const routed = decoded(match[2]);
   if (!routed) return null;
   const ref = match[1].endsWith("s")

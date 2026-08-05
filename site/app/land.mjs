@@ -431,6 +431,7 @@ async function landSelect(i, el){
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
+  <div id="project-connections"></div>
   <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
   <div id="landmap" style="display:none"></div>
   <div id="landpan" class="map-pan-controls" role="group" aria-label="${t("map_pan_group_aria")}" hidden>
@@ -1101,6 +1102,102 @@ function landOutcomeSnapshotHTML(record,phaseTools){
    when the payload is already in memory. Prefetch runs after the land list paints so the
    first selected row (and neighbors) can render without the multi-second cold spinner. */
 const ZAP_OUTCOMES_MEM = new Map(), ZAP_OUTCOMES_MEM_TTL = 300000;
+let projectConnectionsToolsPromise=null;
+function ensureProjectConnectionsTools(){
+  if(!projectConnectionsToolsPromise){
+    projectConnectionsToolsPromise=import("../project_connections.mjs").catch(()=>null);
+  }
+  return projectConnectionsToolsPromise;
+}
+function projectConnectionsCoverageHTML(coverage){
+  if(!coverage) return "";
+  const scopeKey={
+    current_zap_snapshot:"project_connections_scope_current",
+    fixed_completed_project_sample:"project_connections_scope_sample",
+    bounded_entity_materialization:"project_connections_scope_bounded",
+    this_project:"project_connections_scope_project",
+  }[coverage.scope];
+  const scope=scopeKey?t(scopeKey):coverage.scope||"";
+  let statement="";
+  if(coverage.eligible!=null&&coverage.linked!=null){
+    statement=t("project_connections_coverage_measured",{
+      linked:fmtNumber(coverage.linked), eligible:fmtNumber(coverage.eligible), scope:escUiHtml(scope)
+    });
+  }else if(coverage.linked!=null){
+    statement=t("project_connections_coverage_bounded",{
+      linked:fmtNumber(coverage.linked), scope:escUiHtml(scope)
+    });
+  }else{
+    statement=t("project_connections_coverage_unknown",{scope:escUiHtml(scope)});
+  }
+  const vintage=coverage.vintage?t("project_connections_vintage",{date:escUiHtml(fdate(coverage.vintage))}):"";
+  return `<p class="pc-coverage">${statement}${vintage?` <span>${vintage}</span>`:""}</p>`;
+}
+function projectConnectionItemHTML(item, projectScope){
+  if(item.ref&&/^(?:agency:|vendor:stem:|entity:official:|bbl:)/.test(item.ref)){
+    return globalThis.CrolEntityPivots?.entityChipHTML({
+      ref:item.ref,
+      label:item.label,
+      link_confidence:item.confidence,
+      relation:item.relation,
+      evidence:item.evidence,
+    },{scope:projectScope,surface:item.ref.startsWith("bbl:")?"property":"land"})||escUiHtml(item.label||"");
+  }
+  if(item.href&&String(item.href).startsWith("#")) return pivotA(item.href,cleanText(item.label)||item.href);
+  return escUiHtml(item.label||"");
+}
+function projectConnectionsHTML(evidence, tools){
+  if(!evidence||evidence.status!=="bounded"||!tools) return "";
+  const view=tools.buildProjectConnectionView(evidence,{currentHash:"#land",language:window.LANG||"en"});
+  let projectScope=CrolScope.emptyScope(window.LANG||"en");
+  projectScope=CrolScope.scopeWithEntity(projectScope,evidence.project_ref);
+  projectScope.facets.domains=["land"];
+  const gapLabels={
+    applicant_not_published:"project_connections_gap_applicant",
+    no_exact_bbl_edge:"project_connections_gap_parcels",
+    no_exact_meeting_edge_in_bounded_corpus:"project_connections_gap_meetings",
+    decision_documents_not_published:"project_connections_gap_decisions",
+    not_published:"project_connections_gap_notices",
+    source_unavailable:"project_connections_gap_source",
+    no_exact_notice_edge_in_bounded_corpus:"project_connections_gap_notices",
+  };
+  const groups=view.groups.map(group=>{
+    const itemRows=(group.items||[]).slice(0,12).map(item=>{
+      const label=projectConnectionItemHTML(item,projectScope);
+      const outcome=item.outcome?` <span class="pc-outcome">${escUiHtml(item.outcome)}</span>`:"";
+      const when=item.when?` <span class="pc-when">${fdate(item.when)}</span>`:"";
+      return `<li>${label}${outcome}${when}</li>`;
+    }).join("");
+    const docs=(group.documents||[]).filter(doc=>doc.href).slice(0,6).map(doc=>
+      `<a class="view" href="${escUiHtml(doc.href)}" ${EXT_ATTRS}>${escUiHtml(doc.label)}${extSR()}</a>`
+    ).join("");
+    const gapKey=gapLabels[group.gap];
+    const empty=!itemRows&&!docs?`<p class="pc-gap">${t(gapKey||"project_connections_gap_bounded")}</p>`:"";
+    const docGap=group.id==="decisions"&&group.gap==="decision_documents_not_published"&&itemRows
+      ?`<p class="pc-gap">${t("project_connections_gap_decisions")}</p>`:"";
+    const viewAll=group.view_all_href
+      ?`<a class="ei-view-all" href="${escUiHtml(group.view_all_href)}">${t("entity_intel_view_all_scope")}</a>`:"";
+    return `<section class="pc-group" data-project-group="${escUiHtml(group.id)}" data-status="${escUiHtml(group.status)}">
+      <h3>${t("project_connections_group_"+group.id)} <span class="ei-status ${group.status==="matched"?"ei-status-matched":""}">${group.status==="matched"?t("entity_intel_status_matched"):t("entity_intel_status_empty")}</span></h3>
+      ${itemRows?`<ul>${itemRows}</ul>`:""}${docs?`<div class="pc-docs">${docs}</div>`:""}${empty}${docGap}
+      ${projectConnectionsCoverageHTML(group.coverage)}${viewAll}
+    </section>`;
+  }).join("");
+  return `<div class="eicard project-connections" data-project-ref="${escUiHtml(evidence.project_ref)}">
+    <div class="ei-heading-row"><div class="chain-h">${t("project_connections_heading")}</div>
+      <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("project_connections_apply_scope")}</a></div>
+    <p class="ei-lead">${t("project_connections_lead")}</p><div class="pc-groups">${groups}</div>
+    <p class="aidprov ei-method">${t("project_connections_method")}</p>
+  </div>`;
+}
+async function paintProjectConnections(record,selection){
+  const host=$("#project-connections");
+  if(!host) return;
+  const tools=await ensureProjectConnectionsTools();
+  if(selection!==undefined&&selection!==landSelectionSeq) return;
+  if(!host.isConnected||host!==$("#project-connections")) return;
+  host.innerHTML=projectConnectionsHTML(record?.project_connections,tools);
+}
 function zapOutcomesMemGet(projectId){
   const hit = ZAP_OUTCOMES_MEM.get(projectId);
   if(!hit) return null;
@@ -1156,7 +1253,7 @@ async function loadZapOutcomes(r, el, selection){
   if(warm?.data?.ok !== false && warm?.data?.record){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
-    const phaseTools = await phaseToolsP;
+    const [phaseTools] = await Promise.all([phaseToolsP,paintProjectConnections(warm.data.record,selection)]);
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
@@ -1181,6 +1278,9 @@ async function loadZapOutcomes(r, el, selection){
     return;
   }
   const record = normalizeLandRecord(data.record);
+  await paintProjectConnections(record,selection);
+  if(selection !== undefined && selection !== landSelectionSeq) return;
+  if(!document.contains(el)) return;
   el.innerHTML = landOutcomesHTML(record, phaseTools);
   bindLandSpineUI(el);
   paintLandActionRail($("#land-actions"), r, record, phaseTools);
@@ -1335,6 +1435,7 @@ globalThis.ZAP_OUTCOMES_MEM_TTL = ZAP_OUTCOMES_MEM_TTL;
 globalThis.ZAP_SELECT = ZAP_SELECT;
 globalThis.bindLandSpineUI = bindLandSpineUI;
 globalThis.ensureLandPhaseSpineTools = ensureLandPhaseSpineTools;
+globalThis.ensureProjectConnectionsTools = ensureProjectConnectionsTools;
 globalThis.ensureNoticeLandSpineTools = ensureNoticeLandSpineTools;
 globalThis.fetchZapOutcomesPayload = fetchZapOutcomesPayload;
 globalThis.geocode = geocode;
@@ -1342,6 +1443,7 @@ globalThis.isDefaultLandSearchState = isDefaultLandSearchState;
 globalThis.landApplicantConditionedHTML = landApplicantConditionedHTML;
 globalThis.landNearby = landNearby;
 globalThis.landOutcomesHTML = landOutcomesHTML;
+globalThis.projectConnectionsHTML = projectConnectionsHTML;
 globalThis.landPermalinkActionHTML = landPermalinkActionHTML;
 globalThis.landPhaseAggregateHTML = landPhaseAggregateHTML;
 globalThis.landPhaseLabel = landPhaseLabel;

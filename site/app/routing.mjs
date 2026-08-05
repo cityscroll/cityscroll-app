@@ -948,7 +948,15 @@ function applyHash(){
         const att=q.get("attendance");
         hm.value=att==="in_person"||att==="livestream"?att:"";
       }
-      const was = landLoaded; showTab("land"); if(was) landSearch();
+      let scopedProjectId="";
+      try{
+        const facet=JSON.parse(q.get("facet")||"{}");
+        const refs=Array.isArray(facet.entity_refs_all)?facet.entity_refs_all:[];
+        const projects=[...new Set(refs.map(ref=>String(ref).match(/^project:([A-Za-z0-9][A-Za-z0-9_-]{2,24})$/)?.[1]).filter(Boolean))];
+        scopedProjectId=projects.length===1?projects[0]:"";
+      }catch(_e){}
+      if(scopedProjectId) showLandEntry(scopedProjectId);
+      else { const was = landLoaded; showTab("land"); if(was) landSearch(); }
     } else if(SECTIONS[tab]){
       $("#"+tab+"agency").value="";
       forceSelect("#"+tab+"agency", q.get("agency"));
