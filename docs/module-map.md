@@ -28,6 +28,8 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/mwbe_goal_surface.mjs` | Pure solicitation M/WBE / method chips over procurement_method (list + notice detail). |
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, and generic feed-card rendering. |
 | `site/map_exploration.mjs` | Pure map geometry, canonical scope drill hashes, and exact all-lens request-ID membership from `district_activity.district_items`. |
+| `site/parcel_scope.mjs` | Pure exact-BBL typed scope composition and bounded observed parcel biography over committed disposition, ZAP, and tax-lien materializations. |
+| `site/parcel_biography_ui.mjs` | Pure lazy HTML renderer for the observed parcel biography; Property retains route and fetch ownership. |
 | `site/near_you_view.mjs` | Shared static/edge Near-you view model and HTML renderer over versioned scope, district activity, and boundaries. |
 | `site/following_view.mjs` | Shared static/edge Following view model and HTML renderer. The saved scope drives the summary, count, preview, and subscription form. |
 | `site/app/following.mjs` | Following-only personal island plus preview, duplicate-warning, and submission enhancements. Public reading and forms do not depend on it. |

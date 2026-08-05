@@ -42,6 +42,8 @@ export function parseEntityRef(value) {
     const id = ref.slice("entity:official:".length);
     return id ? { kind: "official", id, ref } : null;
   }
+  const parcel = ref.match(/^bbl:(\d{10})$/);
+  if (parcel) return { kind: "parcel", id: parcel[1], ref };
   return null;
 }
 
@@ -63,6 +65,18 @@ export function entityHref(entity = {}, options = {}) {
   const parsed = parseEntityRef(entity.ref);
   if (!parsed) return "";
   const label = clean(entity.label);
+  if (parsed.kind === "parcel") {
+    // The app loads CrolScope before this namespace helper. Accepting the same
+    // namespace explicitly keeps direct module consumers deterministic while
+    // preserving the legacy inline reconstruction's no-nested-import contract.
+    const scopeTools = options.scopeTools || globalThis.CrolScope;
+    if (!["emptyScope", "intersectScopes", "routeHashFromScope", "scopeWithEntity"]
+      .every((name) => typeof scopeTools?.[name] === "function")) return "";
+    const base = options.scope || scopeTools.emptyScope();
+    const parcel = scopeTools.scopeWithEntity(scopeTools.emptyScope(base.language), parsed.ref);
+    const composed = scopeTools.intersectScopes(base, parcel);
+    return scopeTools.routeHashFromScope(composed, { surface: options.surface || "property" });
+  }
   const query = new URLSearchParams();
   let route = "";
   if (parsed.kind === "official") {
