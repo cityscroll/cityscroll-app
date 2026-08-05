@@ -31,9 +31,26 @@ jobs:
         with:
           path: ./_site
 
+  # The site and Worker deploy from separate workflows. Gate the public site on
+  # the semantic API contract so a new client cannot outrun its matching route
+  # or bundled read model during propagation.
+  api-contract:
+    name: Wait for project-connections API contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Require complete or honestly unavailable project connections
+        run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+
   deploy:
     name: Deploy site
-    needs: build
+    needs: [build, api-contract]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -59,5 +76,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: ./.github/actions/setup-playwright
       - name: Post-deploy live URL smoke
         run: node tools/live_url_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+      - name: Post-deploy project-connections API smoke
+        run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+      - name: Post-deploy project-connections browser smoke
+        env:
+          CROL_BASE: https://cityscroll.org/
+        run: python3 test/functional/27_project_connections_live.py

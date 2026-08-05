@@ -4,6 +4,8 @@ import test from "node:test";
 import {
   buildProjectConnectionEvidence,
   buildProjectConnectionView,
+  normalizeProjectConnectionsPayload,
+  projectConnectionsPayloadState,
   projectConnectionScopeHash,
 } from "../site/project_connections.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
@@ -167,6 +169,27 @@ test("missing meeting edges and decision documents remain explicit gaps", () => 
   assert.equal(meetings.gap, "no_exact_meeting_edge_in_bounded_corpus");
   assert.equal(decisions.status, "not_observed");
   assert.equal(decisions.gap, "decision_documents_not_published");
+});
+
+test("response contract distinguishes complete, declared-unavailable, and incomplete 200s", () => {
+  const available = { ok: true, record: { project_id: PROJECT_ID, project_connections: evidence() } };
+  assert.equal(projectConnectionsPayloadState(available, PROJECT_ID), "available");
+
+  const unavailable = {
+    ok: true,
+    sections: { project_connections: { schema_version: 1, status: "unavailable", reason: "read_model_unavailable" } },
+    record: { project_id: PROJECT_ID },
+  };
+  assert.equal(projectConnectionsPayloadState(unavailable, PROJECT_ID), "unavailable");
+  assert.equal(projectConnectionsPayloadState({ ok: true, record: { project_id: PROJECT_ID } }, PROJECT_ID), "incomplete");
+
+  const normalized = normalizeProjectConnectionsPayload(
+    { ok: true, record: { project_id: PROJECT_ID } },
+    PROJECT_ID,
+  );
+  assert.equal(normalized.record.project_connections.status, "unavailable");
+  assert.equal(normalized.record.project_connections.reason, "incomplete_response");
+  assert.equal(normalized.sections.project_connections.status, "unavailable");
 });
 
 test("project scope links round-trip the typed project id and relation", () => {

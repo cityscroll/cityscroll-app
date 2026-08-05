@@ -296,9 +296,23 @@ with sync_playwright() as pw:
         status=200, content_type="application/json", body=json.dumps([project_row])))
     p6.route("**/resource/2iga-a6mk.json?*", lambda route: route.fulfill(
         status=200, content_type="application/json", body='[{"bbl":"1017670001"}]'))
-    p6.route("**/zap-outcomes?id=2022M0258", lambda route: route.fulfill(
-        status=200, content_type="application/json",
-        body=json.dumps({"ok": True, "cached": True, "record": connection_record})))
+    connection_requests = list()
+    p6.route("https://api.cityscroll.org/zap-outcomes?id=2022M0258", lambda route: (
+        connection_requests.append("primary"),
+        route.fulfill(status=200, content_type="application/json", body=json.dumps({
+            "ok": True, "cached": True,
+            "record": {key: value for key, value in connection_record.items()
+                       if key != "project_connections"},
+        })),
+    )[-1])
+    p6.route("https://crol-worker.crol-worker.workers.dev/zap-outcomes?id=2022M0258", lambda route: (
+        connection_requests.append("fallback"),
+        route.fulfill(status=200, content_type="application/json", body=json.dumps({
+            "ok": True, "cached": True,
+            "sections": {"project_connections": {"schema_version": 1, "status": "available"}},
+            "record": connection_record,
+        })),
+    )[-1])
     p6.goto(BASE + "#land/2022M0258", wait_until="domcontentloaded", timeout=30000)
     p6.wait_for_selector('.project-connections[data-project-ref="project:2022M0258"]', timeout=30000)
     project_view = p6.evaluate("""(() => {
@@ -329,6 +343,9 @@ with sync_playwright() as pw:
         and project_view["allRefs"] == [expected_project_ref]
         and project_view["meetingHref"] == "#notice/20240101001"
         and "231" in project_view["text"] and "50" in project_view["text"]
+        and len(connection_requests) >= 2
+        and connection_requests[0] == "primary"
+        and connection_requests[1] == "fallback"
     )
     step("OK" if ok_project else "FAIL", "gc-05 exact project constellation and coverage",
          json.dumps(project_view)[:260])
@@ -377,6 +394,27 @@ with sync_playwright() as pw:
     )
     p7.screenshot(path=SHOT + "official-coverage.png", full_page=True)
     p7.close()
+
+    # A complete outcome response may still declare this optional read model unavailable.
+    # The UI must render that state instead of leaving the host silently empty.
+    p8 = ctx.new_page()
+    unavailable_payload = {
+        "ok": True,
+        "cached": True,
+        "sections": {"project_connections": {
+            "schema_version": 1, "status": "unavailable", "reason": "read_model_unavailable",
+        }},
+        "record": {key: value for key, value in connection_record.items()
+                   if key != "project_connections"},
+    }
+    p8.route("**/zap-outcomes?id=2022M0258", lambda route: route.fulfill(
+        status=200, content_type="application/json", body=json.dumps(unavailable_payload)))
+    p8.goto(BASE + "#land/2022M0258", wait_until="domcontentloaded", timeout=30000)
+    p8.wait_for_selector('[data-project-connections-state="unavailable"]', timeout=30000)
+    unavailable_text = p8.locator('[data-project-connections-state="unavailable"]').inner_text()
+    step("OK" if unavailable_text.strip() else "FAIL", "gc-05 unavailable read model renders honestly",
+         unavailable_text[:160].replace("\n", " | "))
+    p8.close()
 
     # ---------- vendor page direct, with variant resolution ----------
     p3 = ctx.new_page()

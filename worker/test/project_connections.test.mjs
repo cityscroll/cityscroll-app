@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   attachProjectConnections,
+  attachProjectConnectionsSection,
   PROJECT_CONNECTION_COVERAGE,
 } from "../src/project_connections.mjs";
 import { handleZapOutcomes } from "../src/zap_outcomes.mjs";
@@ -66,4 +67,22 @@ test("cached outcome responses receive current project connections at serve time
   assert.equal(body.cached, true);
   assert.equal(body.record.project_connections.project_ref, "project:2022M0258");
   assert.equal(body.record.project_connections.groups.length, 5);
+  assert.deepEqual(body.sections.project_connections, {
+    schema_version: 1,
+    status: "available",
+  });
+});
+
+test("read-model decoration failures become an honest unavailable section", () => {
+  const result = attachProjectConnectionsSection(
+    { project_id: "2022M0258" },
+    { attach: () => { throw new Error("fixture read model failed"); } },
+  );
+  assert.equal(result.record.project_connections.status, "unavailable");
+  assert.equal(result.record.project_connections.reason, "read_model_unavailable");
+  assert.deepEqual(result.section, {
+    schema_version: 1,
+    status: "unavailable",
+    reason: "read_model_unavailable",
+  });
 });

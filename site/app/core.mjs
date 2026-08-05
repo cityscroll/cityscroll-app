@@ -4,20 +4,13 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
 const CSL  = "https://data.cityofnewyork.us/resource/vx8i-nprf.json";
 const PAYFY = "2025";
-// Optional backend (crol-worker, a Cloudflare Worker on our own subdomain — user-visible URLs
-// like feeds and confirm links should read cityscroll.org, never *.workers.dev). Empty = fully
-// client-side: the NL box uses the on-device heuristic, Checkbook $-paid stays hidden, alerts
-// are preview-only. Every worker-backed feature falls back to static behavior if unreachable.
+// Worker-backed features fall back to static behavior when the API is unavailable.
 const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-// The branded subdomain is young — resolvers with a stale NXDOMAIN (or flaky DNS) would
-// otherwise kill every worker feature. workerFetch() fails over to the workers.dev alias
-// and remembers which base worked for the rest of the session. Non-idempotent POSTs get no
-// timeout (an abort+retry could double-send); the DNS failure mode rejects immediately anyway.
+// Fail over during branded-route/DNS propagation; callers never timeout non-idempotent POSTs.
 const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
 let apiBase = API;
-async function workerFetch(path, opts, timeoutMs){
-  // Session cookie lives on the API host. Credentialed calls are same-site
-  // (cityscroll.org → api.cityscroll.org) and only needed for /session + /pins.
+async function workerFetch(path, opts, timeoutMs, acceptResponse){
+  // Only session and pin calls need same-site API credentials.
   const needsCreds = path === "/session" || path === "/session/logout" || path === "/pins"
     || path.startsWith("/session?") || path.startsWith("/pins?");
   const withCreds = (o) => {
@@ -32,12 +25,29 @@ async function workerFetch(path, opts, timeoutMs){
     try{ return await fetch(base + path, {...withCreds(opts), signal: ctl.signal}); }
     finally{ clearTimeout(t); }
   };
-  try{ return await attempt(apiBase); }
-  catch(e){
-    const other = apiBase === API ? API_FALLBACK : API;
-    const r = await attempt(other);
-    apiBase = other;
-    return r;
+  const accepted = async (response) => {
+    if(!acceptResponse) return true;
+    const candidate=typeof response?.clone==="function"?response.clone():response;
+    try{ return await acceptResponse(candidate); }
+    catch(_error){ return false; }
+  };
+  const firstBase=apiBase;
+  const other=firstBase===API?API_FALLBACK:API;
+  try{
+    const first=await attempt(firstBase);
+    if(await accepted(first)) return first;
+    try{
+      const second=await attempt(other);
+      if(await accepted(second)){
+        apiBase=other;
+        return second;
+      }
+      return first;
+    }catch(_error){ return first; }
+  }catch(_error){
+    const response=await attempt(other);
+    apiBase=other;
+    return response;
   }
 }
 const REQ_URL = id => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;

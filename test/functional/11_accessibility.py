@@ -292,10 +292,40 @@ def run_index_states(pw, lang, viewport, failures):
         restore_url=BASE,
     )
 
+    # Project-connections responses may be honestly unavailable during read-model or route
+    # propagation. Wait for that asynchronous state and scan the reader-visible fallback.
+    project_row = {
+        "project_id": "2022M0258", "project_name": "Timbale Terrace",
+        "primary_applicant": "Housing Preservation and Development",
+        "public_status": "Completed", "project_status": "Completed",
+        "borough": "Manhattan", "community_district": "M11",
+        "actions": "HA; PQ", "current_milestone": "Project Completed",
+        "current_milestone_date": "2024-03-13", "ulurp_numbers": "240046HAM; 240047PQM",
+    }
+    page.route(
+        "https://data.cityofnewyork.us/resource/hgx4-8ukb.json*",
+        lambda route: route.fulfill(
+            status=200, content_type="application/json", body=json.dumps([project_row]),
+        ),
+    )
+    project_hash = "#land/2022M0258"
+    page.goto(BASE + project_hash, timeout=30000)
+    page.wait_for_load_state("load", timeout=20000)
+    page.wait_for_selector(
+        '.project-connections[data-project-connections-state="unavailable"]',
+        state="visible",
+        timeout=15000,
+    )
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [land:project-connections-unavailable]", failures,
+        restore_url=BASE, restore_hash=project_hash,
+    )
+
     # entity profile via permalink hash
     agency_hash = "#agency/Housing Preservation and Development"
     page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
-    page.wait_for_timeout(1000)
+    page.wait_for_selector("#entityview .agencybar", state="visible", timeout=15000)
+    page.wait_for_selector("main", state="visible", timeout=15000)
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures,
         restore_url=BASE, restore_hash=agency_hash,
@@ -303,7 +333,8 @@ def run_index_states(pw, lang, viewport, failures):
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
     page.evaluate("location.hash = '#investigation'")
-    page.wait_for_timeout(800)
+    page.wait_for_selector("#invname", state="visible", timeout=15000)
+    page.wait_for_selector("main", state="visible", timeout=15000)
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [investigation]", failures,
         restore_url=BASE, restore_hash="#investigation",
