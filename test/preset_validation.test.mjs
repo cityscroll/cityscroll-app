@@ -17,6 +17,16 @@ test("preset validation reads and rewrites the modular site suggestion source", 
   assert.doesNotMatch(validatorSource, /fallbackFromHTML\(html\)/);
 });
 
+test("live SODA fetch retries with exponential backoff on transient timeouts", () => {
+  assert.match(validatorSource, /isTransientFetchError/);
+  assert.match(validatorSource, /FETCH_BACKOFF_MS/);
+  assert.match(validatorSource, /2 \*\* attempt/);
+  assert.match(validatorSource, /TimeoutError|AbortError/);
+  // CI defaults give SODA more attempts than local so short Open Data blips
+  // do not fail the unit gate when the rest of the suite is green.
+  assert.match(validatorSource, /process\.env\.CI \? 4 : 2/);
+});
+
 test("a zero-result week preset widens only to the first non-empty scope", () => {
   const variants = [
     { id: "week", href: "#meetings?when=week" },

@@ -3,12 +3,19 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import {
+  JOIN_METHOD,
+  PRECISION_PROMOTION_BAR,
   USEFULNESS_THRESHOLD,
+  buildPrecisionReviewReceipt,
   extractExplicitOutcome,
+  joinBridgePromotionDecision,
   joinNonCouncilOutcomes,
   materializeOutcomeLookup,
+  matterTokenMatch,
   measureJoinBridge,
   parseSourceIndex,
+  publisherMatterTokens,
+  reviewJoinCandidates,
 } from "../warehouse/lib/non_council_outcomes.mjs";
 
 const fixture = JSON.parse(readFileSync(
@@ -71,15 +78,35 @@ test("registry inventories all 59 boards and five borough presidents without cit
   }
 });
 
-test("detector fixture exercises accepted and precision-rejected pairs", () => {
+test("publisher matter keys accept ULURP identifiers only", () => {
+  assert.deepEqual(publisherMatterTokens(["260190ZSX", "ATLANTIC-REZONING", "HILLSIDE-AVE"]), ["260190ZSX"]);
+  assert.deepEqual(publisherMatterTokens(["C240001ZMM"]), ["C240001ZMM"]);
+  assert.deepEqual(publisherMatterTokens(["W42ST-PLAN", "HYLAN-REZONING"]), []);
+  assert.equal(matterTokenMatch(["260190ZSX"], "260190ZSX. Motion approved 21-0-0.").matched, true);
+  assert.equal(matterTokenMatch(["ATLANTIC-REZONING"], "ATLANTIC-REZONING. Motion adopted 31-2-1.").matched, false);
+  assert.equal(
+    matterTokenMatch(["260115ZMK"], "Different application N250099ZRK. Motion approved 22-4-0.").matched,
+    false,
+  );
+});
+
+test("repaired join accepts only publisher-ULURP body/date matches", () => {
   const measured = measureJoinBridge(fixture.notices, fixture.documents);
   assert.equal(USEFULNESS_THRESHOLD, 0.3);
+  assert.equal(PRECISION_PROMOTION_BAR, 1);
   assert.equal(measured.total, 10);
-  assert.equal(measured.joined, 4);
-  assert.equal(measured.rate, 0.4);
+  // Prior 4/7 accepted slug tokens; repair keeps only ULURP publisher ids → 2 joins.
+  assert.equal(measured.joined, 2);
+  assert.equal(measured.rate, 0.2);
+  assert.equal(measured.above_threshold, false);
   assert.equal(measured.false_positive_review.reviewed_pairs, 7);
-  assert.equal(measured.false_positive_review.accepted, 4);
-  assert.equal(measured.false_positive_review.rejected, 3);
+  assert.equal(measured.false_positive_review.accepted, 2);
+  assert.equal(measured.false_positive_review.rejected, 5);
+  assert.equal(measured.false_positive_review.precision, 1);
+  assert.equal(measured.false_positive_review.clears_precision_bar, true);
+  assert.ok(measured.false_positive_review.rejection_reasons.publisher_matter_token_absent >= 1);
+  assert.ok(measured.false_positive_review.rejection_reasons.matter_token_mismatch >= 1);
+  assert.ok(measured.false_positive_review.rejection_reasons.date_mismatch >= 1);
   assert.deepEqual(measured.sample_by_borough, {
     Bronx: 2,
     Brooklyn: 2,
@@ -87,7 +114,34 @@ test("detector fixture exercises accepted and precision-rejected pairs", () => {
     Queens: 2,
     "Staten Island": 2,
   });
+});
 
+test("reviewed sample labels each body-matched candidate and gates promotion at 100% precision", () => {
+  const review = reviewJoinCandidates(fixture.notices, fixture.documents);
+  assert.equal(review.candidates.length, 7);
+  assert.ok(review.candidates.every((row) => row.review_label));
+  assert.equal(review.summary.true_positives, 2);
+  assert.equal(review.summary.false_positives, 0);
+  assert.equal(review.summary.precision, 1);
+  assert.equal(review.summary.clears_precision_bar, true);
+
+  const promotion = joinBridgePromotionDecision(measureJoinBridge(fixture.notices, fixture.documents));
+  // Precision clears, usefulness does not → outcome edge stays disabled.
+  assert.equal(promotion.precision_ok, true);
+  assert.equal(promotion.usefulness_ok, false);
+  assert.equal(promotion.enabled, false);
+
+  const precisionReceipt = buildPrecisionReviewReceipt({
+    notices: fixture.notices,
+    documents: fixture.documents,
+    observedOn: "2026-08-05",
+    joinBridgeEnabled: false,
+  });
+  assert.equal(precisionReceipt.schema, "cityscroll.non_council_outcomes.precision_review.v1");
+  assert.equal(precisionReceipt.authoritative_join_gate.enabled, false);
+  assert.equal(precisionReceipt.precision_review.measured_precision, 1);
+  assert.equal(precisionReceipt.precision_review.prior_reported_precision, Number((4 / 7).toFixed(4)));
+  assert.equal(precisionReceipt.reviewed_candidates.length, 7);
 });
 
 test("published real sample kills the below-threshold bridge", () => {
@@ -112,12 +166,21 @@ test("published real sample kills the below-threshold bridge", () => {
   assert.equal(registry.policy.join_bridge_enabled, false);
 });
 
-test("strict bridge requires exact body/date and conservative matter tokens", () => {
+test("strict bridge requires exact body/date and publisher ULURP matter tokens", () => {
   const joined = joinNonCouncilOutcomes(fixture.notices, fixture.documents);
-  assert.equal(joined.length, 4);
-  assert.ok(joined.every((row) => row.join.method === "exact_body_date_matter_tokens"));
+  assert.equal(joined.length, 2);
+  assert.ok(joined.every((row) => row.join.method === JOIN_METHOD));
   assert.ok(joined.every((row) => row.provenance.page_url && row.provenance.document_url));
   assert.ok(joined.every((row) => row.outcome?.explicit === true));
+  assert.deepEqual(
+    joined.map((row) => row.request_id).sort(),
+    ["sample-bx-accepted", "sample-mn-accepted"],
+  );
+
+  // Slug/name tokens never join even when the document text repeats them.
+  const slugOnly = fixture.notices.find((row) => row.request_id === "sample-bk-accepted");
+  assert.ok(slugOnly);
+  assert.ok(!joined.some((row) => row.request_id === slugOnly.request_id));
 
   const wrongTopic = fixture.notices.find((row) => row.request_id === "sample-si-topic-miss");
   assert.ok(wrongTopic);
@@ -154,14 +217,15 @@ test("HTML index parser keeps document provenance and excludes navigation links"
 
 test("payload builder is board-scoped, while the committed killed bridge stays empty", () => {
   const payload = materializeOutcomeLookup(fixture.notices, fixture.documents, {
-    generatedAt: "2026-08-04T12:00:00.000Z",
+    generatedAt: "2026-08-05T12:00:00.000Z",
   });
   assert.equal(payload.schema, "cityscroll.non_council_outcome_lookup.v1");
   assert.equal(payload.coverage.scope, "fixed_sample_not_citywide");
   assert.equal(payload.coverage.notices_seen, 10);
-  assert.equal(payload.coverage.notices_matched, 4);
-  assert.equal(Object.keys(payload.notices).length, 4);
+  assert.equal(payload.coverage.notices_matched, 2);
+  assert.equal(Object.keys(payload.notices).length, 2);
   assert.equal(payload.notices["sample-si-topic-miss"], undefined);
+  assert.equal(payload.notices["sample-bk-accepted"], undefined);
   assert.equal(lookup.schema, payload.schema);
   assert.equal(lookup.coverage.scope, "fixed_sample_not_citywide");
   assert.equal(lookup.coverage.notices_seen, 10);
@@ -177,6 +241,8 @@ test("collector and warehouse runner enforce polite, checkpointed, bounded colle
   assert.match(collectorSource, /HTTP 403/);
   assert.match(collectorSource, /binaries_stored:\s*false/);
   assert.match(collectorSource, /join_bridge_enabled/);
+  assert.match(collectorSource, /publisher ULURP|extractUlurpKeys/);
+  assert.match(collectorSource, /PRECISION|precision_promotion|precision_review/);
   assert.match(runnerSource, /IngestLock/);
   assert.match(runnerSource, /check_headroom/);
   assert.match(runnerSource, /non_council_outcome_sources/);
