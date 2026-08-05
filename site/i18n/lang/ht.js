@@ -2365,7 +2365,7 @@
     career_fee_salary_not_yet_ingested_html: "Pokò ap montre isit la — frè ak salè yo nan {source}.",
     career_noe_source_name: "Avi Egzamen DCAS la",
     career_status_open: "Louvri kounye a",
-    staffing_history_summary: "Sa ki te pase: nominasyon resan",
+    staffing_history_summary: "Dosye nominasyon",
     career_group_open: "Aplike kounye a",
     career_group_upcoming: "K ap vini",
     career_group_continuous: "Egzamen san randevou ak egzamen kontinyèl",

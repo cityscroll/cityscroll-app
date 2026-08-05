@@ -2366,7 +2366,7 @@
     career_fee_salary_not_yet_ingested_html: "此处尚未显示 — 费用与薪资见 {source}。",
     career_noe_source_name: "DCAS 考试通知",
     career_status_open: "现已开放",
-    staffing_history_summary: "已发生的情况：近期任用",
+    staffing_history_summary: "任用记录",
     career_group_open: "立即申请",
     career_group_upcoming: "即将开放",
     career_group_continuous: "现场报名和持续开放的考试",

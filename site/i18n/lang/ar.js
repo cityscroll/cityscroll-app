@@ -2368,7 +2368,7 @@
     career_fee_salary_not_yet_ingested_html: "لم يُعرض هنا بعد — الرسوم والراتب موجودان في {source}.",
     career_noe_source_name: "إشعار امتحان DCAS",
     career_status_open: "افتح الآن",
-    staffing_history_summary: "ما حدث: التعيينات الأخيرة",
+    staffing_history_summary: "سجل التعيينات",
     career_group_open: "قدّم الآن",
     career_group_upcoming: "قريبًا",
     career_group_continuous: "اختبارات الحضور المباشر والمستمرة",
