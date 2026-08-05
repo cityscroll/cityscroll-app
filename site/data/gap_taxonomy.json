@@ -2701,7 +2701,7 @@
       "surface": "Meetings map · unresolved matter or venue geography",
       "i18n_key": null,
       "class": "not_yet_ingested",
-      "disposition": "open",
+      "disposition": "measured_stop",
       "public_source": {
         "name": "City Record Online",
         "access": "NYC Open Data dg92-zbpx plus linked official board or agency pages",
@@ -2713,9 +2713,9 @@
           "agency"
         ]
       },
-      "notices_affected_estimate": "11 of 119 Meetings observations after the venue-geography collector landed.",
-      "evidence": "The August 4 census initially found 24/119 meetings without a place signal. The venue-geography pass landed in PR #500 and narrowed the current committed residual to 11/119: nine require an external board page and two omit a place in the notice body.",
-      "evidence_link": "site/data/district_activity.json"
+      "notices_affected_estimate": "9 of 119 Meetings observations remain unlocated after the bounded source review.",
+      "evidence": "The August 4 census initially found 24/119 meetings without a place signal. The venue-geography pass narrowed that tail to 11/119. Official agency pages classify both body omissions as virtual hearings, leaving 9/119 generic Board Meetings directory rows. Each directory enumerates many bodies and venues without identifying one event, so the rows remain unlocated rather than receiving an invented district pin.",
+      "evidence_link": "site/data/meetings_location_residual_receipt.json"
     },
     {
       "id": "property-parcel-key-residual",
@@ -2741,20 +2741,6 @@
   "ranked_ingest_list": [
     {
       "rank": 1,
-      "source": "Official board and agency meeting pages for the location residual",
-      "access": "Official pages identified from the City Record agency/body and meeting date",
-      "gaps_filled": [
-        "meetings-location-residual"
-      ],
-      "value": "Narrow the 11-row Meetings location tail without substituting agency headquarters for matter geography.",
-      "effort_guess": "Small bounded residual classification followed by source-specific extraction.",
-      "join_risk": "Nine rows require an external board page and two omit a place in the notice body; source availability must be checked per row.",
-      "value_score": 15,
-      "realized_join_rate": null,
-      "predicted_join_grade": null
-    },
-    {
-      "rank": 2,
       "source": "Property notice parcel-key residual",
       "access": "City Record notice text and structured fields for the single unmatched observation",
       "gaps_filled": [
@@ -2784,7 +2770,7 @@
     "PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.",
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.",
     "ABO residual join (2026-08-04): 1/50 labeled matches (2%), 50% fuzzy precision, five false positives, and four ambiguous groups; no notice-level edge materialization below the 30% usefulness and 95% precision gates.",
-    "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 11/119 Meetings after PR #500, and 1/139 Property parcel keys."
+    "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
     "observed_on": "2026-08-05",

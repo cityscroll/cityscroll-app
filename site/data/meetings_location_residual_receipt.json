@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.meetings_location_residual.v1",
-  "observed_on": "2026-08-04",
+  "observed_on": "2026-08-05",
   "source": {
     "system": "city_record",
     "dataset_id": "dg92-zbpx",
@@ -32,6 +32,132 @@
       "external_board_page_needed": 9,
       "body_place_omitted": 2
     }
+  },
+  "followup": {
+    "observed_on": "2026-08-05",
+    "baseline_total": 11,
+    "before": {
+      "located": 108,
+      "virtual_only": 3,
+      "unlocated": 11,
+      "unlocated_by_reason": {
+        "external_board_page_needed": 9,
+        "body_place_omitted": 2
+      }
+    },
+    "result": {
+      "virtual_only": 2,
+      "honest_residual": 9
+    },
+    "after": {
+      "located": 110,
+      "virtual_only": 5,
+      "unlocated": 9,
+      "unlocated_by_reason": {
+        "multi_event_directory": 9
+      }
+    },
+    "cases": [
+      {
+        "request_id": "20260213011",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260213012",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260213013",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260213014",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260213015",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260504036",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260504037",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260504038",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260504039",
+        "prior_reason": "external_board_page_needed",
+        "terminal_classification": "multi_event_directory",
+        "status": "honest_residual",
+        "method": "multi_event_directory",
+        "source_locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039",
+        "source_label": "City Record notice detail"
+      },
+      {
+        "request_id": "20260515001",
+        "prior_reason": "body_place_omitted",
+        "terminal_classification": "virtual_only",
+        "status": "virtual_only",
+        "method": "virtual_only",
+        "source_locator": "https://www.nyc.gov/site/dcas/about/public-hearings/public-hearings-2026.page",
+        "source_label": "DCAS Public Hearings 2026 — Department of Cultural Affairs, June 3"
+      },
+      {
+        "request_id": "20260624005",
+        "prior_reason": "body_place_omitted",
+        "terminal_classification": "virtual_only",
+        "status": "virtual_only",
+        "method": "virtual_only",
+        "source_locator": "https://www.nyc.gov/assets/dsny/downloads/collection/containerization/residential-containerization/deis-25dos003y-07012026.pdf",
+        "source_label": "DSNY Citywide Containerization Program Draft EIS — July 28 public hearing"
+      }
+    ]
   },
   "source_registry_review": {
     "bodies_inventoried": 64,
