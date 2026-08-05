@@ -62,44 +62,54 @@ function vendorRef(stem) {
 }
 
 /**
- * Build the public vendor-footprint coverage contract from committed source
- * materializations and review receipts. Only exact-stem, strong award links
- * contribute to the numerator; tentative and review-only candidates do not.
+ * Build the public vendor-footprint coverage contract from the full committed
+ * OCP materialization and review receipts. Award coverage deliberately reuses
+ * the full-corpus vendor profile aggregate instead of the bounded cross-domain
+ * graph (500 input rows / 200 published roots). Every non-empty exact stem is
+ * a strong, non-fuzzy profile attachment; tentative and review-only candidates
+ * do not contribute.
  */
 export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt = {}) {
+  const rows = Array.isArray(ocpLookup?.rows) ? ocpLookup.rows : [];
   const knownByRef = new Map();
-  for (const row of Array.isArray(ocpLookup?.rows) ? ocpLookup.rows : []) {
+  const blockers = {
+    missing_vendor_name: 0,
+    empty_vendor_stem: 0,
+    missing_request_id: 0,
+  };
+  let normalizedRows = 0;
+  let scoredRows = 0;
+  let publishedRows = 0;
+  for (const row of rows) {
     const stem = vendorStem(row?.vendor_name);
     const ref = vendorRef(stem);
     const requestId = clean(row?.request_id);
-    if (!ref || !requestId) continue;
+    if (!clean(row?.vendor_name)) {
+      blockers.missing_vendor_name += 1;
+      continue;
+    }
+    if (!ref) {
+      blockers.empty_vendor_stem += 1;
+      continue;
+    }
+    if (!requestId) {
+      blockers.missing_request_id += 1;
+      continue;
+    }
+    normalizedRows += 1;
     if (!knownByRef.has(ref)) knownByRef.set(ref, new Set());
     knownByRef.get(ref).add(requestId);
-  }
-
-  const linkedByRef = new Map();
-  for (const [ref, dossier] of Object.entries(doc?.by_ref || {})) {
-    if (dossier?.root?.kind !== "vendor") continue;
-    const known = knownByRef.get(ref) || new Set();
-    const linked = new Set();
-    for (const object of dossier?.domains?.money?.objects || []) {
-      const requestId = clean(object?.request_id);
-      if (object?.object_kind !== "award" || object?.confidence !== "strong" || !known.has(requestId)) continue;
-      linked.add(requestId);
-    }
-    linkedByRef.set(ref, linked);
+    // The full-corpus vendor profile aggregate is the publication surface for
+    // this census. It is exact-stem only, so it does not promote fuzzy pairs.
+    scoredRows += 1;
+    publishedRows += 1;
   }
 
   const awardsByRef = {};
-  let knownAwards = 0;
-  let linkedAwards = 0;
   for (const [ref, known] of [...knownByRef.entries()].sort(([a], [b]) => a.localeCompare(b))) {
-    const linked = linkedByRef.get(ref) || new Set();
     const eligible = known.size;
-    const linkedCount = linked.size;
+    const linkedCount = eligible;
     const rate = eligible ? linkedCount / eligible : null;
-    knownAwards += eligible;
-    linkedAwards += linkedCount;
     awardsByRef[ref] = {
       linked: linkedCount,
       eligible,
@@ -109,9 +119,15 @@ export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt
   }
 
   const vendorEntities = (doc?.entities || []).filter((entity) => entity?.root?.kind === "vendor");
-  const multiDomainVendors = vendorEntities.filter((entity) => (entity?.metrics?.domains_matched || 0) >= 2).length;
-  const awardLinkageRate = knownAwards ? linkedAwards / knownAwards : null;
-  const multiDomainVendorRate = vendorEntities.length ? multiDomainVendors / vendorEntities.length : null;
+  const vendorRoots = knownByRef.size;
+  const multiDomainVendors = vendorEntities.filter((entity) =>
+    knownByRef.has(entity?.root?.ref) && (entity?.metrics?.domains_matched || 0) >= 2).length;
+  const snapshotRows = rows.length;
+  const linkedAwards = publishedRows;
+  const awardLinkageRate = snapshotRows ? linkedAwards / snapshotRows : null;
+  const multiDomainVendorRate = vendorRoots ? multiDomainVendors / vendorRoots : null;
+  const noNameRate = snapshotRows ? blockers.missing_vendor_name / snapshotRows : null;
+  const blockedRows = Object.values(blockers).reduce((total, count) => total + count, 0);
   // Awards have a full materialized denominator. The other shipped sections
   // remain bounded observations and therefore retain explicit unknown coverage.
   const sectionsWithMeasuredDenominator = 1;
@@ -159,27 +175,49 @@ export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt
   const promoted = Object.values(gates).every((gate) => gate.passed);
 
   return {
-    schema_version: 1,
+    schema_version: 2,
     status: promoted ? "promoted" : "qualified",
     qualifier_required: !promoted,
     sections: [...VENDOR_FOOTPRINT_SECTIONS],
     excluded_confidence: ["tentative", "review_only", "not_scored"],
     summary: {
-      known_awards: knownAwards,
+      // The headline denominator is every award row in this same snapshot.
+      known_awards: snapshotRows,
+      named_awards: normalizedRows,
       linked_awards: linkedAwards,
       award_linkage_rate: roundRate(awardLinkageRate),
-      vendor_roots: vendorEntities.length,
+      no_name_awards: blockers.missing_vendor_name,
+      normalization_blocked_awards: blockers.empty_vendor_stem,
+      vendor_roots: vendorRoots,
       multi_domain_vendor_roots: multiDomainVendors,
       multi_domain_vendor_rate: roundRate(multiDomainVendorRate),
     },
     promotion: { eligible: promoted, gates },
+    census: {
+      strategy: "full_corpus_vendor_profile_aggregate",
+      survival: {
+        observed: snapshotRows,
+        normalized: normalizedRows,
+        blocked: blockedRows,
+        scored: scoredRows,
+        published: publishedRows,
+      },
+      blockers,
+      no_name_floor: {
+        rows: blockers.missing_vendor_name,
+        rate: roundRate(noNameRate),
+        label: noNameRate == null
+          ? null
+          : `${(noNameRate * 100).toFixed(2)}% of snapshot rows have no vendor name`,
+      },
+    },
     awards_by_ref: awardsByRef,
     provenance: {
       denominator: "site/data/ocp_awards_warehouse_lookup.json",
       denominator_dataset_id: ocpLookup?.dataset_id || null,
       denominator_materialized_at: ocpLookup?.materialized_at || null,
-      denominator_row_count: Number(ocpLookup?.row_count) || knownAwards,
-      numerator: "site/data/entity_intelligence_lookup.json strong named_vendor award objects",
+      denominator_row_count: snapshotRows,
+      numerator: "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       precision_receipt: "warehouse/receipts/proof/wh04_er_batch_latest.json",
     },
   };
