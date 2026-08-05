@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-08-05",
+  "artifact": "site/data/property_disposition_cohort.json",
+  "join_method": "exact_normalized_bbl",
+  "text_match_used": false,
+  "n": 1,
+  "minimum_sample": 20,
+  "status": "insufficient_sample",
+  "label": "n=1 — insufficient for a duration model",
+  "duration_summary_eligible": false,
+  "forecast_eligible": false,
+  "pairs": [
+    {
+      "bbl": "1019540055",
+      "hearing_request_id": "20161004104",
+      "hearing_date": "2016-10-12",
+      "auction_or_rfp_request_id": "20170512101",
+      "auction_or_rfp_date": "2017-05-19",
+      "interval_days": 219
+    }
+  ]
+}

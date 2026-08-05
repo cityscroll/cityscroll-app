@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "version": "property_disposition_exact_bbl_v1",
+  "generated_at": "2026-08-05T10:42:39.926Z",
+  "sources": {
+    "observations": {
+      "artifact": "site/data/property_domain_observations.json",
+      "version": "property_domain_observations_v1",
+      "generated_at": "2026-08-02T18:47:20.520Z",
+      "property_count": 133
+    },
+    "cross_domain": {
+      "artifact": "site/data/property_cross_domain_lookup.json",
+      "version": "property_cross_domain_v1",
+      "generated_at": "2026-08-05T10:42:39.926Z"
+    }
+  },
+  "cohort": {
+    "unit": "exact_normalized_bbl_hearing_to_later_auction_or_rfp",
+    "date_basis": "city_record_start_date",
+    "join_method": "exact_normalized_bbl",
+    "text_match_used": false,
+    "exact_bbl_groups_considered": 246,
+    "n": 1,
+    "pairs": [
+      {
+        "pair_id": "property-disposition:1019540055:20161004104:20170512101",
+        "bbl": "1019540055",
+        "hearing": {
+          "request_id": "20161004104",
+          "date": "2016-10-12",
+          "date_basis": "start_date"
+        },
+        "auction_or_rfp": {
+          "request_id": "20170512101",
+          "date": "2017-05-19",
+          "date_basis": "start_date"
+        },
+        "interval_days": 219,
+        "provenance": {
+          "join_method": "exact_normalized_bbl",
+          "join_key": "bbl:1019540055",
+          "source_system": "city_record",
+          "source_record_ids": [
+            "city_record:20161004104",
+            "city_record:20170512101"
+          ],
+          "source_fields": [
+            "property_location.bbls",
+            "disposition_stage",
+            "start_date"
+          ],
+          "corroborating_artifact": "site/data/property_cross_domain_lookup.json#by_bbl",
+          "text_match_used": false
+        }
+      }
+    ]
+  },
+  "eligibility": {
+    "minimum_sample": 20,
+    "observed_pairs": 1,
+    "status": "insufficient_sample",
+    "label": "n=1 — insufficient for a duration model",
+    "duration_summary_eligible": false,
+    "forecast_eligible": false
+  },
+  "duration_summary": null,
+  "forecast": null
+}
