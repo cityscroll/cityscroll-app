@@ -11,6 +11,7 @@ import {
 import { handleAdminDigestShadow } from "../src/admin.mjs";
 
 const NOW = new Date("2026-08-04T10:00:00.000Z");
+const HOLD_NOW = new Date("2026-08-04T13:00:00.000Z");
 
 function itemHtml(count, { unsubscribe = true, context = true, badHref = null } = {}) {
   const items = Array.from({ length: count }, (_, index) =>
@@ -270,10 +271,12 @@ test("authenticated operator override releases only a digest named by the redlin
       digest_ids: ["sub:er***"],
       reason: "Reviewed source output and approved delivery",
     }),
-  }), { ADMIN_KEY: "secret", DB });
+  }), { ADMIN_KEY: "secret", DB }, { now: HOLD_NOW });
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.deepEqual(body.hold.overridden_digest_ids, ["sub:er***"]);
+  assert.deepEqual(body.hold.active_digest_ids, []);
+  assert.equal(body.hold.source_status, "REDLINES_AT_CUTOFF");
   assert.deepEqual([...DB.overrides], ["sub:er***"]);
 
   const invalid = await handleAdminDigestShadow(new Request("https://w/admin/digest-shadow", {
@@ -285,7 +288,7 @@ test("authenticated operator override releases only a digest named by the redlin
       digest_ids: ["digest:unrelated"],
       reason: "Not actually affected",
     }),
-  }), { ADMIN_KEY: "secret", DB });
+  }), { ADMIN_KEY: "secret", DB }, { now: HOLD_NOW });
   assert.equal(invalid.status, 400);
   assert.equal((await invalid.json()).error, "hold-override-failed");
 });
