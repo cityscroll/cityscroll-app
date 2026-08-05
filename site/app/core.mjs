@@ -266,6 +266,15 @@ function syncTabAria(){
   btns.forEach(b=>{ const on=b.classList.contains("active"); b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; if(on) any=true; });
   if(!any && btns[0]) btns[0].tabIndex = 0; // notice view: no tab selected — keep the tablist reachable
 }
+function focusLensHeading(name){
+  const pane=document.getElementById("tab-"+name);
+  const heading=pane?.querySelector(".lens-entry-heading");
+  if(!heading) return;
+  if(!heading.isConnected || !heading.closest(".tabpane.active")) return;
+  // Keep the heading focusable without letting the document's smooth-scroll
+  // style animate the entry. The direct viewport move settles immediately.
+  heading.focus({preventScroll:true});
+}
 let pendingRouteModuleTab=null;
 function showTab(name, push){
   const routeModules=globalThis.CrolRouteModules;
@@ -283,6 +292,7 @@ function showTab(name, push){
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
   syncTabAria();
+  focusLensHeading(name);
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
@@ -296,9 +306,6 @@ function showTab(name, push){
   }
   if(name==="people"){
     loadCareerGuide(); loadStaffingFeed();
-    if(push && !globalThis.careerSelected){
-      requestAnimationFrame(()=>scrollStaffingView("notices"));
-    }
   }
   if(name==="property"){
     const panel=$("#tax-lien-sale-panel");
