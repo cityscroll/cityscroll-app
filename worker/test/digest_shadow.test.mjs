@@ -194,8 +194,8 @@ test("shadow failures produce no outbound email", async () => {
       DB,
       ALERT_STATE: { get: async () => null },
       RESEND_API_KEY: "test-resend-key",
-      FEEDBACK_TO: "example@example.com",
-      ALERTS_FROM: "CityScroll <example@example.com>",
+      FEEDBACK_TO: "configured-recipient",
+      ALERTS_FROM: "configured-sender",
     }, {
       now: NOW,
       runAlertsFn: async () => ({ results: [{ sub: "sub:er***", previewId: "digest:error", error: "render failed" }] }),
