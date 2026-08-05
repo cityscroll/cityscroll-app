@@ -132,10 +132,9 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(result.profiles, 1);
   assert.equal(result.buckets, 1);
   assert.equal(result.cronCost.socrataRequestsBefore, 1);
-  // WH-05: Doing Business comes from warehouse materialization (0 SODA catalog pages)
-  // when the committed snapshot includes the vendor stem (CAMBA product seed).
-  assert.equal(result.cronCost.doingBusinessRequests, 0);
-  assert.equal(result.cronCost.socrataRequestsAfter, 2);
+  // An empty committed snapshot preserves the documented live SODA fallback.
+  assert.equal(result.cronCost.doingBusinessRequests, 1);
+  assert.equal(result.cronCost.socrataRequestsAfter, 3);
   assert.equal(result.included.recentNotices, 15);
   assert.equal(result.included.forecasts, 1);
   assert.equal(result.included.doingBusiness, 1);
@@ -150,7 +149,7 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(bucket.profiles.CAMBA.recentNotices[0].vendor_name, undefined);
   assert.deepEqual(bucket.profiles.CAMBA.forecasts, forecast);
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_name, "CAMBA  INC");
-  // Warehouse product seed uses fictional 555 phone (scrim L081); SODA path keeps live shape.
+  // The injected SODA response keeps its source-shaped phone value.
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "5550100");
   assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));

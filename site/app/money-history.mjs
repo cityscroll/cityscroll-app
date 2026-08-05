@@ -447,17 +447,11 @@ function entityIntelligenceHTML(resp){
     </section>`;
   }).join("");
 
-  const cov = resp.metrics && resp.metrics.domains_matched != null
-    ? t("entity_intel_coverage", {
-        matched: String(resp.metrics.domains_matched),
-        total: String(resp.metrics.domains_total || 6),
-      })
-    : "";
   const rootName = escUiHtml(resp.root.display_name || resp.root.ref || "");
 
   return `<div class="eicard" id="entity-intelligence" data-root="${escUiHtml(resp.root.ref||"")}">
       <div class="chain-h" style="margin:16px 0 8px">${t("entity_intel_heading")}</div>
-      <p class="ei-lead">${t("entity_intel_lead", {name: rootName})}${cov?` <span class="ei-cov">${cov}</span>`:""}</p>
+      <p class="ei-lead">${t("entity_intel_lead", {name: rootName})}</p>
       <div class="ei-domains">${domainBlocks}</div>
       <p class="aidprov ei-method">${t("entity_intel_method_note")}</p>
     </div>`;

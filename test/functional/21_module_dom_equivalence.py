@@ -23,6 +23,10 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from i18n_fixtures import HEARING_ROW, install_routes  # noqa: E402
 
 FOOTER = "\n// Publish live bindings for neighboring modules and legacy inline handlers."
+STATIC_PARENT_IMPORT = re.compile(
+    r'import\s+\{[^}]+\}\s+from\s+["\']\.\./([^"\']+)["\'];?',
+    re.MULTILINE,
+)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -43,10 +47,33 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
     names = re.findall(r'await import\("\./(.+?)"\);', loader)
     assert names, "module loader has no imports"
     chunks = []
+    helpers = []
+    seen_helpers = set()
     for name in names:
         source = (SITE / "app" / name).read_text()
+        for helper_name in STATIC_PARENT_IMPORT.findall(source):
+            if helper_name in seen_helpers:
+                continue
+            helper_path = SITE / helper_name
+            assert helper_path.is_file(), f"static helper import missing: {helper_name}"
+            helper_source = helper_path.read_text()
+            assert not re.search(r"^\s*import\s", helper_source, re.MULTILINE), (
+                f"inline reconstruction cannot flatten nested imports in {helper_name}"
+            )
+            helper_source = re.sub(
+                r"^export\s+(?=(?:async\s+)?(?:function|class|const|let|var)\b)",
+                "",
+                helper_source,
+                flags=re.MULTILINE,
+            )
+            assert not re.search(r"^\s*export\s", helper_source, re.MULTILINE), (
+                f"inline reconstruction cannot flatten this export in {helper_name}"
+            )
+            helpers.append(helper_source)
+            seen_helpers.add(helper_name)
+        source = STATIC_PARENT_IMPORT.sub("", source)
         chunks.append(source.split(FOOTER)[0].replace('import("../', 'import("./'))
-    inline = "\n".join(chunks)
+    inline = "\n".join([*helpers, *chunks])
     index_path = target / "index.html"
     index = index_path.read_text()
     marker = '<script type="module" src="app/main.mjs"></script>'

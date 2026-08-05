@@ -27,6 +27,10 @@ import {
   loadProductSeedRows,
   rowToSodaShape,
 } from "../warehouse/lib/doing_business_lookup.mjs";
+import {
+  publicPayloadFindings,
+  publicRecords,
+} from "./lib/public_payload_integrity.mjs";
 
 const ROOT = REPO_ROOT;
 const OUT_SITE = path.join(ROOT, "site", "data", "doing_business_warehouse_lookup.json");
@@ -141,22 +145,28 @@ function collectRows({ fixture, limit }) {
     }
     const seed = loadProductSeedRows();
     const sample = loadSampleCsvRows();
-    return {
-      rows: dedupeRows([...fromWh, ...seed, ...sample]),
-      mode: catalogExists() && fromWh.length ? "fixture_warehouse" : "fixture_csv",
-    };
+    const rows = dedupeRows(
+      publicRecords([...fromWh, ...seed, ...sample], "Doing Business public materialization"),
+    );
+    return { rows, mode: rows.length ? "warehouse" : "live_fallback" };
   }
 
   try {
-    const rows = exportDoingBusinessRowsFromWarehouse({ limit });
+    const rows = publicRecords(
+      exportDoingBusinessRowsFromWarehouse({ limit }),
+      "Doing Business warehouse export",
+    );
     const seed = loadProductSeedRows();
+    const cleanRows = dedupeRows(
+      publicRecords([...rows, ...seed], "Doing Business public materialization"),
+    );
     return {
-      rows: dedupeRows([...rows, ...seed]),
-      mode: rows.length > 1000 ? "bulk_warehouse" : "warehouse",
+      rows: cleanRows,
+      mode: rows.length > 1000 ? "bulk_warehouse" : cleanRows.length ? "warehouse" : "live_fallback",
     };
   } catch (e) {
-    console.warn(`warehouse export failed, using product seed: ${e.message || e}`);
-    return { rows: loadProductSeedRows(), mode: "fixture_csv" };
+    console.warn(`warehouse export failed; keeping the live fallback: ${e.message || e}`);
+    return { rows: [], mode: "live_fallback" };
   }
 }
 
@@ -249,11 +259,23 @@ function writeOrCheck(filePath, doc, check) {
 async function main() {
   const args = parseArgs(process.argv);
   const { rows, mode } = collectRows(args);
-  assert.ok(rows.length >= 1, "materialization needs at least one Doing Business row");
+  let now = new Date().toISOString();
+  if (args.check && existsSync(OUT_WORKER)) {
+    try {
+      now = JSON.parse(readFileSync(OUT_WORKER, "utf8")).materialized_at || now;
+    } catch {
+      /* keep now */
+    }
+  }
   const doc = buildMaterializationDoc(rows, {
     mode,
-    now: new Date().toISOString(),
+    now,
   });
+  assert.deepEqual(
+    publicPayloadFindings(doc, { source: "site/data/doing_business_warehouse_lookup.json" }),
+    [],
+    "Doing Business public materialization contains test-only records",
+  );
   const outs = [
     writeOrCheck(OUT_SITE, doc, args.check),
     writeOrCheck(OUT_WORKER, doc, args.check),

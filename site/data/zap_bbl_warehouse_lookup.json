@@ -4,10 +4,10 @@
   "source": "warehouse",
   "dataset_id": "2iga-a6mk",
   "table_name": "zap_bbl",
-  "mode": "fixture_warehouse",
-  "materialized_at": "2026-08-02T11:47:20.618Z",
-  "project_count": 11,
-  "bbl_row_count": 89,
+  "mode": "verified_seed",
+  "materialized_at": "2026-08-04T23:51:05.308Z",
+  "project_count": 9,
+  "bbl_row_count": 86,
   "replaces_live_fetch": {
     "worker": "worker/src/zap_outcomes.mjs#fetchBbls",
     "soda_dataset": "2iga-a6mk",
@@ -108,19 +108,6 @@
       "project_id": "2026X0362",
       "bbls": [
         "2025710001"
-      ]
-    },
-    {
-      "project_id": "FIXZAP001",
-      "bbls": [
-        "1000010001",
-        "1000010002"
-      ]
-    },
-    {
-      "project_id": "FIXZAP002",
-      "bbls": [
-        "3000020001"
       ]
     },
     {
