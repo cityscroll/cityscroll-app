@@ -18,6 +18,7 @@ import {
   filterPropertyExplorerEntries,
   partitionPropertyExplorerEntries,
   parcelLookupUrls,
+  propertyEntryDefaultQualification,
   propertyExplorerCensusCount,
   propertyProcessActionKey,
   propertyProcessFilterKey,
@@ -292,6 +293,10 @@ test("renderPropExplorer keeps the closed archive one tap away instead of append
   assert.match(index, /propertyView===\"archive\"/);
   assert.match(routing, /q\.set\("view", "archive"\)/);
   assert.match(markup, /id="property-view-switch"/);
+  assert.match(index, /property_nothing_current/);
+  assert.match(index, /data-property-empty-watch/);
+  assert.match(index, /propertyActionEnablingInfoHTML/);
+  assert.match(index, /property_related_current_sales/);
   // Small-multiples collapse is wired into the feed.
   assert.match(index, /clusterRepeatedEntries/);
   assert.match(index, /propertyClusterCardHTML/);
@@ -305,6 +310,7 @@ test("default Property qualification follows live typed events and exposed parti
 
   assert.deepEqual(ids(partition.default_entries).sort(), [
     "20200128107", // evergreen Property Clerk claim route
+    "20251106024", // recurring weekly auto auction remains open through source end date
     "20260526003", // seized-products inquiry route
   ]);
   assert.ok(ids(partition.archive_entries).includes("20240108007"), "Public Hearing pointer is archived");
@@ -313,6 +319,55 @@ test("default Property qualification follows live typed events and exposed parti
   assert.ok(ids(partition.archive_entries).includes("20211118008"), "closed acquisition hearing is archived");
   assert.equal(partition.default_count + partition.archive_count, partition.census_total);
   assert.equal(partition.census_total, rows.length);
+});
+
+test("default qualification consumes the same closed lifecycle as card tense", () => {
+  const row = {
+    request_id: "2019-surplus",
+    short_title: "The City is currently selling surplus assets online",
+    start_date: "2019-01-01",
+    additional_description_1: "To begin bidding, register at https://example.gov/auction.",
+    commercial: {
+      close_date: "2019-01-31",
+      glance: { close_date: "2019-01-31", item: "Equipment" },
+      timed_events: [],
+    },
+  };
+  row.property_reader_actions = extractPropertyReaderActions(row, { today: "2026-08-04" });
+  const [entry] = buildPropertyExplorerEntries([row], []);
+  const qualification = propertyEntryDefaultQualification(entry, { today: "2026-08-04" });
+  const partition = partitionPropertyExplorerEntries([entry], { today: "2026-08-04" });
+
+  assert.equal(row.property_reader_actions.lifecycle.state, "closed");
+  assert.equal(qualification.lifecycle_state, "closed");
+  assert.equal(qualification.qualified, false);
+  assert.equal(partition.default_count, 0);
+  assert.equal(partition.archive_count, 1);
+});
+
+test("source lifecycle end keeps a recurring sale current in the route payload", () => {
+  const row = {
+    request_id: "recurring-auto-auction",
+    short_title: "AUTO AUCTION",
+    start_date: "2025-11-14",
+    end_date: "2027-05-03",
+    additional_description_1: "Auctions are held every week at https://example.gov/auction. All auctions are open to the public and registration is free.",
+    commercial: {
+      close_date: "2025-11-14",
+      glance: { close_date: "2025-11-14", item: "Vehicles" },
+      timed_events: [],
+    },
+  };
+  row.property_reader_actions = extractPropertyReaderActions(row, { today: "2026-08-04" });
+  const [entry] = buildPropertyExplorerEntries([row], []);
+  const qualification = propertyEntryDefaultQualification(entry, { today: "2026-08-04" });
+  const partition = partitionPropertyExplorerEntries([entry], { today: "2026-08-04" });
+
+  assert.equal(row.property_reader_actions.lifecycle.state, "open");
+  assert.equal(qualification.lifecycle_state, "open");
+  assert.equal(qualification.qualified, true);
+  assert.equal(partition.default_count, 1);
+  assert.equal(partition.archive_count, 0);
 });
 
 test("future sales and hearings remain in the default feed; actionless destruction and fallback records do not", () => {

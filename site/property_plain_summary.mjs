@@ -194,10 +194,23 @@ function displayDate(value) {
   return text;
 }
 
-function eventText(event) {
+function eventText(event, today) {
   const start = displayDate(event?.start);
   const end = displayDate(event?.end);
   const deadline = displayDate(event?.deadline);
+  const rawDate = String(event?.deadline || event?.end || event?.start || "").slice(0, 10);
+  const passed = /^\d{4}-\d{2}-\d{2}$/.test(rawDate) && rawDate < today;
+  if (passed) {
+    if (event.kind === "hearing" && start) return `The hearing was held on ${start}.`;
+    if (event.kind === "auction_window" && start && end) return `The auction ran from ${start} through ${end}.`;
+    if (event.kind === "auction" && start) return `The auction was held on ${start}.`;
+    if (event.kind === "sale" && start) return `The sale was held on ${start}.`;
+    if (event.kind === "bid_deadline" && deadline) return `Bids closed ${deadline}.`;
+    if (event.kind === "inspection_showing" && start) return `The site visit was held on ${start}.`;
+    if (event.kind === "accommodation_deadline" && deadline) return `Interpreter requests closed ${deadline}.`;
+    if (event.kind === "objection_deadline" && deadline) return `Objections closed ${deadline}.`;
+    if (event.kind === "comment_deadline" && deadline) return `Comments closed ${deadline}.`;
+  }
   if (event.kind === "hearing" && start) return `The hearing is on ${start}.`;
   if (event.kind === "auction_window" && start && end) return `The auction runs from ${start} through ${end}.`;
   if (event.kind === "auction" && start) return `The auction is on ${start}.`;
@@ -211,8 +224,23 @@ function eventText(event) {
   return null;
 }
 
-function actionText(action, pattern) {
-  if (action.kind === "bid") return /proposal/i.test(action.how?.text || "") ? "You can send a proposal." : "You can send a bid.";
+function actionText(action, pattern, lifecycle) {
+  if (action.status === "historical") {
+    const closed = displayDate(action.by_when?.value || lifecycle?.closed_at);
+    if (action.kind === "bid") return closed ? `Bids closed ${closed}.` : "The bid or proposal period closed.";
+    if (action.kind === "inspect") return closed ? `Inspection ended ${closed}.` : "The inspection or showing ended.";
+    if (action.kind === "attend") return closed ? `The hearing was held on ${closed}.` : "The hearing was held.";
+    if (action.kind === "comment") return closed ? `Comments closed ${closed}.` : "The comment period closed.";
+    if (action.kind === "object") return closed ? `Objections closed ${closed}.` : "The objection period closed.";
+    if (action.kind === "inquire_claim") return "The record previously invited questions or claims.";
+    if (action.kind === "request_accommodation") return "The accommodation request window closed.";
+    if (action.kind === "review_documents") return "The notice identifies records that were available for review.";
+    if (action.kind === "review_result") return "The notice lists the auction result.";
+  }
+  if (action.kind === "bid") {
+    if (/auction[^.]{0,100}open to (?:the )?public|begin bidding/i.test(action.how?.text || "")) return "You can bid in this sale.";
+    return /proposal/i.test(action.how?.text || "") ? "You can send a proposal." : "You can send a bid.";
+  }
   if (action.kind === "inspect") return /showing/i.test(action.how?.text || "")
     ? "You can go to a public showing."
     : "You can inspect the site or item.";
@@ -281,11 +309,12 @@ export function buildPropertyPlainSummary(row = {}, options = {}) {
 
   const events = suppliedEvents(options, visibleRow).filter((event) => eventReceipt(visibleRow, event));
   const readerActions = suppliedReaderActions(options, visibleRow, events);
+  const lifecycle = readerActions?.lifecycle || null;
   const actions = (readerActions?.actions || []).filter((action) => actionReceipt(visibleRow, action));
   const facts = [lead];
   const eventKeys = new Set();
   for (const event of events) {
-    const text = eventText(event);
+    const text = eventText(event, String(options?.today || new Date().toISOString().slice(0, 10)).slice(0, 10));
     const receipt = eventReceipt(visibleRow, event);
     const key = `${event.kind}:${text}`;
     if (!text || !receipt || eventKeys.has(key)) continue;
@@ -293,7 +322,7 @@ export function buildPropertyPlainSummary(row = {}, options = {}) {
     facts.push(fact(`event_${event.kind}`, text, [receipt], "typed_event"));
   }
   for (const action of actions) {
-    const text = actionText(action, pattern);
+    const text = actionText(action, pattern, lifecycle);
     const receipt = actionReceipt(visibleRow, action);
     if (text && receipt) facts.push(fact(`action_${action.kind}`, text, [receipt], "reader_action"));
   }

@@ -1778,6 +1778,7 @@
     property_event_comment: "Comment deadline",
     property_event_result: "Result date",
     property_closed_section: "Closed / archive",
+    property_related_current_sales: "متعلقہ موجودہ فروخت",
     property_more_filters: "More filters",
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",

@@ -1769,6 +1769,7 @@
     property_event_comment: "Fecha límite de comentarios",
     property_event_result: "Fecha de resultados",
     property_closed_section: "Cerrado / archivo",
+    property_related_current_sales: "Ventas actuales relacionadas",
     property_more_filters: "More filters",
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",

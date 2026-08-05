@@ -81,6 +81,50 @@ test("golden summaries use only extracted actions and typed event dates", () => 
   assert.ok(hearing.definitions.some((item) => /hearing may start late/i.test(item.text)));
 });
 
+test("closed lifecycle copy uses past framing and never emits a present-tense action verb", () => {
+  const row = {
+    short_title: "The City is currently selling surplus assets online",
+    start_date: "2019-01-01",
+    additional_description_1: "To begin bidding, register at https://example.gov/auction. Registration is free.",
+    commercial: {
+      close_date: "2019-01-31",
+      glance: { close_date: "2019-01-31" },
+      timed_events: [],
+    },
+  };
+  const summary = buildPropertyPlainSummary(row, { today: "2026-08-04" });
+  assert.match(summary.text, /Bids closed January 31, 2019\./);
+  assert.doesNotMatch(summary.text, /\bYou can\b|\bcan send\b|\bcan attend\b|\bcan ask\b/i);
+  assert.equal(summary.reader_actions.lifecycle.state, "closed");
+  assert.ok(summary.reader_actions.actions.every((action) => action.status === "historical"));
+});
+
+test("tense-parity detector covers every closed Property notice class and action template", () => {
+  const liveVerb = /\bYou can\b|\bcan (?:send|attend|ask|inspect|review|submit|object|comment|request)\b/i;
+  let checkedActions = 0;
+  const checkedPatterns = new Set();
+  for (const item of fixture.cases.filter((entry) => entry.templated !== false)) {
+    const row = structuredClone(item.row);
+    row.commercial = {
+      ...(row.commercial || {}),
+      close_date: "2026-01-31",
+      glance: { ...(row.commercial?.glance || {}), close_date: "2026-01-31" },
+      timed_events: row.commercial?.timed_events || [],
+    };
+    const summary = buildPropertyPlainSummary(row, { today: "2026-08-04" });
+    checkedPatterns.add(summary.pattern);
+    for (const action of summary.reader_actions?.actions || []) {
+      checkedActions += 1;
+      assert.equal(action.status, "historical", `${item.id}:${action.kind}`);
+    }
+    for (const fact of summary.facts.filter((entry) => entry.kind.startsWith("action_"))) {
+      assert.doesNotMatch(fact.text, liveVerb, `${item.id}:${fact.kind}`);
+    }
+  }
+  assert.ok(checkedPatterns.size >= 8, "detector spans the recurring Property notice classes");
+  assert.ok(checkedActions >= 8, "detector exercises the action-template vocabulary");
+});
+
 test("card summaries compose one receipted what-plus-key-event sentence without re-extraction", () => {
   const item = fixture.cases.find((entry) => entry.id === "forest-timber-sale");
   const summary = buildPropertyPlainSummary(item.row, { today: "2019-04-16" });
@@ -102,7 +146,7 @@ test("card summaries keep sale dates short and below the lens reading ceiling", 
   const item = fixture.cases.find((entry) => entry.id === "direct-property-sale");
   const card = propertyCardPlainSummary(buildPropertyPlainSummary(item.row));
 
-  assert.equal(card.text, "This is a public property sale on October 29, 2021 at 4:00 PM.");
+  assert.equal(card.text, "This is a public property sale; the sale was held on October 29, 2021 at 4:00 PM.");
   assert.equal(card.key_fact_kind, "event_sale");
   assert.deepEqual(card.fact_kinds, ["what", "event_sale"]);
 });

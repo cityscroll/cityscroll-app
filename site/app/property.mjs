@@ -477,13 +477,20 @@ async function loadPropertyPlainSummary(r, el){
     if(document.contains(el)) el.innerHTML="";
   }
 }
+let propertyDecisionDataPromise=null;
+function propertyDecisionData(){
+  if(!propertyDecisionDataPromise) propertyDecisionDataPromise=import("../property_decision_data.mjs").then(module=>module.loadPropertyDecisionData()).catch(()=>({attachmentLookup:{},lifecycleHistory:{}}));
+  return propertyDecisionDataPromise;
+}
 async function loadPropertyCommercialDetail(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
   try{
     const tools=await propertyCommercialTools();
     const readerTools=await import("../property_reader_actions.mjs").catch(()=>null);
     // Prefer full-body extraction on detail; merge attachment titles when materialization stamped them.
-    let attachments=[];
+    const {attachmentLookup}=await propertyDecisionData();
+    let attachments=Array.isArray(attachmentLookup?.[r.request_id])?attachmentLookup[r.request_id]:[];
+    if(attachments.length) r.attachments=attachments;
     if(r.commercial && r.commercial.item && r.commercial.item.source==="attachment_metadata"){
       // Keep label signal from stamped commercial when body is thin.
     }
@@ -917,7 +924,7 @@ function propertyReaderActionsTools(){
   }
   return propertyReaderActionsToolsPromise;
 }
-function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
+function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerTools){
   const r=entry.primary;
   if(!r) return "";
   const commercial=r.commercial||null;
@@ -957,7 +964,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
         lease_auction:"sale_method_lease_auction",
       })[methodKey]||"sale_method_unknown")
     : "";
-  const closeLabel=closeDate ? fdt(closeDate) : "";
+  const closeLabel=closeDate ? fdt(closeDate,{dateOnly:true}) : "";
   // Date chips use {date} only — never the price-fact `$` prefix template.
   const closeChipKey=closed ? "property_commercial_closed" : "property_commercial_close";
   // Build tag classes without multi-word English string literals (stray-english gate).
@@ -997,10 +1004,14 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
+  if(closed) secondaryActions.push(`<a class="act" href="/browse/property/">${t("property_related_current_sales")}</a>`);
   const titleBlock=cardCopy
     ? `<div class="ftitle property-card-summary" data-card-fact="${escUiHtml(cardCopy.fact_key||"")}" lang="en" dir="ltr"><a href="${noticeHref}">${escUiHtml(cardCopy.text)}</a></div>
       ${plainTools.propertyCardTitleDisclosureHTML({display_title_html:displayTitle?digTitleHTML(displayTitle,mev):t("untitled"),original_title:title,open:mev?.field==="title"},{escape:escUiHtml})}`
     : `<div class="ftitle"><a href="${noticeHref}">${title?digTitleHTML(title,mev):t("untitled")}</a></div>`;
+  const enablingInfo=readerTools?.propertyActionEnablingInfoHTML
+    ?readerTools.propertyActionEnablingInfoHTML(r.property_reader_actions,{row:r,today:todayISO(),escape:escUiHtml,extAttrs:EXT_ATTRS,extSr:extSR})
+    :"";
   return `<div class="fcard property-fcard${closed?" is-closed":""}" data-request-id="${escUiHtml(r.request_id||"")}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${closed?"closed":(entry.temporal_status||"open")}" data-closed="${closed?"1":"0"}">
       ${commercialLead}
       ${dealLine}
@@ -1008,6 +1019,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
       ${processLine}
       ${entry.bbl?`<div class="tax-lien-card-slot" data-tax-lien-bbl="${escUiHtml(entry.bbl)}"></div>`:""}
       ${titleBlock}
+      ${enablingInfo}
       ${propertyPlaceChips(r._location)}
       ${digEvidenceHTML(mev)}
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
@@ -1138,13 +1150,23 @@ async function renderPropExplorer(){
       renderSearchComponents("property");
     });
   }
-  const [commercialTools,plainTools,readerTools]=await Promise.all([
+  const [commercialTools,plainTools,readerTools,decisionData]=await Promise.all([
     propertyCommercialTools(),
     propertyPlainSummaryTools(),
     propertyReaderActionsTools(),
+    propertyDecisionData(),
   ]);
+  const {attachmentLookup,lifecycleHistory}=decisionData;
   propAll.forEach(r=>{
-    ensurePropertyCommercial(r, commercialTools);
+    // Bridge materializations produced before end_date joined the slim Worker
+    // payload; refreshed payloads carry the same source field directly.
+    if(!r.end_date&&lifecycleHistory?.[r.request_id]) r.end_date=lifecycleHistory[r.request_id];
+    const attachments=Array.isArray(attachmentLookup?.[r.request_id])?attachmentLookup[r.request_id]:[];
+    if(attachments.length&&commercialTools?.extractPropertyCommercial){
+      r.attachments=attachments;
+      r.commercial=commercialTools.extractPropertyCommercial(r,{attachments});
+      if(typeof commercialTools.propertyTimedEventViews==="function") r.commercial.event_views=commercialTools.propertyTimedEventViews(r.commercial.timed_events||[]);
+    }else ensurePropertyCommercial(r, commercialTools);
     if(readerTools?.extractPropertyReaderActions){
       r.property_reader_actions=readerTools.extractPropertyReaderActions(r,{
         today:todayISO(),
@@ -1368,10 +1390,17 @@ async function renderPropExplorer(){
     const followAction=propertyResolvedNeighborhood
       ?`<button type="button" class="act" data-follow-resolved-neighborhood>${escUiHtml(t("follow_this_area"))}</button>`
       :"";
+    const defaultEmptyMessage=propertyView==="default"&&partition.default_count===0
+      ?`<p>${escUiHtml(t("property_nothing_current"))}</p>`
+      :"";
+    const alertAction=propertyView==="default"&&partition.default_count===0
+      ?`<button type="button" class="act" data-property-empty-watch>${escUiHtml(t("watch_this_search"))}</button>`
+      :"";
     feedEl.innerHTML=`<div class="empty property-scope-empty" data-property-scope-empty="1">
       <p><strong>${escUiHtml(scopeLabel)}</strong></p>
+      ${defaultEmptyMessage}
       <p><span>${escUiHtml(t("rule_phase_current"))} <b data-property-scope-current-count>${partition.default_count}</b></span> · <span>${escUiHtml(t("property_closed_section"))} <b data-property-scope-archive-count>${partition.archive_count}</b></span></p>
-      <div class="factions">${alternateAction}${clearAction}${followAction}</div>
+      <div class="factions">${alternateAction}${alertAction}${clearAction}${followAction}</div>
     </div>`;
     const alternate=feedEl.querySelector("[data-property-empty-view]");
     if(alternate) alternate.addEventListener("click",()=>{
@@ -1400,6 +1429,8 @@ async function renderPropExplorer(){
     });
     const follow=feedEl.querySelector("[data-follow-resolved-neighborhood]");
     if(follow) follow.addEventListener("click",()=>watchFromFilters("property"));
+    const alert=feedEl.querySelector("[data-property-empty-watch]");
+    if(alert) alert.addEventListener("click",()=>watchFromFilters("property"));
     try{ renderSearchComponents("property"); }catch(_e){}
     return;
   }
@@ -1410,7 +1441,7 @@ async function renderPropExplorer(){
   }catch(_e){}
   const cardFor=(e)=> e.kind==="cluster"
     ? propertyClusterCardHTML(e,plainTools)
-    : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools);
+    : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools,readerTools);
   feedEl.innerHTML=entries.map(cardFor).join("");
   const followResolved=feedEl.querySelector("[data-follow-resolved-neighborhood]");
   if(followResolved) followResolved.addEventListener("click",()=>watchFromFilters("property"));

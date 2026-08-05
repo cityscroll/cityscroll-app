@@ -23,6 +23,7 @@ import {
   normalizePropertySort,
 } from "./property_commercial.mjs";
 import { propertyEventState } from "./property_timed_events.mjs";
+import { resolvePropertyActionLifecycle } from "./property_reader_actions.mjs";
 
 export const PROPERTY_EXPLORER_SCHEMA_VERSION = 1;
 
@@ -413,15 +414,22 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
     : (row) => row?.commercial || null;
   return (Array.isArray(entries) ? entries : []).map((entry) => {
     if (!entry || typeof entry !== "object") return entry;
-    const close = entryCloseDate(entry, getCommercial);
-    const closed = isCloseDatePast(close, today);
+    const rows = rowsForPropertyEntry(entry);
+    const lifecycles = rows.map((row) => resolvePropertyActionLifecycle(row, {
+      today,
+      commercial: getCommercial(row),
+    }));
+    const closed = lifecycles.length > 0 && lifecycles.every((lifecycle) => lifecycle.state === "closed");
+    const open = lifecycles.some((lifecycle) => lifecycle.state === "open");
+    const close = lifecycles.map((lifecycle) => lifecycle.action_by).filter(Boolean).sort().at(-1)
+      || entryCloseDate(entry, getCommercial);
     const openAction = entry.action_key && entry.action_key !== "property_action_closed"
       ? entry.action_key
       : propertyProcessActionKey(entry.process_stage);
     return {
       ...entry,
       close_date: close,
-      temporal_status: closed ? "closed" : (close ? "open" : "undated"),
+      temporal_status: closed ? "closed" : (open ? "open" : "undated"),
       // Honesty: closed sales never keep a live bid/attend CTA.
       action_key: closed ? "property_action_closed" : openAction,
     };
@@ -480,9 +488,15 @@ export function propertyEntryDefaultQualification(entry, opts = {}) {
     ? civicTodayIso(opts.today)
     : (opts.today ? String(opts.today).slice(0, 10) : civicTodayIso());
   const rows = rowsForPropertyEntry(entry);
+  const lifecycles = rows.map((row) => resolvePropertyActionLifecycle(row, {
+    ...opts,
+    today,
+    commercial: typeof opts.commercialOf === "function" ? opts.commercialOf(row) : row?.commercial,
+  }));
   const liveEvents = [];
   const exposedActions = [];
-  for (const row of rows) {
+  for (const [index, row] of rows.entries()) {
+    if (lifecycles[index]?.state === "closed") continue;
     for (const event of rowTimedEvents(row, opts)) {
       if (livePropertyEvent(event, today)) {
         liveEvents.push({ request_id: row?.request_id || null, kind: event?.kind || null });
@@ -496,6 +510,10 @@ export function propertyEntryDefaultQualification(entry, opts = {}) {
   }
   return {
     qualified: liveEvents.length > 0 || exposedActions.length > 0,
+    lifecycle_state: lifecycles.length && lifecycles.every((lifecycle) => lifecycle.state === "closed")
+      ? "closed"
+      : lifecycles.some((lifecycle) => lifecycle.state === "open") ? "open" : "undated",
+    lifecycles,
     live_events: liveEvents,
     exposed_actions: exposedActions,
   };

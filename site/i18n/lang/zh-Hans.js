@@ -1769,6 +1769,7 @@
     property_event_comment: "意见截止日期",
     property_event_result: "结果日期",
     property_closed_section: "已关闭 / 存档",
+    property_related_current_sales: "相关的当前销售",
     property_more_filters: "More filters",
     property_filters_active: "{n} active",
     property_how_it_works: "How this list works",

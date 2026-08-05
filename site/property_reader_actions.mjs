@@ -8,8 +8,10 @@
 
 import { cleanNoticeText } from "./text_clean.mjs";
 import { classifyPropertyPattern } from "./property_notice_patterns.mjs";
+import { commercialCloseDate } from "./property_commercial.mjs";
 
 export const PROPERTY_READER_ACTIONS_SCHEMA_VERSION = 1;
+export const PROPERTY_ACTION_ENABLING_INFO_SCHEMA_VERSION = 1;
 export const PROPERTY_ACTION_KINDS = Object.freeze([
   "bid",
   "inspect",
@@ -60,7 +62,7 @@ const ALLOWED_BY_PATTERN = Object.freeze({
 });
 
 const ACTION_PATTERNS = Object.freeze({
-  bid: /\b(?:(?:submit|place|begin|make|receive|accept|offer|send|mail|deliver)\w*[^.]{0,120}\b(?:bids?|proposals?)\b|(?:bids?|proposals?)[^.]{0,120}(?:must|shall|may|will|can)[^.]{0,80}(?:submit|receive|accept|place|deliver|mail|send)\w*|to begin bidding)\b/i,
+  bid: /\b(?:(?:submit|place|begin|make|receive|accept|offer|send|mail|deliver)\w*[^.]{0,120}\b(?:bids?|proposals?)\b|(?:bids?|proposals?)[^.]{0,120}(?:must|shall|may|will|can)[^.]{0,80}(?:submit|receive|accept|place|deliver|mail|send)\w*|to begin bidding|auctions? (?:is|are) open to (?:the )?public)\b/i,
   inspect: /\b(?:show dates?|public showings?|inspection[^.]{0,100}(?:date|time|available)|prospective bidders are (?:required|encouraged) to attend)[^.]{0,180}/i,
   attend: /\b(?:wishing to be heard|opportunity to be heard|may (?:appear|attend)[^.]{0,80}(?:and )?be heard|invited to attend[^.]{0,100}(?:hearing|sale)|attend[^.]{0,80}(?:public )?hearing)\b/i,
   request_accommodation: /\b(?:individuals? requesting[^.]{0,220}(?:interpreter|accommodation)|request(?:ing)?[^.]{0,120}(?:sign language interpreter|reasonable accommodation)|(?:sign language interpreter|reasonable accommodation)[^.]{0,160}(?:request|contact))[^.]{0,220}/i,
@@ -236,10 +238,52 @@ function isoDay(value) {
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
 
-function actionStatus(kind, row, byWhen, today) {
+/**
+ * One lifecycle decision shared by action tense, default-feed qualification, and
+ * card state. Typed action dates lead when present; otherwise the City Record
+ * lifecycle end prevents stale source wording from reopening a closed record.
+ */
+export function resolvePropertyActionLifecycle(row = {}, options = {}) {
+  const supplied = options.lifecycle || row?.property_action_lifecycle || row?.property_reader_actions?.lifecycle;
+  if (supplied?.state) return supplied;
+  const today = isoDay(options.today) || new Date().toISOString().slice(0, 10);
+  const commercial = options.commercial || row?.commercial || null;
+  const sourceEnd = isoDay(row?.end_date);
+  const commercialClose = commercial ? commercialCloseDate(row, commercial) : null;
+  const hasTypedCommercialEvent = Array.isArray(commercial?.timed_events)
+    && commercial.timed_events.length > 0;
+  // A typed bid/hearing event is the action boundary. Otherwise City Record's
+  // publication end is the lifecycle boundary (important for recurring sales,
+  // whose title/body can retain an older example auction date).
+  const close = hasTypedCommercialEvent ? commercialClose : (sourceEnd || commercialClose);
+  if (close) {
+    return {
+      schema_version: 1,
+      state: close < today ? "closed" : "open",
+      closed_at: close < today ? close : null,
+      action_by: close,
+      basis: hasTypedCommercialEvent
+        ? "typed_commercial_event"
+        : (sourceEnd ? "source_end_date" : "commercial_close_date"),
+      today,
+    };
+  }
+  return {
+    schema_version: 1,
+    state: "undated",
+    closed_at: null,
+    action_by: null,
+    basis: "no_close_date",
+    today,
+  };
+}
+
+function actionStatus(kind, row, byWhen, today, lifecycle) {
   if (kind === "review_result") return "historical";
+  if (lifecycle?.state === "closed") return "historical";
   const endDay = isoDay(byWhen?.value);
   if (endDay) return endDay < today ? "historical" : "current";
+  if (lifecycle?.state === "open") return "current";
   if (kind === "request_accommodation") {
     // Without the typed-event extractor's derived accommodation deadline, the hearing date still
     // tells us whether the relative request instruction is live or historical.
@@ -275,6 +319,7 @@ const TIMED_EVENT_ACTION_KINDS = Object.freeze({
 export function propertyReaderActionsFromTimedEvents(row = {}, options = {}) {
   const pattern = classifyPropertyPattern(row);
   const today = isoDay(options.today) || new Date().toISOString().slice(0, 10);
+  const lifecycle = resolvePropertyActionLifecycle(row, { ...options, today });
   const events = candidateEvents(row, options);
   const actions = events.map((event, index) => {
     const kind = TIMED_EVENT_ACTION_KINDS[eventKind(event)];
@@ -288,19 +333,21 @@ export function propertyReaderActionsFromTimedEvents(row = {}, options = {}) {
       label: evidence?.text || String(value),
       source: evidence,
     };
-    return {
+    const action = {
       schema_version: PROPERTY_READER_ACTIONS_SCHEMA_VERSION,
       id: `${pattern}-${kind}-timed-${index + 1}`,
       kind,
       label: meta[1],
       band_id: kind,
       pattern,
-      status: actionStatus(kind, row, byWhen, today),
+      status: actionStatus(kind, row, byWhen, today, lifecycle),
       how: evidence,
       methods: [],
       by_when: byWhen,
       timed_event: event,
     };
+    action.enabling_info = propertyActionEnablingInfo(row, action);
+    return action;
   }).filter(Boolean);
   const actionable = actions.filter((action) => action.status !== "historical");
   const primary = (actionable.length ? actionable : actions)[0] || null;
@@ -336,26 +383,107 @@ export function propertyReaderActionsFromTimedEvents(row = {}, options = {}) {
     actions,
     actionable,
     historical: actions.filter((action) => action.status === "historical"),
+    lifecycle,
     rail,
   };
 }
 
-function makeAction(kind, pattern, row, options) {
+function methodValue(entry) {
+  if (!entry) return null;
+  if (typeof entry === "string") return cleanNoticeText(entry);
+  return cleanNoticeText(entry.value || entry.url || entry.email || entry.phone || entry.text);
+}
+
+function structuredVenue(row) {
+  const venueFields = ["building_name", "street_address_1", "street_address_2", "city", "state", "zip_code"]; // Source: City Record Online dataset dg92-zbpx.
+  const value = venueFields.map((field) => cleanNoticeText(row?.[field])).filter(Boolean).join(", ");
+  return value ? { kind: "venue", value, source: "city_record_fields" } : null;
+}
+
+/** Decision-enabling facts travel with the ontology entry, not as card-only prose. */
+export function propertyActionEnablingInfo(row = {}, action = {}) {
+  const commercial = row?.commercial || {};
+  const participation = commercial.participation || {};
+  const methods = Array.isArray(action.methods) ? action.methods : [];
+  const quantities = Array.isArray(commercial.quantities) ? commercial.quantities : [];
+  const itemLabel = cleanNoticeText(commercial.glance?.item || commercial.item?.label);
+  const itemEvidence = cleanNoticeText(commercial.item?.evidence);
+  const price = commercial.primary_price || commercial.glance?.price || null;
+  const priceFacts = Array.isArray(commercial.price_facts) ? commercial.price_facts : [];
+  const depositFact = priceFacts.find((fact) => /deposit|fee/i.test(String(fact?.kind || ""))) || null;
+  const depositStep = (participation.steps || []).find((step) => step?.kind === "deposit_or_fee") || null;
+  const contact = uniqueBy([
+    ...methods.filter((method) => ["email", "phone", "contact", "mail"].includes(method.kind)),
+    ...(participation.emails || []).map((entry) => ({ kind: "email", value: methodValue(entry), source: entry?.evidence || null })),
+    ...(participation.phones || []).map((entry) => ({ kind: "phone", value: methodValue(entry), source: entry?.evidence || null })),
+  ].filter((entry) => entry?.value), (entry) => `${entry.kind}:${entry.value.toLowerCase()}`).slice(0, 8);
+  const marketplaceUrl = safeHttps(participation.package_url)
+    || methods.filter((method) => method.kind === "url").map((method) => safeHttps(method.value)).find(Boolean)
+    || null;
+  const venue = methods.find((method) => method.kind === "venue") || structuredVenue(row);
+  const inspectionStep = (participation.steps || []).find((step) => step?.kind === "show_or_inspection") || null;
+  const inspection = action.kind === "inspect"
+    ? { text: action.how?.text || inspectionStep?.text || null, source: action.how || inspectionStep?.evidence || null }
+    : inspectionStep ? { text: inspectionStep.text || inspectionStep.evidence || null, source: inspectionStep.evidence || null } : null;
+  const howChannels = uniqueBy([
+    ...(marketplaceUrl ? [{ kind: "marketplace", value: marketplaceUrl }] : []),
+    ...contact,
+    ...(action.kind === "attend" && venue ? [venue] : []),
+  ], (entry) => `${entry.kind}:${entry.value}`).slice(0, 10);
+  return {
+    schema_version: PROPERTY_ACTION_ENABLING_INFO_SCHEMA_VERSION,
+    items: itemLabel || itemEvidence || quantities.length ? {
+      label: itemLabel || quantities[0]?.display || itemEvidence,
+      quantities: quantities.map((entry) => entry?.display || entry?.evidence).filter(Boolean).slice(0, 6),
+      evidence: itemEvidence || null,
+      source: commercial.item?.source || null,
+    } : null,
+    price: price ? {
+      kind: price.kind || null,
+      display: price.display || (price.amount != null ? `$${price.amount}` : null),
+      amount: price.amount ?? null,
+      evidence: price.evidence || null,
+      source: price.source || null,
+    } : null,
+    deposit: depositFact ? {
+      kind: depositFact.kind,
+      display: depositFact.display || (depositFact.amount != null ? `$${depositFact.amount}` : null),
+      amount: depositFact.amount ?? null,
+      evidence: depositFact.evidence || null,
+      source: depositFact.source || null,
+    } : depositStep ? { kind: "deposit_or_fee", display: depositStep.text || depositStep.evidence || null, amount: null, evidence: depositStep.evidence || null } : null,
+    contact,
+    venue,
+    marketplace: marketplaceUrl ? { url: marketplaceUrl } : null,
+    inspection,
+    how_to_act: howChannels,
+    missing: [
+      ...(!itemLabel && !itemEvidence && !quantities.length ? ["items"] : []),
+      ...(!price ? ["price"] : []),
+      ...(!howChannels.length ? ["how_to_act"] : []),
+      ...(!inspection ? ["inspection"] : []),
+    ],
+  };
+}
+
+function makeAction(kind, pattern, row, options, lifecycle) {
   const evidence = firstEvidence(row, ACTION_PATTERNS[kind]);
   if (!evidence) return null;
   const byWhen = byWhenFor(kind, row, options, evidence);
   const today = isoDay(options?.today) || new Date().toISOString().slice(0, 10);
-  return {
+  const action = {
     schema_version: PROPERTY_READER_ACTIONS_SCHEMA_VERSION,
     kind,
     label: ACTION_RAIL_META[kind][1],
     band_id: kind,
     pattern,
-    status: actionStatus(kind, row, byWhen, today),
+    status: actionStatus(kind, row, byWhen, today, lifecycle),
     how: evidence,
     methods: statedMethods(row, evidence, kind),
     by_when: byWhen,
   };
+  action.enabling_info = propertyActionEnablingInfo(row, action);
+  return action;
 }
 
 function safeHttps(value) {
@@ -375,10 +503,11 @@ function safeHttps(value) {
  */
 export function extractPropertyReaderActions(row = {}, options = {}) {
   const pattern = classifyPropertyPattern(row);
+  const lifecycle = resolvePropertyActionLifecycle(row, options);
   const allowed = ALLOWED_BY_PATTERN[pattern] || ALLOWED_BY_PATTERN.other;
   const actions = PROPERTY_ACTION_ORDER
     .filter((kind) => allowed.has(kind))
-    .map((kind) => makeAction(kind, pattern, row, options))
+    .map((kind) => makeAction(kind, pattern, row, options, lifecycle))
     .filter(Boolean)
     .map((action, index) => ({ ...action, id: `${pattern}-${action.kind}-${index + 1}` }));
   const actionable = actions.filter((action) => action.status !== "historical");
@@ -393,6 +522,7 @@ export function extractPropertyReaderActions(row = {}, options = {}) {
     actions,
     actionable,
     historical: actions.filter((action) => action.status === "historical"),
+    lifecycle,
     rail: primary ? {
       system: "property_reader_actions",
       mode: actionable.length ? "current" : "historical",
@@ -438,6 +568,49 @@ export function propertyReaderActionRail(rail, matter, api) {
   return actions;
 }
 
+/** Compact list-card rendering of the ontology entry's enabling-information bag. */
+export function propertyActionEnablingInfoHTML(readerActions, helpers = {}) {
+  const esc = helpers.escape || ((value) => String(value || ""));
+  const extAttrs = helpers.extAttrs || "";
+  const extSr = helpers.extSr || (() => "");
+  const lifecycle = readerActions?.lifecycle
+    || (helpers.row ? resolvePropertyActionLifecycle(helpers.row, helpers) : null);
+  const action = (readerActions?.actionable || [])[0] || (readerActions?.historical || [])[0] || null;
+  const info = action?.enabling_info
+    || (helpers.row ? propertyActionEnablingInfo(helpers.row, action || {}) : null);
+  if (!info) return "";
+  const channelHTML = (entry) => {
+    const value = esc(entry?.value || "");
+    if (!value) return "";
+    if (entry.kind === "email") return `<a href="mailto:${value}">${value}</a>`;
+    if (entry.kind === "marketplace" && /^https:\/\//i.test(entry.value || "")) {
+      return `<a href="${value}" ${extAttrs}>${value}${extSr()}</a>`;
+    }
+    return `<span lang="en" dir="ltr">${value}</span>`;
+  };
+  const channels = (info.how_to_act || []).map(channelHTML).filter(Boolean);
+  const historical = lifecycle?.state === "closed" || action?.status === "historical";
+  const item = info.items?.label
+    ? esc(info.items.label)
+    : "The city did not publish an item description in this record.";
+  const price = info.price?.display
+    ? esc(info.price.display)
+    : "The city did not publish an asking price or minimum bid in this record.";
+  const deposit = info.deposit?.display ? ` · Deposit or fee: ${esc(info.deposit.display)}` : "";
+  const how = historical
+    ? "This opportunity is closed; use the official record for history."
+    : channels.length ? channels.join(" · ") : "How to act was not published in this notice.";
+  const inspection = info.inspection?.text
+    ? esc(info.inspection.text)
+    : "Viewing or inspection details were not published in this notice.";
+  return `<dl class="property-decision-info" data-action-enabling-info="1" data-lifecycle="${historical ? "closed" : "live"}">
+    <dt>Items</dt><dd lang="en" dir="ltr">${item}</dd>
+    <dt>Asking price</dt><dd lang="en" dir="ltr">${price}${deposit}</dd>
+    <dt>How to act</dt><dd>${how}</dd>
+    <dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${inspection}</dd>
+  </dl>`;
+}
+
 /** Property-only action-band markup, loaded with the detail extractor (not home boot). */
 export function propertyReaderActionStepsHTML(actions, helpers = {}) {
   const t = helpers.t || ((key) => key);
@@ -449,7 +622,7 @@ export function propertyReaderActionStepsHTML(actions, helpers = {}) {
     const value = esc(method?.value || "");
     if (!value) return "";
     if (method.kind === "email") return `<a href="mailto:${value}">${value}</a>`;
-    if (method.kind === "url" && /^https:\/\//i.test(method.value || "")) {
+    if (["url", "marketplace"].includes(method.kind) && /^https:\/\//i.test(method.value || "")) {
       return `<a href="${value}" ${extAttrs}>${value}${extSr()}</a>`;
     }
     return `<span lang="en" dir="ltr">${value}</span>`;
@@ -461,14 +634,25 @@ export function propertyReaderActionStepsHTML(actions, helpers = {}) {
     const by = item.by_when?.value
       ? fdt(item.by_when.value)
       : item.by_when?.label ? esc(item.by_when.label) : t("task_bid_unknown");
-    const methods = (item.methods || []).map(methodHTML).filter(Boolean);
+    const info = item.enabling_info || {};
+    const methods = (info.how_to_act || item.methods || []).map(methodHTML).filter(Boolean);
+    const items = info.items?.label ? esc(info.items.label) : "The item description was not published in this notice.";
+    const price = info.price?.display ? esc(info.price.display) : "No asking price or minimum bid was published in this notice.";
+    const deposit = info.deposit?.display ? `<dt>Deposit or fee</dt><dd lang="en" dir="ltr">${esc(info.deposit.display)}</dd>` : "";
+    const inspection = info.inspection?.text ? esc(info.inspection.text) : "Viewing or inspection details were not published in this notice.";
+    const actionLabel = historical
+      ? (item.kind === "bid" ? "Bidding closed" : "Past action")
+      : esc(item.label);
     steps.push(`<div class="rules-action-band property-action-band" data-band="${esc(item.band_id || item.kind)}" data-status="${historical ? "historical" : "current"}">
-        <span lang="en" dir="ltr">${esc(item.label)}</span>
+        <span lang="en" dir="ltr">${actionLabel}</span>
         ${historical ? `<span class="band-count">${t("next_action_event_passed")}</span>` : ""}
       </div>
       <dl class="bid-guide-facts property-action-facts">
-        <dt>${t("glance_what")}</dt><dd lang="en" dir="ltr">${esc(item.how.text)}</dd>
-        <dt>${t("apply_method_lbl")}</dt><dd>${methods.length ? methods.join(" · ") : '<span lang="en" dir="ltr">No separate contact or submission channel is stated in this notice.</span>'}</dd>
+        <dt>${t("glance_what")}</dt><dd lang="en" dir="ltr">${items}</dd>
+        <dt>Asking price / minimum bid</dt><dd lang="en" dir="ltr">${price}</dd>
+        ${deposit}
+        <dt>${t("apply_method_lbl")}</dt><dd>${historical ? '<span lang="en" dir="ltr">This action is closed; use the official record for history.</span>' : methods.length ? methods.join(" · ") : '<span lang="en" dir="ltr">How to act was not published in this notice.</span>'}</dd>
+        <dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${inspection}</dd>
         <dt>${t("task_lead_deadline")}</dt><dd>${by}</dd>
       </dl>`);
   }
