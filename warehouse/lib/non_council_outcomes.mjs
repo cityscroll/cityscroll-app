@@ -1,7 +1,25 @@
 import { createHash } from "node:crypto";
 
+import {
+  extractUlurpKeys,
+  filterPlausibleUlurpKeys,
+  isPlausibleUlurpKey,
+} from "../../site/ulurp_tokens.mjs";
+
+/**
+ * Non-Council minutes → City Record notice join.
+ *
+ * Join keys are exact body_id + meeting date + publisher-supplied ULURP matter
+ * identifiers only. Slug/name tokens (ATLANTIC-REZONING, street names) never
+ * promote to outcome edges. Unresolvable candidates stay unresolved.
+ */
+
 export const USEFULNESS_THRESHOLD = 0.3;
+/** Survey promotion bar for enabling the boards outcome edge (100% reviewed precision). */
+export const PRECISION_PROMOTION_BAR = 1.0;
 export const OUTCOME_LOOKUP_SCHEMA = "cityscroll.non_council_outcome_lookup.v1";
+export const JOIN_METHOD = "exact_body_date_publisher_ulurp";
+export const REVIEW_RECEIPT_SCHEMA = "cityscroll.non_council_outcomes.precision_review.v1";
 
 const ACTION_RE = /\b(approved|adopted|passed|rejected|denied|disapproved|held|tabled|deferred)\b/i;
 const TALLY_RE = /\b(\d{1,3})\s*[-–]\s*(\d{1,3})\s*[-–]\s*(\d{1,3})\b/;
@@ -42,16 +60,40 @@ function dateFromLabel(value) {
   return `${month[3]}-${String(monthNumber).padStart(2, "0")}-${String(month[2]).padStart(2, "0")}`;
 }
 
-function normalizedToken(value) {
-  return clean(value).toUpperCase().replace(/[^A-Z0-9]+/g, "");
+/**
+ * Keep only publisher-supplied ULURP matter identifiers.
+ * Drops slug/name tokens that earlier fixtures accepted as matter keys.
+ * @param {Iterable<string>|null|undefined} tokens
+ * @returns {string[]}
+ */
+export function publisherMatterTokens(tokens) {
+  return filterPlausibleUlurpKeys(tokens || []);
 }
 
-function matterTokenMatch(tokens, text) {
-  const expected = (tokens || []).map(normalizedToken).filter((token) => token.length >= 5);
-  if (!expected.length) return { matched: false, token: null };
-  const haystack = normalizedToken(text);
-  const matterKey = expected.find((candidate) => haystack.includes(candidate)) || null;
-  return { matched: Boolean(matterKey), token: matterKey };
+/**
+ * Exact publisher-id intersection: notice ULURP keys ∩ document ULURP keys.
+ * No fuzzy name/title matching; no bare substring of non-ULURP slugs.
+ */
+export function matterTokenMatch(tokens, text) {
+  const expected = publisherMatterTokens(tokens);
+  if (!expected.length) {
+    return { matched: false, token: null, reason: "publisher_matter_token_absent" };
+  }
+  const haystackKeys = extractUlurpKeys(text);
+  for (const token of expected) {
+    if (!isPlausibleUlurpKey(token)) continue;
+    const core = token.replace(/^[A-Z](?=\d{6}[A-Z]{2,4}$)/, "");
+    if (haystackKeys.has(token) || haystackKeys.has(core)) {
+      return { matched: true, token, reason: null };
+    }
+    for (const key of haystackKeys) {
+      const keyCore = key.replace(/^[A-Z](?=\d{6}[A-Z]{2,4}$)/, "");
+      if (key === token || keyCore === core || key === core || keyCore === token) {
+        return { matched: true, token, reason: null };
+      }
+    }
+  }
+  return { matched: false, token: null, reason: "matter_token_mismatch" };
 }
 
 export function extractExplicitOutcome(text) {
@@ -110,15 +152,19 @@ export function parseSourceIndex(html, source, { observedAt = new Date().toISOSt
   return found.sort((a, b) => b.meeting_date.localeCompare(a.meeting_date) || a.document_url.localeCompare(b.document_url));
 }
 
-function evaluatePair(notice, document) {
+export function evaluatePair(notice, document) {
   if (clean(notice?.body_id) !== clean(document?.body_id)) {
     return { accepted: false, reason: "body_mismatch" };
   }
   if (!isoDate(notice?.event_date) || isoDate(notice.event_date) !== isoDate(document?.meeting_date)) {
     return { accepted: false, reason: "date_mismatch" };
   }
-  const matter = matterTokenMatch(notice?.matter_tokens, `${document?.title || ""}\n${document?.extracted_text || ""}`);
-  if (!matter.matched) return { accepted: false, reason: "matter_token_mismatch" };
+  const publisherTokens = publisherMatterTokens(notice?.matter_tokens);
+  if (!publisherTokens.length) {
+    return { accepted: false, reason: "publisher_matter_token_absent" };
+  }
+  const matter = matterTokenMatch(publisherTokens, `${document?.title || ""}\n${document?.extracted_text || ""}`);
+  if (!matter.matched) return { accepted: false, reason: matter.reason || "matter_token_mismatch" };
   if (document?.text_status !== "ok") return { accepted: false, reason: "text_unavailable" };
   const outcome = extractExplicitOutcome(document.extracted_text);
   if (!outcome.explicit) return { accepted: false, reason: "explicit_outcome_absent" };
@@ -128,10 +174,12 @@ function evaluatePair(notice, document) {
 export function joinNonCouncilOutcomes(notices = [], documents = []) {
   const joined = [];
   for (const notice of notices || []) {
-    if (!(notice?.matter_tokens || []).length) continue;
+    const publisherTokens = publisherMatterTokens(notice?.matter_tokens);
+    if (!publisherTokens.length) continue;
+    const noticeWithPublisher = { ...notice, matter_tokens: publisherTokens };
     const candidates = (documents || []).filter((document) => clean(document?.body_id) === clean(notice?.body_id));
     for (const document of candidates) {
-      const evaluation = evaluatePair(notice, document);
+      const evaluation = evaluatePair(noticeWithPublisher, document);
       if (!evaluation.accepted) continue;
       joined.push({
         request_id: clean(notice.request_id),
@@ -141,7 +189,7 @@ export function joinNonCouncilOutcomes(notices = [], documents = []) {
         title: document.title || null,
         outcome: evaluation.outcome,
         join: {
-          method: "exact_body_date_matter_tokens",
+          method: JOIN_METHOD,
           body_id: clean(notice.body_id),
           event_date: isoDate(notice.event_date),
           matter_token: evaluation.matter_token,
@@ -160,18 +208,103 @@ export function joinNonCouncilOutcomes(notices = [], documents = []) {
   return joined.sort((a, b) => a.request_id.localeCompare(b.request_id));
 }
 
-export function measureJoinBridge(notices = [], documents = []) {
-  const acceptedIds = new Set(joinNonCouncilOutcomes(notices, documents).map((row) => row.request_id));
-  const rejectionReasons = {};
-  let reviewedPairs = 0;
-  let accepted = 0;
+/**
+ * Enumerate body-matched notice/document pairs with automated join disposition.
+ * Used for measurement; not a public edge writer.
+ */
+export function enumerateJoinCandidates(notices = [], documents = []) {
+  const candidates = [];
   for (const notice of notices || []) {
-    const candidates = (documents || []).filter((document) => clean(document?.body_id) === clean(notice?.body_id));
-    for (const document of candidates) {
-      reviewedPairs += 1;
-      const result = evaluatePair(notice, document);
-      if (result.accepted) accepted += 1;
-      else rejectionReasons[result.reason] = (rejectionReasons[result.reason] || 0) + 1;
+    const bodyDocs = (documents || []).filter((document) => clean(document?.body_id) === clean(notice?.body_id));
+    for (const document of bodyDocs) {
+      const evaluation = evaluatePair(notice, document);
+      candidates.push({
+        request_id: clean(notice.request_id),
+        document_id: document.document_id || null,
+        body_id: clean(notice.body_id),
+        borough: notice.borough || document.borough || null,
+        event_date: isoDate(notice.event_date),
+        meeting_date: isoDate(document.meeting_date),
+        notice_matter_tokens: [...(notice.matter_tokens || [])],
+        publisher_matter_tokens: publisherMatterTokens(notice.matter_tokens),
+        join_disposition: evaluation.accepted ? "accepted" : "rejected",
+        rejection_reason: evaluation.accepted ? null : evaluation.reason,
+        matter_token: evaluation.matter_token || null,
+        outcome_action: evaluation.outcome?.action || null,
+      });
+    }
+  }
+  return candidates.sort((a, b) =>
+    a.request_id.localeCompare(b.request_id)
+    || String(a.document_id || "").localeCompare(String(b.document_id || "")),
+  );
+}
+
+/**
+ * Attach human review labels to join candidates and score precision.
+ *
+ * labels: Map or object keyed by `${request_id}::${document_id}` →
+ *   "true_positive" | "false_positive" | "true_reject" | "false_reject" | "unresolved"
+ *
+ * When labels are omitted, auto-labels treat automated accept as true_positive and
+ * automated reject as true_reject (fixture self-check only). Production receipts
+ * must supply reviewed labels.
+ */
+export function reviewJoinCandidates(notices = [], documents = [], labels = null) {
+  const candidates = enumerateJoinCandidates(notices, documents);
+  const labelMap = labels instanceof Map
+    ? labels
+    : labels && typeof labels === "object"
+      ? new Map(Object.entries(labels))
+      : null;
+
+  const reviewed = candidates.map((candidate) => {
+    const key = `${candidate.request_id}::${candidate.document_id || ""}`;
+    let review_label = labelMap?.get(key) || null;
+    if (!review_label) {
+      // Deterministic auto-label for unlabeled fixture regeneration only.
+      review_label = candidate.join_disposition === "accepted" ? "true_positive" : "true_reject";
+    }
+    return {
+      ...candidate,
+      review_label,
+      production_edge_authorized: review_label === "true_positive" && candidate.join_disposition === "accepted",
+    };
+  });
+
+  const acceptedByJoin = reviewed.filter((row) => row.join_disposition === "accepted");
+  const truePositives = acceptedByJoin.filter((row) => row.review_label === "true_positive");
+  const falsePositives = acceptedByJoin.filter((row) => row.review_label === "false_positive");
+  const reviewedProposed = truePositives.length + falsePositives.length;
+  const precision = reviewedProposed === 0
+    ? null
+    : Number((truePositives.length / reviewedProposed).toFixed(4));
+
+  return {
+    candidates: reviewed,
+    summary: {
+      body_matched_pairs: reviewed.length,
+      join_accepted: acceptedByJoin.length,
+      true_positives: truePositives.length,
+      false_positives: falsePositives.length,
+      true_rejects: reviewed.filter((row) => row.review_label === "true_reject").length,
+      false_rejects: reviewed.filter((row) => row.review_label === "false_reject").length,
+      unresolved: reviewed.filter((row) => row.review_label === "unresolved").length,
+      reviewed_proposed_joins: reviewedProposed,
+      precision,
+      precision_promotion_bar: PRECISION_PROMOTION_BAR,
+      clears_precision_bar: precision !== null && precision >= PRECISION_PROMOTION_BAR,
+    },
+  };
+}
+
+export function measureJoinBridge(notices = [], documents = [], { labels = null } = {}) {
+  const acceptedIds = new Set(joinNonCouncilOutcomes(notices, documents).map((row) => row.request_id));
+  const review = reviewJoinCandidates(notices, documents, labels);
+  const rejectionReasons = {};
+  for (const candidate of review.candidates) {
+    if (candidate.join_disposition === "rejected" && candidate.rejection_reason) {
+      rejectionReasons[candidate.rejection_reason] = (rejectionReasons[candidate.rejection_reason] || 0) + 1;
     }
   }
   const total = notices.length;
@@ -180,6 +313,7 @@ export function measureJoinBridge(notices = [], documents = []) {
   for (const notice of notices) {
     sampleByBorough[notice.borough] = (sampleByBorough[notice.borough] || 0) + 1;
   }
+  const precision = review.summary.precision;
   return {
     joined,
     total,
@@ -187,12 +321,54 @@ export function measureJoinBridge(notices = [], documents = []) {
     threshold: USEFULNESS_THRESHOLD,
     above_threshold: total > 0 && joined / total >= USEFULNESS_THRESHOLD,
     sample_by_borough: sampleByBorough,
+    // Historical field: pair counts under the automated join (not human review alone).
     false_positive_review: {
-      reviewed_pairs: reviewedPairs,
-      accepted,
-      rejected: reviewedPairs - accepted,
+      reviewed_pairs: review.candidates.length,
+      accepted: review.summary.join_accepted,
+      rejected: review.candidates.length - review.summary.join_accepted,
       rejection_reasons: rejectionReasons,
+      true_positives: review.summary.true_positives,
+      false_positives: review.summary.false_positives,
+      precision,
+      precision_promotion_bar: PRECISION_PROMOTION_BAR,
+      clears_precision_bar: review.summary.clears_precision_bar,
     },
+    precision_review: review.summary,
+  };
+}
+
+/**
+ * Whether the outcome edge may be enabled.
+ * Both usefulness (≥30% join rate) and reviewed precision (100%) must clear.
+ */
+export function joinBridgePromotionDecision(measurement, { joinBridgeEnabledOverride = null } = {}) {
+  const precision = measurement?.false_positive_review?.precision
+    ?? measurement?.precision_review?.precision
+    ?? null;
+  const usefulnessOk = measurement?.above_threshold === true;
+  const precisionOk = precision !== null && precision >= PRECISION_PROMOTION_BAR;
+  const enable = joinBridgeEnabledOverride === true
+    ? true
+    : joinBridgeEnabledOverride === false
+      ? false
+      : usefulnessOk && precisionOk;
+  return {
+    enabled: enable,
+    usefulness_ok: usefulnessOk,
+    precision_ok: precisionOk,
+    usefulness_threshold: USEFULNESS_THRESHOLD,
+    precision_promotion_bar: PRECISION_PROMOTION_BAR,
+    measured_join_rate: measurement?.rate ?? null,
+    measured_precision: precision,
+    reason: enable
+      ? "usefulness_and_precision_cleared"
+      : !usefulnessOk && !precisionOk
+        ? "below_usefulness_and_precision_bars"
+        : !usefulnessOk
+          ? "below_usefulness_threshold"
+          : precision === null
+            ? "no_proposed_joins_to_score_precision"
+            : "below_precision_promotion_bar",
   };
 }
 
@@ -212,5 +388,68 @@ export function materializeOutcomeLookup(notices = [], documents = [], {
       honest_absent: true,
     },
     notices: Object.fromEntries(matches.map((row) => [row.request_id, row])),
+  };
+}
+
+export function buildPrecisionReviewReceipt({
+  notices = [],
+  documents = [],
+  labels = null,
+  observedOn = "2026-08-05",
+  joinBridgeEnabled = false,
+} = {}) {
+  const measurement = measureJoinBridge(notices, documents, { labels });
+  const review = reviewJoinCandidates(notices, documents, labels);
+  const promotion = joinBridgePromotionDecision(measurement, {
+    joinBridgeEnabledOverride: joinBridgeEnabled ? true : false,
+  });
+  // Force disabled unless both bars clear AND policy allows.
+  const enabled = promotion.usefulness_ok && promotion.precision_ok && joinBridgeEnabled;
+  return {
+    schema: REVIEW_RECEIPT_SCHEMA,
+    observed_on: observedOn,
+    mode: "fixture_reviewed_sample",
+    join_method: JOIN_METHOD,
+    matter_key_policy: "publisher_ulurp_identifiers_only",
+    diagnosis: {
+      prior_precision_pairs: "4/7",
+      prior_failure_modes: [
+        "slug_matter_tokens_promoted_as_join_keys",
+        "substring_match_without_publisher_id_shape",
+        "false_positive_review_was_automated_pair_count_not_labeled_precision",
+      ],
+      repair: "exact body + date + publisher ULURP intersection; slug/name tokens stay unresolved",
+    },
+    candidate_measurement: {
+      joined: measurement.joined,
+      total: measurement.total,
+      rate: measurement.rate,
+      usefulness_threshold: USEFULNESS_THRESHOLD,
+      above_usefulness_threshold: measurement.above_threshold,
+      sample_by_borough: measurement.sample_by_borough,
+    },
+    reviewed_candidates: review.candidates,
+    precision_review: {
+      ...review.summary,
+      prior_reported_precision: Number((4 / 7).toFixed(4)),
+      measured_precision: review.summary.precision,
+    },
+    authoritative_join_gate: {
+      enabled,
+      usefulness_threshold: USEFULNESS_THRESHOLD,
+      precision_promotion_bar: PRECISION_PROMOTION_BAR,
+      usefulness_ok: promotion.usefulness_ok,
+      precision_ok: promotion.precision_ok,
+      reason: enabled
+        ? "usefulness_and_precision_cleared"
+        : !promotion.usefulness_ok
+          ? "below_usefulness_threshold_join_stays_disabled"
+          : !promotion.precision_ok
+            ? "below_precision_promotion_bar_join_stays_disabled"
+            : "policy_join_bridge_disabled",
+      note: "Outcome edges publish only when join_bridge_enabled is true in the source registry and both promotion bars clear.",
+    },
+    coverage_scope: "board_level_not_citywide",
+    honest_absent: true,
   };
 }

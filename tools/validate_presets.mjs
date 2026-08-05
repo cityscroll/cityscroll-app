@@ -38,8 +38,10 @@ const PAYROLL_FY = 2025;
 const PRESET_MIN_RESULTS = 1;
 const TODAY = new Date().toISOString().slice(0, 10);
 const FETCH_TIMEOUT_MS = Number(process.env.PRESET_FETCH_TIMEOUT_MS) || (process.env.CI ? 45_000 : 20_000);
-const FETCH_ATTEMPTS = Number(process.env.PRESET_FETCH_ATTEMPTS) || (process.env.CI ? 3 : 2);
+const FETCH_ATTEMPTS = Number(process.env.PRESET_FETCH_ATTEMPTS) || (process.env.CI ? 4 : 2);
 const FETCH_CONCURRENCY = Number(process.env.PRESET_FETCH_CONCURRENCY) || (process.env.CI ? 1 : 4);
+/** Base delay for exponential backoff between live SODA retries (ms). */
+const FETCH_BACKOFF_MS = Number(process.env.PRESET_FETCH_BACKOFF_MS) || (process.env.CI ? 2_000 : 500);
 
 if (!WRITE && !CHECK) {
   throw new Error("usage: node tools/validate_presets.mjs --write|--check");
@@ -51,6 +53,19 @@ function addDays(iso, days) {
   return date.toISOString().slice(0, 10);
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isTransientFetchError(error) {
+  const name = String(error?.name || "");
+  const message = String(error?.message || error || "");
+  if (name === "TimeoutError" || name === "AbortError") return true;
+  return /timeout|aborted|ECONNRESET|ENOTFOUND|EAI_AGAIN|fetch failed|network|socket|503|502|504|429/i.test(
+    message,
+  );
+}
+
 async function fetchJSON(url, options) {
   let last;
   for (let attempt = 0; attempt < FETCH_ATTEMPTS; attempt++) {
@@ -60,13 +75,26 @@ async function fetchJSON(url, options) {
         headers: { "User-Agent": "crol-list-preset-validation/1.0", ...options?.headers },
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       });
-      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+      if (!response.ok) {
+        const err = new Error(`${response.status} ${response.statusText}`);
+        // Retry rate limits and gateway errors; fail closed on other 4xx.
+        if (response.status === 429 || response.status >= 500) throw err;
+        throw Object.assign(err, { permanent: true });
+      }
       return await response.json();
     } catch (error) {
       last = error;
+      if (error?.permanent || attempt + 1 >= FETCH_ATTEMPTS) break;
+      if (!isTransientFetchError(error) && !/^[45]\d\d /.test(String(error?.message || ""))) {
+        // Unknown errors still back off once before giving up.
+      }
+      const delay = Math.min(16_000, FETCH_BACKOFF_MS * 2 ** attempt);
+      await sleep(delay);
     }
   }
-  throw new Error(`preset validation could not read ${new URL(url).origin}: ${last?.message || last}`);
+  throw new Error(
+    `preset validation could not read ${new URL(url).origin} after ${FETCH_ATTEMPTS} attempt(s): ${last?.message || last}`,
+  );
 }
 
 async function countQuery(url, params) {

@@ -1,0 +1,190 @@
+{
+  "schema": "cityscroll.non_council_outcomes.precision_review.v1",
+  "observed_on": "2026-08-05",
+  "mode": "fixture_reviewed_sample",
+  "join_method": "exact_body_date_publisher_ulurp",
+  "matter_key_policy": "publisher_ulurp_identifiers_only",
+  "diagnosis": {
+    "prior_precision_pairs": "4/7",
+    "prior_failure_modes": [
+      "slug_matter_tokens_promoted_as_join_keys",
+      "substring_match_without_publisher_id_shape",
+      "false_positive_review_was_automated_pair_count_not_labeled_precision"
+    ],
+    "repair": "exact body + date + publisher ULURP intersection; slug/name tokens stay unresolved"
+  },
+  "candidate_measurement": {
+    "joined": 2,
+    "total": 10,
+    "rate": 0.2,
+    "usefulness_threshold": 0.3,
+    "above_usefulness_threshold": false,
+    "sample_by_borough": {
+      "Bronx": 2,
+      "Brooklyn": 2,
+      "Manhattan": 2,
+      "Queens": 2,
+      "Staten Island": 2
+    }
+  },
+  "reviewed_candidates": [
+    {
+      "request_id": "sample-bk-accepted",
+      "document_id": "bk8-2026-06-17",
+      "body_id": "brooklyn-cb-08",
+      "borough": "Brooklyn",
+      "event_date": "2026-06-17",
+      "meeting_date": "2026-06-17",
+      "notice_matter_tokens": [
+        "ATLANTIC-REZONING"
+      ],
+      "publisher_matter_tokens": [],
+      "join_disposition": "rejected",
+      "rejection_reason": "publisher_matter_token_absent",
+      "matter_token": null,
+      "outcome_action": null,
+      "review_label": "true_reject",
+      "production_edge_authorized": false
+    },
+    {
+      "request_id": "sample-bk-topic-miss",
+      "document_id": "bk14-2026-06-15",
+      "body_id": "brooklyn-cb-14",
+      "borough": "Brooklyn",
+      "event_date": "2026-06-15",
+      "meeting_date": "2026-06-15",
+      "notice_matter_tokens": [
+        "260115ZMK"
+      ],
+      "publisher_matter_tokens": [
+        "260115ZMK"
+      ],
+      "join_disposition": "rejected",
+      "rejection_reason": "matter_token_mismatch",
+      "matter_token": null,
+      "outcome_action": null,
+      "review_label": "true_reject",
+      "production_edge_authorized": false
+    },
+    {
+      "request_id": "sample-bx-accepted",
+      "document_id": "bx1-2026-06-25",
+      "body_id": "bronx-cb-01",
+      "borough": "Bronx",
+      "event_date": "2026-06-25",
+      "meeting_date": "2026-06-25",
+      "notice_matter_tokens": [
+        "260190ZSX"
+      ],
+      "publisher_matter_tokens": [
+        "260190ZSX"
+      ],
+      "join_disposition": "accepted",
+      "rejection_reason": null,
+      "matter_token": "260190ZSX",
+      "outcome_action": "approved",
+      "review_label": "true_positive",
+      "production_edge_authorized": true
+    },
+    {
+      "request_id": "sample-mn-accepted",
+      "document_id": "mn3-2026-06-23",
+      "body_id": "manhattan-cb-03",
+      "borough": "Manhattan",
+      "event_date": "2026-06-23",
+      "meeting_date": "2026-06-23",
+      "notice_matter_tokens": [
+        "C240001ZMM"
+      ],
+      "publisher_matter_tokens": [
+        "C240001ZMM"
+      ],
+      "join_disposition": "accepted",
+      "rejection_reason": null,
+      "matter_token": "C240001ZMM",
+      "outcome_action": "approved",
+      "review_label": "true_positive",
+      "production_edge_authorized": true
+    },
+    {
+      "request_id": "sample-mn-date-miss",
+      "document_id": "mn4-2026-06-17",
+      "body_id": "manhattan-cb-04",
+      "borough": "Manhattan",
+      "event_date": "2026-06-10",
+      "meeting_date": "2026-06-17",
+      "notice_matter_tokens": [
+        "W42ST-PLAN"
+      ],
+      "publisher_matter_tokens": [],
+      "join_disposition": "rejected",
+      "rejection_reason": "date_mismatch",
+      "matter_token": null,
+      "outcome_action": null,
+      "review_label": "true_reject",
+      "production_edge_authorized": false
+    },
+    {
+      "request_id": "sample-qn-accepted",
+      "document_id": "qn8-2026-06-10",
+      "body_id": "queens-cb-08",
+      "borough": "Queens",
+      "event_date": "2026-06-10",
+      "meeting_date": "2026-06-10",
+      "notice_matter_tokens": [
+        "HILLSIDE-AVE"
+      ],
+      "publisher_matter_tokens": [],
+      "join_disposition": "rejected",
+      "rejection_reason": "publisher_matter_token_absent",
+      "matter_token": null,
+      "outcome_action": null,
+      "review_label": "true_reject",
+      "production_edge_authorized": false
+    },
+    {
+      "request_id": "sample-si-topic-miss",
+      "document_id": "si3-2026-05-26",
+      "body_id": "staten-island-cb-03",
+      "borough": "Staten Island",
+      "event_date": "2026-05-26",
+      "meeting_date": "2026-05-26",
+      "notice_matter_tokens": [
+        "HYLAN-REZONING"
+      ],
+      "publisher_matter_tokens": [],
+      "join_disposition": "rejected",
+      "rejection_reason": "publisher_matter_token_absent",
+      "matter_token": null,
+      "outcome_action": null,
+      "review_label": "true_reject",
+      "production_edge_authorized": false
+    }
+  ],
+  "precision_review": {
+    "body_matched_pairs": 7,
+    "join_accepted": 2,
+    "true_positives": 2,
+    "false_positives": 0,
+    "true_rejects": 5,
+    "false_rejects": 0,
+    "unresolved": 0,
+    "reviewed_proposed_joins": 2,
+    "precision": 1,
+    "precision_promotion_bar": 1,
+    "clears_precision_bar": true,
+    "prior_reported_precision": 0.5714,
+    "measured_precision": 1
+  },
+  "authoritative_join_gate": {
+    "enabled": false,
+    "usefulness_threshold": 0.3,
+    "precision_promotion_bar": 1,
+    "usefulness_ok": false,
+    "precision_ok": true,
+    "reason": "below_usefulness_threshold_join_stays_disabled",
+    "note": "Outcome edges publish only when join_bridge_enabled is true in the source registry and both promotion bars clear."
+  },
+  "coverage_scope": "board_level_not_citywide",
+  "honest_absent": true
+}

@@ -10,17 +10,25 @@ as a complete citywide network while source pages and archive practices remain
 heterogeneous.
 
 The dated receipt under `verification_receipts/` records the fixed, borough-
-stratified join sample and the 30% usefulness gate. The strict bridge required
-an exact body, exact meeting date, and a conservative matter token, but measured
-0/10 and is disabled. Guessed URLs, date-only matches, and inferred actions are
-excluded. The committed lookup contract is therefore empty by design.
+stratified real-notice sample (0/10 strict joins). The join method is
+`exact_body_date_publisher_ulurp`: exact body, exact meeting date, and a
+publisher-supplied ULURP matter identifier present in both the notice and the
+minutes text. Slug or street-name tokens are not join keys. Guessed URLs,
+date-only matches, and inferred actions are excluded.
+
+Promotion requires **both** (1) usefulness ≥30% join rate on the sample and
+(2) reviewed precision 100% on proposed joins. Until both clear,
+`policy.join_bridge_enabled` stays false and the committed lookup stays empty.
+Fixture precision review:
+`warehouse/receipts/proof/rc3_non_council_outcome_precision_2026-08-05.json`.
 
 Rebuild or verify committed artifacts:
 
 ```bash
 node tools/build_non_council_source_registry.mjs
 node tools/build_non_council_source_registry.mjs --check
-warehouse/.venv/bin/python warehouse/scripts/non_council_outcomes_run.py --from-fixture --limit 10
+warehouse/.venv/bin/python warehouse/scripts/non_council_outcomes_run.py --from-fixture --limit 8 --max-docs 10
+node --test test/non_council_outcomes_infrastructure.test.mjs
 ```
 
 The collector stores HTML/PDF/DOCX metadata and bounded extracted text, not
