@@ -46,6 +46,8 @@
   --color-caution: var(--cs-caution);
   --color-success: var(--cs-success);
   --color-danger: var(--cs-danger);
+  /* Map labels cross a continuous light-to-dark choropleth; pure ink guarantees AA at its midpoint. */
+  --color-map-label-dark: #000000;
 
   /* Compatibility aliases: existing component CSS references these short names site-wide. */
   --paper: var(--color-canvas);

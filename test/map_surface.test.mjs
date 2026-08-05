@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { test } from "node:test";
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
+import { buildNearYouViewModel, renderNearYouBody } from "../site/near_you_view.mjs";
+import { scopeFromLensState } from "../site/scope_v0.mjs";
 
 const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
@@ -12,6 +14,8 @@ const source = SITE_SOURCE;
 const near = readFileSync(new URL("../site/near-you/index.html", import.meta.url), "utf8");
 const island = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
 const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+const boundaries = JSON.parse(readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"));
+const activity = JSON.parse(readFileSync(new URL("../site/data/district_activity.json", import.meta.url), "utf8"));
 
 test("the map is a route-owned Near-you facet without a proprietary SDK", () => {
   assert.doesNotMatch(index, /data-tab="map"|id="tab-map"|id="mapSvg"/);
@@ -25,6 +29,28 @@ test("the map is a route-owned Near-you facet without a proprietary SDK", () => 
   assert.match(i18n, /tab_map:\s*"Map"/);
   assert.match(i18n, /map_boundary_vintage/);
   assert.doesNotMatch(readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8"), /map\.mjs/);
+});
+
+test("every rendered borough and community-district polygon has a matching server label and area-list name", () => {
+  const boroughs = ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"];
+  const scopes = [scopeFromLensState("land", {})];
+  for (const borough of boroughs) {
+    const scope = scopeFromLensState("land", { borough, communityDistrict: null });
+    scope.place.viewport = {
+      level: "community_district", id: null, parent: borough, basis: "performance", view_box: null,
+    };
+    scopes.push(scope);
+  }
+  for (const scope of scopes) {
+    const view = buildNearYouViewModel(scope, activity, boundaries);
+    const html = renderNearYouBody(view);
+    assert.ok(view.features.length > 0, `${view.level}:${view.parent || "citywide"} polygons`);
+    for (const feature of view.features) {
+      assert.match(html, new RegExp(`data-map-id="${feature.id}"`), `${feature.id} polygon`);
+      assert.match(html, new RegExp(`data-map-label="${feature.id}"[^>]+data-area-name="${feature.label}"`), `${feature.id} visible label`);
+      assert.match(html, new RegExp(`data-map-area="${feature.id}"[^>]*>[\\s\\S]*?<span>${feature.label}</span>`), `${feature.id} list name`);
+    }
+  }
 });
 
 test("legacy map hashes forward and no-JavaScript area paths stay keyboard native", () => {
