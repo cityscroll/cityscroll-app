@@ -159,7 +159,7 @@ function serializeState(){
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
   const scope=tab==="map"
-    ?CrolScope.scopeWithMapState(CrolScope.scopeFromRouteHash(location.hash,{language:window.LANG||"en"}),mapState,{language:window.LANG||"en",viewBox:mapViewBox})
+    ?CrolScope.scopeWithMapState(CrolScope.scopeFromRouteHash(location.hash,{language:window.LANG||"en"}),mapState,{viewBox:mapViewBox})
     :CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
   return CrolScope.routeHashFromScope(scope,{surface:tab});
 }
@@ -680,8 +680,9 @@ function applyHash(){
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", "#"+raw); }
   if(!raw) return false;
   const scopeSurface=raw.split("?",1)[0];
-  if(["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)){
-    const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
+  const scope=["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
+    ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
+  if(scope){
     const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
     if(adapted!=="#"+raw){
       history.replaceState(routeHistoryState({entry:{hash:adapted,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",adapted);
@@ -735,7 +736,6 @@ function applyHash(){
     return true;
   }
   if(raw === "now" || raw.startsWith("now?")){
-    const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
     showNow({scope:CrolScope.scopeHasConstraints(scope)?scope:null});
     return true;
   }
@@ -956,10 +956,7 @@ function applyHash(){
           .catch(()=>focusAlertsRollupPanel());
       }
     } else if(tab === "map"){
-      const mapScope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
-      const adapted=CrolScope.mapStateFromScope(mapScope);
-      mapState={level:adapted.level,id:adapted.id,parent:adapted.parent,lens:adapted.lens,basis:adapted.basis};
-      mapViewBox=adapted.viewBox;
+      ({viewBox:mapViewBox,...mapState}=CrolScope.mapStateFromScope(scope));
       showTab("map");
     } else {
       showTab(tab);

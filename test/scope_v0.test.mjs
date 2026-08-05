@@ -9,16 +9,13 @@ import {
   lensStateFromScope,
   mapStateFromScope,
   normalizeScope,
-  presetFromScope,
   routeHashFromScope,
   scopeFromLensState,
   scopeFromMapState,
-  scopeFromPreset,
   scopeFromRouteHash,
   scopeFromWatch,
   scopeHasConstraints,
   scopeWithMapState,
-  subscriptionFromScope,
   watchFromScope,
 } from "../site/scope_v0.mjs";
 import { nowItemMatchesScope } from "../site/scope_now_adapter.mjs";
@@ -167,8 +164,8 @@ test("shared links and Back replay canonical scope without a history sidecar cop
 
 test("device presets serialize scope while retaining the legacy local-storage shape", () => {
   const legacy = { label: "Bronx auctions", hash: "#property?boro=Bronx&asset=vehicle&method=online_auction" };
-  const scope = scopeFromPreset(legacy, { language: "ko" });
-  const preset = presetFromScope(scope, { label: legacy.label, lens: "property" });
+  const scope = scopeFromRouteHash(legacy.hash, { language: "ko" });
+  const preset = { label: legacy.label, hash: routeHashFromScope(scope, { surface: "property" }) };
   assert.deepEqual(preset, legacy);
   assert.equal(Object.keys(preset).sort().join(","), "hash,label");
 });
@@ -188,7 +185,7 @@ test("watches and subscription metadata translate through scope without joining 
   };
   const scope = scopeFromWatch(watch, { language: "es" });
   assert.deepEqual(watchFromScope(scope, { lens: "meetings" }), watch);
-  assert.deepEqual(subscriptionFromScope(scope, { freq: "weekly" }), {
+  assert.deepEqual({ freq: "weekly", ...watchFromScope(scope), lang: scope.language }, {
     freq: "weekly",
     lens: "meetings",
     filter: watch.filter,
@@ -225,9 +222,9 @@ test("runtime boundaries all invoke the scope adapter", () => {
   };
   assert.match(files.main, /scope_v0\.mjs/);
   assert.match(files.routing, /scopeFromRouteHash|scopeFromMapState/);
-  assert.match(files.search, /scopeFromPreset|presetFromScope/);
+  assert.match(files.search, /scopeHash/);
   assert.match(files.now, /nowItemMatchesScope/);
   assert.match(files.alerts, /scopeFromWatch/);
   assert.match(files.carry, /watchFromScope/);
-  assert.match(files.templates, /subscriptionFromScope/);
+  assert.match(files.templates, /scopeFromWatch|watchFromScope/);
 });
