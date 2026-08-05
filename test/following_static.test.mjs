@@ -32,6 +32,7 @@ test("Following renders the public control center and a complete no-JavaScript f
     ],
   }, templates);
   const html = renderFollowingDocument(view);
+  const visible = html.replace(/<[^>]+>/g, " ");
 
   assert.match(html, /<h1[^>]*>Following<\/h1>/);
   assert.match(html, /Watches/);
@@ -49,7 +50,9 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /double opt-in/i);
   assert.match(html, /Click it to start the watch/);
   assert.match(html, /privacy/i);
-  assert.match(html, /href="https:\/\/api\.cityscroll\.org\/prefs"/);
+  assert.match(html, /href="https:\/\/cityscroll\.org\/prefs"/);
+  assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org\/following/);
+  assert.doesNotMatch(visible, /\b(?:facet|scope)\b|without JavaScript|server-rendered|static-first/i);
   assert.match(html, /type="module" src="\/app\/following\.mjs"/);
   assert.match(html, /rel="stylesheet" href="\/brand\.css"/);
   assert.match(html, /rel="stylesheet" href="\/civic-documents\.css"/);
@@ -83,7 +86,7 @@ test("contextual watch links open the server-rendered Following preview with the
   }, { matchCount: 17, freq: "weekly" });
   const url = new URL(href);
 
-  assert.equal(url.origin, "https://api.cityscroll.org");
+  assert.equal(url.origin, "https://cityscroll.org");
   assert.equal(url.pathname, "/following");
   assert.equal(url.searchParams.get("lens"), "meetings");
   assert.equal(url.searchParams.get("count"), "17");

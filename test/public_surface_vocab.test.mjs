@@ -40,3 +40,36 @@ for value in bad_render:
   const result = spawnSync("python3", ["-c", code], { encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
+
+test("public-surface vocabulary detector rejects architecture jargon and mechanics narration", () => {
+  const code = String.raw`
+import importlib.util
+from pathlib import Path
+path = Path("test/standards/public_surface_vocab.py")
+spec = importlib.util.spec_from_file_location("public_surface_vocab", path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+bad = [
+    "Map facet",
+    "Keep the active scope",
+    "Personal enhancement island",
+    "Open this document route",
+    "These links work without JavaScript",
+    "This no-JS view keeps the scope object",
+    "The server-rendered static-first page is ready",
+]
+for value in bad:
+    assert any(pattern.search(value) for _, pattern in module.PUBLIC_COPY_PATTERNS), value
+good = [
+    "Map view",
+    "Keep your active filters",
+    "See these records on a map",
+    "Staten Island",
+    "Open the official document",
+]
+for value in good:
+    assert not any(pattern.search(value) for _, pattern in module.PUBLIC_COPY_PATTERNS), value
+`;
+  const result = spawnSync("python3", ["-c", code], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});

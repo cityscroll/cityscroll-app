@@ -44,10 +44,19 @@ function makeEnv(subsMap) {
   };
 }
 
+function prefsUrl(origin, token = "") {
+  const url = new URL("/prefs", origin);
+  if (token) url.searchParams.set("token", token);
+  return url;
+}
+
 test("prefsLink issues prefs-scoped URL", async () => {
   const env = makeEnv({});
   const url = await prefsLink(env, ["a", "b.co"].join("@"));
-  assert.match(url, /^https:\/\/api\.cityscroll\.org\/prefs\?token=/);
+  const parsed = new URL(url);
+  assert.equal(parsed.origin, "https://cityscroll.org");
+  assert.equal(parsed.pathname, "/prefs");
+  assert.ok(parsed.searchParams.get("token"));
 });
 
 test("GET /prefs lists watches for the token email", async () => {
@@ -69,7 +78,7 @@ test("GET /prefs lists watches for the token email", async () => {
   };
   const env = makeEnv(map);
   const tok = await tokenFor(TEST_EMAIL);
-  const res = await handlePrefs(new Request(`https://api.cityscroll.org/prefs?token=${encodeURIComponent(tok)}`), env);
+  const res = await handlePrefs(new Request(prefsUrl("https://cityscroll.org", tok)), env);
   assert.equal(res.status, 200);
   const html = await res.text();
   assert.match(html, /schools/i);
@@ -95,7 +104,7 @@ test("GET /prefs bridges a recognized session into the same account's watch mana
     }),
   });
   const sessionToken = await signToken(SECRET, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
-  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+  const res = await handlePrefs(new Request("https://cityscroll.org/prefs", {
     headers: { Cookie: `cs_session=${sessionToken}` },
   }), env);
   assert.equal(res.status, 200);
@@ -109,7 +118,7 @@ test("GET /prefs bridges a recognized session into the same account's watch mana
 test("GET /prefs shows the recognized account's empty state", async () => {
   const env = makeEnv({});
   const sessionToken = await signToken(SECRET, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
-  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+  const res = await handlePrefs(new Request("https://cityscroll.org/prefs", {
     headers: { Cookie: `cs_session=${sessionToken}` },
   }), env);
   assert.equal(res.status, 200);
@@ -120,11 +129,17 @@ test("anonymous /prefs remains invalid and leaks no account email", async () => 
   const env = makeEnv({
     "sub:w1": JSON.stringify({ email: TEST_EMAIL, lens: "money", filter: {}, freq: "daily" }),
   });
-  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs"), env);
+  const res = await handlePrefs(new Request("https://cityscroll.org/prefs"), env);
   assert.equal(res.status, 400);
   const html = await res.text();
   assert.doesNotMatch(html, new RegExp(TEST_EMAIL, "i"));
   assert.doesNotMatch(html, /schools/i);
+});
+
+test("shared API-host preference documents permanently recover to the canonical host", async () => {
+  const response = await handlePrefs(new Request(prefsUrl("https://api.cityscroll.org", "shared")), {});
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), prefsUrl("https://cityscroll.org", "shared").toString());
 });
 
 test("session cookie alone cannot POST a watch mutation", async () => {

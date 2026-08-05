@@ -121,7 +121,7 @@ test("Near you adds place to the shared scope without dropping lens, agency, typ
     when: "month",
   });
   const narrowed = scopeWithPlace(starting, { borough: "Queens" });
-  const url = nearYouUrlFromScope(narrowed, { base: "https://api.cityscroll.org/near-you" });
+  const url = nearYouUrlFromScope(narrowed, { base: "https://cityscroll.org/near-you" });
   const replayed = scopeFromNearYouUrl(url);
 
   assert.deepEqual(replayed.facets.domains, ["meetings"]);
@@ -130,6 +130,7 @@ test("Near you adds place to the shared scope without dropping lens, agency, typ
   assert.equal(replayed.topic.query, "curb");
   assert.equal(replayed.time_window.preset, "month");
   assert.deepEqual(replayed.place.boroughs, ["Queens"]);
+  assert.equal(new URL(url).origin, "https://cityscroll.org");
   assert.match(url, /v=0/);
 });
 
@@ -168,7 +169,8 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
     { borough: "Queens" },
   );
   const view = buildNearYouViewModel(scope, fixtureActivity(), fixtureBoundaries);
-  const html = renderNearYouDocument(view, { canonicalBase: "https://api.cityscroll.org/near-you" });
+  const html = renderNearYouDocument(view, { canonicalBase: "https://cityscroll.org/near-you" });
+  const visible = html.replace(/<[^>]+>/g, " ");
 
   assert.equal(view.results.count, 1);
   assert.deepEqual(view.results.ids, ["m-queens"]);
@@ -189,6 +191,8 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(html, /rel="stylesheet" href="\/civic-documents\.css"/);
   assert.doesNotMatch(html, /<style>/);
   assert.doesNotMatch(html, /#f5f0e6|#7a1f1f|Georgia/);
+  assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org/);
+  assert.doesNotMatch(visible, /\b(?:facet|scope)\b|without JavaScript|server-rendered|static-first/i);
   assert.match(html, /class="document-brand brand-lockup home"/);
   assert.match(html, /what “near you” means/);
   assert.match(html, /data-use-location/);

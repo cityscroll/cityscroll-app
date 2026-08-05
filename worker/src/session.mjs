@@ -81,12 +81,11 @@ export async function handleSession(req, env, pathname) {
 async function statusFromCookie(req, env, cors) {
   const email = await emailFromRequest(req, env);
   if (!email) return json({ ok: true, recognized: false }, 200, cors);
-  const base = String(env.CONFIRM_BASE || "https://api.cityscroll.org").replace(/\/+$/, "");
   return json({
     ok: true,
     recognized: true,
     email,
-    prefsUrl: `${base}/prefs`,
+    prefsUrl: "https://cityscroll.org/prefs",
   }, 200, cors);
 }
 
