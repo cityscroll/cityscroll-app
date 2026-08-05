@@ -7,7 +7,6 @@ let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=
 let landResolvedArea=null;
 let landCommunityDistrict="";
 let landCouncilDistrict="";
-let landAutoLocationChecked=false;
 const mihOn = v => v===true || v==="true";
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
@@ -58,13 +57,14 @@ function landHearingModeFieldSync(){
   if(field) field.hidden=status!=="hearings";
 }
 function syncLandLensControls(){
-  const status=$("#lstatus")?.value||"active";
+  const status=$("#lstatus")?.value||"all";
   $("#land-status-rail").querySelectorAll("[data-land-status]").forEach(button=>{
     button.setAttribute("aria-pressed",String(button.dataset.landStatus===status));
   });
   landHearingModeFieldSync();
   const active=[
     !!$("#lboro")?.value,
+    status!=="all",
     status==="hearings"&&!!$("#lhearingmode")?.value,
     !!landResolvedArea,
   ].filter(Boolean).length;
@@ -87,6 +87,34 @@ function setLandStatus(message=""){
 function setLandResultCount(count){
   const element=$("#lrescount");
   if(element) element.textContent=t("results_count",{n:fmtNumber(count)});
+}
+function landHasAppliedFilters(){
+  return !!($("#lkw")?.value.trim() || $("#lboro")?.value || landCommunityDistrict
+    || landCouncilDistrict || landResolvedArea || $("#lstatus")?.value!=="all"
+    || $("#lhearingmode")?.value);
+}
+function resetLandFilters(){
+  landResolvedArea=null;
+  landCommunityDistrict="";
+  landCouncilDistrict="";
+  $("#lkw").value="";
+  $("#lboro").value="";
+  $("#lstatus").value="all";
+  if($("#lhearingmode")) $("#lhearingmode").value="";
+  $("#nltrans-land").innerHTML="";
+  landSearch();
+}
+function landEmptyStateHTML(kind="projects"){
+  const filtered=landHasAppliedFilters();
+  const heading=kind==="hearings"?t("land_empty_hearings_heading"):t("land_empty_projects_heading");
+  const detail=filtered?t("land_empty_filtered_detail"):t("land_empty_unfiltered_detail");
+  return `<section class="land-empty-state" role="status" aria-labelledby="land-empty-heading">
+    <h3 id="land-empty-heading">${heading}</h3><p>${detail}</p>
+    <button type="button" class="act" data-land-widen>${t("land_empty_widen")}</button>
+  </section>`;
+}
+function wireLandEmptyState(){
+  $("#llist")?.querySelector("[data-land-widen]")?.addEventListener("click",resetLandFilters);
 }
 function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
   const day=String(today||(typeof todayISO==="function"?todayISO():new Date().toISOString().slice(0,10))).slice(0,10);
@@ -163,7 +191,8 @@ async function landSearchHearings(stale){
     setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
     announce(t("land_hearings_heading")+`: ${lRows.length}`);
     if(!lRows.length){
-      $("#llist").innerHTML="";
+      $("#llist").innerHTML=landEmptyStateHTML("hearings");
+      wireLandEmptyState();
       clearLandDetail();
       return;
     }
@@ -318,7 +347,8 @@ function landRowHTML(r, i, terms, contextTerms){
 function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
-    $("#llist").innerHTML="";
+    $("#llist").innerHTML=landEmptyStateHTML();
+    wireLandEmptyState();
     clearLandDetail();
     return;
   }
@@ -458,7 +488,7 @@ async function showLandEntry(id){
   showTab("land");
   $("#lboro").value="";
   $("#lkw").value="";
-  $("#lstatus").value="active";
+  $("#lstatus").value="all";
   syncLandLensControls();
   $("#lreshead").textContent=t("rezonings_heading");
   $("#lrescount").textContent="";

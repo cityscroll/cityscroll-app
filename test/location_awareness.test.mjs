@@ -156,7 +156,7 @@ test("the tap control requests a position and GeoSearch only after activation", 
   assert.equal("longitude" in resolved, false);
 });
 
-test("an existing geolocation grant resolves the returning user's area without a tap", async () => {
+test("an existing geolocation grant still waits for an explicit tap", async () => {
   resetCouncilBoundariesCache();
   const calls = { permission: 0, position: 0, fetch: 0 };
   let resolved = null;
@@ -200,16 +200,14 @@ test("an existing geolocation grant resolves the returning user's area without a
     },
   }));
 
-  assert.equal(calls.permission, 1);
-  assert.equal(calls.position, 1);
-  assert.equal(calls.fetch, 1);
-  assert.equal(area, resolved);
-  assert.equal(resolved.communityDistrict, "Q04");
-  assert.equal(resolved.councilDistrict, "25");
-  assert.equal(resolved.boundaryVintage, "2026-05-26");
+  assert.equal(calls.permission, 0);
+  assert.equal(calls.position, 0);
+  assert.equal(calls.fetch, 0);
+  assert.equal(area, null);
+  assert.equal(resolved, null);
 });
 
-test("a first prompt-state Land entry asks once and dismissal preserves the tap fallback", async () => {
+test("a first prompt-state Land entry never opens the permission prompt", async () => {
   const storage = memoryStorage();
   let positions = 0;
   let fetches = 0;
@@ -239,8 +237,9 @@ test("a first prompt-state Land entry asks once and dismissal preserves the tap 
 
   assert.equal(await resolveLandEntryLocation(options), null);
   assert.equal(await resolveLandEntryLocation(options), null);
-  assert.equal(positions, 1, "dismissal must consume the once-ever automatic ask");
+  assert.equal(positions, 0, "route entry must not request a position");
   assert.equal(fetches, 0);
+  assert.equal(storage.getItem("crol_land_location_auto_asked_v1"), null);
 });
 
 test("asked-before prompt and denied states keep the explicit-tap/manual paths", async () => {
@@ -425,6 +424,6 @@ test("the Land control is a translated, focusable button wired through the click
   assert.match(indexSource, /<button[^>]+id="landlocation"[^>]+data-i18n="use_my_location"/);
   assert.match(indexSource, /#landlocation\{min-height:32px;/);
   assert.match(indexSource, /bindLocationControl\(\$\("#landlocation"\)/);
-  assert.match(indexSource, /if\(name==="land"\)[\s\S]{0,400}maybeAutoLocateLand\(\)/);
+  assert.doesNotMatch(indexSource, /maybeAutoLocateLand|navigator\.permissions\.query/);
   assert.doesNotMatch(indexSource, /(?:DOMContentLoaded|addEventListener\("load")[\s\S]{0,300}getCurrentPosition/);
 });

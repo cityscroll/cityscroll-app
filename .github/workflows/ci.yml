@@ -381,6 +381,9 @@ jobs:
         env:
           CROL_BASE: http://127.0.0.1:8000/
         run: python3 test/functional/23_mobile_viewport.py
+      - name: Geolocation explicit-gesture gate
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        run: python3 test/functional/24_geolocation_gesture_gate.py
       - name: axe WCAG 2.2 accessibility gate (390px + 1440px, every activated state)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/11_accessibility.py

@@ -47,9 +47,11 @@ test("Zoning keeps review view visible while place controls stay in one disclosu
   assert.doesNotMatch(disclosure, /id="lkw"|id="land-status-rail"/);
   assert.match(zoningSection, /id="lkw"[\s\S]*?id="land-more-filters"/);
   assert.match(zoningSection, /id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"/);
+  assert.match(zoningSection, /id="lstatus"[^>]*><option value="all"/);
+  assert.match(zoningSection, /data-land-status="all" aria-pressed="true"/);
 });
 
-test("Zoning paints an exact count and keeps absent list data unpainted", () => {
+test("Zoning paints an exact count and gives empty scopes a prominent widen action", () => {
   const paint = extractFunction(landSource, "paintLandRows");
   const count = extractFunction(landSource, "setLandResultCount");
   const list = extractFunction(landSource, "landRenderList");
@@ -58,7 +60,10 @@ test("Zoning paints an exact count and keeps absent list data unpainted", () => 
   assert.match(count, /results_count/);
   assert.doesNotMatch(paint, /40\+/);
   assert.doesNotMatch(list, /no_zap|zap_project_index_html|zap_explainer_html/);
-  assert.match(list, /\.innerHTML="";/);
+  assert.match(list, /landEmptyStateHTML\(\)/);
+  assert.match(list, /wireLandEmptyState\(\)/);
+  assert.match(landSource, /data-land-widen/);
+  assert.match(landSource, /resetLandFilters/);
   assert.doesNotMatch(hearings, /land_hearings_empty|land_hearings_empty_next_steps_html/);
   assert.match(landSource, /if\(!view \|\| !view\.event_count\) return "";/);
   assert.match(landSource, /function landSpineGapsHTML\(_gaps\)\{[\s\S]*?return "";/);
