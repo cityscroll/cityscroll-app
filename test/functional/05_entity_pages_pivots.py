@@ -349,6 +349,35 @@ with sync_playwright() as pw:
          "gc-05 project scope survives reload", json.dumps({"url": scoped_url, **round_trip})[:260])
     p6.close()
 
+    # ---------- bounded official decision trail + composable vote scope ----------
+    p7 = ctx.new_page()
+    p7.goto(BASE + "#official/7801", timeout=30000)
+    p7.wait_for_selector('#official-skim [data-official-coverage-status="hold"]', timeout=30000)
+    coverage = p7.evaluate("""(() => ({
+      text:document.querySelector('.official-coverage').innerText,
+      events:document.querySelectorAll('.official-decision-trail .official-event').length,
+      confidence:[...document.querySelectorAll('.official-decision-trail tbody tr')]
+        .every(row=>row.dataset.linkConfidence==='strong' && row.dataset.relation==='votes_on'),
+      href:document.querySelector('.official-view-all')?.getAttribute('href') || ''
+    }))()""")
+    scoped = p7.evaluate("""(() => {
+      const href=document.querySelector('.official-view-all').getAttribute('href');
+      const s=CrolScope.scopeFromRouteHash(href);
+      return {domains:s.facets.domains, refs:s.facets.values.entity_refs_all,
+        relation:s.facets.values.connection_relation};
+    })()""")
+    step(
+        "OK" if "6 of 30" in coverage["text"] and "49 of 49" in coverage["text"]
+        and coverage["events"] >= 1 and coverage["confidence"]
+        and coverage["href"].startswith("#meetings?")
+        and scoped == {"domains":["meetings"], "refs":["entity:official:7801"],
+                       "relation":"votes_on"} else "FAIL",
+        "gc-06 official coverage hold and decision scope",
+        json.dumps({"coverage":coverage, "scope":scoped}),
+    )
+    p7.screenshot(path=SHOT + "official-coverage.png", full_page=True)
+    p7.close()
+
     # ---------- vendor page direct, with variant resolution ----------
     p3 = ctx.new_page()
     p3.goto(BASE + "#vendor/" + ent["vendor"].replace(" ", "%20"), timeout=30000)

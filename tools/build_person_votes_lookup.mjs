@@ -29,6 +29,10 @@ const FIXTURE = path.join(
   ROOT,
   "worker/test/fixtures/entity-intelligence/people_domain_observations.json",
 );
+const RETENTION_RECEIPT = path.join(
+  ROOT,
+  "site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
+);
 
 function parseArgs(argv) {
   const out = { check: false, fixture: false };
@@ -59,6 +63,13 @@ function main() {
       console.error("person_votes_lookup: empty by_person_id");
       process.exit(1);
     }
+    const expectedCoverage = buildPersonVotesLookup(loadPeople(false), {
+      retentionReceipt: JSON.parse(readFileSync(RETENTION_RECEIPT, "utf8")),
+    }).coverage;
+    if (JSON.stringify(doc.coverage) !== JSON.stringify(expectedCoverage)) {
+      console.error("person_votes_lookup: coverage block is stale — rebuild the lookup");
+      process.exit(1);
+    }
     for (const id of PERSON_VOTES_DEMO_IDS) {
       const bag = personVotesForId(doc, id);
       if (!bag || !bag.votes.length) {
@@ -73,7 +84,10 @@ function main() {
   }
 
   const people = loadPeople(args.fixture);
-  const lookup = buildPersonVotesLookup(people);
+  const retentionReceipt = args.fixture
+    ? null
+    : JSON.parse(readFileSync(RETENTION_RECEIPT, "utf8"));
+  const lookup = buildPersonVotesLookup(people, { retentionReceipt });
   mkdirSync(path.dirname(OUT), { recursive: true });
   writeFileSync(OUT, `${JSON.stringify(lookup, null, 2)}\n`);
   console.log(

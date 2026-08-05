@@ -66,7 +66,7 @@ function officialVotesTableHTML(votes, opts){
           return `<td lang="en" dir="ltr">${notice}</td>`;
         })()
       : "";
-    return `<tr data-matter-id="${escUiHtml(v.matter_id || "")}" data-event-id="${escUiHtml(v.event_id || "")}" data-notice-id="${escUiHtml(v.request_id || "")}">
+    return `<tr data-matter-id="${escUiHtml(v.matter_id || "")}" data-event-id="${escUiHtml(v.event_id || "")}" data-notice-id="${escUiHtml(v.request_id || "")}" data-link-confidence="${escUiHtml(v.confidence || "strong")}" data-relation="${escUiHtml(v.relation || "votes_on")}">
       <th scope="row">${fileHTML}${title}</th>
       ${hearingCell}
       <td lang="en" dir="ltr"><span class="official-vote-bucket">${escUiHtml(String(bucket))}${voteExtra}</span></td>
@@ -182,6 +182,12 @@ async function showOfficial(personId, opts){
   // Recent across matters: full precompute list (newest first already in lookup).
   const recentVotes = preVotes.slice(0, 40);
   const name = displayName || id;
+  const officialConnections = await import("../official_connections.mjs");
+  const officialView = officialConnections.buildOfficialConnectionView(
+    lookupBag || { person_id:id, person_name:name, votes:recentVotes },
+    (await loadPersonVotesLookup())?.coverage || {},
+    { currentHash:"#meetings", scope:globalThis.CrolScope },
+  ) || null;
   const event = (record && record.council_event) || {};
   const resolvedEventId = eventId || event.event_id || (scopedVotes[0] && scopedVotes[0].event_id) || "";
   const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#meetings";
@@ -223,7 +229,10 @@ async function showOfficial(personId, opts){
       ? t("official_recent_votes_heading")
       : t("official_all_votes_heading");
     body += `<div class="chain-h" style="margin-top:${hasScoped ? "18" : "0"}px">${recentHeading}</div>`;
-    body += officialVotesTableHTML(recentVotes, { hideHearing: false });
+    body += officialConnections.renderOfficialDecisionTrailHTML(officialView, {
+      formatDate:fdate, escapeHtml:escUiHtml, translate:t, votesTableHTML:officialVotesTableHTML,
+    })
+      || officialVotesTableHTML(recentVotes, { hideHearing: false });
   } else if(!hasScoped){
     body = `<div class="note" data-person-votes-gap="empty">${t("official_no_recent_html",{
       name: escUiHtml(name)
@@ -237,9 +246,11 @@ async function showOfficial(personId, opts){
       <div class="ftype" style="margin-bottom:6px">${kicker}</div>
       <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(name)}</h2>
       ${eventLine}
+      ${officialConnections.renderOfficialCoverageHTML(officialView, { translate:t, escapeHtml:escUiHtml })}
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
         ${noticeLink}
+        ${officialView?.view_all_href ? `<a class="act official-view-all" href="${escUiHtml(officialView.view_all_href)}">${t("official_view_all_scope")}</a>` : ""}
         <a class="view" href="${agencyHref("City Council")}">${t("official_city_council_profile")}</a>
       </div>
       <p class="aidprov" style="margin-top:14px">${t("official_provenance_html")}</p>
