@@ -65,15 +65,25 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
         assert not re.search(r"^\s*import\s", helper_source, re.MULTILINE), (
             f"inline reconstruction cannot flatten nested imports in {helper_name}"
         )
-        export_names = EXPORTED_NAME.findall(helper_source)
-        assert export_names, f"namespace helper has no named exports: {helper_name}"
+        exports = []  # Source: export declarations parsed from helper_source.
+        for name in EXPORTED_NAME.findall(helper_source):
+            exports.append((name, name))
+        for export_list in re.findall(r"\bexport\s*\{([^}]+)\}\s*;?", helper_source):
+            for item in export_list.split(","):
+                aliases = re.split(r"\s+as\s+", item.strip())
+                exports.append((aliases[0], aliases[-1]))
+        assert exports, f"namespace helper has no named exports: {helper_name}"
         helper_source = EXPORTED_DECLARATION.sub("", helper_source)
+        helper_source = re.sub(r"\bexport\s*\{[^}]+\}\s*;?", "", helper_source)
         assert not re.search(r"\bexport\s", helper_source), (
             f"inline reconstruction cannot flatten this export in {helper_name}"
         )
+        namespace_members = ",".join(
+            f"{public_name}:{binding}" for binding, public_name in exports
+        )
         helpers.append(
             f"const {namespace}=(()=>{{\n{helper_source}\n"
-            f"return {{{','.join(export_names)}}};\n}})();\n"
+            f"return Object.freeze({{{namespace_members}}});\n}})();\n"
             f"globalThis.{namespace}={namespace};"
         )
         seen_helpers.add(helper_name)
