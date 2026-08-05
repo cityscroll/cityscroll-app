@@ -22,8 +22,22 @@ import {
   isCloseDatePast,
   normalizePropertySort,
 } from "./property_commercial.mjs";
+import { propertyEventState } from "./property_timed_events.mjs";
 
 export const PROPERTY_EXPLORER_SCHEMA_VERSION = 1;
+
+// Passive record-reading remains valuable in archive/search, but it is not a reason
+// for a record to lead the default feed. These are the source-grounded actions a
+// reader can still take in the world.
+export const PROPERTY_DEFAULT_ACTION_KINDS = Object.freeze(new Set([
+  "bid",
+  "inspect",
+  "attend",
+  "comment",
+  "object",
+  "inquire_claim",
+  "request_accommodation",
+]));
 
 /** Process-stage filter chips for the Property domain rail (ops ontology). */
 export const PROP_PROCESS_STAGES = Object.freeze([
@@ -411,6 +425,123 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
       action_key: closed ? "property_action_closed" : openAction,
     };
   });
+}
+
+function rowsForPropertyEntry(entry) {
+  if (!entry || typeof entry !== "object") return [];
+  if (entry.kind === "cluster") {
+    return (entry.members || []).flatMap(rowsForPropertyEntry);
+  }
+  if (Array.isArray(entry.members) && entry.members.length) return entry.members.filter(Boolean);
+  return entry.primary ? [entry.primary] : [];
+}
+
+/** Raw notice cardinality represented by explorer entries (before or after clustering). */
+export function propertyExplorerCensusCount(entries) {
+  return (Array.isArray(entries) ? entries : [])
+    .reduce((total, entry) => total + rowsForPropertyEntry(entry).length, 0);
+}
+
+function rowTimedEvents(row, opts) {
+  if (typeof opts.eventOf === "function") return opts.eventOf(row) || [];
+  return row?.property_timed_events
+    || row?.property_events
+    || row?.timed_events
+    || row?.commercial?.timed_events
+    || [];
+}
+
+function rowReaderActions(row, opts) {
+  if (typeof opts.actionsOf === "function") return opts.actionsOf(row) || [];
+  const supplied = row?.property_reader_actions;
+  if (Array.isArray(supplied)) return supplied;
+  if (Array.isArray(supplied?.actions)) return supplied.actions;
+  return [];
+}
+
+function livePropertyEvent(event, today) {
+  const state = propertyEventState(event, today);
+  return state === "open" || state === "upcoming";
+}
+
+function exposedPropertyAction(action) {
+  if (!action || !PROPERTY_DEFAULT_ACTION_KINDS.has(action.kind)) return false;
+  return action.status !== "historical";
+}
+
+/**
+ * Default-feed qualification: at least one member has a live typed event or a
+ * source-grounded participatory action. Result/document review stays available in
+ * archive/search but cannot make a closed record lead the feed.
+ */
+export function propertyEntryDefaultQualification(entry, opts = {}) {
+  const today = opts.today instanceof Date || typeof opts.today === "number"
+    ? civicTodayIso(opts.today)
+    : (opts.today ? String(opts.today).slice(0, 10) : civicTodayIso());
+  const rows = rowsForPropertyEntry(entry);
+  const liveEvents = [];
+  const exposedActions = [];
+  for (const row of rows) {
+    for (const event of rowTimedEvents(row, opts)) {
+      if (livePropertyEvent(event, today)) {
+        liveEvents.push({ request_id: row?.request_id || null, kind: event?.kind || null });
+      }
+    }
+    for (const action of rowReaderActions(row, opts)) {
+      if (exposedPropertyAction(action)) {
+        exposedActions.push({ request_id: row?.request_id || null, kind: action.kind });
+      }
+    }
+  }
+  return {
+    qualified: liveEvents.length > 0 || exposedActions.length > 0,
+    live_events: liveEvents,
+    exposed_actions: exposedActions,
+  };
+}
+
+/** Throw when a proposed archive contains anything that still qualifies for default. */
+export function assertPropertyArchiveSafety(archiveEntries, opts = {}) {
+  const violations = [];
+  for (const entry of archiveEntries || []) {
+    const qualification = propertyEntryDefaultQualification(entry, opts);
+    if (!qualification.qualified) continue;
+    const ids = rowsForPropertyEntry(entry).map((row) => row?.request_id).filter(Boolean);
+    violations.push({ ids, qualification });
+  }
+  if (violations.length) {
+    const ids = [...new Set(violations.flatMap((violation) => violation.ids))];
+    throw new Error(`Property archive contains live event/action records: ${ids.join(", ")}`);
+  }
+  return true;
+}
+
+/**
+ * Partition a scoped census without dropping rows. Counts use raw notice cardinality,
+ * so grouping and small-multiple presentation cannot hide conservation failures.
+ */
+export function partitionPropertyExplorerEntries(entries, opts = {}) {
+  const defaultEntries = [];
+  const archiveEntries = [];
+  for (const entry of entries || []) {
+    const qualification = propertyEntryDefaultQualification(entry, opts);
+    const stamped = { ...entry, default_qualification: qualification };
+    (qualification.qualified ? defaultEntries : archiveEntries).push(stamped);
+  }
+  assertPropertyArchiveSafety(archiveEntries, opts);
+  const censusTotal = propertyExplorerCensusCount(entries);
+  const defaultCount = propertyExplorerCensusCount(defaultEntries);
+  const archiveCount = propertyExplorerCensusCount(archiveEntries);
+  if (defaultCount + archiveCount !== censusTotal) {
+    throw new Error(`Property scope count mismatch: ${defaultCount} + ${archiveCount} != ${censusTotal}`);
+  }
+  return {
+    default_entries: defaultEntries,
+    archive_entries: archiveEntries,
+    default_count: defaultCount,
+    archive_count: archiveCount,
+    census_total: censusTotal,
+  };
 }
 
 /**

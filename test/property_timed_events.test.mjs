@@ -113,6 +113,24 @@ test("direct-sale prose gets a sale date; a result title does not invent a resul
   assert.equal(result.find((event) => event.kind === "auction")?.start, "2014-03-25");
 });
 
+test("structured dates qualify source-typed direct auctions and forest sales", () => {
+  const directAuction = extractPropertyTimedEvents({
+    request_id: "fixture-direct-auction",
+    type_of_notice_description: "Sale by Auction",
+    short_title: "PUBLIC AUCTION OF CITY-OWNED PROPERTY, BOROUGH OF BROOKLYN",
+    event_date: "2026-08-14T10:00:00.000",
+  });
+  assert.equal(directAuction.find((event) => event.kind === "auction")?.start, "2026-08-14T10:00:00");
+
+  const forestSale = extractPropertyTimedEvents({
+    request_id: "fixture-forest-sale",
+    type_of_notice_description: "Sale",
+    short_title: "SALE OF FOREST MANAGEMENT PRODUCTS, PROJECT #5205",
+    event_date: "2026-08-16T13:00:00.000",
+  });
+  assert.equal(forestSale.find((event) => event.kind === "sale")?.start, "2026-08-16T13:00:00");
+});
+
 test("comment, objection, and undated hearing references remain honestly absent", () => {
   assert.deepEqual(events("honest-empty"), []);
   const testimony = events("disposition-hearing");

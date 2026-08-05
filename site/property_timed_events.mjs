@@ -354,10 +354,26 @@ export function extractPropertyTimedEvents(row = {}) {
       confidence: "medium",
       date_source: "structured_field",
     });
-  } else if (eventDate && /real estate public auction/i.test(titleAndBody)) {
+  } else if (eventDate && /real estate public auction|public auction of (?:city-owned )?(?:real )?propert/i.test(titleAndBody)) {
     addUnique(events, {
       schema: PROPERTY_TIMED_EVENT_SCHEMA,
       kind: "auction",
+      start: eventDate,
+      end: null,
+      deadline: null,
+      source_field: "event_date",
+      source_span: { start: 0, end: String(row.event_date).length, text: String(row.event_date) },
+      confidence: "medium",
+      date_source: "structured_field",
+    });
+  } else if (
+    eventDate
+    && /\bsale\b/i.test(String(row.type_of_notice_description || ""))
+    && /\b(?:forest management|timber|firewood)\b/i.test(titleAndBody)
+  ) {
+    addUnique(events, {
+      schema: PROPERTY_TIMED_EVENT_SCHEMA,
+      kind: "sale",
       start: eventDate,
       end: null,
       deadline: null,
