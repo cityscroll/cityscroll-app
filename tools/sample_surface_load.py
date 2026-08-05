@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+import re
 import sys
 from typing import Any
 
@@ -21,6 +22,63 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "ontology" / "fixtures" / "dimensions" / "surface_load.json"
 DEFAULT_BASE = "https://cityscroll.org/"
 READY_TIMEOUT_MS = 60_000
+ACTIVE_VERB_IMPAIRED_RE = re.compile(
+    r"\b(?:(?:auction\s+)?(closes|opens|ends))\s+((?:"
+    r"January|February|March|April|May|June|July|August|September|October|November|December"
+    r")\s+\d{1,2},\s*\d{4}|\d{4}-\d{2}-\d{2})",
+    re.IGNORECASE,
+)
+MONTH_TO_NUMBERS = {
+    "january": "01",
+    "february": "02",
+    "march": "03",
+    "april": "04",
+    "may": "05",
+    "june": "06",
+    "july": "07",
+    "august": "08",
+    "september": "09",
+    "october": "10",
+    "november": "11",
+    "december": "12",
+}
+
+
+def parse_loose_date(raw):
+    text = str(raw or "").strip()
+    if not text:
+        return None
+    iso = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})", text)
+    if iso:
+        return f"{iso.group(1)}-{iso.group(2)}-{iso.group(3)}"
+    long_date = re.fullmatch(
+        r"(January|February|March|April|May|June|July|August|September|October|November|December)"
+        r"\s+(\d{1,2}),\s*(\d{4})",
+        text,
+        re.IGNORECASE,
+    )
+    if not long_date:
+        return None
+    month = MONTH_TO_NUMBERS[long_date.group(1).lower()]
+    return f"{long_date.group(3)}-{month}-{int(long_date.group(2)):02d}"
+
+
+def find_tense_violations(text, today):
+    if not text or not today:
+        return []
+    findings = []
+    for match in ACTIVE_VERB_IMPAIRED_RE.finditer(text):
+        raw_date = match.group(2)
+        parsed_date = parse_loose_date(raw_date)
+        if not parsed_date:
+            continue
+        if parsed_date < today:
+            findings.append({
+                "verb": match.group(1).lower(),
+                "date": parsed_date,
+                "text": match.group(0),
+            })
+    return findings
 
 
 def parse_args() -> argparse.Namespace:
@@ -145,6 +203,15 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
           const words = normalize(root.innerText).match(/[\p{L}\p{N}][\p{L}\p{N}'’.-]*/gu) || [];
           const links = [...root.querySelectorAll('a[href]')].filter(visible);
           const buttons = [...root.querySelectorAll('button, input[type=button], input[type=submit]')].filter(visible);
+          const actionLinks = [...root.querySelectorAll(actionSelector)]
+            .map(el => ({
+              label: normalize(el.innerText || el.getAttribute('aria-label') || el.value || '').replace(/\\s+/g,' ').trim(),
+              href: String(el.getAttribute('href') || '').trim(),
+              source: String(el.getAttribute('href') || ''),
+              id: String(el.id || ''),
+              tag: el.tagName ? String(el.tagName).toLowerCase() : 'a',
+            }))
+            .filter(action => action.label && action.href);
           const candidateSelector = 'h1,h2,h3,h4,h5,h6,p,li,dt,dd,a,button,label,summary,td,th';
           const candidateElements = [...root.querySelectorAll(candidateSelector)].filter(visible);
           const candidates = candidateElements
@@ -221,6 +288,7 @@ def inventory_dom(page: Any, root_selector: str, action_selector: str) -> dict[s
             words: words.length,
             links: links.length,
             buttons: buttons.length,
+            action_links: actionLinks,
             max_verbatim_repeat: duplicateRows.length ? duplicateRows[0].count : 1,
             verbatim_duplicates: duplicateRows.slice(0, 10),
             action_candidates: actions.length,
@@ -282,6 +350,26 @@ def breach_rows(inventory: dict[str, Any]) -> list[str]:
                 f"{surface['id']}: apology phrases x{apology_hits} "
                 f"(threshold 1 per card)"
             )
+        today = (inventory.get("measured_at") or measured.get("today") or "")[:10]
+        if not today.startswith("1970") and today:
+            for violation in find_tense_violations(
+                str(measured.get("visible_text") or ""),
+                today,
+            ):
+                rows.append(
+                    f"{surface['id']}: tense mismatch '{violation['verb']} "
+                    f"{violation['date']}' in \"{violation['text']}\""
+                )
+        action_links = [link for link in measured.get("action_links") or [] if isinstance(link, dict)]
+        repeated = {}
+        for link in action_links:
+            key = (surface["id"], (link.get("label") or "").strip(), (link.get("href") or "").strip())
+            repeated[key] = repeated.get(key, 0) + 1
+        for (_section, label, _href), count in repeated.items():
+            if count > 3:
+                rows.append(
+                    f"{surface['id']}: repeated identical CTA \"{label}\" x{count}"
+                )
         for card in measured.get("card_facts") or []:
             seen: dict[str, int] = {}  # Source: rendered rule-card data-card-fact attributes.
             for fact in card.get("facts") or []:
