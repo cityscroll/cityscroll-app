@@ -36,7 +36,7 @@ test("Following renders the public control center and a complete no-JavaScript f
 
   assert.match(html, /<h1[^>]*>Following<\/h1>/);
   assert.match(html, /Your watches/);
-  assert.match(html, /Ready-made watch sets/);
+  assert.match(html, /Watch sets/);
   assert.match(html, /data-scope-axis="agency"[^>]*>Transportation/);
   assert.match(html, /data-scope-axis="borough"[^>]*>Queens/);
   assert.match(html, /data-scope-count="17"/);
@@ -62,8 +62,8 @@ test("Following has a useful server-rendered empty state before personalization"
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
 
   assert.match(html, /data-personal-watch-list/);
-  assert.match(html, /recent CityScroll email/);
-  assert.match(html, /Select filters above to see current matches/);
+  assert.match(html, /Open a CityScroll email to see your watches/);
+  assert.match(html, /Pick filters to see matches/);
   assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first/);
 });
 

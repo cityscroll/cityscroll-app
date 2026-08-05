@@ -186,7 +186,7 @@ function previewHtml(view) {
 }
 
 function subscribeHtml(view) {
-  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Select filters above to see current matches.</p></section>`;
+  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Pick filters to see matches.</p></section>`;
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
@@ -206,7 +206,7 @@ function templateHtml(template) {
   const watches = template.watches.map((watch) => `<li>${esc(watch.label)}.</li>`).join("");
   const firstWatch = template.watches[0];
   const href = followingUrlFromWatch(firstWatch, { frequency: "weekly" });
-  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This set includes ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">Preview one watch</a></article>`;
+  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This set has ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">View one watch</a></article>`;
 }
 
 function controlsHtml(view) {
@@ -220,7 +220,7 @@ function controlsHtml(view) {
     <label>Borough<select name="boro">${boroughOptions(borough)}</select></label>
     <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51"></label>
     <label>Cadence<select name="freq"><option value="daily"${view.frequency === "daily" ? " selected" : ""}>Daily</option><option value="weekly"${view.frequency === "weekly" ? " selected" : ""}>Weekly, Mondays</option></select></label>
-    <button type="submit">Preview these filters</button>
+    <button type="submit">See matches</button>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>`;
 }
@@ -240,10 +240,10 @@ export function renderFollowingBody(view) {
     <section class="following-hero">
       <h1>Following</h1>
     </section>
-    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list><p>Open a recent CityScroll email to see and manage saved watches here.</p></div><p data-personal-status role="status" aria-live="polite"></p></section>
-    <section id="create" class="following-create" aria-labelledby="following-create-heading"><p class="following-kicker">Create</p><h2 id="following-create-heading">Follow a topic or place</h2>${controlsHtml(view)}</section>
+    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list><p>Open a CityScroll email to see your watches.</p></div><p data-personal-status role="status" aria-live="polite"></p></section>
+    <section id="create" class="following-create" aria-labelledby="following-create-heading"><p class="following-kicker">Create</p><h2 id="following-create-heading">Pick a topic or place</h2>${controlsHtml(view)}</section>
     <div class="following-workspace" data-following-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>
-    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Ready-made watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>
+    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>
   </main>`;
 }
 

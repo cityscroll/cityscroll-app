@@ -19,8 +19,10 @@ from playwright.sync_api import Page, sync_playwright
 
 
 ROOT = Path(__file__).parents[2]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
+from tools.local_site_server import QuietHandler  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
 VIEWPORT = {"width": 360, "height": 800}  # Source: mobile contract acceptance width.
@@ -35,17 +37,6 @@ SURFACES = (
     ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
     ("reader action", "#notice/20260701099", "#noticeview .panel"),
 )
-
-
-class QuietHandler(http.server.SimpleHTTPRequestHandler):
-    def log_message(self, _format: str, *_args: object) -> None:
-        pass
-
-    def do_GET(self) -> None:
-        # Production edge routes return the shared shell before the detail island runs.
-        if self.path.split("?", 1)[0].startswith("/notices/"):
-            self.path = "/index.html"
-        super().do_GET()
 
 
 def rendered_target_failures(page: Page) -> list[dict]:
@@ -230,7 +221,7 @@ def run(base: str) -> None:
               previewRows: document.querySelectorAll('[data-following-preview-panel] [data-record-id]').length,
               criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
               quietPrompt: document.querySelector('[data-following-subscribe-panel]')?.textContent
-                .includes('Select filters above to see current matches.'),
+                .includes('Pick filters to see matches.'),
               sectionOrder: [...document.querySelectorAll('#your-following, #create, #packs')]
                 .map(el => el.id),
             })"""

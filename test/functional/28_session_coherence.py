@@ -37,7 +37,7 @@ def personal_html(recognized: bool) -> str:
     if not recognized:
         return (
             '<div data-session-recognized="false">'
-            "<p>Open a recent CityScroll email to see and manage saved watches here.</p>"
+            "<p>Open a CityScroll email to see your watches.</p>"
             "</div>"
         )
     return """

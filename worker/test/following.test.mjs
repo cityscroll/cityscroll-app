@@ -84,7 +84,7 @@ test("the personal island endpoint stays anonymous without a recognized session"
   assert.equal(response.status, 200);
   assert.match(response.headers.get("cache-control") || "", /no-store/);
   assert.match(html, /data-session-recognized="false"/);
-  assert.match(html, /recent CityScroll email/);
+  assert.match(html, /Open a CityScroll email to see your watches/);
   assert.doesNotMatch(html, /href="[^"]*prefs/);
   assert.doesNotMatch(html, /data-watch-key=/);
 });

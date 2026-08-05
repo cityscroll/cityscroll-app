@@ -102,8 +102,8 @@ for value in bad:
     assert any(pattern.search(value) for _, pattern in module.DIDACTIC_COPY_PATTERNS), value
 good = [
     "Manage your watches",
-    "Ready-made watch sets",
-    "Select filters above to see current matches.",
+    "Watch sets",
+    "Pick filters to see matches.",
     "Each email includes a link to stop a watch.",
 ]
 for value in good:

@@ -550,7 +550,7 @@
           },
           {
             "selector": "#packs",
-            "text": "Ready-made watch sets"
+            "text": "Watch sets"
           },
           {
             "selector": ".following-pack"
@@ -760,7 +760,7 @@
           },
           {
             "selector": "[data-following-subscribe-panel]",
-            "text": "Select filters above to see current matches."
+            "text": "Pick filters to see matches."
           },
           {
             "selector": "[data-personal-watch-list]"
@@ -965,11 +965,11 @@
         "visible": [
           {
             "selector": "#create",
-            "text": "Follow a topic or place"
+            "text": "Pick a topic or place"
           },
           {
             "selector": "[data-following-subscribe-panel]",
-            "text": "Select filters above to see current matches."
+            "text": "Pick filters to see matches."
           },
           {
             "selector": "[data-following-preview-form]"

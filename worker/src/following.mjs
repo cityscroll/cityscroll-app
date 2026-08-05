@@ -81,7 +81,7 @@ function personalWatchHtml(watch, credential) {
 
 function personalHtml(watches, credential, recognized) {
   if (!recognized) {
-    return `<div data-session-recognized="false"><p>Open a recent CityScroll email to see and manage saved watches here.</p></div>`;
+    return `<div data-session-recognized="false"><p>Open a CityScroll email to see your watches.</p></div>`;
   }
   if (!watches?.length) return `<div data-session-recognized="true"><p>No saved watches yet.</p></div>`;
   return `<div data-session-recognized="true">${watches.map((watch) => personalWatchHtml(watch, credential)).join("")}</div>`;
