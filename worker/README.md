@@ -62,12 +62,13 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
 | `/priorcycle/<request_id>` | GET | **Precomputed prior-cycle + near-match sets** for an Award notice (Phase 1a — the server side of moving index.html's two live SODA panels off the client; Phase 1b swaps the client to this). Ranked by `src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers (cross-check test fails on divergence); cached in D1 `prior_cycle_matches`, compute-on-miss, cron pre-warms fresh Award notices; validated id, edge-cached 5 min | none |
 | `/translate/<request_id>?lang=` | GET | **Informal notice translation** — original English remains the official record on the client; this returns an optional unofficial title+description aid. Glossary-pinned Haiku call on first miss only; D1 `notice_translations` + edge cache thereafter (no per-pageview upstream). Amounts, dates, PINs, Request IDs, agency names, and addresses must appear verbatim or the response is `{ok:false}` and nothing is cached. Daily ceiling `TRANSLATE_MAX_CALLS_PER_DAY` (default 150) on NEW translations only; cache hits never spend the meter | `ANTHROPIC_API_KEY` for first compute; degrades to `{ok:false}` |
-| `/stats` | GET | **Public outcome counters** (R·B): active subscriptions (count only), digests sent (today/7d/all-time/by-topic), digest-link clicks, feed/batch/share activity, NL calls (today/7d/all-time/by-lens for both windows), and a day-by-day `history` block for digests + NL calls + active-watch snapshots — aggregate integers, no personal data; edge-cached 15 min. All-time totals fold in pre-counter history recovered from an older short-lived counter where available (see `mergeRecoveredAllTime` in `lib/stats.mjs`), and every all-time/breakdown figure has an honest `live_from` boundary in `history` rather than claiming "since launch." | none |
+| `/stats` | GET | **Public corpus and coverage facts** (`public-stats.v2`): official City Record notice count and date range, primary public source systems, and language coverage. Product usage, subscriptions, sends, and daily series are intentionally absent; edge-cached 15 min. | none |
 | `/events` | POST | Bounded first-party event intake. Accepts only the enumerations in `../docs/analytics-event-taxonomy.md`, caps payloads at 1 KiB, and writes one aggregate Analytics Engine point with no visitor identifier. | allowed site origin + production runtime binding + `USAGE_ANALYTICS` |
 | `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `cityscroll.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
 | `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
 | `/admin/ops-contract` | GET | **Versioned ops contract** (`ops-contract.v1`) — digest modes, daylog actions/fields, stats metrics (incl. developer-traffic exclusion), admin routes + auth classes, KV key prefixes, feature flags. No secrets. Desk panels pin `min_compatible_version` against this document (or the committed fixture `worker/ops-contract.v1.json`). Never served on public `/stats` | `ADMIN_KEY` → 404 if unset |
+| `/admin/stats` | GET | **Private product activity and delivery operations** formerly returned by public `/stats`: subscriptions, sends, searches, visits, interaction breakdowns, and daily history. JSON by default; `?view=html` renders the responsive desk panel. | `ADMIN_KEY` → 404 if unset |
 | `/admin/possibly-same` | GET | Read-only desk review of candidates blocked from recent `source_records`, excluding pairs already joined to one canonical entity; `Accept: application/json` returns the shaped cards | `ADMIN_KEY` → 404 if unset; `DB` |
 | `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
 | `/admin/digest-shadow` | GET/POST | **06:00 ET digest rehearsal**. GET returns the latest/dated machine-readable run summary, scoped hold state, and optional `?digest=` preview. GET also accepts the read-only `SHADOW_STATUS_KEY` (constant-time, scoped to this one route) so an ops proxy can read the status without `ADMIN_KEY` custody. `NEEDS_ATTENTION` returns HTTP 503 with structured redlines. POST re-runs the delivery-free build after a repair (always requires `ADMIN_KEY`); `{ "action":"override-hold", "digest_ids":[…], "reason":"…" }` releases only named affected digests | GET: `ADMIN_KEY` or `SHADOW_STATUS_KEY` → 404 if neither is set; POST: `ADMIN_KEY`; `DB` |
@@ -138,7 +139,7 @@ The route accepts an **operator probe key** from either `ADMIN_KEY` or `ANALYTIC
 `?key=` or `Authorization: Bearer`. `ANALYTICS_DEV_KEY` is the same developer-exclusion class
 used for analytics testing, not a Cloudflare product credential; configure it with
 `wrangler secret put ANALYTICS_DEV_KEY`. Live sends with the default `advanceState:false` do not
-update seen/last-sent watermarks or public digest statistics.
+update seen/last-sent watermarks or private digest statistics.
 
 Cron-replayable lenses: **money** (awards ≥ threshold / RFP
 keywords), **land** (rezonings), **property / rules / meetings** (City Record section
@@ -181,9 +182,9 @@ hold no key and are edge-cached.
 
 ## Storage — Cloudflare KV + D1 + Analytics Engine (no R2)
 
-`NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, `stats:<metric>:<day>` outcome counters,
+`NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so `/admin/stats` can window them, last-sent dates, `stats:<metric>:<day>` outcome counters,
 `stats:catday:<metric>:<category>:<day>` windowed per-category counters (e.g. NL calls by lens, last 7 days), and the
-permanent `hist:<metric>:<day>` / `hist:era:<metric>` counters behind /stats' day-by-day history — including `hist:watches_active:<day>`, a once-daily gauge SNAPSHOT of active-subscription
+permanent `hist:<metric>:<day>` / `hist:era:<metric>` counters behind `/admin/stats` day-by-day history — including `hist:watches_active:<day>`, a once-daily gauge SNAPSHOT of active-subscription
 count rather than an event count, written by the cron job, not incremented — see `scripts/backfill-history.mjs`) ·
 `SUBS` (confirmed subs + subscribe rate limits) · `FEEDBACK` (feedback rows + rate limits).
 
@@ -220,9 +221,9 @@ while the index is absent. `node --test test/notices_search.test.mjs` rehearses 
 export/import plus index recreation and checks equivalent ranked results.
 
 Analytics Engine (`crol_usage_events_v1`) holds the rolling 90-day interaction taxonomy described
-in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. `/stats`
-queries the SQL API with `ANALYTICS_READ_TOKEN`, then edge-caches the response for 15 minutes
-(that is the documented latency for an accepted event to appear). Writes also require
+in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. Authenticated
+`/admin/stats` queries the SQL API with `ANALYTICS_READ_TOKEN` and returns a private no-store
+response. Writes also require
 `ANALYTICS_ENVIRONMENT` to equal `production` — set in production `[vars]` in `wrangler.toml`;
 the beta environment overrides it to `preview`. Local `wrangler dev` drops events when the
 Analytics Engine binding is absent. `page_view` events also bump a KV fallback so page-view

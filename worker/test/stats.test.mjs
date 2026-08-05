@@ -9,7 +9,14 @@ import {
   snapshotHistDay, ensureHistEra,
 } from "../src/lib/stats.mjs";
 import { handleRedirect } from "../src/redirect.mjs";
-import { countSubscriptionMetrics, handleStats, prewarmStats, statsEdgeCacheKey } from "../src/stats.mjs";
+import {
+  buildPublicStatsBody,
+  countSubscriptionMetrics,
+  handlePrivateStats,
+  handleStats,
+  prewarmStats,
+  statsEdgeCacheKey,
+} from "../src/stats.mjs";
 
 // A minimal in-memory KV double (get/put/list subset used by the stats helpers).
 function fakeKV(seed = {}) {
@@ -175,7 +182,7 @@ test("bumpCategoryStat is a no-op with no category, and swallows KV failures", a
   await assert.doesNotReject(bumpCategoryStat({ async get() { throw new Error("kv down"); }, async put() {} }, "digest", "land"));
 });
 
-test("GET /stats publishes all-time totals + category breakdown alongside the unchanged 7-day fields", async () => {
+test("private stats preserve all-time totals and category breakdowns", async () => {
   const alertState = fakeKV({
     "stats:alltime:digest": "42",
     "stats:cat:digest:Procurement": "30",
@@ -186,7 +193,7 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
     "stats:cat:nl_search:money": "9",
   });
   const env = { ALERT_STATE: alertState, NL_METER: nlMeter, SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), env);
   assert.equal(res.status, 200);
   const body = await res.json();
 
@@ -208,7 +215,7 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
   assert.equal(body.nl_search.by_category.meetings, 0, "unseen lenses are explicit zeroes, not missing rows");
 });
 
-test("GET /stats exposes durable aggregate action-outcome totals when Analytics Engine SQL is unavailable", async () => {
+test("private stats expose durable aggregate action-outcome totals when Analytics Engine SQL is unavailable", async () => {
   const today = dayStr(NOW);
   const alertState = fakeKV({
     [`stats:usage_action_opened:${today}`]: "10",
@@ -216,10 +223,9 @@ test("GET /stats exposes durable aggregate action-outcome totals when Analytics 
     [`stats:usage_outcome_dismissed:${today}`]: "2",
     [`stats:usage_outcome_recorded:${today}`]: "4",
   });
-  const res = await handleStats(
-    new Request("https://api.cityscroll.org/stats"),
+  const res = await handlePrivateStats(
+    new Request("https://api.cityscroll.org/admin/stats"),
     { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: fakeKV() },
-    { waitUntil: async (promise) => promise },
     { now: NOW },
   );
   const body = await res.json();
@@ -255,7 +261,7 @@ test("before: /stats had no way to tell recovered history from live-counted hist
   assert.equal(await readHistEra(null, "digest"), null);
 });
 
-test("GET /stats includes a history block with per-day totals and the recovered/live boundary for both digests and nl_search", async () => {
+test("private stats include a history block with per-day totals and the recovered/live boundary for both digests and nl_search", async () => {
   const alertState = fakeKV({
     [histDayKey("digest", "2026-07-02")]: "1",
     [histDayKey("digest", "2026-07-13")]: "2",
@@ -266,7 +272,7 @@ test("GET /stats includes a history block with per-day totals and the recovered/
     [histEraKey("nl_search")]: "2026-07-14",
   });
   const env = { ALERT_STATE: alertState, NL_METER: nlMeter, SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), env);
   const body = await res.json();
 
   assert.deepEqual(body.history.digests.by_day, { "2026-07-02": 1, "2026-07-13": 2 });
@@ -363,14 +369,14 @@ test("sum-consistency also holds all-time: summing the per-lens all-time breakdo
   assert.equal(Object.values(byLens).reduce((a, b) => a + b, 0), total);
 });
 
-test("GET /stats publishes a 7-day nl_search total and its per-lens breakdown alongside the unchanged all-time fields", async () => {
+test("private stats preserve the 7-day nl_search total and its per-lens breakdown", async () => {
   const nlMeter = fakeKV({
     [statsKey("nl_search", dayStr(new Date()))]: "3",
     [categoryDayKey("nl_search", "money", dayStr(new Date()))]: "2",
     [categoryDayKey("nl_search", "land", dayStr(new Date()))]: "1",
   });
   const env = { ALERT_STATE: fakeKV(), NL_METER: nlMeter, SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), env);
   const body = await res.json();
   assert.equal(body.nl_search.calls_last7d, 3);
   assert.equal(body.nl_search.by_category_last7d.money, 2);
@@ -378,7 +384,7 @@ test("GET /stats publishes a 7-day nl_search total and its per-lens breakdown al
   assert.equal(body.nl_search.by_category_last7d.meetings, 0);
 });
 
-test("GET /stats separates active watches from unique accounts and keeps digest counts as send units", async () => {
+test("private stats separate active watches from unique accounts and keep digest counts as send units", async () => {
   const today = dayStr(new Date());
   const subs = fakeKV({
     "sub:ada-1": JSON.stringify({ email: "Shared-Account", lens: "money" }),
@@ -390,10 +396,9 @@ test("GET /stats separates active watches from unique accounts and keeps digest 
   const metrics = await countSubscriptionMetrics({ SUBS: subs });
   assert.deepEqual(metrics, { active: 3, accounts: 2 });
 
-  const res = await handleStats(
-    new Request("https://api.cityscroll.org/stats"),
+  const res = await handlePrivateStats(
+    new Request("https://api.cityscroll.org/admin/stats"),
     { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: subs },
-    { waitUntil: async (p) => p },
   );
   const body = await res.json();
   assert.deepEqual(body.subscriptions, { active: 3, accounts: 2 });
@@ -419,14 +424,14 @@ test("ensureHistEra sets the era boundary only the first time it's called — ne
   assert.equal(await readHistEra(kv, "watches_active"), "2026-07-02", "second call is a no-op — era stays pinned to the first day");
 });
 
-test("GET /stats includes a watches_active history block with the same recovered/live shape as digests and nl_search — no backfill for a metric with no historical source", async () => {
+test("private stats include watches_active history without inventing a backfill", async () => {
   const alertState = fakeKV({
     [histDayKey("watches_active", "2026-07-14")]: "12",
     [histDayKey("watches_active", "2026-07-15")]: "14",
     [histEraKey("watches_active")]: "2026-07-14",
   });
   const env = { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), env);
   const body = await res.json();
   assert.deepEqual(body.history.watches_active.by_day, { "2026-07-14": 12, "2026-07-15": 14 });
   assert.equal(body.history.watches_active.live_from, "2026-07-14");
@@ -444,5 +449,42 @@ test("prewarmStats writes the public edge cache key (or reports no_cache_api off
     assert.equal(result.status, 200);
   }
   const key = statsEdgeCacheKey("https://api.cityscroll.org");
-  assert.match(key.url, /\/stats\?edge=r2-adoption-v1$/);
+  assert.match(key.url, /\/stats\?edge=public-corpus-v2$/);
+});
+
+test("public stats v2 contains corpus coverage and no usage-class fields", async () => {
+  const response = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    {},
+    { waitUntil: async (promise) => promise },
+    {
+      now: "2026-08-05T18:00:00Z",
+      fetchImpl: async () => Response.json([{
+        notice_count: "1099194",
+        first_notice_date: "2003-01-02T00:00:00.000",
+        latest_notice_date: "2026-08-05T00:00:00.000",
+      }]),
+    },
+  );
+  const body = await response.json();
+  assert.equal(body.schema, "public-stats.v2");
+  assert.equal(body.city_record.notice_count, 1099194);
+  assert.equal(body.city_record.latest_notice_date, "2026-08-05");
+  assert.equal(body.sources.primary_system_count, 6);
+  assert.equal(body.language_coverage.site_languages, 11);
+  for (const removed of ["subscriptions", "digests", "digest_clicks", "feeds", "batch", "shared_investigations", "nl_search", "history", "usage"]) {
+    assert.equal(Object.hasOwn(body, removed), false, `${removed} must remain private`);
+  }
+});
+
+test("public stats stays honest when the live corpus aggregate is unavailable", () => {
+  const body = buildPublicStatsBody({
+    available: false,
+    notice_count: null,
+    first_notice_date: null,
+    latest_notice_date: null,
+  }, new Date("2026-08-05T18:00:00Z"));
+  assert.equal(body.city_record.available, false);
+  assert.equal(body.city_record.notice_count, null);
+  assert.equal(body.sources.primary_system_count, 6);
 });

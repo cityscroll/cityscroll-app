@@ -27,7 +27,10 @@ function healthyFetch(url) {
   const parsed = new URL(url);
   if (parsed.hostname === "api.cityscroll.org" && parsed.pathname === "/stats") {
     return Promise.resolve(response(200, JSON.stringify({
-      digests: { sent_last7d: 4 }, nl_search: { calls_last7d: 2 }, history: { digests: { by_day: {} } },
+      schema: "public-stats.v2",
+      city_record: { available: true, notice_count: 1099194, latest_notice_date: "2026-08-05" },
+      sources: { primary_system_count: 2, systems: ["A", "B"] },
+      language_coverage: { site_languages: 11 },
     }), { server: "cloudflare", "content-type": "application/json" }));
   }
   if (parsed.hostname === "api.cityscroll.org") {
@@ -114,7 +117,7 @@ test("architecture checks require Pages headers and the GitHub fallback header",
     result("pages-www-home", pagesHeaders),
     result("pages-dev-home", pagesHeaders),
     result("github-pages-fallback", { server: "cloudflare" }),
-    { ...result("api-worker-stats", {}), body: '{"digests":{"sent_last7d":1},"nl_search":{},"history":{}}' },
+    { ...result("api-worker-stats", {}), body: '{"schema":"public-stats.v2","city_record":{},"sources":{},"language_coverage":{}}' },
   ]);
   assert.deepEqual(failures, [
     "github-pages-fallback: expected GitHub Pages origin headers",
@@ -125,7 +128,7 @@ test("scheduled production monitor rejects a changed Stats API schema", () => {
   const failures = architectureFailures([{
     id: "api-worker-stats",
     classification: { ok: true },
-    body: '{"digests":{}}',
+    body: '{"schema":"public-stats.v2","city_record":{}}',
     finalHeaders: new Headers({ "content-type": "application/json" }),
   }]);
   assert.match(failures.join("\n"), /required public schema fields/);

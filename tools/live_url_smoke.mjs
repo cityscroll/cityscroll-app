@@ -94,7 +94,8 @@ export const PAGES_DEV_TARGETS = Object.freeze([
  * focused production matrix in tools/cutover_regression.mjs.
  *
  * URL probes below plus named operational checks in tools/post_flip_checks.mjs
- * (EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY), each annotated
+ * (EMAIL HEALTH, STATS SANITY, CORPUS FRESHNESS, COVERAGE SANITY, WORKER ACCESS,
+ * HUMAN-PATH JOURNEY), each annotated
  * with the incident class it descends from.
  *
  * Optional header checks (no GitHub Pages request id on apex/www) assert the
@@ -131,8 +132,8 @@ export const POST_FLIP_TARGETS = Object.freeze([
   {
     id: "post-flip-api-stats",
     url: "https://api.cityscroll.org/stats",
-    // JSON includes digests block; marker is a stable key name, not HTML CityScroll.
-    marker: /"digests"\s*:/,
+    // Stable versioned public coverage contract; product-use fields are private.
+    marker: /"schema"\s*:\s*"public-stats\.v2"/,
   },
   {
     id: "post-flip-pages-dev",
@@ -639,10 +640,11 @@ Default set probes: ${DEFAULT_TARGETS.map((t) => t.url).join(", ")}
 Named sets (opt-in; not used by deploy jobs unless selected):
   pages-dev  ${PAGES_DEV_TARGETS.map((t) => t.url).join(", ")}
   post-flip  URL matrix + named incident checks (EMAIL HEALTH, STATS SANITY,
-             WORKER ACCESS, HUMAN-PATH JOURNEY)
+             CORPUS FRESHNESS, COVERAGE SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY)
 Each HTML target must return HTTP 200 with a CityScroll content marker, or the retry window ends.
 API health uses the worker health marker. The post-flip set also asserts apex/www lack a
 GitHub Pages request-id header once Pages is the public origin.
+CITYSCROLL_ADMIN_KEY authenticates the EMAIL HEALTH and STATS SANITY desk checks.
 `);
     return 0;
   }
@@ -687,7 +689,7 @@ GitHub Pages request-id header once Pages is the public origin.
   // Named operational checks only for post-flip (or explicit --named-checks-only).
   if (isPostFlip || opts.namedChecksOnly) {
     const { runPostFlipNamedChecks } = await import("./post_flip_checks.mjs");
-    console.log("post-flip named checks: EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY");
+    console.log("post-flip named checks: EMAIL HEALTH, STATS SANITY, CORPUS FRESHNESS, COVERAGE SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY");
     const named = await runPostFlipNamedChecks({
       runJourney: opts.withJourney,
     });

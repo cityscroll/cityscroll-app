@@ -221,7 +221,7 @@ test("named smoke target sets: pages-dev and post-flip are selectable and dorman
   const api = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-api-health");
   assert.equal(api.marker, API_HEALTH_MARKER);
   const stats = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-api-stats");
-  assert.match(String(stats.marker), /digests/);
+  assert.match(String(stats.marker), /public-stats/);
   const apex = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-cityscroll-apex");
   assert.deepEqual([...apex.requireAbsentHeaders], ["x-github-request-id"]);
   const www = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-cityscroll-www");

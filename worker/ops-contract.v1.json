@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -407,6 +407,14 @@
       "description": "This contract document (versioned JSON)."
     },
     {
+      "path": "/admin/stats",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Private product activity, subscriptions, and delivery operations (JSON or ?view=html)."
+    },
+    {
       "path": "/admin/subs",
       "methods": [
         "GET"
@@ -526,7 +534,7 @@
         "GET"
       ],
       "auth": "none",
-      "description": "Public aggregate outcome counters only — never serves this contract."
+      "description": "Public corpus and coverage aggregates only — no product usage fields."
     }
   ],
   "auth_classes": [
@@ -740,11 +748,11 @@
     "usage": [
       {
         "id": "production",
-        "description": "Real visitor / subscriber traffic. Included in public /stats usage cuts."
+        "description": "Real visitor / subscriber traffic. Included only in authenticated /admin/stats usage cuts."
       },
       {
         "id": "developer",
-        "description": "Debug traffic: valid X-CROL-Analytics-Dev exclusion, non-production ANALYTICS_ENVIRONMENT, or explicit emitUsageEvent traffic_class. Excluded from public production metrics."
+        "description": "Debug traffic: valid X-CROL-Analytics-Dev exclusion, non-production ANALYTICS_ENVIRONMENT, or explicit emitUsageEvent traffic_class. Excluded from private production metrics."
       }
     ],
     "daylog": [

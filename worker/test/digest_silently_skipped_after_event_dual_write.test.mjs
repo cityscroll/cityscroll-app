@@ -14,7 +14,7 @@ import {
   DIGEST_RUN_LATEST_KEY,
   digestRunDayKey,
 } from "../src/alerts.mjs";
-import { handleStats } from "../src/stats.mjs";
+import { handlePrivateStats } from "../src/stats.mjs";
 import { statsKey, categoryDayKey, dayStr } from "../src/lib/stats.mjs";
 
 class MockKV {
@@ -203,7 +203,7 @@ test("digest silently skipped after event dual-write: inflated usage counters mu
   }
 });
 
-test("summarizeDigestRun + /stats digests.last_run expose skipped_reason when nothing sent", async () => {
+test("summarizeDigestRun + private desk stats expose skipped_reason when nothing sent", async () => {
   const receipt = summarizeDigestRun({
     ranAt: "2026-07-30T13:00:00.000Z",
     day: "2026-07-30",
@@ -222,7 +222,7 @@ test("summarizeDigestRun + /stats digests.last_run expose skipped_reason when no
 
   const ALERT_STATE = new MockKV({ [DIGEST_RUN_LATEST_KEY]: JSON.stringify(receipt) });
   const env = { ALERT_STATE, NL_METER: new MockKV(), SUBS: new MockKV() };
-  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handlePrivateStats(new Request("https://api.cityscroll.org/admin/stats"), env);
   const body = await res.json();
   assert.ok(body.digests.last_run, "last_run must appear on digests block");
   assert.equal(body.digests.last_run.skipped_reason, "all_quiet");

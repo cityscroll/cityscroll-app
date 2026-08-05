@@ -90,7 +90,7 @@ the live site. `analytics.js` may forward a browser-held value without interpret
 accepts only `v1.<unix-seconds>.<HMAC-SHA256>` tokens signed with `ANALYTICS_DEV_KEY`, with a
 five-minute age limit and 30-second clock-skew allowance. Valid tokens set
 `traffic_class=developer` and skip production dual-write counters and Analytics Engine points
-that feed public `/stats`. Missing, expired, malformed, or incorrectly signed tokens count as
+that feed authenticated `/admin/stats`. Missing, expired, malformed, or incorrectly signed tokens count as
 `production`. Non-production `ANALYTICS_ENVIRONMENT` values also classify as developer and fail
 closed on the writer. All accepted event requests return the same empty HTTP 204 response, so
 token validity is not exposed as a response oracle. The token itself is never written to Analytics
@@ -99,22 +99,22 @@ Engine. Never commit signing material.
 Configure the signing secret with `wrangler secret put ANALYTICS_DEV_KEY` (minimum 32 characters).
 That secret is the **developer key** documented in the ops contract (`GET /admin/ops-contract` /
 `worker/ops-contract.v1.json`). It is distinct from `USAGE_KEY` (Haiku `/usage` spend report only)
-and from `ADMIN_KEY` (operator admin routes). Public SQL for `/stats` keeps rows where `blob7` is
+and from `ADMIN_KEY` (operator admin routes). Private operational SQL keeps rows where `blob7` is
 null, empty, or `production`, so pre-traffic_class history stays continuous.
 
 ## Aggregation and reading
 
-The public Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
-builds the public cuts in `GET /stats`: 7- and 30-day activity, lens interest, search
+The Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
+builds authenticated cuts in `GET /admin/stats`: 7- and 30-day activity, lens interest, search
 activity, scenario interest, deep links, exports, confirmed watches, selected borough interest,
 daily growth, and aggregate action/outcome totals. Version 1.3.0 is additive; queries include
 compatible 1.0.0, 1.1.0, and 1.2.0 rows so the existing rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
-The public response is edge-cached for about 15 minutes — that is the documented latency from an
-accepted `POST /events` until `/stats` is expected to reflect it.
+The private response is not cached. Analytics Engine ingestion can still delay a newly accepted
+`POST /events`; durable Worker counters provide immediate continuity where available.
 
 When `ANALYTICS_READ_TOKEN` is missing, the Analytics Engine SQL path alone would report
-`unavailable_reason=not-configured`. `/stats` then reconciles Site totals against the durable
+`unavailable_reason=not-configured`. `/admin/stats` then reconciles Site totals against the durable
 Worker stores (`ALERT_STATE` and `NL_METER` — the same namespaces used before and after the
 cityscroll.org domain flip): page views and dual-written usage events from `POST /events`,
 searches from the NL meter, digest-link clicks and investigation shares from outcome counters,
@@ -137,9 +137,8 @@ Cloudflare’s current published Workers Paid allowance includes **10 million da
 per month** and **1 million SQL read queries per month**; overages are listed as $0.25 per
 additional million writes and $1.00 per additional million reads. Cloudflare also says Analytics
 Engine usage is not currently billed, while the published prices describe future billing. The
-`/stats` response is cached for 15 minutes, so a continuously requested dashboard needs at most
-about 2,880 SQL reads in a 30-day month, far below the included million. One accepted site event
-uses one write.
+Normal authenticated desk use needs far fewer than the included SQL reads. The public `/stats`
+cache no longer triggers Analytics Engine reads. One accepted site event uses one write.
 
 Platform constraints applied here: at most 20 blobs, 20 doubles, one index, 16 KiB of blob data,
 and 250 data points per Worker invocation. CityScroll uses seven short blobs, one double, one index,
