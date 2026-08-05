@@ -82,7 +82,6 @@ $("#afreq").addEventListener("change", ()=>{
   refreshQuizDisplay();
   announce(t("sync_freq_announce", {freq: $("#afreq").selectedOptions[0].textContent.trim()}));
 });
-$("#apreview").addEventListener("click", async ()=>{ if(!(await resolveMoneyNarrow())) aPreview(); });
 $("#asubscribe").addEventListener("click", aSubscribe);
 // aWatchChange() clears #aparam/#athresh's stale value when the watch type actually changes
 // (see the comment inside aWatchChange itself) -- so the suggestion's own param/threshold must
@@ -98,6 +97,12 @@ document.querySelectorAll(".wandchip").forEach(b=>b.addEventListener("click",()=
 
 /* "Watch this search" — carry the current lens filters into a prefilled alert via hash
    params (same entry path as notice "Watch this notice" and header CTA). */
+function currentLensResultCount(lens){
+  if(lens==="money" && Array.isArray(currentRows)) return currentRows.length;
+  if(lens==="land" && Array.isArray(lRows)) return lRows.length;
+  if(["property","rules","meetings"].includes(lens) && feedRows && Array.isArray(feedRows[lens])) return feedRows[lens].length;
+  return null;
+}
 async function watchFromFilters(lens){
   const carry = await ensureAlertsContextCarry();
   const state = currentLensFilterState(lens) || {};
@@ -112,7 +117,7 @@ async function watchFromFilters(lens){
   if(carry && typeof carry.alertScopeFromLensState === "function"){
     const scope = carry.alertScopeFromLensState(lens, state);
     if(scope){
-      location.hash = carry.alertsHref(scope);
+      location.hash = carry.alertsHref(scope, {matchCount:currentLensResultCount(lens)});
       return;
     }
   }
@@ -172,83 +177,109 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
   filter = filter || {};
   opts = opts || {};
   noticeWatchSeed = null;
+  const parsedCount=opts.matchCount==null||opts.matchCount===""?NaN:Number(opts.matchCount);
+  alertEntryMatchCount=Number.isInteger(parsedCount)&&parsedCount>=0?parsedCount:null;
   paintAlertContextLead(null);
   if(freq==="weekly" || freq==="daily") $("#afreq").selectedIndex = freq==="weekly" ? 1 : 0;
-  // Seed notice/project first so a missing lens can be derived from the row.
   const noticeId = opts.noticeId || filter.requestId || null;
   const projectId = opts.projectId || null;
-  if(noticeId || projectId){
-    await applyNoticeWatchSeed({ noticeId, projectId, lens, filter });
-    if(!lens && noticeWatchSeed && noticeWatchSeed.row){
-      const carry = await ensureAlertsContextCarry();
-      if(carry && typeof carry.alertScopeFromNotice === "function"){
-        const scope = carry.alertScopeFromNotice(noticeWatchSeed.row);
-        lens = scope.lens;
-        filter = Object.assign({}, scope.filter, filter);
-        noticeWatchSeed.lens = lens;
-        noticeWatchSeed.filter = filter;
-        noticeWatchSeed.digKind = scope.digKind || noticeWatchSeed.digKind;
+
+  // PR 524's pure adapter is optional on this branch. When present, consume its scope object;
+  // existing controls remain authoritative and the direct URL-filter path stays the fallback.
+  if(lens && globalThis.CrolScope){
+    try{
+      const scope=CrolScope.scopeFromWatch({lens,filter},{language:window.LANG||"en"});
+      const adapted=CrolScope.watchFromScope(scope,{lens});
+      lens=adapted.lens;
+      filter=adapted.filter;
+    }catch(_e){}
+  }
+
+  function applyAlertScopeToBuilder(targetLens,targetFilter){
+    const f=targetFilter||{};
+    if(targetLens==="money"){
+      // Cold hash routing runs before the const-backed quiz model initializes. Reuse the
+      // Ask-path state adapter, but defer that presentation repaint until the common tail.
+      NL.alerts.apply(f,{skipQuizSync:true});
+      return true;
+    }
+    if(targetLens==="entity"){
+      $("#awatch").value = f.kind==="agency" ? "entityagency" : "entityvendor";
+      aWatchChange();
+      $("#aparam").value = f.name || "";
+      return true;
+    }
+    if(targetLens==="land"){
+      $("#awatch").value = "rezone"; aWatchChange();
+      $("#aparam").value = (f.keywords||[]).join(" ");
+      return true;
+    }
+    if(targetLens==="district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(f.councilDistrict||""))){
+      // Initial hash routing can invoke this hoisted function before the quiz's
+      // later const-backed state is initialized. Defer that repaint until below.
+      $("#awatch").value = "district"; aWatchChange(true);
+      $("#adistrict").value = String(f.councilDistrict);
+      $("#afreq").value = "Weekly";
+      return true;
+    }
+    if(SECTION_WATCH_LABEL[targetLens]){
+      $("#awatch").value = targetLens; aWatchChange();
+      $("#aparam").value = (f.keywords||[]).join(" ");
+      $("#aagency").value = f.agency || "";
+      if(targetLens==="meetings") meetingWatchExtra={
+        borough:f.borough||null, neighborhood:f.neighborhood||null,
+        locationScope:f.locationScope||null, dateWindow:f.dateWindow||f.when||"upcoming",
+        when:f.when||f.dateWindow||"upcoming",
+      };
+      if(targetLens==="property") propertyWatchExtra={
+        borough:f.borough||null, neighborhood:f.neighborhood||null,
+        communityDistrict:f.communityDistrict||null,
+        process:f.process||null, stage:f.stage||null,
+        asset:f.asset||null, saleMethod:f.saleMethod||null,
+        priceBand:f.priceBand||null, sort:f.sort||null,
+      };
+      return true;
+    }
+    if(targetLens==="award" && (f.requestId || noticeId)){
+      awardWatchTarget = {
+        requestId: f.requestId || noticeId,
+        agency: f.agency || "",
+        label: f.label || f.agency || f.requestId || noticeId,
+      };
+      $("#awatch").value = "awardwatch";
+      aWatchChange();
+      return true;
+    }
+    if(targetLens==="people" && f.view==="guide" && f.interestArea){
+      examAreaWatchTarget={id:f.interestArea,label:f.interestLabel||f.interestArea};
+      $("#awatch").value="examarea";
+      aWatchChange();
+      examAreaWatchTarget={id:f.interestArea,label:f.interestLabel||f.interestArea};
+      return true;
+    }
+    return false;
+  }
+
+  // Apply known scope synchronously. A slow/failed optional notice lookup must never leave the
+  // reader looking at the default builder while their agency/type filters sit in the URL.
+  let filled=lens?applyAlertScopeToBuilder(lens,filter):false;
+  if(filled) paintAlertContextLead({});
+
+  if((noticeId||projectId) && lens){
+    await applyNoticeWatchSeed({noticeId,projectId,lens,filter});
+  }else if((noticeId||projectId) && !lens){
+    await applyNoticeWatchSeed({noticeId,projectId,lens,filter});
+    if(noticeWatchSeed&&noticeWatchSeed.row){
+      const carry=await ensureAlertsContextCarry();
+      if(carry&&typeof carry.alertScopeFromNotice==="function"){
+        const derived=carry.alertScopeFromNotice(noticeWatchSeed.row);
+        lens=derived.lens;
+        filter=Object.assign({},derived.filter,filter);
+        const seed=noticeWatchSeed;
+        filled=applyAlertScopeToBuilder(lens,filter);
+        noticeWatchSeed={...seed,lens,filter,digKind:derived.digKind||seed.digKind};
       }
     }
-  }
-  let filled = false;
-  if(lens==="money"){
-    NL.alerts.apply(filter);
-    filled = true;
-  } else if(lens==="entity"){
-    $("#awatch").value = filter.kind==="agency" ? "entityagency" : "entityvendor";
-    aWatchChange();
-    $("#aparam").value = filter.name || "";
-    filled = true;
-  } else if(lens==="land"){
-    $("#awatch").value = "rezone"; aWatchChange();
-    $("#aparam").value = (filter.keywords||[]).join(" ");
-    filled = true;
-  } else if(lens==="district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(filter.councilDistrict||""))){
-    // Initial hash routing can invoke this hoisted function before the quiz's
-    // later const-backed state is initialized. Defer that repaint until below.
-    $("#awatch").value = "district"; aWatchChange(true);
-    $("#adistrict").value = String(filter.councilDistrict);
-    $("#afreq").value = "Weekly";
-    filled = true;
-  } else if(SECTION_WATCH_LABEL[lens]){
-    $("#awatch").value = lens; aWatchChange();
-    $("#aparam").value = (filter.keywords||[]).join(" ");
-    $("#aagency").value = filter.agency || "";
-    if(lens==="meetings") meetingWatchExtra={
-      borough:filter.borough||null, neighborhood:filter.neighborhood||null,
-      locationScope:filter.locationScope||null, dateWindow:filter.dateWindow||filter.when||"upcoming",
-      when:filter.when||filter.dateWindow||"upcoming",
-    };
-    if(lens==="property") propertyWatchExtra={
-      borough:filter.borough||null, neighborhood:filter.neighborhood||null,
-      communityDistrict:filter.communityDistrict||null,
-      process:filter.process||null, stage:filter.stage||null,
-      asset:filter.asset||null, saleMethod:filter.saleMethod||null,
-      priceBand:filter.priceBand||null, sort:filter.sort||null,
-    };
-    filled = true;
-  } else if(lens==="award" && (filter.requestId || noticeId)){
-    // awardwatch one-notice path via hash (same as awardWatchOffer button).
-    awardWatchTarget = {
-      requestId: filter.requestId || noticeId,
-      agency: filter.agency || "",
-      label: filter.label || filter.agency || filter.requestId || noticeId,
-    };
-    $("#awatch").value = "awardwatch";
-    aWatchChange();
-    filled = true;
-  } else if(lens==="people" && filter.view==="guide" && filter.interestArea){
-    examAreaWatchTarget={id:filter.interestArea,label:filter.interestLabel||filter.interestArea};
-    $("#awatch").value="examarea";
-    aWatchChange();
-    // aWatchChange only clears a prior exam-area target when leaving that type.
-    examAreaWatchTarget={id:filter.interestArea,label:filter.interestLabel||filter.interestArea};
-    filled=true;
-  }
-  // aWatchChange() clears noticeWatchSeed when the type changes — re-seed after fill.
-  if((noticeId || projectId) && !noticeWatchSeed){
-    await applyNoticeWatchSeed({ noticeId, projectId, lens, filter });
   }
   try{ refreshQuizDisplay(); }
   catch(_e){ queueMicrotask(()=>{ try{ refreshQuizDisplay(); }catch(__e){} }); }
@@ -401,7 +432,7 @@ async function currentAlertsEntryHref(){
     if(hasBits){
       const carry = await ensureAlertsContextCarry();
       const scope = carry && carry.alertScopeFromLensState(tab, state);
-      if(scope) return carry.alertsHref(scope);
+      if(scope) return carry.alertsHref(scope, {matchCount:currentLensResultCount(tab)});
     }
   }
   return "#alerts";
@@ -417,8 +448,8 @@ async function syncAlertsEntryHrefs(){
 
 /* 60-second onboarding: chips → prefilled advanced options → live preview (Meet-Your-Mayor
    pattern). w12-20: the quiz's chips/narrow field/freq chips and the "Advanced options"
-   builder fields are two VIEWS of one draft alert -- #awatch/#aparam-or-#amoneykw/#afreq are
-   the shared state (both Preview buttons already read them directly, see aFetch()/
+   builder fields are two VIEWS of one draft alert -- #awatch/#aparam-or-#quiznarrow/#afreq are
+   the shared state (the single Preview button reads them directly, see aFetch()/
    aLensFilter()/aPreview() above), and refreshQuizDisplay()/the listeners below keep the
    quiz's view of them live in both directions so picking a topic here and then editing an
    amount in Advanced options (or vice versa) can never leave the two panels disagreeing about
@@ -433,9 +464,9 @@ let quizW=null;
 // exists for moneynl/entityvendor/entityagency, so a builder-side pick of one of those leaves
 // no quiz chip lit (an honest "the quiz has no button for this" state, not a bug).
 const QUIZ_TOPICS = new Set(["rfpkw","bigaward","rezone","property","rules","meetings","district"]);
-// The one narrowing text field a watch type actually reads: moneynl reads #amoneykw,
-// everything else that has a keyword/place field at all reads #aparam.
-function narrowFieldSel(){ return $("#awatch").value==="moneynl" ? "#amoneykw" : "#aparam"; }
+// The main question is the canonical narrowing control for money descriptions; other watch
+// types mirror that one question into their existing #aparam subscription field.
+function narrowFieldSel(){ return $("#awatch").value==="moneynl" ? "#quiznarrow" : "#aparam"; }
 // Repaints the quiz's chips/narrow field/frequency chips from the CURRENT #awatch/narrow-field/
 // #afreq values. Pure repaint -- never writes back into the builder fields it reads, so calling
 // it after any of those fields changes (from either the quiz or the builder side) can't loop.
@@ -468,7 +499,6 @@ $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",(
 // immediately -- no waiting for either Preview button.
 $("#quiznarrow").addEventListener("input", ()=>{ $(narrowFieldSel()).value = $("#quiznarrow").value; });
 $("#aparam").addEventListener("input", ()=>{ if($("#awatch").value!=="moneynl") $("#quiznarrow").value = $("#aparam").value; });
-$("#amoneykw").addEventListener("input", ()=>{ if($("#awatch").value==="moneynl") $("#quiznarrow").value = $("#amoneykw").value; });
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
   if($("#awatch").value==="district" && b.dataset.f!=="Weekly") return;
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });

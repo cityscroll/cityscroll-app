@@ -747,9 +747,6 @@
           },
           {
             "selector": "#quizgo"
-          },
-          {
-            "selector": "#apreview"
           }
         ],
         "notVisible": [

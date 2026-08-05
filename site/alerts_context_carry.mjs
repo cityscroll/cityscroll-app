@@ -311,7 +311,15 @@ export function alertsHref(scope, opts) {
   if (noticeId) params.set("notice", noticeId);
   const projectId = cleanId(o.projectId || scope.projectId);
   if (projectId) params.set("project", projectId);
+  const matchCount = cleanMatchCount(o.matchCount ?? scope.matchCount);
+  if (matchCount != null) params.set("count", String(matchCount));
   return `#alerts?${params.toString()}`;
+}
+
+function cleanMatchCount(value) {
+  if (value == null || value === "") return null;
+  const count = Number(value);
+  return Number.isInteger(count) && count >= 0 && count <= 10000 ? count : null;
 }
 
 function compactFilter(filter) {
@@ -333,7 +341,7 @@ export function parseAlertsEntryParams(hashOrQuery) {
   if (qs.startsWith("#")) qs = qs.slice(1);
   const qi = qs.indexOf("?");
   if (qi >= 0) qs = qs.slice(qi + 1);
-  else if (qs.startsWith("alerts")) return { lens: null, filter: {}, freq: null, noticeId: null, projectId: null };
+  else if (qs.startsWith("alerts")) return { lens: null, filter: {}, freq: null, noticeId: null, projectId: null, matchCount: null };
   const q = new URLSearchParams(qs);
   let filter = {};
   try { filter = JSON.parse(q.get("filter") || "{}") || {}; } catch (_e) { filter = {}; }
@@ -344,6 +352,7 @@ export function parseAlertsEntryParams(hashOrQuery) {
     freq: q.get("freq") || null,
     noticeId: cleanId(q.get("notice")),
     projectId: cleanId(q.get("project")),
+    matchCount: cleanMatchCount(q.get("count")),
   };
 }
 

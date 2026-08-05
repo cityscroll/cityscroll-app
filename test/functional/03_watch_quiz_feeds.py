@@ -113,7 +113,7 @@ with sync_playwright() as pw:
     p5.wait_for_function("document.getElementById('awatch').value === 'moneynl'", timeout=15000)
     p5.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     st = p5.evaluate("""({watch: document.getElementById('awatch').value,
-        kw: document.getElementById('amoneykw').value,
+        kw: document.getElementById('quiznarrow').value,
         min: document.getElementById('amoneymin').value,
         months: document.getElementById('amoneymonths').value,
         echo: document.getElementById('nltrans-alerts').textContent})""")

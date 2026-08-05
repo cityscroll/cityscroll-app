@@ -394,7 +394,7 @@ def run_lang(pw, lang):
 
     page.click('.tabbtn[data-tab="alerts"]')
     page.wait_for_timeout(400)
-    page.click("#apreview")
+    page.click("#quizgo")
     page.wait_for_timeout(1500)
     collect(page, "alerts+digest-preview", frags, violations, seen)
 

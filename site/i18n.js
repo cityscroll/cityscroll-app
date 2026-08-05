@@ -477,7 +477,11 @@ const STRINGS = {
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
     home_cta_prompt:    "Want email updates?",
     // Context-carrying alert entry (notice/lens → pre-scoped #alerts + real email preview)
-    alert_context_scope: "You'll get an email for: {scope}",
+    alert_context_scope: "Watching: {scope} — adjust below.",
+    alert_context_count_one: "This matches the 1 result in the list you opened.",
+    alert_context_count_other: "This matches the {n} results in the list you opened.",
+    alert_preview_scope_count_one: "1 result matched the list you opened. The email example is below.",
+    alert_preview_scope_count_other: "{n} results matched the list you opened. Email examples are below.",
     alert_context_from_notice: "From this notice: “{title}”",
     alert_context_next_step: "Next expected step: {step}",
     alert_context_confirm: "Confirm with your email below — one step.",
@@ -2343,6 +2347,10 @@ const STRINGS = {
     desc_bigaward: "{freq} digest of NYC contract awards over {amt}",
     desc_rfpkw: "{freq} digest of open RFPs matching “{kw}”",
     desc_moneynl: "{freq} digest of contracts or awards{bits}",
+    desc_moneynl_scoped: "{freq} digest of {scope}{bits}",
+    watch_scope_awards: "awards",
+    watch_scope_solicitations: "open RFPs",
+    watch_scope_contracts: "contracts or awards",
     desc_moneynl_about: " about “{kw}”",
     desc_moneynl_over: " over {amt}",
     desc_moneynl_due_one: " due within {n} month",

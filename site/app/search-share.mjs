@@ -423,14 +423,15 @@ const NL = {
       if(f.months) chips.push(`<span class="qchip">due within <b>${f.months} mo</b></span>`);
       return chips;
     },
-    apply:f=>{
+    apply:(f,opts)=>{
       if(f.watchType==="rezone"){ applySuggestion("rezone", f.place||""); return; }
       if(f.route==="agency" && f.name){ location.hash=agencyHref(f.name, f.tab||null); return; }
-      $("#awatch").value="moneynl"; aWatchChange();
-      $("#amoneykw").value=(f.keywords||[]).join(" ");
+      $("#awatch").value="moneynl"; aWatchChange(opts&&opts.skipQuizSync);
+      $("#quiznarrow").value=(f.keywords||[]).join(" ");
       $("#amoneymin").value=f.minAmount||"";
       $("#amoneymonths").value=f.months||"";
       moneynlExtra={agency:f.agency||null, category:f.category||null, maxAmount:f.maxAmount||null, noticeType:f.noticeType||null};
+      syncAlertConditionalFields();
       aPreview();
     }
   }
@@ -453,7 +454,7 @@ async function resolveMoneyNarrow(){
   if(!text) return false;
   if(typeof isLiteralKeyword!=="function" && !await loadNlParser()) return false;
   if(isLiteralKeyword(text)) return false;
-  const buttons=[$("#quizgo"), $("#apreview")].filter(Boolean);
+  const buttons=[$("#quizgo")].filter(Boolean);
   buttons.forEach(b=>b.disabled=true);
   const parsed = await nlResolve(text, "alerts");
   buttons.forEach(b=>b.disabled=false);

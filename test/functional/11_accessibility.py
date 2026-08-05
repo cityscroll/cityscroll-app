@@ -284,7 +284,7 @@ def run_index_states(pw, lang, viewport, failures):
         run_focus_exposure(page, state, failures)
 
     # digest preview (alerts tab is already active from the loop above)
-    page.click("#apreview")
+    page.click("#quizgo")
     page.wait_for_timeout(1200)
     run_axe(
         page, f"index.html [{lang}] [{viewport_name}] [alerts:digest-preview]", failures,

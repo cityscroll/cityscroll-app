@@ -78,5 +78,5 @@ test("unified alerts and council map expose Follow a district", () => {
   assert.match(index, /data-w="district"[^>]*>Follow a district</);
   assert.match(index, /id="adistrict"/);
   assert.match(map, /districtDigestAlertsHref/);
-  assert.match(boot, /lens==="district"/);
+  assert.match(boot, /targetLens==="district"/);
 });

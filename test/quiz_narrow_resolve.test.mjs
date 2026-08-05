@@ -4,12 +4,12 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // "Preview my digest →" — zero results, because the rfpkw watch type sent the whole
 // sentence to SODA as one literal $q phrase, which doesn't substring-match any notice.
 // Pasting the SAME text into the "Ask" box worked, because only the Ask box ran it through
-// nlResolve()/parseNL() — three controls (quiz preview, Ask, Build-an-alert's own Preview
-// button), three different interpretations of the same typed text.
+// nlResolve()/parseNL() — two controls (the alert preview and Ask), with different
+// interpretations of the same typed text.
 //
 // resolveMoneyNarrow() (index.html) is the one place both entry points that share the
-// rfpkw watch type — the quiz's #quizgo and the Build-an-alert panel's own #apreview button
-// — now resolve a non-literal query: promote it to the "moneynl" shape via NL.alerts.apply(),
+// rfpkw watch type — the single #quizgo preview control — now resolves a non-literal query:
+// promote it to the "moneynl" shape via NL.alerts.apply(),
 // the SAME function the Ask box's apply step already calls, so preview and a saved alert are
 // built from ONE interpreted filter. A literal single word or quoted phrase is left alone.
 //
@@ -44,7 +44,6 @@ function makeResolver({ watch, aparam }) {
     "#awatch": { value: watch },
     "#aparam": { value: aparam },
     "#quizgo": { disabled: false },
-    "#apreview": { disabled: false },
     "#nltrans-alerts": { innerHTML: "" },
   };
   const $ = (sel) => fields[sel];

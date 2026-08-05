@@ -36,7 +36,7 @@ test("advanced options are progressive disclosure, not a second form", () => {
   // Subscribe + single email live in the main finish path.
   assert.match(html, /id="asubscribe"/);
   assert.match(html, /id="quizgo"/);
-  assert.match(html, /id="apreview"/);
+  assert.doesNotMatch(html, /id="apreview"/);
 });
 
 test("multi-watch rollup is demoted behind disclosure", () => {
