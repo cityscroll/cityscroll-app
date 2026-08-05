@@ -1,7 +1,7 @@
 // Pure feed builders for GET /feed.{xml,json,ics} — no I/O, unit-tested on their own.
 // A feed is the third spelling of a saved search (email digest / RSS / calendar), so items
 // come from the same compileSub() queries the cron replays; entry links land on the site's
-// #notice/<id> permalinks.
+// /notices/<id> permalinks.
 
 import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
 
@@ -39,7 +39,7 @@ export function feedItems(kind, rows) {
     }
     return {
       id: String(r.request_id || ""),
-      url: `https://cityscroll.org/#notice/${encodeURIComponent(r.request_id || "")}`,
+      url: `https://cityscroll.org/notices/${encodeURIComponent(r.request_id || "")}`,
       title: stripHtml(r.short_title) || "(untitled notice)",
       date: r.start_date || null,
       summary: [

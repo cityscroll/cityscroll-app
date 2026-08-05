@@ -95,7 +95,7 @@ function fmtRecord(r, i) {
   if (r.due_date) lines.push(`   bid due ${r.due_date}`);
   else if (r.deadline_note) lines.push(`   ${r.deadline_note}`);
   if (r.snippet) lines.push(`   ${r.snippet}`);
-  lines.push(`   RequestID ${r.request_id} · https://cityscroll.org/index.html#notice/${r.request_id}`);
+  lines.push(`   RequestID ${r.request_id} · https://cityscroll.org/notices/${encodeURIComponent(r.request_id)}`);
   return lines.join("\n");
 }
 

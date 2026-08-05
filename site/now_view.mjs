@@ -144,7 +144,7 @@ function renderNowSurface(surface) {
         <div class="now-list" data-now-list="open-without-date" data-now-count="${undated.length}">${undated.map(nowCardHTML).join("")}</div>
       </section>` : "";
   box.innerHTML = `<div class="now-surface">
-    <p class="now-back"><a href="#money">${t("back_browse")}</a></p>
+    <p class="now-back"><a href="/browse/">${t("back_browse")}</a></p>
     <header class="now-head"><p class="now-kicker">${t("now_kicker")}</p><h2>${t("now_title")}</h2><p>${t("now_deck")}</p><p class="now-bounded-note">${t("now_bounded_note")}</p></header>
     ${coverage}
     <div class="now-lanes">

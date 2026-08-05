@@ -56,7 +56,7 @@ function time(value, { basis, verified = true, precision = "day", sourceField = 
 }
 
 function officialNoticeRoute(requestId) {
-  return requestId ? `#notice/${encodeURIComponent(requestId)}` : null;
+  return requestId ? `/notices/${encodeURIComponent(requestId)}` : null;
 }
 
 function placeFrom(value) {
@@ -138,7 +138,7 @@ function staffingActions(payload, options) {
     const start = isoDay(exam.application_start);
     const deadline = isoDay(exam.application_end);
     if (!start || !deadline || start > options.today || !withinHorizon(options.today, deadline, options.actionHorizonDays)) continue;
-    const route = exam.exam_number ? `#exam/${encodeURIComponent(exam.exam_number)}` : null;
+    const route = exam.exam_number ? `/#exam/${encodeURIComponent(exam.exam_number)}` : null;
     if (!route) continue;
     const matter = {
       kind: "exam",
@@ -371,7 +371,7 @@ function landEvents(payload, options) {
       agency: row.representing || null,
       domain: "land",
       source: source("land"),
-      route: `#land/${encodeURIComponent(row.project_id)}`,
+      route: `/#land/${encodeURIComponent(row.project_id)}`,
       time: time(value, {
         basis: "published_zap_event",
         precision: String(value).includes("T") ? "instant" : "day",

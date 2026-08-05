@@ -64,7 +64,7 @@ test("daylog entry from a match send carries noticeIds + deep links (desk drill-
   assert.deepEqual(e.noticeIds, [NOTICE.request_id]);
   assert.equal(e.noticeLinks.length, 1);
   assert.equal(e.noticeLinks[0], noticeDeepLink(NOTICE.request_id));
-  assert.match(e.noticeLinks[0], /#notice\/FIX-OPS-SOL-1/);
+  assert.match(e.noticeLinks[0], /\/notices\/FIX-OPS-SOL-1/);
   // Daylog stays send-level: no item HTML, phase, or next-action payload (desk uses deep links).
   assert.equal(e.itemHtml, undefined);
   assert.equal(e.awareness, undefined);
@@ -161,7 +161,7 @@ test("e2e: processOneSub match populates daylog-shaped noticeIds while email HTM
     // Daylog shape operators consume:
     const entry = toDayLogEntry(r, { day: TODAY });
     assert.deepEqual(entry.noticeIds, [NOTICE.request_id]);
-    assert.ok(entry.noticeLinks[0].includes("#notice/FIX-OPS-SOL-1"));
+    assert.ok(entry.noticeLinks[0].includes("/notices/FIX-OPS-SOL-1"));
 
     // Email body still has time + action awareness (product surface for subscribers).
     assert.equal(sent.length, 1);

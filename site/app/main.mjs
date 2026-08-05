@@ -1,5 +1,6 @@
 await import("./core.mjs");
 globalThis.CrolScope = await import("../scope_v0.mjs");
+globalThis.CrolRouteMigration = await import("../route_migration.mjs");
 await import("./money-list.mjs");
 await import("./money-history.mjs");
 await import("./search-share.mjs");
@@ -20,7 +21,9 @@ const loadedRouteModules = new Set();
 
 function routeModuleForHash(hash){
   const raw=String(hash||"").replace(/^#/,"").toLowerCase();
-  return raw.replace(/\?.*$/,"")==="property" || raw.startsWith("notice/")
+  const path=String(location.pathname||"").toLowerCase();
+  return raw.replace(/\?.*$/,"")==="property" || raw.startsWith("notice/") ||
+    path.startsWith("/notices/") || path==="/browse/property/"
     ? "property"
     : null;
 }
@@ -49,7 +52,7 @@ await import("./rules.mjs");
 await import("./procurement-lifecycle.mjs");
 await import("./procurement-phase.mjs");
 await import("./subsidy.mjs");
-if(location.hash.startsWith("#notice/")) await import("./authority-award.mjs");
+if(location.hash.startsWith("#notice/") || location.pathname.startsWith("/notices/")) await import("./authority-award.mjs");
 await import("./meetings.mjs");
 await import("./entities.mjs");
 await import("./workspace.mjs");

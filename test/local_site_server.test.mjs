@@ -32,6 +32,29 @@ test("full preflight allocates its own port without touching existing listeners"
   assert.match(functional, /CROL_TEST_PORT:-0/);
   assert.match(functional, /export CROL_BASE/);
   assert.doesNotMatch(functional, /http\.server 8000|lsof -tiTCP:8000/);
+
+  const ci = read(".github/workflows/ci.yml");
+  assert.match(ci, /tools\/local_site_server\.py --directory site --port 8000/);
+  assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory site/);
+});
+
+test("performance interaction waits for the canonical Contracts document URL", () => {
+  const source = read("test/performance/verify.py");
+  assert.match(source, /location\.pathname === "\/browse\/contracts\/"/);
+  assert.match(source, /new URLSearchParams\(location\.search\)\.get\("q"\) === "housing"/);
+  assert.doesNotMatch(source, /location\.hash\.split\("\?"\).*get\("q"\)/);
+});
+
+test("standalone browser gates share the clean-route server", () => {
+  for (const path of [
+    "test/functional/15_rtl.py",
+    "test/functional/16_forecast_discoverability.py",
+    "test/functional/17_default_examples.py",
+  ]) {
+    const source = read(path);
+    assert.match(source, /from tools\.local_site_server import QuietHandler/, path);
+    assert.doesNotMatch(source, /http\.server\.SimpleHTTPRequestHandler/, path);
+  }
 });
 
 test("local site server publishes an OS-assigned origin and serves the requested tree", async (t) => {
@@ -55,4 +78,14 @@ test("local site server publishes an OS-assigned origin and serves the requested
   const response = await fetch(new URL("near-you/index.html", base));
   assert.equal(response.status, 200);
   assert.match(await response.text(), /data-near-you-root/);
+
+  const notice = await fetch(new URL("notices/20260701099", base));
+  assert.equal(notice.status, 200);
+  assert.match(await notice.text(), /id="noticeview"/);
+
+  for (const route of ["now/", "browse/", "browse/rules/?q=air"]) {
+    const clean = await fetch(new URL(route, base));
+    assert.equal(clean.status, 200, route);
+    assert.match(await clean.text(), /id="main"/, route);
+  }
 });

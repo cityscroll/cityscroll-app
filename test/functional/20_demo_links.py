@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import functools
+import csv
 import json
 import os
 import pathlib
@@ -20,6 +21,12 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 MANIFEST = json.loads((ROOT / "site" / "demo" / "demo-links.json").read_text())
+with (ROOT / "docs" / "url-migration-map.csv").open(newline="") as migration_file:
+    DEMO_ROUTE_TARGETS = {
+        row["link_class"].removeprefix("public demo: "): row["new_pattern"]
+        for row in csv.DictReader(migration_file)
+        if row["link_class"].startswith("public demo: ")
+    }
 BASE = os.environ.get("CROL_BASE", "")
 REQUESTED_ENTRY_IDS = {
     value
@@ -540,6 +547,18 @@ class DemoLinkContract(unittest.TestCase):
         if expected_pathname:
             page.wait_for_function("value => location.pathname === value", arg=expected_pathname, timeout=wait_ms)
             self.assertEqual(page.evaluate("location.pathname"), expected_pathname)
+        elif DEMO_ROUTE_TARGETS.get(entry["id"], "").removeprefix("/") != entry["url"]:
+            expected_route = DEMO_ROUTE_TARGETS[entry["id"]]
+            parsed_expected = urlparse(expected_route)
+            page.wait_for_function(
+                "value => location.pathname === value.pathname && location.hash === value.hash",
+                arg={"pathname": parsed_expected.path, "hash": f"#{parsed_expected.fragment}" if parsed_expected.fragment else ""},
+                timeout=wait_ms,
+            )
+            parsed_actual = urlparse(page.url)
+            self.assertEqual(parsed_actual.path, parsed_expected.path)
+            self.assertEqual(parsed_actual.fragment, parsed_expected.fragment)
+            self.assertEqual(parse_qs(parsed_actual.query), parse_qs(parsed_expected.query))
         else:
             expected_hash = expectations.get("hash", entry["url"])
             page.wait_for_function("value => location.hash === value", arg=expected_hash, timeout=wait_ms)
@@ -547,7 +566,7 @@ class DemoLinkContract(unittest.TestCase):
 
         for expected in expectations["notVisible"]:
             locator = visible_locator(page, expected)
-            page.wait_for_timeout(50)
+            locator.first.wait_for(state="hidden", timeout=wait_ms)
             visible_count = sum(locator.nth(index).is_visible() for index in range(locator.count()))
             self.assertEqual(
                 visible_count,

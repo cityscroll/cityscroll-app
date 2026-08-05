@@ -197,7 +197,7 @@ with sync_playwright() as pw:
 
     linked.locator("#ncopy").click()
     copied = linked.evaluate("window.__copiedLanguageUrl")
-    assert "?lang=es#notice/20260716022" in copied, f"notice copy link lost language: {copied}"
+    assert "/notices/20260716022?lang=es" in copied, f"notice copy link lost language: {copied}"
 
     linked.select_option("#langSelect", "fr")
     linked.wait_for_timeout(300)

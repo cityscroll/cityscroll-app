@@ -68,6 +68,17 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _format: str, *_args: object) -> None:
         pass
 
+    def do_GET(self) -> None:
+        route = self.path.split("?", 1)[0].rstrip("/")
+        if (
+            route.startswith("/notices/")
+            or route == "/now"
+            or route == "/browse"
+            or route.startswith("/browse/")
+        ):
+            self.path = "/index.html"
+        super().do_GET()
+
 
 class StaticServer:
     def __init__(self, directory: Path):
@@ -308,24 +319,26 @@ def verify_interactions(browser: Browser) -> None:
         )
         assert "Código QR" in (page.locator("#landing-share-actions").text_content() or "")
 
-        page.goto(base_url + LAND_HASH, wait_until="domcontentloaded")
+        page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
         page.locator("#searchactions-land [data-search-copy]").wait_for(state="visible")
         land_url = assert_copy_matches_qr(
             page,
             "#searchactions-land [data-search-copy]",
             "#searchactions-land [data-qr-share]",
         )
-        assert land_url == base_url + "?lang=es" + LAND_HASH
+        assert land_url == base_url + "browse/zoning/?boro=Queens&lang=es"
 
         page.locator("#nlpresets-land .nlqpreset-run", has_text="Sidewalk").click()
-        page.wait_for_function("location.hash === '#rules?q=sidewalk'")
+        page.wait_for_function(
+            "() => location.pathname === '/browse/rules/' && location.search.includes('q=sidewalk')"
+        )
         page.locator("#searchactions-rules [data-search-copy]").wait_for(state="visible")
         preset_url = assert_copy_matches_qr(
             page,
             "#searchactions-rules [data-search-copy]",
             "#searchactions-rules [data-qr-share]",
         )
-        assert preset_url == base_url + "?lang=es#rules?q=sidewalk"
+        assert preset_url == base_url + "browse/rules/?q=sidewalk&lang=es"
 
         page.goto(base_url + "#vendor/ACME%20GARDENS", wait_until="domcontentloaded")
         page.locator("#entityview #eqr").wait_for(state="visible")

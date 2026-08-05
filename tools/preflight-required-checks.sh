@@ -102,6 +102,10 @@ run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + jo
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/data_source_graph.mjs
 run_and_fail node tools/data_source_graph.mjs --check
+run_and_fail node tools/build_url_migration_map.mjs --check
+run_and_fail node tools/build_primary_documents.mjs --check
+run_and_fail node tools/build_near_you_pages.mjs --check
+run_and_fail node tools/build_following_page.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs

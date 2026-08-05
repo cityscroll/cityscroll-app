@@ -41,6 +41,12 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, _format: str, *_args: object) -> None:
         pass
 
+    def do_GET(self) -> None:
+        # Production edge routes return the shared shell before the detail island runs.
+        if self.path.split("?", 1)[0].startswith("/notices/"):
+            self.path = "/index.html"
+        super().do_GET()
+
 
 def rendered_target_failures(page: Page) -> list[dict]:
     return page.evaluate(

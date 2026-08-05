@@ -1,0 +1,170 @@
+import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
+
+const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
+const NOTICE_FIELDS = [
+  "request_id", "start_date", "event_date", "due_date", "agency_name",
+  "type_of_notice_description", "section_name", "short_title", "pin",
+  "category_description", "selection_method_description", "street_address_1",
+  "additional_description_1",
+].join(",");
+
+function esc(value) {
+  return String(value == null ? "" : value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function safeId(pathname) {
+  const match = pathname.match(/^\/notices\/([A-Za-z0-9_-]{1,80})\/?$/);
+  return match ? match[1] : null;
+}
+
+function browseFacet(pathname) {
+  const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
+  if (!match) return null;
+  const facet = match[1] || "contracts";
+  return Object.hasOwn(BROWSE_FACETS, facet) ? facet : null;
+}
+
+export function edgeRequestKind(urlValue) {
+  const url = new URL(urlValue);
+  if (safeId(url.pathname)) return "notice";
+  if (browseFacet(url.pathname)) return "browse";
+  return "asset";
+}
+
+export function renderEdgeNotice(row, id) {
+  const title = row?.short_title || `City Record notice ${id}`;
+  const agency = row?.agency_name || "Agency not listed";
+  const source = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+  if (!row) {
+    return `<div class="panel route-item" tabindex="-1" data-edge-rendered="notice-unavailable">
+      <p class="ftype">City Record notice</p><h2 class="rolename">Notice ${esc(id)}</h2>
+      <p>The public record could not be loaded at this moment. The official source remains available.</p>
+      <div class="actions"><a class="act" href="/browse/">Back to Browse</a><a class="act primary" href="${esc(source)}" target="_blank" rel="noopener noreferrer">View City Record</a></div>
+    </div>`;
+  }
+  const facts = [
+    ["Agency", agency], ["Published", row.start_date], ["Event", row.event_date],
+    ["Responses due", row.due_date], ["PIN", row.pin], ["Category", row.category_description],
+    ["Selection method", row.selection_method_description], ["Address", row.street_address_1],
+  ].filter(([, value]) => value);
+  return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
+    <p style="margin:4px 0 12px"><a href="/browse/">Back to Browse</a></p>
+    <article class="panel route-item" tabindex="-1">
+      <p class="ftype">${esc(row.type_of_notice_description || "City Record notice")}${row.section_name ? ` · ${esc(row.section_name)}` : ""} · ${esc(agency)}</p>
+      <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
+      <dl class="glance">${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
+      <div class="actions"><a class="act primary" href="${esc(source)}" target="_blank" rel="noopener noreferrer">View City Record</a></div>
+    </article>
+  </div>`;
+}
+
+function assetRequest(request, pathname) {
+  const url = new URL(request.url);
+  url.pathname = pathname;
+  url.search = "";
+  url.hash = "";
+  return new Request(url, request);
+}
+
+async function staticAsset(env, request, pathname) {
+  return env.ASSETS.fetch(assetRequest(request, pathname));
+}
+
+function rewrittenResponse(asset, status, cacheControl) {
+  const headers = new Headers(asset.headers);
+  headers.delete("Content-Length");
+  headers.delete("ETag");
+  headers.delete("Location");
+  headers.set("Cache-Control", cacheControl);
+  headers.set("Content-Type", "text/html; charset=utf-8");
+  headers.set("X-Content-Type-Options", "nosniff");
+  return new Response(asset.body, { status, headers });
+}
+
+async function noticeRow(id) {
+  const url = new URL(CITY_RECORD_SODA);
+  url.searchParams.set("$select", NOTICE_FIELDS);
+  url.searchParams.set("$where", `request_id='${id}'`);
+  url.searchParams.set("$limit", "1");
+  const response = await fetch(url, { headers: { Accept: "application/json" }, cf: { cacheTtl: 300, cacheEverything: true } });
+  if (!response.ok) throw new Error(`City Record HTTP ${response.status}`);
+  const rows = await response.json();
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function handleNotice(request, env, id) {
+  const asset = await staticAsset(env, request, "/");
+  let row = null;
+  let upstreamFailed = false;
+  try {
+    row = await noticeRow(id);
+  } catch (_error) {
+    upstreamFailed = true;
+  }
+  const status = upstreamFailed ? 503 : row ? 200 : 404;
+  const title = row?.short_title || `City Record notice ${id}`;
+  const canonical = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
+  const response = rewrittenResponse(asset, status, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  const transformed = new HTMLRewriter()
+    .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
+    .on('meta[property="og:title"]', { element(element) { element.setAttribute("content", `${title} · CityScroll`); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
+    .on("button.tabbtn.active", { element(element) { element.setAttribute("class", "tabbtn"); } })
+    .on("section.tabpane.active", { element(element) { element.setAttribute("class", "tabpane"); } })
+    .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
+    .on("#noticeview", { element(element) { element.setInnerContent(renderEdgeNotice(row, id), { html: true }); } })
+    .transform(response);
+  if (request.method === "HEAD") return new Response(null, { status, headers: transformed.headers });
+  return transformed;
+}
+
+function browseAssetPath(facet, pathname) {
+  const requested = String(pathname || "").replace(/\/+$/, "");
+  if (facet === "contracts" && requested === "/browse/contracts") return "/browse/contracts/";
+  return facet === "contracts" ? "/browse/" : `/browse/${facet}/`;
+}
+
+function hasBrowseFilters(url) {
+  return [...url.searchParams].some(([key]) => key !== "lang");
+}
+
+async function handleBrowse(request, env, facet) {
+  const url = new URL(request.url);
+  const asset = await staticAsset(env, request, browseAssetPath(facet, url.pathname));
+  if (!hasBrowseFilters(url) || request.method === "HEAD") return asset;
+  try {
+    const config = BROWSE_FACETS[facet];
+    const dataResponse = await staticAsset(env, request, config.dataPath);
+    if (!dataResponse.ok) return asset;
+    const payload = await dataResponse.json();
+    const view = buildBrowseView(facet, payload, url.searchParams);
+    const response = rewrittenResponse(asset, 200, "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
+    return new HTMLRewriter()
+      .on(`#${config.container}`, { element(element) {
+        element.setAttribute("data-edge-filtered", "true");
+        element.setInnerContent(renderBrowseView(view), { html: true });
+      } })
+      .transform(response);
+  } catch (_error) {
+    return asset;
+  }
+}
+
+export default {
+  async fetch(request, env) {
+    if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
+    if (!['GET', 'HEAD'].includes(request.method)) return new Response("Method not allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
+    const url = new URL(request.url);
+    const id = safeId(url.pathname);
+    if (id) return handleNotice(request, env, id);
+    const facet = browseFacet(url.pathname);
+    if (facet) return handleBrowse(request, env, facet);
+    return env.ASSETS.fetch(request);
+  },
+};

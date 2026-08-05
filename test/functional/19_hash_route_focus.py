@@ -16,6 +16,13 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *_args):
         pass
 
+    def do_GET(self):
+        # The edge response supplies this shell in production. This browser test owns only
+        # the enhancement island's focus behavior; response semantics have a separate gate.
+        if self.path.split("?", 1)[0].startswith("/notices/"):
+            self.path = "/index.html"
+        super().do_GET()
+
 
 def assert_item_landing(page, selector):
     target = page.locator(selector)

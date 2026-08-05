@@ -14,6 +14,7 @@ import {
   scopeWithPlace,
 } from "./near_you_scope.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+import { migrateLegacyUrl } from "./route_migration.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -224,12 +225,13 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     : (nextScope) => nearYouUrlFromScope(nextScope, { base: canonicalBase });
   const siteBase = String(options.siteBase || "").replace(/\/$/, "");
   const siteHref = (path) => `${siteBase}${path}`;
+  const migratedSiteHref = (path) => siteHref(migrateLegacyUrl(path).target);
   const features = mappedFeatures.features.map((feature) => ({
     ...feature,
     href: urlForScope(scopeForFeature(scope, feature)),
   }));
   const resultIds = mapped ? intersection(itemIdsForPlace(activityRoot, lens, scope), allowed) : [];
-  const linkedRecord = (record) => ({ ...record, route: siteHref(record.route) });
+  const linkedRecord = (record) => ({ ...record, route: migratedSiteHref(record.route) });
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
     const ids = mapped ? intersection(activityRoot?.district_items?.[kind]?.[lens], allowed) : [];
@@ -259,7 +261,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     viewBox: defaultViewBox(),
     bags,
     activity: activityRoot,
-    browseHref: siteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
+    browseHref: migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
     watchHref: watchHref(scope, lens, resultIds.length),
     shareHref: nearYouUrlFromScope(scope, { base: canonicalBase }),
     canonicalBase,
@@ -426,7 +428,7 @@ export function renderNearYouDocument(view, options = {}) {
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active scope.">
 <link rel="canonical" href="${esc(view.shareHref)}"><style>${STYLES}</style></head>
 <body><a class="skip" href="#main">Skip to content</a>
-<header class="near-mast"><div class="near-mast-inner"><a class="near-brand" href="${esc(view.siteBase || "/")}">CityScroll</a><nav aria-label="Primary"><a href="${esc(`${view.siteBase}/#now`)}">Now</a><a aria-current="page" href="${esc(`${view.siteBase}/near-you/`)}">Near you</a><a href="${esc(`${view.siteBase}/following/`)}">Following</a><a href="${esc(view.siteBase || "/")}">Browse</a></nav></div></header>
+<header class="near-mast"><div class="near-mast-inner"><a class="near-brand" href="${esc(view.siteBase || "/")}">CityScroll</a><nav aria-label="Primary"><a href="${esc(`${view.siteBase}/now/`)}">Now</a><a aria-current="page" href="${esc(`${view.siteBase}/near-you/`)}">Near you</a><a href="${esc(`${view.siteBase}/following/`)}">Following</a><a href="${esc(`${view.siteBase}/browse/`)}">Browse</a></nav></div></header>
 ${renderNearYouBody(view)}
 <footer class="near-footer">Counts and place labels come from the built district data. Check each record with the linked official source.</footer>
 <script type="module" src="${esc(prefix)}app/map.mjs"></script></body></html>`;

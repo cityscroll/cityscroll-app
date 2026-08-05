@@ -134,7 +134,9 @@ def main():
     server = None
     if not BASE:
         import http.server, threading, functools
-        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT / "site"))
+        sys.path.insert(0, str(ROOT))
+        from tools.local_site_server import QuietHandler
+        handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
         threading.Thread(target=server.serve_forever, daemon=True).start()
         BASE = f"http://127.0.0.1:{server.server_address[1]}/"

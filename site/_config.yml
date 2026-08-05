@@ -1,6 +1,10 @@
 # Keep the generated public site limited to visitor-facing content and public
 # project documentation. Source, tests, automation, and local guidance remain
 # available in the repository without becoming Pages routes.
+include:
+  - _routes.json
+  - _worker.js
+
 exclude:
   - .agents
   - .claude

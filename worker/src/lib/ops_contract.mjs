@@ -135,7 +135,7 @@ export const DAYLOG_ENTRY_FIELDS = Object.freeze([
   { name: "found", type: "number|null", description: "All query matches this run (incl. already-seen)." },
   { name: "noticeCount", type: "number", description: "New notices included in a send." },
   { name: "noticeIds", type: "string[]", description: "Public City Record request ids (capped)." },
-  { name: "noticeLinks", type: "string[]", description: "cityscroll.org/#notice/<id> deep links." },
+  { name: "noticeLinks", type: "string[]", description: "cityscroll.org/notices/<id> deep links." },
   { name: "action", type: "string|null", description: "See daylog.actions." },
   {
     name: "traffic_class",
