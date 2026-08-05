@@ -180,12 +180,25 @@ def capture(page: Page, base: str, width: int) -> dict:
         currentLensTabs: document.querySelectorAll('.tabbtn[data-tab]').length,
         nowOwnsLensTab: Boolean(document.querySelector('.tabbtn[data-tab="now"]')),
         horizontalOverflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
+        visibleSnakeCase: [...new Set((document.querySelector('.now-surface').innerText.match(/\b[a-z]+(?:_[a-z0-9]+)+\b/g) || []))],
+        dateRows: [...document.querySelectorAll('.now-card')].map(card => ({
+          id: card.dataset.nowItem,
+          label: card.querySelector('.now-card-when > span')?.innerText || '',
+          provenance: card.querySelector('.now-card-when')?.title || '',
+        })),
       };
     }""")
     assert result["lists"] and all(row["declared"] == row["rendered"] for row in result["lists"]), result
     assert result["currentLensTabs"] == 8, result
     assert result["nowOwnsLensTab"] is False, result
     assert result["horizontalOverflow"] == 0, result
+    assert result["visibleSnakeCase"] == [], result
+    labels = {row["id"]: row["label"] for row in result["dateRows"]}  # Source: rendered dateRows above.
+    assert labels["money:now-bid"] == "Responses due", labels
+    assert labels["rules:now-rule:comment"] == "Comment by", labels
+    assert labels["staffing:7001"] == "Apply by", labels
+    assert labels["meetings:now-hearing"] == "", labels
+    assert all("Source field:" in row["provenance"] for row in result["dateRows"]), result
     page.evaluate("scrollTo(0, document.querySelector('#tab-now').offsetTop)")
     page.wait_for_timeout(150)
     output = OUT / f"after-{width}.png"
@@ -196,6 +209,7 @@ def capture(page: Page, base: str, width: int) -> dict:
         "current_lens_tabs": result["currentLensTabs"],
         "now_owns_lens_tab": result["nowOwnsLensTab"],
         "horizontal_overflow_pixels": result["horizontalOverflow"],
+        "date_labels": labels,
         "file": output.name,
         "sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
     }
@@ -211,10 +225,20 @@ def main() -> None:
             captures.append(capture(context.new_page(), base, width))
             context.close()
         browser.close()
+    before = []  # Source: committed before-{width}.png captures in OUT.
+    for width, _height in VIEWPORTS:
+        path = OUT / f"before-{width}.png"
+        if path.exists():
+            before.append({
+                "viewport_width": width,
+                "file": path.name,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            })
     receipt = {
         "schema_version": 1,
         "reference_day": date.today().isoformat(),
         "source_models": ["money", "staffing", "rules", "property", "meetings", "land"],
+        "before_captures": before,
         "captures": captures,
         "pass": True,
     }

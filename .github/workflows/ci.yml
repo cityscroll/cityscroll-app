@@ -402,6 +402,9 @@ jobs:
       - name: Label-coverage census (rendered DOM, incl. hidden + JS-built fields)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/label_coverage.py
+      - name: Rendered schema-vocabulary census
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        run: python3 test/standards/rendered_schema_vocabulary.py
       - name: Heading-uniqueness + landmark check (per rendered state)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/heading_uniqueness.py
@@ -470,6 +473,9 @@ jobs:
           node tools/property_a11y_census.mjs \
             --limit 50000 \
             --ratchet-baseline site/property-a11y-ratchet.json \
+            --format markdown
+          node tools/now_reading_level.mjs \
+            --baseline site/now-reading-level-ratchet.json \
             --format markdown
       # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
       # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs
