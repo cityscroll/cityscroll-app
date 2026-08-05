@@ -271,6 +271,70 @@ test("admin shadow endpoint fails closed and returns non-ok HTTP for machine pol
   assert.equal(body.summary.redlines[0].digest_id, "sub:er***");
 });
 
+test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rejects it", async () => {
+  const clean = summary([result()]);
+  const env = (extra = {}) => ({ ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key", DB: readDb(clean), ...extra });
+
+  const getWithShadow = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer shadow-key" } }),
+    env(),
+  );
+  assert.equal(getWithShadow.status, 200);
+
+  // ADMIN_KEY GET still works through the same scoped gate.
+  const getWithAdmin = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer admin-key" } }),
+    env(),
+  );
+  assert.equal(getWithAdmin.status, 200);
+
+  // SHADOW_STATUS_KEY via ?key= query param also authenticates GET.
+  const getWithShadowQuery = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow?key=shadow-key"),
+    env(),
+  );
+  assert.equal(getWithShadowQuery.status, 200);
+
+  // POST is a write path: SHADOW_STATUS_KEY must NOT authenticate it (401, not 200/503).
+  const postWithShadow = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { method: "POST", headers: { authorization: "Bearer shadow-key" } }),
+    env(),
+  );
+  assert.equal(postWithShadow.status, 401);
+
+  // POST still authenticates for ADMIN_KEY. Send an invalid body so the handler returns 400
+  // AFTER the auth gate (proving the key was accepted) without invoking the full run pipeline.
+  const postWithAdmin = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { method: "POST", headers: { authorization: "Bearer admin-key", "content-type": "application/json" }, body: "{not-json" }),
+    env(),
+  );
+  assert.equal(postWithAdmin.status, 400);
+});
+
+test("SHADOW_STATUS_KEY cannot substitute for ADMIN_KEY when ADMIN_KEY is the configured secret", async () => {
+  const clean = summary([result()]);
+  const env = { ADMIN_KEY: "admin-key", DB: readDb(clean) };
+  const wrongKey = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer not-the-key" } }),
+    env,
+  );
+  assert.equal(wrongKey.status, 401);
+  // No SHADOW_STATUS_KEY configured and a wrong key -> 401 (route is revealed by ADMIN_KEY being set).
+  const noShadow = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer shadow-key" } }),
+    env,
+  );
+  assert.equal(noShadow.status, 401);
+});
+
+test("GET /admin/digest-shadow fails closed (404) when neither secret is configured", async () => {
+  const closed = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer anything" } }),
+    { DB: readDb(summary([result()])) },
+  );
+  assert.equal(closed.status, 404);
+});
+
 test("authenticated operator override releases only a digest named by the redlined run", async () => {
   const redlined = summary([{ sub: "sub:er***", error: "boom" }]);
   const DB = holdDb(redlined);
