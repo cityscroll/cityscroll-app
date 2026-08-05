@@ -77,15 +77,15 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
 | `nyc-rules-rss` | landed | agency, publication_date, title_tokens | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present | — | — |
+| `ocp-recent-contract-awards` | landed | PIN, request_id, agency | — | — |
 | `passport-public-contracts` | landed | EPIN, PIN, contract_id, agency | high-risk | 74% (all_notices_to_contracts) |
 | `passport-public-rfx` | landed | EPIN, PIN, procurement_name, agency | high-risk | 78% (either_contracts_or_rfx) |
-| `recent-contract-awards-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `ulurp-recommendation-pdfs` | disabled | ulurp_numbers | high-risk | 0.5% (zap_ulurp_numbered_either) |
 | `ulurp-recommendations` | disabled | ulurp_numbers | high-risk | 0.5% (zap_ulurp_numbered_either) |
 | `unregistered-zoning-application-portal-projects` | not_ingested | project_id, BBL, ulurp_numbers | — | — |
 | `zap-api-outcomes` | landed | project_id, BBL, ulurp_numbers | — | 100% (ulurp_complete_useful_outcome) |
-| `zap-bbl` | live-only | BBL, project_id | — | — |
-| `zap-projects` | live-only | project_id, BBL, ulurp_numbers | — | — |
+| `zap-bbl` | landed | BBL, project_id | — | — |
+| `zap-projects` | landed | project_id, BBL, ulurp_numbers | — | — |
 
 ## Materialized crosswalks
 
@@ -111,10 +111,10 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-contracts-x-passport-public-rfx-via-PIN` | `checkbook-contracts` × `passport-public-rfx` | PIN | yes | 5 |
 | `checkbook-spending-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-spending` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
 | `checkbook-spending-x-passport-public-rfx-via-PIN` | `checkbook-spending` × `passport-public-rfx` | PIN | yes | 5 |
-| `checkbook-contracts-x-recent-contract-awards-ocp-via-PIN` | `checkbook-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
-| `checkbook-spending-x-recent-contract-awards-ocp-via-PIN` | `checkbook-spending` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
+| `checkbook-contracts-x-ocp-recent-contract-awards-via-PIN` | `checkbook-contracts` × `ocp-recent-contract-awards` | PIN | yes | 4 |
+| `checkbook-spending-x-ocp-recent-contract-awards-via-PIN` | `checkbook-spending` × `ocp-recent-contract-awards` | PIN | yes | 4 |
 | `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 4 |
-| `city-record-x-recent-contract-awards-ocp-via-PIN+request_id` | `city-record` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 4 |
+| `city-record-x-ocp-recent-contract-awards-via-PIN+request_id` | `city-record` × `ocp-recent-contract-awards` | PIN · request_id | yes | 4 |
 | `checkbook-contracts-x-checkbook-spending-via-PIN+contract_id` | `checkbook-contracts` × `checkbook-spending` | PIN · contract_id | yes | 3 |
 | `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 3 |
@@ -123,7 +123,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `city-record-x-zap-api-outcomes-via-BBL` | `city-record` × `zap-api-outcomes` | BBL | yes | 3 |
 | `city-record-x-zap-bbl-via-BBL` | `city-record` × `zap-bbl` | BBL | yes | 3 |
 | `city-record-x-zap-projects-via-BBL` | `city-record` × `zap-projects` | BBL | yes | 3 |
-| `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 3 |
+| `nycida-build-nyc-projects-x-ocp-recent-contract-awards-via-request_id` | `nycida-build-nyc-projects` × `ocp-recent-contract-awards` | request_id | yes | 3 |
 | `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 3 |
 | `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 3 |
 | `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 3 |
@@ -147,10 +147,10 @@ graph LR
   checkbook_contracts-.->|PIN candidate| passport_public_rfx
   checkbook_spending-.->|PIN/contract_id candidate| passport_public_contracts
   checkbook_spending-.->|PIN candidate| passport_public_rfx
+  checkbook_contracts-.->|PIN candidate| ocp_recent_contract_awards
+  checkbook_spending-.->|PIN candidate| ocp_recent_contract_awards
+  city_record-.->|PIN/request_id candidate| ocp_recent_contract_awards
   checkbook_contracts-.->|PIN/contract_id candidate| checkbook_spending
-  city_record-.->|BBL candidate| dob_now_job_filings
-  city_record-.->|BBL candidate| zap_api_outcomes
-  city_record-.->|BBL candidate| zap_bbl
 ```
 
 ## Ranked class-(a) ingest list

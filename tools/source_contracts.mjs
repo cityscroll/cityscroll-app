@@ -14,6 +14,7 @@ const ALLOWED_LANDING_PROBE = new Set(["require", "skip", "bot_blocked", "tolera
 const ALLOWED_ENDPOINT_FORMAT = new Set(["js-dump", "json-api"]);
 const ALLOWED_STALE_POLICY = new Set(["error", "skip"]);
 const ALLOWED_EGRESS_CLASS = new Set(["open", "bot_blocked"]);
+const ALLOWED_WAREHOUSE_SNAPSHOT_STATUS = new Set(["materialized"]);
 
 /**
  * Concrete URL the live monitor should probe. Templates like
@@ -89,6 +90,21 @@ export function validateSourceContracts(registry) {
     }
     if (contract.egress_class && !ALLOWED_EGRESS_CLASS.has(contract.egress_class)) {
       errors.push(`${label}: invalid egress_class ${contract.egress_class}`);
+    }
+    if (contract.warehouse_snapshot) {
+      const snapshot = contract.warehouse_snapshot;
+      if (!ALLOWED_WAREHOUSE_SNAPSHOT_STATUS.has(snapshot.status)) {
+        errors.push(`${label}: invalid warehouse_snapshot status ${snapshot.status}`);
+      }
+      if (!snapshot.artifact || !snapshot.materialized_at) {
+        errors.push(`${label}: warehouse_snapshot needs artifact and materialized_at`);
+      }
+      if (!(Number(snapshot.row_count) > 0)) {
+        errors.push(`${label}: warehouse_snapshot row_count must be positive`);
+      }
+      if (contract.delivery_tier !== "edge-materialized") {
+        errors.push(`${label}: warehouse_snapshot requires edge-materialized delivery`);
+      }
     }
     if (contract.endpoint && /\{[a-zA-Z0-9_]+\}/.test(contract.endpoint)) {
       if (!contract.probe_endpoint && !contract.probe_sample_id) {
@@ -235,6 +251,9 @@ export function renderSourceDocument(registry, coverage) {
     "The machine-readable registry is the source of truth. A source marked **live** must expose",
     "its contracted fields and pass its freshness limit. Manual and disabled sources are kept",
     "visible so a webpage or broken identifier cannot be mistaken for a working feed.",
+    "Acquisition status and product delivery tier are independent of warehouse retention and",
+    "production D1 `source_records` coverage. Warehouse snapshots therefore document product",
+    "materialization only; they never imply immutable observation coverage.",
     "",
     "| Status | Delivery tier | Source | Product use | Publisher and product freshness |",
     "|---|---|---|---|---|",
