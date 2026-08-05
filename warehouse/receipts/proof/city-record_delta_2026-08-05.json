@@ -1,0 +1,52 @@
+{
+  "counts": {
+    "deduplicated_rows": 1,
+    "delta_rows": 3,
+    "final_snapshot_rows": 6,
+    "snapshot_rows": 3,
+    "source_rows": 4
+  },
+  "cursor": {
+    "exclusive_after": {
+      "request_id": "20260802002",
+      "start_date": "2026-08-02T00:00:00.000"
+    },
+    "final": {
+      "request_id": "20260804001",
+      "start_date": "2026-08-04T00:00:00.000"
+    },
+    "order": [
+      "start_date ASC",
+      "request_id ASC"
+    ]
+  },
+  "export": {
+    "date_utc": "2026-08-05",
+    "format": "csv-rfc4180-utf8-lf",
+    "partition": "delta_date=2026-08-05",
+    "path": "city-record/delta_date=2026-08-05/rows.csv",
+    "sha256": "296c5394c3a72d59445a8ff00b6956a5ef02b292b68d671b4bdba8965f1aabd1"
+  },
+  "final_snapshot": {
+    "equivalence": {
+      "checked": true,
+      "equivalent": true,
+      "expected_sha256": "9c2e3e4e32160130ee27b18a9fd77186641d331bafee3bf19a538094a8fd9ba9"
+    },
+    "sha256": "9c2e3e4e32160130ee27b18a9fd77186641d331bafee3bf19a538094a8fd9ba9"
+  },
+  "resume": {
+    "checkpoint": "city-record/delta_date=2026-08-05/checkpoint.json",
+    "completion_reason": "source_exhausted",
+    "page_count": 2,
+    "page_size": 2,
+    "resume_count": 1,
+    "resumed_from_checkpoint": true
+  },
+  "schema": "cityscroll.warehouse_delta_export_receipt.v1",
+  "scope": "one-source-proof; no cursor semantics are implied for other sources",
+  "source": {
+    "contract_id": "city-record",
+    "dataset_id": "dg92-zbpx"
+  }
+}
