@@ -187,6 +187,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
     echo "preflight: timed out waiting for http://127.0.0.1:8000/" >&2
     exit 1
   fi
+  run_and_fail python3 test/functional/23_mobile_viewport.py
   run_and_fail python3 test/functional/11_accessibility.py
   run_and_fail python3 test/functional/12_language.py
   run_and_fail python3 test/functional/14_focus_visible.py
