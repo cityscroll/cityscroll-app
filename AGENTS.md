@@ -2141,13 +2141,19 @@ before a future edge can land. Verify with
 The RC-3 source inventory is
 `site/data/non_council_outcome_sources/source_registry.json`: all 59 community
 boards and five borough presidents are represented, but coverage is reported by
-body rather than as citywide. The dated strict-join sample measured 0/10, so
-`policy.join_bridge_enabled` is false and the committed outcome lookup is empty;
-do not enable outcome edges without a replacement receipt clearing the 30%
-usefulness threshold. Rebuild/check with
+body rather than as citywide. The real-sample verification receipt still measures
+0/10 strict joins. The join was repaired to **exact body + date + publisher
+ULURP identifiers only** (`exact_body_date_publisher_ulurp` in
+`warehouse/lib/non_council_outcomes.mjs`); slug/name matter tokens never promote.
+`policy.join_bridge_enabled` remains **false** and the committed outcome lookup
+is empty until **both** bars clear: usefulness ≥30% join rate **and** reviewed
+precision 100% on the proposed-join sample. Precision review receipt:
+`warehouse/receipts/proof/rc3_non_council_outcome_precision_2026-08-05.json`
+(regenerated with the fixture collector). Rebuild/check with
 `node tools/build_non_council_source_registry.mjs --check`; exercise the guarded
 warehouse path with
 `warehouse/.venv/bin/python warehouse/scripts/non_council_outcomes_run.py --from-fixture --limit 8 --max-docs 10`.
+Verify: `node --test test/non_council_outcomes_infrastructure.test.mjs`.
 
 ## Franchise/concession MOCS plan bridge
 

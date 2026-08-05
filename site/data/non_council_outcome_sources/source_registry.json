@@ -22,7 +22,12 @@
     "unmatched_rows_remain_unmatched": true,
     "inventory_only_is_not_absent_publication": true,
     "join_bridge_enabled": false,
-    "join_bridge_receipt": "verification_receipts/non_council_minutes_votes_2026-08-04.json"
+    "join_method": "exact_body_date_publisher_ulurp",
+    "matter_key_policy": "publisher_ulurp_identifiers_only",
+    "usefulness_threshold": 0.3,
+    "precision_promotion_bar": 1,
+    "join_bridge_receipt": "verification_receipts/non_council_minutes_votes_2026-08-04.json",
+    "precision_review_receipt": "warehouse/receipts/proof/rc3_non_council_outcome_precision_2026-08-05.json"
   },
   "sources": [
     {
