@@ -4,6 +4,8 @@ import test from "node:test";
 import {
   extractPropertyReaderActions,
   PROPERTY_ACTION_KINDS,
+  propertyActionEnablingInfoHTML,
+  propertyReaderActionStepsHTML,
 } from "../site/property_reader_actions.mjs";
 import { compileActionRail, validateAction } from "../worker/src/lib/action_registry.mjs";
 
@@ -138,7 +140,10 @@ test("past dated actions become historical context, while evergreen inquiry stay
     start_date: "2025-01-01",
     event_date: "2025-02-01T10:00:00.000",
     additional_description_1: "Persons wishing to be heard may attend the public hearing.",
-  }, future);
+  }, {
+    ...future,
+    events: [{ kind: "bid_deadline", deadline: "2026-09-30" }],
+  });
   assert.equal(past.actions[0].status, "historical");
   assert.equal(past.actionable.length, 0);
 
@@ -149,6 +154,144 @@ test("past dated actions become historical context, while evergreen inquiry stay
   }, future);
   assert.equal(claim.actions[0].status, "undated");
   assert.equal(claim.actionable.length, 1);
+});
+
+test("a closed record lifecycle overrides evergreen wording for every participatory action", () => {
+  const result = extractPropertyReaderActions({
+    request_id: "closed-surplus",
+    short_title: "The City is currently selling surplus assets online",
+    start_date: "2019-01-01",
+    additional_description_1: "To begin bidding, register at https://example.gov/auction. Registration is free.",
+    commercial: {
+      close_date: "2019-01-31",
+      glance: { close_date: "2019-01-31", item: "Surplus equipment" },
+      item: { label: "Surplus equipment", evidence: "surplus assets" },
+      quantities: [],
+      primary_price: null,
+      price_facts: [],
+      participation: { package_url: "https://example.gov/auction", urls: [], emails: [], phones: [], steps: [] },
+      timed_events: [],
+    },
+  }, future);
+
+  assert.equal(result.lifecycle.state, "closed");
+  assert.equal(result.lifecycle.closed_at, "2019-01-31");
+  assert.equal(result.actionable.length, 0);
+  assert.ok(result.actions.every((action) => action.status === "historical"));
+  assert.equal(result.rail.mode, "historical");
+});
+
+test("a recurring sale uses the source lifecycle end instead of an old example auction date", () => {
+  const result = extractPropertyReaderActions({
+    request_id: "recurring-auto-auction",
+    short_title: "AUTO AUCTION",
+    start_date: "2025-11-14",
+    end_date: "2027-05-03",
+    additional_description_1: "Auctions are held every week at https://example.gov/auction. All auctions are open to the public and registration is free.",
+    commercial: {
+      close_date: "2025-11-14",
+      glance: { close_date: "2025-11-14", item: "Vehicles" },
+      item: { label: "Vehicles", evidence: "auto auction" },
+      quantities: [],
+      primary_price: null,
+      price_facts: [],
+      participation: { package_url: "https://example.gov/auction", urls: [], emails: [], phones: [], steps: [] },
+      timed_events: [],
+    },
+  }, future);
+
+  assert.equal(result.lifecycle.state, "open");
+  assert.equal(result.lifecycle.action_by, "2027-05-03");
+  assert.equal(result.lifecycle.basis, "source_end_date");
+  assert.ok(result.actions.some((action) => action.status !== "historical"));
+});
+
+test("action entries carry decision-enabling item, price, contact, venue, and inspection fields", () => {
+  const result = extractPropertyReaderActions({
+    request_id: "live-timber",
+    short_title: "Forest Management Project timber sale",
+    start_date: "2026-08-01",
+    additional_description_1: "Prospective bidders must attend the public showing. Submit bids online at https://example.gov/timber by September 3, 2026.",
+    contact_name: "Taylor Forester",
+    contact_phone: "555-0100",
+    street_address_1: "100 Main Street",
+    city: "New York",
+    state: "NY",
+    zip_code: "10001",
+    commercial: {
+      close_date: "2026-09-03",
+      glance: { close_date: "2026-09-03", item: "333 thousand board feet", price: { kind: "minimum_bid", display: "$25,000", amount: 25000 } },
+      item: { label: "Timber", evidence: "333 thousand board feet of timber" },
+      quantities: [{ display: "333 thousand board feet", evidence: "333 thousand board feet" }],
+      primary_price: { kind: "minimum_bid", display: "$25,000", amount: 25000, evidence: "minimum bid of $25,000" },
+      price_facts: [
+        { kind: "minimum_bid", display: "$25,000", amount: 25000, evidence: "minimum bid of $25,000" },
+        { kind: "deposit", display: "$2,500", amount: 2500, evidence: "deposit of $2,500" },
+      ],
+      participation: {
+        package_url: "https://example.gov/timber",
+        urls: [{ url: "https://example.gov/timber", evidence: "online" }],
+        emails: [],
+        phones: [],
+        steps: [{ kind: "show_or_inspection", text: "Attend the public showing", evidence: "public showing" }],
+      },
+      timed_events: [],
+    },
+  }, future);
+
+  const bid = result.actions.find((action) => action.kind === "bid");
+  assert.equal(bid.enabling_info.schema_version, 1);
+  assert.equal(bid.enabling_info.items.label, "333 thousand board feet");
+  assert.equal(bid.enabling_info.price.display, "$25,000");
+  assert.equal(bid.enabling_info.deposit.display, "$2,500");
+  assert.equal(bid.enabling_info.marketplace.url, "https://example.gov/timber");
+  assert.ok(bid.enabling_info.contact.some((entry) => entry.kind === "contact"));
+  assert.match(bid.enabling_info.venue.value, /100 Main Street/);
+  assert.match(bid.enabling_info.inspection.text, /public showing/i);
+
+  const html = propertyReaderActionStepsHTML(result.actions, { t: (key) => key }).join("");
+  assert.match(html, /333 thousand board feet/);
+  assert.match(html, /\$25,000/);
+  assert.match(html, /Taylor Forester/);
+  assert.match(html, /public showing/i);
+});
+
+test("a live action always renders an act-here channel or an honest absence", () => {
+  const result = extractPropertyReaderActions({
+    short_title: "Notice of Public Sale of Residential Property",
+    start_date: "2026-08-01",
+    additional_description_1: "All bids must be submitted by September 30, 2026.",
+  }, {
+    ...future,
+    events: [{ kind: "bid_deadline", deadline: "2026-09-30" }],
+  });
+  assert.equal(result.actions[0].status, "current");
+  const html = propertyReaderActionStepsHTML(result.actions, { t: (key) => key }).join("");
+  assert.match(html, /The notice does not say how to act\./);
+});
+
+test("an actionless archive card still renders the record's decision-enabling facts", () => {
+  const row = {
+    short_title: "Timber sale result",
+    end_date: "2025-01-31",
+    commercial: {
+      item: { label: "Hardwood timber", evidence: "hardwood timber", source: "notice_body" },
+      glance: { item: "Hardwood timber", price: null },
+      quantities: [],
+      price_facts: [],
+      primary_price: null,
+      participation: { package_url: null, emails: [], phones: [], steps: [] },
+      timed_events: [],
+    },
+  };
+  const html = propertyActionEnablingInfoHTML(null, {
+    row,
+    today: "2026-08-04",
+  });
+  assert.match(html, /Hardwood timber/);
+  assert.match(html, /did not list a price/i);
+  assert.match(html, /This action is closed/i);
+  assert.match(html, /data-lifecycle="closed"/);
 });
 
 test("a relative accommodation request follows the hearing's live/past state until a typed deadline lands", () => {

@@ -671,6 +671,10 @@
   .property-domain-stepper{margin:0 0 4px}
   .property-rail-label{font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
   .property-fcard .property-process-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 6px}
+  .property-decision-info{display:grid;grid-template-columns:minmax(96px,auto) minmax(0,1fr);gap:4px 12px;margin:10px 0;padding:10px 0;border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border);font:12px/1.45 var(--font-interface)}
+  .property-decision-info dt{font-weight:700;color:var(--color-text-soft)}
+  .property-decision-info dd{margin:0;min-width:0;overflow-wrap:anywhere;color:var(--color-text)}
+  @media(max-width:520px){.property-decision-info{grid-template-columns:minmax(0,1fr);gap:1px}.property-decision-info dd{margin-bottom:6px}}
   .property-fcard .property-action-lead{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);margin:0 0 6px}
   .property-fcard .property-mini-stepper{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px;padding:0;list-style:none}
   .property-fcard .property-mini-stepper .lc-step{font-size:11px;padding:2px 7px}

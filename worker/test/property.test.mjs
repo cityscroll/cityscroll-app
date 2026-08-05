@@ -11,6 +11,7 @@ import {
 const sourceRows = [
   {
     request_id: "property-address",
+    end_date: "2027-05-03T00:00:00.000",
     section_name: "Property Disposition",
     short_title: "Residential property sale",
     additional_description_1: "The City offers property located at 35 Beebe Street, Staten Island. Block 684; Lot 261.",
@@ -55,6 +56,7 @@ test("Property view extracts sites, abstains honestly, and geocodes a representa
   const calls = [];
   const view = await buildPropertyView(fetchFixture(calls), new Date("2026-07-29T12:00:00Z"));
   assert.match(new URL(calls[0]).searchParams.get("$where"), /Property Disposition/);
+  assert.match(new URL(calls[0]).searchParams.get("$select"), /(?:^|,)end_date(?:,|$)/);
   assert.equal(view.properties[0].property_location.geometry.label, "35 Beebe Street");
   assert.deepEqual(view.properties[0].property_location.boroughs, ["Staten Island"]);
   assert.ok(view.properties[0].property_location.bbls.includes("5006840261"));
@@ -99,6 +101,7 @@ test("Property refresh writes the materialized view and its route serves it", as
   // Default GET is the slim list view (first-paint); full body dumps are omitted.
   assert.equal(body.view, "list");
   assert.equal(body.properties[0].additional_description_1.includes("35 Beebe"), true);
+  assert.equal(body.properties[0].end_date, "2027-05-03T00:00:00.000");
   assert.equal(body.properties[0].printout_1, undefined);
 });
 

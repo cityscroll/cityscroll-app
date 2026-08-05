@@ -222,7 +222,8 @@ function attachmentText(attachments) {
   if (!Array.isArray(attachments)) return "";
   return plainText(
     attachments
-      .map((a) => (a && (a.title || a.name || a.label)) || "")
+      .map((a) => [a?.title, a?.name, a?.label, a?.extracted_text, a?.text_preview]
+        .filter(Boolean).join(" \n "))
       .filter(Boolean)
       .join(" "),
   );
@@ -1231,6 +1232,15 @@ export function extractPropertyCommercial(row = {}, options = {}) {
 
   const quantities = extractQuantities(text);
   const price_facts = extractPriceFacts(text);
+  const attachmentHasText = (options.attachments || []).some((entry) => entry?.extracted_text || entry?.text_preview);
+  if (attach) {
+    for (const price of price_facts) {
+      const anchor = String(price.evidence || "").replace(/^…|…$/g, "").slice(0, 40);
+      if (anchor && attach.includes(anchor) && !body.includes(anchor)) {
+        price.source = attachmentHasText ? "attachment_text" : "attachment_metadata";
+      }
+    }
+  }
   const sale_method = extractSaleMethod(text);
   const timed_events = extractPropertyTimedEvents(row);
   const participation = extractParticipation(text, timed_events);
@@ -1252,7 +1262,7 @@ export function extractPropertyCommercial(row = {}, options = {}) {
       confidence: itemConfidence,
       evidence: itemEvidence,
       source: attach && itemEvidence && attach.includes(String(itemEvidence).replace(/^…/, "").slice(0, 20))
-        ? "attachment_metadata"
+        ? (attachmentHasText ? "attachment_text" : "attachment_metadata")
         : "notice_body",
     },
     quantities,
