@@ -496,6 +496,9 @@ export function propertyEntryDefaultQualification(entry, opts = {}) {
   const liveEvents = [];
   const exposedActions = [];
   for (const [index, row] of rows.entries()) {
+    // The recurring City Record announcement is provenance for the live fleet
+    // stream, not evidence that this old notice is itself an open bid.
+    if (row?.commercial?.source_role === "provenance_pointer") continue;
     if (lifecycles[index]?.state === "closed") continue;
     for (const event of rowTimedEvents(row, opts)) {
       if (livePropertyEvent(event, today)) {

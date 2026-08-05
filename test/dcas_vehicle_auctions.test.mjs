@@ -7,7 +7,9 @@ import { test } from "node:test";
 import {
   DCAS_VEHICLE_AUCTION_MAX_ROWS,
   buildDcasVehicleAuctionSnapshot,
+  dcasVehicleAuctionFreshness,
   detectDcasVehicleAuctionSnapshot,
+  normalizeDcasVehicleAuction,
   selectDcasVehicleAuctionSurface,
 } from "../site/dcas_vehicle_auctions.mjs";
 import { dcasVehicleAuctionQuery } from "../warehouse/scripts/dcas_vehicle_auctions.mjs";
@@ -47,6 +49,42 @@ test("surface shows open batches, then only the latest closed batch", () => {
   assert.equal(closed.batches.length, 1);
 });
 
+test("fleet rows expose timed auction ends and preserve optional marketplace facts", () => {
+  const row = normalizeDcasVehicleAuction({
+    auction_close_date: "2026-08-12T00:00:00.000",
+    year: "2020",
+    make: "Ford",
+    model: "Transit",
+    vin: "TESTVIN",
+    description: "Cargo van",
+    lot_url: "https://www.govdeals.com/lot/123",
+    current_bid: "$1,250",
+    starting_price: "500",
+  });
+  assert.equal(row.description, "Cargo van");
+  assert.equal(row.lot_url, "https://www.govdeals.com/lot/123");
+  assert.equal(row.current_bid, 1250);
+  assert.equal(row.starting_price, 500);
+  assert.deepEqual(row.timed_events, [{
+    kind: "auction_end",
+    date: "2026-08-12",
+    start: "2026-08-12",
+    end: "2026-08-12",
+    source: "dcas_vehicle_auction",
+  }]);
+});
+
+test("fleet freshness distinguishes a weekly snapshot from a stale one", () => {
+  const snapshot = buildDcasVehicleAuctionSnapshot(ROWS, {
+    asOf: "2026-08-04",
+    observedAt: "2026-08-04T12:00:00Z",
+    sourceUpdatedAt: "2026-08-01T12:00:00Z",
+  });
+  assert.equal(dcasVehicleAuctionFreshness(snapshot, { today: "2026-08-05" }).status, "fresh");
+  assert.equal(dcasVehicleAuctionFreshness(snapshot, { today: "2026-08-12" }).status, "stale");
+  assert.equal(dcasVehicleAuctionFreshness(snapshot, { today: "2026-08-12" }).age_days, 11);
+});
+
 test("collector query is date-bounded and hard-capped", () => {
   const query = dcasVehicleAuctionQuery({ asOf: "2026-08-04", windowDays: 90, limit: 500 });
   assert.equal(query.window_start, "2026-05-06");
@@ -62,19 +100,23 @@ test("committed snapshot and receipt preserve the terms gate", () => {
     "utf8",
   ));
   assert.equal(detectDcasVehicleAuctionSnapshot(snapshot).ok, true);
+  assert.equal(snapshot.source.provenance_notice_id, "20251106024");
+  assert.match(snapshot.source.provenance_notice_url, /RequestDetail\/20251106024$/);
   assert.equal(receipt.taxonomy.domain, "goods_surplus");
   assert.match(receipt.govdeals_gate.short_excerpt, /spiders, crawlers, robots/);
   assert.equal(receipt.govdeals_gate.public_api, "not_public");
   assert.equal(receipt.nonfleet_general_goods.status, "wishlist_partnership_blocked");
 });
 
-test("Property vehicle facet mounts the official inventory without merging it into propAll", () => {
+test("Property mounts the official inventory without merging it into propAll", () => {
   const property = readFileSync(join(ROOT, "site/app/property.mjs"), "utf8");
   const html = readFileSync(join(ROOT, "site/index.html"), "utf8");
   assert.match(html, /id="dcas-fleet-inventory"/);
   assert.match(property, /data\/dcas_vehicle_auctions\.json/);
   assert.match(property, /selectDcasVehicleAuctionSurface/);
   assert.match(property, /renderDcasFleetInventory/);
+  assert.match(property, /dcasVehicleAuctionFreshness/);
+  assert.match(property, /provenance_notice_url/);
   assert.match(property, /latest_close_date,\{dateOnly:true\}/);
   assert.match(property, /batch\.close_date,\{dateOnly:true\}/);
   assert.doesNotMatch(property, /propAll\.push\([^\n]*dcas/i);

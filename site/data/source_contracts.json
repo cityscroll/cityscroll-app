@@ -2025,8 +2025,8 @@
       ],
       "max_stale_days": 21,
       "publisher_cadence": "Weekly",
-      "product_freshness": "A bounded, checkpointed build-time pull keeps the latest 90-day fleet inventory. The Property vehicle facet reads the committed snapshot and labels it goods-surplus, never real property.",
-      "used_for": "Official fleet-auction inventory in the Property vehicle facet. Rows are excluded from parcel chains, BBL joins, map counts, parcel exports, and City Record saved-watch claims.",
+      "product_freshness": "The Worker refreshes the bounded fleet sidecar daily with the Property materialization; the committed snapshot remains a build-time fallback. An eight-day age check labels older data as latest-known, not current.",
+      "used_for": "Official fleet-auction inventory leading the Property open-now surface. Rows are excluded from parcel chains, BBL joins, map counts, parcel exports, and City Record saved-watch claims.",
       "code_references": [
         {
           "path": "warehouse/scripts/dcas_vehicle_auctions.mjs",
@@ -2041,6 +2041,10 @@
           "contains": "renderDcasFleetInventory"
         },
         {
+          "path": "worker/src/property.mjs",
+          "contains": "buildDcasVehicleAuctionSnapshot"
+        },
+        {
           "path": "site/data/property_sources/verification_receipts/dcas_surplus_frontier_2026-08-04.json",
           "contains": "wishlist_partnership_blocked"
         },
@@ -2049,7 +2053,7 @@
           "contains": "goods-surplus"
         }
       ],
-      "delivery_tier": "inline-at-build"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "ulurp-recommendations",

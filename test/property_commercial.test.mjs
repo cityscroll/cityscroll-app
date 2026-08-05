@@ -159,6 +159,7 @@ test("golden vehicle case paints glance item + bid steps without inventing a dea
   const entry = fixture.cases.find((c) => c.request_id === "20251106024");
   const commercial = extractPropertyCommercial(entry.row);
   assert.equal(commercial.item.category, "vehicle");
+  assert.equal(commercial.source_role, "provenance_pointer");
   assert.equal(commercial.glance.price, null);
   assert.equal(commercial.deal_signal.status, "insufficient");
   assert.ok(commercial.participation.has_fields);

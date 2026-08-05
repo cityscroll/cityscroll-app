@@ -534,7 +534,7 @@
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/ynic-uz5i",
-      "delivery_tier": "inline-at-build"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "dob-now-job-filings",
