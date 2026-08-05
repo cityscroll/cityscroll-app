@@ -91,8 +91,9 @@ async function invPullAndMerge(){
     await invPushServer(merged);
   }catch(e){ /* stay local */ }
 }
-const INV_HREF = {notice:"#notice/", vendor:"#vendor/", agency:"#agency/", matter:"#matter/"};
-const invItemHref = it => (INV_HREF[it.t]||"#notice/") + encodeURIComponent(it.id);
+const INV_HREF = {notice:"/notices/", matter:"#matter/"};
+const invItemHref = it => it.t==="agency" ? agencyHref(it.id) : it.t==="vendor" ? vendorHref(it.id) :
+  (INV_HREF[it.t]||"/notices/") + encodeURIComponent(it.id) + (it.t==="notice"?"/":"");
 function pinBtn(t, id, title, meta){
   const d = JSON.stringify({t, id, title:String(title).slice(0,300), meta:String(meta||"").slice(0,300)})
     .replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");

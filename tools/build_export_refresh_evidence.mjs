@@ -48,7 +48,7 @@ const context={
     {stage:"solicitation",status:"matched",date:"2026-06-30",detail:{title:notice.short_title,request_id:notice.request_id,due_date:notice.due_date},source_url:`https://a856-cityrecord.nyc.gov/RequestDetail/${notice.request_id}`},
     {stage:"selection",status:"unmatched",detail:{title:"Next expected stage"}},
   ]},
-  entities:[{entity_type:"agency",name:"Housing Authority",relationship:"published by",url:"https://cityscroll.org/#agency/Housing%20Authority",evidence:"City Record agency field"}],
+  entities:[{entity_type:"agency",name:"Housing Authority",relationship:"published by",url:"https://cityscroll.org/agencies/housing-authority/",evidence:"City Record agency field"}],
   sources:[{source_class:"action",label:"Housing Authority iSupplier registration guide",url:"https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page"}],
   rendered_context:[
     {data_class:"actions",text:"Open iSupplier. Search ID 517992, confirm the procurement name, and upload the complete bid before the deadline.",links:["https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page"]},

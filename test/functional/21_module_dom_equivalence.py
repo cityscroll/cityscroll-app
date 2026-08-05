@@ -31,6 +31,10 @@ STATIC_PARENT_IMPORT = re.compile(
     r'import\s+\{[^}]+\}\s+from\s+["\']\.\./([^"\']+)["\'];?',
     re.MULTILINE,
 )
+STATIC_LOCAL_IMPORT = re.compile(
+    r'import\s+\{[^}]+\}\s+from\s+["\']\./([^"\']+)["\'];?',
+    re.MULTILINE,
+)
 NAMESPACE_PARENT_IMPORT = re.compile(
     r'globalThis\.([A-Za-z_$][\w$]*)\s*=\s*await import\(["\']\.\./([^"\']+)["\']\);?'
 )
@@ -40,6 +44,24 @@ EXPORTED_DECLARATION = re.compile(
 EXPORTED_NAME = re.compile(
     r'\bexport\s+(?:async\s+)?(?:function|class|const|let|var)\s+([A-Za-z_$][\w$]*)'
 )
+
+
+def flatten_helper(path: pathlib.Path, stack: tuple[pathlib.Path, ...] = ()) -> str:
+    """Inline a pure helper's local named-import graph for the pre-split fixture."""
+    assert path not in stack, f"circular inline helper import: {path.name}"
+    source = path.read_text()
+    nested_sources = []  # Source: local helper imports matched by STATIC_LOCAL_IMPORT.
+    for helper_name in STATIC_LOCAL_IMPORT.findall(source):
+        helper_path = path.parent / helper_name
+        assert helper_path.is_file(), f"nested helper import missing: {helper_name}"
+        dependency = flatten_helper(helper_path, (*stack, path))
+        dependency = EXPORTED_DECLARATION.sub("", dependency)
+        dependency = re.sub(r"\bexport\s*\{[^}]+\}\s*;?", "", dependency)
+        assert not re.search(r"\bexport\s", dependency), (
+            f"inline reconstruction cannot flatten this export in {helper_name}"
+        )
+        nested_sources.append(dependency)
+    return "\n".join([*nested_sources, STATIC_LOCAL_IMPORT.sub("", source)])
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -65,10 +87,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
     for namespace, helper_name in NAMESPACE_PARENT_IMPORT.findall(loader):
         helper_path = SITE / helper_name
         assert helper_path.is_file(), f"namespace helper import missing: {helper_name}"
-        helper_source = helper_path.read_text()
-        assert not re.search(r"^\s*import\s", helper_source, re.MULTILINE), (
-            f"inline reconstruction cannot flatten nested imports in {helper_name}"
-        )
+        helper_source = flatten_helper(helper_path)
         exports = []  # Source: export declarations parsed from helper_source.
         for name in EXPORTED_NAME.findall(helper_source):
             exports.append((name, name))
@@ -98,10 +117,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
                 continue
             helper_path = SITE / helper_name
             assert helper_path.is_file(), f"static helper import missing: {helper_name}"
-            helper_source = helper_path.read_text()
-            assert not re.search(r"^\s*import\s", helper_source, re.MULTILINE), (
-                f"inline reconstruction cannot flatten nested imports in {helper_name}"
-            )
+            helper_source = flatten_helper(helper_path)
             helper_source = EXPORTED_DECLARATION.sub("", helper_source)
             assert not re.search(r"^\s*export\s", helper_source, re.MULTILINE), (
                 f"inline reconstruction cannot flatten this export in {helper_name}"

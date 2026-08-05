@@ -1,7 +1,7 @@
 import { noticeDocumentUrl } from "../notice_permalink.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
-   Document routes are canonical for Now, Browse facets, and notices. The same finite
+   Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
    hash grammar remains as an internal adapter for controls and retained item routes. */
 const DOCUMENT_FACET_HASHES=Object.freeze({
   contracts:"money",staffing:"people",zoning:"land",property:"property",rules:"rules",meetings:"meetings",
@@ -14,6 +14,15 @@ function documentRouteRaw(){
     const bounded=new URLSearchParams();
     for(const key of ["w","focus"]) if(params.has(key)) bounded.set(key,params.get(key));
     return `notice/${notice[1]}${bounded.size?`?${bounded}`:""}`;
+  }
+  const entity=path.match(/^\/(agencies|vendors|officials)\/([^/]+)$/);
+  if(entity){
+    const kind=({agencies:"agency",vendors:"vendor",officials:"official"})[entity[1]];
+    const params=new URLSearchParams(location.search); params.delete("lang");
+    const allowed=kind==="official"?["event","notice"]:["tab"];
+    const bounded=new URLSearchParams();
+    for(const key of allowed) if(params.has(key)) bounded.set(key,params.get(key));
+    return `${kind}/${decodeURIComponent(entity[2])}${bounded.size?`?${bounded}`:""}`;
   }
   if(path==="/now"){
     const params=new URLSearchParams(location.search); params.delete("lang");

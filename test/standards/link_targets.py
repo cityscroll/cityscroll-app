@@ -78,7 +78,7 @@ OWN_HREF_PREFIXES = ("https://github.com/jimdc/crol-list",)
 # crol-extlinks2-y8. Keep in sync with index.html/api.html when a new one is added.
 OWN_HREF_EXPRS = (
     "${href}",             # pivotA(href, text) — always called with an in-app hash route
-    "${agencyHref(",       # in-app hash route (#agency/...)
+    "${agencyHref(",       # canonical agency document route
     "${url}",              # investigation share link — location.origin + ... (same origin)
     "${u.atom}", "${u.json}", "${u.ics}",  # feed links — always api.cityscroll.org
     "${API.replace(",       # per-agency/vendor RSS feed links — always api.cityscroll.org
@@ -93,7 +93,7 @@ OWN_HREF_EXPRS = (
     "${taskEsc(landHref)}",
     "${TaskFirst.taskCollectionHash(",
     "${backHref}",
-    # Official event-scoped skim (#official/{id}?notice=&event=) from roll-call names.
+    # Official event-scoped skim (/officials/{id}/?notice=&event=) from roll-call names.
     "${escUiHtml(officialLink)}",
     # Zoning base-rate methodology lives on the same-origin About page.
     "${escUiHtml(stats.formula_url||t(",

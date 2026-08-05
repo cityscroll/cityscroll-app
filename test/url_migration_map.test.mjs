@@ -32,6 +32,15 @@ test("finite legacy routes forward to canonical documents and preserve supported
   assert.equal(migrateLegacyUrl("/#map?lens=property").target, "/near-you/?lens=property");
   assert.equal(migrateLegacyUrl("/#alerts").target, "/following/");
   assert.equal(migrateLegacyUrl("/#now").target, "/now/");
+  assert.equal(
+    migrateLegacyUrl("/#agency/Design%20and%20Construction%20(DDC)").target,
+    "/agencies/design-and-construction/",
+  );
+  assert.equal(migrateLegacyUrl("/#vendor/CAMBA%20LLC").target, "/vendors/CAMBA/");
+  assert.equal(
+    migrateLegacyUrl("/?lang=es#official/7801?event=22526&notice=20260706036").target,
+    "/officials/7801/?event=22526&notice=20260706036&lang=es",
+  );
 });
 
 test("obsolete keys fail soft to a disclosed Browse fallback", () => {
