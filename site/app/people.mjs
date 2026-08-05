@@ -75,7 +75,6 @@ function renderStaffingFeed(){
   const entries=SameConsolidation
     ? SameConsolidation.group(items)
     : items.map(item=>({kind:"item",item}));
-  setExportBandVisibility(items.length, "people-export-band", "people-export-overflow");
   $("#staffing-result-count").textContent=t("staffing_results_count",{n:fmtNumber(items.length)});
   $("#staffing-notice-list").innerHTML=items.length
      ? entries.map(entry=>entry.kind==="same-except-group"
