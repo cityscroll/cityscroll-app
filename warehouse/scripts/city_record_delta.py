@@ -35,8 +35,15 @@ def read_rows(path: Path) -> tuple[list[str], list[dict[str, str]]]:
     with path.open("r", encoding="utf-8", newline="") as source:
         reader = csv.DictReader(source)
         fields = list(reader.fieldnames or [])
-        rows = [{key: value or "" for key, value in row.items()} for row in reader]
-    missing = [field for field in CURSOR_FIELDS if field not in fields]
+        # Source: input CSV; tests use a hand-authored synthetic delta fixture.
+        rows = [
+            {key: value or "" for key, value in row.items()}
+            for row in reader
+        ]
+    # Source: City Record cursor contract; tests use a synthetic delta fixture.
+    missing = [
+        field for field in CURSOR_FIELDS if field not in fields
+    ]
     if missing:
         raise ValueError(f"{path} lacks cursor fields: {', '.join(missing)}")
     return fields, rows
@@ -114,8 +121,12 @@ def fixture_page(
 def dedupe_delta(
     snapshot: list[dict[str, str]], candidates: list[dict[str, str]]
 ) -> tuple[list[dict[str, str]], int]:
-    snapshot_ids = {row["request_id"] for row in snapshot}
-    accepted: dict[str, dict[str, str]] = {}
+    # Source: immutable City Record baseline; tests use a synthetic delta fixture.
+    snapshot_ids = {
+        row["request_id"] for row in snapshot
+    }
+    # Derived dedupe state; tests use a hand-authored synthetic delta fixture.
+    accepted: dict[str, dict[str, str]] = dict()
     duplicate_count = 0
     for row in canonical_rows(candidates):
         request_id = row["request_id"]
@@ -166,8 +177,10 @@ def main(argv: list[str] | None = None) -> int:
     if not snapshot_rows:
         raise SystemExit("baseline snapshot must contain at least one row")
     start_cursor = max(cursor(row) for row in snapshot_rows)
-    source_fields: list[str] = []
-    fixture_rows: list[dict[str, str]] = []
+    # Source: City Record response schema; tests use a synthetic delta fixture.
+    source_fields: list[str] = list()
+    # Source: synthetic fixture, hand-authored for the determinism test.
+    fixture_rows: list[dict[str, str]] = list()
     if args.source_fixture:
         source_fields, fixture_rows = read_rows(args.source_fixture)
     source_identity = sha256_file(args.source_fixture) if args.source_fixture else "live-socrata"
@@ -249,7 +262,8 @@ def main(argv: list[str] | None = None) -> int:
             return 75
 
     write_json(checkpoint_path, checkpoint)
-    candidates: list[dict[str, str]] = []
+    # Source: checkpointed City Record pages; tests use a synthetic delta fixture.
+    candidates: list[dict[str, str]] = list()
     all_fields = list(snapshot_fields)
     for page in checkpoint["pages"]:
         path = args.output_root / page["path"]
@@ -262,7 +276,12 @@ def main(argv: list[str] | None = None) -> int:
     final_rows = canonical_rows(snapshot_rows + delta_rows)
     final_payload = csv_bytes(all_fields, final_rows)
 
-    equivalence = {"checked": False, "equivalent": None, "expected_sha256": None}
+    # Derived verification state; tests use a hand-authored synthetic delta fixture.
+    equivalence = dict(
+        checked=False,
+        equivalent=None,
+        expected_sha256=None,
+    )
     if args.expected_final:
         expected_fields, expected_rows = read_rows(args.expected_final)
         expected_payload = csv_bytes(normalized_fields(all_fields, expected_fields), expected_rows)
