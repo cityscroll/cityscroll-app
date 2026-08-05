@@ -134,7 +134,7 @@ class ReaderTextParser(HTMLParser):
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
-        self.parts: list[str] = []
+        self.parts: list[str] = list()
         self.hidden_depth = 0
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:

@@ -36,7 +36,9 @@ export async function prefsLink(env, email) {
   const token = await signToken(env.TOKEN_SECRET, prefsPayload(email), {
     ttlSeconds: PREFS_TOKEN_TTL_SECONDS,
   });
-  return `https://cityscroll.org/prefs?token=${encodeURIComponent(token)}`;
+  const url = new URL("/prefs", "https://cityscroll.org");
+  url.searchParams.set("token", token);
+  return url.toString();
 }
 
 async function issuePrefsCredential(env, email) {
