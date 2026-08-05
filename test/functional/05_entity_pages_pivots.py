@@ -230,6 +230,125 @@ with sync_playwright() as pw:
     )
     p5.close()
 
+    # ---------- ZAP project constellation (exact project-id evidence) ----------
+    p6 = ctx.new_page()
+    project_row = {
+        "project_id": "2022M0258", "project_name": "Timbale Terrace",
+        "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+        "public_status": "Completed", "project_status": "Complete",
+        "borough": "Manhattan", "community_district": "M11", "cc_district": "8",
+        "actions": "HA; PQ", "current_milestone": "Project Completed",
+        "current_milestone_date": "2024-03-13", "ulurp_numbers": "240046HAM; 240047PQM",
+    }
+    coverage = {
+        "applicant": {"eligible": 231, "linked": 231, "rate": 1,
+                      "scope": "current_zap_snapshot", "vintage": "2026-08-02"},
+        "parcels": {"eligible": 231, "linked": 224, "rate": 224 / 231,
+                    "scope": "current_zap_snapshot", "vintage": "2026-08-05"},
+        "meetings": {"eligible": None, "linked": 6, "rate": None,
+                     "scope": "bounded_entity_materialization", "vintage": "2026-08-05",
+                     "gap": "eligible_denominator_not_measured"},
+        "decisions": {"eligible": 50, "linked": 45, "rate": .9,
+                      "scope": "fixed_completed_project_sample", "vintage": "2026-07-30"},
+        "notices": {"eligible": None, "linked": None, "rate": None,
+                    "scope": "this_project", "vintage": "2026-08-05",
+                    "gap": "eligible_denominator_not_measured"},
+    }
+    groups = [
+        {"id": "applicant", "relation": "applicant_agency", "surface": "land",
+         "status": "matched", "gap": None, "documents": [], "coverage": coverage["applicant"],
+         "items": [{"ref": HPD_REF, "label": "Housing Preservation and Development",
+                    "relation": "applicant_agency", "confidence": "tentative",
+                    "evidence": "land_primary_applicant"}]},
+        {"id": "parcels", "relation": "sited_on_parcel", "surface": "land",
+         "status": "matched", "gap": None, "documents": [], "coverage": coverage["parcels"],
+         "items": [{"ref": "bbl:1017670001", "label": "BBL 1017670001",
+                    "relation": "sited_on_parcel", "confidence": "strong",
+                    "evidence": "exact ZAP project_id → BBL"}]},
+        {"id": "meetings", "relation": "decides_land_project", "surface": "land",
+         "status": "matched", "gap": None, "documents": [], "coverage": coverage["meetings"],
+         "items": [{"ref": "notice:20240101001", "href": "#notice/20240101001",
+                    "label": "City Planning Commission hearing", "when": "2024-01-09",
+                    "relation": "decides_land_project", "confidence": "strong"}]},
+        {"id": "decisions", "relation": "project_disposition", "surface": "land",
+         "status": "matched", "gap": None, "coverage": coverage["decisions"],
+         "items": [{"label": "Community Board", "outcome": "Conditional Favorable",
+                    "when": "2023-10-24", "relation": "project_disposition",
+                    "confidence": "strong"}],
+         "documents": [{"label": "Community Board recommendation",
+                        "href": "https://example.test/recommendation"}]},
+        {"id": "notices", "relation": "references_project", "surface": "land",
+         "status": "matched", "gap": None, "documents": [], "coverage": coverage["notices"],
+         "items": [{"ref": "notice:20240101001", "href": "#notice/20240101001",
+                    "label": "City Planning Commission hearing", "when": "2024-01-09",
+                    "relation": "references_project", "confidence": "strong"}]},
+    ]
+    connection_record = {
+        "project_id": "2022M0258", "project_name": "Timbale Terrace",
+        "public_status": "Completed", "open_data": project_row,
+        "join": {"matched": True, "method": "exact_project_id"}, "filled": False,
+        "approved_actions": [], "dispositions": [], "documents": [],
+        "project_connections": {"schema_version": 1, "status": "bounded",
+                                "project_id": "2022M0258", "project_ref": "project:2022M0258",
+                                "project_name": "Timbale Terrace", "groups": groups},
+    }
+    p6.route("**/resource/hgx4-8ukb.json?*", lambda route: route.fulfill(
+        status=200, content_type="application/json", body=json.dumps([project_row])))
+    p6.route("**/resource/2iga-a6mk.json?*", lambda route: route.fulfill(
+        status=200, content_type="application/json", body='[{"bbl":"1017670001"}]'))
+    p6.route("**/zap-outcomes?id=2022M0258", lambda route: route.fulfill(
+        status=200, content_type="application/json",
+        body=json.dumps({"ok": True, "cached": True, "record": connection_record})))
+    p6.goto(BASE + "#land/2022M0258", wait_until="domcontentloaded", timeout=30000)
+    p6.wait_for_selector('.project-connections[data-project-ref="project:2022M0258"]', timeout=30000)
+    project_view = p6.evaluate("""(() => {
+      const card=document.querySelector('.project-connections');
+      const applicant=card.querySelector('[data-project-group="applicant"] a.entity-pivot');
+      const parcel=card.querySelector('[data-project-group="parcels"] a.entity-pivot');
+      const meeting=card.querySelector('[data-project-group="meetings"] a[href^="#notice/"]');
+      const parcelScope=CrolScope.scopeFromRouteHash(parcel.getAttribute('href'));
+      const allScope=CrolScope.scopeFromRouteHash(
+        card.querySelector('[data-project-group="parcels"] .ei-view-all').getAttribute('href'));
+      return {groups:card.querySelectorAll('.pc-group').length,
+        applicantRef:applicant?.dataset.entityRef, applicantConfidence:applicant?.dataset.linkConfidence,
+        possible:!!card.querySelector('[data-project-group="applicant"] .entity-pivot-band'),
+        parcelRefs:parcelScope.facets.values.entity_refs_all,
+        allRefs:allScope.facets.values.entity_refs_all,
+        meetingHref:meeting?.getAttribute('href'), text:card.innerText};
+    })()""")
+    p6.screenshot(path=SHOT + "project-connections.png", full_page=True)
+    # Sources: NYC Open Data ZAP Projects (hgx4-8ukb) and ZAP Project BBLs (2iga-a6mk).
+    expected_project_ref = "project:2022M0258"
+    expected_parcel_ref = "bbl:1017670001"
+    ok_project = (
+        project_view["groups"] == 5
+        and project_view["applicantRef"] == HPD_REF
+        and project_view["applicantConfidence"] == "tentative"
+        and project_view["possible"]
+        and set(project_view["parcelRefs"]) == {expected_project_ref, expected_parcel_ref}
+        and project_view["allRefs"] == [expected_project_ref]
+        and project_view["meetingHref"] == "#notice/20240101001"
+        and "231" in project_view["text"] and "50" in project_view["text"]
+    )
+    step("OK" if ok_project else "FAIL", "gc-05 exact project constellation and coverage",
+         json.dumps(project_view)[:260])
+    p6.locator(".project-connections .ei-apply").click()
+    p6.wait_for_function("location.hash.startsWith('#land?') && document.querySelector('.project-connections')", timeout=30000)
+    scoped_url = p6.url
+    p6.reload(wait_until="domcontentloaded", timeout=30000)
+    p6.wait_for_selector('.project-connections[data-project-ref="project:2022M0258"]', timeout=30000)
+    round_trip = p6.evaluate("""(() => {
+      const serialized=serializeState();
+      const s=CrolScope.scopeFromRouteHash(serialized);
+      return {refs:s.facets.values.entity_refs_all, relation:s.facets.values.connection_relation,
+        project:document.querySelector('.project-connections')?.dataset.projectRef,
+        serialized};
+    })()""")
+    step("OK" if round_trip["refs"] == [expected_project_ref]
+         and round_trip["project"] == expected_project_ref else "FAIL",
+         "gc-05 project scope survives reload", json.dumps({"url": scoped_url, **round_trip})[:260])
+    p6.close()
+
     # ---------- vendor page direct, with variant resolution ----------
     p3 = ctx.new_page()
     p3.goto(BASE + "#vendor/" + ent["vendor"].replace(" ", "%20"), timeout=30000)

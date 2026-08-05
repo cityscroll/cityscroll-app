@@ -15,7 +15,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
-| `site/app/land.mjs` | Land search/detail/map, static-first ZAP outcomes with optional freshness enhancement, ULURP timeline, and notice-to-ZAP joins. |
+| `site/app/land.mjs` | Land search/detail/map, static-first ZAP outcomes with optional freshness enhancement, ULURP timeline, notice-to-ZAP joins, and the route-lazy project constellation. The pure `site/project_connections.mjs` adapter requires exact project IDs/BBLs, preserves confidence labels, and composes project scopes without another store. |
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, stamped district-bag filtering, hearing explorer, and notice/land action rails. |
 | `site/app/result-match.mjs` | Shared list and digest match evidence plus digest-item presentation used by reading routes without loading watch management. |
 | `site/app/notice-context.mjs` | Notice-detail context, attachment, parcel, and external-award hydration shared by reading routes. |
