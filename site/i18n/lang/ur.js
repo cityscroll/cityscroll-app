@@ -2336,7 +2336,7 @@
     career_fee_salary_not_yet_ingested_html: "ابھی یہاں نہیں دکھایا گیا — فیس اور تنخواہ {source} میں ہیں۔",
     career_noe_source_name: "DCAS امتحان کے نوٹس",
     career_status_open: "اب کھولیں۔",
-    staffing_history_summary: "جو ہوا: حالیہ تقرریاں",
+    staffing_history_summary: "تقرری کا ریکارڈ",
     career_group_open: "ابھی درخواست دیں",
     career_group_upcoming: "جلد آنے والے",
     career_group_continuous: "واک اِن اور مسلسل امتحانات",

@@ -2334,7 +2334,7 @@
     career_fee_salary_not_yet_ingested_html: "এখানে এখনও দেখানো হয়নি — ফি ও বেতন {source}-এ আছে।",
     career_noe_source_name: "DCAS পরীক্ষার নোটিশে",
     career_status_open: "এখন খুলুন",
-    staffing_history_summary: "যা ঘটেছে: সাম্প্রতিক নিয়োগ",
+    staffing_history_summary: "নিয়োগের রেকর্ড",
     career_group_open: "এখনই আবেদন করুন",
     career_group_upcoming: "শিগগির আসছে",
     career_group_continuous: "ওয়াক-ইন ও ধারাবাহিক পরীক্ষা",

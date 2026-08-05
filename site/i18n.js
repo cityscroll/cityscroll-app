@@ -1040,7 +1040,7 @@ const STRINGS = {
     career_fee_salary_not_yet_ingested_html: "Not yet shown here — fee and salary live in {source}.",
     career_noe_source_name: "the DCAS Notice of Examination",
     career_status_open: "Open now",
-    staffing_history_summary: "What happened: recent appointments",
+    staffing_history_summary: "Appointment record",
     career_group_open: "Apply now",
     career_group_upcoming: "Coming up",
     career_group_continuous: "Walk-in and continuous exams",
