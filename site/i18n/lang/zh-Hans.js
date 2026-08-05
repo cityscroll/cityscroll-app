@@ -1828,6 +1828,8 @@
     badge_min_annual_bid: "年最低 ${amt}",
     property_commercial_close: "截止 {date}",
     property_commercial_closed: "已截止 {date}",
+    property_program_active: "Active program",
+    property_program_superseded: "Superseded program edition",
     property_event_hearing: "听证会日期",
     property_event_auction_start: "拍卖开始日期",
     property_event_auction_end: "拍卖结束日期",

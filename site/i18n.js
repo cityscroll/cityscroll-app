@@ -2369,6 +2369,8 @@ const STRINGS = {
     badge_nominal: "$1 nominal",
     property_commercial_close: "closes {date}",
     property_commercial_closed: "closed {date}",
+    property_program_active: "Active program",
+    property_program_superseded: "Superseded program edition",
     property_event_hearing: "Hearing date",
     property_event_auction_start: "Auction start date",
     property_event_auction_end: "Auction close date",

@@ -921,6 +921,10 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const r=entry.primary;
   if(!r) return "";
   const commercial=r.commercial||null;
+  const lifecycle=r.property_reader_actions?.lifecycle||{};
+  const superseded=entry.temporal_status==="superseded"||lifecycle.program_state==="superseded";
+  const activeProgram=!superseded&&(entry.program_state==="active"||lifecycle.program_state==="active")
+    && lifecycle.instance_state==="undated";
   const cardCopy=plainTools?.ensurePropertyCardPlainSummary?.(r,{today:todayISO(),events:r.commercial?.timed_events||undefined,readerActions:r.property_reader_actions||undefined})||null;
   const glance=commercial && commercial.glance ? commercial.glance : null;
   const ev=r.event_date || (glance && glance.close_date) || null;
@@ -929,8 +933,8 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
     || (commercial && commercial.close_date)
     || r.event_date
     || null;
-  const closed=entry.temporal_status==="closed"
-    || (closeDate && daysLeft(closeDate)!==null && daysLeft(closeDate)<0);
+  const closed=!superseded&&(entry.temporal_status==="closed"
+    || (closeDate && daysLeft(closeDate)!==null && daysLeft(closeDate)<0));
   const propertyAddress=r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
   const title=noticeDisplayTitle(r, t("tab_property")+" "+t("rule_sibling_role_notice")), displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
@@ -960,44 +964,47 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const closeLabel=closeDate ? fdt(closeDate,{dateOnly:true}) : "";
   // Date chips use {date} only — never the price-fact `$` prefix template.
   const closeChipKey=closed ? "property_commercial_closed" : "property_commercial_close";
-  // Build tag classes without multi-word English string literals (stray-english gate).
-  // Reuse existing .tag.closed / .tag.open tokens (contrast-checked); do not invent dim past chips.
+  // Keep status chips on checked tag tokens.
   const closeChipClass=["tag", closed?"closed":"open"].join(" ");
-  const processChipClass=["tag", closed?"closed":"open"].join(" ");
+  const processChipClass=["tag", (closed||superseded)?"closed":"open"].join(" ");
+  const programStatus=activeProgram
+    ? `<span class="tag open" data-program-state="active">${escUiHtml(t("property_program_active"))}</span>`
+    : (superseded ? `<span class="tag closed" data-program-state="superseded">${escUiHtml(t("property_program_superseded"))}</span>` : "");
   const commercialLead=`<div class="property-commercial-lead" data-commercial-glance="1">
     ${itemLabel?`<span class="tag asset">${escUiHtml(itemLabel)}</span>`:""}
     ${priceLabel?`<span class="tag amt">${priceLabel}</span>`:""}
     ${methodLabel?`<span class="tag method">${escUiHtml(methodLabel)}</span>`:""}
+    ${programStatus}
     ${Array.isArray(commercial?.event_views)&&commercial.event_views.length?propertyTimedEventChipsHTML(commercial,cardCopy?.event_kind?[cardCopy.event_kind]:[]):(closeLabel&&!cardCopy?.event_kind?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:"")}
   </div>`;
-  const dealLine=(!closed && glance && glance.deal)
+  const dealLine=(!closed && !superseded && glance && glance.deal)
     ? `<p class="property-deal-signal" data-deal-status="derived">${escUiHtml(glance.deal)}</p>`
     : "";
   const processLine=`<div class="property-process-line">
-    <span class="${processChipClass}">${escUiHtml(closed?t("stage_past"):processLabel)}</span>
+    <span class="${processChipClass}">${escUiHtml(superseded?t("property_program_superseded"):closed?t("stage_past"):processLabel)}</span>
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
     ${entry.bbl?`<span class="tag place">${parcelPivotHTML(entry.bbl)}</span>`:``}
   </div>`;
-  const primaryActionKey=!closed&&cardCopy?.action_kind?"property_action_open_notice":actionKey;
-  const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
+  const primaryActionKey=(closed||superseded)?"property_action_open_notice":(!closed&&cardCopy?.action_kind?"property_action_open_notice":actionKey);
+  const primaryAction=`<a class="act${closed||superseded?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
     if(links?.zola_url) secondaryActions.push(`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`);
   }
   // Live marketplace / RFP package is only honest while the sale is still open.
-  if(!closed && commercial && commercial.participation && commercial.participation.package_url){
+  if(!closed && !superseded && commercial && commercial.participation && commercial.participation.package_url){
     secondaryActions.push(`<a class="act" href="${escUiHtml(commercial.participation.package_url)}" ${EXT_ATTRS}>${t("property_action_open_rfp")}${extSR()}</a>`);
   }
   secondaryActions.push(`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`);
-  if(ev && !closed) secondaryActions.push(`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
+  if(ev && !closed && !superseded) secondaryActions.push(`<button class="act" type="button" data-ev="property:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`);
   const geometry=r._location?.geometry;
   const taxLot=r._location?.tax_lots?.[0];
   const blockLotQuery=geometry?"":(taxLot&&r._location?.boroughs?.length?`${taxLot.label}, ${r._location.boroughs[0]}, New York NY`:"");
   const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) secondaryActions.push(`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`);
   if(addr) secondaryActions.push(`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`);
-  if(closed) secondaryActions.push(`<a class="act" href="/browse/property/">${t("property_related_current_sales")}</a>`);
+  if(closed || superseded) secondaryActions.push(`<a class="act" href="/browse/property/">${t("property_related_current_sales")}</a>`);
   const titleBlock=cardCopy
     ? `<div class="ftitle property-card-summary" data-card-fact="${escUiHtml(cardCopy.fact_key||"")}" lang="en" dir="ltr"><a href="${noticeHref}">${escUiHtml(cardCopy.text)}</a></div>
       ${plainTools.propertyCardTitleDisclosureHTML({display_title_html:digTitleHTML(displayTitle,mev),original_title:title,open:mev?.field==="title"},{escape:escUiHtml})}`
@@ -1005,7 +1012,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const enablingInfo=readerTools?.propertyActionEnablingInfoHTML
     ?readerTools.propertyActionEnablingInfoHTML(r.property_reader_actions,{row:r,today:todayISO(),escape:escUiHtml,extAttrs:EXT_ATTRS,extSr:extSR})
     :"";
-  return `<div class="fcard property-fcard${closed?" is-closed":""}" data-request-id="${escUiHtml(r.request_id||"")}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${closed?"closed":(entry.temporal_status||"open")}" data-closed="${closed?"1":"0"}">
+  return `<div class="fcard property-fcard${closed?" is-closed":""}${superseded?" is-superseded":""}" data-request-id="${escUiHtml(r.request_id||"")}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${superseded?"superseded":(closed?"closed":(entry.temporal_status||"open"))}" data-closed="${closed?"1":"0"}">
       ${commercialLead}
       ${dealLine}
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
