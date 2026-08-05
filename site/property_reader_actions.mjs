@@ -280,6 +280,8 @@ export function resolvePropertyActionLifecycle(row = {}, options = {}) {
 
 function actionStatus(kind, row, byWhen, today, lifecycle) {
   if (kind === "review_result") return "historical";
+  // Published records can remain useful after a hearing or sale closes.
+  if (kind === "review_documents" && !isoDay(byWhen?.value)) return "undated";
   if (lifecycle?.state === "closed") return "historical";
   const endDay = isoDay(byWhen?.value);
   if (endDay) return endDay < today ? "historical" : "current";
@@ -413,13 +415,13 @@ export function propertyActionEnablingInfo(row = {}, action = {}) {
   const depositFact = priceFacts.find((fact) => /deposit|fee/i.test(String(fact?.kind || ""))) || null;
   const depositStep = (participation.steps || []).find((step) => step?.kind === "deposit_or_fee") || null;
   const contact = uniqueBy([
-    ...methods.filter((method) => ["email", "phone", "contact", "mail"].includes(method.kind)),
-    ...(participation.emails || []).map((entry) => ({ kind: "email", value: methodValue(entry), source: entry?.evidence || null })),
-    ...(participation.phones || []).map((entry) => ({ kind: "phone", value: methodValue(entry), source: entry?.evidence || null })),
+    ...methods.filter((method) => ["email", "phone", "contact", "mail", "in_person", "online"].includes(method.kind)),
   ].filter((entry) => entry?.value), (entry) => `${entry.kind}:${entry.value.toLowerCase()}`).slice(0, 8);
-  const marketplaceUrl = safeHttps(participation.package_url)
-    || methods.filter((method) => method.kind === "url").map((method) => safeHttps(method.value)).find(Boolean)
-    || null;
+  const marketplaceUrl = ["bid", "inspect"].includes(action.kind)
+    ? safeHttps(participation.package_url)
+      || methods.filter((method) => method.kind === "url").map((method) => safeHttps(method.value)).find(Boolean)
+      || null
+    : null;
   const venue = methods.find((method) => method.kind === "venue") || structuredVenue(row);
   const inspectionStep = (participation.steps || []).find((step) => step?.kind === "show_or_inspection") || null;
   const inspection = action.kind === "inspect"
@@ -440,9 +442,11 @@ export function propertyActionEnablingInfo(row = {}, action = {}) {
     } : null,
     price: price ? {
       kind: price.kind || null,
+      price_role: price.price_role || null,
       display: price.display || (price.amount != null ? `$${price.amount}` : null),
       amount: price.amount ?? null,
       evidence: price.evidence || null,
+      context: price.context || null,
       source: price.source || null,
     } : null,
     deposit: depositFact ? {
@@ -558,8 +562,11 @@ export function propertyReaderActionRail(rail, matter, api) {
   if (guide.primary_kind === "attend" && guide.mode !== "historical") {
     guide.attendance = api.hearingHandoff({ ...matter, deadline: guide.deadline || matter.deadline });
   }
-  const actions = guide.mode === "historical"
-    ? [api.official("document", guide.label_key, guide.label, matter.official_notice_url, null, { guide })]
+  const reviewHandoff = guide.mode !== "historical"
+    && guide.primary_kind === "review_documents"
+    && matter.official_notice_url;
+  const actions = guide.mode === "historical" || reviewHandoff
+    ? [api.official("document", guide.label_key, guide.label, matter.official_notice_url, guide.deadline, { guide })]
     : [api.validateAction({ ...guide.action, guide })];
   if (guide.mode !== "historical" && guide.primary_kind === "attend" && guide.deadline) {
     actions.push(api.local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, guide.deadline));
@@ -590,25 +597,18 @@ export function propertyActionEnablingInfoHTML(readerActions, helpers = {}) {
   };
   const channels = (info.how_to_act || []).map(channelHTML).filter(Boolean);
   const historical = lifecycle?.state === "closed" || action?.status === "historical";
-  const item = info.items?.label
-    ? esc(info.items.label)
-    : "The city did not list the items.";
-  const price = info.price?.display
-    ? esc(info.price.display)
-    : "The city did not list a price or minimum bid.";
-  const deposit = info.deposit?.display ? ` · Deposit or fee: ${esc(info.deposit.display)}` : "";
-  const how = historical
-    ? "This action is closed. Read the City Record notice."
-    : channels.length ? channels.join(" · ") : "The notice does not say how to act.";
-  const inspection = info.inspection?.text
-    ? esc(info.inspection.text)
-    : "The notice does not say when or where to view it.";
-  return `<dl class="property-decision-info" data-action-enabling-info="1" data-lifecycle="${historical ? "closed" : "live"}">
-    <dt>Items</dt><dd lang="en" dir="ltr">${item}</dd>
-    <dt>Asking price</dt><dd lang="en" dir="ltr">${price}${deposit}</dd>
-    <dt>How to act</dt><dd>${how}</dd>
-    <dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${inspection}</dd>
-  </dl>`;
+  const rows = [];
+  if (info.items?.label) rows.push(`<dt>Items</dt><dd lang="en" dir="ltr">${esc(info.items.label)}</dd>`);
+  if (info.price?.display) {
+    const label = info.price.kind === "nominal" ? "Nominal consideration" : "Asking price / minimum bid";
+    const context = info.price.context ? ` <span class="property-price-context">${esc(info.price.context)}</span>` : "";
+    rows.push(`<dt>${label}</dt><dd lang="en" dir="ltr">${esc(info.price.display)}${context}</dd>`);
+  }
+  if (info.deposit?.display) rows.push(`<dt>Deposit or fee</dt><dd lang="en" dir="ltr">${esc(info.deposit.display)}</dd>`);
+  if (!historical && channels.length) rows.push(`<dt>How to act</dt><dd>${channels.join(" · ")}</dd>`);
+  if (info.inspection?.text) rows.push(`<dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${esc(info.inspection.text)}</dd>`);
+  if (!rows.length) return "";
+  return `<dl class="property-decision-info" data-action-enabling-info="1" data-lifecycle="${historical ? "closed" : "live"}">${rows.join("")}</dl>`;
 }
 
 /** Property-only action-band markup, loaded with the detail extractor (not home boot). */
@@ -627,34 +627,54 @@ export function propertyReaderActionStepsHTML(actions, helpers = {}) {
     }
     return `<span lang="en" dir="ltr">${value}</span>`;
   };
-  const steps = [];
-  for (const item of actions || []) {
-    if (!item?.kind || !item.how) continue;
-    const historical = item.status === "historical";
-    const by = item.by_when?.value
-      ? fdt(item.by_when.value)
-      : item.by_when?.label ? esc(item.by_when.label) : t("task_bid_unknown");
-    const info = item.enabling_info || {};
-    const methods = (info.how_to_act || item.methods || []).map(methodHTML).filter(Boolean);
-    const items = info.items?.label ? esc(info.items.label) : "The city did not list the items.";
-    const price = info.price?.display ? esc(info.price.display) : "The city did not list a price or minimum bid.";
-    const deposit = info.deposit?.display ? `<dt>Deposit or fee</dt><dd lang="en" dir="ltr">${esc(info.deposit.display)}</dd>` : "";
-    const inspection = info.inspection?.text ? esc(info.inspection.text) : "The notice does not say when or where to view it.";
-    const actionLabel = historical
-      ? (item.kind === "bid" ? "Bidding closed" : "Past action")
-      : esc(item.label);
-    steps.push(`<div class="rules-action-band property-action-band" data-band="${esc(item.band_id || item.kind)}" data-status="${historical ? "historical" : "current"}">
-        <span lang="en" dir="ltr">${actionLabel}</span>
-        ${historical ? `<span class="band-count">${t("next_action_event_passed")}</span>` : ""}
-      </div>
-      <dl class="bid-guide-facts property-action-facts">
-        <dt>${t("glance_what")}</dt><dd lang="en" dir="ltr">${items}</dd>
-        <dt>Asking price / minimum bid</dt><dd lang="en" dir="ltr">${price}</dd>
-        ${deposit}
-        <dt>${t("apply_method_lbl")}</dt><dd>${historical ? '<span lang="en" dir="ltr">This action is closed. Read the City Record notice.</span>' : methods.length ? methods.join(" · ") : '<span lang="en" dir="ltr">The notice does not say how to act.</span>'}</dd>
-        <dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${inspection}</dd>
-        <dt>${t("task_lead_deadline")}</dt><dd>${by}</dd>
-      </dl>`);
+  const current = (actions || []).filter((item) => item?.kind && item?.how && item.status !== "historical");
+  const historical = uniqueBy(
+    (actions || []).filter((item) => item?.kind && item?.how && item.status === "historical"),
+    (item) => `${item.kind}:${isoDay(item.by_when?.value) || item.by_when?.label || "undated"}`,
+  );
+  const rendered = [];
+  if (current.length) {
+    const entries = current.map((item) => {
+      const info = item.enabling_info || {};
+      const methods = (info.how_to_act || item.methods || []).map(methodHTML).filter(Boolean);
+      const rows = [];
+      if (info.items?.label) rows.push(`<dt>${t("glance_what")}</dt><dd lang="en" dir="ltr">${esc(info.items.label)}</dd>`);
+      if (info.price?.display) {
+        const label = info.price.kind === "nominal" ? "Nominal consideration" : "Asking price / minimum bid";
+        const context = info.price.context ? ` <span class="property-price-context">${esc(info.price.context)}</span>` : "";
+        rows.push(`<dt>${label}</dt><dd lang="en" dir="ltr">${esc(info.price.display)}${context}</dd>`);
+      }
+      if (info.deposit?.display) rows.push(`<dt>Deposit or fee</dt><dd lang="en" dir="ltr">${esc(info.deposit.display)}</dd>`);
+      if (methods.length) rows.push(`<dt>How to act</dt><dd>${methods.join(" · ")}</dd>`);
+      if (info.inspection?.text) rows.push(`<dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${esc(info.inspection.text)}</dd>`);
+      if (item.by_when?.value) {
+        const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(String(item.by_when.value));
+        rows.push(`<dt>${t("task_lead_deadline")}</dt><dd>${fdt(item.by_when.value, { dateOnly })}</dd>`);
+      }
+      return `<article class="property-action-current-entry" data-action-kind="${esc(item.kind)}">
+        <div class="rules-action-band property-action-band" data-band="${esc(item.band_id || item.kind)}" data-status="current"><span lang="en" dir="ltr">${esc(item.label)}</span></div>
+        <p class="property-action-summary" lang="en" dir="ltr">${esc(item.how.text)}</p>
+        ${rows.length ? `<dl class="bid-guide-facts property-action-facts">${rows.join("")}</dl>` : ""}
+      </article>`;
+    }).join("");
+    rendered.push(`<section class="property-action-current" data-action-current><h4>Available now</h4>${entries}</section>`);
   }
-  return steps.length ? steps : [t("next_action_unavailable_handoff")];
+  if (historical.length) {
+    const labels = {
+      attend: "Public hearing",
+      request_accommodation: "Accommodation request deadline",
+      bid: "Bid deadline",
+      object: "Objection deadline",
+      comment: "Comment deadline",
+      inspect: "Inspection / showing",
+    };
+    const events = historical.map((item) => {
+      const raw = item.by_when?.value;
+      const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(String(raw || ""));
+      const when = raw ? fdt(raw, { dateOnly }) : item.by_when?.label ? esc(item.by_when.label) : "";
+      return `<li class="property-action-history-event" data-action-history-event data-action-kind="${esc(item.kind)}"><strong>${esc(labels[item.kind] || item.label)}</strong>${when ? ` <span aria-hidden="true">—</span> <time datetime="${esc(raw || "")}">${when}</time>` : ""}</li>`;
+    }).join("");
+    rendered.push(`<section class="property-action-history" data-action-history><h4>What already happened</h4><ul>${events}</ul></section>`);
+  }
+  return rendered.length ? rendered : [t("next_action_unavailable_handoff")];
 }

@@ -1868,6 +1868,8 @@
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "Позвоните в отдел публичных слушаний по номеру {phone}, чтобы запросить переводчика жестового языка или специальные условия.",
+    property_commercial_call_participation_html: "Позвоните в офис по номеру {phone}, чтобы узнать об участии.",
     property_asset_rail_label: 'Item type',
     property_sale_method_rail_label: 'Sale method',
     property_price_rail_label: 'Price',

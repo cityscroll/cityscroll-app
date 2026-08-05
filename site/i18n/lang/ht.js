@@ -1857,6 +1857,8 @@
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "Rele biwo odyans piblik la nan {phone} pou mande yon entèprèt lang siy oswa yon aranjman.",
+    property_commercial_call_participation_html: "Rele biwo a nan {phone} pou mande kijan pou patisipe.",
     property_asset_rail_label: 'Item type',
     property_sale_method_rail_label: 'Sale method',
     property_price_rail_label: 'Price',

@@ -1867,6 +1867,8 @@
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "اشاروں کی زبان کے مترجم یا دوسری سہولت کی درخواست کے لیے عوامی سماعت کے دفتر کو {phone} پر کال کریں۔",
+    property_commercial_call_participation_html: "شرکت کے بارے میں جاننے کے لیے دفتر کو {phone} پر کال کریں۔",
     property_asset_rail_label: 'Item type',
     property_sale_method_rail_label: 'Sale method',
     property_price_rail_label: 'Price',

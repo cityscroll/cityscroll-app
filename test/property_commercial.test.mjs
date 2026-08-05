@@ -27,6 +27,16 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 const fixture = JSON.parse(
   readFileSync(new URL("./fixtures/property_commercial/real_notices.json", import.meta.url)),
 );
+const propertyGolden = JSON.parse(
+  readFileSync(new URL("./contract/fixtures/property_location_golden.json", import.meta.url)),
+);
+const commercialUiSource = readFileSync(
+  new URL("../site/property_commercial_ui.mjs", import.meta.url),
+  "utf8",
+);
+const nominalDispositionRow = propertyGolden.notices.find(
+  (notice) => notice.row?.request_id === "20170130106",
+)?.row;
 
 test("normalizeAssetFilter maps legacy chip keys to persona vocabulary", () => {
   assert.equal(normalizeAssetFilter("vehequip"), "vehicle");
@@ -253,6 +263,29 @@ test("evidence spans snap to word boundaries with ellipses", () => {
   assert.doesNotMatch(around, /New Y$/);
 });
 
+test("nominal disposition evidence is a complete cited clause, not a clipped template fragment", () => {
+  assert.ok(nominalDispositionRow, "exact nominal-disposition field case is present");
+  const commercial = extractPropertyCommercial(nominalDispositionRow);
+
+  assert.equal(commercial.item.category, "real_property");
+  assert.doesNotMatch(commercial.item.evidence, /^…|…$/);
+  assert.match(commercial.item.evidence, /acquisition and disposition of the following property/i);
+
+  const nominal = commercial.price_facts.find((fact) => fact.kind === "nominal");
+  assert.ok(nominal, "the stated dollar is typed as nominal consideration");
+  assert.equal(nominal.amount, 1);
+  assert.equal(nominal.price_role, "nominal_consideration");
+  assert.doesNotMatch(nominal.evidence, /^…|…$/);
+  assert.match(nominal.evidence, /nominal price of one dollar/i);
+  assert.match(nominal.context, /not an auction price/i);
+
+  const phone = commercial.participation.phones.find((entry) => entry.value === "(212) 788-7490");
+  assert.ok(phone, "the public-hearings contact remains available");
+  assert.equal(phone.purpose, "accommodation");
+  assert.match(phone.context, /requesting sign language interpreters/i);
+  assert.doesNotMatch(phone.context, /^…|…$/);
+});
+
 test("measureDispositionSaleClassSplit reports non-sale vs sale classes", () => {
   const golden = JSON.parse(
     readFileSync(new URL("./contract/fixtures/property_location_golden.json", import.meta.url)),
@@ -269,12 +302,10 @@ test("measureDispositionSaleClassSplit reports non-sale vs sale classes", () => 
 // Direct characterization of render gate via source contracts (avoids full index sandbox).
 test("property commercial detail source gates on sale_eligible and omits apology boxes", () => {
   const src = SITE_SOURCE;
-  const start = src.indexOf("function propertyCommercialDetailHTML");
-  const end = src.indexOf("function commercialSaleSignalsFallback", start);
-  assert.ok(start >= 0 && end > start);
-  const detailSrc = src.slice(start, end);
+  const detailSrc = commercialUiSource;
   assert.match(detailSrc, /sale_eligible/);
   assert.match(src, /function commercialSaleSignalsFallback/);
+  assert.match(src, /renderPropertyCommercialDetail/);
   // Absent-means-absent: price none / deal insufficient / bid none / comparables / persona not inline.
   assert.doesNotMatch(detailSrc, /property_commercial_price_none_html/);
   assert.doesNotMatch(detailSrc, /property_commercial_deal_insufficient_html/);
