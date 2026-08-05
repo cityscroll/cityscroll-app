@@ -19,7 +19,7 @@ PAGES = [
     ("standards.html", "https://cityscroll.org/standards.html"),
     ("stats.html", "https://cityscroll.org/stats.html"),
 ]
-SITEMAP_PAGES = [page for page in PAGES if page[0] not in {"changelog.html", "data.html"}]
+SITEMAP_PAGES = [page for page in PAGES if page[0] not in {"changelog.html", "data.html", "standards.html"}]
 PROMOTED_DOCUMENTS = [
     "https://cityscroll.org/now/",
     "https://cityscroll.org/near-you/",
@@ -34,7 +34,8 @@ PROMOTED_DOCUMENTS = [
 ]
 RETIRED_DESTINATIONS = {
     "changelog.html": "https://cityscroll.org/about.html",
-    "data.html": "https://cityscroll.org/about.html#data",
+    "data.html": "https://cityscroll.org/api.html#upstream",
+    "standards.html": "https://cityscroll.org/about.html#accessibility",
 }
 CANONICAL_DYNAMIC_PATH_ROUTES = (
     "cityscroll.org/near-you*",

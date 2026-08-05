@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Attribution-presence gate (w7-06) — open-data citation, Local Law 11/2012.
 
-The site republishes City Record Open Data; a copy edit that drops the citation set is how
-the audit's original "thin citation" state arose. This is a pure static text check (no
-browser) so it belongs in the fast unit job.
+The API page owns the public source register. This is a pure static text check (no browser),
+so it belongs in the fast unit job.
 """
 import pathlib
 import sys
@@ -17,16 +16,16 @@ DATASET_IDS = ["dg92-zbpx", "k397-673e", "vx8i-nprf", "hgx4-8ukb"]
 def main():
     failures = []
 
-    about = (SITE_ROOT / "about.html").read_text(encoding="utf-8")
+    api = (SITE_ROOT / "api.html").read_text(encoding="utf-8")
     for dsid in DATASET_IDS:
-        if dsid not in about:
-            failures.append(f"about.html: missing dataset id {dsid!r}")
+        if dsid not in api:
+            failures.append(f"api.html: missing dataset id {dsid!r}")
             continue
         # Must be cited with a link to its canonical open-data page, not just named.
-        idx = about.find(dsid)
-        window = about[max(0, idx - 300):idx]
+        idx = api.find(dsid)
+        window = api[max(0, idx - 300):idx]
         if "data.cityofnewyork.us" not in window or "<a href=" not in window:
-            failures.append(f"about.html: {dsid!r} present but not linked to its canonical open-data page")
+            failures.append(f"api.html: {dsid!r} present but not linked to its canonical open-data page")
 
     index = (SITE_ROOT / "index.html").read_text(encoding="utf-8")
     if 'data-i18n="footer_lede"' not in index:
@@ -43,7 +42,7 @@ def main():
         for f in failures:
             print(f"  {f}", file=sys.stderr)
         sys.exit(1)
-    print(f"attribution gate OK — all {len(DATASET_IDS)} dataset IDs cited in about.html, "
+    print(f"attribution gate OK — all {len(DATASET_IDS)} dataset IDs cited in api.html, "
           "footer lede present, data.html source-linked")
 
 

@@ -92,11 +92,11 @@ test("materialized staffing artifact exposes only cohort statistics below the sh
   }
 });
 
-test("exam phase spine and formula page publish the cohort statistic and legal context", () => {
+test("exam phase spine links to the compact eligible-list timing explainer", () => {
   assert.match(indexHtml, /data-staffing-list-prediction="1"/);
   assert.match(indexHtml, /data-staffing-list-law-context="1"/);
   assert.match(indexHtml, /staffing-list-establishment-formula/);
   assert.match(aboutHtml, /id="staffing-list-establishment-formula"/);
-  assert.match(aboutHtml, /exact match between an exam number/);
-  assert.match(aboutHtml, /the close of filing to the date the list was set up/);
+  assert.match(aboutHtml, /never uses applicant names, scores, or ranks/);
+  assert.match(aboutHtml, /match exams by exam number and measure from the filing deadline to the date the list was set up/);
 });

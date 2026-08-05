@@ -1,0 +1,79 @@
+{
+  "before_revision": "HEAD",
+  "viewports": {
+    "390": {
+      "width": 390,
+      "height": 844
+    },
+    "1440": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "captures": [
+    {
+      "file": "site/media/review/about-page-reform/before-overview-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-patterns-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-policy-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-standards-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-overview-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-patterns-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-policy-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-standards-390.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-overview-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-patterns-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-policy-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/before-standards-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-overview-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-patterns-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-policy-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "file": "site/media/review/about-page-reform/after-standards-1440.png",
+      "overflow_px": 0
+    }
+  ]
+}

@@ -188,8 +188,8 @@ test("data.html forwards to public successor paths", () => {
   const src = readFileSync(join(ROOT, "site/data.html"), "utf8");
   assert.match(src, /data has moved/i);
   assert.match(src, /location\.replace/);
-  assert.match(src, /about\.html#data/);
-  assert.match(src, /api\.html/);
+  assert.match(src, /api\.html#upstream/);
+  assert.doesNotMatch(src, /about\.html#data/);
 });
 
 test("index.html uses land default snapshot on Active ULURP first paint", () => {
