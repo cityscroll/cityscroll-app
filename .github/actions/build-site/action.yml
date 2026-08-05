@@ -91,6 +91,19 @@ runs:
         else
           echo "skip land_upcoming_hearings check (tool missing)"
         fi
+    # DCAS fleet rows are an official goods-surplus sidecar. The detector keeps
+    # them bounded and prevents parcel/map/export semantics from leaking in.
+    - name: Check DCAS fleet auction inventory
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        if [ -f "$SOURCE_DIR/warehouse/scripts/dcas_vehicle_auctions.mjs" ]; then
+          node "$SOURCE_DIR/warehouse/scripts/dcas_vehicle_auctions.mjs" --check
+        else
+          echo "skip DCAS vehicle auction check (tool missing)"
+        fi
     - name: Build with GitHub Pages
       uses: actions/jekyll-build-pages@v1
       with:

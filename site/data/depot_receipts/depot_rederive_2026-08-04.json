@@ -4,7 +4,7 @@
   "observed_on": "2026-08-04",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 45,
+  "sources_count": 46,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -645,5 +645,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "2941a1437cf49e8f08430478a8518828a228f4360a93c25c361aab51a10aeaac"
+  "registry_sha256": "672e3f224e9fe207b39f3dbf1619d90695360e791cdc4cb551896eb36c3933d8"
 }
