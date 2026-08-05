@@ -3,8 +3,16 @@
  * Structure + registry + (when catalog present) query seam.
  */
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import {
+  chmodSync,
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { join, dirname } from "node:path";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
@@ -18,7 +26,11 @@ import {
   duckdbPath,
   catalogExists,
 } from "../warehouse/lib/catalog.mjs";
-import { queryWarehouse, exampleOcpAwardCount } from "../warehouse/lib/query.mjs";
+import {
+  DEFAULT_QUERY_MAX_BUFFER_BYTES,
+  queryWarehouse,
+  exampleOcpAwardCount,
+} from "../warehouse/lib/query.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const GITIGNORE = readFileSync(join(ROOT, ".gitignore"), "utf8");
@@ -157,5 +169,24 @@ describe("WH-01 proof ingest + query seam", () => {
     assert.equal(receipt.raw.mode, "fixture");
     assert.equal(receipt.cpu_discipline.single_job_lock, true);
     assert.equal(receipt.cpu_discipline.duckdb_threads, 1);
+  });
+
+  it("carries bulk materialization results larger than the old 16 MiB transport cap", () => {
+    if (!catalogExists()) return;
+    assert.ok(DEFAULT_QUERY_MAX_BUFFER_BYTES >= 64 * 1024 * 1024);
+
+    const dir = mkdtempSync(join(tmpdir(), "warehouse-query-buffer-"));
+    const fakePython = join(dir, "fake-python");
+    writeFileSync(
+      fakePython,
+      `#!/usr/bin/env node\nprocess.stdout.write(JSON.stringify([{ payload: "x".repeat(20 * 1024 * 1024) }]));\n`,
+    );
+    chmodSync(fakePython, 0o755);
+    try {
+      const rows = queryWarehouse("SELECT bulk_payload", { python: fakePython });
+      assert.equal(rows[0].payload.length, 20 * 1024 * 1024);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

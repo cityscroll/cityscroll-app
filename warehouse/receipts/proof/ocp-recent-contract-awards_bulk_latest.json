@@ -2,32 +2,27 @@
   "bulk": true,
   "cpu_discipline": {
     "duckdb_threads": 1,
-    "headroom_gated": true,
+    "execution_policy": "dedicated_compute_host_unthrottled",
+    "headroom_gated": false,
     "sequential_one_dataset": true,
     "single_job_lock": true,
-    "taskpolicy_or_nice_wrap": true
+    "taskpolicy_or_nice_wrap": false
   },
   "data_provenance": {
     "export_url": "https://data.cityofnewyork.us/api/views/qyyg-4tf5/rows.csv?accessType=DOWNLOAD",
     "raw_sha256_basis": "sha256 of full rows.csv download",
-    "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-02)",
+    "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-05)",
     "source": "NYC Open Data Socrata dataset qyyg-4tf5 (Recent Contract Awards)"
   },
   "dataset_id": "ocp-recent-contract-awards",
   "headroom": {
-    "note": "Headroom stayed OK for download, convert, and post-ingest (see manifest headroom_evidence_line).",
-    "post_ingest": {
-      "status": "ok"
-    },
-    "pre_convert": {
-      "status": "ok"
-    },
-    "status": "ok"
+    "note": "Dedicated compute host; unthrottled execution was explicitly selected.",
+    "status": "not_applied"
   },
   "limit": null,
-  "observed_at": "2026-08-02T03:11:59Z",
+  "observed_at": "2026-08-05T10:36:28Z",
   "parquet": {
-    "bytes": 5854115,
+    "bytes": 5855563,
     "column_map_applied": true,
     "column_map_size": 74,
     "columns": [
@@ -70,20 +65,23 @@
       "zip_code",
       "snapshot_date"
     ],
-    "parquet_path": "warehouse/parquet/ocp-recent-contract-awards/snapshot_date=2026-08-02/part-000.parquet",
-    "row_count": 53216,
+    "parquet_path": "warehouse/parquet/ocp-recent-contract-awards/snapshot_date=2026-08-05/part-000.parquet",
+    "row_count": 53251,
     "threads": 1
   },
   "phase": "WH-02",
   "raw": {
-    "bytes": 36544334,
+    "bytes": 36574290,
     "column_map_entries": 74,
-    "column_map_path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=2026-08-02/column_map.json",
+    "column_map_path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=2026-08-05/column_map.json",
+    "content_type": "text/csv; charset=utf-8",
+    "elapsed_s": 6.5,
     "http_status": 200,
+    "last_modified": "Tue, 04 Aug 2026 12:25:32 GMT",
     "mode": "soda_bulk",
-    "path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=2026-08-02/qyyg-4tf5_bulk.csv",
-    "row_count": 53216,
-    "sha256": "142d94b67d37575afcaa68a183c1715800a54290d04a98c23c4b717181097c8b",
+    "path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=2026-08-05/qyyg-4tf5_bulk.csv",
+    "row_count": 53251,
+    "sha256": "305feac515a6fed03fcfda68b2c6a8e6830784c18380b5b6ef280ef6d509e5a6",
     "url": "https://data.cityofnewyork.us/api/views/qyyg-4tf5/rows.csv?accessType=DOWNLOAD"
   },
   "register": {
@@ -128,22 +126,23 @@
       "zip_code",
       "snapshot_date"
     ],
-    "parquet_glob": "warehouse/parquet/ocp-recent-contract-awards/snapshot_date=2026-08-02/*.parquet",
-    "row_count": 53216,
+    "parquet_glob": "warehouse/parquet/ocp-recent-contract-awards/snapshot_date=2026-08-05/*.parquet",
+    "row_count": 53251,
     "table": "ocp_recent_contract_awards"
   },
   "schema_version": 1,
-  "snapshot_date": "2026-08-02",
+  "snapshot_date": "2026-08-05",
+  "snapshot_profile": null,
   "socrata_dataset_id": "qyyg-4tf5",
   "source_contract_id": "ocp-recent-contract-awards",
   "table_name": "ocp_recent_contract_awards",
   "verify_query": {
     "result": {
       "agency_count": 76,
-      "distinct_pins": 48479,
-      "max_start_date": "2026-07-31",
+      "distinct_pins": 48513,
+      "max_start_date": "2026-08-04",
       "min_start_date": "2003-01-02",
-      "row_count": 53216
+      "row_count": 53251
     },
     "sql_file": "warehouse/sql/examples/ocp_bulk_verify.sql"
   },
