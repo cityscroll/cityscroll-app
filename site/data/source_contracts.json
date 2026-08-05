@@ -272,9 +272,27 @@
         {
           "path": "worker/src/lib/ocp_awards.mjs",
           "contains": "qyyg-4tf5"
+        },
+        {
+          "path": "warehouse/scripts/ocp_awards_delta.py",
+          "contains": "ocp_awards_page_url"
         }
       ],
       "delivery_tier": "edge-materialized",
+      "warehouse_delta": {
+        "status": "verified",
+        "observed_on": "2026-08-05",
+        "cursor_order": [
+          "start_date ASC",
+          "request_id ASC"
+        ],
+        "semantics": "exclusive composite cursor after a source-specific bounded ordering probe",
+        "bounded_live_sample_rows": 5000,
+        "duplicate_cursor_pairs": 0,
+        "missing_cursor_rows": 0,
+        "non_monotonic_pairs": 0,
+        "receipt": "warehouse/receipts/proof/ocp_awards_delta_live_2026-08-05.json"
+      },
       "warehouse_snapshot": {
         "status": "materialized",
         "artifact": "site/data/ocp_awards_warehouse_lookup.json",
