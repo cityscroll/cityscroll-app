@@ -18,8 +18,8 @@ test("About describes the time-and-action product in one short section", () => {
   assert.doesNotMatch(section, /Where the data comes from|Data notes|1\.09 million|87\.5%/i);
 });
 
-test("removed data and privacy policy copy is absent from every shipped locale", () => {
-  assert.doesNotMatch(shippedCopy, /about_h_(?:source|honest|privacy)|about_li_(?:honest|privacy)|about\.html#privacy|href=\\?"#privacy\\?"/);
+test("removed data and privacy policy copy is absent and unlinked in every shipped locale", () => {
+  assert.doesNotMatch(shippedCopy, /about_h_(?:source|honest|privacy)|about_li_(?:honest|privacy)|about\.html#(?:data|privacy)|href=\\?"#(?:data|privacy)\\?"/);
   assert.doesNotMatch(about, /<h2[^>]*>Where the data comes from<\/h2>|id="data"|id="privacy"/i);
 });
 

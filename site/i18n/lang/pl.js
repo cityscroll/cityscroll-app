@@ -2030,7 +2030,7 @@
     stats_public_current_label: "City Record aktualny do",
     stats_public_current_desc: "Najnowsza data publikacji zwrócona przez oficjalny zbiór City Record.",
     stats_public_method_heading: "Czego te liczby nie obejmują",
-    stats_public_method_html: "Są to informacje o zakresie danych, a nie analityka odbiorców. Wizyty, wyszukiwania, subskrypcje i liczba wysłanych e-maili to dane operacyjne, których tutaj nie publikujemy. Przeczytaj <a href=\"about.html#data\">uwagi o danych</a> lub otwórz <a href=\"https://api.cityscroll.org/stats\">ograniczony publiczny JSON</a>.",
+    stats_public_method_html: "Są to informacje o zakresie danych, a nie analityka odbiorców. Wizyty, wyszukiwania, subskrypcje i liczba wysłanych e-maili to dane operacyjne, których tutaj nie publikujemy. Przeczytaj <a href=\"api.html#upstream\">informacje o źródłach danych</a> lub otwórz <a href=\"https://api.cityscroll.org/stats\">ograniczony publiczny JSON</a>.",
     stats_public_asof: "Stan na {date}.",
     stats_public_corpus_unavailable: "Liczba źródeł i zakres językowy są aktualne. Bieżąca łączna liczba City Record jest tymczasowo niedostępna.",
     stats_public_unreachable: "Łączne dane o zakresie są teraz niedostępne — publiczny JSON znajduje się pod adresem api.cityscroll.org/stats.",

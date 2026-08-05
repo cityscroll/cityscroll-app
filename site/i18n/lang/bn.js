@@ -2010,7 +2010,7 @@
     stats_public_current_label: "City Record হালনাগাদ আছে",
     stats_public_current_desc: "সরকারি City Record ডেটাসেট থেকে পাওয়া সর্বশেষ প্রকাশের তারিখ।",
     stats_public_method_heading: "এই সংখ্যাগুলোতে যা নেই",
-    stats_public_method_html: "এগুলো কভারেজের তথ্য, পাঠক বিশ্লেষণ নয়। ভিজিট, অনুসন্ধান, সদস্যতা ও ইমেল পাঠানোর পরিমাণ পরিচালনাগত তথ্য এবং এখানে প্রকাশ করা হয় না। <a href=\"about.html#data\">ডেটা নোট</a> পড়ুন অথবা <a href=\"https://api.cityscroll.org/stats\">সংক্ষিপ্ত সরকারি JSON</a> খুলুন।",
+    stats_public_method_html: "এগুলো কভারেজের তথ্য, পাঠক বিশ্লেষণ নয়। ভিজিট, অনুসন্ধান, সদস্যতা ও ইমেল পাঠানোর পরিমাণ পরিচালনাগত তথ্য এবং এখানে প্রকাশ করা হয় না। <a href=\"api.html#upstream\">ডেটার উৎসের তথ্য</a> পড়ুন অথবা <a href=\"https://api.cityscroll.org/stats\">সংক্ষিপ্ত সরকারি JSON</a> খুলুন।",
     stats_public_asof: "{date} অনুযায়ী।",
     stats_public_corpus_unavailable: "উৎসের সংখ্যা ও ভাষার কভারেজ হালনাগাদ। City Record-এর সরাসরি মোট সংখ্যা সাময়িকভাবে পাওয়া যাচ্ছে না।",
     stats_public_unreachable: "কভারেজের মোট সংখ্যা এখন পাওয়া যাচ্ছে না — সরকারি JSON আছে api.cityscroll.org/stats-এ।",

@@ -2023,7 +2023,7 @@
     stats_public_current_label: "City Record یہاں تک تازہ",
     stats_public_current_desc: "سرکاری City Record ڈیٹا سیٹ سے حاصل ہونے والی تازہ ترین اشاعت کی تاریخ۔",
     stats_public_method_heading: "ان اعداد میں کیا شامل نہیں",
-    stats_public_method_html: "یہ کوریج کی معلومات ہیں، سامعین کے تجزیات نہیں۔ دورے، تلاشیں، رکنیتیں اور ای میل کی ترسیل کے اعداد آپریشنل ڈیٹا ہیں اور یہاں شائع نہیں ہوتے۔ <a href=\"about.html#data\">ڈیٹا نوٹس</a> پڑھیں یا <a href=\"https://api.cityscroll.org/stats\">مختصر عوامی JSON</a> کھولیں۔",
+    stats_public_method_html: "یہ کوریج کی معلومات ہیں، سامعین کے تجزیات نہیں۔ دورے، تلاشیں، رکنیتیں اور ای میل کی ترسیل کے اعداد آپریشنل ڈیٹا ہیں اور یہاں شائع نہیں ہوتے۔ <a href=\"api.html#upstream\">ڈیٹا کے ذرائع کی تفصیل</a> پڑھیں یا <a href=\"https://api.cityscroll.org/stats\">مختصر عوامی JSON</a> کھولیں۔",
     stats_public_asof: "{date} تک۔",
     stats_public_corpus_unavailable: "ذرائع کی تعداد اور زبانوں کی کوریج تازہ ہے۔ City Record کی براہِ راست کل تعداد عارضی طور پر دستیاب نہیں۔",
     stats_public_unreachable: "کوریج کی کل تعداد ابھی دستیاب نہیں — عوامی JSON api.cityscroll.org/stats پر موجود ہے۔",

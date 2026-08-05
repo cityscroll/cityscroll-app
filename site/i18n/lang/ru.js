@@ -2020,7 +2020,7 @@
     stats_public_current_label: "City Record актуален по",
     stats_public_current_desc: "Самая новая дата публикации, возвращённая официальным набором City Record.",
     stats_public_method_heading: "Чего нет в этих показателях",
-    stats_public_method_html: "Это данные об охвате, а не аналитика аудитории. Посещения, поиски, подписки и объёмы доставки писем — операционные данные, которые здесь не публикуются. Прочитайте <a href=\"about.html#data\">примечания к данным</a> или откройте <a href=\"https://api.cityscroll.org/stats\">сокращённый публичный JSON</a>.",
+    stats_public_method_html: "Это данные об охвате, а не аналитика аудитории. Посещения, поиски, подписки и объёмы доставки писем — операционные данные, которые здесь не публикуются. Прочитайте <a href=\"api.html#upstream\">сведения об источниках данных</a> или откройте <a href=\"https://api.cityscroll.org/stats\">сокращённый публичный JSON</a>.",
     stats_public_asof: "По состоянию на {date}.",
     stats_public_corpus_unavailable: "Число источников и языковой охват актуальны. Текущее общее число записей City Record временно недоступно.",
     stats_public_unreachable: "Сводные показатели охвата сейчас недоступны — публичный JSON находится по адресу api.cityscroll.org/stats.",
