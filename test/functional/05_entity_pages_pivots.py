@@ -2,10 +2,54 @@
 import json, sys
 from playwright.sync_api import sync_playwright
 import os
+from urllib.parse import unquote
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
 _ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+with open(os.path.join(ROOT, "site", "data", "entity_intelligence_lookup.json"), encoding="utf-8") as f:
+    ENTITY_INTELLIGENCE = json.load(f)
+HPD_REF = "agency:id:housing-preservation-and-development"
+HPD_CONNECTIONS = dict(ENTITY_INTELLIGENCE["by_ref"][HPD_REF])
+HPD_CONNECTIONS["coverage"] = {
+    "eligible": None,
+    "linked": 18,
+    "rate": None,
+    "vintage": ENTITY_INTELLIGENCE["generated_at"],
+    "gap": "eligible_denominator_not_measured",
+    "tentative": 2,
+}
+HPD_CONNECTIONS["materialization_meta"] = {
+    "generated_at": ENTITY_INTELLIGENCE["generated_at"],
+    "observation_count": ENTITY_INTELLIGENCE["observation_count"],
+}
+for block in HPD_CONNECTIONS["domains"].values():
+    objects = block.get("objects", [])
+    block["strong_count"] = sum(o.get("confidence") == "strong" for o in objects)
+    block["tentative_count"] = sum(o.get("confidence") == "tentative" for o in objects)
+    for obj in objects:
+        connections = []  # Source: committed entity-intelligence by_subject_ref fixture.
+        for candidate in ENTITY_INTELLIGENCE.get("by_subject_ref", {}).get(obj.get("subject_ref"), []):
+            ref = candidate.get("entity_ref", "")
+            confidence = candidate.get("confidence")
+            if ref == HPD_REF or confidence not in ("strong", "tentative"):
+                continue
+            if not (ref.startswith("agency:") or ref.startswith("vendor:stem:") or ref.startswith("entity:official:")):
+                continue
+            root = ENTITY_INTELLIGENCE.get("by_ref", {}).get(ref, {}).get("root", {})
+            label = root.get("display_name") or (
+                unquote(ref.removeprefix("vendor:stem:")) if ref.startswith("vendor:stem:") else ref
+            )
+            connections.append({
+                "entity_ref": ref,
+                "label": label,
+                "relation": candidate.get("relation"),
+                "confidence": confidence,
+                "evidence": obj.get("provenance", {}).get("basis"),
+            })
+        obj["connected_entities"] = connections
 
 
 
@@ -94,6 +138,90 @@ with sync_playwright() as pw:
     else:
         step("WARN", "N1 agency→vendor pivot chain", "no vendor bars for this agency")
     p2.close()
+
+    # ---------- agency connection scopes (deterministic five-domain HPD field case) ----------
+    p5 = ctx.new_page()
+    p5.route(
+        "**/entity-intelligence?*",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body=json.dumps(HPD_CONNECTIONS),
+        ),
+    )
+    p5.goto(BASE + "#agency/Housing%20Preservation%20and%20Development", timeout=30000)
+    p5.wait_for_selector("#entity-intelligence .ei-summary", timeout=45000)
+    matched_domains = p5.locator('#entity-intelligence .ei-domain[data-status="matched"]').count()
+    summary = p5.locator("#entity-intelligence .ei-summary").inner_text()
+    tentative_bands = p5.locator(
+        '#entity-intelligence .ei-domain[data-domain="land"] .entity-pivot-band'
+    ).count()
+    connected_pivots = p5.evaluate("""[...document.querySelectorAll(
+      '#entity-intelligence .ei-domain[data-domain="money"] .ei-connections a.entity-pivot'
+    )].map(a=>({href:a.getAttribute('href'),ref:a.dataset.entityRef,
+      confidence:a.dataset.linkConfidence,relation:a.dataset.relation}))""")
+    step(
+        "OK" if matched_domains == 5 and "18" in summary and "2" in summary and tentative_bands == 2
+        and connected_pivots and connected_pivots[0]["href"].startswith("#vendor/")
+        and connected_pivots[0]["ref"].startswith("vendor:stem:")
+        and connected_pivots[0]["confidence"] == "strong"
+        and connected_pivots[0]["relation"] == "named_vendor" else "FAIL",
+        "gc-02 HPD connections separate verified and possible records",
+        json.dumps({"domains": matched_domains, "summary": summary, "tentative": tentative_bands,
+                    "connections": connected_pivots[:2]}),
+    )
+    p5.screenshot(path=SHOT + "agency-connections.png", full_page=True)
+    money_scope = p5.locator(
+        '#entity-intelligence .ei-domain[data-domain="money"] .ei-view-all'
+    )
+    legacy_scope_href = money_scope.get_attribute("href")
+    money_scope.click()
+    p5.wait_for_function("""() => {
+      const q=new URLSearchParams(location.search);
+      return location.pathname==='/browse/contracts/' && q.get('mode')==='award' && q.has('facet')
+        && globalThis.CrolScope && typeof serializeState==='function'
+        && document.querySelector('#tab-money').classList.contains('active');
+    }""")
+    canonical_url = p5.url
+    canonical_route = p5.evaluate("""(() => ({
+      pathname:location.pathname, search:location.search, hash:location.hash
+    }))()""")
+    scope_state = p5.evaluate("""(() => {
+      const s=CrolScope.scopeFromRouteHash(serializeState());
+      return {agency:s.facets.agencies[0], refs:s.facets.values.entity_refs_all,
+        relation:s.facets.values.connection_relation, mode:s.facets.values.mode};
+    })()""")
+    p5.goto(canonical_url, wait_until="domcontentloaded", timeout=30000)
+    p5.wait_for_function("""() => {
+      const q=new URLSearchParams(location.search);
+      if (location.pathname!=='/browse/contracts/' || q.get('mode')!=='award' || !q.has('facet')
+          || !globalThis.CrolScope || typeof serializeState!=='function'
+          || !document.querySelector('#tab-money').classList.contains('active')) return false;
+      const s=CrolScope.scopeFromRouteHash(serializeState());
+      return s.facets.agencies[0]==='Housing Preservation and Development'
+        && s.facets.values.entity_refs_all?.[0]==='agency:id:housing-preservation-and-development'
+        && s.facets.values.connection_relation==='published_by_agency'
+        && s.facets.values.mode==='award';
+    }""")
+    reloaded_scope = p5.evaluate("""(() => {
+      const s=CrolScope.scopeFromRouteHash(serializeState());
+      return {agency:s.facets.agencies[0], refs:s.facets.values.entity_refs_all,
+        relation:s.facets.values.connection_relation, mode:s.facets.values.mode};
+    })()""")
+    step(
+        "OK" if scope_state == reloaded_scope
+        and legacy_scope_href.startswith("#money?")
+        and canonical_route["pathname"] == "/browse/contracts/"
+        and canonical_route["hash"] == ""
+        and scope_state["agency"] == "Housing Preservation and Development"
+        and scope_state["refs"] == [HPD_REF]  # Source: committed entity-intelligence lookup.
+        and scope_state["relation"] == "published_by_agency"
+        and scope_state["mode"] == "award" else "FAIL",
+        "gc-02 connection scope survives reload",
+        json.dumps({"legacy": legacy_scope_href, "canonical": canonical_route,
+                    "before": scope_state, "after": reloaded_scope}),
+    )
+    p5.close()
 
     # ---------- vendor page direct, with variant resolution ----------
     p3 = ctx.new_page()
