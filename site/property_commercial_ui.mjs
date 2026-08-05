@@ -1,4 +1,6 @@
-const ASSET_LABEL = {
+// Keep the helper's module-private binding distinct from property.mjs's legacy
+// ASSET_LABEL global so the pre-split inline reconstruction can flatten both.
+const COMMERCIAL_ASSET_LABEL = {
   vehicle: "asset_vehicle",
   timber: "asset_timber",
   equipment: "asset_equipment",
@@ -46,7 +48,7 @@ export function renderPropertyCommercialDetail(commercial, helpers = {}) {
   };
 
   const item = commercial.item;
-  const categoryLabel = t(ASSET_LABEL[item.category] || "asset_other");
+  const categoryLabel = t(COMMERCIAL_ASSET_LABEL[item.category] || "asset_other");
   const itemDetail = item.label && String(item.label).toLowerCase() !== String(categoryLabel).toLowerCase()
     ? `<span lang="en" dir="ltr"> · ${esc(item.label)}</span>`
     : "";
