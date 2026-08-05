@@ -6,10 +6,11 @@ The thin serverless backend for **[CityScroll](https://cityscroll.org)** — a s
 a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
 the worker — every feature degrades gracefully when it's absent.
 
-Cloudflare Pages owns the canonical `cityscroll.org` / `www.cityscroll.org` site
-hostnames. This Worker owns only `api.cityscroll.org` and the compatibility alias
-`api.crol-list.org`; do not add the public Pages hostnames to `wrangler.toml` routes.
-CORS allowlists retain the old origins for compatibility.
+Cloudflare Pages remains the origin for the canonical `cityscroll.org` / `www.cityscroll.org`
+site hostnames. Bounded Worker zone routes serve the dynamic `/near-you*`, `/following*`,
+and `/prefs*` documents on `cityscroll.org`; all other site paths retain the Pages origin.
+The Worker custom domains are `api.cityscroll.org` and the compatibility alias
+`api.crol-list.org`. CORS allowlists retain the old origins for compatibility.
 
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
@@ -40,6 +41,9 @@ origins only when `DEPLOYMENT_CHANNEL=beta`, while the production environment
 continues to reject those origins. See `../docs/beta-channel.md`.
 
 ## Routes
+
+Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host links for
+`/near-you`, `/following`, and `/prefs` permanently redirect to their canonical equivalents.
 
 | Route | Method | Purpose | Gating / secret |
 |---|---|---|---|

@@ -4,7 +4,8 @@ import { scopeFromNearYouUrl } from "../../site/near_you_scope.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../../site/near_you_view.mjs";
 
 const SITE_BASE = "https://cityscroll.org";
-const EDGE_BASE = "https://api.cityscroll.org/near-you";
+const CANONICAL_BASE = `${SITE_BASE}/near-you`;
+const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
 
 function responseHeaders() {
   return {
@@ -28,6 +29,9 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
       headers: { "Content-Type": "text/plain", Allow: "GET, HEAD" },
     });
   }
+  if (LEGACY_DOCUMENT_HOSTS.has(url.hostname)) {
+    return Response.redirect(`${CANONICAL_BASE}${url.search}`, 301);
+  }
   const edgeCache = typeof caches !== "undefined" ? caches.default : null;
   const cacheKey = new Request(url.toString(), { method: "GET" });
   if (request.method === "GET" && edgeCache) {
@@ -36,11 +40,11 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
   }
   const scope = scopeFromNearYouUrl(url, { language: url.searchParams.get("lang") || "en" });
   const view = buildNearYouViewModel(scope, activity, boundaries, {
-    canonicalBase: EDGE_BASE,
+    canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
   });
   const html = renderNearYouDocument(view, {
-    canonicalBase: EDGE_BASE,
+    canonicalBase: CANONICAL_BASE,
     assetPrefix: `${SITE_BASE}/`,
   });
   const response = new Response(request.method === "HEAD" ? null : html, {
