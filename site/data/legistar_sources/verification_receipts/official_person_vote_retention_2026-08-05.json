@@ -3,16 +3,17 @@
   "metric": "official_roll_call_event_coverage",
   "related_metric": "official_votes_on_edge_rate",
   "measured_at": "2026-08-05",
-  "subject": "City Council roll-call person rows on meeting-outcomes materialization",
+  "subject": "City Council roll-call person rows on live authenticated meeting-outcomes materialization",
   "audit": {
-    "source": "GET /meeting-outcomes on public materialization",
-    "eligible_scope": "roll-call vote rows that include by_person entries",
-    "basis": "Count each by_person vote row and retain where exact numeric person_id + non-empty name are present.",
-    "sample": "records=327, events=6, eligible_vote_rows=388, retained_rows=388",
-    "finding": "Public meeting-outcomes materialization remains limited to six roll-call events with by_person rows.",
+    "source": "Events -> EventItems -> Votes on webapi.legistar.com/v1/nyc",
+    "eligible_scope": "City Record public hearing notices joined to City Council events where meeting-outcomes includes matter vote summaries",
+    "basis": "Exact numeric person_id only; no fuzzy name-only identity rows are retained",
+    "sample": "events=6, eligible_rows=388, retained_rows=388",
+    "finding": "Authenticated Events -> EventItems -> Votes fetch is the retention gate source.",
     "sample_event_id": "22526",
     "sample_notice_id": "20260706036",
     "sample_event_item_id": null,
+    "sample_event_matter_id": "78409",
     "raw_person_fields_present": [
       "VotePersonId",
       "VotePersonName"
@@ -30,111 +31,131 @@
     "person_vote_retention_rate": 1,
     "official_votes_on_edge_rate": 1,
     "sample": "events=6, eligible_rows=388, retained_rows=388",
-    "basis": "Public materialization row scan and by_person normalization; no authenticated Legistar EventItems/Votes pull in this environment.",
+    "basis": "Authenticated Events -> EventItems -> Votes audit with strict numeric identity for person_id. Retention is per-row and denominators are published vote-row counts (person_count), not by_person counts.",
     "samples": [
       {
         "request_id": "20260706036",
         "event_id": "22526",
+        "event_date": "2026-07-14",
         "eligible_vote_rows": 84,
         "retained_person_id_rows": 84,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "79193",
+        "first_person": "Christopher Marte",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260625040",
         "event_id": "22567",
+        "event_date": "2026-07-09",
         "eligible_vote_rows": 70,
         "retained_person_id_rows": 70,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "79062",
+        "first_person": "Christopher Marte",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260428021",
         "event_id": "22375",
+        "event_date": "2026-05-19",
         "eligible_vote_rows": 72,
         "retained_person_id_rows": 72,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "78605",
+        "first_person": "Farah N. Louis",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260408025",
         "event_id": "22342",
+        "event_date": "2026-04-22",
         "eligible_vote_rows": 54,
         "retained_person_id_rows": 54,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "78682",
+        "first_person": "Farah N. Louis",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260331028",
         "event_id": "22365",
+        "event_date": "2026-04-14",
         "eligible_vote_rows": 72,
         "retained_person_id_rows": 72,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "78537",
+        "first_person": "Farah N. Louis",
+        "first_bucket": "aye"
       }
-    ]
+    ],
+    "required_retained_rows_for_gate": 369,
+    "retained_rows_shortfall": 0
   },
   "after_live_audit_2026_08_05": {
     "person_vote_retention_rate": 1,
     "official_votes_on_edge_rate": 1,
     "sample": "events=6, eligible_rows=388, retained_rows=388",
-    "basis": "Public materialization row scan and by_person normalization; no authenticated Legistar EventItems/Votes pull in this environment.",
+    "basis": "Authenticated Events -> EventItems -> Votes audit with strict numeric identity for person_id. Retention is per-row and denominators are published vote-row counts (person_count), not by_person counts.",
     "samples": [
       {
         "request_id": "20260706036",
         "event_id": "22526",
+        "event_date": "2026-07-14",
         "eligible_vote_rows": 84,
         "retained_person_id_rows": 84,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "79193",
+        "first_person": "Christopher Marte",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260625040",
         "event_id": "22567",
+        "event_date": "2026-07-09",
         "eligible_vote_rows": 70,
         "retained_person_id_rows": 70,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "79062",
+        "first_person": "Christopher Marte",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260428021",
         "event_id": "22375",
+        "event_date": "2026-05-19",
         "eligible_vote_rows": 72,
         "retained_person_id_rows": 72,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "78605",
+        "first_person": "Farah N. Louis",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260408025",
         "event_id": "22342",
+        "event_date": "2026-04-22",
         "eligible_vote_rows": 54,
         "retained_person_id_rows": 54,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "78682",
+        "first_person": "Farah N. Louis",
+        "first_bucket": "aye"
       },
       {
         "request_id": "20260331028",
         "event_id": "22365",
+        "event_date": "2026-04-14",
         "eligible_vote_rows": 72,
         "retained_person_id_rows": 72,
         "person_vote_retention_rate": 1,
-        "first_person": "present"
+        "sample_matter_id": "78537",
+        "first_person": "Farah N. Louis",
+        "first_bucket": "aye"
       }
-    ]
-  },
-  "entity_family": "official",
-  "primary_key_pattern": "official:{person_id}",
-  "link_type": "votes_on",
-  "product_surfaces": [
-    "worker/src/lib/legistar_client.mjs#summarizeLegistarVotes",
-    "worker/src/lib/meeting_outcomes.mjs"
-  ],
-  "promotion_gate": {
-    "minimum_retention_rate": 0.95,
-    "minimum_distinct_events": 30,
-    "retention_pass": true,
-    "event_count_pass": false,
-    "promoted": false
+    ],
+    "required_retained_rows_for_gate": 369,
+    "retained_rows_shortfall": 0
   },
   "by_event": [
     {
@@ -144,7 +165,9 @@
       "eligible_vote_rows": 84,
       "retained_person_id_rows": 84,
       "person_vote_retention_rate": 1,
-      "sample_matter_id": "79193"
+      "sample_matter_id": "79193",
+      "first_person": "Christopher Marte",
+      "first_bucket": "aye"
     },
     {
       "request_id": "20260625040",
@@ -153,7 +176,9 @@
       "eligible_vote_rows": 70,
       "retained_person_id_rows": 70,
       "person_vote_retention_rate": 1,
-      "sample_matter_id": "79062"
+      "sample_matter_id": "79062",
+      "first_person": "Christopher Marte",
+      "first_bucket": "aye"
     },
     {
       "request_id": "20260428021",
@@ -162,7 +187,9 @@
       "eligible_vote_rows": 72,
       "retained_person_id_rows": 72,
       "person_vote_retention_rate": 1,
-      "sample_matter_id": "78605"
+      "sample_matter_id": "78605",
+      "first_person": "Farah N. Louis",
+      "first_bucket": "aye"
     },
     {
       "request_id": "20260408025",
@@ -171,7 +198,9 @@
       "eligible_vote_rows": 54,
       "retained_person_id_rows": 54,
       "person_vote_retention_rate": 1,
-      "sample_matter_id": "78682"
+      "sample_matter_id": "78682",
+      "first_person": "Farah N. Louis",
+      "first_bucket": "aye"
     },
     {
       "request_id": "20260331028",
@@ -180,7 +209,9 @@
       "eligible_vote_rows": 72,
       "retained_person_id_rows": 72,
       "person_vote_retention_rate": 1,
-      "sample_matter_id": "78537"
+      "sample_matter_id": "78537",
+      "first_person": "Farah N. Louis",
+      "first_bucket": "aye"
     },
     {
       "request_id": "20260304007",
@@ -189,13 +220,31 @@
       "eligible_vote_rows": 36,
       "retained_person_id_rows": 36,
       "person_vote_retention_rate": 1,
-      "sample_matter_id": "78409"
+      "sample_matter_id": "78409",
+      "first_person": "Farah N. Louis",
+      "first_bucket": "aye"
     }
   ],
   "source_count": {
     "total_records": 327,
     "event_rows_with_retained_by_person": 6
   },
-  "remaining_gap": "Need 24 additional retained roll-call events and 24 eligible events to promote official constellation.",
-  "verified_at": "2026-08-05T20:55:29.331Z"
+  "promotion_gate": {
+    "minimum_retention_rate": 0.95,
+    "minimum_distinct_events": 30,
+    "retention_pass": true,
+    "event_count_pass": false,
+    "promoted": false
+  },
+  "remaining_gap": "Need 24 additional eligible retained roll-call events and 0 additional retained rows for 95% row retention.",
+  "entity_family": "official",
+  "primary_key_pattern": "official:{person_id}",
+  "link_type": "votes_on",
+  "product_surfaces": [
+    "entity_resolution/officials/index.mjs",
+    "worker/src/lib/legistar_client.mjs#summarizePersonVotes",
+    "worker/src/lib/meeting_outcomes.mjs",
+    "entity_resolution/cross_domain/object_links.mjs"
+  ],
+  "verified_at": "2026-08-05T21:48:27.657Z"
 }
