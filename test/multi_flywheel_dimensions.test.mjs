@@ -19,6 +19,7 @@ import {
 import { evaluateReadability, scoreView } from "../ontology/dimensions/readability.mjs";
 import { evaluateOntologyEnrichment } from "../ontology/dimensions/ontology_enrichment.mjs";
 import { evaluateCoverage } from "../ontology/dimensions/coverage.mjs";
+import { normalizeSourceState } from "../ontology/source_state.mjs";
 import { evaluateCrossSourceConsistency } from "../ontology/dimensions/cross_source_consistency.mjs";
 import { evaluateLocationResolution } from "../ontology/dimensions/location_resolution.mjs";
 import {
@@ -457,7 +458,7 @@ test("ontology-enrichment wraps legacy planner with dimension cards", () => {
   assert.ok(result.cards.some((c) => c.id.includes("procurement-lifecycle-coherence")));
 });
 
-test("coverage emits for dual-write gaps and declared-not-ingested sources", () => {
+test("coverage emits for dual-write gaps and undeclared source-record coverage", () => {
   const source_contracts = loadJson("site/data/source_contracts.json");
   const source_coverage = loadJson("entity_resolution/source_coverage.json");
   const result = evaluateCoverage({ source_contracts, source_coverage });
@@ -471,6 +472,36 @@ test("coverage emits for dual-write gaps and declared-not-ingested sources", () 
     assert.ok(card.verify);
     assert.ok(card.demo_win);
   }
+});
+
+test("coverage separates product materialization from immutable source-record coverage", () => {
+  const source_contracts = loadJson("site/data/source_contracts.json");
+  const source_coverage = loadJson("entity_resolution/source_coverage.json");
+  const result = evaluateCoverage({ source_contracts, source_coverage });
+  const expectedMaterialized = new Set([
+    "ocp-recent-contract-awards",
+    "zap-projects",
+    "zap-bbl",
+  ]);
+
+  for (const sourceId of expectedMaterialized) {
+    const contract = source_contracts.contracts.find((entry) => entry.id === sourceId);
+    const state = normalizeSourceState({ contract, coverage: null });
+    assert.equal(state.acquisition_status, "live");
+    assert.equal(state.product_delivery_tier, "edge-materialized");
+    assert.equal(state.warehouse_snapshot.status, "materialized");
+    assert.equal(state.source_records_coverage.status, "not-declared");
+
+    const card = result.cards.find((entry) => entry.evidence?.source_id === sourceId);
+    assert.ok(card, `${sourceId} keeps its D1 observation gap visible`);
+    assert.match(card.title, /^Add immutable observation coverage:/);
+    assert.equal(card.evidence.source_state.warehouse_snapshot.status, "materialized");
+    assert.equal(card.evidence.source_state.source_records_coverage.status, "not-declared");
+  }
+
+  assert.ok(!result.cards.some((card) => /^Ingest declared source:/.test(card.title)));
+  assert.equal(result.metrics.product_materialized >= expectedMaterialized.size, true);
+  assert.equal(result.metrics.source_records_not_declared >= expectedMaterialized.size, true);
 });
 
 test("cross-source-consistency emits open disagreements and spine failures", () => {

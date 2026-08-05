@@ -28,6 +28,33 @@ test("source-contract registry is valid and its generated public docs are curren
   assert.deepEqual(checkGeneratedSourceFiles(), []);
 });
 
+test("OCP and ZAP contracts record their warehouse product snapshots", () => {
+  const registry = loadSourceContracts();
+  const expected = {
+    "ocp-recent-contract-awards": {
+      artifact: "site/data/ocp_awards_warehouse_lookup.json",
+      row_count: 53245,
+    },
+    "zap-projects": {
+      artifact: "site/data/zap_projects_warehouse_lookup.json",
+      row_count: 231,
+    },
+    "zap-bbl": {
+      artifact: "site/data/zap_bbl_warehouse_lookup.json",
+      row_count: 50514,
+    },
+  };
+
+  for (const [id, snapshot] of Object.entries(expected)) {
+    const contract = registry.contracts.find((entry) => entry.id === id);
+    assert.equal(contract.delivery_tier, "edge-materialized");
+    assert.equal(contract.warehouse_snapshot.status, "materialized");
+    assert.equal(contract.warehouse_snapshot.artifact, snapshot.artifact);
+    assert.equal(contract.warehouse_snapshot.row_count, snapshot.row_count);
+    assert.match(contract.warehouse_snapshot.materialized_at, /^2026-08-0[25]T/);
+  }
+});
+
 test("recorded fixtures reject missing fields and non-tabular source shapes", () => {
   const registry = loadSourceContracts();
   const missingField = structuredClone(loadSourceContractFixtures());

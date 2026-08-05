@@ -1,8 +1,9 @@
 // Dimension: coverage
-// For every declared source contract, check whether it is actually ingested
-// and moving a coverage metric. Emit a card per declared-not-ingested source.
+// For every declared source contract, distinguish acquisition/product delivery
+// from immutable D1 observation coverage. Emit cards only for the latter.
 
 import { makeDimensionCard } from "./shared.mjs";
+import { isProductMaterialized, normalizeSourceState } from "../source_state.mjs";
 
 export const DIMENSION_ID = "coverage";
 
@@ -44,9 +45,10 @@ export function evaluateCoverage(input = {}) {
   const cards = [];
   const metrics = {
     declared_live: 0,
-    ingested_complete: 0,
-    declared_not_ingested: 0,
-    dual_write_gaps: 0,
+    product_materialized: 0,
+    source_records_complete: 0,
+    source_records_not_declared: 0,
+    source_records_gaps: 0,
     disabled_or_pointer: 0,
   };
 
@@ -68,54 +70,56 @@ export function evaluateCoverage(input = {}) {
 
     const coverageId = CONTRACT_TO_COVERAGE[id] || id;
     const coverage = coverageById.get(coverageId);
-    const after = coverage?.dual_write?.after;
-    const knownGap = Boolean(coverage?.known_gap);
+    const sourceState = normalizeSourceState({ contract, coverage, coverageId });
+    if (isProductMaterialized(sourceState)) metrics.product_materialized += 1;
+    const after = sourceState.source_records_coverage.dual_write_status;
+    const knownGap = Boolean(sourceState.source_records_coverage.known_gap);
 
     // Declared live, not present in the observation coverage matrix at all
     if (!coverage) {
       // Skip pure pointer / non-ingest product feeds (RSS, geocoders) unless
       // they declare source_record intent.
       if (contract.ingest === false || contract.observation_coverage === false) {
-        metrics.ingested_complete += 1;
+        metrics.source_records_complete += 1;
         continue;
       }
-      // Heuristic: SODA/API datasets and dual-write candidates matter;
-      // landing-only manuals without dataset_id/endpoint may still be declared-not-ingested
-      // when status is live and scope includes lifecycle.
-      metrics.declared_not_ingested += 1;
+      // SODA/API datasets and dual-write candidates matter; a missing matrix
+      // row is an observation-retention gap, not evidence of failed acquisition.
+      metrics.source_records_not_declared += 1;
       cards.push(makeDimensionCard({
         dimension: DIMENSION_ID,
-        slug: `not-ingested-${id}`,
-        title: `Ingest declared source: ${id}`,
+        slug: `source-records-not-declared-${id}`,
+        title: `Add immutable observation coverage: ${id}`,
         rank_score: 78,
         evidence: {
           source_id: id,
           coverage_id: coverageId,
           contract_status: status || null,
-          kind: "declared-not-ingested",
+          kind: "source-records-not-declared",
           has_dataset: Boolean(contract.dataset_id),
           has_endpoint: Boolean(contract.endpoint),
+          source_state: sourceState,
         },
         verify: contract.verify
           || `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # ${coverageId} present`,
-        demo_win: `Declared source ${id} is ingested and moves a coverage metric readers can trust.`,
+        demo_win: `Source ${id} retains immutable D1 observations without changing its product-delivery status.`,
         context: [
           "site/data/source_contracts.json",
           "entity_resolution/source_coverage.json",
           contract.landing_page || null,
         ].filter(Boolean),
-        lesson_class: "declared-not-ingested",
+        lesson_class: "source-records-not-declared",
       }));
       continue;
     }
 
     if (after === "complete" && !knownGap) {
-      metrics.ingested_complete += 1;
+      metrics.source_records_complete += 1;
       continue;
     }
 
     if (after === "gap" || knownGap) {
-      metrics.dual_write_gaps += 1;
+      metrics.source_records_gaps += 1;
       cards.push(makeDimensionCard({
         dimension: DIMENSION_ID,
         slug: `dual-write-${coverageId}`,
@@ -127,6 +131,7 @@ export function evaluateCoverage(input = {}) {
           dual_write_after: after || null,
           known_gap: coverage.known_gap || null,
           kind: "dual-write-gap",
+          source_state: sourceState,
         },
         verify: `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json # ${coverageId} after=complete`,
         demo_win: `Source ${coverageId} retains immutable observations and counts as covered.`,

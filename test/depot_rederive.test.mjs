@@ -53,6 +53,14 @@ test("committed depot registry is schema v2 with join graph", () => {
       assert.ok(["yes", "maybe", "no"].includes(cw.worth_materializing), cw.id);
     }
   }
+  assert.equal(
+    registry.sources.some((source) => source.id === "recent-contract-awards-ocp"),
+    false,
+    "the legacy duplicate OCP identity is removed",
+  );
+  for (const id of ["ocp-recent-contract-awards", "zap-projects", "zap-bbl"]) {
+    assert.equal(registry.sources.find((source) => source.id === id)?.status, "landed");
+  }
 });
 
 test("PASSPort field case: predicted high-risk vs realized 78%, EPIN in graph", () => {
