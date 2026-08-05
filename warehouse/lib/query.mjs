@@ -18,6 +18,8 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { catalogExists, duckdbPath, WAREHOUSE_DIR } from "./catalog.mjs";
 
+export const DEFAULT_QUERY_MAX_BUFFER_BYTES = 64 * 1024 * 1024;
+
 function resolvePython() {
   const venvPy = join(WAREHOUSE_DIR, ".venv", "bin", "python");
   if (existsSync(venvPy)) return venvPy;
@@ -27,7 +29,7 @@ function resolvePython() {
 /**
  * Run SQL against the warehouse catalog. Returns parsed JSON rows.
  * @param {string} sql
- * @param {{ python?: string }} [opts]
+ * @param {{ python?: string, maxBuffer?: number }} [opts]
  */
 export function queryWarehouse(sql, opts = {}) {
   if (!catalogExists()) {
@@ -40,10 +42,11 @@ export function queryWarehouse(sql, opts = {}) {
   const script = join(WAREHOUSE_DIR, "scripts", "query.py");
   const r = spawnSync(python, [script, "--sql", sql, "--format", "json"], {
     encoding: "utf8",
-    maxBuffer: 16 * 1024 * 1024,
+    maxBuffer: opts.maxBuffer || DEFAULT_QUERY_MAX_BUFFER_BYTES,
   });
   if (r.status !== 0) {
-    const err = (r.stderr || r.stdout || "").trim() || `exit ${r.status}`;
+    const detail = (r.stderr || r.stdout || "").trim();
+    const err = r.error?.message || detail.slice(0, 4096) || `exit ${r.status}`;
     throw new Error(`warehouse query failed: ${err}`);
   }
   return JSON.parse(r.stdout);

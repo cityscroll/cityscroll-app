@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "phase": "warehouse-densification",
+  "measured_at": "2026-08-05T10:44:43Z",
+  "basis": "measured",
+  "source_receipts": [
+    "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+    "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+    "warehouse/receipts/proof/city-record_bulk_latest.json",
+    "warehouse/receipts/proof/wh03_ocp_lookup_speed.json",
+    "warehouse/receipts/proof/wh06_zap_bbl_lookup_speed.json",
+    "warehouse/receipts/proof/wh_entity_intelligence_index_latest.json"
+  ],
+  "datasets": {
+    "ocp-recent-contract-awards": {
+      "snapshot_date": "2026-08-05",
+      "row_count": 53251,
+      "min_start_date": "2003-01-02",
+      "max_start_date": "2026-08-04"
+    },
+    "zap-bbl": {
+      "snapshot_date": "2026-08-05",
+      "row_count": 131960,
+      "distinct_projects": 24545,
+      "distinct_bbls": 101072
+    },
+    "city-record": {
+      "snapshot_date": "2026-08-05",
+      "row_count": 1098994,
+      "min_start_date": "2003-01-02",
+      "max_start_date": "2026-08-04",
+      "agency_rules_count": 3062,
+      "property_disposition_count": 243
+    }
+  },
+  "before_after": {
+    "ocp_lookup_rows": {
+      "before": 3,
+      "after": 53245
+    },
+    "zap_bbl_lookup_projects": {
+      "before": 9,
+      "after": 24542
+    },
+    "zap_bbl_lookup_retained_bbls": {
+      "before": 86,
+      "after": 50514
+    },
+    "entity_intelligence_entities": {
+      "before": 40,
+      "after": 200
+    },
+    "entity_intelligence_observations": {
+      "before": 834,
+      "after": 1331
+    },
+    "entity_intelligence_multi_domain_entities": {
+      "before": 21,
+      "after": 29
+    },
+    "property_bbl_zap_join_rate": {
+      "before": 0,
+      "after": 0.475
+    },
+    "property_zap_matched_bbls": {
+      "before": 0,
+      "after": 152
+    }
+  },
+  "surfaces": [
+    {
+      "artifact": "site/data/ocp_awards_warehouse_lookup.json",
+      "route": "/contract-lifecycle",
+      "effect": "OCP award side-car resolves from the materialized lookup before the live SODA fallback"
+    },
+    {
+      "artifact": "site/data/zap_bbl_warehouse_lookup.json",
+      "route": "/zap-outcomes",
+      "effect": "ZAP project tax lots resolve from the materialized lookup before the live SODA fallback"
+    },
+    {
+      "artifact": "site/data/entity_intelligence_lookup.json",
+      "route": "/entity-intelligence",
+      "effect": "agency and vendor profiles expose denser cross-domain objects and join-key edges"
+    },
+    {
+      "artifact": "site/data/property_cross_domain_lookup.json",
+      "route": "/notices/<request_id>",
+      "effect": "Property Disposition notice details expose exact BBL-to-ZAP land-project links"
+    }
+  ],
+  "standing_warehouse": {
+    "retained": true,
+    "catalog": "cityscroll.duckdb",
+    "registered_tables": [
+      "ocp_recent_contract_awards",
+      "city_record"
+    ],
+    "external_parquet_dataset": "zap_bbl"
+  }
+}

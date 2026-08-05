@@ -380,6 +380,14 @@ node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --check
 node tools/build_entity_intelligence.mjs
 ```
 
+When `zap_bbl` is bulk-loaded independently and the catalog does not also have
+the full `zap_projects` table, pass `--all` to materialize the complete
+project-to-BBL index instead of the bounded sell-facing/demo set:
+
+```bash
+node tools/build_zap_bbl_warehouse_lookup.mjs --all --bench
+```
+
 Speed receipt: `warehouse/receipts/proof/wh06_zap_bbl_lookup_speed.json`.
 Product seed: `warehouse/fixtures/zap-bbl/product_seed.csv`.
 

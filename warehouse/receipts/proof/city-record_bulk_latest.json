@@ -2,37 +2,21 @@
   "bulk": true,
   "cpu_discipline": {
     "duckdb_threads": 1,
-    "headroom_gated": true,
+    "execution_policy": "dedicated_compute_host_unthrottled",
+    "headroom_gated": false,
     "sequential_one_dataset": true,
     "single_job_lock": true,
-    "taskpolicy_or_nice_wrap": true
+    "taskpolicy_or_nice_wrap": false
   },
   "dataset_id": "city-record",
   "headroom": {
-    "constrained": false,
-    "ok": true,
-    "post_ingest": {
-      "constrained": false,
-      "ok": true,
-      "problems": [],
-      "returncode": 0,
-      "status": "ok"
-    },
-    "pre_convert": {
-      "constrained": false,
-      "ok": true,
-      "problems": [],
-      "returncode": 0,
-      "status": "ok"
-    },
-    "problems": [],
-    "returncode": 0,
-    "status": "ok"
+    "note": "Dedicated compute host; unthrottled execution was explicitly selected.",
+    "status": "not_applied"
   },
   "limit": null,
-  "observed_at": "2026-08-03T03:42:27Z",
+  "observed_at": "2026-08-05T10:41:44Z",
   "parquet": {
-    "bytes": 53885576,
+    "bytes": 53893686,
     "column_map_applied": true,
     "column_map_size": 74,
     "columns": [
@@ -75,20 +59,20 @@
       "zip_code",
       "snapshot_date"
     ],
-    "parquet_path": "warehouse/parquet/city-record/snapshot_date=2026-08-03/part-000.parquet",
-    "row_count": 1098698,
+    "parquet_path": "warehouse/parquet/city-record/snapshot_date=2026-08-05/part-000.parquet",
+    "row_count": 1098994,
     "threads": 1
   },
   "phase": "WH-07",
   "raw": {
-    "bytes": 541143031,
+    "bytes": 541304627,
     "column_map_entries": 74,
-    "column_map_path": "warehouse/raw/city-record/snapshot_date=2026-08-03/column_map.json",
-    "elapsed_s": 204.91,
+    "column_map_path": "warehouse/raw/city-record/snapshot_date=2026-08-05/column_map.json",
+    "elapsed_s": 319.28,
     "http_status": 200,
     "mode": "soda_bulk",
     "paging": {
-      "checkpoint_path": "warehouse/raw/city-record/snapshot_date=2026-08-03/dg92-zbpx_bulk.checkpoint.json",
+      "checkpoint_path": "warehouse/raw/city-record/snapshot_date=2026-08-05/dg92-zbpx_bulk.checkpoint.json",
       "order": "start_date DESC, request_id DESC",
       "page_count": 22,
       "page_size": 50000,
@@ -96,22 +80,22 @@
       "resumable": true,
       "strategy": "soda_offset"
     },
-    "path": "warehouse/raw/city-record/snapshot_date=2026-08-03/dg92-zbpx_bulk.csv",
-    "row_count": 1098698,
-    "sha256": "7f2038f5a6040663f8e45ab3bbc7a2f1fc6a09a98e30ecd39583c039b794fecd",
+    "path": "warehouse/raw/city-record/snapshot_date=2026-08-05/dg92-zbpx_bulk.csv",
+    "row_count": 1098994,
+    "sha256": "d9200a960e7bfa3458dff85b5b6df266b556d8f4fea5a86dfe9f52310c08a845",
     "snapshot_profile": {
       "section_counts": {
-        "Agency Rules": 3061,
-        "Changes in Personnel": 961586,
+        "Agency Rules": 3062,
+        "Changes in Personnel": 961832,
         "Contract Award Hearings": 10506,
         "Court Notices": 155,
-        "Procurement": 105119,
+        "Procurement": 105158,
         "Property Disposition": 243,
-        "Public Comment on Contract Awards": 947,
-        "Public Hearings and Meetings": 8936,
+        "Public Comment on Contract Awards": 955,
+        "Public Hearings and Meetings": 8938,
         "Special Materials": 8145
       },
-      "start_date_max": "2026-07-31T00:00:00.000",
+      "start_date_max": "2026-08-04T00:00:00.000",
       "start_date_min": "2003-01-02T00:00:00.000"
     },
     "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.csv"
@@ -158,25 +142,25 @@
       "zip_code",
       "snapshot_date"
     ],
-    "parquet_glob": "warehouse/parquet/city-record/snapshot_date=2026-08-03/*.parquet",
-    "row_count": 1098698,
+    "parquet_glob": "warehouse/parquet/city-record/snapshot_date=2026-08-05/*.parquet",
+    "row_count": 1098994,
     "table": "city_record"
   },
   "schema_version": 1,
-  "snapshot_date": "2026-08-03",
+  "snapshot_date": "2026-08-05",
   "snapshot_profile": {
     "section_counts": {
-      "Agency Rules": 3061,
-      "Changes in Personnel": 961586,
+      "Agency Rules": 3062,
+      "Changes in Personnel": 961832,
       "Contract Award Hearings": 10506,
       "Court Notices": 155,
-      "Procurement": 105119,
+      "Procurement": 105158,
       "Property Disposition": 243,
-      "Public Comment on Contract Awards": 947,
-      "Public Hearings and Meetings": 8936,
+      "Public Comment on Contract Awards": 955,
+      "Public Hearings and Meetings": 8938,
       "Special Materials": 8145
     },
-    "start_date_max": "2026-07-31T00:00:00.000",
+    "start_date_max": "2026-08-04T00:00:00.000",
     "start_date_min": "2003-01-02T00:00:00.000"
   },
   "socrata_dataset_id": "dg92-zbpx",

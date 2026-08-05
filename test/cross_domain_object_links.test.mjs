@@ -430,7 +430,8 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(hit.ok, true);
     assert.equal(hit.root.ref, "agency:id:parks-and-recreation");
     assert.ok(hit.domains.land.count >= 1);
-    assert.equal(hit.domains.money.status, "empty");
+    assert.equal(hit.domains.money.status, "matched");
+    assert.ok(hit.domains.money.count >= 1);
     assert.equal(hit.domains.rules.status, "matched");
     assert.equal(hit.domains.meetings.status, "matched");
     assert.ok(hit.domains.rules.count >= 1);
@@ -443,7 +444,7 @@ describe("entity intelligence view — Parks multi-domain", () => {
       (hit.links || []).some((l) => l.type === "hosts_meeting" && l.provenance?.source_record_id),
       "Parks hosts_meeting edges carry provenance",
     );
-    assert.equal(hit.metrics.join_key_link_count, 0);
+    assert.ok(hit.metrics.join_key_link_count > 0);
     assert.ok(!(hit.links || []).some((link) => /FIX\d|FIXZAP|FIXTURE/.test(JSON.stringify(link))));
 
     // Miss returns honest empty, not fabricated links
@@ -533,7 +534,7 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.ok(doc.by_ref["agency:id:parks-and-recreation"]);
     assert.ok(doc.multi_domain_count >= 1);
     const parks = doc.by_ref["agency:id:parks-and-recreation"];
-    assert.equal(parks.domains.money.status, "empty");
+    assert.equal(parks.domains.money.status, "matched");
     assert.equal(parks.domains.land.status, "matched");
     assert.equal(parks.domains.rules.status, "matched");
     assert.equal(parks.domains.meetings.status, "matched");
