@@ -72,6 +72,9 @@ class QuietHandler(SimpleHTTPRequestHandler):
         route = self.path.split("?", 1)[0].rstrip("/")
         if (
             route.startswith("/notices/")
+            or route.startswith("/agencies/")
+            or route.startswith("/vendors/")
+            or route.startswith("/officials/")
             or route == "/now"
             or route == "/browse"
             or route.startswith("/browse/")
@@ -343,7 +346,7 @@ def verify_interactions(browser: Browser) -> None:
         page.goto(base_url + "#vendor/ACME%20GARDENS", wait_until="domcontentloaded")
         page.locator("#entityview #eqr").wait_for(state="visible")
         vendor_url = assert_copy_matches_qr(page, "#entityview #ecopy", "#entityview #eqr")
-        assert vendor_url == base_url + "?lang=es#vendor/ACME%20GARDENS%20LLC"
+        assert vendor_url == base_url + "vendors/ACME%20GARDENS/?lang=es"
 
         assert not errors, errors
         context.close()

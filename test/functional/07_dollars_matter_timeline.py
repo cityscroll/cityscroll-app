@@ -51,8 +51,8 @@ with sync_playwright() as pw:
     checks = {"award": "Award" in t,
               "registered": ("Registered contract" in t or "Contract registered" in t),
               "paid": "Paid to date" in t,
-              "vendor_pivot": p2.locator('#entityview a[href^="#vendor/"]').count() > 0,
-              "agency_pivot": p2.locator('#entityview a[href^="#agency/"]').count() > 0,
+              "vendor_pivot": p2.locator('#entityview a[href^="/vendors/"]').count() > 0,
+              "agency_pivot": p2.locator('#entityview a[href^="/agencies/"]').count() > 0,
               "phase_ui": p2.locator("#entityview .matter-phase-lead, #entityview .matter-phase-stepper").count() > 0
                           or "Payments" in t}
     step("OK" if all(checks.values()) else "FAIL", "N8 matter timeline: CROL + Checkbook events on one spine", json.dumps(checks))

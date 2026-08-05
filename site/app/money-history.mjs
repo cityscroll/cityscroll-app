@@ -176,10 +176,12 @@ function wireNearMatchReveal(el, near){
   if(body) body.innerHTML = nearMatchHTML(near);
 }
 
-async function loadAgencyStats(agency){
+async function loadAgencyStats(agency, variants){
   try{
+    const names = Array.isArray(variants) && variants.length ? variants : [agency];
+    const quoted = names.map(name=>`'${String(name).replace(/'/g,"''")}'`).join(",");
     const rows = await soda({"$select":"count(1) as n, sum(contract_amount) as total",
-      "$where":`agency_name='${agency.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP}`});
+      "$where":`agency_name in(${quoted}) AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP}`});
     return rows[0] || null;
   }catch(e){ return null; }
 }

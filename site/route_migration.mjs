@@ -1,3 +1,5 @@
+import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+
 export const CANONICAL_ORIGIN = "https://cityscroll.org";
 
 export const SELECTABLE_LANGS = Object.freeze([
@@ -90,6 +92,32 @@ export function migrateLegacyUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
   if (!url.hash) return retained(url, "Already a document route; no forwarding is required.");
 
   const { route, params } = splitFragment(url.hash);
+
+  const entity = route.match(/^(agency|vendor|official)\/(.+)$/);
+  if (entity) {
+    let value = "";
+    try { value = decodeURIComponent(entity[2]); } catch { value = ""; }
+    const ref = entityRouteRef(entity[1], value);
+    const target = ref ? entityHref({ ref, label: value }, {
+      tab: params.get("tab"),
+      eventId: params.get("event"),
+      noticeId: params.get("notice"),
+    }) : "";
+    if (target) {
+      const targetUrl = new URL(target, origin);
+      const language = safeLanguage(params.get("lang")) || safeLanguage(url.searchParams.get("lang"));
+      if (language && language !== "en") targetUrl.searchParams.set("lang", language);
+      return {
+        linkClass: `${entity[1]} profile`,
+        target: `${targetUrl.pathname}${targetUrl.search}`,
+        parameterRule: "Resolve the entity identity handle, preserve supported profile context, and move a validated language into the document query.",
+        forwardingBehavior: "The legacy root shim calls location.replace() with the canonical entity document URL.",
+        migrated: true,
+        unsupported: [],
+      };
+    }
+  }
+
   const notice = route.match(/^notice\/([A-Za-z0-9_-]{1,80})$/);
   if (notice) {
     const mapped = targetUrl(`/notices/${encodeURIComponent(notice[1])}`, url, params, NOTICE_PARAMETERS);

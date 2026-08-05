@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-05T16:58:19.251Z",
+  "generated_at": "2026-08-05T17:00:15.119Z",
   "observation_count": 1331,
   "entity_count": 200,
   "multi_domain_count": 29,
@@ -12381,7 +12381,7 @@
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7801?event=22526&notice=20260706036",
+              "href": "/officials/7801/?event=22526&notice=20260706036",
               "provenance": {
                 "source_system": "legistar",
                 "source_record_id": "legistar:person:7801:matter:79193:event:22526",
@@ -12414,7 +12414,7 @@
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7825?event=22567&notice=20260625040",
+              "href": "/officials/7825/?event=22567&notice=20260625040",
               "provenance": {
                 "source_system": "legistar",
                 "source_record_id": "legistar:person:7825:matter:79062:event:22567",
@@ -12447,7 +12447,7 @@
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7785?event=22375&notice=20260428021",
+              "href": "/officials/7785/?event=22375&notice=20260428021",
               "provenance": {
                 "source_system": "legistar",
                 "source_record_id": "legistar:person:7785:matter:78605:event:22375",
@@ -12480,7 +12480,7 @@
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7833?event=22342&notice=20260408025",
+              "href": "/officials/7833/?event=22342&notice=20260408025",
               "provenance": {
                 "source_system": "legistar",
                 "source_record_id": "legistar:person:7833:matter:78682:event:22342",
@@ -12513,7 +12513,7 @@
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7895?event=22365&notice=20260331028",
+              "href": "/officials/7895/?event=22365&notice=20260331028",
               "provenance": {
                 "source_system": "legistar",
                 "source_record_id": "legistar:person:7895:matter:78537:event:22365",
@@ -12546,7 +12546,7 @@
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7810?event=22300&notice=20260304007",
+              "href": "/officials/7810/?event=22300&notice=20260304007",
               "provenance": {
                 "source_system": "legistar",
                 "source_record_id": "legistar:person:7810:matter:78409:event:22300",

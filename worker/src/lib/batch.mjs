@@ -2,12 +2,14 @@
 // Caps are the denial-of-wallet posture: bounded names per request, bounded name length.
 
 import { cleanNoticeText } from "../../../site/text_clean.mjs";
+import { entityHref, entityRouteRef } from "../../../site/entity_pivot.mjs";
 
 export const MAX_NAMES = 10;
 export const MAX_NAME_LEN = 80;
 
 export function vendorEntityPermalink(name, origin = "https://cityscroll.org") {
-  return `${String(origin).replace(/\/$/, "")}/#vendor/${encodeURIComponent(cleanNoticeText(name))}`;
+  const label = cleanNoticeText(name);
+  return new URL(entityHref({ ref: entityRouteRef("vendor", label), label }), `${String(origin).replace(/\/$/, "")}/`).href;
 }
 
 export function parseNames(input) {
