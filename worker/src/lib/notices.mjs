@@ -22,6 +22,17 @@ import {
 } from "./attachment_tables.mjs";
 
 const ROLLING_YEAR = 2090;
+const FTS_UNAVAILABLE = [
+  /no such table:\s*(?:main\.)?notices_fts/i,
+  /no such module:\s*fts5/i,
+  /unable to use function bm25/i,
+];
+const FTS_STOP_WORDS = new Set([
+  "a", "an", "and", "are", "as", "at", "be", "by", "did", "do", "does",
+  "for", "from", "how", "in", "is", "it", "must", "of", "on", "or", "that",
+  "the", "their", "this", "to", "under", "was", "were", "what", "when", "where",
+  "which", "who", "with", "would", "about", "can", "city", "new", "public", "rules",
+]);
 
 function fmtMoney(x) {
   if (x === null || x === undefined) return null;
@@ -47,27 +58,33 @@ export function snippet(text, n = 240) {
 // award never enters LIMIT 25 under multi-billion mega-contracts, so the D1 fast path
 // silently stopped matching mid-size watches (field case Jul 2026). Digests pass
 // orderBy: "start_date" to match the SODA fallback ($order=start_date DESC).
-export function buildNoticesQuery(opts = {}) {
+function buildStructuredFilters(opts = {}, alias = "") {
   const where = [];
   const params = [];
   const today = opts.today || new Date().toISOString().slice(0, 10);
+  const col = (name) => `${alias}${name}`;
 
-  if (opts.section) { where.push("section = ?"); params.push(opts.section); }
-  if (opts.agency) { where.push("lower(agency) LIKE ?"); params.push("%" + String(opts.agency).toLowerCase() + "%"); }
-  if (opts.category) { where.push("category = ?"); params.push(opts.category); }
-  if (opts.noticeType) { where.push("type_of_notice = ?"); params.push(opts.noticeType); }
+  if (opts.section) { where.push(`${col("section")} = ?`); params.push(opts.section); }
+  if (opts.agency) { where.push(`lower(${col("agency")}) LIKE ?`); params.push("%" + String(opts.agency).toLowerCase() + "%"); }
+  if (opts.category) { where.push(`${col("category")} = ?`); params.push(opts.category); }
+  if (opts.noticeType) { where.push(`${col("type_of_notice")} = ?`); params.push(opts.noticeType); }
 
   const hasAmount = opts.minAmount != null || opts.maxAmount != null;
   if (hasAmount) {
-    where.push("contract_amount_valid = 1"); // honest-data rule: corrupt amounts never match money filters
-    if (opts.minAmount != null) { where.push("contract_amount >= ?"); params.push(opts.minAmount); }
-    if (opts.maxAmount != null) { where.push("contract_amount <= ?"); params.push(opts.maxAmount); }
+    where.push(`${col("contract_amount_valid")} = 1`); // corrupt amounts never match money filters
+    if (opts.minAmount != null) { where.push(`${col("contract_amount")} >= ?`); params.push(opts.minAmount); }
+    if (opts.maxAmount != null) { where.push(`${col("contract_amount")} <= ?`); params.push(opts.maxAmount); }
   }
-  if (opts.excludeSpecialCase) where.push("special_case_reason IS NULL");
-  if (opts.excludeRollingDeadlines) { where.push("due_year IS NOT NULL AND due_year < ?"); params.push(ROLLING_YEAR); }
-  if (opts.openOnly) { where.push("due_date >= ?"); params.push(today); }
-  if (opts.dueBefore) { where.push("due_date <= ?"); params.push(opts.dueBefore); }
-  if (opts.sinceDate) { where.push("start_date >= ?"); params.push(opts.sinceDate); }
+  if (opts.excludeSpecialCase) where.push(`${col("special_case_reason")} IS NULL`);
+  if (opts.excludeRollingDeadlines) { where.push(`${col("due_year")} IS NOT NULL AND ${col("due_year")} < ?`); params.push(ROLLING_YEAR); }
+  if (opts.openOnly) { where.push(`${col("due_date")} >= ?`); params.push(today); }
+  if (opts.dueBefore) { where.push(`${col("due_date")} <= ?`); params.push(opts.dueBefore); }
+  if (opts.sinceDate) { where.push(`${col("start_date")} >= ?`); params.push(opts.sinceDate); }
+  return { where, params, hasAmount };
+}
+
+export function buildNoticesQuery(opts = {}) {
+  const { where, params, hasAmount } = buildStructuredFilters(opts);
 
   const groups = opts.termGroups || [];
   const allTerms = [];
@@ -98,6 +115,57 @@ export function buildNoticesQuery(opts = {}) {
   const limit = Math.max(1, Math.min(opts.limit ?? 15, 100));
   const sql = `SELECT *, (${scoreExpr}) AS _score FROM notices ${whereSql} ORDER BY ${orderBy} LIMIT ${limit}`;
   return { sql, params, terms: allTerms };
+}
+
+function lexicalTokens(value, { keepStopWords = false } = {}) {
+  const found = String(value || "").toLowerCase().match(/[a-z0-9][a-z0-9'-]{1,40}/g) || [];
+  return found.filter((term) => keepStopWords || !FTS_STOP_WORDS.has(term));
+}
+
+/** Shared MCP/evaluation input bound; FTS normalization removes stop words afterward. */
+export function noticeSearchTerms(value) {
+  return String(value || "").toLowerCase().slice(0, 500).split(/\s+/).filter(Boolean).slice(0, 24);
+}
+
+function quoteFtsTerm(term) {
+  return `"${String(term).replace(/"/g, '""')}"`;
+}
+
+/** Convert the existing AND-of-ORs term contract into a parameterized FTS5 MATCH expression. */
+export function buildFtsMatch(termGroups = []) {
+  const expressions = [];
+  const terms = [];
+  for (const group of termGroups) {
+    const raw = [...new Set((group || []).flatMap((value) => lexicalTokens(value, { keepStopWords: true })))];
+    let normalized = raw.filter((term) => !FTS_STOP_WORDS.has(term));
+    // An all-stopword query should still be a real query, not an unbounded recent-notices read.
+    if (!normalized.length) normalized = raw;
+    normalized = [...new Set(normalized)];
+    if (!normalized.length) continue;
+    terms.push(...normalized);
+    expressions.push(`(${normalized.map(quoteFtsTerm).join(" OR ")})`);
+  }
+  return { match: expressions.join(" AND "), terms: [...new Set(terms)] };
+}
+
+/** Ranked query for the first production route. All structured predicates precede rank/limit. */
+export function buildRankedNoticesQuery(opts = {}) {
+  const { match, terms } = buildFtsMatch(opts.termGroups || []);
+  if (!match) return null;
+  const { where, params } = buildStructuredFilters(opts, "n.");
+  where.push("notices_fts MATCH ?");
+  params.push(match);
+  const limit = Math.max(1, Math.min(opts.limit ?? 15, 100));
+  const sql = `SELECT n.*, bm25(notices_fts) AS _score
+    FROM notices_fts JOIN notices AS n ON n.rowid = notices_fts.rowid
+    WHERE ${where.join(" AND ")}
+    ORDER BY _score ASC, n.start_date DESC, n.request_id ASC LIMIT ${limit}`;
+  return { sql, params, terms };
+}
+
+export function isFtsUnavailable(error) {
+  const message = String(error?.message || error || "");
+  return FTS_UNAVAILABLE.some((pattern) => pattern.test(message));
 }
 
 // Row → display record, honest fields applied.
@@ -180,18 +248,41 @@ export function annotateSearchMatchProvenance(record, terms = []) {
 }
 
 export async function searchNotices(db, opts = {}) {
-  const { sql, params, terms } = buildNoticesQuery(opts);
-  const { results } = await db.prepare(sql).bind(...params).all();
+  const ranked = (opts.orderBy == null || opts.orderBy === "score")
+    ? buildRankedNoticesQuery(opts)
+    : null;
+  let query = ranked || buildNoticesQuery(opts);
+  let retrievalMethod = ranked ? "fts5_bm25" : "legacy_like";
+  let fallbackReason = null;
+  const started = performance.now();
+  let response;
+  try {
+    response = await db.prepare(query.sql).bind(...query.params).all();
+  } catch (error) {
+    if (!ranked || !isFtsUnavailable(error)) throw error;
+    query = buildNoticesQuery(opts);
+    retrievalMethod = "legacy_like_fallback";
+    fallbackReason = "fts_index_unavailable";
+    response = await db.prepare(query.sql).bind(...query.params).all();
+  }
+  const { results, meta } = response;
   const rows = results ?? [];
   const attachments = await loadAttachmentMetadata(db, rows.map((row) => row.request_id));
   return {
-    terms_used: terms,
+    terms_used: query.terms,
     total_matches: rows.length,
+    retrieval: {
+      method: retrievalMethod,
+      fallback_reason: fallbackReason,
+      duration_ms: Number((performance.now() - started).toFixed(3)),
+      rows_read: Number.isFinite(meta?.rows_read) ? meta.rows_read : null,
+      result_count: rows.length,
+    },
     results: rows.map((row) => {
       const record = toRecord(row, attachments.get(String(row.request_id)) || []);
       // Carry haystack only for provenance annotation, never to public clients.
       record._haystack = row.haystack || "";
-      const annotated = annotateSearchMatchProvenance(record, terms);
+      const annotated = annotateSearchMatchProvenance(record, query.terms);
       delete annotated._haystack;
       return annotated;
     }),
