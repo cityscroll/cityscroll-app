@@ -400,60 +400,100 @@ function agencyIdentityHTML(resp){
     </div>`;
 }
 
-const CROSS_DOMAIN_ORDER = ["money","land","property","rules","meetings","people"];
+const CROSS_DOMAIN_ORDER = ["money","land","property","rules","meetings","people","franchise"];
 
 /** Cross-domain entity intelligence panel (materialized object links + provenance). */
 function entityIntelligenceHTML(resp){
   if(!resp || !resp.ok || !resp.root) return "";
-  const domains = resp.domains || {};
-  const matched = Object.entries(domains).filter(([,d]) => d && d.status === "matched");
-  const other = Object.entries(domains).filter(([,d]) => d && d.status !== "matched");
-  if(!matched.length && !other.length) return "";
+  const returnHash = globalThis.routeReturnContext?.(history.state)?.hash || "#money";
+  const view = globalThis.CrolAgencyConnections?.buildAgencyConnectionView(resp, {
+    currentHash: returnHash,
+    language: window.LANG || "en",
+  });
+  if(!view || !view.groups.length) return "";
 
   const domainLabel = (key) => t("entity_intel_domain_"+key) || key;
   const statusLabel = (st) => {
     if(st === "matched") return t("entity_intel_status_matched");
     if(st === "not_yet_ingested") return t("entity_intel_status_not_yet");
+    if(st === "not_applicable") return t("entity_intel_status_not_applicable");
     return t("entity_intel_status_empty");
   };
 
-  const domainBlocks = CROSS_DOMAIN_ORDER.map((key) => {
-    const d = domains[key];
-    if(!d) return "";
-    const objs = Array.isArray(d.objects) ? d.objects.slice(0, 4) : [];
+  const domainBlocks = view.groups.map((group) => {
+    const key = group.domain;
+    const objs = [...group.objects] // Source: receipt-backed /entity-intelligence response.
+      .sort((a,b)=>(a.confidence==="strong"?0:1)-(b.confidence==="strong"?0:1))
+      .slice(0,4);
     const items = objs.map((o) => {
-      const label = escUiHtml(o.label || o.subject_ref || "");
+      const label = cleanText(o.label || o.subject_ref || "");
       const when = o.when ? `<span class="ei-when">${escUiHtml(fdate(o.when))}</span>` : "";
       const href = o.href && String(o.href).startsWith("#")
         ? pivotA(o.href, label)
-        : label;
-      const conf = o.confidence && o.confidence !== "strong"
-        ? `<span class="ei-conf">${escUiHtml(o.confidence)}</span>`
+        : escUiHtml(label);
+      const conf = o.confidence === "tentative"
+        ? `<span class="entity-pivot-band">${t("entity_intel_possible_match")}</span>`
+        : "";
+      const connections = (o.connected_entities || []).map((entity) =>
+        globalThis.CrolEntityPivots?.entityChipHTML({
+          ref:entity.entity_ref,
+          label:entity.label,
+          link_confidence:entity.confidence,
+          relation:entity.relation,
+          evidence:entity.evidence,
+        }) || escUiHtml(entity.label || "")
+      ).filter(Boolean).join(" <span aria-hidden=\"true\">·</span> ");
+      const connectionLine = connections
+        ? `<span class="ei-connections"><span aria-hidden="true">↳</span> ${connections}</span>`
         : "";
       const prov = o.provenance
         ? `<span class="ei-prov">${escUiHtml(o.provenance.source_system||"")} · ${escUiHtml(o.provenance.source_record_id||"")}</span>`
         : "";
-      return `<li class="ei-obj"><span class="ei-obj-main">${href}${when}${conf}</span>${prov}</li>`;
+      return `<li class="ei-obj" data-link-confidence="${escUiHtml(o.confidence||"")}"><span class="ei-obj-main">${href}${when}${conf}</span>${connectionLine}${prov}</li>`;
     }).join("");
     const list = items
       ? `<ul class="ei-list">${items}</ul>`
-      : `<p class="ei-empty">${escUiHtml(d.note || statusLabel(d.status))}</p>`;
-    const count = d.count != null ? ` <span class="ct">${fmtNumber(+d.count||0)}</span>` : "";
-    return `<section class="ei-domain" data-domain="${escUiHtml(key)}" data-status="${escUiHtml(d.status||"")}">
-      <h3 class="ei-domain-h">${domainLabel(key)}${count}
-        <span class="ei-status ei-status-${escUiHtml(d.status||"empty")}">${statusLabel(d.status)}</span>
+      : `<p class="ei-empty">${statusLabel(group.status)}</p>`;
+    const count = group.strong_count ? ` <span class="ct">${fmtNumber(group.strong_count)}</span>` : "";
+    const possible = group.tentative_count
+      ? `<span class="ei-possible">${t("entity_intel_summary_possible",{n:fmtNumber(group.tentative_count)})}</span>`
+      : "";
+    const viewAll = group.view_all_href
+      ? `<a class="ei-view-all" href="${escUiHtml(group.view_all_href)}">${t("entity_intel_view_all_scope")}</a>`
+      : "";
+    return `<section class="ei-domain" data-domain="${escUiHtml(key)}" data-status="${escUiHtml(group.status||"")}">
+      <h3 class="ei-domain-h"><span>${t(group.role_key)}</span><span class="ei-domain-name">${domainLabel(key)}</span>${count}
+        <span class="ei-status ei-status-${escUiHtml(group.status||"empty")}">${statusLabel(group.status)}</span>${possible}
       </h3>
       ${list}
+      ${viewAll}
     </section>`;
   }).join("");
 
   const rootName = escUiHtml(resp.root.display_name || resp.root.ref || "");
+  const summary = view.summary;
+  const vintage = summary.vintage
+    ? `<span>${t("entity_intel_vintage",{date:escUiHtml(fdate(summary.vintage))})}</span>`
+    : "";
+  const coverage = summary.coverage_eligible != null && summary.coverage_rate != null
+    ? t("entity_intel_coverage_measured",{
+        linked:fmtNumber(summary.coverage_linked),
+        eligible:fmtNumber(summary.coverage_eligible),
+      })
+    : t("entity_intel_coverage_unknown");
 
   return `<div class="eicard" id="entity-intelligence" data-root="${escUiHtml(resp.root.ref||"")}">
-      <div class="chain-h" style="margin:16px 0 8px">${t("entity_intel_heading")}</div>
+      <div class="ei-heading-row"><div class="chain-h">${t("entity_intel_heading")}</div>
+        <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("entity_intel_apply_scope")}</a></div>
       <p class="ei-lead">${t("entity_intel_lead", {name: rootName})}</p>
+      <div class="ei-summary" aria-label="${escUiHtml(t("entity_intel_heading"))}">
+        <span><b>${fmtNumber(summary.observed_domains)}</b> ${t("entity_intel_summary_domains")}</span>
+        <span><b>${fmtNumber(summary.strong_count)}</b> ${t("entity_intel_summary_verified")}</span>
+        ${summary.tentative_count?`<span>${t("entity_intel_summary_possible",{n:fmtNumber(summary.tentative_count)})}</span>`:""}
+        ${vintage}
+      </div>
       <div class="ei-domains">${domainBlocks}</div>
-      <p class="aidprov ei-method">${t("entity_intel_method_note")}</p>
+      <p class="aidprov ei-method">${coverage} ${t("entity_intel_method_note")}</p>
     </div>`;
 }
 

@@ -86,6 +86,113 @@ export function attachVendorFootprint(
   };
 }
 
+function publicConfidence(value) {
+  const confidence = String(value || "").trim().toLowerCase();
+  return confidence === "strong" || confidence === "tentative" ? confidence : null;
+}
+
+function publicEntityRef(value) {
+  const ref = String(value || "").trim();
+  if (/^agency:[^:]+:.+$/.test(ref)) return ref;
+  if (/^vendor:stem:.+$/.test(ref)) return ref;
+  if (/^entity:official:.+$/.test(ref)) return ref;
+  return "";
+}
+
+function decoded(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return "";
+  }
+}
+
+function connectionLabel(entityRef, object) {
+  const materialized = materialization.by_ref?.[entityRef]?.root;
+  if (materialized?.display_name) return materialized.display_name;
+  if (entityRef.startsWith("vendor:stem:")) {
+    return decoded(entityRef.slice("vendor:stem:".length)) || entityRef;
+  }
+  if (entityRef.startsWith("entity:official:") && object?.subject_ref === entityRef) {
+    return String(object.label || "").split(" · ")[0].trim() || entityRef;
+  }
+  return materialized?.canonical_name || entityRef;
+}
+
+function connectedEntitiesForObject(object, rootRef) {
+  const candidates = [...(materialization.by_subject_ref?.[object?.subject_ref] || [])];
+  const subjectEntity = publicEntityRef(object?.subject_ref);
+  if (subjectEntity && subjectEntity !== rootRef) {
+    candidates.push({
+      entity_ref: subjectEntity,
+      relation: object.link_type,
+      confidence: object.confidence,
+    });
+  }
+
+  const seen = new Set();
+  const connections = [];
+  for (const candidate of candidates) {
+    const entityRef = publicEntityRef(candidate?.entity_ref);
+    const confidence = publicConfidence(candidate?.confidence);
+    const relation = String(candidate?.relation || "").trim();
+    if (!entityRef || entityRef === rootRef || !confidence || !relation) continue;
+    const key = `${entityRef}|${relation}|${confidence}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    connections.push({
+      entity_ref: entityRef,
+      label: connectionLabel(entityRef, object),
+      relation,
+      confidence,
+      evidence: object?.provenance?.basis || null,
+    });
+  }
+  return connections;
+}
+
+/** Add read-model framing without changing the committed graph materialization. */
+function decorateConnectionView(view) {
+  if (!view?.ok) return view;
+  let strongCount = 0;
+  let tentativeCount = 0;
+  const domains = Object.fromEntries(Object.entries(view.domains || {}).map(([domain, block]) => {
+    const objects = (block?.objects || []).map((object) => {
+      const confidence = publicConfidence(object?.confidence);
+      if (confidence === "strong") strongCount += 1;
+      else if (confidence === "tentative") tentativeCount += 1;
+      return {
+        ...object,
+        connected_entities: connectedEntitiesForObject(object, view.root?.ref),
+      };
+    });
+    return [domain, {
+      ...block,
+      objects,
+      strong_count: objects.filter((object) => object.confidence === "strong").length,
+      tentative_count: objects.filter((object) => object.confidence === "tentative").length,
+    }];
+  }));
+
+  return {
+    ...view,
+    domains,
+    coverage: {
+      eligible: null,
+      linked: strongCount,
+      rate: null,
+      vintage: materialization.generated_at || null,
+      gap: "eligible_denominator_not_measured",
+      tentative: tentativeCount,
+    },
+    materialization_meta: {
+      generated_at: materialization.generated_at || null,
+      observation_count: materialization.observation_count || 0,
+      entity_count: materialization.entity_count || 0,
+    },
+  };
+}
+
 export async function handleEntityIntelligence(req, env, ctx) {
   if (req.method === "OPTIONS") {
     return new Response(null, {
@@ -130,7 +237,7 @@ export async function handleEntityIntelligence(req, env, ctx) {
         404,
       );
     }
-    const view = lookupEntityIntelligence(materialization, { ref });
+    const view = decorateConnectionView(lookupEntityIntelligence(materialization, { ref }));
     return json(
       { ...view, demo: true, materialization_meta: materialization.verified_demo },
       200,
@@ -169,7 +276,7 @@ export async function handleEntityIntelligence(req, env, ctx) {
   }
 
   const resolvedRoot = resolveRootQuery(query);
-  const view = lookupEntityIntelligence(materialization, query);
+  const view = decorateConnectionView(lookupEntityIntelligence(materialization, query));
   return json(attachVendorFootprint(view, resolvedRoot), 200, CACHE);
 }
 
