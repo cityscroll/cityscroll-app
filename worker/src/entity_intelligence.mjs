@@ -21,6 +21,7 @@ import {
   lookupEntityIntelligence,
   resolveRootQuery,
 } from "../../entity_resolution/cross_domain/index.mjs";
+import { vendorCoverageKey } from "../../entity_resolution/cross_domain/vendor_coverage_key.mjs";
 
 const CACHE = "public, max-age=300";
 
@@ -46,8 +47,9 @@ export function attachVendorFootprint(
   if (root?.kind !== "vendor") return view;
   const footprint = source?.vendor_footprint;
   if (!footprint) return view;
+  const coverageKey = vendorCoverageKey(root.ref);
   const packed = (coverageIndex?.rows || []).find((row) =>
-    String(row).startsWith(`${root.ref}|`));
+    String(row).startsWith(`${coverageKey}|`));
   const [, linkedRaw, eligibleRaw, rateRaw] = packed ? String(packed).split("|") : [];
   const linked = Number(linkedRaw);
   const eligible = Number(eligibleRaw);

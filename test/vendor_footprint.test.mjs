@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { buildVendorFootprintCoverage } from "../tools/lib/entity_intelligence_build.mjs";
+import { vendorCoverageKey } from "../entity_resolution/cross_domain/vendor_coverage_key.mjs";
 import {
   renderVendorFootprintHTML,
   vendorFootprintModel,
@@ -9,6 +10,13 @@ import {
 } from "../site/vendor_footprint.mjs";
 
 const REF = "vendor:stem:ACME";
+
+test("coverage reverse-index keys are stable and do not expose vendor refs", () => {
+  const key = vendorCoverageKey(REF);
+  assert.equal(key, vendorCoverageKey(REF));
+  assert.match(key, /^[0-9a-f]{16}$/);
+  assert.doesNotMatch(key, /ACME/);
+});
 
 function fixtureDoc() {
   return {

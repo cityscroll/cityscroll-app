@@ -20,6 +20,7 @@ import {
   buildEntityIntelligenceDoc,
   slimDocForWorker,
 } from "./lib/entity_intelligence_build.mjs";
+import { vendorCoverageKey } from "../entity_resolution/cross_domain/vendor_coverage_key.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = path.join(ROOT, "site", "data", "entity_intelligence_lookup.json");
@@ -68,13 +69,23 @@ function vendorFootprintEvidence(doc) {
 
 function vendorFootprintCoverageIndex(doc) {
   const awardsByRef = doc.vendor_footprint?.awards_by_ref || {};
+  const keyedRefs = new Map();
+  const rows = Object.entries(awardsByRef).map(([ref, coverage]) => {
+    const key = vendorCoverageKey(ref);
+    const existing = keyedRefs.get(key);
+    if (existing && existing !== ref) {
+      throw new Error(`vendor footprint coverage key collision: ${key}`);
+    }
+    keyedRefs.set(key, ref);
+    return [key, coverage.linked, coverage.eligible, coverage.rate ?? ""].join("|");
+  });
   return {
-    schema_version: 1,
+    schema_version: 2,
     generated_at: doc.generated_at,
-    // Compact public index: ref|linked|eligible|rate. The route expands the
-    // reader label from these build-derived values.
-    rows: Object.entries(awardsByRef).map(([ref, coverage]) =>
-      [ref, coverage.linked, coverage.eligible, coverage.rate ?? ""].join("|")),
+    key_kind: "fnv1a64-vendor-ref",
+    // Compact public index: opaque-key|linked|eligible|rate. The route derives
+    // the same key from the resolved vendor ref and expands the reader label.
+    rows,
   };
 }
 
