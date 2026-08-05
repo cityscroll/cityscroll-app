@@ -407,6 +407,9 @@ jobs:
         env:
           CROL_BASE: http://127.0.0.1:8000/
         run: python3 test/functional/20_demo_links.py
+      - name: Staffing archive field-boundary and consolidation gate
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        run: python3 test/functional/22_same_consolidation.py
       - name: Property facet count and click-through parity
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/25_property_facet_count_parity.py
