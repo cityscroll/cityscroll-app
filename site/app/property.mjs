@@ -3,6 +3,7 @@ import {
   isFranchiseConcessionNoticeEligible,
 } from "../franchise_notice.mjs";
 import { noticeDisplayTitle } from "../display_title.mjs";
+import { renderPropertyCommercialDetail } from "../property_commercial_ui.mjs";
 
 /* ===== Franchise / concession review process spine (FCRC multi-notice chain).
    Reconstructs solicitation → public hearing → committee meeting → award for one
@@ -367,82 +368,16 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
     ${chain?`<div class="chain">${chain}</div>`:""}
     ${how}`;
 }
-/**
- * Detail commercial panel: full extraction with provenance for the surplus-goods buyer.
- * Mounts only when extraction finds real sale signals (method, price, bid steps, or
- * confidently sale-shaped item). Destruction / transfer / abandonment notices stay quiet.
- * Absent subsection data renders nothing — never per-slot apology boxes.
- */
 function propertyCommercialDetailHTML(commercial){
-  if(!commercial || !commercial.item) return "";
-  // Gate: no sale signals → no panel (not an empty "what is for sale" apology stack).
-  const eligible = commercial.sale_eligible === true
-    || (commercial.sale_eligible == null && commercialSaleSignalsFallback(commercial));
-  if(!eligible) return "";
-  const item=commercial.item;
-  const catKey=ASSET_LABEL[item.category]||"asset_other";
-  const hasWhat=Boolean(item.label || item.category && item.category!=="other" || (commercial.quantities||[]).length);
-  const qty=(commercial.quantities||[]).map(q=>`<li><span lang="en" dir="ltr">${escUiHtml(q.display||"")}</span>
-    ${q.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(q.evidence)}</div>`:""}</li>`).join("");
-  const prices=(commercial.price_facts||[]).map(p=>{
-    const label=priceKindBadge(p.kind, String(p.display||"").replace(/^\$/,"") ) || p.display;
-    return `<li><span class="tag amt">${label}</span>
-      ${p.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(p.evidence)}</div>`:""}</li>`;
-  }).join("");
-  const dealDerived=commercial.deal_signal && commercial.deal_signal.status==="derived"
-    ? `<p class="property-deal-signal" data-deal-status="derived"><strong>${escUiHtml(commercial.deal_signal.summary)}</strong></p>`
-    : "";
-  const method=commercial.sale_method
-    ? `<div class="lc-pct">${t("property_commercial_method_lbl")}: <span lang="en" dir="ltr">${escUiHtml(commercial.sale_method.method.replace(/_/g," "))}</span>
-        ${commercial.sale_method.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(commercial.sale_method.evidence)}</div>`:""}</div>`
-    : "";
-  const steps=(commercial.participation && commercial.participation.steps||[]).map(s=>
-    `<li><span lang="en" dir="ltr">${escUiHtml(s.text||s.kind||"")}</span></li>`).join("");
-  const packageUrl=commercial.participation && commercial.participation.package_url
-    ? `<div class="lc-pct"><a href="${escUiHtml(commercial.participation.package_url)}" ${EXT_ATTRS}>${t("property_action_open_rfp")}${extSR()}</a></div>`
-    : "";
-  const contacts=[];
-  for(const e of (commercial.participation && commercial.participation.emails)||[]){
-    contacts.push(`<a href="mailto:${escUiHtml(e.value)}">${escUiHtml(e.value)}</a>`);
-  }
-  for(const p of (commercial.participation && commercial.participation.phones)||[]){
-    contacts.push(`<span lang="en" dir="ltr">${escUiHtml(p.value)}</span>`);
-  }
-  const hasBid=Boolean(method || packageUrl || steps || contacts.length);
-  const timedChips=propertyTimedEventChipsHTML(commercial);
-  const whatBlock=hasWhat?`<div class="property-commercial-what">
-      <div class="stage-name">${t("property_commercial_what_lbl")}</div>
-      <div><span class="tag asset">${escUiHtml(t(catKey))}</span>
-        ${item.label?`<span lang="en" dir="ltr"> · ${escUiHtml(item.label)}</span>`:""}</div>
-      ${item.evidence?`<div class="note muted" lang="en" dir="ltr">${escUiHtml(item.evidence)}</div>`:""}
-      ${qty?`<ul class="ei-list property-commercial-qty">${qty}</ul>`:""}
-    </div>`:"";
-  const priceBlock=prices?`<div class="property-commercial-price">
-      <div class="stage-name">${t("property_commercial_price_lbl")}</div>
-      <ul class="ei-list">${prices}</ul>
-    </div>`:"";
-  const dealBlock=dealDerived?`<div class="property-commercial-deal">
-      <div class="stage-name">${t("property_commercial_deal_lbl")}</div>
-      ${dealDerived}
-    </div>`:"";
-  const bidBlock=hasBid?`<div class="property-commercial-bid">
-      <div class="stage-name">${t("property_commercial_bid_lbl")}</div>
-      ${method}
-      ${packageUrl}
-      ${steps?`<ul class="ei-list">${steps}</ul>`:""}
-      ${contacts.length?`<div class="lc-pct">${contacts.join(" · ")}</div>`:""}
-    </div>`:"";
-  // Methodology / provenance: one collapsed affordance, never inline apology prose.
-  const how=`<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("property_commercial_provenance_html")}</div></details>`;
-  return `<section class="property-commercial-detail" data-commercial-detail="1" data-sale-eligible="1" aria-label="${escUiHtml(t("property_commercial_heading"))}">
-    <div class="chain-h">${t("property_commercial_heading")}</div>
-    ${timedChips}
-    ${whatBlock}
-    ${priceBlock}
-    ${dealBlock}
-    ${bidBlock}
-    ${how}
-  </section>`;
+  return renderPropertyCommercialDetail(commercial,{
+    t,
+    escape:escUiHtml,
+    priceBadge:priceKindBadge,
+    timedEventsHTML:propertyTimedEventChipsHTML,
+    fallbackSaleSignals:commercialSaleSignalsFallback,
+    extAttrs:EXT_ATTRS,
+    extSr:extSR,
+  });
 }
 /** Sync fallback when pure-module hasCommercialSaleSignals is not loaded yet. */
 function commercialSaleSignalsFallback(commercial){
@@ -515,7 +450,15 @@ async function loadPropertyCommercialDetail(r, el){
       commercial.event_views=tools.propertyTimedEventViews(commercial.timed_events||[]);
     }
     if(commercial) r.commercial=commercial;
-    if(readerTools?.extractPropertyReaderActions) r.property_reader_actions=readerTools.extractPropertyReaderActions(r,{today:todayISO(),events:commercial?.timed_events||[]});
+    if(readerTools?.extractPropertyReaderActions){
+      r.property_reader_actions=readerTools.extractPropertyReaderActions(r,{today:todayISO(),events:commercial?.timed_events||[]});
+      // The commercial extractor owns these source-backed actions. Paint them as
+      // soon as they exist instead of waiting for unrelated parcel joins to settle.
+      const actionRail=document.querySelector("#nactions");
+      if(actionRail && typeof globalThis.mountNoticeActionRail==="function"){
+        globalThis.mountNoticeActionRail(actionRail,r);
+      }
+    }
     if(!document.contains(el)) return;
     el.innerHTML=commercial ? propertyCommercialDetailHTML(commercial) : "";
   }catch(_e){
