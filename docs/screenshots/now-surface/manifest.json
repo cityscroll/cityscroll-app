@@ -9,6 +9,18 @@
     "meetings",
     "land"
   ],
+  "before_captures": [
+    {
+      "viewport_width": 1440,
+      "file": "before-1440.png",
+      "sha256": "3e31d687060bb6d7ce4b8f267e426354065a196a71c9793e126acf64c59da451"
+    },
+    {
+      "viewport_width": 390,
+      "file": "before-390.png",
+      "sha256": "41494bce1da159ed3abaf8346844fc2d6f0a4bf822c9b0418494bfd6497ec511"
+    }
+  ],
   "captures": [
     {
       "viewport": {
@@ -30,8 +42,18 @@
       "current_lens_tabs": 8,
       "now_owns_lens_tab": false,
       "horizontal_overflow_pixels": 0,
+      "date_labels": {
+        "money:now-bid": "Responses due",
+        "property:now-property:objection_deadline:2026-08-07": "Object by",
+        "rules:now-rule:comment": "Comment by",
+        "staffing:7001": "Apply by",
+        "meetings:now-hearing": "",
+        "rules:now-rule:public_hearing:2026-08-08": "",
+        "land:2026X0001:2026-08-09": "",
+        "property:now-property:auction:2026-08-10": ""
+      },
       "file": "after-1440.png",
-      "sha256": "a8e630676282ada08d357add85b1ca55e3b3719feacd7c91c985d6f8be806cbe"
+      "sha256": "fc1d040ee264b03581b22310194a7e60dc884f9c8a45290662e8715f3bf6dd1e"
     },
     {
       "viewport": {
@@ -53,8 +75,18 @@
       "current_lens_tabs": 8,
       "now_owns_lens_tab": false,
       "horizontal_overflow_pixels": 0,
+      "date_labels": {
+        "money:now-bid": "Responses due",
+        "property:now-property:objection_deadline:2026-08-07": "Object by",
+        "rules:now-rule:comment": "Comment by",
+        "staffing:7001": "Apply by",
+        "meetings:now-hearing": "",
+        "rules:now-rule:public_hearing:2026-08-08": "",
+        "land:2026X0001:2026-08-09": "",
+        "property:now-property:auction:2026-08-10": ""
+      },
       "file": "after-390.png",
-      "sha256": "c666d285274f4f306767794d1e49db8d157d649231ae0ab6359c62713055cf8a"
+      "sha256": "aac18d6d11f751881656a8217c4aae6e5ef1f05e367f6ed450a4d6b5ded9009d"
     }
   ],
   "pass": true
