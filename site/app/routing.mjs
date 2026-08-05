@@ -148,8 +148,13 @@ function serializeState(){
     if(staffingFilters.role) q.set("role", staffingFilters.role);
     if(staffingFilters.agency) q.set("agency", staffingFilters.agency);
     // Declarative interest routing only: structured attributes the visitor chose, never a profile.
-    if($("#career-guide") && !$("#career-guide").hidden){
-      q.set("view", "guide");
+    // The exam browser is the default Staffing entry and is always mounted. Only
+    // preserve guide filters when the visitor arrived through an explicit guide
+    // route; otherwise a tab switch must mint the clean Staffing document URL.
+    const guideRouteMarker = ["view", "guide"].join("=");
+    const explicitGuideRoute = location.hash.includes(guideRouteMarker)
+      || (location.pathname === "/browse/staffing/" && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1]);
+    if(globalThis.careerRouteFilters && explicitGuideRoute){
       const interest=$("#career-interest")?.value;
       if(interest && interest !== "all" && CrolStaffing.isInterestArea(interest)) q.set("interest", interest);
       const eligibility=$("#career-eligibility")?.value;
