@@ -10,7 +10,6 @@ var MAPPLUTO_QUERY = "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/
 var DISTRICT_BOUNDARIES_URL = "data/district_boundaries.json";
 // Legacy council-only path (compat when unified artifact is missing).
 var COUNCIL_BOUNDARIES_URL = "data/council_district_boundaries.json";
-var LAND_AUTO_PROMPT_KEY = "crol_land_location_auto_asked_v1";
 var districtBoundariesCache = null;
 var districtLookupModulePromise = null;
 
@@ -238,35 +237,6 @@ function requestCurrentArea(options) {
   });
 }
 
-function claimLandAutoPrompt(storage) {
-  if (!storage || typeof storage.getItem !== "function"
-      || typeof storage.setItem !== "function") return false;
-  try {
-    if (storage.getItem(LAND_AUTO_PROMPT_KEY)) return false;
-    storage.setItem(LAND_AUTO_PROMPT_KEY, "1");
-    return true;
-  } catch (_error) {
-    return false;
-  }
-}
-
-async function resolveLandEntryLocation(options) {
-  var settings = options || {};
-  var permissions = settings.permissions;
-  if (!permissions || typeof permissions.query !== "function") return null;
-  try {
-    var permission = await permissions.query({ name: "geolocation" });
-    if (!permission) return null;
-    if (permission.state === "prompt" && !claimLandAutoPrompt(settings.storage)) return null;
-    if (permission.state !== "granted" && permission.state !== "prompt") return null;
-    var area = await requestCurrentArea(settings);
-    if (area && typeof settings.onResolved === "function") settings.onResolved(area);
-    return area;
-  } catch (_error) {
-    return null;
-  }
-}
-
 function bindLocationControl(button, options) {
   if (!button || typeof button.addEventListener !== "function") return;
   var settings = options || {};
@@ -281,13 +251,19 @@ function bindLocationControl(button, options) {
   });
 }
 
+// Compatibility boundary for older callers: entering a route never resolves location.
+// Only bindLocationControl may call the area resolver, from its click listener.
+function resolveLandEntryLocation() {
+  return Promise.resolve(null);
+}
+
 function coarseLandFilter(area, status) {
   return {
     boro: area && area.borough || null,
     communityDistrict: area && area.communityDistrict || null,
     councilDistrict: area && area.councilDistrict || null,
     keywords: [],
-    status: status === "all" ? "all" : "active",
+    status: ["active", "hearings"].includes(status) ? status : "all",
   };
 }
 

@@ -323,7 +323,7 @@ function currentLensFilterState(tab){
     return adapt({
       q: $("#lkw") && $("#lkw").value.trim() || "",
       boro: $("#lboro") && $("#lboro").value || "",
-      status: $("#lstatus") && $("#lstatus").value || "active",
+      status: $("#lstatus") && $("#lstatus").value || "all",
     });
   }
   if(tab === "meetings" || tab === "property" || tab === "rules"){
@@ -509,13 +509,12 @@ $("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDi
 $("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; landSearch(); });
 $("#lstatus").addEventListener("change", landSearch);
 $("#land-status-rail").querySelectorAll("[data-land-status]").forEach(button=>button.addEventListener("click",()=>{
-  $("#lstatus").value=button.dataset.landStatus||"active";
+  $("#lstatus").value=button.dataset.landStatus||"all";
   landSearch();
 }));
 const lhearingmode=$("#lhearingmode");
 if(lhearingmode) lhearingmode.addEventListener("change", landSearch);
 const landLocationOptions={
-  permissions:navigator.permissions,
   geolocation:navigator.geolocation,
   fetchImpl:url=>fetch(url),
   onResolved:area=>{
@@ -527,15 +526,6 @@ const landLocationOptions={
     landSearch();
   },
 };
-function maybeAutoLocateLand(){
-  if(landAutoLocationChecked) return;
-  landAutoLocationChecked=true;
-  let storage=null;
-  try{ storage=localStorage; }catch(e){}
-  const button=$("#landlocation");
-  button.disabled=true;
-  resolveLandEntryLocation({...landLocationOptions, storage}).finally(()=>{ button.disabled=false; });
-}
 bindLocationControl($("#landlocation"), landLocationOptions);
 bindLocationControl($("#propertylocation"), {
   geolocation:navigator.geolocation,
@@ -604,7 +594,6 @@ globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
 globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
 // Land deep links call showTab("land") during the first applyHash; publish this dependency
 // before routing instead of waiting for the general export block at the end of this module.
-globalThis.maybeAutoLocateLand = maybeAutoLocateLand;
 Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
@@ -822,7 +811,6 @@ globalThis.QUIZ_TOPICS = QUIZ_TOPICS;
 globalThis.applySuggestion = applySuggestion;
 globalThis.debouncedLandSearch = debouncedLandSearch;
 globalThis.landLocationOptions = landLocationOptions;
-globalThis.maybeAutoLocateLand = maybeAutoLocateLand;
 globalThis.narrowFieldSel = narrowFieldSel;
 globalThis.paintEditionSpan = paintEditionSpan;
 // prefillAlertFromLink / applyNoticeWatchSeed / syncAlertsEntryHrefs / lastNoticeContext

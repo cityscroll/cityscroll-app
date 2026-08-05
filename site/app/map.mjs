@@ -45,6 +45,7 @@ async function adoptDocument(href) {
   if (!incoming) throw new Error("near-you-document-root-missing");
   for (const selector of [
     ".near-hero",
+    ".near-place-guide",
     ".near-form",
     ".near-coverage",
     ".near-map-section",
@@ -156,7 +157,18 @@ function wireGeolocation() {
           ? found.council_district
           : found.community_district;
         const fallback = boroughFromCommunity(found.community_district);
-        const link = root.querySelector(`[data-map-area="${CSS.escape(preferred || fallback || "")}"]`);
+        let link = preferred
+          ? root.querySelector(`[data-map-area="${CSS.escape(preferred)}"]`)
+          : null;
+        if (!link && fallback) {
+          const boroughLink = root.querySelector(`[data-map-area="${CSS.escape(fallback)}"]`);
+          if (boroughLink && preferred) {
+            await adoptDocument(boroughLink.href);
+            link = root.querySelector(`[data-map-area="${CSS.escape(preferred)}"]`);
+          } else {
+            link = boroughLink;
+          }
+        }
         if (!link) throw new Error("district-missing");
         await adoptDocument(link.href);
         status(copy("messageLocationMatched", { district: preferred || fallback }));
