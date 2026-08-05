@@ -12,7 +12,7 @@
 // request limit; shared daily LLM ceiling (NL_METER `m:mcp:<day>`, MCP_MAX_CALLS_PER_DAY);
 // per-sender confirm-email limit (same 5/day as /subscribe).
 
-import { searchNotices, toRecord } from "./lib/notices.mjs";
+import { noticeSearchTerms, searchNotices, toRecord } from "./lib/notices.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { LENSES } from "./lib/filter.mjs";
 import { compileSub } from "./lib/compile.mjs";
@@ -133,7 +133,7 @@ async function callTool(env, req, name, args) {
   switch (name) {
     case "search_notices": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
-      const terms = String(args.query || "").toLowerCase().split(/\s+/).filter(Boolean).slice(0, 6);
+      const terms = noticeSearchTerms(args.query);
       const res = await searchNotices(env.DB, {
         termGroups: terms.length ? [terms] : [],
         section: args.section || null,
@@ -144,6 +144,8 @@ async function callTool(env, req, name, args) {
         excludeRollingDeadlines: !!args.exclude_rolling,
         limit: typeof args.limit === "number" ? args.limit : 15,
       });
+      // Bounded operational telemetry only: no query text, IP, or notice identifiers.
+      console.log("notice-search:", JSON.stringify({ route: "mcp.search_notices", ...res.retrieval }));
       if (!res.results.length) return text("No matches in the mirror (it holds recent notices; the site searches the full record).");
       return text(res.results.map(fmtRecord).join("\n\n"));
     }

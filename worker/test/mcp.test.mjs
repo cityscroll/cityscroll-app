@@ -2,6 +2,8 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { DatabaseSync } from "node:sqlite";
 import { handleMcp } from "../src/mcp.mjs";
 
 class MockKV {
@@ -57,6 +59,61 @@ test("search_notices returns formatted mirror results", async () => {
   const out = res.result.content[0].text;
   assert.ok(out.includes("Playground Renovation"));
   assert.ok(out.includes("RequestID 20260701001"));
+});
+
+test("search_notices route returns the BM25-ranked strict-filter sample", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  sqlite.exec(readFileSync(new URL("../migrations/0001_notices.sql", import.meta.url), "utf8"));
+  sqlite.exec(readFileSync(new URL("../migrations/0010_notice_facts.sql", import.meta.url), "utf8"));
+  const add = sqlite.prepare(`INSERT INTO notices
+    (request_id, section, agency, type_of_notice, short_title, description,
+     contract_amount, contract_amount_valid, start_date, haystack, document_urls, n_documents)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', 0)`);
+  add.run("rule", "Agency Rules", "Buildings", "Notice", "Sidewalk shed safety",
+    "Pedestrian protection around construction scaffolding", null, 0, "2026-07-07",
+    "sidewalk shed pedestrian protection construction scaffolding");
+  add.run("award", "Procurement", "Buildings", "Award", "Scaffold contract",
+    "Construction award", 2_500_000, 1, "2026-07-08", "construction scaffolding contract");
+  sqlite.exec(readFileSync(new URL("../migrations/0016_notice_fts.sql", import.meta.url), "utf8"));
+
+  const DB = {
+    prepare(sql) {
+      if (/FROM notice_attachments/.test(sql)) {
+        return { bind() { return this; }, async all() { return { results: [] }; } };
+      }
+      const statement = sqlite.prepare(sql);
+      let args = [];
+      const wrapper = {
+        bind(...values) { args = values; return wrapper; },
+        async all() {
+          const results = statement.all(...args);
+          return { results, meta: { rows_read: results.length } };
+        },
+        async first() { return statement.get(...args) ?? null; },
+      };
+      return wrapper;
+    },
+  };
+  const logs = [];
+  const originalLog = console.log;
+  console.log = (...parts) => logs.push(parts.join(" "));
+  try {
+    const res = await (await handleMcp(post({
+      jsonrpc: "2.0", id: 31, method: "tools/call",
+      params: {
+        name: "search_notices",
+        arguments: { query: "pedestrian construction scaffolding", section: "Agency Rules", limit: 5 },
+      },
+    }), { SUBS: new MockKV(), NL_METER: new MockKV(), DB })).json();
+    const out = res.result.content[0].text;
+    assert.match(out, /Sidewalk shed safety/);
+    assert.doesNotMatch(out, /Scaffold contract/);
+    assert.ok(logs.some((line) => /"method":"fts5_bm25"/.test(line)));
+    assert.ok(logs.every((line) => !line.includes("pedestrian construction scaffolding")));
+  } finally {
+    console.log = originalLog;
+    sqlite.close();
+  }
 });
 
 test("bearer token, when configured, is required", async () => {
