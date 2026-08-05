@@ -1,3 +1,8 @@
+import {
+  inferFranchiseStageFromNotice,
+  isFranchiseConcessionNoticeEligible,
+} from "../franchise_notice.mjs";
+
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
   property:{section:"Property Disposition", showAddr:true},

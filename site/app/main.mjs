@@ -6,7 +6,43 @@ await import("./search-share.mjs");
 await import("./people.mjs");
 await import("./land.mjs");
 await import("./feed-actions.mjs");
-await import("./property.mjs");
+
+// Property is the largest route-only lens on the default Money landing. Keep its registration
+// in the ordered graph, but fetch it only for Property and notice routes. Routing itself remains
+// eager: the loader is a narrow activation gate, not a second route-state owner.
+const routeModuleLoaders = Object.freeze({
+  property: () => import("./property.mjs"),
+});
+const routeModulePromises = new Map();
+const loadedRouteModules = new Set();
+
+function routeModuleForHash(hash){
+  const raw=String(hash||"").replace(/^#/,"").toLowerCase();
+  return raw.replace(/\?.*$/,"")==="property" || raw.startsWith("notice/")
+    ? "property"
+    : null;
+}
+function ensureRouteModule(name){
+  const loader=routeModuleLoaders[name];
+  if(!loader) return Promise.resolve();
+  if(!routeModulePromises.has(name)){
+    routeModulePromises.set(name,loader().then(module=>{
+      loadedRouteModules.add(name);
+      return module;
+    }));
+  }
+  return routeModulePromises.get(name);
+}
+function ensureRouteModulesForHash(hash){
+  const name=routeModuleForHash(hash);
+  return name ? ensureRouteModule(name) : Promise.resolve();
+}
+globalThis.CrolRouteModules=Object.freeze({
+  ensure:ensureRouteModule,
+  ensureForHash:ensureRouteModulesForHash,
+  isReady:name=>!routeModuleLoaders[name] || loadedRouteModules.has(name),
+});
+await ensureRouteModulesForHash(location.hash);
 await import("./rules.mjs");
 await import("./alerts.mjs");
 await import("./procurement-lifecycle.mjs");

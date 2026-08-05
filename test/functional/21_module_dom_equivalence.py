@@ -53,7 +53,7 @@ def start_server(directory: pathlib.Path):
 def reconstruct_inline_site(target: pathlib.Path) -> None:
     shutil.copytree(SITE, target)
     loader = (SITE / "app" / "main.mjs").read_text()
-    names = re.findall(r'await import\("\./(.+?)"\);', loader)
+    names = re.findall(r'import\("\./(.+?)"\)', loader)
     assert names, "module loader has no imports"
     chunks = []
     helpers = []
@@ -155,6 +155,10 @@ def normalized_html(page, selector: str) -> str:
 def capture(page, base: str, route: str, ready: str, root: str, action=None) -> str:
     page.goto(base + route, wait_until="load", timeout=30_000)
     page.locator(ready).first.wait_for(state="visible", timeout=20_000)
+    if route == "#notice/20241112003":
+        assert page.locator('#nactions .next-action-list > a[href*="zola.planning.nyc.gov"]').count() == 1, (
+            "Property deep link painted before its BBL-backed action was hydrated"
+        )
     if action:
         page.locator(action).click()
         page.locator("#apreviewbox .emailmock").wait_for(state="visible", timeout=20_000)

@@ -32,8 +32,8 @@
       "fcpMs": 1000,
       "lcpMs": 2500,
       "cls": 0.1,
-      "wireBytes": 460000,
-      "comment": "The 2026-08-04 main sequence starts at 442919 bytes after the Property lens and design tokens (#447; Actions run 30874441414). Per-feature deltas were: prime outreach #456 +4701; exam alerts #459 +1564; registration dwell #457 +1112; hearing pack #460 +1522; M/WBE outreach #458 +9819; unified Alerts #448 +1625; Property watches #462 +822; Rules monitors #455 +8527; district digest #464 -17250; attachment tables #442 +712; Meetings template #468 +142; Zoning template #465 +252; Contracts template #461 -4675; canonical scope v0 adapter +2242; exact Property/Meetings district bag routing +1847. The district snapshot payloads remain behind the lazy map-drill boundary; the measured 459089-byte home path contains only the required route and filter state. Next ratchet target: under 445000 by deferring non-home modules; follow-on under 435000 after splitting digest preview awareness from home boot."
+      "wireBytes": 445000,
+      "comment": "Current main revision 639bf8c5 measured 459328 cold-home gzip bytes in 20/20 samples for both viewports. Deferring the Property renderer while retaining its shared franchise/action classifier measured 437841 bytes in 20/20 samples for both viewports; receipts are under docs/evidence/home-cold-split/. The 445000 ceiling is the next ratchet documented by the August 2026 performance audit; under 435000 remains a separate follow-on."
     },
     "home.warm": {
       "viewports": [
