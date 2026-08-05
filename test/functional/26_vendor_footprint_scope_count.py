@@ -8,7 +8,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 
-BASE = os.environ["CROL_BASE"]
+BASE = os.environ.get("CROL_BASE", f"http://localhost:{8000}/")  # source: a11y-pr local server in ci.yml
 CAMBA_COUNTS = {
     "awards": 273,
     "land": 3,
