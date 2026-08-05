@@ -9,6 +9,8 @@ import { publicRecords } from "./public_payload_integrity.mjs";
 
 import {
   observationFromMoneyRow,
+  observationFromPassportContractRow,
+  observationFromCheckbookContractRow,
   observationFromPaymentRow,
   observationFromLandRow,
   observationFromRulesRow,
@@ -333,12 +335,49 @@ export function loadJsonIfExists(filePath) {
 }
 
 /**
+ * Load procurement-spine observations without turning source keys into vendor
+ * identity claims. The materialization carries a measured PASSPort award rate,
+ * while Checkbook coverage remains null until its population denominator exists.
+ */
+export function collectProcurementSpineObservations(root) {
+  const doc = loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"));
+  if (!doc?.rows || typeof doc.rows !== "object") {
+    return { observations: [], coverage: {}, row_counts: {} };
+  }
+
+  const observations = [];
+  const add = (rows, mapper, sourceSystem) => {
+    for (const row of Array.isArray(rows) ? rows : []) {
+      const observation = mapper(row, { sourceSystem });
+      if (observation) observations.push(observation);
+    }
+  };
+  add(doc.rows.passport_contracts, observationFromPassportContractRow, "passport-public-contracts");
+  add(doc.rows.checkbook_contracts, observationFromCheckbookContractRow, "checkbook-contracts");
+  add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
+
+  return {
+    observations,
+    coverage: doc.sources || {},
+    row_counts: Object.fromEntries(
+      Object.entries(doc.rows).map(([name, rows]) => [name, Array.isArray(rows) ? rows.length : 0]),
+    ),
+  };
+}
+
+/**
  * Collect observations from warehouse + site materializations + optional seeds.
  * @param {string} root repo root
  * @param {{ includePeopleEmpty?: boolean }} [opts]
  */
 export function collectCrossDomainObservations(root, opts = {}) {
   const observations = [];
+
+  // --- Procurement spine: PASSPort contracts + Checkbook rows ---
+  // PIN/EPIN/contract ids become typed evidence edges; they never become
+  // vendor ids or legal-name merge assertions.
+  const procurementSpine = collectProcurementSpineObservations(root);
+  observations.push(...procurementSpine.observations);
 
   // --- Money: warehouse OCP fixtures + product lookup ---
   const ocpPaths = [
@@ -658,6 +697,7 @@ export function collectCrossDomainObservations(root, opts = {}) {
  */
 export function buildEntityIntelligenceDoc(root, opts = {}) {
   const observations = collectCrossDomainObservations(root, opts);
+  const procurementSpine = collectProcurementSpineObservations(root);
   const corpus = buildIntelligenceCorpus(observations, {
     max_per_domain: opts.max_per_domain || 6,
     // The former fixture-era cap of 40 hid roots discovered by bulk lookups.
@@ -709,6 +749,13 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     by_ref: corpus.by_ref,
     by_subject_ref: bySubjectRef,
     vendor_footprint: vendorFootprint,
+    procurement_spine: {
+      schema_version: 1,
+      observed_on: loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"))?.observed_on || null,
+      coverage: procurementSpine.coverage,
+      row_counts: procurementSpine.row_counts,
+      note: "Procurement keys attach contract and payment evidence; they do not assert legal-vendor identity.",
+    },
     provenance: {
       sources: [
         "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv",
@@ -716,6 +763,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "warehouse/fixtures/zap-projects/product_seed.csv",
         "warehouse/fixtures/zap-bbl/product_seed.csv",
         "site/data/ocp_awards_warehouse_lookup.json",
+        "site/data/procurement_spine_sources.json",
         "site/data/zap_projects_warehouse_lookup.json",
         "site/data/zap_bbl_warehouse_lookup.json",
         "site/data/land_default_ulurp.json",
@@ -772,6 +820,7 @@ export function slimDocForWorker(doc) {
     by_ref: doc.by_ref,
     by_subject_ref: doc.by_subject_ref,
     vendor_footprint: footprint,
+    procurement_spine: doc.procurement_spine,
     // Compact entity list for /entity-intelligence?list=1
     entity_index: (doc.entities || []).map((e) => ({
       ref: e.root?.ref,
