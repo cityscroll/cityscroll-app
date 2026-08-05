@@ -28,6 +28,9 @@ from cpu_guard import IngestLock, check_headroom, run_capped
 from paths import REPO_ROOT, WAREHOUSE_DIR, receipts_dir
 
 
+MAX_LIVE_OCP_ROWS = 200
+
+
 def _node_bin() -> str:
     return shutil.which("node") or "node"
 
@@ -62,14 +65,19 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Snapshot partition date YYYY-MM-DD (default: UTC today)",
     )
+    p.add_argument(
+        "--review-receipt",
+        default=None,
+        help="Optional reviewed quality receipt to validate and attach to the proof",
+    )
     args = p.parse_args(argv)
 
     if args.limit < 1:
         raise SystemExit("--limit must be >= 1")
-    if args.limit > 5000 and not args.force_headroom:
+    if not args.from_fixture and args.limit > MAX_LIVE_OCP_ROWS:
         raise SystemExit(
-            f"--limit {args.limit} > 5000 requires --force-headroom after headroom OK "
-            "(CPU discipline — start with ≤200)."
+            f"--limit {args.limit} exceeds the WH-04 live OCP cap of "
+            f"{MAX_LIVE_OCP_ROWS}"
         )
 
     started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
@@ -87,6 +95,8 @@ def main(argv: list[str] | None = None) -> int:
             cmd.append("--force-headroom")
         if args.snapshot_date:
             cmd.extend(["--snapshot-date", args.snapshot_date])
+        if args.review_receipt:
+            cmd.extend(["--review-receipt", args.review_receipt])
 
         # Fixture proof is light; warehouse slice still gets taskpolicy wrap.
         if args.from_fixture and args.limit <= 100:
@@ -107,6 +117,7 @@ def main(argv: list[str] | None = None) -> int:
             "finished_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "from_fixture": bool(args.from_fixture),
             "limit": args.limit,
+            "live_ocp_hard_cap": MAX_LIVE_OCP_ROWS,
             "headroom": {
                 "status": headroom.get("status"),
                 "constrained": headroom.get("constrained"),

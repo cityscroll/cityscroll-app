@@ -3,58 +3,77 @@
   "phase": "WH-04",
   "title": "Batch entity-resolution over warehouse tables",
   "er_batch_version": "wh04_er_batch_v1",
-  "mode": "fixture",
-  "snapshot_date": "fixture",
-  "observed_at": "2026-08-03T16:37:38.456Z",
-  "limit": 25,
+  "mode": "warehouse",
+  "snapshot_date": "2026-08-05",
+  "observed_at": "2026-08-05T06:15:41.201Z",
+  "limit": 200,
+  "live_ocp_cap": 200,
+  "runtime_ms": 1453.742084,
+  "source_fetch": {
+    "receipt": "warehouse/receipts/ocp-recent-contract-awards_2026-08-05.json",
+    "observed_at": "2026-08-05T06:15:39Z",
+    "snapshot_date": "2026-08-05",
+    "source_contract_id": "ocp-recent-contract-awards",
+    "socrata_dataset_id": "qyyg-4tf5",
+    "mode": "soda_limit",
+    "requested_row_cap": 200,
+    "fetched_row_count": 200,
+    "http_status": 200,
+    "elapsed_s": 0.76,
+    "last_modified": "Tue, 04 Aug 2026 12:25:32 GMT",
+    "bytes": 219176,
+    "sha256": "db380e85baa57b06643040933a9387a7d7ed9a012326922392eb19033429dfc5",
+    "request_url": "https://data.cityofnewyork.us/resource/qyyg-4tf5.csv?%24limit=200&%24order=start_date+DESC",
+    "raw_path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=2026-08-05/qyyg-4tf5_limit200.csv"
+  },
   "metrics": {
     "er_batch_version": "wh04_er_batch_v1",
-    "ocp_rows_in": 10,
-    "ocp_observations": 10,
+    "ocp_rows_in": 200,
+    "ocp_observations": 200,
     "doing_business_observations": 3,
-    "vendor_observations": 13,
-    "vendor_stem_links": 13,
-    "agency_links": 10,
-    "pair_candidates": 16,
-    "pair_same": 6,
-    "pair_unresolved": 10,
+    "vendor_observations": 203,
+    "vendor_stem_links": 203,
+    "agency_links": 200,
+    "pair_candidates": 562,
+    "pair_same": 45,
+    "pair_unresolved": 517,
     "pair_different": 0,
-    "entity_link_rows": 23,
-    "canonical_entities": 16,
-    "unique_vendor_entities": 9,
-    "unique_agency_entities": 7,
-    "cross_source_stem_hits": 2,
+    "entity_link_rows": 403,
+    "canonical_entities": 199,
+    "unique_vendor_entities": 173,
+    "unique_agency_entities": 26,
+    "cross_source_stem_hits": 1,
     "blocker": "token_v0_v0",
     "vendor_method": "vendor_stem_v1",
     "vendor_matcher_version": "1",
     "agency_method": "agency_canonical_v1",
     "matchers_version": "conventional_v1"
   },
-  "resolution_run_id": "run_ab1928eb_85",
-  "stage_dir": "warehouse/raw/er-batch/snapshot_date=fixture",
+  "resolution_run_id": "run_0e894087_5e",
+  "stage_dir": "warehouse/raw/er-batch/snapshot_date=2026-08-05",
   "materialize": {
     "catalog": "warehouse/duckdb/cityscroll.duckdb",
-    "snapshot_date": "fixture",
+    "snapshot_date": "2026-08-05",
     "tables": [
       {
         "view": "er_entity_link",
-        "parquet": "warehouse/parquet/er_entity_link/snapshot_date=fixture/part-000.parquet",
-        "row_count": 23
+        "parquet": "warehouse/parquet/er_entity_link/snapshot_date=2026-08-05/part-000.parquet",
+        "row_count": 403
       },
       {
         "view": "er_canonical_entity",
-        "parquet": "warehouse/parquet/er_canonical_entity/snapshot_date=fixture/part-000.parquet",
-        "row_count": 16
+        "parquet": "warehouse/parquet/er_canonical_entity/snapshot_date=2026-08-05/part-000.parquet",
+        "row_count": 199
       },
       {
         "view": "er_resolution_run",
-        "parquet": "warehouse/parquet/er_resolution_run/snapshot_date=fixture/part-000.parquet",
+        "parquet": "warehouse/parquet/er_resolution_run/snapshot_date=2026-08-05/part-000.parquet",
         "row_count": 1
       },
       {
         "view": "er_pair_receipt",
-        "parquet": "warehouse/parquet/er_pair_receipt/snapshot_date=fixture/part-000.parquet",
-        "row_count": 16
+        "parquet": "warehouse/parquet/er_pair_receipt/snapshot_date=2026-08-05/part-000.parquet",
+        "row_count": 562
       },
       {
         "view": "er_ocp_vendor_resolved",
@@ -70,6 +89,7 @@
     "taskpolicy_or_nice_wrap": true,
     "duckdb_threads": 1,
     "default_limit": 200,
+    "live_ocp_hard_cap": 200,
     "incremental": true
   },
   "reuse": {
@@ -85,33 +105,68 @@
     ]
   },
   "what_resolved": {
-    "vendor_entities": 9,
-    "agency_entities": 7,
-    "entity_link_rows": 23,
-    "pair_candidates": 16,
-    "pair_same": 6,
+    "vendor_entities": 173,
+    "agency_entities": 26,
+    "entity_link_rows": 403,
+    "pair_candidates": 562,
+    "pair_same": 45,
     "multi_source_stems": {
-      "ACME WIDGETS": "3 source_records \u2192 vendor:stem:ACME WIDGETS",
-      "SINERGIA": "3 source_records \u2192 vendor:stem:SINERGIA"
+      "CAMBA": "5 source_records \u2192 vendor:stem:CAMBA",
+      "VOLUNTEERS OF AMERICA GREATER NEW YORK": "2 source_records \u2192 vendor:stem:VOLUNTEERS OF AMERICA GREATER NEW YORK",
+      "URBAN RESOURCE INSTITUTE": "2 source_records \u2192 vendor:stem:URBAN RESOURCE INSTITUTE",
+      "LANTERN COMMUNITY SERVICES": "2 source_records \u2192 vendor:stem:LANTERN COMMUNITY SERVICES",
+      "COMPULINK TECHNOLOGIES": "3 source_records \u2192 vendor:stem:COMPULINK TECHNOLOGIES",
+      "SERVICES FOR THE UNDERSERVED": "5 source_records \u2192 vendor:stem:SERVICES FOR THE UNDERSERVED",
+      "VOCATIONAL INSTRUCTION PROJECT COMMUNITY SERVICES": "2 source_records \u2192 vendor:stem:VOCATIONAL INSTRUCTION PROJECT COMMUNITY SERVICES",
+      "ITALIAN AMERICAN CIVIL RIGHTS LEAGUE CANARSIE": "2 source_records \u2192 vendor:stem:ITALIAN AMERICAN CIVIL RIGHTS LEAGUE CANARSIE",
+      "QUEENS COMMUNITY HOUSE": "3 source_records \u2192 vendor:stem:QUEENS COMMUNITY HOUSE",
+      "CHINESE AMERICAN PLANNING COUNCIL": "2 source_records \u2192 vendor:stem:CHINESE AMERICAN PLANNING COUNCIL",
+      "SCO FAMILY OF SERVICES": "2 source_records \u2192 vendor:stem:SCO FAMILY OF SERVICES",
+      "BRONXWORKS": "2 source_records \u2192 vendor:stem:BRONXWORKS",
+      "HEBREW EDUCATIONAL SOCIETY OF BROOKLYN": "2 source_records \u2192 vendor:stem:HEBREW EDUCATIONAL SOCIETY OF BROOKLYN",
+      "K SYSTEMS SOLUTIONS": "2 source_records \u2192 vendor:stem:K SYSTEMS SOLUTIONS",
+      "KINGS BAY YM -YWHA": "2 source_records \u2192 vendor:stem:KINGS BAY YM -YWHA",
+      "THE CHILDREN S AID SOCIETY": "3 source_records \u2192 vendor:stem:THE CHILDREN S AID SOCIETY",
+      "UNIQUE PEOPLE SERVICES": "2 source_records \u2192 vendor:stem:UNIQUE PEOPLE SERVICES",
+      "THE SALVATION ARMY": "2 source_records \u2192 vendor:stem:THE SALVATION ARMY",
+      "SANCTUARY FOR FAMILIES": "2 source_records \u2192 vendor:stem:SANCTUARY FOR FAMILIES",
+      "JACOB A RIIS NEIGHBORHOOD SETTLEMENT": "2 source_records \u2192 vendor:stem:JACOB A RIIS NEIGHBORHOOD SETTLEMENT",
+      "GRAND STREET SETTLEMENT": "2 source_records \u2192 vendor:stem:GRAND STREET SETTLEMENT"
     },
-    "cross_source_stem_hits": 2
+    "cross_source_stem_hits": 1
   },
-  "next_step": "Pack doing-business-entities (and/or city-record) via WH-02 capped bulk when headroom green; re-run er_batch_run.py --limit 200 over warehouse OCP (no --from-fixture) for a real slice; optional dual-write metrics report for false-split desk.",
+  "quality_review": {
+    "receipt": "warehouse/receipts/proof/wh04_er_batch_live_review_2026-08-05.json",
+    "schema_version": 1,
+    "phase": "WH-04",
+    "reviewed_at": "2026-08-05",
+    "source_raw_sha256": "db380e85baa57b06643040933a9387a7d7ed9a012326922392eb19033429dfc5",
+    "candidate_pairs": 562,
+    "accepted_pair_candidates": 45,
+    "accepted_pair_candidates_reviewed": 45,
+    "ambiguous_pair_candidates": 517,
+    "confirmed_false_positives": 0,
+    "review_basis": "All pair candidates accepted by the conventional matcher were reviewed at the published vendor-name and normalized-stem grain. Every accepted pair shared an exact vendor stem; unresolved candidates were not promoted to links.",
+    "unreviewed_residual": "The review does not audit every single-record vendor-stem link or agency normalization, does not resolve the 517 ambiguous pair candidates, and does not support a full-corpus precision claim."
+  },
+  "residual": "This receipt characterizes one bounded 200-row OCP slice only. Unresolved candidates remain unlinked, optional Doing Business rows reflect the currently registered warehouse snapshot, and no full-corpus safety or precision claim is inferred.",
+  "next_step": "Keep the 200-row cap. A wider or full-corpus ER run requires a separate decision and new resource and precision evidence.",
   "runner": {
     "phase": "WH-04",
     "entrypoint": "er_batch_run.py",
-    "started_at": "2026-08-03T16:37:36Z",
-    "finished_at": "2026-08-03T16:37:38Z",
-    "from_fixture": true,
-    "limit": 25,
+    "started_at": "2026-08-05T06:15:39Z",
+    "finished_at": "2026-08-05T06:15:41Z",
+    "from_fixture": false,
+    "limit": 200,
+    "live_ocp_hard_cap": 200,
     "headroom": {
-      "status": "constrained",
-      "constrained": true
+      "status": "ok",
+      "constrained": false
     },
     "cpu_discipline": {
       "single_job_lock": true,
       "headroom_gate": true,
-      "taskpolicy_or_nice_wrap": false
+      "taskpolicy_or_nice_wrap": true
     }
   }
 }

@@ -36,6 +36,7 @@ import {
 } from "../lib/er_batch.mjs";
 
 const ROOT = REPO_ROOT;
+export const MAX_LIVE_OCP_ROWS = 200;
 const OCP_SAMPLE = path.join(
   WAREHOUSE_DIR,
   "fixtures",
@@ -62,6 +63,7 @@ function parseArgs(argv) {
     force: false,
     skipMaterialize: false,
     snapshotDate: null,
+    reviewReceipt: null,
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
@@ -70,16 +72,15 @@ function parseArgs(argv) {
     else if (a === "--skip-materialize") out.skipMaterialize = true;
     else if (a === "--limit") out.limit = Number(argv[++i]);
     else if (a === "--snapshot-date") out.snapshotDate = String(argv[++i]);
+    else if (a === "--review-receipt") out.reviewReceipt = String(argv[++i]);
     else if (a === "--help" || a === "-h") out.help = true;
   }
   if (!Number.isFinite(out.limit) || out.limit < 1) {
     throw new Error("--limit must be a positive number");
   }
-  // Soft cap: large slices need explicit ack via high limit only when operator sets it;
-  // default 200 is the incremental WH-04 proof size.
-  if (out.limit > 5000 && !out.force) {
+  if (!out.fromFixture && out.limit > MAX_LIVE_OCP_ROWS) {
     throw new Error(
-      `--limit ${out.limit} > 5000: pass --force-headroom only after headroom OK (CPU discipline)`
+      `--limit ${out.limit} exceeds the WH-04 live OCP cap of ${MAX_LIVE_OCP_ROWS}`
     );
   }
   return out;
@@ -204,7 +205,79 @@ function writeProofReceipt(payload) {
   return dest;
 }
 
+function relativeRepoPath(filePath) {
+  if (!filePath) return null;
+  const absolute = path.resolve(String(filePath));
+  const relative = path.relative(ROOT, absolute);
+  return relative.startsWith("..") ? null : relative;
+}
+
+function loadSourceFetchReceipt(snapshotDate) {
+  const candidates = [
+    path.join(
+      WAREHOUSE_DIR,
+      "receipts",
+      `${OCP_SOURCE_SYSTEM}_${snapshotDate}.json`
+    ),
+    path.join(
+      WAREHOUSE_DIR,
+      "receipts",
+      "proof",
+      `${OCP_SOURCE_SYSTEM}_bulk_latest.json`
+    ),
+  ];
+  for (const candidate of candidates) {
+    if (!existsSync(candidate)) continue;
+    const source = JSON.parse(readFileSync(candidate, "utf8"));
+    if (source.snapshot_date !== snapshotDate) continue;
+    return {
+      receipt: path.relative(ROOT, candidate),
+      observed_at: source.observed_at || null,
+      snapshot_date: source.snapshot_date || null,
+      source_contract_id: source.source_contract_id || OCP_SOURCE_SYSTEM,
+      socrata_dataset_id: source.socrata_dataset_id || null,
+      mode: source.raw?.mode || null,
+      requested_row_cap: source.limit,
+      fetched_row_count: source.raw?.row_count ?? null,
+      http_status: source.raw?.http_status ?? null,
+      elapsed_s: source.raw?.elapsed_s ?? null,
+      last_modified: source.raw?.last_modified || null,
+      bytes: source.raw?.bytes ?? null,
+      sha256: source.raw?.sha256 || null,
+      request_url: source.raw?.url || null,
+      raw_path: relativeRepoPath(source.raw?.path),
+    };
+  }
+  return null;
+}
+
+function loadQualityReview(reviewPath, { metrics, sourceFetch }) {
+  if (!reviewPath) return null;
+  const absolute = path.resolve(ROOT, reviewPath);
+  if (!existsSync(absolute)) {
+    throw new Error(`Quality review receipt not found: ${reviewPath}`);
+  }
+  const review = JSON.parse(readFileSync(absolute, "utf8"));
+  if (review.source_raw_sha256 !== sourceFetch?.sha256) {
+    throw new Error("Quality review source_raw_sha256 does not match the live source receipt");
+  }
+  if (review.candidate_pairs !== metrics.pair_candidates) {
+    throw new Error("Quality review candidate_pairs does not match this ER run");
+  }
+  if (review.accepted_pair_candidates !== metrics.pair_same) {
+    throw new Error("Quality review accepted_pair_candidates does not match this ER run");
+  }
+  if (review.ambiguous_pair_candidates !== metrics.pair_unresolved) {
+    throw new Error("Quality review ambiguous_pair_candidates does not match this ER run");
+  }
+  return {
+    receipt: path.relative(ROOT, absolute),
+    ...review,
+  };
+}
+
 function main(argv = process.argv) {
+  const startedNs = process.hrtime.bigint();
   const args = parseArgs(argv);
   if (args.help) {
     console.log(`WH-04 batch ER over warehouse tables
@@ -240,6 +313,11 @@ Prefer the capped runner:
       mode === "fixture"
         ? "WH-04 fixture proof (OCP sample + vendor variants + optional DB sample)"
         : `WH-04 warehouse slice limit=${args.limit}`,
+  });
+  const sourceFetch = args.fromFixture ? null : loadSourceFetchReceipt(snap);
+  const qualityReview = loadQualityReview(args.reviewReceipt, {
+    metrics: batch.metrics,
+    sourceFetch,
   });
 
   const root = warehouseRoot();
@@ -301,6 +379,9 @@ Prefer the capped runner:
     snapshot_date: snap,
     observed_at: new Date().toISOString(),
     limit: args.limit,
+    live_ocp_cap: MAX_LIVE_OCP_ROWS,
+    runtime_ms: Number(process.hrtime.bigint() - startedNs) / 1_000_000,
+    source_fetch: sourceFetch,
     metrics: batch.metrics,
     resolution_run_id: batch.resolution_run.id,
     stage_dir: path.relative(ROOT, stageDir),
@@ -313,6 +394,7 @@ Prefer the capped runner:
       taskpolicy_or_nice_wrap: true,
       duckdb_threads: 1,
       default_limit: 200,
+      live_ocp_hard_cap: MAX_LIVE_OCP_ROWS,
       incremental: true,
     },
     reuse: {
@@ -333,8 +415,12 @@ Prefer the capped runner:
       multi_source_stems: multiSourceStems,
       cross_source_stem_hits: batch.metrics.cross_source_stem_hits,
     },
+    quality_review: qualityReview,
+    residual: args.fromFixture
+      ? "Fixture evidence only; live-slice quality remains unmeasured."
+      : "This receipt characterizes one bounded 200-row OCP slice only. Unresolved candidates remain unlinked, optional Doing Business rows reflect the currently registered warehouse snapshot, and no full-corpus safety or precision claim is inferred.",
     next_step:
-      "Pack doing-business-entities (and/or city-record) via WH-02 capped bulk when headroom green; re-run er_batch_run.py --limit 200 over warehouse OCP (no --from-fixture) for a real slice; optional dual-write metrics report for false-split desk.",
+      "Keep the 200-row cap. A wider or full-corpus ER run requires a separate decision and new resource and precision evidence.",
   };
 
   const proofPath = writeProofReceipt(receipt);

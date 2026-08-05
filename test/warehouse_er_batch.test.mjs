@@ -24,6 +24,10 @@ import {
   sqlVerifyVendorResolution,
 } from "../warehouse/lib/er_batch.mjs";
 import {
+  MAX_LIVE_OCP_ROWS,
+  parseArgs,
+} from "../warehouse/scripts/er_batch.mjs";
+import {
   vendorStem as erVendorStem,
   generateCandidates,
   scorePair,
@@ -154,6 +158,24 @@ describe("WH-04 pure ER batch (reuse entity_resolution)", () => {
 });
 
 describe("WH-04 fixtures + capped runner layout", () => {
+  it("enforces the 200-row live OCP cap even with a headroom override", () => {
+    assert.equal(
+      parseArgs(["node", "er_batch.mjs", "--limit", "200"]).limit,
+      MAX_LIVE_OCP_ROWS
+    );
+    assert.throws(
+      () =>
+        parseArgs([
+          "node",
+          "er_batch.mjs",
+          "--limit",
+          "201",
+          "--force-headroom",
+        ]),
+      /live OCP cap of 200/
+    );
+  });
+
   it("ships er-batch fixtures, scripts, and verify SQL", () => {
     assert.ok(
       existsSync(join(WAREHOUSE_DIR, "fixtures", "er-batch", "ocp_vendor_variants.csv"))
