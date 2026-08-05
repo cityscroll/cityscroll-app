@@ -114,7 +114,7 @@ function makeHarness(bucketBody) {
   const showVendor = new Function(
     "$", "showTab", "cleanText", "vendorStem", "loadVendorProfileRecord",
     "renderVendorProfile", "hydrateVendorProfile", "showVendorLive", "announce", "t",
-    "focusItemRouteTarget",
+    "focusItemRouteTarget", "applyActiveHistoryRouteScroll",
     `${extractFn("showVendor")}; return showVendor;`,
   )(
     (selector) => selector === "#entityview" ? box : null,
@@ -127,6 +127,7 @@ function makeHarness(bucketBody) {
     showVendorLive,
     () => {},
     (key) => key,
+    () => {},
     () => {},
   );
 

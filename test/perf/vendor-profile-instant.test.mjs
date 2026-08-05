@@ -100,9 +100,9 @@ function makeHarness(precomputed) {
   const box = fakeBox();
   const fallbackCalls = [];
   const headerHTML = new Function(
-    "money", "fdate", "t", "cleanText",
+    "money", "fdate", "t", "cleanText", "doingBusinessCardHTML",
     `${extractFn("renderVendorVariants")}; ${extractFn("vendorProfileHeaderHTML")}; return vendorProfileHeaderHTML;`,
-  )(money, (value) => String(value || "").slice(0, 10), t, String);
+  )(money, (value) => String(value || "").slice(0, 10), t, String, () => "");
 
   const renderVendorProfile = (_box, profile) => {
     _box.innerHTML = headerHTML(profile);
@@ -120,7 +120,7 @@ function makeHarness(precomputed) {
   const showVendor = new Function(
     "$", "showTab", "cleanText", "vendorStem", "loadVendorProfileRecord",
     "renderVendorProfile", "hydrateVendorProfile", "showVendorLive", "announce", "t",
-    "focusItemRouteTarget",
+    "focusItemRouteTarget", "applyActiveHistoryRouteScroll",
     `${extractFn("showVendor")}; return showVendor;`,
   )(
     (selector) => selector === "#entityview" ? box : null,
@@ -133,6 +133,7 @@ function makeHarness(precomputed) {
     showVendorLive,
     () => {},
     t,
+    () => {},
     () => {},
   );
 

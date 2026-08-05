@@ -925,6 +925,9 @@ function vendorProfileHTML(profile, details, hydrating){
         <div class="chain-h">${t("vendor_mentions_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
         <div class="chain-h">${t("forecast_section_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
       </div>` : "";
+  const footprintAbsent = !details?.footprint
+    ? `<div class="eicard vendor-footprint vendor-footprint-absent"><div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div><p class="ei-empty">This summary is not available yet.</p></div>`
+    : "";
   // Checkbook outbound is only in the phase lead (one per profile) — note names the source only.
   return `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
@@ -938,7 +941,7 @@ function vendorProfileHTML(profile, details, hydrating){
 
       <div id="overview-content">
         ${agencies.length?`<div class="chain-h">${t("vendor_agencies_heading")}</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
-        <div id="vendor-footprint"></div>
+        <div id="vendor-footprint">${footprintAbsent}</div>
         ${onTheRecord}
         ${mentions.length?`<div class="chain-h">${t("vendor_mentions_heading")}</div><div class="timeline">${mentionItems}</div>`:""}
         ${loadingSections}
@@ -1056,16 +1059,13 @@ async function showVendor(name, initialTab){
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
   if(stem.length < 3){ box.innerHTML = `<div class="empty">${t("vendor_name_too_short",{name:safe})} ${routeBackHTML("#money")}</div>`; applyActiveHistoryRouteScroll(); return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
-  const [profile, footprint] = await Promise.all([
-    loadVendorProfileRecord(name),
-    loadVendorFootprint(name),
-  ]);
+  const profile = await loadVendorProfileRecord(name);
   if(!profile) return showVendorLive(name, initialTab, box);
   renderVendorProfile(box, profile, {
     agencies:profile.topAgencies||[],
     rows:profile.recentNotices,
     forecasts:profile.forecasts,
-    footprint
+    footprint:profile.footprint||null
   }, initialTab, false);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   focusItemRouteTarget(box.querySelector(".route-item"));

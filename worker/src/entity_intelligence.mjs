@@ -24,6 +24,21 @@ import {
 import { vendorCoverageKey } from "../../entity_resolution/cross_domain/vendor_coverage_key.mjs";
 
 const CACHE = "public, max-age=300";
+const VENDOR_SECTION_SPECS = Object.freeze([
+  { id: "awards", domain: "money", kind: "award" },
+  { id: "payments", domain: "money", kind: "payment" },
+  { id: "land", domain: "land" },
+  { id: "property", domain: "property" },
+  { id: "rules", domain: "rules" },
+  { id: "meetings", domain: "meetings" },
+  { id: "franchise", domain: "franchise" },
+]);
+const DEFAULT_VENDOR_COVERAGE = new Map(
+  (vendorFootprintCoverage?.rows || []).map((row) => {
+    const value = String(row);
+    return [value.split("|", 1)[0], value];
+  }),
+);
 
 function json(body, status = 200, cache) {
   const headers = {
@@ -48,8 +63,9 @@ export function attachVendorFootprint(
   const footprint = source?.vendor_footprint;
   if (!footprint) return view;
   const coverageKey = vendorCoverageKey(root.ref);
-  const packed = (coverageIndex?.rows || []).find((row) =>
-    String(row).startsWith(`${coverageKey}|`));
+  const packed = coverageIndex === vendorFootprintCoverage
+    ? DEFAULT_VENDOR_COVERAGE.get(coverageKey)
+    : (coverageIndex?.rows || []).find((row) => String(row).startsWith(`${coverageKey}|`));
   const [, linkedRaw, eligibleRaw, rateRaw] = packed ? String(packed).split("|") : [];
   const linked = Number(linkedRaw);
   const eligible = Number(eligibleRaw);
@@ -71,6 +87,25 @@ export function attachVendorFootprint(
     rate: null,
     label: "coverage not measured for awards",
   };
+  const sectionCounts = Object.fromEntries(VENDOR_SECTION_SPECS.map((section) => {
+    const objects = (view?.domains?.[section.domain]?.objects || [])
+      .filter((object) => !section.kind || object?.object_kind === section.kind);
+    const uniqueCount = (rows) => new Set(rows.map((object) =>
+      String(object?.request_id || object?.subject_ref || object?.href || object?.label || ""),
+    ).filter(Boolean)).size;
+    let confirmedCount = uniqueCount(objects.filter((object) => object?.confidence === "strong"));
+    let mentionCount = uniqueCount(objects.filter((object) =>
+      object?.confidence === "strong" || object?.confidence === "tentative"));
+    if (section.id === "awards") {
+      confirmedCount = Number.isFinite(awardCoverage.linked) ? awardCoverage.linked : confirmedCount;
+      mentionCount = Number.isFinite(awardCoverage.eligible) ? awardCoverage.eligible : mentionCount;
+    }
+    return [section.id, {
+      confirmed_count: confirmedCount,
+      mention_count: Math.max(confirmedCount, mentionCount),
+      scope_count: Math.max(confirmedCount, mentionCount),
+    }];
+  }));
   return {
     ...view,
     vendor_footprint: {
@@ -80,10 +115,23 @@ export function attachVendorFootprint(
       sections: footprint.sections,
       excluded_confidence: footprint.excluded_confidence,
       award_coverage: awardCoverage,
+      section_counts: sectionCounts,
       promotion: footprint.promotion,
       provenance: footprint.provenance,
     },
   };
+}
+
+/** Daily vendor-profile read model assembled entirely from committed lookups. */
+export function precomputedVendorFootprint(stem, displayName = stem) {
+  const value = String(stem || "").trim();
+  if (!value) return null;
+  const ref = `vendor:stem:${encodeURIComponent(value)}`;
+  const view = decorateConnectionView(lookupEntityIntelligence(materialization, {
+    ref,
+    name: displayName,
+  }));
+  return attachVendorFootprint(view, view.root);
 }
 
 function publicConfidence(value) {

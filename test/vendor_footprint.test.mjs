@@ -93,6 +93,9 @@ test("vendor footprint renders load-bearing coverage copy and strong objects onl
         rate: 0.5,
         label: "showing 1 of 2 known awards linked so far (50%)",
       },
+      section_counts: {
+        awards: { confirmed_count: 1, mention_count: 2, scope_count: 2 },
+      },
       promotion: { eligible: false },
       provenance: { denominator_materialized_at: "2026-08-05" },
     },
@@ -100,21 +103,47 @@ test("vendor footprint renders load-bearing coverage copy and strong objects onl
 
   const model = vendorFootprintModel(response);
   assert.equal(model.groups.find((group) => group.id === "awards").objects.length, 1);
+  assert.equal(model.groups.find((group) => group.id === "awards").scope_count, 2);
 
   const html = renderVendorFootprintHTML(response);
-  assert.match(html, /showing 1 of 2 known awards linked so far \(50%\)/);
-  assert.match(html, /coverage not measured for this section; showing strong links only/);
+  assert.match(html, /Awards <span class="ct">2<\/span>/);
+  assert.match(html, /1 link we’ve confirmed/);
+  assert.match(html, /2 records mention this name/);
+  assert.match(html, /We haven’t measured how complete this section is yet/);
+  assert.match(html, /See Acme &amp; Co\.&#39;s awards \(2\)/);
   assert.match(html, /Strong award/);
   assert.doesNotMatch(html, /Weak candidate/);
+  assert.doesNotMatch(html, /strongly linked|in this build|coverage not measured|View this vendor as/i);
   assert.match(html, /Acme &amp; Co\./);
 });
 
 test("view-all links compose a typed vendor constraint through scope v0", () => {
-  const href = vendorFootprintScopeHref(REF, "awards");
+  const href = vendorFootprintScopeHref(REF, "awards", { query: "Acme & Co.", resultCount: 2 });
   assert.match(href, /^#money\?mode=award&/);
   const params = new URLSearchParams(href.split("?")[1]);
-  assert.deepEqual(JSON.parse(params.get("facet")), { entity_refs_all: [REF] });
+  assert.equal(params.get("q"), "Acme & Co.");
+  assert.deepEqual(JSON.parse(params.get("facet")), {
+    entity_refs_all: [REF],
+    result_count_receipt: 2,
+  });
   assert.equal(vendorFootprintScopeHref(REF, "franchise"), "");
+});
+
+test("zero confirmed links surface name mentions instead of a dead section", () => {
+  const html = renderVendorFootprintHTML({
+    root: { kind: "vendor", ref: REF, display_name: "Acme" },
+    domains: { money: { objects: [] } },
+    vendor_footprint: {
+      qualifier_required: true,
+      award_coverage: { linked: 0, eligible: 273, rate: 0 },
+      section_counts: {
+        awards: { confirmed_count: 0, mention_count: 273, scope_count: 273 },
+      },
+    },
+  });
+  assert.match(html, /Awards <span class="ct">273<\/span>/);
+  assert.match(html, /273 records mention this name — identity not yet confirmed/);
+  assert.match(html, /See Acme&#39;s awards \(273\)/);
 });
 
 test("promotion removes qualifier labels but never admits tentative rows", () => {
@@ -126,6 +155,9 @@ test("promotion removes qualifier labels but never admits tentative rows", () =>
     vendor_footprint: {
       qualifier_required: false,
       award_coverage: { label: "showing 1 of 1 known awards linked so far (100%)" },
+      section_counts: {
+        awards: { confirmed_count: 1, mention_count: 1, scope_count: 1 },
+      },
       promotion: { eligible: true },
     },
   };
@@ -133,5 +165,5 @@ test("promotion removes qualifier labels but never admits tentative rows", () =>
   assert.doesNotMatch(html, /showing 1 of 1/);
   assert.doesNotMatch(html, /coverage not measured/);
   assert.doesNotMatch(html, /Maybe/);
-  assert.match(html, /passed the documented coverage and precision promotion gates/);
+  assert.match(html, /links we’ve confirmed/);
 });

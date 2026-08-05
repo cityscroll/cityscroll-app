@@ -7,7 +7,7 @@ import {
 
 const GROUPS = Object.freeze([
   { id: "awards", label: "Awards", domain: "money", kind: "award", surface: "money", mode: "award" },
-  { id: "payments", label: "Payments", domain: "money", kind: "payment", surface: "money" },
+  { id: "payments", label: "Payments", domain: "money", kind: "payment", surface: null },
   { id: "land", label: "Land use", domain: "land", surface: "land" },
   { id: "property", label: "Property", domain: "property", surface: "property" },
   { id: "rules", label: "Rules", domain: "rules", surface: "rules" },
@@ -30,14 +30,26 @@ function strongObjects(response, group) {
 }
 
 /** Compose a domain scope with the typed vendor constraint from gc-01. */
-export function vendorFootprintScopeHref(ref, groupId, { language = "en" } = {}) {
+export function vendorFootprintScopeHref(
+  ref,
+  groupId,
+  { language = "en", query = "", resultCount = null } = {},
+) {
   const group = GROUPS.find((candidate) => candidate.id === groupId);
   if (!group?.surface || !ref) return "";
   const domainScope = emptyScope(language);
   domainScope.facets.domains = [group.surface];
   if (group.mode) domainScope.facets.values.mode = group.mode;
+  if (query) {
+    domainScope.topic.query = String(query);
+    domainScope.topic.keywords = [String(query)];
+  }
   const entityScope = scopeWithEntity(emptyScope(language), ref);
   const composed = intersectScopes(domainScope, entityScope);
+  const count = Number(resultCount);
+  if (Number.isInteger(count) && count >= 0) {
+    composed.facets.values.result_count_receipt = count;
+  }
   return routeHashFromScope(composed, { surface: group.surface });
 }
 
@@ -50,12 +62,39 @@ export function vendorFootprintModel(response = {}) {
     award_coverage: footprint.award_coverage || null,
     promotion: footprint.promotion || null,
     provenance: footprint.provenance || null,
-    groups: GROUPS.map((group) => ({
-      ...group,
-      objects: strongObjects(response, group),
-      href: vendorFootprintScopeHref(response.root.ref, group.id),
-      coverage_kind: group.id === "awards" ? "measured" : "unknown",
-    })),
+    groups: GROUPS.map((group) => {
+      const objects = strongObjects(response, group);
+      const explicit = footprint.section_counts?.[group.id] || {};
+      const awardFallback = group.id === "awards" ? footprint.award_coverage || {} : {};
+      const confirmedCount = Number.isInteger(explicit.confirmed_count)
+        ? explicit.confirmed_count
+        : Number.isInteger(awardFallback.linked)
+          ? awardFallback.linked
+          : objects.length;
+      const mentionCount = Number.isInteger(explicit.mention_count)
+        ? explicit.mention_count
+        : Number.isInteger(awardFallback.eligible)
+          ? awardFallback.eligible
+          : confirmedCount;
+      const scopeCount = Number.isInteger(explicit.scope_count)
+        ? explicit.scope_count
+        : Math.max(confirmedCount, mentionCount);
+      const query = response.root.stem || response.root.display_name || "";
+      return {
+        ...group,
+        objects,
+        confirmed_count: confirmedCount,
+        mention_count: Math.max(confirmedCount, mentionCount),
+        scope_count: Math.max(confirmedCount, scopeCount),
+        href: scopeCount > 0
+          ? vendorFootprintScopeHref(response.root.ref, group.id, {
+              query,
+              resultCount: scopeCount,
+            })
+          : "",
+        coverage_kind: group.id === "awards" ? "measured" : "unknown",
+      };
+    }),
   };
 }
 
@@ -75,38 +114,45 @@ function objectHTML(object, formatDate) {
 export function renderVendorFootprintHTML(response = {}, { formatDate = (value) => value } = {}) {
   const model = vendorFootprintModel(response);
   if (!model) return "";
-  const awardCoverage = model.award_coverage;
+  const displayName = model.root.display_name || model.root.stem || "this vendor";
   const sections = model.groups.map((group) => {
-    let coverage = "";
-    if (model.qualifier_required && group.coverage_kind === "measured" && awardCoverage?.label) {
-      coverage = `<p class="vendor-footprint-coverage" data-coverage-kind="measured">${escapeHTML(awardCoverage.label)}</p>`;
-    } else if (model.qualifier_required) {
-      coverage = `<p class="vendor-footprint-coverage" data-coverage-kind="unknown">coverage not measured for this section; showing strong links only</p>`;
+    const coverage = model.qualifier_required && group.coverage_kind === "unknown"
+      ? `<p class="vendor-footprint-coverage" data-coverage-kind="unknown">We haven’t measured how complete this section is yet.</p>`
+      : "";
+    const confirmed = group.confirmed_count;
+    const mentions = group.mention_count;
+    let identitySummary = "";
+    if (!confirmed && mentions) {
+      identitySummary = `${mentions.toLocaleString("en-US")} record${mentions === 1 ? "" : "s"} mention this name — identity not yet confirmed`;
+    } else if (confirmed && mentions > confirmed) {
+      identitySummary = `${confirmed.toLocaleString("en-US")} link${confirmed === 1 ? "" : "s"} we’ve confirmed · ${mentions.toLocaleString("en-US")} records mention this name`;
+    } else if (confirmed) {
+      identitySummary = `${confirmed.toLocaleString("en-US")} link${confirmed === 1 ? "" : "s"} we’ve confirmed`;
+    } else {
+      identitySummary = "No records mentioning this name are in this summary yet.";
     }
     const objects = group.objects.slice(0, 4);
     const body = objects.length
       ? `<ul class="ei-list">${objects.map((object) => objectHTML(object, formatDate)).join("")}</ul>`
-      : `<p class="ei-empty">No strongly linked records in this build.</p>`;
+      : "";
     const viewAll = group.href
-      ? `<a class="vendor-footprint-scope" href="${escapeHTML(group.href)}">View this vendor as a ${escapeHTML(group.label.toLowerCase())} scope →</a>`
+      ? `<a class="vendor-footprint-scope" href="${escapeHTML(group.href)}">See ${escapeHTML(displayName)}&#39;s ${escapeHTML(group.label.toLowerCase())} (${group.scope_count.toLocaleString("en-US")}) →</a>`
       : "";
     return `<section class="ei-domain vendor-footprint-section" data-footprint-section="${group.id}">
-      <h3 class="ei-domain-h">${escapeHTML(group.label)} <span class="ct">${group.objects.length}</span></h3>
+      <h3 class="ei-domain-h">${escapeHTML(group.label)} <span class="ct">${group.scope_count.toLocaleString("en-US")}</span></h3>
       ${coverage}
+      <p class="vendor-footprint-match-summary">${escapeHTML(identitySummary)}</p>
       ${body}
       ${viewAll}
     </section>`;
   }).join("");
-  const method = model.qualifier_required
-    ? "This is a partial view. Exact-stem strong links appear; possible and review-only matches stay out."
-    : "This view passed the documented coverage and precision promotion gates. Possible and review-only matches stay out.";
   const asOf = model.provenance?.denominator_materialized_at
-    ? ` Award denominator rebuilt ${escapeHTML(formatDate(model.provenance.denominator_materialized_at))}.`
+    ? ` Awards last counted ${escapeHTML(formatDate(model.provenance.denominator_materialized_at))}.`
     : "";
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
-    <p class="ei-lead">Published records linked to ${escapeHTML(model.root.display_name || model.root.stem || "this vendor")}, grouped by what they show.</p>
+    <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
     <div class="ei-domains">${sections}</div>
-    <p class="aidprov ei-method">${method}${asOf}</p>
+    <p class="aidprov ei-method">This summary separates links we’ve confirmed from records that mention the name.${asOf}</p>
   </div>`;
 }
