@@ -1,0 +1,69 @@
+{
+  "counts": {
+    "deduplicated_rows": 1,
+    "delta_rows": 3,
+    "final_snapshot_rows": 6,
+    "snapshot_rows": 3,
+    "source_rows": 4
+  },
+  "cursor": {
+    "exclusive_after": {
+      "request_id": "OCP0003",
+      "start_date": "2026-08-02T00:00:00.000"
+    },
+    "final": {
+      "request_id": "OCP0006",
+      "start_date": "2026-08-04T00:00:00.000"
+    },
+    "inclusive_through": null,
+    "order": [
+      "start_date ASC",
+      "request_id ASC"
+    ]
+  },
+  "discipline": {
+    "headroom_gated": true,
+    "one_dataset": true,
+    "single_job_lock": true
+  },
+  "evidence": {
+    "basis": "synthetic-fixture"
+  },
+  "export": {
+    "date_utc": "2026-08-05",
+    "format": "csv-rfc4180-utf8-lf",
+    "partition": "delta_date=2026-08-05",
+    "path": "ocp-recent-contract-awards/delta_date=2026-08-05/rows.csv",
+    "sha256": "e005d2e986d3754ef40799b58e806f022c50f2d545d5ed836df5db466b8df523"
+  },
+  "final_snapshot": {
+    "equivalence": {
+      "checked": true,
+      "equivalent": true,
+      "expected_sha256": "7df87bcc69501758a6353d444c6b655668b933255c20602fc65e2bec3e06f6ec"
+    },
+    "sha256": "7df87bcc69501758a6353d444c6b655668b933255c20602fc65e2bec3e06f6ec"
+  },
+  "ordering": {
+    "duplicate_cursor_pairs": 0,
+    "missing_cursor_rows": 0,
+    "non_monotonic_pairs": 0,
+    "observed_order": "ascending",
+    "sample_rows": 4,
+    "verified": true
+  },
+  "resume": {
+    "checkpoint": "ocp-recent-contract-awards/delta_date=2026-08-05/checkpoint.json",
+    "completion_reason": "source_exhausted",
+    "page_count": 2,
+    "page_size": 2,
+    "resume_count": 0,
+    "resumed_from_checkpoint": false
+  },
+  "schema": "cityscroll.ocp_awards_delta_export_receipt.v1",
+  "scope": "OCP Recent Contract Awards only; no cursor semantics are inherited from another source",
+  "source": {
+    "contract_id": "ocp-recent-contract-awards",
+    "dataset_id": "qyyg-4tf5"
+  }
+}

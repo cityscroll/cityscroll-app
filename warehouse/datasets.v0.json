@@ -36,7 +36,7 @@
       "bulk_class": "BULK",
       "default_limit": 50,
       "wh02_full_export": true,
-      "soda_order": "start_date DESC",
+      "soda_order": "start_date DESC, request_id DESC",
       "required_fields": [
         "request_id",
         "start_date",
