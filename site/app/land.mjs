@@ -1147,6 +1147,12 @@ function projectConnectionItemHTML(item, projectScope){
   return escUiHtml(item.label||"");
 }
 function projectConnectionsHTML(evidence, tools){
+  if(evidence?.status==="unavailable"){
+    return `<div class="eicard project-connections project-connections-unavailable" data-project-connections-state="unavailable" data-project-ref="${escUiHtml(evidence.project_ref||"")}">
+      <div class="chain-h">${t("project_connections_heading")}</div>
+      <p class="pc-gap">${t("project_connections_gap_source")}</p>
+    </div>`;
+  }
   if(!evidence||evidence.status!=="bounded"||!tools) return "";
   const view=tools.buildProjectConnectionView(evidence,{currentHash:"#land",language:window.LANG||"en"});
   let projectScope=CrolScope.emptyScope(window.LANG||"en");
@@ -1214,9 +1220,16 @@ function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
   if(existing?.data && (allowStatic || !existing.staticSnapshot)) return Promise.resolve(existing.data);
   const p = (async ()=>{
     try{
-      const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000);
+      const tools=await ensureProjectConnectionsTools();
+      const accepts=tools?async response=>{
+        if(!response?.ok) return false;
+        const payload=await response.json();
+        return tools.projectConnectionsPayloadState(payload,id)==="available";
+      }:null;
+      const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000, accepts);
       if(!resp || !resp.ok) return null;
-      return await resp.json();
+      const payload=await resp.json();
+      return tools?tools.normalizeProjectConnectionsPayload(payload,id):payload;
     }catch(e){ return null; }
   })();
   ZAP_OUTCOMES_MEM.set(id, {p});
@@ -1263,7 +1276,14 @@ async function loadZapOutcomes(r, el, selection){
     bindLandSpineUI(el);
     paintLandActionRail($("#land-actions"), r, record, phaseTools);
     const generated=Date.parse(warm.generatedAt||warm.data.generated_at||"");
-    const staleStatic=warm.staticSnapshot && (!Number.isFinite(generated) || Date.now()-generated>6*60*60*1000);
+    const connectionState=(await ensureProjectConnectionsTools())?.projectConnectionsPayloadState(
+      warm.data,r.project_id
+    );
+    const staleStatic=warm.staticSnapshot && (
+      !Number.isFinite(generated)
+      || Date.now()-generated>6*60*60*1000
+      || connectionState!=="available"
+    );
     if(!staleStatic) return;
   }
   const [data, phaseTools] = await Promise.all([

@@ -4,7 +4,11 @@ import entityLookup from "./data/entity_intelligence_lookup.json" with { type: "
 import projectLookup from "./data/zap_projects_warehouse_lookup.json" with { type: "json" };
 import bblLookup from "./data/zap_bbl_warehouse_lookup.json" with { type: "json" };
 import outcomeReceipt from "../../site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json" with { type: "json" };
-import { buildProjectConnectionEvidence } from "../../site/project_connections.mjs";
+import {
+  buildProjectConnectionEvidence,
+  PROJECT_CONNECTIONS_SCHEMA_VERSION,
+  PROJECT_CONNECTION_GROUPS,
+} from "../../site/project_connections.mjs";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const projectRows = Array.isArray(projectLookup?.rows) ? projectLookup.rows : [];
@@ -138,4 +142,53 @@ export function attachProjectConnections(record) {
       coverage: PROJECT_CONNECTION_COVERAGE,
     }),
   };
+}
+
+function unavailableRecord(record, reason) {
+  const id = clean(record?.project_id);
+  return {
+    ...record,
+    project_connections: {
+      schema_version: PROJECT_CONNECTIONS_SCHEMA_VERSION,
+      status: "unavailable",
+      reason,
+      project_id: id || null,
+      project_ref: id ? `project:${id}` : null,
+      groups: [],
+    },
+  };
+}
+
+/** Attach the read model and always return an explicit section availability contract. */
+export function attachProjectConnectionsSection(record, { attach = attachProjectConnections } = {}) {
+  try {
+    const decorated = attach(record);
+    const evidence = decorated?.project_connections;
+    const groupIds = new Set((evidence?.groups || []).map((group) => group?.id));
+    if (evidence?.schema_version === PROJECT_CONNECTIONS_SCHEMA_VERSION
+        && evidence?.status === "bounded"
+        && PROJECT_CONNECTION_GROUPS.every(({ id }) => groupIds.has(id))) {
+      return {
+        record: decorated,
+        section: { schema_version: PROJECT_CONNECTIONS_SCHEMA_VERSION, status: "available" },
+      };
+    }
+    return {
+      record: unavailableRecord(decorated || record, "read_model_incomplete"),
+      section: {
+        schema_version: PROJECT_CONNECTIONS_SCHEMA_VERSION,
+        status: "unavailable",
+        reason: "read_model_incomplete",
+      },
+    };
+  } catch (_error) {
+    return {
+      record: unavailableRecord(record, "read_model_unavailable"),
+      section: {
+        schema_version: PROJECT_CONNECTIONS_SCHEMA_VERSION,
+        status: "unavailable",
+        reason: "read_model_unavailable",
+      },
+    };
+  }
 }

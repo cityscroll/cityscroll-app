@@ -22,7 +22,7 @@ import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehou
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
-import { attachProjectConnections } from "./project_connections.mjs";
+import { attachProjectConnectionsSection } from "./project_connections.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -616,13 +616,28 @@ export async function handleZapOutcomes(request, env, ctx) {
 
   const cached = await kvGetRecord(env, projectId);
 
-  if (outcomeCacheIsFresh(cached)) {
+  const successResponse = (record, metadata = {}) => {
+    const connections = attachProjectConnectionsSection(record);
+    if (connections.section.status === "unavailable") {
+      console.warn(JSON.stringify({
+        event: "project-connections-unavailable",
+        project_id: projectId,
+        reason: connections.section.reason,
+      }));
+    }
     return response(JSON.stringify({
       ok: true,
+      ...metadata,
+      sections: { project_connections: connections.section },
+      record: connections.record,
+    }));
+  };
+
+  if (outcomeCacheIsFresh(cached)) {
+    return successResponse(cached, {
       cached: true,
       generated_at: cached.generated_at,
-      record: attachProjectConnections(cached),
-    }));
+    });
   }
 
   try {
@@ -632,21 +647,17 @@ export async function handleZapOutcomes(request, env, ctx) {
       if (ctx?.waitUntil) ctx.waitUntil(write);
       else await write;
     }
-    return response(JSON.stringify({
-      ok: true,
+    return successResponse(record, {
       cached: false,
       generated_at: record.generated_at,
-      record: attachProjectConnections(record),
-    }));
+    });
   } catch (error) {
     if (cached) {
-      return response(JSON.stringify({
-        ok: true,
+      return successResponse(cached, {
         cached: true,
         stale: true,
         generated_at: cached.generated_at,
-        record: attachProjectConnections(cached),
-      }));
+      });
     }
     return response(JSON.stringify({
       ok: false,

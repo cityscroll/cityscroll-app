@@ -181,9 +181,6 @@
   .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink)}
   .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft);cursor:default}
   .qchip b{color:var(--oxblood)}
-  /* Status text, not a control — deliberately NOT pill-shaped (999px radius) or button-styled
-     like .trychip above it, so the two never read as the same kind of thing. Its "Edit search"
-     button (.nledit) is a real, plainly-styled button (.mini) rather than another chip. */
   .nlunderstood{margin:10px 0 2px;font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .nlunderstood .nledit{margin-inline-start:8px;vertical-align:baseline}
   .searchactive{display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
@@ -206,8 +203,6 @@
   .nlqpreset-run{display:inline-flex;align-items:center;gap:7px;font:600 12px/1.25 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;background:#fff;color:var(--ink-soft);border:1px solid var(--rule);border-radius:7px 0 0 7px;max-width:340px;white-space:normal;text-align:start}
   .nlqpreset-lens{flex:0 0 auto;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--oxblood);border-inline-end:1px solid var(--rule);padding-inline-end:7px}
   .nlqpreset-remove{font:700 13px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 9px;background:var(--paper-2);color:var(--rose);border:1px solid var(--rule);border-inline-start:0;border-radius:0 7px 7px 0}
-  /* Low/no signal understood, or zero matches — the interpretation gets a visible callout
-     instead of blending into quiet status text (w12-02: never a bare empty result). */
   .nlunderstood-weak{background:#eceef2;border-inline-start:3px solid var(--amber);padding:8px 10px;border-start-end-radius:6px;border-end-end-radius:6px;color:var(--ink-soft)}
   .qcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;white-space:pre-wrap;color:var(--ink-soft);margin-top:4px}
   .tryrow{margin-top:12px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--muted)}
@@ -215,12 +210,6 @@
   .teaching-example{padding:var(--space-2) var(--space-3);border:1px dashed var(--color-border-strong);border-radius:var(--radius-sm);background:transparent}
   .teaching-example::before{content:"↳";margin-inline-end:var(--space-1);color:var(--color-text-muted)}
   .teaching-example:hover{border-color:var(--color-action);background:var(--color-action-tint,#eef2ff);color:var(--color-action-hover)}
-  /* w12-17: a SUBTLE, honest-data indicator — a 1px border tint, nothing louder — on a
-     suggestion chip whose own live results were found (at cron-validation time, not by the
-     client) to conspicuously carry prior award-cycle history and/or agency forecast data. Two
-     distinct, equally quiet tints so the two signals read as different things; a chip carrying
-     neither class looks exactly like any other .trychip, on purpose (uncertain data never
-     borrows the indicator). */
   .trychip.has-lineage{border-color:var(--amber)}
   .trychip.has-forecast{border-color:var(--blue)}
   .trychip.has-lineage.has-forecast{border-color:var(--oxblood)}
@@ -232,18 +221,11 @@
   .panel{background:var(--card);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow)}
   .panel h2{font:600 14px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0;padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
   .panel h2 .count{font-weight:600;color:var(--blue);letter-spacing:0;text-transform:none}
-  /* w12-20: the builder is the advanced expansion of the quiz above it, in the SAME panel —
-     a <details> disclosure, not a second h2-headed panel, so the two never read as siblings.
-     Open by default: every field stays as immediately reachable as it was as its own panel. */
   #advopts{margin-top:18px;border-top:1px solid var(--rule)}
   #advopts>summary{font:600 14px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);padding:14px 16px;cursor:pointer;list-style:none}
   #advopts>summary::-webkit-details-marker{display:none}
-  /* a down/up chevron, not a left/right-pointing one -- carries no reading-direction meaning,
-     so it needs no [dir=rtl] mirror rule the way an arrow glyph in translated text would. */
   #advopts>summary::before{content:"▾";display:inline-block;margin-inline-end:6px;transition:transform .15s}
   #advopts[open]>summary::before{transform:rotate(180deg)}
-  /* w9-02: the Export button lives beside the heading, not inside it — .panelbar takes over
-     the box styling h2 normally carries alone, so the heading's accessible name is just its text. */
   .panel .panelbar{padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
   .panel .panelbar h2{padding:0;border-bottom:0;margin:0}
 
@@ -254,9 +236,6 @@
   .row .rtitle{font-weight:700;font-size:15px;margin:0 0 4px}
   .row .rmeta{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .row .ragency{color:var(--blue)}
-  /* Money results are compound rows: the primary action and the detail selector are
-     siblings, never nested controls. Action-first DOM order gives keyboard users the
-     kinetic path before the optional detail expansion without adding a second row. */
   .money-row-card{position:relative;border-bottom:1px solid var(--rule);min-width:0}
   .money-row-card>.row{border-bottom:0;min-width:0}
   .money-row-card>.money-row-action{position:absolute;z-index:1;inset-block-start:13px;inset-inline-end:16px;justify-content:center;max-width:132px;padding:8px 10px;font-size:12px;line-height:1.2;text-align:center}
@@ -266,30 +245,20 @@
   .money-row-card:has(>.row.sel){background:#eef2ff;box-shadow:inset 3px 0 var(--blue)}
   .money-row-card:has(>.row.sel)>.row{background:transparent;box-shadow:none}
   .pin{font:11px/1 ui-monospace,Menlo,monospace;background:#eceef2;border:1px solid var(--rule);border-radius:5px;padding:2px 6px;color:#5b6470}
-  /* w9-07: de-emphasize the "no linkable PIN" badge without opacity -- opacity:.6 faded BOTH
-     text and background together, compositing down to 2.63:1 (axe serious). Full-opacity
-     var(--muted) on the unchanged solid background is 6.57:1; the dashed border keeps the
-     de-emphasis legible without a contrast hit. */
   .pin.muted{color:var(--muted);border-style:dashed}
   .tag{display:inline-block;font:700 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 7px;border-radius:999px;margin-inline-end:6px}
   .tag.open{background:#e7f4ec;color:var(--green)}
   .tag.soon{background:#eceef2;color:var(--amber)}
   .tag.closed{background:#eceef2;color:var(--rose)}
   .tag.hot{background:var(--oxblood);color:#fff}
-  /* Non-urgency facts read as quiet ink — color is reserved for what needs acting on (Tufte:
-     color as signal). Dollar amounts and asset types are information, not alarms. */
   .tag.amt{background:var(--paper-2);color:var(--ink-soft)}
   .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
   .tag.renewal{background:var(--paper-2);color:var(--ink-soft)}
-  /* M/WBE method chips — brand-tint signal via the design-language token sheet (not urgency). */
   .tag.mwbe{background:var(--cs-action-tint,color-mix(in srgb, var(--color-brand) 12%, var(--color-canvas-subtle)));color:var(--color-brand)}
   .tag.method{background:var(--color-canvas-subtle);color:var(--color-text-soft)}
   .tag.floor{background:var(--cs-success-tint,color-mix(in srgb, var(--color-success) 14%, var(--color-canvas-subtle)));color:var(--color-success)}
   .mwbe-chiprow{display:flex;flex-wrap:wrap;gap:var(--space-1,4px);margin-top:var(--space-1,4px)}
   .mwbe-sol-detail{margin-top:var(--space-4,14px)}
-  /* Rule-lifecycle status chips link to the official comment/adoption page. Comment-open
-     is the actionable moment, so it reuses the hot/soon/open urgency ladder; settled
-     stages read as quiet ink (color is reserved for what needs acting on). */
   a.tag{cursor:pointer;text-decoration:none}
   a.tag:hover{box-shadow:0 0 0 1px var(--rule-strong)}
   a.pivot{color:inherit;text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
@@ -465,19 +434,13 @@
   .chain-h{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
   .chain{display:flex;gap:0;flex-wrap:wrap;align-items:stretch}
   .stage{flex:1 1 220px;min-width:200px;display:flex;align-items:stretch}
-  /* Stage boxes are directly labeled (.stage-name) — no color code to learn. */
   .box{flex:1;border:1px solid var(--rule);border-top:3px solid var(--rule-strong);border-radius:8px;background:#fff;padding:13px 14px;display:flex;flex-direction:column;gap:6px}
   .box .stage-name{font:700 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .box .when{font:12px/1 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .box .bt{font-weight:700;font-size:14px;line-height:1.3}
   .box .amt{font:700 19px/1 var(--font-display);color:var(--green)}
   .box .vend{font-size:13px;color:#5b6470}
-  /* w9-10: 273x12px was AA-exempt (spacing) but far under the comfort bar -- vertical padding
-     brings the tappable height to ~28px without disturbing the chain-box layout. */
   .box a.view{margin-top:auto;font:600 12px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none;display:inline-block;padding:8px 0}
-  /* Near-match "maybe" tier (w12-18) — dashed top border + amber label, visually distinct from
-     the confident chain's solid var(--rule-strong) boxes above so a maybe is never mistaken for
-     a confirmed paper-trail stage at a glance. */
   .box.maybe{border-top-style:dashed;border-top-color:var(--amber)}
   .box.maybe .stage-name{color:var(--amber)}
   .box .why{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
@@ -485,7 +448,6 @@
   .near-match-reveal summary{cursor:pointer;font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
   .near-match-reveal summary:hover{text-decoration:underline}
   .near-match-reveal .chain-h{margin-top:14px}
-  /* Inline methodology disclosure on notice detail — expands in place (no navigation). */
   .inline-disclose{display:inline;margin:0}
   .inline-disclose>summary{display:inline;cursor:pointer;list-style:none;color:var(--oxblood);border-bottom:1px dotted var(--rule-strong);font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif}
   .inline-disclose>summary::-webkit-details-marker{display:none}
@@ -493,14 +455,10 @@
   .inline-disclose-body{display:block;margin-top:8px;padding:10px 12px;background:var(--paper-2,#f6f7f9);border:1px solid var(--rule);border-radius:6px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:42em}
   .inline-disclose-body a{color:var(--oxblood)}
   .pivot-disclose{display:inline-block;margin-inline-start:6px;vertical-align:baseline}
-  /* Native title bubbles are hover-only on many phones. Static/abbreviated phase chips
-     expose the same full label on keyboard focus or tap without inventing another modal. */
   .lc-step-help{position:relative;cursor:help}
   .lc-step-help::after{content:attr(title);display:none;position:absolute;z-index:40;inset-block-start:calc(100% + 6px);inset-inline-start:0;width:max-content;max-width:min(260px,calc(100vw - 44px));padding:8px 10px;border:1px solid var(--rule-strong);border-radius:7px;background:var(--ink);color:#fff;font:600 12px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:0;text-transform:none;white-space:normal;box-shadow:var(--shadow)}
   .lc-step-help:hover::after,.lc-step-help:focus::after{display:block}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
-  /* Rules carries five distinct event types; its denser spine gets a fixed five-column
-     reading order on wide notice detail and a vertical sequence on phones. */
   .rule-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:8px}
   .rule-chain .stage{min-width:0}
   .rule-chain .connector{display:none}
@@ -510,9 +468,6 @@
   }
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
 
-  /* Council meeting outcomes: matter-centric agenda scan (not N lifecycle chains).
-     Summary chips + short title + outcome badge; action history / votes / long text
-     behind progressive disclosure. Event docs appear once above the list. */
   .meeting-summary{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
   .meeting-chip{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper-2);color:var(--ink-soft)}
   .meeting-chip strong{color:var(--ink);font-weight:700}
@@ -548,11 +503,9 @@
   .meeting-roll-call{margin-top:4px}
   .meeting-roll-call-person a,.meeting-roll-call a.meeting-official-link,.meeting-roll-call-table a.meeting-official-link{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
   .meeting-roll-call-person a:hover,.meeting-roll-call a.meeting-official-link:hover,.meeting-roll-call-table a.meeting-official-link:hover{color:var(--ink)}
-  /* One-line roll-call chip on the matter card (not only inside collapsed Decision). */
   .meeting-roll-call-chip{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:6px 0 0;padding:6px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2,#f6f7f9);font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .meeting-roll-call-chip .meeting-roll-call-chip-lbl{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .meeting-roll-call-chip .meeting-roll-call-names{min-width:0;overflow-wrap:anywhere}
-  /* Full named roll call (decision panel) — real table for a11y. */
   .meeting-roll-call-table{width:100%;border-collapse:collapse;margin:6px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif}
   .meeting-roll-call-table caption.meeting-roll-call-caption{caption-side:top;text-align:start;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
   .meeting-roll-call-table th,.meeting-roll-call-table td{padding:6px 8px;border-bottom:1px solid var(--rule);text-align:start;vertical-align:top}
@@ -567,23 +520,15 @@
   .official-vote-file{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif}
   .official-vote-title{margin:4px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .official-vote-bucket{display:inline-block;margin-top:0;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood)}
-  /* Council matter phase-group (agenda → matter → decision → record) over server spines[].
-     Same lead → stepper → panels shape as rules/land; future chips solid muted for axe. */
   .meeting-matter-phase{margin-top:10px}
   .meeting-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
   .meeting-phase-stepper .lc-step.future{opacity:1;color:#5b6470;background:#f6f7f9;border-style:dashed;border-color:#b7bdc7}
   .meeting-spine-lead .lc-phase-action .act{margin-inline-end:6px}
   .meeting-phase-docs{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:4px}
   .meeting-phase-agg{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 6px}
-  /* Legacy chain classes kept for other lifecycle surfaces. */
   .meeting-spines{display:flex;flex-direction:column;gap:12px}
   .meeting-spine-docs{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
 
-  /* Lifecycle timeline (PROC-001): phase-grouped stepper (Solicitation → Selection →
-     Award and registration → Payments) + detail only for material stages. Same progressive-
-     disclosure pattern as land_phase_spine; pure model in site/procurement_phase_spine.mjs.
-     Future unmatched steps stay grey chips — never a paragraph of "Not yet shown here"
-     per empty stage. */
   .lc-stepper{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;list-style:none;margin:0 0 12px;padding:0}
   .lc-stepper > li{display:flex;align-items:center;gap:2px;min-width:0}
   .lc-step{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper-2,#f6f7f9);color:var(--muted);white-space:nowrap}
@@ -593,7 +538,6 @@
   .lc-step.future,.lc-step.unmatched{opacity:.55;border-style:dashed}
   .lc-step.ambiguous{border-color:var(--amber);background:#f6f7f9;color:var(--amber)}
   .lc-step-arrow{color:var(--muted);font-size:13px;padding:0 2px;user-select:none}
-  /* Matter PIN timeline phase grouping (same shape as land / procurement phase spines) */
   .matter-phase-lead{margin:0 0 12px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:#ffffff}
   .matter-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
   .matter-phase-now-phase{font:700 18px/1.2 var(--font-display);margin:0 0 4px;color:var(--ink)}
@@ -601,7 +545,6 @@
   .matter-phase-action{font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:8px 0 0}
   .matter-phase-next{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:6px 0 0}
   .matter-phase-stepper .lc-step{cursor:pointer}
-  /* Future chips: no opacity fade (axe color-contrast). Dashed border still signals not-started. */
   .matter-phase-stepper .lc-step.future{opacity:1;color:#5b6470;background:#f6f7f9;border-style:dashed;border-color:#b7bdc7}
   .matter-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#ffffff;overflow:hidden}
   .matter-phase[open]{background:#fff}
@@ -625,7 +568,6 @@
   .matter-phase-history > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
   .matter-phase-chrono{max-height:280px;overflow:auto;margin-top:8px}
   .matter-phase-chrono .tl{margin-bottom:6px}
-  /* Vendor profile “On the record” — same phase chrome as matter (award → registration → payments) */
   .vendor-phase-lead{margin:0 0 12px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:#ffffff}
   .vendor-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
   .vendor-phase-now-phase{font:700 18px/1.2 var(--font-display);margin:0 0 4px;color:var(--ink)}
@@ -634,7 +576,6 @@
   .vendor-phase-action a{font-weight:700}
   .vendor-phase-next{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:6px 0 0}
   .vendor-phase-stepper .lc-step{cursor:pointer}
-  /* Future chips: no opacity fade (axe color-contrast). Dashed border still signals not-started. */
   .vendor-phase-stepper .lc-step.future{opacity:1;color:#5b6470;background:#f6f7f9;border-style:dashed;border-color:#b7bdc7}
   .vendor-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#ffffff;overflow:hidden}
   .vendor-phase[open]{background:#fff}
@@ -664,7 +605,6 @@
   .lc-docs-caveat{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
   .lc-how{display:block;margin-top:10px}
   .lc-how>summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}
-  /* Shared notice-fact panel: prime-award snapshot + receipt-backed subsidy projects. */
   .notice-fact-detail{margin-top:14px;padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:var(--card,#fff)}
   .notice-fact-detail>.chain-h{margin-top:0}
   .notice-fact-detail .count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;margin-inline-start:5px;border:1px solid var(--rule);border-radius:999px;font:700 11px/1 ui-monospace,SFMono-Regular,monospace;color:var(--muted)}
@@ -678,7 +618,6 @@
   .sub-outreach-chips{display:flex;flex-wrap:wrap;gap:6px}
   .sub-outreach-window{margin-top:12px;padding:10px 12px;border-left:3px solid var(--color-brand);background:var(--color-canvas-subtle);font:14px/1.45 var(--ui,ui-sans-serif,system-ui,sans-serif);color:var(--color-text-soft)}
 
-  /* Shared phase-timeline chrome (Money lifecycle + paper trail + Land/ZAP). */
   .lc-phase-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f6f7f9) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
   .lc-phase-facts{margin:8px 0 2px}
   .lc-phase-facts .lc-phase-fact{margin:4px 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink,#12181f)}
@@ -692,7 +631,6 @@
   .lc-phase-next{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0;padding-top:8px;border-top:1px solid var(--rule);color:var(--muted)}
   .lc-phase-next strong{color:var(--ink);font-weight:700}
   .lc-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
-  /* Future chips: no opacity fade (axe color-contrast). Dashed border still signals not-started. */
   .lc-phase-stepper .lc-step.future{opacity:1;color:#5b6470;background:#f6f7f9;border-style:dashed;border-color:#b7bdc7}
   .lc-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#ffffff;overflow:hidden}
   .lc-phase[open]{background:#fff}
@@ -718,12 +656,8 @@
   .lc-phase-dates > li{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding:3px 0;overflow-wrap:anywhere}
   .lc-phase-toggle{display:inline-block;margin-top:6px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;background:none;border:0;padding:0;color:var(--oxblood);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
   .lc-phase-portal{display:inline-flex;align-items:center;gap:6px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 12px}
-  /* Subsidy phase spine (NYCIDA/Build NYC) — same progressive-disclosure shape as
-     procurement/land; future chips solid muted (axe contrast, no opacity fade). */
   .subsidy-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
   .subsidy-phase-stepper .lc-step.future,.lc-phase-stepper .lc-step.future{opacity:1;color:#5b6470;background:#f6f7f9;border-style:dashed;border-color:#b7bdc7}
-  /* Franchise + property disposition steppers use done/current/todo chips; todo must
-     stay solid muted (axe contrast) — same treatment as .lc-step.future elsewhere. */
   .franchise-phase-stepper .lc-step.todo,
   .disposition-phase-stepper .lc-step.todo{opacity:1;color:#5b6470;background:#f6f7f9;border-style:dashed;border-color:#b7bdc7}
   .franchise-phase-stepper .lc-step.done,
@@ -741,15 +675,11 @@
   .property-fcard .property-action-lead{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);margin:0 0 6px}
   .property-fcard .property-mini-stepper{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px;padding:0;list-style:none}
   .property-fcard .property-mini-stepper .lc-step{font-size:11px;padding:2px 7px}
-  /* Closed sales: quiet card chrome only — keep child tag tokens for contrast. */
   .property-fcard.is-closed{border-color:var(--color-border);background:var(--color-surface)}
   .property-closed-section{margin:18px 0 var(--space-2);padding-top:var(--space-3);border-top:1px solid var(--color-border)}
   .property-closed-section-title{margin:0;font:600 13px/1.3 var(--font-interface);color:var(--color-text-soft);letter-spacing:.02em;text-transform:uppercase}
   .property-view-switch{margin:0 0 var(--space-4);display:flex;flex-wrap:wrap;gap:var(--space-2)}
   .property-view-switch .chip{min-height:44px}
-  /* ===== Lens filter template (reference instance: Property). Progressive disclosure:
-     one primary rail visible, secondary facets behind "More filters"; selected-filters
-     summary + count line; small-multiples collapse card. See docs/design-principles-lens.md. */
   .lens-method{margin:var(--space-1) 0 0}
   .lens-method-summary{display:inline-flex;align-items:center;gap:var(--space-2);font:600 11px/1.2 var(--font-sc);letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-muted);cursor:pointer;list-style:none}
   .lens-method-summary::-webkit-details-marker{display:none}
@@ -954,7 +884,7 @@
   .land-phase-step{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper-2,#f6f7f9);color:var(--muted);cursor:pointer}
   .land-phase-step.passed{border-color:#b6ddc3;background:#e7f4ec;color:var(--muted)}
   .land-phase-step.current{box-shadow:0 0 0 2px var(--oxblood);border-color:var(--oxblood);background:#fff;color:var(--ink)}
-  .land-phase-step.future{opacity:.55;border-style:dashed}
+  .land-phase-step.future{opacity:1;color:var(--muted);background:var(--paper-2);border-style:dashed;border-color:var(--rule-strong)}
   .land-phase-arrow{color:var(--muted);font-size:13px;padding:0 2px;user-select:none}
   .land-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#ffffff;overflow:hidden}
   .land-phase[open]{background:#fff}

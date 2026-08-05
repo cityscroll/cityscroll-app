@@ -13,6 +13,59 @@ export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "notices", relation: "references_project", surface: "land" },
 ]);
 
+export const PROJECT_CONNECTIONS_SCHEMA_VERSION = 1;
+
+/** Classify the semantic section contract, not merely the HTTP status. */
+export function projectConnectionsPayloadState(payload, expectedProjectId = "") {
+  const expectedRef = expectedProjectId ? `project:${String(expectedProjectId).trim()}` : "";
+  const evidence = payload?.record?.project_connections;
+  const groupIds = new Set((evidence?.groups || []).map((group) => group?.id));
+  const available = payload?.ok !== false
+    && evidence?.schema_version === PROJECT_CONNECTIONS_SCHEMA_VERSION
+    && evidence?.status === "bounded"
+    && (!expectedRef || evidence?.project_ref === expectedRef)
+    && PROJECT_CONNECTION_GROUPS.every(({ id }) => groupIds.has(id));
+  if (available) return "available";
+
+  const section = payload?.sections?.project_connections;
+  if (section?.schema_version === PROJECT_CONNECTIONS_SCHEMA_VERSION
+      && section?.status === "unavailable"
+      && section?.reason) {
+    return "unavailable";
+  }
+  return "incomplete";
+}
+
+/** Turn an incomplete success into an explicit reader-visible unavailable section. */
+export function normalizeProjectConnectionsPayload(payload, expectedProjectId = "") {
+  if (!payload?.record || projectConnectionsPayloadState(payload, expectedProjectId) === "available") {
+    return payload;
+  }
+  const declared = payload?.sections?.project_connections;
+  const reason = declared?.status === "unavailable" && declared?.reason
+    ? declared.reason
+    : "incomplete_response";
+  const id = String(expectedProjectId || payload.record.project_id || "").trim();
+  const section = {
+    schema_version: PROJECT_CONNECTIONS_SCHEMA_VERSION,
+    status: "unavailable",
+    reason,
+  };
+  return {
+    ...payload,
+    sections: { ...(payload.sections || {}), project_connections: section },
+    record: {
+      ...payload.record,
+      project_connections: {
+        ...section,
+        project_id: id || null,
+        project_ref: id ? `project:${id}` : null,
+        groups: [],
+      },
+    },
+  };
+}
+
 const clean = (value, max = 320) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
