@@ -311,21 +311,24 @@ async function applyNoticeWatchSeed({ noticeId, projectId, lens, filter }){
  * Neutral surfaces (home, about-style) stay bare #alerts.
  */
 function currentLensFilterState(tab){
+  const adapt=(state)=>globalThis.CrolScope
+    ?CrolScope.lensStateFromScope(CrolScope.scopeFromLensState(tab,state,{language:window.LANG||"en"}),tab)
+    :state;
   if(tab === "money"){
-    return {
+    return adapt({
       agency: $("#agency") && $("#agency").value || "",
       q: $("#kw") && $("#kw").value.trim() || "",
       minAmount: $("#minamt") && $("#minamt").value || null,
       mode: $("#mode") && $("#mode").value || "open",
       noticeType: ($("#mode") && $("#mode").value === "award") ? "award" : null,
-    };
+    });
   }
   if(tab === "land"){
-    return {
+    return adapt({
       q: $("#lkw") && $("#lkw").value.trim() || "",
       boro: $("#lboro") && $("#lboro").value || "",
       status: $("#lstatus") && $("#lstatus").value || "active",
-    };
+    });
   }
   if(tab === "meetings" || tab === "property" || tab === "rules"){
     const state = {
@@ -360,7 +363,7 @@ function currentLensFilterState(tab){
         state.communityDistrict=propertyCommunityDistrict;
       }
     }
-    return state;
+    return adapt(state);
   }
   return null;
 }

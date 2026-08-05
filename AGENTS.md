@@ -36,6 +36,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/app/*.mjs` module is registered exactly once, with no orphan or unregistered files.
   Pure libs loaded only via dynamic `import()` (not listed in `SITE_MODULES`) do not need
   graph registration; still re-run the test when an *app* module that imports them changes.
+- Browse scope uses the pure `site/scope_v0.mjs` adapter; existing DOM controls, hashes,
+  map state, presets, and watch drafts remain the state owners. Do not add a parallel scope
+  store. Verify cross-surface round trips with `node --test test/scope_v0.test.mjs`.
 
 ## Digest cron deploy safety
 

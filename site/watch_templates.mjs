@@ -7,6 +7,8 @@
  * Artifact: site/data/watch_templates.json
  */
 
+import { scopeFromWatch, subscriptionFromScope } from "./scope_v0.mjs";
+
 export const WATCH_TEMPLATES_SCHEMA_VERSION = 1;
 
 /** @type {object|null} */
@@ -107,14 +109,13 @@ export function templateSubscribePayloads(template, opts = {}) {
   const freq = opts.freq === "weekly" ? "weekly" : "daily";
   const lang = opts.lang || "en";
   const watches = Array.isArray(template?.watches) ? template.watches : [];
-  return watches.map((w) => ({
-    email,
-    lens: w.lens,
-    filter: normalizeFilter(w.filter),
-    freq,
-    lang,
-    label: w.label || w.lens,
-  }));
+  return watches.map((w) => {
+    const scope = scopeFromWatch({ lens: w.lens, filter: normalizeFilter(w.filter) }, { language: lang });
+    return {
+      ...subscriptionFromScope(scope, { email, freq }, { lens: w.lens }),
+      label: w.label || w.lens,
+    };
+  });
 }
 
 /**

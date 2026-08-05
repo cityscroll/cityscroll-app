@@ -6,6 +6,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 |---|---|
 | `site/app/main.mjs` | Ordered module loading; read for boot-order or module-registration changes. |
 | `site/app/core.mjs` | API clients, shared formatting, skeletons, tabs, and common DOM helpers. |
+| `site/scope_v0.mjs` | Pure scope v0 narrow-waist adapter across routes, filters, map/Now state, presets, sharing, and watches; owns no mutable state. `scope_now_adapter.mjs` keeps the Now matcher on that surface's lazy graph. |
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |

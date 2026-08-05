@@ -306,7 +306,9 @@ test("#now is an additive entry route and does not take ownership from current l
   for (const lens of ["money", "people", "land", "property", "rules", "meetings", "map", "alerts"]) {
     assert.match(html, new RegExp(`data-tab="${lens}"`));
   }
-  assert.match(routing, /if\(raw === "now"\)\{\s*showNow\(\);/);
+  assert.match(routing, /raw === "now" \|\| raw\.startsWith\("now\?"\)/);
+  assert.match(routing, /scopeFromRouteHash\("#"\+raw/);
+  assert.match(routing, /showNow\(\{scope:CrolScope\.scopeHasConstraints\(scope\)\?scope:null\}\)/);
   assert.match(main, /import\("\.\/now\.mjs"\)/);
   assert.match(nowApp, /import\("\.\.\/now_view\.mjs"\)/);
   assert.doesNotMatch(nowApp, /now_surface/);
