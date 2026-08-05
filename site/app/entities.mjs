@@ -630,6 +630,26 @@ async function paintVendorFootprint(box, response){
   host.innerHTML = tools.renderVendorFootprintHTML(response, { formatDate: fdate });
 }
 
+/**
+ * Composability suggestion (gc-08): "intersect with an agency scope" using the
+ * vendor's own top counterparty agency (already fetched for the agency-chip row).
+ * Silent no-op when the typed vendor ref or the composed href can't be built —
+ * same quiet-fail posture as agencyForecastTeaser.
+ */
+async function paintVendorAgencyIntersect(box, profile, agencies){
+  const host = box?.querySelector("#vendor-agency-intersect");
+  if(!host || !agencies.length) return;
+  const topAgencyName = cleanText(agencies[0].name || agencies[0].agency_name || "");
+  if(!topAgencyName) return;
+  const ref = globalThis.CrolEntityPivots?.entityRouteRef("vendor", profile.display);
+  if(!ref) return;
+  const tools = await ensureVendorFootprintTools();
+  if(!tools || !document.contains(host)) return;
+  const href = tools.vendorAgencyIntersectionHref(ref, topAgencyName, { query: profile.stem });
+  if(!href) return;
+  host.innerHTML = `<a class="pivot" href="${escUiHtml(href)}">${t("vendor_agency_intersect_link",{agency:escUiHtml(topAgencyName)})}</a>`;
+}
+
 function vendorMentionItemsHTML(mentions){
   return mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}</span>
@@ -919,6 +939,13 @@ function vendorProfileHTML(profile, details, hydrating){
     const name = a.name||a.agency_name||"";
     return `<a class="chip" style="text-decoration:none" href="${agencyHref(name)}">${escUiHtml(cleanText(name))}<span class="ct">${money(a.total??a.t)||a.n}</span></a>`;
   }).join("");
+  // Composability suggestion (gc-08): the vendor's own top counterparty agency is
+  // already fetched for the chip row above — reuse it to suggest one fast, reliable
+  // intersection move (vendor ∩ agency) instead of inventing a second data fetch.
+  const topAgencyName = agencies.length ? cleanText(agencies[0].name||agencies[0].agency_name||"") : "";
+  const agencyIntersectHost = topAgencyName
+    ? `<p id="vendor-agency-intersect" class="ei-lead" style="margin-top:6px"></p>`
+    : "";
   // Flat fallback inside the host; paintVendorPhaseTimeline upgrades to phase UI.
   const onTheRecord = rows.length
     ? `<div class="chain-h">${t("vendor_on_the_record")}</div>
@@ -951,7 +978,7 @@ function vendorProfileHTML(profile, details, hydrating){
       </div>` : ""}
 
       <div id="overview-content">
-        ${agencies.length?`<div class="chain-h">${t("vendor_agencies_heading")}</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
+        ${agencies.length?`<div class="chain-h">${t("vendor_agencies_heading")}</div><div class="chiprow" style="margin-top:6px">${agChips}</div>${agencyIntersectHost}`:""}
         <div id="vendor-footprint">${footprintAbsent}</div>
         ${onTheRecord}
         ${mentions.length?`<div class="chain-h">${t("vendor_mentions_heading")}</div><div class="timeline">${mentionItems}</div>`:""}
@@ -983,6 +1010,8 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
   const rows = details?.rows || [];
   if(rows.length && !hydrating) paintVendorPhaseTimeline(box, profile, rows);
   if(details?.footprint) paintVendorFootprint(box, details.footprint);
+  const agenciesForIntersect = details?.agencies || profile.topAgencies || [];
+  if(agenciesForIntersect.length) paintVendorAgencyIntersect(box, profile, agenciesForIntersect);
   const lazyMentions = $("#vendor-mentions-lazy");
   if(lazyMentions) lazyMentions.addEventListener("toggle", ()=>{
     if(!lazyMentions.open || lazyMentions.dataset.loaded) return;

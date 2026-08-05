@@ -1254,6 +1254,7 @@
 
     vendor_on_the_record: "En el registro — avisos que nombran a este proveedor",
     vendor_agencies_heading: "Agencias de las que ganan (clic para pivotar)",
+    vendor_agency_intersect_link: "Ver los registros de este proveedor con {agency} →",
     vendor_mentions_heading: "Ver otras menciones",
     vendor_follow_btn: "Seguir a este proveedor",
     agency_follow_btn: "Seguir agencia",

@@ -5,6 +5,7 @@ import { buildVendorFootprintCoverage } from "../tools/lib/entity_intelligence_b
 import { vendorCoverageKey } from "../entity_resolution/cross_domain/vendor_coverage_key.mjs";
 import {
   renderVendorFootprintHTML,
+  vendorAgencyIntersectionHref,
   vendorFootprintModel,
   vendorFootprintScopeHref,
 } from "../site/vendor_footprint.mjs";
@@ -184,4 +185,62 @@ test("promotion removes qualifier labels but never admits tentative rows", () =>
   assert.doesNotMatch(html, /coverage not measured/);
   assert.doesNotMatch(html, /Maybe/);
   assert.match(html, /links we’ve confirmed/);
+});
+
+test("PASSPort/Checkbook contract corroboration (VI-02) gets its own section, distinct from award and payment", () => {
+  const response = {
+    ok: true,
+    root: { kind: "vendor", ref: REF, display_name: "Make it Zesty LLC" },
+    domains: {
+      money: {
+        objects: [
+          { object_kind: "award", request_id: "1", confidence: "strong", label: "Catering Services", href: "#notice/1" },
+          { object_kind: "contract", subject_ref: "contract:CT1", confidence: "strong", label: "PASSPort contract" },
+          { object_kind: "contract", subject_ref: "contract:CT2", confidence: "strong", label: "Checkbook contract" },
+          { object_kind: "payment", subject_ref: "entity:spending:1", confidence: "strong", label: "Checkbook payment" },
+        ],
+      },
+      land: { objects: [] },
+      property: { objects: [] },
+      rules: { objects: [] },
+      meetings: { objects: [] },
+      franchise: { objects: [] },
+    },
+    vendor_footprint: {
+      qualifier_required: true,
+      award_coverage: { linked: 1, eligible: 1, rate: 1, label: "showing 1 of 1 known awards linked so far (100%)" },
+      section_counts: {
+        awards: { confirmed_count: 1, mention_count: 1, scope_count: 1 },
+        contracts: { confirmed_count: 2, mention_count: 2, scope_count: 2 },
+        payments: { confirmed_count: 1, mention_count: 1, scope_count: 1 },
+      },
+      promotion: { eligible: false },
+      provenance: {},
+    },
+  };
+
+  const model = vendorFootprintModel(response);
+  const awards = model.groups.find((group) => group.id === "awards");
+  const contracts = model.groups.find((group) => group.id === "contracts");
+  const payments = model.groups.find((group) => group.id === "payments");
+  assert.equal(awards.objects.length, 1);
+  assert.equal(contracts.objects.length, 2);
+  assert.equal(payments.objects.length, 1);
+  assert.equal(contracts.coverage_kind, "unknown");
+
+  const html = renderVendorFootprintHTML(response);
+  assert.match(html, /Contract corroboration <span class="ct">2<\/span>/);
+  assert.match(html, /PASSPort contract/);
+  assert.match(html, /Checkbook contract/);
+});
+
+test("vendorAgencyIntersectionHref composes a typed vendor ∩ named-agency scope", () => {
+  const href = vendorAgencyIntersectionHref(REF, "Health and Mental Hygiene", { query: "MAKE IT ZESTY" });
+  assert.match(href, /^#money\?/);
+  const params = new URLSearchParams(href.split("?")[1]);
+  assert.equal(params.get("agency"), "Health and Mental Hygiene");
+  assert.equal(params.get("q"), "MAKE IT ZESTY");
+  assert.deepEqual(JSON.parse(params.get("facet")), { entity_refs_all: [REF] });
+  assert.equal(vendorAgencyIntersectionHref(REF, ""), "");
+  assert.equal(vendorAgencyIntersectionHref("", "Health and Mental Hygiene"), "");
 });

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "title": "Vendor constellation entry-gate verification (gc-08)",
+  "observed_on": "2026-08-05",
+  "context": "VI-01 (census repair), VI-02 (PASSPort/Checkbook procurement-spine wiring), and VI-03 (expanded gold + conservative alias policy) landed on main before this measurement. This receipt re-verifies the three entry gates the vendor constellation's promotion decision depends on, plus a live-cohort resolved-same rate VI-03 did not publish (its worker measured gold only).",
+  "gates": {
+    "precision": {
+      "status": "measured",
+      "method": "node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0 --pipeline",
+      "result": {
+        "precision": 1,
+        "recall": 1,
+        "candidate_recall": 1,
+        "false_merge": 0,
+        "false_split": 0,
+        "cases": 56,
+        "gold_version": "v1"
+      },
+      "passed": true
+    },
+    "false_split": {
+      "status": "measured",
+      "method": "Same run as precision gate; false_split counted over all 56 gold_v1 cases (43 same-labeled pairs across vendor/agency/procurement).",
+      "result": { "false_split": 0 },
+      "spot_check_strata_resolved_same": [
+        {
+          "id": "gv1-045",
+          "stratum": "dba_alias",
+          "pair": ["Northstar Consulting DBA Northstar Partners", "Northstar Partners"]
+        },
+        {
+          "id": "gv1-046",
+          "stratum": "dba_alias",
+          "pair": ["Quality Construction Group LLC DBA QCG Builders", "QCG Builders"]
+        },
+        {
+          "id": "gv1-047",
+          "stratum": "alias",
+          "pair": ["Summit Security Group LLC", "Summit Security"]
+        },
+        {
+          "id": "gv1-049",
+          "stratum": "successor",
+          "pair": ["Metropolitan Building Services Inc.", "Metropolitan Building Services LLC"]
+        },
+        {
+          "id": "gv1-050",
+          "stratum": "successor",
+          "pair": ["Greenfield Environmental Inc", "Greenfield Environmental LLC"]
+        }
+      ],
+      "passed": true
+    },
+    "multi_domain": {
+      "status": "measured",
+      "method": "Re-ran the shipped PIN/EPIN join (worker/src/lib/passport_join.mjs) between the committed full award census (site/data/ocp_awards_warehouse_lookup.json, 53,245 rows) and a fresh live pull of PASSPort Public's contractData.js (61,032 contracts, fetched 2026-08-05), then counted distinct vendorStem values that appear in BOTH the award census and the PASSPort-joined subset.",
+      "result": {
+        "definition": "share of resolved vendor roots (full award census) carrying an edge in ≥2 money sub-kinds (award + PASSPort/Checkbook contract corroboration)",
+        "named_award_rows": 51812,
+        "total_vendor_roots": 14463,
+        "vendor_roots_with_passport_contract_corroboration": 4026,
+        "multi_domain_vendor_rate": 0.2784
+      },
+      "caveat": "This measures multi-sub-kind linkage WITHIN the money domain (award vs. contract corroboration), which is the pairing the task named ('awards + contracts/payments at minimum'). It is not the same denominator as docs/evidence/vendor-footprint-coverage.json's multi_domain_vendor_rate gate, which counts entities matched in >=2 of the 7 cross-domain domains (money/land/property/rules/meetings/people/franchise) inside the capped 200-root entity-intelligence materialization — that figure remains 0 because PASSPort corroboration is currently wired into the corpus builder from a 2-row fixture (site/data/procurement_spine_sources.json), not the full 61k-row live PASSPort dump, and because land/rules/meetings/property/franchise objects are overwhelmingly agency-identified rather than vendor-identified in this corpus.",
+      "passed": false,
+      "passed_note": "27.84% is a meaningful, non-trivial share, but below the 50% bar the diagnosis's own promotion gate used. The constellation ships qualified/labeled, not unqualified, consistent with this result."
+    }
+  },
+  "live_cohort_resolved_same_rate": {
+    "status": "measured",
+    "label": "PASSPort-joined award-PIN cohort — matcher+conservative_v1 policy resolved-same rate",
+    "method": "Live re-run of the diagnosis's methodology: parsed the live PASSPort Public contractData.js dump with worker/src/lib/passport_parse.mjs, joined it to the committed award census by PIN/EPIN with worker/src/lib/passport_join.mjs (same exact/prefix/suffix rules used in production), then scored every joined pair's vendor-name pair through the deployed pipeline (entity_resolution/features + matchers + policies, conservative_v1). Each side's OWN native key (award PIN vs. PASSPort EPIN) was used for the authority-key feature, so only exact-value joins get an authority-key auto-same; prefix/suffix-bridged rows still had to clear name-similarity matching.",
+    "result": {
+      "award_rows_with_pin": 53154,
+      "passport_contracts_parsed": 61032,
+      "joined_rows": 14093,
+      "join_rate": 0.2651,
+      "join_methods": {
+        "exact": 13970,
+        "pin_prefix_of_epin": 103,
+        "pin_strip_suffix": 18,
+        "epin_prefix_of_pin": 2
+      },
+      "same": 14083,
+      "different": 0,
+      "unresolved": 10,
+      "resolved_same_rate": 0.9993
+    },
+    "note": "The 10 unresolved rows are all weak prefix/suffix joins where the award vendor and PASSPort vendor names are unrelated companies (e.g. 'King Teleservices L.L.C.' vs 'PIVOTPOINT SECURITY INC') — correctly held unresolved rather than auto-linked. This is a measurement over the PIN-joined cohort only, not the full award corpus."
+  },
+  "reproduce": [
+    "node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0 --pipeline",
+    "curl -fsSL https://a0333-passportpublic.nyc.gov/dataJs/contractData.js -o /tmp/passport-contractData.js",
+    "# join site/data/ocp_awards_warehouse_lookup.json rows to the PASSPort dump via worker/src/lib/passport_join.mjs (buildEpinIndex + joinPinToEpin), then score each joined pair via entity_resolution/features + matchers + policies (conservative_v1)"
+  ]
+}

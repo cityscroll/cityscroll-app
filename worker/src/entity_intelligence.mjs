@@ -26,6 +26,9 @@ import { vendorCoverageKey } from "../../entity_resolution/cross_domain/vendor_c
 const CACHE = "public, max-age=300";
 const VENDOR_SECTION_SPECS = Object.freeze([
   { id: "awards", domain: "money", kind: "award" },
+  // PASSPort Public + Checkbook Contracts corroboration (VI-02 procurement spine):
+  // a distinct evidence kind from the award notice itself, never conflated with it.
+  { id: "contracts", domain: "money", kind: "contract" },
   { id: "payments", domain: "money", kind: "payment" },
   { id: "land", domain: "land" },
   { id: "property", domain: "property" },

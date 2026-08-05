@@ -7,6 +7,10 @@ import {
 
 const GROUPS = Object.freeze([
   { id: "awards", label: "Awards", domain: "money", kind: "award", surface: "money", mode: "award" },
+  // PASSPort Public + Checkbook Contracts corroboration (VI-02 procurement spine):
+  // a distinct evidence kind from the award notice, so it gets its own labeled,
+  // separately counted section instead of folding into "awards" or "payments".
+  { id: "contracts", label: "Contract corroboration", domain: "money", kind: "contract", surface: null },
   { id: "payments", label: "Payments", domain: "money", kind: "payment", surface: null },
   { id: "land", label: "Land use", domain: "land", surface: "land" },
   { id: "property", label: "Property", domain: "property", surface: "property" },
@@ -51,6 +55,31 @@ export function vendorFootprintScopeHref(
     composed.facets.values.result_count_receipt = count;
   }
   return routeHashFromScope(composed, { surface: group.surface });
+}
+
+/**
+ * Suggest one fast, reliable composition move: this vendor scope intersected
+ * with a named agency (the money "agency=" facet, already load-bearing across
+ * every lens). Reuses the same typed-entity + intersectScopes primitive as
+ * vendorFootprintScopeHref — never invents a link when either side is empty.
+ */
+export function vendorAgencyIntersectionHref(
+  ref,
+  agencyName,
+  { language = "en", query = "" } = {},
+) {
+  const name = String(agencyName || "").trim();
+  if (!ref || !name) return "";
+  const domainScope = emptyScope(language);
+  domainScope.facets.domains = ["money"];
+  domainScope.facets.agencies = [name];
+  if (query) {
+    domainScope.topic.query = String(query);
+    domainScope.topic.keywords = [String(query)];
+  }
+  const entityScope = scopeWithEntity(emptyScope(language), ref);
+  const composed = intersectScopes(domainScope, entityScope);
+  return routeHashFromScope(composed, { surface: "money" });
 }
 
 export function vendorFootprintModel(response = {}) {
