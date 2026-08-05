@@ -152,4 +152,23 @@ describe("GET /entity-intelligence", () => {
       "not_scored",
     ]);
   });
+
+  it("gc-08: PASSPort/Checkbook contract corroboration (VI-02) counts separately from awards and payments", async () => {
+    const res = await handleEntityIntelligence(
+      req("/entity-intelligence?kind=vendor&name=Make%20it%20Zesty%20LLC"),
+    );
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    const contractObjects = (body.domains.money.objects || [])
+      .filter((object) => object.object_kind === "contract");
+    // The committed procurement-spine fixture carries this vendor's PASSPort +
+    // Checkbook contract rows (VI-02); the award notice is a separate object_kind.
+    assert.ok(contractObjects.length >= 1);
+    assert.ok(body.vendor_footprint.section_counts.contracts.confirmed_count >= 1);
+    assert.ok(body.vendor_footprint.section_counts.awards.confirmed_count >= 1);
+    assert.notEqual(
+      body.vendor_footprint.section_counts.contracts.confirmed_count,
+      undefined,
+    );
+  });
 });

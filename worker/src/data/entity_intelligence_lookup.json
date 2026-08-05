@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-05T20:11:08.263Z",
+  "generated_at": "2026-08-05T22:38:47.894Z",
   "observation_count": 1334,
   "entity_count": 200,
   "multi_domain_count": 29,
@@ -96937,6 +96937,7 @@
     "qualifier_required": true,
     "sections": [
       "awards",
+      "contracts",
       "payments",
       "land",
       "property",
@@ -96975,9 +96976,9 @@
         },
         "section_denominator_rate": {
           "threshold": 1,
-          "actual": 0.1429,
+          "actual": 0.125,
           "measured_sections": 1,
-          "total_sections": 7,
+          "total_sections": 8,
           "passed": false
         },
         "precision_review": {

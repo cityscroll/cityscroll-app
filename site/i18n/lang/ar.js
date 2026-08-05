@@ -1261,6 +1261,7 @@
 
     vendor_on_the_record: "On the record — notices naming this vendor",
     vendor_agencies_heading: "Agencies they win from (click to pivot)",
+    vendor_agency_intersect_link: "See this vendor’s records with {agency} →",
     vendor_mentions_heading: "Mentioned in other notices (text match)",
     vendor_follow_btn: "Follow this vendor",
     agency_follow_btn: "Follow agency",

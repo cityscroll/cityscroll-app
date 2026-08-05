@@ -189,6 +189,28 @@ only; no fuzzy invent. Notice detail phase-groups disposition spine
 (`site/property_phase_spine.mjs`) and action rail surfaces ZoLa parcel lookup.
 Demo BBLs: `1006440001`, `3025180036`.
 
+**Vendor constellation (gc-08):** `site/vendor_footprint.mjs` groups a vendor's
+linked objects by section — awards, **contracts** (PASSPort Public + Checkbook
+Contracts corroboration, VI-02; a distinct `object_kind` from the award notice —
+never lump into "awards" or "payments"), payments, land, property, rules,
+meetings, franchise — each with confirmed/mention counts and a typed scope-v0
+"view all" link (`vendorFootprintScopeHref`). `vendorAgencyIntersectionHref`
+composes one fast, reliable suggestion (vendor ∩ named agency) reusing the
+vendor's own top-agency data already fetched for the profile's agency chips —
+it does not add a new fetch or a new scope facet. "Follow this vendor"
+(`data-follow="vendor"` → `alerts_context_carry.mjs` → `#alerts?lens=entity`)
+and the entity-lens digest compile (`worker/src/lib/compile.mjs` /
+`compile_d1.mjs`, `kind !== "agency"` branch) predate this card — no new watch
+machinery was added. The "money domain, multiple object_kinds" split here is a
+different measurement from `docs/evidence/vendor-footprint-coverage.json`'s
+`multi_domain_vendor_rate` gate (which counts entities matched across the 7
+cross-domain **domains** — money/land/property/rules/meetings/people/franchise —
+inside the capped 200-root materialization); see
+`docs/evidence/vendor-linkage-gate-verification-2026-08-05.json` for both
+measurements side by side plus the live PASSPort-joined-cohort resolved-same
+rate. Verify: `node --test test/vendor_footprint.test.mjs
+worker/test/entity_intelligence.test.mjs`.
+
 ## DuckDB + parquet warehouse (WH-01…WH-06)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
