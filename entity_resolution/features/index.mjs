@@ -1,4 +1,7 @@
 // entity_resolution/features — deterministic pair features for matcher v0.
+//
+// VI-03 extension: typo/truncation/abbreviation/DBA proximity features that
+// surface variant pairs the v0 normalizer misses without lowering thresholds.
 
 import { agencyCanonicalId } from "../normalizers/agency.mjs";
 import { vendorStem } from "../normalizers/vendor_stem.mjs";
@@ -7,7 +10,7 @@ import {
   authorityKeysForSide,
 } from "../authority_keys/index.mjs";
 
-export const FEATURES_VERSION = "pair_features_v1";
+export const FEATURES_VERSION = "pair_features_v2";
 
 const LEGAL_FORMS = new Map([
   ["INC", "INC"],
@@ -187,6 +190,145 @@ function agencyPlaces(pieces) {
   return [...places].sort();
 }
 
+// --- VI-03 proximity features ---
+
+/**
+ * Bounded Levenshtein distance — returns a sentinel when the distance exceeds
+ * the cap, so callers never pay O(n*m) on unrelated strings.
+ */
+function boundedLevenshtein(a, b, maxDist = 2) {
+  if (a === b) return 0;
+  if (Math.abs(a.length - b.length) > maxDist) return maxDist + 1;
+  const prev = new Array(b.length + 1);
+  const curr = new Array(b.length + 1);
+  for (let j = 0; j <= b.length; j++) prev[j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    curr[0] = i;
+    let rowMin = curr[0];
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curr[j] = Math.min(
+        curr[j - 1] + 1,
+        prev[j] + 1,
+        prev[j - 1] + cost,
+      );
+      rowMin = Math.min(rowMin, curr[j]);
+    }
+    if (rowMin > maxDist) return maxDist + 1;
+    for (let j = 0; j <= b.length; j++) prev[j] = curr[j];
+  }
+  return prev[b.length];
+}
+
+/**
+ * Vendor abbreviation expansion map. Only abbreviations where the expansion is
+ * unambiguous — expanding to the wrong word would be a false merge — are here.
+ */
+const VENDOR_ABBREVIATIONS = new Map([
+  ["CNTR", "CENTER"],
+  ["CTR", "CENTER"],
+  ["ASSOC", "ASSOCIATES"],
+  ["ASSN", "ASSOCIATION"],
+  ["BROS", "BROTHERS"],
+  ["CO", "COMPANY"],
+  ["CORP", "CORPORATION"],
+  ["DEPT", "DEPARTMENT"],
+  ["DIV", "DIVISION"],
+  ["ENG", "ENGINEERING"],
+  ["ENT", "ENTERPRISES"],
+  ["GOVT", "GOVERNMENT"],
+  ["INTL", "INTERNATIONAL"],
+  ["MGMT", "MANAGEMENT"],
+  ["MFG", "MANUFACTURING"],
+  ["SYS", "SYSTEMS"],
+  ["TECH", "TECHNOLOGY"],
+  ["SVCS", "SERVICES"],
+  ["SRVC", "SERVICE"],
+  ["TRANS", "TRANSPORTATION"],
+]);
+
+/** True when one token is a known abbreviation of the other. */
+function abbreviationPair(leftToken, rightToken) {
+  if (leftToken === rightToken) return false;
+  const abbr = VENDOR_ABBREVIATIONS.get(leftToken);
+  if (abbr && abbr === rightToken) return true;
+  const abbr2 = VENDOR_ABBREVIATIONS.get(rightToken);
+  if (abbr2 && abbr2 === leftToken) return true;
+  return false;
+}
+
+/**
+ * Count abbreviation-matched token pairs between two identity-token sets.
+ * Returns the number of tokens that match through abbreviation expansion
+ * (beyond exact matches already counted in shared_tokens).
+ */
+function abbreviationMatches(leftTokens, rightTokens) {
+  const leftSet = new Set(leftTokens);
+  const rightSet = new Set(rightTokens);
+  let count = 0;
+  for (const lt of leftTokens) {
+    if (rightSet.has(lt)) continue;
+    for (const rt of rightTokens) {
+      if (leftSet.has(rt)) continue;
+      if (abbreviationPair(lt, rt)) {
+        count += 1;
+        break;
+      }
+    }
+  }
+  return count;
+}
+
+const DBA_PATTERN = /\b(DBA|D\/B\/A|D\.B\.A\.|AKA|A\/K\/A|A\.K\.A\.|FKA|F\/K\/A|F\.K\.A\.|T\/A)\b/i;
+
+/**
+ * Extract the DBA/FKA/AKA alias from a display name.
+ * Returns { alias, primary, separator } or null when no DBA notation is present.
+ */
+export function extractDba(name) {
+  const raw = String(name || "").trim();
+  const match = raw.match(DBA_PATTERN);
+  if (!match) return null;
+  const idx = match.index;
+  const primary = raw.slice(0, idx).trim();
+  const alias = raw.slice(idx + match[0].length).trim();
+  if (!primary || !alias) return null;
+  return { primary, alias, separator: match[0].toUpperCase() };
+}
+
+/**
+ * Detect typo proximity between two vendor stems.
+ * Returns { close: boolean, distance: number } — true when the stems differ
+ * by at most 2 characters and have at least 4 characters (avoiding noise on
+ * very short names).
+ */
+function typoProximity(leftStem, rightStem) {
+  if (!leftStem || !rightStem || leftStem === rightStem) {
+    return { close: false, distance: -1 };
+  }
+  if (leftStem.length < 4 || rightStem.length < 4) {
+    return { close: false, distance: -1 };
+  }
+  const dist = boundedLevenshtein(leftStem, rightStem, 2);
+  return { close: dist <= 2, distance: dist };
+}
+
+/**
+ * Detect truncation: one stem is a prefix of the other within a small tail.
+ * This catches 50-char Checkbook/City Record truncations where the suffix
+ * strip left the same identity words but one surface was cut mid-word.
+ */
+function stemTruncation(leftStem, rightStem) {
+  if (!leftStem || !rightStem || leftStem === rightStem) return false;
+  const shorter = leftStem.length < rightStem.length ? leftStem : rightStem;
+  const longer = leftStem.length < rightStem.length ? rightStem : leftStem;
+  if (shorter.length < 5) return false;
+  if (!longer.startsWith(shorter)) return false;
+  const tail = longer.length - shorter.length;
+  // Truncation: the tail is a partial word (≤4 chars) or empty after trimming.
+  return tail <= 4;
+}
+
 /**
  * Extract deterministic, JSON-safe features for one candidate pair.
  *
@@ -265,5 +407,15 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
       leftPlaces.length > 0 && rightPlaces.length > 0 &&
       !leftPlaces.some((place) => rightPlaces.includes(place)),
     ),
+    // VI-03 proximity features (vendor family only).
+    typo_proximity: family === "vendor"
+      ? typoProximity(leftStem, rightStem)
+      : { close: false, distance: -1 },
+    stem_truncation: family === "vendor" && stemTruncation(leftStem, rightStem),
+    abbreviation_matches: family === "vendor"
+      ? abbreviationMatches(leftPieces, rightPieces)
+      : 0,
+    left_dba: family === "vendor" ? extractDba(leftName) : null,
+    right_dba: family === "vendor" ? extractDba(rightName) : null,
   };
 }

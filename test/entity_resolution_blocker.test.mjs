@@ -25,7 +25,7 @@ import {
 } from "../entity_resolution/eval/run_metrics.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const GOLD = join(ROOT, "entity_resolution/eval/gold_v0.jsonl");
+const GOLD = join(ROOT, "entity_resolution/eval/gold_v1.jsonl");
 const HARNESS = join(ROOT, "entity_resolution/eval/run_metrics.mjs");
 
 test("blocker id is token_v0", () => {
@@ -133,10 +133,10 @@ test("runBlocker dispatches token_v0 and ignores none", () => {
   assert.ok(r.candidateIds.has("t1"));
 });
 
-test("CLI --blocker token_v0 prints candidate_recall in [0,1] and block examples", () => {
+test("CLI --blocker token_v0 --pipeline prints candidate_recall in [0,1] and block examples", () => {
   const r = spawnSync(
     process.execPath,
-    [HARNESS, "--gold", GOLD, "--blocker", "token_v0"],
+    [HARNESS, "--gold", GOLD, "--blocker", "token_v0", "--pipeline"],
     { encoding: "utf8", cwd: ROOT },
   );
   assert.equal(r.status, 0, r.stderr || r.stdout);
@@ -152,8 +152,9 @@ test("CLI --blocker token_v0 prints candidate_recall in [0,1] and block examples
   assert.match(r.stdout, /blocked_in\t/);
   // DoITT→OTI (gv0-026) now shares a stem key; no gold-same pair is blocked out.
   assert.doesNotMatch(r.stdout, /blocked_out\tgv0-026\t/);
-  assert.match(r.stdout, /blocker_summary.*dropped=0|blocker_summarygold_same=29retained=29dropped=0/);
+  assert.match(r.stdout, /blocker_summary.*dropped=0/);
   assert.match(r.stdout, /blocker=token_v0/);
+  assert.match(r.stdout, /pipeline:conservative_v1/);
   // No production side effects: harness is offline.
   assert.doesNotMatch(r.stdout, /auto.?link|D1|production/i);
 });

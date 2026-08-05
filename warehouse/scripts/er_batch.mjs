@@ -401,7 +401,7 @@ Prefer the capped runner:
       entity_resolution: [
         "vendorStem / VENDOR_STEM_METHOD",
         "generateCandidates (token_v0)",
-        "scorePair (conventional_v1)",
+        "scorePair (conventional_v2)",
         "canonicalAgency",
       ],
       worker_entity_link: ["buildExactStemAutoCase", "canonicalVendorIdForStem"],
