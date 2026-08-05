@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  createStaffingConsolidationUI,
   groupSameExcept,
   repeatedSameExceptFindings,
 } from "../site/same_consolidation.mjs";
@@ -142,4 +143,39 @@ test("the People renderer uses the shared grouping utility and keeps exports on 
   assert.match(consolidation, /staffingAppointmentGroupHTML/);
   assert.match(exports, /if\(lens==="people"\) return withEnrichedExportSpec\(lens,\{rows:staffingVisibleItems\(\)/);
   assert.deepEqual(auditUnconsolidatedRepeatedRows(), []);
+});
+
+test("appointment archive rows expose six labeled fields and scope the record link to the name", () => {
+  const helpers = {
+    t(key, values = {}) {
+      const labels = {
+        person_name_label: "Name",
+        agency_label: "Agency",
+        staffing_effective_date: `Effective ${values.date || ""}`,
+        staffing_salary: `Salary ${values.amount || ""}`,
+        staffing_title_code: `Title code ${values.code || ""}`,
+        staffing_appointment_group_posted: `Posted ${values.date || ""}`,
+        staffing_unknown_role: `Title code ${values.code || ""}`,
+      };
+      return labels[key] || key;
+    },
+    escUiHtml: (value) => String(value),
+    money: (value) => `$${Number(value).toLocaleString("en-US")}`,
+    fdate: (value) => String(value).slice(0, 10),
+    REQ_URL: (id) => `https://example.test/${id}`,
+    EXT_ATTRS: 'target="_blank" rel="noopener noreferrer"',
+    extSR: () => '<span class="sr-only"> (opens in new tab)</span>',
+  };
+  const html = createStaffingConsolidationUI(helpers).rowHTML(appointment());
+
+  assert.match(html, /<dl class="staffing-hire-fields"/);
+  assert.equal((html.match(/class="staffing-hire-field(?: |")/g) || []).length, 6);
+  assert.match(html, /<dt>Name<\/dt><dd><a [^>]*><span[^>]*>DOE,JANE<\/span>/);
+  assert.match(html, /<dt>Title code<\/dt><dd>/);
+  assert.match(html, /<dt>Agency<\/dt><dd>/);
+  assert.match(html, /<dt>Effective<\/dt><dd>/);
+  assert.match(html, /<dt>Salary<\/dt><dd>/);
+  assert.match(html, /<dt>Posted<\/dt><dd>/);
+  assert.equal((html.match(/<a\b/g) || []).length, 1, "only the person/record name is linked");
+  assert.doesNotMatch(html, /<article[^>]*>\s*<a\b/);
 });

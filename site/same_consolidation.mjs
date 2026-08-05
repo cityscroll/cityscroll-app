@@ -170,16 +170,23 @@ export function createStaffingConsolidationUI(helpers) {
         + values.map(value => `<button type="button" class="chip" data-staffing-${kind}="${escUiHtml(value)}" aria-pressed="${String(selected === value)}"><span lang="en" dir="ltr">${escUiHtml(value)}</span></button>`).join("");
     },
     rowHTML(item) {
-      const role = item.role || t("staffing_unknown_role", { code: escUiHtml(item.title_code || "—") });
+      const role = item.role || "";
       const salary = money(item.salary);
-      const facts = [
-        item.effective_date ? `<span class="staffing-hire-fact" lang="en" dir="ltr">${escUiHtml(item.effective_date)}</span>` : "",
-        salary ? `<span class="staffing-hire-fact">${salary}</span>` : "",
-        item.title_code ? `<span class="staffing-hire-fact">${escUiHtml(item.title_code)}</span>` : "",
-      ].filter(Boolean).join("");
-      return `<article class="staffing-hire-row" data-kind="hire"><a href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}>
-        <span class="staffing-hire-role" lang="en" dir="ltr">${escUiHtml(role)}</span><span class="staffing-hire-person" lang="en" dir="ltr">${escUiHtml(item.person)}</span><span class="staffing-hire-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</span>${facts}<span class="staffing-hire-date">${fdate(item.published_at)}</span>${extSR()}
-      </a></article>`;
+      const empty = "—";
+      const field = (label, value, className = "") => `<div class="staffing-hire-field${className ? ` ${className}` : ""}"><dt>${escUiHtml(label)}</dt><dd>${value}</dd></div>`;
+      const titleCode = `<span class="staffing-hire-code" lang="en" dir="ltr">${escUiHtml(item.title_code || empty)}</span>`
+        + (role ? `<span class="staffing-hire-role" lang="en" dir="ltr">${escUiHtml(role)}</span>` : "");
+      const person = `<a href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(item.person || empty)}</span>${extSR()}</a>`;
+      return `<article class="staffing-hire-row" data-kind="hire">
+        <dl class="staffing-hire-fields">
+          ${field(t("person_name_label"), person, "staffing-hire-person-field")}
+          ${field(t("staffing_title_code", { code: "" }).trim(), titleCode, "staffing-hire-title-field")}
+          ${field(t("agency_label"), `<span lang="en" dir="ltr">${escUiHtml(item.agency || empty)}</span>`, "staffing-hire-agency-field")}
+          ${field(t("staffing_effective_date", { date: "" }).trim(), `<span lang="en" dir="ltr">${escUiHtml(item.effective_date || empty)}</span>`)}
+          ${field(t("staffing_salary", { amount: "" }).trim(), salary || empty)}
+          ${field(t("staffing_appointment_group_posted", { date: "" }).trim(), item.published_at ? fdate(item.published_at) : empty)}
+        </dl>
+      </article>`;
     },
     groupHTML: entry => staffingAppointmentGroupHTML(entry, helpers),
   };

@@ -25,6 +25,15 @@ SHARED_STYLESHEET_LINK = re.compile(
     re.IGNORECASE,
 )
 
+# Secondary and archive states share the main application document, so scanning HTML files alone
+# cannot prove that those states retained component styling. Keep their load-bearing selectors in
+# this gate: each must have a declaration block that consumes at least one civic design token.
+SECONDARY_VIEW_SELECTORS = (
+    ".staffing-hire-fields",
+    ".staffing-hire-group",
+    ".property-fcard.is-closed",
+)
+
 
 def legacy_values(text: str) -> list[str]:
     return sorted({match.group(0).lower() for match in HEX.finditer(text)} & LEGACY_PALETTE)
@@ -46,12 +55,20 @@ def main() -> int:
         if values:
             failures.append(f"{path.relative_to(ROOT)}: legacy palette values {', '.join(values)}")
 
+    application_css = (SITE / "index.html").read_text(encoding="utf-8")
+    for selector in SECONDARY_VIEW_SELECTORS:
+        rule = re.search(rf"{re.escape(selector)}[^{{]*\{{([^}}]+)\}}", application_css)
+        if not rule:
+            failures.append(f"site/index.html: secondary/archive view missing {selector} styling")
+        elif "var(--" not in rule.group(1):
+            failures.append(f"site/index.html: {selector} styling does not consume civic tokens")
+
     if failures:
         print("Civic token contract failed:")
         for failure in failures:
             print(f"  - {failure}")
         return 1
-    print("Civic token contract passed: all shipped documents consume brand.css and are legacy-palette clean")
+    print("Civic token contract passed: primary documents and secondary/archive views consume civic tokens")
     return 0
 
 
