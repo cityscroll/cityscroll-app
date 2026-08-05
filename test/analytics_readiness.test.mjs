@@ -5,7 +5,7 @@ import { readFile } from "node:fs/promises";
 import vm from "node:vm";
 
 import { handleEvent } from "../worker/src/events.mjs";
-import { handleStats } from "../worker/src/stats.mjs";
+import { handlePrivateStats } from "../worker/src/stats.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import {
   ANALYTICS_LENSES,
@@ -179,7 +179,7 @@ test("developer exclusion is authenticated, invisible, and fail-closed", async (
   assert.equal(nonProduction.length, 0, "non-production bindings drop events by default");
 });
 
-test("fixture event flows emit -> sampling-aware aggregate -> public stats endpoint", async () => {
+test("fixture event flows emit -> sampling-aware aggregate -> authenticated stats endpoint", async () => {
   // FIXTURE_DAY / FIXTURE_NOW pin the last7d window (main #375); do not use wall-clock today.
   const points = [];
   await emit(points, { event: "page_view", surface: "home" });
@@ -200,10 +200,9 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
     NL_METER: fakeKV(),
     SUBS: fakeKV(),
   };
-  const response = await handleStats(
-    new Request("https://api.cityscroll.org/stats"),
+  const response = await handlePrivateStats(
+    new Request("https://api.cityscroll.org/admin/stats"),
     env,
-    { waitUntil() {} },
     {
       fetchImpl: async (_url, init) => {
         assert.match(init.body, /sum\(_sample_interval \* double1\)/);
@@ -305,9 +304,9 @@ test("accepted action and voluntary outcome rows are exposed only as aggregate c
   assert.doesNotMatch(JSON.stringify(snapshot.action_outcomes), /visitor|device|query|address|notice|referrer/i);
 });
 
-test("zero-state repro: without usage credentials, /stats reports unavailable usage", async () => {
-  const response = await handleStats(
-    new Request("https://api.cityscroll.org/stats"),
+test("zero-state repro: private stats report unavailable usage without analytics credentials", async () => {
+  const response = await handlePrivateStats(
+    new Request("https://api.cityscroll.org/admin/stats"),
     { SUBS: fakeKV(), ALERT_STATE: fakeKV(), NL_METER: fakeKV() },
     { waitUntil() {} },
   );
@@ -317,9 +316,9 @@ test("zero-state repro: without usage credentials, /stats reports unavailable us
   assert.equal(body.usage.page_views.last30d, 0);
 });
 
-test("field case: accepted page_view must be readable by /stats when SQL credentials are missing", async () => {
+test("field case: accepted page_view remains readable by private stats when SQL credentials are missing", async () => {
   // Symptom (2026-07-30): POST /events returned 204 for a well-formed page_view, but
-  // /stats page_views stayed 0 and usage.available stayed false (unavailable_reason
+  // The operational stats reader showed page_views=0 and usage.available=false (unavailable_reason
   // not-configured). Writer must await KV fallback; reader must promote those counts
   // when the Analytics Engine SQL path is not configured.
   const points = [];
@@ -340,8 +339,8 @@ test("field case: accepted page_view must be readable by /stats when SQL credent
   });
 
   // Bumps are awaited inside handleEvent — no sleep race. Immediately after 204, KV holds counts.
-  const response = await handleStats(
-    new Request("https://api.cityscroll.org/stats"),
+  const response = await handlePrivateStats(
+    new Request("https://api.cityscroll.org/admin/stats"),
     { SUBS: fakeKV(), ALERT_STATE: alertState, NL_METER: fakeKV() },
     { waitUntil() {} },
   );
@@ -353,8 +352,7 @@ test("field case: accepted page_view must be readable by /stats when SQL credent
   assert.equal(body.usage.page_views.last30d, 2);
   assert.equal(body.usage.page_views.by_surface_last30d.home, 1);
   assert.equal(body.usage.page_views.by_surface_last30d.stats, 1);
-  // Edge cache contract: public responses advertise the documented aggregation latency.
-  assert.match(response.headers.get("Cache-Control") || "", /max-age=900/);
+  assert.equal(response.headers.get("Cache-Control"), "private, no-store");
 });
 
 test("field case: fire-and-forget page_view writes are rejected by the intake contract", async () => {
@@ -405,7 +403,7 @@ test("field case: domain migration store continuity — durable KV history must 
   assert.equal(reconciled.lens_interest.last30d.money, 32);
   assert.equal(reconciled.growth.by_day["2026-07-29"].interactions, 68);
 
-  // End-to-end through /stats with the live KV shape (no AE credentials).
+  // End-to-end through private stats with the live KV shape (no AE credentials).
   const today = new Date().toISOString().slice(0, 10);
   const alertState = fakeKV({
     [`stats:click:${today}`]: "3",
@@ -418,8 +416,8 @@ test("field case: domain migration store continuity — durable KV history must 
     [`hist:nl_search:2026-07-29`]: "68",
     [`hist:era:nl_search`]: "2026-07-14",
   });
-  const response = await handleStats(
-    new Request("https://api.cityscroll.org/stats"),
+  const response = await handlePrivateStats(
+    new Request("https://api.cityscroll.org/admin/stats"),
     { SUBS: fakeKV(), ALERT_STATE: alertState, NL_METER: nlMeter },
     { waitUntil() {} },
   );
@@ -440,16 +438,16 @@ test("aggregate windows exclude old rows without inventing missing values", () =
   assert.equal(snapshot.measured_since, "2026-06-01");
 });
 
-test("stats page never success-gates its number panels and stamps each panel", async () => {
+test("public stats page is a small coverage surface with dated cards and no usage panels", async () => {
   const html = await readFile(new URL("../site/stats.html", import.meta.url), "utf8");
-  for (const id of ["grid", "gridAllTime", "gridUsage", "gridTechnical"]) {
-    assert.match(html, new RegExp(`id="${id}"(?![^>]*\\bhidden\\b)`));
-  }
-  assert.ok((html.match(/data-stat-asof/g) || []).length >= 15);
-  assert.ok((html.match(/data-usage-asof/g) || []).length >= 8);
-  assert.match(html, /stats_usage_unavailable/);
-  assert.match(html, /usageLensTableBody/);
-  assert.match(html, /usageGrowthTableBody/);
+  assert.match(html, /id="grid"(?![^>]*\bhidden\b)/);
+  assert.equal((html.match(/class="stat"/g) || []).length, 4);
+  assert.equal((html.match(/data-stat-asof/g) || []).length, 5);
+  assert.doesNotMatch(html, /gridUsage|usageLensTableBody|usageGrowthTableBody|s-digests|s-subs|s-pageviews/);
+  assert.match(html, /stats_public_notices_label/);
+  assert.match(html, /stats_public_sources_label/);
+  assert.match(html, /stats_public_languages_label/);
+  assert.match(html, /stats_public_current_label/);
 });
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
@@ -458,7 +456,7 @@ test("every public page loads the first-party collector and every locale covers 
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     const source = await readFile(new URL(`../site/i18n/lang/${locale}.js`, import.meta.url), "utf8");
-    for (const key of ["stats_h_usage", "stats_lbl_pageviews", "stats_col_last30", "stats_metric_asof", "stats_area_queens"]) {
+    for (const key of ["stats_public_lede", "stats_public_notices_label", "stats_public_sources_label", "stats_public_languages_label", "stats_public_asof"]) {
       assert.match(source, new RegExp(`${key}:`), `${locale}: ${key}`);
     }
   }

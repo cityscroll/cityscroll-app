@@ -66,7 +66,7 @@ export function buildCutoverTargets() {
     {
       id: "api-worker-stats",
       url: API_STATS_URL,
-      marker: /"digests"\s*:/,
+      marker: /"schema"\s*:\s*"public-stats\.v2"/,
     },
     {
       id: "legacy-origin",
@@ -137,8 +137,13 @@ export function architectureFailures(results) {
   } else if (stats.classification?.ok) {
     try {
       const body = JSON.parse(stats.body || "");
-      const shapeOk = body?.digests && Object.hasOwn(body.digests, "sent_last7d")
-        && body?.nl_search && body?.history;
+      const shapeOk = body?.schema === "public-stats.v2"
+        && body?.city_record
+        && body?.sources
+        && body?.language_coverage
+        && !Object.hasOwn(body, "usage")
+        && !Object.hasOwn(body, "subscriptions")
+        && !Object.hasOwn(body, "digests");
       if (!shapeOk) failures.push("api-worker-stats: required public schema fields are missing");
     } catch (_error) {
       failures.push("api-worker-stats: response is not valid JSON");

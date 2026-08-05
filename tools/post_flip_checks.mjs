@@ -28,10 +28,10 @@ export const POST_FLIP_NAMED_CHECKS = Object.freeze([
       field_case:
         "2026-07-30 digest silent miss: sent_today=0 with no durable last_run receipt "
         + "(observer reads at 13:06Z/13:10Z after 13:00 UTC cron; dual-write / send-path class)",
-      detection_was: "manual stats read",
+      detection_was: "manual operational-stats read",
     }),
     description:
-      "Digest send-path receipt exists and send counters show motion (not an unexplained zero).",
+      "Authenticated desk receipt exists and send counters show motion (not an unexplained zero).",
   }),
   Object.freeze({
     id: "stats-sanity",
@@ -41,10 +41,36 @@ export const POST_FLIP_NAMED_CHECKS = Object.freeze([
       field_case:
         "2026-07-30 stats optics: sent_today stuck at 0 without last_run explanation; "
         + "usage/digest gauges that look frozen after domain or analytics continuity incidents",
-      detection_was: "manual /stats and stats.html inspection",
+      detection_was: "manual operational-stats inspection",
     }),
     description:
-      "Usage and digest counters are live (not frozen empty) and unexplained zeros are rejected.",
+      "Authenticated usage and digest counters are live and unexplained zeros are rejected.",
+  }),
+  Object.freeze({
+    id: "corpus-freshness",
+    name: "CORPUS FRESHNESS",
+    incident: Object.freeze({
+      class: "stale-public-corpus",
+      field_case:
+        "The public Stats contract now reports civic-corpus recency rather than private delivery activity; "
+        + "a stale latest_notice_date must remain visible to public monitoring.",
+      detection_was: "public stats recency check",
+    }),
+    description:
+      "The City Record aggregate is available and its latest publication date is recent.",
+  }),
+  Object.freeze({
+    id: "coverage-sanity",
+    name: "COVERAGE SANITY",
+    incident: Object.freeze({
+      class: "public-private-contract-drift",
+      field_case:
+        "The public Stats response must retain corpus/source/language coverage while excluding "
+        + "subscriptions, sends, visits, searches, and daily-use series.",
+      detection_was: "public schema inspection",
+    }),
+    description:
+      "Coverage fields are coherent and usage-class fields stay absent.",
   }),
   Object.freeze({
     id: "worker-access",
@@ -79,19 +105,52 @@ export const POST_FLIP_NAMED_CHECK_IDS = Object.freeze(
 );
 
 /**
- * EMAIL HEALTH classifier (pure).
- * Requires digests.last_run receipt; rejects unexplained sent_today=0; requires
- * multi-day send counter motion (sent_last7d or history non-zeros).
+ * CORPUS FRESHNESS classifier (pure).
  */
-export function classifyEmailHealth(stats, { now = new Date() } = {}) {
+export function classifyCorpusFreshness(stats, { now = new Date() } = {}) {
   if (!stats || typeof stats !== "object") {
     return { ok: false, reason: "stats body missing or not an object" };
   }
+  if (stats.schema !== "public-stats.v2") return { ok: false, reason: "unexpected public stats schema" };
+  const corpus = stats.city_record;
+  if (!corpus?.available) return { ok: false, reason: "live City Record aggregate is unavailable" };
+  if (!(Number(corpus.notice_count) > 0)) return { ok: false, reason: "City Record notice_count is empty" };
+  const latest = String(corpus.latest_notice_date || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(latest)) return { ok: false, reason: "latest_notice_date is missing" };
+  if (latest < prevUtcDay(dayStrUtc(now), 3)) return { ok: false, reason: `latest_notice_date ${latest} is older than 3 days` };
+  return { ok: true };
+}
+
+/**
+ * COVERAGE SANITY classifier (pure).
+ */
+export function classifyCoverageSanity(stats) {
+  if (!stats || typeof stats !== "object") {
+    return { ok: false, reason: "stats body missing or not an object" };
+  }
+  const sourceCount = Number(stats.sources?.primary_system_count) || 0;
+  const systems = stats.sources?.systems;
+  if (sourceCount < 1 || !Array.isArray(systems) || systems.length !== sourceCount) {
+    return { ok: false, reason: "primary source count and source list disagree" };
+  }
+  if ((Number(stats.language_coverage?.site_languages) || 0) < 2) {
+    return { ok: false, reason: "language coverage is missing" };
+  }
+  const nonPublicFields = ["subscriptions", "digests", "digest_clicks", "feeds", "batch", "shared_investigations", "nl_search", "history", "usage"];
+  const leaked = nonPublicFields.filter((field) => Object.hasOwn(stats, field));
+  if (leaked.length) return { ok: false, reason: `usage-class fields leaked: ${leaked.join(", ")}` };
+  return { ok: true };
+}
+
+/** EMAIL HEALTH classifier over the authenticated desk response. */
+export function classifyEmailHealth(stats, { now = new Date() } = {}) {
+  if (!stats || typeof stats !== "object") {
+    return { ok: false, reason: "private stats body missing or not an object" };
+  }
   const digests = stats.digests;
   if (!digests || typeof digests !== "object") {
-    return { ok: false, reason: "digests block missing on /stats" };
+    return { ok: false, reason: "digests block missing on /admin/stats" };
   }
-
   const lastRun = digests.last_run;
   if (lastRun == null) {
     return {
@@ -104,16 +163,10 @@ export function classifyEmailHealth(stats, { now = new Date() } = {}) {
   if (typeof lastRun !== "object") {
     return { ok: false, reason: "digests.last_run is not an object receipt" };
   }
-  // Receipt must be inspectable: ranAt/day/at + explicit skipped_reason key (null = sent).
   const when = lastRun.ranAt || lastRun.at || lastRun.day || lastRun.finished_at;
-  if (!when) {
-    return { ok: false, reason: "digests.last_run missing ranAt/day timestamp" };
-  }
+  if (!when) return { ok: false, reason: "digests.last_run missing ranAt/day timestamp" };
   if (!("skipped_reason" in lastRun) && !("sent" in lastRun)) {
-    return {
-      ok: false,
-      reason: "digests.last_run missing skipped_reason and sent fields",
-    };
+    return { ok: false, reason: "digests.last_run missing skipped_reason and sent fields" };
   }
 
   const sentToday = Number(digests.sent_today) || 0;
@@ -121,84 +174,52 @@ export function classifyEmailHealth(stats, { now = new Date() } = {}) {
   const sentAll = Number(digests.sent_all_time) || 0;
   const historyDays = stats.history?.digests?.by_day || {};
   const historyMotion = Object.values(historyDays).some((n) => Number(n) > 0);
-
   if (sentToday === 0) {
-    // Explained quiet day is OK only when receipt says so.
     const reason = lastRun.skipped_reason;
     const receiptSent = Number(lastRun.sent) || 0;
     if (receiptSent === 0 && (reason == null || reason === "")) {
       return {
         ok: false,
-        reason:
-          "sent_today=0 with last_run.skipped_reason empty — unexplained zero "
-          + "(sent_today-zero class)",
+        reason: "sent_today=0 with last_run.skipped_reason empty — unexplained zero (sent_today-zero class)",
       };
     }
   }
-
   if (sent7 === 0 && sentAll === 0 && !historyMotion) {
-    return {
-      ok: false,
-      reason: "digest send counters show no motion in 7d, all-time, or history",
-    };
+    return { ok: false, reason: "digest send counters show no motion in 7d, all-time, or history" };
   }
-
-  // Optional freshness: if cron is long past and receipt day is stale multi-day, warn as fail.
   const receiptDay = String(lastRun.day || "").slice(0, 10);
-  const today = dayStrUtc(now);
-  if (receiptDay && receiptDay < prevUtcDay(today, 2)) {
-    return {
-      ok: false,
-      reason: `digests.last_run.day ${receiptDay} is older than 2 days (stale receipt)`,
-    };
+  if (receiptDay && receiptDay < prevUtcDay(dayStrUtc(now), 2)) {
+    return { ok: false, reason: `digests.last_run.day ${receiptDay} is older than 2 days (stale receipt)` };
   }
-
   return { ok: true };
 }
 
-/**
- * STATS SANITY classifier (pure).
- * Rejects frozen empty usage gauges and unexplained digest zeros.
- */
+/** STATS SANITY classifier over the authenticated desk response. */
 export function classifyStatsSanity(stats) {
   if (!stats || typeof stats !== "object") {
-    return { ok: false, reason: "stats body missing or not an object" };
+    return { ok: false, reason: "private stats body missing or not an object" };
   }
-
   const usage = stats.usage;
   if (!usage || typeof usage !== "object") {
-    return { ok: false, reason: "usage block missing on /stats (frozen-gauge class)" };
+    return { ok: false, reason: "usage block missing on /admin/stats (frozen-gauge class)" };
   }
   if (usage.available === false) {
-    return {
-      ok: false,
-      reason: `usage.available=false (${usage.unavailable_reason || "no reason"})`,
-    };
+    return { ok: false, reason: `usage.available=false (${usage.unavailable_reason || "no reason"})` };
   }
-
-  const pageViews7 = Number(usage.page_views?.last7d) || 0;
-  const searches7 = Number(usage.searches?.last7d) || 0;
-  const nl7 = Number(stats.nl_search?.calls_last7d) || 0;
-  const clicks7 = Number(stats.digest_clicks?.last7d) || 0;
-  const motion = pageViews7 + searches7 + nl7 + clicks7;
+  const motion = (Number(usage.page_views?.last7d) || 0)
+    + (Number(usage.searches?.last7d) || 0)
+    + (Number(stats.nl_search?.calls_last7d) || 0)
+    + (Number(stats.digest_clicks?.last7d) || 0);
   if (motion === 0) {
     return {
       ok: false,
-      reason:
-        "usage/search/click gauges all zero over 7d — frozen-gauge class "
-        + "(site looks idle or dual-write path is dead)",
+      reason: "usage/search/click gauges all zero over 7d — frozen-gauge class",
     };
   }
-
-  // sent_today-zero with no receipt is also a stats-sanity failure.
   const digests = stats.digests || {};
   if ((Number(digests.sent_today) || 0) === 0 && digests.last_run == null) {
-    return {
-      ok: false,
-      reason: "sent_today=0 and digests.last_run null — sent_today-zero class",
-    };
+    return { ok: false, reason: "sent_today=0 and digests.last_run null — sent_today-zero class" };
   }
-
   return { ok: true };
 }
 
@@ -231,7 +252,7 @@ export function classifyWorkerAccess(probe = {}) {
     };
   }
   if (!probe.statsOkJson) {
-    return { ok: false, reason: "GET /stats did not return parseable digests JSON" };
+    return { ok: false, reason: "GET /stats did not return public-stats.v2 JSON" };
   }
   const acao = probe.eventsCorsOrigin;
   if (!acao) {
@@ -295,7 +316,7 @@ async function fetchText(url, { fetchImpl = globalThis.fetch, method = "GET", he
 }
 
 /**
- * Run the four named post-flip checks against live (or injected) endpoints.
+ * Run the six named post-flip checks against live (or injected) endpoints.
  *
  * @param {{
  *   apiBase?: string,
@@ -306,6 +327,7 @@ async function fetchText(url, { fetchImpl = globalThis.fetch, method = "GET", he
  *   runJourney?: boolean,
  *   journeyRunner?: () => Promise|{ steps: object[] },
  *   skip?: string[],
+ *   adminKey?: string,
  * }} [opts]
  */
 export async function runPostFlipNamedChecks(opts = {}) {
@@ -314,20 +336,23 @@ export async function runPostFlipNamedChecks(opts = {}) {
   const siteBase = opts.siteBase || `${siteOrigin}/`;
   const fetchImpl = opts.fetchImpl || globalThis.fetch;
   const now = opts.now || new Date();
+  const adminKey = opts.adminKey || process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY || "";
   const skip = new Set(opts.skip || []);
   // Explicit opt-out omits the journey check (not a failure).
   if (opts.runJourney === false) skip.add("human-path-journey");
   const results = [];
 
-  // Shared stats fetch for EMAIL HEALTH + STATS SANITY + WORKER ACCESS.
+  // Shared public coverage fetch for CORPUS FRESHNESS + COVERAGE SANITY + WORKER ACCESS.
   let statsStatus = 0;
   let statsJson = null;
   let statsOkJson = false;
   let healthStatus = 0;
   let healthBody = "";
   let eventsCorsOrigin = null;
+  let opsStatsJson = null;
+  let opsStatsError = null;
 
-  if (!skip.has("email-health") || !skip.has("stats-sanity") || !skip.has("worker-access")) {
+  if (!skip.has("corpus-freshness") || !skip.has("coverage-sanity") || !skip.has("worker-access")) {
     try {
       const health = await fetchText(`${apiBase}/health`, { fetchImpl });
       healthStatus = health.status;
@@ -341,7 +366,7 @@ export async function runPostFlipNamedChecks(opts = {}) {
       statsStatus = stats.status;
       try {
         statsJson = JSON.parse(stats.body);
-        statsOkJson = Boolean(statsJson?.digests);
+        statsOkJson = statsJson?.schema === "public-stats.v2";
       } catch {
         statsJson = null;
         statsOkJson = false;
@@ -369,6 +394,26 @@ export async function runPostFlipNamedChecks(opts = {}) {
     }
   }
 
+  if (!skip.has("email-health") || !skip.has("stats-sanity")) {
+    if (!adminKey) {
+      opsStatsError = "CITYSCROLL_ADMIN_KEY is required for authenticated operations checks";
+    } else {
+      try {
+        const opsStatsResponse = await fetchText(`${apiBase}/admin/stats`, {
+          fetchImpl,
+          headers: { Authorization: `Bearer ${adminKey}` },
+        });
+        if (opsStatsResponse.status !== 200) {
+          opsStatsError = `GET /admin/stats status ${opsStatsResponse.status}, expected 200`;
+        } else {
+          opsStatsJson = JSON.parse(opsStatsResponse.body);
+        }
+      } catch (err) {
+        opsStatsError = `GET /admin/stats failed: ${String(err?.message || err)}`;
+      }
+    }
+  }
+
   const catalog = Object.fromEntries(POST_FLIP_NAMED_CHECKS.map((c) => [c.id, c]));
 
   function pushResult(id, classification) {
@@ -383,10 +428,23 @@ export async function runPostFlipNamedChecks(opts = {}) {
   }
 
   if (!skip.has("email-health")) {
-    pushResult("email-health", classifyEmailHealth(statsJson, { now }));
+    pushResult(
+      "email-health",
+      opsStatsError ? { ok: false, reason: opsStatsError } : classifyEmailHealth(opsStatsJson, { now }),
+    );
   }
   if (!skip.has("stats-sanity")) {
-    pushResult("stats-sanity", classifyStatsSanity(statsJson));
+    pushResult(
+      "stats-sanity",
+      opsStatsError ? { ok: false, reason: opsStatsError } : classifyStatsSanity(opsStatsJson),
+    );
+  }
+
+  if (!skip.has("corpus-freshness")) {
+    pushResult("corpus-freshness", classifyCorpusFreshness(statsJson, { now }));
+  }
+  if (!skip.has("coverage-sanity")) {
+    pushResult("coverage-sanity", classifyCoverageSanity(statsJson));
   }
   if (!skip.has("worker-access")) {
     pushResult(
@@ -486,14 +544,18 @@ export async function main(argv = process.argv.slice(2)) {
   if (opts.help) {
     console.log(`Usage: node tools/post_flip_checks.mjs [options]
 
-Named post-flip operational checks (EMAIL HEALTH, STATS SANITY, WORKER ACCESS,
-HUMAN-PATH JOURNEY). Each is annotated with the incident class it descends from.
+Named post-flip operational checks (EMAIL HEALTH, STATS SANITY, CORPUS FRESHNESS,
+COVERAGE SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY). Each is annotated with the incident
+class it descends from.
 
 Options:
   --api-base URL
   --site-origin URL
   --site-base URL
   --with-journey / --skip-journey
+
+Environment:
+  CITYSCROLL_ADMIN_KEY  Authenticates EMAIL HEALTH and STATS SANITY at /admin/stats.
 `);
     return 0;
   }

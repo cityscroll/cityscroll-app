@@ -50,7 +50,7 @@ Not included: multi-minute edge redirect-cache lag after a bad CNAME/DNS change 
 | Class | How it was found | Latency | Gate that encodes it now |
 | --- | --- | --- | --- |
 | Redirect loop while deploy green | Manual browser | Not stopwatch-quantified; human found while CI was green | Default URL smoke + **HUMAN-PATH JOURNEY** |
-| Silent digest (`sent_today=0`, no receipt) | Manual `/stats` | **6–10 min** after 13:00 UTC cron (reads at 13:06 / 13:10) | **EMAIL HEALTH** + **STATS SANITY** |
+| Silent digest (`sent_today=0`, no receipt) | Manual operational-stats read | **6–10 min** after 13:00 UTC cron (reads at 13:06 / 13:10) | **EMAIL HEALTH** + **STATS SANITY** on authenticated desk data |
 | API/CORS dead while HTML 200 | Feature/console | Class inventory (not a timed outage sample) | **WORKER ACCESS** |
 
 ## Rollback time (estimated from runbook)

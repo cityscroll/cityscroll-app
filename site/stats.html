@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CityScroll</title>
-<meta name="description" content="CityScroll's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
+<meta name="description" content="CityScroll corpus and coverage totals: City Record notices, primary public sources, language coverage, and update recency.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://cityscroll.org/stats.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CityScroll">
 <meta property="og:title" content="Stats · CityScroll">
-<meta property="og:description" content="See CityScroll's privacy-preserving aggregate usage and outcome counts.">
+<meta property="og:description" content="See what public records CityScroll covers and how current that coverage is.">
 <meta property="og:url" content="https://cityscroll.org/stats.html">
 <meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
 <meta property="og:image:alt" content="CityScroll — the City Record, made legible">
@@ -30,47 +30,35 @@
 <style>
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
-  .wrap{position:relative;max-width:760px;margin:0 auto;padding:0 22px 80px}
+  .wrap{position:relative;max-width:840px;margin:0 auto;padding:0 22px 80px}
   a{color:var(--oxblood)}
-  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  .cr-rule{border-top:3px solid var(--ink)}.cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
   header{padding-top:18px;text-align:center}
   .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
   .home:hover .cr-title{color:var(--oxblood)}
-  .cr-seal{width:34px;height:34px;color:var(--ink)}
   .cr-title{font-family:var(--font-nameplate);font-weight:700;font-size:1.5rem;letter-spacing:.01em;margin:0}
   .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
   h1{font-family:var(--font-nameplate);font-weight:700;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
   .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
   .backhome:hover{text-decoration:underline}
-  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 8px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:20px 0}
-  .stat{background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px}
-  .stat .n{font-family:var(--font-nameplate);font-weight:700;font-size:2.2rem;line-height:1;color:var(--ink)}
-  .stat .l{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:6px}
-  .stat .d{font:13px/1.5 var(--ui);color:var(--ink-soft);margin-top:8px}
-  .stat .stat-asof{padding-top:7px;border-top:1px solid var(--rule);color:var(--muted)}
-  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:30px 0 8px;border-top:1px solid var(--rule);padding-top:16px}
-  h3{font:600 13px/1.4 var(--ui);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:20px 0 6px}
-  p{margin:10px 0}
+  .lede{max-width:62ch;margin:24px auto 8px;text-align:center;color:var(--ink-soft)}
+  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:32px 0 8px;border-top:1px solid var(--rule);padding-top:18px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+  .stat{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);padding:18px}
+  .stat .n{font-family:var(--font-nameplate);font-weight:700;font-size:clamp(1.8rem,5vw,2.55rem);line-height:1.05;color:var(--ink);overflow-wrap:anywhere}
+  .stat .l{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .stat .d{font:14px/1.5 var(--ui);color:var(--ink-soft);margin-top:8px}
+  .stat .stat-asof{padding-top:8px;border-top:1px solid var(--rule);color:var(--muted);font-size:12px}
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
-  .cattable{width:100%;border-collapse:collapse;margin:12px 0 4px;font:14px/1.5 var(--ui)}
-  .cattable th,.cattable td{text-align:start;padding:6px 10px;border-bottom:1px solid var(--rule)}
-  .cattable th{font:600 12px/1 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-  .cattable td.n{font-variant-numeric:tabular-nums;text-align:end}
-  #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.2em}
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-  .histtable td.n{font-variant-numeric:tabular-nums;text-align:end}
-  .histtable td.notrec{color:var(--muted);font-style:italic}
-  .histera{border-top:1px dashed var(--rule);padding-top:10px;margin-top:14px}
+  #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.5em;text-align:center}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
-  .foot a{color:var(--oxblood)}
-  /* language switcher — matches index.html */
-  .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}.lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}.lang-select:focus-visible{outline:2px solid var(--blue,#1b3a8f);outline-offset:2px}
+  .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}
+  .lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}
   .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
-  :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
-  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
-  .skip:focus{left:0}
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}.skip:focus{left:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal!important;text-transform:none!important}
+  @media(max-width:560px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.lang-switcher{position:static;margin-top:12px;justify-content:center}.stat{padding:16px}.lede{text-align:start}}
 </style>
 <link rel="stylesheet" href="brand.css">
 </head>
@@ -80,378 +68,75 @@
 <header>
   <div class="cr-rule"></div>
   <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
-    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
-      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span class="cr-title">CityScroll</span>
   </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="stats_link">Stats</h1>
-      <div class="lang-switcher" id="langSwitcher">
-      <select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language">
-        <option value="en" lang="en">English</option>
-        <option value="es" lang="es">Español</option>
-        <option value="zh-Hans" lang="zh-Hans">中文（简体）</option>
-        <option value="ru" lang="ru">Русский</option>
-        <option value="bn" lang="bn">বাংলা</option>
-        <option value="ht" lang="ht">Kreyòl ayisyen</option>
-        <option value="ko" lang="ko">한국어</option>
-        <option value="fr" lang="fr">Français</option>
-        <option value="pl" lang="pl">Polski</option>
-        <option value="ar" lang="ar" dir="rtl">العربية</option>
-        <option value="ur" lang="ur" dir="rtl">اردو</option>
-      </select>
-    </div>
+  <div class="lang-switcher" id="langSwitcher"><select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language">
+    <option value="en" lang="en">English</option><option value="es" lang="es">Español</option><option value="zh-Hans" lang="zh-Hans">中文（简体）</option><option value="ru" lang="ru">Русский</option><option value="bn" lang="bn">বাংলা</option><option value="ht" lang="ht">Kreyòl ayisyen</option><option value="ko" lang="ko">한국어</option><option value="fr" lang="fr">Français</option><option value="pl" lang="pl">Polski</option><option value="ar" lang="ar" dir="rtl">العربية</option><option value="ur" lang="ur" dir="rtl">اردو</option>
+  </select></div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
-
-<main id="main" tabindex="-1">
-<p id="msg" role="status" data-i18n="stats_loading">Loading live counters…</p>
-
-<h2 data-i18n="stats_h_general">The headline numbers</h2>
-<div class="grid" id="grid">
-  <div class="stat"><div class="n" id="s-subs">–</div><div class="l" data-i18n="stats_lbl_subs">Active watches</div><div class="d" data-i18n="stats_desc_subs">Confirmed watches that are not paused. One account may have more than one.</div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-accounts">–</div><div class="l" data-i18n="stats_lbl_accounts">Accounts with watches</div><div class="d" data-i18n="stats_desc_accounts">Distinct email accounts with at least one active watch.</div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-digests">–</div><div class="l" data-i18n="stats_lbl_digests">Digests sent · 7 days</div><div class="d" data-i18n-html="stats_desc_digests_html"><span id="s-digests-today">–</span> today. Sent for new matches and periodic "still watching" check-ins.</div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-nl">–</div><div class="l" data-i18n="stats_lbl_nl">Searches asked · 7 days</div><div class="d" data-i18n-html="stats_desc_nl_html"><span id="s-nl-today">–</span> today. Plain questions typed into "Ask," about any part of the site.</div><div class="d stat-asof" data-stat-asof></div></div>
-</div>
-
-<h2 data-i18n="stats_h_alltime">Totals</h2>
-<p class="src" data-i18n="stats_p_alltime">The same outcomes, added up instead of reset every 7 days.</p>
-<div class="grid" id="gridAllTime">
-  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CityScroll has ever sent.</div><div class="d" id="s-digests-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Searches asked · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English question CityScroll has ever answered.</div><div class="d" id="s-nl-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
-</div>
-
-<h2 data-i18n="stats_h_category">Digests, by topic</h2>
-<p class="src" data-i18n="stats_p_category">Notices surfaced in digests, broken out by City Record topic.</p>
-<table class="cattable" id="catTable" hidden>
-  <thead><tr><th data-i18n="stats_col_category">Topic</th><th data-i18n="stats_col_count">Notices</th></tr></thead>
-  <tbody id="catTableBody"></tbody>
-</table>
-<p class="src" id="catEmpty" data-i18n="stats_cat_empty" hidden>No digests have matched anything yet.</p>
-<p class="src histera" id="catSinceNote" hidden></p>
-<p class="src" data-stat-asof></p>
-
-<h2 data-i18n="stats_h_bylens">Searches, by section</h2>
-          <p class="src" data-i18n="stats_p_bylens">Which part of the site people asked about: contracts, staffing, zoning, property, rules, or meetings.</p>
-<table class="cattable" id="lensTable" hidden>
-  <thead><tr>
-    <th data-i18n="stats_col_lens">Section</th>
-    <th data-i18n="stats_col_last7">Last 7 days</th>
-    <th data-i18n="stats_col_alltime">All time</th>
-  </tr></thead>
-  <tbody id="lensTableBody"></tbody>
-</table>
-<p class="src" id="lensEmpty" data-i18n="stats_lens_empty" hidden>No searches have been asked yet.</p>
-<p class="src histera" id="lensSinceNote" hidden></p>
-<p class="src" data-stat-asof></p>
-
-<h2 data-i18n="stats_h_usage">How people use CityScroll</h2>
-<p class="src" data-i18n="stats_p_usage">Site totals. See use by day. No cookies. No visitor profiles.</p>
-<div class="grid" id="gridUsage">
-  <div class="stat"><div class="n" id="s-pageviews">–</div><div class="l" data-i18n="stats_lbl_pageviews">Page views · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
-  <div class="stat"><div class="n" id="s-usage-searches">–</div><div class="l" data-i18n="stats_lbl_usage_searches">Searches run · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
-  <div class="stat"><div class="n" id="s-deeplinks">–</div><div class="l" data-i18n="stats_lbl_deeplinks">Deep links opened · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
-  <div class="stat"><div class="n" id="s-exports">–</div><div class="l" data-i18n="stats_lbl_exports">Exports · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
-  <div class="stat"><div class="n" id="s-alert-confirms">–</div><div class="l" data-i18n="stats_lbl_alert_confirms">Watches confirmed · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
-</div>
-<p class="src histera" id="usageSinceNote" hidden></p>
-<p class="src" id="usageUnavailable" data-i18n="stats_usage_unavailable" hidden>These totals are not ready yet. They show after the first visit (about 15 minutes).</p>
-
-<h3 data-i18n="stats_h_lens_interest">Use by section</h3>
-<table class="cattable" id="usageLensTable" hidden>
-  <thead><tr><th data-i18n="stats_col_lens">Section</th><th data-i18n="stats_col_last7">Last 7 days</th><th data-i18n="stats_col_last30">Last 30 days</th></tr></thead>
-  <tbody id="usageLensTableBody"></tbody>
-</table>
-<p class="src" data-stat-asof data-usage-asof></p>
-
-<h3 data-i18n="stats_h_geography">Searches by area</h3>
-<table class="cattable" id="usageGeoTable" hidden>
-  <thead><tr><th data-i18n="stats_col_area">Area</th><th data-i18n="stats_col_last30">Last 30 days</th></tr></thead>
-  <tbody id="usageGeoTableBody"></tbody>
-</table>
-<p class="src" data-stat-asof data-usage-asof></p>
-
-<h3 data-i18n="stats_h_usage_growth">Daily use</h3>
-<table class="cattable histtable" id="usageGrowthTable" hidden>
-  <thead><tr><th data-i18n="stats_col_day">Day</th><th data-i18n="stats_lbl_pageviews_short">Page views</th><th data-i18n="stats_col_interactions">Actions</th></tr></thead>
-  <tbody id="usageGrowthTableBody"></tbody>
-</table>
-<p class="src" data-stat-asof data-usage-asof></p>
-
-<h2 data-i18n="stats_h_history">Over time</h2>
-<p class="src" data-i18n="stats_p_history">Digests sent, searches asked, and watches active, day by day.</p>
-<table class="cattable histtable" id="histTable" hidden>
-  <caption class="sr-only" data-i18n="stats_history_caption">Daily counts of digests sent, searches asked, and watches active</caption>
-  <thead><tr>
-    <th data-i18n="stats_col_day">Day</th>
-    <th data-i18n="stats_col_digests">Digests sent</th>
-    <th data-i18n="stats_col_searches">Searches asked</th>
-    <th data-i18n="stats_col_watches">Watches active</th>
-  </tr></thead>
-  <tbody id="histTableBody"></tbody>
-</table>
-<p class="src histera" id="histEraNote" hidden></p>
-<p class="src" id="histEmpty" data-i18n="stats_history_empty" hidden>No day-by-day history yet.</p>
-<p class="src" data-stat-asof></p>
-
-<h2 data-i18n="stats_h_technical">Technical details</h2>
-<p class="src" data-i18n="stats_p_technical">How the numbers above are put together. You don't need to know this to use CityScroll.</p>
-<div class="grid" id="gridTechnical">
-  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Daily counts from the notice-link redirect — <a href="about.html#privacy">how this works</a>.</div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Saved-search checks via the API · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Shared investigation links · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div><div class="d stat-asof" data-stat-asof></div></div>
-</div>
-
+<main id="main" tabindex="-1" data-stats-schema="public-stats.v2">
+  <p class="lede" data-i18n="stats_public_lede">See what CityScroll has and how new it is.</p>
+  <p id="msg" role="status" data-i18n="stats_loading">Loading coverage…</p>
+  <h2 data-i18n="stats_h_general">Key facts</h2>
+  <div class="grid" id="grid">
+    <article class="stat"><div class="n" id="s-notices">–</div><div class="l" data-i18n="stats_public_notices_label">City Record posts</div><div class="d" data-i18n="stats_public_notices_desc">Rows in City Record data, from the first date to the last.</div><div class="d stat-asof" data-stat-asof></div></article>
+    <article class="stat"><div class="n" id="s-sources">–</div><div class="l" data-i18n="stats_public_sources_label">Main public data sets</div><div class="d" data-i18n="stats_public_sources_desc">Public data for news, jobs, land, deals, and pay.</div><div class="d stat-asof" data-stat-asof></div></article>
+    <article class="stat"><div class="n" id="s-languages">–</div><div class="l" data-i18n="stats_public_languages_label">Site languages</div><div class="d" data-i18n="stats_public_languages_desc">The site has English and 10 more languages. Source text stays in English. A reader may ask for a translation.</div><div class="d stat-asof" data-stat-asof></div></article>
+    <article class="stat"><div class="n" id="s-current">–</div><div class="l" data-i18n="stats_public_current_label">Last City Record date</div><div class="d" data-i18n="stats_public_current_desc">The last date in City Record data.</div><div class="d stat-asof" data-stat-asof></div></article>
+  </div>
+  <h2 data-i18n="stats_public_method_heading">What is private</h2>
+  <p class="src" data-i18n-html="stats_public_method_html">These facts count records, not people. Visits, search, watches, and email totals stay private. Read the <a href="about.html#data">data notes</a> or open the <a href="https://api.cityscroll.org/stats">public JSON</a>.</p>
 </main>
-<footer class="foot">
-  <p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) ·
-  <a href="about.html">About</a> · <a href="index.html">Home</a></p>
-</footer>
+<footer class="foot"><p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) · <a href="about.html">About</a> · <a href="index.html">Home</a></p></footer>
 </div>
-
 <script>
-(async () => {
-  const msg = document.getElementById("msg"), grid = document.getElementById("grid");
-  const gridAllTime = document.getElementById("gridAllTime"), gridTechnical = document.getElementById("gridTechnical");
-  const catTable = document.getElementById("catTable"), catTableBody = document.getElementById("catTableBody");
-  const catEmpty = document.getElementById("catEmpty"), catSinceNote = document.getElementById("catSinceNote");
-  const lensTable = document.getElementById("lensTable"), lensTableBody = document.getElementById("lensTableBody");
-  const lensEmpty = document.getElementById("lensEmpty"), lensSinceNote = document.getElementById("lensSinceNote");
-  const histTable = document.getElementById("histTable"), histTableBody = document.getElementById("histTableBody");
-  const histEraNote = document.getElementById("histEraNote"), histEmpty = document.getElementById("histEmpty");
-  const usageSinceNote = document.getElementById("usageSinceNote"), usageUnavailable = document.getElementById("usageUnavailable");
-  const usageLensTable = document.getElementById("usageLensTable"), usageLensTableBody = document.getElementById("usageLensTableBody");
-  const usageGeoTable = document.getElementById("usageGeoTable"), usageGeoTableBody = document.getElementById("usageGeoTableBody");
-  const usageGrowthTable = document.getElementById("usageGrowthTable"), usageGrowthTableBody = document.getElementById("usageGrowthTableBody");
-  const put = (id, v) => { document.getElementById(id).textContent = (v == null ? "–" : Number(v).toLocaleString("en-US")); };
+(() => {
+  const msg = document.getElementById("msg");
   const curLoc = () => (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
-  const dateLabel = (iso, opts) => new Date(iso + "T00:00:00Z").toLocaleDateString(curLoc(), { ...opts, timeZone: "UTC" });
-  // A "since {date}" honesty note (w12-14): shared by every all-time total/breakdown, so a
-  // reader always knows how far back a given number can honestly account for. Hidden with no
-  // fabricated fallback when the live_from boundary isn't known.
-  function renderSinceNote(el, liveFrom) {
-    if (!el) return;
-    if (!liveFrom) { el.hidden = true; return; }
-    el.textContent = t("stats_since", { date: dateLabel(liveFrom, { month: "long", day: "numeric", year: "numeric" }) });
-    el.hidden = false;
-  }
-  // A category name is either a real City Record section_name (already covered by
-  // tSection's per-language table) or the "land" fallback used for ZAP notices, which have
-  // no section_name — reuse the existing tab_land translation for that one case.
-  const categoryLabel = (cat) => (cat === "land" ? t("tab_land") : tSection(cat));
-  function renderCategories(byCategory) {
-    if (!byCategory) return;
-    const entries = Object.entries(byCategory).sort((a, b) => b[1] - a[1]);
-    catTableBody.textContent = "";
-    for (const [cat, count] of entries) {
-      const tr = document.createElement("tr");
-      const th = document.createElement("th"); th.scope = "row"; th.textContent = categoryLabel(cat);
-      const td = document.createElement("td"); td.className = "n"; td.textContent = Number(count).toLocaleString("en-US");
-      tr.append(th, td);
-      catTableBody.appendChild(tr);
-    }
-    catTable.hidden = entries.length === 0;
-    catEmpty.hidden = entries.length !== 0;
-  }
-  // Every lens the site has (money/people/land/property/rules/meetings/alerts) shares a
-  // "tab_<lens>" label already used elsewhere in the app — reuse it rather than inventing a
-  // second name for the same thing. t() already falls back through English, then the raw
-  // key, so an unrecognized lens (should not happen — LENSES is a fixed, small set) still
-  // shows the slug rather than nothing.
-  const lensLabel = (lens) => t("tab_" + lens);
-  function renderLensTable(byLens7d, byLensAllTime) {
-    if (!byLens7d && !byLensAllTime) return;
-    const last7 = byLens7d || {}, allTime = byLensAllTime || {};
-    const lenses = [...new Set([...Object.keys(last7), ...Object.keys(allTime)])].sort((a, b) => (allTime[b] || 0) - (allTime[a] || 0));
-    lensTableBody.textContent = "";
-    for (const lens of lenses) {
-      const tr = document.createElement("tr");
-      const th = document.createElement("th"); th.scope = "row"; th.textContent = lensLabel(lens);
-      const td7 = document.createElement("td"); td7.className = "n"; td7.textContent = Number(last7[lens] || 0).toLocaleString("en-US");
-      const tdAll = document.createElement("td"); tdAll.className = "n"; tdAll.textContent = Number(allTime[lens] || 0).toLocaleString("en-US");
-      tr.append(th, td7, tdAll);
-      lensTableBody.appendChild(tr);
-    }
-    lensTable.hidden = lenses.length === 0;
-    lensEmpty.hidden = lenses.length !== 0;
-  }
-  // Merge the per-day series into one row set. An EVENT-COUNTED metric (digests, searches)
-  // only gets a real number when its own metric has a recorded value for that day, or when
-  // the day falls on/after that metric's "live_from" boundary (a missing key there is a
-  // confirmed zero, since live counting never expires and never skips a day). A GAUGE
-  // SNAPSHOT metric (watches active) never zero-fills — a missing key just means that day's
-  // once-daily cron snapshot hasn't happened (yet, or ever), not a confirmed zero. Anything
-  // uncertain renders as "not recorded" rather than guessing — see
-  // worker/scripts/backfill-history.mjs and lib/stats.mjs's snapshotHistDay.
-  function renderHistory(history) {
-    if (!history) return;
-    const dByDay = history.digests?.by_day || {}, nByDay = history.nl_search?.by_day || {};
-    const wByDay = history.watches_active?.by_day || {};
-    const dLive = history.digests?.live_from || null, nLive = history.nl_search?.live_from || null;
-    const wLive = history.watches_active?.live_from || null;
-    const days = [...new Set([...Object.keys(dByDay), ...Object.keys(nByDay), ...Object.keys(wByDay)])].sort();
-    histTableBody.textContent = "";
-    for (const day of days) {
-      const dVal = day in dByDay ? dByDay[day] : (dLive && day >= dLive ? 0 : null);
-      const nVal = day in nByDay ? nByDay[day] : (nLive && day >= nLive ? 0 : null);
-      const wVal = day in wByDay ? wByDay[day] : null; // gauge — never zero-filled
-      const tr = document.createElement("tr");
-      const th = document.createElement("th"); th.scope = "row";
-      th.textContent = dateLabel(day, { month: "short", day: "numeric", year: "numeric" });
-      const cell = (v) => {
-        const td = document.createElement("td");
-        if (v == null) { td.className = "notrec"; td.textContent = t("stats_history_notrecorded"); }
-        else { td.className = "n"; td.textContent = v.toLocaleString("en-US"); }
-        return td;
-      };
-      tr.append(th, cell(dVal), cell(nVal), cell(wVal));
-      histTableBody.appendChild(tr);
-    }
-    const earliestLive = [dLive, nLive, wLive].filter(Boolean).sort()[0] || null;
-    if (earliestLive) {
-      const label = dateLabel(earliestLive, { month: "long", day: "numeric", year: "numeric" });
-      histEraNote.textContent = t("stats_history_era", { date: label });
-      histEraNote.hidden = false;
-    } else {
-      histEraNote.hidden = true;
-    }
-    histTable.hidden = days.length === 0;
-    histEmpty.hidden = days.length !== 0;
-  }
-  const areaLabel = (area) => t("stats_area_" + area.replace("-", "_"));
-  function numberCell(value) {
-    const td = document.createElement("td");
-    td.className = "n";
-    td.textContent = Number(value || 0).toLocaleString("en-US");
-    return td;
-  }
-  function renderUsage(usage) {
-    if (!usage || !usage.available) {
-      usageUnavailable.hidden = false;
-      usageLensTable.hidden = true;
-      usageGeoTable.hidden = true;
-      usageGrowthTable.hidden = true;
-      renderSinceNote(usageSinceNote, usage?.measured_since);
-      return;
-    }
-    usageUnavailable.hidden = true;
-    put("s-pageviews", usage.page_views?.last7d);
-    put("s-usage-searches", usage.searches?.last7d);
-    put("s-deeplinks", usage.deep_links?.last7d);
-    put("s-exports", usage.exports?.last7d);
-    put("s-alert-confirms", usage.alerts?.confirmed_last7d);
-    renderSinceNote(usageSinceNote, usage.measured_since);
-
-    usageLensTableBody.textContent = "";
-    const lens7 = usage.lens_interest?.last7d || {}, lens30 = usage.lens_interest?.last30d || {};
-    for (const lens of Object.keys(lens30)) {
-      const tr = document.createElement("tr"), th = document.createElement("th");
-      th.scope = "row"; th.textContent = lensLabel(lens);
-      tr.append(th, numberCell(lens7[lens]), numberCell(lens30[lens]));
-      usageLensTableBody.appendChild(tr);
-    }
-    usageLensTable.hidden = usageLensTableBody.rows.length === 0;
-
-    usageGeoTableBody.textContent = "";
-    for (const [area, count] of Object.entries(usage.geography_interest?.last30d || {})) {
-      const tr = document.createElement("tr"), th = document.createElement("th");
-      th.scope = "row"; th.textContent = areaLabel(area);
-      tr.append(th, numberCell(count));
-      usageGeoTableBody.appendChild(tr);
-    }
-    usageGeoTable.hidden = usageGeoTableBody.rows.length === 0;
-
-    usageGrowthTableBody.textContent = "";
-    const growth = Object.entries(usage.growth?.by_day || {}).sort((a, b) => a[0].localeCompare(b[0])).slice(-30);
-    for (const [day, counts] of growth) {
-      const tr = document.createElement("tr"), th = document.createElement("th");
-      th.scope = "row"; th.textContent = dateLabel(day, { month: "short", day: "numeric", year: "numeric" });
-      tr.append(th, numberCell(counts.page_views), numberCell(counts.interactions));
-      usageGrowthTableBody.appendChild(tr);
-    }
-    usageGrowthTable.hidden = growth.length === 0;
-  }
-  // applyStrings() rebuilds data-i18n-html containers (incl. the nested today-count spans)
-  // on every language switch — the state below survives that so a switch after data loads
-  // repaints the real numbers instead of resetting to the loading/placeholder text, and
-  // re-translates every table's row labels into the new language.
-  let msgState = { kind: "loading" }, digestsToday = null, nlToday = null;
-  let categoryData = null, categorySince = null, lensData7d = null, lensDataAllTime = null, lensSince = null;
-  let historyData = null, usageData = null, digestsAllTimeSince = null, nlAllTimeSince = null, metricAsOf = null;
+  const number = (value) => value == null ? "–" : Number(value).toLocaleString(curLoc());
+  const date = (value) => value ? new Date(value + "T00:00:00Z").toLocaleDateString(curLoc(), { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }) : "–";
+  let data = null;
+  let state = "loading";
   function paint() {
-    msg.textContent = msgState.kind === "asof" ? t("stats_asof", { date: msgState.date })
-      : msgState.kind === "unreachable" ? t("stats_unreachable") : t("stats_loading");
-    if (digestsToday != null) put("s-digests-today", digestsToday);
-    if (nlToday != null) put("s-nl-today", nlToday);
-    renderCategories(categoryData);
-    renderSinceNote(catSinceNote, categorySince);
-    renderLensTable(lensData7d, lensDataAllTime);
-    renderSinceNote(lensSinceNote, lensSince);
-    renderSinceNote(document.getElementById("s-digests-alltime-since"), digestsAllTimeSince);
-    renderSinceNote(document.getElementById("s-nl-alltime-since"), nlAllTimeSince);
-    renderHistory(historyData);
-    renderUsage(usageData);
-    const stamp = metricAsOf ? t("stats_metric_asof", { date: metricAsOf }) : t("stats_metric_unavailable");
+    document.getElementById("s-notices").textContent = number(data?.city_record?.notice_count);
+    document.getElementById("s-sources").textContent = number(data?.sources?.primary_system_count);
+    document.getElementById("s-languages").textContent = number(data?.language_coverage?.site_languages);
+    document.getElementById("s-current").textContent = date(data?.city_record?.latest_notice_date);
+    if (state === "ready") msg.textContent = t("stats_public_asof", { date: new Date(data.generated_at).toLocaleString(curLoc()) });
+    else if (state === "partial") msg.textContent = t("stats_public_corpus_unavailable");
+    else if (state === "failed") msg.textContent = t("stats_public_unreachable");
+    else msg.textContent = t("stats_loading");
+    const stamp = data?.generated_at ? t("stats_public_asof", { date: new Date(data.generated_at).toLocaleString(curLoc()) }) : t("stats_metric_unavailable");
     document.querySelectorAll("[data-stat-asof]").forEach((el) => { el.textContent = stamp; });
-    const usageStamp = usageData?.available ? stamp : t("stats_metric_unavailable");
-    document.querySelectorAll("[data-usage-asof]").forEach((el) => { el.textContent = usageStamp; });
   }
   paint();
-  // Wire the switcher immediately — it must not wait on the fetch below, or clicking it
-  // during the loading window would silently do nothing (found in manual verification).
   initSubpageLangSwitcher(paint);
-  const API_PRIMARY = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
-  const bases = API_PRIMARY === API_FALLBACK ? [API_PRIMARY] : [API_PRIMARY, API_FALLBACK];
-  for (const base of bases) {
-    try {
-      const r = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });
-      if (!r.ok) continue;
-      const d = await r.json();
-      put("s-subs", d.subscriptions?.active);
-      put("s-accounts", d.subscriptions?.accounts);
-      put("s-digests", d.digests?.sent_last7d);
-      digestsToday = d.digests?.sent_today;
-      put("s-digests-today", digestsToday);
-      put("s-clicks", d.digest_clicks?.last7d);
-      put("s-feeds", d.feeds?.fetches_last7d);
-      put("s-batch", d.batch?.calls_last7d);
-      put("s-inv", d.shared_investigations?.created_last7d);
-      put("s-nl", d.nl_search?.calls_last7d);
-      nlToday = d.nl_search?.calls_today;
-      put("s-nl-today", nlToday);
-      put("s-digests-alltime", d.digests?.sent_all_time);
-      put("s-nl-alltime", d.nl_search?.calls_all_time);
-      digestsAllTimeSince = d.history?.digests?.live_from || null;
-      nlAllTimeSince = d.history?.nl_search?.live_from || null;
-      categoryData = d.digests?.by_category;
-      categorySince = digestsAllTimeSince;
-      renderCategories(categoryData);
-      lensData7d = d.nl_search?.by_category_last7d;
-      lensDataAllTime = d.nl_search?.by_category;
-      lensSince = nlAllTimeSince;
-      renderLensTable(lensData7d, lensDataAllTime);
-      historyData = d.history;
-      renderHistory(historyData);
-      usageData = d.usage || null;
-      metricAsOf = new Date(d.generated).toLocaleString(curLoc());
-      msgState = { kind: "asof", date: new Date(d.generated).toLocaleString(curLoc()) };
-      paint();
-      return;
-    } catch { /* try the alias */ }
-  }
-  msgState = { kind: "unreachable" };
-  catEmpty.hidden = false;
-  lensEmpty.hidden = false;
-  histEmpty.hidden = false;
-  usageUnavailable.hidden = false;
-  paint();
+  const primary = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
+  const fallback = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
+  const bases = primary === fallback ? [primary] : [primary, fallback];
+  (async () => {
+    const publicSchema = document.getElementById("main").dataset.statsSchema;
+    for (const base of bases) {
+      try {
+        const response = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });
+        if (!response.ok) continue;
+        const candidate = await response.json();
+        if (candidate?.schema !== publicSchema) continue;
+        data = candidate;
+        state = candidate.city_record?.available ? "ready" : "partial";
+        paint();
+        return;
+      } catch { /* try the compatibility origin */ }
+    }
+    state = "failed";
+    paint();
+  })();
 })();
 </script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate. -->

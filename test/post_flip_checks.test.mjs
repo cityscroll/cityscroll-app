@@ -5,6 +5,8 @@ import { test } from "node:test";
 import {
   POST_FLIP_NAMED_CHECKS,
   POST_FLIP_NAMED_CHECK_IDS,
+  classifyCorpusFreshness,
+  classifyCoverageSanity,
   classifyEmailHealth,
   classifyHumanPathJourney,
   classifyStatsSanity,
@@ -16,22 +18,17 @@ import { POST_FLIP_TARGETS, targetsFromCli } from "../tools/live_url_smoke.mjs";
 const baseline = JSON.parse(
   readFileSync(new URL("../docs/evidence/hosting-migration-baseline.json", import.meta.url), "utf8"),
 );
+const NOW = new Date("2026-08-05T18:00:00Z");
 
-/** Fresh last_run receipt within the classifier's 2-day window (wall-clock independent). */
 function freshLastRun(overrides = {}) {
-  const day = new Date().toISOString().slice(0, 10);
-  return {
-    ranAt: `${day}T13:00:00.000Z`,
-    day,
-    sent: 0,
-    skipped_reason: "all_quiet",
-    matched: 0,
-    ...overrides,
-  };
+  const day = NOW.toISOString().slice(0, 10);
+  return { ranAt: `${day}T13:00:00.000Z`, day, sent: 0, skipped_reason: "all_quiet", matched: 0, ...overrides };
 }
 
-test("named post-flip checks cover the four incident-encoded gates", () => {
+test("named post-flip checks preserve private operations gates and add public coverage gates", () => {
   assert.deepEqual([...POST_FLIP_NAMED_CHECK_IDS].sort(), [
+    "corpus-freshness",
+    "coverage-sanity",
     "email-health",
     "human-path-journey",
     "stats-sanity",
@@ -39,110 +36,70 @@ test("named post-flip checks cover the four incident-encoded gates", () => {
   ].sort());
   const byId = Object.fromEntries(POST_FLIP_NAMED_CHECKS.map((c) => [c.id, c]));
   assert.equal(byId["email-health"].incident.class, "silent-five-day-alert");
-  assert.match(byId["email-health"].incident.field_case, /2026-07-30/);
   assert.equal(byId["stats-sanity"].incident.class, "sent_today-zero-and-frozen-gauge");
+  assert.equal(byId["corpus-freshness"].incident.class, "stale-public-corpus");
+  assert.equal(byId["coverage-sanity"].incident.class, "public-private-contract-drift");
   assert.equal(byId["worker-access"].incident.class, "could-not-reach");
   assert.equal(byId["human-path-journey"].incident.class, "owner-manually-found-the-site-down");
   assert.match(byId["human-path-journey"].incident.field_case, /ERR_TOO_MANY_REDIRECTS|redirect-loop/i);
 });
 
-test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with receipt + motion", () => {
-  assert.equal(
-    classifyEmailHealth({
-      digests: { sent_today: 0, sent_last7d: 6, sent_all_time: 27, last_run: null },
-    }).ok,
-    false,
+test("EMAIL HEALTH still rejects silent or unexplained sends on authenticated operations data", () => {
+  const privateStats = {
+    digests: { sent_today: 0, sent_last7d: 6, sent_all_time: 27, last_run: freshLastRun() },
+    history: { digests: { by_day: {} } },
+  };
+  assert.equal(classifyEmailHealth(privateStats, { now: NOW }).ok, true);
+  assert.match(
+    classifyEmailHealth({ ...privateStats, digests: { ...privateStats.digests, last_run: null } }, { now: NOW }).reason,
+    /last_run is null/,
   );
   assert.match(
-    classifyEmailHealth({
-      digests: { sent_today: 0, sent_last7d: 6, last_run: null },
-    }).reason,
-    /silent-five-day-alert|last_run is null/,
+    classifyEmailHealth({ ...privateStats, digests: { ...privateStats.digests, last_run: freshLastRun({ skipped_reason: null }) } }, { now: NOW }).reason,
+    /unexplained zero/,
   );
-
-  // Unexplained zero: receipt exists but skipped_reason empty and sent=0
   assert.equal(
-    classifyEmailHealth({
-      digests: {
-        sent_today: 0,
-        sent_last7d: 6,
-        last_run: freshLastRun({ sent: 0, skipped_reason: undefined }),
-      },
-    }).ok,
-    false,
-  );
-  // Explicit empty skipped_reason (key present) still fails unexplained zero.
-  assert.equal(
-    classifyEmailHealth({
-      digests: {
-        sent_today: 0,
-        sent_last7d: 6,
-        last_run: freshLastRun({ sent: 0, skipped_reason: null }),
-      },
-    }).ok,
-    false,
-  );
-
-  assert.equal(
-    classifyEmailHealth({
-      digests: {
-        sent_today: 0,
-        sent_last7d: 6,
-        sent_all_time: 27,
-        last_run: freshLastRun(),
-      },
-    }).ok,
-    true,
-  );
-
-  assert.equal(
-    classifyEmailHealth({
-      digests: {
-        sent_today: 2,
-        sent_last7d: 8,
-        last_run: freshLastRun({ sent: 2, skipped_reason: null }),
-      },
-    }).ok,
+    classifyEmailHealth({ ...privateStats, digests: { ...privateStats.digests, sent_today: 2, last_run: freshLastRun({ sent: 2, skipped_reason: null }) } }, { now: NOW }).ok,
     true,
   );
 });
 
-test("STATS SANITY rejects frozen gauges and unexplained sent_today zero", () => {
-  assert.equal(
-    classifyStatsSanity({
-      digests: { sent_today: 0, last_run: null },
-      usage: { available: true, page_views: { last7d: 0 }, searches: { last7d: 0 } },
-      nl_search: { calls_last7d: 0 },
-      digest_clicks: { last7d: 0 },
-    }).ok,
-    false,
-  );
+test("STATS SANITY still rejects frozen gauges on authenticated operations data", () => {
+  const privateStats = {
+    digests: { sent_today: 0, last_run: freshLastRun() },
+    usage: { available: true, page_views: { last7d: 316 }, searches: { last7d: 90 } },
+    nl_search: { calls_last7d: 90 },
+    digest_clicks: { last7d: 21 },
+  };
+  assert.equal(classifyStatsSanity(privateStats).ok, true);
   assert.match(
-    classifyStatsSanity({
-      digests: { sent_today: 1, last_run: { ranAt: "x", sent: 1, skipped_reason: null } },
-      usage: { available: true, page_views: { last7d: 0 }, searches: { last7d: 0 } },
-      nl_search: { calls_last7d: 0 },
-      digest_clicks: { last7d: 0 },
-    }).reason,
+    classifyStatsSanity({ ...privateStats, usage: { available: true, page_views: {}, searches: {} }, nl_search: {}, digest_clicks: {} }).reason,
     /frozen-gauge/,
   );
+  assert.match(classifyStatsSanity({ ...privateStats, digests: { sent_today: 0, last_run: null } }).reason, /sent_today-zero/);
+});
 
-  assert.equal(
-    classifyStatsSanity({
-      digests: {
-        sent_today: 0,
-        last_run: freshLastRun({ sent: 0, skipped_reason: "all_quiet" }),
-      },
-      usage: {
-        available: true,
-        page_views: { last7d: 316 },
-        searches: { last7d: 90 },
-      },
-      nl_search: { calls_last7d: 90 },
-      digest_clicks: { last7d: 21 },
-    }).ok,
-    true,
+test("CORPUS FRESHNESS requires an available, recent City Record aggregate", () => {
+  const current = {
+    schema: "public-stats.v2",
+    city_record: { available: true, notice_count: 1099194, latest_notice_date: "2026-08-05" },
+  };
+  assert.equal(classifyCorpusFreshness(current, { now: new Date("2026-08-05T18:00:00Z") }).ok, true);
+  assert.equal(classifyCorpusFreshness({ ...current, city_record: { available: false } }).ok, false);
+  assert.match(
+    classifyCorpusFreshness({ ...current, city_record: { ...current.city_record, latest_notice_date: "2026-07-01" } }, { now: new Date("2026-08-05T18:00:00Z") }).reason,
+    /older than 3 days/,
   );
+});
+
+test("COVERAGE SANITY requires coherent coverage and rejects usage-class fields", () => {
+  const coverage = {
+    sources: { primary_system_count: 2, systems: ["A", "B"] },
+    language_coverage: { site_languages: 11 },
+  };
+  assert.equal(classifyCoverageSanity(coverage).ok, true);
+  assert.match(classifyCoverageSanity({ ...coverage, usage: {} }).reason, /usage-class fields leaked/);
+  assert.match(classifyCoverageSanity({ ...coverage, sources: { primary_system_count: 3, systems: ["A"] } }).reason, /disagree/);
 });
 
 test("WORKER ACCESS requires health, stats JSON, and site-origin CORS on /events", () => {
@@ -215,20 +172,18 @@ test("HUMAN-PATH JOURNEY requires home/search/notice/deeplink/subscribe steps", 
 });
 
 test("runPostFlipNamedChecks aggregates classifiers with incident annotations", async () => {
-  const statsBody = {
-    digests: {
-      sent_today: 0,
-      sent_last7d: 6,
-      sent_all_time: 27,
-      last_run: freshLastRun(),
-    },
-    usage: {
-      available: true,
-      page_views: { last7d: 100 },
-      searches: { last7d: 10 },
-    },
+  const publicStatsBody = {
+    schema: "public-stats.v2",
+    city_record: { available: true, notice_count: 1099194, latest_notice_date: "2026-08-05" },
+    sources: { primary_system_count: 2, systems: ["A", "B"] },
+    language_coverage: { site_languages: 11 },
+  };
+  const privateStatsBody = {
+    digests: { sent_today: 0, sent_last7d: 6, sent_all_time: 27, last_run: freshLastRun() },
+    usage: { available: true, page_views: { last7d: 100 }, searches: { last7d: 10 } },
     nl_search: { calls_last7d: 10 },
     digest_clicks: { last7d: 5 },
+    history: { digests: { by_day: {} } },
   };
 
   const fetchImpl = async (url, init = {}) => {
@@ -240,10 +195,18 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
         headers: { get: () => null },
       };
     }
+    if (u.endsWith("/admin/stats")) {
+      assert.equal(init.headers?.Authorization, "Bearer test-admin-key");
+      return {
+        status: 200,
+        text: async () => JSON.stringify(privateStatsBody),
+        headers: { get: () => null },
+      };
+    }
     if (u.endsWith("/stats")) {
       return {
         status: 200,
-        text: async () => JSON.stringify(statsBody),
+        text: async () => JSON.stringify(publicStatsBody),
         headers: { get: () => null },
       };
     }
@@ -266,6 +229,8 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
 
   const result = await runPostFlipNamedChecks({
     fetchImpl,
+    adminKey: "test-admin-key",
+    now: NOW,
     runJourney: true,
     journeyRunner: async () => ({
       steps: [
@@ -278,11 +243,23 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
     }),
   });
   assert.equal(result.ok, true);
-  assert.equal(result.results.length, 4);
+  assert.equal(result.results.length, 6);
   for (const r of result.results) {
     assert.ok(r.incident?.class, `${r.id} must carry incident annotation`);
     assert.equal(r.ok, true, r.id);
   }
+});
+
+test("private operations checks fail closed when no desk credential is configured", async () => {
+  const result = await runPostFlipNamedChecks({
+    fetchImpl: async () => ({ status: 503, text: async () => "", headers: { get: () => null } }),
+    runJourney: false,
+    skip: ["corpus-freshness", "coverage-sanity", "worker-access"],
+    adminKey: "",
+  });
+  assert.equal(result.ok, false);
+  assert.deepEqual(result.results.map((row) => row.id), ["email-health", "stats-sanity"]);
+  assert.ok(result.results.every((row) => /CITYSCROLL_ADMIN_KEY/.test(row.reason)));
 });
 
 test("post-flip URL matrix includes stats endpoint and is selected only via --set", () => {

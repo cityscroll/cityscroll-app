@@ -111,7 +111,7 @@ export async function handleEvent(req, env, options = {}) {
   // Engine is best-effort and historically empty when ANALYTICS_ENVIRONMENT was unset; the
   // KV path is the continuous store that must survive domain/route flips. Await before the
   // 204 — fire-and-forget writes are cancelled when the isolate freezes.
-  // Production counters only: developer traffic must not inflate public /stats.
+  // Production counters only: developer traffic must not inflate the private operations view.
   if (env?.ALERT_STATE && isProductionUsageTraffic(stamped)) {
     try {
       const tasks = [bumpStat(env.ALERT_STATE, `usage_${stamped.event}`, now)];

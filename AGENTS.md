@@ -510,7 +510,12 @@ BATCHABLE / hybrid-default surfaces paint from prebuilt payloads; parameterized 
 | Money default open RFPs | Live SODA open solicitations 40 on `#` / Money open | `site/data/money_default_open.json` | Snapshot first (drop past-due rows client-side); filter/keyword/method/award stay live |
 | Money agency dropdown | Live SODA agency group-by (~2s cold) | `site/data/money_procurement_agencies.json` | Snapshot first; hybrid SODA refresh |
 | Staffing default hires | Live SODA last-80 APPOINTED | `site/data/staffing_default_hires.json` | Snapshot first; live SODA refresh; keyword/payroll stay live |
-| Public `/stats` | Cold multi-KV fan-out on `stats.html` | Daily cron `prewarmStats` → edge cache | Not build-time city data — product counters; warm path only |
+| Public `/stats` | Live City Record corpus aggregate on `stats.html` | Daily cron `prewarmStats` → edge cache | Corpus, source, language, and recency facts only; product-use telemetry stays on authenticated `/admin/stats` |
+
+Evidence boundary: screenshots of authenticated or internal operations surfaces are private
+artifacts. Never commit them, link them from public review surfaces, or place them under `docs/`.
+Public reviews may state that the destination was verified visually and publish only public-page
+captures.
 
 Rebuild snapshots: `node tools/build_batch_precompute_snapshots.mjs` (pure lib:
 `tools/lib/batch_precompute_snapshots.mjs`). Property slim: `worker/src/lib/property_list.mjs`.
@@ -1173,7 +1178,7 @@ watermark only on success. Tracks `digest_catchup` stats separately from normal 
 - Admin: `POST /admin/digest-catchup` (ADMIN_KEY, body `{ minLagDays?, subKeys? }`)
 - Cron: env `DIGEST_CATCH_UP=1` (one-shot; prefer admin for operator control)
 
-**Stats:** `/stats` digests block carries `catch_up_sent_today`,
+**Stats:** authenticated `/admin/stats` digests block carries `catch_up_sent_today`,
 `catch_up_sent_all_time`, `catch_up_last_run`, `lagging_subs`. Operator can show
 catch-up rows via daylog `action: "catch_up"` (and `traffic_class: "catch_up"`).
 
@@ -1276,7 +1281,7 @@ with the public worker (digest modes, daylog actions/fields, stats metrics, admi
 - Pure builder: `worker/src/lib/ops_contract.mjs` → committed fixture
   `worker/ops-contract.v1.json`
 - Served: `GET /admin/ops-contract` (`ADMIN_KEY`, fail closed)
-- Usage `traffic_class`: `production` | `developer` (`blob7`; public SQL keeps production
+- Usage `traffic_class`: `production` | `developer` (`blob7`; private operational SQL keeps production
   only). Developer key is `ANALYTICS_DEV_KEY` (not `USAGE_KEY` / Haiku meter).
 - Verify: `node --test worker/test/ops_contract.test.mjs`
 
