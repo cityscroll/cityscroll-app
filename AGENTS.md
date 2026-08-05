@@ -147,6 +147,14 @@ Rules/meetings densify from live City Record domain snapshots
 cites a ULURP token or ZAP project URL that resolves to a known land project in
 the corpus (strict `extractUlurpKeys` / portal URL only — no title-only invent).
 People densify from Legistar `by_person` on **all** meeting-outcomes records that already carry roll-call names (`site/data/people_domain_observations.json` — list densify via `tools/build_rules_meetings_domain_observations.mjs --people-only`; never invents from `tally_only`).
+
+Official decision trails remain a bounded read model until both fixed promotion
+bars clear: at least 95% exact person-id retention in the dated Legistar audit
+and at least 30 distinct retained roll-call events. The current coverage block
+is materialized in `site/data/person_votes_lookup.json` by
+`site/official_connections.mjs`; below the gate, reader copy must remain
+“published roll calls in this corpus.” Exact `entity:official:<person_id>` plus
+`votes_on` owns composed scope. Never promote name-derived officials.
 Refresh snapshots: `node tools/build_rules_meetings_domain_observations.mjs`
 (extracts ULURP/ZAP keys from body at build time — raw body is not committed)
 then rebuild entity intelligence.

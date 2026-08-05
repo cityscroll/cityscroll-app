@@ -40,6 +40,10 @@ const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
 const OUT_PEOPLE = path.join(ROOT, "site/data/people_domain_observations.json");
 const OUT_PERSON_VOTES = path.join(ROOT, "site/data/person_votes_lookup.json");
+const OFFICIAL_RETENTION_RECEIPT = JSON.parse(readFileSync(path.join(
+  ROOT,
+  "site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
+), "utf8"));
 const MEETINGS_RESIDUAL_SOURCES = JSON.parse(
   readFileSync(path.join(ROOT, "site/data/meetings_location_residual_sources.json"), "utf8"),
 );
@@ -144,7 +148,9 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt) {
     `wrote ${path.relative(ROOT, OUT_PEOPLE)} rows=${peopleDoc.row_count} people=${peopleDoc.person_count} notices=${peopleDoc.notice_count} events=${peopleDoc.event_count}`,
   );
   // Person-page index (#official/{id}) — same densify, keyed by person_id.
-  const voteLookup = buildPersonVotesLookup(peopleDoc);
+  const voteLookup = buildPersonVotesLookup(peopleDoc, {
+    retentionReceipt: OFFICIAL_RETENTION_RECEIPT,
+  });
   writeFileSync(OUT_PERSON_VOTES, `${JSON.stringify(voteLookup, null, 2)}\n`);
   console.log(
     `wrote ${path.relative(ROOT, OUT_PERSON_VOTES)} persons=${voteLookup.person_count} rows=${voteLookup.row_count}`,

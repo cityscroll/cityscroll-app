@@ -9,7 +9,9 @@
  * Source: site/data/people_domain_observations.json (from meeting-outcomes by_person)
  */
 
-export const PERSON_VOTES_LOOKUP_SCHEMA_VERSION = 1;
+import { measureOfficialCoverage } from "./official_connections.mjs";
+
+export const PERSON_VOTES_LOOKUP_SCHEMA_VERSION = 2;
 export const PERSON_VOTES_DEMO_IDS = Object.freeze(["7801"]); // Christopher Marte field case
 
 function clean(v) {
@@ -176,6 +178,10 @@ export function buildPersonVotesLookup(peopleDocOrRows, opts = {}) {
     person_count: Object.keys(by_person_id).length,
     row_count: total,
     demo_person_ids: [...PERSON_VOTES_DEMO_IDS],
+    coverage: measureOfficialCoverage(
+      isDoc ? peopleDocOrRows : { rows, retrieved_at: retrievedAt, source },
+      opts.retentionReceipt || null,
+    ),
     by_person_id,
     provenance: {
       method: "people_domain_by_person_index",
