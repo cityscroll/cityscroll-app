@@ -32,6 +32,9 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/entities.mjs` | Official, agency, and vendor profiles; vendor phase timeline and forecasts. |
 | `site/app/workspace.mjs` | Investigation storage/sync/share and matter timeline. |
 | `site/app/map.mjs` | District choropleth map exploration (borough → CD → council), precomputed activity density, and area feed deep links. |
+| `site/app/now.mjs` | Tiny route-lazy `#now` entry shim; keeps the Now renderer and its read models off the home cold path. |
+| `site/now_view.mjs` | Additive Now loader and renderer; compiles existing read models into Act by and Happening soon without owning lens navigation. |
+| `site/now_surface.mjs` | Pure cross-domain Now compiler, temporal ordering, source coverage, and opaque future-scope predicate seam. |
 | `site/app/routing.mjs` | Permalinks, URL/filter state, route history, and item-route dispatch. |
 | `site/app/boot.mjs` | Event wiring, initial loads, language repaint, alert quiz, and session boot. |
 
