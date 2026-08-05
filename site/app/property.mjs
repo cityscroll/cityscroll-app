@@ -1166,46 +1166,6 @@ async function renderPropExplorer(){
       if(!r._stage) r._stage=propStage(r);
     }
   });
-  const ac={all:propAll.length}, sc={all:propAll.length};
-  const mc={all:propAll.length};
-  const pcBands={all:propAll.length, priced:0, under_10k:0, "10k_100k":0, "100k_plus":0};
-  propAll.forEach(r=>{
-    ac[r._asset]=(ac[r._asset]||0)+1;
-    sc[r._stage]=(sc[r._stage]||0)+1;
-    const method=propSaleMethodOf(r);
-    if(method) mc[method]=(mc[method]||0)+1;
-    const band=propPriceBandOf(r);
-    if(band){
-      pcBands.priced=(pcBands.priced||0)+1;
-      pcBands[band]=(pcBands[band]||0)+1;
-    }
-  });
-  const assetEl=$("#assettabs");
-  if(assetEl){
-    assetEl.innerHTML=[["all","all_types"],...ASSET_BUCKETS].map(([k,l])=>
-      `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
-    assetEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=normalizePropAsset(b.dataset.a); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  }
-  await renderDcasFleetInventory();
-  const saleEl=$("#salerail");
-  if(saleEl){
-    saleEl.innerHTML=[["all","sale_method_all"],...SALE_METHOD_BUCKETS].map(([k,l])=>
-      `<button type="button" class="chip ${propSaleMethod===k?'on':''}" data-m="${k}">${t(l)}<span class="ct">${mc[k]||0}</span></button>`).join("");
-    saleEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propSaleMethod=normalizePropSaleMethod(b.dataset.m); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  }
-  const priceEl=$("#pricerail");
-  if(priceEl){
-    priceEl.innerHTML=PRICE_BAND_BUCKETS.map(([k,l])=>
-      `<button type="button" class="chip ${propPriceBand===k?'on':''}" data-p="${k}">${t(l)}<span class="ct">${pcBands[k]||0}</span></button>`).join("");
-    priceEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propPriceBand=normalizePropPriceBand(b.dataset.p); renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  }
-  const lifeEl=$("#liferail");
-  if(lifeEl){
-    lifeEl.innerHTML=PROP_STAGES.map(([k,l])=>
-      `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${t(l)}<span class="ct">${sc[k]||0}</span></button>`).join("");
-    lifeEl.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  }
-
   const neighborhoodInput=(($("#propertyneighborhood")?.value)||"").trim();
   const neighborhoodState=neighborhoodInput
     ?await import("../neighborhood_search.mjs")
@@ -1226,53 +1186,48 @@ async function renderPropExplorer(){
   const tools=await propertyExplorerTools();
   const processRail=$("#processrail");
   const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
-  let entries=[];
-  if(tools && tools.buildPropertyExplorerEntries){
-    entries=tools.buildPropertyExplorerEntries(propAll, propSpines);
-    entries=tools.filterPropertyExplorerEntries(entries,{
-      process: propProcessSel,
-      asset: propAsset,
-      saleMethod: propSaleMethod,
-      priceBand: propPriceBand,
-      temporal: propStageSel,
-      temporalOf: propStage,
-      assetOf: (r)=>r._asset||classifyAsset(r),
-      commercialOf: (r)=>r.commercial||null,
-      borough: borough||null,
-      neighborhood: propertyCommunityDistrict?null:(neighborhood||null),
-      communityDistricts: propertyResolvedNeighborhood&&propertyCommunityDistrict?[propertyCommunityDistrict]:[],
-    });
-    if(tools.stampPropertyExplorerTemporal){
-      entries=tools.stampPropertyExplorerTemporal(entries,{
-        commercialOf:(r)=>r.commercial||null,
-      });
-    }
-    if(tools.sortPropertyExplorerEntries){
-      entries=tools.sortPropertyExplorerEntries(entries, propSort, (r)=>r.commercial||null);
-    }
-    const pc=tools.countPropertyProcessStages(tools.buildPropertyExplorerEntries(propAll, propSpines));
-    if(processRail){
-      const stages=tools.PROP_PROCESS_STAGES||[["all","stage_all"]];
-      processRail.innerHTML=stages.map(([k,l])=>
-        `<button type="button" class="chip ${propProcessSel===k?'on':''}" data-p="${k}">${t(l)}<span class="ct">${pc[k]||0}</span></button>`
-      ).join("");
-      processRail.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propProcessSel=b.dataset.p; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-    }
-  } else {
-    // Fallback: flat notice list if the explorer module fails to load.
-    if(processRail) processRail.innerHTML="";
-    entries=propAll
+  const filterOptions={
+    process: propProcessSel,
+    asset: propAsset,
+    saleMethod: propSaleMethod,
+    priceBand: propPriceBand,
+    temporal: propStageSel,
+    temporalOf: propStage,
+    assetOf: (r)=>r._asset||classifyAsset(r),
+    commercialOf: (r)=>r.commercial||null,
+    borough: borough||null,
+    neighborhood: propertyCommunityDistrict?null:(neighborhood||null),
+    communityDistricts: propertyResolvedNeighborhood&&propertyCommunityDistrict?[propertyCommunityDistrict]:[],
+  };
+  const allEntries=tools?.buildPropertyExplorerEntries
+    ?tools.buildPropertyExplorerEntries(propAll, propSpines)
+    :propAll.map(r=>({
+      kind:"notice",
+      primary:r,
+      members:[r],
+      notice_count:1,
+      process_stage:r.disposition_stage||null,
+      process_filter:r.disposition_stage||"unstaged",
+      action_key:"property_action_open_notice",
+      bbl:null,
+      matched_phases:r.disposition_stage?[r.disposition_stage]:[],
+    }));
+  const fallbackEntriesFor=(overrides={})=>{
+    const filters={...filterOptions,...overrides};
+    return propAll
       .filter(r=>{
-        if(propAsset!=="all" && r._asset!==propAsset) return false;
-        if(propStageSel!=="all" && r._stage!==propStageSel) return false;
-        if(propSaleMethod!=="all" && propSaleMethodOf(r)!==propSaleMethod) return false;
-        if(propPriceBand!=="all"){
+        if(filters.asset!=="all" && r._asset!==filters.asset) return false;
+        if(filters.temporal!=="all" && r._stage!==filters.temporal) return false;
+        if(filters.process!=="all" && (r.disposition_stage||"unstaged")!==filters.process) return false;
+        if(filters.saleMethod!=="all" && propSaleMethodOf(r)!==filters.saleMethod) return false;
+        if(filters.priceBand!=="all"){
           const band=propPriceBandOf(r);
-          if(propPriceBand==="priced"){ if(!band) return false; }
-          else if(band!==propPriceBand) return false;
+          if(filters.priceBand==="priced"){ if(!band) return false; }
+          else if(band!==filters.priceBand) return false;
         }
-        // Commercial filters drop non-sales when any commercial organize filter is on.
-        if((propAsset!=="all"||propSaleMethod!=="all"||propPriceBand!=="all")
+        // Only sale-method and price filters imply a commercial-sale scope. Item type
+        // intentionally includes non-sale classes such as seized / unclaimed property.
+        if((filters.saleMethod!=="all"||filters.priceBand!=="all")
           && r.commercial && r.commercial.sale_eligible===false) return false;
         if(borough && !(r._location?.boroughs||[]).includes(borough)) return false;
         if(propertyResolvedNeighborhood&&propertyCommunityDistrict && r._communityDistrict!==propertyCommunityDistrict) return false;
@@ -1282,29 +1237,53 @@ async function renderPropExplorer(){
         ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())) return false;
         return true;
       })
-      .map(r=>({
-        kind:"notice",
-        primary:r,
-        members:[r],
-        notice_count:1,
-        process_stage:r.disposition_stage||null,
-        process_filter:r.disposition_stage||"unstaged",
-        action_key:"property_action_open_notice",
-        bbl:null,
-        matched_phases:r.disposition_stage?[r.disposition_stage]:[],
-      }));
-  }
-
-  const partition=tools?.partitionPropertyExplorerEntries
-    ?tools.partitionPropertyExplorerEntries(entries,{today:todayISO()})
+      .map(r=>allEntries.find(entry=>entry.primary===r)||null)
+      .filter(Boolean);
+  };
+  const scopedEntries=(overrides={})=>tools?.filterPropertyExplorerEntries
+    ?tools.filterPropertyExplorerEntries(allEntries,{...filterOptions,...overrides})
+    :fallbackEntriesFor(overrides);
+  const partitionEntries=(scoped)=>tools?.partitionPropertyExplorerEntries
+    ?tools.partitionPropertyExplorerEntries(scoped,{today:todayISO()})
     :{
-      default_entries:entries,
+      default_entries:scoped,
       archive_entries:[],
-      default_count:entries.length,
+      default_count:scoped.length,
       archive_count:0,
-      census_total:entries.length,
+      census_total:scoped.length,
     };
-  entries=propertyView==="archive"?partition.archive_entries:partition.default_entries;
+  const partitionFor=(overrides={})=>partitionEntries(scopedEntries(overrides));
+  const currentCountFor=(overrides={})=>partitionFor(overrides).default_count;
+  const selectPropertyFacet=(apply)=>{
+    apply();
+    propertyView="default";
+    const taxPanel=$("#tax-lien-sale-panel");
+    if(taxPanel) taxPanel.hidden=true;
+    renderPropExplorer();
+    updateHash();
+    renderSearchComponents("property");
+  };
+  const renderFacetRail=(el,values,selected,dataKey,overrideKey,normalize,apply)=>{
+    if(!el) return;
+    el.innerHTML=values.map(([key,label])=>`<button type="button" class="chip ${selected===key?'on':''}" data-${dataKey}="${key}" aria-pressed="${selected===key?'true':'false'}">${escUiHtml(t(label))}<span class="ct">${currentCountFor({[overrideKey]:key})}</span></button>`).join("");
+    el.querySelectorAll(".chip").forEach(button=>button.addEventListener("click",()=>selectPropertyFacet(()=>apply(normalize?normalize(button.dataset[dataKey]):button.dataset[dataKey]))));
+  };
+  renderFacetRail($("#assettabs"),[["all","all_types"],...ASSET_BUCKETS],propAsset,"a","asset",normalizePropAsset,value=>{ propAsset=value; });
+  renderFacetRail($("#salerail"),[["all","sale_method_all"],...SALE_METHOD_BUCKETS],propSaleMethod,"m","saleMethod",normalizePropSaleMethod,value=>{ propSaleMethod=value; });
+  renderFacetRail($("#pricerail"),PRICE_BAND_BUCKETS,propPriceBand,"p","priceBand",normalizePropPriceBand,value=>{ propPriceBand=value; });
+  renderFacetRail($("#liferail"),PROP_STAGES,propStageSel,"s","temporal",null,value=>{ propStageSel=value; });
+  const processStages=tools?.PROP_PROCESS_STAGES||[["all","stage_all"]];
+  renderFacetRail(processRail,processStages,propProcessSel,"p","process",null,value=>{ propProcessSel=value; });
+  await renderDcasFleetInventory();
+
+  const partition=partitionFor();
+  let entries=propertyView==="archive"?partition.archive_entries:partition.default_entries;
+  if(tools?.stampPropertyExplorerTemporal){
+    entries=tools.stampPropertyExplorerTemporal(entries,{commercialOf:(r)=>r.commercial||null});
+  }
+  if(tools?.sortPropertyExplorerEntries){
+    entries=tools.sortPropertyExplorerEntries(entries,propSort,(r)=>r.commercial||null);
+  }
   const viewSwitch=$("#property-view-switch");
   if(viewSwitch){
     const viewOptions=[
@@ -1367,13 +1346,60 @@ async function renderPropExplorer(){
   if(countEl) countEl.textContent=t("property_entries_announce",{n:totalCount});
   setExportBandVisibility(totalCount, "property-export-band", "property-export-overflow");
   if(!entries.length){
-    if(propertyResolvedNeighborhood){
-      feedEl.innerHTML=`<div class="empty property-neighborhood-empty"><p>${t("property_neighborhood_empty_html",{name:escUiHtml(propertyResolvedNeighborhood.name)})}</p><button type="button" class="act primary" data-follow-resolved-neighborhood>${t("follow_this_area")}</button></div>`;
-      const follow=feedEl.querySelector("[data-follow-resolved-neighborhood]");
-      if(follow) follow.addEventListener("click",()=>watchFromFilters("property"));
-    } else {
-      feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
-    }
+    const scopeLabels=[];
+    if(propAsset!=="all") scopeLabels.push(t(ASSET_LABEL[propAsset]||"asset_other"));
+    if(propSaleMethod!=="all") scopeLabels.push(t(SALE_METHOD_BUCKETS.find(([key])=>key===propSaleMethod)?.[1]||"sale_method_unknown"));
+    if(propPriceBand!=="all") scopeLabels.push(t(PRICE_BAND_BUCKETS.find(([key])=>key===propPriceBand)?.[1]||"price_band_all"));
+    if(propStageSel!=="all") scopeLabels.push(t(PROP_STAGES.find(([key])=>key===propStageSel)?.[1]||"stage_all"));
+    if(propProcessSel!=="all") scopeLabels.push(t(processStages.find(([key])=>key===propProcessSel)?.[1]||"stage_all"));
+    if(propertyResolvedNeighborhood?.name) scopeLabels.push(propertyResolvedNeighborhood.name);
+    else if(neighborhood) scopeLabels.push(neighborhood);
+    else if(borough) scopeLabels.push(borough);
+    if(kw) scopeLabels.push(`“${kw}”`);
+    const scopeLabel=scopeLabels.length?scopeLabels.join(" · "):t("tab_property");
+    const alternateView=propertyView==="default"?"archive":"default";
+    const alternateCount=alternateView==="archive"?partition.archive_count:partition.default_count;
+    const alternateLabel=alternateView==="archive"?t("property_closed_section"):t("rule_phase_current");
+    const alternateAction=alternateCount
+      ?`<button type="button" class="act primary" data-property-empty-view="${alternateView}">${escUiHtml(alternateLabel)} <span class="ct">${alternateCount}</span></button>`
+      :"";
+    const hasFacetScope=propAsset!=="all"||propSaleMethod!=="all"||propPriceBand!=="all"||propStageSel!=="all"||propProcessSel!=="all"||!!borough||!!neighborhood||!!kw;
+    const clearAction=hasFacetScope?`<button type="button" class="act" data-property-clear-scope>${escUiHtml(t("clear_filters_btn"))}</button>`:"";
+    const followAction=propertyResolvedNeighborhood
+      ?`<button type="button" class="act" data-follow-resolved-neighborhood>${escUiHtml(t("follow_this_area"))}</button>`
+      :"";
+    feedEl.innerHTML=`<div class="empty property-scope-empty" data-property-scope-empty="1">
+      <p><strong>${escUiHtml(scopeLabel)}</strong></p>
+      <p><span>${escUiHtml(t("rule_phase_current"))} <b data-property-scope-current-count>${partition.default_count}</b></span> · <span>${escUiHtml(t("property_closed_section"))} <b data-property-scope-archive-count>${partition.archive_count}</b></span></p>
+      <div class="factions">${alternateAction}${clearAction}${followAction}</div>
+    </div>`;
+    const alternate=feedEl.querySelector("[data-property-empty-view]");
+    if(alternate) alternate.addEventListener("click",()=>{
+      propertyView=alternate.dataset.propertyEmptyView==="archive"?"archive":"default";
+      renderPropExplorer();
+      updateHash();
+      renderSearchComponents("property");
+    });
+    const clear=feedEl.querySelector("[data-property-clear-scope]");
+    if(clear) clear.addEventListener("click",()=>{
+      propAsset="all";
+      propSaleMethod="all";
+      propPriceBand="all";
+      propStageSel="all";
+      propProcessSel="all";
+      propertyView="default";
+      propertyCommunityDistrict="";
+      propertyCouncilDistrict="";
+      propertyResolvedNeighborhood=null;
+      if($("#propertyboro")) $("#propertyboro").value="";
+      if($("#propertyneighborhood")) $("#propertyneighborhood").value="";
+      if($("#propertykw")) $("#propertykw").value="";
+      renderPropExplorer();
+      updateHash();
+      renderSearchComponents("property");
+    });
+    const follow=feedEl.querySelector("[data-follow-resolved-neighborhood]");
+    if(follow) follow.addEventListener("click",()=>watchFromFilters("property"));
     try{ renderSearchComponents("property"); }catch(_e){}
     return;
   }

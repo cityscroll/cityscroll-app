@@ -22,6 +22,10 @@ test("finite legacy routes forward to canonical documents and preserve supported
   );
   assert.equal(migrateLegacyUrl("/#money?closing=week").target, "/browse/contracts/?closing=week");
   assert.equal(
+    migrateLegacyUrl("/#property?asset=seized_property").target,
+    "/browse/property/?asset=seized_property",
+  );
+  assert.equal(
     migrateLegacyUrl("/#staffing?lang=es&view=guide&role=Engineer%20Civil&window=open").target,
     "/browse/staffing/?lang=es&view=guide&role=Engineer+Civil&window=open",
   );
