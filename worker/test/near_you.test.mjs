@@ -13,7 +13,11 @@ test("the edge renderer returns an inspectable scoped HTML document and public c
   assert.match(response.headers.get("content-type") || "", /text\/html/);
   assert.match(response.headers.get("cache-control") || "", /public/);
   assert.equal(response.headers.get("access-control-allow-origin"), "https://cityscroll.org");
+  assert.match(response.headers.get("content-security-policy") || "", /style-src[^;]+https:\/\/cityscroll\.org/);
+  assert.match(response.headers.get("content-security-policy") || "", /font-src https:\/\/fonts\.gstatic\.com/);
   assert.match(html, /<h1[^>]*>Near you<\/h1>/);
+  assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/brand\.css"/);
+  assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/civic-documents\.css"/);
   assert.match(html, /data-scope-axis="borough"[^>]*>Queens/);
   assert.match(html, /data-scope-axis="agency"[^>]*>Transportation/);
   assert.match(html, /data-results-count=/);

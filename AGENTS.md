@@ -51,6 +51,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
   its summary, preview count, results, and `/subscribe` form. Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
+- Static-first standalone documents load `site/brand.css` plus `site/civic-documents.css` through
+  `site/civic_document_chrome.mjs`; do not inline a page-local palette or type stack. Run
+  `python3 test/standards/civic_token_contract.py` after adding or generating a shipped document.
 
 ## Primary document routes
 
