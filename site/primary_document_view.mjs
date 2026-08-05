@@ -76,6 +76,14 @@ function pageMetadata(html, { title, description, canonical, primaryHref, primar
   return out;
 }
 
+function addRouteStyles(html, paths) {
+  const links = paths
+    .filter((path) => !html.includes(`href="${path}"`))
+    .map((path) => `<link rel="stylesheet" href="${path}" data-route-style="${path}">`)
+    .join("\n");
+  return links ? html.replace("</head>", `${links}\n</head>`) : html;
+}
+
 function canonicalRoute(route) {
   return `https://cityscroll.org${route}`;
 }
@@ -153,6 +161,7 @@ export function buildBrowseLandingDocument(shell, payloads, options = {}) {
     primaryContext: "browse",
   });
   html = activateTab(html, "browse");
+  html = addRouteStyles(html, ["browse.css"]);
   const landing = buildBrowseLanding(payloads, options);
   return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
 }
@@ -170,5 +179,7 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
     primaryContext: "browse",
   });
   html = activateTab(html, config.tab);
+  html = addRouteStyles(html, ["browse.css"]);
+  if (facet === "property") html = addRouteStyles(html, ["property.css"]);
   return replaceElementContent(html, config.container, renderBrowseView(view));
 }

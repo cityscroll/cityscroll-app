@@ -147,3 +147,7 @@ you@example.com
 
 # ── Map exploration (cs-geo-04) — route token; never rendered chrome
 view=tax-lien
+
+# Route-scoped stylesheet selectors and asset names; these are DOM plumbing, not chrome.
+link[data-route-style="
+property.css

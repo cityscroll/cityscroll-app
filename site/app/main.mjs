@@ -21,6 +21,13 @@ const routeModuleLoaders = Object.freeze({
 const routeModulePromises = new Map();
 const loadedRouteModules = new Set();
 
+function ensureRouteStylesheet(path){
+  if(document.querySelector(`link[data-route-style="${path}"]`)) return;
+  const link=document.createElement("link");
+  link.rel="stylesheet"; link.href=path; link.dataset.routeStyle=path;
+  document.head.appendChild(link);
+}
+
 function routeModuleForHash(hash){
   const raw=String(hash||"").replace(/^#/,"").toLowerCase();
   const path=String(location.pathname||"").toLowerCase();
@@ -32,6 +39,7 @@ function routeModuleForHash(hash){
 function ensureRouteModule(name){
   const loader=routeModuleLoaders[name];
   if(!loader) return Promise.resolve();
+  if(name === "property") ensureRouteStylesheet("property.css");
   if(!routeModulePromises.has(name)){
     routeModulePromises.set(name,loader().then(module=>{
       loadedRouteModules.add(name);
