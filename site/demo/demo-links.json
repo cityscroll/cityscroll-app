@@ -232,7 +232,7 @@
     },
     {
       "id": "meetings-ida-widening",
-      "url": "#meetings?when=upcoming&q=IDA",
+      "url": "#meetings?q=IDA&when=upcoming",
       "feature": "meeting-result-widening",
       "description": "Show a recent IDA meeting when no upcoming meeting matches the search.",
       "expectations": {
@@ -270,7 +270,7 @@
     },
     {
       "id": "contracts-closing-this-week",
-      "url": "#money?mode=open&closing=week",
+      "url": "#money?closing=week",
       "feature": "contract-closing-preset",
       "description": "Open contract opportunities that are accepting responses and closing this week.",
       "expectations": {
@@ -307,7 +307,7 @@
     },
     {
       "id": "scenario-city-work",
-      "url": "#money?mode=open&closing=week",
+      "url": "#money?closing=week",
       "feature": "scenario-city-work",
       "description": "Start the city-work path with open contracts closing this week.",
       "expectations": {
@@ -410,7 +410,7 @@
     },
     {
       "id": "scenario-subsidies-land-use",
-      "url": "#meetings?when=past&q=IDA",
+      "url": "#meetings?q=IDA&when=past",
       "feature": "scenario-subsidies-land-use",
       "description": "Start the subsidies and land-use path with a published IDA meeting.",
       "expectations": {
@@ -447,7 +447,7 @@
     },
     {
       "id": "rules-hearing-affected-area",
-      "url": "#rules?q=BRONX%20CURB",
+      "url": "#rules?q=BRONX+CURB",
       "feature": "rules-hearing-location",
       "description": "Show a rule hearing with its affected borough rather than its Manhattan venue.",
       "expectations": {
@@ -643,7 +643,7 @@
         "visible": [
           {
             "selector": "#propertyfeed .fcard",
-            "text": "PUBLIC AUCTION"
+            "text": "PROPERTY DISPOSITIONS"
           },
           {
             "selector": "#propertyfeed .tag.place",

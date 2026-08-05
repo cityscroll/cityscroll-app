@@ -68,7 +68,7 @@ test("Meetings paints an exact count and keeps absent results unpainted", () => 
   const render = extractFunction(feedSource, "renderHearingExplorer");
   const count = extractFunction(feedSource, "setMeetingsResultCount");
   const filters = extractFunction(feedSource, "updateMeetingsMoreFiltersState");
-  assert.match(render, /setMeetingsResultCount\(entries\.length\)/);
+  assert.match(render, /setMeetingsResultCount\(uniqueRows\.length\)/);
   assert.match(count, /results_count/);
   assert.match(render, /if\(!entries\.length\)\{[\s\S]*?el\.innerHTML="";/);
   assert.match(filters, /meetingswhen/);

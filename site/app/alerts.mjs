@@ -717,24 +717,29 @@ function syncAlertsAdvDisclosure(){
 // Map the alert builder to a real content-lens query the worker re-sanitizes + the cron replays.
 function aLensFilter(){
   const w=$("#awatch").value, p=$("#aparam").value.trim().toLowerCase();
-  if(w==="bigaward") return {lens:"money", filter:{minAmount:Number($("#athresh").value)||1000000}};
-  if(w==="rfpkw")    return {lens:"money", filter:{keywords:p?[p]:[]}};
+  const adapt=(watch)=>{
+    if(!globalThis.CrolScope) return watch;
+    const scope=CrolScope.scopeFromWatch(watch,{language:window.LANG||"en"});
+    return CrolScope.watchFromScope(scope,{lens:watch.lens});
+  };
+  if(w==="bigaward") return adapt({lens:"money", filter:{minAmount:Number($("#athresh").value)||1000000}});
+  if(w==="rfpkw")    return adapt({lens:"money", filter:{keywords:p?[p]:[]}});
   if(w==="moneynl"){
     const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||null, months=Number($("#amoneymonths").value)||null;
     const {agency=null, category=null, maxAmount=null, noticeType=null} = moneynlExtra;
-    return {lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months, agency, category, maxAmount, noticeType}};
+    return adapt({lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months, agency, category, maxAmount, noticeType}});
   }
-  if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
-  if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
-  if(w==="awardwatch") return {lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}};
-  if(w==="examarea") return {lens:"people", filter:{view:"guide",interestArea:examAreaWatchTarget?.id||null,interestLabel:examAreaWatchTarget?.label||null}};
-  if(w==="district") return {lens:"district", filter:{councilDistrict:$("#adistrict").value||null}};
-  if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{
+  if(w==="entityvendor") return adapt({lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}});
+  if(w==="entityagency") return adapt({lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}});
+  if(w==="awardwatch") return adapt({lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}});
+  if(w==="examarea") return adapt({lens:"people", filter:{view:"guide",interestArea:examAreaWatchTarget?.id||null,interestLabel:examAreaWatchTarget?.label||null}});
+  if(w==="district") return adapt({lens:"district", filter:{councilDistrict:$("#adistrict").value||null}});
+  if(SECTION_WATCH_LABEL[w]) return adapt({lens:w, filter:{
     keywords:p?[p]:[], agency:$("#aagency").value.trim()||null,
     ...(w==="meetings"?meetingWatchExtra:{}),
     ...(w==="property"?propertyWatchExtra:{})
-  }};
-  return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
+  }});
+  return adapt({lens:"land", filter:{keywords:p?[p]:[], status:"all"}}); // rezonings — text match on the place
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 function subscribeErrorWhy(reason){

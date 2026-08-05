@@ -12,7 +12,10 @@ import {
   citywideTotals,
   citywideBucketCounts,
   defaultViewBox,
+  districtBagItemIds,
   drillInto,
+  filterRowsByDistrictBag,
+  materializeDistrictBagRows,
   granularityCollapseFindings,
   loadDistrictActivity,
   mapDrillListHash,
@@ -74,7 +77,7 @@ test("areaFeedLinks uses existing list filter grammar", () => {
   const boro = areaFeedLinks("borough", "Queens", { onlyPositive: false });
   assert.ok(boro.some((l) => l.hash === "#land?boro=Queens"));
   assert.ok(boro.some((l) => l.hash === "#property?boro=Queens"));
-  assert.ok(boro.some((l) => l.hash === "#meetings?boro=Queens&when=all"));
+  assert.ok(boro.some((l) => l.hash === "#meetings?when=all&boro=Queens"));
   assert.ok(boro.some((l) => l.hash === "#rules?boro=Queens"));
   assert.equal(boro.find((l) => l.lens === "land")?.scope, "district");
   // Money has no borough polygon filter — omit rather than bare #money lobby.
@@ -83,11 +86,15 @@ test("areaFeedLinks uses existing list filter grammar", () => {
   assert.ok(cd.some((l) => l.hash.includes("cd=Q04")));
   assert.equal(cd.find((l) => l.lens === "property")?.hash, "#property?boro=Queens&cd=Q04");
   assert.equal(cd.find((l) => l.lens === "property")?.scope, "district");
+  assert.equal(cd.find((l) => l.lens === "meetings")?.hash, "#meetings?when=all&boro=Queens&cd=Q04");
+  assert.equal(cd.find((l) => l.lens === "meetings")?.scope, "district");
   const council = areaFeedLinks("council_district", "25", { onlyPositive: false });
   assert.ok(council.some((l) => l.hash === "#land?council=25"));
   assert.equal(council.find((l) => l.lens === "land")?.scope, "district");
-  // Council list filters exist only for land — do not emit citywide lobby under district counts.
-  for (const lens of ["property", "meetings", "money", "rules"]) {
+  assert.equal(council.find((l) => l.lens === "property")?.hash, "#property?council=25");
+  assert.equal(council.find((l) => l.lens === "meetings")?.hash, "#meetings?when=all&council=25");
+  // Rules and performance-place Money still lack exact council filters.
+  for (const lens of ["money", "rules"]) {
     assert.ok(!council.some((l) => l.lens === lens), lens);
   }
 });
@@ -130,14 +137,14 @@ test("bucketFeedLinks carry virtual and citywide scopes into list hashes", () =>
   });
   assert.equal(virt.length, 1);
   assert.equal(virt[0].lens, "meetings");
-  assert.equal(virt[0].hash, "#meetings?scope=virtual&when=all");
+  assert.equal(virt[0].hash, "#meetings?when=all&scope=virtual");
   assert.equal(virt[0].count, 3);
 
   const cw = bucketFeedLinks("citywide", {
     counts: { land: 3, property: 0, rules: 97, meetings: 3, money: 1 },
   });
   assert.ok(cw.some((l) => l.hash === "#rules?scope=citywide" && l.count === 97));
-  assert.ok(cw.some((l) => l.hash === "#meetings?scope=citywide&when=all" && l.count === 3));
+  assert.ok(cw.some((l) => l.hash === "#meetings?when=all&scope=citywide" && l.count === 3));
   assert.ok(cw.some((l) => l.hash === "#money?scope=citywide" && l.count === 1));
 });
 
@@ -375,6 +382,97 @@ test("buildDistrictActivity resolves property geometry to districts", () => {
   assert.equal(activity.by_level.community_district.Q04.property, 1);
   assert.equal(activity.by_level.council_district["25"].property, 1);
   assert.equal(activity.by_level.borough.Queens.property, 1);
+  assert.deepEqual(
+    districtBagItemIds(activity, "property", { communityDistrict: "Q04" }),
+    ["t1"],
+  );
+  assert.deepEqual(
+    districtBagItemIds(activity, "property", { councilDistrict: "25" }),
+    ["t1"],
+  );
+});
+
+test("district bag counts and list membership share one stamped corpus", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    propertyRows: [
+      {
+        request_id: "property-q04",
+        property_location: {
+          boroughs: ["Queens"],
+          geometry: { latitude: 40.7473, longitude: -73.8832 },
+        },
+      },
+      {
+        request_id: "property-k01",
+        property_location: {
+          boroughs: ["Brooklyn"],
+          geometry: { latitude: 40.7175, longitude: -73.958 },
+        },
+      },
+    ],
+    meetingsRows: [
+      {
+        request_id: "meeting-m01",
+        affected_area: {
+          scope: "local",
+          boroughs: ["Manhattan"],
+          community_districts: ["M01"],
+        },
+      },
+      {
+        request_id: "meeting-q04",
+        affected_area: {
+          scope: "local",
+          boroughs: ["Queens"],
+          community_districts: ["Q04"],
+        },
+      },
+    ],
+  });
+
+  for (const [lens, level, id, filter] of [
+    ["property", "community_district", "Q04", { communityDistrict: "Q04" }],
+    ["property", "council_district", "25", { councilDistrict: "25" }],
+    ["meetings", "community_district", "Q04", { communityDistrict: "Q04" }],
+    ["meetings", "council_district", "25", { councilDistrict: "25" }],
+  ]) {
+    const ids = districtBagItemIds(activity, lens, filter);
+    assert.equal(ids.length, activity.by_level[level][id][lens], `${lens} ${level} ${id}`);
+    const rows = [...ids.map((request_id) => ({ request_id })), { request_id: "outside" }];
+    assert.deepEqual(
+      filterRowsByDistrictBag(activity, lens, rows, filter).map((row) => row.request_id),
+      ids,
+    );
+  }
+  assert.equal(activity.district_items.boundary_vintage, activity.boundary_vintage);
+  assert.equal(activity.district_items.built_at, activity.built_at);
+});
+
+test("district drill materializes missing live rows from the stamped corpus", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    meetingsRows: [
+      { request_id: "m-live", affected_area: { scope: "local", boroughs: ["Queens"] } },
+      { request_id: "m-snapshot", affected_area: { scope: "local", boroughs: ["Queens"] } },
+    ],
+  });
+  const corpusRows = [
+    { request_id: "m-live", short_title: "compact live" },
+    { request_id: "m-snapshot", short_title: "snapshot fallback" },
+  ];
+  const liveRows = [{ request_id: "m-live", short_title: "richer live row" }];
+  const rows = materializeDistrictBagRows(
+    activity,
+    "meetings",
+    corpusRows,
+    liveRows,
+    { borough: "Queens" },
+  );
+  assert.equal(rows.length, activity.by_level.borough.Queens.meetings);
+  assert.deepEqual(rows.map((row) => row.request_id), ["m-live", "m-snapshot"]);
+  assert.equal(rows[0].short_title, "richer live row");
+  assert.equal(rows[1].short_title, "snapshot fallback");
 });
 
 test("community board agency names map to product CD ids", () => {
