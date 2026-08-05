@@ -5,7 +5,7 @@ import { handleNearYou } from "../src/near_you.mjs";
 
 test("the edge renderer returns an inspectable scoped HTML document and public cache policy", async () => {
   const response = await handleNearYou(new Request(
-    "https://api.cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation",
+    "https://cityscroll.org/near-you?v=0&lens=meetings&boro=Queens&agency=Transportation",
   ));
   const html = await response.text();
 
@@ -25,9 +25,21 @@ test("the edge renderer returns an inspectable scoped HTML document and public c
   assert.match(html, /data-map-area=/);
 });
 
+test("shared API-host Near-you documents permanently recover to the canonical host", async () => {
+  const response = await handleNearYou(new Request(
+    "https://api.cityscroll.org/near-you?v=0&lens=land&boro=Bronx&cd=X08",
+  ));
+
+  assert.equal(response.status, 301);
+  assert.equal(
+    response.headers.get("location"),
+    "https://cityscroll.org/near-you?v=0&lens=land&boro=Bronx&cd=X08",
+  );
+});
+
 test("contract response-address scope remains separate from performance geography", async () => {
   const response = await handleNearYou(new Request(
-    "https://api.cityscroll.org/near-you?v=0&lens=money&basis=contract_action_address&boro=Manhattan",
+    "https://cityscroll.org/near-you?v=0&lens=money&basis=contract_action_address&boro=Manhattan",
   ));
   const html = await response.text();
 

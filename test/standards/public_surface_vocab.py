@@ -15,6 +15,7 @@ the allowlist.
 from __future__ import annotations
 
 import argparse
+from html.parser import HTMLParser
 import json
 import re
 import sys
@@ -48,6 +49,31 @@ INTERNAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("methodology: invented", re.compile(r"\b(?:(?:not|never|nothing\s+is)\s+(?:invented|fabricated)|(?:do|does)\s+not\s+invent)\b", re.I)),
     ("methodology: not venue", re.compile(r"\bnot\s+venue\b", re.I)),
     ("methodology: site virtue", re.compile(r"\b(?:we\s+do\s+not\s+(?:fabricate|guess)|honest(?:ly)?)\b", re.I)),
+]
+
+# Architecture vocabulary and implementation narration should stay in code and
+# tests. Lens is intentionally absent: it is established product language.
+PUBLIC_COPY_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("architecture jargon: facet", re.compile(r"\bfacets?\b", re.I)),
+    (
+        "architecture jargon: scope",
+        re.compile(
+            r"\b(?:active|saved|shared|place|district|map|this|one)\s+scopes?\b"
+            r"|\b(?:apply|preview|pick|watch|share|update|keep)\s+(?:this\s+|the\s+|an?\s+)?scopes?\b"
+            r"|\bsets?\s+of\s+scopes?\b",
+            re.I,
+        ),
+    ),
+    (
+        "architecture jargon: island",
+        re.compile(r"\b(?:client|enhancement|personal|route[- ]only)\s+island\b", re.I),
+    ),
+    ("architecture jargon: document route", re.compile(r"\bdocument\s+route\b", re.I)),
+    ("mechanics narration: without JavaScript", re.compile(r"\bwithout\s+JavaScript\b", re.I)),
+    ("mechanics narration: no-JS", re.compile(r"\bno[- ]?JS\b", re.I)),
+    ("mechanics narration: scope object", re.compile(r"\bscope\s+object\b", re.I)),
+    ("mechanics narration: server-rendered", re.compile(r"\bserver[- ]rendered\b", re.I)),
+    ("mechanics narration: static-first", re.compile(r"\bstatic[- ]first\b", re.I)),
 ]
 
 # Join provenance belongs in a disclosure, expressed in reader language. These
@@ -101,6 +127,35 @@ DIRECT_RENDER_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 # and badges should say what a thing is, not what alternative the site rejected.
 LABEL_BADGE_KEY = re.compile(r"(?:^|_)(?:label|lbl|badge|tag|lead)(?:_|$)", re.I)
 CONTRASTIVE_NEGATION = re.compile(r"\b(?:not\s+\w+|instead\s+of|rather\s+than)\b", re.I)
+
+
+class ReaderTextParser(HTMLParser):
+    """Collect reader-visible copy and accessibility text from built HTML."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.hidden_depth = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in {"script", "style"}:
+            self.hidden_depth += 1
+            return
+        for name, value in attrs:
+            if not value:
+                continue
+            if name in {"aria-label", "placeholder", "title"} or name.startswith(("data-message-", "data-msg-")):
+                self.parts.append(value)
+            elif tag == "meta" and name == "content":
+                self.parts.append(value)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in {"script", "style"} and self.hidden_depth:
+            self.hidden_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if not self.hidden_depth and data.strip():
+            self.parts.append(data.strip())
 
 
 def load_allowlist(path: Path) -> set[str]:
@@ -212,7 +267,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # Hits against the public catalogs (source, key, term, excerpt). Empty until scan.
     hits = []  # source: site/i18n.js STRINGS.en + INTERNAL_PATTERNS
-    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS)]  # source: public i18n catalogs
+    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS)]  # source: public i18n catalogs
     for path in sorted(LOCALE_DIR.glob("*.js")):
         catalogs.append(
             (
@@ -263,6 +318,26 @@ def main(argv: list[str] | None = None) -> int:
                         "excerpt": line.strip()[:180],
                     }
                 )
+    built_documents = [
+        SITE / "following" / "index.html",
+        *sorted((SITE / "near-you").rglob("*.html")),
+    ]
+    for path in built_documents:
+        parser = ReaderTextParser()
+        parser.feed(path.read_text(encoding="utf-8"))
+        reader_text = "\n".join(parser.parts)
+        for term, pattern in PUBLIC_COPY_PATTERNS:
+            match = pattern.search(reader_text)
+            if not match:
+                continue
+            hits.append(
+                {
+                    "source": str(path.relative_to(REPO)),
+                    "key": "visible_copy",
+                    "term": term,
+                    "excerpt": reader_text[max(0, match.start() - 60) : match.end() + 100].replace("\n", " ")[:180],
+                }
+            )
     findings = hits
 
     if args.json:

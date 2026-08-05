@@ -28,15 +28,15 @@ import {
 } from "./lib/prefs.mjs";
 
 const MAX_PREFS_ATTEMPTS_PER_IP_DAY = 60;
+const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
 
 /** Issue a long-lived preference-center URL for digests / admin. */
 export async function prefsLink(env, email) {
   if (!env.TOKEN_SECRET) return null;
-  const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
   const token = await signToken(env.TOKEN_SECRET, prefsPayload(email), {
     ttlSeconds: PREFS_TOKEN_TTL_SECONDS,
   });
-  return `${base}/prefs?token=${encodeURIComponent(token)}`;
+  return `https://cityscroll.org/prefs?token=${encodeURIComponent(token)}`;
 }
 
 async function issuePrefsCredential(env, email) {
@@ -46,11 +46,14 @@ async function issuePrefsCredential(env, email) {
 }
 
 export async function handlePrefs(req, env) {
+  const url = new URL(req.url);
+  if ((req.method === "GET" || req.method === "HEAD") && LEGACY_DOCUMENT_HOSTS.has(url.hostname)) {
+    return Response.redirect(`https://cityscroll.org${url.pathname}${url.search}`, 301);
+  }
   if (!env.TOKEN_SECRET || !env.SUBS) {
     return page("Unavailable", "This link isn't available right now.", 503);
   }
 
-  const url = new URL(req.url);
   const ip = req.headers.get("CF-Connecting-IP") || "";
   if (ip && await overActorLimit(env.SUBS, "prefs", ip, MAX_PREFS_ATTEMPTS_PER_IP_DAY)) {
     return page("Try again later", "Too many requests from this network. Please try again tomorrow.", 429);

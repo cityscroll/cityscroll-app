@@ -1616,7 +1616,7 @@
     const params = new URLSearchParams();
     params.set("lens", lens);
     params.set("filter", JSON.stringify(filter));
-    return "https://api.cityscroll.org/following?" + params.toString();
+    return "https://cityscroll.org/following?" + params.toString();
   }
 
   function compileActionRail(matter, options) {

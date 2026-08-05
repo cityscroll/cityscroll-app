@@ -45,7 +45,7 @@ test("the edge Following renderer previews the same saved scope and preserves th
     dateWindow: "month",
   }));
   const response = await handleFollowing(new Request(
-    `https://api.cityscroll.org/following?lens=meetings&filter=${filter}&freq=weekly&count=17`,
+    `https://cityscroll.org/following?lens=meetings&filter=${filter}&freq=weekly&count=17`,
   ), {}, {}, { fetchImpl: previewFetch });
   const html = await response.text();
 
@@ -61,6 +61,18 @@ test("the edge Following renderer previews the same saved scope and preserves th
   assert.match(html, /Queens curb redesign hearing/);
   assert.match(html, /name="lens"[^>]+value="meetings"/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
+});
+
+test("shared API-host Following documents permanently recover to the canonical host", async () => {
+  const response = await handleFollowing(new Request(
+    "https://api.cityscroll.org/following?lens=meetings&freq=weekly",
+  ));
+
+  assert.equal(response.status, 301);
+  assert.equal(
+    response.headers.get("location"),
+    "https://cityscroll.org/following?lens=meetings&freq=weekly",
+  );
 });
 
 test("the personal island endpoint stays anonymous without a recognized session", async () => {
@@ -141,7 +153,7 @@ test("a no-JavaScript form can submit, confirm, then reach management and unsubs
     const confirmed = await handleConfirm(new Request(confirmUrl), env);
     const confirmedHtml = await confirmed.text();
     assert.equal(confirmed.status, 200);
-    const manageUrl = confirmedHtml.match(/https:\/\/api\.cityscroll\.org\/prefs\?[^"<]+/)?.[0].replaceAll("&amp;", "&");
+    const manageUrl = confirmedHtml.match(/https:\/\/cityscroll\.org\/prefs\?[^"<]+/)?.[0].replaceAll("&amp;", "&");
     assert.ok(manageUrl, "confirmation landing links to watch management");
 
     const managed = await handlePrefs(new Request(manageUrl), env);

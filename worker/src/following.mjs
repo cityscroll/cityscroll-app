@@ -8,6 +8,7 @@ import { emailFromRequest } from "./session.mjs";
 import { listWatchesForEmail } from "./prefs.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
+const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -53,9 +54,9 @@ function personalHeaders(request, env) {
 }
 
 function personalHtml(watches) {
-  if (!watches?.length) return `<p>Existing watches appear after CityScroll recognizes a link from one of your emails.</p><p><a href="https://api.cityscroll.org/prefs">Manage from a CityScroll email</a></p>`;
+  if (!watches?.length) return `<p>Existing watches appear after CityScroll recognizes a link from one of your emails.</p><p><a href="https://cityscroll.org/prefs">Manage from a CityScroll email</a></p>`;
   const rows = watches.map((watch) => `<article data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}"><h3>${esc(watch.query)}</h3><p class="watch-meta">${watch.paused ? "Paused" : "Active"} · ${esc(watch.freq)}</p></article>`).join("");
-  return `${rows}<p><a href="https://api.cityscroll.org/prefs">Change cadence, pause, or unsubscribe</a></p>`;
+  return `${rows}<p><a href="https://cityscroll.org/prefs">Change cadence, pause, or unsubscribe</a></p>`;
 }
 
 async function handlePersonal(request, env) {
@@ -72,6 +73,9 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
   if (url.pathname === "/following/personal") return handlePersonal(request, env);
   if (url.pathname !== "/following" && url.pathname !== "/following/") return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain" } });
   if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405, headers: { "Content-Type": "text/plain", Allow: "GET, HEAD" } });
+  if (LEGACY_DOCUMENT_HOSTS.has(url.hostname)) {
+    return Response.redirect(`${SITE_ORIGIN}${url.pathname}${url.search}`, 301);
+  }
 
   const parsed = watchFromFollowingParams(url.searchParams);
   const watch = { lens: parsed.lens, filter: sanitize(parsed.lens, parsed.filter) };

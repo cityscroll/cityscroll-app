@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active scope.">
-<link rel="canonical" href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;level=community_district&amp;parent=Staten+Island"><link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
+<link rel="canonical" href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;level=community_district&amp;parent=Staten+Island"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/brand.css">
@@ -15,8 +15,8 @@
     <nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a aria-current="page" href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav>
   </div></header>
 <main id="main" data-near-you-root data-lens="property" data-level="community_district"
-    data-message-updating="Updating this scope…"
-    data-message-updated="Scope updated. Map and list counts match."
+    data-message-updating="Updating the map…"
+    data-message-updated="Map updated. Map and list counts match."
     data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
     data-message-location-finding="Finding your district…"
     data-message-location-matched="Location matched {district}."
@@ -25,12 +25,12 @@
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
       <h1>Near you</h1>
-      <p>Keep one scope for the list, map, search, share link, and watch. A place makes the scope smaller. It does not remove your other filters.</p>
-      <ul class="near-scope" aria-label="Active scope"><li data-scope-axis="lens">Property</li><li data-scope-axis="borough">Staten Island</li></ul>
-      <nav class="near-actions" aria-label="Scope actions">
+      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="lens">Property</li><li data-scope-axis="borough">Staten Island</li></ul>
+      <nav class="near-actions" aria-label="Map actions">
         <a href="/browse/property/?boro=Staten+Island">Open as a list</a>
-        <a href="https://api.cityscroll.org/following?lens=property&amp;filter=%7B%22borough%22%3A%22Staten+Island%22%7D&amp;count=3">Watch this scope</a>
-        <a href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;level=community_district&amp;parent=Staten+Island">Share this scope</a>
+        <a href="https://cityscroll.org/following?lens=property&amp;filter=%7B%22borough%22%3A%22Staten+Island%22%7D&amp;count=3">Watch these filters</a>
+        <a href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;level=community_district&amp;parent=Staten+Island">Share this map</a>
       </nav>
     </section>
     <section class="near-place-guide is-set" aria-labelledby="near-place-heading">
@@ -44,7 +44,7 @@
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
-    <form class="near-form" id="near-place-fields" method="get" action="https://api.cityscroll.org/near-you">
+    <form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
       <input type="hidden" name="v" value="0"><input type="hidden" name="level" value="community_district">
       <label>Lens<select name="lens"><option value="meetings">Meetings</option><option value="land">Zoning</option><option value="property" selected>Property</option><option value="rules">Rules</option><option value="money">Contracts</option><option value="people">Staffing</option></select></label>
       <label>Agency<input name="agency" value="" placeholder="Any agency"></label>
@@ -54,12 +54,12 @@
       <label>Community district<input name="cd" value="" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
       <label>Council district<input name="council" value="" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
 
-      <button type="submit">Apply scope</button>
+      <button type="submit">Apply filters</button>
     </form>
 
 
     <section class="near-map-section" aria-labelledby="near-map-heading">
-      <div class="near-section-heading"><div><p class="near-kicker">Map facet</p><h2 id="near-map-heading">Property by area</h2></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">Property by area</h2></div>
         <div class="map-controls js-only" hidden>
           <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
           <button type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
@@ -77,27 +77,26 @@
             <desc id="nearMapDesc">The area list beside this map contains the same links and Property counts.</desc>
             <g fill-rule="evenodd"><path class="map-district"
     data-map-id="R01" data-count="1" data-map-level="community_district"
-    data-map-href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R01&amp;level=community_district&amp;id=R01&amp;parent=Staten+Island" d="M179.54,647.79L176.59,646.88L175.84,641.49L182.93,643.63L179.79,647.53L179.54,647.79ZM317.48,631.91L323.21,632.23L331.34,639.37L332.88,639.53L333.32,637.72L332.70,638.81L334.46,640.84L336.27,639.42L335.20,641.23L337.27,643.70L335.52,645.44L338.63,644.91L333.50,646.09L338.84,646.02L333.77,647.35L334.13,649.02L339.32,648.67L333.79,649.98L333.77,654.37L335.04,655.44L333.07,656.30L333.27,659.05L335.55,658.95L333.29,659.21L333.34,669.63L333.96,673.70L342.82,677.23L334.09,674.42L335.18,681.07L332.98,681.72L334.45,681.70L335.25,686.95L339.23,694.30L345.55,700.23L346.50,699.16L346.07,700.65L347.41,699.53L345.21,702.16L349.54,701.93L348.04,703.47L350.16,703.88L349.41,704.67L354.57,710.74L356.54,716.51L357.14,714.47L356.66,716.70L358.16,717.09L362.91,725.81L347.91,734.40L350.88,739.19L332.14,730.86L311.73,727.86L293.64,719.49L269.82,720.35L258.09,718.07L234.38,724.67L203.07,725.84L196.09,722.09L174.38,701.53L164.14,695.49L152.50,692.19L139.46,679.63L114.04,663.28L116.98,659.42L116.75,657.23L118.61,657.05L131.21,643.28L134.21,641.56L136.34,645.95L136.30,640.44L141.30,639.88L142.79,641.19L142.91,638.91L143.34,640.98L144.52,640.35L143.59,646.70L144.30,644.21L145.96,646.21L147.84,643.91L149.36,645.74L148.80,643.28L150.71,643.47L150.57,640.21L152.91,639.21L155.46,641.40L155.86,644.30L158.32,644.51L157.39,645.30L157.88,648.77L155.39,650.02L157.91,648.81L158.84,645.14L158.59,647.12L162.39,646.21L166.91,647.86L167.68,645.56L168.21,648.33L169.75,646.02L169.30,649.67L170.12,650.26L170.70,647.91L171.13,651.19L171.43,648.67L171.70,651.42L172.77,648.93L175.57,649.74L174.50,654.02L175.98,652.49L176.36,654.42L176.96,652.58L176.64,654.49L177.95,654.79L178.82,651.33L178.18,655.02L178.82,654.12L179.79,656.26L180.34,653.91L182.34,655.88L182.63,653.77L182.55,655.91L186.25,656.93L187.80,656.47L188.05,653.05L188.21,657.35L191.43,657.84L192.32,655.19L194.29,656.44L193.93,652.56L197.41,657.19L198.43,654.16L199.00,657.12L198.61,653.77L205.02,652.60L207.39,653.74L210.18,650.44L224.38,646.77L229.89,647.44L231.82,649.49L233.05,648.02L232.18,649.47L233.38,650.37L234.09,648.40L234.27,650.63L236.55,650.79L237.45,652.74L237.41,650.60L239.16,650.58L238.63,648.07L239.93,647.86L239.29,650.63L242.57,650.86L245.36,649.77L244.95,648.16L246.45,647.56L250.13,648.37L250.07,646.02L251.61,647.74L251.07,645.63L252.46,647.60L252.07,645.26L252.86,647.60L255.14,647.28L254.96,644.12L255.95,646.26L255.95,643.74L256.89,646.00L258.30,645.42L261.07,642.77L260.80,641.53L262.70,640.63L260.96,641.67L261.91,642.51L268.32,638.47L278.36,637.81L287.86,639.42L298.23,637.28L311.23,630.51L316.84,631.81L317.48,631.91Z" fill="rgb(27,58,143)"
+    data-map-href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R01&amp;level=community_district&amp;id=R01&amp;parent=Staten+Island" d="M179.54,647.79L176.59,646.88L175.84,641.49L182.93,643.63L179.79,647.53L179.54,647.79ZM317.48,631.91L323.21,632.23L331.34,639.37L332.88,639.53L333.32,637.72L332.70,638.81L334.46,640.84L336.27,639.42L335.20,641.23L337.27,643.70L335.52,645.44L338.63,644.91L333.50,646.09L338.84,646.02L333.77,647.35L334.13,649.02L339.32,648.67L333.79,649.98L333.77,654.37L335.04,655.44L333.07,656.30L333.27,659.05L335.55,658.95L333.29,659.21L333.34,669.63L333.96,673.70L342.82,677.23L334.09,674.42L335.18,681.07L332.98,681.72L334.45,681.70L335.25,686.95L339.23,694.30L345.55,700.23L346.50,699.16L346.07,700.65L347.41,699.53L345.21,702.16L349.54,701.93L348.04,703.47L350.16,703.88L349.41,704.67L354.57,710.74L356.54,716.51L357.14,714.47L356.66,716.70L358.16,717.09L362.91,725.81L347.91,734.40L350.88,739.19L332.14,730.86L311.73,727.86L293.64,719.49L269.82,720.35L258.09,718.07L234.38,724.67L203.07,725.84L196.09,722.09L174.38,701.53L164.14,695.49L152.50,692.19L139.46,679.63L114.04,663.28L116.98,659.42L116.75,657.23L118.61,657.05L131.21,643.28L134.21,641.56L136.34,645.95L136.30,640.44L141.30,639.88L142.79,641.19L142.91,638.91L143.34,640.98L144.52,640.35L143.59,646.70L144.30,644.21L145.96,646.21L147.84,643.91L149.36,645.74L148.80,643.28L150.71,643.47L150.57,640.21L152.91,639.21L155.46,641.40L155.86,644.30L158.32,644.51L157.39,645.30L157.88,648.77L155.39,650.02L157.91,648.81L158.84,645.14L158.59,647.12L162.39,646.21L166.91,647.86L167.68,645.56L168.21,648.33L169.75,646.02L169.30,649.67L170.12,650.26L170.70,647.91L171.13,651.19L171.43,648.67L171.70,651.42L172.77,648.93L175.57,649.74L174.50,654.02L175.98,652.49L176.36,654.42L176.96,652.58L176.64,654.49L177.95,654.79L178.82,651.33L178.18,655.02L178.82,654.12L179.79,656.26L180.34,653.91L182.34,655.88L182.63,653.77L182.55,655.91L186.25,656.93L187.80,656.47L188.05,653.05L188.21,657.35L191.43,657.84L192.32,655.19L194.29,656.44L193.93,652.56L197.41,657.19L198.43,654.16L199.00,657.12L198.61,653.77L205.02,652.60L207.39,653.74L210.18,650.44L224.38,646.77L229.89,647.44L231.82,649.49L233.05,648.02L232.18,649.47L233.38,650.37L234.09,648.40L234.27,650.63L236.55,650.79L237.45,652.74L237.41,650.60L239.16,650.58L238.63,648.07L239.93,647.86L239.29,650.63L242.57,650.86L245.36,649.77L244.95,648.16L246.45,647.56L250.13,648.37L250.07,646.02L251.61,647.74L251.07,645.63L252.46,647.60L252.07,645.26L252.86,647.60L255.14,647.28L254.96,644.12L255.95,646.26L255.95,643.74L256.89,646.00L258.30,645.42L261.07,642.77L260.80,641.53L262.70,640.63L260.96,641.67L261.91,642.51L268.32,638.47L278.36,637.81L287.86,639.42L298.23,637.28L311.23,630.51L316.84,631.81L317.48,631.91Z" fill="rgb(27,58,143)"
     aria-label="Staten Island Community District 1: 1 Property records"></path><path class="map-district"
     data-map-id="R02" data-count="1" data-map-level="community_district"
-    data-map-href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R02&amp;level=community_district&amp;id=R02&amp;parent=Staten+Island" d="M333.09,794.44L330.21,792.65L333.07,794.44L333.09,794.44ZM114.04,663.28L139.46,679.63L152.50,692.19L164.14,695.49L175.68,702.44L196.09,722.09L201.36,725.26L207.95,726.58L234.38,724.67L258.09,718.07L269.82,720.35L294.96,719.65L311.73,727.86L332.14,730.86L353.36,739.86L355.21,744.60L350.43,746.67L356.14,756.02L345.30,766.65L322.95,795.23L306.20,808.00L298.63,818.74L277.30,804.63L276.36,806.77L280.25,809.49L278.70,813.26L275.84,814.16L273.93,816.79L289.95,826.79L282.61,837.42L264.09,824.40L260.18,830.98L241.25,816.40L247.41,809.81L246.91,802.53L237.38,799.05L236.20,801.84L227.18,805.86L201.80,809.28L173.89,821.65L170.73,824.14L169.64,833.84L168.00,836.53L158.48,834.14L147.18,828.47L143.98,812.67L137.27,808.70L134.39,809.98L126.46,801.09L126.43,811.79L124.55,811.49L124.18,798.42L109.14,792.33L101.88,790.47L96.38,791.26L99.29,782.07L99.79,770.05L98.84,769.09L103.55,765.35L101.70,764.79L103.52,765.12L103.86,763.63L103.00,763.91L107.61,759.16L111.59,751.63L111.95,748.70L109.36,740.21L103.18,730.30L102.11,724.95L102.79,713.30L106.34,706.21L105.23,696.79L106.38,696.51L104.23,690.42L105.73,673.60L106.43,671.02L112.88,666.53L114.00,663.30L114.04,663.28Z" fill="rgb(27,58,143)"
+    data-map-href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R02&amp;level=community_district&amp;id=R02&amp;parent=Staten+Island" d="M333.09,794.44L330.21,792.65L333.07,794.44L333.09,794.44ZM114.04,663.28L139.46,679.63L152.50,692.19L164.14,695.49L175.68,702.44L196.09,722.09L201.36,725.26L207.95,726.58L234.38,724.67L258.09,718.07L269.82,720.35L294.96,719.65L311.73,727.86L332.14,730.86L353.36,739.86L355.21,744.60L350.43,746.67L356.14,756.02L345.30,766.65L322.95,795.23L306.20,808.00L298.63,818.74L277.30,804.63L276.36,806.77L280.25,809.49L278.70,813.26L275.84,814.16L273.93,816.79L289.95,826.79L282.61,837.42L264.09,824.40L260.18,830.98L241.25,816.40L247.41,809.81L246.91,802.53L237.38,799.05L236.20,801.84L227.18,805.86L201.80,809.28L173.89,821.65L170.73,824.14L169.64,833.84L168.00,836.53L158.48,834.14L147.18,828.47L143.98,812.67L137.27,808.70L134.39,809.98L126.46,801.09L126.43,811.79L124.55,811.49L124.18,798.42L109.14,792.33L101.88,790.47L96.38,791.26L99.29,782.07L99.79,770.05L98.84,769.09L103.55,765.35L101.70,764.79L103.52,765.12L103.86,763.63L103.00,763.91L107.61,759.16L111.59,751.63L111.95,748.70L109.36,740.21L103.18,730.30L102.11,724.95L102.79,713.30L106.34,706.21L105.23,696.79L106.38,696.51L104.23,690.42L105.73,673.60L106.43,671.02L112.88,666.53L114.00,663.30L114.04,663.28Z" fill="rgb(27,58,143)"
     aria-label="Staten Island Community District 2: 1 Property records"></path><path class="map-district"
     data-map-id="R03" data-count="0" data-map-level="community_district"
-    data-map-href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R03&amp;level=community_district&amp;id=R03&amp;parent=Staten+Island" d="M232.25,883.84L232.41,885.28L231.21,885.05L232.14,885.65L228.95,887.60L230.00,888.67L228.91,887.65L227.82,888.91L228.73,889.47L226.09,890.79L226.71,891.70L225.25,891.63L232.20,883.79L232.25,883.84ZM111.61,793.35L124.18,798.42L124.55,811.49L126.43,811.79L126.46,801.09L134.39,809.98L137.27,808.70L143.98,812.67L147.18,828.47L158.75,834.21L168.00,836.53L169.64,833.84L170.73,824.14L196.16,811.00L226.93,805.93L236.20,801.84L237.38,799.05L246.91,802.53L247.41,809.81L241.25,816.40L260.18,830.98L264.09,824.40L282.61,837.42L264.91,859.58L263.34,860.79L261.29,858.26L255.79,862.81L250.77,856.67L250.96,855.30L236.96,843.49L216.70,863.98L221.68,868.72L219.32,870.26L221.21,872.05L219.30,870.28L219.88,872.84L217.95,869.77L216.30,871.79L218.54,873.84L216.50,872.26L218.09,874.30L216.02,872.79L215.11,873.72L217.25,875.47L215.05,873.79L216.23,876.44L213.59,874.35L215.68,876.35L213.75,875.26L215.43,877.14L213.16,876.49L214.54,878.23L211.93,876.53L213.68,878.53L211.77,876.70L213.82,879.16L211.88,877.72L211.07,878.60L212.57,880.40L210.20,878.47L211.20,885.26L210.23,888.05L211.00,887.40L210.41,888.53L211.96,890.37L210.38,888.56L211.46,890.49L207.45,890.37L205.82,893.49L197.82,897.12L195.18,901.05L192.04,902.16L185.73,908.33L185.38,910.21L183.89,909.35L179.11,913.26L174.52,913.51L160.71,923.14L155.89,923.33L147.18,932.02L140.98,928.70L134.23,931.77L127.68,938.81L126.30,941.07L127.07,941.65L125.52,941.12L115.70,953.53L107.73,950.16L107.04,947.40L108.80,946.33L93.63,949.16L89.84,951.63L90.50,952.56L89.55,951.93L82.98,961.86L80.16,962.65L75.75,968.98L62.50,972.63L58.41,971.40L51.36,972.49L41.45,976.74L35.98,982.37L27.98,982.44L23.64,985.74L18.50,984.09L15.89,979.23L12.21,976.44L9.43,969.84L7.98,958.47L11.27,954.81L9.77,953.56L11.93,953.81L12.48,950.72L11.55,949.58L12.43,950.16L14.38,946.51L14.05,944.86L17.66,941.77L16.86,939.28L19.25,941.67L17.96,939.21L18.88,940.26L20.45,939.14L19.73,936.77L18.91,937.26L20.52,936.09L19.79,936.72L22.29,940.14L24.21,939.60L23.21,936.79L24.14,937.93L26.41,936.53L25.66,934.70L31.57,934.12L36.04,930.02L30.48,927.37L30.71,920.91L28.63,918.81L33.02,904.56L32.05,896.86L28.30,890.98L26.18,890.91L27.80,888.33L25.71,881.51L21.38,876.53L24.75,870.47L29.71,865.42L31.79,867.56L35.02,865.91L42.12,859.28L42.14,855.02L44.82,853.47L47.64,854.63L52.30,847.53L54.79,847.70L56.55,845.60L65.29,846.40L66.84,847.88L69.87,846.65L71.89,849.74L73.07,849.19L72.82,846.98L73.95,849.60L73.66,846.44L75.45,848.81L80.82,845.95L80.38,844.67L83.45,845.07L87.20,836.14L86.82,829.09L87.98,824.95L92.82,812.74L96.38,791.26L101.88,790.47L109.14,792.33L111.61,793.35Z" fill="#eceef2"
+    data-map-href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R03&amp;level=community_district&amp;id=R03&amp;parent=Staten+Island" d="M232.25,883.84L232.41,885.28L231.21,885.05L232.14,885.65L228.95,887.60L230.00,888.67L228.91,887.65L227.82,888.91L228.73,889.47L226.09,890.79L226.71,891.70L225.25,891.63L232.20,883.79L232.25,883.84ZM111.61,793.35L124.18,798.42L124.55,811.49L126.43,811.79L126.46,801.09L134.39,809.98L137.27,808.70L143.98,812.67L147.18,828.47L158.75,834.21L168.00,836.53L169.64,833.84L170.73,824.14L196.16,811.00L226.93,805.93L236.20,801.84L237.38,799.05L246.91,802.53L247.41,809.81L241.25,816.40L260.18,830.98L264.09,824.40L282.61,837.42L264.91,859.58L263.34,860.79L261.29,858.26L255.79,862.81L250.77,856.67L250.96,855.30L236.96,843.49L216.70,863.98L221.68,868.72L219.32,870.26L221.21,872.05L219.30,870.28L219.88,872.84L217.95,869.77L216.30,871.79L218.54,873.84L216.50,872.26L218.09,874.30L216.02,872.79L215.11,873.72L217.25,875.47L215.05,873.79L216.23,876.44L213.59,874.35L215.68,876.35L213.75,875.26L215.43,877.14L213.16,876.49L214.54,878.23L211.93,876.53L213.68,878.53L211.77,876.70L213.82,879.16L211.88,877.72L211.07,878.60L212.57,880.40L210.20,878.47L211.20,885.26L210.23,888.05L211.00,887.40L210.41,888.53L211.96,890.37L210.38,888.56L211.46,890.49L207.45,890.37L205.82,893.49L197.82,897.12L195.18,901.05L192.04,902.16L185.73,908.33L185.38,910.21L183.89,909.35L179.11,913.26L174.52,913.51L160.71,923.14L155.89,923.33L147.18,932.02L140.98,928.70L134.23,931.77L127.68,938.81L126.30,941.07L127.07,941.65L125.52,941.12L115.70,953.53L107.73,950.16L107.04,947.40L108.80,946.33L93.63,949.16L89.84,951.63L90.50,952.56L89.55,951.93L82.98,961.86L80.16,962.65L75.75,968.98L62.50,972.63L58.41,971.40L51.36,972.49L41.45,976.74L35.98,982.37L27.98,982.44L23.64,985.74L18.50,984.09L15.89,979.23L12.21,976.44L9.43,969.84L7.98,958.47L11.27,954.81L9.77,953.56L11.93,953.81L12.48,950.72L11.55,949.58L12.43,950.16L14.38,946.51L14.05,944.86L17.66,941.77L16.86,939.28L19.25,941.67L17.96,939.21L18.88,940.26L20.45,939.14L19.73,936.77L18.91,937.26L20.52,936.09L19.79,936.72L22.29,940.14L24.21,939.60L23.21,936.79L24.14,937.93L26.41,936.53L25.66,934.70L31.57,934.12L36.04,930.02L30.48,927.37L30.71,920.91L28.63,918.81L33.02,904.56L32.05,896.86L28.30,890.98L26.18,890.91L27.80,888.33L25.71,881.51L21.38,876.53L24.75,870.47L29.71,865.42L31.79,867.56L35.02,865.91L42.12,859.28L42.14,855.02L44.82,853.47L47.64,854.63L52.30,847.53L54.79,847.70L56.55,845.60L65.29,846.40L66.84,847.88L69.87,846.65L71.89,849.74L73.07,849.19L72.82,846.98L73.95,849.60L73.66,846.44L75.45,848.81L80.82,845.95L80.38,844.67L83.45,845.07L87.20,836.14L86.82,829.09L87.98,824.95L92.82,812.74L96.38,791.26L101.88,790.47L109.14,792.33L111.61,793.35Z" fill="#eceef2"
     aria-label="Staten Island Community District 3: 0 Property records"></path></g>
           </svg>
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
-          <p class="near-vintage">Boundary layer: 2026-05-26</p>
+          <p class="near-vintage">Map boundaries: 2026-05-26</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
           <h3>Equivalent area list</h3>
-          <p>These links work without JavaScript. They keep the active scope.</p>
-          <ol class="near-area-list"><li><a data-map-area="R01" data-count="1" href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R01&amp;level=community_district&amp;id=R01&amp;parent=Staten+Island"><span>Staten Island Community District 1</span><strong>1</strong></a></li><li><a data-map-area="R02" data-count="1" href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R02&amp;level=community_district&amp;id=R02&amp;parent=Staten+Island"><span>Staten Island Community District 2</span><strong>1</strong></a></li><li><a data-map-area="R03" data-count="0" href="https://api.cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R03&amp;level=community_district&amp;id=R03&amp;parent=Staten+Island"><span>Staten Island Community District 3</span><strong>0</strong></a></li></ol>
+          <ol class="near-area-list"><li><a data-map-area="R01" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R01&amp;level=community_district&amp;id=R01&amp;parent=Staten+Island"><span>Staten Island Community District 1</span><strong>1</strong></a></li><li><a data-map-area="R02" data-count="1" href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R02&amp;level=community_district&amp;id=R02&amp;parent=Staten+Island"><span>Staten Island Community District 2</span><strong>1</strong></a></li><li><a data-map-area="R03" data-count="0" href="https://cityscroll.org/near-you?v=0&amp;lens=property&amp;boro=Staten+Island&amp;cd=R03&amp;level=community_district&amp;id=R03&amp;parent=Staten+Island"><span>Staten Island Community District 3</span><strong>0</strong></a></li></ol>
         </div>
       </div>
     </section>
     <section class="near-results" aria-labelledby="near-results-heading" data-results-count="3">
-      <div class="near-section-heading"><div><p class="near-kicker">Qualifying records</p><h2 id="near-results-heading" tabindex="-1">3 Property records in this place scope</h2></div></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">3 Property records for these filters</h2></div></div>
       <ol class="near-records"><li class="near-record" data-record-id="20220518001">
     <a class="near-record-title" href="/notices/20220518001">Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island</a>
     <div class="near-record-meta">
@@ -125,22 +124,22 @@
   </li></ol>
     </section>
     <section class="near-bags" aria-labelledby="near-bags-heading">
-      <p class="near-kicker">Place-basis bags</p><h2 id="near-bags-heading">Records outside district polygons</h2>
+      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
       <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
       <details class="near-bag" data-bag="citywide">
     <summary><span>Citywide</span><strong>0</strong></summary>
     <p>These records apply citywide, so they do not belong to one district.</p>
-    <p class="near-empty">No citywide records match this scope.</p>
+    <p class="near-empty">No citywide records match these filters.</p>
   </details><details class="near-bag" data-bag="virtual">
     <summary><span>Virtual / online only</span><strong>0</strong></summary>
     <p>These records are online only and have no physical place.</p>
-    <p class="near-empty">No virtual / online only records match this scope.</p>
+    <p class="near-empty">No virtual / online only records match these filters.</p>
   </details><details class="near-bag" data-bag="unlocated">
     <summary><span>No place signal</span><strong>0</strong></summary>
     <p>The source does not give enough place detail to map these records.</p>
-    <p class="near-empty">No no place signal records match this scope.</p>
+    <p class="near-empty">No no place signal records match these filters.</p>
   </details>
     </section>
   </main>
-<footer class="near-footer">Counts and place labels come from the built district data. Check each record with the linked official source.</footer>
+<footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script type="module" src="/app/map.mjs"></script></body></html>

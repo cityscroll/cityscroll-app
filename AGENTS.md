@@ -77,8 +77,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Production Worker deploys must run `node tools/wait_for_digest_cron_window.mjs`
   immediately before `wrangler deploy`. Wrangler rewrites Cron Trigger configuration,
   so the guard keeps deploys outside 12:40–13:05 UTC around the 13:00 digest.
-- Cloudflare Pages owns `cityscroll.org` and `www.cityscroll.org`; the Worker custom-domain
-  routes are only `api.cityscroll.org` and the `api.crol-list.org` compatibility alias.
+- Cloudflare Pages remains the origin for `cityscroll.org` and `www.cityscroll.org`. Bounded
+  Worker zone routes serve canonical `/near-you*`, `/following*`, and `/prefs*` documents;
+  Worker custom domains remain `api.cityscroll.org` and the `api.crol-list.org` compatibility alias.
 
 ## Digest shadow delivery holds
 
@@ -350,8 +351,9 @@ counts, special place bags, SVG choropleth, and equivalent area list before
 JavaScript. `site/app/map.mjs` is a route-only island that adopts those nodes for
 pan, zoom, drill-down, geolocation, and focus synchronization; it must never join
 the home loader or rebuild the page root. Common pages are built by
-`tools/build_near_you_pages.mjs`; uncommon scopes use the same renderer at
-`GET /near-you` on the API Worker. The legacy `#map` route forwards into this
+`tools/build_near_you_pages.mjs`; uncommon scopes use the same renderer at canonical
+`GET /near-you` Worker routes. API-host document requests permanently redirect to the
+canonical host. The legacy `#map` route forwards into this
 surface. See `docs/module-map.md`.
 
 **All five map lenses** (land / property / rules / meetings / money) roll through

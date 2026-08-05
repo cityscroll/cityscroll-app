@@ -37,7 +37,7 @@ test("beta carries no production write, delivery, analytics, queue, or cron bind
   assert.match(beta, /^SOURCE_VAULT_ENABLED = "false"$/m);
 });
 
-test("production Worker routes carry API domains without reclaiming Pages hosts", () => {
+test("production Worker routes carry API domains and bounded canonical document paths", () => {
   const config = read("../wrangler.toml");
   const production = config.slice(0, config.indexOf("[env.beta]"));
   for (const hostname of [
@@ -46,7 +46,10 @@ test("production Worker routes carry API domains without reclaiming Pages hosts"
   ]) {
     assert.match(production, new RegExp(`pattern = "${hostname.replaceAll(".", "\\.")}"`));
   }
-  assert.doesNotMatch(production, /pattern = "cityscroll\.org"/);
+  assert.match(production, /pattern = "cityscroll\.org\/near-you\*"/);
+  assert.match(production, /pattern = "cityscroll\.org\/following\*"/);
+  assert.match(production, /pattern = "cityscroll\.org\/prefs\*"/);
+  assert.doesNotMatch(production, /pattern = "cityscroll\.org"\s*,\s*custom_domain/);
   assert.doesNotMatch(production, /pattern = "www\.cityscroll\.org"/);
   assert.match(production, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   // Production analytics writes must not depend on a secret that can be forgotten —
