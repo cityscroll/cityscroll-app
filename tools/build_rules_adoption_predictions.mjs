@@ -18,6 +18,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildRulemakingGapObservations,
+  cityRecordRowToRuleRecord,
   fitAdoptionLagModel,
   runAdoptionLagBacktest,
   materializePredictionView,
@@ -25,6 +26,14 @@ import {
   MODEL_VERSION,
   BACKTEST_SPLIT_DATE,
 } from "../worker/src/lib/rules_adoption_lag.mjs";
+import { classifyRulemakingRole } from "../worker/src/lib/rules.mjs";
+import {
+  buildRulesExplorerEntries,
+  classifyCityRecordRuleStage,
+  countRulesProcessStages,
+  filterRulesExplorerEntries,
+  rulesProcessStage,
+} from "../site/rules_explorer.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_FIXTURE = join(
@@ -80,6 +89,100 @@ function writeJson(path, value) {
   writeFileSync(path, stableStringify(value));
 }
 
+const CENSUS_STAGES = [
+  "all",
+  "proposal",
+  "public_process",
+  "adoption",
+  "effective",
+  "unstaged",
+];
+
+function lifecycleRowsAndCensus(rows) {
+  const lifecycleRows = rows.map((row) => {
+    const stage = classifyCityRecordRuleStage(row);
+    const enriched = { ...row, stage };
+    const phase = rulesProcessStage(enriched) || "unstaged";
+    return {
+      ...enriched,
+      _lifecycle_phase: phase === "unstaged" ? null : phase,
+      _adoption_stage_eligible: phase === "adoption",
+    };
+  });
+  const entries = buildRulesExplorerEntries(lifecycleRows, null);
+  const stepperCounts = countRulesProcessStages(entries);
+  const scopeCounts = Object.fromEntries(CENSUS_STAGES.map((stage) => [
+    stage,
+    filterRulesExplorerEntries(entries, { process: stage }).length,
+  ]));
+  const recordCensus = { all: lifecycleRows.length };
+  for (const stage of CENSUS_STAGES.slice(1)) recordCensus[stage] = 0;
+  for (const row of lifecycleRows) {
+    const stage = row._lifecycle_phase || "unstaged";
+    recordCensus[stage] += 1;
+  }
+
+  const legacyAdoption = new Set();
+  const stepperAdoption = new Set();
+  for (const [index, row] of lifecycleRows.entries()) {
+    const id = String(row.request_id || "");
+    if (classifyRulemakingRole(cityRecordRowToRuleRecord(rows[index])) === "adoption") {
+      legacyAdoption.add(id);
+    }
+    if (row._adoption_stage_eligible) stepperAdoption.add(id);
+  }
+  const outsideStepper = [...legacyAdoption].filter((id) => !stepperAdoption.has(id));
+  const newlyIncluded = [...stepperAdoption].filter((id) => !legacyAdoption.has(id));
+  const phaseById = new Map(lifecycleRows.map((row) => [
+    String(row.request_id || ""),
+    row._lifecycle_phase || "unstaged",
+  ]));
+  const honestGapCounts = {};
+  for (const id of outsideStepper) {
+    const phase = phaseById.get(id) || "unstaged";
+    honestGapCounts[phase] = (honestGapCounts[phase] || 0) + 1;
+  }
+  const equal = CENSUS_STAGES.every((stage) => (
+    stepperCounts[stage] === scopeCounts[stage]
+    && stepperCounts[stage] === recordCensus[stage]
+  ));
+
+  return {
+    rows: lifecycleRows,
+    census: {
+      classifier: "rulesProcessStage/classifyCityRecordRuleStage",
+      record_census: recordCensus,
+      stepper_counts: Object.fromEntries(CENSUS_STAGES.map((stage) => [stage, stepperCounts[stage]])),
+      filter_scope_counts: scopeCounts,
+      count_equals_scope: equal,
+      adoption_parity: {
+        legacy_role_count: legacyAdoption.size,
+        stepper_stage_count: stepperAdoption.size,
+        net_delta: stepperAdoption.size - legacyAdoption.size,
+        newly_included_stale_records: newlyIncluded.length,
+        legacy_signals_outside_stepper: outsideStepper.length,
+        honest_gap_counts_by_stepper_stage: honestGapCounts,
+        honest_gap_request_ids: outsideStepper.slice(0, 20),
+      },
+    },
+  };
+}
+
+function assertionStatusCounts(view) {
+  const counts = { open: 0, expired: 0, resolved: 0, other: 0 };
+  for (const item of view?.items || []) {
+    const status = item?.assertion?.status;
+    if (status in counts && status !== "other") counts[status] += 1;
+    else counts.other += 1;
+  }
+  return counts;
+}
+
+function readJsonIfPresent(path) {
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, "utf8"));
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
@@ -87,7 +190,14 @@ function main() {
     process.exit(0);
   }
 
-  const { rows, path: sourcePath } = loadRows(args.input);
+  const { rows: sourceRows, path: sourcePath } = loadRows(args.input);
+  const { rows, census: lifecycleCensus } = lifecycleRowsAndCensus(sourceRows);
+  if (!lifecycleCensus.count_equals_scope) {
+    throw new Error("rules lifecycle stepper counts do not equal filter scope");
+  }
+  const priorModel = readJsonIfPresent(OUT_MODEL);
+  const priorView = readJsonIfPresent(OUT_VIEW);
+  const priorEvidence = readJsonIfPresent(OUT_EVIDENCE);
   const generatedAt = new Date().toISOString();
   const scoreEnd = "2026-07-31";
 
@@ -110,13 +220,18 @@ function main() {
   // Demo open matters for the precomputed view: censored (not yet adopted) with
   // comment_close in 2025-26 — product will also attach live from /rules.
   const openMatters = fullObs
-    .filter((o) => o.censored && o.comment_close >= "2025-01-01")
+    .filter((o) => (
+      o.censored
+      && o.comment_close >= "2025-01-01"
+      && o.lifecycle_phase === "public_process"
+    ))
     .slice(0, 200)
     .map((o) => ({
       subject_ref: o.subject_ref,
       request_id: o.comment_close_request_id,
       agency: o.agency,
       comment_close: o.comment_close,
+      lifecycle_phase: o.lifecycle_phase,
       evidence_event_ids: [
         `cte:rules.comment_close:${o.subject_ref}:${o.comment_close}`,
       ],
@@ -130,9 +245,10 @@ function main() {
 
   const modelArtifact = {
     ...fullModel,
+    lifecycle_census: lifecycleCensus,
     source: {
       path: sourcePath.replace(`${ROOT}/`, ""),
-      row_count: rows.length,
+      row_count: sourceRows.length,
       observed_at: generatedAt,
     },
     backtest: {
@@ -146,12 +262,61 @@ function main() {
     },
   };
 
+  const baseline = priorEvidence?.refresh_measurement?.baseline || {
+    generated_at: priorEvidence?.generated_at || null,
+    event_count: priorModel?.event_count ?? null,
+    censored_count: priorModel?.censored_count ?? null,
+    agency_cohorts: Object.keys(priorModel?.agencies || {}).length,
+    interval_coverage: priorEvidence?.local_scorecard?.interval_coverage ?? null,
+    resolved_backtest_predictions:
+      priorEvidence?.local_scorecard?.resolved_backtest_predictions ?? null,
+    open_view_items: priorView?.count ?? null,
+    assertion_status_counts: assertionStatusCounts(priorView),
+    public_projection: priorEvidence?.public_projection || null,
+  };
+  const currentMeasurement = {
+    generated_at: generatedAt,
+    event_count: fullModel.event_count,
+    censored_count: fullModel.censored_count,
+    agency_cohorts: Object.keys(fullModel.agencies).length,
+    interval_coverage: backtestRun.local_scorecard.interval_coverage,
+    resolved_backtest_predictions:
+      backtestRun.local_scorecard.resolved_backtest_predictions,
+    open_view_items: view.count,
+    assertion_status_counts: assertionStatusCounts(view),
+    public_projection: backtestRun.public_projection,
+  };
+  const numericDelta = (key) => (
+    typeof baseline[key] === "number"
+      ? Math.round((currentMeasurement[key] - baseline[key]) * 10_000) / 10_000
+      : null
+  );
+  const refreshMeasurement = {
+    baseline,
+    current: currentMeasurement,
+    delta: {
+      event_count: numericDelta("event_count"),
+      censored_count: numericDelta("censored_count"),
+      agency_cohorts: numericDelta("agency_cohorts"),
+      interval_coverage: numericDelta("interval_coverage"),
+      resolved_backtest_predictions: numericDelta("resolved_backtest_predictions"),
+      open_view_items: numericDelta("open_view_items"),
+    },
+    lifecycle_census: lifecycleCensus,
+    reader_copy: {
+      baseline_projection: baseline.public_projection,
+      current_projection: currentMeasurement.public_projection,
+      changed: baseline.public_projection !== currentMeasurement.public_projection,
+      note: "Per-matter timing remains gated by the existing calibration ship bar.",
+    },
+  };
+
   const evidence = {
     metric: "rules_adoption_lag_backtest",
     model_name: MODEL_NAME,
     model_version: MODEL_VERSION,
     generated_at: generatedAt,
-    source_row_count: rows.length,
+    source_row_count: sourceRows.length,
     protocol: backtestRun.protocol,
     train_observations: backtestRun.train_observations,
     open_at_split: backtestRun.open_at_split,
@@ -167,6 +332,7 @@ function main() {
     ship_bar_passed: backtestRun.ship_bar_passed,
     public_projection: backtestRun.public_projection,
     note: backtestRun.note,
+    refresh_measurement: refreshMeasurement,
     backtest_summary: {
       domain: backtestRun.backtest.domain,
       split_date: backtestRun.backtest.split_date,
@@ -197,7 +363,7 @@ function main() {
     model_name: MODEL_NAME,
     model_version: MODEL_VERSION,
     observed_at: generatedAt,
-    source_row_count: rows.length,
+    source_row_count: sourceRows.length,
     observation_count: fullObs.length,
     event_count: fullModel.event_count,
     censored_count: fullModel.censored_count,
@@ -206,6 +372,7 @@ function main() {
     interval_coverage: backtestRun.local_scorecard.interval_coverage,
     resolved_backtest_predictions:
       backtestRun.local_scorecard.resolved_backtest_predictions,
+    refresh_measurement: refreshMeasurement,
     artifacts: {
       model: "site/data/rules_adoption_lag_model.json",
       view: "site/data/rules_adoption_predictions.json",
@@ -237,6 +404,19 @@ function main() {
       console.error(`interval_coverage drift: ${covC} vs ${covR}`);
       process.exit(1);
     }
+    const parity = committed.refresh_measurement?.lifecycle_census;
+    if (!parity?.count_equals_scope) {
+      console.error("committed lifecycle census is missing count-equals-scope parity");
+      process.exit(1);
+    }
+    for (const stage of CENSUS_STAGES) {
+      if (parity.stepper_counts?.[stage] !== lifecycleCensus.stepper_counts[stage]) {
+        console.error(
+          `lifecycle stage drift on ${stage}: committed=${parity.stepper_counts?.[stage]} rebuilt=${lifecycleCensus.stepper_counts[stage]}`,
+        );
+        process.exit(1);
+      }
+    }
     console.log("rules adoption-lag artifacts OK");
     process.exit(0);
   }
@@ -248,7 +428,7 @@ function main() {
 
   console.log(JSON.stringify({
     ok: true,
-    source_rows: rows.length,
+    source_rows: sourceRows.length,
     observations: fullObs.length,
     events: fullModel.event_count,
     censored: fullModel.censored_count,
@@ -259,6 +439,7 @@ function main() {
     ship_bar: backtestRun.local_scorecard.ship_bar.status,
     public_projection: backtestRun.public_projection,
     open_view_items: view.count,
+    lifecycle_census: lifecycleCensus,
   }, null, 2));
 }
 
