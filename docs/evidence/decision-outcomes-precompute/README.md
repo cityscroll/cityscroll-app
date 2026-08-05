@@ -1,8 +1,8 @@
 # Decision-outcome first-paint timing
 
 The prior Land detail path waited for a cold `GET /zap-outcomes` response before it could replace
-“Loading decision documents and outcomes…”. The route-level regression test records observed cold
-responses of approximately 12–17 seconds in `test/functional/20_demo_links.py`.
+“Loading decision documents and outcomes…”. The route-level regression test records cold responses
+of 12–17 seconds in `test/functional/20_demo_links.py`.
 
 The replacement contract measures the interval from a dispatched Zoning-tab activation to the DOM
 mutation that adds either a precomputed outcome or an explicit honest-absent state. It runs after the
