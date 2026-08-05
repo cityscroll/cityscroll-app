@@ -65,8 +65,12 @@ export function canonicalHistoricalSchedule(rows = []) {
     if (!row || typeof row !== "object" || Array.isArray(row)) continue;
     const examNumber = normalizedExamNumber(row.exam_number);
     if (!examNumber) continue;
+    const titleCode = String(row.title_code || "").trim();
+    const examTitle = String(row.exam_title || row.title || "").trim();
     const candidate = {
       exam_number: examNumber,
+      ...(titleCode ? { title_code: titleCode } : {}),
+      ...(examTitle ? { exam_title: examTitle } : {}),
       application_start: day(row.application_period_start || row.application_start),
       application_close: day(row.application_period_end_date || row.application_end || row.application_close),
       exam_type: staffingExamType(row),

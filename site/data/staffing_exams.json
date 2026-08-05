@@ -674,7 +674,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-08-03",
+      "fetched_at": "2026-08-05",
       "refresh_cadence": "Rebuild with the staffing exam artifact; uses the same registered annual-schedule dataset as the current snapshot.",
       "stale_after_days": 95
     },
