@@ -62,6 +62,15 @@ test("Following has a useful server-rendered empty state before personalization"
   assert.match(html, /Manage from a CityScroll email/);
 });
 
+test("Following gives every visible heading a distinct navigation label", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  const headings = [...html.matchAll(/<h[1-3](?:\s[^>]*)?>([^<]+)<\/h[1-3]>/g)]
+    .map((match) => match[1].trim());
+  const duplicates = [...new Set(headings.filter((heading, index) => headings.indexOf(heading) !== index))];
+
+  assert.deepEqual(duplicates, []);
+});
+
 test("contextual watch links open the server-rendered Following preview with the source-list count", () => {
   const href = alertsHref({
     lens: "meetings",
