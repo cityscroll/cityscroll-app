@@ -297,6 +297,29 @@ test("member blurbs weave notice specifics on three real-shaped notices", () => 
   }
 });
 
+test("member blurb uses rules lifecycle classification and canonical notice URL", () => {
+  const blurb = buildMemberBlurb(
+    {
+      request_id: "20251015011",
+      agency_name: "Consumer and Worker Protection",
+      short_title: "NOA Immigration Assistance Provider Penalty Schedule",
+      type_of_notice_description: "Notice",
+    },
+    {
+      stage: "adopted",
+      events: [{ event_type: "adoption", status: "occurred" }],
+    },
+    { now: "2026-08-05", siteBase: "https://cityscroll.org" },
+  );
+
+  assert.ok(blurb?.text);
+  assert.match(blurb.text, /adopted rule/i);
+  assert.doesNotMatch(blurb.text, /listed as (?:a |an )?notice/i);
+  assert.doesNotMatch(blurb.text, /\b([a-z][a-z'-]*)\s+\1\b/i);
+  assert.match(blurb.text, /Read the notice: https:\/\/cityscroll\.org\/notices\/20251015011\b/);
+  assert.doesNotMatch(blurb.text, /#notice\//);
+});
+
 test("UI wires templates, action bands, participation, and blurb chrome", () => {
   assert.match(html, /id="watch-templates"/);
   assert.match(html, /data-watch-templates/);

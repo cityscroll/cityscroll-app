@@ -10,8 +10,9 @@
 
 import { daysUntil } from "./rules_action_bands.mjs";
 import { extractCommentFacts, hasOpenCommentWindow } from "./rules_participation.mjs";
+import { noticeDocumentUrl } from "./notice_permalink.mjs";
 
-export const RULES_MEMBER_BLURB_SCHEMA_VERSION = 1;
+export const RULES_MEMBER_BLURB_SCHEMA_VERSION = 2;
 
 /**
  * Build a forwardable member-newsletter blurb for one rule notice.
@@ -47,9 +48,9 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
   });
 
   const requestId = clean(noticeRow?.request_id || rec?.request_id);
-  const siteBase = (opts.siteBase || "https://cityscroll.org").replace(/\/+$/, "");
-  const noticeUrl = requestId ? `${siteBase}/#notice/${requestId}` : null;
-  const type = clean(noticeRow?.type_of_notice_description);
+  const noticeUrl = noticeDocumentUrl(requestId, opts.siteBase);
+  const rawType = clean(noticeRow?.type_of_notice_description);
+  const classification = memberBlurbClassification(noticeRow, rec);
   const bodyBit = excerptChange(noticeRow, rec);
   const whoAffected = whoIsAffected(agency, title, bodyBit);
   const stage = facts.stage_comment_open
@@ -71,8 +72,8 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
 
   if (bodyBit) {
     bits.push(bodyBit);
-  } else if (type) {
-    bits.push(`It is listed as a ${type.toLowerCase()} notice.`);
+  } else if (classification) {
+    bits.push(`It is ${classification.phrase}.`);
   }
 
   bits.push(whoAffected);
@@ -99,7 +100,7 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
     actionLine = eff
       ? `The rule has been adopted and is set to take effect ${humanDate(eff)}.`
       : "The rule has been adopted.";
-  } else if (type && /adopt/i.test(type)) {
+  } else if (rawType && /adopt/i.test(rawType)) {
     actionLine = "This notice records an adoption — check the official text for the effective date.";
   } else {
     actionLine = "Review the official notice for deadlines and next steps.";
@@ -142,8 +143,46 @@ export function buildMemberBlurb(noticeRow, rec = null, opts = {}) {
       open_comment: open,
       days_left: daysLeft,
       notice_url: noticeUrl,
+      classification: classification?.id || null,
+      classification_source: classification?.source || null,
+      city_record_notice_type: rawType,
       change_excerpt: bodyBit,
     },
+  };
+}
+
+/**
+ * Prefer the rules lifecycle read model over City Record's often-generic
+ * type_of_notice_description. Generic "Notice" is honest absence, not a label.
+ */
+export function memberBlurbClassification(noticeRow, rec = null) {
+  const stage = normalizeLooseStage(rec?.stage || noticeRow?._ruleStage?.stage);
+  const lifecycle = {
+    "comment-open": { id: "proposed", phrase: "a proposed rule" },
+    "comment-closed": { id: "proposed", phrase: "a proposed rule" },
+    proposed: { id: "proposed", phrase: "a proposed rule" },
+    hearing: { id: "hearing", phrase: "a public hearing" },
+    adopted: { id: "adopted", phrase: "an adopted rule" },
+    effective: { id: "effective", phrase: "an effective rule" },
+  }[stage];
+  if (lifecycle) return { ...lifecycle, source: "rules_lifecycle" };
+
+  const raw = clean(noticeRow?.type_of_notice_description);
+  if (!raw || /^(?:city record\s+)?notice$/i.test(raw)) return null;
+  if (/^public hearings?$/i.test(raw)) {
+    return { id: "hearing", phrase: "a public hearing", source: "city_record_notice_type" };
+  }
+  if (/^proposed rule ?making$/i.test(raw)) {
+    return { id: "proposed", phrase: "a proposed rule", source: "city_record_notice_type" };
+  }
+  if (/^adoption of rules?$/i.test(raw)) {
+    return { id: "adopted", phrase: "an adopted rule", source: "city_record_notice_type" };
+  }
+  const lower = raw.toLowerCase();
+  return {
+    id: lower.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+    phrase: `${/^[aeiou]/i.test(lower) ? "an" : "a"} ${lower}`,
+    source: "city_record_notice_type",
   };
 }
 

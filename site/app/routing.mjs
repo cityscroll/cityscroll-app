@@ -1,3 +1,5 @@
+import { noticeDocumentUrl } from "../notice_permalink.mjs";
+
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, and notices. The same finite
    hash grammar remains as an internal adapter for controls and retained item routes. */
@@ -34,7 +36,7 @@ function documentUrlForHash(hash){
   return mapped.migrated?mapped.target:null;
 }
 function routeUrlForHash(hash){ return documentUrlForHash(hash)||hash; }
-const noticeLink = id => currentLanguageURL(location.origin + "/notices/" + encodeURIComponent(id));
+const noticeLink = id => currentLanguageURL(noticeDocumentUrl(id, location.origin));
 const landLink = id => currentLanguageURL(location.origin + location.pathname + "#land/" + encodeURIComponent(id));
 let hashLock = false;
 let focusedItemRouteHash = "";
