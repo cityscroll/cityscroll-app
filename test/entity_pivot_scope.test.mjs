@@ -1,0 +1,179 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import {
+  emptyScope,
+  intersectScopes,
+  normalizeScope,
+  routeHashFromScope,
+  scopeFromRouteHash,
+  scopeWithEntity,
+} from "../site/scope_v0.mjs";
+import {
+  entityChipHTML,
+  entityHref,
+  parseEntityRef,
+} from "../site/entity_pivot.mjs";
+import { buildSubjectEntityIndex } from "../tools/lib/entity_intelligence_build.mjs";
+
+const CAMBA = "vendor:stem:CAMBA";
+const DSS = "agency:id:homeless-services";
+
+test("typed entity refs fail closed and routable refs keep existing route ownership", () => {
+  assert.deepEqual(parseEntityRef(CAMBA), {
+    kind: "vendor",
+    id: "stem:CAMBA",
+    ref: CAMBA,
+  });
+  assert.deepEqual(parseEntityRef("entity:official:7801"), {
+    kind: "official",
+    id: "7801",
+    ref: "entity:official:7801",
+  });
+  assert.equal(parseEntityRef("notice:20260706036"), null);
+  assert.equal(parseEntityRef("vendor:stem:CAM BA"), null);
+
+  assert.equal(entityHref({ ref: CAMBA, label: "CAMBA" }), "#vendor/CAMBA");
+  assert.equal(
+    entityHref({ ref: DSS, label: "Homeless Services" }, { tab: "forecast" }),
+    "#agency/Homeless%20Services?tab=forecast",
+  );
+  assert.equal(
+    entityHref(
+      { ref: "entity:official:7801", label: "Member" },
+      { eventId: "22526", noticeId: "20260706036" },
+    ),
+    "#official/7801?event=22526&notice=20260706036",
+  );
+  assert.equal(entityHref({ ref: "notice:1", label: "not an entity" }), "");
+});
+
+test("entity chips link accepted refs, band tentative matches, and suppress review candidates", () => {
+  const strong = entityChipHTML({
+    ref: CAMBA,
+    label: "CAMBA & Co",
+    link_confidence: "strong",
+    relation: "named_vendor",
+  });
+  assert.match(strong, /<a class="pivot entity-pivot" href="#vendor\/CAMBA"/);
+  assert.match(strong, /CAMBA &amp; Co/);
+  assert.doesNotMatch(strong, /Possible match/);
+
+  const tentative = entityChipHTML({
+    ref: CAMBA,
+    label: "CAMBA",
+    link_confidence: "tentative",
+    relation: "applicant_vendor",
+    evidence: "Primary applicant name",
+  });
+  assert.match(tentative, /data-link-confidence="tentative"/);
+  assert.match(tentative, /Possible match/);
+  assert.match(tentative, /Primary applicant name/);
+
+  const review = entityChipHTML({
+    ref: CAMBA,
+    label: "CAMBA <review>",
+    link_confidence: "review_only",
+    relation: "possibly_same",
+  });
+  assert.equal(review, "CAMBA &lt;review&gt;");
+  assert.doesNotMatch(review, /href=/);
+});
+
+test("scopeWithEntity is normalized, idempotent, and ignores invalid refs", () => {
+  const base = emptyScope();
+  base.facets.domains = ["money"];
+  const once = scopeWithEntity(base, CAMBA);
+  const twice = scopeWithEntity(once, CAMBA);
+  assert.deepEqual(once, twice);
+  assert.deepEqual(once.facets.values.entity_refs_all, [CAMBA]);
+  assert.deepEqual(scopeWithEntity(once, "notice:1"), once);
+});
+
+test("structured scope intersection is commutative, idempotent, and closed", () => {
+  const awards = scopeFromRouteHash("#money?mode=award&agency=Homeless+Services");
+  awards.time_window.start = "2026-01-01";
+  awards.time_window.end = "2026-12-31";
+  awards.topic.keywords = ["shelter"];
+
+  const vendor = scopeWithEntity(emptyScope(), CAMBA);
+  vendor.facets.domains = ["money", "land"];
+  vendor.time_window.start = "2026-04-01";
+  vendor.time_window.end = "2027-03-31";
+  vendor.topic.keywords = ["services", "shelter"];
+
+  const left = intersectScopes(awards, vendor);
+  const right = intersectScopes(vendor, awards);
+  assert.deepEqual(left, right);
+  assert.deepEqual(intersectScopes(left, left), left);
+  assert.deepEqual(left.facets.domains, ["money"]);
+  assert.deepEqual(left.facets.agencies, ["Homeless Services"]);
+  assert.deepEqual(left.facets.values.entity_refs_all, [CAMBA]);
+  assert.equal(left.facets.values.mode, "award");
+  assert.equal(left.time_window.start, "2026-04-01");
+  assert.equal(left.time_window.end, "2026-12-31");
+  assert.deepEqual(left.topic.keywords, ["services", "shelter"]);
+
+  const urlScope = intersectScopes(
+    scopeFromRouteHash("#money?mode=award&agency=Homeless+Services"),
+    scopeWithEntity(emptyScope(), CAMBA),
+  );
+  const hash = routeHashFromScope(urlScope, { surface: "money" });
+  assert.match(hash, /^#money\?mode=award&agency=Homeless\+Services&/);
+  assert.match(hash, /(?:^|&)facet=/);
+  assert.deepEqual(scopeFromRouteHash(hash), normalizeScope(urlScope));
+});
+
+test("disjoint allowlists, inverted dates, and unsupported query conjunctions produce bottom", () => {
+  const money = emptyScope();
+  money.facets.domains = ["money"];
+  const land = emptyScope();
+  land.facets.domains = ["land"];
+  assert.equal(intersectScopes(money, land).facets.values.match_none, true);
+
+  const early = emptyScope();
+  early.time_window.start = "2026-08-01";
+  const ended = emptyScope();
+  ended.time_window.end = "2026-07-31";
+  assert.equal(intersectScopes(early, ended).facets.values.match_none, true);
+
+  const roofs = emptyScope();
+  roofs.topic.query = "roof repair";
+  const boilers = emptyScope();
+  boilers.topic.query = "boiler replacement";
+  const unsupported = intersectScopes(roofs, boilers);
+  assert.equal(unsupported.facets.values.match_none, true);
+  assert.deepEqual(unsupported.facets.values.composition_unsupported, ["topic.query"]);
+});
+
+test("required entity refs union while OR-like value allowlists meet", () => {
+  const a = scopeWithEntity(emptyScope(), CAMBA);
+  a.facets.values.notice_types = ["Award", "Solicitation"];
+  const b = scopeWithEntity(emptyScope(), DSS);
+  b.facets.values.notice_types = ["Award", "Hearing"];
+  const met = intersectScopes(a, b);
+  assert.deepEqual(met.facets.values.entity_refs_all, [DSS, CAMBA]);
+  assert.deepEqual(met.facets.values.notice_types, ["Award"]);
+});
+
+test("subject reverse index exposes only public strong or tentative entity links", () => {
+  const bySubject = buildSubjectEntityIndex({
+    by_ref: {
+      [DSS]: {
+        root: { ref: DSS, kind: "agency", display_name: "Homeless Services" },
+        links: [
+          { type: "published_by_agency", from: "notice:1", to: DSS, confidence: "strong", domain: "money" },
+          { type: "applicant_agency", from: "project:2", to: DSS, confidence: "tentative", domain: "land" },
+          { type: "possibly_same", from: "vendor:stem:MAYBE", to: DSS, confidence: "review_only", domain: "money" },
+        ],
+      },
+    },
+  });
+  assert.deepEqual(bySubject["notice:1"], [{
+    entity_ref: DSS,
+    relation: "published_by_agency",
+    confidence: "strong",
+  }]);
+  assert.equal(bySubject["vendor:stem:MAYBE"], undefined);
+  assert.equal(bySubject[DSS], undefined);
+});

@@ -4,8 +4,8 @@
    time (v1): normalize to a stem (case/punctuation/legal suffixes), prefix-match server-side,
    then keep only rows whose own stem matches exactly. Honest and zero-infrastructure; a
    nightly clustered alias table can replace it without changing this page. */
-const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
-const vendorHref = (name, tab) => "#vendor/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
+const agencyHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("agency",cleanText(name)),label:cleanText(name)},{tab}) : "#agency/"+encodeURIComponent(cleanText(name))+(tab?"?tab="+tab:"");
+const vendorHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("vendor",cleanText(name)),label:cleanText(name)},{tab}) : "#vendor/"+encodeURIComponent(cleanText(name))+(tab?"?tab="+tab:"");
 
 /** Cached person_votes_lookup.json (precomputed by_person densify). */
 let personVotesLookupPromise = null;
@@ -238,7 +238,15 @@ async function showOfficial(personId, opts){
 const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
 // Escape the label once: cleanText now decodes entities to plain Unicode, so an unescaped
 // pivot label would re-open injection for any notice field carrying &lt;…&gt;.
-const pivotA = (href, text) => `<a class="pivot" href="${href}">${escUiHtml(text)}</a>`;
+function typedPivotHTML(href, text){
+  const typed = globalThis.CrolEntityPivots?.entityFromHref(href, cleanText(text));
+  return globalThis.CrolEntityPivots.entityChipHTML({
+    ref: typed.ref,
+    label: typed.label,
+    link_confidence: "strong",
+  }, typed.options);
+}
+const pivotA = (href, text) => globalThis.CrolEntityPivots?.entityFromHref(href,cleanText(text)) ? typedPivotHTML(href,text) : `<a class="pivot" href="${href}">${escUiHtml(text)}</a>`;
 
 const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
 function vendorStem(name){
