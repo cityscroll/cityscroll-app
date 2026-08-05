@@ -69,6 +69,35 @@ def people_opens_on_a_populated_example(pw):
         failures.append(f"bare #people did not forward to the clean Staffing route — got: {route!r}")
     if page.locator("#career-query").input_value():
         failures.append("bare #people unexpectedly requires or injects an exam search")
+    if page.evaluate("document.activeElement?.id") != "career-browser-heading":
+        failures.append(
+            "bare #people did not place initial focus on the action heading — got: "
+            f"{page.evaluate('document.activeElement?.id')!r}"
+        )
+
+    # Every source tab is a clean document entry, and each entry focus lands on
+    # that lens's heading rather than a list or demoted section.
+    for tab, heading in (
+        ("money", ""),
+        ("people", "career-browser-heading"),
+        ("land", ""),
+        ("property", ""),
+        ("rules", ""),
+        ("meetings", ""),
+    ):
+        page.click(f'.tabbtn[data-tab="{tab}"]')
+        page.wait_for_timeout(100)
+        route = page.evaluate("({ pathname: location.pathname, search: location.search, hash: location.hash })")
+        expected_path = f"/browse/{ {'money':'contracts','people':'staffing','land':'zoning'}.get(tab, tab) }/"
+        if route != {"pathname": expected_path, "search": "", "hash": ""}:
+            failures.append(f"{tab} tab did not mint its clean document route — got: {route!r}")
+        actual_focus = page.evaluate("document.activeElement?.id")
+        if tab == "people":
+            if actual_focus != heading:
+                failures.append(f"{tab} entry focus landed on {actual_focus!r}, not {heading!r}")
+        else:
+            if page.evaluate("document.activeElement?.classList.contains('lens-entry-heading')") is not True:
+                failures.append(f"{tab} entry focus did not land on its lens heading — got: {actual_focus!r}")
     browser.close()
     return failures
 
