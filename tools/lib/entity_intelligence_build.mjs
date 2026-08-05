@@ -28,6 +28,44 @@ import {
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
 
+/**
+ * Compact public reverse index: observed subject_ref → published entity pivots.
+ * Numeric matcher scores and review-queue candidates never enter this artifact.
+ */
+export function buildSubjectEntityIndex(doc = {}) {
+  const grouped = new Map();
+  for (const dossier of Object.values(doc.by_ref || {})) {
+    const root = dossier?.root || {};
+    const entityRef = clean(root.ref);
+    if (!entityRef) continue;
+    for (const link of dossier.links || []) {
+      const confidence = clean(link?.confidence || link?.link_confidence).toLowerCase();
+      if (!new Set(["strong", "tentative"]).has(confidence)) continue;
+      const from = clean(link.from);
+      const to = clean(link.to);
+      const subjectRef = from === entityRef ? to : to === entityRef ? from : "";
+      if (!subjectRef || subjectRef === entityRef) continue;
+      const entry = {
+        entity_ref: entityRef,
+        relation: clean(link.type),
+        confidence,
+      };
+      const key = [entry.entity_ref, entry.relation, entry.confidence].join("|");
+      if (!grouped.has(subjectRef)) grouped.set(subjectRef, new Map());
+      grouped.get(subjectRef).set(key, entry);
+    }
+  }
+  return Object.fromEntries([...grouped.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([subjectRef, entries]) => [
+      subjectRef,
+      [...entries.values()].sort((a, b) =>
+        a.entity_ref.localeCompare(b.entity_ref)
+        || a.relation.localeCompare(b.relation)
+        || a.confidence.localeCompare(b.confidence)),
+    ]));
+}
+
 /** Coerce materialization `source` fields that may be objects into a system id. */
 function cleanSourceSystem(value, fallback) {
   if (value == null) return fallback;
@@ -444,6 +482,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
   // when people is empty on other roots.
   const demoEntity = withPeople || parks || multi[0] || null;
 
+  const bySubjectRef = buildSubjectEntityIndex(corpus);
   return {
     schema_version: 1,
     phase: "cross-domain-object-links",
@@ -468,6 +507,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
       : null,
     entities: corpus.entities,
     by_ref: corpus.by_ref,
+    by_subject_ref: bySubjectRef,
     provenance: {
       sources: [
         "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv",
@@ -522,6 +562,7 @@ export function slimDocForWorker(doc) {
     demo_refs: doc.demo_refs,
     verified_demo: doc.verified_demo,
     by_ref: doc.by_ref,
+    by_subject_ref: doc.by_subject_ref,
     // Compact entity list for /entity-intelligence?list=1
     entity_index: (doc.entities || []).map((e) => ({
       ref: e.root?.ref,

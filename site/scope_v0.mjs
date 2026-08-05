@@ -75,3 +75,162 @@ export function nearYouUrlFromScope(input, { base = "/near-you/" } = {}) {
   if (scope.language && scope.language !== "en") params.set("lang", scope.language);
   return absolute ? url.toString() : `${url.pathname}${url.search}`;
 }
+
+const sortedUnique = (values) => [...new Set((values || []).map(String).filter(Boolean))].sort();
+const sameValue = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+
+function routableEntityRef(value) {
+  const ref = String(value || "").trim();
+  if (!ref || /\s/.test(ref)) return null;
+  if (/^agency:[^:]+:.+$/.test(ref)) return ref;
+  if (/^vendor:stem:.+$/.test(ref)) return ref;
+  if (/^entity:official:.+$/.test(ref)) return ref;
+  return null;
+}
+
+/** Add one required, typed entity constraint without creating mutable scope state. */
+export function scopeWithEntity(input, ref) {
+  const scope = normalizeScope(input);
+  const entityRef = routableEntityRef(ref);
+  if (!entityRef) return scope;
+  const current = Array.isArray(scope.facets.values.entity_refs_all)
+    ? scope.facets.values.entity_refs_all.map(routableEntityRef).filter(Boolean)
+    : [];
+  scope.facets.values.entity_refs_all = sortedUnique([...current, entityRef]);
+  return normalizeScope(scope);
+}
+
+function meetAllowlist(left, right, markBottom) {
+  const a = sortedUnique(left);
+  const b = sortedUnique(right);
+  if (!a.length) return b;
+  if (!b.length) return a;
+  const allowed = new Set(b);
+  const met = a.filter((value) => allowed.has(value));
+  if (!met.length) markBottom();
+  return met;
+}
+
+function meetScalar(left, right, markBottom) {
+  if (left == null || left === "") return right ?? null;
+  if (right == null || right === "") return left ?? null;
+  if (sameValue(left, right)) return left;
+  markBottom();
+  return null;
+}
+
+function laterBound(left, right) {
+  if (!left) return right || null;
+  if (!right) return left;
+  return left > right ? left : right;
+}
+
+function earlierBound(left, right) {
+  if (!left) return right || null;
+  if (!right) return left;
+  return left < right ? left : right;
+}
+
+function tighterRollingWindow(left, right) {
+  if (!Number.isFinite(left)) return Number.isFinite(right) ? right : null;
+  if (!Number.isFinite(right)) return left;
+  return Math.min(left, right);
+}
+
+/**
+ * Meet two supported structured scopes. Independent axes conjoin, OR-like
+ * allowlists intersect, all-keyword and all-entity constraints union, and a
+ * contradiction remains a serializable bottom scope via match_none.
+ */
+export function intersectScopes(leftInput, rightInput) {
+  const left = normalizeScope(leftInput);
+  const right = normalizeScope(rightInput);
+  const language = left.language === right.language
+    ? left.language
+    : left.language === "en"
+      ? right.language
+      : right.language === "en"
+        ? left.language
+        : [left.language, right.language].sort()[0];
+  const out = emptyScope(language);
+  let bottom = Boolean(left.facets.values.match_none || right.facets.values.match_none);
+  const markBottom = () => { bottom = true; };
+
+  out.place.boroughs = meetAllowlist(left.place.boroughs, right.place.boroughs, markBottom);
+  out.place.community_districts = meetAllowlist(
+    left.place.community_districts,
+    right.place.community_districts,
+    markBottom,
+  );
+  out.place.council_districts = meetAllowlist(
+    left.place.council_districts,
+    right.place.council_districts,
+    markBottom,
+  );
+  out.place.neighborhood = meetScalar(left.place.neighborhood, right.place.neighborhood, markBottom);
+  out.place.location_scope = meetScalar(
+    left.place.location_scope,
+    right.place.location_scope,
+    markBottom,
+  );
+  out.place.viewport = meetScalar(left.place.viewport, right.place.viewport, markBottom);
+
+  out.time_window.preset = meetScalar(
+    left.time_window.preset,
+    right.time_window.preset,
+    markBottom,
+  );
+  out.time_window.start = laterBound(left.time_window.start, right.time_window.start);
+  out.time_window.end = earlierBound(left.time_window.end, right.time_window.end);
+  if (out.time_window.start && out.time_window.end
+      && out.time_window.start > out.time_window.end) markBottom();
+  out.time_window.rolling_months = tighterRollingWindow(
+    left.time_window.rolling_months,
+    right.time_window.rolling_months,
+  );
+
+  out.topic.query = meetScalar(left.topic.query, right.topic.query, () => {
+    markBottom();
+    out.facets.values.composition_unsupported = ["topic.query"];
+  });
+  out.topic.keywords = sortedUnique([...left.topic.keywords, ...right.topic.keywords]);
+
+  out.facets.domains = meetAllowlist(left.facets.domains, right.facets.domains, markBottom);
+  out.facets.agencies = meetAllowlist(left.facets.agencies, right.facets.agencies, markBottom);
+  out.facets.actions = meetAllowlist(left.facets.actions, right.facets.actions, markBottom);
+
+  const leftValues = left.facets.values || {};
+  const rightValues = right.facets.values || {};
+  const entityRefs = sortedUnique([
+    ...(Array.isArray(leftValues.entity_refs_all) ? leftValues.entity_refs_all : []),
+    ...(Array.isArray(rightValues.entity_refs_all) ? rightValues.entity_refs_all : []),
+  ].map(routableEntityRef).filter(Boolean));
+  if (entityRefs.length) out.facets.values.entity_refs_all = entityRefs;
+
+  const unsupported = sortedUnique([
+    ...(out.facets.values.composition_unsupported || []),
+    ...(Array.isArray(leftValues.composition_unsupported)
+      ? leftValues.composition_unsupported : []),
+    ...(Array.isArray(rightValues.composition_unsupported)
+      ? rightValues.composition_unsupported : []),
+  ]);
+  if (unsupported.length) out.facets.values.composition_unsupported = unsupported;
+
+  const reserved = new Set(["entity_refs_all", "match_none", "composition_unsupported"]);
+  const valueKeys = sortedUnique([...Object.keys(leftValues), ...Object.keys(rightValues)])
+    .filter((key) => !reserved.has(key));
+  for (const key of valueKeys) {
+    const a = leftValues[key];
+    const b = rightValues[key];
+    if (a == null || a === "") out.facets.values[key] = b;
+    else if (b == null || b === "") out.facets.values[key] = a;
+    else if (Array.isArray(a) && Array.isArray(b)) {
+      const met = meetAllowlist(a, b, markBottom);
+      if (met.length) out.facets.values[key] = met;
+    } else if (sameValue(a, b)) out.facets.values[key] = a;
+    else markBottom();
+  }
+
+  if (bottom) out.facets.values.match_none = true;
+  return normalizeScope(out);
+}
