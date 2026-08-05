@@ -195,3 +195,6 @@ git:log
 .github/workflows/deploy-worker.yml
 site/data/procurement_planning_payload.json
 site/data/procurement_planning_payload/*.json
+docs/unblocked-plans-2026-08.md
+docs/evidence/hosting-dual-host-metrics.json
+docs/evidence/index-module-split.json
