@@ -1,21 +1,12 @@
+import {
+  inferFranchiseStageFromNotice,
+  isFranchiseConcessionNoticeEligible,
+} from "../franchise_notice.mjs";
+
 /* ===== Franchise / concession review process spine (FCRC multi-notice chain).
    Reconstructs solicitation → public hearing → committee meeting → award for one
    franchise/concession agreement or annual plan, joined by counterparty stem,
    plan year, or FCRC rules subject. Empty stages stay class-(a). ===== */
-function isFranchiseConcessionNoticeEligible(r){
-  if(!r) return false;
-  const agency=String(r.agency_name||"");
-  const title=cleanText(r.short_title||"");
-  const body=cleanText(r.additional_description_1||"");
-  const hay=`${title} ${body}`;
-  if(/city council/i.test(agency) && /zoning and franchises/i.test(hay)) return false;
-  if(/^franchise and concession review committee$/i.test(agency)) return true;
-  if(/^mayor'?s office of contract services$/i.test(agency) && /\bFCRC\b|franchise and concession/i.test(hay)) return true;
-  if(/\bFCRC\b/i.test(hay)) return true;
-  if(/franchise and concession review committee/i.test(hay)) return true;
-  if(/proposed (?:information services )?franchise agreement/i.test(hay)) return true;
-  return false;
-}
 function franchiseStageLabel(kind){
   if(kind==="solicitation") return t("franchise_stage_solicitation");
   if(kind==="public_hearing") return t("franchise_stage_public_hearing");
@@ -76,21 +67,6 @@ function lifecycleNoticeEventsHTML(events){
       ${sourceUrl?`<div class="lc-pct"><a href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a></div>`:""}
     </div>`;
   }).join("");
-}
-/** Infer process stage from the notice type/title when the spine has not stamped yet. */
-function inferFranchiseStageFromNotice(r){
-  if(!r) return null;
-  if(r.franchise_stage) return r.franchise_stage;
-  const type=String(r.type_of_notice_description||"");
-  const title=cleanText(r.short_title||"");
-  const body=cleanText(r.additional_description_1||"");
-  const hay=`${title} ${body}`;
-  // Publisher type labels matched via regex (not string literals) so stray-english stays green.
-  if(/^Award$/i.test(type) || /\b(?:has been awarded|award of (?:the )?(?:franchise|concession)|franchise has been granted)\b/i.test(hay)) return "award";
-  if(/^Solicitation$/i.test(type) || (/\b(?:request for proposals?|\brfp\b|solicitation)\b/i.test(hay) && !/\bpublic hearing\b/i.test(hay))) return "solicitation";
-  if(/^Meeting$/i.test(type) || /\bpublic meeting\b/i.test(title) || /\bFCRC\b.*\bmeeting\b/i.test(title)) return "committee_meeting";
-  if(/^Public Hearings$/i.test(type) || /\bpublic hearing\b/i.test(hay) || /\bFCRC\b.*\bhearing\b/i.test(hay)) return "public_hearing";
-  return null;
 }
 let franchisePhaseSpineToolsPromise=null;
 function franchisePhaseSpineTools(){
@@ -635,6 +611,19 @@ async function loadPropertyDispositionSpine(r, el){
     const bbl = tools.primaryPropertyBbl(location);
     if(bbl) r._property_bbl = bbl;
   }catch(_e){}
+}
+
+// A Property permalink must not paint a generic action and replace it after the parcel lookup
+// resolves. Hydrate the local, source-derived BBL before routing renders the first detail frame.
+async function hydratePropertyActionMatter(r){
+  if(!r || !isPropertyDispositionEligible(r) || r._property_bbl) return r;
+  try{
+    const tools=await propertyLocationTools();
+    const location=r.property_location||tools.propertyLocationFromRow(r);
+    const bbl=tools.primaryPropertyBbl(location);
+    if(bbl) r._property_bbl=bbl;
+  }catch(_e){}
+  return r;
 }
 
 /**
@@ -1644,31 +1633,6 @@ async function loadTaxLienForNotice(r,el){
   el.innerHTML=`<section class="tax-lien-panel tax-lien-cycle-context" data-tax-lien-cycle-context="1"><h2>${t("tax_lien_heading")}</h2>${taxLienBblResultHTML(summary,lookup,bbl)}${taxLienCycleStatusHTML(guide)}${taxLienDeadlineHTML(guide)}${taxLienStepperHTML(guide?.stepper)}${taxLienActionsHTML(guide)}<p class="tax-lien-meta">${t("tax_lien_deck_html")}</p></section>`;
 }
 
-function propertyPlaceChips(location){
-  if(!location) return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
-  if(location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
-  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
-  const values=[
-    ...(location.addresses||[]).slice(0,3).map(address=>address.label),
-    ...(location.boroughs||[]),
-    ...(location.tax_lots||[]).slice(0,2).map(lot=>lot.label),
-    ...(location.bbls||[]).slice(0,2).map(bbl=>`BBL ${bbl}`),
-  ];
-  return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
-}
-
-function rulePlaceChips(location){
-  if(!location||location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
-  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("rule_stage_unstaged")}</span></div>`;
-  const values=[
-    ...(location.districts||[]),
-    ...(location.neighborhoods||[]),
-    ...(location.boroughs||[]),
-    ...(location.addresses||[]).map(address=>address.label),
-  ].filter(Boolean);
-  return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
-}
-
 // Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.ASSET_BUCKETS = ASSET_BUCKETS;
 globalThis.ASSET_LABEL = ASSET_LABEL;
@@ -1684,6 +1648,7 @@ globalThis.franchiseConcessionSpineHTML = franchiseConcessionSpineHTML;
 globalThis.franchisePhaseSpineTools = franchisePhaseSpineTools;
 globalThis.franchiseStageLabel = franchiseStageLabel;
 globalThis.hydrateTaxLienBblSlots = hydrateTaxLienBblSlots;
+globalThis.hydratePropertyActionMatter = hydratePropertyActionMatter;
 globalThis.inferFranchiseStageFromNotice = inferFranchiseStageFromNotice;
 globalThis.isFranchiseConcessionNoticeEligible = isFranchiseConcessionNoticeEligible;
 globalThis.isPropertyDispositionEligible = isPropertyDispositionEligible;
@@ -1700,9 +1665,7 @@ globalThis.propertyDispositionTimingHTML = propertyDispositionTimingHTML;
 globalThis.propertyExplorerCardHTML = propertyExplorerCardHTML;
 globalThis.propertyExplorerTools = propertyExplorerTools;
 globalThis.propertyPhaseSpineTools = propertyPhaseSpineTools;
-globalThis.propertyPlaceChips = propertyPlaceChips;
 globalThis.renderPropExplorer = renderPropExplorer;
-globalThis.rulePlaceChips = rulePlaceChips;
 globalThis.taxLienActionsHTML = taxLienActionsHTML;
 globalThis.taxLienAreaTable = taxLienAreaTable;
 globalThis.taxLienBblResultHTML = taxLienBblResultHTML;

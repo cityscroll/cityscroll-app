@@ -1,0 +1,1709 @@
+{
+  "version": 1,
+  "measurementContext": {
+    "revisionUnderTest": "split-the-home-cold-path-and-ratchet-the-cold-wi",
+    "baselineRevision": "639bf8c5",
+    "siteRoot": "site",
+    "headroom": "headroom OK; load 3.2/4 CPUs, CPU 11%, run queue 3, memory 40%",
+    "baselineWireBytes": 459328,
+    "measuredWireBytes": 437841,
+    "deltaWireBytes": -21487,
+    "reductionPercent": 4.68,
+    "budgetWireBytes": 445000,
+    "budgetHeadroomBytes": 7159,
+    "note": "Property is absent from the home cold path. Property and notice routes await the Property module and parcel/action hydration before their first detail frame. All standing fixtures passed in this 20-sample run."
+  },
+  "statistics": {
+    "quantile": 0.95,
+    "samples": 20,
+    "warmupSamples": 1
+  },
+  "runs": [
+    {
+      "fixture": "home.cold",
+      "viewport": "mobile",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 300,
+        "fcpMs": 1000,
+        "lcpMs": 2500,
+        "cls": 0.1,
+        "wireBytes": 445000,
+        "comment": "Current main revision 639bf8c5 measured 459328 cold-home gzip bytes in 20/20 samples for both viewports. Deferring the Property renderer while retaining its shared franchise/action classifier measured 437841 bytes in 20/20 samples for both viewports; receipts are under docs/evidence/home-cold-split/. The 445000 ceiling is the next ratchet documented by the August 2026 performance audit; under 435000 remains a separate follow-on."
+      },
+      "p95": {
+        "lcpMs": 52.400000000000006,
+        "wireBytes": 437841.0,
+        "eventDurationMs": 0.0,
+        "fcpMs": 52.400000000000006,
+        "ttfbMs": 1.90500009059906,
+        "cls": 0.0
+      },
+      "samples": [
+        {
+          "ttfbMs": 1.7999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 2,
+          "fcpMs": 60,
+          "lcpMs": 60,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.6000001430511475,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.9000000953674316,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.1999998092651367,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 36,
+          "lcpMs": 36,
+          "cls": 0,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        }
+      ],
+      "failures": [],
+      "wireFiles": [
+        {
+          "path": "i18n.js",
+          "gzipBytes": 66574
+        },
+        {
+          "path": "index.html",
+          "gzipBytes": 40893
+        },
+        {
+          "path": "app/alerts.mjs",
+          "gzipBytes": 23184
+        },
+        {
+          "path": "action_registry.js",
+          "gzipBytes": 20425
+        },
+        {
+          "path": "app/money-history.mjs",
+          "gzipBytes": 19972
+        },
+        {
+          "path": "app/land.mjs",
+          "gzipBytes": 19365
+        },
+        {
+          "path": "app/routing.mjs",
+          "gzipBytes": 19239
+        },
+        {
+          "path": "app/feed-actions.mjs",
+          "gzipBytes": 18994
+        },
+        {
+          "path": "app/search-share.mjs",
+          "gzipBytes": 17741
+        },
+        {
+          "path": "app/people.mjs",
+          "gzipBytes": 16092
+        },
+        {
+          "path": "app/entities.mjs",
+          "gzipBytes": 15471
+        },
+        {
+          "path": "app/rules.mjs",
+          "gzipBytes": 15195
+        },
+        {
+          "path": "app/boot.mjs",
+          "gzipBytes": 13054
+        },
+        {
+          "path": "app/workspace.mjs",
+          "gzipBytes": 10722
+        },
+        {
+          "path": "app/procurement-lifecycle.mjs",
+          "gzipBytes": 9362
+        },
+        {
+          "path": "app/core.mjs",
+          "gzipBytes": 9217
+        },
+        {
+          "path": "app/procurement-phase.mjs",
+          "gzipBytes": 8729
+        },
+        {
+          "path": "app/subsidy.mjs",
+          "gzipBytes": 8268
+        },
+        {
+          "path": "app/meetings.mjs",
+          "gzipBytes": 7843
+        },
+        {
+          "path": "app/money-list.mjs",
+          "gzipBytes": 7836
+        },
+        {
+          "path": "qr_share.js",
+          "gzipBytes": 6846
+        },
+        {
+          "path": "hearing_location.js",
+          "gzipBytes": 6828
+        },
+        {
+          "path": "app/map.mjs",
+          "gzipBytes": 5387
+        },
+        {
+          "path": "scope_v0.mjs",
+          "gzipBytes": 4458
+        },
+        {
+          "path": "staffing.js",
+          "gzipBytes": 4399
+        },
+        {
+          "path": "sub_outreach.mjs",
+          "gzipBytes": 3534
+        },
+        {
+          "path": "export_workflows.js",
+          "gzipBytes": 3492
+        },
+        {
+          "path": "data/money_default_open.json",
+          "gzipBytes": 3300
+        },
+        {
+          "path": "location_awareness.js",
+          "gzipBytes": 3239
+        },
+        {
+          "path": "nl_deeplink.js",
+          "gzipBytes": 3133
+        },
+        {
+          "path": "external_awards.js",
+          "gzipBytes": 3103
+        },
+        {
+          "path": "task_first.js",
+          "gzipBytes": 3006
+        },
+        {
+          "path": "solicitation_procurement_method.mjs",
+          "gzipBytes": 2883
+        },
+        {
+          "path": "mwbe_goal_surface.mjs",
+          "gzipBytes": 2806
+        },
+        {
+          "path": "analytics.js",
+          "gzipBytes": 2130
+        },
+        {
+          "path": "clarity.js",
+          "gzipBytes": 1932
+        },
+        {
+          "path": "brand.css",
+          "gzipBytes": 1718
+        },
+        {
+          "path": "text_clean.mjs",
+          "gzipBytes": 1646
+        },
+        {
+          "path": "beta_flags.js",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "data/money_procurement_agencies.json",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "app/main.mjs",
+          "gzipBytes": 939
+        },
+        {
+          "path": "franchise_notice.mjs",
+          "gzipBytes": 795
+        },
+        {
+          "path": "action_link_health.js",
+          "gzipBytes": 430
+        },
+        {
+          "path": "city_record_id.mjs",
+          "gzipBytes": 248
+        },
+        {
+          "path": "beta-flags.json",
+          "gzipBytes": 227
+        },
+        {
+          "path": "app/now.mjs",
+          "gzipBytes": 180
+        }
+      ]
+    },
+    {
+      "fixture": "home.cold",
+      "viewport": "desktop",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 300,
+        "fcpMs": 1000,
+        "lcpMs": 2500,
+        "cls": 0.1,
+        "wireBytes": 445000,
+        "comment": "Current main revision 639bf8c5 measured 459328 cold-home gzip bytes in 20/20 samples for both viewports. Deferring the Property renderer while retaining its shared franchise/action classifier measured 437841 bytes in 20/20 samples for both viewports; receipts are under docs/evidence/home-cold-split/. The 445000 ceiling is the next ratchet documented by the August 2026 performance audit; under 435000 remains a separate follow-on."
+      },
+      "p95": {
+        "lcpMs": 64.2,
+        "wireBytes": 437841.0,
+        "eventDurationMs": 0.0,
+        "fcpMs": 64.2,
+        "ttfbMs": 2.200000047683716,
+        "cls": 0.00952348992827825
+      },
+      "samples": [
+        {
+          "ttfbMs": 1.1999998092651367,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 2.200000047683716,
+          "fcpMs": 68,
+          "lcpMs": 68,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5999999046325684,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 2.200000047683716,
+          "fcpMs": 64,
+          "lcpMs": 64,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.6000001430511475,
+          "fcpMs": 64,
+          "lcpMs": 64,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 60,
+          "lcpMs": 60,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0,
+          "wireBytes": 437841.0
+        }
+      ],
+      "failures": [],
+      "wireFiles": [
+        {
+          "path": "i18n.js",
+          "gzipBytes": 66574
+        },
+        {
+          "path": "index.html",
+          "gzipBytes": 40893
+        },
+        {
+          "path": "app/alerts.mjs",
+          "gzipBytes": 23184
+        },
+        {
+          "path": "action_registry.js",
+          "gzipBytes": 20425
+        },
+        {
+          "path": "app/money-history.mjs",
+          "gzipBytes": 19972
+        },
+        {
+          "path": "app/land.mjs",
+          "gzipBytes": 19365
+        },
+        {
+          "path": "app/routing.mjs",
+          "gzipBytes": 19239
+        },
+        {
+          "path": "app/feed-actions.mjs",
+          "gzipBytes": 18994
+        },
+        {
+          "path": "app/search-share.mjs",
+          "gzipBytes": 17741
+        },
+        {
+          "path": "app/people.mjs",
+          "gzipBytes": 16092
+        },
+        {
+          "path": "app/entities.mjs",
+          "gzipBytes": 15471
+        },
+        {
+          "path": "app/rules.mjs",
+          "gzipBytes": 15195
+        },
+        {
+          "path": "app/boot.mjs",
+          "gzipBytes": 13054
+        },
+        {
+          "path": "app/workspace.mjs",
+          "gzipBytes": 10722
+        },
+        {
+          "path": "app/procurement-lifecycle.mjs",
+          "gzipBytes": 9362
+        },
+        {
+          "path": "app/core.mjs",
+          "gzipBytes": 9217
+        },
+        {
+          "path": "app/procurement-phase.mjs",
+          "gzipBytes": 8729
+        },
+        {
+          "path": "app/subsidy.mjs",
+          "gzipBytes": 8268
+        },
+        {
+          "path": "app/meetings.mjs",
+          "gzipBytes": 7843
+        },
+        {
+          "path": "app/money-list.mjs",
+          "gzipBytes": 7836
+        },
+        {
+          "path": "qr_share.js",
+          "gzipBytes": 6846
+        },
+        {
+          "path": "hearing_location.js",
+          "gzipBytes": 6828
+        },
+        {
+          "path": "app/map.mjs",
+          "gzipBytes": 5387
+        },
+        {
+          "path": "scope_v0.mjs",
+          "gzipBytes": 4458
+        },
+        {
+          "path": "staffing.js",
+          "gzipBytes": 4399
+        },
+        {
+          "path": "sub_outreach.mjs",
+          "gzipBytes": 3534
+        },
+        {
+          "path": "export_workflows.js",
+          "gzipBytes": 3492
+        },
+        {
+          "path": "data/money_default_open.json",
+          "gzipBytes": 3300
+        },
+        {
+          "path": "location_awareness.js",
+          "gzipBytes": 3239
+        },
+        {
+          "path": "nl_deeplink.js",
+          "gzipBytes": 3133
+        },
+        {
+          "path": "external_awards.js",
+          "gzipBytes": 3103
+        },
+        {
+          "path": "task_first.js",
+          "gzipBytes": 3006
+        },
+        {
+          "path": "solicitation_procurement_method.mjs",
+          "gzipBytes": 2883
+        },
+        {
+          "path": "mwbe_goal_surface.mjs",
+          "gzipBytes": 2806
+        },
+        {
+          "path": "analytics.js",
+          "gzipBytes": 2130
+        },
+        {
+          "path": "clarity.js",
+          "gzipBytes": 1932
+        },
+        {
+          "path": "brand.css",
+          "gzipBytes": 1718
+        },
+        {
+          "path": "text_clean.mjs",
+          "gzipBytes": 1646
+        },
+        {
+          "path": "beta_flags.js",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "data/money_procurement_agencies.json",
+          "gzipBytes": 1503
+        },
+        {
+          "path": "app/main.mjs",
+          "gzipBytes": 939
+        },
+        {
+          "path": "franchise_notice.mjs",
+          "gzipBytes": 795
+        },
+        {
+          "path": "action_link_health.js",
+          "gzipBytes": 430
+        },
+        {
+          "path": "city_record_id.mjs",
+          "gzipBytes": 248
+        },
+        {
+          "path": "beta-flags.json",
+          "gzipBytes": 227
+        },
+        {
+          "path": "app/now.mjs",
+          "gzipBytes": 180
+        }
+      ]
+    },
+    {
+      "fixture": "home.warm",
+      "viewport": "mobile",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 150,
+        "lcpMs": 1000,
+        "cls": 0.1
+      },
+      "p95": {
+        "lcpMs": 117.60000000000002,
+        "eventDurationMs": 0.0,
+        "fcpMs": 117.60000000000002,
+        "ttfbMs": 6.944999861717225,
+        "cls": 0.0
+      },
+      "samples": [
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 44,
+          "lcpMs": 44,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.1000001430511475,
+          "fcpMs": 68,
+          "lcpMs": 68,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.9000000953674316,
+          "fcpMs": 68,
+          "lcpMs": 68,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.299999952316284,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 6.8999998569488525,
+          "fcpMs": 148,
+          "lcpMs": 148,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 7.799999952316284,
+          "fcpMs": 116,
+          "lcpMs": 116,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 40,
+          "lcpMs": 40,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.1999998092651367,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 4.799999952316284,
+          "fcpMs": 64,
+          "lcpMs": 64,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.299999952316284,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.5,
+          "fcpMs": 68,
+          "lcpMs": 68,
+          "cls": 0,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.4000000953674316,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0,
+          "eventDurationMs": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "fixture": "home.warm",
+      "viewport": "desktop",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "ttfbMs": 150,
+        "lcpMs": 1000,
+        "cls": 0.1
+      },
+      "p95": {
+        "lcpMs": 57.40000000000002,
+        "eventDurationMs": 0.0,
+        "fcpMs": 57.40000000000002,
+        "ttfbMs": 2.2050000429153442,
+        "cls": 0.00952348992827825
+      },
+      "samples": [
+        {
+          "ttfbMs": 2.200000047683716,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.9000000953674316,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.5,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.4000000953674316,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.9000000953674316,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.3000001907348633,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.5999999046325684,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.299999952316284,
+          "fcpMs": 84,
+          "lcpMs": 84,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.6000001430511475,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2999999523162842,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.2000000476837158,
+          "fcpMs": 48,
+          "lcpMs": 48,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.0999999046325684,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.6000001430511475,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 2.0999999046325684,
+          "fcpMs": 56,
+          "lcpMs": 56,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        },
+        {
+          "ttfbMs": 1.3999998569488525,
+          "fcpMs": 52,
+          "lcpMs": 52,
+          "cls": 0.00952348992827825,
+          "eventDurationMs": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "fixture": "contracts.keyword-housing",
+      "viewport": "mobile",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "invariant": "keyword-control-visible-without-extra-disclosure",
+        "visualResponseMs": 100,
+        "settledMs": 1200,
+        "eventDurationMs": 225,
+        "comment": "The 20-sample pre-change p95 measured 212 ms; 225 ms prevents regression. Ratchet target: 200 ms."
+      },
+      "p95": {
+        "eventDurationMs": 16.0,
+        "visualResponseMs": 3.6249999046325687,
+        "settledMs": 723.9950015442446
+      },
+      "samples": [
+        {
+          "visualResponseMs": 3.5,
+          "settledMs": 714.2713749781251,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.3999998569488525,
+          "settledMs": 715.4558748006821,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 3.200000047683716,
+          "settledMs": 726.4017076231539,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 4.099999904632568,
+          "settledMs": 708.7409999221563,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.6999998092651367,
+          "settledMs": 717.8409998305142,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 3.5999999046325684,
+          "settledMs": 710.0230827927589,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 3.3999998569488525,
+          "settledMs": 720.6375827081501,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 3.5,
+          "settledMs": 723.8683328032494,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2,
+          "settledMs": 707.305624615401,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.5999999046325684,
+          "settledMs": 707.8352919779718,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1,
+          "settledMs": 710.8235000632703,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.7999999523162842,
+          "settledMs": 699.3793752044439,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.1000001430511475,
+          "settledMs": 703.5090830177069,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1,
+          "settledMs": 693.1873746216297,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.2000000476837158,
+          "settledMs": 695.2002923935652,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.0999999046325684,
+          "settledMs": 691.5382919833064,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.4000000953674316,
+          "settledMs": 698.7043749541044,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.0999999046325684,
+          "settledMs": 707.8647082671523,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.2000000476837158,
+          "settledMs": 707.6781671494246,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.0999999046325684,
+          "settledMs": 704.7035419382155,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "fixture": "contracts.keyword-housing",
+      "viewport": "desktop",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "invariant": "keyword-control-visible-without-extra-disclosure",
+        "visualResponseMs": 100,
+        "settledMs": 1200,
+        "eventDurationMs": 225,
+        "comment": "The 20-sample pre-change p95 measured 212 ms; 225 ms prevents regression. Ratchet target: 200 ms."
+      },
+      "p95": {
+        "eventDurationMs": 16.0,
+        "visualResponseMs": 3.3049999594688417,
+        "settledMs": 710.2730811806396
+      },
+      "samples": [
+        {
+          "visualResponseMs": 1.2000000476837158,
+          "settledMs": 701.7081249505281,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.2999999523162842,
+          "settledMs": 693.8380422070622,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.0999999046325684,
+          "settledMs": 699.2659159004688,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.200000047683716,
+          "settledMs": 694.34979185462,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.0999999046325684,
+          "settledMs": 701.9347078166902,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 0.8999998569488525,
+          "settledMs": 703.4150827676058,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.2999999523162842,
+          "settledMs": 689.7464171051979,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1,
+          "settledMs": 691.2917080335319,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.2000000476837158,
+          "settledMs": 706.5869998186827,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.5,
+          "settledMs": 721.7553746886551,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.0999999046325684,
+          "settledMs": 702.2107499651611,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.799999952316284,
+          "settledMs": 696.758707985282,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1.3999998569488525,
+          "settledMs": 705.3415412083268,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.299999952316284,
+          "settledMs": 700.2369579859078,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.5,
+          "settledMs": 705.8305838145316,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 2.5,
+          "settledMs": 708.187208045274,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1,
+          "settledMs": 697.2886668518186,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 1,
+          "settledMs": 700.9489159099758,
+          "eventDurationMs": 0,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 3.299999952316284,
+          "settledMs": 709.6687499433756,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        },
+        {
+          "visualResponseMs": 3.4000000953674316,
+          "settledMs": 705.1364579237998,
+          "eventDurationMs": 16,
+          "invariant": 1,
+          "state": {
+            "activeTab": "money",
+            "activePane": "tab-money",
+            "keywordVisible": true,
+            "controlsDisplay": "flex",
+            "toggleVisible": true,
+            "expanded": null
+          }
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "status": "PASS",
+  "failures": []
+}
