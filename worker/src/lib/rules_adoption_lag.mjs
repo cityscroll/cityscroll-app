@@ -150,6 +150,15 @@ export function cityRecordRowToRuleRecord(row = {}) {
     event_date: eventDate,
     type_of_notice_description: noticeType,
     section_name: row.section_name || "Agency Rules",
+    // Batch callers may stamp the unified Rules lifecycle classifier before
+    // stitching. Preserve that classification so adoption eligibility does
+    // not fall back to the older title-role heuristic.
+    stage: row.stage || null,
+    _lifecycle_phase: row._lifecycle_phase || null,
+    _adoption_stage_eligible:
+      typeof row._adoption_stage_eligible === "boolean"
+        ? row._adoption_stage_eligible
+        : null,
     body_text: body || null,
     city_record: {
       request_id: requestId || null,
@@ -256,7 +265,11 @@ export function commentCloseAnchor(notices = []) {
 /** First adoption publication day in a sibling group, if any. */
 export function adoptionAnchor(notices = []) {
   const adoptions = (Array.isArray(notices) ? notices : [])
-    .filter((n) => classifyRulemakingRole(n) === "adoption")
+    .filter((n) => (
+      typeof n?._adoption_stage_eligible === "boolean"
+        ? n._adoption_stage_eligible
+        : classifyRulemakingRole(n) === "adoption"
+    ))
     .map((n) => ({
       day: isoDay(n.notice_date || n.start_date || n.city_record?.start_date),
       request_id: n.request_id || n.city_record?.request_id || null,
@@ -310,6 +323,14 @@ export function buildRulemakingGapObservations(rows = [], opts = {}) {
       ? daysBetween(comment.day, cutoff)
       : (!observed ? null : null);
 
+    const lifecyclePhase = notices.reduce((latest, notice) => {
+      const phase = notice?._lifecycle_phase || null;
+      const order = { proposal: 0, public_process: 1, adoption: 2, effective: 3 };
+      if (!(phase in order)) return latest;
+      if (!latest || order[phase] > order[latest]) return phase;
+      return latest;
+    }, null);
+
     // Drop non-positive observed gaps.
     if (observed && (gapDays == null || gapDays < 0)) continue;
     // For censored rows we need a non-negative follow-up time.
@@ -326,6 +347,7 @@ export function buildRulemakingGapObservations(rows = [], opts = {}) {
       gap_days: observed ? gapDays : null,
       censored: !observed,
       follow_up_days: observed ? gapDays : censoredAtDays,
+      lifecycle_phase: lifecyclePhase,
       notice_ids: notices.map((n) => n.request_id).filter(Boolean).sort(),
       notice_count: notices.length,
     });
@@ -1442,6 +1464,7 @@ export function materializePredictionView(openMatters = [], model, opts = {}) {
       request_id: matter.request_id || null,
       agency: matter.agency || null,
       comment_close: isoDay(matter.comment_close),
+      lifecycle_phase: matter.lifecycle_phase || null,
       assertion,
       pattern: emitted.pattern,
       pattern_line: adoptionLagPatternLine(emitted.pattern, {

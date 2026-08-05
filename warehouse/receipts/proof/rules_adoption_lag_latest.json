@@ -3,15 +3,124 @@
   "dataset": "rules_adoption_lag",
   "model_name": "rules_adoption_lag",
   "model_version": "1.0.0",
-  "observed_at": "2026-08-03T05:25:13.693Z",
+  "observed_at": "2026-08-05T05:25:13.143Z",
   "source_row_count": 3061,
-  "observation_count": 925,
-  "event_count": 129,
-  "censored_count": 796,
-  "agency_cohorts": 9,
+  "observation_count": 921,
+  "event_count": 256,
+  "censored_count": 665,
+  "agency_cohorts": 4,
   "ship_bar_passed": true,
-  "interval_coverage": 0.734,
-  "resolved_backtest_predictions": 100,
+  "interval_coverage": 0.849,
+  "resolved_backtest_predictions": 200,
+  "refresh_measurement": {
+    "baseline": {
+      "generated_at": "2026-08-03T05:25:13.693Z",
+      "event_count": 129,
+      "censored_count": 796,
+      "agency_cohorts": 9,
+      "interval_coverage": 0.734,
+      "resolved_backtest_predictions": 100,
+      "open_view_items": 120,
+      "assertion_status_counts": {
+        "open": 120,
+        "expired": 0,
+        "resolved": 0,
+        "other": 0
+      },
+      "public_projection": "per_matter_projection"
+    },
+    "current": {
+      "generated_at": "2026-08-05T05:25:13.143Z",
+      "event_count": 256,
+      "censored_count": 665,
+      "agency_cohorts": 4,
+      "interval_coverage": 0.849,
+      "resolved_backtest_predictions": 200,
+      "open_view_items": 86,
+      "assertion_status_counts": {
+        "open": 45,
+        "expired": 41,
+        "resolved": 0,
+        "other": 0
+      },
+      "public_projection": "per_matter_projection"
+    },
+    "delta": {
+      "event_count": 127,
+      "censored_count": -131,
+      "agency_cohorts": -5,
+      "interval_coverage": 0.115,
+      "resolved_backtest_predictions": 100,
+      "open_view_items": -34
+    },
+    "lifecycle_census": {
+      "classifier": "rulesProcessStage/classifyCityRecordRuleStage",
+      "record_census": {
+        "all": 3061,
+        "proposal": 261,
+        "public_process": 486,
+        "adoption": 689,
+        "effective": 1,
+        "unstaged": 1624
+      },
+      "stepper_counts": {
+        "all": 3061,
+        "proposal": 261,
+        "public_process": 486,
+        "adoption": 689,
+        "effective": 1,
+        "unstaged": 1624
+      },
+      "filter_scope_counts": {
+        "all": 3061,
+        "proposal": 261,
+        "public_process": 486,
+        "adoption": 689,
+        "effective": 1,
+        "unstaged": 1624
+      },
+      "count_equals_scope": true,
+      "adoption_parity": {
+        "legacy_role_count": 389,
+        "stepper_stage_count": 689,
+        "net_delta": 300,
+        "newly_included_stale_records": 345,
+        "legacy_signals_outside_stepper": 45,
+        "honest_gap_counts_by_stepper_stage": {
+          "unstaged": 41,
+          "public_process": 4
+        },
+        "honest_gap_request_ids": [
+          "20260624035",
+          "20260601006",
+          "20260522005",
+          "20251205002",
+          "20250821007",
+          "20250821006",
+          "20250821005",
+          "20250509004",
+          "20250509005",
+          "20241122021",
+          "20241122001",
+          "20241021026",
+          "20241016002",
+          "20240815002",
+          "20240605009",
+          "20240319024",
+          "20231208001",
+          "20230615004",
+          "20230427013",
+          "20230327021"
+        ]
+      }
+    },
+    "reader_copy": {
+      "baseline_projection": "per_matter_projection",
+      "current_projection": "per_matter_projection",
+      "changed": false,
+      "note": "Per-matter timing remains gated by the existing calibration ship bar."
+    }
+  },
   "artifacts": {
     "model": "site/data/rules_adoption_lag_model.json",
     "view": "site/data/rules_adoption_predictions.json",
