@@ -122,7 +122,7 @@ function beforeItemHtml(kind, r) {
   if (kind === "rezone") {
     const cd = r.community_district ? `CD ${r.community_district}` : "";
     const meta = [r.borough, cd, r.public_status].filter(Boolean).map(esc).join(" · ");
-    return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
+    return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || `Project ${r.project_id}`)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
       <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
   }

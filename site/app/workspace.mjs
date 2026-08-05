@@ -1,3 +1,5 @@
+import { noticeDisplayTitle } from "../display_title.mjs";
+
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local
    workspace (localStorage — nothing leaves the device), annotate, export citation-grade
@@ -224,7 +226,7 @@ async function showSharedInv(id){
     <p style="margin:4px 0 12px">${routeBackHTML("#investigation")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${t("inv_shared_heading",{date:j.sharedAt||"—"})}</div>
-      <h2 class="rolename">${String(j.name||t("untitled_name")).replace(/[<>&]/g,"")}</h2>
+      <h2 class="rolename">${String(j.name||`Investigation ${id}`).replace(/[<>&]/g,"")}</h2>
       <div class="timeline" style="margin-top:14px">${invItemsHtml(j.items,true)}</div>
       <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">${t("inv_import_btn")}</button></div>
     </div></div>`;
@@ -416,7 +418,7 @@ function matterChronoRowHTML(m){
   const date = m.date ? fdate(m.date) : t("matter_today");
   let label = "";
   if(m.kind === "notice" && m.request_id){
-    label = `<b>${escUiHtml(m.notice_type || "Notice")}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), cleanText(m.title)||"(untitled)")}`;
+    label = `<b>${escUiHtml(m.notice_type || "Notice")}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), noticeDisplayTitle({title:m.title,request_id:m.request_id}))}`;
   } else {
     label = `<b>${escUiHtml(matterMilestoneTitle(m))}</b>`;
   }
@@ -477,7 +479,7 @@ function matterPhaseTimelineHTML(view){
 function matterTimelineHTMLFlat(rows, pin, regDetail, lifecycle){
   const items = rows.map(r => ({
     date: r.start_date,
-    label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}`,
+    label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), noticeDisplayTitle(r))}`,
     extra: [r.pin && r.pin !== pin ? t("matter_renewal_linked",{pin:escUiHtml(r.pin)}) : null,
             money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
             r.due_date?(isRollingDeadline(r.due_date)?t("rolling_deadline_tag"):t("matter_responses_due",{date:fdate(r.due_date)})):null].filter(Boolean).join(" · ")

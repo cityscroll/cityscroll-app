@@ -1,4 +1,5 @@
 import { propertyReaderActionsFromTimedEvents } from "./property_reader_actions.mjs";
+import { landProjectDisplayTitle, noticeDisplayTitle } from "./display_title.mjs";
 
 export const NOW_SURFACE_SCHEMA_VERSION = 1;
 export const NOW_ACTION_HORIZON_DAYS = 30;
@@ -346,7 +347,7 @@ function meetingEvents(payload, options) {
       id: `meetings:${row.request_id}`,
       lane: "happening_soon",
       kind,
-      title: row.title || (kind === "hearing" ? "Untitled hearing" : "Untitled meeting"),
+      title: noticeDisplayTitle({ title: row.title, request_id: row.request_id }, kind === "hearing" ? "Hearing" : "Meeting"),
       agency: row.agency || null,
       domain: "meetings",
       source: source("meetings"),
@@ -367,7 +368,7 @@ function landEvents(payload, options) {
       id: `land:${row.project_id}:${isoDay(value)}`,
       lane: "happening_soon",
       kind: "hearing",
-      title: row.project_name || "Untitled land-use hearing",
+      title: landProjectDisplayTitle(row),
       agency: row.representing || null,
       domain: "land",
       source: source("land"),
