@@ -53,9 +53,9 @@ test("every geolocation request is downstream of an explicit click handler", () 
   assert.doesNotMatch(`${core}\n${boot}\n${land}`, /navigator\.permissions\.query|permissions\.query/);
 });
 
-test("Zoning defaults to all and every zero-result scope renders a widen control", () => {
+test("Zoning defaults to active and every zero-result scope renders a widen control", () => {
   assert.match(index, /id="lstatus"[^>]*><option value="all"/);
-  assert.match(index, /data-land-status="all" aria-pressed="true"/);
+  assert.match(index, /data-land-status="active" aria-pressed="true"/);
   assert.match(land, /landEmptyStateHTML/);
   assert.match(land, /data-land-widen/);
   assert.match(land, /wireLandEmptyState/);

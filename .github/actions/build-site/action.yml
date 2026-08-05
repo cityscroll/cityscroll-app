@@ -23,6 +23,10 @@ inputs:
     description: Exact source commit represented by a review artifact.
     required: false
     default: ""
+  refresh-decision-outcomes:
+    description: Refresh bounded Land and meeting decision-outcome records.
+    required: false
+    default: "false"
 
 runs:
   using: composite
@@ -48,6 +52,19 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: 22
+    - name: Refresh static-first decision outcomes
+      if: inputs.refresh-decision-outcomes == 'true'
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        node "$SOURCE_DIR/tools/build_batch_precompute_snapshots.mjs" --land-only
+        node "$SOURCE_DIR/tools/build_meeting_outcomes_snapshot.mjs"
+        node --test \
+          "$SOURCE_DIR/test/batch_precompute_snapshots.test.mjs" \
+          "$SOURCE_DIR/test/zap_outcomes.test.mjs" \
+          "$SOURCE_DIR/test/meeting_outcomes_static.test.mjs"
     - name: Build authenticated-desk data-source graph
       id: data-source-graph
       shell: bash

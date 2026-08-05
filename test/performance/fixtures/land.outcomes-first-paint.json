@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "sourceDelayMs": 180,
+  "editionDate": "2026-08-05",
+  "today": {
+    "counts": [],
+    "agencies": [],
+    "award": [],
+    "closing": [],
+    "hearing": []
+  },
+  "contracts": [],
+  "selectionMethods": [],
+  "landProjects": [
+    {
+      "project_id": "2024Q0135",
+      "project_name": "Willets Point Phase II Mapping Actions",
+      "primary_applicant": "EDC - Economic Development Corporation for NYC",
+      "public_status": "Completed",
+      "project_status": "Active",
+      "borough": "Queens",
+      "community_district": "Q07",
+      "actions": "MM",
+      "mih_flag": "false",
+      "current_milestone": "MM - Final Letter Sent",
+      "ulurp_numbers": "240058MMQ"
+    }
+  ]
+}

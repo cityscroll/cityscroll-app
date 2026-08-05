@@ -109,6 +109,22 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
   assert.doesNotMatch(html, /class="loading"/);
 });
 
+test("notice response renderer includes a known meeting outcome or honest absence", () => {
+  const row = {
+    request_id: "20260805001",
+    short_title: "Community meeting",
+    agency_name: "City Council",
+    section_name: "Public Hearings and Meetings",
+  };
+  const html = renderEdgeNotice(row, row.request_id, {
+    request_id: row.request_id,
+    snapshot_state: "absent",
+  });
+  assert.match(html, /data-meeting-outcomes-first-paint="1"/);
+  assert.match(html, /No decision documents published for this meeting\./);
+  assert.doesNotMatch(html, /class="loading"/);
+});
+
 test("Pages edge routing is a narrow waist and explicitly excludes the public Stats document", () => {
   assert.equal(edgeRequestKind("https://cityscroll.org/notices/20240515016"), "notice");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/rules/?q=air"), "browse");

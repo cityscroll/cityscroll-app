@@ -905,7 +905,7 @@ function applyHash(){
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
       const landStatus=q.get("status");
-      $("#lstatus").value = landStatus==="active"||landStatus==="hearings"?landStatus:"all";
+      $("#lstatus").value = landStatus==="all"||landStatus==="hearings"?landStatus:"active";
       const hm=$("#lhearingmode");
       if(hm){
         const att=q.get("attendance");
@@ -1081,7 +1081,9 @@ async function showNotice(id, watch){
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
-  box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
+  const edgeNotice=box.querySelector(`[data-edge-rendered="notice"][data-notice-id="${CSS.escape(String(id))}"]`);
+  const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
+  if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
   try{
     const [rows, attachmentData] = await Promise.all([
@@ -1135,7 +1137,7 @@ async function showNotice(id, watch){
       <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div><div id="nactions" data-export-class="actions">${initialActionRail}</div>
       ${r.type_of_notice_description==="Solicitation"?`<div data-export-class="actions">${buildApply(r,false)}</div>`:""}
       <div data-export-class="notice_context">${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}</div>
-      <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes"></div><div id="nexternal" data-export-class="external_award"></div>
+      <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes">${meetingFirstPaint}</div><div id="nexternal" data-export-class="external_award"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}

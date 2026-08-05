@@ -5,6 +5,7 @@ export const DATA_PAGE_DATASET = "dg92-zbpx";
 export const LAND_DEFAULT_DATASET = "hgx4-8ukb";
 export const CITY_RECORD_DATASET = "dg92-zbpx";
 export const SODA_BASE = "https://data.cityofnewyork.us/resource";
+export const ZAP_OUTCOMES_ENDPOINT = "https://api.cityscroll.org/zap-outcomes";
 
 // List-card fields only for the committed snapshot. project_brief stays off the
 // static artifact (publisher text is large and not required to paint the default list);
@@ -351,10 +352,57 @@ export function projectToLandListRow(project) {
   return row;
 }
 
-export function buildLandDefaultSnapshot(projects, { now = new Date() } = {}) {
+const ZAP_OUTCOME_SNAPSHOT_FIELDS = Object.freeze([
+  "project_id",
+  "public_status",
+  "portal_url",
+  "join",
+  "filled",
+  "approved_actions",
+  "dispositions",
+  "documents",
+  "n_documents",
+  "generated_at",
+]);
+
+/** Keep only fields consumed by the Land outcomes renderer and action rail. */
+export function compactZapOutcomeRecord(record) {
+  if (!record || typeof record !== "object") return null;
+  const out = {};
+  for (const key of ZAP_OUTCOME_SNAPSHOT_FIELDS) {
+    if (record[key] !== undefined) out[key] = record[key];
+  }
+  if (Array.isArray(out.approved_actions)) out.approved_actions = out.approved_actions.slice(0, 8);
+  if (Array.isArray(out.dispositions)) out.dispositions = out.dispositions.slice(0, 6);
+  if (Array.isArray(out.documents)) out.documents = out.documents.slice(0, 10);
+  out.snapshot_state = record.filled ? "present" : "absent";
+  return out;
+}
+
+export function buildLandDefaultSnapshot(
+  projects,
+  { now = new Date(), outcomesByProject = {} } = {},
+) {
   const rows = Array.isArray(projects)
     ? projects.slice(0, LAND_DEFAULT_LIMIT).map(projectToLandListRow)
     : [];
+  const byProject = {};
+  let presentCount = 0;
+  let absentCount = 0;
+  let missingCount = 0;
+  for (const row of rows) {
+    const id = String(row?.project_id || "").trim();
+    if (!id) continue;
+    const outcome = compactZapOutcomeRecord(outcomesByProject[id]);
+    if (outcome) {
+      byProject[id] = outcome;
+      if (outcome.snapshot_state === "present") presentCount += 1;
+      else absentCount += 1;
+    } else {
+      byProject[id] = { project_id: id, snapshot_state: "unavailable" };
+      missingCount += 1;
+    }
+  }
   return {
     schema_version: 1,
     delivery_tier: "inline-at-build",
@@ -370,6 +418,18 @@ export function buildLandDefaultSnapshot(projects, { now = new Date() } = {}) {
     },
     count: rows.length,
     projects: rows,
+    outcomes: {
+      schema_version: 1,
+      delivery_tier: "inline-at-build",
+      source: {
+        name: "CityScroll ZAP outcomes daily read model",
+        endpoint: "https://api.cityscroll.org/zap-outcomes",
+      },
+      present_count: presentCount,
+      absent_count: absentCount,
+      missing_count: missingCount,
+      by_project: byProject,
+    },
   };
 }
 
@@ -424,6 +484,40 @@ export async function fetchLandDefaultProjects(fetchImpl = fetch, opts = {}) {
   const rows = await fetchJson(fetchImpl, sodaUrl(LAND_DEFAULT_DATASET, landDefaultQuery()));
   if (!Array.isArray(rows)) throw new Error("land default SODA returned a non-array");
   return rows;
+}
+
+/**
+ * Read the already-materialized Worker records for the bounded default Land list.
+ * The daily Worker cron performs publisher fan-out; this build step only copies the
+ * resulting read model into the static first-paint document.
+ */
+export async function fetchLandOutcomeSnapshots(
+  projects,
+  fetchImpl = fetch,
+  { concurrency = 4 } = {},
+) {
+  const ids = [...new Set((projects || []).map((row) => String(row?.project_id || "").trim()).filter(Boolean))]
+    .slice(0, LAND_DEFAULT_LIMIT);
+  const byProject = {};
+  let cursor = 0;
+  const width = Math.max(1, Math.min(Number(concurrency) || 4, 8));
+  async function worker() {
+    while (cursor < ids.length) {
+      const id = ids[cursor++];
+      try {
+        const response = await fetchImpl(`${ZAP_OUTCOMES_ENDPOINT}?id=${encodeURIComponent(id)}`, {
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) continue;
+        const body = await response.json();
+        if (body?.ok !== false && body?.record) byProject[id] = body.record;
+      } catch {
+        // A missing row becomes an explicit unavailable state in the snapshot.
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: width }, () => worker()));
+  return byProject;
 }
 
 export async function fetchMoneyDefaultOpen(fetchImpl = fetch, now = new Date()) {
