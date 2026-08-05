@@ -33,6 +33,10 @@ import {
   lookupZapBblsFromWarehouse,
   lookupZapBblsInIndex,
 } from "../warehouse/lib/zap_bbl_lookup.mjs";
+import {
+  publicPayloadFindings,
+  publicRecords,
+} from "./lib/public_payload_integrity.mjs";
 
 const ROOT = REPO_ROOT;
 const OUT_SITE = path.join(ROOT, "site", "data", "zap_bbl_warehouse_lookup.json");
@@ -108,16 +112,25 @@ function collectProjectRows({ fixture, limit, all }) {
     }
     const seed = loadBblProductSeedRows();
     const sample = loadBblSampleRows();
-    const flat = [...fromWh, ...seed, ...sample];
+    const cleanWarehouseRows = publicRecords(fromWh, "ZAP BBL warehouse export");
+    const flat = publicRecords(
+      [...fromWh, ...seed, ...sample],
+      "ZAP BBL public materialization",
+    );
     return {
       projectRows: groupBblRowsByProject(flat),
-      mode: catalogExists() ? "fixture_warehouse" : "fixture_csv",
+      mode: cleanWarehouseRows.length ? "warehouse" : "verified_seed",
     };
   }
 
-  const flat = exportZapBblRowsFromWarehouse({ limit, all: !!all });
+  const flat = publicRecords(
+    exportZapBblRowsFromWarehouse({ limit, all: !!all }),
+    "ZAP BBL warehouse export",
+  );
   const seed = loadBblProductSeedRows();
-  const projectRows = groupBblRowsByProject([...flat, ...seed]);
+  const projectRows = groupBblRowsByProject(
+    publicRecords([...flat, ...seed], "ZAP BBL public materialization"),
+  );
   return {
     projectRows,
     mode: flat.length > 200 ? "bulk_warehouse" : "warehouse",
@@ -302,6 +315,11 @@ async function main() {
   );
   doc.project_count = doc.rows.length;
   doc.bbl_row_count = doc.rows.reduce((n, e) => n + e.bbls.length, 0);
+  assert.deepEqual(
+    publicPayloadFindings(doc, { source: "site/data/zap_bbl_warehouse_lookup.json" }),
+    [],
+    "ZAP BBL public materialization contains test-only records",
+  );
 
   const written = writeOutputs(doc, args.check);
   console.log(JSON.stringify(written, null, 2));

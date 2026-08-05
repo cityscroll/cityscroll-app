@@ -4,9 +4,9 @@
   "source": "warehouse",
   "dataset_id": "qyyg-4tf5",
   "table_name": "ocp_recent_contract_awards",
-  "mode": "fixture_warehouse",
-  "materialized_at": "2026-08-02T05:02:26.328Z",
-  "row_count": 8,
+  "mode": "verified_seed",
+  "materialized_at": "2026-08-04T23:51:04.685Z",
+  "row_count": 3,
   "replaces_live_fetch": {
     "worker": "worker/src/checkbook_lifecycle.mjs#fetchOcpAwardRows",
     "soda_dataset": "qyyg-4tf5",
@@ -21,24 +21,7 @@
       "short_title": "Catering Services",
       "pin": "81626W0043001",
       "contract_amount": "250000",
-      "vendor_name": "Make it Zesty LLC",
-      "place": {
-        "scope": "local",
-        "boroughs": [
-          "Bronx"
-        ],
-        "derivation": {
-          "methods": [
-            "vendor_address"
-          ],
-          "confidence": 0.55,
-          "role": "vendor",
-          "evidence": [
-            "1880 Valentine Avenue"
-          ]
-        },
-        "confidence_tier": "derived"
-      }
+      "vendor_name": "Make it Zesty LLC"
     },
     {
       "request_id": "20260724010",
@@ -58,71 +41,7 @@
       "short_title": "Summer Youth Employment Program NAQ: Career Ready",
       "pin": "26026N0011014",
       "contract_amount": "2540261",
-      "vendor_name": "Child Development Center - Mosholu Montefiore Community Center",
-      "place": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "citywide_phrase"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "throughout New York City"
-          ]
-        },
-        "confidence_tier": "strong"
-      }
-    },
-    {
-      "request_id": "FIX001",
-      "start_date": "2024-07-01 00:00:00",
-      "agency_name": "Department of Citywide Administrative Services",
-      "type_of_notice_description": "Award",
-      "short_title": "Synthetic fixture row one",
-      "pin": "PIN-FIXTURE-1",
-      "contract_amount": "100",
-      "vendor_name": "FIXTURE VENDOR A"
-    },
-    {
-      "request_id": "FIX002",
-      "start_date": "2024-07-02 00:00:00",
-      "agency_name": "Department of Transportation",
-      "type_of_notice_description": "Award",
-      "short_title": "Synthetic fixture row two",
-      "pin": "PIN-FIXTURE-2",
-      "contract_amount": "200",
-      "vendor_name": "FIXTURE VENDOR B"
-    },
-    {
-      "request_id": "FIX003",
-      "start_date": "2024-07-03 00:00:00",
-      "agency_name": "Department of Environmental Protection",
-      "type_of_notice_description": "Award",
-      "short_title": "Synthetic fixture row three",
-      "pin": "PIN-FIXTURE-3",
-      "contract_amount": "300",
-      "vendor_name": "FIXTURE VENDOR C"
-    },
-    {
-      "request_id": "FIX004",
-      "start_date": "2024-07-04 00:00:00",
-      "agency_name": "Department of Education",
-      "type_of_notice_description": "Award",
-      "short_title": "Synthetic fixture row four",
-      "pin": "PIN-FIXTURE-4",
-      "contract_amount": "400",
-      "vendor_name": "FIXTURE VENDOR D"
-    },
-    {
-      "request_id": "FIX005",
-      "start_date": "2024-07-05 00:00:00",
-      "agency_name": "Department of Parks and Recreation",
-      "type_of_notice_description": "Award",
-      "short_title": "Synthetic fixture row five",
-      "pin": "PIN-FIXTURE-5",
-      "contract_amount": "500",
-      "vendor_name": "FIXTURE VENDOR E"
+      "vendor_name": "Child Development Center - Mosholu Montefiore Community Center"
     }
   ]
 }

@@ -1004,7 +1004,11 @@ async function showNotice(id, watch){
   }catch(e){}
   if(!r){
     lastNoticeContext = null;
-    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")} · <a href="${REQ_URL(id)}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a></div>`;
+    const cityRecordUrl = cityRecordRequestUrl(id);
+    const cityRecordAction = cityRecordUrl
+      ? ` · <a href="${cityRecordUrl}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a>`
+      : "";
+    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")}${cityRecordAction}</div>`;
     applyActiveHistoryRouteScroll();
     if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
     return;

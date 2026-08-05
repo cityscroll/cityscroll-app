@@ -61,9 +61,9 @@ describe("WH-05 committed Doing Business materialization + speed receipt", () =>
     const worker = JSON.parse(readFileSync(DB_WORKER, "utf8"));
     assert.equal(site.schema_version, 1);
     assert.equal(site.phase, "WH-05");
-    assert.ok(site.row_count >= 3);
+    assert.equal(site.row_count, 0);
+    assert.equal(site.mode, "live_fallback");
     assert.deepEqual(site.rows, worker.rows);
-    assert.ok(site.rows.some((r) => /CAMBA/i.test(r.organization_name)));
   });
 
   it("records speed receipt for Doing Business lookup", () => {

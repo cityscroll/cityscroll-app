@@ -74,6 +74,14 @@ JOIN_MECHANICS_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
         "join mechanics: parenthesized method placeholder",
         re.compile(r"\(\{method\}\)", re.I),
     ),
+    (
+        "join mechanics: domain coverage count",
+        re.compile(
+            r"\b(?:\{[A-Za-z0-9_]+\}|\d+)\s+of\s+(?:\{[A-Za-z0-9_]+\}|\d+)\s+"
+            r"domains?\s+(?:have|with)\s+linked\s+objects?\b",
+            re.I,
+        ),
+    ),
 ]
 
 # Catch the original dynamic leak even when the catalog contains only a
@@ -91,7 +99,7 @@ DIRECT_RENDER_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 
 # Contrastive negation is especially harmful in compact naming surfaces: labels
 # and badges should say what a thing is, not what alternative the site rejected.
-LABEL_BADGE_KEY = re.compile(r"(?:^|_)(?:label|lbl|badge|tag)(?:_|$)", re.I)
+LABEL_BADGE_KEY = re.compile(r"(?:^|_)(?:label|lbl|badge|tag|lead)(?:_|$)", re.I)
 CONTRASTIVE_NEGATION = re.compile(r"\b(?:not\s+\w+|instead\s+of|rather\s+than)\b", re.I)
 
 

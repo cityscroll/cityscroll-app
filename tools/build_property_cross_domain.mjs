@@ -25,12 +25,15 @@ import {
   loadCsvIfExists,
   loadJsonIfExists,
 } from "./lib/entity_intelligence_build.mjs";
+import {
+  publicPayloadFindings,
+  publicRecords,
+} from "./lib/public_payload_integrity.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = join(ROOT, "site/data/property_cross_domain_lookup.json");
 const OUT_WORKER = join(ROOT, "worker/src/data/property_cross_domain_lookup.json");
 const PROPERTY_OBS_PATH = join(ROOT, "site/data/property_domain_observations.json");
-const FIXTURE = join(ROOT, "worker/test/fixtures/property-cross-domain/corpus.json");
 const DEFAULT_LIVE_URL =
   process.env.PROPERTY_LOCATIONS_URL || "https://api.cityscroll.org/property-locations";
 
@@ -203,11 +206,10 @@ function dedupePropertyRows(rows) {
 }
 
 function collectCorpus(root, propertyObsDoc) {
-  const fixture = loadJsonIfExists(FIXTURE) || {};
-  const propertyRows = [...(fixture.property_rows || [])];
-  const zapBblRows = [...(fixture.zap_bbl_rows || [])];
-  const zapProjects = [...(fixture.zap_projects || [])];
-  const moneyRows = [...(fixture.money_rows || [])];
+  const propertyRows = [];
+  const zapBblRows = [];
+  const zapProjects = [];
+  const moneyRows = [];
 
   // Live / committed property materialization (main densify source)
   if (propertyObsDoc?.property_rows?.length) {
@@ -221,10 +223,7 @@ function collectCorpus(root, propertyObsDoc) {
     }
   }
 
-  for (const p of [
-    join(root, "warehouse/fixtures/zap-bbl/sample.csv"),
-    join(root, "warehouse/fixtures/zap-bbl/product_seed.csv"),
-  ]) {
+  for (const p of [join(root, "warehouse/fixtures/zap-bbl/product_seed.csv")]) {
     for (const row of loadCsvIfExists(p)) {
       if (row.project_id && row.bbl) zapBblRows.push({ ...row, source_system: "zap-bbl" });
     }
@@ -234,19 +233,7 @@ function collectCorpus(root, propertyObsDoc) {
   const bblLookup = loadJsonIfExists(join(root, "site/data/zap_bbl_warehouse_lookup.json"));
   for (const row of flattenZapBblLookup(bblLookup)) zapBblRows.push(row);
 
-  const multi = loadJsonIfExists(
-    join(root, "test/fixtures/property_disposition/multi_notice_bbl.json"),
-  );
-  if (multi?.notices) {
-    for (const n of multi.notices) {
-      propertyRows.push({ ...n, section_name: n.section_name || "Property Disposition" });
-    }
-  }
-
-  for (const p of [
-    join(root, "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv"),
-    join(root, "warehouse/fixtures/ocp-recent-contract-awards/sample.csv"),
-  ]) {
+  for (const p of [join(root, "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv")]) {
     for (const row of loadCsvIfExists(p)) moneyRows.push(row);
   }
   const ocpLookup = loadJsonIfExists(join(root, "site/data/ocp_awards_warehouse_lookup.json"));
@@ -254,10 +241,7 @@ function collectCorpus(root, propertyObsDoc) {
     for (const row of ocpLookup.rows.slice(0, 200)) moneyRows.push(row);
   }
 
-  for (const p of [
-    join(root, "warehouse/fixtures/zap-projects/product_seed.csv"),
-    join(root, "warehouse/fixtures/zap-projects/sample.csv"),
-  ]) {
+  for (const p of [join(root, "warehouse/fixtures/zap-projects/product_seed.csv")]) {
     for (const row of loadCsvIfExists(p)) zapProjects.push(row);
   }
   const zapLookup = loadJsonIfExists(join(root, "site/data/zap_projects_warehouse_lookup.json"));
@@ -266,10 +250,12 @@ function collectCorpus(root, propertyObsDoc) {
   }
 
   return {
-    propertyRows: dedupePropertyRows(propertyRows),
-    zapBblRows,
-    zapProjects,
-    moneyRows,
+    propertyRows: dedupePropertyRows(
+      publicRecords(propertyRows, "property cross-domain property rows"),
+    ),
+    zapBblRows: publicRecords(zapBblRows, "property cross-domain ZAP BBL rows"),
+    zapProjects: publicRecords(zapProjects, "property cross-domain ZAP projects"),
+    moneyRows: publicRecords(moneyRows, "property cross-domain money rows"),
     property_source: propertyObsDoc
       ? {
           path: "site/data/property_domain_observations.json",
@@ -337,7 +323,7 @@ async function main() {
 
   if (!propertyObsDoc?.property_rows?.length) {
     console.warn(
-      "warning: no site/data/property_domain_observations.json — densify limited to fixtures. Re-run with --from-live.",
+      "warning: no site/data/property_domain_observations.json — property joins remain empty. Re-run with --from-live.",
     );
   }
 
@@ -362,6 +348,13 @@ async function main() {
     demos,
     demo_bbls: demoBbls,
   };
+  const integrityFindings = publicPayloadFindings(out, {
+    source: "site/data/property_cross_domain_lookup.json",
+  });
+  if (integrityFindings.length) {
+    console.error("property cross-domain output contains test-only records", integrityFindings);
+    process.exit(1);
+  }
 
   if (check) {
     if (!existsSync(OUT_SITE)) {

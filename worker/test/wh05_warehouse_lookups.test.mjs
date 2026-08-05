@@ -13,20 +13,33 @@ import {
   resetDoingBusinessWarehouseIndexCache,
 } from "../src/lib/doing_business_warehouse_lookup.mjs";
 
-test("committed Doing Business materialization is ready", () => {
+const FIELD_CASE_DOC = {
+  schema_version: 1,
+  phase: "WH-05",
+  mode: "test",
+  rows: [
+    {
+      organization_name: "CAMBA  INC",
+      ownership_structure_code: "COR",
+      doing_business_start_date: "2009-05-16",
+    },
+  ],
+};
+
+test("empty committed Doing Business materialization preserves live fallback", () => {
   resetDoingBusinessWarehouseIndexCache();
   const meta = dbMeta();
   assert.equal(meta.schema_version, 1);
-  assert.ok(meta.row_count >= 3);
-  assert.equal(doingBusinessWarehouseReady(), true);
+  assert.equal(meta.row_count, 0);
+  assert.equal(meta.mode, "live_fallback");
+  assert.equal(doingBusinessWarehouseReady(), false);
 });
 
-test("Doing Business warehouse hit for CAMBA without network", () => {
-  const hit = lookupDoingBusinessFromWarehouse("Camba Inc.");
+test("Doing Business warehouse hit works with a source-backed document", () => {
+  const hit = lookupDoingBusinessFromWarehouse("Camba Inc.", FIELD_CASE_DOC);
   assert.equal(hit.hit, true);
   assert.equal(hit.path, "warehouse");
   assert.equal(hit.payload.organization_name, "CAMBA  INC");
-  assert.equal(hit.payload.organization_phone, "5550100");
 });
 
 test("Doing Business warehouse miss leaves SODA fallback room", () => {
@@ -35,12 +48,12 @@ test("Doing Business warehouse miss leaves SODA fallback room", () => {
   assert.equal(miss.payload, null);
 });
 
-test("attachDoingBusinessFromWarehouse fills matching profiles", () => {
+test("attachDoingBusinessFromWarehouse fills matching profiles from an override", () => {
   const profiles = {
     CAMBA: { stem: "CAMBA", display: "Camba Inc.", variants: [], doingBusiness: null },
     NOPE: { stem: "NOPEVENDORXYZ", display: "Nope Vendor Xyz", variants: [], doingBusiness: null },
   };
-  const r = attachDoingBusinessFromWarehouse(profiles);
+  const r = attachDoingBusinessFromWarehouse(profiles, FIELD_CASE_DOC);
   assert.equal(r.used, true);
   assert.equal(r.path, "warehouse");
   assert.equal(r.requests, 0);

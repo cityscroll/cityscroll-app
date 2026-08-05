@@ -5,6 +5,7 @@
 
 import { readFileSync, existsSync } from "node:fs";
 import path from "node:path";
+import { publicRecords } from "./public_payload_integrity.mjs";
 
 import {
   observationFromMoneyRow,
@@ -108,7 +109,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // --- Money: warehouse OCP fixtures + product lookup ---
   const ocpPaths = [
     path.join(root, "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv"),
-    path.join(root, "warehouse/fixtures/ocp-recent-contract-awards/sample.csv"),
+    ...(opts.include_test_fixtures
+      ? [path.join(root, "warehouse/fixtures/ocp-recent-contract-awards/sample.csv")]
+      : []),
   ];
   for (const p of ocpPaths) {
     for (const row of loadCsvIfExists(p)) {
@@ -132,7 +135,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // --- Land: warehouse ZAP fixtures + land default + zap lookup ---
   const zapPaths = [
     path.join(root, "warehouse/fixtures/zap-projects/product_seed.csv"),
-    path.join(root, "warehouse/fixtures/zap-projects/sample.csv"),
+    ...(opts.include_test_fixtures
+      ? [path.join(root, "warehouse/fixtures/zap-projects/sample.csv")]
+      : []),
   ];
   for (const p of zapPaths) {
     for (const row of loadCsvIfExists(p)) {
@@ -165,7 +170,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   const bblJoinRows = [];
   const bblPaths = [
     path.join(root, "warehouse/fixtures/zap-bbl/product_seed.csv"),
-    path.join(root, "warehouse/fixtures/zap-bbl/sample.csv"),
+    ...(opts.include_test_fixtures
+      ? [path.join(root, "warehouse/fixtures/zap-bbl/sample.csv")]
+      : []),
   ];
   for (const p of bblPaths) {
     for (const row of loadCsvIfExists(p)) {
@@ -191,7 +198,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // --- Money payments: Checkbook spending fixtures (vendor ↔ awards ↔ payments) ---
   const paymentPaths = [
     path.join(root, "warehouse/fixtures/checkbook-spending/product_seed.csv"),
-    path.join(root, "warehouse/fixtures/checkbook-spending/sample.csv"),
+    ...(opts.include_test_fixtures
+      ? [path.join(root, "warehouse/fixtures/checkbook-spending/sample.csv")]
+      : []),
   ];
   for (const p of paymentPaths) {
     for (const row of loadCsvIfExists(p)) {
@@ -207,7 +216,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   const rulesLimit = Number.isFinite(opts.rules_limit) ? opts.rules_limit : 200;
   const rulesSnapshots = [
     path.join(root, "site/data/rules_domain_observations.json"),
-    path.join(root, "worker/test/fixtures/entity-intelligence/rules_materialized_v2.json"),
+    ...(opts.include_test_fixtures
+      ? [path.join(root, "worker/test/fixtures/entity-intelligence/rules_materialized_v2.json")]
+      : []),
   ];
   for (const p of rulesSnapshots) {
     const doc = loadJsonIfExists(p);
@@ -228,7 +239,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   const meetingsLimit = Number.isFinite(opts.meetings_limit) ? opts.meetings_limit : 250;
   const meetingsSnapshots = [
     path.join(root, "site/data/meetings_domain_observations.json"),
-    path.join(root, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+    ...(opts.include_test_fixtures
+      ? [path.join(root, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json")]
+      : []),
   ];
   for (const p of meetingsSnapshots) {
     const doc = loadJsonIfExists(p);
@@ -253,8 +266,12 @@ export function collectCrossDomainObservations(root, opts = {}) {
   const peopleLimit = Number.isFinite(opts.people_limit) ? opts.people_limit : 500;
   const peopleSnapshots = [
     path.join(root, "site/data/people_domain_observations.json"),
-    path.join(root, "worker/test/fixtures/entity-intelligence/people_domain_observations.json"),
-    path.join(root, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+    ...(opts.include_test_fixtures
+      ? [
+          path.join(root, "worker/test/fixtures/entity-intelligence/people_domain_observations.json"),
+          path.join(root, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+        ]
+      : []),
   ];
   let peopleLoaded = 0;
   for (const p of peopleSnapshots) {
@@ -282,11 +299,11 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // --- Seed: property multi-domain demos + optional people (only when person_id present) ---
   // Rules/meetings seeds are no longer the primary materialization (live snapshots above).
   // Seed rules/meetings rows remain as fallback anchors when snapshots are missing.
-  const seedPath = path.join(
-    root,
-    "worker/test/fixtures/entity-intelligence/domain_observations.json",
-  );
-  const seed = loadJsonIfExists(seedPath);
+  const seed = opts.include_test_fixtures
+    ? loadJsonIfExists(
+        path.join(root, "worker/test/fixtures/entity-intelligence/domain_observations.json"),
+      )
+    : null;
   if (seed) {
     const haveLiveRules = observations.some((o) => o.domain === "rules");
     const haveLiveMeetings = observations.some((o) => o.domain === "meetings");
@@ -334,8 +351,12 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // keep hand-labelled owner / ZAP demo lots that may sit outside the live window.
   const propPaths = [
     path.join(root, "site/data/property_domain_observations.json"),
-    path.join(root, "worker/test/fixtures/property-cross-domain/corpus.json"),
-    path.join(root, "test/fixtures/property_disposition/multi_notice_bbl.json"),
+    ...(opts.include_test_fixtures
+      ? [
+          path.join(root, "worker/test/fixtures/property-cross-domain/corpus.json"),
+          path.join(root, "test/fixtures/property_disposition/multi_notice_bbl.json"),
+        ]
+      : []),
   ];
   for (const p of propPaths) {
     const doc = loadJsonIfExists(p);
@@ -358,8 +379,12 @@ export function collectCrossDomainObservations(root, opts = {}) {
   const franchiseLimit = Number.isFinite(opts.franchise_limit) ? opts.franchise_limit : 200;
   const franchisePaths = [
     path.join(root, "site/data/franchise_domain_observations.json"),
-    path.join(root, "test/fixtures/franchise_concession/field_cases.json"),
-    path.join(root, "test/fixtures/franchise_concession/multi_notice_densify.json"),
+    ...(opts.include_test_fixtures
+      ? [
+          path.join(root, "test/fixtures/franchise_concession/field_cases.json"),
+          path.join(root, "test/fixtures/franchise_concession/multi_notice_densify.json"),
+        ]
+      : []),
   ];
   for (const p of franchisePaths) {
     const doc = loadJsonIfExists(p);
@@ -391,7 +416,7 @@ export function collectCrossDomainObservations(root, opts = {}) {
     seen.add(key);
     out.push(obs);
   }
-  return out;
+  return publicRecords(out, "entity intelligence observations");
 }
 
 /**
@@ -404,8 +429,8 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     max_entities: opts.max_entities || 40,
   });
 
-  // Prefer a multi-domain demo that includes live people when present; else Parks
-  // (money fixture + land applicant); else first multi-domain entity.
+  // Prefer a multi-domain demo that includes live people when present; else Parks;
+  // else the first multi-domain entity.
   const multi = corpus.entities.filter((e) => (e.metrics?.domains_matched || 0) >= 2);
   const withPeople = multi.find((e) => e.domains?.people?.status === "matched");
   const parks = corpus.entities.find(
@@ -442,10 +467,10 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     by_ref: corpus.by_ref,
     provenance: {
       sources: [
-        "warehouse/fixtures/ocp-recent-contract-awards",
-        "warehouse/fixtures/checkbook-spending",
-        "warehouse/fixtures/zap-projects",
-        "warehouse/fixtures/zap-bbl",
+        "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv",
+        "warehouse/fixtures/checkbook-spending/product_seed.csv",
+        "warehouse/fixtures/zap-projects/product_seed.csv",
+        "warehouse/fixtures/zap-bbl/product_seed.csv",
         "site/data/ocp_awards_warehouse_lookup.json",
         "site/data/zap_projects_warehouse_lookup.json",
         "site/data/zap_bbl_warehouse_lookup.json",
@@ -455,11 +480,6 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/people_domain_observations.json",
         "site/data/property_domain_observations.json",
         "site/data/franchise_domain_observations.json",
-        "test/fixtures/franchise_concession/field_cases.json",
-        "test/fixtures/franchise_concession/multi_notice_densify.json",
-        "worker/test/fixtures/entity-intelligence/domain_observations.json",
-        "worker/test/fixtures/property-cross-domain/corpus.json",
-        "test/fixtures/property_disposition/multi_notice_bbl.json",
       ],
       methods: [
         "agency_canonical_v1",
