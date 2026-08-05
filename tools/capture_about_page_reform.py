@@ -109,12 +109,12 @@ def capture_topic(page: Page, base_url: str, state: str, topic: str, width: int)
 
 
 def capture_tree(browser, tree: Path, state: str, width: int, height: int) -> list[dict]:
-    rows = []
+    rows: list[dict] = list()
     with StaticServer(tree / "site") as base_url:
         context = browser.new_context(viewport={"width": width, "height": height})
         page = context.new_page()
         page.route("https://**", lambda route: route.abort())
-        errors: list[str] = []
+        errors: list[str] = list()
         page.on("pageerror", lambda error: errors.append(str(error)))
         for topic in ("overview", "patterns", "policy", "standards"):
             rows.append(capture_topic(page, base_url, state, topic, width))
@@ -139,7 +139,7 @@ def main() -> None:
             browser = playwright.chromium.launch(headless=True)
             try:
                 for width, height in VIEWPORTS:
-                    measurements["viewports"][str(width)] = {"width": width, "height": height}
+                    measurements["viewports"][str(width)] = dict(width=width, height=height)
                     measurements["captures"].extend(capture_tree(browser, before_tree, "before", width, height))
                     measurements["captures"].extend(capture_tree(browser, ROOT, "after", width, height))
             finally:
