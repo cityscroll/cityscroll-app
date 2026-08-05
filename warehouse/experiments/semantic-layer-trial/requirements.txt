@@ -1,0 +1,3 @@
+# Offline experiment only; not imported by the Worker, Pages build, or CI.
+sentence-transformers==5.5.1
+sqlite-vec==0.1.9
