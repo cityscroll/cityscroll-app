@@ -192,7 +192,7 @@ test("gap taxonomy registry enumerates class a/b gaps with evidence and ranked i
 test("August census residuals are executable and retain measured evidence", () => {
   const byId = new Map(registry.gaps.map((gap) => [gap.id, gap]));
   assert.match(byId.get("money-location-residual")?.evidence || "", /212\/340/);
-  assert.match(byId.get("meetings-location-residual")?.evidence || "", /11\/119/);
+  assert.match(byId.get("meetings-location-residual")?.evidence || "", /9\/119/);
   assert.match(byId.get("property-parcel-key-residual")?.evidence || "", /138\/139/);
   for (const id of ["money-location-residual", "meetings-location-residual", "property-parcel-key-residual"]) {
     assert.ok(byId.get(id)?.evidence_link, `${id}: evidence link`);
