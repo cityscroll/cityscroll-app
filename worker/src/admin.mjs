@@ -82,7 +82,7 @@ function requestKey(req) {
 // ADMIN_KEY. Both secrets are compared in constant time and never logged. Fails closed
 // (404, not 401) when no accepted secret is configured; the 401 shape matches checkAdminKey.
 export function checkDigestShadowAuth(req, env) {
-  const allowShadowStatus = req.method === "GET";
+  const allowShadowStatus = req.method === "GET" && new URL(req.url).pathname === "/admin/digest-shadow";
   if (allowShadowStatus) {
     if (!env.ADMIN_KEY && !env.SHADOW_STATUS_KEY) return { ok: false, res: json({ error: "not found" }, 404) };
   } else if (!env.ADMIN_KEY) {

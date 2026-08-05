@@ -9,6 +9,7 @@ import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 import { handleAdminMeetingOutcomesRefresh } from "../src/meeting_outcomes.mjs";
 import { handleAdminZapOutcomesRefresh } from "../src/zap_outcomes.mjs";
+import worker from "../src/worker.mjs";
 
 function kv(map = {}) {
   return {
@@ -63,6 +64,7 @@ test("checkDigestShadowAuth: GET accepts ADMIN_KEY or the read-only SHADOW_STATU
   assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=shadow-key"), env).ok, true);
   assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow", { authorization: "Bearer shadow-key" }), env).ok, true);
   assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=wrong"), env).res.status, 401);
+  assert.equal(checkDigestShadowAuth(get("https://w/admin/subs?key=shadow-key"), env).res.status, 401);
 });
 
 test("checkDigestShadowAuth: POST accepts ADMIN_KEY but rejects SHADOW_STATUS_KEY (401)", () => {
@@ -80,9 +82,7 @@ test("checkDigestShadowAuth: fails closed (404) when no accepted secret is confi
   assert.equal(checkDigestShadowAuth(postShadow("https://w/admin/digest-shadow?key=shadow-key"), { SHADOW_STATUS_KEY: "shadow-key" }).res.status, 404);
 });
 
-test("SHADOW_STATUS_KEY is rejected by the shared checkAdminKey gate every other /admin/* route uses", () => {
-  // Every admin route other than digest-shadow authenticates via checkAdminKey, which must NOT
-  // accept SHADOW_STATUS_KEY — otherwise the "read-only, one route only" guarantee is broken.
+test("SHADOW_STATUS_KEY is rejected by the shared admin gates", () => {
   const env = { ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key" };
   assert.equal(checkAdminKey(post("https://w/admin/suggest-refresh?key=shadow-key"), env).res.status, 401);
   assert.equal(checkAdminKey(post("https://w/admin/digest-catchup?key=shadow-key"), env).res.status, 401);
@@ -90,6 +90,41 @@ test("SHADOW_STATUS_KEY is rejected by the shared checkAdminKey gate every other
   assert.equal(checkAdminKey(get("https://w/admin/ops-contract?key=shadow-key"), env).res.status, 401);
   // ADMIN_KEY continues to work everywhere as today.
   assert.equal(checkAdminKey(post("https://w/admin/suggest-refresh?key=admin-key"), env).ok, true);
+});
+
+test("SHADOW_STATUS_KEY gets 401 from every other registered /admin/* route", async () => {
+  const routes = [
+    ["GET", "/admin/subs"],
+    ["GET", "/admin/watch-log"],
+    ["POST", "/admin/watch-log/enrich"],
+    ["GET", "/admin/feedback"],
+    ["GET", "/admin/possibly-same"],
+    ["POST", "/admin/possibly-same"],
+    ["GET", "/admin/ops-contract"],
+    ["GET", "/admin/digest-rollup"],
+    ["POST", "/admin/digest-shadow"],
+    ["POST", "/admin/digest-send-test"],
+    ["POST", "/admin/suggest-refresh"],
+    ["POST", "/admin/meeting-outcomes-refresh"],
+    ["POST", "/admin/zap-outcomes-refresh"],
+    ["POST", "/admin/digest-catchup"],
+    ["POST", "/admin/passport-ingest"],
+    ["POST", "/admin/attachment-metadata"],
+  ];
+  const env = {
+    ADMIN_KEY: "admin-key",
+    ANALYTICS_DEV_KEY: "analytics-key",
+    SHADOW_STATUS_KEY: "shadow-key",
+  };
+
+  for (const [method, path] of routes) {
+    const response = await worker.fetch(new Request(`https://w${path}`, {
+      method,
+      headers: { authorization: "Bearer shadow-key" },
+    }), env, {});
+    assert.equal(response.status, 401, `${method} ${path}`);
+    assert.deepEqual(await response.json(), { error: "unauthorized" }, `${method} ${path}`);
+  }
 });
 
 test("checkDigestShadowAuth: 401 response shape matches the shared admin gate", async () => {
