@@ -1010,7 +1010,7 @@ async function refreshAnnualScheduleHistory() {
   const allRows = [];
   for (let offset = 0; ; offset += 1000) {
     const rows = await fetchJson(sodaUrl(ANNUAL_ID, {
-      "$select": "exam_number,application_period_start,application_period_end_date,open_competitive_promotion,data_current_as_of",
+      "$select": "exam_number,title_code,exam_title,application_period_start,application_period_end_date,open_competitive_promotion,data_current_as_of",
       "$order": "exam_number asc,data_current_as_of asc",
       "$limit": "1000",
       "$offset": String(offset),
@@ -1033,7 +1033,8 @@ async function refreshAnnualScheduleHistory() {
     summary: {
       raw_rows: allRows.length,
       distinct_exams: records.length,
-      canonical_rule: "Exact normalized exam_number; keep the latest data_current_as_of revision, then latest application close as deterministic tie-break.",
+      exact_title_code_exams: records.filter((row) => row.title_code).length,
+      canonical_rule: "Exact normalized exam_number; keep the latest data_current_as_of revision, then latest application close as deterministic tie-break. Preserve publisher-supplied title_code and exam_title only; do not infer them from title text.",
     },
     records,
   };
