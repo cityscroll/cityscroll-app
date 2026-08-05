@@ -1966,6 +1966,51 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "dcas-vehicle-auction-list",
+      "name": "DCAS Vehicle Auction List",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "build-time",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "ynic-uz5i",
+      "landing_page": "https://data.cityofnewyork.us/d/ynic-uz5i",
+      "required_fields": [
+        "auction_close_date",
+        "year",
+        "make",
+        "model",
+        "vin"
+      ],
+      "max_stale_days": 21,
+      "publisher_cadence": "Weekly",
+      "product_freshness": "A bounded, checkpointed build-time pull keeps the latest 90-day fleet inventory. The Property vehicle facet reads the committed snapshot and labels it goods-surplus, never real property.",
+      "used_for": "Official fleet-auction inventory in the Property vehicle facet. Rows are excluded from parcel chains, BBL joins, map counts, parcel exports, and City Record saved-watch claims.",
+      "code_references": [
+        {
+          "path": "warehouse/scripts/dcas_vehicle_auctions.mjs",
+          "contains": "DCAS Vehicle Auction List collector"
+        },
+        {
+          "path": "site/dcas_vehicle_auctions.mjs",
+          "contains": "include_in_parcel_chains"
+        },
+        {
+          "path": "site/app/property.mjs",
+          "contains": "renderDcasFleetInventory"
+        },
+        {
+          "path": "site/data/property_sources/verification_receipts/dcas_surplus_frontier_2026-08-04.json",
+          "contains": "wishlist_partnership_blocked"
+        },
+        {
+          "path": "test/dcas_vehicle_auctions.test.mjs",
+          "contains": "goods-surplus"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "ulurp-recommendations",
       "name": "ULURP Recommendations (Borough President positions)",
       "owner": "Brooklyn Borough President / NYC Open Data",

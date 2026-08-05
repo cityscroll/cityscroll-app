@@ -1,0 +1,23 @@
+[
+  {
+    "auction_close_date": "2026-08-12T00:00:00.000",
+    "year": "2018",
+    "make": "FORD",
+    "model": "TRANSIT",
+    "vin": "1FTYE1YM0JKA00001"
+  },
+  {
+    "auction_close_date": "2026-08-12T00:00:00.000",
+    "year": "2014",
+    "make": "MACK",
+    "model": "LEU613",
+    "vin": "1M2AU02C7EM000002"
+  },
+  {
+    "auction_close_date": "2026-07-23T00:00:00.000",
+    "year": "2017",
+    "make": "GMC",
+    "model": "TERRAIN",
+    "vin": "2GKFLSEK3H6309069"
+  }
+]
