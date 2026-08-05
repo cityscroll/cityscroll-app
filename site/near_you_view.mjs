@@ -377,7 +377,7 @@ export function renderNearYouBody(view) {
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
       <p class="near-kicker">${view.hasPlace ? "Place set" : "Start here"}</p>
       <h2 id="near-place-heading">${view.hasPlace ? "Change what “near you” means" : "Set what “near you” means"}</h2>
-      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser and are not saved or sent with the scope.</p>
+      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
       <div class="near-place-actions">
         <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
         <a href="#near-place-fields">Choose a place</a>
