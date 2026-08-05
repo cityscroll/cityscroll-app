@@ -254,6 +254,92 @@ function actionStatus(kind, row, byWhen, today) {
   return "undated";
 }
 
+const TIMED_EVENT_ACTION_KINDS = Object.freeze({
+  bid_deadline: "bid",
+  proposal_deadline: "bid",
+  auction_window_end: "bid",
+  objection_deadline: "object",
+  comment_deadline: "comment",
+  testimony_deadline: "comment",
+  accommodation_deadline: "request_accommodation",
+  accommodation_request_deadline: "request_accommodation",
+});
+
+/**
+ * Compile already-extracted Property timed events into the reader-action shape.
+ *
+ * This is deliberately not a prose extractor: an event must already carry one of
+ * the typed action-deadline kinds above. The Now view can therefore reuse the
+ * action registry without reading the notice body a second time.
+ */
+export function propertyReaderActionsFromTimedEvents(row = {}, options = {}) {
+  const pattern = classifyPropertyPattern(row);
+  const today = isoDay(options.today) || new Date().toISOString().slice(0, 10);
+  const events = candidateEvents(row, options);
+  const actions = events.map((event, index) => {
+    const kind = TIMED_EVENT_ACTION_KINDS[eventKind(event)];
+    const value = eventDate(event);
+    if (!kind || !value) return null;
+    const meta = ACTION_RAIL_META[kind];
+    const evidence = evidenceFromEvent(event);
+    const byWhen = {
+      kind: eventKind(event),
+      value,
+      label: evidence?.text || String(value),
+      source: evidence,
+    };
+    return {
+      schema_version: PROPERTY_READER_ACTIONS_SCHEMA_VERSION,
+      id: `${pattern}-${kind}-timed-${index + 1}`,
+      kind,
+      label: meta[1],
+      band_id: kind,
+      pattern,
+      status: actionStatus(kind, row, byWhen, today),
+      how: evidence,
+      methods: [],
+      by_when: byWhen,
+      timed_event: event,
+    };
+  }).filter(Boolean);
+  const actionable = actions.filter((action) => action.status !== "historical");
+  const primary = (actionable.length ? actionable : actions)[0] || null;
+  const meta = primary ? ACTION_RAIL_META[primary.kind] : null;
+  const rail = primary ? {
+    system: "property_reader_actions",
+    mode: actionable.length ? "current" : "historical",
+    pattern,
+    actions,
+    build_actions: propertyReaderActionRail,
+    render_steps: propertyReaderActionStepsHTML,
+    heading_key: "rules_action_band_rail_label",
+    has_fields: true,
+    label_key: actionable.length ? meta[0] : "read_official_notice",
+    label: actionable.length ? meta[1] : "Read the official notice",
+    primary_type: actionable.length ? meta[2] : "document",
+    primary_kind: primary.kind,
+    deadline: primary.by_when?.value || null,
+    destination: null,
+    action: actionable.length ? {
+      type: meta[2],
+      label_key: meta[0],
+      label: meta[1],
+      delivery: "local",
+      destination: null,
+      deadline: primary.by_when?.value || null,
+      confirmation_required: ["comment", "official_application"].includes(meta[2]),
+    } : null,
+  } : null;
+  return {
+    schema_version: PROPERTY_READER_ACTIONS_SCHEMA_VERSION,
+    pattern,
+    actions,
+    actionable,
+    historical: actions.filter((action) => action.status === "historical"),
+    rail,
+  };
+}
+
 function makeAction(kind, pattern, row, options) {
   const evidence = firstEvidence(row, ACTION_PATTERNS[kind]);
   if (!evidence) return null;

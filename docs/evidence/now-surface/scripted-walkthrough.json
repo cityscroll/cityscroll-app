@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "reference_day": "2026-08-03",
+  "input_contract": "existing extracted time and action records",
+  "tasks": [
+    {
+      "task": "Find the public-comment deadline before Friday and reach the official response page.",
+      "pass": true,
+      "evidence": {
+        "item_id": "rules:walkthrough-rule:comment",
+        "deadline": "2026-08-07",
+        "official_handoff": true
+      }
+    },
+    {
+      "task": "Find the next scheduled hearing and open its source notice.",
+      "pass": true,
+      "evidence": {
+        "item_id": "meetings:walkthrough-hearing",
+        "event_date": "2026-08-04",
+        "route": "#notice/walkthrough-hearing"
+      }
+    },
+    {
+      "task": "Find an exam application closing within fourteen days and reach the official application page.",
+      "pass": true,
+      "evidence": {
+        "item_id": "staffing:7001",
+        "deadline": "2026-08-14",
+        "official_handoff": true
+      }
+    }
+  ],
+  "invariants": {
+    "two_lanes": true,
+    "count_equals_list": true,
+    "expired_action_absent": true,
+    "existing_models_only": true
+  },
+  "counts": {
+    "act_by": 3,
+    "happening_soon": 2,
+    "total": 5
+  },
+  "performance": {
+    "samples": 500,
+    "unit": "milliseconds",
+    "p50": 0.018,
+    "p95": 0.033,
+    "maximum": 0.385,
+    "budget_p95": 10,
+    "pass": true
+  },
+  "pass": true
+}
