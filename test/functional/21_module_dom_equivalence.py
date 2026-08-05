@@ -27,6 +27,15 @@ STATIC_PARENT_IMPORT = re.compile(
     r'import\s+\{[^}]+\}\s+from\s+["\']\.\./([^"\']+)["\'];?',
     re.MULTILINE,
 )
+NAMESPACE_PARENT_IMPORT = re.compile(
+    r'globalThis\.([A-Za-z_$][\w$]*)\s*=\s*await import\(["\']\.\./([^"\']+)["\']\);?'
+)
+EXPORTED_DECLARATION = re.compile(
+    r'\bexport\s+(?=(?:async\s+)?(?:function|class|const|let|var)\b)'
+)
+EXPORTED_NAME = re.compile(
+    r'\bexport\s+(?:async\s+)?(?:function|class|const|let|var)\s+([A-Za-z_$][\w$]*)'
+)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -49,6 +58,25 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
     chunks = []
     helpers = []
     seen_helpers = set()
+    for namespace, helper_name in NAMESPACE_PARENT_IMPORT.findall(loader):
+        helper_path = SITE / helper_name
+        assert helper_path.is_file(), f"namespace helper import missing: {helper_name}"
+        helper_source = helper_path.read_text()
+        assert not re.search(r"^\s*import\s", helper_source, re.MULTILINE), (
+            f"inline reconstruction cannot flatten nested imports in {helper_name}"
+        )
+        export_names = EXPORTED_NAME.findall(helper_source)
+        assert export_names, f"namespace helper has no named exports: {helper_name}"
+        helper_source = EXPORTED_DECLARATION.sub("", helper_source)
+        assert not re.search(r"\bexport\s", helper_source), (
+            f"inline reconstruction cannot flatten this export in {helper_name}"
+        )
+        helpers.append(
+            f"const {namespace}=(()=>{{\n{helper_source}\n"
+            f"return {{{','.join(export_names)}}};\n}})();\n"
+            f"globalThis.{namespace}={namespace};"
+        )
+        seen_helpers.add(helper_name)
     for name in names:
         source = (SITE / "app" / name).read_text()
         for helper_name in STATIC_PARENT_IMPORT.findall(source):
@@ -60,12 +88,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
             assert not re.search(r"^\s*import\s", helper_source, re.MULTILINE), (
                 f"inline reconstruction cannot flatten nested imports in {helper_name}"
             )
-            helper_source = re.sub(
-                r"^export\s+(?=(?:async\s+)?(?:function|class|const|let|var)\b)",
-                "",
-                helper_source,
-                flags=re.MULTILINE,
-            )
+            helper_source = EXPORTED_DECLARATION.sub("", helper_source)
             assert not re.search(r"^\s*export\s", helper_source, re.MULTILINE), (
                 f"inline reconstruction cannot flatten this export in {helper_name}"
             )
