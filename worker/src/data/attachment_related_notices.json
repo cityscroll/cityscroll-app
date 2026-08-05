@@ -3,7 +3,7 @@
   "architecture": "precomputed_related_edges",
   "method": "hashed_ngram_tfidf_v0",
   "dim": 256,
-  "built_at": "2026-08-04T00:54:56.355Z",
+  "built_at": "2026-08-05T14:02:58.726Z",
   "top_k": 5,
   "min_score": 0.22,
   "source_count": 1,

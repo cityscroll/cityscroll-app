@@ -141,6 +141,10 @@ export async function main(argv = process.argv.slice(2)) {
     notices_scraped: scraped,
     personnel_skipped: skippedPersonnel,
     attachments_found: attachments.length,
+    attempted: input.rows.length,
+    extracted: attachments.length,
+    skipped: skippedPersonnel,
+    failed: 0,
     source_counts: {
       dataset: attachments.filter((item) => item.source === "dataset").length,
       portal: attachments.filter((item) => item.source === "portal").length,
