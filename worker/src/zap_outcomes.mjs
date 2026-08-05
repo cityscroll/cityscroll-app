@@ -22,6 +22,7 @@ import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehou
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
 import { attachZoningStatistics } from "./lib/zoning_statistics.mjs";
+import { attachProjectConnections } from "./project_connections.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -507,8 +508,9 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
     filings: [],
     reason: "Tax-lot / DOB side-car not requested.",
   };
+  let bbls = [];
   if (fetchBbl) {
-    const bbls = await fetchBbls(id);
+    bbls = await fetchBbls(id);
     if (!bbls.length) {
       dob = {
         matched: false,
@@ -526,6 +528,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
   const withDob = {
     ...record,
     dob,
+    bbls: Array.isArray(bbls) ? bbls : [],
     filled: outcomeIsFilled(record),
     generated_at: new Date().toISOString(),
   };
@@ -618,7 +621,7 @@ export async function handleZapOutcomes(request, env, ctx) {
       ok: true,
       cached: true,
       generated_at: cached.generated_at,
-      record: cached,
+      record: attachProjectConnections(cached),
     }));
   }
 
@@ -633,7 +636,7 @@ export async function handleZapOutcomes(request, env, ctx) {
       ok: true,
       cached: false,
       generated_at: record.generated_at,
-      record,
+      record: attachProjectConnections(record),
     }));
   } catch (error) {
     if (cached) {
@@ -642,7 +645,7 @@ export async function handleZapOutcomes(request, env, ctx) {
         cached: true,
         stale: true,
         generated_at: cached.generated_at,
-        record: cached,
+        record: attachProjectConnections(cached),
       }));
     }
     return response(JSON.stringify({
