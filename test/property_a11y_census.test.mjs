@@ -67,9 +67,9 @@ test("the census scores the receipt-backed authored summary separately from offi
     additional_description_1: "A voluntary public hearing will be held on November 26, 2024 about the listed property.",
   });
   assert.match(surfaces.plain_summary, /This notice is about a public hearing on a property matter\./);
-  assert.match(surfaces.plain_summary, /The hearing is on November 26, 2024\./);
+  assert.match(surfaces.plain_summary, /The hearing was held on November 26, 2024\./);
   assert.doesNotMatch(surfaces.plain_summary, /voluntary/);
-  assert.equal(surfaces.lens_view, "This is a public hearing about property; hearing November 26, 2024.");
+  assert.equal(surfaces.lens_view, "This is a public hearing about property; the hearing was held on November 26, 2024.");
   assert.doesNotMatch(surfaces.lens_view, /Notice of voluntary public hearing/);
 });
 

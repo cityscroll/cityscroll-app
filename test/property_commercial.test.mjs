@@ -156,6 +156,25 @@ test("golden vehicle case paints glance item + bid steps without inventing a dea
   assert.ok(commercial.participation.steps.some((s) => s.kind === "registration"));
 });
 
+test("attachment inline text supplies item detail and labeled price without inventing absent fields", () => {
+  const commercial = extractPropertyCommercial({
+    request_id: "attachment-sale",
+    short_title: "Forest Management Project notice of availability",
+    additional_description_1: "See the attached project inventory and official bid package.",
+  }, {
+    attachments: [{
+      title: "Project inventory",
+      extracted_text: "The City will sell 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp. Minimum bid: $25,000. Public showing details are in the official notice.",
+    }],
+  });
+  assert.equal(commercial.item.category, "timber");
+  assert.equal(commercial.item.source, "attachment_text");
+  assert.match(commercial.glance.item, /89 cords|187|timber/i);
+  assert.equal(commercial.primary_price?.display, "$25,000");
+  assert.equal(commercial.primary_price?.source, "attachment_text");
+  assert.ok(commercial.quantities.length >= 1);
+});
+
 test("golden deal-signal case: min bid is 40% of stated appraised value", () => {
   const entry = fixture.cases.find((c) => c.request_id === "synthetic-deal-vehicle-001");
   const commercial = extractPropertyCommercial(entry.row);

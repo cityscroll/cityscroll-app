@@ -18,7 +18,7 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const SELECT = [
-  "request_id", "start_date", "agency_name", "type_of_notice_description", "section_name",
+  "request_id", "start_date", "end_date", "agency_name", "type_of_notice_description", "section_name",
   "short_title", "event_date", "building_name", "street_address_1", "street_address_2",
   "city", "state", "zip_code", "additional_description_1", "additional_description_2",
   "additional_description_3", "other_info_1", "other_info_2", "other_info_3",
