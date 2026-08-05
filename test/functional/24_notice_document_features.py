@@ -97,7 +97,7 @@ def main() -> None:
 
         direct_context = context_with_clipboard(browser)
         direct = direct_context.new_page()
-        direct_calls: list[str] = []
+        direct_calls: list[str] = list()
         install_notice_routes(direct, direct_calls)
         direct.goto(f"{BASE}/notices/{NOTICE_ID}?lang=es", wait_until="load", timeout=30000)
 
@@ -122,7 +122,7 @@ def main() -> None:
 
         click_context = context_with_clipboard(browser, saved_language="es")
         clicked = click_context.new_page()
-        click_calls: list[str] = []
+        click_calls: list[str] = list()
         install_notice_routes(clicked, click_calls)
         clicked.goto(f"{BASE}/notices/{NOTICE_ID}", wait_until="load", timeout=30000)
         button = clicked.locator("[data-xlate-btn]")
