@@ -1,5 +1,6 @@
 await import("./core.mjs");
 globalThis.CrolScope = await import("../scope_v0.mjs");
+globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
 globalThis.CrolRouteMigration = await import("../route_migration.mjs");
 await import("./money-list.mjs");
 await import("./money-history.mjs");

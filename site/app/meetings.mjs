@@ -168,6 +168,12 @@ function officialIdFromPerson(p){
 function officialHref(personId, ctx){
   const id = String(personId || "").trim();
   if(!id) return "";
+  if(globalThis.CrolEntityPivots){
+    return globalThis.CrolEntityPivots.entityHref({
+      ref: globalThis.CrolEntityPivots.entityRouteRef("official", id),
+      label: id,
+    }, ctx || {});
+  }
   const q = new URLSearchParams();
   if(ctx && ctx.eventId) q.set("event", String(ctx.eventId));
   if(ctx && ctx.noticeId) q.set("notice", String(ctx.noticeId));
@@ -206,7 +212,15 @@ function meetingRollCallChipHTML(votes, ctx){
     const name = (p.official && p.official.display_name) || p.person_name || id;
     const officialLink = officialHref(id, ctx);
     const label = escUiHtml(name);
-    return officialLink
+    const typed = globalThis.CrolEntityPivots?.entityChipHTML({
+      ref: globalThis.CrolEntityPivots.entityRouteRef("official", id),
+      label: name,
+      link_confidence: "strong",
+      relation: "votes_as_official",
+    }, { ...(ctx || {}), className: "meeting-official-link" });
+    return typed
+      ? `<span data-official-id="${escUiHtml(id)}" lang="en" dir="ltr">${typed}</span>`
+      : officialLink
       ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}" lang="en" dir="ltr">${label}</a>`
       : `<span lang="en" dir="ltr" data-official-id="${escUiHtml(id)}">${label}</span>`;
   }).join(", ");
@@ -229,9 +243,16 @@ function meetingRollCallTableHTML(people, ctx){
     const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
     const vote = p.vote_bucket || p.vote_value || "—";
     const officialLink = officialHref(id, ctx);
-    const nameHTML = officialLink
+    const typed = globalThis.CrolEntityPivots?.entityChipHTML({
+      ref: globalThis.CrolEntityPivots.entityRouteRef("official", id),
+      label: name,
+      link_confidence: "strong",
+      relation: "votes_as_official",
+    }, { ...(ctx || {}), className: "meeting-official-link" });
+    const nameHTML = typed
+      || (officialLink
       ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
-      : escUiHtml(name);
+      : escUiHtml(name));
     return `<tr data-official-id="${escUiHtml(id)}" data-vote-bucket="${escUiHtml(String(p.vote_bucket || ""))}">
       <th scope="row" lang="en" dir="ltr" class="meeting-roll-call-person">${nameHTML}</th>
       <td lang="en" dir="ltr">${escUiHtml(String(vote))}</td>
