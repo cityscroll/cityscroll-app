@@ -40,6 +40,12 @@ const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
 const OUT_PEOPLE = path.join(ROOT, "site/data/people_domain_observations.json");
 const OUT_PERSON_VOTES = path.join(ROOT, "site/data/person_votes_lookup.json");
+const MEETINGS_RESIDUAL_SOURCES = JSON.parse(
+  readFileSync(path.join(ROOT, "site/data/meetings_location_residual_sources.json"), "utf8"),
+);
+const MEETINGS_RESIDUAL_BY_ID = new Map(
+  (MEETINGS_RESIDUAL_SOURCES.cases || []).map((row) => [String(row.request_id), row]),
+);
 const NEIGHBORHOOD_GAZETTEER = JSON.parse(
   readFileSync(path.join(ROOT, "site/data/neighborhood_gazetteer.json"), "utf8"),
 );
@@ -324,10 +330,22 @@ function cleanHearing(row) {
   if (landRefs.zap_project_ids.length) out.zap_project_ids = landRefs.zap_project_ids;
   // Place stamp for map choropleth: human derivation (matter → venue → agency HQ).
   // Scope + district bags + method/confidence only — never raw body text.
-  const place = compactPlaceStamp(meetingPlaceFromRow(fullRow, {
+  let place = compactPlaceStamp(meetingPlaceFromRow(fullRow, {
     neighborhoodGazetteer: NEIGHBORHOOD_GAZETTEER,
   }));
+  const residualSource = MEETINGS_RESIDUAL_BY_ID.get(out.request_id);
+  if (residualSource?.terminal_classification === "virtual_only") {
+    place = { scope: "unlocated", unlocated_reason: "virtual_only", virtual_only: true };
+  } else if (residualSource?.terminal_classification === "multi_event_directory") {
+    place = { scope: "unlocated", unlocated_reason: "multi_event_directory", virtual_only: false };
+  }
   if (place) out.affected_area = place;
+  if (residualSource) {
+    out.location_source = {
+      terminal_classification: residualSource.terminal_classification,
+      locator: residualSource.source_locator,
+    };
+  }
   // Measured Council demo join (notice → Legistar event 22526).
   if (out.request_id === "20260706036") {
     out.event_id = "22526";
@@ -538,7 +556,11 @@ async function main() {
       const replacement = replacements.get(String(row.request_id));
       if (!replacement) return row;
       replaced += 1;
-      return { ...row, affected_area: replacement.affected_area };
+      return {
+        ...row,
+        affected_area: replacement.affected_area,
+        ...(replacement.location_source ? { location_source: replacement.location_source } : {}),
+      };
     });
     if (replaced !== ids.length) {
       throw new Error(`residual-only matched ${replaced}/${ids.length} committed rows`);

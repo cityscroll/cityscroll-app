@@ -152,8 +152,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504039"
       }
     },
     {
@@ -429,8 +433,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504038"
       }
     },
     {
@@ -736,8 +744,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504037"
       }
     },
     {
@@ -880,8 +892,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260504036"
       }
     },
     {
@@ -1059,8 +1075,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
+        "unlocated_reason": "virtual_only",
+        "virtual_only": true
+      },
+      "location_source": {
+        "terminal_classification": "virtual_only",
+        "locator": "https://www.nyc.gov/assets/dsny/downloads/collection/containerization/residential-containerization/deis-25dos003y-07012026.pdf"
       }
     },
     {
@@ -1252,8 +1272,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213015"
       }
     },
     {
@@ -1549,8 +1573,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213014"
       }
     },
     {
@@ -1824,8 +1852,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213013"
       }
     },
     {
@@ -2292,8 +2324,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213012"
       }
     },
     {
@@ -2613,8 +2649,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "external_board_page_needed",
+        "unlocated_reason": "multi_event_directory",
         "virtual_only": false
+      },
+      "location_source": {
+        "terminal_classification": "multi_event_directory",
+        "locator": "https://a856-cityrecord.nyc.gov/RequestDetail/20260213011"
       }
     },
     {
@@ -2752,8 +2792,12 @@
       "source_system": "city_record",
       "affected_area": {
         "scope": "unlocated",
-        "unlocated_reason": "body_place_omitted",
-        "virtual_only": false
+        "unlocated_reason": "virtual_only",
+        "virtual_only": true
+      },
+      "location_source": {
+        "terminal_classification": "virtual_only",
+        "locator": "https://www.nyc.gov/site/dcas/about/public-hearings/public-hearings-2026.page"
       }
     },
     {
@@ -3331,6 +3375,6 @@
   "location_residual": {
     "receipt": "data/meetings_location_residual_receipt.json",
     "fixed_rows": 24,
-    "refreshed_at": "2026-08-04T18:31:47.018Z"
+    "refreshed_at": "2026-08-05T14:00:27.418Z"
   }
 }

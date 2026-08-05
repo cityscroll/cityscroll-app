@@ -48,7 +48,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | Property commercial watch · non-fleet surplus goods | b | publication_blocked | a DCAS-hosted item-level feed or an authorized GovDeals client API/export if DCAS and GovDeals release one | — |
 | land / ZAP · final decision documents beyond status | a | landed | Zoning Application Portal projects | [receipt](https://github.com/cityscroll/crol-list/pull/188) |
 | Money map · place-of-performance coverage | b | publication_blocked | a contract-keyed public place-of-performance or service-area field released by the procuring agency or PASSPort | — |
-| Meetings map · unresolved matter or venue geography | a | open | City Record Online | — |
+| Meetings map · unresolved matter or venue geography | a | measured_stop | City Record Online | — |
 | Property · parcel-linked notice context | a | open | City Record Online | — |
 
 ## Join graph (sources)
@@ -158,8 +158,7 @@ graph LR
 Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 `site/data/gap_taxonomy.json` → `ranked_ingest_list`.
 
-1. **Official board and agency meeting pages for the location residual** — meetings-location-residual.
-2. **Property notice parcel-key residual** — property-parcel-key-residual.
+1. **Property notice parcel-key residual** — property-parcel-key-residual.
 
 ## Class changes (loud)
 
@@ -178,7 +177,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.
 - Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.
 - ABO residual join (2026-08-04): 1/50 labeled matches (2%), 50% fuzzy precision, five false positives, and four ambiguous groups; no notice-level edge materialization below the 30% usefulness and 95% precision gates.
-- August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 11/119 Meetings after PR #500, and 1/139 Property parcel keys.
+- August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys.
 
 ## UI copy keys (two registers)
 

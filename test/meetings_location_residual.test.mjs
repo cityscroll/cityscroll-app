@@ -9,6 +9,7 @@ const readJson = (relativePath) => JSON.parse(
 const receipt = readJson("../site/data/meetings_location_residual_receipt.json");
 const meetings = readJson("../site/data/meetings_domain_observations.json");
 const activity = readJson("../site/data/district_activity.json");
+const sources = readJson("../site/data/meetings_location_residual_sources.json");
 
 test("fixed Meetings residual is classified and remeasured without synthetic rows", () => {
   assert.equal(receipt.schema, "cityscroll.meetings_location_residual.v1");
@@ -58,14 +59,25 @@ test("partial non-Council registry remains an honest absence for generic board d
   assert.equal(receipt.source_registry_review.accepted_specific_body_matches, 0);
 });
 
+test("the fixed 11-row follow-up has terminal source-backed classifications", () => {
+  assert.equal(sources.cases.length, 11);
+  assert.equal(receipt.followup.baseline_total, 11);
+  assert.deepEqual(receipt.followup.result, { virtual_only: 2, honest_residual: 9 });
+  assert.ok(receipt.followup.cases.every((row) => row.source_locator.startsWith("https://")));
+  assert.equal(receipt.followup.cases.filter((row) => row.terminal_classification === "multi_event_directory").length, 9);
+  assert.equal(receipt.followup.cases.filter((row) => row.terminal_classification === "virtual_only").length, 2);
+});
+
 test("fixed-corpus re-stamp advances Meetings coverage without changing corpus width", () => {
   assert.equal(meetings.row_count, 119);
   assert.equal(meetings.location_residual.fixed_rows, 24);
   assert.equal(activity.sources.meetings.counted, 119);
-  assert.equal(activity.sources.meetings.located, 108);
-  assert.equal(activity.unlocated.meetings, 11);
+  assert.equal(activity.sources.meetings.located, 110);
+  assert.equal(activity.unlocated.meetings, 9);
+  assert.equal(activity.virtual.meetings, 5);
   assert.deepEqual(activity.unlocated_reasons.meetings, {
-    external_board_page_needed: 9,
-    body_place_omitted: 2,
+    multi_event_directory: 9,
   });
+  assert.ok(activity.district_items.virtual.meetings.includes("20260515001"));
+  assert.ok(activity.district_items.virtual.meetings.includes("20260624005"));
 });

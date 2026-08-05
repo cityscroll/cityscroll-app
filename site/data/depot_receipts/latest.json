@@ -709,16 +709,10 @@
   "ranked_ingest_top": [
     {
       "rank": 1,
-      "source": "Official board and agency meeting pages for the location residual",
-      "value_score": 15,
-      "realized_join_rate": null
-    },
-    {
-      "rank": 2,
       "source": "Property notice parcel-key residual",
       "value_score": 15,
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "ef6f1a186155e67c50ac35ae6b5a70c1922a3cd23ff76e1da88ff496577a3e95"
+  "registry_sha256": "33d6e47e3147f87cbee9ec0109f911faa7a8f3dd3eff211489a05b2e1a891291"
 }
