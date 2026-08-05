@@ -20,6 +20,9 @@ import {
   loadDistrictActivity,
   mapDrillListHash,
   mapFeatures,
+  mapLabelContrast,
+  mapLabelText,
+  mapLabelTone,
   nonPolygonBuckets,
   moneyCoverageFraming,
   parseMapDrillListHash,
@@ -56,6 +59,29 @@ test("map helpers project lon/lat and emit SVG paths", () => {
   const path = polygonsToSvgPath(boundaries.council_districts[0].polygons);
   assert.match(path, /^M/);
   assert.match(path, /Z/);
+});
+
+test("map features carry interior label anchors and familiar district names", () => {
+  const activity = { by_level: { borough: {}, community_district: {}, council_district: {} } };
+  const boroughs = mapFeatures(boundaries, activity, { level: "borough", lens: "land" }).features;
+  assert.equal(boroughs.length, 5);
+  assert.ok(boroughs.every((feature) => Number.isFinite(feature.labelPoint.x) && Number.isFinite(feature.labelPoint.y)));
+  assert.equal(mapLabelText("community_district", "X08", "Bronx Community District 8"), "CD 8");
+  assert.equal(mapLabelTone("rgb(27,58,143)"), "light");
+  assert.equal(mapLabelTone("#eceef2"), "dark");
+  for (let count = 0; count <= 100; count++) {
+    const fill = choroplethFill(count, 100);
+    assert.ok(mapLabelContrast(fill) >= 4.5, `${fill} label contrast`);
+  }
+
+  const queens = mapFeatures(boundaries, activity, {
+    level: "community_district",
+    parent: "Queens",
+    lens: "land",
+  }).features;
+  assert.equal(queens.length, 14);
+  assert.ok(queens.every((feature) => /^CD \d+$/.test(feature.labelText)));
+  assert.ok(queens.every((feature) => Number.isFinite(feature.labelPoint.x) && Number.isFinite(feature.labelPoint.y)));
 });
 
 test("choroplethFill uses the civic palette for zero and deepens with density", () => {
