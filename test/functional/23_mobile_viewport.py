@@ -1,0 +1,210 @@
+"""Mobile interaction and layout ratchet at the 360px acceptance width.
+
+The broader axe walk uses 390px and desktop review widths. This focused gate covers
+the narrower phone width where intrinsic grid sizing and compact controls have
+historically escaped: no document overflow, 44px primary touch targets, a vertical
+phase chain, a tap/focus path for abbreviated phase labels, and contained tables.
+"""
+
+from __future__ import annotations
+
+import functools
+import http.server
+import os
+from pathlib import Path
+import sys
+import threading
+
+from playwright.sync_api import Page, sync_playwright
+
+
+ROOT = Path(__file__).parents[2]
+sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
+from i18n_fixtures import install_routes  # noqa: E402
+
+BASE = os.environ.get("CROL_BASE", "")
+VIEWPORT = {"width": 360, "height": 800}  # Source: mobile contract acceptance width.
+SURFACES = (
+    ("contracts", "#money", "#list .row"),
+    ("staffing", "#people?view=guide", "#career-results .career-card, #staffing-notice-list .staffing-hire-row"),
+    ("property", "#property", "#propertyfeed .fcard"),
+    ("rules", "#rules", "#rulesfeed .fcard"),
+    ("meetings", "#meetings", "#meetingsfeed .fcard"),
+    ("map", "#map", "#mapAreaList button"),
+    ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
+    ("reader action", "#notice/20260701099", "#noticeview .panel"),
+)
+
+
+class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, _format: str, *_args: object) -> None:
+        pass
+
+
+def rendered_target_failures(page: Page) -> list[dict]:
+    return page.evaluate(
+        """() => {
+          const selector = [
+            'button:not([disabled]):not(#apreview)',
+            'input:not([disabled]):not([type="hidden"])',
+            'select:not([disabled])',
+            'textarea:not([disabled])',
+            'summary',
+            'a.act',
+            '.lc-step-help[tabindex="0"]'
+          ].join(',');
+          const rendered = el => {
+            const style = getComputedStyle(el), rect = el.getBoundingClientRect();
+            const closed = el.closest('details:not([open])');
+            if (closed && !closed.querySelector(':scope > summary')?.contains(el)) return false;
+            return style.display !== 'none' && style.visibility !== 'hidden'
+              && rect.width > 0 && rect.height > 0;
+          };
+          return [...document.querySelectorAll(selector)].filter(rendered).flatMap(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.width >= 43.5 && rect.height >= 43.5) return [];
+            return [{
+              tag: el.tagName.toLowerCase(), id: el.id,
+              cls: String(el.className || '').slice(0, 90),
+              text: String(el.innerText || el.getAttribute('aria-label') || '').trim().slice(0, 90),
+              width: Math.round(rect.width * 10) / 10,
+              height: Math.round(rect.height * 10) / 10,
+            }];
+          });
+        }"""
+    )
+
+
+def assert_mobile_surface(page: Page, name: str) -> None:
+    metrics = page.evaluate(
+        """() => ({
+          innerWidth,
+          clientWidth: document.documentElement.clientWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          viewport: document.querySelector('meta[name="viewport"]')?.content || '',
+        })"""
+    )
+    assert metrics["innerWidth"] == 360, (name, metrics)
+    assert metrics["scrollWidth"] <= metrics["clientWidth"] + 1, (name, metrics)
+    assert "width=device-width" in metrics["viewport"], (name, metrics)
+    failures = rendered_target_failures(page)
+    assert not failures, f"{name}: touch targets below 44px: {failures[:12]}"
+    if name == "contracts":
+        collision = page.evaluate(
+            """() => {
+              const a = document.querySelector('.lang-switcher').getBoundingClientRect();
+              const b = document.querySelector('.cr-title').getBoundingClientRect();
+              return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+            }"""
+        )
+        assert not collision, "language selector overlaps the masthead title at 360px"
+
+
+def install_table_fixture(page: Page) -> None:
+    page.evaluate(
+        """async () => {
+          const mod = await import('./attachment_tables_ui.mjs');
+          const detail = document.querySelector('#detail');
+          detail.innerHTML = mod.attachmentTablesHTML({
+            tables_status: 'ok',
+            tables_preview: 'Species and timber volume',
+            extracted_tables: [{
+              caption: 'Forest products',
+              headers: ['Species', 'Sawtimber (MBF)', 'Pulp (cords)', 'Percent of sawtimber'],
+              rows: [
+                ['Red Oak', '91.6', '28', '49%'],
+                ['White Ash', '41.1', '18', '22%'],
+              ],
+            }],
+          }, {t: key => key});
+          detail.querySelector('.attachment-tables').open = true;
+        }"""
+    )
+
+
+def run(base: str) -> None:
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        context = browser.new_context(viewport=VIEWPORT, has_touch=True)
+        page = context.new_page()
+        install_routes(page)
+
+        for name, route, ready in SURFACES:
+            page.goto(f"{base}{route}", wait_until="domcontentloaded", timeout=30_000)
+            page.locator(ready).first.wait_for(state="visible", timeout=20_000)
+            page.wait_for_timeout(250)
+            assert_mobile_surface(page, name)
+
+            if name == "rule detail":
+                phase_buttons = page.locator(".rule-phase-stepper .lc-step")
+                assert phase_buttons.count() >= 3
+                tops = phase_buttons.evaluate_all(
+                    "els => els.map(el => Math.round(el.getBoundingClientRect().top))"
+                )
+                assert len(set(tops)) == len(tops), f"phase chain still wraps horizontally: {tops}"
+
+        page.goto(f"{base}#money", wait_until="domcontentloaded", timeout=30_000)
+        page.locator("#detail").wait_for(state="visible")
+        install_table_fixture(page)
+        page.locator("table.attachment-table").wait_for(state="visible")
+        assert_mobile_surface(page, "attachment table")
+        table_metrics = page.evaluate(
+            """() => {
+              const body = document.querySelector('.attachment-tables-body');
+              const head = document.querySelector('.attachment-table th[tabindex]');
+              return {
+                contained: body.scrollWidth > body.clientWidth,
+                headHeight: head.getBoundingClientRect().height,
+                documentOverflow: document.documentElement.scrollWidth - innerWidth,
+              };
+            }"""
+        )
+        assert table_metrics["contained"], table_metrics
+        assert table_metrics["headHeight"] >= 43.5, table_metrics
+        assert table_metrics["documentOverflow"] <= 1, table_metrics
+
+        page.goto(f"{base}#property", wait_until="domcontentloaded", timeout=30_000)
+        page.locator("#property-domain-intro").wait_for(state="visible", timeout=20_000)
+        page.locator("#property-domain-intro").evaluate(
+            """el => el.insertAdjacentHTML('beforeend', `
+              <ol class="lc-stepper" aria-label="Example phase disclosure">
+                <li><span class="lc-step lc-step-help" tabindex="0"
+                  aria-label="Auction or request for proposals"
+                  title="Auction or request for proposals">BID</span></li>
+              </ol>`)
+            """
+        )
+        help_step = page.locator(".lc-step-help[title]").first
+        help_step.focus()
+        disclosure = help_step.evaluate(
+            "el => getComputedStyle(el, '::after').content.replace(/^['\"]|['\"]$/g, '')"
+        )
+        assert disclosure and disclosure != "none", "abbreviated phase has no tap/focus disclosure"
+
+        context.close()
+        browser.close()
+
+
+def main() -> None:
+    global BASE
+    server = None
+    thread = None
+    if not BASE:
+        handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        BASE = f"http://127.0.0.1:{server.server_port}/"
+    try:
+        run(BASE)
+        print("OK mobile viewport: 360px overflow, touch targets, phase disclosure, and table containment")
+    finally:
+        if server:
+            server.shutdown()
+            if thread:
+                thread.join(timeout=5)
+            server.server_close()
+
+
+if __name__ == "__main__":
+    main()
