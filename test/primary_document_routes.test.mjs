@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 
-import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
+import {
+  BROWSE_FACETS,
+  buildBrowseLanding,
+  buildBrowseView,
+  renderBrowseLanding,
+  renderBrowseView,
+} from "../site/browse_view.mjs";
 import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
 import { edgeRequestKind, renderEdgeNotice } from "../site/pages_edge.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
@@ -29,12 +35,21 @@ test("primary navigation is four real document links on every promoted shell", (
     }
   }
   const root = read("../site/index.html");
-  for (const facet of ["money", "people", "land", "property", "rules", "meetings"]) {
-    assert.match(root, new RegExp(`data-tab="${facet}"`), `${facet} stays reachable as a Browse facet`);
+  const routes = {
+    money: "/browse/contracts/",
+    people: "/browse/staffing/",
+    land: "/browse/zoning/",
+    property: "/browse/property/",
+    rules: "/browse/rules/",
+    meetings: "/browse/meetings/",
+  };
+  assert.match(root, /class="browse-child-nav"/);
+  for (const [facet, route] of Object.entries(routes)) {
+    assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${facet}"`), `${facet} is a real Browse child link`);
   }
 });
 
-test("Now and every bounded Browse default are exact build outputs with useful no-JS HTML", () => {
+test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {
   const outputs = primaryDocumentOutputs();
   assert.equal(outputs.length, 8);
   for (const [path, generated] of outputs) {
@@ -48,12 +63,52 @@ test("Now and every bounded Browse default are exact build outputs with useful n
   assert.match(now, /data-build-rendered="now"/);
   assert.match(now, /data-now-item=/);
   assert.match(now, /href="\/notices\/[A-Za-z0-9_-]+"/);
+  assert.doesNotMatch(now, /class="browse-child-nav"[^>]*>[\s\S]{0,300}data-tab=/);
+  const landing = output("/site/browse/index.html");
+  assert.match(landing, /data-build-rendered="browse-landing"/);
+  assert.match(landing, /<h2[^>]*>Browse NYC’s public record<\/h2>/);
+  assert.match(landing, /href="\/browse\/contracts\/"/);
+  assert.match(landing, /40 open opportunities/);
+  assert.match(landing, /228 civil-service exams/);
+  assert.doesNotMatch(landing, /data-browse-facet="contracts"/);
   for (const facet of Object.keys(BROWSE_FACETS)) {
     const html = output(`/site/browse/${facet}/index.html`);
     assert.match(html, new RegExp(`data-browse-facet="${facet}"`));
     assert.match(html, /data-record-id=/);
     assert.doesNotMatch(html, /data-build-rendered="browse"[\s\S]{0,200}<span class="loading"/);
   }
+});
+
+test("Browse landing counts are labeled bounded source snapshots", () => {
+  const landing = buildBrowseLanding({
+    contracts: { open_as_of: "2026-08-03", notices: Array.from({ length: 3 }, (_, i) => ({ request_id: String(i) })) },
+    staffing: { generated_at: "2026-08-02T12:00:00Z", notices: Array.from({ length: 4 }, (_, i) => ({ request_id: String(i) })) },
+    zoning: { generated_at: "2026-08-05T12:00:00Z", projects: [{ project_id: "P1" }] },
+    property: { generated_at: "2026-08-02T12:00:00Z", property_rows: [{ request_id: "P" }] },
+    rules: { retrieved_at: "2026-08-03T12:00:00Z", rows: [{ request_id: "R" }] },
+    meetings: { retrieved_at: "2026-08-02T12:00:00Z", rows: [{ request_id: "M" }] },
+  }, { staffingExamCount: 228, staffingExamAsOf: "2026-07-22" });
+  assert.equal(landing.cards.length, 6);
+  assert.equal(landing.cards[0].count, 3);
+  assert.equal(landing.cards[1].secondaryCount, 228);
+  const html = renderBrowseLanding(landing);
+  assert.match(html, /Current public snapshots/);
+  assert.match(html, /Counts describe the bounded records shown here, not each source’s full historical corpus\./);
+  assert.match(html, /source snapshot 2026-08-03/);
+});
+
+test("public identity copy describes a linked multi-source record", () => {
+  const index = read("../site/index.html");
+  const about = read("../site/about.html");
+  for (const html of [index, about, read("../site/api.html"), read("../site/stats.html")]) {
+    assert.doesNotMatch(html, /search interface over|searches the City Record Open Data|the City Record, made legible|The City Record, searchable/i);
+  }
+  assert.match(index, /NYC’s public record/);
+  assert.match(index, /1,099,194 City Record notices/);
+  assert.match(index, /228 civil-service exams/);
+  assert.match(index, /4 other main public systems/);
+  assert.match(index, /August 5, 2026/);
+  assert.match(about, /NYC’s public record, linked/);
 });
 
 test("Browse edge filtering is bounded, semantic, and discloses live-only controls", () => {
@@ -126,6 +181,7 @@ test("notice response renderer includes a known meeting outcome or honest absenc
 });
 
 test("Pages edge routing is a narrow waist and explicitly excludes the public Stats document", () => {
+  assert.equal(edgeRequestKind("https://cityscroll.org/browse/"), "asset");
   assert.equal(edgeRequestKind("https://cityscroll.org/notices/20240515016"), "notice");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/rules/?q=air"), "browse");
   assert.equal(edgeRequestKind("https://cityscroll.org/agencies/design-and-construction/"), "entity");

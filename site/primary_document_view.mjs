@@ -1,4 +1,10 @@
-import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
+import {
+  BROWSE_FACETS,
+  buildBrowseLanding,
+  buildBrowseView,
+  renderBrowseLanding,
+  renderBrowseView,
+} from "./browse_view.mjs";
 import { buildNowSurface } from "./now_surface.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 
@@ -42,17 +48,27 @@ function activateTab(html, tab) {
   let out = html
     .replaceAll('class="tabbtn active"', 'class="tabbtn"')
     .replaceAll('class="tabpane active"', 'class="tabpane"');
-  out = out.replace(`class="tabbtn" data-tab="${tab}"`, `class="tabbtn active" data-tab="${tab}"`);
+  out = out.replace(
+    new RegExp(`class="tabbtn"([^>]*\\bdata-tab="${tab}")`),
+    'class="tabbtn active"$1',
+  );
   out = out.replace(`id="tab-${tab}" class="tabpane"`, `id="tab-${tab}" class="tabpane active"`);
   return out;
 }
 
-function pageMetadata(html, { title, description, canonical, primaryHref }) {
+function pageMetadata(html, { title, description, canonical, primaryHref, primaryContext }) {
   let out = html
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)
     .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${esc(canonical)}">`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(description)}">`)
     .replace("<main id=\"main\"", '<main id="main" data-document-rendered="true"');
+  if (primaryContext) {
+    if (/<body\b[^>]*\bdata-primary-context=/i.test(out)) {
+      out = out.replace(/(<body\b[^>]*\bdata-primary-context=")[^"]*(")/i, `$1${esc(primaryContext)}$2`);
+    } else {
+      out = out.replace(/<body\b/i, `<body data-primary-context="${esc(primaryContext)}"`);
+    }
+  }
   if (!/<base\b/i.test(out)) out = out.replace("<head>", '<head>\n<base href="/">');
   if (primaryHref) {
     out = out.replace(`href="${primaryHref}"`, `href="${primaryHref}" aria-current="page"`);
@@ -121,9 +137,24 @@ export function buildNowDocument(shell, sources, options = {}) {
     description: "NYC public deadlines that require action and public events happening soon.",
     canonical: canonicalRoute("/now/"),
     primaryHref: "/now/",
+    primaryContext: "now",
   });
   html = activateTab(html, "now");
+  html = replaceElementContent(html, "browse-child-nav", "");
   return replaceElementContent(html, "nowview", renderNowBuildView(sources, today));
+}
+
+export function buildBrowseLandingDocument(shell, payloads, options = {}) {
+  let html = pageMetadata(shell, {
+    title: "Browse NYC’s public record · CityScroll",
+    description: "Browse NYC contracts, staffing, zoning, property, rules, and meetings from linked public sources.",
+    canonical: canonicalRoute("/browse/"),
+    primaryHref: "/browse/",
+    primaryContext: "browse",
+  });
+  html = activateTab(html, "browse");
+  const landing = buildBrowseLanding(payloads, options);
+  return replaceElementContent(html, "browseview", renderBrowseLanding(landing));
 }
 
 export function buildBrowseDocument(shell, facet, payload, params = new URLSearchParams(), options = {}) {
@@ -136,6 +167,7 @@ export function buildBrowseDocument(shell, facet, payload, params = new URLSearc
     description: `Browse bounded NYC ${config.label.toLowerCase()} public records, then refine with the full source controls.`,
     canonical: canonicalRoute(route),
     primaryHref: "/browse/",
+    primaryContext: "browse",
   });
   html = activateTab(html, config.tab);
   return replaceElementContent(html, config.container, renderBrowseView(view));

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "before_revision": "2ad88ab940e1",
+  "javascript": "disabled (no-JS document parity)",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "captures": [
+    {
+      "phase": "before",
+      "route": "/now/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-now-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/near-you/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-near_you-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/following/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-following-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/browse/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-browse-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/now/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-now-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/near-you/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-near_you-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/following/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-following-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "route": "/browse/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/before-browse-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/now/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-now-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-near_you-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/following/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-following-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/browse/",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-browse-390.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/now/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-now-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/near-you/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-near_you-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/following/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-following-1440.png",
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "route": "/browse/",
+      "viewport": [
+        1440,
+        900
+      ],
+      "file": "docs/screenshots/footer-browse-hierarchy/after-browse-1440.png",
+      "overflow_px": 0
+    }
+  ]
+}

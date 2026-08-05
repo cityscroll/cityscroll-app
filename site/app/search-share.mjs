@@ -721,7 +721,7 @@ function documentSearchHash(lens){
   const facets={money:"contracts",people:"staffing",land:"zoning",property:"property",rules:"rules",meetings:"meetings"};
   const expected=facets[lens];
   const match=location.pathname.replace(/\/+$/,"").match(/^\/browse(?:\/([^/]+))?$/);
-  const facet=match?(match[1]||"contracts"):null;
+  const facet=match?match[1]||null:null;
   if(!expected || facet!==expected) return null;
   const params=new URLSearchParams(location.search);
   params.delete("lang");

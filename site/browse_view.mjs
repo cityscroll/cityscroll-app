@@ -2,6 +2,10 @@ export const BROWSE_FACETS = Object.freeze({
   contracts: {
     tab: "money",
     label: "Contracts",
+    route: "/browse/contracts/",
+    countLabel: "open opportunities",
+    description: "Open solicitations, awards, procurement plans, registration, and payment trails.",
+    sources: "City Record · PASSPort · Checkbook NYC · MOCS plans",
     container: "list",
     dataPath: "/data/money_default_open.json",
     rowsKey: "notices",
@@ -9,6 +13,10 @@ export const BROWSE_FACETS = Object.freeze({
   staffing: {
     tab: "people",
     label: "Staffing",
+    route: "/browse/staffing/",
+    countLabel: "recent appointments",
+    description: "Recent appointments, payroll, civil-service exams, eligible lists, and hiring outcomes.",
+    sources: "City Record · DCAS · Citywide Payroll",
     container: "staffing-notice-list",
     dataPath: "/data/staffing_default_hires.json",
     rowsKey: "notices",
@@ -16,6 +24,10 @@ export const BROWSE_FACETS = Object.freeze({
   zoning: {
     tab: "land",
     label: "Zoning",
+    route: "/browse/zoning/",
+    countLabel: "active projects",
+    description: "Active land-use projects, hearings, recommendations, votes, and final outcomes.",
+    sources: "ZAP · City Record · Council records",
     container: "llist",
     dataPath: "/data/land_default_ulurp.json",
     rowsKey: "projects",
@@ -23,6 +35,10 @@ export const BROWSE_FACETS = Object.freeze({
   property: {
     tab: "property",
     label: "Property",
+    route: "/browse/property/",
+    countLabel: "observed property records",
+    description: "Disposition notices joined by parcel, with hearings, sales, conveyances, and tax-lien context.",
+    sources: "City Record · parcel data · published tax-lien lists",
     container: "propertyfeed",
     dataPath: "/data/property_domain_observations.json",
     rowsKey: "property_rows",
@@ -30,6 +46,10 @@ export const BROWSE_FACETS = Object.freeze({
   rules: {
     tab: "rules",
     label: "Rules",
+    route: "/browse/rules/",
+    countLabel: "recent rule records",
+    description: "Proposed and adopted rules, comment periods, hearings, and effective dates.",
+    sources: "City Record · NYC Rules",
     container: "rulesfeed",
     dataPath: "/data/rules_domain_observations.json",
     rowsKey: "rows",
@@ -37,6 +57,10 @@ export const BROWSE_FACETS = Object.freeze({
   meetings: {
     tab: "meetings",
     label: "Meetings",
+    route: "/browse/meetings/",
+    countLabel: "recent meeting records",
+    description: "Public meetings and hearings, agendas, testimony details, votes, minutes, and outcomes.",
+    sources: "City Record · Council Legistar",
     container: "meetingsfeed",
     dataPath: "/data/meetings_domain_observations.json",
     rowsKey: "rows",
@@ -152,6 +176,56 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     liveOnlyFilters: liveOnlyFilters(search),
     hasQuery: [...search].some(([key]) => !DOCUMENT_FILTERS.has(key)),
   };
+}
+
+export function buildBrowseLanding(payloads = {}, options = {}) {
+  const cards = Object.entries(BROWSE_FACETS).map(([facet, config]) => {
+    const payload = payloads[facet] || {};
+    const view = buildBrowseView(facet, payload);
+    return {
+      facet,
+      ...config,
+      count: view.total,
+      asOf: view.asOf,
+      secondaryCount: facet === "staffing" ? Number(options.staffingExamCount) || 0 : null,
+      secondaryAsOf: facet === "staffing" ? isoDay(options.staffingExamAsOf) : null,
+    };
+  });
+  const dated = cards.flatMap((card) => [card.asOf, card.secondaryAsOf]).filter(Boolean).sort();
+  return {
+    cards,
+    oldestSnapshot: dated[0] || null,
+    newestSnapshot: dated.at(-1) || null,
+  };
+}
+
+export function renderBrowseLanding(landing) {
+  const cards = (landing?.cards || []).map((card) => {
+    const primary = `${card.count.toLocaleString("en-US")} ${card.countLabel}`;
+    const secondary = card.secondaryCount
+      ? ` · ${card.secondaryCount.toLocaleString("en-US")} civil-service exams${card.secondaryAsOf ? ` as of ${esc(card.secondaryAsOf)}` : ""}`
+      : "";
+    return `<article class="browse-source-card" id="source-${esc(card.facet)}">
+      <p class="browse-source-count">${esc(primary)}${secondary}</p>
+      <h3><a href="${esc(card.route)}">${esc(card.label)}</a></h3>
+      <p class="browse-source-description">${esc(card.description)}</p>
+      <p class="browse-source-systems">${esc(card.sources)}</p>
+      <p class="browse-source-asof">${card.asOf ? `source snapshot ${esc(card.asOf)}` : "snapshot date unavailable"}</p>
+      <a class="browse-source-action" href="${esc(card.route)}">Browse ${esc(card.label.toLowerCase())} <span aria-hidden="true">→</span></a>
+    </article>`;
+  }).join("");
+  const range = landing?.oldestSnapshot && landing?.newestSnapshot
+    ? `Snapshots dated ${esc(landing.oldestSnapshot)} through ${esc(landing.newestSnapshot)}.`
+    : "Snapshot dates are shown on each source.";
+  return `<div class="browse-landing" data-build-rendered="browse-landing">
+    <header class="browse-landing-head">
+      <p class="now-kicker">Browse</p>
+      <h2>Browse NYC’s public record</h2>
+      <p>Choose a source view, then narrow it by agency, place, status, date, or keyword.</p>
+      <p class="browse-landing-disclosure"><strong>Current public snapshots.</strong> Counts describe the bounded records shown here, not each source’s full historical corpus. ${range}</p>
+    </header>
+    <div class="browse-source-grid">${cards}</div>
+  </div>`;
 }
 
 function renderedDate(value) {
