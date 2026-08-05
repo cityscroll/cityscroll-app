@@ -6,6 +6,8 @@ docs/data-source-graph.json
 docs/data-source-graph.html
 
 # Local notes and planning dirs (not part of the product tree)
+# Internal-only planning locations. Gitignore prevents future adds, but CI is
+# the enforcement layer for tracked-path introductions in PRs.
 internal/
 tasks/
 backlog/
@@ -14,7 +16,6 @@ backlog/
 # Local editor / agent helper files
 # AGENTS.md is committed (standing project contracts for contributors).
 CLAUDE.md
-backlog/
 PAPERCUTS.md
 .claude/
 .agents/
