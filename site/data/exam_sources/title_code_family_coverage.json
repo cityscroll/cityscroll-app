@@ -42,6 +42,30 @@
       "92510"
     ]
   },
+  "backfill": {
+    "shortfall_to_30pct": 15,
+    "candidate_rows_found": 0,
+    "reviewed_rows": 0,
+    "source_scan": [
+      {
+        "id": "dcas-annual-schedule",
+        "source": "annual_schedule.json",
+        "matches": 0
+      },
+      {
+        "id": "dcas-open-competitive",
+        "source": "dcas_open_competitive.json",
+        "matches": 0
+      },
+      {
+        "id": "dcas-annual-closed-list-depth",
+        "source": "list_depth_closed_exams.json",
+        "matches": 0
+      }
+    ],
+    "backfill_rows": [],
+    "note": "no exact publisher-supplied exam_number->title_code candidates found in checked official sources"
+  },
   "precision_audit": {
     "reviewed": 0,
     "correct": 0,
