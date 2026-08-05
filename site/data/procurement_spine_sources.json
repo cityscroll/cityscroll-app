@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "title": "Procurement spine observations for entity intelligence",
+  "observed_on": "2026-07-30",
+  "receipts": {
+    "passport_join": "site/data/passport_sources/verification_receipts/passport_public_2026-07-30.json",
+    "source_coverage": "entity_resolution/source_coverage.json"
+  },
+  "sources": {
+    "passport_contracts": {
+      "source_system": "passport-public-contracts",
+      "coverage_status": "measured",
+      "modern_awards": {
+        "joined": 4581,
+        "total": 5170,
+        "rate": 0.886,
+        "basis": "City Record Procurement awards with PIN, start_date >= 2025-01-01"
+      }
+    },
+    "checkbook_contracts": {
+      "source_system": "checkbook-contracts",
+      "coverage_status": "unknown",
+      "modern_awards": {
+        "joined": null,
+        "total": null,
+        "rate": null,
+        "basis": "Population denominator not materialized"
+      }
+    },
+    "checkbook_spending": {
+      "source_system": "checkbook-spending",
+      "coverage_status": "unknown",
+      "modern_awards": {
+        "joined": null,
+        "total": null,
+        "rate": null,
+        "basis": "Population denominator not materialized"
+      }
+    }
+  },
+  "rows": {
+    "passport_contracts": [
+      {
+        "ctr_id": "5755276",
+        "epin": "81626W0043001",
+        "contract_id": "CT1-816-20278801775",
+        "title": "PIN 26AE017201R0X00",
+        "agency": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+        "vendor": "MAKE IT ZESTY LLC",
+        "status": "Registered",
+        "award_amount": 250000,
+        "current_amount": 250000,
+        "paid_amount": 0,
+        "start_date": "09/01/2026",
+        "registration_date": "07/23/2026"
+      },
+      {
+        "ctr_id": "5790163",
+        "epin": "26026O0002001R001",
+        "title": "PO202700030 - DIONA Dell Marketing Renewal #1",
+        "agency": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+        "vendor": "DELL MARKETING LP",
+        "status": "In Progress",
+        "award_amount": 64500,
+        "current_amount": 64500,
+        "registration_date": null
+      }
+    ],
+    "checkbook_contracts": [
+      {
+        "prime_contract_id": "CT81626W0043001",
+        "prime_vendor": "Make it Zesty LLC",
+        "agency": "Health and Mental Hygiene",
+        "pin": "81626W0043001",
+        "status": "registered",
+        "current": "250000",
+        "registered": "2026-07-23"
+      }
+    ],
+    "checkbook_spending": [
+      {
+        "document_id": "CHK-Zesty-001",
+        "issue_date": "2026-08-01",
+        "payee_name": "Make it Zesty LLC",
+        "contract_id": "CT81626W0043001",
+        "check_amount": "12000.00",
+        "agency_name": "Health and Mental Hygiene",
+        "pin": "81626W0043001"
+      }
+    ]
+  },
+  "note": "Rows are replayable procurement observations, not the population denominator. The PASSPort rate is measured by the dated verification receipt; Checkbook uplift remains unknown until a population denominator is materialized."
+}

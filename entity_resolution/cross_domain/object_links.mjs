@@ -32,6 +32,7 @@ import {
 } from "../../worker/src/lib/subject_registry.mjs";
 // Reuse land-side strict ULURP token extractor (same as joinCityRecordLandNotices).
 import { extractUlurpKeys } from "../../worker/src/lib/ulurp_recommendations_join.mjs";
+import { buildEpinIndex, joinPinToEpin, normId } from "../../worker/src/lib/passport_join.mjs";
 // Franchise/concession party + eligibility (pure; only depends on vendorStem).
 import {
   extractCounterparties as extractFranchiseCounterparties,
@@ -51,6 +52,8 @@ export const CONTRACT_METHOD = "contract_id_join_v1";
 export const CONTRACT_METHOD_VERSION = "1";
 export const PAYMENT_METHOD = "checkbook_payment_v1";
 export const PAYMENT_METHOD_VERSION = "1";
+export const PASSPORT_CONTRACT_JOIN_METHOD = "passport_contract_join_v1";
+export const PASSPORT_CONTRACT_JOIN_METHOD_VERSION = "1";
 /** Meeting body → land project via exact ULURP token (mirrors land CR join). */
 export const MEETING_LAND_ULURP_METHOD = "exact_ulurp_token_v1";
 export const MEETING_LAND_ULURP_METHOD_VERSION = "1";
@@ -226,6 +229,8 @@ export function makeProvenance(input = {}) {
   if (input.observed_at) provenance.observed_at = clean(input.observed_at);
   if (input.source_url) provenance.source_url = clean(input.source_url);
   if (input.input_value != null) provenance.input_value = clean(input.input_value);
+  if (input.related_source_system) provenance.related_source_system = clean(input.related_source_system);
+  if (input.related_source_record_id) provenance.related_source_record_id = clean(input.related_source_record_id);
   return provenance;
 }
 
@@ -303,17 +308,28 @@ export function observationFromMoneyRow(row, opts = {}) {
   const sourceSystem = clean(opts.sourceSystem || row.source_system || "ocp-recent-contract-awards");
   const requestId = clean(row.request_id || row.id);
   const pin = clean(row.pin);
+  const epin = clean(row.epin || row.epin_id);
   const contractId = clean(
-    row.contract_id || row.prime_contract_id || row.ct_id || row.registered_contract_id,
+    row.contract_id
+      || row.prime_contract_id
+      || row.ct_id
+      || row.registered_contract_id
+      || row.ctr_id,
   );
-  const nativeKey = requestId || (pin ? `pin:${pin}` : "") || (contractId ? `ct:${contractId}` : "");
+  const nativeKey = requestId
+    || (pin ? `pin:${pin}` : "")
+    || (contractId ? `ct:${contractId}` : "")
+    || (epin ? `epin:${epin}` : "");
   if (!nativeKey) return null;
-  const agencyName = clean(row.agency_name);
-  const vendorName = clean(row.vendor_name);
+  const agencyName = clean(row.agency_name || row.agency);
+  const vendorName = clean(row.vendor_name || row.vendor || row.prime_vendor);
   if (!agencyName && !vendorName) return null;
 
   const typeDesc = clean(row.type_of_notice_description).toLowerCase();
-  let object_kind = "award";
+  const contractObservation = opts.objectKind === "contract"
+    || row.object_kind === "contract"
+    || /passport|checkbook_contracts/i.test(sourceSystem);
+  let object_kind = contractObservation ? "contract" : "award";
   if (typeDesc.includes("solicit")) object_kind = "solicitation";
   else if (typeDesc.includes("intent to award")) object_kind = "intent_to_award";
 
@@ -325,17 +341,66 @@ export function observationFromMoneyRow(row, opts = {}) {
     native_key: nativeKey,
     request_id: requestId || null,
     pin: pin || null,
+    epin: epin || null,
     contract_id: contractId || null,
     agency_name: agencyName || null,
     vendor_name: vendorName || null,
     label: clean(row.short_title) || vendorName || agencyName || requestId || nativeKey,
-    when: clean(row.start_date || row.award_date || row.date) || null,
+    when: clean(row.start_date || row.award_date || row.registration_date || row.date) || null,
     amount:
       row.contract_amount != null && row.contract_amount !== ""
         ? Number(row.contract_amount)
         : null,
-    subject_ref: requestId ? formatSubjectRef("notice", requestId) : null,
+    subject_ref: requestId
+      ? formatSubjectRef("notice", requestId)
+      : contractObservation && contractId
+        ? formatSubjectRef("contract", contractId)
+        : contractObservation && epin
+          ? formatSubjectRef("contract", `epin-${epin}`)
+        : null,
   };
+}
+
+/**
+ * Shape a PASSPort Public contract row as a contract subject.
+ *
+ * EPIN and contract ids remain procurement evidence keys on that subject;
+ * neither key rewrites a vendor into a legal-identity match.
+ */
+export function observationFromPassportContractRow(row, opts = {}) {
+  if (!row || typeof row !== "object") return null;
+  return observationFromMoneyRow(
+    {
+      ...row,
+      agency_name: row.agency_name || row.agency,
+      vendor_name: row.vendor_name || row.vendor,
+      object_kind: "contract",
+    },
+    {
+      ...opts,
+      sourceSystem: opts.sourceSystem || "passport-public-contracts",
+      objectKind: "contract",
+    },
+  );
+}
+
+/** Shape a Checkbook Contracts observation as a distinct contract subject. */
+export function observationFromCheckbookContractRow(row, opts = {}) {
+  if (!row || typeof row !== "object") return null;
+  return observationFromMoneyRow(
+    {
+      ...row,
+      contract_id: row.contract_id || row.prime_contract_id || row.id,
+      agency_name: row.agency_name || row.agency,
+      vendor_name: row.vendor_name || row.vendor || row.prime_vendor,
+      object_kind: "contract",
+    },
+    {
+      ...opts,
+      sourceSystem: opts.sourceSystem || "checkbook-contracts",
+      objectKind: "contract",
+    },
+  );
 }
 
 /**
@@ -357,8 +422,8 @@ export function observationFromPaymentRow(row, opts = {}) {
     row.contract_id || row.prime_contract_id || row.ct_id,
   );
   const pin = clean(row.pin);
-  const payee = clean(row.payee_name || row.vendor_name);
-  const agencyName = clean(row.agency_name);
+  const payee = clean(row.payee_name || row.vendor_name || row.payee || row.vendor);
+  const agencyName = clean(row.agency_name || row.agency);
   if (!payee && !contractId) return null;
   const nativeKey =
     documentId
@@ -1882,34 +1947,42 @@ export function joinKeyLinksForObservation(obs) {
   const pin = clean(obs.pin);
   const contractId = clean(obs.contract_id);
 
-  // notice|entity → pin (authority key)
-  if (objectSubject && pin) {
-    const pinRef = formatSubjectRef("pin", pin);
-    if (pinRef) {
-      const provenance = makeProvenance({
-        source_system: obs.source_system,
-        source_record_id: obs.source_record_id,
-        source_fields: ["pin"],
-        basis: "money_pin",
-        observed_at: obs.when,
-        input_value: pin,
-      });
-      if (provenance) {
-        // Registry path when both kinds are in shares_authority_key vocabulary.
-        const fromKind = parseSubjectRef(objectSubject)?.kind;
-        if (fromKind === "notice" || fromKind === "contract" || fromKind === "vendor") {
-          const edge = makeObjectLink({
-            type: "shares_authority_key",
-            from: objectSubject,
-            to: pinRef,
-            domain: "money",
-            confidence: "strong",
-            method: PIN_METHOD,
-            method_version: PIN_METHOD_VERSION,
-            provenance,
-          });
-          if (edge) edges.push(edge);
-        }
+  // notice|contract → PIN/EPIN authority keys. Keys are sidecars, never
+  // vendor-identity merges: the registry edge says two procurement subjects
+  // share publisher evidence, not that their legal names are identical.
+  if (objectSubject) {
+    const fromKind = parseSubjectRef(objectSubject)?.kind;
+    if (fromKind === "notice" || fromKind === "contract" || fromKind === "vendor") {
+      const keys = [
+        ...(pin ? [{ value: pin, field: "pin", basis: "money_pin" }] : []),
+        ...(clean(obs.epin) ? [{ value: clean(obs.epin), field: "epin", basis: "money_epin" }] : []),
+      ];
+      const seenKeys = new Set();
+      for (const key of keys) {
+        if (seenKeys.has(key.value)) continue;
+        seenKeys.add(key.value);
+        const pinRef = formatSubjectRef("pin", key.value);
+        if (!pinRef) continue;
+        const provenance = makeProvenance({
+          source_system: obs.source_system,
+          source_record_id: obs.source_record_id,
+          source_fields: [key.field],
+          basis: key.basis,
+          observed_at: obs.when,
+          input_value: key.value,
+        });
+        if (!provenance) continue;
+        const edge = makeObjectLink({
+          type: "shares_authority_key",
+          from: objectSubject,
+          to: pinRef,
+          domain: "money",
+          confidence: "strong",
+          method: PIN_METHOD,
+          method_version: PIN_METHOD_VERSION,
+          provenance,
+        });
+        if (edge) edges.push(edge);
       }
     }
   }
@@ -2090,9 +2163,14 @@ export function indexObservationsByRoot(observations) {
   // Resolve meeting → land reverse links against land projects in the same corpus
   // before identity indexing so decides_land_project edges ride with agency roots.
   const stamped = stampMeetingLandLinksOnCorpus(observations);
+  const procurementLinks = procurementContractLinksForObservations(stamped);
 
   for (const obs of stamped || []) {
-    const { objects, links } = linkObservation(obs);
+    const { objects, links: observationLinks } = linkObservation(obs);
+    const links = [
+      ...observationLinks,
+      ...(procurementLinks.get(obs.source_record_id) || []),
+    ];
     // Identity edges (agency/vendor) share the object list order; join-key edges are extras.
     const identityLinks = (links || []).filter((l) => l && !SIDE_LINK_TYPES.has(l.type));
     const sideLinks = (links || []).filter((l) => l && SIDE_LINK_TYPES.has(l.type));
@@ -2159,6 +2237,114 @@ export function dedupeObjectLinks(links = []) {
     || String(a.type).localeCompare(String(b.type))
     || String(a.to).localeCompare(String(b.to)),
   );
+}
+
+/**
+ * Join City Record award/intent rows to materialized contract subjects.
+ *
+ * The join reuses the production PIN↔EPIN strategy (exact, suffix, and safe
+ * prefix forms) and accepts an exact normalized contract id as a second key.
+ * It returns links keyed by the notice observation so vendor dossiers receive
+ * contract corroboration without turning a procurement key into a legal-name
+ * identity assertion.
+ *
+ * @param {object[]} observations
+ * @returns {Map<string, object[]>}
+ */
+export function procurementContractLinksForObservations(observations = []) {
+  const list = Array.isArray(observations) ? observations : [];
+  const contracts = list.filter(
+    (obs) => obs?.domain === "money"
+      && obs.object_kind === "contract"
+      && obs.subject_ref
+      && parseSubjectRef(obs.subject_ref)?.kind === "contract",
+  );
+  const byContractId = new Map();
+  const byAuthorityKey = new Map();
+  const passportEpinRows = [];
+
+  const addKey = (key, contract) => {
+    const normalized = normId(key);
+    if (!normalized) return;
+    if (!byAuthorityKey.has(normalized)) byAuthorityKey.set(normalized, []);
+    byAuthorityKey.get(normalized).push(contract);
+  };
+
+  for (const contract of contracts) {
+    const contractId = normId(contract.contract_id);
+    if (contractId) {
+      if (!byContractId.has(contractId)) byContractId.set(contractId, []);
+      byContractId.get(contractId).push(contract);
+    }
+    addKey(contract.pin, contract);
+    addKey(contract.epin, contract);
+    if (contract.epin) passportEpinRows.push(contract.epin);
+  }
+  const epinIndex = buildEpinIndex(passportEpinRows);
+  const linksByObservation = new Map();
+
+  for (const notice of list) {
+    if (notice?.domain !== "money" || notice.object_kind === "contract") continue;
+    if (!notice.subject_ref || parseSubjectRef(notice.subject_ref)?.kind !== "notice") continue;
+
+    const matches = new Map();
+    const addMatches = (rows, joinMethod, inputValue) => {
+      for (const contract of rows || []) {
+        if (!matches.has(contract.subject_ref)) {
+          matches.set(contract.subject_ref, { contract, joinMethod, inputValue });
+        }
+      }
+    };
+    const contractId = normId(notice.contract_id);
+    if (contractId) addMatches(byContractId.get(contractId), "contract_id", notice.contract_id);
+
+    const pin = clean(notice.pin);
+    if (pin) {
+      addMatches(byAuthorityKey.get(normId(pin)), "pin_exact", pin);
+      const joined = joinPinToEpin(pin, epinIndex);
+      if (joined?.epin) {
+        addMatches(
+          byAuthorityKey.get(joined.epin),
+          joined.method,
+          pin,
+        );
+      }
+    }
+    const epin = clean(notice.epin);
+    if (epin) addMatches(byAuthorityKey.get(normId(epin)), "epin_exact", epin);
+    if (!matches.size) continue;
+
+    const edges = [];
+    for (const { contract, joinMethod, inputValue } of matches.values()) {
+      const sourceFields = joinMethod === "contract_id"
+        ? ["contract_id"]
+        : ["pin", "epin"];
+      const provenance = makeProvenance({
+        source_system: contract.source_system,
+        source_record_id: contract.source_record_id,
+        source_fields: sourceFields,
+        basis: `procurement_${joinMethod}`,
+        observed_at: contract.when,
+        input_value: inputValue || contract.epin || contract.contract_id,
+        related_source_system: notice.source_system,
+        related_source_record_id: notice.source_record_id,
+      });
+      if (!provenance) continue;
+      const edge = makeObjectLink({
+        type: "references_contract",
+        from: notice.subject_ref,
+        to: contract.subject_ref,
+        domain: "money",
+        confidence: "strong",
+        method: PASSPORT_CONTRACT_JOIN_METHOD,
+        method_version: PASSPORT_CONTRACT_JOIN_METHOD_VERSION,
+        provenance,
+      });
+      if (edge) edges.push(edge);
+    }
+    if (edges.length) linksByObservation.set(notice.source_record_id, edges);
+  }
+  return linksByObservation;
 }
 
 /**
