@@ -212,6 +212,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/11_accessibility.py
   run_and_fail python3 test/standards/rendered_schema_vocabulary.py
   run_and_fail python3 test/functional/12_language.py
+  run_and_fail python3 test/functional/24_notice_document_features.py
   run_and_fail python3 test/functional/14_focus_visible.py
   run_and_fail python3 test/functional/16_external_links.py
   # Runtime multi-locale stray-English is not a CI required gate (static lint is).
