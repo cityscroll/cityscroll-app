@@ -367,6 +367,21 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
   const by_bbl = {};
   let pairCount = 0;
 
+  const noticeSummary = (obs) => ({
+    request_id: obs.request_id,
+    subject_ref: obs.subject_ref,
+    label: obs.label,
+    when: obs.when || null,
+    date_basis: obs.when ? "City Record event/start date" : null,
+    agency_name: obs.agency_name || null,
+    disposition_stage: obs.disposition_stage || null,
+    source: "City Record Online",
+    relation: "sits_on_parcel",
+    confidence: "strong",
+    method: BBL_JOIN_METHOD,
+    href: `#notice/${encodeURIComponent(obs.request_id)}`,
+  });
+
   for (const obs of propertyObservations || []) {
     if (!obs?.subject_ref || obs.domain !== "property") continue;
     for (const bbl of obs.bbls || []) {
@@ -381,11 +396,7 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
             status: "no_zap_match",
           };
         }
-        by_bbl[bbl].property_notices.push({
-          request_id: obs.request_id,
-          subject_ref: obs.subject_ref,
-          label: obs.label,
-        });
+        by_bbl[bbl].property_notices.push(noticeSummary(obs));
         continue;
       }
       if (!by_bbl[bbl]) {
@@ -397,11 +408,7 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
           status: "matched",
         };
       }
-      by_bbl[bbl].property_notices.push({
-        request_id: obs.request_id,
-        subject_ref: obs.subject_ref,
-        label: obs.label,
-      });
+      by_bbl[bbl].property_notices.push(noticeSummary(obs));
       for (const projectId of projects) {
         const projectRef = formatSubjectRef("project", projectId);
         const parcelRef = bblSubjectRef(bbl);
@@ -451,6 +458,17 @@ export function joinPropertyToZapByBbl(propertyObservations = [], zapBblRows = [
           subject_ref: projectRef,
           label: clean(meta.project_name) || projectId,
           public_status: clean(meta.public_status) || null,
+          when: clean(meta.completed_date || meta.approval_date || meta.current_milestone_date
+            || meta.noticed_date || meta.app_filed_date) || null,
+          date_basis: meta.completed_date ? "ZAP completed date"
+            : meta.approval_date ? "ZAP approval date"
+              : meta.current_milestone_date ? "ZAP current milestone date"
+                : meta.noticed_date ? "ZAP noticed date"
+                  : meta.app_filed_date ? "ZAP application filed date" : null,
+          source: "ZAP / zap-bbl",
+          relation: "sits_on_parcel",
+          confidence: "strong",
+          method: BBL_JOIN_METHOD,
           href: `#land?project=${encodeURIComponent(projectId)}`,
         });
         by_bbl[bbl].status = "matched";

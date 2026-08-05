@@ -170,6 +170,7 @@ function serializeState(){
       if(propProcessSel !== "all") q.set("process", propProcessSel);
       if(propStageSel !== "all") q.set("stage", propStageSel);
       if(propertyView === "archive") q.set("view", "archive");
+      if(globalThis.propertyParcelScopeBbl) q.set("facet",JSON.stringify({entity_refs_all:[`bbl:${globalThis.propertyParcelScopeBbl}`]}));
     }
     if(tab === "rules"){
       if(rulesProcessSel !== "all") q.set("process", rulesProcessSel);
@@ -960,6 +961,17 @@ function applyHash(){
         propProcessSel = q.get("process") || "all";
         propStageSel = q.get("stage") || "all";
         propertyView = q.get("view")==="archive" ? "archive" : "default";
+        let parcelBbl=null;
+        try{
+          const facet=JSON.parse(q.get("facet")||"{}");
+          const refs=Array.isArray(facet.entity_refs_all)?facet.entity_refs_all:[];
+          const parcels=[...new Set(refs.map(ref=>String(ref).match(/^bbl:(\d{10})$/)?.[1]).filter(Boolean))];
+          parcelBbl=parcels.length===1?parcels[0]:null;
+        }catch(_e){}
+        globalThis.propertyParcelScopeBbl=parcelBbl;
+        const parcelPanel=$("#parcel-biography-panel");
+        if(parcelBbl) paintParcelBiographyPanel(parcelBbl);
+        else if(parcelPanel){parcelPanel.hidden=true;parcelPanel.innerHTML="";}
         const taxPanel=$("#tax-lien-sale-panel");
         if(taxPanel){
           const showLien=q.get("view")==="tax-lien";
