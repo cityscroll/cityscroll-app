@@ -384,7 +384,7 @@ export function resolveSourceId(name, contractsById) {
     [/zap/, "zap-projects"],
     [/dob now|dob-now/, "dob-now-job-filings"],
     [/current solicitations|3khw-qi8f/, "current-solicitations-ocp"],
-    [/recent contract awards|qyyg-4tf5/, "recent-contract-awards-ocp"],
+    [/recent contract awards|qyyg-4tf5/, "ocp-recent-contract-awards"],
     [/bid tabulation|9k82-ys7w/, "bid-tabulations-historical"],
     [/doing business|72mk-a8z7/, "doing-business-entities"],
     [/abo|authorities budget/, "abo-local-authorities"],
@@ -449,6 +449,7 @@ function collectDepotSources(registry, sourceContracts) {
   // so a moved publisher URL does not stay stuck on a stale depot copy.
   for (const src of registry.sources || []) {
     if (!src?.id) continue;
+    if (src.id === "recent-contract-awards-ocp") continue;
     const fromContract = byId.get(src.id);
     upsert(src.id, {
       name: src.name || src.id,

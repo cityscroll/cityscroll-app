@@ -262,7 +262,7 @@
       ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent (Open Data metadata)",
-      "product_freshness": "Joined into the precomputed contract lifecycle on the Worker; edge-cached with the lifecycle read model.",
+      "product_freshness": "The 2026-08-05 warehouse snapshot is served first on the contract lifecycle; live SODA remains the miss fallback.",
       "used_for": "OCP award side-car on the procurement lifecycle: award date and amount corroboration against City Record, with both sources named when they disagree.",
       "code_references": [
         {
@@ -274,7 +274,13 @@
           "contains": "qyyg-4tf5"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/ocp_awards_warehouse_lookup.json",
+        "materialized_at": "2026-08-05T10:40:50.286Z",
+        "row_count": 53245
+      }
     },
     {
       "id": "checkbook-nycha-contracts",
@@ -700,7 +706,7 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic project updates",
-      "product_freshness": "Queried live with a five-minute browser cache and used by daily subscriptions.",
+      "product_freshness": "The warehouse snapshot is served first for ZAP outcome project rows; live SODA remains the miss fallback, and browser search still queries live with a five-minute cache.",
       "used_for": "Rezoning search, status, milestones, applicants, and comments handoff.",
       "code_references": [
         {
@@ -708,7 +714,13 @@
           "contains": "hgx4-8ukb"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/zap_projects_warehouse_lookup.json",
+        "materialized_at": "2026-08-02T10:22:34.003Z",
+        "row_count": 231
+      }
     },
     {
       "id": "zap-bbl",
@@ -729,7 +741,7 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic project updates",
-      "product_freshness": "Queried live with a five-minute browser cache.",
+      "product_freshness": "The 2026-08-05 warehouse snapshot is served first for ZAP outcome tax lots; live SODA remains the miss fallback.",
       "used_for": "Tax-lot joins from ZAP projects to MapPLUTO.",
       "code_references": [
         {
@@ -737,7 +749,14 @@
           "contains": "2iga-a6mk"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/zap_bbl_warehouse_lookup.json",
+        "materialized_at": "2026-08-05T10:41:38.120Z",
+        "row_count": 50514,
+        "project_count": 24542
+      }
     },
     {
       "id": "zap-api-outcomes",
