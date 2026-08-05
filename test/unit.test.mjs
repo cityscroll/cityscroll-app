@@ -236,6 +236,45 @@ test("workerFetch: both bases down → rejects (callers show their own error)", 
   const { workerFetch } = makeWorkerFetch(async () => { throw new TypeError("down"); });
   await assert.rejects(() => workerFetch("/inv", {}));
 });
+test("workerFetch: incomplete 200 → semantic failover and remembers complete base", async () => {
+  const calls = [];
+  const { workerFetch } = makeWorkerFetch(async (url) => {
+    calls.push(url);
+    return {
+      ok: true,
+      url,
+      complete: url.startsWith("https://fallback.example"),
+      clone() { return this; },
+    };
+  });
+  const accepts = async (response) => response.complete;
+  const r1 = await workerFetch("/zap-outcomes?id=2022M0258", null, 12000, accepts);
+  assert.equal(r1.url, "https://fallback.example/zap-outcomes?id=2022M0258");
+  const r2 = await workerFetch("/nl", { method: "POST" });
+  assert.equal(r2.url, "https://fallback.example/nl");
+  assert.deepEqual(calls, [
+    "https://api.example/zap-outcomes?id=2022M0258",
+    "https://fallback.example/zap-outcomes?id=2022M0258",
+    "https://fallback.example/nl",
+  ]);
+});
+test("workerFetch: both responses incomplete → preserves primary for honest normalization", async () => {
+  const calls = [];
+  const { workerFetch } = makeWorkerFetch(async (url) => {
+    calls.push(url);
+    return {
+      ok: url.startsWith("https://api.example"),
+      url,
+      clone() { return this; },
+    };
+  });
+  const response = await workerFetch("/zap-outcomes?id=2022M0258", null, 12000, () => false);
+  assert.equal(response.url, "https://api.example/zap-outcomes?id=2022M0258");
+  assert.deepEqual(calls, [
+    "https://api.example/zap-outcomes?id=2022M0258",
+    "https://fallback.example/zap-outcomes?id=2022M0258",
+  ]);
+});
 
 // ---------- priorCycleAwards: cross-cycle recurring-bid heuristic (research-spike findings) ----------
 // The research measured a naive agency+title match at ~48% precision on real award data — NYC
