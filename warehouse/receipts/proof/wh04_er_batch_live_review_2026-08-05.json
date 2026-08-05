@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "phase": "WH-04",
+  "reviewed_at": "2026-08-05",
+  "source_raw_sha256": "db380e85baa57b06643040933a9387a7d7ed9a012326922392eb19033429dfc5",
+  "candidate_pairs": 562,
+  "accepted_pair_candidates": 45,
+  "accepted_pair_candidates_reviewed": 45,
+  "ambiguous_pair_candidates": 517,
+  "confirmed_false_positives": 0,
+  "review_basis": "All pair candidates accepted by the conventional matcher were reviewed at the published vendor-name and normalized-stem grain. Every accepted pair shared an exact vendor stem; unresolved candidates were not promoted to links.",
+  "unreviewed_residual": "The review does not audit every single-record vendor-stem link or agency normalization, does not resolve the 517 ambiguous pair candidates, and does not support a full-corpus precision claim."
+}
