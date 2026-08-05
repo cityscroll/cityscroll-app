@@ -739,6 +739,17 @@
     .property-view-switch .chip{min-width:0;width:100%;white-space:normal}
   }
   .tax-lien-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--oxblood);border-radius:10px;box-shadow:var(--shadow)}
+  .parcel-biography-panel{margin:0 0 20px;padding:18px;background:var(--card);border:1px solid var(--rule);border-inline-start:5px solid var(--green);border-radius:10px;box-shadow:var(--shadow)}
+  .parcel-biography-panel[hidden]{display:none!important}
+  .parcel-biography-bbl{font:700 16px/1.3 var(--font-display);margin:5px 0 8px}
+  .parcel-biography-domains{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+  .parcel-biography-domain{min-width:0;padding:12px;border:1px solid var(--rule);border-radius:8px;background:var(--color-canvas-subtle)}
+  .parcel-biography-domain .ei-list{margin:7px 0;padding-inline-start:18px}
+  .parcel-biography-domain .ei-list li{margin:0 0 8px}
+  .parcel-biography-item-meta,.parcel-biography-relation{display:block;font-size:12px;line-height:1.4}
+  .parcel-biography-coverage{margin:9px 0 0;padding-top:8px;border-top:1px solid var(--rule);font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .parcel-biography-method{margin-top:10px}
+  @media(max-width:760px){.parcel-biography-domains{grid-template-columns:minmax(0,1fr)}}
   .tax-lien-panel h2{font:700 21px/1.15 var(--font-display);margin:0 0 7px}
   .tax-lien-deck,.tax-lien-lead,.tax-lien-meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif;margin:0 0 10px;color:var(--ink-soft)}
   .tax-lien-lead{font-weight:750;color:var(--ink);font-size:15px}
@@ -2004,6 +2015,7 @@
       </details>
     </div>
     <div class="chiprow property-view-switch" id="property-view-switch" role="group" aria-label="Current and archived Property records"></div>
+    <section class="parcel-biography-panel" id="parcel-biography-panel" aria-live="polite" hidden></section>
     <!-- Archive/reference only: deep link #property?view=tax-lien. Not a property lens destination. -->
     <section class="tax-lien-panel tax-lien-archive-panel" id="tax-lien-sale-panel" aria-live="polite" hidden data-tax-lien-archive="1">
       <div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div>
