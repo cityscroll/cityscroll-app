@@ -14,6 +14,7 @@ import {
   buildMoneyAgenciesSnapshot,
   buildMoneyDefaultOpenSnapshot,
   buildStaffingHiresSnapshot,
+  compactZapOutcomeRecord,
   filterStillOpenNotices,
   isDefaultLandSearch,
   isDefaultMoneySearch,
@@ -57,10 +58,25 @@ test("buildDataPageSnapshot stamps schema and chart keys from raw SODA rows", ()
 
 test("buildLandDefaultSnapshot keeps project_id order and caps count", () => {
   const projects = JSON.parse(readFileSync(join(FIXTURE, "land_default_projects.json"), "utf8"));
-  const snap = buildLandDefaultSnapshot(projects, { now: new Date("2026-08-01T12:00:00Z") });
+  const outcomesByProject = {
+    [projects[0].project_id]: compactZapOutcomeRecord({
+      project_id: projects[0].project_id,
+      filled: false,
+      join: { matched: false, reason: "No published outcome joined." },
+      documents: [],
+      dispositions: [],
+      approved_actions: [],
+    }),
+  };
+  const snap = buildLandDefaultSnapshot(projects, {
+    now: new Date("2026-08-01T12:00:00Z"),
+    outcomesByProject,
+  });
   assert.equal(snap.delivery_tier, "inline-at-build");
   assert.equal(snap.count, projects.length);
   assert.equal(snap.projects[0].project_id, projects[0].project_id);
+  assert.equal(snap.outcomes.by_project[projects[0].project_id].snapshot_state, "absent");
+  assert.equal(snap.outcomes.missing_count, projects.length - 1);
   assert.match(snap.query.$where, /ULURP/);
 });
 
@@ -119,6 +135,12 @@ test("committed data page and land default snapshots exist and parse", () => {
   assert.ok(dataPage.charts.sections.length >= 1);
   assert.ok(land.projects.length >= 1);
   assert.ok(land.projects[0].project_id);
+  assert.equal(land.outcomes.delivery_tier, "inline-at-build");
+  assert.equal(
+    Object.keys(land.outcomes.by_project).length,
+    land.projects.length,
+    "every default project must ship a present, absent, or unavailable outcome state",
+  );
 });
 
 test("buildMoneyDefaultOpenSnapshot keeps notice order and due_date floor", () => {

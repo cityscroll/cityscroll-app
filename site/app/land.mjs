@@ -36,9 +36,26 @@ function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
     landDefaultSnapshotPromise=fetch(LAND_DEFAULT_SNAPSHOT_URL)
       .then(r=>r.ok?r.json():null)
+      .then(snapshot=>{
+        seedLandOutcomeSnapshot(snapshot);
+        return snapshot;
+      })
       .catch(()=>null);
   }
   return landDefaultSnapshotPromise;
+}
+function seedLandOutcomeSnapshot(snapshot){
+  const byProject=snapshot?.outcomes?.by_project||{};
+  const generatedAt=snapshot?.generated_at||null;
+  for(const [id,record] of Object.entries(byProject)){
+    if(!record || record.snapshot_state==="unavailable") continue;
+    ZAP_OUTCOMES_MEM.set(id,{
+      data:{ok:true,cached:true,static_snapshot:true,generated_at:generatedAt,record},
+      at:Date.now(),
+      generatedAt,
+      staticSnapshot:true
+    });
+  }
 }
 function loadLandUpcomingHearings(){
   if(!landUpcomingHearingsPromise){
@@ -410,7 +427,7 @@ async function landSelect(i, el){
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
-  <div id="land-outcomes" class="land-outcomes"><div class="note"><span class="loading"></span> ${t("land_outcomes_loading")}</div></div>
+  <div id="land-outcomes" class="land-outcomes">${landOutcomeFirstPaintHTML(r)}</div>
   <div id="landmap" style="display:none"></div>
   <div id="landpan" class="map-pan-controls" role="group" aria-label="${t("map_pan_group_aria")}" hidden>
     <button type="button" data-map-pan="west" aria-controls="landmap" aria-label="${t("map_pan_west")}">←</button>
@@ -980,7 +997,7 @@ function landOutcomesHTML(record, phaseTools){
   record=normalizeLandRecord(record);
   const spineHTML=landSpineHTML(record.spine, record, phaseTools);
   const join = record.join || {};
-  if(!join.matched || !record.filled) return spineHTML;
+  if(!join.matched || !record.filled) return `${spineHTML}${landOutcomeAbsentHTML(record)}`;
   const actions = Array.isArray(record.approved_actions) ? record.approved_actions : [];
   const dispositions = Array.isArray(record.dispositions) ? record.dispositions : [];
   const documents = Array.isArray(record.documents) ? record.documents : [];
@@ -1054,6 +1071,27 @@ function landOutcomesHTML(record, phaseTools){
     <div class="note">${t("land_outcomes_provenance_html")}</div>`;
 }
 
+function landOutcomeAbsentHTML(record){
+  const portal=record?.portal_url
+    ? ` <a class="view" href="${escUiHtml(record.portal_url)}" ${EXT_ATTRS}>${t("land_outcomes_portal_link")}${extSR()}</a>`
+    : "";
+  return `<div class="land-outcomes-absent" data-zap-outcomes-state="absent">
+    <div class="chain-h">${t("land_outcomes_heading")}</div>
+    <div class="note">${t("land_outcomes_unmatched_html",{reason:t("land_outcomes_unmatched_default")})}${portal}</div>
+  </div>`;
+}
+
+function landOutcomeFirstPaintHTML(r){
+  const hit=r?.project_id?zapOutcomesMemGet(r.project_id):null;
+  const record=hit?.data?.record;
+  if(!record) return "";
+  return landOutcomeSnapshotHTML(record,null);
+}
+function landOutcomeSnapshotHTML(record,phaseTools){
+  const state=record.snapshot_state==="absent"?"absent":"present";
+  return `<section data-zap-outcomes-first-paint="1" data-zap-outcomes-state="${state}">${landOutcomesHTML(record,phaseTools)}</section>`;
+}
+
 /* Session cache + list prefetch for zap-outcomes. Daily edge prewarm keeps the Worker KV
    warm (~50–200ms), but a same-tab revisit or list→detail click should not re-pay even that
    when the payload is already in memory. Prefetch runs after the land list paints so the
@@ -1067,12 +1105,12 @@ function zapOutcomesMemGet(projectId){
   ZAP_OUTCOMES_MEM.delete(projectId);
   return null;
 }
-function fetchZapOutcomesPayload(projectId){
+function fetchZapOutcomesPayload(projectId,{allowStatic=true}={}){
   const id = String(projectId || "").trim();
   if(!id) return Promise.resolve(null);
   const existing = zapOutcomesMemGet(id);
   if(existing?.p) return existing.p;
-  if(existing?.data) return Promise.resolve(existing.data);
+  if(existing?.data && (allowStatic || !existing.staticSnapshot)) return Promise.resolve(existing.data);
   const p = (async ()=>{
     try{
       const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000);
@@ -1118,16 +1156,24 @@ async function loadZapOutcomes(r, el, selection){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
-    el.innerHTML = landOutcomesHTML(record, phaseTools);
+    el.innerHTML = warm.staticSnapshot
+      ? landOutcomeSnapshotHTML(record,phaseTools)
+      : landOutcomesHTML(record,phaseTools);
     bindLandSpineUI(el);
     paintLandActionRail($("#land-actions"), r, record, phaseTools);
-    return;
+    const generated=Date.parse(warm.generatedAt||warm.data.generated_at||"");
+    const staleStatic=warm.staticSnapshot && (!Number.isFinite(generated) || Date.now()-generated>6*60*60*1000);
+    if(!staleStatic) return;
   }
-  const [data, phaseTools] = await Promise.all([fetchZapOutcomesPayload(r.project_id), phaseToolsP]);
+  const [data, phaseTools] = await Promise.all([
+    fetchZapOutcomesPayload(r.project_id,{allowStatic:false}),
+    phaseToolsP
+  ]);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    el.innerHTML = "";
+    // Preserve a static first paint on transient freshness failures. An empty
+    // region is allowed only when this project was outside the bounded snapshot.
     return;
   }
   const record = normalizeLandRecord(data.record);

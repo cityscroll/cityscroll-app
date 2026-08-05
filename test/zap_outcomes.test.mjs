@@ -170,12 +170,12 @@ test("verification receipt records rates above usefulness and curl-verified sour
   assert.equal(receipt.field_cases.demo_frame.deep_link, "#land/2022M0258");
 });
 
-test("source contract is edge-materialized with join_measurement", () => {
+test("source contract is inline-at-build with join_measurement", () => {
   const registry = loadSourceContracts();
   const contract = registry.contracts.find((c) => c.id === "zap-api-outcomes");
   assert.ok(contract, "zap-api-outcomes contract missing");
   assert.equal(contract.status, "live");
-  assert.equal(contract.delivery_tier, "edge-materialized");
+  assert.equal(contract.delivery_tier, "inline-at-build");
   assert.equal(contract.kind, "html");
   assert.ok(contract.join_measurement);
   assert.ok(contract.join_measurement.rates.ulurp_complete_useful_outcome.rate >= 0.3);
@@ -212,4 +212,16 @@ test("index land detail loads outcomes from worker path only", () => {
   // so first select does not pay the multi-second cold materialization spinner.
   assert.match(src, /prefetchZapOutcomesForList/);
   assert.match(src, /ZAP_OUTCOMES_MEM/);
+});
+
+test("default Land outcomes paint from the daily snapshot without spinner-to-empty", () => {
+  const src = SITE_SOURCE;
+  assert.match(src, /landOutcomeFirstPaintHTML/);
+  assert.match(src, /data-zap-outcomes-first-paint/);
+  assert.match(src, /data-zap-outcomes-state="absent"/);
+  assert.doesNotMatch(
+    src,
+    /id="land-outcomes"[^>]*><div class="note"><span class="loading"><\/span>/,
+  );
+  assert.doesNotMatch(src, /if\(!data \|\| data\.ok === false \|\| !data\.record\)\{\s*el\.innerHTML = ""/);
 });

@@ -363,7 +363,7 @@
           {
             "selector": "#lstatus",
             "property": "value",
-            "equals": "all"
+            "equals": "active"
           }
         ]
       }

@@ -7,6 +7,10 @@
 name: Deploy Cloudflare Pages
 
 on:
+  schedule:
+    # The Worker refreshes the ZAP read model at 13:00 UTC; copy it into the
+    # static Land document after that bounded materialization completes.
+    - cron: "17 14 * * *"
   push:
     branches: [main]
   pull_request:
@@ -63,6 +67,8 @@ jobs:
       - uses: actions/configure-pages@v5
       - name: Build verified site artifact
         uses: ./.github/actions/build-site
+        with:
+          refresh-decision-outcomes: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
       - name: Deploy to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v3.14.1

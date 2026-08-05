@@ -10,11 +10,12 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/route_migration.mjs` | Finite legacy-fragment grammar, clean document targets, bounded parameter allowlists, and the URL migration-map contract. `site/legacy_hash_forward.mjs` is the root-document bridge that applies it. |
 | `site/primary_document_view.mjs` | Shared document shell for build-rendered Now and Browse defaults. `site/browse_view.mjs` owns bounded facet view models and HTML; `tools/build_primary_documents.mjs` materializes them. |
 | `site/pages_edge.mjs` | Pages request router for edge-rendered Browse queries and notice permalinks. `site/_worker.js` is the deployment entry; Stats routes are explicitly excluded. |
+| `site/meeting_outcomes_static.mjs` | Pure compaction and first-paint rendering for the daily per-notice Council outcome snapshot, including an explicit honest-absent state. |
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
-| `site/app/land.mjs` | Land search/detail/map, ZAP outcomes, ULURP timeline, and notice-to-ZAP joins. |
+| `site/app/land.mjs` | Land search/detail/map, static-first ZAP outcomes with optional freshness enhancement, ULURP timeline, and notice-to-ZAP joins. |
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, stamped district-bag filtering, hearing explorer, and notice/land action rails. |
 | `site/app/result-match.mjs` | Shared list and digest match evidence plus digest-item presentation used by reading routes without loading watch management. |
 | `site/app/notice-context.mjs` | Notice-detail context, attachment, parcel, and external-award hydration shared by reading routes. |

@@ -1965,11 +1965,11 @@
         <a class="act mini" href="/near-you/lens/land/" data-near-you-link data-lens="land" data-i18n="near_you_map_scope">See on map</a>
       </div>
     </div>
-    <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
+    <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" selected data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
     <div class="property-rail-label lens-primary-label" data-i18n="status_label">Status</div>
     <div class="chiprow lens-primary-rail" id="land-status-rail" role="group" aria-label="Status" data-i18n-aria="status_label">
-      <button type="button" class="chip" data-land-status="all" aria-pressed="true" data-i18n="status_all">All</button>
-      <button type="button" class="chip" data-land-status="active" aria-pressed="false" data-i18n="status_active">In review / active</button>
+      <button type="button" class="chip" data-land-status="all" aria-pressed="false" data-i18n="status_all">All</button>
+      <button type="button" class="chip" data-land-status="active" aria-pressed="true" data-i18n="status_active">In review / active</button>
       <button type="button" class="chip" data-land-status="hearings" aria-pressed="false" data-i18n="land_status_upcoming_hearings">Upcoming hearings</button>
     </div>
     <div class="lens-search-state" data-search-state="land"></div>

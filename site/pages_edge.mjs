@@ -1,4 +1,5 @@
 import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
+import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_FIELDS = [
@@ -41,7 +42,7 @@ export function edgeRequestKind(urlValue) {
   return "asset";
 }
 
-export function renderEdgeNotice(row, id) {
+export function renderEdgeNotice(row, id, meetingOutcome = null) {
   const title = row?.short_title || `City Record notice ${id}`;
   const agency = row?.agency_name || "Agency not listed";
   const source = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -64,6 +65,7 @@ export function renderEdgeNotice(row, id) {
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       <dl class="glance">${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
+      ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
       <div class="actions"><a class="act primary" href="${esc(source)}" target="_blank" rel="noopener noreferrer">View City Record</a></div>
     </article>
   </div>`;
@@ -104,7 +106,17 @@ async function noticeRow(id) {
 }
 
 async function handleNotice(request, env, id) {
-  const asset = await staticAsset(env, request, "/");
+  const [asset, meetingSnapshotResponse] = await Promise.all([
+    staticAsset(env, request, "/"),
+    staticAsset(env, request, "/data/meeting_outcomes_snapshot.json"),
+  ]);
+  let meetingOutcome = null;
+  try {
+    const snapshot = meetingSnapshotResponse.ok ? await meetingSnapshotResponse.json() : null;
+    meetingOutcome = snapshot?.by_notice?.[id] || null;
+  } catch (_error) {
+    meetingOutcome = null;
+  }
   let row = null;
   let upstreamFailed = false;
   try {
@@ -124,7 +136,7 @@ async function handleNotice(request, env, id) {
     .on("button.tabbtn.active", { element(element) { element.setAttribute("class", "tabbtn"); } })
     .on("section.tabpane.active", { element(element) { element.setAttribute("class", "tabpane"); } })
     .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
-    .on("#noticeview", { element(element) { element.setInnerContent(renderEdgeNotice(row, id), { html: true }); } })
+    .on("#noticeview", { element(element) { element.setInnerContent(renderEdgeNotice(row, id, meetingOutcome), { html: true }); } })
     .transform(response);
   if (request.method === "HEAD") return new Response(null, { status, headers: transformed.headers });
   return transformed;
