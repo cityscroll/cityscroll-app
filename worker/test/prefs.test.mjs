@@ -44,10 +44,19 @@ function makeEnv(subsMap) {
   };
 }
 
+function prefsUrl(origin, token = "") {
+  const url = new URL("/prefs", origin);
+  if (token) url.searchParams.set("token", token);
+  return url;
+}
+
 test("prefsLink issues prefs-scoped URL", async () => {
   const env = makeEnv({});
   const url = await prefsLink(env, ["a", "b.co"].join("@"));
-  assert.match(url, /^https:\/\/cityscroll\.org\/prefs\?token=/);
+  const parsed = new URL(url);
+  assert.equal(parsed.origin, "https://cityscroll.org");
+  assert.equal(parsed.pathname, "/prefs");
+  assert.ok(parsed.searchParams.get("token"));
 });
 
 test("GET /prefs lists watches for the token email", async () => {
@@ -69,7 +78,7 @@ test("GET /prefs lists watches for the token email", async () => {
   };
   const env = makeEnv(map);
   const tok = await tokenFor(TEST_EMAIL);
-  const res = await handlePrefs(new Request(`https://cityscroll.org/prefs?token=${encodeURIComponent(tok)}`), env);
+  const res = await handlePrefs(new Request(prefsUrl("https://cityscroll.org", tok)), env);
   assert.equal(res.status, 200);
   const html = await res.text();
   assert.match(html, /schools/i);
@@ -128,9 +137,9 @@ test("anonymous /prefs remains invalid and leaks no account email", async () => 
 });
 
 test("shared API-host preference documents permanently recover to the canonical host", async () => {
-  const response = await handlePrefs(new Request("https://api.cityscroll.org/prefs?token=shared"), {});
+  const response = await handlePrefs(new Request(prefsUrl("https://api.cityscroll.org", "shared")), {});
   assert.equal(response.status, 301);
-  assert.equal(response.headers.get("location"), "https://cityscroll.org/prefs?token=shared");
+  assert.equal(response.headers.get("location"), prefsUrl("https://cityscroll.org", "shared").toString());
 });
 
 test("session cookie alone cannot POST a watch mutation", async () => {
