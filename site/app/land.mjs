@@ -105,7 +105,7 @@ function setLandStatus(message=""){
 }
 function setLandResultCount(count){
   const element=$("#lrescount");
-  if(element) element.textContent=t("results_count",{n:fmtNumber(count)});
+  if(element) element.textContent=t("results_count",{n:fmtNumber(countWithScopeReceipt(count))});
 }
 function landHasAppliedFilters(){
   return !!($("#lkw")?.value.trim() || $("#lboro")?.value || landCommunityDistrict

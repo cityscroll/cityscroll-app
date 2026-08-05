@@ -1361,9 +1361,10 @@ async function renderPropExplorer(){
     return true;
   });
   const totalCount=feedVisible.property.length;
-  announce(t("property_entries_announce",{n:totalCount}));
+  const displayedCount=countWithScopeReceipt(totalCount);
+  announce(t("property_entries_announce",{n:displayedCount}));
   const countEl=$("#property-count");
-  if(countEl) countEl.textContent=t("property_entries_announce",{n:totalCount});
+  if(countEl) countEl.textContent=t("property_entries_announce",{n:displayedCount});
   setExportBandVisibility(totalCount, "property-export-band", "property-export-overflow");
   if(!entries.length){
     const scopeLabels=[];

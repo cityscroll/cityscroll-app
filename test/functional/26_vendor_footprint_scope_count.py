@@ -1,0 +1,151 @@
+"""Vendor footprint previews and destination lists share one count receipt."""
+
+import json
+import os
+import sys
+import time
+
+from playwright.sync_api import sync_playwright
+
+
+BASE = os.environ.get("CROL_BASE", f"http://localhost:{8000}/")  # source: a11y-pr local server in ci.yml
+CAMBA_COUNTS = {
+    "awards": 273,
+    "land": 3,
+    "property": 2,
+    "rules": 4,
+    "meetings": 5,
+}
+DESTINATIONS = {
+    "awards": ("/browse/contracts/", "#rescount"),
+    "land": ("/browse/zoning/", "#lrescount"),
+    "property": ("/browse/property/", "#property-count"),
+    "rules": ("/browse/rules/", "#rules-count"),
+    "meetings": ("/browse/meetings/", "#meetings-count"),
+}
+
+
+def profile_payload():
+    section_counts = {
+        section: {
+            "confirmed_count": 0,
+            "mention_count": count,
+            "scope_count": count,
+        }
+        for section, count in CAMBA_COUNTS.items()
+    }
+    section_counts.update({
+        "payments": {"confirmed_count": 0, "mention_count": 0, "scope_count": 0},
+        "franchise": {"confirmed_count": 0, "mention_count": 0, "scope_count": 0},
+    })
+    domains = {
+        name: {"status": "empty", "objects": [], "count": 0}
+        for name in ("money", "land", "property", "rules", "meetings", "franchise", "people")
+    }
+    footprint = {
+        "ok": True,
+        "root": {
+            "kind": "vendor",
+            "ref": "vendor:stem:CAMBA",
+            "stem": "CAMBA",
+            "display_name": "CAMBA",
+        },
+        "domains": domains,
+        "vendor_footprint": {
+            "qualifier_required": True,
+            "award_coverage": {"linked": 0, "eligible": 273, "rate": 0},
+            "section_counts": section_counts,
+            "provenance": {"denominator_materialized_at": "2026-08-05"},
+        },
+    }
+    return {
+        "ok": True,
+        "generated": "2026-08-05T13:00:00.000Z",
+        "profile": {
+            "stem": "CAMBA",
+            "display": "CAMBA",
+            "variants": [{
+                "name": "CAMBA",
+                "n": 273,
+                "total": 1_950_000_000,
+                "first": "2007-09-14",
+                "last": "2026-08-04",
+            }],
+            "awardCount": 273,
+            "total": 1_950_000_000,
+            "first": "2007-09-14",
+            "last": "2026-08-04",
+            "topAgencies": [],
+            "recentNotices": [],
+            "forecasts": [],
+            "footprint": footprint,
+        },
+    }
+
+
+def visible_count(page, selector):
+    text = page.locator(selector).inner_text()
+    digits = "".join(char for char in text if char.isdigit())
+    return int(digits) if digits else None
+
+
+with sync_playwright() as pw:
+    browser = pw.chromium.launch()
+    page = browser.new_page()
+    errors = []  # source: Playwright pageerror events observed during this run
+    requests = []  # source: Playwright request events observed during this run
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on("request", lambda request: requests.append(request.url))
+    body = json.dumps(profile_payload())
+    page.route(
+        "**/vendor-profile?*",
+        lambda route: route.fulfill(status=200, content_type="application/json", body=body),
+    )
+    page.route(
+        "https://data.cityofnewyork.us/resource/**",
+        lambda route: route.fulfill(status=200, content_type="application/json", body="[]"),
+    )
+
+    started = time.monotonic()
+    page.goto(BASE + "#vendor/CAMBA", wait_until="domcontentloaded", timeout=30_000)
+    page.wait_for_selector("#vendor-footprint [data-footprint-section='awards']", timeout=10_000)
+    elapsed = time.monotonic() - started
+    assert elapsed < 2.0, f"precomputed footprint took {elapsed:.2f}s to paint"
+    assert not any("/entity-intelligence?" in url for url in requests), requests
+
+    footprint_text = page.locator("#vendor-footprint").inner_text()
+    assert "273 records mention this name — identity not yet confirmed" in footprint_text
+    forbidden = (
+        "strongly linked",
+        "in this build",
+        "coverage not measured",
+        "view this vendor as",
+    )
+    assert not any(term in footprint_text.lower() for term in forbidden), footprint_text
+
+    for section, expected in CAMBA_COUNTS.items():
+        page.goto(BASE + "#vendor/CAMBA", wait_until="domcontentloaded", timeout=30_000)
+        section_root = page.locator(f"[data-footprint-section='{section}']")
+        section_root.wait_for(state="visible", timeout=10_000)
+        heading = section_root.locator("h3").inner_text()
+        link = section_root.locator("a.vendor-footprint-scope")
+        assert str(expected) in heading, (section, heading)
+        assert f"({expected})" in link.inner_text(), (section, link.inner_text())
+
+        path, count_selector = DESTINATIONS[section]
+        link.click()
+        page.wait_for_url(f"**{path}**", timeout=15_000)
+        page.wait_for_function(
+            "([selector, expected]) => { const node=document.querySelector(selector); "
+            "const value=Number((node?.textContent||'').replace(/[^0-9]/g,'')); "
+            "return value===expected; }",
+            arg=[count_selector, expected],
+            timeout=20_000,
+        )
+        assert visible_count(page, count_selector) == expected, section
+
+    assert not errors, errors
+    browser.close()
+
+print("vendor footprint scope-count parity: PASS")
+sys.exit(0)
