@@ -50,6 +50,7 @@ export {
 export {
   FEATURES_VERSION,
   contractIdValues,
+  extractDba,
   extractFeatures,
   normalizeHardIdentifier,
   pinEpinValues,
@@ -62,6 +63,7 @@ export {
 
 export {
   POLICIES_VERSION,
+  lookupAlias,
   routeDecision,
 } from "./policies/index.mjs";
 
@@ -70,7 +72,10 @@ export {
   loadPredictions,
   loadCandidates,
   computeMetrics,
+  predictWithMatcher,
+  predictWithPipeline,
   GOLD_V0_PATH,
+  GOLD_V1_PATH,
   AUTHORITY_LABEL,
   AUTHORITY_VERSION,
   AUTHORITY_FIXTURE_V0_PATH,

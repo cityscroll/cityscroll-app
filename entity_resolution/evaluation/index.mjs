@@ -9,6 +9,8 @@ export {
   loadPredictions,
   loadCandidates,
   computeMetrics,
+  predictWithMatcher,
+  predictWithPipeline,
 } from "../eval/run_metrics.mjs";
 
 export {
@@ -22,6 +24,9 @@ export {
 
 /** Package-relative path to the v0 gold set (repo root as cwd). */
 export const GOLD_V0_PATH = "entity_resolution/eval/gold_v0.jsonl";
+
+/** Package-relative path to the v1 gold set (repo root as cwd). */
+export const GOLD_V1_PATH = "entity_resolution/eval/gold_v1.jsonl";
 
 export {
   AUTHORITY_LABEL,
