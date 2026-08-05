@@ -23,7 +23,13 @@ with sync_playwright() as pw:
     page.on("pageerror", lambda e: errors.append(str(e)))
 
     # ---------- load money, grab a real agency + vendor from awards ----------
-    page.goto(BASE, timeout=30000)
+    page.goto(BASE + "browse/contracts/", wait_until="domcontentloaded", timeout=30000)
+    page.wait_for_function(
+        "document.querySelector('#tab-money').classList.contains('active')",
+        timeout=30000,
+    )
+    page.locator("#money-more-filters > summary").click()
+    page.locator("#mode").wait_for(state="visible", timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
     page.select_option("#mode", "award")
     page.wait_for_function("currentRows.length && currentRows[0].type_of_notice_description==='Award'", timeout=30000)
@@ -37,19 +43,21 @@ with sync_playwright() as pw:
     page.locator("#methodfacet .chip").first.click()
     page.wait_for_function("document.querySelector('#methodfacet .chip.on') !== null", timeout=30000)
     page.wait_for_function("methodSel && currentRows.length && currentRows.every(r=>r.selection_method_description===methodSel)", timeout=30000)
-    d = page.evaluate("""({m: methodSel, hash: location.hash,
+    d = page.evaluate("""({m: methodSel, url: location.pathname + location.search + location.hash,
         allMatch: currentRows.every(r=>r.selection_method_description===methodSel),
         head: document.getElementById('reshead').textContent})""")
-    ok = d["m"] and d["allMatch"] and ("m="+d["m"].split(" ")[0]) in d["hash"].replace("+"," ").replace("%20"," ") or (d["m"] and d["allMatch"] and "m=" in d["hash"])
-    step("OK" if d["m"] and d["allMatch"] and "m=" in d["hash"] else "FAIL", "N4 method chip filters server-side + URL", json.dumps(d)[:180])
+    step("OK" if d["m"] and d["allMatch"] and "m=" in d["url"] else "FAIL", "N4 method chip filters server-side + URL", json.dumps(d)[:180])
     page.locator("#methodfacet .chip.on").click()  # clear
     page.wait_for_function("methodSel === ''", timeout=30000)
     step("OK", "N4 method chip toggles off", "")
 
     # ---------- glance pivots on an award ----------
     page.wait_for_selector("#detail .glance", timeout=30000)
-    piv = page.evaluate("[...document.querySelectorAll('#detail .glance a.pivot')].map(a=>a.getAttribute('href'))")
-    step("OK" if piv and any(h.startswith('#agency/') for h in piv) else "FAIL", "N4 glance agency pivot link", str(piv[:2]))
+    piv = page.evaluate("""[...document.querySelectorAll('#detail .glance a.pivot')].map(a=>({
+      href:a.getAttribute('href'), ref:a.dataset.entityRef, confidence:a.dataset.linkConfidence
+    }))""")
+    typed_agency = [p for p in piv if p["href"].startswith("#agency/")]
+    step("OK" if typed_agency and typed_agency[0]["ref"].startswith("agency:") and typed_agency[0]["confidence"]=="strong" else "FAIL", "N4 glance typed agency pivot", str(piv[:2]))
 
     # ---------- agency page ----------
     p2 = ctx.new_page()
@@ -59,19 +67,25 @@ with sync_playwright() as pw:
     has = {"total": "TOTAL AWARDED" in txt.upper(), "sections": p2.locator("#entityview .chiprow .chip").count() > 0,
            "vendors": p2.locator("#entityview .ladder .lrow").count()}
     step("OK" if has["total"] and has["sections"] else "FAIL", "N2 agency page renders", json.dumps(has))
-    # watch button prefills agency
+    # watch button carries the agency scope into the canonical Following document
     p2.locator('#entityview [data-aw="rules"]').click()
-    p2.wait_for_function("document.querySelector('#tab-alerts').classList.contains('active')", timeout=10000)
-    ag = p2.evaluate("({w:document.getElementById('awatch').value, a:document.getElementById('aagency').value})")
-    step("OK" if ag["w"]=="rules" and ag["a"]==ent["agency"] else "FAIL", "N2 agency watch prefill", json.dumps(ag))
+    p2.wait_for_url("**/following?**", timeout=10000)
+    ag = p2.evaluate("""(() => {
+      const q=new URLSearchParams(location.search), f=JSON.parse(q.get('filter')||'{}');
+      return {lens:q.get('lens'), agency:f.agency};
+    })()""")
+    step("OK" if ag["lens"]=="rules" and ag["agency"]==ent["agency"] else "FAIL", "N2 agency watch prefill", json.dumps(ag))
     p2.screenshot(path=SHOT + "agency.png", full_page=True)
 
     # pivot chain: agency page -> top vendor -> vendor page
     p2.goto(BASE + "#agency/" + ent["agency"].replace(" ", "%20"), timeout=30000)
     p2.wait_for_selector("#entityview .agencybar", timeout=45000)
     if p2.locator("#entityview .ladder a.pivot").count():
-        vname = p2.locator("#entityview .ladder a.pivot").first.inner_text()
-        p2.locator("#entityview .ladder a.pivot").first.click()
+        vendor_pivot = p2.locator("#entityview .ladder a.pivot").first
+        vname = vendor_pivot.inner_text()
+        vtyped = vendor_pivot.evaluate("a=>({ref:a.dataset.entityRef, confidence:a.dataset.linkConfidence})")
+        step("OK" if vtyped["ref"].startswith("vendor:stem:") and vtyped["confidence"]=="strong" else "FAIL", "N1 typed vendor pivot metadata", json.dumps(vtyped))
+        vendor_pivot.click()
         p2.wait_for_function("location.hash.startsWith('#vendor/')", timeout=10000)
         p2.wait_for_function("document.querySelector('#entityview .ftype')?.textContent.includes('Vendor profile') || (document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading'))", timeout=45000)
         vtxt = p2.locator("#entityview").inner_text()
@@ -85,6 +99,7 @@ with sync_playwright() as pw:
     p3 = ctx.new_page()
     p3.goto(BASE + "#vendor/" + ent["vendor"].replace(" ", "%20"), timeout=30000)
     p3.wait_for_selector("#entityview .agencybar, #entityview .empty:not(:has(.loading))", timeout=45000)
+    p3.wait_for_function("document.querySelector('#entityview .ftype')?.textContent.includes('Vendor profile') || (document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading'))", timeout=45000)
     vt = p3.locator("#entityview").inner_text()
     ok = "TOTAL AWARDED" in vt.upper() and "VARIANT" in vt.upper()
     step("OK" if ok else "FAIL", "N1 vendor page resolves + renders", vt[:120].replace("\n"," | "))
@@ -104,7 +119,7 @@ with sync_playwright() as pw:
 
     # ---------- feed card agency pivot ----------
     p4 = ctx.new_page()
-    p4.goto(BASE + "#rules", timeout=30000)
+    p4.goto(BASE + "browse/rules/", timeout=30000)
     p4.wait_for_selector("#rulesfeed .fcard", timeout=30000)
     p4.locator("#rulesfeed .fcard .ftype a.pivot").first.click()
     p4.wait_for_function("location.hash.startsWith('#agency/')", timeout=10000)
@@ -121,8 +136,9 @@ with sync_playwright() as pw:
     step("OK", "regression: closing-week", "")
     strip = page.evaluate("!!document.getElementById('homeCta')")
     step("OK" if strip else "FAIL", "regression: today strip", "")
-    page.click("#tabbtn-people"); page.wait_for_selector("#pchips .chip", timeout=15000)
-    step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: people chips", "")
+    page.goto(BASE + "browse/staffing/", timeout=30000)
+    page.wait_for_selector("#career-area-watches .career-area-watch", timeout=15000)
+    step("OK" if page.locator("#career-area-watches .career-area-watch").count()>=7 else "FAIL", "regression: staffing interest areas", "")
 
     step("OK" if not errors else "FAIL", "zero page errors", "; ".join(errors[:5]))
     browser.close()
