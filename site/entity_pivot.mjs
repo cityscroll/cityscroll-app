@@ -6,9 +6,9 @@
  * remain parseable for links already in the wild.
  */
 
-import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { cleanNoticeText } from "./text_clean.mjs";
-export { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
+export { reconcileAgencyIdentity, resolveAgencyIdentity };
 
 const clean = (value, max = 320) =>
   String(value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
