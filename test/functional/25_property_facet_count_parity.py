@@ -128,7 +128,7 @@ def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = browser.new_page(viewport={"width": 1440, "height": 1100})
-        errors: list[str] = []
+        errors: list[str] = list()
 
         def capture_pageerror(error) -> None:
             errors.append(str(error))

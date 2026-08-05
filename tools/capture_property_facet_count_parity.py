@@ -67,7 +67,7 @@ def capture(browser, site: Path, label: str, rows: list[dict], asset: str = "sei
     body = json.dumps(FIXTURE["payload"](rows))
     with serve(site) as base:
         page = browser.new_page(viewport={"width": 1440, "height": 1100}, device_scale_factor=1)
-        page_errors: list[str] = []
+        page_errors: list[str] = list()
         page.on("pageerror", lambda error: page_errors.append(str(error)))
 
         def route(request):
