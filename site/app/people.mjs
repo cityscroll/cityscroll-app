@@ -355,7 +355,8 @@ function examProcessSpineHTML(spine, exam, phaseView){
         const cls=p.matched?(cur&&p.id===cur.id?"current":"done"):"todo";
         const aria=cur&&p.id===cur.id?` aria-current="step"`:"";
         const arrow=i<phaseView.phases.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
-        return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(examStageLabel(p.id))}">${escUiHtml(p.short||examStageLabel(p.id))}</span>${arrow}</li>`;
+        const label=examStageLabel(p.id);
+        return `<li><span class="lc-step lc-step-help ${cls}" tabindex="0" aria-label="${escUiHtml(label)}"${aria} title="${escUiHtml(label)}">${escUiHtml(p.short||label)}</span>${arrow}</li>`;
       }).join("")
     }</ol>`;
     // Detail only for matched phases + current (collapse pure-future empties to stepper chips).

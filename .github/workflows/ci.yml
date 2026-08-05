@@ -370,6 +370,11 @@ jobs:
         run: |
           python3 -m http.server 8000 --directory site &
           sleep 1
+      - name: Mobile viewport contract (360px overflow, targets, and interaction)
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        env:
+          CROL_BASE: http://127.0.0.1:8000/
+        run: python3 test/functional/23_mobile_viewport.py
       - name: axe WCAG 2.2 accessibility gate (390px + 1440px, every activated state)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/11_accessibility.py

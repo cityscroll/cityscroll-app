@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "production_before": "https://cityscroll.org/",
+  "local_after": "local static site with hermetic public-data fixtures",
+  "staffing_route_check": "Verified independently at 360px in headless Chromium and at 500px in an interactive Chrome viewport. The tab, career results, feed, appointments disclosure, and appointment list all rendered with nonzero geometry. The initial capture failure waited for disclosure content before opening its parent.",
+  "viewports": [
+    [
+      360,
+      800
+    ],
+    [
+      1280,
+      900
+    ]
+  ],
+  "captures": [
+    {
+      "phase": "before",
+      "surface": "contracts",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-contracts-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "staffing",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-staffing-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "rules-stepper",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-rules-stepper-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 375,
+      "overflow_px": 15
+    },
+    {
+      "phase": "before",
+      "surface": "reader-action",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-reader-action-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "map",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-map-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "table",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-table-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "contracts",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-contracts-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "staffing",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-staffing-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "rules-stepper",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-rules-stepper-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "reader-action",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-reader-action-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "map",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-map-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "before",
+      "surface": "table",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/before-table-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "contracts",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-contracts-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "staffing",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-staffing-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "rules-stepper",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-rules-stepper-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "reader-action",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-reader-action-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "map",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-map-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "table",
+      "viewport": [
+        360,
+        800
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-table-360.png",
+      "inner_width": 360,
+      "document_scroll_width": 360,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "contracts",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-contracts-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "staffing",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-staffing-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "rules-stepper",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-rules-stepper-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "reader-action",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-reader-action-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "map",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-map-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    },
+    {
+      "phase": "after",
+      "surface": "table",
+      "viewport": [
+        1280,
+        900
+      ],
+      "file": "docs/screenshots/mobile-intentional/after-table-1280.png",
+      "inner_width": 1280,
+      "document_scroll_width": 1280,
+      "overflow_px": 0
+    }
+  ]
+}
