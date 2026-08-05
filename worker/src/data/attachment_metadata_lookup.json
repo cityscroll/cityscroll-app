@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.attachment_metadata.v1",
-  "built_at": "2026-08-04T00:00:00Z",
+  "built_at": "2026-08-05T14:02:58.670Z",
   "tier": "t2_structured_tables",
   "storage": "json",
   "storage_adr": "docs/adr/attachment-tables-storage.md",
@@ -18,14 +18,14 @@
         "text_reason": null,
         "text_method": "docx_xml",
         "text_chars": 1410,
-        "text_preview": "New York City Department of Environmental Protection \u00b7 Bureau of Water Supply - Natural Resources Division \u00b7 CARPENTERS EDDY EAST \u00b7 Forest Management Project # 5116\u2026",
-        "extracted_text": "New York City Department of Environmental Protection\nBureau of Water Supply - Natural Resources Division\nCARPENTERS EDDY EAST\nForest Management Project # 5116\nNOTICE OF PROJECT AVAILABILITY\nDescription: The City of New York will sell 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest Management Project #5116 in the Cannonsville watershed basin.\nSummary: This sale is comprised of mostly mature red oak and white ash. The project includes 2.5 miles of trail construction and 27 acres of shelterwood regeneration.\nProject Area: 103 ac\nTotal Volume: 187 MBF sawtimber and 89 cords hardwood pulp\nSpecies as a percent of total sawtimber volume: 49% Red Oak, 22% White Ash, 14% Red Maple, 9% Chestnut Oak.\nShow Dates: Prospective bidders should attend one of the public showings to receive the full bid package.\nBid Deadline: Sealed bids must be received by the date stated in the official notice.\nVolume by species (sawtimber MBF)\nSpecies\nSawtimber (MBF)\nPulp (cords)\nPercent of sawtimber\nRed Oak\n91.6\n28\n49%\nWhite Ash\n41.1\n18\n22%\nRed Maple\n26.2\n22\n14%\nChestnut Oak\n16.8\n12\n9%\nOther hardwoods\n11.3\n9\n6%\nTotal\n187.0\n89\n100%\nStand summary by unit\nStand\nAcres\nDominant species\nSawtimber (MBF)\nTreatment\n1\n28\nRed Oak\n62.4\nShelterwood\n2\n35\nWhite Ash / Red Oak\n71.2\nShelterwood\n3\n24\nRed Maple\n38.1\nGroup selection\n4\n16\nMixed hardwoods\n15.3\nTrail / access\nTotal\n103\n\u2014\n187.0\n\u2014",
+        "text_preview": "New York City Department of Environmental Protection · Bureau of Water Supply - Natural Resources Division · CARPENTERS EDDY EAST · Forest Management Project # 5116…",
+        "extracted_text": "New York City Department of Environmental Protection\nBureau of Water Supply - Natural Resources Division\nCARPENTERS EDDY EAST\nForest Management Project # 5116\nNOTICE OF PROJECT AVAILABILITY\nDescription: The City of New York will sell 187 MBF of hardwood sawtimber and 89 cords of hardwood pulp through Carpenters Eddy East Forest Management Project #5116 in the Cannonsville watershed basin.\nSummary: This sale is comprised of mostly mature red oak and white ash. The project includes 2.5 miles of trail construction and 27 acres of shelterwood regeneration.\nProject Area: 103 ac\nTotal Volume: 187 MBF sawtimber and 89 cords hardwood pulp\nSpecies as a percent of total sawtimber volume: 49% Red Oak, 22% White Ash, 14% Red Maple, 9% Chestnut Oak.\nShow Dates: Prospective bidders should attend one of the public showings to receive the full bid package.\nBid Deadline: Sealed bids must be received by the date stated in the official notice.\nVolume by species (sawtimber MBF)\nSpecies\nSawtimber (MBF)\nPulp (cords)\nPercent of sawtimber\nRed Oak\n91.6\n28\n49%\nWhite Ash\n41.1\n18\n22%\nRed Maple\n26.2\n22\n14%\nChestnut Oak\n16.8\n12\n9%\nOther hardwoods\n11.3\n9\n6%\nTotal\n187.0\n89\n100%\nStand summary by unit\nStand\nAcres\nDominant species\nSawtimber (MBF)\nTreatment\n1\n28\nRed Oak\n62.4\nShelterwood\n2\n35\nWhite Ash / Red Oak\n71.2\nShelterwood\n3\n24\nRed Maple\n38.1\nGroup selection\n4\n16\nMixed hardwoods\n15.3\nTrail / access\nTotal\n103\n—\n187.0\n—",
         "text_extracted_at": "2026-08-03T00:00:00Z",
         "tables_status": "ok",
         "tables_reason": null,
         "tables_method": "docx_tbl",
         "tables_count": 2,
-        "tables_preview": "2 tables: Species \u00b7 Sawtimber (MBF) \u00b7 Pulp (cords) \u00b7 Percent of sawtimber \u2014 Red Oak \u00b7 91.6 \u00b7 28 \u00b7 49% \u00b7 +11 more",
+        "tables_preview": "2 tables: Species · Sawtimber (MBF) · Pulp (cords) · Percent of sawtimber — Red Oak · 91.6 · 28 · 49% · +11 more",
         "extracted_tables": [
           {
             "index": 0,
@@ -120,9 +120,9 @@
               [
                 "Total",
                 "103",
-                "\u2014",
+                "—",
                 "187.0",
-                "\u2014"
+                "—"
               ]
             ],
             "n_rows": 5,
@@ -131,6 +131,70 @@
           }
         ],
         "tables_extracted_at": "2026-08-04T00:00:00Z"
+      }
+    ],
+    "20260729005": [
+      {
+        "request_id": "20260729005",
+        "document_id": "44340",
+        "title": "NYPD IT Infrastructure Engineer Proposal - Public Hearing - CROL Announcement jdw",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260729005&requestStatus=Current&documentId=44340",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
+      }
+    ],
+    "20260729019": [
+      {
+        "request_id": "20260729019",
+        "document_id": "44341",
+        "title": "OTI Announcement",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260729019&requestStatus=Current&documentId=44341",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
+      }
+    ],
+    "20260729020": [
+      {
+        "request_id": "20260729020",
+        "document_id": "44342",
+        "title": "COMPTROLLER CROL",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=1&requestId=20260729020&requestStatus=Current&documentId=44342",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
+      }
+    ],
+    "20260729027": [
+      {
+        "request_id": "20260729027",
+        "document_id": "44338",
+        "title": "Car Transportation Services - RFP 2026",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=6&requestId=20260729027&requestStatus=Current&documentId=44338",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
+      },
+      {
+        "request_id": "20260729027",
+        "document_id": "44339",
+        "title": "Car Transportation Services RFP 2026- Price Sheet",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=6&requestId=20260729027&requestStatus=Current&documentId=44339",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
+      }
+    ],
+    "20260804030": [
+      {
+        "request_id": "20260804030",
+        "document_id": "44362",
+        "title": "Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences - Extension of Time to File and Expansion of Processes - Emergency Rule",
+        "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?sectionId=4&requestId=20260804030&requestStatus=Current&documentId=44362",
+        "content_type": null,
+        "bytes": null,
+        "source": "portal"
       }
     ]
   }
