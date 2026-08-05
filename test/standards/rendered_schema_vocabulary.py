@@ -19,8 +19,8 @@ from i18n_fixtures import install_routes  # noqa: E402
 
 # Source: the local server contract used by the repository's browser CI job.
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/")
-PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]  # Source: public page inventory in the reading-level and metadata gates.
-TABS = ["money", "people", "land", "property", "rules", "meetings", "map", "alerts"]  # Source: site/index.html .tabbtn[data-tab] controls.
+PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html"]  # Source: public page inventory in the reading-level and metadata gates.
+TABS = ["money", "people", "land", "property", "rules", "meetings", "alerts"]  # Source: site/index.html .tabbtn[data-tab] controls.
 SNAKE_CASE = re.compile(r"\b[a-z]+(?:_[a-z0-9]+)+\b")
 
 # Keep this narrow and evidence-backed. Add an entry only when underscores are genuinely

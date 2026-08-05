@@ -30,7 +30,7 @@ SURFACES = (
     ("property", "#property", "#propertyfeed .fcard"),
     ("rules", "#rules", "#rulesfeed .fcard"),
     ("meetings", "#meetings", "#meetingsfeed .fcard"),
-    ("map", "#map", "#mapAreaList button"),
+    ("near you", "near-you/", ".near-area-list a"),
     ("rule detail", "#notice/20260714029", ".rule-phase-stepper"),
     ("reader action", "#notice/20260701099", "#noticeview .panel"),
 )
@@ -135,6 +135,20 @@ def run(base: str) -> None:
             page.wait_for_timeout(250)
             assert_mobile_surface(page, name)
 
+            if name == "near you":
+                contract = page.evaluate(
+                    """() => ({
+                      count: Number(document.querySelector('.near-results')?.dataset.resultsCount || 0),
+                      ids: [...document.querySelectorAll('.near-results [data-record-id]')].map(el => el.dataset.recordId),
+                      paths: Object.fromEntries([...document.querySelectorAll('[data-map-id]')].map(el => [el.dataset.mapId, Number(el.dataset.count)])),
+                      areas: Object.fromEntries([...document.querySelectorAll('[data-map-area]')].map(el => [el.dataset.mapArea, Number(el.dataset.count)])),
+                      enhanced: document.querySelector('[data-near-you-root]')?.dataset.enhanced,
+                    })"""
+                )
+                assert contract["count"] == len(set(contract["ids"])), contract
+                assert contract["paths"] == contract["areas"], contract
+                assert contract["enhanced"] == "true", contract
+
             if name == "rule detail":
                 phase_buttons = page.locator(".rule-phase-stepper .lc-step")
                 assert phase_buttons.count() >= 3
@@ -182,6 +196,24 @@ def run(base: str) -> None:
         assert disclosure and disclosure != "none", "abbreviated phase has no tap/focus disclosure"
 
         context.close()
+
+        no_js = browser.new_context(viewport=VIEWPORT, has_touch=True, java_script_enabled=False)
+        no_js_page = no_js.new_page()
+        no_js_page.goto(f"{base}near-you/", wait_until="domcontentloaded", timeout=30_000)
+        no_js_page.locator(".near-area-list a").first.wait_for(state="visible", timeout=20_000)
+        assert_mobile_surface(no_js_page, "near you without JavaScript")
+        no_js_contract = no_js_page.evaluate(
+            """() => ({
+              count: Number(document.querySelector('.near-results')?.dataset.resultsCount || 0),
+              ids: [...document.querySelectorAll('.near-results [data-record-id]')].map(el => el.dataset.recordId),
+              bags: [...document.querySelectorAll('.near-bag')].map(el => el.dataset.bag),
+              controlsHidden: [...document.querySelectorAll('.js-only')].every(el => el.hidden),
+            })"""
+        )
+        assert no_js_contract["count"] == len(set(no_js_contract["ids"])), no_js_contract
+        assert no_js_contract["bags"] == ["citywide", "virtual", "unlocated"], no_js_contract
+        assert no_js_contract["controlsHidden"], no_js_contract
+        no_js.close()
         browser.close()
 
 

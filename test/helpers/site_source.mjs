@@ -18,11 +18,15 @@ export const SITE_MODULES = [
   "meetings.mjs",
   "entities.mjs",
   "workspace.mjs",
-  "map.mjs",
   "now.mjs",
   "routing.mjs",
   "boot.mjs",
 ];
+
+// Route-owned islands are registered here instead of the home loader. Tests read
+// them directly when their surface is in scope, keeping unrelated-route source
+// extraction aligned with the browser's wire graph.
+export const ROUTE_ISLAND_MODULES = ["map.mjs"];
 
 export function readSiteSource() {
   const html = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");

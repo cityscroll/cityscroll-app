@@ -67,6 +67,7 @@ import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
 import { handleEntityIntelligence } from "./entity_intelligence.mjs";
 import { handleAdminAttachmentMetadata, handleAttachmentMetadata } from "./attachment_metadata.mjs";
 import { runDigestShadow } from "./digest_shadow.mjs";
+import { handleNearYou } from "./near_you.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -111,6 +112,7 @@ export default {
     if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
+    if (pathname === "/near-you" || pathname === "/near-you/") return handleNearYou(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/events") return handleEvent(request, env);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);

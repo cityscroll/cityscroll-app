@@ -58,17 +58,17 @@ def validate_entry(entry: object, index: int) -> None:
         isinstance(entry["feature"], str) and ID_PATTERN.fullmatch(entry["feature"]),
         f"{path}.feature is invalid",
     )
-    require(
-        isinstance(entry["url"], str) and entry["url"].startswith("#") and not any(c.isspace() for c in entry["url"]),
-        f"{path}.url must be a local hash route",
-    )
+    url = entry["url"]
+    is_hash_route = isinstance(url, str) and url.startswith("#")
+    is_document_route = isinstance(url, str) and bool(re.fullmatch(r"[a-z0-9][^\s:#]*", url))
+    require(is_hash_route or is_document_route, f"{path}.url must be a local hash or document route")
     description = entry["description"]
     require(isinstance(description, str) and 12 <= len(description) <= 160, f"{path}.description length is invalid")
     require(not any(c in description for c in "\r\n<>"), f"{path}.description must be one line of plain text")
 
     expectations = entry["expectations"]
     require(isinstance(expectations, dict), f"{path}.expectations must be an object")
-    allowed = frozenset(("hash", "visible", "notVisible", "focus", "states", "banner"))
+    allowed = frozenset(("hash", "pathname", "visible", "notVisible", "focus", "states", "banner"))
     require(set(expectations) <= allowed, f"{path}.expectations has unknown fields")
     for name in ("visible", "notVisible"):
         locators = expectations.get(name)
@@ -90,6 +90,17 @@ def validate_entry(entry: object, index: int) -> None:
             isinstance(expectations["hash"], str) and expectations["hash"].startswith("#"),
             f"{path}.expectations.hash must be a hash route",
         )
+    if "pathname" in expectations:
+        require(
+            isinstance(expectations["pathname"], str)
+            and expectations["pathname"].startswith("/")
+            and not any(character.isspace() for character in expectations["pathname"]),
+            f"{path}.expectations.pathname must be an absolute local path",
+        )
+    require(
+        not ("hash" in expectations and "pathname" in expectations),
+        f"{path}.expectations cannot require both hash and pathname",
+    )
     if "focus" in expectations:
         require(isinstance(expectations["focus"], str) and expectations["focus"], f"{path}.expectations.focus is invalid")
     for state_index, state in enumerate(expectations.get("states", [])):
