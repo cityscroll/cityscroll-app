@@ -23,7 +23,7 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
-VIEWPORT = {"width": 360, "height": 800}
+VIEWPORT = {"width": 360, "height": 800}  # Source: mobile contract acceptance width.
 SURFACES = (
     ("contracts", "#money", "#list .row"),
     ("staffing", "#people?view=guide", "#career-results .career-card, #staffing-notice-list .staffing-hire-row"),

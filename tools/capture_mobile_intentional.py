@@ -109,7 +109,7 @@ def capture_page(page: Page, target: str, path: Path) -> dict:
 
 
 def capture_phase(browser, base: str, phase: str) -> list[dict]:
-    records = []
+    records = []  # Derived inventory: one record for each captured surface and viewport.
     for width, height in VIEWPORTS:
         context = browser.new_context(
             viewport={"width": width, "height": height}, has_touch=width <= 480
