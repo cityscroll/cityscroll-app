@@ -4,7 +4,7 @@
    time (v1): normalize to a stem (case/punctuation/legal suffixes), prefix-match server-side,
    then keep only rows whose own stem matches exactly. Honest and zero-infrastructure; a
    nightly clustered alias table can replace it without changing this page. */
-const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(String(name||"").trim()) + (tab ? "?tab="+tab : "");
+const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
 const vendorHref = (name, tab) => "#vendor/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
 
 /** Cached person_votes_lookup.json (precomputed by_person densify). */
