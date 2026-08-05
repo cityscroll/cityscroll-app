@@ -120,7 +120,7 @@ def install_fixtures(page: Page) -> None:
 
 
 def old_footprint_html() -> str:
-    sections = []
+    sections = []  # source: deterministic rendering of the previous reader state
     for label in ("Awards", "Payments", "Land use", "Property", "Rules", "Meetings", "Franchises and concessions"):
         coverage = (
             "showing 0 of 273 known awards linked so far (0%)"

@@ -8,7 +8,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 
-BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
+BASE = os.environ["CROL_BASE"]
 CAMBA_COUNTS = {
     "awards": 273,
     "land": 3,
@@ -92,8 +92,8 @@ def visible_count(page, selector):
 with sync_playwright() as pw:
     browser = pw.chromium.launch()
     page = browser.new_page()
-    errors = []
-    requests = []
+    errors = []  # source: Playwright pageerror events observed during this run
+    requests = []  # source: Playwright request events observed during this run
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.on("request", lambda request: requests.append(request.url))
     body = json.dumps(profile_payload())
