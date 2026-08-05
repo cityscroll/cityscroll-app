@@ -1,0 +1,16 @@
+{
+  "feature": "near-you-static-first",
+  "before": {
+    "390": "../map-exploration/after-borough-390.png",
+    "1440": "../map-exploration/after-borough-1440.png"
+  },
+  "after": [
+    "after-summary-390.png",
+    "after-summary-1440.png",
+    "after-map-390.png",
+    "after-map-1440.png",
+    "after-map-no-js-390.png"
+  ],
+  "scope": "/near-you/borough/queens/",
+  "count_contract": "SVG paths, equivalent area links, and the server record list"
+}

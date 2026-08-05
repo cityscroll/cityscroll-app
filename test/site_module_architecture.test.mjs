@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
 
-import { SITE_MODULES } from "./helpers/site_source.mjs";
+import { ROUTE_ISLAND_MODULES, SITE_MODULES } from "./helpers/site_source.mjs";
 import { computeModuleGraphDigest } from "../tools/site_module_architecture.mjs";
 
 const evidence = JSON.parse(
@@ -11,6 +11,7 @@ const evidence = JSON.parse(
 );
 const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const loader = readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8");
+const nearYou = readFileSync(new URL("../site/near-you/index.html", import.meta.url), "utf8");
 const loaderModules = [...loader.matchAll(/import\("\.\/(.+?)"\)/g)].map(
   (match) => match[1],
 );
@@ -36,7 +37,11 @@ test("index.html delegates application behavior to the ordered ES-module loader"
 
 test("every application module is registered exactly once in the import graph", () => {
   assert.equal(new Set(loaderModules).size, loaderModules.length, "duplicate loader imports");
-  assert.deepEqual([...loaderModules].sort(), applicationModules);
+  assert.equal(new Set(ROUTE_ISLAND_MODULES).size, ROUTE_ISLAND_MODULES.length, "duplicate route islands");
+  assert.deepEqual([...loaderModules, ...ROUTE_ISLAND_MODULES].sort(), applicationModules);
+  assert.doesNotMatch(loader, /map\.mjs/);
+  assert.match(nearYou, /<script type="module" src="\/app\/map\.mjs"><\/script>/);
+  assert.doesNotMatch(index, /<script[^>]+app\/map\.mjs/);
 });
 
 test("Property stays behind route activation while routing state remains eager", () => {
@@ -56,7 +61,7 @@ test("Property stays behind route activation while routing state remains eager",
 });
 
 test("every application module stays below the short-context working bar", () => {
-  for (const name of SITE_MODULES) {
+  for (const name of [...SITE_MODULES, ...ROUTE_ISLAND_MODULES]) {
     const bytes = Buffer.byteLength(moduleSource(name));
     assert.ok(bytes < evidence.after.working_bar_bytes, `${name}: ${bytes} bytes`);
   }

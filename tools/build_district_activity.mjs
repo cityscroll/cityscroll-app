@@ -56,6 +56,12 @@ function loadInputs() {
     moneyRows: Array.isArray(money?.rows) ? money.rows : [],
     contractActionRows: Array.isArray(contractActions?.rows) ? contractActions.rows : [],
     districtCorpora: {
+      land: {
+        path: "data/zap_projects_warehouse_lookup.json",
+        collection: "rows",
+        stamp_field: "materialized_at",
+        stamp_value: zap?.materialized_at || null,
+      },
       property: {
         path: "data/property_domain_observations.json",
         collection: "property_rows",
@@ -67,6 +73,18 @@ function loadInputs() {
         collection: "rows",
         stamp_field: "retrieved_at",
         stamp_value: meetings?.retrieved_at || null,
+      },
+      rules: {
+        path: "data/rules_domain_observations.json",
+        collection: "rows",
+        stamp_field: "retrieved_at",
+        stamp_value: rules?.retrieved_at || null,
+      },
+      money: {
+        path: "data/money_domain_observations.json",
+        collection: "rows",
+        stamp_field: "retrieved_at",
+        stamp_value: money?.retrieved_at || null,
       },
     },
   };
@@ -95,7 +113,7 @@ function check(doc) {
     || itemIndex.boundary_vintage !== doc.boundary_vintage
     || itemIndex.built_at !== doc.built_at
   ) throw new Error("district item index stamp mismatch");
-  for (const lens of ["property", "meetings"]) {
+  for (const lens of ["land", "property", "rules", "meetings", "money"]) {
     const corpus = itemIndex.corpora?.[lens];
     if (!corpus?.path || !corpus?.collection || !corpus?.stamp_field || !corpus?.stamp_value) {
       throw new Error(`${lens} district item corpus descriptor missing`);
@@ -107,9 +125,14 @@ function check(doc) {
     const sourceRows = Array.isArray(sourceDoc?.[corpus.collection])
       ? sourceDoc[corpus.collection]
       : [];
-    const sourceIds = new Set(sourceRows.map((row) => String(row?.request_id || "")).filter(Boolean));
+    const sourceIds = new Set(sourceRows
+      .map((row) => String(row?.request_id || row?.project_id || row?.id || ""))
+      .filter((id) => id && !/^FIX\d+/i.test(id)));
     if ((doc.sources?.[lens]?.indexed || 0) !== (doc.sources?.[lens]?.counted || 0)) {
       throw new Error(`${lens} item index does not cover its counted corpus`);
+    }
+    if (Object.keys(doc.records?.[lens] || {}).length !== sourceIds.size) {
+      throw new Error(`${lens} compact record index does not cover its source corpus`);
     }
     for (const level of ["borough", "community_district", "council_district"]) {
       for (const [id, counts] of Object.entries(doc.by_level[level] || {})) {
@@ -125,7 +148,16 @@ function check(doc) {
           if (!sourceIds.has(String(requestId))) {
             throw new Error(`${lens} ${level} ${id} member missing from stamped corpus`);
           }
+          if (!doc.records?.[lens]?.[String(requestId)]) {
+            throw new Error(`${lens} ${level} ${id} member missing compact record`);
+          }
         }
+      }
+    }
+    for (const bucket of ["citywide", "virtual", "unlocated"]) {
+      const ids = itemIndex[bucket]?.[lens] || [];
+      if ((doc[bucket]?.[lens] || 0) !== ids.length) {
+        throw new Error(`${lens} ${bucket} count/list drift`);
       }
     }
   }

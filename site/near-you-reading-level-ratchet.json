@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "surface": "near-you",
+  "metrics": {
+    "grade_level": {
+      "direction": "max",
+      "baseline": 7.0,
+      "formula": "flesch_kincaid_grade"
+    }
+  }
+}
