@@ -193,7 +193,10 @@ async function showInvestigation(){
   box.querySelectorAll(".invdel").forEach(b=>b.addEventListener("click", ()=>{
     const s2=invStore(); s2.invs[s2.current].items.splice(+b.dataset.idx,1); invSave(s2); showInvestigation();
   }));
-  $("#invcsv").addEventListener("click", ()=>invDownload("investigation.csv", invCsv(invStore().invs[s.current]), "text/csv;charset=utf-8"));
+  $("#invcsv").addEventListener("click", async ()=>{
+    await ensureCrolExports();
+    invDownload("investigation.csv", invCsv(invStore().invs[s.current]), "text/csv;charset=utf-8");
+  });
   $("#invjson").addEventListener("click", ()=>invDownload("investigation.json", JSON.stringify(invStore().invs[s.current],null,2), "application/json"));
   $("#invprint").addEventListener("click", ()=>window.print());
   $("#invclear").addEventListener("click", ()=>{ const s2=invStore(); s2.invs[s2.current].items=[]; invSave(s2); showInvestigation(); });

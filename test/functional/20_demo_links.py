@@ -532,7 +532,7 @@ class DemoLinkContract(unittest.TestCase):
         expectations = entry["expectations"]
         wait_ms = entry_wait_ms(entry)
         self.page_errors.clear()
-        page.goto(BASE + entry["url"], wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
+        page.goto(f"{BASE.rstrip('/')}/{entry['url'].lstrip('/')}", wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
 
         if is_slow_land_entry(entry):
             wait_land_detail_ready(page, wait_ms)

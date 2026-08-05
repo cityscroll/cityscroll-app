@@ -22,6 +22,11 @@ function safeId(pathname) {
   return match ? match[1] : null;
 }
 
+function safeExamNumber(pathname) {
+  const match = pathname.match(/^\/exams\/(\d{4})\/?$/);
+  return match ? match[1] : null;
+}
+
 function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
@@ -38,9 +43,28 @@ function entityDocument(pathname) {
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (safeId(url.pathname)) return "notice";
+  if (safeExamNumber(url.pathname)) return "exam";
   if (browseFacet(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   return "asset";
+}
+
+const DOCUMENT_LANGS = new Set(["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]);
+
+async function handleExam(request, env, examNumber) {
+  const url = new URL(request.url);
+  const asset = await staticAsset(env, request, `/exams/${examNumber}/`);
+  if (!asset.ok) return asset;
+  const language = DOCUMENT_LANGS.has(url.searchParams.get("lang")) && url.searchParams.get("lang") !== "en"
+    ? url.searchParams.get("lang") : null;
+  const canonical = `https://cityscroll.org/exams/${examNumber}/${language ? `?lang=${encodeURIComponent(language)}` : ""}`;
+  const response = rewrittenResponse(asset, 200, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  const transformed = new HTMLRewriter()
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
+    .transform(response);
+  if (request.method === "HEAD") return new Response(null, { status: 200, headers: transformed.headers });
+  return transformed;
 }
 
 export function renderEdgeNotice(row, id, meetingOutcome = null) {
@@ -196,6 +220,8 @@ export default {
     const url = new URL(request.url);
     const id = safeId(url.pathname);
     if (id) return handleNotice(request, env, id);
+    const examNumber = safeExamNumber(url.pathname);
+    if (examNumber) return handleExam(request, env, examNumber);
     const facet = browseFacet(url.pathname);
     if (facet) return handleBrowse(request, env, facet);
     const entity = entityDocument(url.pathname);

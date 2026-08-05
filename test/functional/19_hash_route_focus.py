@@ -66,7 +66,16 @@ def main():
             page = browser.new_page(viewport={"width": 1440, "height": 900})
             install_routes(page)
             page.goto(base + "#exam/6125", wait_until="load")
-            assert_item_landing(page, "#career-exam-6125")
+            page.wait_for_url("**/exams/6125/")
+            document = page.locator('[data-exam-document="1"]')
+            document.wait_for(state="visible")
+            assert page.locator("h1").inner_text().strip()
+            assert page.locator('[data-exam-watch="6125"]').count() == 1
+            page.close()
+
+            page = browser.new_page(viewport={"width": 1440, "height": 900})
+            install_routes(page)
+            page.goto(base + "#notice/20260701099", wait_until="load")
 
             in_page_routes = (
                 ("#notice/20260701099", "#noticeview .route-item"),
