@@ -837,6 +837,7 @@ function propertyTimedEventChipsHTML(commercial,omitSourceKinds=[]){
   return chips.length?`<div>${chips.join("")}</div>`:"";
 }
 let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
+let propertyView="default";
 let propertyCommunityDistrict="", propertyCouncilDistrict="", propertyResolvedNeighborhood=null;
 let propertyAuctionExportVisible=[];
 let propSaleMethod="all", propPriceBand="all", propSort="closing_soon";
@@ -919,6 +920,13 @@ function propertyPlainSummaryTools(){
     propertyPlainSummaryToolsPromise=import("../property_plain_summary.mjs").catch(()=>null);
   }
   return propertyPlainSummaryToolsPromise;
+}
+let propertyReaderActionsToolsPromise=null;
+function propertyReaderActionsTools(){
+  if(!propertyReaderActionsToolsPromise){
+    propertyReaderActionsToolsPromise=import("../property_reader_actions.mjs").catch(()=>null);
+  }
+  return propertyReaderActionsToolsPromise;
 }
 function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools){
   const r=entry.primary;
@@ -1141,10 +1149,24 @@ async function renderPropExplorer(){
       renderSearchComponents("property");
     });
   }
-  const commercialTools=await propertyCommercialTools();
-  const plainTools=await propertyPlainSummaryTools();
+  const [commercialTools,plainTools,readerTools]=await Promise.all([
+    propertyCommercialTools(),
+    propertyPlainSummaryTools(),
+    propertyReaderActionsTools(),
+  ]);
   propAll.forEach(r=>{
     ensurePropertyCommercial(r, commercialTools);
+    if(readerTools?.extractPropertyReaderActions){
+      r.property_reader_actions=readerTools.extractPropertyReaderActions(r,{
+        today:todayISO(),
+        events:r.commercial?.timed_events||[],
+      });
+    }
+    plainTools?.ensurePropertyCardPlainSummary?.(r,{
+      today:todayISO(),
+      events:r.commercial?.timed_events||[],
+      readerActions:r.property_reader_actions||undefined,
+    });
     if(!r._asset){
       r._asset=classifyAsset(r);
       r._stage=propStage(r);
@@ -1284,8 +1306,35 @@ async function renderPropExplorer(){
       }));
   }
 
+  const partition=tools?.partitionPropertyExplorerEntries
+    ?tools.partitionPropertyExplorerEntries(entries,{today:todayISO()})
+    :{
+      default_entries:entries,
+      archive_entries:[],
+      default_count:entries.length,
+      archive_count:0,
+      census_total:entries.length,
+    };
+  entries=propertyView==="archive"?partition.archive_entries:partition.default_entries;
+  const viewSwitch=$("#property-view-switch");
+  if(viewSwitch){
+    const viewOptions=[
+      ["default","rule_phase_current",partition.default_count],
+      ["archive","property_closed_section",partition.archive_count],
+    ];
+    viewSwitch.innerHTML=viewOptions.map(([key,label,count])=>`<button type="button" class="chip ${propertyView===key?'on':''}" data-property-view="${key}" aria-pressed="${propertyView===key?'true':'false'}">${escUiHtml(t(label))}<span class="ct">${count}</span></button>`).join("");
+    viewSwitch.querySelectorAll("[data-property-view]").forEach(button=>button.addEventListener("click",()=>{
+      propertyView=button.dataset.propertyView==="archive"?"archive":"default";
+      const taxPanel=$("#tax-lien-sale-panel");
+      if(taxPanel) taxPanel.hidden=true;
+      renderPropExplorer();
+      updateHash();
+      renderSearchComponents("property");
+    }));
+  }
+
   // Small-multiples collapse (Tufte): runs of near-identical single notices → one card
-  // carrying the count + date range. Applied after stamp + sort so temporal status rides along.
+  // carrying the count + date range. Applied within the selected current/archive view.
   if(tools && tools.clusterRepeatedEntries){
     entries=tools.clusterRepeatedEntries(entries);
   }
@@ -1344,35 +1393,10 @@ async function renderPropExplorer(){
     const locTools=await propertyLocationTools();
     parcelLinks=locTools.parcelLinksFromBbl;
   }catch(_e){}
-  const isClosed=(e)=> e.temporal_status==="closed"
-    || (e.close_date && daysLeft(e.close_date)!==null && daysLeft(e.close_date)<0);
   const cardFor=(e)=> e.kind==="cluster"
     ? propertyClusterCardHTML(e,plainTools)
     : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools);
-  const parts=[];
-  if(propStageSel==="all"){
-    // Archive never leads: current (open/upcoming/undated) first, then a labeled closed
-    // block. When nothing is current, lead with an honest one-line note, not the archive.
-    const current=entries.filter(e=>!isClosed(e));
-    const closedEntries=entries.filter(isClosed);
-    if(current.length){
-      current.forEach(e=>parts.push(cardFor(e)));
-    } else if(closedEntries.length){
-      if(propertyResolvedNeighborhood){
-        parts.push(`<div class="property-empty-current"><p>${t("property_neighborhood_empty_html",{name:escUiHtml(propertyResolvedNeighborhood.name)})}</p><button type="button" class="act primary" data-follow-resolved-neighborhood>${t("follow_this_area")}</button></div>`);
-      } else {
-        parts.push(`<p class="property-empty-current">${escUiHtml(t("property_nothing_current"))}</p>`);
-      }
-    }
-    if(closedEntries.length){
-      parts.push(`<div class="property-closed-section" data-closed-section="1" role="separator" aria-label="${escUiHtml(t("property_closed_section"))}"><h3 class="property-closed-section-title">${escUiHtml(t("property_closed_section"))}</h3></div>`);
-      closedEntries.forEach(e=>parts.push(cardFor(e)));
-    }
-  } else {
-    // Explicit temporal window (proposed / soon / upcoming / past): flat list as requested.
-    entries.forEach(e=>parts.push(cardFor(e)));
-  }
-  feedEl.innerHTML=parts.join("");
+  feedEl.innerHTML=entries.map(cardFor).join("");
   const followResolved=feedEl.querySelector("[data-follow-resolved-neighborhood]");
   if(followResolved) followResolved.addEventListener("click",()=>watchFromFilters("property"));
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
@@ -1702,6 +1726,7 @@ Object.defineProperty(globalThis, "propPriceBand", { configurable: true, get: ()
 Object.defineProperty(globalThis, "propSort", { configurable: true, get: () => propSort, set: value => { propSort = value; } });
 Object.defineProperty(globalThis, "propSpines", { configurable: true, get: () => propSpines, set: value => { propSpines = value; } });
 Object.defineProperty(globalThis, "propStageSel", { configurable: true, get: () => propStageSel, set: value => { propStageSel = value; } });
+Object.defineProperty(globalThis, "propertyView", { configurable: true, get: () => propertyView, set: value => { propertyView = value === "archive" ? "archive" : "default"; } });
 globalThis.normalizePropSaleMethod = normalizePropSaleMethod;
 globalThis.normalizePropPriceBand = normalizePropPriceBand;
 globalThis.normalizePropSort = normalizePropSort;

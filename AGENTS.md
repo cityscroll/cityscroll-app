@@ -2090,6 +2090,14 @@ accommodation boilerplate must never become a bid deadline. Verify extraction, t
 bands, and honest-empty behavior with `node --test test/property_timed_events.test.mjs`,
 then rerun `node tools/property_a11y_census.mjs --as-of 2026-08-04 --format markdown`.
 
+## Property default-feed qualification
+
+The default Property feed is action-first: `site/property_explorer.mjs` admits an entry only
+when a member has a live typed event or a source-grounded participatory action. Closed results,
+passive document review, pointer notices, and honest fallbacks remain in `#property?view=archive`;
+they are not deleted. Preserve the raw-notice conservation invariant and archive safety detector
+in `test/property_explorer.test.mjs` when changing Property events, actions, grouping, or filters.
+
 ## Property plain-language summaries
 
 Property detail summaries come from `site/property_plain_summary.mjs`. A classifier match alone

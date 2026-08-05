@@ -138,6 +138,7 @@ function serializeState(){
       if(typeof propSort !== "undefined" && propSort && propSort !== "closing_soon") q.set("sort", propSort);
       if(propProcessSel !== "all") q.set("process", propProcessSel);
       if(propStageSel !== "all") q.set("stage", propStageSel);
+      if(propertyView === "archive") q.set("view", "archive");
     }
     if(tab === "rules"){
       if(rulesProcessSel !== "all") q.set("process", rulesProcessSel);
@@ -154,7 +155,7 @@ function serializeState(){
   }
   if(tab === "property"){
     const taxPanel=$("#tax-lien-sale-panel");
-    if(taxPanel && !taxPanel.hidden) q.set("view", "tax-lien");
+    if(propertyView !== "archive" && taxPanel && !taxPanel.hidden) q.set("view", "tax-lien");
   }
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
@@ -896,6 +897,7 @@ function applyHash(){
         const sortEl=$("#propsort"); if(sortEl) sortEl.value=propSort;
         propProcessSel = q.get("process") || "all";
         propStageSel = q.get("stage") || "all";
+        propertyView = q.get("view")==="archive" ? "archive" : "default";
         const taxPanel=$("#tax-lien-sale-panel");
         if(taxPanel){
           const showLien=q.get("view")==="tax-lien";

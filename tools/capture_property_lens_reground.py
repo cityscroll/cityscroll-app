@@ -11,9 +11,9 @@ Env:
   CROL_REGROUND_OUT     output dir           (default docs/screenshots/property-lens-reground)
 
 Scenarios:
-  default        current sales lead; archive with 5 near-identical destruction notices
-  empty-current  ONLY the 5 closed destruction notices (the owner's screenshot symptom)
-after-only shots also open "More filters" (capability parity) and expand the cluster.
+  default        three live sales; archive count remains visible in the view switch
+  archive        five actionless destruction notices, retained behind one tap
+after-only shots also cover the 390px current/archive bars and expand the archive cluster.
 """
 
 from __future__ import annotations
@@ -49,6 +49,8 @@ def commercial(category, method, close, price=None, deal=None, amount=None, elig
         "deal_signal": {"status": "derived" if deal else "insufficient", "pct_of_value": 40 if deal else None,
                         "summary": deal, "method": "stated_value_discount",
                         "comparables_slot": {"status": "not_yet_acquired", "category": category}},
+        "timed_events": ([{"kind": "bid_deadline", "deadline": close}]
+                         if eligible and close else []),
         "close_date": close,
         "glance": {"item": None, "price": price, "close_date": close, "deal": deal, "sale_method": method},
     }
@@ -126,44 +128,47 @@ def main() -> None:
         r.continue_()
 
     def wait_feed(page):
-        page.wait_for_timeout(2600)
-        try:
-            page.locator("#propertyfeed .fcard, #propertyfeed .property-cluster, #propertyfeed .property-empty-current").first.wait_for(state="visible", timeout=20000)
-        except Exception:
-            pass
+        page.locator("#property-view-switch [data-property-view]").first.wait_for(state="visible", timeout=20000)
+        page.locator("#propertyfeed .fcard, #propertyfeed .property-cluster").first.wait_for(state="visible", timeout=20000)
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
 
-        def shot(rows, out_name, width=1440, height=1000, click=None):
+        def shot(rows, out_name, width=1440, height=1000, click=None, route_hash="#property"):
             # Fresh context per scenario so the client's in-memory data cache does not
             # carry a prior dataset across navigations.
             rows_ref["rows"] = rows
             ctx = browser.new_context(viewport={"width": width, "height": height})
             ctx.route("**/*", route)
             page = ctx.new_page()
-            page.goto(f"{base}/index.html#property", wait_until="domcontentloaded")
+            page.goto(f"{base}/index.html{route_hash}", wait_until="domcontentloaded")
             wait_feed(page)
+            selected = "archive" if "view=archive" in route_hash else "default"
+            assert page.locator(f'[data-property-view="{selected}"]').get_attribute("aria-pressed") == "true"
+            assert page.locator('[data-property-view="default"] .ct').inner_text() == "3"
+            assert page.locator('[data-property-view="archive"] .ct').inner_text() == "5"
+            if width <= 390:
+                assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
             if click:
-                try:
-                    page.locator(click).first.click(timeout=4000)
-                    page.wait_for_timeout(500)
-                except Exception:
-                    pass
+                page.locator(click).first.click(timeout=4000)
+                page.wait_for_timeout(500)
             page.screenshot(path=str(OUT / out_name), full_page=True)
             ctx.close()
 
-        # Scenario A — default list (current leads, archive with the repeats)
+        # Scenario A — default list contains only qualified current records.
         shot(CURRENT + DESTRUCTION, f"{LABEL}-default-1440.png")
         shot(CURRENT + DESTRUCTION, f"{LABEL}-default-390.png", width=390, height=844)
-        # Scenario B — only closed destruction notices (empty-current symptom)
-        shot(list(DESTRUCTION), f"{LABEL}-empty-current-1440.png")
+        # Scenario B — the same scope is conserved in the dedicated archive view.
+        shot(CURRENT + DESTRUCTION, f"{LABEL}-archive-1440.png", route_hash="#property?view=archive")
+        shot(CURRENT + DESTRUCTION, f"{LABEL}-archive-390.png", width=390, height=844,
+             route_hash="#property?view=archive")
 
         if LABEL == "after":
             # Capability parity: open "More filters" to show every secondary facet is reachable.
             shot(CURRENT + DESTRUCTION, "after-morefilters-1440.png", click="#property-more-filters > summary")
-            # Honest expandable collapse: expand the cluster card.
-            shot(list(DESTRUCTION), "after-cluster-expanded-1440.png", click=".property-cluster > details > summary")
+            # Honest expandable archive: every collapsed member remains inspectable.
+            shot(CURRENT + DESTRUCTION, "after-cluster-expanded-1440.png",
+                 click=".property-cluster > details > summary", route_hash="#property?view=archive")
 
         browser.close()
     server.shutdown()
