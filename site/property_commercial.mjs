@@ -14,6 +14,7 @@
  */
 
 import { plainText } from "./text_clean.mjs";
+import { DCAS_VEHICLE_AUCTION_PROVENANCE_NOTICE_ID } from "./dcas_vehicle_auctions.mjs";
 import {
   extractPropertyTimedEvents,
   primaryPropertyActionDate,
@@ -1302,10 +1303,14 @@ export function extractPropertyCommercial(row = {}, options = {}) {
 
   const primary = primaryListPrice(price_facts);
   const close_date = primaryPropertyActionDate(timed_events);
+  const source_role = String(row.request_id || "") === DCAS_VEHICLE_AUCTION_PROVENANCE_NOTICE_ID
+    ? "provenance_pointer"
+    : null;
 
   const commercial = {
     schema: PROPERTY_COMMERCIAL_SCHEMA,
     request_id: row.request_id ? String(row.request_id) : null,
+    source_role,
     disposition_class,
     item: {
       category: categoryInfo.category,
