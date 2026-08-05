@@ -120,21 +120,31 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.ok(routes.include.includes("/browse/*"));
 });
 
-test("Stats document and API keep their exact public endpoints and response meaning", async () => {
+test("Stats document and API keep their exact public endpoints with the reduced coverage contract", async () => {
   const html = read("../site/stats.html");
   assert.match(html, /<link rel="canonical" href="https:\/\/cityscroll\.org\/stats\.html">/);
   assert.match(html, /https:\/\/api\.cityscroll\.org\/stats/);
   const worker = read("../worker/src/worker.mjs");
   assert.match(worker, /pathname === "\/stats"\) return handleStats/);
   const env = { ALERT_STATE: fakeKV(), NL_METER: fakeKV(), SUBS: fakeKV() };
-  const response = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil() {} }, { now: "2026-08-05T12:00:00Z" });
+  const response = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil() {} }, {
+    now: "2026-08-05T12:00:00Z",
+    fetchImpl: async () => Response.json([{
+      notice_count: "1099194",
+      first_notice_date: "2003-01-02T00:00:00.000",
+      latest_notice_date: "2026-08-05T00:00:00.000",
+    }]),
+  });
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type"), /application\/json/);
   const body = await response.json();
-  assert.ok(Object.hasOwn(body, "digests"));
-  assert.ok(Object.hasOwn(body, "nl_search"));
-  assert.ok(Object.hasOwn(body, "history"));
-  assert.ok(Object.hasOwn(body.digests, "sent_last7d"));
+  assert.equal(body.schema, "public-stats.v2");
+  assert.equal(body.city_record.notice_count, 1099194);
+  assert.equal(body.sources.primary_system_count, 6);
+  assert.equal(body.language_coverage.site_languages, 11);
+  for (const privateField of ["subscriptions", "digests", "nl_search", "history", "usage"]) {
+    assert.equal(Object.hasOwn(body, privateField), false, `${privateField} stays behind the desk`);
+  }
 });
 
 test("client island recognizes promoted document routes without converting entity or matter pages", () => {

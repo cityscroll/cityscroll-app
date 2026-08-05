@@ -3,6 +3,9 @@
 Date: 2026-07-27
 Trigger: user feedback that the public statistics surface showed missing or empty information.
 
+> Historical note (2026-08-05): the usage panels described below now live on authenticated
+> `/admin/stats`. Public `/stats` retains only corpus and coverage aggregates.
+
 ## Production reproduction
 
 The live page and endpoint were checked before implementation:

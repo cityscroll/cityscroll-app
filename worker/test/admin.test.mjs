@@ -4,7 +4,14 @@
 // (checkAdminKey, admin.mjs): 404 until ADMIN_KEY is configured, 401 on a wrong/missing key.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { checkAdminKey, checkOperatorProbeKey, checkDigestShadowAuth, handleAdminDigestSendTest } from "../src/admin.mjs";
+import {
+  checkAdminKey,
+  checkOperatorProbeKey,
+  checkDigestShadowAuth,
+  handleAdminDigestSendTest,
+  handleAdminStats,
+  renderAdminStatsPage,
+} from "../src/admin.mjs";
 import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 import { handleAdminMeetingOutcomesRefresh } from "../src/meeting_outcomes.mjs";
@@ -101,6 +108,7 @@ test("SHADOW_STATUS_KEY gets 401 from every other registered /admin/* route", as
     ["GET", "/admin/possibly-same"],
     ["POST", "/admin/possibly-same"],
     ["GET", "/admin/ops-contract"],
+    ["GET", "/admin/stats"],
     ["GET", "/admin/digest-rollup"],
     ["POST", "/admin/digest-shadow"],
     ["POST", "/admin/digest-send-test"],
@@ -144,6 +152,29 @@ test("handleAdminDigestSendTest: fails closed and enforces the recipient allowli
   assert.equal((await handleAdminDigestSendTest(body("example@example.com"), {})).status, 404);
   assert.equal((await handleAdminDigestSendTest(body("example@example.com"), { ADMIN_KEY: "s3cr3t" })).status, 403);
   assert.equal((await handleAdminDigestSendTest(body("not-a-recipient"), { ANALYTICS_DEV_KEY: "s3cr3t" })).status, 403);
+});
+
+test("handleAdminStats fails closed and serves private JSON or the responsive desk view", async () => {
+  assert.equal((await handleAdminStats(new Request("https://w/admin/stats"), {})).status, 404);
+  const env = { ADMIN_KEY: "secret" };
+  const jsonResponse = await handleAdminStats(new Request("https://w/admin/stats?key=secret"), env, {
+    now: "2026-08-05T18:00:00Z",
+  });
+  assert.equal(jsonResponse.status, 200);
+  assert.equal(jsonResponse.headers.get("Cache-Control"), "no-store");
+  const body = await jsonResponse.json();
+  assert.deepEqual(body.subscriptions, { active: 0, accounts: 0 });
+  assert.ok(body.usage);
+
+  const htmlResponse = await handleAdminStats(new Request("https://w/admin/stats?key=secret&view=html"), env, {
+    now: "2026-08-05T18:00:00Z",
+  });
+  assert.match(htmlResponse.headers.get("Content-Type"), /text\/html/);
+  const html = await htmlResponse.text();
+  assert.match(html, /Authenticated desk · private operations/);
+  assert.match(html, /Product activity/);
+  assert.match(html, /@media\(max-width:430px\)/);
+  assert.match(renderAdminStatsPage(body), /Delivery operations/);
 });
 
 // ---- POST /admin/suggest-refresh ----------------------------------------------------------

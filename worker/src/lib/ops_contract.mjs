@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.3.0";
+export const OPS_CONTRACT_VERSION = "1.4.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -175,7 +175,7 @@ export const DAYLOG_ENVELOPE_FIELDS = Object.freeze([
 ]);
 
 /**
- * Public /stats metric paths operators care about.
+ * Authenticated /admin/stats metric paths operators care about.
  * exclude_developer_traffic: true when developer/debug traffic must not inflate the count.
  */
 export const STATS_METRICS = Object.freeze([
@@ -280,6 +280,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "This contract document (versioned JSON).",
   },
   {
+    path: "/admin/stats",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Private product activity, subscriptions, and delivery operations (JSON or ?view=html).",
+  },
+  {
     path: "/admin/subs",
     methods: ["GET"],
     auth: "ADMIN_KEY",
@@ -367,7 +373,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/stats",
     methods: ["GET"],
     auth: "none",
-    description: "Public aggregate outcome counters only — never serves this contract.",
+    description: "Public corpus and coverage aggregates only — no product usage fields.",
   },
 ]);
 
@@ -500,14 +506,14 @@ export const TRAFFIC_CLASSES = Object.freeze({
   usage: [
     {
       id: "production",
-      description: "Real visitor / subscriber traffic. Included in public /stats usage cuts.",
+      description: "Real visitor / subscriber traffic. Included only in authenticated /admin/stats usage cuts.",
     },
     {
       id: "developer",
       description:
         "Debug traffic: valid X-CROL-Analytics-Dev exclusion, non-production "
         + "ANALYTICS_ENVIRONMENT, or explicit emitUsageEvent traffic_class. Excluded from "
-        + "public production metrics.",
+        + "private production metrics.",
     },
   ],
   daylog: [

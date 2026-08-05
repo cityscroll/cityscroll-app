@@ -126,7 +126,7 @@
         "max": 10
       },
       "tag": "measured",
-      "gate_that_would_catch_now": "EMAIL HEALTH + STATS SANITY named post-flip checks"
+      "gate_that_would_catch_now": "EMAIL HEALTH + STATS SANITY on authenticated desk data"
     },
     {
       "incident_class": "could-not-reach-api-while-html-200",

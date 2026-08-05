@@ -28,6 +28,7 @@ import { buildOpsContract } from "./lib/ops_contract.mjs";
 import { timingSafeEqualString } from "./lib/secret_compare.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
+import { handlePrivateStats } from "./stats.mjs";
 import {
   DigestShadowHoldInputError,
   overrideDigestShadowHold,
@@ -516,6 +517,61 @@ export async function handleAdminOpsContract(req, env) {
   if (!auth.ok) return auth.res;
   if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
   return json(buildOpsContract(), 200);
+}
+
+function deskNumber(value) {
+  return Number(value || 0).toLocaleString("en-US");
+}
+
+function deskDate(value) {
+  if (!value) return "Not recorded";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? escapeHtml(value)
+    : date.toLocaleString("en-US", { timeZone: "UTC" }) + " UTC";
+}
+
+export function renderAdminStatsPage(stats = {}) {
+  const usage = stats.usage || {};
+  const daily = Object.entries(usage.growth?.by_day || {})
+    .sort(([a], [b]) => b.localeCompare(a))
+    .slice(0, 14);
+  const dailyRows = daily.length
+    ? daily.map(([day, row]) => `<tr><th scope="row">${escapeHtml(day)}</th><td>${deskNumber(row.page_views)}</td><td>${deskNumber(row.interactions)}</td></tr>`).join("")
+    : '<tr><td colspan="3">No daily activity is recorded.</td></tr>';
+  const lastRun = stats.digests?.last_run || {};
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Product activity · CityScroll desk</title><style>
+  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede{max-width:70ch;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0}.card,.panel{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}.value{font:750 2rem/1 ui-serif,Georgia,serif}.label{margin-top:8px;color:var(--muted);font-size:.82rem;font-weight:750;text-transform:uppercase;letter-spacing:.05em}.panels{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px}h2{margin:0 0 10px;font:700 1.25rem ui-serif,Georgia,serif}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}th:first-child{text-align:left}.stamp{color:var(--muted);font-size:.82rem;margin-top:18px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}}@media(max-width:430px){.wrap{padding-inline:14px}.grid{grid-template-columns:1fr}.value{font-size:1.75rem}}
+  </style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · private operations</p><h1>Product activity</h1><p class="lede">Usage, subscriptions, and delivery volumes live here because they describe product operations and people’s activity—not the public civic corpus.</p></header>
+  <section class="grid" aria-label="Product activity summary">
+    <article class="card"><div class="value">${deskNumber(stats.subscriptions?.accounts)}</div><div class="label">Accounts with watches</div></article>
+    <article class="card"><div class="value">${deskNumber(stats.subscriptions?.active)}</div><div class="label">Active watches</div></article>
+    <article class="card"><div class="value">${deskNumber(stats.digests?.sent_last7d)}</div><div class="label">Digests · 7 days</div></article>
+    <article class="card"><div class="value">${deskNumber(usage.page_views?.last7d)}</div><div class="label">Page views · 7 days</div></article>
+    <article class="card"><div class="value">${deskNumber(usage.searches?.last7d)}</div><div class="label">Searches · 7 days</div></article>
+    <article class="card"><div class="value">${deskNumber(usage.deep_links?.last7d)}</div><div class="label">Deep links · 7 days</div></article>
+    <article class="card"><div class="value">${deskNumber(usage.exports?.last7d)}</div><div class="label">Exports · 7 days</div></article>
+    <article class="card"><div class="value">${deskNumber(usage.alerts?.confirmed_last7d)}</div><div class="label">Watches confirmed · 7 days</div></article>
+  </section><section class="panels"><article class="panel"><h2>Delivery operations</h2><dl class="ops">
+    <dt>Digests sent today</dt><dd>${deskNumber(stats.digests?.sent_today)}</dd><dt>Catch-up sends today</dt><dd>${deskNumber(stats.digests?.catch_up_sent_today)}</dd><dt>Lagging subscriptions</dt><dd>${deskNumber(stats.digests?.lagging_subs)}</dd><dt>Last run</dt><dd>${deskDate(lastRun.ran_at || lastRun.ranAt || lastRun.at)}</dd><dt>Last-run status</dt><dd>${escapeHtml(lastRun.skipped_reason || lastRun.status || "Not recorded")}</dd>
+  </dl></article><article class="panel"><h2>Daily activity</h2><table><thead><tr><th>UTC day</th><th>Page views</th><th>Actions</th></tr></thead><tbody>${dailyRows}</tbody></table></article></section><p class="stamp">Generated ${deskDate(stats.generated)}. Private response: no-store.</p></main></body></html>`;
+}
+
+/** GET /admin/stats?key=… — private usage and delivery data formerly served on public /stats. */
+export async function handleAdminStats(req, env, options = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  const response = await handlePrivateStats(req, env, options);
+  const stats = await response.json();
+  if (new URL(req.url).searchParams.get("view") === "html") {
+    return new Response(renderAdminStatsPage(stats), {
+      status: 200,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" },
+    });
+  }
+  return json(stats, 200);
 }
 
 /**
