@@ -30,7 +30,11 @@ test("auction export is parcel-exact and omits unpublished fields", () => {
   ]);
 
   assert.equal(rows.length, 1, "only the one auction/sale-stage parcel in the view exports");
-  assert.deepEqual(rows[0], {
+  assert.deepEqual({
+    address:rows[0].address, block:rows[0].block, lot:rows[0].lot, bbl:rows[0].bbl,
+    stage:rows[0].stage, posted:rows[0].posted, event_date:rows[0].event_date,
+    close_date:rows[0].close_date, source_link:rows[0].source_link,
+  }, {
     address: "1 Commercial Street",
     block: "2518",
     lot: "36",
@@ -42,6 +46,10 @@ test("auction export is parcel-exact and omits unpublished fields", () => {
     source_link: "https://a856-cityrecord.nyc.gov/RequestDetail/auction-1",
   });
   assert.equal(rows[0].close_date, "", "an unpublished date stays empty");
+  assert.equal(rows[0].boroughs, "Brooklyn");
+  assert.equal(rows[0].neighborhoods, "Greenpoint");
+  assert.equal(rows[0].latitude, "", "coordinates without evidence stay empty");
+  assert.equal(rows[0].permalink, "https://cityscroll.org/notices/auction-1");
 });
 
 test("count-equals-list law: one export row per eligible parcel in the saved-search view", () => {

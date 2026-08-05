@@ -998,25 +998,25 @@ function renderDetail(r, chain, stats){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
   </div>`;
-  html += `<div id="dcontext"></div><div id="dactions"></div>`;
+  html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;
   // Lead with the response path for solicitations (deadline / contact) before lifecycle
   // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
-  if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
-  else html += glanceFor(r, actionRailGuideCoverage(initialActionsForGlance));
+  if(r.type_of_notice_description === "Solicitation") html += `<div data-export-class="actions">${buildApply(r,false)}</div>`;
+  else html += `<div data-export-class="notice_context">${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}</div>`;
   // M/WBE solicitation chips + prime sub-outreach (award_prime_goal) mount points.
-  html += `<div id="dmwbe"></div><div id="drules"></div><div id="dlifecycle"></div><div id="dsuboutreach"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
+  html += `<div id="dmwbe" data-export-class="mwbe_context"></div><div id="drules" data-export-class="rule_lifecycle"></div><div id="dlifecycle" data-export-class="procurement_lifecycle"></div><div id="dsuboutreach" data-export-class="sub_outreach"></div><div id="ddollars" data-export-class="dollars"></div><div id="dsubsidy" data-export-class="subsidy"></div><div id="dmeet" data-export-class="meeting_outcomes"></div>`;
 
   html += pending
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
-    : `<div id="dchain">${chainHTMLFlat(r, chain)}${pastWinnersHTML(chain)}${cadenceHTML(cadenceEstimate(chain))}</div>`;
+    : `<div id="dchain" data-export-class="paper_trail">${chainHTMLFlat(r, chain)}${pastWinnersHTML(chain)}${cadenceHTML(cadenceEstimate(chain))}</div>`;
 
   // Original English notice text is the official record — always rendered first.
   // excerptHtml: decode entities, truncate on plain text, escape once (same discipline as cards).
   const scopeHtml = excerptHtml(r.additional_description_1, 900);
-  if(scopeHtml) html += `<div class="scope" lang="en" dir="ltr"><span class="lbl">${t("what_they_want")}</span>${scopeHtml}</div>`;
+  if(scopeHtml) html += `<div class="scope" data-export-class="official_notice_text" lang="en" dir="ltr"><span class="lbl">${t("what_they_want")}</span>${scopeHtml}</div>`;
   // Optional unofficial translation sits AFTER the original; never replaces it.
-  html += `<div class="xlate" id="dxlate"></div>`;
-  html += `<div id="dexternal"></div><div id="dprior"></div><div id="dforecast"></div>`;
+  html += `<div class="xlate" id="dxlate" data-export-class="unofficial_translation"></div>`;
+  html += `<div id="dexternal" data-export-class="external_award"></div><div id="dprior" data-export-class="paper_trail"></div><div id="dforecast" data-export-class="agency_forecast"></div>`;
   // Agency-wide totals are context for this notice, not the headline — rendered last and
   // visually subordinated (smaller figures) so notice-specific facts read first.
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");

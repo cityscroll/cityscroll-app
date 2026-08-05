@@ -67,10 +67,36 @@ export function propertyAuctionExportRows(entries) {
       if (seen.has(identity)) continue;
       seen.add(identity);
       const commercial = row.commercial || null;
+      const price = commercial?.primary_price || commercial?.glance?.price || null;
+      const geometry = location.geometry || {};
+      const locatedAddress = (location.addresses || []).find(address =>
+        Number.isFinite(address?.latitude) && Number.isFinite(address?.longitude)
+      ) || {};
+      const crossDomain = row.property_cross_domain || row._property_cross_domain || {};
+      const projectIds = (crossDomain.land?.projects || crossDomain.land_projects || [])
+        .map(project => project?.project_id || project?.id)
+        .filter(Boolean);
       out.push({
         address: location.addresses?.[0]?.label || "", block, lot, bbl, stage,
         posted: iso(row.start_date), event_date: iso(row.event_date),
         close_date: iso(commercial?.close_date),
+        boroughs: (location.boroughs || []).join(" | "),
+        community_districts: (location.community_districts || [location.community_district]).filter(Boolean).join(" | "),
+        council_districts: (location.council_districts || [location.council_district]).filter(Boolean).join(" | "),
+        neighborhoods: (location.neighborhoods || []).join(" | "),
+        latitude: Number.isFinite(geometry.latitude) ? geometry.latitude : (Number.isFinite(locatedAddress.latitude) ? locatedAddress.latitude : ""),
+        longitude: Number.isFinite(geometry.longitude) ? geometry.longitude : (Number.isFinite(locatedAddress.longitude) ? locatedAddress.longitude : ""),
+        asset_type: row._asset || commercial?.item?.category || "",
+        commercial_item: commercial?.glance?.item || commercial?.item?.label || "",
+        price_amount: Number.isFinite(Number(price?.amount)) ? Number(price.amount) : "",
+        price_kind: price?.kind || "",
+        sale_method: commercial?.sale_method?.method || "",
+        participation_url: commercial?.participation?.package_url || "",
+        disposition_subject: row.disposition_subject_ref || "",
+        disposition_join_keys: (row.disposition_join_keys || []).join(" | "),
+        project_ids: projectIds.join(" | "),
+        request_id: row.request_id || "",
+        permalink: row.request_id ? `https://cityscroll.org/notices/${encodeURIComponent(row.request_id)}` : "",
         source_link: row.request_id ? `${SOURCE_BASE}${encodeURIComponent(row.request_id)}` : "",
       });
     }
