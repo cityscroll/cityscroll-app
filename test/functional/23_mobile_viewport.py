@@ -229,12 +229,16 @@ def run(base: str) -> None:
               scopeCount: Number(document.querySelector('[data-scope-count]')?.dataset.scopeCount || 0),
               previewRows: document.querySelectorAll('[data-following-preview-panel] [data-record-id]').length,
               criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
-              emptyPrompt: Boolean(document.querySelector('[data-following-empty]')),
+              quietPrompt: document.querySelector('[data-following-subscribe-panel]')?.textContent
+                .includes('Select filters above to see current matches.'),
+              sectionOrder: [...document.querySelectorAll('#your-following, #create, #packs')]
+                .map(el => el.id),
             })"""
         )
         assert following_contract["scopeCount"] == following_contract["previewRows"], following_contract
         assert following_contract["criteriaMethod"] == "get", following_contract
-        assert following_contract["emptyPrompt"], following_contract
+        assert following_contract["quietPrompt"], following_contract
+        assert following_contract["sectionOrder"] == ["your-following", "create", "packs"], following_contract
         no_js.close()
         browser.close()
 

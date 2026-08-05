@@ -125,6 +125,27 @@ test("GET /prefs shows the recognized account's empty state", async () => {
   assert.match(await res.text(), /No active watches for this address/i);
 });
 
+test("a stale manage token cannot override a recognized session", async () => {
+  const env = makeEnv({
+    "sub:w1": JSON.stringify({
+      email: TEST_EMAIL,
+      lens: "money",
+      filter: { keywords: ["schools"] },
+      freq: "daily",
+    }),
+  });
+  const sessionToken = await signToken(SECRET, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
+  const res = await handlePrefs(new Request("https://cityscroll.org/prefs?token=your-token-here", {
+    headers: { Cookie: `cs_session=${sessionToken}` },
+  }), env);
+
+  assert.equal(res.status, 200);
+  const html = await res.text();
+  assert.match(html, /schools/i);
+  assert.doesNotMatch(html, /Link not valid/i);
+  assert.doesNotMatch(html, /name="token" value="your-token-here"/);
+});
+
 test("anonymous /prefs remains invalid and leaks no account email", async () => {
   const env = makeEnv({
     "sub:w1": JSON.stringify({ email: TEST_EMAIL, lens: "money", filter: {}, freq: "daily" }),

@@ -14,6 +14,8 @@ import {
   safeNextUrl,
   sessionCookieHeader,
   readSessionCookie,
+  readSessionCookies,
+  canIssueSharedSessionCookie,
   pinsKeyForEmail,
   EMAIL_SESSION_TTL_SECONDS,
   SESSION_SCOPE,
@@ -162,13 +164,19 @@ test("safeNextUrl blocks open redirects and strips residual tokens", () => {
   assert.equal(safeNextUrl("#notice/abc"), "https://cityscroll.org/#notice/abc");
 });
 
-test("session cookie header is HttpOnly Secure SameSite=Lax", () => {
+test("session cookie header is shared by the canonical site and API subdomain", () => {
   const h = sessionCookieHeader("tok123");
   assert.match(h, /HttpOnly/);
   assert.match(h, /Secure/);
   assert.match(h, /SameSite=Lax/);
+  assert.match(h, /Domain=cityscroll\.org/);
+  assert.match(h, /Path=\//);
   assert.match(h, /cs_session=tok123/);
   assert.equal(readSessionCookie("foo=1; cs_session=tok123; bar=2"), "tok123");
+  assert.deepEqual(readSessionCookies("cs_session=legacy; cs_session=shared"), ["legacy", "shared"]);
+  assert.equal(canIssueSharedSessionCookie("https://api.cityscroll.org/session"), true);
+  assert.equal(canIssueSharedSessionCookie("https://crol-worker.crol-worker.workers.dev/session"), false);
+  assert.equal(canIssueSharedSessionCookie("https://api.crol-list.org/session"), false);
 });
 
 // ---- HTTP handlers --------------------------------------------------------
@@ -212,7 +220,13 @@ test("GET /session names the recognized account and exposes its watch manager", 
     recognized: true,
     email: fixtureEmail,
     prefsUrl: "https://cityscroll.org/prefs",
+    manageUrl: "https://cityscroll.org/following/#your-following",
   });
+  const migrated = res.headers.getSetCookie();
+  assert.equal(migrated.length, 2);
+  assert.match(migrated[0], /Domain=cityscroll\.org/);
+  assert.match(migrated[1], /Max-Age=0/);
+  assert.doesNotMatch(migrated.join("\n"), /token=/);
 });
 
 test("GET /session never returns account fields without a valid cookie", async () => {
@@ -225,6 +239,27 @@ test("GET /session never returns account fields without a valid cookie", async (
   assert.deepEqual(body, { ok: true, recognized: false });
   assert.equal(body.email, undefined);
   assert.equal(body.prefsUrl, undefined);
+  assert.equal(body.manageUrl, undefined);
+});
+
+test("compatibility hosts never advertise a session canonical documents cannot read", async () => {
+  const e = env();
+  const fixtureEmail = ["user", "example.test"].join("@");
+  const cookieTok = await signToken(SECRET, sessionPayload(fixtureEmail), { ttlSeconds: 3600 });
+  const status = await handleSession(new Request("https://crol-worker.crol-worker.workers.dev/session", {
+    headers: { Origin: "https://cityscroll.org", Cookie: `cs_session=${cookieTok}` },
+  }), e, "/session");
+  assert.deepEqual(await status.json(), { ok: true, recognized: false });
+  assert.equal(status.headers.get("Set-Cookie"), null);
+
+  const emailToken = await issueEmailSessionToken(e, fixtureEmail);
+  const exchange = await handleSession(new Request("https://crol-worker.crol-worker.workers.dev/session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: "https://cityscroll.org" },
+    body: JSON.stringify({ token: emailToken }),
+  }), e, "/session");
+  assert.deepEqual(await exchange.json(), { ok: true, recognized: false });
+  assert.equal(exchange.headers.get("Set-Cookie"), null);
 });
 
 test("invalid / expired tokens degrade silently (recognized:false, no cookie)", async () => {
@@ -296,6 +331,18 @@ test("GET /r/... with bad s= still redirects anonymously (no scary error)", asyn
   const res = await handleRedirect(req, e, null, "/r/money/20260701200");
   assert.equal(res.status, 302);
   assert.match(res.headers.get("Location") || "", /\/notices\/20260701200/);
+  assert.equal(res.headers.get("Set-Cookie"), null);
+});
+
+test("compatibility redirect hosts do not mint an unreadable canonical session", async () => {
+  const e = env();
+  const fixtureEmail = ["compat", "example.test"].join("@");
+  const tok = await issueEmailSessionToken(e, fixtureEmail);
+  const req = new Request(
+    `https://api.crol-list.org/r/money/20260701200?s=${encodeURIComponent(tok)}`,
+  );
+  const res = await handleRedirect(req, e, null, "/r/money/20260701200");
+  assert.equal(res.status, 302);
   assert.equal(res.headers.get("Set-Cookie"), null);
 });
 
@@ -452,6 +499,29 @@ test("emailFromRequest reads a valid session cookie", async () => {
   assert.equal(await emailFromRequest(req, e), "z@y.com");
 });
 
+test("emailFromRequest accepts a valid shared cookie after an expired legacy cookie", async () => {
+  const e = env();
+  const expiredEmail = ["expired", "example.test"].join("@");
+  const sharedEmail = ["current", "example.test"].join("@");
+  const expired = await signToken(SECRET, sessionPayload(expiredEmail), { ttlSeconds: 1, now: T0 });
+  const shared = await signToken(SECRET, sessionPayload(sharedEmail), { ttlSeconds: 3600 });
+  const req = new Request("https://api.cityscroll.org/pins", {
+    headers: { Cookie: `cs_session=${expired}; cs_session=${shared}` },
+  });
+  assert.equal(await emailFromRequest(req, e), sharedEmail);
+});
+
+test("GET logout redirects safely while clearing shared and legacy cookies", async () => {
+  const response = await handleSession(
+    new Request("https://api.cityscroll.org/session/logout?next=https%3A%2F%2Fcityscroll.org%2Ffollowing%2F"),
+    env(),
+    "/session/logout",
+  );
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get("location"), "https://cityscroll.org/following/");
+  assert.equal(response.headers.getSetCookie().length, 2);
+});
+
 test("logout clears cookie and subsequent /pins is anonymous", async () => {
   const e = env();
   const emailTok = await issueEmailSessionToken(e, "out@example.com");
@@ -473,5 +543,11 @@ test("logout clears cookie and subsequent /pins is anonymous", async () => {
     e,
     "/session/logout",
   );
-  assert.match(logout.headers.get("Set-Cookie") || "", /Max-Age=0/);
+  const cleared = typeof logout.headers.getSetCookie === "function"
+    ? logout.headers.getSetCookie()
+    : [logout.headers.get("Set-Cookie") || ""];
+  assert.equal(cleared.length, 2);
+  assert.ok(cleared.every((value) => /Max-Age=0/.test(value)));
+  assert.ok(cleared.some((value) => /Domain=cityscroll\.org/.test(value)));
+  assert.ok(cleared.some((value) => !/Domain=/.test(value)));
 });

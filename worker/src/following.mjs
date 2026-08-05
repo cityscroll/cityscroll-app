@@ -5,7 +5,7 @@ import { feedItems } from "./lib/feed.mjs";
 import { sanitize } from "./lib/filter.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
 import { emailFromRequest } from "./session.mjs";
-import { listWatchesForEmail } from "./prefs.mjs";
+import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
@@ -53,10 +53,38 @@ function personalHeaders(request, env) {
   };
 }
 
-function personalHtml(watches) {
-  if (!watches?.length) return `<p>Existing watches appear after CityScroll recognizes a link from one of your emails.</p><p><a href="https://cityscroll.org/prefs">Manage from a CityScroll email</a></p>`;
-  const rows = watches.map((watch) => `<article data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}"><h3>${esc(watch.query)}</h3><p class="watch-meta">${watch.paused ? "Paused" : "Active"} · ${esc(watch.freq)}</p></article>`).join("");
-  return `${rows}<p><a href="https://cityscroll.org/prefs">Change cadence, pause, or unsubscribe</a></p>`;
+function hiddenCredential(token, watch) {
+  return `<input type="hidden" name="token" value="${esc(token)}"><input type="hidden" name="key" value="${esc(watch.key)}">`;
+}
+
+function personalWatchHtml(watch, credential) {
+  const action = watch.paused ? "unpause" : "pause";
+  return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}">
+    <div class="following-watch-heading"><h3>${esc(watch.query)}</h3><p class="watch-meta">${watch.paused ? "Paused" : "Active"}</p></div>
+    <div class="following-watch-controls">
+      <form method="post" action="${SITE_ORIGIN}/prefs" data-watch-action>
+        ${hiddenCredential(credential, watch)}<input type="hidden" name="action" value="update">
+        <label>Cadence<select name="freq"><option value="daily"${watch.freq === "daily" ? " selected" : ""}>Daily</option><option value="weekly"${watch.freq === "weekly" ? " selected" : ""}>Weekly</option></select></label>
+        <button type="submit">Save cadence</button>
+      </form>
+      <form method="post" action="${SITE_ORIGIN}/prefs" data-watch-action>
+        ${hiddenCredential(credential, watch)}<input type="hidden" name="action" value="${action}">
+        <button type="submit">${watch.paused ? "Resume" : "Pause"}</button>
+      </form>
+      <form method="post" action="${SITE_ORIGIN}/prefs" data-watch-action data-confirm="Stop this watch?">
+        ${hiddenCredential(credential, watch)}<input type="hidden" name="action" value="delete">
+        <button type="submit" class="following-watch-remove">Unsubscribe</button>
+      </form>
+    </div>
+  </article>`;
+}
+
+function personalHtml(watches, credential, recognized) {
+  if (!recognized) {
+    return `<div data-session-recognized="false"><p>Open a recent CityScroll email to see and manage saved watches here.</p></div>`;
+  }
+  if (!watches?.length) return `<div data-session-recognized="true"><p>No saved watches yet.</p></div>`;
+  return `<div data-session-recognized="true">${watches.map((watch) => personalWatchHtml(watch, credential)).join("")}</div>`;
 }
 
 async function handlePersonal(request, env) {
@@ -65,7 +93,8 @@ async function handlePersonal(request, env) {
   if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405, headers: { ...headers, Allow: "GET, HEAD, OPTIONS" } });
   const email = await emailFromRequest(request, env);
   const watches = email ? await listWatchesForEmail(env, email) : [];
-  return new Response(request.method === "HEAD" ? null : personalHtml(watches), { status: 200, headers });
+  const credential = email ? await issuePrefsCredential(env, email) : null;
+  return new Response(request.method === "HEAD" ? null : personalHtml(watches, credential, !!email), { status: 200, headers });
 }
 
 export async function handleFollowing(request, env = {}, ctx = {}, options = {}) {

@@ -114,15 +114,15 @@ test("English i18n carries alerts rollup preference keys", () => {
   }
 });
 
-test("public demo contract carries the digest explanation into Following", () => {
+test("public demo contract opens the top-level watch manager in Following", () => {
   const demo = JSON.parse(readFileSync(join(ROOT, "site/demo/demo-links.json"), "utf8"));
   const entry = demo.entries.find((row) => row.id === "alerts-rollup-prefs");
   assert.ok(entry, "demo-links must include alerts-rollup-prefs");
   assert.equal(entry.feature, "alerts-rollup-prefs");
   assert.equal(entry.url, "following/");
   assert.equal(entry.expectations.pathname, "/following/");
-  assert.ok(entry.expectations.visible.some((loc) => loc.selector === ".following-explainer"));
-  assert.ok(entry.expectations.visible.some((loc) => loc.selector === "#your-following"));
+  assert.ok(entry.expectations.visible.some((loc) => loc.selector === "#your-following" && loc.text === "Your watches"));
+  assert.ok(entry.expectations.visible.some((loc) => loc.selector === "[data-personal-watch-list]"));
 });
 
 test("project memory documents alerts rollup prefs surface", () => {

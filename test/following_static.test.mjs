@@ -35,10 +35,8 @@ test("Following renders the public control center and a complete no-JavaScript f
   const visible = html.replace(/<[^>]+>/g, " ");
 
   assert.match(html, /<h1[^>]*>Following<\/h1>/);
-  assert.match(html, /Watches/);
-  assert.match(html, /Monitor packs/);
-  assert.match(html, /District digests/);
-  assert.match(html, /One digest/);
+  assert.match(html, /Your watches/);
+  assert.match(html, /Ready-made watch sets/);
   assert.match(html, /data-scope-axis="agency"[^>]*>Transportation/);
   assert.match(html, /data-scope-axis="borough"[^>]*>Queens/);
   assert.match(html, /data-scope-count="17"/);
@@ -47,10 +45,9 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /<form[^>]+method="post"[^>]+action="https:\/\/api\.cityscroll\.org\/subscribe"/);
   assert.match(html, /name="filter"[^>]+value="[^"]*curb/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
-  assert.match(html, /double opt-in/i);
   assert.match(html, /Click it to start the watch/);
-  assert.match(html, /privacy/i);
-  assert.match(html, /href="https:\/\/cityscroll\.org\/prefs"/);
+  assert.doesNotMatch(html, /href="https:\/\/cityscroll\.org\/prefs"/);
+  assert.doesNotMatch(html, /Email and privacy|Confirm first|double opt-in/i);
   assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org\/following/);
   assert.doesNotMatch(visible, /\b(?:facet|scope)\b|without JavaScript|server-rendered|static-first/i);
   assert.match(html, /type="module" src="\/app\/following\.mjs"/);
@@ -64,10 +61,21 @@ test("Following renders the public control center and a complete no-JavaScript f
 test("Following has a useful server-rendered empty state before personalization", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
 
-  assert.match(html, /data-following-empty/);
-  assert.match(html, /Choose a topic or place/);
   assert.match(html, /data-personal-watch-list/);
-  assert.match(html, /Manage from a CityScroll email/);
+  assert.match(html, /recent CityScroll email/);
+  assert.match(html, /Select filters above to see current matches/);
+  assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first/);
+});
+
+test("Following puts saved watches before every watch-creation flow", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  const personal = html.indexOf('id="your-following"');
+  const create = html.indexOf('id="create"');
+  const packs = html.indexOf('id="packs"');
+
+  assert.ok(personal > 0 && create > personal && packs > create, `personal=${personal} create=${create} packs=${packs}`);
+  assert.doesNotMatch(html, /All your watches|Save a set of filters once|Monitor packs|District digests|One digest/);
+  assert.doesNotMatch(html, /Saved filters|What this watch follows|preview and each email use these same terms/i);
 });
 
 test("Following gives every visible heading a distinct navigation label", () => {

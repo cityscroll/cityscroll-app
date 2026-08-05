@@ -157,12 +157,11 @@ function boroughOptions(current) {
 }
 
 function scopeHtml(view) {
+  if (!view.requested) return "";
   const chips = view.scopeSummary.map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
   return `<section class="following-scope" data-following-scope-panel aria-labelledby="following-scope-heading">
-    <p class="following-kicker">Saved filters</p>
-    <h2 id="following-scope-heading">What this watch follows</h2>
+    <h2 id="following-scope-heading">Watch criteria</h2>
     <ul aria-label="Watch criteria">${chips}</ul>
-    <p>The preview and each email use these same terms. There is no second set of filters.</p>
   </section>`;
 }
 
@@ -172,12 +171,7 @@ function previewItem(item) {
 }
 
 function previewHtml(view) {
-  if (!view.requested) {
-    return `<section class="following-preview" data-following-preview-panel data-following-empty aria-labelledby="following-preview-heading">
-      <p class="following-kicker">Preview</p><h2 id="following-preview-heading">Choose a topic or place</h2>
-      <p>Choose some filters. See what they find before you ask for email.</p>
-    </section>`;
-  }
+  if (!view.requested) return "";
   const count = view.matchCount ?? view.previewItems.length;
   const body = view.previewError
     ? `<p class="following-note" role="status">${esc(view.previewError)}</p>`
@@ -185,14 +179,14 @@ function previewHtml(view) {
       ? `<ol>${view.previewItems.map(previewItem).join("")}</ol>`
       : `<p class="following-empty">No records match now. The watch can still tell you when a new match appears.</p>`;
   return `<section class="following-preview" data-following-preview-panel data-scope-count="${count}" aria-labelledby="following-preview-heading">
-    <p class="following-kicker">Preview</p><h2 id="following-preview-heading">${count} records match these saved filters</h2>
+    <p class="following-kicker">Preview</p><h2 id="following-preview-heading">${count} matching records</h2>
     <p>${view.previewItems.length < count ? `${view.previewItems.length} recent matches are shown.` : "Every current match is shown."}</p>
     ${body}
   </section>`;
 }
 
 function subscribeHtml(view) {
-  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Preview your filters first. The preview becomes the saved watch.</p></section>`;
+  if (!view.requested) return `<section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Select filters above to see current matches.</p></section>`;
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
@@ -212,7 +206,7 @@ function templateHtml(template) {
   const watches = template.watches.map((watch) => `<li>${esc(watch.label)}.</li>`).join("");
   const firstWatch = template.watches[0];
   const href = followingUrlFromWatch(firstWatch, { frequency: "weekly" });
-  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This pack saves ${template.watches.length} watches. Open it to see each one.</p><details><summary>Show saved watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">Preview one watch</a></article>`;
+  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This set includes ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">Preview one watch</a></article>`;
 }
 
 function controlsHtml(view) {
@@ -235,27 +229,21 @@ export function renderFollowingBody(view) {
   return `<main id="main" data-following-root data-personal-url="${API_BASE}/following/personal"
     data-msg-duplicate="You already follow these filters. Manage the saved watch instead of making a copy."
     data-msg-preview-loading="Updating the preview…"
-    data-msg-preview-ready="Preview updated. The saved terms did not change."
+    data-msg-preview-ready="Preview updated."
     data-msg-preview-error="The quick preview is not ready. Submit again to open the full preview."
     data-msg-submit-loading="Sending a link…"
     data-msg-submit-ready="Check your inbox. The watch starts after you click the link."
-    data-msg-submit-error="We could not send the link. Check the address and try again.">
+    data-msg-submit-error="We could not send the link. Check the address and try again."
+    data-msg-personal-saving="Saving…"
+    data-msg-personal-saved="Saved."
+    data-msg-personal-error="Could not save that change. Try again.">
     <section class="following-hero">
-      <p class="following-kicker">All your watches</p><h1>Following</h1>
-      <p>Save a set of filters once. See what it finds. Pick when it comes. Change each watch here.</p>
-      <nav aria-label="Following sections"><a href="#create">Create a watch</a><a href="#packs">Monitor packs</a><a href="#your-following">Your following</a></nav>
+      <h1>Following</h1>
     </section>
-    <section class="following-explainer" aria-label="What Following includes">
-      <article><h2>Watches</h2><p>A watch saves your filters from Browse, Now, or Near you.</p></article>
-      <article><h2>Sets of watches</h2><p>A monitor pack saves a set of watches. You can see and change each one.</p></article>
-      <article><h2>District digests</h2><p>A district watch can send one email each week. It can track deals, events, land, and homes.</p></article>
-      <article><h2>One digest</h2><p>One email groups the new matches from all your watches.</p></article>
-    </section>
+    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list><p>Open a recent CityScroll email to see and manage saved watches here.</p></div><p data-personal-status role="status" aria-live="polite"></p></section>
     <section id="create" class="following-create" aria-labelledby="following-create-heading"><p class="following-kicker">Create</p><h2 id="following-create-heading">Follow a topic or place</h2>${controlsHtml(view)}</section>
-    <div class="following-workspace">${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>
-    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Sets to start with</p><h2 id="following-packs-heading">Monitor packs</h2><div>${view.templates.map(templateHtml).join("")}</div></section>
-    <section class="following-privacy" aria-labelledby="following-privacy-heading"><p class="following-kicker">Email and privacy</p><h2 id="following-privacy-heading">Confirm first</h2><p>This is called double opt-in. We send one link. Click it to start the watch. Until then, we save nothing. Each email has a link to change or stop the watch. You do not need to sign in to use the preview.</p></section>
-    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Your saved watches</p><h2 id="following-personal-heading">Your following</h2><div data-personal-watch-list><p>Open a link from one of our emails. Your watches can then show here.</p><p><a href="${SITE_BASE}/prefs">Manage from a CityScroll email</a></p></div></section>
+    <div class="following-workspace" data-following-workspace>${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>
+    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Ready-made watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>
   </main>`;
 }
 
@@ -265,12 +253,12 @@ export function renderFollowingDocument(view, options = {}) {
   const siteBase = String(options.siteBase || "").replace(/\/$/, "");
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches, monitor packs, digests, and district updates.">
+<title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches and district updates.">
 <link rel="canonical" href="https://cityscroll.org/following/">${renderCivicDocumentAssets(assetPrefix)}</head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "following", siteBase, surfaceClass: "following-mast" })}
 ${renderFollowingBody(view)}
-<footer class="following-footer">The preview and each email use the same saved terms. Check each item at its source.</footer>
+<footer class="following-footer">Check each item at its source.</footer>
 <script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
 <script type="module" src="${esc(prefix)}app/following.mjs"></script></body></html>`.replace(/[ \t]+$/gm, "");
 }

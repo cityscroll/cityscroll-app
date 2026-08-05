@@ -19,7 +19,8 @@ import {
   isPinsSessionPayload,
   sessionPayload,
   sessionCookieHeader,
-  readSessionCookie,
+  canIssueSharedSessionCookie,
+  readSessionCookies,
   safeNextUrl,
 } from "./lib/session.mjs";
 
@@ -79,27 +80,51 @@ export async function handleSession(req, env, pathname) {
 }
 
 async function statusFromCookie(req, env, cors) {
+  // Compatibility hosts cannot set a cookie that canonical documents can read.
+  // They must stay anonymous instead of advertising a split session.
+  if (!canIssueSharedSessionCookie(req.url)) {
+    return json({ ok: true, recognized: false }, 200, cors);
+  }
   const email = await emailFromRequest(req, env);
   if (!email) return json({ ok: true, recognized: false }, 200, cors);
-  return json({
+  // A status check is also the migration seam for legacy API-host-only cookies.
+  // Re-issuing on the parent domain makes the same recognized identity visible to
+  // canonical document routes such as /prefs without putting a token in a URL.
+  const cookieTok = await signToken(
+    env.TOKEN_SECRET,
+    sessionPayload(email),
+    { ttlSeconds: SESSION_COOKIE_TTL_SECONDS },
+  );
+  const headers = new Headers({
+    ...cors,
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+  });
+  headers.append("Set-Cookie", sessionCookieHeader(cookieTok));
+  headers.append("Set-Cookie", sessionCookieHeader("", { clear: true, domain: null }));
+  return new Response(JSON.stringify({
     ok: true,
     recognized: true,
     email,
     prefsUrl: "https://cityscroll.org/prefs",
-  }, 200, cors);
+    manageUrl: "https://cityscroll.org/following/#your-following",
+  }), { status: 200, headers });
 }
 
 async function handleLogout(req, cors) {
-  const headers = {
+  const headers = new Headers({
     ...cors,
     "Content-Type": "application/json",
-    "Set-Cookie": sessionCookieHeader("", { clear: true }),
     "Cache-Control": "no-store",
-  };
+  });
+  // Clear both the shared cookie and the legacy host-only cookie. Keeping the
+  // latter would make the API banner re-recognize a user immediately after logout.
+  headers.append("Set-Cookie", sessionCookieHeader("", { clear: true }));
+  headers.append("Set-Cookie", sessionCookieHeader("", { clear: true, domain: null }));
   if (req.method === "GET") {
     // GET logout used from the banner; prefer a soft landing on the site.
     const next = safeNextUrl(new URL(req.url).searchParams.get("next"));
-    headers["Location"] = next;
+    headers.set("Location", next);
     return new Response(null, { status: 302, headers });
   }
   return new Response(JSON.stringify({ ok: true, recognized: false }), { status: 200, headers });
@@ -133,7 +158,7 @@ async function exchangeJson(req, env, token, cors) {
  * a fresh session cookie. Rate-limits by IP. Never throws; failures → no cookie.
  */
 async function tryExchange(req, env, token) {
-  if (!env.TOKEN_SECRET || !token) return { cookie: null };
+  if (!env.TOKEN_SECRET || !token || !canIssueSharedSessionCookie(req.url)) return { cookie: null };
   const ip = req.headers.get("CF-Connecting-IP") || "";
   if (ip && env.SUBS && await overActorLimit(env.SUBS, "session", ip, MAX_SESSION_ATTEMPTS_PER_IP_DAY)) {
     return { cookie: null };
@@ -152,11 +177,12 @@ async function tryExchange(req, env, token) {
 /** Resolve the subscriber email from the session cookie, or null. */
 export async function emailFromRequest(req, env) {
   if (!env.TOKEN_SECRET) return null;
-  const raw = readSessionCookie(req.headers.get("cookie") || "");
-  if (!raw) return null;
-  const res = await verifyToken(env.TOKEN_SECRET, raw);
-  if (!res.valid || !isPinsSessionPayload(res.payload)) return null;
-  return res.payload.e;
+  const candidates = readSessionCookies(req.headers.get("cookie") || "") || [];
+  for (const raw of candidates) {
+    const res = await verifyToken(env.TOKEN_SECRET, raw);
+    if (res.valid && isPinsSessionPayload(res.payload)) return res.payload.e;
+  }
+  return null;
 }
 
 /** Sign a pins-scoped email-link token for digests (caller embeds in URLs). */

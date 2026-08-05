@@ -129,7 +129,10 @@ summary). One rollup email counts as **one send unit** toward `MAX_PER_RUN` /
 `MAX_SENDS_PER_DAY`. Single-watch addresses keep the per-watch email shape. Queue mode
 enqueues one job per account (`type: rollup|sub`), not one job per watch for multi-watch
 accounts. Footers link to the **preference center** (`/prefs`) and support per-watch or
-all-watches unsubscribe. Preference edits take effect on the **next daily cron** (~9am ET).
+all-watches unsubscribe. A recognized `cs_session` cookie is shared across the API and
+canonical `cityscroll.org` document routes; `/following/#your-following` mints narrower
+purpose tokens into its inline management forms without exposing them in URLs. Preference
+edits take effect on the **next daily cron** (~9am ET).
 Design notes: [`docs/digest-rollup-prefs.md`](../docs/digest-rollup-prefs.md). Operator
 dry-run: `GET /admin/digest-rollup?key=…&email=…`.
 Test-send evaluation (no Resend):

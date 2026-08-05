@@ -30,6 +30,10 @@ test("anonymous invSave still writes localStorage only (server push gated)", () 
   assert.match(INDEX, /if\(invSessionRecognized\) invScheduleServerSave\(s\)/);
 });
 
+test("credentialed account calls never fail over to a host that cannot share the session", () => {
+  assert.match(INDEX, /if\(needsCreds\) return attempt\(API\)/);
+});
+
 test("session banner is dismissible and has a not-you affordance", () => {
   assert.match(INDEX, /id="sessionNotYou"/);
   assert.match(INDEX, /id="sessionDismiss"/);

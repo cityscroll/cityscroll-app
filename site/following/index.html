@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches, monitor packs, digests, and district updates.">
+<title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches and district updates.">
 <link rel="canonical" href="https://cityscroll.org/following/"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -17,22 +17,18 @@
 <main id="main" data-following-root data-personal-url="https://api.cityscroll.org/following/personal"
     data-msg-duplicate="You already follow these filters. Manage the saved watch instead of making a copy."
     data-msg-preview-loading="Updating the preview…"
-    data-msg-preview-ready="Preview updated. The saved terms did not change."
+    data-msg-preview-ready="Preview updated."
     data-msg-preview-error="The quick preview is not ready. Submit again to open the full preview."
     data-msg-submit-loading="Sending a link…"
     data-msg-submit-ready="Check your inbox. The watch starts after you click the link."
-    data-msg-submit-error="We could not send the link. Check the address and try again.">
+    data-msg-submit-error="We could not send the link. Check the address and try again."
+    data-msg-personal-saving="Saving…"
+    data-msg-personal-saved="Saved."
+    data-msg-personal-error="Could not save that change. Try again.">
     <section class="following-hero">
-      <p class="following-kicker">All your watches</p><h1>Following</h1>
-      <p>Save a set of filters once. See what it finds. Pick when it comes. Change each watch here.</p>
-      <nav aria-label="Following sections"><a href="#create">Create a watch</a><a href="#packs">Monitor packs</a><a href="#your-following">Your following</a></nav>
+      <h1>Following</h1>
     </section>
-    <section class="following-explainer" aria-label="What Following includes">
-      <article><h2>Watches</h2><p>A watch saves your filters from Browse, Now, or Near you.</p></article>
-      <article><h2>Sets of watches</h2><p>A monitor pack saves a set of watches. You can see and change each one.</p></article>
-      <article><h2>District digests</h2><p>A district watch can send one email each week. It can track deals, events, land, and homes.</p></article>
-      <article><h2>One digest</h2><p>One email groups the new matches from all your watches.</p></article>
-    </section>
+    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list><p>Open a recent CityScroll email to see and manage saved watches here.</p></div><p data-personal-status role="status" aria-live="polite"></p></section>
     <section id="create" class="following-create" aria-labelledby="following-create-heading"><p class="following-kicker">Create</p><h2 id="following-create-heading">Follow a topic or place</h2><form class="following-form" method="get" action="https://cityscroll.org/following" data-following-preview-form>
     <input type="hidden" name="filter" value="{}">
     <label>Topic<select name="lens"><option value="money" selected>Contracts and RFPs</option><option value="people">Staffing and exams</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="meetings">Hearings and meetings</option><option value="district">District digest</option><option value="entity">Agency or vendor</option></select></label>
@@ -44,19 +40,9 @@
     <button type="submit">Preview these filters</button>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form></section>
-    <div class="following-workspace"><section class="following-scope" data-following-scope-panel aria-labelledby="following-scope-heading">
-    <p class="following-kicker">Saved filters</p>
-    <h2 id="following-scope-heading">What this watch follows</h2>
-    <ul aria-label="Watch criteria"><li data-scope-axis="topic">Contracts and RFPs</li></ul>
-    <p>The preview and each email use these same terms. There is no second set of filters.</p>
-  </section><section class="following-preview" data-following-preview-panel data-following-empty aria-labelledby="following-preview-heading">
-      <p class="following-kicker">Preview</p><h2 id="following-preview-heading">Choose a topic or place</h2>
-      <p>Choose some filters. See what they find before you ask for email.</p>
-    </section><section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Preview your filters first. The preview becomes the saved watch.</p></section></div>
-    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Sets to start with</p><h2 id="following-packs-heading">Monitor packs</h2><div><article class="following-pack"><h3>Restaurant &amp; food-service rules</h3><p>This pack saves 2 watches. Open it to see each one.</p><details><summary>Show saved watches</summary><ul><li>DOHMH Agency Rules.</li><li>Food-service keywords in rules.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Health+and+Mental+Hygiene%22%7D&amp;freq=weekly">Preview one watch</a></article><article class="following-pack"><h3>For-hire vehicles (TLC)</h3><p>This pack saves 2 watches. Open it to see each one.</p><details><summary>Show saved watches</summary><ul><li>TLC Agency Rules.</li><li>FHV / taxi keywords in rules.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Taxi+and+Limousine+Commission%22%7D&amp;freq=weekly">Preview one watch</a></article><article class="following-pack"><h3>Construction safety (Buildings)</h3><p>This pack saves 2 watches. Open it to see each one.</p><details><summary>Show saved watches</summary><ul><li>Buildings Agency Rules.</li><li>Construction safety keywords in rules.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Buildings%22%7D&amp;freq=weekly">Preview one watch</a></article><article class="following-pack"><h3>Child care (ACS / DOHMH)</h3><p>This pack saves 2 watches. Open it to see each one.</p><details><summary>Show saved watches</summary><ul><li>ACS Agency Rules.</li><li>DOHMH child-care keywords.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Administration+for+Children%27s+Services%22%7D&amp;freq=weekly">Preview one watch</a></article></div></section>
-    <section class="following-privacy" aria-labelledby="following-privacy-heading"><p class="following-kicker">Email and privacy</p><h2 id="following-privacy-heading">Confirm first</h2><p>This is called double opt-in. We send one link. Click it to start the watch. Until then, we save nothing. Each email has a link to change or stop the watch. You do not need to sign in to use the preview.</p></section>
-    <section id="your-following" class="following-personal" aria-labelledby="following-personal-heading"><p class="following-kicker">Your saved watches</p><h2 id="following-personal-heading">Your following</h2><div data-personal-watch-list><p>Open a link from one of our emails. Your watches can then show here.</p><p><a href="https://cityscroll.org/prefs">Manage from a CityScroll email</a></p></div></section>
+    <div class="following-workspace" data-following-workspace><section class="following-subscribe" data-following-subscribe-panel><h2>Create a watch</h2><p>Select filters above to see current matches.</p></section></div>
+    <section id="packs" class="following-packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Ready-made watch sets</h2><div><article class="following-pack"><h3>Restaurant &amp; food-service rules</h3><p>This set includes 2 watches.</p><details><summary>Show watches</summary><ul><li>DOHMH Agency Rules.</li><li>Food-service keywords in rules.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Health+and+Mental+Hygiene%22%7D&amp;freq=weekly">Preview one watch</a></article><article class="following-pack"><h3>For-hire vehicles (TLC)</h3><p>This set includes 2 watches.</p><details><summary>Show watches</summary><ul><li>TLC Agency Rules.</li><li>FHV / taxi keywords in rules.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Taxi+and+Limousine+Commission%22%7D&amp;freq=weekly">Preview one watch</a></article><article class="following-pack"><h3>Construction safety (Buildings)</h3><p>This set includes 2 watches.</p><details><summary>Show watches</summary><ul><li>Buildings Agency Rules.</li><li>Construction safety keywords in rules.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Buildings%22%7D&amp;freq=weekly">Preview one watch</a></article><article class="following-pack"><h3>Child care (ACS / DOHMH)</h3><p>This set includes 2 watches.</p><details><summary>Show watches</summary><ul><li>ACS Agency Rules.</li><li>DOHMH child-care keywords.</li></ul></details><a href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%22agency%22%3A%22Administration+for+Children%27s+Services%22%7D&amp;freq=weekly">Preview one watch</a></article></div></section>
   </main>
-<footer class="following-footer">The preview and each email use the same saved terms. Check each item at its source.</footer>
+<footer class="following-footer">Check each item at its source.</footer>
 <script defer src="/analytics.js?v=1.3.0"></script>
 <script type="module" src="/app/following.mjs"></script></body></html>

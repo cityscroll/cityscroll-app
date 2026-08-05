@@ -620,6 +620,7 @@ function rerenderForLang(){
     sessionShowBanner({
       email: sessionBanner.dataset.email || "",
       prefsUrl: sessionBanner.dataset.prefsUrl || "",
+      manageUrl: sessionBanner.dataset.manageUrl || "",
     });
   }
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
@@ -658,23 +659,36 @@ function rerenderForLang(){
 
 /* ===================== MAGIC-LINK SESSION (digest email recognition) =====================
    Quiet sign-in: a pins-scoped token from an alert email is exchanged for an HttpOnly
-   session cookie on the API host. The token is stripped from the URL immediately so it
-   never sits in history/referrers. The cookie may bootstrap the narrower watch manager;
-   unsubscribe and other purpose-specific actions never accept it directly. */
+   session cookie shared by the API and canonical document hosts. The token is stripped
+   from the URL immediately so it never sits in history/referrers. The cookie may
+   bootstrap the narrower watch manager; unsubscribe and other purpose-specific actions
+   never accept it directly. */
 function sessionShowBanner(session){
   const el = document.getElementById("sessionBanner");
   if(!el) return;
   const open = !!session;
-  el.hidden = !open;
+  if(!open) el.dataset.dismissed = "false";
+  el.hidden = !open || el.dataset.dismissed === "true";
   el.dataset.open = open ? "true" : "false";
+  const homeCta = document.getElementById("homeCta");
+  const homeCtaManage = document.getElementById("homeCtaManage");
+  if(homeCta) homeCta.dataset.sessionOpen = open ? "true" : "false";
+  if(homeCtaManage){
+    homeCtaManage.hidden = !open;
+    if(open){
+      homeCtaManage.href = session.manageUrl || session.prefsUrl || "https://cityscroll.org/following/#your-following";
+      if(window.t) homeCtaManage.textContent = t("session_manage_watches");
+    }
+  }
   if(open){
     el.dataset.email = String(session.email || "");
     el.dataset.prefsUrl = String(session.prefsUrl || "");
+    el.dataset.manageUrl = String(session.manageUrl || "");
     const txt = document.getElementById("sessionBannerText");
     if(txt && window.t) txt.textContent = t("session_signed_in", { email: String(session.email || "") });
     const manage = document.getElementById("sessionManage");
     if(manage){
-      manage.href = session.prefsUrl || "https://cityscroll.org/prefs";
+      manage.href = session.manageUrl || session.prefsUrl || "https://cityscroll.org/following/#your-following";
       if(window.t) manage.textContent = t("session_manage_watches");
     }
     // Keep the Alerts-tab manage link in lockstep with the session banner prefs URL.
@@ -742,7 +756,12 @@ async function sessionBoot(){
     const ny = document.getElementById("sessionNotYou");
     const di = document.getElementById("sessionDismiss");
     if(ny) ny.addEventListener("click", ()=>{ sessionLogout(); });
-    if(di) di.addEventListener("click", ()=>{ sessionShowBanner(false); });
+    if(di) di.addEventListener("click", ()=>{
+      const banner = document.getElementById("sessionBanner");
+      if(!banner) return;
+      banner.dataset.dismissed = "true";
+      banner.hidden = true;
+    });
     sessionBoot();
   };
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", wire);

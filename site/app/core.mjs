@@ -6,11 +6,10 @@ const CSL  = "https://data.cityofnewyork.us/resource/vx8i-nprf.json";
 const PAYFY = "2025";
 // Worker-backed features fall back to static behavior when the API is unavailable.
 const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-// Fail over during branded-route/DNS propagation; callers never timeout non-idempotent POSTs.
+// Only non-account reads may fail over; session and pin calls stay on the shared-cookie API host.
 const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
 let apiBase = API;
 async function workerFetch(path, opts, timeoutMs, acceptResponse){
-  // Only session and pin calls need same-site API credentials.
   const needsCreds = path === "/session" || path === "/session/logout" || path === "/pins"
     || path.startsWith("/session?") || path.startsWith("/pins?");
   const withCreds = (o) => {
@@ -31,6 +30,7 @@ async function workerFetch(path, opts, timeoutMs, acceptResponse){
     try{ return await acceptResponse(candidate); }
     catch(_error){ return false; }
   };
+  if(needsCreds) return attempt(API);
   const firstBase=apiBase;
   const other=firstBase===API?API_FALLBACK:API;
   try{

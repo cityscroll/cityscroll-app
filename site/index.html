@@ -80,12 +80,20 @@
   .home-cta-alt{margin:10px 0 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .home-cta-alt a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
   .home-cta-msg{margin-top:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .home-cta-session{display:none;margin:0}
+  .home-cta-session a{display:inline-flex;min-height:44px;align-items:center;padding:8px 14px;border:1px solid var(--oxblood);border-radius:7px;color:var(--oxblood);font:700 15px/1.3 var(--font-body);text-decoration:none}
   .home-cta.compact{max-width:none;margin:2px 0 12px;padding:10px 12px 8px;text-align:left}
   .home-cta.compact .home-cta-prompt,
   .home-cta.compact .home-cta-form,
   .home-cta.compact .home-cta-alt,
   .home-cta.compact .home-cta-msg{display:none}
   .home-cta.compact .home-cta-compact{display:block}
+  .home-cta[data-session-open="true"] .home-cta-prompt,
+  .home-cta[data-session-open="true"] .home-cta-form,
+  .home-cta[data-session-open="true"] .home-cta-alt,
+  .home-cta[data-session-open="true"] .home-cta-compact,
+  .home-cta[data-session-open="true"] .home-cta-msg{display:none}
+  .home-cta[data-session-open="true"] .home-cta-session{display:block}
   @media(max-width:680px){
     .home-cta{margin-inline:0;padding:12px}
     .lang-switcher{top:8px;inset-inline-end:10px}
@@ -1458,6 +1466,7 @@
   /* Magic-link session indicator: quiet, dismissible ("not you?" signs out). */
   .session-banner{display:none;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px auto 0;max-width:720px;padding:8px 14px;background:#eceef2;border:1px solid var(--rule);border-radius:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);text-align:center}
   .session-banner[data-open="true"]{display:flex}
+  .session-banner[data-dismissed="true"]{display:none}
   .session-banner button{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;min-height:32px;border-radius:6px;border:1px solid var(--rule-strong);background:var(--card);color:var(--ink);cursor:pointer}
   .session-banner button:hover{border-color:var(--ink)}
   .session-banner .session-manage{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;padding:9px 10px;border-radius:6px;border:1px solid var(--rule-strong);background:var(--card);color:var(--ink);text-decoration:none}
@@ -1541,13 +1550,14 @@
       </form>
       <p class="home-cta-alt"><a href="/following/" id="homeCtaTopics" data-i18n="home_cta_topics">or pick topics</a></p>
       <p class="home-cta-compact" id="homeCtaCompact"><a href="/following/"><span data-i18n="home_cta_prompt">Want email updates?</span> <span aria-hidden="true">→</span></a></p>
-      <div id="homeCtaMsg" class="home-cta-msg" role="status" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
+      <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="session_manage_watches" hidden>Manage watches</a></p>
+      <div id="homeCtaMsg" class="home-cta-msg" role="status"></div>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
     <nav class="now-entry-row" aria-label="Primary">
       <a class="now-entry" href="/now/"><strong data-i18n="now_title">Now</strong><span data-i18n="now_entry_link">See deadlines and upcoming events</span></a>
       <a class="now-entry" href="/near-you/"><strong data-i18n="near_you_entry_title">Near you</strong><span data-i18n="near_you_entry_desc">Keep these filters. Add a place.</span></a>
-      <a class="now-entry" href="/following/"><strong>Following</strong><span>Preview and manage saved scopes</span></a>
+      <a class="now-entry" href="/following/"><strong>Following</strong><span>See and manage your watches</span></a>
       <a class="now-entry" href="/browse/"><strong>Browse</strong><span>Explore every public source</span></a>
     </nav>
     <div class="browse-child-nav" id="browse-child-nav">
@@ -2199,11 +2209,11 @@
       <!-- Context-carry lead: filled when arriving with #alerts?lens=…&filter=… (or notice/project). -->
       <div id="acontextlead" class="alert-context-lead" hidden role="status" style="margin:0 0 14px;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);max-width:62ch"></div>
 
-      <!-- Association monitor packs: registry-driven multi-watch templates (data/watch_templates.json). -->
+      <!-- Registry-driven ready-made watch sets (data/watch_templates.json). -->
       <div class="watch-tpl-pack" id="watch-templates" data-watch-templates="1">
-        <h3 class="watch-tpl-heading" data-i18n="watch_tpl_heading">Association monitor packs</h3>
+        <h3 class="watch-tpl-heading" data-i18n="watch_tpl_heading">Ready-made watch sets</h3>
         <p class="watch-tpl-lead muted" data-i18n="watch_tpl_lead">One-tap multi-watch bundles for industry associations. Each pack creates separate email watches through the usual confirm-link path.</p>
-        <div class="watch-tpl-list" id="watch-template-list" role="group" data-i18n-aria="watch_tpl_heading" aria-label="Association monitor packs"></div>
+        <div class="watch-tpl-list" id="watch-template-list" role="group" data-i18n-aria="watch_tpl_heading" aria-label="Ready-made watch sets"></div>
         <div class="watch-tpl-detail" id="watch-template-detail" hidden></div>
       </div>
 
@@ -2310,7 +2320,7 @@
         <button id="apreview" type="button" data-i18n="quiz_preview_btn">Preview digest</button>
       </div>
       <div id="asubwrap" style="margin-top:12px">
-        <div id="asubmsg" class="muted" role="status" style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
+        <div id="asubmsg" class="muted" role="status" style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
         <div class="muted" style="margin-top:6px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</div>
         <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
       </div>

@@ -76,6 +76,26 @@ PUBLIC_COPY_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("mechanics narration: static-first", re.compile(r"\bstatic[- ]first\b", re.I)),
 ]
 
+# Product copy explicitly retired after reader review. These phrases turn simple
+# watch creation into a curriculum; behavior stays, but the narration must not
+# creep back into any built reader document or the English catalog.
+DIDACTIC_COPY_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("retired watch copy: confirmation caption", re.compile(r"We'll email a link to confirm\.", re.I)),
+    ("retired watch copy: email and privacy", re.compile(r"\bEmail and privacy\b", re.I)),
+    ("retired watch copy: confirm first", re.compile(r"\bConfirm first\b", re.I)),
+    ("retired watch copy: double opt-in lesson", re.compile(r"\bThis is called double opt-in\b", re.I)),
+    ("retired watch copy: all your watches", re.compile(r"\bAll your watches\b", re.I)),
+    ("retired watch copy: save filters lesson", re.compile(r"\bSave a set of filters once\b", re.I)),
+    ("retired watch copy: monitor packs", re.compile(r"\bMonitor packs\b", re.I)),
+    ("retired watch copy: district digests", re.compile(r"\bDistrict digests\b", re.I)),
+    ("retired watch copy: one digest", re.compile(r"\bOne digest\b(?!\s+line)", re.I)),
+    ("retired watch copy: saved filters", re.compile(r"\bSaved filters\b", re.I)),
+    ("retired watch copy: watch follows lesson", re.compile(r"\bWhat this watch follows\b", re.I)),
+    ("retired watch copy: preview email equivalence", re.compile(r"\bThe preview and each email use these same terms\b", re.I)),
+    ("retired watch copy: choose topic lesson", re.compile(r"\bChoose a topic or place\b", re.I)),
+    ("retired watch copy: preview filters lesson", re.compile(r"\bPreview your filters first\b", re.I)),
+]
+
 VENDOR_FOOTPRINT_JARGON_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("vendor footprint: strong linkage", re.compile(r"\b(?:strong(?:ly)?\s+linked|strong\s+links?)\b", re.I)),
     ("vendor footprint: build narration", re.compile(r"\bin\s+this\s+build\b", re.I)),
@@ -278,7 +298,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # Hits against the public catalogs (source, key, term, excerpt). Empty until scan.
     hits = []  # source: site/i18n.js STRINGS.en + INTERNAL_PATTERNS
-    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS)]  # source: public i18n catalogs
+    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS + DIDACTIC_COPY_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS)]  # source: public i18n catalogs
     for path in sorted(LOCALE_DIR.glob("*.js")):
         catalogs.append(
             (
@@ -337,7 +357,29 @@ def main(argv: list[str] | None = None) -> int:
         parser = ReaderTextParser()
         parser.feed(path.read_text(encoding="utf-8"))
         reader_text = "\n".join(parser.parts)
-        for term, pattern in PUBLIC_COPY_PATTERNS:
+        for term, pattern in PUBLIC_COPY_PATTERNS + DIDACTIC_COPY_PATTERNS:
+            match = pattern.search(reader_text)
+            if not match:
+                continue
+            hits.append(
+                {
+                    "source": str(path.relative_to(REPO)),
+                    "key": "visible_copy",
+                    "term": term,
+                    "excerpt": reader_text[max(0, match.start() - 60) : match.end() + 100].replace("\n", " ")[:180],
+                }
+            )
+    # Retired copy can re-enter through static fallbacks on any HTML document,
+    # including the large application shell that the broader jargon scan omits
+    # for noise control.
+    didactic_documents = sorted(SITE.rglob("*.html"))
+    for path in didactic_documents:
+        if path in built_documents:
+            continue
+        reader_parser = ReaderTextParser()
+        reader_parser.feed(path.read_text(encoding="utf-8"))
+        reader_text = "\n".join(reader_parser.parts)
+        for term, pattern in DIDACTIC_COPY_PATTERNS:
             match = pattern.search(reader_text)
             if not match:
                 continue
