@@ -1,0 +1,34 @@
+{
+  "fixture": {
+    "seized_total": 17,
+    "seized_current": 15,
+    "seized_archive": 2
+  },
+  "before": {
+    "chip": 17,
+    "current": 0,
+    "archive": 0,
+    "resultCount": 0,
+    "genericEmpty": true,
+    "scopeEmpty": false,
+    "archiveAction": false
+  },
+  "after": {
+    "chip": 15,
+    "current": 15,
+    "archive": 2,
+    "resultCount": 15,
+    "genericEmpty": false,
+    "scopeEmpty": false,
+    "archiveAction": false
+  },
+  "after_archive_only": {
+    "chip": 0,
+    "current": 0,
+    "archive": 1,
+    "resultCount": 0,
+    "genericEmpty": false,
+    "scopeEmpty": true,
+    "archiveAction": true
+  }
+}

@@ -98,6 +98,28 @@ test("filterPropertyExplorerEntries respects process stage", () => {
   assert.ok(typeof counts.hearing === "number");
 });
 
+test("asset facets retain action-bearing non-sale records before current/archive partitioning", () => {
+  const [seized] = censusEntries([{
+    request_id: "seized-with-inquiry",
+    start_date: "2026-08-01",
+    short_title: "Pending destruction of seized property",
+    additional_description_1: "Inquiries relating to the seized property should be made to the Civil Enforcement Unit.",
+  }]);
+  assert.equal(seized.primary.commercial.sale_eligible, false);
+  assert.equal(seized.primary.property_reader_actions.actionable[0]?.kind, "inquire_claim");
+
+  const filtered = filterPropertyExplorerEntries([seized], {
+    asset: "seized_property",
+    assetOf: (row) => row.commercial?.item?.category,
+    commercialOf: (row) => row.commercial,
+  });
+
+  assert.equal(filtered.length, 1, "item type is not a sales-only filter");
+  const partition = partitionPropertyExplorerEntries(filtered, { today: "2026-08-04" });
+  assert.equal(partition.default_count, 1);
+  assert.equal(partition.archive_count, 0);
+});
+
 test("aggregatePhaseEvents + dedupePhaseSourceLinks collapse verbatim property stage noise", () => {
   const events = [
     {
