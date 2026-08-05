@@ -409,6 +409,25 @@
       }
     },
     {
+      "id": "staffing-route-alias",
+      "url": "#staffing?lang=es&view=guide&role=Engineer%20Civil&window=open",
+      "feature": "staffing-route-alias",
+      "description": "Accept the former Staffing route name while keeping People as the canonical permalink.",
+      "expectations": {
+        "hash": "#people?lang=es&view=guide&role=Engineer%20Civil&window=open",
+        "visible": [
+          {
+            "selector": "#career-guide"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#career-results .loading"
+          }
+        ]
+      }
+    },
+    {
       "id": "scenario-subsidies-land-use",
       "url": "#meetings?q=IDA&when=past",
       "feature": "scenario-subsidies-land-use",
