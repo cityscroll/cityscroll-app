@@ -326,7 +326,10 @@ function showTab(name, push){
   }
 }
 
-document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
+document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",e=>{
+  e.preventDefault();
+  showTab(b.dataset.tab, true);
+}));
 
 /* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */
 (function(){

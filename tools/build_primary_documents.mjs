@@ -4,7 +4,11 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { BROWSE_FACETS } from "../site/browse_view.mjs";
-import { buildBrowseDocument, buildNowDocument } from "../site/primary_document_view.mjs";
+import {
+  buildBrowseDocument,
+  buildBrowseLandingDocument,
+  buildNowDocument,
+} from "../site/primary_document_view.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -29,7 +33,11 @@ export function primaryDocumentOutputs() {
     meetings: { status: "unavailable", reason: "edge_refresh", hearings: [] },
   };
   const outputs = [output("now", buildNowDocument(shell, nowSources))];
-  outputs.push(output("browse", buildBrowseDocument(shell, "contracts", payloads.contracts, new URLSearchParams(), { route: "/browse/" })));
+  const staffingExams = json("/data/staffing_exams.json");
+  outputs.push(output("browse", buildBrowseLandingDocument(shell, payloads, {
+    staffingExamCount: Array.isArray(staffingExams.exams) ? staffingExams.exams.length : 0,
+    staffingExamAsOf: staffingExams.data_current_as_of,
+  })));
   for (const [facet, payload] of Object.entries(payloads)) {
     outputs.push(output(`browse/${facet}`, buildBrowseDocument(shell, facet, payload, new URLSearchParams(), { route: `/browse/${facet}/` })));
   }

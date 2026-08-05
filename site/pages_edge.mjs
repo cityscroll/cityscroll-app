@@ -25,7 +25,8 @@ function safeId(pathname) {
 function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
-  const facet = match[1] || "contracts";
+  const facet = match[1];
+  if (!facet) return null;
   return Object.hasOwn(BROWSE_FACETS, facet) ? facet : null;
 }
 
@@ -133,7 +134,7 @@ async function handleNotice(request, env, id) {
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
     .on('meta[property="og:title"]', { element(element) { element.setAttribute("content", `${title} · CityScroll`); } })
     .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
-    .on("button.tabbtn.active", { element(element) { element.setAttribute("class", "tabbtn"); } })
+    .on(".tabbtn.active", { element(element) { element.setAttribute("class", "tabbtn"); } })
     .on("section.tabpane.active", { element(element) { element.setAttribute("class", "tabpane"); } })
     .on("#tab-notice", { element(element) { element.setAttribute("class", "tabpane active"); } })
     .on("#noticeview", { element(element) { element.setInnerContent(renderEdgeNotice(row, id, meetingOutcome), { html: true }); } })
