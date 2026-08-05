@@ -317,13 +317,16 @@ with sync_playwright() as pw:
         meetingHref:meeting?.getAttribute('href'), text:card.innerText};
     })()""")
     p6.screenshot(path=SHOT + "project-connections.png", full_page=True)
+    # Sources: NYC Open Data ZAP Projects (hgx4-8ukb) and ZAP Project BBLs (2iga-a6mk).
+    expected_project_ref = "project:2022M0258"
+    expected_parcel_ref = "bbl:1017670001"
     ok_project = (
         project_view["groups"] == 5
         and project_view["applicantRef"] == HPD_REF
         and project_view["applicantConfidence"] == "tentative"
         and project_view["possible"]
-        and set(project_view["parcelRefs"]) == {"project:2022M0258", "bbl:1017670001"}
-        and project_view["allRefs"] == ["project:2022M0258"]
+        and set(project_view["parcelRefs"]) == {expected_project_ref, expected_parcel_ref}
+        and project_view["allRefs"] == [expected_project_ref]
         and project_view["meetingHref"] == "#notice/20240101001"
         and "231" in project_view["text"] and "50" in project_view["text"]
     )
@@ -341,8 +344,8 @@ with sync_playwright() as pw:
         project:document.querySelector('.project-connections')?.dataset.projectRef,
         serialized};
     })()""")
-    step("OK" if round_trip["refs"] == ["project:2022M0258"]
-         and round_trip["project"] == "project:2022M0258" else "FAIL",
+    step("OK" if round_trip["refs"] == [expected_project_ref]
+         and round_trip["project"] == expected_project_ref else "FAIL",
          "gc-05 project scope survives reload", json.dumps({"url": scoped_url, **round_trip})[:260])
     p6.close()
 
