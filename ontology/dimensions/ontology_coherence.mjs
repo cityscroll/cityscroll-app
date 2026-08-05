@@ -104,10 +104,21 @@ function eventIsPlanned(event) {
 function eventIsTerminalComplete(event) {
   if (event?._synthetic) return false;
   if (eventIsPlanned(event)) return false;
+  // A disposition without a vote date is still useful hearing evidence, but
+  // its hearing date is not evidence that the represented body's review was
+  // complete. Keep it on the reader timeline without using it to order
+  // lifecycle completions.
+  if (event?.kind === "zap_disposition" && event?.time?.basis === "hearing_date") return false;
   const status = String(event?.status || event?.detail || "").toLowerCase();
   if (status.includes("not started")) return false;
   if (status.includes("in progress")) return false;
   return true;
+}
+
+function phasesHaveStrictCompletionOrder(earlier, later) {
+  // ZAP publishes filing and CEQR as parallel, repeatedly re-filed workflows.
+  // Their display order is useful navigation, not a completion dependency.
+  return !(earlier === "pre_application" && later === "environmental");
 }
 
 function phaseIndex(phaseId, order) {
@@ -272,6 +283,7 @@ export function auditLandPayload(payload = {}, opts = {}) {
     for (let j = i + 1; j < LAND_ULURP_PHASES.length; j++) {
       const earlier = LAND_ULURP_PHASES[i];
       const later = LAND_ULURP_PHASES[j];
+      if (!phasesHaveStrictCompletionOrder(earlier, later)) continue;
       const eDay = firstCompleteByPhase.get(earlier);
       const lDay = firstCompleteByPhase.get(later);
       if (eDay && lDay && lDay < eDay) {
