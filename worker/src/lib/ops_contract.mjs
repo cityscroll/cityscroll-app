@@ -64,7 +64,6 @@ export const DIGEST_SHADOW = Object.freeze({
     "aggregate_count_explosion",
     "count_list_mismatch",
     "broken_digest_link",
-    "owner_notification_failed",
   ],
   monitoring: {
     poll_status: "HTTP 200 only when READY; NEEDS_ATTENTION returns HTTP 503 with the JSON body",

@@ -181,23 +181,35 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
   assert.equal(DB.runs.length, 2);
 });
 
-test("operator notification failure becomes its own structured redline", async () => {
+test("shadow failures produce no outbound email", async () => {
   const DB = writeOnlyDb();
-  const out = await runDigestShadow({
-    DB,
-    ALERT_STATE: { get: async () => null },
-  }, {
-    now: NOW,
-    runAlertsFn: async () => ({ results: [{ sub: "sub:er***", previewId: "digest:error", error: "render failed" }] }),
-    notifyFn: async () => { throw new Error("mail unavailable"); },
-  });
-  const warning = out.redlines.find((item) => item.code === "owner_notification_failed");
-  assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
-  assert.equal(warning.digest_id, "run");
-  assert.equal(warning.evidence.error, "mail unavailable");
-  assert.equal(out.notification.status, "failed");
-  assert.equal(DB.batches.length, 3);
-  assert.equal(DB.runs.length, 1);
+  const originalFetch = globalThis.fetch;
+  let outboundRequests = 0;
+  globalThis.fetch = async () => {
+    outboundRequests++;
+    return new Response(null, { status: 202 });
+  };
+  try {
+    const out = await runDigestShadow({
+      DB,
+      ALERT_STATE: { get: async () => null },
+      RESEND_API_KEY: "test-resend-key",
+      FEEDBACK_TO: "configured-recipient",
+      ALERTS_FROM: "configured-sender",
+    }, {
+      now: NOW,
+      runAlertsFn: async () => ({ results: [{ sub: "sub:er***", previewId: "digest:error", error: "render failed" }] }),
+    });
+    assert.equal(out.status, DIGEST_SHADOW_ATTENTION);
+    assert.equal(out.redlines.length, 1);
+    assert.equal(out.redlines[0].code, "render_error");
+    assert.equal(outboundRequests, 0);
+    assert.equal("notification" in out, false);
+    assert.equal(DB.batches.length, 2);
+    assert.equal(DB.runs.length, 1);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 function readDb(summaryJson, preview = null) {
