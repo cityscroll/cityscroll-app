@@ -172,7 +172,7 @@ test("committed materialization passes the ship bar and attaches an unconditione
   assert.equal(attached.predictions.at(-1).basis.method, "phase_duration_ecdf");
 });
 
-test("land timeline renders the base-rate register and formula page publishes every equation", () => {
+test("land timeline renders the base-rate register and links to a compact explainer", () => {
   const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   const worker = readFileSync(new URL("../worker/src/zap_outcomes.mjs", import.meta.url), "utf8");
@@ -180,10 +180,8 @@ test("land timeline renders the base-rate register and formula page publishes ev
   assert.match(index, /data-zoning-base-rate/);
   assert.match(index, /land_zoning_base_rate_authority_html/);
   assert.match(about, /id="zoning-base-rates"/);
-  assert.match(about, /take p25 and p75 by nearest rank/);
-  assert.match(about, /Each rate is its count divided by the total of those three results/);
-  assert.match(about, /It resolved 63 cases/);
-  assert.match(about, /77\.78%/);
+  assert.match(about, /past zoning cases to show a usual time range and results for similar cases/);
+  assert.match(about, /same action type and borough, then use a wider group if there are fewer than 20 cases/);
   assert.match(worker, /attachZoningStatistics/);
   assert.match(worker, /zoning_statistics\.json/);
 });
@@ -379,18 +377,16 @@ test("committed materialization ships applicant conditioning with n>=20 and fals
   assert.ok(["descriptive_history", "per_matter"].includes(applicant.render_mode));
 });
 
-test("formula page and land UI name applicant conditioning constraints", () => {
+test("About and the land UI state applicant-history constraints", () => {
   const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
   assert.match(index, /function landApplicantConditionedHTML/);
   assert.match(index, /data-applicant-conditioned/);
   assert.match(about, /id="applicant-conditioned-ulurp"/);
-  assert.match(about, /False-positive modes/);
-  assert.match(about, /entity-resolution mislinks/i);
-  assert.match(about, /Small-cohort noise/);
-  assert.match(about, /Era effects/);
-  assert.match(about, /at least <b>20<\/b>/);
+  assert.match(about, /at least 20 past zoning results/);
+  assert.match(about, /If name matches or past test results are weak/);
+  assert.match(about, /descriptive history or does not show it/);
   assert.match(i18n, /land_applicant_conditioned_predict_html/);
   assert.match(i18n, /vs \{p0\}% overall/);
 });

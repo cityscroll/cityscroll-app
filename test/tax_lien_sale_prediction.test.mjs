@@ -139,5 +139,6 @@ test("public read models stay action-first and degrade to cohort statistics", ()
   assert.match(copy, /tax_lien_action_deadline/);
   // Notice-inline cycle context (position + actions) lives in the property module.
   assert.match(index, /taxLienNoticeCycleHTML|data-tax-lien-cycle-context/);
-  assert.match(about, /does not mean the property was sold, foreclosed, or transferred/);
+  assert.match(about, /does not predict that a property will be sold or foreclosed/);
+  assert.match(about, /payment, a payment plan, an exemption, a correction, or a canceled sale/);
 });

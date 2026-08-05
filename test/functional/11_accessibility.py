@@ -352,7 +352,7 @@ def run_subpage(pw, path, viewport, failures):
     target = BASE + path
     page.goto(target, timeout=30000)
     page.wait_for_load_state("load", timeout=20000)
-    # Handoff pages (data.html → about.html#data) use location.replace after parse.
+    # Retired handoff pages use location.replace after parse.
     # Give the redirect a beat, then axe the settled document.
     page.wait_for_timeout(1200)
     try:

@@ -2,34 +2,26 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
-const source = readFileSync(new URL("../site/standards.html", import.meta.url), "utf8");
+const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
+const standards = readFileSync(new URL("../site/standards.html", import.meta.url), "utf8");
 
-function selfConformanceSection() {
-  const match = source.match(
-    /<section id="selfConformance"[\s\S]*?<\/section>/
+function accessibilitySection() {
+  const match = about.match(
+    /<h2 id="accessibility"[\s\S]*?(?=<h2[^>]*data-i18n="about_h_content")/
   );
-  assert.ok(match, "standards.html must include the CityScroll self-conformance section");
+  assert.ok(match, "about.html must include the folded accessibility section");
   return match[0];
 }
 
-test("standards page states CityScroll's current accessibility target", () => {
-  const section = selfConformanceSection();
-
+test("About states CityScroll's current accessibility target", () => {
+  const section = accessibilitySection();
   assert.match(section, /CityScroll targets <b>WCAG 2\.2 Level AA<\/b> today/);
-  assert.doesNotMatch(section, /CityScroll targets <b>WCAG 2\.1 Level AA<\/b>/);
+  assert.match(section, /Automated checks cover every public page/);
+  assert.doesNotMatch(section, /WCAG 2\.1|certified|conforms/i);
 });
 
-test("self-conformance section names each continuous observation", () => {
-  const section = selfConformanceSection();
-
-  assert.match(section, /axe[\s\S]*every pull request/i);
-  assert.match(section, /Local Law 30[\s\S]*switcher[\s\S]*live/i);
-  assert.match(section, /reading-level ratchet[\s\S]*every pull request/i);
-});
-
-test("self-conformance section does not make a certification claim", () => {
-  const section = selfConformanceSection();
-  const certificationClaims = /\b(?:compliant|certified|conforms)\b/i;
-
-  assert.doesNotMatch(section, certificationClaims);
+test("retired Standards document redirects to the folded About section", () => {
+  assert.match(standards, /data-destination="about\.html#accessibility"/);
+  assert.match(standards, /<link rel="canonical" href="https:\/\/cityscroll\.org\/about\.html#accessibility">/);
+  assert.doesNotMatch(standards, /langJoinBody|timelineList|selfConformance|pending human review/i);
 });
