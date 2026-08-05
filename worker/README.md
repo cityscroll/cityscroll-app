@@ -66,7 +66,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/admin/ops-contract` | GET | **Versioned ops contract** (`ops-contract.v1`) — digest modes, daylog actions/fields, stats metrics (incl. developer-traffic exclusion), admin routes + auth classes, KV key prefixes, feature flags. No secrets. Desk panels pin `min_compatible_version` against this document (or the committed fixture `worker/ops-contract.v1.json`). Never served on public `/stats` | `ADMIN_KEY` → 404 if unset |
 | `/admin/possibly-same` | GET | Read-only desk review of candidates blocked from recent `source_records`, excluding pairs already joined to one canonical entity; `Accept: application/json` returns the shaped cards | `ADMIN_KEY` → 404 if unset; `DB` |
 | `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
-| `/admin/digest-shadow` | GET/POST | **06:00 ET digest rehearsal**. GET returns the latest/dated machine-readable run summary, scoped hold state, and optional `?digest=` preview. `NEEDS_ATTENTION` returns HTTP 503 with structured redlines. POST re-runs the delivery-free build after a repair; `{ "action":"override-hold", "digest_ids":[…], "reason":"…" }` releases only named affected digests | `ADMIN_KEY` → 404 if unset; `DB` |
+| `/admin/digest-shadow` | GET/POST | **06:00 ET digest rehearsal**. GET returns the latest/dated machine-readable run summary, scoped hold state, and optional `?digest=` preview. GET also accepts the read-only `SHADOW_STATUS_KEY` (constant-time, scoped to this one route) so an ops proxy can read the status without `ADMIN_KEY` custody. `NEEDS_ATTENTION` returns HTTP 503 with structured redlines. POST re-runs the delivery-free build after a repair (always requires `ADMIN_KEY`); `{ "action":"override-hold", "digest_ids":[…], "reason":"…" }` releases only named affected digests | GET: `ADMIN_KEY` or `SHADOW_STATUS_KEY` → 404 if neither is set; POST: `ADMIN_KEY`; `DB` |
 | `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
@@ -229,9 +229,11 @@ CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over e
 ```
 
 Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
-`TOKEN_SECRET`, `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`,
-`GITHUB_BOT_TOKEN`, `BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`,
-`BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. Board-notify
+`TOKEN_SECRET`, `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `SHADOW_STATUS_KEY`,
+`BOARD_HOOK_SECRET`, `GITHUB_BOT_TOKEN`, `BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`,
+`BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. `SHADOW_STATUS_KEY`
+is an optional read-only secret accepted **only** on `GET /admin/digest-shadow`; when absent, that
+route falls back to `ADMIN_KEY` as before. Board-notify
 secrets are optional — see "Board notifications" above. Vars (in `wrangler.toml`):
 `ANALYTICS_ENVIRONMENT` (`production` on the live Worker; beta overrides to `preview`),
 `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run: still **renders** each

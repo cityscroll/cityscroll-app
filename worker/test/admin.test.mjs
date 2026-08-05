@@ -4,7 +4,7 @@
 // (checkAdminKey, admin.mjs): 404 until ADMIN_KEY is configured, 401 on a wrong/missing key.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { checkAdminKey, checkOperatorProbeKey, handleAdminDigestSendTest } from "../src/admin.mjs";
+import { checkAdminKey, checkOperatorProbeKey, checkDigestShadowAuth, handleAdminDigestSendTest } from "../src/admin.mjs";
 import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 import { handleAdminMeetingOutcomesRefresh } from "../src/meeting_outcomes.mjs";
@@ -46,6 +46,58 @@ test("checkOperatorProbeKey: accepts either ADMIN_KEY or ANALYTICS_DEV_KEY", () 
   assert.equal(checkOperatorProbeKey(post("https://w/admin/digest-send-test", { authorization: "Bearer analytics" }), env).ok, true);
   assert.equal(checkOperatorProbeKey(post("https://w/admin/digest-send-test?key=wrong"), env).res.status, 401);
   assert.equal(checkOperatorProbeKey(post(), {}).res.status, 404);
+});
+
+// ---- checkDigestShadowAuth: scoped SHADOW_STATUS_KEY for GET /admin/digest-shadow only ---------
+
+function get(url = "https://w/admin/digest-shadow", headers = {}) {
+  return new Request(url, { method: "GET", headers });
+}
+function postShadow(url = "https://w/admin/digest-shadow", headers = {}) {
+  return new Request(url, { method: "POST", headers });
+}
+
+test("checkDigestShadowAuth: GET accepts ADMIN_KEY or the read-only SHADOW_STATUS_KEY", () => {
+  const env = { ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key" };
+  assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=admin-key"), env).ok, true);
+  assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=shadow-key"), env).ok, true);
+  assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow", { authorization: "Bearer shadow-key" }), env).ok, true);
+  assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=wrong"), env).res.status, 401);
+});
+
+test("checkDigestShadowAuth: POST accepts ADMIN_KEY but rejects SHADOW_STATUS_KEY (401)", () => {
+  const env = { ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key" };
+  assert.equal(checkDigestShadowAuth(postShadow("https://w/admin/digest-shadow?key=admin-key"), env).ok, true);
+  assert.equal(checkDigestShadowAuth(postShadow("https://w/admin/digest-shadow?key=shadow-key"), env).res.status, 401);
+  assert.equal(checkDigestShadowAuth(postShadow("https://w/admin/digest-shadow", { authorization: "Bearer shadow-key" }), env).res.status, 401);
+});
+
+test("checkDigestShadowAuth: fails closed (404) when no accepted secret is configured", () => {
+  assert.equal(checkDigestShadowAuth(get(), {}).res.status, 404);
+  // GET reveals the route only when SHADOW_STATUS_KEY is configured even without ADMIN_KEY.
+  assert.equal(checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=shadow-key"), { SHADOW_STATUS_KEY: "shadow-key" }).ok, true);
+  // POST still requires ADMIN_KEY; SHADOW_STATUS_KEY alone is not enough for the write path.
+  assert.equal(checkDigestShadowAuth(postShadow("https://w/admin/digest-shadow?key=shadow-key"), { SHADOW_STATUS_KEY: "shadow-key" }).res.status, 404);
+});
+
+test("SHADOW_STATUS_KEY is rejected by the shared checkAdminKey gate every other /admin/* route uses", () => {
+  // Every admin route other than digest-shadow authenticates via checkAdminKey, which must NOT
+  // accept SHADOW_STATUS_KEY — otherwise the "read-only, one route only" guarantee is broken.
+  const env = { ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key" };
+  assert.equal(checkAdminKey(post("https://w/admin/suggest-refresh?key=shadow-key"), env).res.status, 401);
+  assert.equal(checkAdminKey(post("https://w/admin/digest-catchup?key=shadow-key"), env).res.status, 401);
+  assert.equal(checkAdminKey(get("https://w/admin/subs?key=shadow-key"), env).res.status, 401);
+  assert.equal(checkAdminKey(get("https://w/admin/ops-contract?key=shadow-key"), env).res.status, 401);
+  // ADMIN_KEY continues to work everywhere as today.
+  assert.equal(checkAdminKey(post("https://w/admin/suggest-refresh?key=admin-key"), env).ok, true);
+});
+
+test("checkDigestShadowAuth: 401 response shape matches the shared admin gate", async () => {
+  const env = { ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key" };
+  const scoped = checkDigestShadowAuth(get("https://w/admin/digest-shadow?key=wrong"), env).res;
+  const shared = checkAdminKey(post("https://w/admin/suggest-refresh?key=wrong"), env).res;
+  assert.equal(scoped.status, shared.status);
+  assert.deepEqual(await scoped.json(), await shared.json());
 });
 
 test("handleAdminDigestSendTest: fails closed and enforces the recipient allowlist", async () => {

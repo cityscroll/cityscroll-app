@@ -25,6 +25,7 @@ import {
 } from "./lib/false_split_evidence.mjs";
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
+import { timingSafeEqualString } from "./lib/secret_compare.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 import {
@@ -66,6 +67,31 @@ export function checkOperatorProbeKey(req, env) {
   const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
   if (key !== env.ADMIN_KEY && key !== env.ANALYTICS_DEV_KEY) return { ok: false, res: json({ error: "unauthorized" }, 401) };
   return { ok: true };
+}
+
+// Extracts the operator key exactly the way the shared gates do: ?key= query param or an
+// Authorization: Bearer header. Centralized so the scoped gate below stays in lockstep.
+function requestKey(req) {
+  const url = new URL(req.url);
+  return url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+}
+
+// Scoped gate for GET/POST /admin/digest-shadow. GET additionally accepts the read-only
+// SHADOW_STATUS_KEY so an ops proxy can surface the rehearsal status without custody of the
+// full ADMIN_KEY. POST (rerun / hold override) and every other /admin/* route still require
+// ADMIN_KEY. Both secrets are compared in constant time and never logged. Fails closed
+// (404, not 401) when no accepted secret is configured; the 401 shape matches checkAdminKey.
+export function checkDigestShadowAuth(req, env) {
+  const allowShadowStatus = req.method === "GET";
+  if (allowShadowStatus) {
+    if (!env.ADMIN_KEY && !env.SHADOW_STATUS_KEY) return { ok: false, res: json({ error: "not found" }, 404) };
+  } else if (!env.ADMIN_KEY) {
+    return { ok: false, res: json({ error: "not found" }, 404) };
+  }
+  const key = requestKey(req);
+  if (env.ADMIN_KEY && timingSafeEqualString(key, env.ADMIN_KEY)) return { ok: true };
+  if (allowShadowStatus && env.SHADOW_STATUS_KEY && timingSafeEqualString(key, env.SHADOW_STATUS_KEY)) return { ok: true };
+  return { ok: false, res: json({ error: "unauthorized" }, 401) };
 }
 
 export async function handleAdminSubs(req, env) {
@@ -516,7 +542,7 @@ export async function handleAdminDigestRollup(req, env) {
  * scheduled monitoring can wake on HTTP status while still consuming structured evidence.
  */
 export async function handleAdminDigestShadow(req, env, { now = new Date() } = {}) {
-  const auth = checkAdminKey(req, env);
+  const auth = checkDigestShadowAuth(req, env);
   if (!auth.ok) return auth.res;
   if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
   if (!env.DB) return json({ error: "no-store" }, 503);

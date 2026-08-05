@@ -311,7 +311,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/digest-shadow",
     methods: ["GET", "POST"],
     auth: "ADMIN_KEY",
-    description: "GET reads the rehearsal, hold state, or rendered preview; POST reruns after repair or overrides named affected digest holds.",
+    description: "GET reads the rehearsal, hold state, or rendered preview; GET also accepts the read-only SHADOW_STATUS_KEY. POST reruns after repair or overrides named affected digest holds (ADMIN_KEY only).",
   },
   {
     path: "/admin/digest-send-test",
@@ -375,6 +375,12 @@ export const AUTH_CLASSES = Object.freeze([
     presentation: ["?key=", "Authorization: Bearer"],
     fail_closed: "404 until ADMIN_KEY or ANALYTICS_DEV_KEY is set; 401 on wrong key",
     description: "Accepts ADMIN_KEY or ANALYTICS_DEV_KEY (digest-send-test probe).",
+  },
+  {
+    id: "SHADOW_STATUS_KEY",
+    presentation: ["?key=", "Authorization: Bearer"],
+    fail_closed: "404 until SHADOW_STATUS_KEY (or ADMIN_KEY) is set; 401 on wrong key; POST /admin/digest-shadow always requires ADMIN_KEY",
+    description: "Read-only secret accepted only on GET /admin/digest-shadow. Lets an ops proxy read the rehearsal status without ADMIN_KEY custody.",
   },
   {
     id: "USAGE_KEY",
