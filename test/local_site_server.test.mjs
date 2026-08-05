@@ -45,6 +45,18 @@ test("performance interaction waits for the canonical Contracts document URL", (
   assert.doesNotMatch(source, /location\.hash\.split\("\?"\).*get\("q"\)/);
 });
 
+test("standalone browser gates share the clean-route server", () => {
+  for (const path of [
+    "test/functional/15_rtl.py",
+    "test/functional/16_forecast_discoverability.py",
+    "test/functional/17_default_examples.py",
+  ]) {
+    const source = read(path);
+    assert.match(source, /from tools\.local_site_server import QuietHandler/, path);
+    assert.doesNotMatch(source, /http\.server\.SimpleHTTPRequestHandler/, path);
+  }
+});
+
 test("local site server publishes an OS-assigned origin and serves the requested tree", async (t) => {
   const temp = mkdtempSync(join(tmpdir(), "crol-local-site-"));
   const ready = join(temp, "ready");
