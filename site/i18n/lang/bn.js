@@ -699,6 +699,8 @@
     no_hearings_window: "পরবর্তী ৩০ দিন বা শহরব্যাপী / অবস্থানহীন বেছে দেখুন। এই নির্দিষ্ট তারিখ ও এলাকায় কোনো সভা মেলেনি।",
     desc_affecting_area: " {area}-কে প্রভাবিত করে",
     near_you_area: "আপনার কাছাকাছি → {area}",
+    near_you_entry_title: "আপনার কাছাকাছি",
+    near_you_entry_desc: "এই পরিসরটি রাখুন এবং স্থান অনুযায়ী সংকুচিত করুন",
     zip_addr_neighborhood: "জিপ কোড, ঠিকানা, বা এলাকা",
     status_label: "অবস্থা",
     status_active: "পর্যালোচনাধীন / সক্রিয়",

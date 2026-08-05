@@ -702,6 +702,8 @@
     no_hearings_window: "اگلے 30 دن یا شہر بھر / بلا مقام آزمائیں۔ اس مخصوص تاریخ اور علاقے میں کوئی مماثل میٹنگ نہیں ہے۔",
     desc_affecting_area: " جو {area} کو متاثر کرتی ہیں",
     near_you_area: "آپ کے قریب ← {area}",
+    near_you_entry_title: "آپ کے قریب",
+    near_you_entry_desc: "اس دائرۂ کار کو برقرار رکھیں اور مقام کے لحاظ سے محدود کریں",
     zip_addr_neighborhood: "زپ کوڈ، پتہ، یا محلہ",
     status_label: "حیثیت",
     status_active: "زیرِ جائزہ / فعال",

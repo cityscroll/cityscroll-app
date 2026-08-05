@@ -728,6 +728,8 @@
     no_hearings_window: "Essayez les 30 prochains jours ou Toute la ville / sans lieu. Cette date et cette zone précises ne correspondent à aucune réunion.",
     desc_affecting_area: " concernant {area}",
     near_you_area:       "près de chez vous → {area}",
+    near_you_entry_title: "Près de chez vous",
+    near_you_entry_desc: "Conservez ce périmètre et affinez-le par lieu",
     zip_addr_neighborhood: "Code postal, adresse ou quartier",
     status_label:        "Statut",
     status_active:       "En examen / actif",

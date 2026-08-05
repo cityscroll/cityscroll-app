@@ -699,6 +699,8 @@
     no_hearings_window: "Pruebe los próximos 30 días o Toda la ciudad / sin ubicación. Esta fecha y zona exactas no tienen reuniones que coincidan.",
     desc_affecting_area: " que afectan a {area}",
     near_you_area: "cerca de ti → {area}",
+    near_you_entry_title: "Cerca de ti",
+    near_you_entry_desc: "Mantén este alcance y redúcelo por lugar",
     zip_addr_neighborhood: "Código postal, dirección o vecindario",
     status_label: "Estado",
     status_active: "En revisión / activo",

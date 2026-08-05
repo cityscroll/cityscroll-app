@@ -699,6 +699,8 @@
     no_hearings_window: "Попробуйте следующие 30 дней или «Весь город / место не указано». Для этой точной даты и территории совпадений нет.",
     desc_affecting_area: " затрагивающие {area}",
     near_you_area: "рядом с вами → {area}",
+    near_you_entry_title: "Рядом с вами",
+    near_you_entry_desc: "Сохраните этот охват и сузьте его по месту",
     zip_addr_neighborhood: "Индекс, адрес или район",
     status_label: "Статус",
     status_active: "На рассмотрении / активно",

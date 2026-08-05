@@ -910,6 +910,8 @@ const STRINGS = {
     no_hearings_window: "Try the next 30 days or Citywide / unlocated. This exact date and area have no matching meetings.",
     desc_affecting_area: " affecting {area}",
     near_you_area:       "near you → {area}",
+    near_you_entry_title: "Near you",
+    near_you_entry_desc: "Keep this scope and narrow it by place",
     zip_addr_neighborhood: "ZIP or place",
     status_label:        "Status",
     status_active:       "In review / active",

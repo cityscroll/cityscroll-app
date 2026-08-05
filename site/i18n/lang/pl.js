@@ -707,6 +707,8 @@
     no_hearings_window: "Spróbuj następnych 30 dni lub Całe miasto / brak lokalizacji. Dla tej dokładnej daty i obszaru nie ma pasujących spotkań.",
     desc_affecting_area: " dotyczące {area}",
     near_you_area: "w pobliżu → {area}",
+    near_you_entry_title: "W pobliżu",
+    near_you_entry_desc: "Zachowaj ten zakres i zawęź go według miejsca",
     zip_addr_neighborhood: "Kod pocztowy, adres lub okolica",
     status_label: "Status",
     status_active: "W trakcie rozpatrywania / aktywne",

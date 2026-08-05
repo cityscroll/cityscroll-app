@@ -698,6 +698,8 @@
     no_hearings_window: "Eseye 30 jou k ap vini yo oswa Tout vil la / san kote. Dat ak zòn egzak sa yo pa gen reyinyon ki koresponn.",
     desc_affecting_area: " ki afekte {area}",
     near_you_area: "toupre ou → {area}",
+    near_you_entry_title: "Toupre ou",
+    near_you_entry_desc: "Kenbe dimansyon sa a epi limite li selon kote",
     zip_addr_neighborhood: "Kòd postal, adrès, oswa katye",
     status_label: "Estati",
     status_active: "Ap egzamine / aktif",
