@@ -41,6 +41,7 @@ test/functional/capture_rules_status_chips.py
 test/standards/attribution.py
 test/standards/brand_identity.py
 test/standards/canonical_domain.py
+test/standards/civic_token_contract.py
 test/standards/es_diacritics.py
 test/standards/form_border_contrast.py
 test/standards/heading_uniqueness.py
@@ -71,6 +72,7 @@ tools/capture_legistar_depth_recon.py
 tools/capture_preset_widening.py
 tools/capture_procurement_lifecycle_stitch.py
 tools/capture_property_lens_reground.py
+tools/capture_r2_token_consistency.py
 tools/capture_rfx_documents_recon.py
 tools/capture_scenario_routing.py
 tools/capture_standards_self_conformance.py

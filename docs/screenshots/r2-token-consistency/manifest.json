@@ -1,0 +1,23 @@
+{
+  "feature": "r2-token-consistency",
+  "surfaces": [
+    "/near-you/borough/queens/",
+    "/following/"
+  ],
+  "viewports": [
+    390,
+    1440
+  ],
+  "before": [
+    "before-near-you-390.png",
+    "before-near-you-1440.png",
+    "before-following-390.png",
+    "before-following-1440.png"
+  ],
+  "after": [
+    "after-near-you-390.png",
+    "after-near-you-1440.png",
+    "after-following-390.png",
+    "after-following-1440.png"
+  ]
+}

@@ -83,6 +83,7 @@ run_and_fail python3 test/standards/link_text.py
 run_and_fail python3 test/standards/control_labels.py
 run_and_fail python3 test/standards/outline_guard.py
 run_and_fail python3 test/standards/form_border_contrast.py
+run_and_fail python3 test/standards/civic_token_contract.py
 run_and_fail python3 test/standards/nyc_copy_lint.py --gate
 run_and_fail python3 test/standards/public_surface_vocab.py --gate
 run_and_fail node tools/check_public_payload_integrity.mjs
