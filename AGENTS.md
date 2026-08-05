@@ -2163,6 +2163,14 @@ failure analysis, costs, and rerun commands are in
 The corpus sanitizer runs at ingest, must be idempotent, and reports the exact record, rule,
 and matched substring on failure; do not replace that diagnostic with a generic validation error.
 
+Production lexical notice ranking is the narrower follow-on: `worker/migrations/0016_notice_fts.sql`
+owns the rebuildable D1 FTS5 index, while `worker/src/lib/notices.mjs` owns BM25 query/fallback
+behavior. Keep ranked retrieval limited to explicitly adopted routes; run
+`node tools/semantic_layer_trial.mjs --retrieval-only --check` and
+`node --test worker/test/notices_search.test.mjs` after changing tokenization, ranking, or refresh.
+Before D1 export, use `worker/sql/notice_fts_export_prepare.sql`, then replay migration `0016` on
+both the live and restored databases.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
