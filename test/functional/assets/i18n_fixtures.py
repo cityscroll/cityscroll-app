@@ -432,6 +432,13 @@ _NOTICE_LAND_CR = "https://a856-cityrecord.nyc.gov/RequestDetail/20230912001"
 NOTICE_LAND_ZAP_OUTCOMES = {
     "ok": True,
     "cached": True,
+    "sections": {
+        "project_connections": {
+            "schema_version": 1,
+            "status": "unavailable",
+            "reason": "read_model_unavailable",
+        },
+    },
     "record": {
         "project_id": "2022M0258",
         "project_name": "Timbale Terrace",
@@ -454,6 +461,12 @@ NOTICE_LAND_ZAP_OUTCOMES = {
             "current_milestone": "HA - Project Completed",
             "current_milestone_date": "2024-03-13",
             "certified_referred": "2023-08-21",
+        },
+        "project_connections": {
+            "schema_version": 1,
+            "status": "unavailable",
+            "project_ref": "project:2022M0258",
+            "reason": "read_model_unavailable",
         },
         "spine": {
             "schema_version": 1,
@@ -1026,6 +1039,7 @@ def install_routes(page):
     # ...and /rules (Agency Rules lifecycle spine). Without a matched record the notice
     # detail fail-softs and never mounts #nrules — the public demo needs a joined spine.
     page.route("https://api.cityscroll.org/rules*", fixed(RULES_VIEW))
+    page.route("https://api.cityscroll.org/zap-outcomes?id=2022M0258", fixed(NOTICE_LAND_ZAP_OUTCOMES))
     # Award sub-outreach demo needs award_prime_goal on /contract-lifecycle.
     def contract_lifecycle(route):
         url = route.request.url
@@ -1042,6 +1056,8 @@ def install_routes(page):
     page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     page.route("https://crol-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))
     page.route("https://crol-worker.crol-worker.workers.dev/rules*", fixed(RULES_VIEW))
+    page.route("https://crol-worker.crol-worker.workers.dev/zap-outcomes?id=2022M0258",
+               fixed(NOTICE_LAND_ZAP_OUTCOMES))
     page.route("https://crol-worker.crol-worker.workers.dev/contract-lifecycle*", contract_lifecycle)
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())

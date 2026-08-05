@@ -87,5 +87,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: ./.github/actions/setup-playwright
       - name: Post-deploy live URL smoke
         run: node tools/live_url_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+      - name: Post-deploy project-connections API smoke
+        run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+      - name: Post-deploy project-connections browser smoke
+        env:
+          CROL_BASE: https://cityscroll.org/
+        run: python3 test/functional/27_project_connections_live.py

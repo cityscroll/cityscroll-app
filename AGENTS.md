@@ -47,6 +47,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Property is route-lazy through `site/app/main.mjs`'s activation registry. Keep routing state
   eager; initial Property/notice deep links load the lens before `routing.mjs`, and later hash or
   tab activation passes through the existing router/tab owner rather than adding another store.
+- Land project connections are a semantic response contract, not an HTTP-status contract:
+  `/zap-outcomes` must return all five exact-key groups or explicitly mark
+  `sections.project_connections` unavailable. The client retries the alternate Worker host for an
+  incomplete 200 and otherwise renders an honest unavailable card. Keep the Pages readiness gate,
+  the post-deploy API smoke (`node tools/project_connections_smoke.mjs`), and the focused browser
+  smoke (`python3 test/functional/27_project_connections_live.py`) together.
 - Following is static-first at `site/following/index.html` and edge-rendered at `GET /following`
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
   its summary, preview count, results, and `/subscribe` form. Personal watches load only through
