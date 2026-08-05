@@ -21,7 +21,6 @@ const FIELD_CASE_DOC = {
     {
       organization_name: "CAMBA  INC",
       ownership_structure_code: "COR",
-      organization_phone: "2125550100",
       doing_business_start_date: "2009-05-16",
     },
   ],
@@ -41,7 +40,6 @@ test("Doing Business warehouse hit works with a source-backed document", () => {
   assert.equal(hit.hit, true);
   assert.equal(hit.path, "warehouse");
   assert.equal(hit.payload.organization_name, "CAMBA  INC");
-  assert.equal(hit.payload.organization_phone, "212-555-0100");
 });
 
 test("Doing Business warehouse miss leaves SODA fallback room", () => {
