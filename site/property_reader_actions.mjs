@@ -592,17 +592,17 @@ export function propertyActionEnablingInfoHTML(readerActions, helpers = {}) {
   const historical = lifecycle?.state === "closed" || action?.status === "historical";
   const item = info.items?.label
     ? esc(info.items.label)
-    : "The city did not publish an item description in this record.";
+    : "The city did not list the items.";
   const price = info.price?.display
     ? esc(info.price.display)
-    : "The city did not publish an asking price or minimum bid in this record.";
+    : "The city did not list a price or minimum bid.";
   const deposit = info.deposit?.display ? ` · Deposit or fee: ${esc(info.deposit.display)}` : "";
   const how = historical
-    ? "This opportunity is closed; use the official record for history."
-    : channels.length ? channels.join(" · ") : "How to act was not published in this notice.";
+    ? "This action is closed. Read the City Record notice."
+    : channels.length ? channels.join(" · ") : "The notice does not say how to act.";
   const inspection = info.inspection?.text
     ? esc(info.inspection.text)
-    : "Viewing or inspection details were not published in this notice.";
+    : "The notice does not say when or where to view it.";
   return `<dl class="property-decision-info" data-action-enabling-info="1" data-lifecycle="${historical ? "closed" : "live"}">
     <dt>Items</dt><dd lang="en" dir="ltr">${item}</dd>
     <dt>Asking price</dt><dd lang="en" dir="ltr">${price}${deposit}</dd>
@@ -636,10 +636,10 @@ export function propertyReaderActionStepsHTML(actions, helpers = {}) {
       : item.by_when?.label ? esc(item.by_when.label) : t("task_bid_unknown");
     const info = item.enabling_info || {};
     const methods = (info.how_to_act || item.methods || []).map(methodHTML).filter(Boolean);
-    const items = info.items?.label ? esc(info.items.label) : "The item description was not published in this notice.";
-    const price = info.price?.display ? esc(info.price.display) : "No asking price or minimum bid was published in this notice.";
+    const items = info.items?.label ? esc(info.items.label) : "The city did not list the items.";
+    const price = info.price?.display ? esc(info.price.display) : "The city did not list a price or minimum bid.";
     const deposit = info.deposit?.display ? `<dt>Deposit or fee</dt><dd lang="en" dir="ltr">${esc(info.deposit.display)}</dd>` : "";
-    const inspection = info.inspection?.text ? esc(info.inspection.text) : "Viewing or inspection details were not published in this notice.";
+    const inspection = info.inspection?.text ? esc(info.inspection.text) : "The notice does not say when or where to view it.";
     const actionLabel = historical
       ? (item.kind === "bid" ? "Bidding closed" : "Past action")
       : esc(item.label);
@@ -651,7 +651,7 @@ export function propertyReaderActionStepsHTML(actions, helpers = {}) {
         <dt>${t("glance_what")}</dt><dd lang="en" dir="ltr">${items}</dd>
         <dt>Asking price / minimum bid</dt><dd lang="en" dir="ltr">${price}</dd>
         ${deposit}
-        <dt>${t("apply_method_lbl")}</dt><dd>${historical ? '<span lang="en" dir="ltr">This action is closed; use the official record for history.</span>' : methods.length ? methods.join(" · ") : '<span lang="en" dir="ltr">How to act was not published in this notice.</span>'}</dd>
+        <dt>${t("apply_method_lbl")}</dt><dd>${historical ? '<span lang="en" dir="ltr">This action is closed. Read the City Record notice.</span>' : methods.length ? methods.join(" · ") : '<span lang="en" dir="ltr">The notice does not say how to act.</span>'}</dd>
         <dt>Viewing / inspection</dt><dd lang="en" dir="ltr">${inspection}</dd>
         <dt>${t("task_lead_deadline")}</dt><dd>${by}</dd>
       </dl>`);

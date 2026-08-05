@@ -267,7 +267,7 @@ test("a live action always renders an act-here channel or an honest absence", ()
   });
   assert.equal(result.actions[0].status, "current");
   const html = propertyReaderActionStepsHTML(result.actions, { t: (key) => key }).join("");
-  assert.match(html, /How to act was not published in this notice\./);
+  assert.match(html, /The notice does not say how to act\./);
 });
 
 test("an actionless archive card still renders the record's decision-enabling facts", () => {
@@ -289,8 +289,8 @@ test("an actionless archive card still renders the record's decision-enabling fa
     today: "2026-08-04",
   });
   assert.match(html, /Hardwood timber/);
-  assert.match(html, /did not publish an asking price/i);
-  assert.match(html, /This opportunity is closed/i);
+  assert.match(html, /did not list a price/i);
+  assert.match(html, /This action is closed/i);
   assert.match(html, /data-lifecycle="closed"/);
 });
 

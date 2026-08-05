@@ -233,7 +233,7 @@ function actionText(action, pattern, lifecycle) {
     if (action.kind === "comment") return closed ? `Comments closed ${closed}.` : "The comment period closed.";
     if (action.kind === "object") return closed ? `Objections closed ${closed}.` : "The objection period closed.";
     if (action.kind === "inquire_claim") return "The record previously invited questions or claims.";
-    if (action.kind === "request_accommodation") return "The accommodation request window closed.";
+    if (action.kind === "request_accommodation") return "The time to ask for access help has passed.";
     if (action.kind === "review_documents") return "The notice identifies records that were available for review.";
     if (action.kind === "review_result") return "The notice lists the auction result.";
   }
