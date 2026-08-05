@@ -54,6 +54,15 @@
       "settledMs": 1200,
       "eventDurationMs": 225,
       "comment": "The 20-sample pre-change p95 measured 212 ms; 225 ms prevents regression. Ratchet target: 200 ms."
+    },
+    "land.outcomes-first-paint": {
+      "viewports": [
+        "mobile",
+        "desktop"
+      ],
+      "invariant": "precomputed-outcome-or-honest-absent-without-spinner",
+      "settledMs": 1200,
+      "comment": "The default Land detail must paint today's precomputed decision/outcome state within the loading-state budget; live freshness is an enhancement."
     }
   }
 }

@@ -1,0 +1,412 @@
+{
+  "version": 1,
+  "statistics": {
+    "quantile": 0.95,
+    "samples": 20,
+    "warmupSamples": 1
+  },
+  "runs": [
+    {
+      "fixture": "land.outcomes-first-paint",
+      "viewport": "mobile",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "invariant": "precomputed-outcome-or-honest-absent-without-spinner",
+        "settledMs": 1200,
+        "comment": "The default Land detail must paint today's precomputed decision/outcome state within the loading-state budget; live freshness is an enhancement."
+      },
+      "p95": {
+        "settledMs": 58.57499990463258
+      },
+      "samples": [
+        {
+          "settledMs": 40.700000286102295,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 58.09999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 43.0,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 39.19999980926514,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 39.200000286102295,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 67.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 47.200000286102295,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 30.90000009536743,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 27.0,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 41.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 33.0,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 38.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 43.30000019073486,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 35.19999980926514,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 33.09999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 37.90000009536743,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 44.19999980926514,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 26.09999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 34.700000286102295,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 36.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "fixture": "land.outcomes-first-paint",
+      "viewport": "desktop",
+      "status": "PASS",
+      "budget": {
+        "viewports": [
+          "mobile",
+          "desktop"
+        ],
+        "invariant": "precomputed-outcome-or-honest-absent-without-spinner",
+        "settledMs": 1200,
+        "comment": "The default Land detail must paint today's precomputed decision/outcome state within the loading-state budget; live freshness is an enhancement."
+      },
+      "p95": {
+        "settledMs": 61.96999990940095
+      },
+      "samples": [
+        {
+          "settledMs": 61.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 43.700000286102295,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 34.60000038146973,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 31.90000009536743,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 40.89999961853027,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 46.0,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 46.90000009536743,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 39.10000038146973,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 25.300000190734863,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 43.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 40.90000009536743,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 37.80000019073486,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 39.30000019073486,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 44.0,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 69.0,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 41.90000009536743,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 46.5,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 31.59999990463257,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 42.200000286102295,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        },
+        {
+          "settledMs": 34.30000019073486,
+          "invariant": 1,
+          "state": {
+            "spinnerCount": 0,
+            "state": "present",
+            "firstPaint": "1"
+          }
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "status": "PASS",
+  "failures": []
+}

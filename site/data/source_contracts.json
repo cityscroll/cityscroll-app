@@ -793,7 +793,7 @@
         "documents"
       ],
       "publisher_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
-      "product_freshness": "Worker materializes per-project outcomes on GET /zap-outcomes with a one-day edge cache; the browser never calls the ZAP API for this panel.",
+      "product_freshness": "The daily site build copies the bounded active-project outcome view from GET /zap-outcomes into land_default_ulurp.json for first paint. A browser request may refresh snapshots older than six hours; it never calls the ZAP API directly.",
       "used_for": "Land detail decision documents, action approvals, disposition votes/recommendations, and DOB NOW tax-lot filing side-car beyond Open Data status chips.",
       "join_keys": [
         "project_id",
@@ -868,7 +868,7 @@
           "contains": "zap-outcomes"
         }
       ],
-      "delivery_tier": "edge-materialized",
+      "delivery_tier": "inline-at-build",
       "probe_sample_id": "2022M0258",
       "endpoint_format": "json-api",
       "landing_probe": "require"
@@ -1369,7 +1369,7 @@
       "kind": "html",
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "publisher_cadence": "Updated as meetings, agenda items, and votes change",
-      "product_freshness": "Daily edge materialization (cron) fetches authenticated Events (180-day window), strict-joins City Record hearing notices, and materializes EventItems (agenda + matters + outcomes), best-effort roll-call votes, item attachments, and hearing documents (agenda/minutes PDFs) into the meeting-outcomes KV read model. Token reaches the Worker as secret LEGISTAR_API_TOKEN, synced idempotently from the GitHub Actions secret on each deploy.",
+      "product_freshness": "Daily edge materialization fetches authenticated Events (180-day window) and builds the meeting-outcomes read model. The daily site build copies a bounded per-notice snapshot, including explicit absent records, into meeting_outcomes_snapshot.json for notice-document first paint; the client endpoint remains a freshness enhancement.",
       "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, matters, action outcomes, roll-call votes, attachments, and supporting documents.",
       "code_references": [
         {
@@ -1383,9 +1383,13 @@
         {
           "path": "worker/src/lib/legistar_join.mjs",
           "contains": "exact_date_body_tokens"
+        },
+        {
+          "path": "tools/build_meeting_outcomes_snapshot.mjs",
+          "contains": "buildMeetingOutcomesSnapshot"
         }
       ],
-      "delivery_tier": "edge-materialized",
+      "delivery_tier": "inline-at-build",
       "endpoint": "https://webapi.legistar.com/v1/nyc/Bodies",
       "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
       "join_keys": [

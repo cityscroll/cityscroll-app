@@ -716,7 +716,7 @@
         }
       },
       "landing_page": "https://council.nyc.gov/legislation/api/",
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "nyc-geosearch",
@@ -950,7 +950,7 @@
         }
       },
       "landing_page": "https://zap.planning.nyc.gov/",
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "zap-bbl",
