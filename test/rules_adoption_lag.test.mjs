@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildRulemakingGapObservations,
+  adoptionAnchor,
   fitAdoptionLagModel,
   emitAdoptionPrediction,
   adoptionLagPatternLine,
@@ -103,6 +104,25 @@ describe("rules adoption lag — anchors and stitch", () => {
     const withAdopt = obs.filter((o) => !o.censored);
     assert.ok(withAdopt.length >= 1);
     assert.ok(withAdopt.every((o) => o.gap_days >= 0));
+  });
+
+  it("uses unified lifecycle eligibility as the adoption boundary when stamped", () => {
+    const legacyLooking = {
+      request_id: "legacy-gap",
+      title: "Notice of Adoption for a Rule Without a Unified Stage",
+      start_date: "2026-01-10",
+      _adoption_stage_eligible: false,
+    };
+    assert.equal(adoptionAnchor([legacyLooking]), null);
+    assert.deepEqual(
+      adoptionAnchor([{
+        ...legacyLooking,
+        request_id: "stepper-adoption",
+        title: "Final Rule — Unified Stage Record",
+        _adoption_stage_eligible: true,
+      }]),
+      { day: "2026-01-10", request_id: "stepper-adoption" },
+    );
   });
 });
 
@@ -517,6 +537,28 @@ describe("rules adoption lag — committed artifacts", () => {
     assert.ok(evidence.local_scorecard.interval_coverage != null);
     const cov = evidence.local_scorecard.interval_coverage;
     assert.ok(Math.abs(cov - 0.8) <= 0.1 + 1e-9, `coverage ${cov}`);
+    const parity = evidence.refresh_measurement?.lifecycle_census;
+    assert.equal(parity?.count_equals_scope, true);
+    for (const stage of ["all", "proposal", "public_process", "adoption", "effective", "unstaged"]) {
+      assert.equal(parity.stepper_counts[stage], parity.filter_scope_counts[stage]);
+      assert.equal(parity.stepper_counts[stage], parity.record_census[stage]);
+    }
+    assert.equal(
+      parity.stepper_counts.adoption,
+      parity.record_census.adoption,
+      "adoption step count must equal the underlying record census",
+    );
+    assert.ok(parity.adoption_parity.newly_included_stale_records > 0);
+    assert.ok(parity.adoption_parity.legacy_signals_outside_stepper > 0);
+    assert.equal(
+      Object.values(parity.adoption_parity.honest_gap_counts_by_stepper_stage)
+        .reduce((sum, count) => sum + count, 0),
+      parity.adoption_parity.legacy_signals_outside_stepper,
+    );
+
+    const view = JSON.parse(readFileSync(join(ROOT, "site/data/rules_adoption_predictions.json"), "utf8"));
+    assert.ok(view.items.every((item) => item.lifecycle_phase === "public_process"));
+    assert.ok(view.items.some((item) => item.assertion?.status === "expired"));
   });
 
   it("sample fixture loads and produces observations", () => {
