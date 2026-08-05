@@ -66,6 +66,7 @@ import {
   forecastIsDeliverableOn,
 } from "./lib/contract_forecast_predictions.mjs";
 import {
+  completeDigestShadowRecovery,
   digestShadowId,
   isDigestHeld,
   partitionDigestJobsByHold,
@@ -143,6 +144,9 @@ export function summarizeDigestRun({ ranAt, day, live, mode, sentThisRun, sentTo
     skipped_reason = "queue_pending";
   } else if (sent > 0) {
     skipped_reason = null;
+  } else if (results.some((result) => result?.skipped === "shadow-hold")
+    && results.every((result) => result?.mode === "queue" || result?.skipped === "shadow-hold")) {
+    skipped_reason = "shadow_hold";
   } else if (tallies.errors > 0) {
     skipped_reason = "errors";
   } else if (tallies.capped > 0 && matched > 0) {
@@ -314,6 +318,32 @@ const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeU
 const RETRYABLE_SODA_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 524]);
 const SODA_RETRY_DELAY_MS = 250;
 
+export async function runDigestShadowRecoveryCatchUp(env, shadowHold, {
+  now = new Date(),
+  runCatchUpFn = runCatchUpDigests,
+} = {}) {
+  if (!shadowHold?.catch_up_required) return null;
+  const result = await runCatchUpFn(env, { minLagDays: 1 });
+  const incomplete = (result?.results || []).filter((item) => item?.error || item?.capped);
+  if (incomplete.length) {
+    throw new Error(`digest shadow recovery catch-up incomplete for ${incomplete.length} subscription(s)`);
+  }
+  if (result?.live !== true) {
+    return { result, receipt: null, pending: true };
+  }
+  const receipt = await completeDigestShadowRecovery(env.ALERT_STATE, {
+    now,
+    recoveryOf: shadowHold.recovery_of,
+    catchUp: {
+      candidates: Number(result?.candidates) || 0,
+      sent: Number(result?.sentThisRun) || 0,
+      live: result?.live === true,
+    },
+  });
+  console.error("digest shadow recovery catch-up:", JSON.stringify(receipt));
+  return { result, receipt };
+}
+
 export async function runAlerts(env, watches = cfg.watches || [], options = {}) {
   const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
   const LIVE = options.live == null ? env.ALERTS_LIVE === "true" : options.live === true;
@@ -324,8 +354,16 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const day = now.toISOString().slice(0, 10);
   const shadowHold = options.shadowHoldState || (options.capturePreviews
     ? null
-    : await resolveDigestShadowHold(env.DB, { now, persist: true }));
+    : await resolveDigestShadowHold(env.DB, {
+      now,
+      persist: true,
+      receiptStore: env.ALERT_STATE,
+    }));
   const heldDigestIds = new Set(shadowHold?.active_digest_ids || []);
+  const holdAllDigests = shadowHold?.delivery_policy === "ALL_DIGESTS_HELD";
+  const shadowRecovery = options.capturePreviews
+    ? null
+    : await runDigestShadowRecoveryCatchUp(env, shadowHold, { now });
   let sentToday = await getSendCount(env, day);
   let sentThisRun = 0;
   const results = [];
@@ -342,7 +380,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 
   for (const w of watches) {
     const watchDigestId = `watch:${w.id}`;
-    if (heldDigestIds.has(watchDigestId)) {
+    if (isDigestHeld(shadowHold, watchDigestId)) {
       results.push({
         watch: w.id,
         kind: "config_watch",
@@ -440,6 +478,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
     capturePreviews: options.capturePreviews === true,
     advanceState: options.advanceState,
     heldDigestIds,
+    holdAllDigests,
     holdContract: shadowHold?.contract || null,
   };
   let mode = "inline";
@@ -488,10 +527,24 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   // Queue mode only has the fan-out stub here; consumers append via mergeDayLogEntry.
   if (options.persist !== false) {
     if (mode !== "queue") {
-      await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results }));
+      await writeDigestDayLog(env, buildDayLog({
+        day,
+        ranAt,
+        live: LIVE,
+        mode,
+        results,
+        shadowHoldDecision: shadowHold?.degraded_receipt || shadowRecovery?.receipt || null,
+      }));
     } else {
       // Seed an empty/queue daylog so the day is present even before consumers finish.
-      await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results: [] }));
+      await writeDigestDayLog(env, buildDayLog({
+        day,
+        ranAt,
+        live: LIVE,
+        mode,
+        results: [],
+        shadowHoldDecision: shadowHold?.degraded_receipt || shadowRecovery?.receipt || null,
+      }));
     }
   }
   const summary = {
@@ -505,8 +558,11 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
       source_status: shadowHold.source_status,
       delivery_policy: shadowHold.delivery_policy,
       active_count: heldDigestIds.size,
+      hold_all: holdAllDigests,
       expires_at: shadowHold.expires_at,
+      degraded_receipt: shadowHold.degraded_receipt || null,
     } : null,
+    shadowRecovery,
     receipt,
     results,
   };
@@ -525,7 +581,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
 export async function processOneSub(env, s, ctx) {
   const digestId = await digestShadowId("digest", s.key);
   const previewId = ctx.capturePreviews ? digestId : null;
-  if (ctx.heldDigestIds?.has(digestId)) {
+  if (ctx.holdAllDigests || ctx.heldDigestIds?.has(digestId)) {
     return {
       sub: maskKey(s.key),
       kind: "subscription",
@@ -722,7 +778,7 @@ export async function processAccountRollup(env, subs, ctx) {
   const accountId = accountLogId(email);
   const digestId = await digestShadowId("digest", (subs || []).map((sub) => sub.key).sort().join("|"));
   const previewId = ctx.capturePreviews ? digestId : null;
-  if (ctx.heldDigestIds?.has(digestId)) {
+  if (ctx.holdAllDigests || ctx.heldDigestIds?.has(digestId)) {
     return {
       sub: accountId,
       kind: "rollup",
@@ -1145,7 +1201,11 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     : (jobOrKey && typeof jobOrKey === "object" ? jobOrKey : {});
   const now = options.now == null ? new Date() : new Date(options.now);
   const day = now.toISOString().slice(0, 10);
-  const shadowHold = options.shadowHoldState || await resolveDigestShadowHold(env.DB, { now });
+  const shadowHold = options.shadowHoldState || await resolveDigestShadowHold(env.DB, {
+    now,
+    persist: true,
+    receiptStore: env.ALERT_STATE,
+  });
   let daily = await getSendCount(env, day);
   const ctx = {
     FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
@@ -1158,6 +1218,7 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     caps: { "per-run": Number(env.MAX_PER_RUN) || 25, daily: Number(env.MAX_SENDS_PER_DAY) || 50 },
     onSent: async () => { daily++; await setSendCount(env, day, daily); },
     heldDigestIds: new Set(shadowHold.active_digest_ids || []),
+    holdAllDigests: shadowHold.delivery_policy === "ALL_DIGESTS_HELD",
     holdContract: shadowHold.contract,
   };
 

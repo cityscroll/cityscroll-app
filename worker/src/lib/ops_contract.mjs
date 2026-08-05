@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.2.0";
+export const OPS_CONTRACT_VERSION = "1.3.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -67,7 +67,7 @@ export const DIGEST_SHADOW = Object.freeze({
   ],
   monitoring: {
     poll_status: "HTTP 200 only when READY; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
-    wake: "Scheduled repository monitor opens or updates a repair issue for redlines or missing runs.",
+    wake: "Scheduled post-rehearsal and post-delivery monitors open or update a repair issue for redlines, missing runs, or open degraded receipts.",
     rerun: "Authenticated POST /admin/digest-shadow rebuilds all previews after a repair; affected_digest_ids scopes diagnosis.",
     delivery_effect: "At 12:45 UTC, only affected_digest_ids still redlined are held from the 13:00 UTC delivery path; unrelated digests remain eligible.",
   },
@@ -76,7 +76,11 @@ export const DIGEST_SHADOW = Object.freeze({
     cutoff_utc: "12:45",
     delivery_boundary_utc: "13:00",
     expires_utc: "14:00",
-    missing_run_policy: "fail open because no digest-specific scope exists",
+    retry_policy: "three bounded read attempts with 250ms then 1000ms backoff",
+    unavailable_policy: "use today's persisted state when usable; otherwise fail open loudly",
+    missing_run_policy: "fail open loudly while a READY rehearsal is less than 3 days old; hold all at the 3-day boundary",
+    recovery_policy: "a READY rehearsal after a dark-period hold triggers automatic catch-up before normal delivery",
+    degraded_receipt_contract: "digest-shadow-degraded-decision.v1",
     redline_policy: "fail closed only for affected_digest_ids",
     expiry_policy: "fail open after the bounded delivery window",
     override: "Authenticated POST with action=override-hold, digest_ids, and reason",
@@ -162,6 +166,11 @@ export const DAYLOG_ENVELOPE_FIELDS = Object.freeze([
   { name: "sentCount", type: "number" },
   { name: "zeroSendCount", type: "number" },
   { name: "totalNotices", type: "number" },
+  {
+    name: "shadowHoldDecision",
+    type: "object|null",
+    description: "Collapsed degraded-path or recovery receipt for the send-safety quiet line.",
+  },
   { name: "entries", type: "array" },
 ]);
 
@@ -413,6 +422,7 @@ export const KV_NAMESPACES = Object.freeze([
       { prefix: "digest:daylog:", semantics: "Per-UTC-day send log JSON for desk correctness." },
       { prefix: "digest:run:", semantics: "Per-day and latest daily-run receipts." },
       { prefix: "digest:catchup:", semantics: "Catch-up run receipts (latest + per day)." },
+      { prefix: "digest:shadow:degraded:", semantics: "Send-time degraded-policy receipts and recovery status." },
       { prefix: "seen:", semantics: "Per-watch seen notice id set (watermark adjacent)." },
       { prefix: "lastsent:", semantics: "Per-watch last live-send UTC day (delivery watermark)." },
       { prefix: "sendcount:", semantics: "Per-day live send counter (caps + /stats)." },

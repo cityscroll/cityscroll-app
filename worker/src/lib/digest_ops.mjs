@@ -89,7 +89,14 @@ export function noticeDeepLink(requestId) {
  * Build the durable day log body from a run's result list.
  * Includes zero-match rows so absence is visible, not skipped.
  */
-export function buildDayLog({ day, ranAt, live, mode, results = [] } = {}) {
+export function buildDayLog({
+  day,
+  ranAt,
+  live,
+  mode,
+  results = [],
+  shadowHoldDecision = null,
+} = {}) {
   const entries = [];
   for (const r of results) {
     const e = r?.kind === "rollup"
@@ -109,6 +116,7 @@ export function buildDayLog({ day, ranAt, live, mode, results = [] } = {}) {
     sentCount: sentEntries.length,
     zeroSendCount: zeroSend.length,
     totalNotices,
+    shadowHoldDecision,
     entries,
   };
 }
@@ -214,6 +222,7 @@ export function summarizeDay({ day, dayLog = null, receipt = null, sendcount = n
     catchUpSendCount,
     sendcount: sendcount == null ? null : Number(sendcount) || 0,
     skipped_reason,
+    shadowHoldDecision: dayLog?.shadowHoldDecision || null,
     receipt: receipt
       ? {
           ranAt: receipt.ranAt || null,
