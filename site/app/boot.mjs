@@ -1,12 +1,7 @@
-/* ===================== INIT =====================
-   No "Filter" buttons: selects apply on change, text applies as you type (debounced — the
-   query cache + stale guards make overlapping keystrokes safe) or on Enter. Craigslist rule:
-   the fastest control is the one you don't have to click. */
+// Initialize direct-manipulation controls.
 $("#nlgo").addEventListener("click", nlTranslate);
 $("#nlq").addEventListener("keydown", e=>{ if(e.key==="Enter") nlTranslate(); });
-// One delegated handler covers every ".nledit" button nlTransHTML() renders (money's
-// #nltrans, each lens's #nltrans-<lens>, and the alerts zero-result preview) — avoids
-// wiring a fresh listener, and a duplicate-id risk, on every re-render.
+// Delegate every rendered .nledit button without duplicate listeners.
 document.addEventListener("click", e=>{
   const btn=e.target.closest(".nledit"); if(!btn) return;
   const inp=btn.dataset.nlfor ? $(btn.dataset.nlfor) : null;
@@ -82,10 +77,7 @@ $("#afreq").addEventListener("change", ()=>{
   announce(t("sync_freq_announce", {freq: $("#afreq").selectedOptions[0].textContent.trim()}));
 });
 $("#asubscribe").addEventListener("click", ()=>globalThis.aSubscribe?.());
-// aWatchChange() clears #aparam/#athresh's stale value when the watch type actually changes
-// (see the comment inside aWatchChange itself) -- so the suggestion's own param/threshold must
-// be applied AFTER that call, and refreshQuizDisplay() re-run once more afterward so the quiz's
-// mirrored narrow field picks up the just-applied value rather than the pre-clear one.
+// Apply suggestion values after aWatchChange clears stale fields.
 function applySuggestion(w, p){
   $("#awatch").value=w; globalThis.aWatchChange?.();
   if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p;
@@ -419,30 +411,15 @@ async function syncAlertsEntryHrefs(){
   if(compact) compact.setAttribute("href", href);
 }
 
-/* 60-second onboarding: chips → prefilled advanced options → live preview (Meet-Your-Mayor
-   pattern). w12-20: the quiz's chips/narrow field/freq chips and the "Advanced options"
-   builder fields are two VIEWS of one draft alert -- #awatch/#aparam-or-#quiznarrow/#afreq are
-   the shared state (the single Preview button reads them directly, see aFetch()/
-   aLensFilter()/aPreview() above), and refreshQuizDisplay()/the listeners below keep the
-   quiz's view of them live in both directions so picking a topic here and then editing an
-   amount in Advanced options (or vice versa) can never leave the two panels disagreeing about
-   what will actually be sent. Before this card, the quiz only ever pushed INTO the builder,
-   once, when its own Preview button was clicked -- see test/functional/18_draft_alert_sync.py
-   for the pinned before/after repro. */
-// Values are i18n keys — resolved with t() at click time so the quiz follows the active language.
+// Quiz and advanced controls are two views of one draft.
 const QUIZ_PLACEHOLDER={rfpkw:"quizph_rfpkw", bigaward:"quizph_bigaward",
   rezone:"quizph_rezone", property:"quizph_property", rules:"quizph_rules", meetings:"quizph_meetings"};
 let quizW=null;
-// The quiz's 6 topic chips are a curated subset of #awatch's 9 "watch for" options -- no chip
-// exists for moneynl/entityvendor/entityagency, so a builder-side pick of one of those leaves
-// no quiz chip lit (an honest "the quiz has no button for this" state, not a bug).
+// Only watch types represented in the quiz can light a chip.
 const QUIZ_TOPICS = new Set(["rfpkw","bigaward","rezone","property","rules","meetings","district"]);
-// The main question is the canonical narrowing control for money descriptions; other watch
-// types mirror that one question into their existing #aparam subscription field.
+// Mirror the selected watch's narrowing field.
 function narrowFieldSel(){ return $("#awatch").value==="moneynl" ? "#quiznarrow" : "#aparam"; }
-// Repaints the quiz's chips/narrow field/frequency chips from the CURRENT #awatch/narrow-field/
-// #afreq values. Pure repaint -- never writes back into the builder fields it reads, so calling
-// it after any of those fields changes (from either the quiz or the builder side) can't loop.
+// Repaint without mutating builder state.
 function refreshQuizDisplay(){
   const w = $("#awatch").value;
   const narrowBox = $("#quiznarrowbox");
@@ -468,8 +445,7 @@ $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",(
   if(changed) aWatchChange(); else refreshQuizDisplay(); // aWatchChange() already ends by calling refreshQuizDisplay()
   announce(t("sync_watch_announce", {what: b.textContent.trim()}));
 }));
-// Live, in both directions: typing in either narrowing field mirrors into the other one
-// immediately -- no waiting for either Preview button.
+// Mirror narrowing fields as the reader types.
 $("#quiznarrow").addEventListener("input", ()=>{ $(narrowFieldSel()).value = $("#quiznarrow").value; });
 $("#aparam").addEventListener("input", ()=>{ if($("#awatch").value!=="moneynl") $("#quiznarrow").value = $("#aparam").value; });
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
@@ -583,24 +559,16 @@ window.addEventListener("hashchange", async ()=>{
   if(!hashLock && !applyHash()) showTab("money");
   restoreHistoryRouteScroll();
 }); // empty/unknown hash (e.g. Back to the first entry) → default view
-// Publish alert prefill bindings BEFORE the first applyHash() so #alerts?lens=…&notice=…
-// deep links (and health-fix links) can call prefillAlertFromLink on cold load.
-// routing.mjs resolves that free name on globalThis; assigning after applyHash left
-// cold entry as "prefillAlertFromLink is not defined" and a blank builder.
+// Publish alert bindings before the first hash route.
 globalThis.prefillAlertFromLink = prefillAlertFromLink;
 globalThis.applyNoticeWatchSeed = applyNoticeWatchSeed;
 globalThis.syncAlertsEntryHrefs = syncAlertsEntryHrefs;
 globalThis.currentAlertsEntryHref = currentAlertsEntryHref;
 globalThis.ensureAlertsContextCarry = ensureAlertsContextCarry;
-// Land deep links call showTab("land") during the first applyHash; publish this dependency
-// before routing instead of waiting for the general export block at the end of this module.
+// Publish land context before routing.
 Object.defineProperty(globalThis, "lastNoticeContext", { configurable: true, get: () => lastNoticeContext, set: value => { lastNoticeContext = value; } });
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
-// skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
-// just because #awatch's mandatory default ("bigaward") happens to match one of its chips —
-// the quiz starts genuinely unanswered (test/functional/03_watch_quiz_feeds.py's "quiz CTA
-// without topic" probe pins this). Skip when the hash already carries alert context — applyHash
-// scheduled prefillAlertFromLink, and a second aWatchChange would race the draft fields.
+// Keep the quiz unanswered unless the hash carries alert context.
 const alertsEntryHash = location.hash || "";
 const isAlertsContextEntry = (alertsEntryHash.startsWith("#alerts?")
   && /(?:^|[?&])(?:lens|notice|project)=/.test(alertsEntryHash.slice(1)));
