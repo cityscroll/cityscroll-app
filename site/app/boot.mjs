@@ -657,12 +657,7 @@ function rerenderForLang(){
   else if(tab && SECTIONS[tab] && feedLoaded[tab]){ loadSectionAgencies(tab); loadSection(tab); }
 }
 
-/* ===================== MAGIC-LINK SESSION (digest email recognition) =====================
-   Quiet sign-in: a pins-scoped token from an alert email is exchanged for an HttpOnly
-   session cookie shared by the API and canonical document hosts. The token is stripped
-   from the URL immediately so it never sits in history/referrers. The cookie may
-   bootstrap the narrower watch manager; unsubscribe and other purpose-specific actions
-   never accept it directly. */
+// Pins tokens become shared-cookie sessions; purpose-specific mutation tokens stay separate.
 function sessionShowBanner(session){
   const el = document.getElementById("sessionBanner");
   if(!el) return;
@@ -691,7 +686,7 @@ function sessionShowBanner(session){
       manage.href = session.manageUrl || session.prefsUrl || "https://cityscroll.org/following/#your-following";
       if(window.t) manage.textContent = t("session_manage_watches");
     }
-    // Keep the Alerts-tab manage link in lockstep with the session banner prefs URL.
+    // Sync the Alerts link.
     globalThis.syncAlertsPrefsManageLink?.();
     const ny = document.getElementById("sessionNotYou");
     if(ny && window.t) ny.textContent = t("session_not_you");
@@ -741,8 +736,6 @@ async function sessionLogout(){
   sessionShowBanner(false);
 }
 async function sessionBoot(){
-  // Prefer a URL token (if a client ever lands with ?s=); usually the worker redirect
-  // already set the cookie and the token is gone from the final URL.
   const fromUrl = sessionStripUrlToken();
   if(fromUrl) await sessionExchange(fromUrl);
   const session = await sessionCheck();
@@ -768,7 +761,7 @@ async function sessionBoot(){
   else wire();
 })();
 
-// Homepage general-interest form stays tiny and independent of the deferred Following island.
+// Static homepage subscription.
 async function homeCtaSubscribeStatic(event){
   event?.preventDefault?.();
   const msg=$("#homeCtaMsg"),dest=$("#homeCtaEmail"),btn=$("#homeCtaSubmit");
