@@ -28,9 +28,8 @@ function copy(name, values = {}) {
 function linkedPair(id) {
   if (!root || !id) return [];
   return [
-    root.querySelector(`[data-map-id="${CSS.escape(id)}"]`),
-    root.querySelector(`[data-map-area="${CSS.escape(id)}"]`),
-  ].filter(Boolean);
+    ...root.querySelectorAll(`[data-map-id="${CSS.escape(id)}"], [data-map-label="${CSS.escape(id)}"], [data-map-area="${CSS.escape(id)}"]`),
+  ];
 }
 
 function setLinked(id, on) {

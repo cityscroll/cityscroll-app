@@ -1,0 +1,318 @@
+{
+  "feature": "map-geography-labels",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "routes": [
+    "/near-you/",
+    "/near-you/borough/queens/land/"
+  ],
+  "checks": "polygon-label-list identity and visible-label overlap",
+  "captures": [
+    {
+      "file": "before-borough-390.png",
+      "zoom": "borough",
+      "width": 390,
+      "paths": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "labels": [],
+      "areas": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "before-district-390.png",
+      "zoom": "district",
+      "width": 390,
+      "paths": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "labels": [],
+      "areas": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "before-borough-1440.png",
+      "zoom": "borough",
+      "width": 1440,
+      "paths": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "labels": [],
+      "areas": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "before-district-1440.png",
+      "zoom": "district",
+      "width": 1440,
+      "paths": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "labels": [],
+      "areas": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "after-borough-390.png",
+      "zoom": "borough",
+      "width": 390,
+      "paths": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "labels": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "areas": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "after-district-390.png",
+      "zoom": "district",
+      "width": 390,
+      "paths": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "labels": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "areas": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "after-borough-1440.png",
+      "zoom": "borough",
+      "width": 1440,
+      "paths": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "labels": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "areas": [
+        "Bronx",
+        "Brooklyn",
+        "Manhattan",
+        "Queens",
+        "Staten Island"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    },
+    {
+      "file": "after-district-1440.png",
+      "zoom": "district",
+      "width": 1440,
+      "paths": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "labels": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "areas": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "Q07",
+        "Q08",
+        "Q09",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q14"
+      ],
+      "namesMatch": true,
+      "allVisible": true,
+      "overlaps": []
+    }
+  ]
+}
