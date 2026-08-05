@@ -73,6 +73,10 @@ async function countLaggingSubs(env, thresholdDays = 2, now = new Date()) {
 const WINDOW_DAYS = 7;
 const PAGE_VIEW_SURFACES = Object.freeze([
   "home",
+  "now",
+  "near-you",
+  "following",
+  "browse",
   "stats",
   "about",
   "data",
@@ -83,6 +87,21 @@ const PAGE_VIEW_SURFACES = Object.freeze([
 
 function completePageViewsBySurface(observed = {}) {
   return Object.fromEntries(PAGE_VIEW_SURFACES.map((surface) => [surface, observed[surface] || 0]));
+}
+
+async function readFallbackActionOutcomes(env, now = new Date()) {
+  if (!env?.ALERT_STATE) return {};
+  const events = {
+    opened: "action_opened",
+    prompted: "outcome_prompted",
+    dismissed: "outcome_dismissed",
+    recorded: "outcome_recorded",
+  };
+  const entries = await Promise.all(Object.entries(events).flatMap(([label, event]) => [
+    sumStat(env.ALERT_STATE, `usage_${event}`, 7, now).then((count) => [`${label}_last7d`, count]),
+    sumStat(env.ALERT_STATE, `usage_${event}`, 30, now).then((count) => [`${label}_last30d`, count]),
+  ]));
+  return Object.fromEntries(entries);
 }
 
 async function readFallbackPageViews(env, now = new Date()) {
@@ -120,7 +139,7 @@ function growthFromHistories(nlHist = {}, digestHist = {}, pageViewHist = {}) {
 export function statsEdgeCacheKey(baseUrl = "https://api.cityscroll.org") {
   // Version the cache key when the usage reconciliation shape changes so a deploy cannot
   // keep serving a pre-flip empty usage block for the full max-age window.
-  return new Request(new URL("/stats?edge=watch-account-v1", baseUrl).toString(), {
+  return new Request(new URL("/stats?edge=r2-adoption-v1", baseUrl).toString(), {
     method: "GET",
   });
 }
@@ -169,6 +188,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     digestHist, digestEra, nlHist, nlEra,
     nl7d, nlByCategory7d, watchesHist, watchesEra, usage,
     pageViewsFallback,
+    actionOutcomesFallback,
     nl30d, nlByCategory30d, clicks30d, shares30d, alertsConfirmed7d, alertsConfirmed30d,
     digestLastRun,
     catchUpSentToday, catchUpAllTime, catchUpLastRun, laggingSubs,
@@ -196,6 +216,7 @@ export async function handleStats(req, env, ctx, options = {}) {
       readHistEra(env.ALERT_STATE, "watches_active"),
       readUsageAnalytics(env, { fetchImpl: options.fetchImpl, now }),
       readFallbackPageViews(env, now),
+      readFallbackActionOutcomes(env, now),
       sumStat(env.NL_METER, "nl_search", 30, now),
       readAllCategoryStatsWindow(env.NL_METER, "nl_search", 30, now),
       sumStat(env.ALERT_STATE, "click", 30, now),
@@ -228,6 +249,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     sharesLast30d: shares30d,
     alertsConfirmedLast7d: alertsConfirmed7d,
     alertsConfirmedLast30d: alertsConfirmed30d,
+    actionOutcomes: actionOutcomesFallback,
     growthByDay: growthFromHistories(nlHist, digestHist),
   }, { measuredSince: env?.ANALYTICS_MEASURED_SINCE || usage?.measured_since || null });
   // Replace rather than Object.assign: reconciliation may delete unavailable_reason.

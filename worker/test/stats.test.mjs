@@ -208,6 +208,28 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
   assert.equal(body.nl_search.by_category.meetings, 0, "unseen lenses are explicit zeroes, not missing rows");
 });
 
+test("GET /stats exposes durable aggregate action-outcome totals when Analytics Engine SQL is unavailable", async () => {
+  const today = dayStr(NOW);
+  const alertState = fakeKV({
+    [`stats:usage_action_opened:${today}`]: "10",
+    [`stats:usage_outcome_prompted:${today}`]: "8",
+    [`stats:usage_outcome_dismissed:${today}`]: "2",
+    [`stats:usage_outcome_recorded:${today}`]: "4",
+  });
+  const res = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: fakeKV() },
+    { waitUntil: async (promise) => promise },
+    { now: NOW },
+  );
+  const body = await res.json();
+
+  assert.equal(body.usage.action_outcomes.opened_last7d, 10);
+  assert.equal(body.usage.action_outcomes.prompted_last30d, 8);
+  assert.equal(body.usage.action_outcomes.dismissed_last7d, 2);
+  assert.equal(body.usage.action_outcomes.recorded_last30d, 4);
+});
+
 test("bumpHistDay accumulates per day with no TTL, unlike the 40-day rolling stats:<metric>:<day> counter", async () => {
   const kv = fakeKV();
   await bumpHistDay(kv, "digest", NOW);
@@ -422,5 +444,5 @@ test("prewarmStats writes the public edge cache key (or reports no_cache_api off
     assert.equal(result.status, 200);
   }
   const key = statsEdgeCacheKey("https://api.cityscroll.org");
-  assert.match(key.url, /\/stats\?edge=watch-account-v1$/);
+  assert.match(key.url, /\/stats\?edge=r2-adoption-v1$/);
 });
