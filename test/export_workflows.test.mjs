@@ -10,6 +10,8 @@ const source = SITE_SOURCE;
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const {
   excelSafeCsv,
+  exportModel,
+  buildEnrichedListWorkbook,
   buildListWorkbook,
   buildNoticeWorkbook,
 } = require("../site/export_workflows.js");
@@ -57,7 +59,7 @@ test("the shared CSV serializer preserves Excel-safe bytes and fixture values", 
   assert.match(csv, /"1250\.5"/);
 });
 
-test("the notice workbook carries typed dates and amounts on separate sheets", () => {
+test("the notice workbook carries the enriched record and companion sheets", () => {
   const workbook = buildNoticeWorkbook(
     {
       request_id: "001234",
@@ -65,7 +67,7 @@ test("the notice workbook carries typed dates and amounts on separate sheets", (
       agency_name: "Department of Community Affairs",
       short_title: "社区中心",
       start_date: "2026-07-27T00:00:00.000",
-      due_date: "2026-08-03T00:00:00.000",
+      due_date: "2026-08-03T11:00:00.000",
       contract_amount: "1250.50",
       pin: "000077",
       vendor_name: "Acme LLC",
@@ -79,6 +81,10 @@ test("the notice workbook carries typed dates and amounts on separate sheets", (
       pin: "000077",
     }],
     row => `https://example.test/#notice/${row.request_id}`,
+    {
+      actions:[{type:"official_handoff",label:"Open response portal",destination:"https://example.test/respond",delivery:"official_handoff",deadline:"2026-08-03"}],
+      rendered_context:[{data_class:"procurement_lifecycle",text:"Solicitation, then award",links:["https://example.test/source"]}],
+    },
   );
   const entries = zipEntries(workbook);
 
@@ -96,17 +102,56 @@ test("the notice workbook carries typed dates and amounts on separate sheets", (
   const book = entries.get("xl/workbook.xml").toString("utf8");
   const styles = entries.get("xl/styles.xml").toString("utf8");
   const notice = entries.get("xl/worksheets/sheet1.xml").toString("utf8");
-  const trail = entries.get("xl/worksheets/sheet2.xml").toString("utf8");
+  const trail = entries.get("xl/worksheets/sheet4.xml").toString("utf8");
   assert.match(book, /name="Notice"/);
-  assert.match(book, /name="Contract trail"/);
-  assert.match(styles, /numFmtId="14"/);
-  assert.match(notice, /<c r="E2" s="1"><v>\d+(?:\.\d+)?<\/v><\/c>/);
-  assert.match(notice, /<c r="F2" s="1"><v>\d+(?:\.\d+)?<\/v><\/c>/);
-  assert.match(notice, /<c r="G2"><v>1250\.5<\/v><\/c>/);
-  assert.match(trail, /<c r="C2" s="1"><v>\d+(?:\.\d+)?<\/v><\/c>/);
-  assert.match(trail, /<c r="D2"><v>900\.25<\/v><\/c>/);
+  for (const name of ["Timed events","Actions","Lifecycle","Entities","Sources","Rendered context"]){
+    assert.match(book, new RegExp(`name="${name}"`));
+  }
+  assert.match(styles, /numFmtId="164" formatCode="yyyy-mm-dd hh:mm"/);
+  assert.match(notice, /<c r="I2" s="3"><v>\d+(?:\.\d+)?<\/v><\/c>/);
+  assert.match(notice, /<c r="J2" s="3"><v>\d+\.458333/);
+  assert.match(notice, /<c r="M2"><v>1250\.5<\/v><\/c>/);
+  assert.match(trail, /<c r="D2" s="3"><v>\d+(?:\.\d+)?<\/v><\/c>/);
+  assert.match(trail, /<c r="F2"><v>900\.25<\/v><\/c>/);
   assert.match(notice, /<t(?: [^>]*)?>001234<\/t>/);
   assert.match(trail, /<t(?: [^>]*)?>مؤسسة أكمي<\/t>/);
+  assert.match(entries.get("xl/worksheets/sheet3.xml").toString("utf8"), /Open response portal/);
+  assert.match(entries.get("xl/worksheets/sheet7.xml").toString("utf8"), /Solicitation, then award/);
+  assert.match(notice,/state="frozen"/,"header row should stay visible while working the export");
+});
+
+test("the enriched model keeps evidence-backed groups typed and honest-absent", () => {
+  const model = exportModel([{
+    request_id:"20260617050", agency_name:"Housing Authority", short_title:"Elevator rehabilitation",
+    start_date:"2026-06-30", due_date:"2026-08-05T11:00:00", pin:"517992",
+    property_location:{boroughs:["Bronx"],neighborhoods:["Gun Hill"],addresses:[],bbls:[],geometry:null},
+  }], {
+    permalinkFor:row=>`https://cityscroll.org/notices/${row.request_id}`,
+    context:{actions:[{type:"official_handoff",label:"Open iSupplier",destination:"https://example.test/isupplier"}]},
+  });
+  assert.equal(model.records[0].boroughs,"Bronx");
+  assert.equal(model.records[0].latitude,"", "missing coordinates remain empty");
+  assert.equal(model.records[0].plain_language_summary,"", "no summary is fabricated from the title");
+  assert.ok(model.events.some(event=>event.event_type==="deadline"&&event.event_at.includes("2026-08-05")));
+  assert.equal(model.actions[0].destination,"https://example.test/isupplier");
+  assert.ok(model.sources.some(source=>source.source_class==="canonical"));
+  assert.equal(exportModel([{request_id:"zero",contract_amount:0}],{}).records[0].amount,0,"an evidenced zero is not treated as absent");
+});
+
+test("enriched list workbooks retain companion sheets for joined groups", () => {
+  const entries=zipEntries(buildEnrichedListWorkbook(
+    "Money",
+    [{request_id:"A-1",short_title:"Joined notice",due_date:"2026-08-07",lens_only:"preserved"}],
+    {primaryColumns:[{label:"Lens-only field",value:row=>row.lens_only}]},
+  ));
+  const book=entries.get("xl/workbook.xml").toString("utf8");
+  const primary=entries.get("xl/worksheets/sheet1.xml").toString("utf8");
+  assert.match(book,/name="Money"/);
+  assert.match(book,/name="Timed events"/);
+  assert.match(book,/name="Actions"/);
+  assert.match(primary,/Lens-only field/);
+  assert.match(primary,/preserved/);
+  assert.equal([...entries.keys()].filter(name=>/^xl\/worksheets\/sheet\d+\.xml$/.test(name)).length,7);
 });
 
 test("a list workbook carries typed dates, amounts, and non-ASCII text on one sheet", () => {

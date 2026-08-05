@@ -13,8 +13,8 @@ test("rules materialization carries the distinct event spine to the public read 
 });
 
 test("Agency Rules notice detail mounts and renders the event spine", () => {
-  assert.match(html, /<div id="drules"><\/div>/);
-  assert.match(html, /<div id="nrules"><\/div>/);
+  assert.match(html, /<div id="drules" data-export-class="rule_lifecycle"><\/div>/);
+  assert.match(html, /<div id="nrules" data-export-class="rule_lifecycle"><\/div>/);
   assert.match(html, /loadRuleLifecycle\(r, \$\("#drules"\)\)/);
   assert.match(html, /loadRuleLifecycle\(r, \$\("#nrules"\)\)/);
   assert.match(html, /function ruleEventSpineHTML\(/);

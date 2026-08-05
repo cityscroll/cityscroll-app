@@ -905,9 +905,99 @@ function injectNLBoxes(){
   Object.entries({money:"kw",people:"pkw",land:"lkw",property:"propertykw",rules:"ruleskw",meetings:"meetingskw",alerts:"quiznarrow"}).forEach(([lens,id])=>$("#"+id)?.addEventListener("input",()=>deactivateAskSearch(lens)));
 }
 
+function exportContextForRow(row){
+  const context={actions:[]};
+  if(globalThis.CrolActions && typeof CrolActions.compileActionRail==="function" && typeof noticeActionMatter==="function"){
+    try{
+      const lifecycle=row?._export_context?.lifecycle||null;
+      context.actions=(CrolActions.compileActionRail(noticeActionMatter(row,null,lifecycle),{today:todayISO()})||[]).map(action=>({
+        type:action.type||action.kind||"",
+        label:typeof actionRailLabel==="function"?actionRailLabel(action):(action.label||action.type||""),
+        destination:action.destination||action.url||"",
+        destination_label:action.destination_label||"",
+        delivery:action.delivery||"",
+        deadline:action.deadline||row.due_date||row.event_date||"",
+      }));
+      const primary=context.actions.find(action=>action.destination);
+      if(primary) context.primary_action_url=primary.destination;
+    }catch(_e){}
+  }
+  return context;
+}
+
+function noticeRenderedExportContext(root){
+  const context={actions:[],timed_events:[],lifecycle_rows:[],entities:[],sources:[],rendered_context:[]};
+  if(!root) return context;
+  const policy=CrolExports.EXPORT_CLASS_POLICY||{};
+  root.querySelectorAll("[data-export-class]").forEach(section=>{
+    const dataClass=section.dataset.exportClass||"";
+    if(!dataClass||policy[dataClass]?.excluded) return;
+    const text=(section.textContent||"").replace(/\s+/g," ").trim();
+    if(!text) return;
+    const links=[...section.querySelectorAll("a[href]")].map(link=>link.href).filter(Boolean);
+    context.rendered_context.push({data_class:dataClass,text,links});
+    context.lifecycle_rows.push({lifecycle:dataClass,stage:dataClass,status:"rendered",detail:text,source_url:links[0]||""});
+    section.querySelectorAll("a[href]").forEach(link=>{
+      const href=link.href||"";
+      const label=(link.textContent||"").replace(/\s+/g," ").trim();
+      if(/^https?:/i.test(href)) context.sources.push({source_class:dataClass,label,url:href});
+      if(/(?:#|\/)(?:agency|vendor|land|notices?)\b/i.test(href)){
+        const match=href.match(/(?:#|\/)(agency|vendor|land|notices?)\b/i);
+        context.entities.push({entity_type:match?.[1]||"linked",name:label,relationship:dataClass,url:href,evidence:"rendered"});
+      }
+    });
+    ["[datetime]","[data-land-statutory-due]","[data-date-chip]"].forEach(selector=>{
+      section.querySelectorAll(selector).forEach(node=>{
+        const date=node.getAttribute("datetime")||node.dataset.landStatutoryDue||node.dataset.date||"";
+        if(date) context.timed_events.push({event_type:dataClass,event_at:date,label:(node.textContent||"").trim(),status:node.dataset.deadlineState||node.dataset.landStatutoryStatus||""});
+      });
+    });
+  });
+  const actionNodes=[];
+  root.querySelectorAll('[data-export-class="actions"]').forEach(section=>{
+    section.querySelectorAll("a[href]").forEach(node=>actionNodes.push(node));
+    ["[data-next-calendar]","[data-rule-event]","[data-ev]"].forEach(selector=>{
+      section.querySelectorAll(selector).forEach(node=>actionNodes.push(node));
+    });
+  });
+  actionNodes.forEach(node=>{
+    const label=(node.textContent||"").replace(/\s+/g," ").trim();
+    if(!label) return;
+    context.actions.push({
+      type:node.hasAttribute("data-next-calendar")?"calendar":"rendered_action",
+      label,
+      destination:node.href||node.dataset.copyValue||"",
+      delivery:node.href&&/^https?:/i.test(node.href)?"official_handoff":"local",
+    });
+  });
+  const primary=root.querySelector('[data-export-class="actions"] a[href]');
+  if(primary) context.primary_action_url=primary.href;
+  return context;
+}
+
+function mergeExportContexts(...contexts){
+  const merged={actions:[],timed_events:[],lifecycle_rows:[],entities:[],sources:[],rendered_context:[]};
+  contexts.filter(Boolean).forEach(context=>{
+    Object.keys(merged).forEach(key=>merged[key].push(...(Array.isArray(context[key])?context[key]:[])));
+    if(!merged.primary_action_url&&context.primary_action_url) merged.primary_action_url=context.primary_action_url;
+  });
+  return merged;
+}
+
+function withEnrichedExportSpec(lens,spec){
+  const labels=new Set((spec.columns||[]).map(column=>Array.isArray(column)?column[0]:column.label));
+  const extras=CrolExports.enrichedCsvColumns({
+    kind:lens==="land"?"land":"notice",
+    contextFor:exportContextForRow,
+    permalinkFor:row=>row.request_id?noticeLink(row.request_id):(row.project_id?landLink(row.project_id):location.href),
+    cityRecordFor:row=>row.request_id?REQ_URL(row.request_id):"",
+  }).filter(column=>!labels.has(column.label));
+  return {...spec,columns:[...(spec.columns||[]),...extras]};
+}
+
 function exportSpec(lens){
   const searchLink=()=>location.href;
-  if(lens==="money") return {rows:currentRows, columns:[
+  if(lens==="money") return withEnrichedExportSpec(lens,{rows:currentRows, columns:[
     {label:"Type",value:r=>r.type_of_notice_description,width:22},
     {label:"Agency",value:r=>r.agency_name,width:32},
     {label:"Title",value:r=>cleanText(r.short_title),width:48},
@@ -921,8 +1011,8 @@ function exportSpec(lens){
     {label:"Amount",value:r=>r.contract_amount||"",type:"number",width:16},
     ["Request ID",r=>r.request_id||""],
     ["Permalink",r=>noticeLink(r.request_id)],["City Record URL",r=>REQ_URL(r.request_id)]
-  ]};
-  if(lens==="people") return {rows:staffingVisibleItems(), columns:[
+  ]});
+  if(lens==="people") return withEnrichedExportSpec(lens,{rows:staffingVisibleItems(), columns:[
     ["Type",r=>r.kind==="exam"?t("staffing_filter_exams"):t("staffing_new_hire_tag")],
     [t("csv_role"),r=>r.role||""],[t("person_name_label"),r=>r.person||""],["Agency",r=>r.agency||""],
     {label:"Posted / application start",value:r=>r.published_at||"",type:"date",width:22},
@@ -932,15 +1022,15 @@ function exportSpec(lens){
     ["Request ID",r=>r.kind==="hire"?r.request_id:""],
     ["City Record URL",r=>r.kind==="hire"?REQ_URL(r.request_id):location.origin+location.pathname+"#exam/"+encodeURIComponent(r.request_id)],
     [t("csv_search_permalink"),searchLink]
-  ]};
-  if(lens==="land") return {rows:lRows, columns:[
+  ]});
+  if(lens==="land") return withEnrichedExportSpec(lens,{rows:lRows, columns:[
     {label:t("csv_project"),value:r=>r.project_name,width:40},
     ["Borough",r=>r.borough],["Community district",r=>r.community_district],
     [t("csv_status"),r=>r.public_status||r.project_status],["Milestone",r=>cleanText(r.current_milestone)],
     {label:"Milestone date",value:r=>fdate(r.current_milestone_date),xlsxValue:r=>r.current_milestone_date,type:"date",width:15},
     [t("csv_applicant"),r=>r.primary_applicant],
     [t("csv_project_id"),r=>r.project_id],["Permalink",r=>landLink(r.project_id)]
-  ]};
+  ]});
   const rows=feedVisible[lens]||[];
   const columns=[
     {label:"Type",value:r=>r.type_of_notice_description,width:22},
@@ -971,7 +1061,7 @@ function exportSpec(lens){
       [t("csv_sale_eligible"),r=>r.commercial&&r.commercial.sale_eligible===false?"no":"yes"],
     );
   }
-  return {rows,columns};
+  return withEnrichedExportSpec(lens,{rows,columns});
 }
 function exportLensCsv(lens){
   const spec=exportSpec(lens);
@@ -989,7 +1079,15 @@ function exportPropertyAuctionCsv(){
     [t("csv_address"),r=>r.address], ["Block",r=>r.block], ["Lot",r=>r.lot],
     ["BBL",r=>r.bbl], [t("property_process_label"),r=>r.stage],
     ["Posted",r=>r.posted], ["Event date",r=>r.event_date],
-    [t("csv_close_date"),r=>r.close_date], ["City Record URL",r=>r.source_link],
+    [t("csv_close_date"),r=>r.close_date], ["Boroughs",r=>r.boroughs],
+    ["Community districts",r=>r.community_districts], ["Council districts",r=>r.council_districts],
+    ["Neighborhoods",r=>r.neighborhoods], ["Latitude",r=>r.latitude], ["Longitude",r=>r.longitude],
+    [t("csv_asset_type"),r=>r.asset_type], [t("csv_commercial_item"),r=>r.commercial_item],
+    [t("csv_primary_price"),r=>r.price_amount], [t("csv_price_kind"),r=>r.price_kind],
+    [t("csv_sale_method"),r=>r.sale_method], ["Participation URL",r=>r.participation_url],
+    ["Disposition subject",r=>r.disposition_subject], ["Disposition join keys",r=>r.disposition_join_keys],
+    [t("csv_project_id"),r=>r.project_ids], ["Request ID",r=>r.request_id],
+    ["Permalink",r=>r.permalink], ["City Record URL",r=>r.source_link],
   ];
   CrolExports.downloadFile(
     `cityscroll-property-auction-parcels-${new Date().toISOString().slice(0,10)}.csv`,
@@ -1000,10 +1098,16 @@ function exportPropertyAuctionCsv(){
 function exportLensXlsx(lens){
   const spec=exportSpec(lens);
   if(!spec||!spec.rows.length) return;
-  const bytes=CrolExports.buildListWorkbook(
+  const bytes=CrolExports.buildEnrichedListWorkbook(
     lens.charAt(0).toUpperCase()+lens.slice(1),
-    spec.columns,
-    spec.rows
+    spec.rows,
+    {
+      kind:lens==="land"?"land":"notice",
+      primaryColumns:spec.columns,
+      contextFor:exportContextForRow,
+      permalinkFor:row=>row.kind==="exam"?`${location.origin}${location.pathname}#exam/${encodeURIComponent(row.request_id)}`:(row.request_id?noticeLink(row.request_id):(row.project_id?landLink(row.project_id):location.href)),
+      cityRecordFor:row=>row.kind==="exam"?`${location.origin}${location.pathname}#exam/${encodeURIComponent(row.request_id)}`:(row.request_id?REQ_URL(row.request_id):""),
+    }
   );
   CrolExports.downloadFile(
     `crol-${lens}-${new Date().toISOString().slice(0,10)}.xlsx`,
@@ -1011,7 +1115,9 @@ function exportLensXlsx(lens){
   );
 }
 function exportNoticeXlsx(notice, chain){
-  const bytes=CrolExports.buildNoticeWorkbook(notice,chain,record=>noticeLink(record.request_id));
+  const root=document.querySelector("#noticeview .route-item")||document.querySelector("#detail");
+  const context=mergeExportContexts(exportContextForRow(notice),noticeRenderedExportContext(root));
+  const bytes=CrolExports.buildNoticeWorkbook(notice,chain,record=>noticeLink(record.request_id),context);
   CrolExports.downloadFile(
     `crol-notice-${String(notice.request_id||"export").replace(/[^a-z0-9_-]/gi,"-")}.xlsx`,
     new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
@@ -1054,6 +1160,8 @@ globalThis.exportLensCsv = exportLensCsv;
 globalThis.exportPropertyAuctionCsv = exportPropertyAuctionCsv;
 globalThis.exportLensXlsx = exportLensXlsx;
 globalThis.exportNoticeXlsx = exportNoticeXlsx;
+globalThis.exportContextForRow = exportContextForRow;
+globalThis.noticeRenderedExportContext = noticeRenderedExportContext;
 globalThis.exportSpec = exportSpec;
 globalThis.injectNLBoxes = injectNLBoxes;
 globalThis.interpretedSearchRowHTML = interpretedSearchRowHTML;
