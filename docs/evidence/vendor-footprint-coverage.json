@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Vendor footprint coverage and promotion receipt",
-  "generated_at": "2026-08-05T16:58:19.251Z",
+  "generated_at": "2026-08-05T18:59:58.871Z",
   "status": "qualified",
   "qualifier_required": true,
   "sections": [
@@ -19,20 +19,43 @@
     "not_scored"
   ],
   "summary": {
-    "known_awards": 51812,
-    "linked_awards": 141,
-    "award_linkage_rate": 0.0027,
-    "vendor_roots": 116,
+    "known_awards": 53245,
+    "named_awards": 51812,
+    "linked_awards": 51812,
+    "award_linkage_rate": 0.9731,
+    "no_name_awards": 1429,
+    "normalization_blocked_awards": 4,
+    "vendor_roots": 14463,
     "multi_domain_vendor_roots": 0,
     "multi_domain_vendor_rate": 0
+  },
+  "census": {
+    "strategy": "full_corpus_vendor_profile_aggregate",
+    "survival": {
+      "observed": 53245,
+      "normalized": 51812,
+      "blocked": 1433,
+      "scored": 51812,
+      "published": 51812
+    },
+    "blockers": {
+      "missing_vendor_name": 1429,
+      "empty_vendor_stem": 4,
+      "missing_request_id": 0
+    },
+    "no_name_floor": {
+      "rows": 1429,
+      "rate": 0.0268,
+      "label": "2.68% of snapshot rows have no vendor name"
+    }
   },
   "promotion": {
     "eligible": false,
     "gates": {
       "award_linkage_rate": {
         "threshold": 0.95,
-        "actual": 0.0027,
-        "passed": false
+        "actual": 0.9731,
+        "passed": true
       },
       "multi_domain_vendor_rate": {
         "threshold": 0.5,
@@ -61,7 +84,7 @@
     "denominator_dataset_id": "qyyg-4tf5",
     "denominator_materialized_at": "2026-08-05T10:40:50.286Z",
     "denominator_row_count": 53245,
-    "numerator": "site/data/entity_intelligence_lookup.json strong named_vendor award objects",
+    "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
     "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json"
   }
 }

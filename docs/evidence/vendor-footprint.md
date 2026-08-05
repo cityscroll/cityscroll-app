@@ -15,11 +15,13 @@ node tools/build_entity_intelligence.mjs --check
 ## Coverage shown to readers
 
 The Awards section uses the full committed OCP Recent Contract Awards materialization as its
-denominator. Each vendor's exact normalized stem defines the set of distinct known award request
-IDs. The numerator contains only those award IDs published in the entity-intelligence view with a
-`strong` `named_vendor` link. The section count and destination count use that same exact-stem
-set. When the identity graph has no confirmed links but the source has records under the name,
-the reader sees:
+single all-row denominator. The full-corpus vendor profile aggregate applies the existing exact
+`vendor_stem_v1` normalizer to every row; rows with a non-empty stem are published as strong
+name-based award attachments. This aggregate is independent of the bounded cross-domain graph,
+so a 500-row intake or 200-root graph cap cannot change the award census. Each vendor's exact
+normalized stem still defines the set of distinct known award request IDs used by its profile
+count and destination scope. When the identity graph has no confirmed links but the source has
+records under the name, the reader sees:
 
 > N records mention this name — identity not yet confirmed
 
@@ -30,7 +32,10 @@ candidates stay out. The interface says that completeness has not been measured 
 presenting an unmeasured zero as a complete result.
 
 The current denominator, numerator, source vintage, and excluded confidence bands live in the
-JSON receipt rather than this prose so a rebuild cannot leave stale counts here.
+JSON receipt rather than this prose so a rebuild cannot leave stale counts here. The receipt also
+publishes observation survival through normalization, blocking, scoring, and publication, plus
+the no-name floor. Missing vendor names remain excluded from vendor-specific profile rows; they
+are retained in the all-row denominator.
 
 ## CAMBA reader surface
 

@@ -116,6 +116,7 @@ export function attachVendorFootprint(
       excluded_confidence: footprint.excluded_confidence,
       award_coverage: awardCoverage,
       section_counts: sectionCounts,
+      census: footprint.census,
       promotion: footprint.promotion,
       provenance: footprint.provenance,
     },
