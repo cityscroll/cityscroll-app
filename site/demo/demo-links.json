@@ -636,9 +636,9 @@
     },
     {
       "id": "property-brooklyn-sites",
-      "url": "#property?boro=Brooklyn",
+      "url": "#property?boro=Brooklyn&view=archive",
       "feature": "property-location-filter",
-      "description": "Open Property with only notices whose subject site is identified in Brooklyn.",
+      "description": "Open archived Property notices whose subject site is identified in Brooklyn.",
       "expectations": {
         "visible": [
           {
