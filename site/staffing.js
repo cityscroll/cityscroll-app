@@ -169,7 +169,16 @@
     return sourceAgeDays(source, today) > Number(source.stale_after_days || 0);
   }
 
+  function examDocumentPath(examNumber) {
+    const id = String(examNumber || "").trim();
+    return /^\d{4}$/.test(id) ? `/exams/${encodeURIComponent(id)}/` : "/exams/";
+  }
+
   function examUrl(examNumber, base) {
+    return new URL(examDocumentPath(examNumber), base || "https://cityscroll.org/").href;
+  }
+
+  function legacyExamUrl(examNumber, base) {
     return `${base || "https://cityscroll.org/"}#exam/${encodeURIComponent(examNumber)}`;
   }
 
@@ -366,7 +375,9 @@
     filterExams,
     sourceAgeDays,
     sourceIsStale,
+    examDocumentPath,
     examUrl,
+    legacyExamUrl,
     featuredExams,
     normalizeTitle,
     examForTitle,

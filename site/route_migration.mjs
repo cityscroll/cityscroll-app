@@ -35,6 +35,7 @@ export const LEGACY_ROUTE_PARAMETERS = Object.freeze({
 });
 
 const NOTICE_PARAMETERS = new Set(["w", "focus"]);
+const EXAM_PARAMETERS = new Set();
 
 function safeUrl(value, origin) {
   const raw = String(value || "").trim();
@@ -127,6 +128,18 @@ export function migrateLegacyUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
       ...mapped,
       parameterRule: "Preserve a validated lang value plus bounded watch (w) and focus parameters; discard every other fragment parameter.",
       forwardingBehavior: "The legacy root shim calls location.replace() with the canonical notice document URL.",
+      migrated: true,
+    };
+  }
+
+  const exam = route.match(/^exam\/(\d{4})$/);
+  if (exam) {
+    const mapped = targetUrl(`/exams/${encodeURIComponent(exam[1])}/`, url, params, EXAM_PARAMETERS);
+    return {
+      linkClass: "exam permalink",
+      ...mapped,
+      parameterRule: "Preserve only a validated language value in the canonical exam document query.",
+      forwardingBehavior: "The legacy root shim calls location.replace() with the canonical exam document URL.",
       migrated: true,
     };
   }

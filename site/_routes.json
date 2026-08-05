@@ -6,6 +6,7 @@
     "/vendors/*",
     "/officials/*",
     "/browse",
+    "/exams/*",
     "/browse/*"
   ],
   "exclude": [

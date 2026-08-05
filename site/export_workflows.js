@@ -212,6 +212,14 @@
     external_award:{sheets:["Lifecycle","Entities","Sources"]},
     paper_trail:{sheets:["Lifecycle","Sources"]},
     agency_forecast:{sheets:["Lifecycle","Rendered context"]},
+    exam_identity:{sheets:["Exam"]},
+    exam_facts:{sheets:["Exam"]},
+    exam_prediction:{sheets:["Exam","Rendered context"]},
+    exam_disclaimer:{sheets:["Rendered context"]},
+    exam_process:{sheets:["Lifecycle","Sources"]},
+    exam_outcomes:{sheets:["Lifecycle","Sources"]},
+    exam_actions:{sheets:["Actions"]},
+    exam_provenance:{sheets:["Sources"]},
     official_notice_text:{sheets:["Rendered context"]},
     unofficial_translation:{excluded:"Unofficial translations are intentionally omitted; the official English record remains in the export."},
   });
@@ -232,7 +240,7 @@
   const itemUrl=(kind,id)=>{
     if(!id) return "";
     if(kind==="land") return `https://cityscroll.org/#land?project=${encodeURIComponent(id)}`;
-    if(kind==="exam") return `https://cityscroll.org/#exam/${encodeURIComponent(id)}`;
+    if(kind==="exam") return `https://cityscroll.org/exams/${encodeURIComponent(id)}/`;
     return `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
   };
   function locationFor(row){

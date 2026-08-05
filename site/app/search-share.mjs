@@ -1020,7 +1020,7 @@ function exportSpec(lens){
     {label:t("staffing_salary",{amount:""}).trim(),value:r=>r.salary||"",type:"number",width:16},
     [t("staffing_title_code",{code:""}).trim()+" / "+t("career_exam_number",{number:""}).trim(),r=>r.kind==="exam"?r.request_id:(r.title_code||"")],
     ["Request ID",r=>r.kind==="hire"?r.request_id:""],
-    ["City Record URL",r=>r.kind==="hire"?REQ_URL(r.request_id):location.origin+location.pathname+"#exam/"+encodeURIComponent(r.request_id)],
+    ["City Record URL",r=>r.kind==="hire"?REQ_URL(r.request_id):CrolStaffing.examUrl(r.request_id, location.origin)],
     [t("csv_search_permalink"),searchLink]
   ]});
   if(lens==="land") return withEnrichedExportSpec(lens,{rows:lRows, columns:[
@@ -1105,8 +1105,8 @@ function exportLensXlsx(lens){
       kind:lens==="land"?"land":"notice",
       primaryColumns:spec.columns,
       contextFor:exportContextForRow,
-      permalinkFor:row=>row.kind==="exam"?`${location.origin}${location.pathname}#exam/${encodeURIComponent(row.request_id)}`:(row.request_id?noticeLink(row.request_id):(row.project_id?landLink(row.project_id):location.href)),
-      cityRecordFor:row=>row.kind==="exam"?`${location.origin}${location.pathname}#exam/${encodeURIComponent(row.request_id)}`:(row.request_id?REQ_URL(row.request_id):""),
+      permalinkFor:row=>row.kind==="exam"?CrolStaffing.examUrl(row.request_id, location.origin):(row.request_id?noticeLink(row.request_id):(row.project_id?landLink(row.project_id):location.href)),
+      cityRecordFor:row=>row.kind==="exam"?CrolStaffing.examUrl(row.request_id, location.origin):(row.request_id?REQ_URL(row.request_id):""),
     }
   );
   CrolExports.downloadFile(

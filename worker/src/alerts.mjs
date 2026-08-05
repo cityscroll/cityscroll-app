@@ -1992,7 +1992,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const itemKind = kind === "district" ? r.district_kind : kind;
     const itemClass = kind === "district" ? ' class="district-item"' : "";
     if (itemKind === "exam") {
-      const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
+      const link = `https://cityscroll.org/exams/${encodeURIComponent(r.exam_number)}/`;
       const dates = r.application_start && r.application_end
         ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}`
         : "";
@@ -2214,7 +2214,7 @@ function rollupDigestHtml({
       const itemKind = sec.kind === "district" ? r.district_kind : sec.kind;
       const itemClass = sec.kind === "district" ? ' class="district-item"' : "";
       if (itemKind === "exam") {
-        const link = `https://cityscroll.org/#exam/${encodeURIComponent(r.exam_number)}`;
+        const link = `https://cityscroll.org/exams/${encodeURIComponent(r.exam_number)}/`;
         const dates = r.application_start && r.application_end ? `${String(r.application_start).slice(0, 10)}–${String(r.application_end).slice(0, 10)}` : "";
         const meta = [`Exam ${r.exam_number}`, dates, r.open_window_band].filter(Boolean).map(esc).join(" · ");
         return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${link}">${esc(r.title || "Civil-service exam")}</a></b><br>
