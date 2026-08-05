@@ -1,0 +1,53 @@
+{
+  "description": "Load-bearing deterministic variants for full-dollar formatting, feed field inclusion, and current permalink forms.",
+  "currency": {
+    "valid_positive_amounts": [
+      { "input": 1, "full": "$1", "on_page": "$1" },
+      { "input": 1000, "full": "$1,000", "on_page": "$1K" },
+      { "input": 1234567.89, "full": "$1,234,567.89", "on_page": "$1.23M" }
+    ],
+    "worker_usd_closure_count": 5
+  },
+  "feed": {
+    "kind": "award",
+    "row": {
+      "request_id": "20260805014",
+      "start_date": "2026-08-05T00:00:00.000",
+      "agency_name": "Parks & Recreation",
+      "short_title": "Playground <b>reconstruction</b>",
+      "contract_amount": "1234567.89",
+      "vendor_name": "Acme &amp; Sons LLC",
+      "due_date": "2026-08-20T00:00:00.000",
+      "event_date": "2026-08-12T10:30:00.000",
+      "street_address_1": "1 Centre Street"
+    },
+    "item": {
+      "id": "20260805014",
+      "url": "https://cityscroll.org/#notice/20260805014",
+      "title": "Playground reconstruction",
+      "date": "2026-08-05T00:00:00.000",
+      "summary": "Parks & Recreation · $1,234,567.89 · → Acme & Sons LLC · due 2026-08-20 · event 2026-08-12 · 1 Centre Street",
+      "eventDate": "2026-08-12T10:30:00.000"
+    }
+  },
+  "permalinks": [
+    {
+      "kind": "vendor",
+      "raw_name": "  <b>Acme &amp; Sons LLC</b>  ",
+      "hash": "#vendor/Acme%20%26%20Sons%20LLC",
+      "spanish": "https://cityscroll.org/?lang=es#vendor/Acme%20%26%20Sons%20LLC"
+    },
+    {
+      "kind": "agency",
+      "raw_name": "  Parks &amp; Recreation  ",
+      "hash": "#agency/Parks%20%26%20Recreation",
+      "spanish": "https://cityscroll.org/?lang=es#agency/Parks%20%26%20Recreation"
+    },
+    {
+      "kind": "notice",
+      "id": "20260805014",
+      "hash": "#notice/20260805014",
+      "spanish": "https://cityscroll.org/?lang=es#notice/20260805014"
+    }
+  ]
+}

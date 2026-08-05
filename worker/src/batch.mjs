@@ -8,7 +8,7 @@
 //   mentions = full-text hits in recent editions (trailing ~2 years)
 //   entity   = site permalink to the vendor profile when awards exist
 
-import { parseNames, MAX_NAMES } from "./lib/batch.mjs";
+import { parseNames, MAX_NAMES, vendorEntityPermalink } from "./lib/batch.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { vendorStem } from "./lib/compile.mjs";
@@ -65,7 +65,7 @@ export async function handleBatch(req, env) {
     } catch { /* leave 0 */ }
     results[name] = {
       awards, mentions,
-      entity: awards > 0 ? `https://cityscroll.org/#vendor/${encodeURIComponent(name)}` : null,
+      entity: awards > 0 ? vendorEntityPermalink(name) : null,
     };
   }));
 
