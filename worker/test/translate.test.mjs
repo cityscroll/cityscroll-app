@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { getOrTranslate, handleTranslate } from "../src/translate.mjs";
-import { sourceHash } from "../src/lib/translate_notice.mjs";
+import { sourceHash, translateNoticeFields } from "../src/lib/translate_notice.mjs";
 import { noticeSourceText } from "../src/lib/translate_invariants.mjs";
 
 const NOTICE = {
@@ -76,6 +76,65 @@ function kvStore(seed = {}) {
     _map: map,
   };
 }
+
+test("translateNoticeFields: requests and reads a structured translation tool response", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestBody;
+  globalThis.fetch = async (_url, init) => {
+    requestBody = JSON.parse(init.body);
+    return {
+      ok: true,
+      json: async () => ({
+        content: [{
+          type: "tool_use",
+          name: "return_translation",
+          input: {
+            title: "DEMOLICIÓN INMEDIATA DE EMERGENCIA DE 28 W 130th St, MANHATTAN",
+            description: "Demolición de emergencia en 28 W 130th St. Monto del contrato $550,000. Vence 2022-04-01.",
+          },
+        }],
+      }),
+    };
+  };
+  try {
+    const result = await translateNoticeFields(
+      { ANTHROPIC_API_KEY: "test-key" },
+      "es",
+      NOTICE,
+    );
+    assert.equal(requestBody.tool_choice.type, "tool");
+    assert.equal(requestBody.tool_choice.name, "return_translation");
+    assert.equal(requestBody.tools[0].input_schema.additionalProperties, false);
+    assert.match(result.title, /DEMOLICIÓN/);
+    assert.match(result.description, /\$550,000/);
+    assert.equal(result.model, "claude-haiku-4-5");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("translateNoticeFields: malformed model content fails closed without parsing free-form text", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({
+    ok: true,
+    json: async () => ({
+      content: [{
+        type: "text",
+        text: "{\"title\":\"looks structured\",\"description\":\"but is not a tool response\"}",
+      }],
+    }),
+  });
+  try {
+    const result = await translateNoticeFields(
+      { ANTHROPIC_API_KEY: "test-key" },
+      "es",
+      NOTICE,
+    );
+    assert.deepEqual(result, { degraded: true, reason: "no-tool" });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
 
 test("getOrTranslate: serves D1 cache without calling the model", async () => {
   const rowShape = {
