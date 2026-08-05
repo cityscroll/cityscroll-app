@@ -64,6 +64,12 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *_args):
         pass
 
+    def do_GET(self):
+        route = self.path.split("?", 1)[0].rstrip("/")
+        if route == "/browse" or route.startswith("/browse/"):
+            self.path = "/index.html"
+        super().do_GET()
+
 
 def fixed(body):
     return lambda route: route.fulfill(
@@ -128,7 +134,22 @@ def run(page, downloads: pathlib.Path):
         "document.querySelectorAll('#staffing-notice-list .staffing-hire-row').length === 1"
     )
     assert page.locator("#staffing-notice-list .staffing-hire-group").count() == 0
-    assert page.locator("#staffing-notice-list .staffing-hire-row a").get_attribute("href") == (
+    row = page.locator("#staffing-notice-list .staffing-hire-row")
+    rendered_text = row.inner_text()
+    glued_boundaries = (
+        r"\b\d{5}(?=[A-Z][A-Z,' .-]{2,})",
+        r"\$\d[\d,]*(?:\.\d{2})?(?=\d{4}-\d{2}-\d{2}\b)",
+    )
+    assert not any(re.search(pattern, rendered_text) for pattern in glued_boundaries), (
+        f"appointment fields are concatenated in rendered text: {rendered_text!r}"
+    )
+    assert row.locator(".staffing-hire-field").count() == 6
+    labels = row.locator("dt").all_inner_texts()
+    assert labels == [
+        "NAME", "TITLE CODE", "AGENCY", "EFFECTIVE", "SALARY", "POSTED",
+    ], labels
+    assert row.locator("a").count() == 1, "the record link must not wrap the whole row"
+    assert row.locator(".staffing-hire-person-field a").get_attribute("href") == (
         "https://a856-cityrecord.nyc.gov/RequestDetail/990001"
     )
 

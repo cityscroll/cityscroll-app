@@ -953,6 +953,27 @@
   .staffing-feed-meta p{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
   .staffing-export-actions{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-top:10px}
   .staffing-notice-list{display:flex;flex-direction:column;min-height:290px;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--card)}
+  .staffing-hire-row{border-bottom:1px solid var(--rule);min-width:0;background:var(--card)}
+  .staffing-hire-row:last-child{border-bottom:0}
+  .staffing-hire-fields{display:grid;grid-template-columns:minmax(150px,1.15fr) minmax(120px,.8fr) minmax(180px,1.3fr) minmax(100px,.75fr) minmax(85px,.6fr) minmax(100px,.7fr);gap:var(--space-3);margin:0;padding:var(--space-3) var(--space-4);min-width:0}
+  .staffing-hire-field{min-width:0}
+  .staffing-hire-field dt{font:700 10px/1.2 var(--font-label);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 var(--space-1)}
+  .staffing-hire-field dd{font:12.5px/1.4 var(--font-interface);color:var(--ink);margin:0;min-width:0;overflow-wrap:anywhere}
+  .staffing-hire-person-field dd{font-weight:750}
+  .staffing-hire-person-field a{color:var(--oxblood);text-decoration-thickness:1px;text-underline-offset:2px}
+  .staffing-hire-code{display:block;font:700 12.5px/1.35 ui-monospace,Menlo,monospace;color:var(--ink)}
+  .staffing-hire-role{display:block;margin-top:2px;font:11.5px/1.35 var(--font-interface);color:var(--muted);overflow-wrap:anywhere}
+  .staffing-hire-agency-field dd{color:var(--ink-soft)}
+  .staffing-hire-group{border-bottom:1px solid var(--rule);padding:var(--space-4);min-width:0;background:var(--paper-2)}
+  .staffing-hire-group:last-child{border-bottom:0}
+  .staffing-hire-group-head h4{font:700 15px/1.4 var(--font-body);color:var(--ink);margin:0;overflow-wrap:anywhere}
+  .staffing-hire-group-facts{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--space-1) var(--space-3);margin-top:var(--space-2);min-width:0;font:12px/1.4 var(--font-interface);color:var(--muted)}
+  .staffing-hire-group details{margin-top:var(--space-3)}
+  .staffing-hire-group summary{width:max-content;max-width:100%;font:700 12px/1.4 var(--font-interface);color:var(--oxblood);cursor:pointer}
+  .staffing-hire-group-names{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:2px var(--space-4);list-style:none;margin:var(--space-2) 0 0;padding:0;min-width:0}
+  .staffing-hire-group-names li{min-width:0}
+  .staffing-hire-group-names a{display:block;padding:5px 7px;border-radius:var(--radius-sm);font:650 12.5px/1.4 var(--font-interface);color:var(--ink-soft);overflow-wrap:anywhere}
+  .staffing-hire-group-names a:hover{background:var(--card);color:var(--oxblood)}
   .staffing-notice-list:has(.staffing-notice-card){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:visible;background:transparent;border:0;padding:0}
   .staffing-notice-card{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--blue);border-radius:8px;padding:14px;min-width:0;display:flex;flex-direction:column;gap:8px}
   .staffing-notice-card[data-kind="exam"]{border-top-color:var(--green)}
@@ -1070,6 +1091,8 @@
     .staffing-feed-head{grid-template-columns:1fr}
     .staffing-filter-bar{grid-template-columns:1fr 1fr}
     .staffing-filter-group:first-child{grid-column:1/-1}
+    .staffing-hire-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3) var(--space-4);padding:var(--space-3)}
+    .staffing-hire-agency-field{grid-column:1/-1}
     .career-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
     .career-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
