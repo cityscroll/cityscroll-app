@@ -194,7 +194,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
   <li><b>Why there is no date on one lot</b> — we only show a dated range when enough past cases clear a fixed check. This set does not. You get the “typically” line only.</li>
   <li><b>When a real sale date exists</b> — the normal soon/urgent chips own it. The pattern line only appears before that date is published.</li>
 </ul>
-<p class="src">The site file <code>data/property_disposition_timing_model.json</code> holds the current numbers.</p>
+<p class="src">The site's property timing data file holds the current numbers.</p>
 
 <h3 id="tax-lien-sale-predictions" data-i18n="about_h_tax_lien_formula">Tax lien sale progression</h3>
 <p class="src" data-i18n-html="about_p_tax_lien_formula_html">Method: <b>borough base rate plus the announced sale date</b>. For each 90-, 60-, 30-, or 10-day stage, the rate is the number of distinct cycle-and-BBL pairs that also appear on that cycle's final sale list, divided by all distinct cycle-and-BBL pairs at that stage. Training requires at least three earlier cycles. A cycle-based holdout runs through the public prediction scorecard. Below the bar, CityScroll shows cohort statistics and observed BBL status, not a property-specific probability. False-positive modes include payment, payment plans, exemptions, corrections, and cancellation of an entire sale cycle. The dataset cannot identify which reason removed a BBL. A final-list match means the <b>lien</b> appeared on the sale list. It does not mean the property was sold, foreclosed, or transferred.</p>
@@ -214,13 +214,13 @@ and public action results. The base line does not use the applicant's name. It d
 <h2 id="applicant-conditioned-ulurp">Applicant history on ULURP outcomes</h2>
 <p class="src">When the same applicant has enough past ZAP projects, CityScroll also shows that applicant's historical approval rate <b>next to</b> the unconditioned base rate above. The conditioned number never appears alone.</p>
 <ul class="src" style="margin:8px 0;padding-left:20px">
-  <li><b>Method.</b> Join each project's <code>primary_applicant</code> through entity resolution. Known city agencies map to a stable agency id (including common ZAP acronyms such as HPD and LPC). Private applicants map to a vendor stem. Cohorts need at least <b>20</b> terminal outcomes (approved, modified, or disapproved). Below that floor, nothing conditioned is shown.</li>
+  <li><b>Method.</b> Join each project's main applicant through entity resolution. Known city agencies map to a stable agency id (including common ZAP acronyms such as HPD and LPC). Private applicants map to a vendor stem. Cohorts need at least <b>20</b> terminal outcomes (approved, modified, or disapproved). Below that floor, nothing conditioned is shown.</li>
   <li><b>Rate.</b> For an applicant entity, approved count ÷ (approved + modified + disapproved). Withdrawals and administrative terminations stay out of the denominator.</li>
   <li><b>Presentation.</b> One line names the sample and both percentages. Example: “Based on 40 applications by this applicant since 2019: 75% approved, vs 68% overall.” Match confidence uses the public strong / tentative link band.</li>
   <li><b>Backtest.</b> A time split (train before 2024) compares Brier scores for the applicant-conditioned probability against the unconditioned base rate on later dispositions. If conditioning does not beat the base rate out of sample, pages label the line as <b>descriptive history</b> and do not emit a predictive occurrence claim.</li>
   <li><b>False-positive modes.</b> (1) Entity-resolution mislinks — distinct applicants collapsed onto one stem, or one firm split across stems. (2) Small-cohort noise at the n=20 floor. (3) Era effects — practice or policy shifts between the training window and a live application.</li>
 </ul>
-<p class="src">The current numbers live in <code>data/zoning_statistics.json</code> under <code>applicant_conditioning</code>. Legal deadlines still control. This is public-record history and context, not a claim that a named party will win or lose a review.</p>
+<p class="src">The site's zoning statistics file holds the current applicant comparisons. Legal deadlines still control. This is public-record history and context, not a claim that a named party will win or lose a review.</p>
 
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
