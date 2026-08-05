@@ -4,6 +4,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { computeSourceRecordHash, ingestNotices } from "../src/ingest.mjs";
 
 function withMockedFetch(rows, fn) {
@@ -39,7 +40,7 @@ function fakeDb() {
           if (/SELECT v FROM ingest_state/.test(query)) {
             return null;
           }
-          if (/INSERT OR REPLACE INTO notices/.test(query)) {
+          if (/INSERT INTO notices/.test(query)) {
             const args = this._args;
             const row = {
               request_id: args[0],
@@ -151,6 +152,12 @@ const FIXTURE = [
     due_date: "2026-07-20T00:00:00.000",
   },
 ];
+
+test("notice refresh preserves rowid for the external-content FTS index", () => {
+  const source = readFileSync(new URL("../src/ingest.mjs", import.meta.url), "utf8");
+  assert.doesNotMatch(source, /INSERT OR REPLACE INTO notices/);
+  assert.match(source, /ON CONFLICT\(request_id\) DO UPDATE SET/);
+});
 
 test("ingest with dual-write flag OFF keeps existing notices-only mirror behavior", async () => {
   const DB = fakeDb();

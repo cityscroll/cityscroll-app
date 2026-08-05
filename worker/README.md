@@ -190,7 +190,34 @@ count rather than an event count, written by the cron job, not incremented — s
 D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + ingest cursor
 (daily cron, `ingest.mjs`; Socrata stays the source of truth) and `prior_cycle_matches` (the
 `/priorcycle` precompute cache), plus private `digest_shadow_runs` summaries and
-`digest_shadow_previews` rendered email buffers. Schema detail lives in `../docs/architecture.md`.
+`digest_shadow_previews` rendered email buffers. `notices_fts` is an external-content FTS5 index
+over `notices.haystack`; triggers keep it current and migration `0016_notice_fts.sql` can rebuild
+it deterministically. Schema detail lives in `../docs/architecture.md`.
+
+### Ranked notice search and D1 export
+
+`search_notices` on `/mcp` is the first and only FTS5/BM25 route. Its section, agency, category,
+notice-type, honest amount, deadline, and date predicates remain inside the ranked SQL query and
+therefore apply before `ORDER BY bm25(...)` and `LIMIT`. A missing FTS5 table/module activates the
+existing `haystack LIKE` query; unrelated database errors still surface. Each route call emits one
+`notice-search:` JSON log with only route, method, fallback reason, duration, rows read, and result
+count—never query text, IP, or notice identifiers. Before another route adopts ranked search,
+retain a dated production sample and report p95 `duration_ms` plus the rows-read distribution.
+
+D1 cannot export a database containing virtual tables. The recovery rehearsal is:
+
+```bash
+cd worker
+npx wrangler d1 execute crol-notices --remote --file=sql/notice_fts_export_prepare.sql
+npx wrangler d1 export crol-notices --remote --output=./crol-notices.sql
+npx wrangler d1 execute crol-notices --remote --file=migrations/0016_notice_fts.sql
+# Import crol-notices.sql into the recovery database, then execute 0016 there too.
+```
+
+The prepare step deliberately removes only the FTS table and its three triggers. Replay `0016`
+immediately on the live database after export; ranked requests use the controlled legacy fallback
+while the index is absent. `node --test test/notices_search.test.mjs` rehearses ordinary-table
+export/import plus index recreation and checks equivalent ranked results.
 
 Analytics Engine (`crol_usage_events_v1`) holds the rolling 90-day interaction taxonomy described
 in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. `/stats`

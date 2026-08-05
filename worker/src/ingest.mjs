@@ -168,14 +168,30 @@ export async function ingestNotices(env) {
   const NYCHA_IDS_CAP = 200;
 
   const insert = env.DB.prepare(
-    `INSERT OR REPLACE INTO notices
+    `INSERT INTO notices
        (request_id, section, agency, type_of_notice, category, short_title,
         selection_method, special_case_reason, pin, vendor_name, description,
         other_info, printout, contract_amount, contract_amount_valid, start_date,
         due_date, due_year, event_date, event_building, event_addr1, event_city,
         event_state, event_zip, document_urls, n_documents, structured_facts,
         haystack, raw, ingested_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+     ON CONFLICT(request_id) DO UPDATE SET
+       section=excluded.section, agency=excluded.agency,
+       type_of_notice=excluded.type_of_notice, category=excluded.category,
+       short_title=excluded.short_title, selection_method=excluded.selection_method,
+       special_case_reason=excluded.special_case_reason, pin=excluded.pin,
+       vendor_name=excluded.vendor_name, description=excluded.description,
+       other_info=excluded.other_info, printout=excluded.printout,
+       contract_amount=excluded.contract_amount,
+       contract_amount_valid=excluded.contract_amount_valid,
+       start_date=excluded.start_date, due_date=excluded.due_date,
+       due_year=excluded.due_year, event_date=excluded.event_date,
+       event_building=excluded.event_building, event_addr1=excluded.event_addr1,
+       event_city=excluded.event_city, event_state=excluded.event_state,
+       event_zip=excluded.event_zip, document_urls=excluded.document_urls,
+       n_documents=excluded.n_documents, structured_facts=excluded.structured_facts,
+       haystack=excluded.haystack, raw=excluded.raw, ingested_at=excluded.ingested_at`,
   );
   const sourceRecordInsert = dualWriteEnabled(env)
     ? env.DB.prepare(SOURCE_RECORD_INSERT_SQL)
