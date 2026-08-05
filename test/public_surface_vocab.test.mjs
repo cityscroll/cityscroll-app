@@ -16,6 +16,7 @@ bad = [
     "Match (exact_concession_id)",
     "Match (fuzzy_title_date)",
     "Joined {n} notices ({method})",
+    "6 of 7 domains have linked objects",
 ]
 for value in bad:
     assert any(pattern.search(value) for _, pattern in module.JOIN_MECHANICS_PATTERNS), value
@@ -26,6 +27,9 @@ good = [
 ]
 for value in good:
     assert not any(pattern.search(value) for _, pattern in module.JOIN_MECHANICS_PATTERNS), value
+assert module.LABEL_BADGE_KEY.search("entity_intel_lead")
+assert module.CONTRASTIVE_NEGATION.search("Published records — not siloed lists")
+assert not module.CONTRASTIVE_NEGATION.search("Published records organized by topic")
 bad_render = [
     "method: escUiHtml(join.method || '—')",
     "subject: escUiHtml(spine.subject_ref || '—')",

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "version": "property_cross_domain_v1",
-  "generated_at": "2026-08-02T18:47:20.530Z",
-  "property_observation_count": 139,
+  "generated_at": "2026-08-04T23:51:05.483Z",
+  "property_observation_count": 133,
   "by_bbl": {
     "1000730008": {
       "bbl": "1000730008",
@@ -337,19 +337,11 @@
         {
           "request_id": "20241112003",
           "subject_ref": "notice:20241112003",
-          "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1"
+          "label": "NOTICE OF VOLUNTARY PUBLIC HEARING"
         }
       ],
-      "land_projects": [
-        {
-          "project_id": "2022M0258",
-          "subject_ref": "project:2022M0258",
-          "label": "Timbale Terrace",
-          "public_status": "Completed",
-          "href": "#land?project=2022M0258"
-        }
-      ],
-      "status": "matched"
+      "land_projects": [],
+      "status": "no_zap_match"
     },
     "1008190037": {
       "bbl": "1008190037",
@@ -1498,11 +1490,6 @@
       "parcel_ref": "bbl:2025180031",
       "property_notices": [
         {
-          "request_id": "20150421106",
-          "subject_ref": "notice:20150421106",
-          "label": "Excelsior II"
-        },
-        {
           "request_id": "20150609105",
           "subject_ref": "notice:20150609105",
           "label": "Excelsior II"
@@ -1510,6 +1497,11 @@
         {
           "request_id": "20150609104",
           "subject_ref": "notice:20150609104",
+          "label": "Excelsior II"
+        },
+        {
+          "request_id": "20150421106",
+          "subject_ref": "notice:20150421106",
           "label": "Excelsior II"
         }
       ],
@@ -2697,50 +2689,6 @@
       "land_projects": [],
       "status": "no_zap_match"
     },
-    "3025180031": {
-      "bbl": "3025180031",
-      "parcel_ref": "bbl:3025180031",
-      "property_notices": [
-        {
-          "request_id": "20150421106",
-          "subject_ref": "notice:20150421106",
-          "label": "Excelsior II"
-        }
-      ],
-      "land_projects": [],
-      "status": "no_zap_match"
-    },
-    "3025180036": {
-      "bbl": "3025180036",
-      "parcel_ref": "bbl:3025180036",
-      "property_notices": [
-        {
-          "request_id": "20150421106",
-          "subject_ref": "notice:20150421106",
-          "label": "Excelsior II"
-        },
-        {
-          "request_id": "20250301001",
-          "subject_ref": "notice:20250301001",
-          "label": "Parks surplus parcel hearing — Brooklyn Block 2518 Lot 36"
-        },
-        {
-          "request_id": "20150609105",
-          "subject_ref": "notice:20150609105",
-          "label": "Excelsior II"
-        }
-      ],
-      "land_projects": [
-        {
-          "project_id": "FIXZAP001",
-          "subject_ref": "project:FIXZAP001",
-          "label": "Fixture ULURP Project One",
-          "public_status": "Active",
-          "href": "#land?project=FIXZAP001"
-        }
-      ],
-      "status": "matched"
-    },
     "3027850042": {
       "bbl": "3027850042",
       "parcel_ref": "bbl:3027850042",
@@ -3595,24 +3543,6 @@
           "request_id": "20161115105",
           "subject_ref": "notice:20161115105",
           "label": "Disposition"
-        }
-      ],
-      "land_projects": [],
-      "status": "no_zap_match"
-    },
-    "3044440001": {
-      "bbl": "3044440001",
-      "parcel_ref": "bbl:3044440001",
-      "property_notices": [
-        {
-          "request_id": "20220504006",
-          "subject_ref": "notice:20220504006",
-          "label": "REQUEST FOR PROPOSALS - INDUSTRY ROAD"
-        },
-        {
-          "request_id": "20220425010",
-          "subject_ref": "notice:20220425010",
-          "label": "Request for Proposals - Industry Road"
         }
       ],
       "land_projects": [],
@@ -4720,6 +4650,19 @@
       "land_projects": [],
       "status": "no_zap_match"
     },
+    "5006840261": {
+      "bbl": "5006840261",
+      "parcel_ref": "bbl:5006840261",
+      "property_notices": [
+        {
+          "request_id": "20220518001",
+          "subject_ref": "notice:20220518001",
+          "label": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island"
+        }
+      ],
+      "land_projects": [],
+      "status": "no_zap_match"
+    },
     "5018010170": {
       "bbl": "5018010170",
       "parcel_ref": "bbl:5018010170",
@@ -4733,39 +4676,6 @@
           "request_id": "20220425010",
           "subject_ref": "notice:20220425010",
           "label": "Request for Proposals - Industry Road"
-        }
-      ],
-      "land_projects": [],
-      "status": "no_zap_match"
-    },
-    "5006840261": {
-      "bbl": "5006840261",
-      "parcel_ref": "bbl:5006840261",
-      "property_notices": [
-        {
-          "request_id": "20220518001",
-          "subject_ref": "notice:20220518001",
-          "label": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island"
-        },
-        {
-          "request_id": "full-chain-hearing",
-          "subject_ref": "notice:full-chain-hearing",
-          "label": "Disposition hearing — 35 Beebe Street"
-        },
-        {
-          "request_id": "full-chain-auction",
-          "subject_ref": "notice:full-chain-auction",
-          "label": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island"
-        },
-        {
-          "request_id": "full-chain-award",
-          "subject_ref": "notice:full-chain-award",
-          "label": "Notice of tentative winning bidders"
-        },
-        {
-          "request_id": "cross-agency-same-lot",
-          "subject_ref": "notice:cross-agency-same-lot",
-          "label": "Unrelated hearing on same tax lot different agency"
         }
       ],
       "land_projects": [],
@@ -4785,544 +4695,8 @@
       "status": "no_zap_match"
     }
   },
-  "by_owner": {
-    "MAKE IT ZESTY": {
-      "stem": "MAKE IT ZESTY",
-      "display_name": "Make it Zesty LLC",
-      "vendor_ref": "vendor:stem:MAKE%20IT%20ZESTY",
-      "property_notices": [
-        {
-          "request_id": "20241112003",
-          "subject_ref": "notice:20241112003",
-          "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1"
-        }
-      ],
-      "contracts": [
-        {
-          "request_id": "FIXZESTY1",
-          "subject_ref": "notice:FIXZESTY1",
-          "pin": "PIN-ZESTY",
-          "label": "Fixture parks catering award",
-          "when": "2024-07-05",
-          "amount": 50000,
-          "href": "#notice/FIXZESTY1"
-        },
-        {
-          "request_id": "20260723031",
-          "subject_ref": "notice:20260723031",
-          "pin": "81626W0043001",
-          "label": "Catering Services",
-          "when": "2026-07-30T00:00:00.000",
-          "amount": 250000,
-          "href": "#notice/20260723031"
-        },
-        {
-          "request_id": "20260723031",
-          "subject_ref": "notice:20260723031",
-          "pin": "81626W0043001",
-          "label": "Catering Services",
-          "when": "2026-07-30T00:00:00.000",
-          "amount": 250000,
-          "href": "#notice/20260723031"
-        }
-      ],
-      "status": "matched",
-      "gap_note": null
-    }
-  },
+  "by_owner": {},
   "links": [
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20150421106",
-      "to": "project:FIXZAP001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3025180036",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-        "input_value": "3025180036",
-        "via_parcel": "bbl:3025180036",
-        "property_request_id": "20150421106"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:FIXZAP001",
-      "to": "bbl:3025180036",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-        "input_value": "3025180036"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20241112003",
-      "to": "project:2022M0258",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "1006440001",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:2022M0258:1006440001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/2022M0258",
-        "input_value": "1006440001",
-        "via_parcel": "bbl:1006440001",
-        "property_request_id": "20241112003"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:2022M0258",
-      "to": "bbl:1006440001",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:2022M0258:1006440001",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/2022M0258",
-        "input_value": "1006440001"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20250301001",
-      "to": "project:FIXZAP001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3025180036",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-        "input_value": "3025180036",
-        "via_parcel": "bbl:3025180036",
-        "property_request_id": "20250301001"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:FIXZAP001",
-      "to": "bbl:3025180036",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-        "input_value": "3025180036"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "parcel_links_project",
-      "from": "notice:20150609105",
-      "to": "project:FIXZAP001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3025180036",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-        "input_value": "3025180036",
-        "via_parcel": "bbl:3025180036",
-        "property_request_id": "20150609105"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "project:FIXZAP001",
-      "to": "bbl:3025180036",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "zap-bbl",
-        "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-        "source_fields": [
-          "bbl",
-          "project_id"
-        ],
-        "basis": "exact_bbl",
-        "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-        "input_value": "3025180036"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "owner_has_award",
-      "from": "vendor:stem:MAKE%20IT%20ZESTY",
-      "to": "notice:FIXZESTY1",
-      "domain": "money",
-      "confidence": "tentative",
-      "method": "vendor_stem_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "ocp-recent-contract-awards",
-        "source_record_id": "ocp-recent-contract-awards:FIXZESTY1",
-        "source_fields": [
-          "vendor_name"
-        ],
-        "basis": "owner_vendor_stem",
-        "input_value": "Make it Zesty LLC",
-        "via_property_notice": "20241112003",
-        "owner_extract_method": "disposition_owner_label_v1"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "owner_has_award",
-      "from": "vendor:stem:MAKE%20IT%20ZESTY",
-      "to": "notice:20260723031",
-      "domain": "money",
-      "confidence": "tentative",
-      "method": "vendor_stem_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "ocp-recent-contract-awards",
-        "source_record_id": "ocp-recent-contract-awards:20260723031",
-        "source_fields": [
-          "vendor_name"
-        ],
-        "basis": "owner_vendor_stem",
-        "input_value": "Make it Zesty LLC",
-        "via_property_notice": "20241112003",
-        "owner_extract_method": "disposition_owner_label_v1"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "owner_has_award",
-      "from": "vendor:stem:MAKE%20IT%20ZESTY",
-      "to": "notice:20260723031",
-      "domain": "money",
-      "confidence": "tentative",
-      "method": "vendor_stem_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "ocp-recent-contract-awards",
-        "source_record_id": "ocp-recent-contract-awards:20260723031",
-        "source_fields": [
-          "vendor_name"
-        ],
-        "basis": "owner_vendor_stem",
-        "input_value": "Make it Zesty LLC",
-        "via_property_notice": "20241112003",
-        "owner_extract_method": "disposition_owner_label_v1"
-      },
-      "layer": "property_cross_domain_v1"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20150421106",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150421106",
-      "to": "bbl:2025180031",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421106",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "2025180031"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150421106",
-      "to": "bbl:3025180031",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421106",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "3025180031"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20150421106",
-      "to": "bbl:3025180036",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421106",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "3025180036"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20220504006",
-      "to": "agency:id:economic-development-corporation",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20220504006",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2022-05-04T00:00:00.000",
-        "input_value": "Economic Development Corporation"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20220504006",
-      "to": "bbl:3044440001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20220504006",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2022-05-04T00:00:00.000",
-        "input_value": "3044440001"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20220504006",
-      "to": "bbl:5018010170",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20220504006",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2022-05-04T00:00:00.000",
-        "input_value": "5018010170"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20241112003",
-      "to": "agency:id:small-business-services",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20241112003",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2024-11-26T10:00:00.000",
-        "input_value": "Small Business Services"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "named_owner",
-      "from": "notice:20241112003",
-      "to": "vendor:stem:MAKE%20IT%20ZESTY",
-      "domain": "property",
-      "confidence": "tentative",
-      "method": "disposition_owner_label_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20241112003",
-        "source_fields": [
-          "additional_description_1",
-          "short_title"
-        ],
-        "basis": "winning_bidder",
-        "observed_at": "2024-11-26T10:00:00.000",
-        "input_value": "Make it Zesty LLC",
-        "evidence": "Tentative winning bidder is Make it Zesty LLC."
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20241112003",
-      "to": "bbl:1006440001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20241112003",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2024-11-26T10:00:00.000",
-        "input_value": "1006440001"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:20250301001",
-      "to": "agency:id:parks-and-recreation",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20250301001",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2025-03-01",
-        "input_value": "Department of Parks and Recreation"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20250301001",
-      "to": "bbl:3025180036",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20250301001",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2025-03-01",
-        "input_value": "3025180036"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
     {
       "type": "published_by_agency",
       "from": "notice:20251209013",
@@ -5361,6 +4735,47 @@
         "basis": "exact_bbl",
         "observed_at": "2025-12-18T13:00:00.000",
         "input_value": "2027810500"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20241112003",
+      "to": "agency:id:small-business-services",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20241112003",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2024-11-26T10:00:00.000",
+        "input_value": "Small Business Services"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20241112003",
+      "to": "bbl:1006440001",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20241112003",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2024-11-26T10:00:00.000",
+        "input_value": "1006440001"
       },
       "layer": "cross_domain_object_link_v2"
     },
@@ -5407,6 +4822,47 @@
     },
     {
       "type": "published_by_agency",
+      "from": "notice:20220504006",
+      "to": "agency:id:economic-development-corporation",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20220504006",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2022-05-09T00:00:00.000",
+        "input_value": "Economic Development Corporation"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20220504006",
+      "to": "bbl:5018010170",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20220504006",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2022-05-09T00:00:00.000",
+        "input_value": "5018010170"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
       "from": "notice:20220425010",
       "to": "agency:id:economic-development-corporation",
       "domain": "property",
@@ -5420,29 +4876,8 @@
           "agency_name"
         ],
         "basis": "property_agency_name",
-        "observed_at": "2022-04-25T00:00:00.000",
+        "observed_at": "2022-05-02T00:00:00.000",
         "input_value": "Economic Development Corporation"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:20220425010",
-      "to": "bbl:3044440001",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20220425010",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2022-04-25T00:00:00.000",
-        "input_value": "3044440001"
       },
       "layer": "cross_domain_object_link_v2"
     },
@@ -5462,7 +4897,7 @@
           "tax_lots"
         ],
         "basis": "exact_bbl",
-        "observed_at": "2022-04-25T00:00:00.000",
+        "observed_at": "2022-05-02T00:00:00.000",
         "input_value": "5018010170"
       },
       "layer": "cross_domain_object_link_v2"
@@ -13370,27 +12805,6 @@
       "layer": "cross_domain_object_link_v2"
     },
     {
-      "type": "sits_on_parcel",
-      "from": "notice:20150609105",
-      "to": "bbl:3025180036",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150609105",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2015-07-15T01:00:00.000",
-        "input_value": "3025180036"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
       "type": "published_by_agency",
       "from": "notice:20150609101",
       "to": "agency:id:housing-preservation-and-development",
@@ -13593,6 +13007,47 @@
         "basis": "exact_bbl",
         "observed_at": "2015-06-10T10:00:00.000",
         "input_value": "2030140045"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "published_by_agency",
+      "from": "notice:20150421106",
+      "to": "agency:id:housing-preservation-and-development",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421106",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "layer": "cross_domain_object_link_v2"
+    },
+    {
+      "type": "sits_on_parcel",
+      "from": "notice:20150421106",
+      "to": "bbl:2025180031",
+      "domain": "property",
+      "confidence": "strong",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421106",
+        "source_fields": [
+          "property_location.bbls",
+          "tax_lots"
+        ],
+        "basis": "exact_bbl",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "2025180031"
       },
       "layer": "cross_domain_object_link_v2"
     },
@@ -16847,338 +16302,9 @@
         "input_value": "2027000009"
       },
       "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:full-chain-hearing",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-hearing",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2021-02-01T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:full-chain-hearing",
-      "to": "bbl:5006840261",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-hearing",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2021-02-01T10:00:00.000",
-        "input_value": "5006840261"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:full-chain-auction",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-auction",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2021-04-01T16:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:full-chain-auction",
-      "to": "bbl:5006840261",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-auction",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2021-04-01T16:00:00.000",
-        "input_value": "5006840261"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:full-chain-award",
-      "to": "agency:id:housing-preservation-and-development",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-award",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2021-05-20T00:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:full-chain-award",
-      "to": "bbl:5006840261",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-award",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2021-05-20T00:00:00.000",
-        "input_value": "5006840261"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:singleton-unlocated",
-      "to": "agency:id:citywide-administrative-services",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:singleton-unlocated",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2022-07-01T00:00:00.000",
-        "input_value": "Citywide Administrative Services"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "published_by_agency",
-      "from": "notice:cross-agency-same-lot",
-      "to": "agency:id:small-business-services",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:cross-agency-same-lot",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2018-02-01T10:00:00.000",
-        "input_value": "Small Business Services"
-      },
-      "layer": "cross_domain_object_link_v2"
-    },
-    {
-      "type": "sits_on_parcel",
-      "from": "notice:cross-agency-same-lot",
-      "to": "bbl:5006840261",
-      "domain": "property",
-      "confidence": "strong",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:cross-agency-same-lot",
-        "source_fields": [
-          "property_location.bbls",
-          "tax_lots"
-        ],
-        "basis": "exact_bbl",
-        "observed_at": "2018-02-01T10:00:00.000",
-        "input_value": "5006840261"
-      },
-      "layer": "cross_domain_object_link_v2"
     }
   ],
   "agency_objects": [
-    {
-      "subject_ref": "notice:20150421106",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Excelsior II",
-      "when": "2015-06-10T10:00:00.000",
-      "request_id": "20150421106",
-      "bbls": [
-        "2025180031",
-        "3025180031",
-        "3025180036"
-      ],
-      "primary_bbl": "2025180031",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/20150421106",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20150421106",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2015-06-10T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20220504006",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
-      "when": "2022-05-04T00:00:00.000",
-      "request_id": "20220504006",
-      "bbls": [
-        "3044440001",
-        "5018010170"
-      ],
-      "primary_bbl": "3044440001",
-      "root_ref": "agency:id:economic-development-corporation",
-      "root_kind": "agency",
-      "href": "#notice/20220504006",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20220504006",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2022-05-04T00:00:00.000",
-        "input_value": "Economic Development Corporation"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20241112003",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1",
-      "when": "2024-11-26T10:00:00.000",
-      "request_id": "20241112003",
-      "bbls": [
-        "1006440001"
-      ],
-      "primary_bbl": "1006440001",
-      "root_ref": "agency:id:small-business-services",
-      "root_kind": "agency",
-      "href": "#notice/20241112003",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20241112003",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2024-11-26T10:00:00.000",
-        "input_value": "Small Business Services"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:20241112003",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1",
-      "when": "2024-11-26T10:00:00.000",
-      "request_id": "20241112003",
-      "bbls": [
-        "1006440001"
-      ],
-      "primary_bbl": "1006440001",
-      "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
-      "root_kind": "vendor",
-      "href": "#notice/20241112003",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20241112003",
-        "source_fields": [
-          "additional_description_1",
-          "short_title"
-        ],
-        "basis": "winning_bidder",
-        "observed_at": "2024-11-26T10:00:00.000",
-        "input_value": "Make it Zesty LLC",
-        "evidence": "Tentative winning bidder is Make it Zesty LLC."
-      },
-      "link_type": "named_owner",
-      "confidence": "tentative",
-      "method": "disposition_owner_label_v1"
-    },
-    {
-      "subject_ref": "notice:20250301001",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Parks surplus parcel hearing — Brooklyn Block 2518 Lot 36",
-      "when": "2025-03-01",
-      "request_id": "20250301001",
-      "bbls": [
-        "3025180036"
-      ],
-      "primary_bbl": "3025180036",
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "href": "#notice/20250301001",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:20250301001",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2025-03-01",
-        "input_value": "Department of Parks and Recreation"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
     {
       "subject_ref": "notice:20251209013",
       "domain": "property",
@@ -17202,6 +16328,34 @@
         "basis": "property_agency_name",
         "observed_at": "2025-12-18T13:00:00.000",
         "input_value": "Economic Development Corporation"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20241112003",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "NOTICE OF VOLUNTARY PUBLIC HEARING",
+      "when": "2024-11-26T10:00:00.000",
+      "request_id": "20241112003",
+      "bbls": [
+        "1006440001"
+      ],
+      "primary_bbl": "1006440001",
+      "root_ref": "agency:id:small-business-services",
+      "root_kind": "agency",
+      "href": "#notice/20241112003",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20241112003",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2024-11-26T10:00:00.000",
+        "input_value": "Small Business Services"
       },
       "link_type": "published_by_agency",
       "confidence": "strong",
@@ -17236,17 +16390,44 @@
       "method": "agency_canonical_v1"
     },
     {
+      "subject_ref": "notice:20220504006",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
+      "when": "2022-05-09T00:00:00.000",
+      "request_id": "20220504006",
+      "bbls": [
+        "5018010170"
+      ],
+      "primary_bbl": "5018010170",
+      "root_ref": "agency:id:economic-development-corporation",
+      "root_kind": "agency",
+      "href": "#notice/20220504006",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20220504006",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2022-05-09T00:00:00.000",
+        "input_value": "Economic Development Corporation"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
       "subject_ref": "notice:20220425010",
       "domain": "property",
       "object_kind": "disposition",
       "label": "Request for Proposals - Industry Road",
-      "when": "2022-04-25T00:00:00.000",
+      "when": "2022-05-02T00:00:00.000",
       "request_id": "20220425010",
       "bbls": [
-        "3044440001",
         "5018010170"
       ],
-      "primary_bbl": "3044440001",
+      "primary_bbl": "5018010170",
       "root_ref": "agency:id:economic-development-corporation",
       "root_kind": "agency",
       "href": "#notice/20220425010",
@@ -17257,7 +16438,7 @@
           "agency_name"
         ],
         "basis": "property_agency_name",
-        "observed_at": "2022-04-25T00:00:00.000",
+        "observed_at": "2022-05-02T00:00:00.000",
         "input_value": "Economic Development Corporation"
       },
       "link_type": "published_by_agency",
@@ -19652,8 +18833,7 @@
       "when": "2015-07-15T01:00:00.000",
       "request_id": "20150609105",
       "bbls": [
-        "2025180031",
-        "3025180036"
+        "2025180031"
       ],
       "primary_bbl": "2025180031",
       "root_ref": "agency:id:housing-preservation-and-development",
@@ -19776,6 +18956,34 @@
       "provenance": {
         "source_system": "city_record",
         "source_record_id": "city_record:20150421105",
+        "source_fields": [
+          "agency_name"
+        ],
+        "basis": "property_agency_name",
+        "observed_at": "2015-06-10T10:00:00.000",
+        "input_value": "Housing Preservation and Development"
+      },
+      "link_type": "published_by_agency",
+      "confidence": "strong",
+      "method": "agency_canonical_v1"
+    },
+    {
+      "subject_ref": "notice:20150421106",
+      "domain": "property",
+      "object_kind": "disposition",
+      "label": "Excelsior II",
+      "when": "2015-06-10T10:00:00.000",
+      "request_id": "20150421106",
+      "bbls": [
+        "2025180031"
+      ],
+      "primary_bbl": "2025180031",
+      "root_ref": "agency:id:housing-preservation-and-development",
+      "root_kind": "agency",
+      "href": "#notice/20150421106",
+      "provenance": {
+        "source_system": "city_record",
+        "source_record_id": "city_record:20150421106",
         "source_fields": [
           "agency_name"
         ],
@@ -21113,173 +20321,35 @@
       "link_type": "published_by_agency",
       "confidence": "strong",
       "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:full-chain-hearing",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Disposition hearing — 35 Beebe Street",
-      "when": "2021-02-01T10:00:00.000",
-      "request_id": "full-chain-hearing",
-      "bbls": [
-        "5006840261"
-      ],
-      "primary_bbl": "5006840261",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/full-chain-hearing",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-hearing",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2021-02-01T10:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:full-chain-auction",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island",
-      "when": "2021-04-01T16:00:00.000",
-      "request_id": "full-chain-auction",
-      "bbls": [
-        "5006840261"
-      ],
-      "primary_bbl": "5006840261",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/full-chain-auction",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-auction",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2021-04-01T16:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:full-chain-award",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Notice of tentative winning bidders",
-      "when": "2021-05-20T00:00:00.000",
-      "request_id": "full-chain-award",
-      "bbls": [
-        "5006840261"
-      ],
-      "primary_bbl": "5006840261",
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "href": "#notice/full-chain-award",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:full-chain-award",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2021-05-20T00:00:00.000",
-        "input_value": "Housing Preservation and Development"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:singleton-unlocated",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "AUTO AUCTION",
-      "when": "2022-07-01T00:00:00.000",
-      "request_id": "singleton-unlocated",
-      "bbls": [],
-      "primary_bbl": null,
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "href": "#notice/singleton-unlocated",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:singleton-unlocated",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2022-07-01T00:00:00.000",
-        "input_value": "Citywide Administrative Services"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
-    },
-    {
-      "subject_ref": "notice:cross-agency-same-lot",
-      "domain": "property",
-      "object_kind": "disposition",
-      "label": "Unrelated hearing on same tax lot different agency",
-      "when": "2018-02-01T10:00:00.000",
-      "request_id": "cross-agency-same-lot",
-      "bbls": [
-        "5006840261"
-      ],
-      "primary_bbl": "5006840261",
-      "root_ref": "agency:id:small-business-services",
-      "root_kind": "agency",
-      "href": "#notice/cross-agency-same-lot",
-      "provenance": {
-        "source_system": "city_record",
-        "source_record_id": "city_record:cross-agency-same-lot",
-        "source_fields": [
-          "agency_name"
-        ],
-        "basis": "property_agency_name",
-        "observed_at": "2018-02-01T10:00:00.000",
-        "input_value": "Small Business Services"
-      },
-      "link_type": "published_by_agency",
-      "confidence": "strong",
-      "method": "agency_canonical_v1"
     }
   ],
   "metrics": {
-    "property_bbl_zap_join_rate": 0.006191950464396285,
-    "bbl_count": 323,
-    "matched_bbl_count": 2,
-    "bbl_link_pair_count": 4,
-    "property_owner_contract_join_rate": 1,
-    "owner_count": 1,
-    "owners_with_contracts": 1,
-    "owner_contract_link_count": 3,
-    "property_agency_link_count": 139,
-    "property_owner_link_count": 1,
-    "property_parcel_link_count": 436,
-    "property_rows_with_bbl": 138,
-    "fraction_observations_with_bbl": 0.9928
+    "property_bbl_zap_join_rate": 0,
+    "bbl_count": 320,
+    "matched_bbl_count": 0,
+    "bbl_link_pair_count": 0,
+    "property_owner_contract_join_rate": 0,
+    "owner_count": 0,
+    "owners_with_contracts": 0,
+    "owner_contract_link_count": 0,
+    "property_agency_link_count": 133,
+    "property_owner_link_count": 0,
+    "property_parcel_link_count": 426,
+    "property_rows_with_bbl": 133,
+    "fraction_observations_with_bbl": 1
   },
   "coverage": {
-    "by_bbl_count": 323,
-    "property_observation_count": 139,
-    "property_rows_with_bbl": 138,
-    "fraction_observations_with_bbl": 0.9928,
-    "zap_matched_bbl_count": 2,
-    "zap_matched_fraction": 0.0062,
-    "agency_link_count": 139,
-    "owner_link_count": 1,
-    "parcel_link_count": 436,
-    "owner_count": 1,
-    "owners_with_contracts": 1
+    "by_bbl_count": 320,
+    "property_observation_count": 133,
+    "property_rows_with_bbl": 133,
+    "fraction_observations_with_bbl": 1,
+    "zap_matched_bbl_count": 0,
+    "zap_matched_fraction": 0,
+    "agency_link_count": 133,
+    "owner_link_count": 0,
+    "parcel_link_count": 426,
+    "owner_count": 0,
+    "owners_with_contracts": 0
   },
   "provenance": {
     "sources": [
@@ -21295,17 +20365,17 @@
       "agency_canonical_v1"
     ],
     "coverage": {
-      "by_bbl_count": 323,
-      "property_observation_count": 139,
-      "property_rows_with_bbl": 138,
-      "fraction_observations_with_bbl": 0.9928,
-      "zap_matched_bbl_count": 2,
-      "zap_matched_fraction": 0.0062,
-      "agency_link_count": 139,
-      "owner_link_count": 1,
-      "parcel_link_count": 436,
-      "owner_count": 1,
-      "owners_with_contracts": 1
+      "by_bbl_count": 320,
+      "property_observation_count": 133,
+      "property_rows_with_bbl": 133,
+      "fraction_observations_with_bbl": 1,
+      "zap_matched_bbl_count": 0,
+      "zap_matched_fraction": 0,
+      "agency_link_count": 133,
+      "owner_link_count": 0,
+      "parcel_link_count": 426,
+      "owner_count": 0,
+      "owners_with_contracts": 0
     },
     "note": "BBL→ZAP is exact tax-lot only; ZAP edges stay sparse until the full zap-bbl lookup is densified. Owner→contract is vendorStem only when a labeled winning bidder exists. Agency + parcel edges densify from every disposition row with a BBL. No fuzzy address geocode invents land links.",
     "property_feed": {
@@ -21500,267 +20570,88 @@
         "money_join_is_stem_only": true
       }
     },
-    "1006440001": {
+    "1000940025": {
       "ok": true,
       "version": "property_cross_domain_v1",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
-      "bbl": "1006440001",
-      "parcel_ref": "bbl:1006440001",
+      "bbl": "1000940025",
+      "parcel_ref": "bbl:1000940025",
       "property": {
         "status": "matched",
         "notices": [
           {
-            "request_id": "20241112003",
-            "subject_ref": "notice:20241112003",
-            "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1",
-            "when": "2024-11-26T10:00:00.000",
-            "agency_name": "Small Business Services",
-            "disposition_stage": "hearing",
-            "href": "#notice/20241112003"
-          }
-        ],
-        "count": 1
-      },
-      "land": {
-        "status": "matched",
-        "gap_class": null,
-        "note": null,
-        "projects": [
+            "request_id": "20180413111",
+            "subject_ref": "notice:20180413111",
+            "label": "Disposition",
+            "when": "2018-05-23T10:00:00.000",
+            "agency_name": "Housing Preservation and Development",
+            "disposition_stage": "award_or_conveyance",
+            "href": "#notice/20180413111"
+          },
           {
-            "project_id": "2022M0258",
-            "subject_ref": "project:2022M0258",
-            "label": "Timbale Terrace",
-            "public_status": "Completed",
-            "href": "#land?project=2022M0258"
-          }
-        ],
-        "count": 1
-      },
-      "owners": {
-        "status": "matched",
-        "note": null,
-        "items": [
-          {
-            "name": "Make it Zesty LLC",
-            "vendor_ref": "vendor:stem:MAKE%20IT%20ZESTY",
-            "stem": "MAKE IT ZESTY",
-            "basis": "winning_bidder",
-            "contracts": [
-              {
-                "request_id": "FIXZESTY1",
-                "subject_ref": "notice:FIXZESTY1",
-                "pin": "PIN-ZESTY",
-                "label": "Fixture parks catering award",
-                "when": "2024-07-05",
-                "amount": 50000,
-                "href": "#notice/FIXZESTY1"
-              },
-              {
-                "request_id": "20260723031",
-                "subject_ref": "notice:20260723031",
-                "pin": "81626W0043001",
-                "label": "Catering Services",
-                "when": "2026-07-30T00:00:00.000",
-                "amount": 250000,
-                "href": "#notice/20260723031"
-              },
-              {
-                "request_id": "20260723031",
-                "subject_ref": "notice:20260723031",
-                "pin": "81626W0043001",
-                "label": "Catering Services",
-                "when": "2026-07-30T00:00:00.000",
-                "amount": 250000,
-                "href": "#notice/20260723031"
-              }
-            ]
-          }
-        ],
-        "count": 1
-      },
-      "agencies": [
-        {
-          "ref": "agency:id:small-business-services",
-          "name": "Small Business Services"
-        }
-      ],
-      "links": [
-        {
-          "type": "parcel_links_project",
-          "from": "notice:20241112003",
-          "to": "project:2022M0258",
-          "domain": "property",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "bbl": "1006440001",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:2022M0258:1006440001",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/2022M0258",
-            "input_value": "1006440001",
-            "via_parcel": "bbl:1006440001",
-            "property_request_id": "20241112003"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "sits_on_parcel",
-          "from": "project:2022M0258",
-          "to": "bbl:1006440001",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:2022M0258:1006440001",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/2022M0258",
-            "input_value": "1006440001"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "owner_has_award",
-          "from": "vendor:stem:MAKE%20IT%20ZESTY",
-          "to": "notice:FIXZESTY1",
-          "domain": "money",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:FIXZESTY1",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "owner_vendor_stem",
-            "input_value": "Make it Zesty LLC",
-            "via_property_notice": "20241112003",
-            "owner_extract_method": "disposition_owner_label_v1"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "owner_has_award",
-          "from": "vendor:stem:MAKE%20IT%20ZESTY",
-          "to": "notice:20260723031",
-          "domain": "money",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "owner_vendor_stem",
-            "input_value": "Make it Zesty LLC",
-            "via_property_notice": "20241112003",
-            "owner_extract_method": "disposition_owner_label_v1"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "owner_has_award",
-          "from": "vendor:stem:MAKE%20IT%20ZESTY",
-          "to": "notice:20260723031",
-          "domain": "money",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "owner_vendor_stem",
-            "input_value": "Make it Zesty LLC",
-            "via_property_notice": "20241112003",
-            "owner_extract_method": "disposition_owner_label_v1"
-          },
-          "layer": "property_cross_domain_v1"
-        }
-      ],
-      "metrics": {
-        "property_notice_count": 1,
-        "land_project_count": 1,
-        "owner_count": 1,
-        "owner_contract_count": 3
-      },
-      "honesty": {
-        "zap_bbl_required": true,
-        "owner_requires_labeled_language": true,
-        "money_join_is_stem_only": true
-      }
-    },
-    "3025180036": {
-      "ok": true,
-      "version": "property_cross_domain_v1",
-      "method": "exact_bbl_v1",
-      "method_version": "1.0.0",
-      "bbl": "3025180036",
-      "parcel_ref": "bbl:3025180036",
-      "property": {
-        "status": "matched",
-        "notices": [
-          {
-            "request_id": "20150421106",
-            "subject_ref": "notice:20150421106",
-            "label": "Excelsior II",
-            "when": "2015-06-10T10:00:00.000",
+            "request_id": "20170512106",
+            "subject_ref": "notice:20170512106",
+            "label": "Disposition",
+            "when": "2017-06-21T10:00:00.000",
             "agency_name": "Housing Preservation and Development",
             "disposition_stage": "hearing",
-            "href": "#notice/20150421106"
+            "href": "#notice/20170512106"
           },
           {
-            "request_id": "20250301001",
-            "subject_ref": "notice:20250301001",
-            "label": "Parks surplus parcel hearing — Brooklyn Block 2518 Lot 36",
-            "when": "2025-03-01",
-            "agency_name": "Department of Parks and Recreation",
-            "disposition_stage": "hearing",
-            "href": "#notice/20250301001"
-          },
-          {
-            "request_id": "20150609105",
-            "subject_ref": "notice:20150609105",
-            "label": "Excelsior II",
-            "when": "2015-07-15T01:00:00.000",
+            "request_id": "20161101105",
+            "subject_ref": "notice:20161101105",
+            "label": "Disposition",
+            "when": "2016-12-07T01:00:00.000",
             "agency_name": "Housing Preservation and Development",
             "disposition_stage": "hearing",
-            "href": "#notice/20150609105"
+            "href": "#notice/20161101105"
+          },
+          {
+            "request_id": "20160419102",
+            "subject_ref": "notice:20160419102",
+            "label": "East Tremont-Lebanon",
+            "when": "2016-05-25T10:00:00.000",
+            "agency_name": "Housing Preservation and Development",
+            "disposition_stage": "hearing",
+            "href": "#notice/20160419102"
+          },
+          {
+            "request_id": "20150326109",
+            "subject_ref": "notice:20150326109",
+            "label": "Clinton Site 7",
+            "when": "2015-04-29T01:00:00.000",
+            "agency_name": "Housing Preservation and Development",
+            "disposition_stage": "hearing",
+            "href": "#notice/20150326109"
+          },
+          {
+            "request_id": "20150320104",
+            "subject_ref": "notice:20150320104",
+            "label": "Clinton Site 7 - West 153 Street",
+            "when": "2015-04-29T01:00:00.000",
+            "agency_name": "Housing Preservation and Development",
+            "disposition_stage": "hearing",
+            "href": "#notice/20150320104"
+          },
+          {
+            "request_id": "20140514103",
+            "subject_ref": "notice:20140514103",
+            "label": "Property Dispositions",
+            "when": "2014-06-25T10:00:00.000",
+            "agency_name": "Housing Preservation and Development",
+            "disposition_stage": "hearing",
+            "href": "#notice/20140514103"
           }
         ],
-        "count": 3
+        "count": 7
       },
       "land": {
-        "status": "matched",
-        "gap_class": null,
-        "note": null,
-        "projects": [
-          {
-            "project_id": "FIXZAP001",
-            "subject_ref": "project:FIXZAP001",
-            "label": "Fixture ULURP Project One",
-            "public_status": "Active",
-            "href": "#land?project=FIXZAP001"
-          }
-        ],
-        "count": 1
+        "status": "empty",
+        "gap_class": "empty_in_corpus",
+        "note": "No ZAP project in the linked corpus shares this exact BBL — not proof no land-use application exists citywide.",
+        "projects": [],
+        "count": 0
       },
       "owners": {
         "status": "empty",
@@ -21772,152 +20663,12 @@
         {
           "ref": "agency:id:housing-preservation-and-development",
           "name": "Housing Preservation and Development"
-        },
-        {
-          "ref": "agency:id:parks-and-recreation",
-          "name": "Parks and Recreation"
         }
       ],
-      "links": [
-        {
-          "type": "parcel_links_project",
-          "from": "notice:20150421106",
-          "to": "project:FIXZAP001",
-          "domain": "property",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "bbl": "3025180036",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-            "input_value": "3025180036",
-            "via_parcel": "bbl:3025180036",
-            "property_request_id": "20150421106"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "sits_on_parcel",
-          "from": "project:FIXZAP001",
-          "to": "bbl:3025180036",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-            "input_value": "3025180036"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "parcel_links_project",
-          "from": "notice:20250301001",
-          "to": "project:FIXZAP001",
-          "domain": "property",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "bbl": "3025180036",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-            "input_value": "3025180036",
-            "via_parcel": "bbl:3025180036",
-            "property_request_id": "20250301001"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "sits_on_parcel",
-          "from": "project:FIXZAP001",
-          "to": "bbl:3025180036",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-            "input_value": "3025180036"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "parcel_links_project",
-          "from": "notice:20150609105",
-          "to": "project:FIXZAP001",
-          "domain": "property",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "bbl": "3025180036",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-            "input_value": "3025180036",
-            "via_parcel": "bbl:3025180036",
-            "property_request_id": "20150609105"
-          },
-          "layer": "property_cross_domain_v1"
-        },
-        {
-          "type": "sits_on_parcel",
-          "from": "project:FIXZAP001",
-          "to": "bbl:3025180036",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "exact_bbl_v1",
-          "method_version": "1.0.0",
-          "provenance": {
-            "source_system": "zap-bbl",
-            "source_record_id": "zap-bbl:FIXZAP001:3025180036",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "exact_bbl",
-            "source_url": "https://zap.planning.nyc.gov/projects/FIXZAP001",
-            "input_value": "3025180036"
-          },
-          "layer": "property_cross_domain_v1"
-        }
-      ],
+      "links": [],
       "metrics": {
-        "property_notice_count": 3,
-        "land_project_count": 1,
+        "property_notice_count": 7,
+        "land_project_count": 0,
         "owner_count": 0,
         "owner_contract_count": 0
       },
@@ -21927,36 +20678,27 @@
         "money_join_is_stem_only": true
       }
     },
-    "3044440001": {
+    "1000950101": {
       "ok": true,
       "version": "property_cross_domain_v1",
       "method": "exact_bbl_v1",
       "method_version": "1.0.0",
-      "bbl": "3044440001",
-      "parcel_ref": "bbl:3044440001",
+      "bbl": "1000950101",
+      "parcel_ref": "bbl:1000950101",
       "property": {
         "status": "matched",
         "notices": [
           {
-            "request_id": "20220504006",
-            "subject_ref": "notice:20220504006",
-            "label": "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
-            "when": "2022-05-04T00:00:00.000",
+            "request_id": "20211118008",
+            "subject_ref": "notice:20211118008",
+            "label": "DECEMBER 28, 2021 PUBLIC HEARING",
+            "when": "2021-12-28T10:00:00.000",
             "agency_name": "Economic Development Corporation",
-            "disposition_stage": "auction_or_rfp",
-            "href": "#notice/20220504006"
-          },
-          {
-            "request_id": "20220425010",
-            "subject_ref": "notice:20220425010",
-            "label": "Request for Proposals - Industry Road",
-            "when": "2022-04-25T00:00:00.000",
-            "agency_name": "Economic Development Corporation",
-            "disposition_stage": "auction_or_rfp",
-            "href": "#notice/20220425010"
+            "disposition_stage": "hearing",
+            "href": "#notice/20211118008"
           }
         ],
-        "count": 2
+        "count": 1
       },
       "land": {
         "status": "empty",
@@ -21979,7 +20721,61 @@
       ],
       "links": [],
       "metrics": {
-        "property_notice_count": 2,
+        "property_notice_count": 1,
+        "land_project_count": 0,
+        "owner_count": 0,
+        "owner_contract_count": 0
+      },
+      "honesty": {
+        "zap_bbl_required": true,
+        "owner_requires_labeled_language": true,
+        "money_join_is_stem_only": true
+      }
+    },
+    "1006440001": {
+      "ok": true,
+      "version": "property_cross_domain_v1",
+      "method": "exact_bbl_v1",
+      "method_version": "1.0.0",
+      "bbl": "1006440001",
+      "parcel_ref": "bbl:1006440001",
+      "property": {
+        "status": "matched",
+        "notices": [
+          {
+            "request_id": "20241112003",
+            "subject_ref": "notice:20241112003",
+            "label": "NOTICE OF VOLUNTARY PUBLIC HEARING",
+            "when": "2024-11-26T10:00:00.000",
+            "agency_name": "Small Business Services",
+            "disposition_stage": "hearing",
+            "href": "#notice/20241112003"
+          }
+        ],
+        "count": 1
+      },
+      "land": {
+        "status": "empty",
+        "gap_class": "empty_in_corpus",
+        "note": "No ZAP project in the linked corpus shares this exact BBL — not proof no land-use application exists citywide.",
+        "projects": [],
+        "count": 0
+      },
+      "owners": {
+        "status": "empty",
+        "note": "No labeled winning-bidder / sold-to owner in these disposition notices.",
+        "items": [],
+        "count": 0
+      },
+      "agencies": [
+        {
+          "ref": "agency:id:small-business-services",
+          "name": "Small Business Services"
+        }
+      ],
+      "links": [],
+      "metrics": {
+        "property_notice_count": 1,
         "land_project_count": 0,
         "owner_count": 0,
         "owner_contract_count": 0
@@ -22008,45 +20804,9 @@
             "agency_name": "City University",
             "disposition_stage": "auction_or_rfp",
             "href": "#notice/20220518001"
-          },
-          {
-            "request_id": "full-chain-hearing",
-            "subject_ref": "notice:full-chain-hearing",
-            "label": "Disposition hearing — 35 Beebe Street",
-            "when": "2021-02-01T10:00:00.000",
-            "agency_name": "Housing Preservation and Development",
-            "disposition_stage": null,
-            "href": "#notice/full-chain-hearing"
-          },
-          {
-            "request_id": "full-chain-auction",
-            "subject_ref": "notice:full-chain-auction",
-            "label": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island",
-            "when": "2021-04-01T16:00:00.000",
-            "agency_name": "Housing Preservation and Development",
-            "disposition_stage": null,
-            "href": "#notice/full-chain-auction"
-          },
-          {
-            "request_id": "full-chain-award",
-            "subject_ref": "notice:full-chain-award",
-            "label": "Notice of tentative winning bidders",
-            "when": "2021-05-20T00:00:00.000",
-            "agency_name": "Housing Preservation and Development",
-            "disposition_stage": null,
-            "href": "#notice/full-chain-award"
-          },
-          {
-            "request_id": "cross-agency-same-lot",
-            "subject_ref": "notice:cross-agency-same-lot",
-            "label": "Unrelated hearing on same tax lot different agency",
-            "when": "2018-02-01T10:00:00.000",
-            "agency_name": "Small Business Services",
-            "disposition_stage": null,
-            "href": "#notice/cross-agency-same-lot"
           }
         ],
-        "count": 5
+        "count": 1
       },
       "land": {
         "status": "empty",
@@ -22065,19 +20825,11 @@
         {
           "ref": "agency:id:city-university",
           "name": "City University"
-        },
-        {
-          "ref": "agency:id:housing-preservation-and-development",
-          "name": "Housing Preservation and Development"
-        },
-        {
-          "ref": "agency:id:small-business-services",
-          "name": "Small Business Services"
         }
       ],
       "links": [],
       "metrics": {
-        "property_notice_count": 5,
+        "property_notice_count": 1,
         "land_project_count": 0,
         "owner_count": 0,
         "owner_contract_count": 0
@@ -22091,11 +20843,11 @@
   },
   "demo_bbls": [
     "1006440001",
-    "3025180036",
-    "3044440001",
     "5006840261",
     "1000730008",
     "1000740001",
-    "1000740020"
+    "1000740020",
+    "1000940025",
+    "1000950101"
   ]
 }

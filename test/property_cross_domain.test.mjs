@@ -164,16 +164,18 @@ describe("parcel intelligence + entity property domain", () => {
     assert.ok(objects.some((o) => o.root_kind === "vendor"));
   });
 
-  it("materialization artifact densifies well above fixture-scale (5 BBLs)", () => {
+  it("materialization artifact densifies well above five BBLs", () => {
     const path = join(ROOT, "site/data/property_cross_domain_lookup.json");
     // Allow missing only before first build in CI of this PR — create if needed by caller.
     if (!existsSync(path)) return;
     const doc = JSON.parse(readFileSync(path, "utf8"));
     assert.equal(doc.version, "property_cross_domain_v1");
-    assert.ok(doc.demos?.["1006440001"]?.land?.status === "matched");
+    assert.equal(doc.demos?.["1006440001"]?.land?.status, "empty");
+    assert.equal(doc.coverage?.zap_matched_bbl_count, 0);
+    assert.doesNotMatch(JSON.stringify(doc), /FIXZAP|FIXTURE APPLICANT/);
 
     const byBblCount = Object.keys(doc.by_bbl || {}).length;
-    // Live property feed exposes ~320 unique BBLs; densify must leave fixture-scale (5).
+    // Live property feed exposes about 320 unique BBLs.
     assert.ok(
       byBblCount >= 50,
       `expected by_bbl densify (≥50), got ${byBblCount}`,

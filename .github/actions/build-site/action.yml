@@ -104,6 +104,11 @@ runs:
         else
           echo "skip DCAS vehicle auction check (tool missing)"
         fi
+    - name: Check public payload integrity
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: node "$SOURCE_DIR/tools/check_public_payload_integrity.mjs"
     - name: Build with GitHub Pages
       uses: actions/jekyll-build-pages@v1
       with:

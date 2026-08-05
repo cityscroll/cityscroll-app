@@ -1,3 +1,5 @@
+import { cityRecordRequestUrl } from "../city_record_id.mjs";
+
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
 const CSL  = "https://data.cityofnewyork.us/resource/vx8i-nprf.json";
@@ -361,6 +363,7 @@ globalThis.PAY = PAY;
 globalThis.PAYFY = PAYFY;
 globalThis.RECENT_DAYS = RECENT_DAYS;
 globalThis.REQ_URL = REQ_URL;
+globalThis.cityRecordRequestUrl = cityRecordRequestUrl;
 globalThis.ROLLING_DUE_YEAR = ROLLING_DUE_YEAR;
 globalThis.EXPORT_BAND_THRESHOLD = EXPORT_BAND_THRESHOLD;
 globalThis.SELECT = SELECT;
