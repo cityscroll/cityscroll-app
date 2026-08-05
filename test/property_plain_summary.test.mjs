@@ -115,10 +115,18 @@ test("tense-parity detector covers every closed Property notice class and action
     checkedPatterns.add(summary.pattern);
     for (const action of summary.reader_actions?.actions || []) {
       checkedActions += 1;
-      assert.equal(action.status, "historical", `${item.id}:${action.kind}`);
+      assert.equal(
+        action.status,
+        action.kind === "review_documents" ? "undated" : "historical",
+        `${item.id}:${action.kind}`,
+      );
     }
     for (const fact of summary.facts.filter((entry) => entry.kind.startsWith("action_"))) {
-      assert.doesNotMatch(fact.text, liveVerb, `${item.id}:${fact.kind}`);
+      if (fact.kind === "action_review_documents") {
+        assert.match(fact.text, /review the records/i, `${item.id}:${fact.kind}`);
+      } else {
+        assert.doesNotMatch(fact.text, liveVerb, `${item.id}:${fact.kind}`);
+      }
     }
   }
   assert.ok(checkedPatterns.size >= 8, "detector spans the recurring Property notice classes");

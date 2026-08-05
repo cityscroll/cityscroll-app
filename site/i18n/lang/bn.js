@@ -1858,6 +1858,8 @@
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "সাংকেতিক ভাষার দোভাষী বা অন্য সুবিধার অনুরোধ করতে {phone} নম্বরে জনশুনানি দপ্তরে ফোন করুন।",
+    property_commercial_call_participation_html: "অংশগ্রহণ সম্পর্কে জানতে {phone} নম্বরে দপ্তরে ফোন করুন।",
     property_asset_rail_label: 'Item type',
     property_sale_method_rail_label: 'Sale method',
     property_price_rail_label: 'Price',

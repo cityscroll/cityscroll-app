@@ -1860,6 +1860,8 @@
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "수어 통역사 또는 편의 지원을 요청하려면 공청회 사무실 {phone}번으로 전화하세요.",
+    property_commercial_call_participation_html: "참여 방법은 사무실 {phone}번으로 문의하세요.",
     property_asset_rail_label: 'Item type',
     property_sale_method_rail_label: 'Sale method',
     property_price_rail_label: 'Price',

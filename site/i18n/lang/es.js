@@ -1858,6 +1858,8 @@
     property_commercial_price_lbl: "Cuánto",
     property_commercial_deal_lbl: "¿Es una ganga?",
     property_commercial_bid_lbl: "Cuándo / cómo ofertar",
+    property_commercial_call_accommodation_html: "Llame a la oficina de audiencias públicas al {phone} para solicitar un intérprete de lengua de señas u otra adaptación.",
+    property_commercial_call_participation_html: "Llame a la oficina al {phone} para consultar cómo participar.",
     property_asset_rail_label: 'Tipo de artículo',
     property_sale_method_rail_label: 'Método de venta',
     property_price_rail_label: 'Precio',

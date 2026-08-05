@@ -200,6 +200,36 @@ export function evidenceAround(text, re, pad = 40) {
   return snippet || evidence(match[0]);
 }
 
+function evidenceClauseAt(text, hitStart, hitLength) {
+  const body = plainText(text).replace(/\s+/g, " ").trim();
+  if (!body) return "";
+  const startIndex = Math.max(0, Number(hitStart) || 0);
+  const hitEnd = Math.min(body.length, startIndex + Math.max(1, Number(hitLength) || 1));
+  const before = body.slice(0, startIndex);
+  const boundary = Math.max(before.lastIndexOf("."), before.lastIndexOf("!"), before.lastIndexOf("?"));
+  const start = boundary >= 0 ? boundary + 1 : 0;
+  const after = body.slice(hitEnd);
+  const nextMatch = /[.!?](?=\s|$)/.exec(after);
+  const end = nextMatch ? hitEnd + nextMatch.index + 1 : body.length;
+  return body.slice(start, end).replace(/^\s+|\s+$/g, "");
+}
+
+/** Complete sentence/clause evidence for reader-facing quotes (never a clipped window). */
+export function evidenceClauseAround(text, re) {
+  const body = plainText(text).replace(/\s+/g, " ").trim();
+  if (!body) return null;
+  const match = new RegExp(re.source, re.flags.replace("g", "")).exec(body);
+  if (!match) return null;
+  return evidenceClauseAt(body, match.index, match[0].length) || null;
+}
+
+function evidenceMatch(text, re) {
+  const body = plainText(text).replace(/\s+/g, " ").trim();
+  if (!body) return null;
+  const match = new RegExp(re.source, re.flags.replace("g", "")).exec(body);
+  return match ? match[0].trim() : null;
+}
+
 function noticeBody(row = {}) {
   return plainText([
     row.short_title,
@@ -531,7 +561,7 @@ export function propertySortI18nKey(sort) {
 export function classifyCommercialCategory(text) {
   const t = String(text || "").toLowerCase();
   const hit = (...words) => words.some((w) => t.includes(w));
-  const around = (re, fallback) => evidenceAround(text, re) || evidence(fallback);
+  const around = (re, fallback) => evidenceClauseAround(text, re) || evidence(fallback);
 
   if (hit("forest management", "board feet", "sawtimber", "cordwood", "timber", "firewood", "roundwood")) {
     return {
@@ -618,11 +648,19 @@ export function classifyCommercialCategory(text) {
     || /\bblock\s+\d+/i.test(t)
     || /\blot\s*\(?s?\)?\s*\d+/i.test(t)
   ) {
+    const dispositionEvidence = evidenceMatch(
+      text,
+      /Department of Housing Preservation and Development \("HPD"\) of the City of New York \("City"\) has proposed the acquisition and disposition of the following property \("Disposition Area"\) in the Borough of [A-Za-z ]+/i,
+    ) || evidenceMatch(
+      text,
+      /has proposed the acquisition and disposition of the following property \("Disposition Area"\) in the Borough of [A-Za-z ]+/i,
+    );
     return {
       category: "real_property",
       label: "Real property",
       confidence: "high",
-      evidence: around(/(?:disposition|city-owned|real property|lease auction|block)/i, "real property"),
+      evidence: dispositionEvidence
+        || around(/(?:proposed (?:the )?(?:acquisition and disposition|sale) of the following property|city-owned property|real property|lease auction|block\/lot)/i, "real property"),
     };
   }
   if (hit("easement", "mortgage and note", "outstanding debt")) {
@@ -925,12 +963,17 @@ export function extractPriceFacts(text) {
   for (const match of body.matchAll(nominalRe)) {
     facts.push({
       kind: "nominal",
+      price_role: "nominal_consideration",
       amount: 1,
       currency: "USD",
       display: "$1",
+      context: "Nominal consideration for the disposition — not an auction price.",
       source: "notice_body",
       confidence: "high",
-      evidence: evidence(match[0]),
+      evidence: evidenceMatch(
+        body,
+        /Under the proposed project, the City will acquire[\s\S]{0,500}?for the nominal price of one dollar\.?/i,
+      ) || evidenceClauseAt(body, match.index, match[0].length),
     });
   }
 
@@ -1006,25 +1049,33 @@ function extractUrls(text) {
 }
 
 function extractEmails(text) {
+  const body = String(text || "");
   return uniqueBy(
-    Array.from(String(text || "").matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi)).map((m) => ({
+    Array.from(body.matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi)).map((m) => ({
       value: m[0],
       source: "notice_body",
       confidence: "high",
       evidence: evidence(m[0]),
+      context: evidenceClauseAt(body, m.index, m[0].length),
     })),
     (e) => e.value.toLowerCase(),
   ).slice(0, 6);
 }
 
 function extractPhones(text) {
+  const body = String(text || "");
   return uniqueBy(
-    Array.from(String(text || "").matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)).map((m) => ({
-      value: m[0],
-      source: "notice_body",
-      confidence: "medium",
-      evidence: evidence(m[0]),
-    })),
+    Array.from(body.matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)).map((m) => {
+      const context = evidenceClauseAt(body, m.index, m[0].length);
+      return {
+        value: m[0],
+        source: "notice_body",
+        confidence: "medium",
+        evidence: evidence(m[0]),
+        context,
+        purpose: /interpreter|accommodation/i.test(context) ? "accommodation" : "participation",
+      };
+    }),
     (e) => e.value.replace(/\D/g, ""),
   ).slice(0, 6);
 }
