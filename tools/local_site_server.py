@@ -18,7 +18,8 @@ class QuietHandler(SimpleHTTPRequestHandler):
         # Pages supplies the shared shell for edge-rendered notice documents. Local browser
         # gates exercise the enhancement island against that shell; response HTML is tested
         # separately against the edge renderer.
-        if self.path.split("?", 1)[0].startswith("/notices/"):
+        route = self.path.split("?", 1)[0].rstrip("/")
+        if route.startswith("/notices/") or route == "/now" or route == "/browse" or route.startswith("/browse/"):
             self.path = "/index.html"
         super().do_GET()
 

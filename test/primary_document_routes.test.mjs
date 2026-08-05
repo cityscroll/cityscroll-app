@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 
 import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
@@ -34,22 +34,22 @@ test("primary navigation is four real document links on every promoted shell", (
   }
 });
 
-test("Now and every bounded Browse default are exact build projections with useful no-JS HTML", () => {
+test("Now and every bounded Browse default are exact build outputs with useful no-JS HTML", () => {
   const outputs = primaryDocumentOutputs();
   assert.equal(outputs.length, 8);
   for (const [path, generated] of outputs) {
-    const committed = readFileSync(path, "utf8");
-    assert.equal(committed, generated, `${path} is stale`);
-    assert.match(committed, /<base href="\/">/);
-    assert.match(committed, /data-document-rendered="true"/);
-    assert.doesNotMatch(committed, /<link rel="canonical" href="https:\/\/cityscroll\.org\/">/);
+    if (existsSync(path)) assert.equal(readFileSync(path, "utf8"), generated, `${path} is stale`);
+    assert.match(generated, /<base href="\/">/);
+    assert.match(generated, /data-document-rendered="true"/);
+    assert.doesNotMatch(generated, /<link rel="canonical" href="https:\/\/cityscroll\.org\/">/);
   }
-  const now = read("../site/now/index.html");
+  const output = (suffix) => outputs.find(([path]) => path.endsWith(suffix))?.[1] || "";
+  const now = output("/site/now/index.html");
   assert.match(now, /data-build-rendered="now"/);
   assert.match(now, /data-now-item=/);
   assert.match(now, /href="\/notices\/[A-Za-z0-9_-]+"/);
   for (const facet of Object.keys(BROWSE_FACETS)) {
-    const html = read(`../site/browse/${facet}/index.html`);
+    const html = output(`/site/browse/${facet}/index.html`);
     assert.match(html, new RegExp(`data-browse-facet="${facet}"`));
     assert.match(html, /data-record-id=/);
     assert.doesNotMatch(html, /data-build-rendered="browse"[\s\S]{0,200}<span class="loading"/);

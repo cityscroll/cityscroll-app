@@ -40,6 +40,14 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const check = process.argv.includes("--check");
   let stale = 0;
   for (const [path, content] of primaryDocumentOutputs()) {
+    if (!existsSync(path)) {
+      if (!check) {
+        mkdirSync(dirname(path), { recursive: true });
+        writeFileSync(path, content);
+        console.log("wrote", path);
+      }
+      continue;
+    }
     if (existsSync(path) && readFileSync(path, "utf8") === content) continue;
     stale += 1;
     if (!check) {

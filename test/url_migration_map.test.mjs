@@ -57,7 +57,7 @@ test("every public demo URL has an explicit generated mapping row", () => {
   }
 });
 
-test("committed CSV and Markdown are exact generated projections", () => {
+test("committed CSV and Markdown are exact generated outputs", () => {
   const rows = buildMigrationRows();
   assert.equal(read("../docs/url-migration-map.csv"), renderCsv(rows));
   assert.equal(read("../docs/url-migration-map.md"), renderMarkdown(rows));

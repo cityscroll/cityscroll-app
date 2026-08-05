@@ -549,15 +549,16 @@ class DemoLinkContract(unittest.TestCase):
             self.assertEqual(page.evaluate("location.pathname"), expected_pathname)
         elif DEMO_ROUTE_TARGETS.get(entry["id"], "").removeprefix("/") != entry["url"]:
             expected_route = DEMO_ROUTE_TARGETS[entry["id"]]
+            parsed_expected = urlparse(expected_route)
             page.wait_for_function(
-                "value => location.pathname + location.search + location.hash === value",
-                arg=expected_route,
+                "value => location.pathname === value.pathname && location.hash === value.hash",
+                arg={"pathname": parsed_expected.path, "hash": f"#{parsed_expected.fragment}" if parsed_expected.fragment else ""},
                 timeout=wait_ms,
             )
-            self.assertEqual(
-                page.evaluate("location.pathname + location.search + location.hash"),
-                expected_route,
-            )
+            parsed_actual = urlparse(page.url)
+            self.assertEqual(parsed_actual.path, parsed_expected.path)
+            self.assertEqual(parsed_actual.fragment, parsed_expected.fragment)
+            self.assertEqual(parse_qs(parsed_actual.query), parse_qs(parsed_expected.query))
         else:
             expected_hash = expectations.get("hash", entry["url"])
             page.wait_for_function("value => location.hash === value", arg=expected_hash, timeout=wait_ms)

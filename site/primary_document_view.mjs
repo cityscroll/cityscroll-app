@@ -18,15 +18,15 @@ function findElementRange(html, id) {
   const tokens = new RegExp(`<${tag}\\b[^>]*>|</${tag}\\s*>`, "ig");
   tokens.lastIndex = opening.index + opening[0].length;
   let depth = 1;
-  let token;
-  while ((token = tokens.exec(html))) {
-    depth += token[0].startsWith("</") ? -1 : 1;
+  let tagMatch;
+  while ((tagMatch = tokens.exec(html))) {
+    depth += tagMatch[0].startsWith("</") ? -1 : 1;
     if (depth === 0) {
       return {
         openingStart: opening.index,
         contentStart: opening.index + opening[0].length,
-        contentEnd: token.index,
-        closingEnd: token.index + token[0].length,
+        contentEnd: tagMatch.index,
+        closingEnd: tagMatch.index + tagMatch[0].length,
       };
     }
   }

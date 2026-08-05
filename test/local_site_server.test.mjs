@@ -59,4 +59,10 @@ test("local site server publishes an OS-assigned origin and serves the requested
   const notice = await fetch(new URL("notices/20260701099", base));
   assert.equal(notice.status, 200);
   assert.match(await notice.text(), /id="noticeview"/);
+
+  for (const route of ["now/", "browse/", "browse/rules/?q=air"]) {
+    const clean = await fetch(new URL(route, base));
+    assert.equal(clean.status, 200, route);
+    assert.match(await clean.text(), /id="main"/, route);
+  }
 });
