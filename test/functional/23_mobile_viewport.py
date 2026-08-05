@@ -45,7 +45,7 @@ def rendered_target_failures(page: Page) -> list[dict]:
     return page.evaluate(
         """() => {
           const selector = [
-            'button:not([disabled]):not(#apreview)',
+            'button:not([disabled])',
             'input:not([disabled]):not([type="hidden"])',
             'select:not([disabled])',
             'textarea:not([disabled])',
