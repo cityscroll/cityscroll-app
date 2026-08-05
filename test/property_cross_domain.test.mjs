@@ -170,8 +170,9 @@ describe("parcel intelligence + entity property domain", () => {
     if (!existsSync(path)) return;
     const doc = JSON.parse(readFileSync(path, "utf8"));
     assert.equal(doc.version, "property_cross_domain_v1");
-    assert.equal(doc.demos?.["1006440001"]?.land?.status, "empty");
-    assert.equal(doc.coverage?.zap_matched_bbl_count, 0);
+    assert.equal(doc.demos?.["1006440001"]?.land?.status, "matched");
+    assert.ok(doc.coverage?.zap_matched_bbl_count > 0);
+    assert.ok(doc.metrics?.property_bbl_zap_join_rate > 0.006);
     assert.doesNotMatch(JSON.stringify(doc), /FIXZAP|FIXTURE APPLICANT/);
 
     const byBblCount = Object.keys(doc.by_bbl || {}).length;

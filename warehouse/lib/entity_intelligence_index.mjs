@@ -235,7 +235,30 @@ export function lookupFromIndex(indexDoc, query) {
 export function collectFixtureObservations(root = ROOT, opts = {}) {
   const limit = Math.max(1, Number(opts.limit) || 400);
   const observations = collectCrossDomainObservations(root, opts);
-  return observations.slice(0, limit);
+  // Bulk money rows arrive first in the source list. A plain prefix sample can
+  // therefore erase every other domain and destroy the multi-domain proof.
+  // Round-robin by domain retains source order within each stratum while
+  // guaranteeing that a bounded index still represents the joined corpus.
+  const buckets = new Map(CROSS_DOMAIN_DOMAINS.map((domain) => [domain, []]));
+  for (const observation of observations) {
+    if (!buckets.has(observation.domain)) buckets.set(observation.domain, []);
+    buckets.get(observation.domain).push(observation);
+  }
+  const positions = new Map([...buckets.keys()].map((domain) => [domain, 0]));
+  const sampled = [];
+  let progressed = true;
+  while (sampled.length < limit && progressed) {
+    progressed = false;
+    for (const [domain, rows] of buckets) {
+      const position = positions.get(domain);
+      if (position >= rows.length) continue;
+      sampled.push(rows[position]);
+      positions.set(domain, position + 1);
+      progressed = true;
+      if (sampled.length >= limit) break;
+    }
+  }
+  return sampled;
 }
 
 /**

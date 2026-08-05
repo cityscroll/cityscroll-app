@@ -491,9 +491,10 @@ test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkboo
     const sol = body.timeline.find((t) => t.stage === "solicitation");
     assert.ok(sol, "solicitation stage still present");
     assert.equal(sol.documents_status, "unmatched");
-    // OCP side-car still runs (request_id join) and is attached
-    assert.ok(ocpCalls >= 1, "OCP side-car lookup still runs without a PIN");
+    // OCP side-car still resolves by request_id, now from the bulk materialization.
+    assert.equal(ocpCalls, 0, "warehouse OCP hit avoids a live SODA call");
     assert.ok(body.ocp_award, "ocp_award attached even without PIN");
+    assert.equal(body.ocp_award.lookup_path, "warehouse");
   } finally { globalThis.fetch = orig; }
 });
 

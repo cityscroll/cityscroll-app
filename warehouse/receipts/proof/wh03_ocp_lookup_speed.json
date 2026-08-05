@@ -1,23 +1,38 @@
 {
   "phase": "WH-03",
-  "measured_at": "2026-08-04T23:51:05.257Z",
+  "measured_at": "2026-08-05T10:40:51.331Z",
   "replaced_fetch": {
     "function": "fetchOcpAwardRows",
     "file": "worker/src/checkbook_lifecycle.mjs",
     "soda_dataset": "qyyg-4tf5",
     "product": "OCP award side-car on GET /contract-lifecycle"
   },
-  "warehouse_duckdb_build_path": null,
+  "warehouse_duckdb_build_path": {
+    "samples_ms": [
+      56.87,
+      51.74,
+      52.07,
+      49.57,
+      49.1
+    ],
+    "p50_ms": 51.74,
+    "mean_ms": 51.87,
+    "n": 5,
+    "path": "warehouse",
+    "rows": 1,
+    "notice_request_id": "20260723031",
+    "note": "Python DuckDB CLI spawn per query — build/ops only, not Worker request path"
+  },
   "materialized_index_edge_path": {
     "samples_ms": [
-      0.0014,
-      0.0006,
+      0.0011,
       0.0005,
       0.0004,
-      0.0008
+      0.0003,
+      0.0004
     ],
-    "p50_ms": 0.0002,
-    "mean_ms": 0.0003,
+    "p50_ms": 0.0001,
+    "mean_ms": 0.0002,
     "n": 200,
     "path": "materialized_index",
     "rows": 1,
@@ -26,12 +41,12 @@
   },
   "soda_live_previous_path": {
     "samples_ms": [
-      286.97,
-      138.07,
-      137.9
+      237.48,
+      144.46,
+      229.32
     ],
-    "p50_ms": 138.07,
-    "mean_ms": 187.65,
+    "p50_ms": 229.32,
+    "mean_ms": 203.75,
     "n": 3,
     "path": "soda_live",
     "rows": 1,
@@ -40,10 +55,10 @@
     "note": "Previous live path in fetchOcpAwardRows"
   },
   "speedup": {
-    "soda_p50_ms": 138.07,
-    "warehouse_materialized_p50_ms": 0.0002,
-    "ratio_vs_0_01ms_floor": 13807,
-    "summary": "OCP side-car lookup p50: live SODA 138.07ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)",
+    "soda_p50_ms": 229.32,
+    "warehouse_materialized_p50_ms": 0.0001,
+    "ratio_vs_0_01ms_floor": 22932,
+    "summary": "OCP side-car lookup p50: live SODA 229.32ms → warehouse materialization 0.0001ms (sub-ms; removes a SODA RTT)",
     "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
   }
 }

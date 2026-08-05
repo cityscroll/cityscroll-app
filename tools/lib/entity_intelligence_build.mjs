@@ -26,6 +26,7 @@ import {
 } from "../../entity_resolution/cross_domain/index.mjs";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
 
 /** Coerce materialization `source` fields that may be objects into a system id. */
 function cleanSourceSystem(value, fallback) {
@@ -426,7 +427,9 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
   const observations = collectCrossDomainObservations(root, opts);
   const corpus = buildIntelligenceCorpus(observations, {
     max_per_domain: opts.max_per_domain || 6,
-    max_entities: opts.max_entities || 40,
+    // The former fixture-era cap of 40 hid roots discovered by bulk lookups.
+    // Keep the edge document bounded while retaining a useful densified corpus.
+    max_entities: opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP,
   });
 
   // Prefer a multi-domain demo that includes live people when present; else Parks;
