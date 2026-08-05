@@ -50,7 +50,7 @@ def flatten_helper(path: pathlib.Path, stack: tuple[pathlib.Path, ...] = ()) -> 
     """Inline a pure helper's local named-import graph for the pre-split fixture."""
     assert path not in stack, f"circular inline helper import: {path.name}"
     source = path.read_text()
-    nested_sources = []
+    nested_sources = []  # Source: local helper imports matched by STATIC_LOCAL_IMPORT.
     for helper_name in STATIC_LOCAL_IMPORT.findall(source):
         helper_path = path.parent / helper_name
         assert helper_path.is_file(), f"nested helper import missing: {helper_name}"
