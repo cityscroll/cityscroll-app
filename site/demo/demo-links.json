@@ -141,25 +141,26 @@
     },
     {
       "id": "exam-caseworker-7016",
-      "url": "#exam/7016",
+      "url": "exams/7016/",
       "feature": "civil-service-exam-detail",
       "description": "Open the Caseworker exam with qualifications, fees, dates, and official actions.",
       "expectations": {
+        "pathname": "/exams/7016/",
         "visible": [
           {
-            "selector": "#career-exam-7016",
+            "selector": "[data-exam-document='1']",
             "text": "Caseworker"
           },
           {
-            "selector": "#career-exam-7016 .career-metrics",
+            "selector": ".exam-facts",
             "text": "$68"
           },
           {
-            "selector": "#career-exam-7016 .career-metrics",
+            "selector": ".exam-facts",
             "text": "$48,206"
           },
           {
-            "selector": "#career-exam-7016 .actions"
+            "selector": ".exam-actions"
           }
         ],
         "notVisible": [
@@ -170,28 +171,28 @@
             "selector": "#career-results .loading"
           },
           {
-            "selector": "#career-exam-7016 [data-fee-salary='not_yet_ingested']"
+            "selector": "[data-exam-document='1'] [data-fee-salary='not_yet_ingested']"
           },
           {
-            "selector": "#career-exam-7016 [data-fee-salary='not_published']"
+            "selector": "[data-exam-document='1'] [data-fee-salary='not_published']"
           }
-        ],
-        "focus": "#career-exam-7016"
+        ]
       }
     },
     {
       "id": "exam-emergency-medical-specialist-6125",
-      "url": "#exam/6125",
+      "url": "exams/6125/",
       "feature": "civil-service-exam-detail",
       "description": "Open the Emergency Medical Specialist exam with qualifications and official actions.",
       "expectations": {
+        "pathname": "/exams/6125/",
         "visible": [
           {
-            "selector": "#career-exam-6125",
+            "selector": "[data-exam-document='1']",
             "text": "Emergency Medical Specialist"
           },
           {
-            "selector": "#career-exam-6125 .actions"
+            "selector": ".exam-actions"
           }
         ],
         "notVisible": [
@@ -201,8 +202,7 @@
           {
             "selector": "#career-results .loading"
           }
-        ],
-        "focus": "#career-exam-6125"
+        ]
       }
     },
     {

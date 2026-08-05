@@ -79,6 +79,18 @@ const EXPORT_BAND_THRESHOLD = 25;
 
 const $ = s => document.querySelector(s);
 const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
+let exportWorkflowLoad;
+globalThis.ensureCrolExports = () => {
+  if (globalThis.CrolExports) return Promise.resolve(globalThis.CrolExports);
+  if (!exportWorkflowLoad) exportWorkflowLoad = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "/export_workflows.js";
+    script.onload = () => resolve(globalThis.CrolExports);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+  return exportWorkflowLoad;
+};
 // N months after an ISO date, as a date-only ISO string — mirrors the worker's compileSub()
 // monthsFromISO() exactly, so the alert preview's "due within" bound matches the digest.
 const addMonthsISO = (iso, months) => { const d=new Date(iso.slice(0,10)+"T00:00:00Z"); d.setUTCMonth(d.getUTCMonth()+months); return d.toISOString().slice(0,10); };

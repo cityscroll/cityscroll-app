@@ -119,6 +119,14 @@ runs:
         node "$SOURCE_DIR/tools/build_primary_documents.mjs"
         node "$SOURCE_DIR/tools/build_primary_documents.mjs" --check
         node "$SOURCE_DIR/tools/build_url_migration_map.mjs" --check
+    - name: Build static-first exam documents
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        node "$SOURCE_DIR/tools/build_exam_documents.mjs"
+        node "$SOURCE_DIR/tools/build_exam_documents.mjs" --check
     - name: Check civic token contract for built documents
       shell: bash
       env:

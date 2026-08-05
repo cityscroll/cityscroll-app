@@ -101,7 +101,8 @@ function digItemHTML(kind, r, keywords, awarenessTools){
   if(kind==="exam"){
     const band=CrolStaffing.openWindowBand(r,careerToday());
     const meta=[t("career_exam_number",{number:r.exam_number}),r.application_start&&r.application_end?`${r.application_start}–${r.application_end}`:"",band].filter(Boolean).join(" · ");
-    return `<div class="digitem"><div class="dt"><a href="#exam/${encodeURIComponent(r.exam_number)}">${escUiHtml(r.title||"")}</a></div><div class="dm" lang="en" dir="ltr">${escUiHtml(meta)}</div>${r.notice_url?`<div class="da" lang="en" dir="ltr">NOE posted</div>`:""}<div class="dc"><a href="#exam/${encodeURIComponent(r.exam_number)}">${t("view_on_crol")}</a></div></div>`;
+    const examLink = CrolStaffing.examUrl(r.exam_number, location.origin);
+    return `<div class="digitem"><div class="dt"><a href="${examLink}">${escUiHtml(r.title||"")}</a></div><div class="dm" lang="en" dir="ltr">${escUiHtml(meta)}</div>${r.notice_url?`<div class="da" lang="en" dir="ltr">NOE posted</div>`:""}<div class="dc"><a href="${examLink}">${t("view_on_crol")}</a></div></div>`;
   }
   const aw=digAwarenessHTML(kind,r,awarenessTools);
   if(kind==="award"){

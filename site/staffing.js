@@ -170,7 +170,9 @@
   }
 
   function examUrl(examNumber, base) {
-    return `${base || "https://cityscroll.org/"}#exam/${encodeURIComponent(examNumber)}`;
+    const id = String(examNumber || "").trim();
+    const path = /^\d{4}$/.test(id) ? `/exams/${id}/` : "/exams/";
+    return new URL(path, base || "https://cityscroll.org/").href;
   }
 
   function featuredExams(exams, today, limit) {

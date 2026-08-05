@@ -537,7 +537,7 @@ function careerCardHTML(exam){
       ${countdown?`<span class="career-deadline-countdown">${countdown}</span>`:""}
     </div>
     <div class="career-card-head">
-      <p class="career-card-title"><a href="#exam/${encodeURIComponent(exam.exam_number)}" lang="en" dir="ltr">${title}</a></p>
+      <p class="career-card-title"><a href="${escUiHtml(CrolStaffing.examUrl(exam.exam_number, location.origin))}" lang="en" dir="ltr">${title}</a></p>
       <span class="career-exam-number">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
     </div>
     ${actionFacts}
@@ -954,7 +954,7 @@ async function pSearch(keepDetail){
 function roleRowHTML(r, i, terms, comp2, exam){
   const ev = matchEvidence(r.title_description, "", terms);
   const status=exam?CrolStaffing.statusFor(exam,careerToday()):null;
-  const examLink=exam?`<a class="staffing-exam-link" href="#exam/${encodeURIComponent(exam.exam_number)}">
+  const examLink=exam?`<a class="staffing-exam-link" href="${CrolStaffing.examUrl(exam.exam_number, location.origin)}">
       <span class="tag ${careerStatusClass(status)}">${status==="open"?t("staffing_exam_open_tag"):t("staffing_exam_upcoming_tag")}</span>
       <span class="staffing-exam-window">${careerWindowText(exam,status)}</span>
     </a>`:"";
@@ -1009,7 +1009,7 @@ function pSelectRole(i, el){
   let html = `<h2 class="rolename" lang="en" dir="ltr">${r.title_description}</h2>
     <div class="badges"><span class="tag ${comp?'open':'soon'}">${comp?t("competitive_badge"):t("noncompetitive_badge")}</span></div>
     ${exam?`<div class="note"><b>${examStatus==="open"?t("staffing_exam_open_tag"):t("staffing_exam_upcoming_tag")}:</b> ${careerWindowText(exam,examStatus)}
-      <a href="#exam/${encodeURIComponent(exam.exam_number)}">${t("staffing_view_exam_detail")}</a></div>`:""}
+      <a href="${CrolStaffing.examUrl(exam.exam_number, location.origin)}">${t("staffing_view_exam_detail")}</a></div>`:""}
     <div class="agencybar">
       <div><div class="big">${money(r.mn)}–${money(r.mx)}</div><div class="lbl">${t("base_salary_band_lbl")}</div></div>
       <div><div class="big">${money(r.avg)}</div><div class="lbl">${t("average_base_lbl")}</div></div>
