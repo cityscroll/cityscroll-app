@@ -14,6 +14,7 @@ import { meetingPlaceFromRow } from "../worker/src/lib/hearings.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "site/data/meetings_location_residual_receipt.json");
+const SOURCES = path.join(ROOT, "site/data/meetings_location_residual_sources.json");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const BASELINE_IDS = Object.freeze([
   "20260213011", "20260213012", "20260213013", "20260213014", "20260213015",
@@ -73,6 +74,15 @@ function validateReceipt(receipt) {
   if (receipt.source_registry_review?.citywide_complete !== false) {
     throw new Error("non-Council registry must remain explicitly partial");
   }
+  if (receipt.followup?.baseline_total !== 11 || receipt.followup?.cases?.length !== 11) {
+    throw new Error("Meetings residual follow-up must retain the fixed 11-row tail");
+  }
+  if (receipt.followup?.result?.virtual_only !== 2 || receipt.followup?.result?.honest_residual !== 9) {
+    throw new Error("Meetings residual follow-up result mismatch");
+  }
+  if (receipt.followup.cases.some((row) => !row.source_locator || !row.terminal_classification)) {
+    throw new Error("every Meetings residual follow-up case needs a terminal classification and source locator");
+  }
   for (const row of receipt.cases) {
     if (!BASELINE_IDS.includes(String(row.request_id))) {
       throw new Error(`unexpected meetings residual id ${row.request_id}`);
@@ -103,6 +113,7 @@ async function buildReceipt() {
   const registryReceipt = readJson(
     "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json",
   );
+  const residualSources = readJson("site/data/meetings_location_residual_sources.json");
   const rows = await fetchBaselineRows();
   const classificationCounts = Object.fromEntries(CAUSES.map((cause) => [cause, 0]));
   const joinedByMethod = Object.create(null);
@@ -131,6 +142,21 @@ async function buildReceipt() {
   }
 
   const joined = cases.filter((row) => row.status === "joined").length;
+  const followupCases = residualSources.cases.map((source) => {
+    const prior = cases.find((row) => row.request_id === String(source.request_id));
+    if (!prior || prior.status !== "honest_absent") {
+      throw new Error(`follow-up source is not in the fixed 11-row tail: ${source.request_id}`);
+    }
+    return {
+      request_id: String(source.request_id),
+      prior_reason: prior.method,
+      terminal_classification: source.terminal_classification,
+      status: source.terminal_classification === "virtual_only" ? "virtual_only" : "honest_residual",
+      method: source.terminal_classification,
+      source_locator: source.source_locator,
+      source_label: source.source_label || "City Record notice detail",
+    };
+  });
   const receipt = {
     schema: "cityscroll.meetings_location_residual.v1",
     observed_on: new Date().toISOString().slice(0, 10),
@@ -154,6 +180,30 @@ async function buildReceipt() {
       joined_by_method: joinedByMethod,
       honest_absent_by_reason: honestAbsentByReason,
     },
+    followup: {
+      observed_on: residualSources.observed_on,
+      baseline_total: followupCases.length,
+      before: {
+        located: 108,
+        virtual_only: 3,
+        unlocated: 11,
+        unlocated_by_reason: {
+          external_board_page_needed: 9,
+          body_place_omitted: 2,
+        },
+      },
+      result: {
+        virtual_only: followupCases.filter((row) => row.status === "virtual_only").length,
+        honest_residual: followupCases.filter((row) => row.status === "honest_residual").length,
+      },
+      after: {
+        located: 110,
+        virtual_only: 5,
+        unlocated: 9,
+        unlocated_by_reason: { multi_event_directory: 9 },
+      },
+      cases: followupCases,
+    },
     source_registry_review: {
       bodies_inventoried: sourceRegistry.sources?.length || 0,
       citywide_complete: registryReceipt.source_inventory?.citywide_complete === true,
@@ -176,7 +226,7 @@ async function buildReceipt() {
 
 async function main() {
   if (process.argv.includes("--check")) {
-    if (!existsSync(OUT)) throw new Error(`missing ${path.relative(ROOT, OUT)}`);
+    if (!existsSync(OUT) || !existsSync(SOURCES)) throw new Error("missing Meetings residual artifact");
     validateReceipt(JSON.parse(readFileSync(OUT, "utf8")));
     console.log("meetings location residual receipt ok");
     return;
