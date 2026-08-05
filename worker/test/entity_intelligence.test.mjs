@@ -53,7 +53,7 @@ describe("GET /entity-intelligence", () => {
     const parks = await parksRes.json();
     assert.equal(parks.root.ref, "agency:id:parks-and-recreation");
     assert.ok(parks.metrics.domains_matched >= 3);
-    assert.equal(parks.domains.money.status, "empty");
+    assert.equal(parks.domains.money.status, "matched");
     assert.doesNotMatch(JSON.stringify(parks), /FIX\d|FIXZAP|FIXTURE VENDOR/);
     // Parks has no person-vote rows — empty, not permanent not_yet_ingested theater.
     assert.equal(parks.domains.people.status, "empty");

@@ -30,7 +30,7 @@
     "status": "ok"
   },
   "limit": null,
-  "observed_at": "2026-08-02T11:46:34Z",
+  "observed_at": "2026-08-05T10:36:34Z",
   "parquet": {
     "bytes": 1047648,
     "column_map_applied": true,
@@ -48,7 +48,7 @@
       "unverified_lot",
       "snapshot_date"
     ],
-    "parquet_path": "warehouse/parquet/zap-bbl/snapshot_date=2026-08-02/part-000.parquet",
+    "parquet_path": "warehouse/parquet/zap-bbl/snapshot_date=2026-08-05/part-000.parquet",
     "row_count": 131960,
     "threads": 1
   },
@@ -56,13 +56,13 @@
   "raw": {
     "bytes": 9698912,
     "column_map_entries": 10,
-    "column_map_path": "warehouse/raw/zap-bbl/snapshot_date=2026-08-02/column_map.json",
+    "column_map_path": "warehouse/raw/zap-bbl/snapshot_date=2026-08-05/column_map.json",
     "content_type": "text/csv; charset=utf-8",
-    "elapsed_s": 33.17,
+    "elapsed_s": 10.16,
     "http_status": 200,
     "last_modified": "Tue, 26 May 2026 16:32:24 GMT",
     "mode": "soda_bulk",
-    "path": "warehouse/raw/zap-bbl/snapshot_date=2026-08-02/2iga-a6mk_bulk.csv",
+    "path": "warehouse/raw/zap-bbl/snapshot_date=2026-08-05/2iga-a6mk_bulk.csv",
     "row_count": 131960,
     "sha256": "4414b0d8c51966561b871e619031d448ee4ee854917966a2cdfcbc26751c22d5",
     "url": "https://data.cityofnewyork.us/api/views/2iga-a6mk/rows.csv?accessType=DOWNLOAD"
@@ -82,12 +82,13 @@
       "unverified_lot",
       "snapshot_date"
     ],
-    "parquet_glob": "warehouse/parquet/zap-bbl/snapshot_date=2026-08-02/*.parquet",
+    "parquet_glob": "warehouse/parquet/zap-bbl/snapshot_date=2026-08-05/*.parquet",
     "row_count": 131960,
     "table": "zap_bbl"
   },
   "schema_version": 1,
-  "snapshot_date": "2026-08-02",
+  "snapshot_date": "2026-08-05",
+  "snapshot_profile": null,
   "socrata_dataset_id": "2iga-a6mk",
   "source_contract_id": "zap-bbl",
   "table_name": "zap_bbl",
