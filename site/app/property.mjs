@@ -301,7 +301,8 @@ function propertyDispositionTimingHTML(estimate){
     ?`<div class="note disposition-timing-cohort-note">${t("disposition_timing_cohort_note_html")}</div>`
     :"";
   const formula=`<div class="lc-pct"><a href="about.html#property-disposition-timing-formula">${t("disposition_timing_formula_link")}</a></div>`;
-  return `<div class="note disposition-timing-estimate" data-property-disposition-timing="1" data-disposition-timing-projection="${escUiHtml(estimate.public_projection||"cohort_statistic_only")}">${t("disposition_timing_estimate_html",{line,tag})}${cohortNote}${formula}</div>`;
+  const value=`${estimate.weeks_low??"unknown"}-${estimate.weeks_high??"unknown"}-weeks`;
+  return `<div class="note disposition-timing-estimate" data-property-disposition-timing="1" data-prediction-subject="property-sale-timing" data-prediction-value="${escUiHtml(value)}" data-disposition-timing-projection="${escUiHtml(estimate.public_projection||"cohort_statistic_only")}">${t("disposition_timing_estimate_html",{line,tag})}${cohortNote}${formula}</div>`;
 }
 function propertyDispositionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";

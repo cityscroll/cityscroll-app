@@ -85,19 +85,11 @@ export function adoptionLagPatternLine(pattern, opts = {}) {
   const lo = pattern.middle_half_low;
   const hi = pattern.middle_half_high;
   const halfUseful = lo != null && hi != null && lo !== hi;
-  const halfPhrase = halfUseful ? ` middle half ${lo}–${hi} days` : "";
-  const closed = date ? `Comment period closed ${date}. ` : "";
-  if (pattern.projection === "cohort_statistic_only" || median == null) {
-    const half = halfUseful ? `${halfPhrase}.` : ".";
-    const med = median != null ? ` typically ${median} days to adoption,` : "";
-    return `${closed}Predicted based on ${n} similar rule adoptions since ${year} —${med}${half}`
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-  const tail = halfUseful
-    ? `median ${median} days to adoption,${halfPhrase}.`
-    : `median ${median} days to adoption.`;
-  return `${closed}Predicted based on ${n} similar rule adoptions since ${year} — ${tail}`;
+  const closed = date ? `Comments closed ${date}. ` : "";
+  const timing = median != null
+    ? `Adoption typically takes ${median} days${halfUseful ? `; the middle half took ${lo}–${hi} days` : ""}.`
+    : `Adoption timing for similar rules usually fell between ${lo} and ${hi} days.`;
+  return `${closed}${timing} Based on ${n} similar rule adoptions since ${year}.`;
 }
 
 /**

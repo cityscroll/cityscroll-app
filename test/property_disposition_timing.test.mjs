@@ -141,8 +141,8 @@ test("pattern line uses weeks and citywide cohort attribution", () => {
   const line = dispositionTimingPatternLine(model.citywide, {
     pairKind: model.corpus.primary_pair_kind,
   });
-  assert.match(line, /Predicted based on \d+ Property Disposition auction notices since 2013/);
-  assert.match(line, /typically falls \d+–\d+ weeks after the auction notice/);
+  assert.match(line, /^A published sale date typically falls \d+–\d+ weeks after the auction notice/);
+  assert.match(line, /\d+ past Property Disposition notices since 2013/);
 });
 
 test("phase view attaches cohort estimate when hearing matched and auction empty", () => {
@@ -175,7 +175,7 @@ test("phase view attaches cohort estimate when hearing matched and auction empty
   assert.ok(withEstimate.disposition_timing_estimate);
   assert.equal(withEstimate.disposition_timing_estimate.public_projection, "cohort_statistic_only");
   assert.equal(withEstimate.disposition_timing_estimate.predicted_window, null);
-  assert.match(withEstimate.disposition_timing_estimate.pattern_line, /Predicted based on/);
+  assert.match(withEstimate.disposition_timing_estimate.pattern_line, /^A published sale date/);
 
   // Auction already matched → no estimate (scheduled date owns urgency)
   const full = {
@@ -205,6 +205,7 @@ test("phase view attaches cohort estimate when hearing matched and auction empty
 
 test("product surface wires estimate chrome, formula, and cohort copy keys", () => {
   assert.match(indexHtml, /data-property-disposition-timing="1"/);
+  assert.match(indexHtml, /data-prediction-subject="property-sale-timing"/);
   assert.match(indexHtml, /disposition_timing_estimate/);
   assert.match(indexHtml, /property-disposition-timing-formula/);
   assert.match(i18n, /disposition_timing_estimate_html/);

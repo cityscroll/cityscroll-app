@@ -555,7 +555,8 @@ function ruleAdoptionEstimateHTML(estimate){
       window=`<p class="rule-adoption-estimate-window">${escUiHtml(t("rule_adoption_estimate_window",{p10:w.p10,p50:w.p50,p90:w.p90}))}</p>`;
     }
   }
-  return `<div class="rule-adoption-estimate" data-rule-adoption-estimate="1" data-ghost="1" role="note">
+  const value=estimate.pattern?.median_days!=null?`${estimate.pattern.median_days}-days`:"historical-range";
+  return `<div class="rule-adoption-estimate" data-rule-adoption-estimate="1" data-prediction-subject="rule-adoption-timing" data-prediction-value="${escUiHtml(value)}" data-ghost="1" role="note">
     <p class="rule-adoption-estimate-line">${escUiHtml(estimate.pattern_line)} ${chip}</p>
     ${window}
   </div>`;

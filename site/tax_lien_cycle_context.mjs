@@ -305,7 +305,7 @@ export function buildTaxLienCycleContext({
         cycle_count: cycleCount,
         stage,
         line: historical_line,
-        attribution: cycleCount != null ? `Based on ${cycleCount} prior cycles` : null,
+        attribution: cycleCount != null ? `Evidence: ${cycleCount} prior cycles` : null,
       }
       : null,
     deadline: guide.deadline,
@@ -365,7 +365,7 @@ export function buildDispositionCycleContext(phaseView, opts = {}) {
       since_year: timingStamp.since_year || null,
       public_projection: timingStamp.public_projection || "cohort_statistic_only",
       attribution: timingStamp.n != null
-        ? `Based on ${timingStamp.n} prior dispositions`
+        ? `Evidence: ${timingStamp.n} prior dispositions`
         : null,
     }
     : null;

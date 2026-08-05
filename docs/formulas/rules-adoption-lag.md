@@ -67,7 +67,7 @@ For the timing ECDF, gaps longer than 365 days are winsorized to censored-at-365
 - **Page:** dashed “Estimate” ghost segment after comment close on the rules phase timeline — never an event dot.
 - **Digest:** one pattern-attribution line for watched closed comment periods, only on **band transitions** (`far` → `approaching` → `imminent` → `overdue`) via `predictionDeliveryTransition`. Re-estimation alone does not resend.
 - **Copy (one line):**  
-  `Comment period closed {date}. Predicted based on {N} similar rule adoptions since {YYYY} — median {D} days to adoption, middle half {D1}–{D2}.`  
+  `Comments closed {date}. Adoption typically takes {D} days; the middle half took {D1}–{D2} days. Based on {N} similar rule adoptions since {YYYY}.`
   When the ship bar fails for a cohort, the same line uses “typically” without a per-matter date.
 
 ## Evaluation

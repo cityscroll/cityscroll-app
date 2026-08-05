@@ -4,7 +4,7 @@
 
 When a Property Disposition matter has a **hearing** but City Record has not yet published an **auction / RFP / sale** notice with a date, the disposition timeline can show a citywide cohort line:
 
-> Predicted based on {N} Property Disposition auction notices since {YYYY} — when a sale date is published, it typically falls {W1}–{W2} weeks after the auction notice.
+> A published sale date typically falls {W1}–{W2} weeks after the auction notice ({N} past Property Disposition notices since {YYYY}).
 
 This is a **cohort statistic**, not a calendar deadline. The existing “soon ≤30 days” list rail remains the urgency device for *scheduled* auction dates; this line only fills the gap **before** a sale date is published.
 

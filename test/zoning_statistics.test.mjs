@@ -120,8 +120,9 @@ test("statistical timing emits through cityscroll.prediction.v0 and copy names i
   assert.equal(prediction.predicted_window.p50, addDays("2025-01-15", cohort.duration_days.p50));
 
   const copy = zoningStatisticCopy(cohort);
-  assert.match(copy, /^Based on 40 past zoning map amendment cases since 2020\./);
-  assert.match(copy, /% were approved\. Final action usually came .* months after certification\.$/);
+  assert.match(copy, /^90% of past zoning map amendment cases were approved\./);
+  assert.match(copy, /40 cases since 2020/);
+  assert.match(copy, /% of past .* were approved\. Final action usually came .* months after certification/);
 });
 
 test("unconditioned cohorts contain no applicant dimension", () => {
@@ -264,8 +265,8 @@ test("conditioned copy always names the unconditioned base rate alongside", () =
   const copy = applicantConditionedCopy(conditioned, base, {
     renderMode: "descriptive_history",
   });
-  assert.match(copy, /Based on 25 applications by this applicant since 2019/);
-  assert.match(copy, /% approved, vs \d+% overall/);
+  assert.match(copy, /^This applicant's past applications were \d+% approved/);
+  assert.match(copy, /compared with \d+% overall \(25 applications since 2019\)/);
   assert.doesNotMatch(copy, /^Predicted based on/);
 });
 
@@ -336,7 +337,7 @@ test("attach surfaces conditioned rates with base rate and blocks thin cohorts",
   assert.ok(attached.zoning_statistics.applicant_conditioned.base_rate);
   assert.match(
     attached.zoning_statistics.applicant_conditioned.copy,
-    /vs \d+% overall/,
+    /compared with \d+% overall/,
   );
   // descriptive_history: no occurrence prediction emitted
   assert.ok(!attached.predictions.some((row) => row.model_name === "zap_applicant_outcome_rate"));
@@ -388,7 +389,7 @@ test("About and the land UI state applicant-history constraints", () => {
   assert.match(about, /If name matches or past test results are weak/);
   assert.match(about, /descriptive history or does not show it/);
   assert.match(i18n, /land_applicant_conditioned_predict_html/);
-  assert.match(i18n, /vs \{p0\}% overall/);
+  assert.match(i18n, /compared with \{p0\}% overall/);
 });
 
 test("before/after applicant-entity evidence is committed and checksum-pinned", () => {
