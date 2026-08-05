@@ -72,6 +72,8 @@ test("Property view extracts sites, abstains honestly, and geocodes a representa
   assert.equal(view.properties[0].commercial.item.category, "real_property");
   assert.equal(view.properties[1].commercial.item.category, "vehicle");
   assert.equal(view.commercial_metrics.metric, "property_commercial_price_coverage");
+  assert.equal(view.dcas_vehicle_auctions.schema, "cityscroll.dcas_vehicle_auctions.v1");
+  assert.equal(view.dcas_vehicle_auctions.taxonomy.domain, "goods_surplus");
   // Slim list keeps commercial glance fields.
   const slim = (await import("../src/lib/property_list.mjs")).slimPropertyListView(view);
   assert.ok(slim.properties[1].commercial.glance);
@@ -103,6 +105,7 @@ test("Property refresh writes the materialized view and its route serves it", as
   assert.equal(body.properties[0].additional_description_1.includes("35 Beebe"), true);
   assert.equal(body.properties[0].end_date, "2027-05-03T00:00:00.000");
   assert.equal(body.properties[0].printout_1, undefined);
+  assert.equal(body.dcas_vehicle_auctions.schema, "cityscroll.dcas_vehicle_auctions.v1");
 });
 
 test("Property full view remains available via ?full=1", async () => {

@@ -9,7 +9,9 @@
     "dataset": "ynic-uz5i",
     "landing_page": "https://data.cityofnewyork.us/d/ynic-uz5i",
     "official_guide": "https://www.nyc.gov/site/dcas/business/vehicle-auction.page",
-    "marketplace": "https://www.govdeals.com/en/nyc-dcas-fleet"
+    "marketplace": "https://www.govdeals.com/en/nyc-dcas-fleet",
+    "provenance_notice_id": "20251106024",
+    "provenance_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20251106024"
   },
   "taxonomy": {
     "domain": "goods_surplus",
