@@ -50,6 +50,9 @@ export const BOROUGH_META = Object.freeze({
   "Staten Island": { id: "Staten Island", prefix: "R", label: "Staten Island" },
 });
 
+const MAP_LABEL_TONES = Object.freeze({ dark: "dark", light: "light" });
+const MAP_LABEL_RGB = Object.freeze({ dark: [0, 0, 0], light: [255, 255, 255] });
+
 const PREFIX_TO_BOROUGH = Object.freeze({
   M: "Manhattan",
   X: "Bronx",
@@ -180,6 +183,144 @@ export function polygonsToSvgPath(polygons, bounds = NYC_BOUNDS) {
     }
   }
   return parts.join("");
+}
+
+function ringCentroid(ring) {
+  if (!Array.isArray(ring) || ring.length < 3) return null;
+  let twiceArea = 0;
+  let x = 0;
+  let y = 0;
+  for (let i = 0; i < ring.length; i++) {
+    const [x0, y0] = ring[i];
+    const [x1, y1] = ring[(i + 1) % ring.length];
+    const cross = Number(x0) * Number(y1) - Number(x1) * Number(y0);
+    twiceArea += cross;
+    x += (Number(x0) + Number(x1)) * cross;
+    y += (Number(y0) + Number(y1)) * cross;
+  }
+  if (Math.abs(twiceArea) < 1e-12) return null;
+  return [x / (3 * twiceArea), y / (3 * twiceArea)];
+}
+
+function pointInRing(point, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    const crosses = ((yi > point[1]) !== (yj > point[1]))
+      && point[0] < ((xj - xi) * (point[1] - yi)) / ((yj - yi) || Number.EPSILON) + xi;
+    if (crosses) inside = !inside;
+  }
+  return inside;
+}
+
+function pointInPolygon(point, polygon) {
+  const rings = polygon?.rings || [];
+  return !!rings[0] && pointInRing(point, rings[0])
+    && !rings.slice(1).some((ring) => pointInRing(point, ring));
+}
+
+function segmentDistanceSquared(point, a, b) {
+  const dx = b[0] - a[0];
+  const dy = b[1] - a[1];
+  if (!dx && !dy) return (point[0] - a[0]) ** 2 + (point[1] - a[1]) ** 2;
+  const t = Math.max(0, Math.min(1,
+    ((point[0] - a[0]) * dx + (point[1] - a[1]) * dy) / (dx * dx + dy * dy)));
+  const x = a[0] + t * dx;
+  const y = a[1] + t * dy;
+  return (point[0] - x) ** 2 + (point[1] - y) ** 2;
+}
+
+function polygonEdgeDistance(point, polygon) {
+  let best = Infinity;
+  for (const ring of polygon?.rings || []) {
+    for (let i = 0; i < ring.length; i++) {
+      best = Math.min(best, segmentDistanceSquared(point, ring[i], ring[(i + 1) % ring.length]));
+    }
+  }
+  return Math.sqrt(best);
+}
+
+/**
+ * Stable, interior label anchor. A small pole-of-inaccessibility search avoids
+ * centroids that land in water, holes, or outside crescent-shaped districts.
+ */
+export function polygonLabelPoint(polygons, bounds = NYC_BOUNDS) {
+  let best = null;
+  let bestDistance = -1;
+  for (const polygon of Array.isArray(polygons) ? polygons : []) {
+    const outer = polygon?.rings?.[0];
+    if (!outer?.length) continue;
+    const xs = outer.map((point) => Number(point[0]));
+    const ys = outer.map((point) => Number(point[1]));
+    const box = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+    const candidates = [ringCentroid(outer), [(box[0] + box[2]) / 2, (box[1] + box[3]) / 2]];
+    for (let gx = 1; gx < 12; gx++) {
+      for (let gy = 1; gy < 12; gy++) {
+        candidates.push([
+          box[0] + ((box[2] - box[0]) * gx) / 12,
+          box[1] + ((box[3] - box[1]) * gy) / 12,
+        ]);
+      }
+    }
+    for (const point of candidates.filter(Boolean)) {
+      if (!pointInPolygon(point, polygon)) continue;
+      const distance = polygonEdgeDistance(point, polygon);
+      if (distance > bestDistance) {
+        best = point;
+        bestDistance = distance;
+      }
+    }
+  }
+  if (!best) return null;
+  const [x, y] = projectLonLat(best[0], best[1], bounds);
+  return { x: Number(x.toFixed(2)), y: Number(y.toFixed(2)) };
+}
+
+function bboxLabelPoint(bbox) {
+  if (!Array.isArray(bbox) || bbox.length !== 4) return null;
+  const [x, y] = projectLonLat((bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2);
+  return { x: Number(x.toFixed(2)), y: Number(y.toFixed(2)) };
+}
+
+function fillRgb(fill) {
+  const value = String(fill || "").trim();
+  const hex = value.match(/^#([0-9a-f]{6})$/i);
+  if (hex) return [0, 2, 4].map((offset) => Number.parseInt(hex[1].slice(offset, offset + 2), 16));
+  const rgb = value.match(/^rgb\(\s*(\d+)\D+(\d+)\D+(\d+)\s*\)$/i);
+  return rgb ? rgb.slice(1, 4).map(Number) : [236, 238, 242];
+}
+
+function relativeLuminance(values) {
+  return values.reduce((sum, value, index) => {
+    const channel = value / 255;
+    const linear = channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    return sum + linear * [0.2126, 0.7152, 0.0722][index];
+  }, 0);
+}
+
+function contrastRatio(a, b) {
+  const high = Math.max(a, b);
+  const low = Math.min(a, b);
+  return (high + 0.05) / (low + 0.05);
+}
+
+export function mapLabelTone(fill) {
+  const fillLuminance = relativeLuminance(fillRgb(fill));
+  const darkContrast = contrastRatio(fillLuminance, relativeLuminance(MAP_LABEL_RGB.dark));
+  const lightContrast = contrastRatio(fillLuminance, relativeLuminance(MAP_LABEL_RGB.light));
+  return lightContrast > darkContrast ? MAP_LABEL_TONES.light : MAP_LABEL_TONES.dark;
+}
+
+export function mapLabelContrast(fill) {
+  const tone = mapLabelTone(fill);
+  return contrastRatio(relativeLuminance(fillRgb(fill)), relativeLuminance(MAP_LABEL_RGB[tone]));
+}
+
+export function mapLabelText(level, id, label) {
+  if (level === "community_district") return `CD ${Number(String(id).slice(1))}`;
+  if (level === "council_district") return `Council ${id}`;
+  return String(label || id || "");
 }
 
 export function bboxToViewBox(bbox, pad = 0.02) {
@@ -816,6 +957,7 @@ export function mapFeatures(boundaries, activity, opts = {}) {
         path: ringToSvgPath(hull.rings[0]),
         counts: { ...emptyLensCounts(), ...c },
         total: totalForLens(c, lens),
+        labelPoint: bboxLabelPoint(hull.bbox),
       };
     });
     return stampMax(features, lens);
@@ -844,6 +986,7 @@ export function mapFeatures(boundaries, activity, opts = {}) {
         counts: { ...emptyLensCounts(), ...c },
         total: totalForLens(c, lens),
         parent: boroughFromCommunityId(id),
+        labelPoint: polygonLabelPoint(d.polygons),
       });
     }
     return stampMax(features, lens);
@@ -867,6 +1010,7 @@ export function mapFeatures(boundaries, activity, opts = {}) {
       path: polygonsToSvgPath(d.polygons),
       counts: { ...emptyLensCounts(), ...c },
       total: totalForLens(c, lens),
+      labelPoint: polygonLabelPoint(d.polygons),
     });
   }
   return stampMax(features, lens);
@@ -881,6 +1025,8 @@ function stampMax(features, lens) {
     features: features.map((f) => ({
       ...f,
       fill: choroplethFill(f.total, max),
+      labelText: mapLabelText(f.level, f.id, f.label),
+      labelTone: mapLabelTone(choroplethFill(f.total, max)),
     })),
     max,
     lens,

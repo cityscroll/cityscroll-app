@@ -1,6 +1,8 @@
 import {
   MAP_LENSES,
   BOROUGH_META,
+  BOROUGH_HULLS,
+  bboxToViewBox,
   defaultViewBox,
   mapFeatures,
 } from "./map_exploration.mjs";
@@ -266,7 +268,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     max: mappedFeatures.max,
     level,
     parent,
-    viewBox: defaultViewBox(),
+    viewBox: level === "community_district" && parent && BOROUGH_HULLS[parent]
+      ? bboxToViewBox(BOROUGH_HULLS[parent].bbox, 0.08)
+      : defaultViewBox(),
     bags,
     activity: activityRoot,
     browseHref: migratedSiteHref(`/${routeHashFromScope(scope, { surface: lens })}`),
@@ -333,6 +337,10 @@ export function renderNearYouBody(view) {
     data-map-id="${esc(feature.id)}" data-count="${feature.total}" data-map-level="${esc(feature.level)}"
     data-map-href="${esc(feature.href)}" d="${esc(feature.path)}" fill="${esc(feature.fill)}"
     aria-label="${esc(feature.label)}: ${feature.total} ${esc(view.lensLabel)} records"></path>`).join("");
+  const labels = view.features.map((feature) => `<text class="map-label map-label-${esc(feature.level)} map-label--${esc(feature.labelTone)}"
+      data-map-label="${esc(feature.id)}" data-area-name="${esc(feature.label)}"
+      x="${esc(feature.labelPoint?.x)}" y="${esc(feature.labelPoint?.y)}"
+      text-anchor="middle" dominant-baseline="central" aria-label="${esc(feature.label)}">${esc(feature.labelText)}</text>`).join("");
   const areas = [...view.features] // Source: district_boundaries.json build artifact.
     .sort((a, b) => b.total - a.total || String(a.label).localeCompare(String(b.label)))
     .map((feature) => `<li><a data-map-area="${esc(feature.id)}" data-count="${feature.total}" href="${esc(feature.href)}"><span>${esc(feature.label)}</span><strong>${feature.total}</strong></a></li>`)
@@ -409,6 +417,7 @@ export function renderNearYouBody(view) {
             <title id="nearMapTitle">New York City ${esc(view.level.replaceAll("_", " "))} map</title>
             <desc id="nearMapDesc">The area list beside this map contains the same links and ${esc(view.lensLabel)} counts.</desc>
             <g fill-rule="evenodd">${paths}</g>
+            <g aria-hidden="true">${labels}</g>
           </svg>
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Boundary layer: ${esc(view.activity?.boundary_vintage || "not published")}</p>

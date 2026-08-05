@@ -400,6 +400,38 @@ select {
   stroke-width: 3;
 }
 
+.map-label {
+  pointer-events: none;
+  font-family: var(--font-interface);
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: .01em;
+  paint-order: stroke fill;
+  stroke-linejoin: round;
+  stroke-width: 4px;
+}
+
+.map-label-borough {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.map-label--dark {
+  fill: var(--color-map-label-dark);
+  stroke: rgba(255, 255, 255, .92);
+}
+
+.map-label--light {
+  fill: var(--color-surface);
+  stroke: rgba(19, 36, 82, .92);
+}
+
+.map-label.is-linked {
+  font-weight: 850;
+  stroke-width: 6px;
+}
+
 .map-controls {
   display: flex;
   flex-wrap: wrap;
@@ -729,6 +761,10 @@ select {
 
   .near-map-wrap svg {
     height: 48vh;
+  }
+
+  .map-label-borough {
+    font-size: 28px;
   }
 }
 
