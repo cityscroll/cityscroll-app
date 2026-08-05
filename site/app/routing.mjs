@@ -1132,10 +1132,10 @@ async function showNotice(id, watch){
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
-      <div id="nplain"></div><div id="ncontext"></div><div id="nactions">${initialActionRail}</div>
-      ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
-      ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
-      <div id="naddr"></div><div id="nmwbe"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="nregdwell"></div><div id="nsuboutreach"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="naboaward"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="nplain" data-export-class="plain_summary"></div><div id="ncontext" data-export-class="notice_context"></div><div id="nactions" data-export-class="actions">${initialActionRail}</div>
+      ${r.type_of_notice_description==="Solicitation"?`<div data-export-class="actions">${buildApply(r,false)}</div>`:""}
+      <div data-export-class="notice_context">${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}</div>
+      <div id="naddr" data-export-class="address_geography"></div><div id="nmwbe" data-export-class="mwbe_context"></div><div id="nrules" data-export-class="rule_lifecycle"></div><div id="nlifecycle" data-export-class="procurement_lifecycle"></div><div id="nregdwell" data-export-class="award_registration_dwell"></div><div id="nsuboutreach" data-export-class="sub_outreach"></div><div id="ndollars" data-export-class="dollars"></div><div id="nsubsidy" data-export-class="subsidy"></div><div id="naboaward" data-export-class="authority_award"></div><div id="ncommercial" data-export-class="commercial"></div><div id="ndisposition" data-export-class="property_disposition"></div><div id="npropertyxd" data-export-class="property_cross_domain"></div><div id="ntaxlien" data-export-class="tax_lien"></div><div id="nfranchise" data-export-class="franchise"></div><div id="nland" data-export-class="land_project"></div><div id="nmeet" data-export-class="meeting_outcomes"></div><div id="nexternal" data-export-class="external_award"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -1145,11 +1145,11 @@ async function showNotice(id, watch){
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>
-      ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
-      <div class="xlate" id="nxlate"></div>
-      <div id="nprior"></div>
-      <div id="nforecast"></div>
-      <div id="nchain"></div>
+      ${scope?`<details class="fulltext" data-export-class="official_notice_text"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
+      <div class="xlate" id="nxlate" data-export-class="unofficial_translation"></div>
+      <div id="nprior" data-export-class="paper_trail"></div>
+      <div id="nforecast" data-export-class="agency_forecast"></div>
+      <div id="nchain" data-export-class="paper_trail"></div>
       <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
   </div></div>`;
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
