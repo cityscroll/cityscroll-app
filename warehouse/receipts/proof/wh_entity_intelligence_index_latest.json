@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "wh_entity_intelligence_index_v1",
   "object_link_version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-05T20:11:46.475Z",
+  "generated_at": "2026-08-05T20:13:49.210Z",
   "observation_count": 400,
   "root_count": 160,
   "edge_count": 752,
