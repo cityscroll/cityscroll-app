@@ -152,9 +152,10 @@ async function nlTranslate(){
 function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
 
 // Informal notice translation — original English always stays primary above this mount.
-// On-demand only (button); worker caches per (notice, lang) so a second open is a cache hit
-// with no upstream model call. Invariant failures return ok:false → we show the short
-// unavailable line, never a partial translation.
+// An explicit language on a canonical notice document is a request for the translated aid,
+// so that route opens it on first paint. Saved-language visits and in-app notice navigation
+// remain on-demand. The worker caches per (notice, lang), and invariant failures return
+// ok:false → we show the short unavailable line, never a partial translation.
 function mountUnofficialTranslation(el, r){
   if(!el || !r || !r.request_id) return;
   const lang = window.LANG || "en";
@@ -166,7 +167,7 @@ function mountUnofficialTranslation(el, r){
   const pane = el.querySelector("[data-xlate-pane]");
   if(!btn || !pane) return;
   let state = "idle"; // idle | loading | open | unavailable
-  btn.addEventListener("click", async ()=>{
+  const activate = async ()=>{
     if(state === "open"){
       pane.hidden = true;
       btn.textContent = t("unofficial_translation_show");
@@ -221,7 +222,11 @@ function mountUnofficialTranslation(el, r){
       btn.disabled = true;
       state = "unavailable";
     }
-  });
+  };
+  btn.addEventListener("click", activate);
+  const explicitLang = new URLSearchParams(location.search).get("lang");
+  const noticeDocument = /^\/notices\/[A-Za-z0-9_-]{1,80}\/?$/.test(location.pathname);
+  if(noticeDocument && explicitLang === lang) void activate();
 }
 
 // The chips summarizing what was understood are inert status text (role="status"), not the

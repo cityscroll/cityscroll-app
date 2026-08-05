@@ -16,6 +16,21 @@ export const TRANSLATE_LANGS = Object.freeze([
 
 const MODEL = "claude-haiku-4-5";
 const MAX_SOURCE_CHARS = 6000;
+const TRANSLATION_TOOL_NAME = "return_translation";
+
+const TRANSLATION_TOOL = Object.freeze({
+  name: TRANSLATION_TOOL_NAME,
+  description: "Return the translated City Record notice fields.",
+  input_schema: {
+    type: "object",
+    properties: {
+      title: { type: "string" },
+      description: { type: "string" },
+    },
+    required: ["title", "description"],
+    additionalProperties: false,
+  },
+});
 
 // Language labels for the system prompt (native name where helpful).
 const LANG_LABEL = {
@@ -129,11 +144,11 @@ function buildSystem(lang, meta) {
   const pin = meta.pin ? `PIN (keep EXACTLY): ${meta.pin}` : "";
   const rid = meta.request_id ? `Request ID (keep EXACTLY): ${meta.request_id}` : "";
   return [
-    `You produce an INFORMAL translation of a New York City Record procurement notice into ${LANG_LABEL[lang] || lang}.`,
+    `You produce an INFORMAL translation of a New York City Record notice into ${LANG_LABEL[lang] || lang}.`,
     "This is an unofficial aid only — the English original remains the legal record.",
-    "Return ONLY a JSON object with keys title and description (strings). No markdown fences.",
+    `Call ${TRANSLATION_TOOL_NAME} exactly once with the translated title and description.`,
     "",
-    "HARD RULES — if you cannot satisfy them, still return JSON but leave the English tokens intact:",
+    "HARD RULES — if you cannot satisfy them, leave the English tokens intact in the tool input:",
     "1. Every dollar amount ($…), date, PIN, Request ID, multi-digit number, agency name, and street address from the source MUST appear character-for-character in the output.",
     "2. Do NOT convert currencies, reformat dates, localize numbers, or translate proper names of agencies, streets, boroughs, or PINs.",
     "3. Leave English acronyms for NYC agencies as-is; do not expand them into a wrong agency.",
@@ -150,21 +165,21 @@ function buildSystem(lang, meta) {
   ].filter(Boolean).join("\n");
 }
 
-function parseModelJson(raw) {
-  const text = String(raw || "").trim();
-  // Prefer a fenced or bare JSON object.
-  const fence = text.match(/\{[\s\S]*\}/);
-  if (!fence) return null;
-  try {
-    const obj = JSON.parse(fence[0]);
-    if (!obj || typeof obj !== "object") return null;
-    return {
-      title: obj.title != null ? String(obj.title) : "",
-      description: obj.description != null ? String(obj.description) : "",
-    };
-  } catch {
+function translationFieldsFromMessage(data) {
+  const block = (data?.content || []).find(
+    (candidate) => candidate?.type === "tool_use"
+      && candidate.name === TRANSLATION_TOOL_NAME,
+  );
+  if (!block?.input || typeof block.input !== "object" || Array.isArray(block.input)) {
     return null;
   }
+  if (typeof block.input.title !== "string" || typeof block.input.description !== "string") {
+    return null;
+  }
+  return {
+    title: block.input.title,
+    description: block.input.description,
+  };
 }
 
 /**
@@ -208,6 +223,8 @@ export async function translateNoticeFields(env, lang, row) {
         model: MODEL,
         max_tokens: 1800,
         system: buildSystem(lang, meta),
+        tools: [TRANSLATION_TOOL],
+        tool_choice: { type: "tool", name: TRANSLATION_TOOL_NAME },
         messages: [
           {
             role: "user",
@@ -221,12 +238,8 @@ export async function translateNoticeFields(env, lang, row) {
     });
     if (!r.ok) return { degraded: true, reason: `api-${r.status}` };
     const data = await r.json();
-    const text = (data.content || [])
-      .filter((b) => b.type === "text")
-      .map((b) => b.text)
-      .join("\n");
-    const parsed = parseModelJson(text);
-    if (!parsed) return { degraded: true, reason: "no-json" };
+    const parsed = translationFieldsFromMessage(data);
+    if (!parsed) return { degraded: true, reason: "no-tool" };
     return { title: parsed.title, description: parsed.description, model: MODEL };
   } catch (e) {
     return { degraded: true, reason: "error", message: String(e?.message || e) };
