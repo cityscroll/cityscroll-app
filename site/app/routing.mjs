@@ -352,6 +352,15 @@ function bareCollectionHash(raw){
   }[route]||null;
 }
 
+// Readers still use the former Staffing lens name in hand-written and shared URLs.
+// Normalize only the route token so every query parameter survives byte-for-byte; generated
+// links continue to use the canonical People namespace.
+function canonicalInputRoute(raw){
+  const qi=raw.indexOf("?");
+  const route=qi<0?raw:raw.slice(0,qi);
+  return route==="staffing"?"people"+raw.slice(route.length):raw;
+}
+
 // Item routes are a same-document SPA navigation, so their visible Back control should traverse
 // the entry that opened them instead of guessing a global landing. The URL remains canonical and
 // shareable; this small history-state sidecar carries only the prior hash and viewport position.
@@ -677,11 +686,17 @@ function applyHash(){
   setNoticeCompactCta(false);
   const incoming = location.hash.slice(1);
   const slashPos = incoming.indexOf("/");
-  const raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
+  let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", "#"+raw); }
   if(!raw) return false;
+  const canonicalRaw=canonicalInputRoute(raw);
+  const normalizedInputAlias=canonicalRaw!==raw;
+  if(normalizedInputAlias){
+    raw=canonicalRaw;
+    history.replaceState(routeHistoryState({entry:{hash:"#"+raw,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"","#"+raw);
+  }
   const scopeSurface=raw.split("?",1)[0];
-  const scope=["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
+  const scope=!normalizedInputAlias&&["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
     ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
   if(scope){
     const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
