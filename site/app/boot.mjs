@@ -311,9 +311,7 @@ async function applyNoticeWatchSeed({ noticeId, projectId, lens, filter }){
  * Neutral surfaces (home, about-style) stay bare #alerts.
  */
 function currentLensFilterState(tab){
-  const adapt=(state)=>globalThis.CrolScope
-    ?CrolScope.lensStateFromScope(CrolScope.scopeFromLensState(tab,state,{language:window.LANG||"en"}),tab)
-    :state;
+    const adapt=state=>CrolScope.lensStateFromScope(CrolScope.scopeFromLensState(tab,state,{language:window.LANG||"en"}),tab);
   if(tab === "money"){
     return adapt({
       agency: $("#agency") && $("#agency").value || "",

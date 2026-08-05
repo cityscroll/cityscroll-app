@@ -1,8 +1,6 @@
 let nlParserPromise;
-function adaptedScopeHash(lens, hash){
-  if(!hash || !globalThis.CrolScope) return hash;
-  const scope=CrolScope.scopeFromRouteHash(hash,{language:window.LANG||"en"});
-  return CrolScope.routeHashFromScope(scope,{surface:lens});
+function scopeHash(lens, hash){
+  return hash&&CrolScope.routeHashFromScope(CrolScope.scopeFromRouteHash(hash,{language:window.LANG||"en"}),{surface:lens});
 }
 function loadNlParser(){
   return nlParserPromise ||= new Promise(resolve=>{
@@ -58,7 +56,7 @@ function renderNLQPresets(){
       : "";
     box.querySelectorAll(".nlqpreset-run").forEach(btn=>btn.addEventListener("click",()=>{
       const preset=nlqPresetStore()[+btn.dataset.i]; if(!preset) return;
-      const hash=adaptedScopeHash(presetLens(preset),preset.hash);
+      const hash=scopeHash(presetLens(preset),preset.hash);
       if(location.hash===hash) applyHash(); else location.hash=hash;
     }));
     box.querySelectorAll(".nlqpreset-remove").forEach(btn=>btn.addEventListener("click",()=>{
@@ -90,13 +88,12 @@ function renderLandingShareActions(){
   bindQRShare(root.querySelector("[data-qr-share]"), url);
 }
 function searchActionsHTML(lens, hash){
-  hash=adaptedScopeHash(lens,hash);
   if(!hash) return "";
   const moneyIds=lens==="money";
   return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(currentLanguageURL(canonicalSearchURL(location, hash)))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
 function bindSearchActions(root, label, hash){
-  hash=adaptedScopeHash(presetLens(hash)||document.querySelector(".tabbtn.active")?.dataset.tab,hash);
+  hash=scopeHash(presetLens(hash)||document.querySelector(".tabbtn.active")?.dataset.tab,hash);
   if(!root || !hash) return;
   const url=currentLanguageURL(canonicalSearchURL(location, hash));
   const share=root.querySelector("[data-search-share]"); if(share) share.href=url;
@@ -105,10 +102,7 @@ function bindSearchActions(root, label, hash){
   bindQRShare(root.querySelector("[data-qr-share]"), url);
   const save=root.querySelector("[data-search-save]");
   if(save) save.addEventListener("click",()=>{
-    const lens=presetLens(hash);
-    const scope=CrolScope.scopeFromPreset({label,hash},{language:window.LANG||"en"});
-    const preset=CrolScope.presetFromScope(scope,{label,lens});
-    nlqPresetSet(savePreset(nlqPresetStore(), preset.label, preset.hash));
+    nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
     renderNLQPresets();
     save.dataset.i18n="saved_check";
     save.textContent=t("saved_check");
@@ -568,7 +562,7 @@ function nlFeed(key, placeholder){
 }
 
 function searchFilterFromHash(lens, hash){
-  hash=adaptedScopeHash(lens,hash);
+  hash=scopeHash(lens,hash);
   const qi=(hash||"").indexOf("?");
   if(qi<0 || !hash.startsWith("#"+lens+"?")) return null;
   const q=new URLSearchParams(hash.slice(qi+1));
