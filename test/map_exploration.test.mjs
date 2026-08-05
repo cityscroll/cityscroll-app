@@ -58,8 +58,8 @@ test("map helpers project lon/lat and emit SVG paths", () => {
   assert.match(path, /Z/);
 });
 
-test("choroplethFill is paper for zero and deeper for higher density", () => {
-  assert.equal(choroplethFill(0, 10), "#f4efe6");
+test("choroplethFill uses the civic palette for zero and deepens with density", () => {
+  assert.equal(choroplethFill(0, 10), "#eceef2");
   assert.notEqual(choroplethFill(10, 10), choroplethFill(1, 10));
   assert.ok(totalForLens({ land: 2, property: 3 }, "all") === 5);
   assert.ok(totalForLens({ land: 2, property: 3 }, "land") === 2);

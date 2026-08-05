@@ -102,6 +102,11 @@ runs:
         node "$SOURCE_DIR/tools/build_primary_documents.mjs"
         node "$SOURCE_DIR/tools/build_primary_documents.mjs" --check
         node "$SOURCE_DIR/tools/build_url_migration_map.mjs" --check
+    - name: Check civic token contract for built documents
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: python3 "$SOURCE_DIR/test/standards/civic_token_contract.py"
     # Land upcoming-hearings payload: production rows must be ZAP-traceable.
     # Live sweep is scheduled separately; deploy only re-checks the committed
     # snapshot so synthetic padding cannot re-enter the public site.
