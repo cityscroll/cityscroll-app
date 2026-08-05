@@ -384,8 +384,9 @@ python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
 warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py \
   --from-fixture --limit 25 --force-headroom
 
-# Incremental warehouse slice (after WH-01/02 OCP load; default limit 200)
-warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200
+# Incremental warehouse slice (after WH-01/02 OCP load; hard limit 200)
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200 \
+  --review-receipt warehouse/receipts/proof/wh04_er_batch_live_review_2026-08-05.json
 
 warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/er_entity_links_verify.sql
@@ -396,7 +397,7 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
 | **Single-job lock** | Same `warehouse/.ingest.lock` as ingest |
 | **Headroom gate** | Refuses when CONSTRAINED unless `--force-headroom` (fixture only) |
 | **taskpolicy / nice** | Warehouse slices go through `headroom.py wrap`; tiny fixture may skip wrap |
-| **Default limit** | 200 OCP rows (not full bulk) |
+| **Live OCP hard limit** | 200 rows; neither headroom override nor another flag widens it |
 | **DuckDB threads** | 1 on materialize |
 
 ### Materialized views
@@ -409,8 +410,11 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
 | `er_pair_receipt` | token_v0 candidate pair scores |
 | `er_ocp_vendor_resolved` | OCP awards LEFT JOIN vendor links (when OCP view present) |
 
-Parquet under `warehouse/parquet/er_*/` (gitignored). Proof receipt:
-`warehouse/receipts/proof/wh04_er_batch_latest.json`.
+Parquet under `warehouse/parquet/er_*/` (gitignored). The proof receipt at
+`warehouse/receipts/proof/wh04_er_batch_latest.json` copies the bounded source
+fetch metadata, runtime, candidate/accept/ambiguity counts, and an optional
+source-hash-gated quality review. The 200-row evidence is not a full-corpus
+precision or resource-safety claim.
 
 Pure lib: `warehouse/lib/er_batch.mjs` (imports `entity_resolution/` +
 `worker/src/lib/entity_link.mjs` exact-stem builder). Identity is never
