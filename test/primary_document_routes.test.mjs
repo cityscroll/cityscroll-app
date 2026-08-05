@@ -112,11 +112,17 @@ test("notice response renderer supplies semantic HTML before the enhancement isl
 test("Pages edge routing is a narrow waist and explicitly excludes the public Stats document", () => {
   assert.equal(edgeRequestKind("https://cityscroll.org/notices/20240515016"), "notice");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/rules/?q=air"), "browse");
+  assert.equal(edgeRequestKind("https://cityscroll.org/agencies/design-and-construction/"), "entity");
+  assert.equal(edgeRequestKind("https://cityscroll.org/vendors/CAMBA/"), "entity");
+  assert.equal(edgeRequestKind("https://cityscroll.org/officials/7801/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/stats.html"), "asset");
   assert.equal(edgeRequestKind("https://api.cityscroll.org/stats"), "asset");
   const routes = JSON.parse(read("../site/_routes.json"));
   assert.deepEqual(routes.exclude, ["/stats.html"]);
   assert.ok(routes.include.includes("/notices/*"));
+  assert.ok(routes.include.includes("/agencies/*"));
+  assert.ok(routes.include.includes("/vendors/*"));
+  assert.ok(routes.include.includes("/officials/*"));
   assert.ok(routes.include.includes("/browse/*"));
 });
 

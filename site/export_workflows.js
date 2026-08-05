@@ -446,8 +446,15 @@
     const rec=recordRow(row,{context});
     const rows=[];
     const add=(entity_type,name,relationship,url,evidence)=>{if(name)rows.push({request_id:rec.request_id,entity_type,name:compact(name),relationship,url:compact(url),evidence:compact(evidence)});};
-    add("agency",rec.agency,"published by",rec.agency?`https://cityscroll.org/#agency/${encodeURIComponent(rec.agency)}`:"","City Record agency field");
-    add("vendor",rec.vendor,"awarded to",rec.vendor?`https://cityscroll.org/#vendor/${encodeURIComponent(rec.vendor)}`:"","City Record or joined award field");
+    const entityUrl=(kind,name)=>{
+      if(!name)return "";
+      const pivots=typeof globalThis!=="undefined"&&globalThis.CrolEntityPivots;
+      if(pivots)return new URL(pivots.entityHref({ref:pivots.entityRouteRef(kind,name),label:name}),"https://cityscroll.org").href;
+      if(kind==="agency")return `https://cityscroll.org/agencies/${encodeURIComponent(String(name).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""))}/`;
+      return `https://cityscroll.org/vendors/${encodeURIComponent(String(name).toUpperCase().replace(/\s+(?:LLC|INC|CORP(?:ORATION)?|LTD)\.?$/,""))}/`;
+    };
+    add("agency",rec.agency,"published by",entityUrl("agency",rec.agency),"City Record agency field");
+    add("vendor",rec.vendor,"awarded to",entityUrl("vendor",rec.vendor),"City Record or joined award field");
     add("project",rec.project_id||rec.project_name,"joined project",rec.project_id?`https://cityscroll.org/#land?project=${encodeURIComponent(rec.project_id)}`:"","exact published project identifier");
     rec.bbls.split(" | ").filter(Boolean).forEach(bbl=>add("parcel",bbl,"located on",/^\d{10}$/.test(bbl)?`https://zola.planning.nyc.gov/l/lot/${bbl[0]}/${Number(bbl.slice(1,6))}/${Number(bbl.slice(6))}`:"","published or exact-derived BBL"));
     asArray(context&&context.entities).forEach(entity=>add(entity.entity_type||entity.type,entity.name||entity.id,entity.relationship,entity.url,entity.evidence));

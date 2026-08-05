@@ -2,6 +2,9 @@
   "version": 1,
   "include": [
     "/notices/*",
+    "/agencies/*",
+    "/vendors/*",
+    "/officials/*",
     "/browse",
     "/browse/*"
   ],

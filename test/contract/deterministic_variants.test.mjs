@@ -8,6 +8,7 @@ import { SITE_SOURCE } from "../helpers/site_source.mjs";
 import { feedItems, atomFeed, jsonFeed, icsFeed } from "../../worker/src/lib/feed.mjs";
 import { vendorEntityPermalink } from "../../worker/src/lib/batch.mjs";
 import { migrateLegacyUrl } from "../../site/route_migration.mjs";
+import { entityHref, entityRouteRef } from "../../site/entity_pivot.mjs";
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 const fixture = JSON.parse(read("../fixtures/deterministic-drift/contracts.json"));
@@ -128,10 +129,10 @@ test("vendor and agency slug cleaning plus language-bearing permalink forms are 
   for (const entry of fixture.permalinks) {
     let hash;
     if (entry.kind === "vendor") {
-      hash = site.vendorHref(entry.raw_name);
-      assert.equal(vendorEntityPermalink(entry.raw_name), `https://cityscroll.org/${entry.hash}`);
+      hash = entityHref({ref:entityRouteRef("vendor", entry.raw_name),label:entry.raw_name});
+      assert.equal(vendorEntityPermalink(entry.raw_name), new URL(entry.path,"https://cityscroll.org").href);
     } else if (entry.kind === "agency") {
-      hash = site.agencyHref(entry.raw_name);
+      hash = entityHref({ref:entityRouteRef("agency", entry.raw_name),label:entry.raw_name});
     } else {
       hash = `#notice/${encodeURIComponent(entry.id)}`;
       assert.equal(migrateLegacyUrl(`/${hash}`).target, entry.canonical);
@@ -140,9 +141,9 @@ test("vendor and agency slug cleaning plus language-bearing permalink forms are 
         entry.canonical_spanish,
       );
     }
-    assert.equal(hash, entry.hash);
+    assert.equal(hash, entry.path || entry.hash);
     assert.equal(
-      language.languageURL(`https://cityscroll.org/${hash}`, "es", "https://cityscroll.org/"),
+      language.languageURL(new URL(hash,"https://cityscroll.org/").href, "es", "https://cityscroll.org/"),
       entry.spanish,
     );
   }

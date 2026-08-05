@@ -226,7 +226,7 @@ describe("observation → links with provenance", () => {
     assert.equal(objects.length, 1);
     assert.equal(objects[0].link_type, "votes_as_official");
     assert.equal(objects[0].root_ref, "agency:id:city-council");
-    assert.match(objects[0].href || "", /#official\/7801/);
+    assert.match(objects[0].href || "", /\/officials\/7801\//);
     assert.equal(links[0].type, "votes_as_official");
     assert.equal(links[0].to, "agency:id:city-council");
 

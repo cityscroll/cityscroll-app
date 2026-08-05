@@ -13,13 +13,15 @@ import {
   entityChipHTML,
   entityHref,
   parseEntityRef,
+  reconcileAgencyIdentity,
+  resolveAgencyIdentity,
 } from "../site/entity_pivot.mjs";
 import { buildSubjectEntityIndex } from "../tools/lib/entity_intelligence_build.mjs";
 
 const CAMBA = "vendor:stem:CAMBA";
 const DSS = "agency:id:homeless-services";
 
-test("typed entity refs fail closed and routable refs keep existing route ownership", () => {
+test("typed entity refs fail closed and mint canonical document routes", () => {
   assert.deepEqual(parseEntityRef(CAMBA), {
     kind: "vendor",
     id: "stem:CAMBA",
@@ -33,17 +35,17 @@ test("typed entity refs fail closed and routable refs keep existing route owners
   assert.equal(parseEntityRef("notice:20260706036"), null);
   assert.equal(parseEntityRef("vendor:stem:CAM BA"), null);
 
-  assert.equal(entityHref({ ref: CAMBA, label: "CAMBA" }), "#vendor/CAMBA");
+  assert.equal(entityHref({ ref: CAMBA, label: "CAMBA" }), "/vendors/CAMBA/");
   assert.equal(
     entityHref({ ref: DSS, label: "Homeless Services" }, { tab: "forecast" }),
-    "#agency/Homeless%20Services?tab=forecast",
+    "/agencies/homeless-services/?tab=forecast",
   );
   assert.equal(
     entityHref(
       { ref: "entity:official:7801", label: "Member" },
       { eventId: "22526", noticeId: "20260706036" },
     ),
-    "#official/7801?event=22526&notice=20260706036",
+    "/officials/7801/?event=22526&notice=20260706036",
   );
   assert.equal(entityHref({ ref: "notice:1", label: "not an entity" }), "");
 });
@@ -55,7 +57,7 @@ test("entity chips link accepted refs, band tentative matches, and suppress revi
     link_confidence: "strong",
     relation: "named_vendor",
   });
-  assert.match(strong, /<a class="pivot entity-pivot" href="#vendor\/CAMBA"/);
+  assert.match(strong, /<a class="pivot entity-pivot" href="\/vendors\/CAMBA\/"/);
   assert.match(strong, /CAMBA &amp; Co/);
   assert.doesNotMatch(strong, /Possible match/);
 
@@ -78,6 +80,46 @@ test("entity chips link accepted refs, band tentative matches, and suppress revi
   });
   assert.equal(review, "CAMBA &lt;review&gt;");
   assert.doesNotMatch(review, /href=/);
+});
+
+test("agency display aliases resolve to the same canonical identity and never enter the href", () => {
+  for (const arrival of [
+    "Design and Construction",
+    "Design and Construction (DDC)",
+    "Department of Design and Construction",
+    "DESIGN & CONSTRUCTION",
+  ]) {
+    const identity = resolveAgencyIdentity(arrival);
+    assert.equal(identity.canonical_id, "design-and-construction");
+    assert.equal(identity.canonical_name, "Design and Construction");
+    assert.ok(identity.variants.includes("Design and Construction"));
+  }
+  const html = entityChipHTML({
+    ref: "agency:id:design-and-construction",
+    label: "Design and Construction (DDC)",
+    link_confidence: "strong",
+  });
+  assert.match(html, /href="\/agencies\/design-and-construction\/"/);
+  assert.match(html, />Design and Construction \(DDC\)<\/a>/);
+  assert.doesNotMatch(html, /href="[^"]*DDC/);
+});
+
+test("the source crosswalk makes canonical agency ids reversible to every exact source spelling", () => {
+  const rows = [
+    {
+      raw_string: "Triborough Bridge and Tunnel Authority",
+      canonical_id: "triborough-bridge-and-tunnel-authority",
+      canonical_name: "Triborough Bridge and Tunnel Authority",
+      variants: ["TRIBOROUGH BRIDGE & TUNNEL AUTH", "Triborough Bridge and Tunnel Authority"],
+    },
+  ];
+  const identity = reconcileAgencyIdentity("triborough-bridge-and-tunnel-authority", rows);
+  assert.equal(identity.canonical_name, "Triborough Bridge and Tunnel Authority");
+  assert.deepEqual(identity.variants, [
+    "Triborough Bridge and Tunnel Authority",
+    "TRIBOROUGH BRIDGE & TUNNEL AUTH",
+  ]);
+  assert.equal(identity.matched, true);
 });
 
 test("scopeWithEntity is normalized, idempotent, and ignores invalid refs", () => {

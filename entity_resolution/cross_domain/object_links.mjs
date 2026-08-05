@@ -2058,7 +2058,7 @@ function hrefForObject(obs) {
     if (obs.event_id) q.set("event", obs.event_id);
     if (obs.request_id) q.set("notice", obs.request_id);
     const qs = q.toString();
-    return `#official/${encodeURIComponent(obs.person_id)}${qs ? `?${qs}` : ""}`;
+    return `/officials/${encodeURIComponent(obs.person_id)}/${qs ? `?${qs}` : ""}`;
   }
   if (obs.request_id) return `#notice/${encodeURIComponent(obs.request_id)}`;
   if (obs.project_id) return `#land?project=${encodeURIComponent(obs.project_id)}`;

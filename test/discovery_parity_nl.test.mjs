@@ -40,7 +40,7 @@ test("money: Parks contract forecast routes to agency forecast tab", () => {
   assert.equal(f.tab, "forecast");
   assert.equal(
     buildMoneyDeepLink(f),
-    "#agency/Parks%20and%20Recreation?tab=forecast",
+    "/agencies/parks-and-recreation/?tab=forecast",
   );
 });
 

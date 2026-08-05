@@ -4,8 +4,19 @@
    time (v1): normalize to a stem (case/punctuation/legal suffixes), prefix-match server-side,
    then keep only rows whose own stem matches exactly. Honest and zero-infrastructure; a
    nightly clustered alias table can replace it without changing this page. */
-const agencyHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("agency",cleanText(name)),label:cleanText(name)},{tab}) : "#agency/"+encodeURIComponent(cleanText(name))+(tab?"?tab="+tab:"");
-const vendorHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("vendor",cleanText(name)),label:cleanText(name)},{tab}) : "#vendor/"+encodeURIComponent(cleanText(name))+(tab?"?tab="+tab:"");
+const agencyHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("agency",cleanText(name)),label:cleanText(name)},{tab}) : "/agencies/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
+const vendorHref = (name, tab) => globalThis.CrolEntityPivots ? globalThis.CrolEntityPivots.entityHref({ref:globalThis.CrolEntityPivots.entityRouteRef("vendor",cleanText(name)),label:cleanText(name)},{tab}) : "/vendors/"+encodeURIComponent(cleanText(name))+"/"+(tab?"?tab="+tab:"");
+let agencyCrosswalkPromise = null;
+async function routedAgencyIdentity(value, localIdentity){
+  if(localIdentity.matched) return localIdentity;
+  if(!agencyCrosswalkPromise){
+    agencyCrosswalkPromise = workerFetch("/agencies", null, 8000)
+      .then(r=>r.ok?r.json():null).then(data=>Array.isArray(data?.rows)?data.rows:[])
+      .catch(()=>[]);
+  }
+  const rows = await agencyCrosswalkPromise;
+  return globalThis.CrolEntityPivots.reconcileAgencyIdentity(value, rows);
+}
 
 /** Cached person_votes_lookup.json (precomputed by_person densify). */
 let personVotesLookupPromise = null;
@@ -368,14 +379,20 @@ async function showAgency(name, initialTab){
   showTab("entity");
   const box = $("#entityview");
   delete box.dataset.vendorStem;
-  const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
+  const arrival = String(name||"").trim();
+  const localIdentity = globalThis.CrolEntityPivots.resolveAgencyIdentity(arrival);
+  const safe = arrival.replace(/[<>&]/g,"");
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
+  const identity = await routedAgencyIdentity(arrival, localIdentity);
+  const nm = identity.canonical_name;
+  const variants = identity.variants;
+  const agencyWhere = `agency_name in(${variants.map(value=>`'${String(value).replace(/'/g,"''")}'`).join(",")})`;
   const [stats, sections, vendors, rfps, events, forecastData, externalAward, agencyIdentity, entityIntel] = await Promise.all([
-    loadAgencyStats(nm),
-    soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
-    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
-    soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
-    soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
+    loadAgencyStats(nm, variants),
+    soda({"$select":"section_name, count(1) as n","$where":agencyWhere,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
+    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`${agencyWhere} AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
+    soda({"$select":SELECT,"$where":`${agencyWhere} AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
+    soda({"$select":FEED_SELECT,"$where":`${agencyWhere} AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
     workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null),
     // Only fuzzy ABO agencies list awards on the profile; exact (NYCHA) has no agency-wide set,
     // and absent/unknown agencies have nothing to fetch (their claim is the synchronous note).
@@ -389,11 +406,15 @@ async function showAgency(name, initialTab){
       .then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
-    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. ${routeBackHTML("#money")}</div>`;
+    const searchHref = `/browse/contracts/?q=${encodeURIComponent(arrival)}`;
+    const explanation = identity.matched || localIdentity.matched
+      ? t("agency_empty_known", {name:safe})
+      : t("agency_empty_unknown", {name:safe});
+    box.innerHTML = `<div class="empty">${explanation} <a href="${searchHref}">${t("agency_empty_search")}</a> ${routeBackHTML("#money")}</div>`;
     applyActiveHistoryRouteScroll();
     return;
   }
-  const link = location.origin + location.pathname + agencyHref(nm);
+  const link = new URL(agencyHref(nm), location.origin).href;
   const maxT = Math.max.apply(null, vendors.map(v=>+v.t||0)) || 1;
   const vendorRows = vendors.map(v=>`<div class="lrow">
       <div class="lname">${pivotA(vendorHref(v.vendor_name), cleanText(v.vendor_name))}</div>
@@ -414,7 +435,7 @@ async function showAgency(name, initialTab){
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
-    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px" data-agency-id="${escUiHtml(identity.canonical_id)}" data-agency-name="${escUiHtml(nm)}" data-agency-variants="${escUiHtml(JSON.stringify(variants))}">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
       ${agencyProfileBar(stats, rfps.length, nm)}
@@ -938,7 +959,7 @@ function vendorProfileHTML(profile, details, hydrating){
 
 function renderVendorProfile(box, profile, details, initialTab, hydrating){
   const display = cleanText(profile.display);
-  const link = location.origin + location.pathname + vendorHref(display);
+  const link = new URL(vendorHref(display), location.origin).href;
   box.dataset.vendorStem = profile.stem;
   box.innerHTML = vendorProfileHTML(profile, details, hydrating);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));

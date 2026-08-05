@@ -129,7 +129,7 @@ test("matrix decodes to the exact bare canonical landing URL", () => {
 
 test("filtered, entity, located, and saved-preset URLs survive matrix encoding exactly", () => {
   const urls = [
-    "https://cityscroll.org/#vendor/Acme%20Gardens",
+    "https://cityscroll.org/vendors/ACME%20GARDENS/",
     "https://cityscroll.org/browse/zoning/?boro=Queens",
     "https://cityscroll.org/browse/zoning/?boro=Queens&cd=Q04",
     "https://cityscroll.org/browse/zoning/?boro=Queens&cd=Q04&council=25",
