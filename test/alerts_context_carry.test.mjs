@@ -44,14 +44,14 @@ test("exemplar notice scopes to meetings + agency, digKind meetings", () => {
   assert.equal(scope.noticeId, "20260716009");
 });
 
-test("alertsHref for exemplar is hash-param (same pattern as health fix path)", () => {
+test("alertsHref for exemplar opens the server Following preview", () => {
   const href = alertsHref(alertScopeFromNotice(DINING_OUT));
-  assert.match(href, /^#alerts\?/);
+  assert.match(href, /^https:\/\/api\.cityscroll\.org\/following\?/);
   const p = parseAlertsEntryParams(href);
   assert.equal(p.lens, "meetings");
   assert.equal(p.filter.agency, "Transportation");
-  assert.equal(p.noticeId, "20260716009");
-  assert.ok(isContextAlertsHash(href));
+  assert.equal(p.noticeId, null);
+  assert.equal(isContextAlertsHash(href), false, "Following is a document route, not a legacy hash route");
   assert.equal(isContextAlertsHash("#alerts"), false);
 });
 
@@ -79,7 +79,7 @@ test("agency rules notice → rules lens", () => {
   assert.equal(scope.digKind, "rules");
 });
 
-test("land project scope carries place keywords + project id", () => {
+test("land project scope carries its place criteria into Following", () => {
   const scope = alertScopeFromLandProject({
     project_id: "2022M0258",
     project_name: "SoHo/NoHo Neighborhood Plan",
@@ -89,7 +89,10 @@ test("land project scope carries place keywords + project id", () => {
   assert.equal(scope.projectId, "2022M0258");
   assert.ok(scope.filter.keywords.length >= 1);
   const href = alertsHref(scope);
-  assert.match(href, /project=2022M0258/);
+  const parsed = parseAlertsEntryParams(href);
+  assert.equal(parsed.lens, "land");
+  assert.deepEqual(parsed.filter.keywords, scope.filter.keywords);
+  assert.equal(parsed.filter.boro, "Manhattan");
 });
 
 test("lens list state → matching filter prefill (meetings with boro)", () => {

@@ -60,7 +60,7 @@ $("#career-query").addEventListener("input",debounce(()=>{
 },200));
 
 $("#awatch").addEventListener("change", ()=>{
-  aWatchChange();
+  globalThis.aWatchChange?.();
   announce(t("sync_watch_announce", {what: $("#awatch").selectedOptions[0].textContent.trim()}));
 });
 const districtSelect=$("#adistrict");
@@ -72,26 +72,25 @@ if(districtSelect){
   districtSelect.addEventListener("change",async()=>{
     if(!districtSelect.value) return;
     const tools=await import("../district_weekly_digest.mjs").catch(()=>null);
-    const href=tools&&tools.districtDigestAlertsHref?tools.districtDigestAlertsHref(districtSelect.value):"#alerts";
-    if(location.hash!==href) location.hash=href;
-    else aPreview();
+    const href=tools&&tools.districtDigestAlertsHref?tools.districtDigestAlertsHref(districtSelect.value):"/following/";
+    location.assign(href);
   });
 }
 $("#afreq").addEventListener("change", ()=>{
-  updateAWhen();
+  globalThis.updateAWhen?.();
   refreshQuizDisplay();
   announce(t("sync_freq_announce", {freq: $("#afreq").selectedOptions[0].textContent.trim()}));
 });
-$("#asubscribe").addEventListener("click", aSubscribe);
+$("#asubscribe").addEventListener("click", ()=>globalThis.aSubscribe?.());
 // aWatchChange() clears #aparam/#athresh's stale value when the watch type actually changes
 // (see the comment inside aWatchChange itself) -- so the suggestion's own param/threshold must
 // be applied AFTER that call, and refreshQuizDisplay() re-run once more afterward so the quiz's
 // mirrored narrow field picks up the just-applied value rather than the pre-clear one.
 function applySuggestion(w, p){
-  $("#awatch").value=w; aWatchChange();
+  $("#awatch").value=w; globalThis.aWatchChange?.();
   if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p;
   refreshQuizDisplay();
-  aPreview();
+  globalThis.aPreview?.();
 }
 document.querySelectorAll(".wandchip").forEach(b=>b.addEventListener("click",()=>applySuggestion(b.dataset.w, b.dataset.p)));
 
@@ -117,41 +116,12 @@ async function watchFromFilters(lens){
   if(carry && typeof carry.alertScopeFromLensState === "function"){
     const scope = carry.alertScopeFromLensState(lens, state);
     if(scope){
-      location.hash = carry.alertsHref(scope, {matchCount:currentLensResultCount(lens)});
+      location.assign(carry.alertsHref(scope, {matchCount:currentLensResultCount(lens)}));
       return;
     }
   }
-  // Fail-soft: previous direct-prefill path if the module failed to load.
-  showTab("alerts", true);
-  if(lens==="money"){
-    if(mode==="award" && $("#minamt").value){
-      $("#awatch").value="bigaward"; aWatchChange();
-      const thr=Number($("#minamt").value), opts=[1000000,5000000,10000000,50000000];
-      $("#athresh").value=String(opts.filter(o=>o<=thr).pop()||opts[0]);
-    } else {
-      $("#awatch").value="rfpkw"; aWatchChange();
-      $("#aparam").value=$("#kw").value.trim();
-    }
-  } else if(lens==="land"){
-    $("#awatch").value="rezone"; aWatchChange();
-    if($("#lkw").value.trim()) $("#aparam").value=$("#lkw").value.trim();
-  } else {
-    $("#awatch").value=lens; aWatchChange();
-    $("#aparam").value=$("#"+lens+"kw").value.trim();
-    const ag=$("#"+lens+"agency"); $("#aagency").value=(ag&&ag.value)||"";
-    if(lens==="meetings"){
-      const place=$("#meetingsboro").value;
-      meetingWatchExtra={
-        borough:place&&place!=="citywide-unlocated"&&place!=="citywide"&&place!=="virtual"&&place!=="unlocated"?place:null,
-        neighborhood:$("#meetingsneighborhood").value.trim()||null,
-        locationScope:(place==="citywide-unlocated"||place==="citywide"||place==="virtual"||place==="unlocated")?place:null,
-        dateWindow:$("#meetingswhen").value,
-        when:$("#meetingswhen").value,
-      };
-    }
-  }
-  refreshQuizDisplay();
-  aPreview();
+  // If context adaptation ever fails, the common server form remains the safe entry.
+  location.assign("/following/");
 }
 document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
 
@@ -402,11 +372,11 @@ function currentLensFilterState(tab){
 async function currentAlertsEntryHref(){
   const hash = location.hash || "";
   // On the alerts page itself, keep the current hash (or bare).
-  if(hash === "#alerts" || hash.startsWith("#alerts?")) return hash.startsWith("#alerts") ? hash : "#alerts";
+  if(hash === "#alerts" || hash.startsWith("#alerts?")) return "/following/";
   // Notice detail → notice-scoped entry.
   if(/^#notice\//.test(hash) && lastNoticeContext && lastNoticeContext.row){
     const carry = await ensureAlertsContextCarry();
-    if(!carry) return "#alerts";
+    if(!carry) return "/following/";
     return carry.alertsHref(carry.alertScopeFromNotice(lastNoticeContext.row));
   }
   // Land project detail (#land/<project_id>).
@@ -414,7 +384,7 @@ async function currentAlertsEntryHref(){
     const id = decodeURIComponent(hash.slice(6).split("?")[0] || "");
     if(id){
       const carry = await ensureAlertsContextCarry();
-      if(!carry) return "#alerts";
+      if(!carry) return "/following/";
       const row = (typeof lRows !== "undefined" && Array.isArray(lRows))
         ? lRows.find(r => r && String(r.project_id) === id)
         : null;
@@ -438,7 +408,7 @@ async function currentAlertsEntryHref(){
       if(scope) return carry.alertsHref(scope, {matchCount:currentLensResultCount(tab)});
     }
   }
-  return "#alerts";
+  return "/following/";
 }
 
 async function syncAlertsEntryHrefs(){
@@ -645,10 +615,12 @@ if(!applyHash()) search(); // an incoming permalink wins over the default Money 
 const alertsEntryHash = location.hash || "";
 const isAlertsContextEntry = (alertsEntryHash.startsWith("#alerts?")
   && /(?:^|[?&])(?:lens|notice|project)=/.test(alertsEntryHash.slice(1)));
-if(!isAlertsContextEntry) aWatchChange(true);
-updateAWhen();
-aRenderSaved();
-initAlertsRollupPrefs();
+if(typeof globalThis.aWatchChange==="function"){
+  if(!isAlertsContextEntry) globalThis.aWatchChange(true);
+  globalThis.updateAWhen?.();
+  globalThis.aRenderSaved?.();
+  globalThis.initAlertsRollupPrefs?.();
+}
 
 // Language switch must also repaint DYNAMICALLY-BUILT surfaces (2026-07-13 hotfix): applyStrings()
 // only covers data-i18n chrome, so lists, dropdowns and detail panels kept their old language.
@@ -665,8 +637,10 @@ function rerenderForLang(){
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   paintEditionSpan();
   loadAgencies();
-  aWatchChange(true); updateAWhen(); aRenderSaved(); renderAlertsRollupPrefs();
-  if(document.querySelector("#tab-alerts.active") && typeof initWatchTemplates==="function") initWatchTemplates();
+  if(typeof globalThis.aWatchChange==="function"){
+    globalThis.aWatchChange(true); globalThis.updateAWhen?.(); globalThis.aRenderSaved?.(); globalThis.renderAlertsRollupPrefs?.();
+    if(document.querySelector("#tab-alerts.active")) globalThis.initWatchTemplates?.();
+  }
   renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
@@ -715,7 +689,7 @@ function sessionShowBanner(session){
       if(window.t) manage.textContent = t("session_manage_watches");
     }
     // Keep the Alerts-tab manage link in lockstep with the session banner prefs URL.
-    syncAlertsPrefsManageLink();
+    globalThis.syncAlertsPrefsManageLink?.();
     const ny = document.getElementById("sessionNotYou");
     if(ny && window.t) ny.textContent = t("session_not_you");
     const di = document.getElementById("sessionDismiss");
@@ -786,6 +760,26 @@ async function sessionBoot(){
   else wire();
 })();
 
+// Homepage general-interest form stays tiny and independent of the deferred Following island.
+async function homeCtaSubscribeStatic(event){
+  event?.preventDefault?.();
+  const msg=$("#homeCtaMsg"),dest=$("#homeCtaEmail"),btn=$("#homeCtaSubmit");
+  if(!msg||!dest||!btn)return;
+  const email=dest.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    msg.textContent=t("enter_valid_email");dest.setAttribute("aria-invalid","true");dest.focus();return;
+  }
+  dest.removeAttribute("aria-invalid");btn.disabled=true;
+  msg.innerHTML='<span class="loading"></span> '+t("sending_confirm_link");
+  try{
+    const response=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens:"money",filter:{},freq:"weekly",lang:window.LANG||"en"})});
+    const result=await response.json().catch(()=>({}));
+    if(result.ok){msg.innerHTML="<b>"+t("check_inbox")+"</b> "+t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")});dest.value="";}
+    else msg.textContent=t("cant_reach_server");
+  }catch{msg.textContent=t("cant_reach_server");}
+  btn.disabled=false;
+}
+
 // Language switcher init — compact <select> top-right; i18n.js already loaded in <head>.
 (function(){
   function initLangSwitcher(){
@@ -810,7 +804,7 @@ async function sessionBoot(){
   }
   function initHomeCta(){
     const form = document.getElementById("homeCtaForm");
-    if(form) form.addEventListener("submit", homeCtaSubscribe);
+    if(form) form.addEventListener("submit", homeCtaSubscribeStatic);
   }
   function boot(){
     initLangSwitcher();

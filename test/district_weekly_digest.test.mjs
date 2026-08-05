@@ -54,10 +54,10 @@ test("action sections are positive and honest-absent", () => {
   assert.ok(grouped.every((section) => section.items.length > 0), "empty sections do not render");
 });
 
-test("district alert context URL is one shareable weekly watch", () => {
+test("district Following URL is one shareable weekly watch", () => {
   const href = districtDigestAlertsHref("33");
-  assert.match(href, /^#alerts\?/);
-  const q = new URLSearchParams(href.split("?")[1]);
+  assert.match(href, /^https:\/\/api\.cityscroll\.org\/following\?/);
+  const q = new URL(href).searchParams;
   assert.equal(q.get("lens"), "district");
   assert.equal(q.get("freq"), "weekly");
   assert.deepEqual(JSON.parse(q.get("filter")), { councilDistrict: "33" });

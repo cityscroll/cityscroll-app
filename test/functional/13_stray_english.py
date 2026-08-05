@@ -392,12 +392,6 @@ def run_lang(pw, lang):
         page.wait_for_timeout(1800 if tab == "land" else 1200)
         collect(page, tab, frags, violations, seen)
 
-    page.click('.tabbtn[data-tab="alerts"]')
-    page.wait_for_timeout(400)
-    page.click("#apreview")
-    page.wait_for_timeout(1500)
-    collect(page, "alerts+digest-preview", frags, violations, seen)
-
     # w9-05: entity view -- exercises announce()'s "Agency profile: {name}" into #srstatus
     # (L3), scoped to the SR-only surfaces (aria-labels + #srstatus), not the entity view's
     # full body text (a separate, larger translation gap outside this card's L1-L6 scope).

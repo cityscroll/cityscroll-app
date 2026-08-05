@@ -319,19 +319,19 @@ test("alert scope from commercial lens state carries asset + method + borough", 
   assert.equal(scope.filter.saleMethod, "online_auction");
   assert.equal(scope.filter.borough, "Brooklyn");
   const href = alertsHref(scope);
-  assert.match(href, /#alerts\?/);
+  assert.match(href, /\/following\?/);
   assert.match(href, /vehicle/);
   assert.match(href, /online_auction/);
 });
 
-test("property watch context carries neighborhood and disposition stage through the unified Alerts URL", () => {
+test("property watch context carries neighborhood and disposition stage through Following", () => {
   const scope = alertScopeFromLensState("property", {
     borough: "Brooklyn",
     neighborhood: "Greenpoint",
     process: "auction_or_rfp",
   });
   const href = alertsHref(scope);
-  assert.match(href, /#alerts\?/);
+  assert.match(href, /\/following\?/);
   assert.deepEqual(scope.filter, {
     keywords: [],
     agency: null,

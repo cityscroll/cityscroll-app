@@ -128,7 +128,7 @@ async function emailFromPrefsToken(env, token) {
   return normalizeEmail(res.payload.e);
 }
 
-async function listWatchesForEmail(env, email) {
+export async function listWatchesForEmail(env, email) {
   const want = normalizeEmail(email);
   const out = [];
   let cursor;

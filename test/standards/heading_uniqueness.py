@@ -20,8 +20,8 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
-TABS = ["people", "land", "property", "rules", "meetings", "alerts"]
+PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
+TABS = ["people", "land", "property", "rules", "meetings"]  # Source: site/index.html .tabbtn[data-tab] controls.
 
 STATE_JS = """() => {
   function visible(el){

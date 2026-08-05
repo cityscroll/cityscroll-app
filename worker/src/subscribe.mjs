@@ -12,7 +12,7 @@
 import { sanitize } from "./lib/filter.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { signToken } from "optin-token";
-import { confirmSubject, confirmEmailHtml } from "./lib/confirm_email.mjs";
+import { confirmSubject, confirmEmailHtml, htmlPage } from "./lib/confirm_email.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { overActorLimit } from "./lib/meter.mjs";
 
@@ -27,27 +27,32 @@ export async function handleSubscribe(req, env) {
   const origin = req.headers.get("origin") || "";
   const cors = corsHeaders(origin, env);
   if (!isAllowedRequestOrigin(origin, env)) {
-    return json({ ok: false, reason: "origin" }, 403, cors);
+    return reply(req, { ok: false, reason: "origin" }, 403, cors);
   }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-  if (req.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
+  if (req.method !== "POST") return reply(req, { ok: false, reason: "method" }, 405, cors);
 
   if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) {
-    return json({ ok: false, reason: "not-configured" }, 503, cors);
+    return reply(req, { ok: false, reason: "not-configured" }, 503, cors);
   }
 
-  let body;
-  try { body = await req.json(); } catch { return json({ ok: false, reason: "bad-json" }, 400, cors); }
+  let body = {};
+  const contentType = req.headers.get("content-type") || "";
+  try {
+    if (contentType.includes("application/json")) body = await req.json();
+    else body = Object.fromEntries(new URLSearchParams(await req.text()).entries());
+    if (typeof body.filter === "string") body.filter = JSON.parse(body.filter || "{}");
+  } catch { return reply(req, { ok: false, reason: "bad-request" }, 400, cors); }
 
   const email = String(body.email || "");
   const lens = SUBSCRIBABLE.has(body.lens) ? body.lens : null;
-  if (!isValidEmail(email)) return json({ ok: false, reason: "bad-email" }, 400, cors);
-  if (!lens) return json({ ok: false, reason: "bad-lens" }, 400, cors);
-  if ((body.channel || "email") !== "email") return json({ ok: false, reason: "channel-unsupported" }, 400, cors); // SMS later
+  if (!isValidEmail(email)) return reply(req, { ok: false, reason: "bad-email" }, 400, cors);
+  if (!lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
+  if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors); // SMS later
 
   const ip = req.headers.get("CF-Connecting-IP") || "";
   // Cheap KV rate-limit BEFORE spending an email send.
-  if (await overLimit(env, ip, email)) return json({ ok: false, reason: "rate-limited" }, 429, cors);
+  if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
   const filter = sanitize(lens, body.filter);
@@ -63,9 +68,9 @@ export async function handleSubscribe(req, env) {
   try {
     await sendConfirm(env, sub.email, lens, filter, sub.freq, confirmUrl, sub.lang);
   } catch {
-    return json({ ok: false, reason: "send-failed" }, 502, cors);
+    return reply(req, { ok: false, reason: "send-failed" }, 502, cors);
   }
-  return json({ ok: true }, 200, cors);
+  return reply(req, { ok: true }, 200, cors);
 }
 
 // Exported: /mcp create_watch and the inbound-email handler reuse the same
@@ -88,4 +93,29 @@ async function overLimit(env, ip, email) {
 
 function json(obj, status, cors) {
   return new Response(JSON.stringify(obj), { status, headers: { ...cors, "Content-Type": "application/json" } });
+}
+
+function reply(req, obj, status, cors) {
+  const accepts = req.headers.get("accept") || "";
+  const contentType = req.headers.get("content-type") || "";
+  const wantsHtml = accepts.includes("text/html") || contentType.includes("application/x-www-form-urlencoded");
+  if (!wantsHtml) return json(obj, status, cors);
+  const copy = {
+    origin: ["Request not accepted", "Open the form from cityscroll.org and try again."],
+    method: ["Request not accepted", "Use the Following form to create a watch."],
+    "not-configured": ["Temporarily unavailable", "Watch signup is not available right now. Please try again later."],
+    "bad-request": ["Check the form", "The saved scope could not be read. Return to Following and preview it again."],
+    "bad-email": ["Check the email address", "Enter a complete email address and try again."],
+    "bad-lens": ["Check the saved scope", "That topic cannot be followed. Return to Following and choose another topic."],
+    "channel-unsupported": ["Email only", "CityScroll currently sends watches by email."],
+    "rate-limited": ["Try again tomorrow", "Too many confirmation emails were requested for this address or network."],
+    "send-failed": ["Confirmation not sent", "The confirmation email could not be sent. Please try again shortly."],
+  };
+  const [title, message] = obj.ok
+    ? ["Check your inbox", "We sent a confirmation link. The watch starts only after you click it. You can close this page or return to Following."]
+    : (copy[obj.reason] || ["Something went wrong", "Return to Following and try again."]);
+  return new Response(htmlPage(title, `${message}<br><br><a href="https://cityscroll.org/following/">Return to Following</a>`), {
+    status,
+    headers: { ...cors, "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+  });
 }

@@ -1,5 +1,7 @@
 /** Shared district-preset contract for the site preview, build step, and Worker email. */
 
+import { followingUrlFromWatch } from "./following_view.mjs";
+
 export const DISTRICT_WEEKLY_DIGEST_SCHEMA = "district_weekly_digests.v1";
 
 export const DISTRICT_DIGEST_SECTIONS = Object.freeze([
@@ -37,11 +39,10 @@ export function groupDistrictDigestRows(rows = []) {
 
 export function districtDigestAlertsHref(councilDistrict) {
   const id = normalizeCouncilDistrict(councilDistrict);
-  if (!id) return "#alerts";
-  const q = new URLSearchParams({
+  if (!id) return "/following/";
+  return followingUrlFromWatch({
     lens: "district",
-    filter: JSON.stringify({ councilDistrict: id }),
+    filter: { councilDistrict: id },
     freq: "weekly",
-  });
-  return `#alerts?${q}`;
+  }, { frequency: "weekly" });
 }
