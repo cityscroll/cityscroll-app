@@ -119,6 +119,24 @@ function meetScalar(left, right, markBottom) {
   return null;
 }
 
+function laterBound(left, right) {
+  if (!left) return right || null;
+  if (!right) return left;
+  return left > right ? left : right;
+}
+
+function earlierBound(left, right) {
+  if (!left) return right || null;
+  if (!right) return left;
+  return left < right ? left : right;
+}
+
+function tighterRollingWindow(left, right) {
+  if (!Number.isFinite(left)) return Number.isFinite(right) ? right : null;
+  if (!Number.isFinite(right)) return left;
+  return Math.min(left, right);
+}
+
 /**
  * Meet two supported structured scopes. Independent axes conjoin, OR-like
  * allowlists intersect, all-keyword and all-entity constraints union, and a
@@ -162,15 +180,14 @@ export function intersectScopes(leftInput, rightInput) {
     right.time_window.preset,
     markBottom,
   );
-  out.time_window.start = [left.time_window.start, right.time_window.start]
-    .filter(Boolean).sort().at(-1) || null;
-  out.time_window.end = [left.time_window.end, right.time_window.end]
-    .filter(Boolean).sort()[0] || null;
+  out.time_window.start = laterBound(left.time_window.start, right.time_window.start);
+  out.time_window.end = earlierBound(left.time_window.end, right.time_window.end);
   if (out.time_window.start && out.time_window.end
       && out.time_window.start > out.time_window.end) markBottom();
-  const rolling = [left.time_window.rolling_months, right.time_window.rolling_months]
-    .filter((value) => Number.isFinite(value));
-  out.time_window.rolling_months = rolling.length ? Math.min(...rolling) : null;
+  out.time_window.rolling_months = tighterRollingWindow(
+    left.time_window.rolling_months,
+    right.time_window.rolling_months,
+  );
 
   out.topic.query = meetScalar(left.topic.query, right.topic.query, () => {
     markBottom();
