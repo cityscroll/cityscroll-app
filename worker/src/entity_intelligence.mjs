@@ -15,6 +15,7 @@
  */
 
 import materialization from "./data/entity_intelligence_lookup.json" with { type: "json" };
+import vendorFootprintCoverage from "./data/vendor_footprint_coverage.json" with { type: "json" };
 import {
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
   lookupEntityIntelligence,
@@ -34,6 +35,53 @@ function json(body, status = 200, cache) {
   if (cache) headers["Cache-Control"] = cache;
   else if (status !== 200) headers["Cache-Control"] = "no-store";
   return new Response(JSON.stringify(body), { status, headers });
+}
+
+export function attachVendorFootprint(
+  view,
+  root,
+  source = materialization,
+  coverageIndex = vendorFootprintCoverage,
+) {
+  if (root?.kind !== "vendor") return view;
+  const footprint = source?.vendor_footprint;
+  if (!footprint) return view;
+  const packed = (coverageIndex?.rows || []).find((row) =>
+    String(row).startsWith(`${root.ref}|`));
+  const [, linkedRaw, eligibleRaw, rateRaw] = packed ? String(packed).split("|") : [];
+  const linked = Number(linkedRaw);
+  const eligible = Number(eligibleRaw);
+  const rate = rateRaw === "" || rateRaw == null ? null : Number(rateRaw);
+  const pct = Number.isFinite(rate)
+    ? (() => {
+        const value = Math.round(rate * 1_000) / 10;
+        return `${Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1)}%`;
+      })()
+    : null;
+  const awardCoverage = packed ? {
+    linked,
+    eligible,
+    rate,
+    label: `showing ${linked} of ${eligible} known awards linked so far (${pct})`,
+  } : {
+    linked: 0,
+    eligible: 0,
+    rate: null,
+    label: "coverage not measured for awards",
+  };
+  return {
+    ...view,
+    vendor_footprint: {
+      schema_version: footprint.schema_version,
+      status: footprint.status,
+      qualifier_required: footprint.qualifier_required,
+      sections: footprint.sections,
+      excluded_confidence: footprint.excluded_confidence,
+      award_coverage: awardCoverage,
+      promotion: footprint.promotion,
+      provenance: footprint.provenance,
+    },
+  };
 }
 
 export async function handleEntityIntelligence(req, env, ctx) {
@@ -118,8 +166,9 @@ export async function handleEntityIntelligence(req, env, ctx) {
     );
   }
 
+  const resolvedRoot = resolveRootQuery(query);
   const view = lookupEntityIntelligence(materialization, query);
-  return json(view, 200, CACHE);
+  return json(attachVendorFootprint(view, resolvedRoot), 200, CACHE);
 }
 
 export function getEntityIntelligenceMaterialization() {

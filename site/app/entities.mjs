@@ -571,6 +571,31 @@ async function loadVendorProfileRecord(name){
   }catch(e){ return null; }
 }
 
+let vendorFootprintToolsPromise = null;
+function ensureVendorFootprintTools(){
+  if(!vendorFootprintToolsPromise){
+    vendorFootprintToolsPromise = import("../vendor_footprint.mjs").catch(() => null);
+  }
+  return vendorFootprintToolsPromise;
+}
+
+async function loadVendorFootprint(name){
+  try{
+    const response = await workerFetch("/entity-intelligence?kind=vendor&name="+encodeURIComponent(cleanText(name)), null, 3000);
+    if(!response.ok) return null;
+    const body = await response.json();
+    return body?.vendor_footprint ? body : null;
+  }catch(e){ return null; }
+}
+
+async function paintVendorFootprint(box, response){
+  const host = box?.querySelector("#vendor-footprint");
+  if(!host || !response) return;
+  const tools = await ensureVendorFootprintTools();
+  if(!tools || !document.contains(host)) return;
+  host.innerHTML = tools.renderVendorFootprintHTML(response, { formatDate: fdate });
+}
+
 function vendorMentionItemsHTML(mentions){
   return mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
@@ -890,6 +915,7 @@ function vendorProfileHTML(profile, details, hydrating){
 
       <div id="overview-content">
         ${agencies.length?`<div class="chain-h">${t("vendor_agencies_heading")}</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
+        <div id="vendor-footprint"></div>
         ${onTheRecord}
         ${mentions.length?`<div class="chain-h">${t("vendor_mentions_heading")}</div><div class="timeline">${mentionItems}</div>`:""}
         ${loadingSections}
@@ -919,6 +945,7 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
   bindQRShare($("#eqr"), link);
   const rows = details?.rows || [];
   if(rows.length && !hydrating) paintVendorPhaseTimeline(box, profile, rows);
+  if(details?.footprint) paintVendorFootprint(box, details.footprint);
   const lazyMentions = $("#vendor-mentions-lazy");
   if(lazyMentions) lazyMentions.addEventListener("toggle", ()=>{
     if(!lazyMentions.open || lazyMentions.dataset.loaded) return;
@@ -964,16 +991,17 @@ async function loadVendorMentions(profile, el){
 async function hydrateVendorProfile(profile, initialTab, box, fetchAgencies){
   const names = profile.variants.map(v=>v.name).slice(0,20);
   const inList = names.map(n=>`'${n.replace(/'/g,"''")}'`).join(",");
-  const [agencies, rows, mentions, forecastData] = await Promise.all([
+  const [agencies, rows, mentions, forecastData, footprint] = await Promise.all([
     fetchAgencies
       ? soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,"$group":"agency_name","$order":"t DESC","$limit":"10"},15000).catch(()=>[])
       : Promise.resolve(profile.topAgencies||[]),
     soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"},15000).catch(()=>[]),
     soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":profile.stem,"$order":"start_date DESC","$limit":"8"},8000).catch(()=>[]),
-    workerFetch("/inv/"+encodeURIComponent(profile.display),null,8000).then(r=>r.ok?r.json():null).catch(()=>null)
+    workerFetch("/inv/"+encodeURIComponent(profile.display),null,8000).then(r=>r.ok?r.json():null).catch(()=>null),
+    loadVendorFootprint(profile.display)
   ]);
   if(box.dataset.vendorStem !== profile.stem) return;
-  renderVendorProfile(box, profile, {agencies,rows,mentions,forecasts:forecastData?.forecasts||[]}, initialTab, false);
+  renderVendorProfile(box, profile, {agencies,rows,mentions,forecasts:forecastData?.forecasts||[],footprint}, initialTab, false);
 }
 
 async function showVendorLive(name, initialTab, box){
@@ -1005,12 +1033,16 @@ async function showVendor(name, initialTab){
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
   if(stem.length < 3){ box.innerHTML = `<div class="empty">${t("vendor_name_too_short",{name:safe})} ${routeBackHTML("#money")}</div>`; applyActiveHistoryRouteScroll(); return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
-  const profile = await loadVendorProfileRecord(name);
+  const [profile, footprint] = await Promise.all([
+    loadVendorProfileRecord(name),
+    loadVendorFootprint(name),
+  ]);
   if(!profile) return showVendorLive(name, initialTab, box);
   renderVendorProfile(box, profile, {
     agencies:profile.topAgencies||[],
     rows:profile.recentNotices,
-    forecasts:profile.forecasts
+    forecasts:profile.forecasts,
+    footprint
   }, initialTab, false);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   focusItemRouteTarget(box.querySelector(".route-item"));
@@ -1030,6 +1062,7 @@ globalThis.forecastItemHTML = forecastItemHTML;
 globalThis.forecastItemsHTML = forecastItemsHTML;
 globalThis.forecastPaneHTML = forecastPaneHTML;
 globalThis.hydrateVendorProfile = hydrateVendorProfile;
+globalThis.loadVendorFootprint = loadVendorFootprint;
 globalThis.loadVendorMentions = loadVendorMentions;
 globalThis.loadVendorProfileRecord = loadVendorProfileRecord;
 globalThis.paintVendorPhaseTimeline = paintVendorPhaseTimeline;

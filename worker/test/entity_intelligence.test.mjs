@@ -102,4 +102,24 @@ describe("GET /entity-intelligence", () => {
     assert.equal(miss.metrics.link_count, 0);
     assert.equal(miss.domains.money.count, 0);
   });
+
+  it("attaches build-derived vendor coverage even when the bounded graph has no dossier", async () => {
+    const res = await handleEntityIntelligence(
+      req("/entity-intelligence?kind=vendor&name=CAMBA"),
+    );
+    assert.equal(res.status, 200);
+    const body = await res.json();
+    assert.equal(body.root.ref, "vendor:stem:CAMBA");
+    assert.equal(body.vendor_footprint.qualifier_required, true);
+    assert.ok(body.vendor_footprint.award_coverage.eligible > 0);
+    assert.match(
+      body.vendor_footprint.award_coverage.label,
+      /^showing \d+ of \d+ known awards linked so far \([\d.]+%\)$/,
+    );
+    assert.deepEqual(body.vendor_footprint.excluded_confidence, [
+      "tentative",
+      "review_only",
+      "not_scored",
+    ]);
+  });
 });
