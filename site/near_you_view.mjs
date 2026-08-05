@@ -64,7 +64,7 @@ function recordMatches(record, scope, builtAt) {
   if (type && String(record.type || "").toLowerCase() !== String(type).toLowerCase()) return false;
   const query = String(scope.topic.query || first(scope.topic.keywords) || "").trim().toLowerCase();
   if (query) {
-    const haystack = [record.id, record.title, record.agency, record.type, record.status]
+    const haystack = [record.id, record.title, record.agency, record.type, record.status] // Source: district_activity.json records.
       .filter(Boolean).join(" ").toLowerCase();
     if (!haystack.includes(query)) return false;
   }
@@ -323,7 +323,7 @@ export function renderNearYouBody(view) {
     data-map-id="${esc(feature.id)}" data-count="${feature.total}" data-map-level="${esc(feature.level)}"
     data-map-href="${esc(feature.href)}" d="${esc(feature.path)}" fill="${esc(feature.fill)}"
     aria-label="${esc(feature.label)}: ${feature.total} ${esc(view.lensLabel)} records"></path>`).join("");
-  const areas = [...view.features]
+  const areas = [...view.features] // Source: district_boundaries.json build artifact.
     .sort((a, b) => b.total - a.total || String(a.label).localeCompare(String(b.label)))
     .map((feature) => `<li><a data-map-area="${esc(feature.id)}" data-count="${feature.total}" href="${esc(feature.href)}"><span>${esc(feature.label)}</span><strong>${feature.total}</strong></a></li>`)
     .join("");
