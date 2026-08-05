@@ -301,10 +301,11 @@ function examStageCountHTML(stageOrPhase){
 function examListForecastHTML(exam){
   const forecast=exam?.list_establishment_forecast;
   if(!forecast) return "";
+  const months=fmtNumber(forecast.median_months);
   const statistic=t("exam_list_prediction_cohort_html",{
     n:fmtNumber(forecast.n),
     year:escUiHtml(forecast.since_year||2018),
-    months:fmtNumber(forecast.median_months)
+    months
   });
   const prediction=forecast.prediction;
   const window=prediction?.predicted_window
@@ -313,7 +314,7 @@ function examListForecastHTML(exam){
       median:fdate(prediction.predicted_window.p50),
       last:fdate(prediction.predicted_window.p90)
     })}</div>`:"";
-  return `<div class="note" data-staffing-list-prediction="1">${statistic} ${window}
+  return `<div class="note" data-staffing-list-prediction="1" data-prediction-subject="eligible-list-establishment" data-prediction-value="${escUiHtml(months)}-months">${statistic} ${window}
     <a href="about.html#staffing-list-establishment-formula">${t("exam_list_prediction_method")}</a></div>`;
 }
 function examListStatutoryContextHTML(exam){

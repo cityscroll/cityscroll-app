@@ -220,10 +220,10 @@ describe("rules adoption lag — prediction contract emission", () => {
       },
       { commentClose: "2026-03-01" },
     );
-    assert.match(line, /Comment period closed 2026-03-01/);
+    assert.match(line, /Comments closed 2026-03-01/);
     assert.match(line, /214 similar rule adoptions since 2019/);
-    assert.match(line, /median 42 days/);
-    assert.match(line, /middle half 26–75/);
+    assert.match(line, /Adoption typically takes 42 days/);
+    assert.match(line, /middle half took 26–75 days/);
   });
 
   it("pattern line omits collapsed middle half", () => {
@@ -238,7 +238,7 @@ describe("rules adoption lag — prediction contract emission", () => {
       },
       { commentClose: "2025-01-09" },
     );
-    assert.match(line, /median 43 days to adoption\./);
+    assert.match(line, /Adoption typically takes 43 days\./);
     assert.doesNotMatch(line, /middle half 43–43/);
   });
 
@@ -482,7 +482,7 @@ describe("rules adoption lag — ghost segment", () => {
     assert.equal(ghost.event_dot, false);
     assert.equal(ghost.dashed, true);
     assert.equal(ghost.chip, "Estimate");
-    assert.match(ghost.pattern_line, /Comment period closed 2026-06-01/);
+    assert.match(ghost.pattern_line, /Comments closed 2026-06-01/);
 
     const adopted = {
       ...closed,

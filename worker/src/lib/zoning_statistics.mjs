@@ -408,8 +408,9 @@ export function zoningStatisticCopy(cohort) {
   const approved = Math.round(cohort.outcome_rates.approved * 100);
   const low = cohort.typical_months?.low;
   const high = cohort.typical_months?.high;
-  return `Based on ${cohort.n} past ${cohort.action_label} cases since ${year}. `
-    + `${approved}% were approved. Final action usually came ${low}–${high} months after certification.`;
+  return `${approved}% of past ${cohort.action_label} cases were approved. `
+    + `Final action usually came ${low}–${high} months after certification `
+    + `(${cohort.n} cases since ${year}).`;
 }
 
 export function emitZoningStatisticalPrediction(record = {}, cohort, opts = {}) {
@@ -538,9 +539,11 @@ export function applicantConditionedCopy(conditioned, base, opts = {}) {
     : "";
   const predictive = opts.renderMode !== "descriptive_history"
     && opts.renderMode !== "cohort_statistic_only";
-  const lead = predictive ? "Predicted based on" : "Based on";
-  const line = `${lead} ${conditioned.n} applications by this applicant since ${year}: `
-    + `${p}% approved, vs ${p0}% overall.`;
+  const line = predictive
+    ? `This application has a ${p}% estimated chance of approval, compared with ${p0}% overall `
+      + `(based on ${conditioned.n} applications by this applicant since ${year}).`
+    : `This applicant's past applications were ${p}% approved, compared with ${p0}% overall `
+      + `(${conditioned.n} applications since ${year}).`;
   return confLabel ? `${line} (${confLabel}.)` : line;
 }
 
