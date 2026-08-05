@@ -1,0 +1,24 @@
+{
+  "schema": "cityscroll.semantic_layer_trial.join_judgments.v1",
+  "review_started_at": "2026-08-05T01:37:10Z",
+  "review_finished_at": "2026-08-05T01:37:57Z",
+  "reviewer": "manual source-text review",
+  "acceptance_rule": "Similarity can nominate a pair only. Acceptance requires exact public-body identity, exact meeting date, a specific named matter shared by notice and minutes, and an explicit outcome in the minutes.",
+  "judgments": [
+    {
+      "notice_id": "20260527036",
+      "document_id": "queens-cb-08:2026-06-10:minutes",
+      "disposition": "accepted_candidate",
+      "evidence": {
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10",
+        "named_matter": "Raphael Nathaniel Yusapov Way",
+        "notice_span": "Street Co-naming Raphael Nathaniel Yusapov Way — Northeast corner of 72nd Avenue and Parsons Boulevard.",
+        "minutes_span": "Co-naming — NE Corner 72nd Avenue and Parsons Boulevard to Raphael Nathaniel Yusapov Way",
+        "outcome_span": "Yes — 30 No — 0 Abstention — 0. The motion passed unanimously."
+      },
+      "production_edge_authorized": false,
+      "note": "This is a reviewed trial candidate, not rendered truth or production wiring."
+    }
+  ]
+}

@@ -2100,6 +2100,18 @@ fallback titles unchanged. The census ratchets authored-summary grade, lens-view
 template coverage together. Verify the real-notice fixtures with `node --test
 test/property_plain_summary.test.mjs`, then rerun the Property accessibility census.
 
+## Learned semantic retrieval trial
+
+The bounded MiniLM + `sqlite-vec` experiment in
+`warehouse/experiments/semantic-layer-trial/` concluded `not-worth-it`: hybrid retrieval
+added no successful query coverage over BM25, and the reviewed join-candidate yield stayed
+below the existing usefulness gate. Keep semantic output candidate-only and do not infer a
+production vector layer from the existing hashed TF-IDF T3 related-reading artifact. Source,
+failure analysis, costs, and rerun commands are in
+`docs/research/semantic-layer-trial-2026-08-04.md`.
+The corpus sanitizer runs at ingest, must be idempotent, and reports the exact record, rule,
+and matched substring on failure; do not replace that diagnostic with a generic validation error.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
