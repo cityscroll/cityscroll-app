@@ -66,8 +66,7 @@
       "aggregate_count_collapse",
       "aggregate_count_explosion",
       "count_list_mismatch",
-      "broken_digest_link",
-      "owner_notification_failed"
+      "broken_digest_link"
     ],
     "monitoring": {
       "poll_status": "HTTP 200 only when READY; NEEDS_ATTENTION returns HTTP 503 with the JSON body",
