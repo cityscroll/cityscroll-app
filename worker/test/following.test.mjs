@@ -52,6 +52,10 @@ test("the edge Following renderer previews the same saved scope and preserves th
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") || "", /text\/html/);
   assert.match(response.headers.get("cache-control") || "", /public/);
+  assert.match(response.headers.get("content-security-policy") || "", /style-src[^;]+https:\/\/cityscroll\.org/);
+  assert.match(response.headers.get("content-security-policy") || "", /font-src https:\/\/fonts\.gstatic\.com/);
+  assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/brand\.css"/);
+  assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/civic-documents\.css"/);
   assert.match(html, /data-scope-count="17"/);
   assert.match(html, /data-preview-id="20260805001"/);
   assert.match(html, /Queens curb redesign hearing/);

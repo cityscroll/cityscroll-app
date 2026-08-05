@@ -210,6 +210,9 @@ jobs:
       - name: Form-control border contrast gate (WCAG 1.4.11)
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/form_border_contrast.py
+      - name: Civic token and legacy-palette contract
+        if: needs.changes.outputs.unit_full == 'true'
+        run: python3 test/standards/civic_token_contract.py
       - name: NYC copy lint (NYC Web Content Style Guide)
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/nyc_copy_lint.py --gate

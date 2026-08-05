@@ -120,20 +120,20 @@ export function totalForLens(counts, lens) {
 }
 
 /**
- * Choropleth fill from activity density. Zero stays a paper tone; higher → oxblood.
+ * Choropleth fill from activity density. The stops mirror the shared civic token sheet.
  * @param {number} count
  * @param {number} max
  */
 export function choroplethFill(count, max) {
   const n = Number(count) || 0;
   const m = Number(max) || 0;
-  if (n <= 0 || m <= 0) return "#f4efe6";
+  if (n <= 0 || m <= 0) return "#eceef2";
   const t = Math.min(1, Math.max(0, n / m));
-  // Paper → amber → oxblood
+  // Canvas subtle → action tint border → brand navy.
   const stops = [
-    [244, 239, 230],
-    [214, 170, 90],
-    [122, 31, 31],
+    [236, 238, 242],
+    [201, 213, 255],
+    [27, 58, 143],
   ];
   const scaled = t * (stops.length - 1);
   const i = Math.min(stops.length - 2, Math.floor(scaled));

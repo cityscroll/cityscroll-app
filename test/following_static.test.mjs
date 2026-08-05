@@ -51,6 +51,11 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /privacy/i);
   assert.match(html, /href="https:\/\/api\.cityscroll\.org\/prefs"/);
   assert.match(html, /type="module" src="\/app\/following\.mjs"/);
+  assert.match(html, /rel="stylesheet" href="\/brand\.css"/);
+  assert.match(html, /rel="stylesheet" href="\/civic-documents\.css"/);
+  assert.doesNotMatch(html, /<style>/);
+  assert.doesNotMatch(html, /#f5f0e6|#7a1f1f|Georgia/);
+  assert.match(html, /class="document-brand brand-lockup home"/);
 });
 
 test("Following has a useful server-rendered empty state before personalization", () => {
