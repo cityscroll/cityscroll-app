@@ -17,6 +17,153 @@
       "meaning": "Transient reach failures and join ambiguity keep their existing operational wording; they are not publication taxonomy."
     }
   },
+  "partnership_blocked_sources": [
+    {
+      "id": "dcas-nonfleet-surplus-inventory",
+      "wishlist_gap_id": "dcas-nonfleet-surplus-listings",
+      "name": "DCAS non-fleet surplus auction inventory",
+      "data_offered": "Item-level non-fleet surplus listings such as equipment, furniture, and other goods offered through the DCAS marketplace channel. Coverage is unknown; the separate vehicle slice is already published by DCAS on NYC Open Data as ynic-uz5i.",
+      "collecting_body": "NYC Department of Citywide Administrative Services",
+      "platform": "GovDeals",
+      "platform_url": "https://www.govdeals.com/en/nyc-dcas",
+      "status": "application-possible",
+      "status_note": "Automated marketplace collection is not authorized. A public-data request to DCAS is the preferred route; the vendor client API is a secondary authorized route.",
+      "access_mechanisms": [
+        {
+          "id": "dcas-open-data-publication-request",
+          "type": "open-data-publication-request",
+          "label": "Ask DCAS to publish the non-fleet slice on NYC Open Data",
+          "preferred": true,
+          "requirement": "Submit a public dataset request through the NYC Open Data Help Desk, routed to DCAS. This mirrors DCAS's existing publication of the vehicle slice instead of creating a private dependency.",
+          "citation_ids": [
+            "nyc-open-data-public-dataset-requests",
+            "dcas-open-data-public-dataset-policy"
+          ]
+        },
+        {
+          "id": "govdeals-registered-client-api",
+          "type": "registered-client-api",
+          "label": "Obtain authorized GovDeals client API access",
+          "preferred": false,
+          "requirement": "DCAS or another eligible GovDeals client must request authorized API or export access; public crawling and data mining remain prohibited.",
+          "citation_ids": [
+            "govdeals-user-agreement-restrictions",
+            "govdeals-registered-client-api-policy"
+          ]
+        }
+      ],
+      "policy_citations": [
+        {
+          "id": "nyc-open-data-public-dataset-requests",
+          "title": "NYC Open Data Technical Standards Manual",
+          "url": "https://www.nyc.gov/assets/doitt/downloads/pdf/nyc_open_data_tsm.pdf",
+          "section": "6.1–6.2, Open Data Help Desk and Public Dataset Requests",
+          "date": "2023-05-12",
+          "note": "The Help Desk accepts new-dataset requests and routes them to the responsible agency."
+        },
+        {
+          "id": "dcas-open-data-public-dataset-policy",
+          "title": "DCAS Open Data Sets",
+          "url": "https://www.nyc.gov/site/dcas/reports/dcas-open-data-sets.page",
+          "section": "Open Data Law public-dataset scope",
+          "date": "2026-08-04",
+          "date_basis": "accessed_on",
+          "note": "DCAS describes eligible datasets maintained by or for a City agency as candidates for free public release."
+        },
+        {
+          "id": "govdeals-user-agreement-restrictions",
+          "title": "GovDeals User Agreement",
+          "url": "https://www.govdeals.com/en/content/site-terms",
+          "section": "2. Restrictions on Use of Services",
+          "date": "2026-08-04",
+          "date_basis": "accessed_on",
+          "note": "The agreement prohibits spiders, crawlers, robots, substantial downloading, and data mining without authorization."
+        },
+        {
+          "id": "govdeals-registered-client-api-policy",
+          "title": "GovDeals client API access page",
+          "url": "https://sam.lqdt1.com/",
+          "section": "Access notice",
+          "date": "2026-08-04",
+          "date_basis": "accessed_on",
+          "note": "The API page states that it is for registered GovDeals clients."
+        }
+      ],
+      "surfaces": [
+        "Property",
+        "Notices & search",
+        "Alerts"
+      ]
+    },
+    {
+      "id": "passport-contract-sites",
+      "wishlist_gap_id": "money-location-residual",
+      "name": "PASSPort contract project sites",
+      "data_offered": "Contract project locations entered on the PASSPort Sites tab, including multiple work locations when recorded. This is a candidate source for the 212-award place-of-performance residual, not evidence that every award has a site.",
+      "collecting_body": "NYC Mayor's Office of Contract Services and contracting agencies",
+      "platform": "PASSPort",
+      "platform_url": "https://www.nyc.gov/site/mocs/passport/articles/manage-contract.page",
+      "status": "application-possible",
+      "status_note": "The fields exist in authenticated contract records but are absent from the public PASSPort dump. Public release is preferred over contract-by-contract privileged access.",
+      "access_mechanisms": [
+        {
+          "id": "mocs-open-data-publication-request",
+          "type": "open-data-publication-request",
+          "label": "Ask MOCS to publish contract Sites fields",
+          "preferred": true,
+          "requirement": "Submit a public dataset request through the NYC Open Data Help Desk for contract-level, privacy-reviewed Sites fields keyed by contract ID or EPIN.",
+          "citation_ids": [
+            "nyc-open-data-public-dataset-requests",
+            "passport-contract-sites-guide"
+          ]
+        },
+        {
+          "id": "mocs-data-sharing-agreement",
+          "type": "data-sharing-agreement",
+          "label": "Apply for an authorized MOCS data share",
+          "preferred": false,
+          "requirement": "MOCS would need to approve a scoped export or data-sharing agreement for authenticated contract Sites fields; ordinary public PASSPort access does not expose other organizations' contract records.",
+          "citation_ids": [
+            "passport-contract-sites-guide",
+            "passport-account-access-policy"
+          ]
+        }
+      ],
+      "policy_citations": [
+        {
+          "id": "nyc-open-data-public-dataset-requests",
+          "title": "NYC Open Data Technical Standards Manual",
+          "url": "https://www.nyc.gov/assets/doitt/downloads/pdf/nyc_open_data_tsm.pdf",
+          "section": "6.1–6.2, Open Data Help Desk and Public Dataset Requests",
+          "date": "2023-05-12",
+          "note": "The Help Desk accepts new-dataset requests and routes them to the responsible agency."
+        },
+        {
+          "id": "passport-contract-sites-guide",
+          "title": "MOCS Manage My Contract guide",
+          "url": "https://www.nyc.gov/site/mocs/passport/articles/manage-contract.page",
+          "section": "Sites Tab",
+          "date": "2026-08-04",
+          "date_basis": "accessed_on",
+          "note": "MOCS states that the Sites tab records where contract work will be performed and may contain multiple locations."
+        },
+        {
+          "id": "passport-account-access-policy",
+          "title": "MOCS PASSPort account access guide",
+          "url": "https://www.nyc.gov/site/mocs/passport/articles/create-passport-account.page",
+          "section": "Organization account request and approval",
+          "date": "2026-08-04",
+          "date_basis": "accessed_on",
+          "note": "Access requires an organization account request that MOCS processes and approves."
+        }
+      ],
+      "surfaces": [
+        "Money",
+        "Map",
+        "Agency profiles"
+      ]
+    }
+  ],
   "sources": [
     {
       "id": "abo-local-authorities",
