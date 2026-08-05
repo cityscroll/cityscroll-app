@@ -407,7 +407,8 @@ def measure_contracts(
     start = time.perf_counter()
     keyword.fill("housing")
     page.wait_for_function(
-        """() => new URLSearchParams(location.hash.split("?")[1] || "").get("q") === "housing" &&
+        """() => location.pathname === "/browse/contracts/" &&
+          new URLSearchParams(location.search).get("q") === "housing" &&
           document.querySelector("#rescount").textContent.trim() !== "" &&
           document.querySelector("#list .row, #list .empty")"""
     )

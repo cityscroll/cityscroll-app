@@ -326,8 +326,8 @@ jobs:
           if-no-files-found: error
 
   # w7-01: promotes the axe gate + language gate to every PR. The pages under test are
-  # static + local (a plain http.server, no live open-data traffic), so the flakiness that
-  # parks the heavier functional suite on manual dispatch doesn't apply here.
+  # static + local (the route-aware repository server, no live open-data traffic), so the
+  # flakiness that parks the heavier functional suite on manual dispatch doesn't apply here.
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
     # Fail-fast: wait for Unit tests so we can skip the browser suite with a completed
@@ -371,7 +371,7 @@ jobs:
       - name: Serve site locally
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
-          python3 -m http.server 8000 --directory site &
+          python3 tools/local_site_server.py --directory site --port 8000 &
           sleep 1
       - name: Mobile viewport contract (360px overflow, targets, and interaction)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'

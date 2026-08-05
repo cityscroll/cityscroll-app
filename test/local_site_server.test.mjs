@@ -32,6 +32,17 @@ test("full preflight allocates its own port without touching existing listeners"
   assert.match(functional, /CROL_TEST_PORT:-0/);
   assert.match(functional, /export CROL_BASE/);
   assert.doesNotMatch(functional, /http\.server 8000|lsof -tiTCP:8000/);
+
+  const ci = read(".github/workflows/ci.yml");
+  assert.match(ci, /tools\/local_site_server\.py --directory site --port 8000/);
+  assert.doesNotMatch(ci, /python3 -m http\.server 8000 --directory site/);
+});
+
+test("performance interaction waits for the canonical Contracts document URL", () => {
+  const source = read("test/performance/verify.py");
+  assert.match(source, /location\.pathname === "\/browse\/contracts\/"/);
+  assert.match(source, /new URLSearchParams\(location\.search\)\.get\("q"\) === "housing"/);
+  assert.doesNotMatch(source, /location\.hash\.split\("\?"\).*get\("q"\)/);
 });
 
 test("local site server publishes an OS-assigned origin and serves the requested tree", async (t) => {

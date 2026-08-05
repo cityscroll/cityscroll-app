@@ -13,7 +13,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   push range touches `site/**`. Bypass only with `git push --no-verify` (CI still must pass).
 - Full browser preflight starts `tools/local_site_server.py` on an OS-assigned port
   (`CROL_TEST_PORT=0` by default) and exports `CROL_BASE`. Set `CROL_TEST_PORT` only
-  for local debugging; checks must not reclaim a shared fixed port.
+  for local debugging; checks must not reclaim a shared fixed port. CI browser jobs use
+  the same route-aware server: a plain static server cannot resolve clean document routes
+  after the finite legacy-fragment forwarding shim runs.
 - Module-graph fingerprint: after intentional `site/app/` edits, validate with
   `node tools/site_module_architecture.mjs --check` (or `make module-graph-digest`).
   The digest is derived at check time rather than committed; one-time token_reduction /
