@@ -756,7 +756,7 @@ function landApplicantConditionedHTML(stats){
   const lineKey=mode==="per_matter"
     ? "land_applicant_conditioned_predict_html"
     : "land_applicant_conditioned_history_html";
-  return `<div class="applicant-conditioned" data-applicant-conditioned="1" data-applicant-n="${escUiHtml(String(ac.n))}" data-applicant-render-mode="${escUiHtml(mode)}">
+  return `<div class="applicant-conditioned" data-applicant-conditioned="1" data-prediction-subject="land-use-approval" data-prediction-value="${escUiHtml(String(approved))}-percent" data-applicant-n="${escUiHtml(String(ac.n))}" data-applicant-render-mode="${escUiHtml(mode)}">
     <p>${t(lineKey,{
       n:String(ac.n),
       year,

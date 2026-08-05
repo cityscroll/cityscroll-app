@@ -219,6 +219,9 @@ jobs:
       - name: Public-surface internal-vocabulary lint
         if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/public_surface_vocab.py --gate
+      - name: Claim-first prediction lint
+        if: needs.changes.outputs.unit_full == 'true'
+        run: python3 test/standards/claim_first_prediction.py
       - name: Public payload integrity
         if: needs.changes.outputs.unit_full == 'true'
         run: node tools/check_public_payload_integrity.mjs
