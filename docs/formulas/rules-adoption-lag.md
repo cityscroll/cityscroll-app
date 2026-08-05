@@ -17,6 +17,26 @@ There is no statutory adoption deadline — only a general “minimum of about 6
 - **Historical corpus:** City Record Online Agency Rules notices (warehouse bulk snapshot; ~3,061 Agency Rules rows spanning 2013–2026 in the committed fixture rebuild).
 - **Live open matters:** the rules materialization (`/rules`, 540-day window, multi-notice stitch) remains the source of truth for current comment periods.
 - **Sibling stitch:** the same `attachRulemakingSiblings` / `matchRulemakingSiblings` logic as the live pipeline groups proposal, hearing, and adoption notices. No parallel matcher.
+- **Lifecycle eligibility:** adoption evidence uses the same `classifyCityRecordRuleStage` → `rulesProcessStage` contract as the Rules stepper. An older title-role signal that falls outside the stepper remains a labeled gap rather than being forced into the adoption cohort.
+
+## August 2026 lifecycle refresh
+
+The committed 3,061-record source now has a count-equals-scope census: stepper
+counts and filtered record counts are identical at 261 proposal, 486 public
+process, 689 adoption, 1 effective, and 1,624 unstaged. Compared with the older
+role classifier, the unified adoption stage recovers 345 stale records and
+leaves 45 conflicting legacy signals outside the cohort as explicit gaps (a net
+increase of 300 adoption-stage records). Of those gaps, 41 remain unstaged and
+four are classified as public process by the stepper.
+
+The rebuilt model rises from 129 to 256 observed adoption events. The calibration
+gate remains passing: resolved backtest predictions increase from 100 to 200 and
+interval coverage moves from 0.734 to 0.849. Eligible agency cohorts decrease
+from nine to four because the refreshed event/censor distribution is evaluated
+again against the unchanged `n_events` gate. The precomputed open view falls from
+120 to 86 items: every item is scoped to the stepper's public-process stage, with
+45 open and 41 honestly expired assertions. The public reader projection and
+attribution copy remain unchanged.
 
 ## Comment-close anchor (priority)
 
