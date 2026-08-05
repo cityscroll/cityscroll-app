@@ -1488,13 +1488,27 @@ disjoint comparable ids measure `authority_conflict_auto_link_rate`. The committ
 fixture is characterization data, not a production measurement. Verify:
 `node --test test/entity_resolution_authority.test.mjs`.
 
-**Features + matcher (er-09, extended by er-19):** `entity_resolution/features/` extracts
-deterministic family-aware stem/token/authority-key/length signals;
-`entity_resolution/matchers/` emits
-`same` / `different` / `unresolved` without LLM scoring. PIN and EPIN share one candidate
-identifier family; blocked-out true matches remain visible in the metrics report. Verify:
+**Features + matcher (er-09, extended by er-19 + VI-03):** `entity_resolution/features/`
+extracts deterministic family-aware stem/token/authority-key/length signals plus VI-03
+proximity features (typo, truncation, abbreviation, DBA);
+`entity_resolution/matchers/` emits `same` / `different` / `unresolved` without LLM scoring.
+PIN and EPIN share one candidate identifier family; blocked-out true matches remain visible
+in the metrics report. Verify:
 `node --test worker/test/entity_resolution_matcher.test.mjs` and
-`node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`.
+`node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0`.
+
+**VI-03 live-distribution ER (conservative alias policy):** expands gold to `gold_v1.jsonl`
+(56 cases: v0 + typo/truncation/abbreviation/DBA/alias/successor/unsafe-granularity strata).
+Features v2 adds `typo_proximity` (bounded Levenshtein ≤2 on vendor stems),
+`stem_truncation` (prefix-with-tail ≤4), `abbreviation_matches` (CNTR→CENTER etc.),
+and `extractDba` (DBA/FKA/AKA parsing). Matcher v2 (`conventional_v2`) adds conservative
+same-decisions on these features — no threshold-only retune. Policy v1 (`conservative_v1`)
+activates auto-link on high-confidence matcher same + reviewed alias-registry matches
+(`entity_resolution/review/alias_registry.json`); unresolved stays unresolved; hard-id
+conflicts are never overridden. Pipeline prediction (`--pipeline` flag): precision=1,
+recall=1, false_merge=0, false_split=0 on gold_v1. Gold additions carry `stratum` +
+`provenance` (reviewer=agent, date). Verify:
+`node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0 --pipeline`.
 
 **Scoped authority keys (er-19):** PIN/EPIN matcher evidence is a complete
 `(scheme, issuing authority, value, scope)` tuple from

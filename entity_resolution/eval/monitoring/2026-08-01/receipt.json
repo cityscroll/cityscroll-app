@@ -14,7 +14,7 @@
   "policy_versions": {
     "authority": "nyc_scoped_authority_keys_v1",
     "candidate_generation": "token_v0_v0",
-    "matcher": "conventional_v1",
+    "matcher": "conventional_v2",
     "shadow_run_matchers": [
       "vendor_stem_v1"
     ]

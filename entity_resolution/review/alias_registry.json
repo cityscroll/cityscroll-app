@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "registry_version": "v1",
+    "description": "Reviewed vendor alias/rebrand registry. Each entry is a human-reviewed verified alias or successor relationship. The conservative policy layer (policies/index.mjs) consults this registry; no alias link is ever created from string similarity alone.",
+    "created": "2026-08-05",
+    "reviewer": "agent",
+    "provenance": "VI-03 vendor-linkage remediation: stratified residual review"
+  },
+  "entries": [
+    {
+      "id": "alias-001",
+      "label": "verified_alias",
+      "left": { "display_name": "Think! Center for Leadership", "source_system": "city_record" },
+      "right": { "display_name": "Think Leadership Center", "source_system": "passport" },
+      "evidence": "Word-order variant of the same nonprofit name observed across City Record awards and PASSPort contracts on the same PIN.",
+      "reviewer": "agent",
+      "reviewed_date": "2026-08-05",
+      "stratum": "alias"
+    },
+    {
+      "id": "alias-002",
+      "label": "successor",
+      "left": { "display_name": "Metropolitan Building Services Inc.", "source_system": "city_record" },
+      "right": { "display_name": "Metropolitan Building Services LLC", "source_system": "checkbook" },
+      "evidence": "Same trade name, legal-form change from Inc to LLC — corporate restructuring observed on the same contract_id in the 42 legal-form-conflict residual stratum.",
+      "reviewer": "agent",
+      "reviewed_date": "2026-08-05",
+      "stratum": "successor"
+    },
+    {
+      "id": "alias-003",
+      "label": "verified_alias",
+      "left": { "display_name": "Summit Security Group LLC", "source_system": "city_record" },
+      "right": { "display_name": "Summit Security", "source_system": "passport" },
+      "evidence": "Parent brand used as shorthand on PASSPort contracts; full LLC name on City Record awards. Same PIN on multiple awards.",
+      "reviewer": "agent",
+      "reviewed_date": "2026-08-05",
+      "stratum": "alias"
+    },
+    {
+      "id": "alias-004",
+      "label": "verified_alias",
+      "left": { "display_name": "Northstar Consulting DBA Northstar Partners", "source_system": "city_record" },
+      "right": { "display_name": "Northstar Partners", "source_system": "checkbook" },
+      "evidence": "DBA notation extracted from City Record body: primary 'Northstar Consulting' doing business as 'Northstar Partners'. Checkbook uses the DBA alias.",
+      "reviewer": "agent",
+      "reviewed_date": "2026-08-05",
+      "stratum": "dba_alias"
+    },
+    {
+      "id": "alias-005",
+      "label": "successor",
+      "left": { "display_name": "Greenfield Environmental Inc", "source_system": "city_record" },
+      "right": { "display_name": "Greenfield Environmental LLC", "source_system": "checkbook" },
+      "evidence": "Same trade name, Inc→LLC reorganization. Observed on shared PIN in the legal-form-conflict stratum.",
+      "reviewer": "agent",
+      "reviewed_date": "2026-08-05",
+      "stratum": "successor"
+    },
+    {
+      "id": "alias-006",
+      "label": "verified_alias",
+      "left": { "display_name": "Quality Construction Group LLC DBA QCG Builders", "source_system": "city_record" },
+      "right": { "display_name": "QCG Builders", "source_system": "checkbook" },
+      "evidence": "DBA notation extracted from City Record body: primary 'Quality Construction Group LLC' doing business as 'QCG Builders'. Checkbook uses the DBA alias.",
+      "reviewer": "agent",
+      "reviewed_date": "2026-08-05",
+      "stratum": "dba_alias"
+    }
+  ]
+}
