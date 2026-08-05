@@ -447,10 +447,9 @@ async function showAgency(name, initialTab){
   box.querySelectorAll("[data-aw]").forEach(b=>b.addEventListener("click", ()=>{
     const lens = b.dataset.aw;
     const filter = { keywords: [], agency: nm };
-    const params = new URLSearchParams();
-    params.set("lens", lens);
-    params.set("filter", JSON.stringify(filter));
-    location.hash = `#alerts?${params.toString()}`;
+    import("../alerts_context_carry.mjs")
+      .then(carry=>location.assign(carry.alertsHref({lens,filter})))
+      .catch(()=>location.assign("/following/"));
   }));
 
   if (hasForecasts) {
@@ -480,10 +479,9 @@ async function showAgency(name, initialTab){
     box.querySelectorAll(".mini-sub-btn").forEach(b => b.addEventListener("click", () => {
       const kind = b.dataset.watchKind === "agency" ? "agency" : "vendor";
       const watchName = b.dataset.watchName || "";
-      const params = new URLSearchParams();
-      params.set("lens", "entity");
-      params.set("filter", JSON.stringify({ kind, name: watchName }));
-      location.hash = `#alerts?${params.toString()}`;
+      import("../alerts_context_carry.mjs")
+        .then(carry=>location.assign(carry.alertsHref({lens:"entity",filter:{kind,name:watchName}})))
+        .catch(()=>location.assign("/following/"));
     }));
 
     if(initialTab === "forecast") btnForecast.click();
@@ -936,10 +934,9 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
     box.querySelectorAll(".mini-sub-btn").forEach(b=>b.addEventListener("click", ()=>{
       const kind = b.dataset.watchKind === "agency" ? "agency" : "vendor";
       const watchName = b.dataset.watchName || "";
-      const params = new URLSearchParams();
-      params.set("lens", "entity");
-      params.set("filter", JSON.stringify({ kind, name: watchName }));
-      location.hash = `#alerts?${params.toString()}`;
+      import("../alerts_context_carry.mjs")
+        .then(carry=>location.assign(carry.alertsHref({lens:"entity",filter:{kind,name:watchName}})))
+        .catch(()=>location.assign("/following/"));
     }));
     if(initialTab==="forecast") btnForecast.click();
   }

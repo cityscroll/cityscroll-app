@@ -558,13 +558,10 @@ async function landShowLots(gj, n, selection){
 }
 
 function landToAlert(term){
-  // Hash-param entry (same shape as Watch this notice) so back-nav and deep links share one path.
   const keywords = term ? [String(term).toLowerCase().trim()].filter(Boolean) : [];
-  const filter = { keywords, status: "all" };
-  const params = new URLSearchParams();
-  params.set("lens", "land");
-  params.set("filter", JSON.stringify(filter));
-  location.hash = "#alerts?" + params.toString();
+  import("../alerts_context_carry.mjs")
+    .then(carry=>location.assign(carry.alertsHref({lens:"land",filter:{keywords,status:"all"}})))
+    .catch(()=>location.assign("/following/"));
 }
 
 

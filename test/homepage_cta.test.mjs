@@ -48,9 +48,9 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
   assert.match(index, /data-i18n="home_cta_prompt"/);
   assert.match(index, /id="homeCtaEmail"/);
   assert.match(index, /id="homeCtaForm"/);
-  assert.match(index, /href="#alerts"/);
+  assert.match(index, /href="\/following\/"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
-  assert.match(index, /homeCtaSubscribe[\s\S]*workerFetch\("\/subscribe"/);
+  assert.match(index, /homeCtaSubscribeStatic[\s\S]*workerFetch\("\/subscribe"/);
   assert.match(index, /lens:\s*"money"/);
   assert.match(index, /filter:\s*\{\}/);
   assert.match(index, /freq:\s*"weekly"/);

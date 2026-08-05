@@ -1,5 +1,5 @@
 /**
- * Alerts page re-ground: one subscribe surface, context in the hash, multi-watch demoted.
+ * Legacy Alerts characterization plus the Following route handoff.
  *
  *   node --test test/alerts_reground.test.mjs
  */
@@ -46,16 +46,17 @@ test("multi-watch rollup is demoted behind disclosure", () => {
   assert.match(SITE_SOURCE, /panel\.open\s*=\s*true/);
 });
 
-test("agency follow writes entity scope into the hash (context-carry)", () => {
+test("agency follow opens Following with the same entity scope", () => {
   assert.match(workspace, /alerts_context_carry\.mjs/);
-  assert.match(workspace, /location\.hash/);
+  assert.match(workspace, /location\.assign/);
   assert.match(workspace, /lens:\s*"entity"/);
   const href = alertsHref({
     lens: "entity",
     filter: { kind: "agency", name: "Design and Construction" },
   });
-  assert.ok(isContextAlertsHash(href));
-  const p = parseAlertsEntryParams(href);
+  const url = new URL(href);
+  assert.equal(url.pathname, "/following");
+  const p = parseAlertsEntryParams(url.search);
   assert.equal(p.lens, "entity");
   assert.equal(p.filter.kind, "agency");
   assert.equal(p.filter.name, "Design and Construction");

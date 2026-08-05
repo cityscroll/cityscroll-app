@@ -303,9 +303,11 @@ test("#now is an additive entry route and does not take ownership from current l
   assert.match(html, /href="#now"/);
   assert.match(html, /id="tab-now" class="tabpane"/);
   assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="now"/);
-  for (const lens of ["money", "people", "land", "property", "rules", "meetings", "alerts"]) {
+  for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
     assert.match(html, new RegExp(`data-tab="${lens}"`));
   }
+  assert.doesNotMatch(html, /class="tabbtn"[^>]+data-tab="alerts"/);
+  assert.match(html, /href="\/following\/"/);
   assert.doesNotMatch(html, /data-tab="map"/);
   assert.match(html, /href="\/near-you\/"[^>]+data-near-you-link/);
   assert.match(routing, /raw === "now" \|\| raw\.startsWith\("now\?"\)/);

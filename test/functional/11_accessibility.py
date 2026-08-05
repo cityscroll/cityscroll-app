@@ -10,7 +10,7 @@ remains a per-wave practice (see internal reviews, Kalbag ch.6).
 
 w7-02 (dynamic-state coverage): axe only sees markup that's actually in the accessibility
 tree — display:none content (every inactive .tabpane) is invisible to it. So for index.html
-we don't stop at the load state: we ACTIVATE each of the seven .tabbtn tabs in turn and
+we don't stop at the load state: we ACTIVATE each source .tabbtn tab in turn and
 re-run axe after each, catching violations (like unlabeled fields) that only exist once a
 panel is shown.
 
@@ -19,9 +19,8 @@ Axe on those races mid-navigation ("Execution context was destroyed"); destinati
 already covered as about.html. Keep them out of PAGES (see #423). run_axe still retries
 once on context-destroyed so an activated index state that navigates does not red the gate.
 
-Context-carrying alert entry: after notice detail, activate "Watch this notice" (hash to
-#alerts?lens=…&notice=…) as its own state so the prefilled builder + digItemHTML preview
-are scanned.
+Following is a separate static-first page. It is scanned as a public content page at both
+review widths; exact context-carry semantics are covered by the scope contract tests.
 
 w9-09: the full audit (data/crol-a11y-full-q9) found its only two real failures — the
 critical #invname label and the serious .pin contrast — in states this file didn't drive
@@ -58,7 +57,7 @@ AXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "axe.mi
 # Public content pages only. data.html and changelog.html are handoff shells that
 # client-side location.replace to About/API; axe on those races mid-navigation
 # ("Execution context was destroyed") and the destinations are already covered.
-PAGES = ["about.html", "stats.html", "api.html", "standards.html", "near-you/index.html"]  # Source: public site/ pages.
+PAGES = ["about.html", "stats.html", "api.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
 FAIL_IMPACTS = {"critical", "serious"}
 # w9-01: landmark-one-main/region were standing moderate findings (no <main>, no <footer>
 # landmark) on every page. Now that every page has both, ratchet these specific rule ids
@@ -67,7 +66,7 @@ FAIL_IMPACTS = {"critical", "serious"}
 # w10-04: heading-order (NYC Web Content Style Guide — heading levels "should not be
 # skipped") is also axe 'moderate', so without a ratchet entry it's invisible to the gate.
 RATCHET_RULES = {"landmark-one-main", "region", "heading-order"}
-TABS = ["people", "land", "property", "rules", "meetings", "alerts"]  # money is active on load
+TABS = ["people", "land", "property", "rules", "meetings"]  # money is active on load
 LANGS = ["en", "es"]
 VIEWPORTS = [(390, 844), (1440, 900)]
 
@@ -197,9 +196,8 @@ def run_focus_exposure(page, state_name, failures, *, retry=True):
               };
               const findings = [];
               for (const el of [...document.querySelectorAll(selector)].filter(rendered)) {
-                // Skip #alerts hash links — activating them changes location.hash and would
-                // tear down this evaluate mid-loop. Those destinations are scanned as their
-                // own activated states (tab:alerts, alerts:context-carry).
+                // Skip legacy #alerts hash links because routing forwards them to Following
+                // and would tear down this evaluate mid-loop. Following is scanned separately.
                 const href = el.getAttribute('href') || '';
                 if (href.startsWith('#alerts')) continue;
                 el.focus({preventScroll:false});
@@ -283,14 +281,6 @@ def run_index_states(pw, lang, viewport, failures):
         run_axe(page, state, failures, restore_url=BASE)
         run_focus_exposure(page, state, failures)
 
-    # digest preview (alerts tab is already active from the loop above)
-    page.click("#apreview")
-    page.wait_for_timeout(1200)
-    run_axe(
-        page, f"index.html [{lang}] [{viewport_name}] [alerts:digest-preview]", failures,
-        restore_url=BASE,
-    )
-
     # notice detail: money tab, click the first fixture row (renderList also auto-clicks
     # it on load, but an explicit click keeps this state independent of that behavior)
     page.click('.tabbtn[data-tab="money"]')
@@ -301,54 +291,6 @@ def run_index_states(pw, lang, viewport, failures):
         page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures,
         restore_url=BASE,
     )
-
-    # Context-carrying alert entry: Watch this notice → #alerts?lens=…&notice=… (hash).
-    # Prefer #dactions rail (money detail) over header CTAs (earlier in DOM, may be bare #alerts).
-    rail_watch = (
-        "#dactions a.act[href*='#alerts?'], #nactions a.act[href*='#alerts?'], "
-        "#dactions a[href*='#alerts?'], #nactions a[href*='#alerts?']"
-    )
-    try:
-        page.wait_for_selector(rail_watch, timeout=8000)
-    except Exception:
-        pass
-    if page.locator(rail_watch).count() > 0:
-        prior = page.evaluate("() => location.hash")
-        page.locator(rail_watch).first.click(timeout=10000)
-        try:
-            page.wait_for_function(
-                """([want, prior]) => {
-                  const h = location.hash || '';
-                  return h.includes(want) && h !== prior;
-                }""",
-                arg=["#alerts", prior],
-                timeout=10000,
-            )
-        except Exception:
-            page.wait_for_function(
-                "(want) => (location.hash || '').includes(want)",
-                arg="#alerts",
-                timeout=10000,
-            )
-        page.wait_for_selector("#tab-alerts.active, #awatch, #apreviewbox", timeout=15000)
-        page.wait_for_timeout(1200)
-        carry_hash = page.evaluate("() => location.hash")
-        run_axe(
-            page, f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]", failures,
-            restore_url=BASE, restore_hash=carry_hash,
-        )
-        run_focus_exposure(
-            page, f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]", failures,
-        )
-    else:
-        step(
-            "FAIL",
-            f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]",
-            "no rail watch link with #alerts?… after notice-detail",
-        )
-        failures.append(
-            (f"index.html [{lang}] [{viewport_name}] [alerts:context-carry]", "missing-watch-cta")
-        )
 
     # entity profile via permalink hash
     agency_hash = "#agency/Housing Preservation and Development"

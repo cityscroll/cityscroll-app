@@ -780,9 +780,7 @@ function actionRailHTML(actions){
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
     // Local watch (and other local navigations): use the action destination when present
     // so "Watch this notice" carries #alerts?lens=…&filter=…&notice=… context.
-    const href = action.destination && String(action.destination).startsWith("#")
-      ? action.destination
-      : "#alerts";
+    const href = action.destination || "/following/";
     return `<a class="act" href="${escUiHtml(href)}">${label}</a>`;
   }).join("");
   return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}<div data-action-outcome-slot></div></section>`;

@@ -20,8 +20,8 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
-TABS = ["people", "land", "property", "rules", "meetings", "alerts"]
+PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
+TABS = ["people", "land", "property", "rules", "meetings"]  # Source: site/index.html .tabbtn[data-tab] controls.
 
 INV_SEED = {"current": "inv1", "invs": {"inv1": {
     "name": "My investigation", "created": "2026-07-10",
@@ -77,15 +77,11 @@ def main():
             name = path or "index.html"
             census(page, name, failures)
 
-            if not path:  # index.html: walk every tab + the alerts digest preview + investigation
+            if not path:  # index.html: walk every source tab plus the investigation route
                 for tab in TABS:
                     page.click(f'.tabbtn[data-tab="{tab}"]')
                     page.wait_for_timeout(400)
                     census(page, f"{name} [tab:{tab}]", failures)
-                page.click("#apreview")
-                page.wait_for_timeout(600)
-                census(page, f"{name} [alerts:digest-preview]", failures)
-
                 page.evaluate("location.hash = '#investigation'")
                 page.wait_for_timeout(800)
                 census(page, f"{name} [investigation-workspace]", failures)

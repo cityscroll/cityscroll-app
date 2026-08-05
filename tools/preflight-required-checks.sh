@@ -125,6 +125,11 @@ if [[ "$RUN_READING_LEVEL" == "1" ]]; then
     --baseline site/reading-level-baseline.json \
     --format gh-annotations \
     about.html api.html changelog.html data.html index.html stats.html standards.html
+  run_and_fail python3 test/standards/reading_level.py \
+    --root site \
+    --max-grade 7 \
+    --format gh-annotations \
+    following/index.html
   run_and_fail node tools/property_a11y_census.mjs \
     --limit 50000 \
     --ratchet-baseline site/property-a11y-ratchet.json \
