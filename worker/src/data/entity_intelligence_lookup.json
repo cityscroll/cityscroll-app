@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-05T15:39:31.575Z",
+  "generated_at": "2026-08-05T16:58:19.251Z",
   "observation_count": 1331,
   "entity_count": 200,
   "multi_domain_count": 29,
@@ -96281,6 +96281,71 @@
         "confidence": "tentative"
       }
     ]
+  },
+  "vendor_footprint": {
+    "schema_version": 1,
+    "status": "qualified",
+    "qualifier_required": true,
+    "sections": [
+      "awards",
+      "payments",
+      "land",
+      "property",
+      "rules",
+      "meetings",
+      "franchise"
+    ],
+    "excluded_confidence": [
+      "tentative",
+      "review_only",
+      "not_scored"
+    ],
+    "summary": {
+      "known_awards": 51812,
+      "linked_awards": 141,
+      "award_linkage_rate": 0.0027,
+      "vendor_roots": 116,
+      "multi_domain_vendor_roots": 0,
+      "multi_domain_vendor_rate": 0
+    },
+    "promotion": {
+      "eligible": false,
+      "gates": {
+        "award_linkage_rate": {
+          "threshold": 0.95,
+          "actual": 0.0027,
+          "passed": false
+        },
+        "multi_domain_vendor_rate": {
+          "threshold": 0.5,
+          "actual": 0,
+          "passed": false
+        },
+        "section_denominator_rate": {
+          "threshold": 1,
+          "actual": 0.1429,
+          "measured_sections": 1,
+          "total_sections": 7,
+          "passed": false
+        },
+        "precision_review": {
+          "reviewed_links_threshold": 200,
+          "reviewed_links_actual": 45,
+          "false_positive_rate_threshold": 0.01,
+          "false_positive_rate_actual": 0,
+          "full_corpus": false,
+          "passed": false
+        }
+      }
+    },
+    "provenance": {
+      "denominator": "site/data/ocp_awards_warehouse_lookup.json",
+      "denominator_dataset_id": "qyyg-4tf5",
+      "denominator_materialized_at": "2026-08-05T10:40:50.286Z",
+      "denominator_row_count": 53245,
+      "numerator": "site/data/entity_intelligence_lookup.json strong named_vendor award objects",
+      "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json"
+    }
   },
   "entity_index": [
     {

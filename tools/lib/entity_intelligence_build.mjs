@@ -24,9 +24,166 @@ import {
   buildIntelligenceCorpus,
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
 } from "../../entity_resolution/cross_domain/index.mjs";
+import { vendorStem } from "../../entity_resolution/normalizers/vendor_stem.mjs";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
+
+export const VENDOR_FOOTPRINT_PROMOTION_GATES = Object.freeze({
+  award_linkage_rate: 0.95,
+  multi_domain_vendor_rate: 0.5,
+  section_denominator_rate: 1,
+  precision_reviewed_links: 200,
+  precision_false_positive_rate: 0.01,
+});
+
+const VENDOR_FOOTPRINT_SECTIONS = Object.freeze([
+  "awards",
+  "payments",
+  "land",
+  "property",
+  "rules",
+  "meetings",
+  "franchise",
+]);
+
+function roundRate(value) {
+  return Number.isFinite(value) ? Math.round(value * 10_000) / 10_000 : null;
+}
+
+function percentLabel(rate) {
+  if (!Number.isFinite(rate)) return null;
+  const value = Math.round(rate * 1_000) / 10;
+  return `${Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1)}%`;
+}
+
+function vendorRef(stem) {
+  return stem ? `vendor:stem:${encodeURIComponent(stem)}` : "";
+}
+
+/**
+ * Build the public vendor-footprint coverage contract from committed source
+ * materializations and review receipts. Only exact-stem, strong award links
+ * contribute to the numerator; tentative and review-only candidates do not.
+ */
+export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt = {}) {
+  const knownByRef = new Map();
+  for (const row of Array.isArray(ocpLookup?.rows) ? ocpLookup.rows : []) {
+    const stem = vendorStem(row?.vendor_name);
+    const ref = vendorRef(stem);
+    const requestId = clean(row?.request_id);
+    if (!ref || !requestId) continue;
+    if (!knownByRef.has(ref)) knownByRef.set(ref, new Set());
+    knownByRef.get(ref).add(requestId);
+  }
+
+  const linkedByRef = new Map();
+  for (const [ref, dossier] of Object.entries(doc?.by_ref || {})) {
+    if (dossier?.root?.kind !== "vendor") continue;
+    const known = knownByRef.get(ref) || new Set();
+    const linked = new Set();
+    for (const object of dossier?.domains?.money?.objects || []) {
+      const requestId = clean(object?.request_id);
+      if (object?.object_kind !== "award" || object?.confidence !== "strong" || !known.has(requestId)) continue;
+      linked.add(requestId);
+    }
+    linkedByRef.set(ref, linked);
+  }
+
+  const awardsByRef = {};
+  let knownAwards = 0;
+  let linkedAwards = 0;
+  for (const [ref, known] of [...knownByRef.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+    const linked = linkedByRef.get(ref) || new Set();
+    const eligible = known.size;
+    const linkedCount = linked.size;
+    const rate = eligible ? linkedCount / eligible : null;
+    knownAwards += eligible;
+    linkedAwards += linkedCount;
+    awardsByRef[ref] = {
+      linked: linkedCount,
+      eligible,
+      rate: roundRate(rate),
+      label: `showing ${linkedCount} of ${eligible} known awards linked so far (${percentLabel(rate)})`,
+    };
+  }
+
+  const vendorEntities = (doc?.entities || []).filter((entity) => entity?.root?.kind === "vendor");
+  const multiDomainVendors = vendorEntities.filter((entity) => (entity?.metrics?.domains_matched || 0) >= 2).length;
+  const awardLinkageRate = knownAwards ? linkedAwards / knownAwards : null;
+  const multiDomainVendorRate = vendorEntities.length ? multiDomainVendors / vendorEntities.length : null;
+  // Awards have a full materialized denominator. The other shipped sections
+  // remain bounded observations and therefore retain explicit unknown coverage.
+  const sectionsWithMeasuredDenominator = 1;
+  const sectionDenominatorRate = sectionsWithMeasuredDenominator / VENDOR_FOOTPRINT_SECTIONS.length;
+  const review = erReceipt?.quality_review || {};
+  const reviewedLinks = Number(review.accepted_pair_candidates_reviewed) || 0;
+  const falsePositives = Number(review.confirmed_false_positives) || 0;
+  const falsePositiveRate = reviewedLinks ? falsePositives / reviewedLinks : null;
+  const fullCorpusPrecision = !/does not support a full-corpus precision claim/i.test(
+    String(review.unreviewed_residual || erReceipt?.residual || ""),
+  );
+
+  const gates = {
+    award_linkage_rate: {
+      threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.award_linkage_rate,
+      actual: roundRate(awardLinkageRate),
+      passed: Number.isFinite(awardLinkageRate)
+        && awardLinkageRate >= VENDOR_FOOTPRINT_PROMOTION_GATES.award_linkage_rate,
+    },
+    multi_domain_vendor_rate: {
+      threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.multi_domain_vendor_rate,
+      actual: roundRate(multiDomainVendorRate),
+      passed: Number.isFinite(multiDomainVendorRate)
+        && multiDomainVendorRate >= VENDOR_FOOTPRINT_PROMOTION_GATES.multi_domain_vendor_rate,
+    },
+    section_denominator_rate: {
+      threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.section_denominator_rate,
+      actual: roundRate(sectionDenominatorRate),
+      measured_sections: sectionsWithMeasuredDenominator,
+      total_sections: VENDOR_FOOTPRINT_SECTIONS.length,
+      passed: sectionDenominatorRate >= VENDOR_FOOTPRINT_PROMOTION_GATES.section_denominator_rate,
+    },
+    precision_review: {
+      reviewed_links_threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.precision_reviewed_links,
+      reviewed_links_actual: reviewedLinks,
+      false_positive_rate_threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.precision_false_positive_rate,
+      false_positive_rate_actual: roundRate(falsePositiveRate),
+      full_corpus: fullCorpusPrecision,
+      passed: reviewedLinks >= VENDOR_FOOTPRINT_PROMOTION_GATES.precision_reviewed_links
+        && Number.isFinite(falsePositiveRate)
+        && falsePositiveRate <= VENDOR_FOOTPRINT_PROMOTION_GATES.precision_false_positive_rate
+        && fullCorpusPrecision,
+    },
+  };
+  const promoted = Object.values(gates).every((gate) => gate.passed);
+
+  return {
+    schema_version: 1,
+    status: promoted ? "promoted" : "qualified",
+    qualifier_required: !promoted,
+    sections: [...VENDOR_FOOTPRINT_SECTIONS],
+    excluded_confidence: ["tentative", "review_only", "not_scored"],
+    summary: {
+      known_awards: knownAwards,
+      linked_awards: linkedAwards,
+      award_linkage_rate: roundRate(awardLinkageRate),
+      vendor_roots: vendorEntities.length,
+      multi_domain_vendor_roots: multiDomainVendors,
+      multi_domain_vendor_rate: roundRate(multiDomainVendorRate),
+    },
+    promotion: { eligible: promoted, gates },
+    awards_by_ref: awardsByRef,
+    provenance: {
+      denominator: "site/data/ocp_awards_warehouse_lookup.json",
+      denominator_dataset_id: ocpLookup?.dataset_id || null,
+      denominator_materialized_at: ocpLookup?.materialized_at || null,
+      denominator_row_count: Number(ocpLookup?.row_count) || knownAwards,
+      numerator: "site/data/entity_intelligence_lookup.json strong named_vendor award objects",
+      precision_receipt: "warehouse/receipts/proof/wh04_er_batch_latest.json",
+    },
+  };
+}
 
 /**
  * Compact public reverse index: observed subject_ref → published entity pivots.
@@ -469,6 +626,11 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     // Keep the edge document bounded while retaining a useful densified corpus.
     max_entities: opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP,
   });
+  const vendorFootprint = buildVendorFootprintCoverage(
+    corpus,
+    loadJsonIfExists(path.join(root, "site/data/ocp_awards_warehouse_lookup.json")) || {},
+    loadJsonIfExists(path.join(root, "warehouse/receipts/proof/wh04_er_batch_latest.json")) || {},
+  );
 
   // Prefer a multi-domain demo that includes live people when present; else Parks;
   // else the first multi-domain entity.
@@ -508,6 +670,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     entities: corpus.entities,
     by_ref: corpus.by_ref,
     by_subject_ref: bySubjectRef,
+    vendor_footprint: vendorFootprint,
     provenance: {
       sources: [
         "warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv",
@@ -549,6 +712,13 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
 
 export function slimDocForWorker(doc) {
   // Worker payload: keep by_ref + summary; drop full entities array duplicate if large
+  const footprint = doc.vendor_footprint
+    ? (() => {
+        const { awards_by_ref: awardsByRef = {}, ...meta } = doc.vendor_footprint;
+        void awardsByRef;
+        return meta;
+      })()
+    : null;
   return {
     schema_version: doc.schema_version,
     phase: doc.phase,
@@ -563,6 +733,7 @@ export function slimDocForWorker(doc) {
     verified_demo: doc.verified_demo,
     by_ref: doc.by_ref,
     by_subject_ref: doc.by_subject_ref,
+    vendor_footprint: footprint,
     // Compact entity list for /entity-intelligence?list=1
     entity_index: (doc.entities || []).map((e) => ({
       ref: e.root?.ref,

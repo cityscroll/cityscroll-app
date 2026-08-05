@@ -20,6 +20,7 @@ import {
   buildEntityIntelligenceDoc,
   slimDocForWorker,
 } from "./lib/entity_intelligence_build.mjs";
+import { vendorCoverageKey } from "../entity_resolution/cross_domain/vendor_coverage_key.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = path.join(ROOT, "site", "data", "entity_intelligence_lookup.json");
@@ -30,6 +31,63 @@ const OUT_WORKER = path.join(
   "data",
   "entity_intelligence_lookup.json",
 );
+const OUT_VENDOR_FOOTPRINT_EVIDENCE = path.join(
+  ROOT,
+  "docs",
+  "evidence",
+  "vendor-footprint-coverage.json",
+);
+const OUT_VENDOR_FOOTPRINT_SITE = path.join(
+  ROOT,
+  "site",
+  "data",
+  "vendor_footprint_coverage.json",
+);
+const OUT_VENDOR_FOOTPRINT_WORKER = path.join(
+  ROOT,
+  "worker",
+  "src",
+  "data",
+  "vendor_footprint_coverage.json",
+);
+
+function vendorFootprintEvidence(doc) {
+  const footprint = doc.vendor_footprint || {};
+  return {
+    schema_version: 1,
+    title: "Vendor footprint coverage and promotion receipt",
+    generated_at: doc.generated_at,
+    status: footprint.status,
+    qualifier_required: footprint.qualifier_required,
+    sections: footprint.sections,
+    excluded_confidence: footprint.excluded_confidence,
+    summary: footprint.summary,
+    promotion: footprint.promotion,
+    provenance: footprint.provenance,
+  };
+}
+
+function vendorFootprintCoverageIndex(doc) {
+  const awardsByRef = doc.vendor_footprint?.awards_by_ref || {};
+  const keyedRefs = new Map();
+  const rows = Object.entries(awardsByRef).map(([ref, coverage]) => {
+    const key = vendorCoverageKey(ref);
+    const existing = keyedRefs.get(key);
+    if (existing && existing !== ref) {
+      throw new Error(`vendor footprint coverage key collision: ${key}`);
+    }
+    keyedRefs.set(key, ref);
+    return [key, coverage.linked, coverage.eligible, coverage.rate ?? ""].join("|");
+  });
+  return {
+    schema_version: 2,
+    generated_at: doc.generated_at,
+    key_kind: "fnv1a64-vendor-ref",
+    // Compact public index: opaque-key|linked|eligible|rate. The route derives
+    // the same key from the resolved vendor ref and expands the reader label.
+    rows,
+  };
+}
 
 function main() {
   const args = process.argv.slice(2);
@@ -38,6 +96,8 @@ function main() {
 
   const full = buildEntityIntelligenceDoc(ROOT);
   const slim = slimDocForWorker(full);
+  const footprintEvidence = vendorFootprintEvidence(full);
+  const footprintCoverage = vendorFootprintCoverageIndex(full);
 
   if (printDemo) {
     console.log(JSON.stringify(full.verified_demo || full.demo_refs, null, 2));
@@ -65,7 +125,10 @@ function main() {
   }
 
   if (check) {
-    if (!existsSync(OUT_SITE) || !existsSync(OUT_WORKER)) {
+    if (!existsSync(OUT_SITE) || !existsSync(OUT_WORKER)
+      || !existsSync(OUT_VENDOR_FOOTPRINT_EVIDENCE)
+      || !existsSync(OUT_VENDOR_FOOTPRINT_SITE)
+      || !existsSync(OUT_VENDOR_FOOTPRINT_WORKER)) {
       console.error("entity intelligence lookup missing — run without --check");
       process.exit(1);
     }
@@ -81,6 +144,18 @@ function main() {
       console.error("entity intelligence lookup drift — rebuild with tools/build_entity_intelligence.mjs");
       process.exit(1);
     }
+    const committedEvidence = JSON.parse(readFileSync(OUT_VENDOR_FOOTPRINT_EVIDENCE, "utf8"));
+    if (JSON.stringify(strip(committedEvidence)) !== JSON.stringify(strip(footprintEvidence))) {
+      console.error("vendor footprint coverage receipt drift — rebuild with tools/build_entity_intelligence.mjs");
+      process.exit(1);
+    }
+    for (const coveragePath of [OUT_VENDOR_FOOTPRINT_SITE, OUT_VENDOR_FOOTPRINT_WORKER]) {
+      const committedCoverage = JSON.parse(readFileSync(coveragePath, "utf8"));
+      if (JSON.stringify(strip(committedCoverage)) !== JSON.stringify(strip(footprintCoverage))) {
+        console.error("vendor footprint coverage index drift — rebuild with tools/build_entity_intelligence.mjs");
+        process.exit(1);
+      }
+    }
     console.log(
       `entity intelligence ok: entities=${site.entity_count} multi_domain=${site.multi_domain_count}`,
     );
@@ -89,9 +164,16 @@ function main() {
 
   mkdirSync(path.dirname(OUT_SITE), { recursive: true });
   mkdirSync(path.dirname(OUT_WORKER), { recursive: true });
+  mkdirSync(path.dirname(OUT_VENDOR_FOOTPRINT_EVIDENCE), { recursive: true });
+  mkdirSync(path.dirname(OUT_VENDOR_FOOTPRINT_SITE), { recursive: true });
+  mkdirSync(path.dirname(OUT_VENDOR_FOOTPRINT_WORKER), { recursive: true });
   const body = `${JSON.stringify(slim, null, 2)}\n`;
   writeFileSync(OUT_SITE, body);
   writeFileSync(OUT_WORKER, body);
+  writeFileSync(OUT_VENDOR_FOOTPRINT_EVIDENCE, `${JSON.stringify(footprintEvidence, null, 2)}\n`);
+  const footprintBody = `${JSON.stringify(footprintCoverage)}\n`;
+  writeFileSync(OUT_VENDOR_FOOTPRINT_SITE, footprintBody);
+  writeFileSync(OUT_VENDOR_FOOTPRINT_WORKER, footprintBody);
   console.log(
     `wrote ${path.relative(ROOT, OUT_SITE)} and worker twin — entities=${slim.entity_count} multi_domain=${slim.multi_domain_count} observations=${slim.observation_count}`,
   );
