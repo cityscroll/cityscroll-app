@@ -15,8 +15,8 @@ builder had been switched to "Rule changes") left #awatch on "rules" -- the quiz
 failing against the pre-fix index.html (git stash) before confirming it passes below.
 
 After this card: #awatch/#athresh update live the instant the quiz chip is clicked (no Preview
-click needed to observe it), so the builder's own "Preview today's digest" button and the
-quiz's "Preview my digest" button always compile and describe the exact same draft.
+click needed to observe it), so the form's single "Preview digest" button and the
+single preview action always compiles and describes the exact same draft.
 """
 import sys
 from playwright.sync_api import sync_playwright
@@ -40,6 +40,7 @@ with sync_playwright() as pw:
 
     # 1) Move the builder's own select away from its default ("bigaward") -- a real
     #    "Advanced options" interaction with nothing to do with the quiz above it.
+    page.locator("#advopts").evaluate("el => { el.open = true; }")
     page.select_option("#awatch", "rules")
 
     # 2) Now pick "Big contract awards" from the quiz -- the drift scenario: does the chip
@@ -65,9 +66,9 @@ with sync_playwright() as pw:
     step("$10.00M" in subj and "award" in subj.lower(),
          "builder's own Preview button reflects the quiz pick + the amount edit together", subj)
 
-    # 5) The quiz's own Preview button must produce the IDENTICAL description -- no path may
-    #    preview one thing while the other previews (or a saved alert builds from) something else.
-    page.click("#quizgo")
+    # 5) Repeating the one Preview action must produce the identical description; no hidden
+    #    parallel control may compile a different draft.
+    page.click("#apreview")
     page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     subj2 = page.locator("#apreviewbox .esubj").inner_text()
     step(subj2 == subj, "quiz's own Preview button previews the SAME draft as the builder's button",

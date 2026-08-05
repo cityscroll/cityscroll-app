@@ -746,9 +746,6 @@
             "selector": "#quizfreq"
           },
           {
-            "selector": "#quizgo"
-          },
-          {
             "selector": "#apreview"
           }
         ],

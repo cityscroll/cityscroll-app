@@ -924,7 +924,9 @@ function applyHash(){
         let filter = {};
         try{ filter = JSON.parse(q.get("filter") || "{}"); }catch(e){ filter = {}; }
         // Context-carrying entry: pre-scope builder + seed real digItemHTML preview.
-        Promise.resolve(prefillAlertFromLink(lens, filter, q.get("freq"), { noticeId, projectId }))
+        Promise.resolve(prefillAlertFromLink(lens, filter, q.get("freq"), {
+          noticeId, projectId, matchCount:q.get("count"),
+        }))
           .catch(()=>{});
       } else if(!rollupView){
         // Neutral #alerts — clear carried seed and return the single form to a calm bare draft
@@ -937,9 +939,9 @@ function applyHash(){
           if(typeof aWatchChange === "function") aWatchChange(true);
           if($("#aparam")) $("#aparam").value = "";
           if($("#aagency")) $("#aagency").value = "";
-          if($("#amoneykw")) $("#amoneykw").value = "";
           if($("#amoneymin")) $("#amoneymin").value = "";
           if($("#amoneymonths")) $("#amoneymonths").value = "";
+          alertEntryMatchCount = null;
           if($("#apreviewbox") && typeof t === "function"){
             $("#apreviewbox").innerHTML = `<div class="empty">${t("empty_preview")}</div>`;
           }
