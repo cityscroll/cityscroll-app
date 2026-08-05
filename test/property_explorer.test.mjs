@@ -10,17 +10,22 @@ import { test } from "node:test";
 
 import {
   PROP_PROCESS_STAGES,
+  assertPropertyArchiveSafety,
   buildPropertyExplorerEntries,
   clusterRepeatedEntries,
   countPropertyProcessStages,
   describeCollapsedGroup,
   filterPropertyExplorerEntries,
+  partitionPropertyExplorerEntries,
   parcelLookupUrls,
+  propertyExplorerCensusCount,
   propertyProcessActionKey,
   propertyProcessFilterKey,
   propertyProcessStage,
   spineCurrentProcessStage,
 } from "../site/property_explorer.mjs";
+import { extractPropertyCommercial } from "../site/property_commercial.mjs";
+import { extractPropertyReaderActions } from "../site/property_reader_actions.mjs";
 import {
   aggregatePhaseEvents,
   buildPropertyPhaseView,
@@ -32,6 +37,22 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/property_disposition/multi_notice_bbl.json"), "utf8"),
 );
+const censusFixture = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/property_plain_summary/real_notices.json"), "utf8"),
+);
+
+function censusEntries(rows, today = "2026-08-04") {
+  const prepared = rows.map((source) => {
+    const row = structuredClone(source);
+    row.commercial = extractPropertyCommercial(row);
+    row.property_reader_actions = extractPropertyReaderActions(row, {
+      today,
+      events: row.commercial.timed_events,
+    });
+    return row;
+  });
+  return buildPropertyExplorerEntries(prepared, []);
+}
 
 test("PROP_PROCESS_STAGES is the ops-ontology rail (not temporal proposed/soon)", () => {
   const keys = PROP_PROCESS_STAGES.map(([k]) => k);
@@ -241,15 +262,84 @@ test("clusterRepeatedEntries never collapses already-grouped multi-notice spines
   assert.ok(out.some((e) => e === spine), "multi-notice spine is untouched");
 });
 
-test("renderPropExplorer splits current-first then a labeled closed block (archive never leads)", () => {
+test("renderPropExplorer keeps the closed archive one tap away instead of appending it to the default feed", () => {
   const index = readFileSync(join(ROOT, "site/app/property.mjs"), "utf8");
-  // Current (open/upcoming/undated) render before the closed/archive header.
-  assert.match(index, /const current=entries\.filter\(e=>!isClosed\(e\)\)/);
-  assert.match(index, /property-empty-current/);
-  assert.match(index, /property_nothing_current/);
+  const routing = readFileSync(join(ROOT, "site/app/routing.mjs"), "utf8");
+  const markup = readFileSync(join(ROOT, "site/index.html"), "utf8");
+  assert.match(index, /partitionPropertyExplorerEntries/);
+  assert.match(index, /propertyView===\"archive\"/);
+  assert.match(routing, /q\.set\("view", "archive"\)/);
+  assert.match(markup, /id="property-view-switch"/);
   // Small-multiples collapse is wired into the feed.
   assert.match(index, /clusterRepeatedEntries/);
   assert.match(index, /propertyClusterCardHTML/);
+});
+
+test("default Property qualification follows live typed events and exposed participatory actions", () => {
+  const rows = censusFixture.cases.map((entry) => entry.row);
+  const entries = censusEntries(rows);
+  const partition = partitionPropertyExplorerEntries(entries, { today: "2026-08-04" });
+  const ids = (list) => list.flatMap((entry) => entry.members.map((row) => row.request_id));
+
+  assert.deepEqual(ids(partition.default_entries).sort(), [
+    "20200128107", // evergreen Property Clerk claim route
+    "20260526003", // seized-products inquiry route
+  ]);
+  assert.ok(ids(partition.archive_entries).includes("20240108007"), "Public Hearing pointer is archived");
+  assert.ok(ids(partition.archive_entries).includes("20140403113"), "closed medallion result is archived");
+  assert.ok(ids(partition.archive_entries).includes("20170512106"), "closed UDAAP hearing is archived");
+  assert.ok(ids(partition.archive_entries).includes("20211118008"), "closed acquisition hearing is archived");
+  assert.equal(partition.default_count + partition.archive_count, partition.census_total);
+  assert.equal(partition.census_total, rows.length);
+});
+
+test("future sales and hearings remain in the default feed; actionless destruction and fallback records do not", () => {
+  const rows = [
+    {
+      request_id: "open-medallion",
+      start_date: "2026-08-01",
+      short_title: "Medallion sale upset price",
+      additional_description_1: "All bids must be submitted by September 10, 2026 for the medallion sale.",
+    },
+    {
+      request_id: "live-hearing",
+      start_date: "2026-08-01",
+      event_date: "2026-09-12",
+      short_title: "Public hearing for an acquisition and easement",
+      additional_description_1: "People wishing to be heard may attend the public hearing on September 12, 2026.",
+    },
+    {
+      request_id: "destruction-no-contact",
+      start_date: "2026-08-01",
+      short_title: "Pending destruction of unauthorized tobacco products",
+      additional_description_1: "The listed unauthorized products are pending destruction.",
+    },
+    {
+      request_id: "honest-fallback",
+      start_date: "2026-08-01",
+      short_title: "Property Disposition",
+      additional_description_1: "Official record only.",
+    },
+  ];
+  const partition = partitionPropertyExplorerEntries(censusEntries(rows), { today: "2026-08-04" });
+  const ids = (list) => list.map((entry) => entry.primary.request_id).sort();
+  assert.deepEqual(ids(partition.default_entries), ["live-hearing", "open-medallion"]);
+  assert.deepEqual(ids(partition.archive_entries), ["destruction-no-contact", "honest-fallback"]);
+  assert.equal(propertyExplorerCensusCount(partition.default_entries), 2);
+  assert.equal(propertyExplorerCensusCount(partition.archive_entries), 2);
+});
+
+test("archive safety detector rejects a record with a live typed event or exposed action", () => {
+  const [live] = censusEntries([{
+    request_id: "live-sale",
+    start_date: "2026-08-01",
+    short_title: "Notice of Public Sale of Residential Property",
+    additional_description_1: "All bids must be submitted by September 20, 2026.",
+  }]);
+  assert.throws(
+    () => assertPropertyArchiveSafety([live], { today: "2026-08-04" }),
+    /live-sale/,
+  );
 });
 
 test("Property cards lead with the cached plain variant and disclose the exact legal title", () => {

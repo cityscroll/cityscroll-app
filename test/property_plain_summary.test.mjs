@@ -88,7 +88,7 @@ test("card summaries compose one receipted what-plus-key-event sentence without 
 
   assert.equal(
     card.text,
-    "This is a forest project; bids due December 6, 2023 at 4:00 PM.",
+    "Timber sale; bids due December 6, 2023 at 4:00 PM.",
   );
   assert.equal(card.key_fact_kind, "event_bid_deadline");
   assert.equal(card.event_kind, "bid_deadline");
@@ -96,6 +96,15 @@ test("card summaries compose one receipted what-plus-key-event sentence without 
   assert.ok(card.sources.length > 0);
   card.sources.forEach((receipt) => assertReceipt(item.row, receipt));
   assert.equal((card.text.match(/[.!?](?:\s|$)/g) || []).length, 1, "the card variant is one sentence");
+});
+
+test("card summaries keep sale dates short and below the lens reading ceiling", () => {
+  const item = fixture.cases.find((entry) => entry.id === "direct-property-sale");
+  const card = propertyCardPlainSummary(buildPropertyPlainSummary(item.row));
+
+  assert.equal(card.text, "This is a public property sale on October 29, 2021 at 4:00 PM.");
+  assert.equal(card.key_fact_kind, "event_sale");
+  assert.deepEqual(card.fact_kinds, ["what", "event_sale"]);
 });
 
 test("card summaries use a receipted action when no timed event exists and preserve honest fallback", () => {
