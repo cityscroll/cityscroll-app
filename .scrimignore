@@ -195,3 +195,12 @@ git:log
 .github/workflows/deploy-worker.yml
 site/data/procurement_planning_payload.json
 site/data/procurement_planning_payload/*.json
+
+# 2026-08-05: pre-existing public content on origin/main (predates gc-08-vendor-constellation),
+# verified untouched by that branch's diff. A006/L031/L032 findings on these files fire on their
+# annotation-blind / hash-shaped-content classes (estimation-language phrasing; MD5/SHA1 checksums
+# used as data-integrity provenance, not secrets) rather than on any credential or private detail.
+# Path-scoped to the exact files reviewed — not a rule-wide suppression.
+A006:docs/unblocked-plans-2026-08.md # reviewed 2026-08-05; estimation-language phrasing on an already-public planning doc
+L031:docs/evidence/hosting-dual-host-metrics.json # reviewed 2026-08-05; MD5s are file-integrity checksums in a published measurement receipt, not secrets
+L032:docs/evidence/index-module-split.json # reviewed 2026-08-05; SHA-1 is a module-graph content digest in a published receipt, not a secret
