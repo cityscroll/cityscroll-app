@@ -536,9 +536,14 @@ class DemoLinkContract(unittest.TestCase):
             locator = visible_locator(page, expected)
             locator.first.wait_for(state="visible", timeout=wait_ms)
 
-        expected_hash = expectations.get("hash", entry["url"])
-        page.wait_for_function("value => location.hash === value", arg=expected_hash, timeout=wait_ms)
-        self.assertEqual(page.evaluate("location.hash"), expected_hash)
+        expected_pathname = expectations.get("pathname")
+        if expected_pathname:
+            page.wait_for_function("value => location.pathname === value", arg=expected_pathname, timeout=wait_ms)
+            self.assertEqual(page.evaluate("location.pathname"), expected_pathname)
+        else:
+            expected_hash = expectations.get("hash", entry["url"])
+            page.wait_for_function("value => location.hash === value", arg=expected_hash, timeout=wait_ms)
+            self.assertEqual(page.evaluate("location.hash"), expected_hash)
 
         for expected in expectations["notVisible"]:
             locator = visible_locator(page, expected)

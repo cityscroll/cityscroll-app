@@ -9,65 +9,62 @@ const demo = JSON.parse(
   readFileSync(new URL("../site/demo/demo-links.json", import.meta.url), "utf8"),
 );
 const source = SITE_SOURCE;
+const near = readFileSync(new URL("../site/near-you/index.html", import.meta.url), "utf8");
+const island = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
+const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
 
-test("map tab surface is wired without a proprietary map SDK", () => {
-  assert.match(index, /data-tab="map"/);
-  assert.match(index, /id="tab-map"/);
-  assert.match(index, /id="mapSvg"/);
-  assert.match(source, /function paintMapExploration/);
-  assert.match(source, /import\("\.\.\/map_exploration\.mjs"\)/);
-  assert.match(source, /data\/district_activity\.json/);
-  assert.match(source, /data\/district_boundaries\.json/);
-  assert.doesNotMatch(source, /mapbox|google\.maps|Mapbox/i);
+test("the map is a route-owned Near-you facet without a proprietary SDK", () => {
+  assert.doesNotMatch(index, /data-tab="map"|id="tab-map"|id="mapSvg"/);
+  assert.match(near, /data-near-you-root/);
+  assert.match(near, /id="nearMapSvg"/);
+  assert.match(near, /class="near-area-list"/);
+  assert.match(near, /<script type="module" src="\/app\/map\.mjs"/);
+  assert.match(island, /import[^;]+map_exploration\.mjs/);
+  assert.match(island, /data\/district_boundaries\.json/);
+  assert.doesNotMatch(`${island}\n${near}`, /mapbox|google\.maps|Mapbox/i);
   assert.match(i18n, /tab_map:\s*"Map"/);
   assert.match(i18n, /map_boundary_vintage/);
-  assert.match(readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8"), /map\.mjs/);
+  assert.doesNotMatch(readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8"), /map\.mjs/);
 });
 
-test("map hash grammar and keyboard district paths exist", () => {
-  assert.match(source, /tab === "map"/);
-  assert.match(index, /data-map-zoom="in"/);
-  assert.match(index, /data-map-pan="west"/);
-  assert.match(source, /tabindex="0"/);
-  assert.match(index, /id="mapAreaList"/);
+test("legacy map hashes forward and no-JavaScript area paths stay keyboard native", () => {
+  assert.match(routing, /raw==="map"\|\|raw\.startsWith\("map" \+ "\?"\)/);
+  assert.match(routing, /location\.replace\(target\)/);
+  assert.match(near, /data-map-zoom="in"/);
+  assert.match(near, /data-map-pan="west"/);
+  assert.doesNotMatch(near, /class="map-district"[^>]+tabindex/);
+  assert.match(island, /path\.setAttribute\("role", "link"\)/);
+  assert.match(island, /path\.tabIndex = 0/);
+  assert.match(island, /svg\.setAttribute\("role", "group"\)/);
+  assert.match(near, /<form class="near-form" method="get"/);
+  assert.match(near, /<a data-map-area=/);
 });
 
-test("map drill-throughs carry scope into list hashes (not bare lens tabs)", () => {
-  // Map detail uses pure bucketFeedLinks / areaFeedLinks (dynamic import).
-  assert.match(source, /bucketFeedLinks\(bucketSel\.kind/);
-  assert.match(source, /areaFeedLinks\(sel\.level, sel\.id/);
-  assert.match(source, /map-count-link/);
-  // Virtual bag must not link to bare #meetings.
-  assert.doesNotMatch(source, /bucketSel\.kind==="virtual"\?`<a class="act" href="#meetings"/);
-  // Scope tokens land in meetings / rules list grammar.
-  assert.match(index, /value="virtual"/);
-  assert.match(index, /id="rulesboro"/);
-  assert.match(source, /scopePlaces|locationScope.*virtual|place==="virtual"/);
+test("map drill-throughs carry the shared scope into server-owned area documents", () => {
+  for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
+    assert.match(index, new RegExp(`data-near-you-link[^>]+data-lens="${lens}"|data-lens="${lens}"[^>]+data-near-you-link`));
+  }
+  assert.match(island, /fetch\(href, \{ headers: \{ Accept: "text\/html" \} \}\)/);
+  assert.match(island, /current\.replaceWith\(document\.importNode\(replacement, true\)\)/);
+  assert.doesNotMatch(island, /root\.(?:innerHTML|replaceChildren)/);
   const pure = readFileSync(new URL("../site/map_exploration.mjs", import.meta.url), "utf8");
   assert.match(pure, /export function mapDrillListHash/);
   assert.match(pure, /export function bucketFeedLinks/);
   assert.match(pure, /export function districtBagItemIds/);
   assert.match(pure, /export function materializeDistrictBagRows/);
   assert.match(pure, /export async function materializeDistrictBagRowsFromFiles/);
-  assert.match(source, /filterFeedRowsToDistrictBag\("property",rows\)/);
-  assert.match(source, /filterFeedRowsToDistrictBag\("meetings",/);
-  assert.match(source, /setMeetingsResultCount\(uniqueRows\.length\)/);
-  assert.match(source, /const totalCount=feedVisible\.property\.length/);
   assert.match(pure, /scope=virtual|locationScope === "virtual"/);
 });
 
 test("contract response geography is visibly distinct from performance geography", () => {
-  assert.match(index, /id="mapMoneyBasisRow"/);
-  assert.match(index, /id="mapMoneyBasisNote"/);
-  assert.match(index, /id="moneylocationbasis"/);
-  assert.match(index, /value="submission_address"/);
-  assert.match(index, /value="pre_bid_venue"/);
-  assert.match(index, /value="document_pickup"/);
-  assert.match(i18n, /map_money_basis_performance:\s*"Where work may affect a district"/);
-  assert.match(i18n, /money_location_basis_submission:\s*"Located by submission address"/);
-  assert.match(i18n, /not where the contracted work will happen/);
-  assert.match(source, /basis_layers\.contract_action_address/);
-  assert.match(source, /basis:\s*mapState\.basis/);
+  const activity = JSON.parse(readFileSync(new URL("../site/data/district_activity.json", import.meta.url), "utf8"));
+  const layer = activity.basis_layers.contract_action_address;
+  assert.equal(layer.is_place_of_performance, false);
+  assert.match(layer.note, /never merged into performance-place density/);
+  for (const [borough, counts] of Object.entries(layer.by_level.borough)) {
+    assert.equal(layer.district_items.by_level.borough[borough]?.money?.length || 0, counts.money, borough);
+  }
+  assert.match(readFileSync(new URL("../site/near_you_view.mjs", import.meta.url), "utf8"), /does not say where the contract work will happen/);
 });
 
 test("precomputed district_activity artifact is present and loadable", () => {
@@ -82,7 +79,7 @@ test("precomputed district_activity artifact is present and loadable", () => {
   assert.equal(doc.district_items.built_at, doc.built_at);
   assert.equal(doc.district_items.corpora.property.collection, "property_rows");
   assert.equal(doc.district_items.corpora.meetings.collection, "rows");
-  for (const lens of ["property", "meetings"]) {
+  for (const lens of ["land", "property", "rules", "meetings", "money"]) {
     const ids = doc.district_items.by_level.council_district["1"]?.[lens] || [];
     assert.equal(ids.length, doc.by_level.council_district["1"][lens]);
   }

@@ -77,6 +77,14 @@ runs:
         else
           echo "skip district_activity rebuild (tool missing)"
         fi
+    - name: Build static-first Near-you documents
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        node "$SOURCE_DIR/tools/build_near_you_pages.mjs"
+        node "$SOURCE_DIR/tools/build_near_you_pages.mjs" --check
     # Land upcoming-hearings payload: production rows must be ZAP-traceable.
     # Live sweep is scheduled separately; deploy only re-checks the committed
     # snapshot so synthetic padding cannot re-enter the public site.

@@ -146,12 +146,6 @@ function serializeState(){
       if(rulesBoro && rulesBoro.value==="citywide") q.set("scope","citywide");
       else if(rulesBoro && rulesBoro.value) q.set("boro", rulesBoro.value);
     }
-  } else if(tab === "map"){
-    if(mapState.level && mapState.level !== "borough") q.set("level", mapState.level);
-    if(mapState.id) q.set("id", mapState.id);
-    if(mapState.parent) q.set("parent", mapState.parent);
-    if(mapState.lens && mapState.lens !== "all") q.set("lens", mapState.lens);
-    if(mapState.lens === "money" && mapState.basis === "contract_action_address") q.set("basis", "contract_action_address");
   }
   if(tab === "property"){
     const taxPanel=$("#tax-lien-sale-panel");
@@ -159,10 +153,25 @@ function serializeState(){
   }
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
-  const scope=tab==="map"
-    ?CrolScope.scopeWithMapState(CrolScope.scopeFromRouteHash(location.hash,{language:window.LANG||"en"}),mapState,{viewBox:mapViewBox})
-    :CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
+  const scope=CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
   return CrolScope.routeHashFromScope(scope,{surface:tab});
+}
+function nearYouHref(scope){
+  const normalized=CrolScope.normalizeScope(scope,{language:window.LANG||"en"});
+  const common=CrolScope.commonNearYouPath(normalized);
+  if(common) return common;
+  return CrolScope.nearYouUrlFromScope(normalized,{base:"https://api.cityscroll.org/near-you"});
+}
+function syncNearYouLinks(currentHash){
+  const active=document.querySelector(".tabbtn.active")?.dataset.tab||"meetings";
+  const activeHash=currentHash||serializeState();
+  document.querySelectorAll("[data-near-you-link]").forEach(link=>{
+    const requested=link.dataset.lens==="current"?active:(link.dataset.lens||active);
+    const supported=["money","people","land","property","rules","meetings","now","alerts"].includes(requested);
+    const route=supported&&requested===active?activeHash:`#${supported?requested:"meetings"}`;
+    const scope=CrolScope.scopeFromRouteHash(route,{language:window.LANG||"en"});
+    link.href=nearYouHref(scope);
+  });
 }
 function updateHash(){ // filter changes rewrite the current entry
   if(hashLock) return;
@@ -174,6 +183,7 @@ function updateHash(){ // filter changes rewrite the current entry
     const entry={hash:h,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)};
     history.replaceState(routeHistoryState({entry}), "", h);
   }
+  syncNearYouLinks(h);
 }
 function pushHash(){ // tab changes create a history entry (back returns to the prior tab)
   if(hashLock) return;
@@ -183,6 +193,7 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
     // New tab entries do not inherit an item-route back target.
     history.pushState(routeHistoryState({entry, back:null}), "", h);
   }
+  syncNearYouLinks(h);
 }
 
 // ===== Digest deep-links (w12-12) =====
@@ -695,6 +706,7 @@ function applyHash(){
     raw=canonicalRaw;
     history.replaceState(routeHistoryState({entry:{hash:"#"+raw,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"","#"+raw);
   }
+  if(raw==="map"||raw.startsWith("map" + "?")) return forwardLegacyMapToNearYou(raw);
   const scopeSurface=raw.split("?",1)[0];
   const scope=!normalizedInputAlias&&["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
     ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
@@ -974,13 +986,18 @@ function applyHash(){
           .then(()=>focusAlertsRollupPanel())
           .catch(()=>focusAlertsRollupPanel());
       }
-    } else if(tab === "map"){
-      ({viewBox:mapViewBox,...mapState}=CrolScope.mapStateFromScope(scope));
-      showTab("map");
     } else {
       showTab(tab);
     }
   } finally { hashLock = false; }
+  syncNearYouLinks("#"+raw);
+  return true;
+}
+
+function forwardLegacyMapToNearYou(raw){
+  const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
+  const target=raw==="map"?"/near-you/":nearYouHref(scope);
+  location.replace(target);
   return true;
 }
 
@@ -1180,6 +1197,7 @@ globalThis.taskEsc = taskEsc;
 globalThis.taskPaymentLagHTML = taskPaymentLagHTML;
 globalThis.taskWhatWillChangeCardHTML = taskWhatWillChangeCardHTML;
 globalThis.updateHash = updateHash;
+globalThis.syncNearYouLinks = syncNearYouLinks;
 globalThis.watchChipsFor = watchChipsFor;
 Object.defineProperty(globalThis, "activeHistoryRouteScroll", { configurable: true, get: () => activeHistoryRouteScroll, set: value => { activeHistoryRouteScroll = value; } });
 Object.defineProperty(globalThis, "focusedItemRouteHash", { configurable: true, get: () => focusedItemRouteHash, set: value => { focusedItemRouteHash = value; } });
@@ -1189,3 +1207,4 @@ Object.defineProperty(globalThis, "pendingItemRouteContext", { configurable: tru
 Object.defineProperty(globalThis, "pendingNoticeFocus", { configurable: true, get: () => pendingNoticeFocus, set: value => { pendingNoticeFocus = value; } });
 Object.defineProperty(globalThis, "taskFirstBundle", { configurable: true, get: () => taskFirstBundle, set: value => { taskFirstBundle = value; } });
 Object.defineProperty(globalThis, "taskFirstBundlePromise", { configurable: true, get: () => taskFirstBundlePromise, set: value => { taskFirstBundlePromise = value; } });
+syncNearYouLinks();

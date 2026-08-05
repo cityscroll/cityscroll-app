@@ -47,6 +47,96 @@ export { DISTRICT_ACTIVITY_SCHEMA };
 
 const LENSES = ["land", "property", "rules", "meetings", "money"];
 
+function emptyItemLensSets() {
+  return Object.fromEntries(LENSES.map((lens) => [lens, new Set()]));
+}
+
+function sortedItemIds(values) {
+  return [...(values || [])].map(String).sort();
+}
+
+function compactText(value, max = 240) {
+  return plainText(value == null ? "" : String(value)).replace(/\s+/g, " ").trim().slice(0, max);
+}
+
+function compactRecordBasis(lens, slots) {
+  if (!Array.isArray(slots) || !slots.length) {
+    return { basis: "No place signal", confidence: "unknown", method: null };
+  }
+  const first = slots[0] || {};
+  const method = first.method || null;
+  const numericConfidence = Number(first.confidence);
+  const confidence = first.confidence_tier || (Number.isFinite(numericConfidence)
+    ? (numericConfidence >= 0.8 ? "strong" : numericConfidence >= 0.55 ? "derived" : "weak")
+    : (["coordinates_pip", "publisher_council", "cd_centroid_council"].includes(method)
+      ? "strong"
+      : "derived"));
+  if (slots.some((slot) => isVirtualPlacement(slot))) {
+    return { basis: "Virtual", confidence, method: method || "virtual_only" };
+  }
+  if (slots.some((slot) => isCitywidePlacement(slot))) {
+    return { basis: "Citywide", confidence, method: method || "citywide" };
+  }
+  if (["agency_hq", "vendor_address", "vendor_place"].includes(method) || confidence === "weak") {
+    return { basis: "Weak fallback", confidence: "weak", method };
+  }
+  if (["venue_line", "venue_column", "civic_address_pip"].includes(method) && lens === "meetings") {
+    return { basis: "Venue / logistics", confidence, method };
+  }
+  if (lens === "meetings" && /^matter_/.test(method || "")) {
+    return { basis: "Matter place", confidence, method };
+  }
+  return { basis: "Affected area", confidence, method };
+}
+
+function isCitywidePlacement(slot) {
+  return slot?.bucket === "citywide"
+    || slot?.borough === "Citywide"
+    || ["citywide", "citywide_phrase", "rule_default_citywide"].includes(slot?.method);
+}
+
+function isVirtualPlacement(slot) {
+  return slot?.bucket === "virtual"
+    || slot?.borough === "Virtual"
+    || slot?.method === "virtual_only";
+}
+
+/** Compact public facts embedded beside the exact membership index for static rendering. */
+export function compactDistrictRecord(lens, row = {}, slots = []) {
+  const id = compactText(row.request_id || row.project_id || row.id, 80);
+  if (!id) return null;
+  const type = compactText(
+    row.type_of_notice_description || row.public_status || row.project_status || "Record",
+    100,
+  );
+  const fallbackTitle = lens === "money" && row.pin
+    ? `${type || "Contract"} ${compactText(row.pin, 80)}`
+    : `${type || lens} ${id}`;
+  const title = compactText(row.short_title || row.title || row.project_name || fallbackTitle, 240);
+  const agency = compactText(
+    row.agency_name || row.agency || row.primary_applicant || "",
+    160,
+  ) || null;
+  const date = compactText(
+    row.event_date || row.current_milestone_date || row.start_date || row.noticed_date || "",
+    40,
+  ) || null;
+  const status = compactText(row.current_milestone || row.project_status || row.disposition_stage || "", 120) || null;
+  const place = compactRecordBasis(lens, slots);
+  return {
+    id,
+    title,
+    agency,
+    type: type || null,
+    date,
+    status,
+    basis: place.basis,
+    confidence: place.confidence,
+    basis_method: place.method,
+    route: lens === "land" ? `/#land/${encodeURIComponent(id)}` : `/#notice/${encodeURIComponent(id)}`,
+  };
+}
+
 /**
  * Synthetic warehouse fixture rows (WH-01 sample / ER offline seed) must not
  * pollute map density. Product demos use real City Record request_ids; FIX* ids
@@ -783,6 +873,15 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
   const byCouncil = Object.create(null);
   const unlocated = emptyLensCounts();
   const byBasis = Object.create(null);
+  const itemSets = {
+    by_level: {
+      borough: Object.create(null),
+      community_district: Object.create(null),
+      council_district: Object.create(null),
+    },
+    unlocated: new Set(),
+  };
+  const records = Object.create(null);
   const source = {
     corpus: "contract_action_address_locations",
     counted: 0,
@@ -795,6 +894,11 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
     if (!bag[key]) bag[key] = emptyLensCounts();
     bag[key].money = (bag[key].money || 0) + 1;
   };
+  const addItem = (level, key, id) => {
+    if (!key || !id) return;
+    if (!itemSets.by_level[level][key]) itemSets.by_level[level][key] = new Set();
+    itemSets.by_level[level][key].add(id);
+  };
 
   for (const row of rows || []) {
     source.counted += 1;
@@ -804,6 +908,8 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
     const communities = new Set();
     const councils = new Set();
     const bases = new Set();
+    const id = compactText(row?.request_id || row?.id, 80);
+    const placements = [];
     for (const location of Array.isArray(row?.locations) ? row.locations : []) {
       if (location?.is_place_of_performance !== false || !location?.basis) continue;
       const borough = canonBorough(location.borough);
@@ -813,16 +919,42 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
       if (community) communities.add(community);
       if (council) councils.add(council);
       bases.add(location.basis);
+      placements.push({
+        borough,
+        community,
+        council,
+        method: location.basis,
+        confidence_tier: "strong",
+      });
+    }
+    const record = compactDistrictRecord("money", row, placements);
+    if (record && id) {
+      const labels = [...new Set((row.locations || []).map((location) => location?.basis_label).filter(Boolean))];
+      records[id] = {
+        ...record,
+        basis: labels.join(" / ") || "Contract response address",
+        confidence: "strong",
+      };
     }
     if (!boroughs.size && !communities.size && !councils.size) {
       unlocated.money += 1;
+      if (id) itemSets.unlocated.add(id);
       continue;
     }
     source.located += 1;
     for (const basis of bases) byBasis[basis] = (byBasis[basis] || 0) + 1;
-    for (const borough of boroughs) bumpMoney(byBorough, borough);
-    for (const community of communities) bumpMoney(byCommunity, community);
-    for (const council of councils) bumpMoney(byCouncil, council);
+    for (const borough of boroughs) {
+      bumpMoney(byBorough, borough);
+      addItem("borough", borough, id);
+    }
+    for (const community of communities) {
+      bumpMoney(byCommunity, community);
+      addItem("community_district", community, id);
+    }
+    for (const council of councils) {
+      bumpMoney(byCouncil, council);
+      addItem("council_district", council, id);
+    }
   }
 
   for (const borough of ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"]) {
@@ -850,6 +982,16 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
     citywide: emptyLensCounts(),
     virtual: emptyLensCounts(),
     unlocated,
+    district_items: {
+      by_level: Object.fromEntries(Object.entries(itemSets.by_level).map(([level, bags]) => [
+        level,
+        Object.fromEntries(Object.entries(bags).map(([id, values]) => [id, { money: sortedItemIds(values) }])),
+      ])),
+      citywide: { money: [] },
+      virtual: { money: [] },
+      unlocated: { money: sortedItemIds(itemSets.unlocated) },
+    },
+    records: { money: records },
     sources: { money: source },
     note:
       "Response logistics only. Counts name their submission, pre-bid, or document-pickup basis and are never merged into performance-place density.",
@@ -893,10 +1035,11 @@ export function buildDistrictActivity(opts = {}) {
       community_district: Object.create(null),
       council_district: Object.create(null),
     },
-    citywide: { property: new Set(), meetings: new Set() },
-    virtual: { property: new Set(), meetings: new Set() },
-    unlocated: { property: new Set(), meetings: new Set() },
+    citywide: emptyItemLensSets(),
+    virtual: emptyItemLensSets(),
+    unlocated: emptyItemLensSets(),
   };
+  const records = Object.fromEntries(LENSES.map((lens) => [lens, Object.create(null)]));
   const citywideBag = emptyLensCounts();
   const virtualBag = emptyLensCounts();
   const unlocated = emptyLensCounts();
@@ -926,29 +1069,23 @@ export function buildDistrictActivity(opts = {}) {
   }
 
   function addDistrictItem(lens, level, id, itemId) {
-    if (!(lens === "property" || lens === "meetings") || !id || !itemId) return;
+    if (!LENSES.includes(lens) || !id || !itemId) return;
     const levelBag = districtItemSets.by_level[level];
-    if (!levelBag[id]) levelBag[id] = { property: new Set(), meetings: new Set() };
+    if (!levelBag[id]) levelBag[id] = emptyItemLensSets();
     levelBag[id][lens].add(String(itemId));
   }
 
   function addBucketItem(lens, bucket, itemId) {
-    if (!(lens === "property" || lens === "meetings") || !itemId) return;
+    if (!LENSES.includes(lens) || !itemId) return;
     districtItemSets[bucket][lens].add(String(itemId));
   }
 
   function isCitywideSlot(slot) {
-    return slot?.bucket === "citywide"
-      || slot?.borough === "Citywide"
-      || slot?.method === "citywide"
-      || slot?.method === "citywide_phrase"
-      || slot?.method === "rule_default_citywide";
+    return isCitywidePlacement(slot);
   }
 
   function isVirtualSlot(slot) {
-    return slot?.bucket === "virtual"
-      || slot?.borough === "Virtual"
-      || slot?.method === "virtual_only";
+    return isVirtualPlacement(slot);
   }
 
   function place(lens, { borough, community, council, method }, itemId = null) {
@@ -1095,6 +1232,12 @@ export function buildDistrictActivity(opts = {}) {
     }
   }
 
+  function record(lens, row, slots) {
+    const compact = compactDistrictRecord(lens, row, slots);
+    if (compact) records[lens][compact.id] = compact;
+    return compact?.id || null;
+  }
+
   // Land — publisher community_district on ZAP; council via ZAP field or CD centroid.
   for (const row of opts.zapRows || []) {
     const cds = parseZapCommunityDistricts(row.community_district);
@@ -1102,43 +1245,44 @@ export function buildDistrictActivity(opts = {}) {
     const publisherCouncil = normalizeCouncilDistrictId(
       row.cc_district || row.council_district || row.city_council_district,
     );
-    if (cds.length) {
-      for (const cd of cds) {
-        // Multi-CD projects count once per listed district (honest multi-place).
-        place("land", {
+    const slots = cds.length
+      ? cds.map((cd) => ({
           borough: boro,
           community: cd,
           council: publisherCouncil,
           method: publisherCouncil ? "publisher_council" : "cd_centroid_council",
-        });
-      }
-    } else {
-      place("land", {
+        }))
+      : [{
         borough: boro,
         community: null,
         council: publisherCouncil,
         method: publisherCouncil ? "publisher_council" : null,
-      });
-    }
+      }];
+    const itemId = record("land", row, slots);
+    placeSlots("land", slots, itemId);
   }
 
   // Property — geometry → point-in-polygon; else borough-only.
   for (const row of opts.propertyRows || []) {
     const placements = propertyPlacementsFromRow(row, boundaries);
-    if (placements.length) place("property", placements[0], row.request_id);
-    else place("property", {}, row.request_id);
+    const itemId = record("property", row, placements);
+    placeSlots("property", placements, itemId);
   }
 
   const placeOpts = { cdCouncilIndex };
 
   // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
   for (const row of opts.meetingsRows || []) {
-    placeSlots("meetings", meetingPlacementsFromRow(row, boundaries, placeOpts), row.request_id);
+    const placements = meetingPlacementsFromRow(row, boundaries, placeOpts);
+    const itemId = record("meetings", row, placements);
+    placeSlots("meetings", placements, itemId);
   }
 
   // Rules — rule-scope / hearing extractors; citywide → Citywide bag.
   for (const row of opts.rulesRows || []) {
-    placeSlots("rules", rulePlacementsFromRow(row, boundaries, placeOpts));
+    const placements = rulePlacementsFromRow(row, boundaries, placeOpts);
+    const itemId = record("rules", row, placements);
+    placeSlots("rules", placements, itemId);
   }
 
   // Money — publisher geo, coords/gazetteer PIP, citywide phrase, service borough.
@@ -1146,7 +1290,9 @@ export function buildDistrictActivity(opts = {}) {
   // inflate map unlocated / no_place_signal accounting.
   for (const row of opts.moneyRows || []) {
     if (isSyntheticWarehouseFixtureRow(row)) continue;
-    placeSlots("money", moneyPlacementsFromRow(row, boundaries, placeOpts));
+    const placements = moneyPlacementsFromRow(row, boundaries, placeOpts);
+    const itemId = record("money", row, placements);
+    placeSlots("money", placements, itemId);
   }
 
   const contractActionBasis = buildContractActionBasisLayer(
@@ -1180,34 +1326,23 @@ export function buildDistrictActivity(opts = {}) {
 
   const sortedIds = (set) => [...set].sort();
   const serializeLevel = (levelBag) => Object.fromEntries(
-    Object.entries(levelBag).map(([id, lenses]) => [id, {
-      property: sortedIds(lenses.property),
-      meetings: sortedIds(lenses.meetings),
-    }]),
+    Object.entries(levelBag).map(([id, lenses]) => [id,
+      Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(lenses[lens])]))]),
   );
   const districtItems = {
     schema: "cityscroll.district_items.v1",
     boundary_vintage: String(boundaries.boundary_vintage),
     built_at: builtAt,
-    lenses: ["property", "meetings"],
+    lenses: LENSES.slice(),
     corpora: opts.districtCorpora || {},
     by_level: {
       borough: serializeLevel(districtItemSets.by_level.borough),
       community_district: serializeLevel(districtItemSets.by_level.community_district),
       council_district: serializeLevel(districtItemSets.by_level.council_district),
     },
-    citywide: {
-      property: sortedIds(districtItemSets.citywide.property),
-      meetings: sortedIds(districtItemSets.citywide.meetings),
-    },
-    virtual: {
-      property: sortedIds(districtItemSets.virtual.property),
-      meetings: sortedIds(districtItemSets.virtual.meetings),
-    },
-    unlocated: {
-      property: sortedIds(districtItemSets.unlocated.property),
-      meetings: sortedIds(districtItemSets.unlocated.meetings),
-    },
+    citywide: Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(districtItemSets.citywide[lens])])),
+    virtual: Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(districtItemSets.virtual[lens])])),
+    unlocated: Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(districtItemSets.unlocated[lens])])),
     note: "Exact list membership stamped by the same placement pass as map counts; no client-side place reinterpretation.",
   };
 
@@ -1261,6 +1396,7 @@ export function buildDistrictActivity(opts = {}) {
     unlocated_reasons: unlocatedReasons,
     sources,
     district_items: districtItems,
+    records,
     basis_layers: {
       contract_action_address: contractActionBasis,
     },
