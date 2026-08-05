@@ -23,7 +23,7 @@
     },
     "item": {
       "id": "20260805014",
-      "url": "https://cityscroll.org/#notice/20260805014",
+      "url": "https://cityscroll.org/notices/20260805014",
       "title": "Playground reconstruction",
       "date": "2026-08-05T00:00:00.000",
       "summary": "Parks & Recreation · $1,234,567.89 · → Acme & Sons LLC · due 2026-08-20 · event 2026-08-12 · 1 Centre Street",
@@ -47,7 +47,9 @@
       "kind": "notice",
       "id": "20260805014",
       "hash": "#notice/20260805014",
-      "spanish": "https://cityscroll.org/?lang=es#notice/20260805014"
+      "spanish": "https://cityscroll.org/?lang=es#notice/20260805014",
+      "canonical": "/notices/20260805014",
+      "canonical_spanish": "https://cityscroll.org/notices/20260805014?lang=es"
     }
   ]
 }

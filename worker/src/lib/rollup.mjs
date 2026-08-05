@@ -186,7 +186,7 @@ export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
     found: Number.isFinite(result.found) ? Number(result.found) : null,
     noticeCount,
     noticeIds,
-    noticeLinks: noticeIds.map((id) => `https://cityscroll.org/#notice/${encodeURIComponent(id)}`),
+    noticeLinks: noticeIds.map((id) => `https://cityscroll.org/notices/${encodeURIComponent(id)}`),
     action,
     traffic_class: isCatchUp ? "catch_up" : (result.traffic_class || null),
     sent: !!result.sent,

@@ -285,7 +285,7 @@ test("GET /r/... with s= exchanges session and redirects to notice without s", a
   const res = await handleRedirect(req, e, null, "/r/money/20260701200");
   assert.equal(res.status, 302);
   const loc = res.headers.get("Location") || "";
-  assert.match(loc, /cityscroll\.org\/#notice\/20260701200/);
+  assert.match(loc, /cityscroll\.org\/notices\/20260701200/);
   assert.doesNotMatch(loc, /[?&]s=/);
   assert.match(res.headers.get("Set-Cookie") || "", /cs_session=/);
 });
@@ -295,7 +295,7 @@ test("GET /r/... with bad s= still redirects anonymously (no scary error)", asyn
   const req = new Request("https://api.cityscroll.org/r/money/20260701200?s=garbage");
   const res = await handleRedirect(req, e, null, "/r/money/20260701200");
   assert.equal(res.status, 302);
-  assert.match(res.headers.get("Location") || "", /#notice\/20260701200/);
+  assert.match(res.headers.get("Location") || "", /\/notices\/20260701200/);
   assert.equal(res.headers.get("Set-Cookie"), null);
 });
 

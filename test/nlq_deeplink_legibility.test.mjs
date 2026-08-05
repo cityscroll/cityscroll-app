@@ -100,7 +100,7 @@ test("same-hash sharing resolves to a canonical absolute URL and opens a new tab
       { origin: "https://cityscroll.org", pathname: "/index.html" },
       PINNED_HASH,
     ),
-    "https://cityscroll.org/index.html" + PINNED_HASH,
+    "https://cityscroll.org/browse/contracts/?mode=award&min=500000&category=Construction%2FConstruction+Services",
   );
   assert.match(
     indexSource,

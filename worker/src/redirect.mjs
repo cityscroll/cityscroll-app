@@ -7,10 +7,10 @@
 // per-day integer. The disclosure line in every digest footer points at this file's behavior.
 //
 // Not an open redirect: the target is always constructed by us from the validated request id
-// (cityscroll.org/#notice/<id>); the path never carries a URL. Bad paths fall through to the
+// (cityscroll.org/notices/<id>); the path never carries a URL. Bad paths fall through to the
 // homepage uncounted. The optional `w` query value (w12-12: the originating watch's own filter,
 // built by encodeWatchFilter()/lib/filter.mjs) is passed through unread — the redirect only
-// bounds its shape (validWatchParam) before re-embedding it in the target's hash fragment; the
+// bounds its shape (validWatchParam) before re-embedding it in the target's document query; the
 // site's own client-side parseWatchParam() is what actually validates its JSON contents, and
 // fails soft to the plain notice view on anything malformed or truncated.
 

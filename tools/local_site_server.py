@@ -14,6 +14,14 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _format, *_args):
         return
 
+    def do_GET(self):
+        # Pages supplies the shared shell for edge-rendered notice documents. Local browser
+        # gates exercise the enhancement island against that shell; response HTML is tested
+        # separately against the edge renderer.
+        if self.path.split("?", 1)[0].startswith("/notices/"):
+            self.path = "/index.html"
+        super().do_GET()
+
 
 def port_number(value: str) -> int:
     port = int(value)

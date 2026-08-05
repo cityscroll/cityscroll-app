@@ -50,6 +50,20 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   its summary, preview count, results, and `/subscribe` form. Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
 
+## Primary document routes
+
+- Now, Near you, Following, and Browse are the primary navigation documents. Contracts,
+  Staffing, Zoning, Property, Rules, and Meetings remain complete source views under
+  `/browse/<facet>/`; the existing application modules enhance their build-rendered HTML.
+- `node tools/build_primary_documents.mjs` builds the bounded Now and Browse defaults.
+  `site/_worker.js` delegates document requests to `site/pages_edge.mjs`; notice permalinks are
+  edge-rendered at `/notices/<request_id>`, while entity and matter hashes remain unchanged.
+- `site/legacy_hash_forward.mjs` is the finite fragment-to-document compatibility bridge.
+  Update its grammar through `site/route_migration.mjs`, then rebuild and review
+  `docs/url-migration-map.csv` and `docs/url-migration-map.md` with
+  `node tools/build_url_migration_map.mjs`. The public Stats document and API are explicit
+  exclusions and must retain their current routes and semantics.
+
 ## Digest cron deploy safety
 
 - Production Worker deploys must run `node tools/wait_for_digest_cron_window.mjs`

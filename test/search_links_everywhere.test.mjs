@@ -55,7 +55,7 @@ test("one preset store accepts every search lens and identifies its lens for lab
       { origin: "https://cityscroll.org", pathname: "/" },
       store[0].hash,
     ),
-    "https://cityscroll.org/#land?boro=Queens",
+    "https://cityscroll.org/browse/zoning/?boro=Queens",
   );
 });
 

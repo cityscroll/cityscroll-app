@@ -55,4 +55,8 @@ test("local site server publishes an OS-assigned origin and serves the requested
   const response = await fetch(new URL("near-you/index.html", base));
   assert.equal(response.status, 200);
   assert.match(await response.text(), /data-near-you-root/);
+
+  const notice = await fetch(new URL("notices/20260701099", base));
+  assert.equal(notice.status, 200);
+  assert.match(await notice.text(), /id="noticeview"/);
 });

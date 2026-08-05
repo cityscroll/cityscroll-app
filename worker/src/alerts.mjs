@@ -1104,7 +1104,7 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", session
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   // Route award-watch notice clicks through /session so the device is recognized
   // (pins-scoped cookie) before landing on the notice permalink — token never stays in the URL.
-  const dest = `https://cityscroll.org/#notice/${encodeURIComponent(filter.requestId)}`;
+  const dest = `https://cityscroll.org/notices/${encodeURIComponent(filter.requestId)}`;
   const base = "https://api.cityscroll.org";
   const noticeUrl = sessionTok
     ? `${base}/session?token=${encodeURIComponent(sessionTok)}&next=${encodeURIComponent(dest)}`
@@ -2108,7 +2108,7 @@ function rollupDigestHtml({
       }).join("");
       const requestId = sec.awardFilter?.requestId;
       const contextLink = requestId
-        ? `<p style="font-size:13px"><a href="https://cityscroll.org/#notice/${encodeURIComponent(requestId)}">View the watched notice on CityScroll</a></p>`
+        ? `<p style="font-size:13px"><a href="https://cityscroll.org/notices/${encodeURIComponent(requestId)}">View the watched notice on CityScroll</a></p>`
         : "";
       return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
         <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>

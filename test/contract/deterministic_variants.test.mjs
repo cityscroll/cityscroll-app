@@ -7,6 +7,7 @@ import { test } from "node:test";
 import { SITE_SOURCE } from "../helpers/site_source.mjs";
 import { feedItems, atomFeed, jsonFeed, icsFeed } from "../../worker/src/lib/feed.mjs";
 import { vendorEntityPermalink } from "../../worker/src/lib/batch.mjs";
+import { migrateLegacyUrl } from "../../site/route_migration.mjs";
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 const fixture = JSON.parse(read("../fixtures/deterministic-drift/contracts.json"));
@@ -92,7 +93,7 @@ test("MCP record output consumes the same full-dollar display and notice permali
     contract_amount_display: fixture.currency.valid_positive_amounts[2].full,
   }, 0);
   assert.match(output, /\$1,234,567\.89/);
-  assert.match(output, /https:\/\/cityscroll\.org\/index\.html#notice\/20260805014/);
+  assert.match(output, /https:\/\/cityscroll\.org\/notices\/20260805014/);
 });
 
 test("feed neutral-item fields and serializer shapes stay fixture-exact", () => {
@@ -120,7 +121,7 @@ test("feed neutral-item fields and serializer shapes stay fixture-exact", () => 
   const ics = icsFeed({ title: "CityScroll — awards", items: [item] });
   assert.match(ics, /UID:20260805014@crol-list/);
   assert.match(ics, /DTSTART:20260812T103000/);
-  assert.match(ics, /https:\/\/cityscroll\.org\/#notice\/20260805014/);
+  assert.match(ics, /https:\/\/cityscroll\.org\/notices\/20260805014/);
 });
 
 test("vendor and agency slug cleaning plus language-bearing permalink forms are stable", () => {
@@ -133,6 +134,11 @@ test("vendor and agency slug cleaning plus language-bearing permalink forms are 
       hash = site.agencyHref(entry.raw_name);
     } else {
       hash = `#notice/${encodeURIComponent(entry.id)}`;
+      assert.equal(migrateLegacyUrl(`/${hash}`).target, entry.canonical);
+      assert.equal(
+        language.languageURL(`https://cityscroll.org${entry.canonical}`, "es", "https://cityscroll.org/"),
+        entry.canonical_spanish,
+      );
     }
     assert.equal(hash, entry.hash);
     assert.equal(

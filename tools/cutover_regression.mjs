@@ -24,6 +24,7 @@ export const PUBLIC_ORIGIN = "https://cityscroll.org";
 export const WWW_ORIGIN = "https://www.cityscroll.org";
 export const PAGES_ORIGIN = "https://cityscroll.pages.dev";
 export const API_HEALTH_URL = "https://api.cityscroll.org/health";
+export const API_STATS_URL = "https://api.cityscroll.org/stats";
 export const LEGACY_ORIGIN = "https://crol-list.org";
 export const GITHUB_FALLBACK_URL = "https://cityscroll.github.io/crol-list/";
 
@@ -61,6 +62,11 @@ export function buildCutoverTargets() {
       id: "api-worker-health",
       url: API_HEALTH_URL,
       marker: API_HEALTH_MARKER,
+    },
+    {
+      id: "api-worker-stats",
+      url: API_STATS_URL,
+      marker: /"digests"\s*:/,
     },
     {
       id: "legacy-origin",
@@ -122,6 +128,20 @@ export function architectureFailures(results) {
     const requestId = headerValue(fallback.finalHeaders, "x-github-request-id");
     if (server !== "github.com" || !requestId) {
       failures.push("github-pages-fallback: expected GitHub Pages origin headers");
+    }
+  }
+
+  const stats = byId.get("api-worker-stats");
+  if (!stats) {
+    failures.push("api-worker-stats: missing result");
+  } else if (stats.classification?.ok) {
+    try {
+      const body = JSON.parse(stats.body || "");
+      const shapeOk = body?.digests && Object.hasOwn(body.digests, "sent_last7d")
+        && body?.nl_search && body?.history;
+      if (!shapeOk) failures.push("api-worker-stats: required public schema fields are missing");
+    } catch (_error) {
+      failures.push("api-worker-stats: response is not valid JSON");
     }
   }
 
