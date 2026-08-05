@@ -32,6 +32,28 @@ export const CURRENCY_SYMBOL_BEFORE_MONTH_RE = new RegExp(
   "i",
 );
 
+/** Future-implying verbs with date tails that must be past-tense when past-dated. */
+export const TENSE_PARITY_VERB_DATE_RE = new RegExp(
+  String.raw`\b(?:auction\s+)?(?<verb>closes?|opens?|ends?)\s+(?<date>(?:(?:${ENGLISH_MONTHS.join("|")})\s+\d{1,2},\s*\d{4}|\d{4}-\d{2}-\d{2}))`,
+  "i",
+);
+
+const MONTH_TO_NUM = Object.fromEntries(
+  ENGLISH_MONTHS.map((name, index) => [name.toLowerCase(), String(index + 1).padStart(2, "0")]),
+);
+
+function normalizeTextDateToDay(rawDate) {
+  const exact = String(rawDate || "").trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (exact) return `${exact[1]}-${exact[2]}-${exact[3]}`;
+  const longDate = String(rawDate || "").trim().match(
+    new RegExp(String.raw`^(${ENGLISH_MONTHS.join("|")})\s+(\d{1,2}),\s*(\d{4})$`, "i"),
+  );
+  if (!longDate) return null;
+  const month = MONTH_TO_NUM[longDate[1].toLowerCase()];
+  if (!month) return null;
+  return `${longDate[3]}-${month}-${String(longDate[2]).padStart(2, "0")}`;
+}
+
 /**
  * Lint rendered chip / card text for currency-symbol-before-month date chips.
  *
@@ -80,6 +102,90 @@ export function findCurrencyLeakedDateI18n(
     if (/\$\{date\}/.test(String(value)) || /\$\s*\{date\}/.test(String(value))) {
       findings.push({ key, value: String(value) });
     }
+  }
+  return { ok: findings.length === 0, findings };
+}
+
+/**
+ * Lint rendered text for active voice ("closes/opens/ends") with past dates.
+ *
+ * @param {string|string[]|{text?: string, label?: string}[]} input
+ * @param {{today?: string}} [opts]
+ * @returns {{
+ *   ok: boolean,
+ *   findings: Array<{ source?: string, text: string, match: string, verb: string, date: string }>,
+ * }}
+ */
+export function findTenseParityViolations(input, opts = {}) {
+  const items = normalizeTextItems(input);
+  const today = String(opts.today || "").slice(0, 10) || null;
+  const findings = [];
+
+  if (!today) return { ok: true, findings };
+
+  for (const item of items) {
+    const text = item.text;
+    if (!text) continue;
+    const pattern = new RegExp(TENSE_PARITY_VERB_DATE_RE.source, "ig");
+    for (const match of text.matchAll(pattern)) {
+      const verb = String(match?.groups?.verb || "").toLowerCase();
+      if (!verb) continue;
+      const date = normalizeTextDateToDay(match?.groups?.date || "");
+      if (!date || date >= today) continue;
+      findings.push({
+        source: item.source,
+        text,
+        match: match[0],
+        verb,
+        date,
+      });
+    }
+  }
+
+  return { ok: findings.length === 0, findings };
+}
+
+/**
+ * Lint repeated identical actions/CTAs in one section when the same label+href
+ * appears more than maxRepeats times.
+ *
+ * @param {Array<{section?: string, buttons?: Array<{label?: string, href?: string, source?: string}>}>} input
+ * @param {{maxRepeats?: number}} [opts]
+ * @returns {{ ok: boolean, findings: Array<{ section: string, label: string, href: string, count: number, sources: string[] }> }}
+ */
+export function findRepeatedIdenticalButtonActions(input, opts = {}) {
+  const maxRepeats = Number.isFinite(Number(opts.maxRepeats)) ? Number(opts.maxRepeats) : 3;
+  const buckets = new Map();
+
+  for (const card of Array.isArray(input) ? input : []) {
+    if (!card || typeof card !== "object") continue;
+    const section = String(card.section || card.surface || "default").trim() || "default";
+    const buttons = Array.isArray(card.buttons) ? card.buttons : [card];
+
+    for (const button of buttons) {
+      if (!button || typeof button !== "object") continue;
+      const label = String(button.label || button.text || "").trim();
+      const href = String(button.href || button.url || "").trim();
+      if (!label || !href) continue;
+      const key = `${section}||${label}||${href}`;
+      if (!buckets.has(key)) {
+        buckets.set(key, {
+          section,
+          label,
+          href,
+          count: 0,
+          sources: [],
+        });
+      }
+      const bucket = buckets.get(key);
+      bucket.count += 1;
+      if (button.source) bucket.sources.push(button.source);
+    }
+  }
+
+  const findings = [];
+  for (const bucket of buckets.values()) {
+    if (bucket.count > maxRepeats) findings.push(bucket);
   }
   return { ok: findings.length === 0, findings };
 }

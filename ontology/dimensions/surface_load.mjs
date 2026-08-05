@@ -8,6 +8,8 @@ import { makeDimensionCard } from "./shared.mjs";
 import {
   findCurrencyLeakedDateChips,
   findPastDeadlinesInDefaultView,
+  findRepeatedIdenticalButtonActions,
+  findTenseParityViolations,
 } from "../../site/property_list_sanity.mjs";
 
 export const DIMENSION_ID = "surface-load";
@@ -306,6 +308,48 @@ export function surfaceLoadBreaches(surface = {}) {
     }
   }
 
+  const tense = findTenseParityViolations(
+    measured.visible_text || measured.text || "",
+    {
+      today: measured.today
+        || measured.measured_at?.slice(0, 10)
+        || surface.today
+        || null,
+    },
+  );
+  if (!tense.ok) {
+    breaches.push({
+      kind: "tense-parity-active-past",
+      metric: "active_verb_past_date",
+      actual: tense.findings.length,
+      maximum: 0,
+      findings: tense.findings.slice(0, 8),
+      reason: "active-voice close/open/end verb appears with a date in the past",
+    });
+  }
+
+  const repeatedCta = findRepeatedIdenticalButtonActions(
+    (Array.isArray(measured.action_links) ? measured.action_links : []).map((button) => ({
+      section: surface.id || "default",
+      label: button.label || button.text || "",
+      href: button.href || button.url || "",
+      source: surface.id || "",
+    })),
+    {
+      maxRepeats: 3,
+    },
+  );
+  if (!repeatedCta.ok) {
+    breaches.push({
+      kind: "repeated-identical-cta",
+      metric: "identical_button_actions",
+      actual: repeatedCta.findings.length,
+      maximum: 0,
+      findings: repeatedCta.findings.slice(0, 8),
+      reason: "one surface includes the same action more than three times",
+    });
+  }
+
   return breaches;
 }
 
@@ -325,6 +369,8 @@ export function evaluateSurfaceLoad(input = {}) {
     empty_state_flags: 0,
     chip_format_flags: 0,
     temporal_sanity_flags: 0,
+    tense_parity_flags: 0,
+    repeated_cta_flags: 0,
   };
 
   for (const surface of surfaces) {
@@ -334,6 +380,9 @@ export function evaluateSurfaceLoad(input = {}) {
       continue;
     }
     metrics.surfaces_complete += 1;
+    if (inventory.measured_at && typeof surface.measured === "object" && surface.measured) {
+      surface.measured.today = surface.measured.today || inventory.measured_at.slice(0, 10);
+    }
     const breaches = surfaceLoadBreaches(surface);
     if (!breaches.length) continue;
     metrics.surfaces_over_budget += 1;
@@ -353,10 +402,18 @@ export function evaluateSurfaceLoad(input = {}) {
     if (breaches.some((breach) => breach.kind === "default-view-past-deadline")) {
       metrics.temporal_sanity_flags += 1;
     }
+    if (breaches.some((breach) => breach.kind === "tense-parity-active-past")) {
+      metrics.tense_parity_flags += 1;
+    }
+    if (breaches.some((breach) => breach.kind === "repeated-identical-cta")) {
+      metrics.repeated_cta_flags += 1;
+    }
     const actionFirst = breaches.some((breach) => breach.kind === "action-position");
     const emptyHeavy = breaches.some((breach) => breach.kind === "empty-state-density");
     const chipFormat = breaches.some((breach) => breach.kind === "chip-format-currency-before-month");
     const temporalBad = breaches.some((breach) => breach.kind === "default-view-past-deadline");
+    const tenseBad = breaches.some((breach) => breach.kind === "tense-parity-active-past");
+    const ctaBad = breaches.some((breach) => breach.kind === "repeated-identical-cta");
     const duplicateFact = breaches.some((breach) => breach.kind === "duplicate-card-fact");
     const worstRatio = Math.max(1, ...breaches
       .filter((breach) => breach.actual != null && breach.maximum > 0)
@@ -368,27 +425,39 @@ export function evaluateSurfaceLoad(input = {}) {
         ? `Restore an action-first opening on ${surface.label || id}`
         : duplicateFact
           ? `Remove repeated card facts on ${surface.label || id}`
-        : temporalBad
-          ? `Keep past-dated closes out of the default open head on ${surface.label || id}`
-          : chipFormat
-            ? `Fix currency-leaked date chips on ${surface.label || id}`
-          : emptyHeavy
-            ? `Remove empty-state apology density on ${surface.label || id}`
-            : `Reduce measured interface load on ${surface.label || id}`,
+          : temporalBad
+            ? `Keep past-dated closes out of the default open head on ${surface.label || id}`
+            : tenseBad
+              ? `Use past-tense status for closed dated entries on ${surface.label || id}`
+              : ctaBad
+                ? `Collapse repeated CTAs on ${surface.label || id}`
+                : chipFormat
+                  ? `Fix currency-leaked date chips on ${surface.label || id}`
+                  : emptyHeavy
+                    ? `Remove empty-state apology density on ${surface.label || id}`
+                    : `Reduce measured interface load on ${surface.label || id}`,
       rank_score: actionFirst ? 96
         : duplicateFact ? 95
         : temporalBad ? 95
+        : tenseBad ? 94
+        : ctaBad ? 93
         : chipFormat ? 94
         : emptyHeavy ? 94
         : worstRatio >= 3 ? 92 : worstRatio >= 1.5 ? 84 : 72,
       evidence: {
         kind: temporalBad
           ? "default-view-past-deadline"
-          : duplicateFact
-            ? "duplicate-card-fact"
-          : chipFormat
-            ? "chip-format-currency-before-month"
-            : emptyHeavy ? "empty-state-density" : "surface-load-regression",
+          : tenseBad
+            ? "tense-parity-active-copy"
+            : ctaBad
+              ? "repeated-identical-cta"
+              : duplicateFact
+                ? "duplicate-card-fact"
+                : chipFormat
+                  ? "chip-format-date-currency"
+                  : emptyHeavy
+                    ? "empty-state-density"
+                    : "surface-load-regression",
         surface_id: id,
         label: surface.label || id,
         route: surface.route || null,
@@ -405,11 +474,15 @@ export function evaluateSurfaceLoad(input = {}) {
           ? `Each card on ${surface.label || id} presents each semantic fact once, in its strongest position.`
         : temporalBad
           ? `The ${surface.label || id} default open head shows only upcoming/current closes; past sales sit under a closed archive section.`
-          : chipFormat
-            ? `Date chips on ${surface.label || id} render as dates (no currency symbol before month names); price chips keep $ only on amounts.`
-          : emptyHeavy
-            ? `The ${surface.label || id} surface renders data-bearing blocks only; empty subsections stay absent.`
-            : `The ${surface.label || id} surface stays within its measured word, link, button, and repetition budgets.`,
+          : tenseBad
+            ? `The ${surface.label || id} surface should use past tense for entries dated in the past.`
+            : ctaBad
+              ? `The ${surface.label || id} surface should use one shared CTA instead of repeated identical buttons.`
+              : chipFormat
+                ? `Date chips on ${surface.label || id} render as dates (no currency symbol before month names); price chips keep $ only on amounts.`
+                : emptyHeavy
+                  ? `The ${surface.label || id} surface renders data-bearing blocks only; empty subsections stay absent.`
+                  : `The ${surface.label || id} surface stays within its measured word, link, button, and repetition budgets.`,
       context: [
         "tools/sample_surface_load.py",
         "ontology/fixtures/dimensions/surface_load.json",
@@ -422,11 +495,15 @@ export function evaluateSurfaceLoad(input = {}) {
           ? "duplicate-card-fact"
         : temporalBad
           ? "default-view-temporal-sanity"
-          : chipFormat
-            ? "chip-format-date-currency"
-          : emptyHeavy
-            ? "empty-state-density"
-            : "surface-load-budget",
+          : tenseBad
+            ? "tense-parity-active-copy"
+            : ctaBad
+              ? "repeated-identical-cta"
+              : chipFormat
+                ? "chip-format-date-currency"
+                : emptyHeavy
+                  ? "empty-state-density"
+                  : "surface-load-budget",
     }));
   }
 
