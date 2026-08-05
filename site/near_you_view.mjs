@@ -225,7 +225,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     ? viewport.parent || first(scope.place.boroughs)
     : null;
   const mappedFeatures = mapFeatures(boundaries, scopedActivity, { level, parent, lens: mapped ? lens : "meetings" });
-  const canonicalBase = options.canonicalBase || "https://api.cityscroll.org/near-you";
+  const canonicalBase = options.canonicalBase || "https://cityscroll.org/near-you";
   const urlForScope = typeof options.urlForScope === "function"
     ? options.urlForScope
     : (nextScope) => nearYouUrlFromScope(nextScope, { base: canonicalBase });
@@ -300,7 +300,7 @@ function recordCard(record) {
   </li>`;
 }
 
-function recordList(records, emptyCopy = "No records match this scope.") {
+function recordList(records, emptyCopy = "No records match these filters.") {
   if (!records.length) return `<p class="near-empty">${esc(emptyCopy)}</p>`;
   return `<ol class="near-records">${records.map(recordCard).join("")}</ol>`;
 }
@@ -352,12 +352,12 @@ export function renderNearYouBody(view) {
       : bag.kind === "virtual"
         ? "These records are online only and have no physical place."
         : "The source does not give enough place detail to map these records."}</p>
-    ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match this scope.`)}
+    ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
   const currentBorough = first(view.scope.place.boroughs);
   return `<main id="main" data-near-you-root data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
-    data-message-updating="Updating this scope…"
-    data-message-updated="Scope updated. Map and list counts match."
+    data-message-updating="Updating the map…"
+    data-message-updated="Map updated. Map and list counts match."
     data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
     data-message-location-finding="Finding your district…"
     data-message-location-matched="Location matched {district}."
@@ -366,12 +366,12 @@ export function renderNearYouBody(view) {
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
       <h1>Near you</h1>
-      <p>Keep one scope for the list, map, search, share link, and watch. A place makes the scope smaller. It does not remove your other filters.</p>
-      <ul class="near-scope" aria-label="Active scope">${scopeChips}</ul>
-      <nav class="near-actions" aria-label="Scope actions">
+      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters">${scopeChips}</ul>
+      <nav class="near-actions" aria-label="Map actions">
         <a href="${esc(view.browseHref)}">Open as a list</a>
-        <a href="${esc(view.watchHref)}">Watch this scope</a>
-        <a href="${esc(view.shareHref)}">Share this scope</a>
+        <a href="${esc(view.watchHref)}">Watch these filters</a>
+        <a href="${esc(view.shareHref)}">Share this map</a>
       </nav>
     </section>
     <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
@@ -395,12 +395,12 @@ export function renderNearYouBody(view) {
       <label>Community district<input name="cd" value="${esc(first(view.scope.place.community_districts) || "")}" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
       <label>Council district<input name="council" value="${esc(first(view.scope.place.council_districts) || "")}" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
       ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
-      <button type="submit">Apply scope</button>
+      <button type="submit">Apply filters</button>
     </form>
-    ${view.mapped ? "" : `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> The lens stays in the shared scope. The page does not switch to a different set of records.</aside>`}
+    ${view.mapped ? "" : `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> Your other filters stay in place, and the page does not switch to a different set of records.</aside>`}
     ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}
     <section class="near-map-section" aria-labelledby="near-map-heading">
-      <div class="near-section-heading"><div><p class="near-kicker">Map facet</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
         <div class="map-controls js-only" hidden>
           <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
           <button type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
@@ -420,21 +420,20 @@ export function renderNearYouBody(view) {
             <g aria-hidden="true">${labels}</g>
           </svg>
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
-          <p class="near-vintage">Boundary layer: ${esc(view.activity?.boundary_vintage || "not published")}</p>
+          <p class="near-vintage">Map boundaries: ${esc(view.activity?.boundary_vintage || "not published")}</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
           <h3>Equivalent area list</h3>
-          <p>These links work without JavaScript. They keep the active scope.</p>
-          <ol class="near-area-list">${areas || "<li>No areas match this scope.</li>"}</ol>
+          <ol class="near-area-list">${areas || "<li>No areas match these filters.</li>"}</ol>
         </div>
       </div>
     </section>
     <section class="near-results" aria-labelledby="near-results-heading" data-results-count="${view.results.count}">
-      <div class="near-section-heading"><div><p class="near-kicker">Qualifying records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records in this place scope</h2></div></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records for these filters</h2></div></div>
       ${recordList(view.results.records)}
     </section>
     <section class="near-bags" aria-labelledby="near-bags-heading">
-      <p class="near-kicker">Place-basis bags</p><h2 id="near-bags-heading">Records outside district polygons</h2>
+      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
       <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
       ${bags}
     </section>
@@ -446,12 +445,12 @@ export function renderNearYouDocument(view, options = {}) {
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active scope.">
+<title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
 <link rel="canonical" href="${esc(view.shareHref)}">${renderCivicDocumentAssets(assetPrefix)}</head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, surfaceClass: "near-mast" })}
 ${renderNearYouBody(view)}
-<footer class="near-footer">Counts and place labels come from the built district data. Check each record with the linked official source.</footer>
+<footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script type="module" src="${esc(prefix)}app/map.mjs"></script></body></html>`;
   return html.replace(/[ \t]+$/gm, "");
 }

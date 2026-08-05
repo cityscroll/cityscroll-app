@@ -686,7 +686,7 @@ function syncAlertsPrefsManageLink(){
   if(!manage) return;
   const banner = document.getElementById("sessionBanner");
   const fromSession = banner && banner.dataset.open === "true" ? (banner.dataset.prefsUrl || "") : "";
-  manage.href = fromSession || ((API || "https://api.cityscroll.org").replace(/\/+$/, "") + "/prefs");
+  manage.href = fromSession || "https://cityscroll.org/prefs";
 }
 async function renderAlertsRollupPrefs(){
   const groupsEl = document.getElementById("alerts-rollup-groups");

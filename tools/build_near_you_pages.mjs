@@ -15,7 +15,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
-const EDGE_BASE = "https://api.cityscroll.org/near-you";
+const CANONICAL_BASE = "https://cityscroll.org/near-you";
 
 function json(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -51,9 +51,9 @@ function buildDocuments() {
   return commonScopes().map((scope) => {
     const publicPath = commonNearYouPath(scope);
     const urlForScope = (next) => commonNearYouPath(next)
-      || nearYouUrlFromScope(next, { base: EDGE_BASE });
+      || nearYouUrlFromScope(next, { base: CANONICAL_BASE });
     const view = buildNearYouViewModel(scope, activity, boundaries, {
-      canonicalBase: EDGE_BASE,
+      canonicalBase: CANONICAL_BASE,
       urlForScope,
     });
     return {

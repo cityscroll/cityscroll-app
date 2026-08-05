@@ -9,13 +9,16 @@ import {
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("Worker routes retain API domains without reclaiming Pages hostnames", () => {
+test("Worker routes retain API domains and claim only canonical dynamic-document paths", () => {
   const config = read("worker/wrangler.toml");
   const start = config.indexOf("routes = [");
   const routeBlock = config.slice(start, config.indexOf("]", start) + 1);
   assert.match(routeBlock, /api\.cityscroll\.org/);
   assert.match(routeBlock, /api\.crol-list\.org/);
-  assert.doesNotMatch(routeBlock, /pattern = "cityscroll\.org"/);
+  assert.match(routeBlock, /pattern = "cityscroll\.org\/near-you\*"/);
+  assert.match(routeBlock, /pattern = "cityscroll\.org\/following\*"/);
+  assert.match(routeBlock, /pattern = "cityscroll\.org\/prefs\*"/);
+  assert.doesNotMatch(routeBlock, /pattern = "cityscroll\.org"\s*,\s*custom_domain/);
   assert.doesNotMatch(routeBlock, /pattern = "www\.cityscroll\.org"/);
 });
 

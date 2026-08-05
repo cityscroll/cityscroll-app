@@ -56,7 +56,7 @@ test("action sections are positive and honest-absent", () => {
 
 test("district Following URL is one shareable weekly watch", () => {
   const href = districtDigestAlertsHref("33");
-  assert.match(href, /^https:\/\/api\.cityscroll\.org\/following\?/);
+  assert.match(href, /^https:\/\/cityscroll\.org\/following\?/);
   const q = new URL(href).searchParams;
   assert.equal(q.get("lens"), "district");
   assert.equal(q.get("freq"), "weekly");
@@ -80,5 +80,5 @@ test("unified alerts retain district watches while Near you watches its shared s
   assert.match(index, /id="adistrict"/);
   assert.match(boot, /targetLens==="district"/);
   assert.match(nearView, /watchFromScope/);
-  assert.match(nearPage, />Watch this scope</);
+  assert.match(nearPage, />Watch these filters</);
 });

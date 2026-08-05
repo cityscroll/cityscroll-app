@@ -191,7 +191,7 @@ function nearYouHref(scope){
   const normalized=CrolScope.normalizeScope(scope,{language:window.LANG||"en"});
   const common=CrolScope.commonNearYouPath(normalized);
   if(common) return common;
-  return CrolScope.nearYouUrlFromScope(normalized,{base:"https://api.cityscroll.org/near-you"});
+  return CrolScope.nearYouUrlFromScope(normalized,{base:"https://cityscroll.org/near-you"});
 }
 function syncNearYouLinks(currentHash){
   const active=document.querySelector(".tabbtn.active")?.dataset.tab||"meetings";
@@ -1039,7 +1039,7 @@ function forwardLegacyMapToNearYou(raw){
 function forwardLegacyAlertsToFollowing(raw){
   const query=raw.includes("?")?raw.slice(raw.indexOf("?")+1):"";
   const target=query
-    ? "https://api.cityscroll.org/following?"+query
+    ? "https://cityscroll.org/following?"+query
     : "/following/";
   location.replace(target);
   return true;
