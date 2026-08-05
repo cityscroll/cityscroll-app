@@ -1,0 +1,48 @@
+{
+  "schema": "cityscroll.semantic_layer_trial.join_review_receipt.v1",
+  "observed_on": "2026-08-04",
+  "honest_label": "Semantic output is a candidate queue, never a factual edge.",
+  "residual": {
+    "name": "dated non-Council notice-to-minutes residual",
+    "baseline_joined": 0,
+    "baseline_total": 10,
+    "baseline_receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json"
+  },
+  "candidate_generation": {
+    "structural_blockers_before_similarity": [
+      "exact_body_id",
+      "exact_meeting_date"
+    ],
+    "semantic_threshold": 0.45,
+    "structurally_eligible_pairs": 1,
+    "candidates_proposed": 1,
+    "candidates_surviving_review": 1,
+    "accepted_candidate_rate_over_residual": 0.1,
+    "usefulness_threshold": 0.3,
+    "clears_usefulness_threshold": false
+  },
+  "review_cost": {
+    "review_seconds": 47.0,
+    "accepted_candidates": 1,
+    "seconds_per_accepted_candidate": 47.0
+  },
+  "candidates": [
+    {
+      "notice_id": "20260527036",
+      "document_id": "queens-cb-08:2026-06-10:minutes",
+      "semantic_score": 0.62324,
+      "honest_label": "join_candidate_only",
+      "review_disposition": "accepted_candidate",
+      "review_evidence": {
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10",
+        "named_matter": "Raphael Nathaniel Yusapov Way",
+        "notice_span": "Street Co-naming Raphael Nathaniel Yusapov Way — Northeast corner of 72nd Avenue and Parsons Boulevard.",
+        "minutes_span": "Co-naming — NE Corner 72nd Avenue and Parsons Boulevard to Raphael Nathaniel Yusapov Way",
+        "outcome_span": "Yes — 30 No — 0 Abstention — 0. The motion passed unanimously."
+      },
+      "production_edge_authorized": false
+    }
+  ],
+  "production_wiring": false
+}

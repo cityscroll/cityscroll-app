@@ -1,0 +1,18 @@
+{
+  "schema": "cityscroll.semantic_layer_trial.decision.v1",
+  "observed_on": "2026-08-04",
+  "decision_hook": "not-worth-it",
+  "production_wiring_in_trial": false,
+  "reasons": {
+    "hybrid_precision_at_5": 0.2467,
+    "current_token_precision_at_5": 0.02,
+    "bm25_precision_at_5": 0.24,
+    "semantic_precision_at_5": 0.24,
+    "hybrid_precision_delta_vs_bm25": 0.0067,
+    "hybrid_additional_queries_with_relevant_at_5_vs_bm25": 0,
+    "join_candidates_surviving_review": 1,
+    "join_residual_total": 10,
+    "join_clears_usefulness_threshold": false
+  },
+  "follow_on": "Improve ranked lexical retrieval first and keep the existing precomputed related-reading path. Re-run a learned-embedding trial only after a larger labeled corpus names a missed reader journey. Do not add semantic join edges from this trial; the join-candidate yield remains below the existing gate."
+}
