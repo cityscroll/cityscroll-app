@@ -78,28 +78,3 @@ test("worker/src: no stale $5B literal in any form (decimal or scientific notati
     assert.doesNotMatch(src, STALE_CAP_PATTERN, `worker/src/${f}`);
   }
 });
-
-// Copy-vs-code: a third drift surface, distinct from site-vs-worker. about.html's "The data,
-// to be honest" section (and its i18n.js runtime counterpart) explains this exact cap in prose
-// to readers — that explanation must agree with the code, not just with itself. See
-// docs/drift-inventory.md #19.
-const CAP_DISPLAY_BILLIONS = CANONICAL_CAP / 1e9; // 10
-const HONESTY_SENTENCE_RE = new RegExp(
-  `Money filters and digests exclude amounts of \\$${CAP_DISPLAY_BILLIONS}(?:&nbsp;|\\s)*billion or more`,
-);
-const STALE_HONESTY_SENTENCE_RE = /Money filters and digests exclude amounts of \$5(?:&nbsp;|\s)*billion or more/;
-
-test("about.html: the honesty-cap explanation states the same value as MONEY_HONESTY_CAP", () => {
-  const src = readFileSync(join(ROOT, "site", "about.html"), "utf8");
-  assert.match(src, HONESTY_SENTENCE_RE, "about.html's copy doesn't state the current $10B cap");
-  assert.doesNotMatch(src, STALE_HONESTY_SENTENCE_RE, "about.html's copy still states the old $5B cap");
-});
-
-test("i18n.js: the English runtime string for the same explanation agrees with MONEY_HONESTY_CAP", () => {
-  const src = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
-  const m = src.match(/about_li_honest_html:\s*"((?:[^"\\]|\\.)*)"/);
-  assert.ok(m, "about_li_honest_html key not found in i18n.js");
-  const value = m[1].replace(/\\"/g, '"');
-  assert.match(value, HONESTY_SENTENCE_RE, "i18n.js's about_li_honest_html doesn't state the current $10B cap");
-  assert.doesNotMatch(value, STALE_HONESTY_SENTENCE_RE, "i18n.js's about_li_honest_html still states the old $5B cap");
-});

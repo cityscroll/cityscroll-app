@@ -60,11 +60,10 @@ const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bva
 // column happened to be empty.
 const SELECT = "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,address_to_request,contact_name,contact_phone,email,selection_method_description,additional_description_1,other_info_1";
 
-// Honest-data cap (EDA: 3 rows >= $10B are data-entry errors, max legit ~= $6.68B, the NYPA
-// electricity contract cited in about.html's "The data, to be honest" section — mirrors
-// worker/src/ingest.mjs's AMOUNT_CAP). One named constant, referenced everywhere a Money-lens
-// query needs it, instead of a repeated literal (test/contract/money_honesty_cap.test.mjs pins
-// both this file's uses and about.html's/i18n.js's copy against it).
+// Honest-data cap (EDA: 3 rows >= $10B are data-entry errors, max legit ~= $6.68B; mirrors
+// worker/src/ingest.mjs's AMOUNT_CAP). One named constant is referenced everywhere a Money-lens
+// query needs it instead of repeating the literal; test/contract/money_honesty_cap.test.mjs pins
+// both sides.
 const MONEY_HONESTY_CAP = 10000000000;
 const EXPORT_BAND_THRESHOLD = 25;
 

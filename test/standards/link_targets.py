@@ -187,7 +187,7 @@ def classify(href):
             return "own"
         return None
     if not href.startswith("http"):
-        return "own"  # a relative page link (index.html, about.html#data, ...)
+        return "own"  # a relative page link (index.html, api.html#upstream, ...)
     if href.startswith(OWN_HREF_PREFIXES):
         return "own"
     return "own" if urlparse(href).netloc in OWN_HOSTS else "external"

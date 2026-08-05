@@ -182,16 +182,14 @@ test("email capture fields ship with data-clarity-mask in markup", () => {
   assert.match(about, /id="fbemail"[^>]*data-clarity-mask="true"/);
 });
 
-test("privacy copy discloses Clarity, masking, and DNT/GPC in English", () => {
+test("analytics behavior stands on implementation, not a public privacy policy", () => {
   const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   for (const src of [i18n, about]) {
-    assert.match(src, /Microsoft Clarity/);
-    assert.match(src, /Do Not Track/);
-    assert.match(src, /Global Privacy Control/);
-    assert.match(src, /masked/i);
+    assert.doesNotMatch(src, /Microsoft Clarity/);
+    assert.doesNotMatch(src, /Do Not Track/);
+    assert.doesNotMatch(src, /Global Privacy Control/);
   }
-  // Live project id is public (not a secret); activation is intentional.
   const clarity = readFileSync(new URL("../site/clarity.js", import.meta.url), "utf8");
   assert.match(clarity, /const CONFIGURED_PROJECT_ID = "xusuca7gsv";/);
 });

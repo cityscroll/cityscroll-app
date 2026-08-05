@@ -462,26 +462,11 @@ test("every public page loads the first-party collector and every locale covers 
   }
 });
 
-test("privacy copy removes falsified exhaustive promises without adding a new enumeration", async () => {
+test("the retired privacy policy stays off the public About page", async () => {
   const about = await readFile(new URL("../site/about.html", import.meta.url), "utf8");
   const english = await readFile(new URL("../site/i18n.js", import.meta.url), "utf8");
-  for (const source of [about, english]) {
-    // Honest intro: no password accounts / no ad tech / no cross-site tracking.
-    // Session cookies exist only after an alert-email magic link (pins + watch management). Optional
-    // heatmaps (Clarity) may also set first-party cookies when configured — do not
-    // re-promise a blanket "no cookies" line that the product no longer keeps.
-    assert.match(source, /no password accounts and no ad tech/i);
-    assert.match(source, /does not track you across other sites/i);
-    assert.match(source, /Searches and filters(?:<\/b>)? use NYC Open Data/);
-    assert.match(source, /Email links, pins, and watches/i);
-    assert.match(source, /do not need a second email link to manage watches/i);
-    // Optional heatmaps disclosed in plain language (masking + opt-out), not as tech inventory.
-    assert.match(source, /Microsoft Clarity/);
-    assert.match(source, /Do Not Track|Global Privacy Control/);
-    assert.doesNotMatch(source, /go straight to NYC Open Data|server never sees them|only keep a daily count/i);
-    assert.doesNotMatch(source, /aggregate usage events|interaction taxonomy/i);
-    assert.doesNotMatch(source, /uses no accounts, no cookies, no cross-site tracking, no ad tech/);
-  }
+  assert.doesNotMatch(about, /id="privacy"|Microsoft Clarity|Do Not Track|Global Privacy Control/i);
+  assert.doesNotMatch(english, /about_h_privacy|about_p_privacy_intro|about_li_privacy_html/);
 });
 
 test("taxonomy and budget note pin current Cloudflare allowances and limits", async () => {

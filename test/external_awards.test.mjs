@@ -16,7 +16,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // checkbook_nycha/contract/PO1125076 renders real PIN-340881 data regardless of the year segment);
 // ABO's fuzzy match/none-found links to the authority-filtered SODA view (verified live — Socrata
 // accepts a plain `authority_name=` filter on the dataset's own /resource/<id>.json endpoint); a
-// verified-absent agency links to about.html's own provenance doc; and malformed/missing registry
+// verified-absent agency links to the upstream-source documentation; and malformed/missing registry
 // data (no dataset/authority, no contract id) fails soft to unlinked source-name text, never a
 // broken href.
 
@@ -68,8 +68,8 @@ const T = (key, vars) => {
     external_award_nycha_none_note_html: "Not yet shown here — Housing Authority registrations live in {link}.",
     external_award_nycha_note_html: "{link} award matched by exact PIN <code>{pin}</code>.",
     agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
-    agency_awards_none_open_data_html: "The city does not publish this agency's awards in an open dataset — they would appear in NYS Authorities Budget Office filings or Checkbook NYC if released. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
-    agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
+    agency_awards_none_open_data_html: "The city does not publish this agency's awards in an open dataset — they would appear in NYS Authorities Budget Office filings or Checkbook NYC if released. <a href=\"api.html#upstream\">See what we checked</a>.",
+    agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"api.html#upstream\">See what we checked</a>.",
     mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
     award_watch_offer_btn: "Watch award",
   }[key]) || key;
@@ -200,13 +200,13 @@ test("agencyAwardsNote: registry-backed empty state — before, every branch nam
   // the site's own provenance doc instead of naming a source with nowhere to click.
   const absent = agencyAwardsNote("Tax Commission");
   assert.match(absent, /does not publish this agency's awards in an open dataset/);
-  assert.match(absent, /<a href="about\.html#external-awards-sources">/);
+  assert.match(absent, /<a href="api\.html#upstream">/);
 
   // Unknown (agency not in the registry at all) keeps the soft hedge, also now linked to the
   // same provenance doc rather than left as a bare unfulfilled "elsewhere" claim.
   const unknown = agencyAwardsNote("Sanitation");
   assert.match(unknown, /some agencies publish awards elsewhere/, "unknown agency keeps the soft hedge");
-  assert.match(unknown, /<a href="about\.html#external-awards-sources">/);
+  assert.match(unknown, /<a href="api\.html#upstream">/);
 });
 
 test("agencyAwardsNote: an authority name that needs URL-encoding still produces a valid, correctly-scoped href", () => {
