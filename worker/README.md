@@ -85,10 +85,11 @@ aggregate collapse/explosion, count/list mismatch, and malformed unsubscribe/con
 produce `NEEDS_ATTENTION` and HTTP 503.
 
 The scheduled `digest-shadow-monitor.yml` poll runs after the rehearsal and opens or updates a
-repair issue when the run is redlined, missing, or stale. The same redline also uses the existing
-operator-notification email path (`FEEDBACK_TO` via Resend). The repair protocol is machine-readable:
-diagnose the listed `affected_digest_ids`, apply the repair, then authenticated `POST
-/admin/digest-shadow` re-renders the full set before 09:00. At 12:45 UTC (15 minutes before the
+repair issue when the run is redlined, missing, or stale. Shadow failures never send operator
+email; the authenticated admin endpoint remains the canonical machine-readable status surface.
+The repair protocol is to diagnose the listed `affected_digest_ids`, apply the repair, then use
+authenticated `POST /admin/digest-shadow` to re-render the full set before 09:00. At 12:45 UTC
+(15 minutes before the
 configured 13:00 UTC delivery cron), any digest IDs still named by a redlined run receive a
 `digest-shadow-hold.v1` delivery lease. The producer and queue consumer both enforce that lease;
 unrelated digests remain eligible. A `READY` rerun releases all leases and clears overrides.

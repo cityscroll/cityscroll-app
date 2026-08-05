@@ -246,11 +246,6 @@ export function buildDigestShadowSummary({ run, history = [], now = new Date() }
       rerun_method: "POST /admin/digest-shadow",
       rerun_scope: "full_build_path",
     },
-    notification: {
-      channel: "operator_email",
-      required: redlines.length > 0,
-      status: redlines.length ? "pending" : "not_required",
-    },
     previews: metadata,
     _rendered_previews: previews,
   };
@@ -312,40 +307,8 @@ export async function persistDigestShadow(db, summary) {
   await db.batch(statements);
 }
 
-export async function notifyDigestShadowRedline(env, summary) {
-  if (!env.RESEND_API_KEY) throw new Error("RESEND_API_KEY is not configured");
-  if (!env.FEEDBACK_TO) throw new Error("FEEDBACK_TO is not configured");
-  if (!env.ALERTS_FROM) throw new Error("ALERTS_FROM is not configured");
-  const endpoint = `${env.CONFIRM_BASE || "https://api.cityscroll.org"}/admin/digest-shadow`;
-  const lines = summary.redlines.map((item) =>
-    `${item.code} · ${item.digest_id}${item.watch_id ? ` · ${item.watch_id}` : ""}: ${item.reason}`);
-  const text = [
-    "CityScroll digest shadow run needs attention",
-    `Run: ${summary.run_day} at ${summary.ran_at}`,
-    `Redlines: ${summary.redlines.length}`,
-    "",
-    ...lines,
-    "",
-    `Private machine-readable summary: ${endpoint}`,
-  ].join("\n");
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: env.ALERTS_FROM,
-      to: env.FEEDBACK_TO,
-      subject: `[CityScroll] Digest shadow: ${summary.redlines.length} redline(s)`,
-      text,
-    }),
-  });
-  if (!response.ok) throw new Error(`Resend ${response.status}: ${await response.text()}`);
-}
-
 /** Run the real digest builders with delivery, queue fan-out, and state advancement disabled. */
-export async function runDigestShadow(env, { now = new Date(), runAlertsFn = runAlerts, notifyFn = notifyDigestShadowRedline } = {}) {
+export async function runDigestShadow(env, { now = new Date(), runAlertsFn = runAlerts } = {}) {
   if (!env.DB) throw new Error("digest shadow requires DB");
   const at = new Date(now);
   const shadowEnv = { ...env, ALERTS_LIVE: "false", QUEUE_DIGESTS: "false" };
@@ -362,32 +325,6 @@ export async function runDigestShadow(env, { now = new Date(), runAlertsFn = run
   const history = await readHistory(env, at.toISOString().slice(0, 10));
   const summary = buildDigestShadowSummary({ run, history, now: at });
   await persistDigestShadow(env.DB, summary);
-  if (summary.redlines.length) {
-    try {
-      await notifyFn(env, summary);
-      summary.notification = {
-        ...summary.notification,
-        status: "sent",
-        sent_at: new Date().toISOString(),
-      };
-      await persistDigestShadow(env.DB, summary);
-    } catch (error) {
-      summary.redlines.push(redline(
-        "owner_notification_failed",
-        "run",
-        "The existing operator email path could not deliver the shadow-run alert.",
-        { error: String(error?.message || error) },
-      ));
-      summary.ok = false;
-      summary.status = DIGEST_SHADOW_ATTENTION;
-      summary.notification = {
-        ...summary.notification,
-        status: "failed",
-        error: String(error?.message || error),
-      };
-      await persistDigestShadow(env.DB, summary);
-    }
-  }
   summary.hold = await recordDigestShadowHoldState(env.DB, summary, { now: at });
   await persistDigestShadow(env.DB, summary);
   const out = { ...summary };

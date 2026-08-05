@@ -311,6 +311,8 @@ async function recordQueueJobOutcome(env, day, jobResult) {
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+const RETRYABLE_SODA_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 524]);
+const SODA_RETRY_DELAY_MS = 250;
 
 export async function runAlerts(env, watches = cfg.watches || [], options = {}) {
   const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
@@ -1615,6 +1617,32 @@ export function dueLabel(dueDate) {
   return "due " + s.slice(0, 10);
 }
 
+export async function fetchSodaRowsWithRetry(url, {
+  fetchFn = fetch,
+  waitFn = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+} = {}) {
+  const attempts = 2;
+  let lastError = null;
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    let response;
+    try {
+      response = await fetchFn(url);
+    } catch (error) {
+      lastError = error;
+      if (attempt === attempts - 1) throw error;
+      await waitFn(SODA_RETRY_DELAY_MS);
+      continue;
+    }
+    if (response.ok) return response.json();
+    lastError = new Error(`SODA ${response.status}`);
+    if (!RETRYABLE_SODA_STATUSES.has(response.status) || attempt === attempts - 1) {
+      throw lastError;
+    }
+    await waitFn(SODA_RETRY_DELAY_MS);
+  }
+  throw lastError;
+}
+
 async function runWatch(w) {
   const params = new URLSearchParams();
   params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1");
@@ -1630,9 +1658,7 @@ async function runWatch(w) {
     if (w.q) params.set("$q", w.q);
   }
 
-  const r = await fetch(`${SODA}?${params.toString()}`);
-  if (!r.ok) throw new Error(`SODA ${r.status}`);
-  return r.json();
+  return fetchSodaRowsWithRetry(`${SODA}?${params.toString()}`);
 }
 
 // ---- actionable digest (phone / email / links per item) ------------------
