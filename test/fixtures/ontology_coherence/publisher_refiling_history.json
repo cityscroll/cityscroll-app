@@ -1,0 +1,33 @@
+{
+  "project_id": "2022K0419",
+  "spine": {
+    "events": [
+      {
+        "id": "zap-milestone:16d2094e-fe14-ee11-8f6d-001dd809c825",
+        "kind": "zap_milestone",
+        "title": "Environmental Assessment Statement Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "time": {
+          "value": "2026-02-13",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-milestone:63b70dc4-ca80-ef11-a670-001dd809b68c",
+        "kind": "zap_milestone",
+        "title": "Land Use Application Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "time": {
+          "value": "2026-04-17",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      }
+    ]
+  }
+}

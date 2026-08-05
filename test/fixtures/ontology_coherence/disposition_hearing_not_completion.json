@@ -1,0 +1,46 @@
+{
+  "project_id": "2024K0286",
+  "spine": {
+    "events": [
+      {
+        "id": "zap-disposition:1f5d4dad-43bb-f011-bbd3-001dd80f20e8+405d4dad-43bb-f011-bbd3-001dd80f20e8",
+        "kind": "zap_disposition",
+        "title": "Borough President",
+        "detail": "Conditional Favorable",
+        "status": "Submitted",
+        "time": {
+          "value": "2026-04-13",
+          "precision": "day",
+          "basis": "hearing_date",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-disposition:987f36a1-43bb-f011-bbd2-001dd8089923+bc7f36a1-43bb-f011-bbd2-001dd8089923",
+        "kind": "zap_disposition",
+        "title": "Community Board",
+        "detail": "Conditional Favorable",
+        "status": "Submitted",
+        "time": {
+          "value": "2026-04-14",
+          "precision": "day",
+          "basis": "vote_date",
+          "certainty": "actual"
+        }
+      },
+      {
+        "id": "zap-milestone:0d029778-5f24-f011-998a-001dd806295a",
+        "kind": "zap_milestone",
+        "title": "Borough President Review",
+        "detail": "Multiple Borough President Recommendations",
+        "status": "Completed",
+        "time": {
+          "value": "2026-05-16",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        }
+      }
+    ]
+  }
+}

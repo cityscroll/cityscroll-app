@@ -213,6 +213,52 @@ test("exam rule fires when post-list events exist inside an open application win
   );
 });
 
+test("parallel filing and CEQR histories are not ordered as sequential completions", () => {
+  const payload = loadJson("test/fixtures/ontology_coherence/publisher_refiling_history.json");
+  const report = auditLandPayload(payload, { today: "2026-08-05" });
+  assert.ok(
+    !report.violations.some((v) => v.rule_id === "completion_order_violation"),
+    JSON.stringify(report.violations, null, 2),
+  );
+});
+
+test("a disposition hearing date is not a lifecycle completion date", () => {
+  const payload = loadJson("test/fixtures/ontology_coherence/disposition_hearing_not_completion.json");
+  const report = auditLandPayload(payload, { today: "2026-08-05" });
+  assert.ok(
+    !report.violations.some((v) => v.rule_id === "completion_order_violation"),
+    JSON.stringify(report.violations, null, 2),
+  );
+});
+
+test("strict public-review stages completed out of order still violate", () => {
+  const report = auditLandPayload({
+    project_id: "TESTORDER1",
+    spine: {
+      events: [
+        {
+          id: "cb",
+          kind: "zap_milestone",
+          title: "Community Board Review",
+          status: "Completed",
+          time: { value: "2026-05-02", basis: "actual_end", certainty: "actual" },
+        },
+        {
+          id: "bp",
+          kind: "zap_milestone",
+          title: "Borough President Review",
+          status: "Completed",
+          time: { value: "2026-05-01", basis: "actual_end", certainty: "actual" },
+        },
+      ],
+    },
+  }, { today: "2026-08-05" });
+  assert.ok(report.violations.some((v) =>
+    v.rule_id === "completion_order_violation"
+      && v.detail.earlier_phase === "community_board"
+      && v.detail.later_phase === "borough_president"));
+});
+
 test("fixture inventory census + flywheel evaluator emit rule cards", () => {
   const inventory = loadJson("ontology/fixtures/dimensions/ontology_coherence_payloads.json");
   const census = auditOntologyCoherence(inventory, { today: inventory.today });
