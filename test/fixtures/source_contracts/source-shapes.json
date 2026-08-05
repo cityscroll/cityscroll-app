@@ -601,6 +601,20 @@
       ]
     },
     {
+      "id": "dcas-vehicle-auction-list",
+      "kind": "socrata",
+      "identifier": "ynic-uz5i",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "auction_close_date",
+        "year",
+        "make",
+        "model",
+        "vin"
+      ]
+    },
+    {
       "id": "ulurp-recommendations",
       "kind": "socrata",
       "identifier": "4j6i-9rmr",

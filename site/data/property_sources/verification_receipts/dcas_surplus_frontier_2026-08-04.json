@@ -1,0 +1,70 @@
+{
+  "schema": "cityscroll.dcas_surplus_frontier_receipt.v1",
+  "observed_at": "2026-08-04T23:47:05.690Z",
+  "measured_vs_estimated": {
+    "dataset_counts": "measured",
+    "source_mechanics": "measured",
+    "nonfleet_listing_coverage": "unknown_not_estimated"
+  },
+  "taxonomy": {
+    "domain": "goods_surplus",
+    "distinct_from": "real_property_disposition",
+    "product_rule": "Fleet rows may appear in auction-prep, but never enter parcel chains, BBL joins, map counts, or parcel exports."
+  },
+  "official_source": {
+    "id": "dcas-vehicle-auction-list",
+    "dataset": "ynic-uz5i",
+    "landing_page": "https://data.cityofnewyork.us/d/ynic-uz5i",
+    "publisher": "NYC Department of Citywide Administrative Services",
+    "cadence": "Weekly",
+    "total_rows": 12316,
+    "bounded_rows": 100,
+    "latest_close_date": "2026-07-23",
+    "latest_batch_rows": 24,
+    "open_rows_as_of": 0,
+    "as_of": "2026-08-04",
+    "fields": [
+      "auction_close_date",
+      "year",
+      "make",
+      "model",
+      "vin"
+    ],
+    "missing_listing_fields": [
+      "auction_id",
+      "lot_url",
+      "current_bid",
+      "pickup_location",
+      "condition"
+    ]
+  },
+  "govdeals_gate": {
+    "seller_page": "https://www.govdeals.com/en/nyc-dcas",
+    "user_agreement": "https://www.govdeals.com/en/content/site-terms",
+    "clause": "2. Restrictions on Use of Services",
+    "short_excerpt": "use spiders, crawlers, robots or any other similar means to access our Site",
+    "effect": "No GovDeals page collector or data-mining adapter is permitted without written authorization.",
+    "public_api": "not_public",
+    "api_evidence": "https://sam.lqdt1.com/",
+    "api_short_excerpt": "for use by Registered GovDeals Clients only",
+    "partnership_path": "DCAS, as the seller, can request an authorized export or client API feed from GovDeals.",
+    "robots_note": "A crawl-delay or sitemap does not override the User Agreement restriction."
+  },
+  "nonfleet_general_goods": {
+    "status": "wishlist_partnership_blocked",
+    "official_pointer": "https://www.nyc.gov/site/dcas/business/surplus-sales.page",
+    "reason": "DCAS publishes categories and marketplace pointers, but no verified NYC-hosted item-level feed for non-fleet surplus goods was found."
+  },
+  "collector": {
+    "checkpointed": true,
+    "checkpoint_hit": false,
+    "pages": 2,
+    "bounded_limit": 500,
+    "truncated": false,
+    "source": "NYC Open Data only"
+  },
+  "detector": {
+    "ok": true,
+    "findings": []
+  }
+}
