@@ -10,10 +10,14 @@
 
 import { normalizeUsageTrafficClass } from "./ops_contract.mjs";
 
-export const TAXONOMY_VERSION = "1.2.0";
-export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", "1.1.0", TAXONOMY_VERSION]);
+export const TAXONOMY_VERSION = "1.3.0";
+export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", "1.1.0", "1.2.0", TAXONOMY_VERSION]);
 export const DEFAULT_ANALYTICS_DATASET = "crol_usage_events_v1";
 export const ANALYTICS_RETENTION_DAYS = 90;
+export const ANALYTICS_DOCUMENT_CUTOVER = "2026-08-05";
+export const ANALYTICS_PRIMARY_DOCUMENT_SURFACES = Object.freeze([
+  "now", "near-you", "following", "browse",
+]);
 export { normalizeUsageTrafficClass };
 
 export const ANALYTICS_LENSES = Object.freeze([
@@ -30,8 +34,11 @@ export const ANALYTICS_SCENARIOS = Object.freeze([
 ]);
 
 const SURFACES = Object.freeze([
-  "home", "stats", "about", "data", "api", "changelog", "standards",
+  "home", ...ANALYTICS_PRIMARY_DOCUMENT_SURFACES,
+  "stats", "about", "data", "api", "changelog", "standards",
 ]);
+
+const ACTION_OUTCOMES = Object.freeze(["submitted", "attended", "bid", "won", "not-useful"]);
 
 const EVENT_SPECS = Object.freeze({
   page_view: {
@@ -224,12 +231,13 @@ export function usageAnalyticsQuery(datasetName = DEFAULT_ANALYTICS_DATASET) {
   blob3 AS detail,
   blob4 AS geography,
   blob5 AS surface,
+  blob6 AS taxonomy_version,
   sum(_sample_interval * double1) AS count
 FROM ${dataset}
 WHERE timestamp >= NOW() - INTERVAL '${ANALYTICS_RETENTION_DAYS}' DAY
   AND blob6 IN (${versions})
   AND (blob7 IS NULL OR blob7 = '' OR blob7 = 'production')
-GROUP BY day, event, lens, detail, geography, surface
+GROUP BY day, event, lens, detail, geography, surface, taxonomy_version
 ORDER BY day ASC`;
 }
 
@@ -252,13 +260,35 @@ function blankUsage(measuredSince = null) {
     measured_since: measuredSince,
     retention_days: ANALYTICS_RETENTION_DAYS,
     taxonomy_version: TAXONOMY_VERSION,
-    page_views: { last7d: 0, last30d: 0, by_surface_last30d: fixedCounts(SURFACES) },
+    page_views: {
+      last7d: 0,
+      last30d: 0,
+      by_surface_last30d: fixedCounts(SURFACES),
+      attribution_cutover: ANALYTICS_DOCUMENT_CUTOVER,
+      pre_cutover_home: {
+        label: "home (before primary-document attribution)",
+        through: dayOffset(new Date(`${ANALYTICS_DOCUMENT_CUTOVER}T00:00:00Z`), 1),
+        retained: 0,
+        last30d: 0,
+      },
+    },
     lens_interest: { last7d: fixedCounts(ANALYTICS_LENSES), last30d: fixedCounts(ANALYTICS_LENSES) },
     scenario_interest: { last7d: fixedCounts(ANALYTICS_SCENARIOS), last30d: fixedCounts(ANALYTICS_SCENARIOS) },
     searches: { last7d: 0, last30d: 0, by_lens_last30d: fixedCounts(ANALYTICS_LENSES) },
     deep_links: { last7d: 0, last30d: 0, by_kind_last30d: {} },
     exports: { last7d: 0, last30d: 0, by_format_last30d: {} },
     alerts: { starts_last30d: 0, confirmed_last7d: 0, confirmed_last30d: 0 },
+    action_outcomes: {
+      opened_last7d: 0,
+      opened_last30d: 0,
+      prompted_last7d: 0,
+      prompted_last30d: 0,
+      dismissed_last7d: 0,
+      dismissed_last30d: 0,
+      recorded_last7d: 0,
+      recorded_last30d: 0,
+      by_outcome_last30d: fixedCounts(ACTION_OUTCOMES),
+    },
     geography_interest: { last30d: fixedCounts(ANALYTICS_AREAS) },
     growth: { by_day: {} },
   };
@@ -274,7 +304,7 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
   const last7 = dayOffset(now, 6);
   const last30 = dayOffset(now, 29);
   const pageBySurface = {};
-  const lens7 = {}, lens30 = {}, scenario7 = {}, scenario30 = {}, searchesByLens = {}, deepByKind = {}, exportsByFormat = {}, geography = {};
+  const lens7 = {}, lens30 = {}, scenario7 = {}, scenario30 = {}, searchesByLens = {}, deepByKind = {}, exportsByFormat = {}, geography = {}, outcomesByKind = {};
 
   for (const row of validRows) {
     const day = String(row?.day || "").slice(0, 10);
@@ -294,6 +324,10 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
       if (in30) {
         out.page_views.last30d += count;
         addCount(pageBySurface, surface, count);
+      }
+      if (surface === "home" && day < ANALYTICS_DOCUMENT_CUTOVER) {
+        out.page_views.pre_cutover_home.retained += count;
+        if (in30) out.page_views.pre_cutover_home.last30d += count;
       }
     }
     if (["lens_open", "search_run", "deep_link_open", "export", "alert_start"].includes(event)) {
@@ -330,6 +364,19 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
       if (in7) out.alerts.confirmed_last7d += count;
       if (in30) out.alerts.confirmed_last30d += count;
     }
+    const actionMetric = ({
+      action_opened: "opened",
+      outcome_prompted: "prompted",
+      outcome_dismissed: "dismissed",
+      outcome_recorded: "recorded",
+    })[event];
+    if (actionMetric) {
+      if (in7) out.action_outcomes[`${actionMetric}_last7d`] += count;
+      if (in30) {
+        out.action_outcomes[`${actionMetric}_last30d`] += count;
+        if (event === "outcome_recorded") addCount(outcomesByKind, detail, count);
+      }
+    }
     if (in30) addCount(geography, area, count);
 
     if (!out.growth.by_day[day]) out.growth.by_day[day] = { page_views: 0, interactions: 0 };
@@ -346,6 +393,7 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
   out.deep_links.by_kind_last30d = deepByKind;
   out.exports.by_format_last30d = exportsByFormat;
   out.geography_interest.last30d = fixedCounts(ANALYTICS_AREAS, geography);
+  out.action_outcomes.by_outcome_last30d = fixedCounts(ACTION_OUTCOMES, outcomesByKind);
   return out;
 }
 
@@ -403,6 +451,7 @@ export function reconcileUsageWithDurableStores(usage, durable = {}, options = {
   const shares30 = Number(durable.sharesLast30d) || 0;
   const alertsConfirmed7 = Number(durable.alertsConfirmedLast7d) || 0;
   const alertsConfirmed30 = Number(durable.alertsConfirmedLast30d) || 0;
+  const durableActionOutcomes = durable.actionOutcomes || {};
   const growthDays = durable.growthByDay || {};
 
   const takeMax = (a, b) => Math.max(Number(a) || 0, Number(b) || 0);
@@ -449,6 +498,18 @@ export function reconcileUsageWithDurableStores(usage, durable = {}, options = {
   out.alerts.confirmed_last7d = takeMax(out.alerts.confirmed_last7d, alertsConfirmed7);
   out.alerts.confirmed_last30d = takeMax(out.alerts.confirmed_last30d, alertsConfirmed30);
 
+  out.action_outcomes = out.action_outcomes || blankUsage(measuredSince).action_outcomes;
+  for (const metric of ["opened", "prompted", "dismissed", "recorded"]) {
+    for (const window of ["last7d", "last30d"]) {
+      const key = `${metric}_${window}`;
+      out.action_outcomes[key] = takeMax(out.action_outcomes[key], durableActionOutcomes[key]);
+    }
+  }
+  out.action_outcomes.by_outcome_last30d = fixedCounts(
+    ACTION_OUTCOMES,
+    out.action_outcomes.by_outcome_last30d,
+  );
+
   out.lens_interest = out.lens_interest || {
     last7d: fixedCounts(ANALYTICS_LENSES),
     last30d: fixedCounts(ANALYTICS_LENSES),
@@ -487,6 +548,7 @@ export function reconcileUsageWithDurableStores(usage, durable = {}, options = {
   const hasDurable = Boolean(
     page7 || page30 || searches7 || searches30 || deep7 || deep30 || shares7 || shares30
     || alertsConfirmed7 || alertsConfirmed30
+    || Object.values(durableActionOutcomes).some((n) => n > 0)
     || Object.keys(growthDays).length
     || Object.values(searchesByLens).some((n) => n > 0),
   );

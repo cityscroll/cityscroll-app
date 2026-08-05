@@ -2,12 +2,16 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import vm from "node:vm";
 
 import { handleEvent } from "../worker/src/events.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
+import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import {
   ANALYTICS_LENSES,
   ANALYTICS_SCENARIOS,
+  ANALYTICS_DOCUMENT_CUTOVER,
+  ANALYTICS_PRIMARY_DOCUMENT_SURFACES,
   COMPATIBLE_TAXONOMY_VERSIONS,
   TAXONOMY_VERSION,
   buildUsageSnapshot,
@@ -77,6 +81,31 @@ async function emit(points, event, options = {}) {
   assert.equal(response.status, 204);
   assert.equal(await response.text(), "");
   return response;
+}
+
+async function pageViewSurface(pathname) {
+  const source = await readFile(new URL("../site/analytics.js", import.meta.url), "utf8");
+  const payloads = [];
+  const context = {
+    location: { pathname, hash: "" },
+    localStorage: { getItem() { return ""; } },
+    navigator: {},
+    fetch(_url, init) {
+      payloads.push(JSON.parse(init.body));
+      return Promise.resolve(new Response(null, { status: 204 }));
+    },
+    document: {
+      body: {},
+      addEventListener() {},
+      querySelector() { return null; },
+    },
+  };
+  context.window = {
+    addEventListener() {},
+    CROL_API_ORIGIN: "https://api.cityscroll.org",
+  };
+  vm.runInNewContext(source, context);
+  return payloads.find((payload) => payload.event === "page_view")?.surface;
 }
 
 test("event intake writes only bounded taxonomy dimensions", async () => {
@@ -197,6 +226,83 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
   assert.deepEqual(Object.keys(body.usage.lens_interest.last30d), ANALYTICS_LENSES);
   assert.equal(body.usage.lens_interest.last30d.meetings, 0);
   assert.equal(body.nl_search.by_category.meetings, 0, "previously omitted zero-count lens is pinned");
+});
+
+test("primary document routes classify before the legacy filename fallback", async () => {
+  const routes = {
+    "/now/": "now",
+    "/near-you/": "near-you",
+    "/near-you/borough/queens/": "near-you",
+    "/following/": "following",
+    "/browse/": "browse",
+    "/browse/property/": "browse",
+    "/": "home",
+    "/stats.html": "stats",
+  };
+  for (const [pathname, expected] of Object.entries(routes)) {
+    assert.equal(await pageViewSurface(pathname), expected, pathname);
+  }
+});
+
+test("all primary documents load the aggregate collector", async () => {
+  const built = Object.fromEntries(primaryDocumentOutputs().map(([path, html]) => [path, html]));
+  for (const route of ["now", "browse"]) {
+    const entry = Object.entries(built).find(([path]) => path.endsWith(`/site/${route}/index.html`));
+    assert.ok(entry, `${route} build output exists`);
+    assert.match(entry[1], /analytics\.js\?v=1\.3\.0/, route);
+  }
+  for (const route of ["near-you", "following"]) {
+    const html = await readFile(new URL(`../site/${route}/index.html`, import.meta.url), "utf8");
+    assert.match(html, /analytics\.js\?v=1\.3\.0/, route);
+  }
+});
+
+test("primary-document attribution has a dated cutover and preserves old home rows without inventing a split", () => {
+  assert.equal(ANALYTICS_DOCUMENT_CUTOVER, "2026-08-05");
+  assert.deepEqual(ANALYTICS_PRIMARY_DOCUMENT_SURFACES, ["now", "near-you", "following", "browse"]);
+  const snapshot = buildUsageSnapshot([
+    { day: "2026-08-04", event: "page_view", surface: "home", count: 7 },
+    { day: "2026-08-05", event: "page_view", surface: "home", count: 2 },
+    { day: "2026-08-05", event: "page_view", surface: "now", count: 3 },
+    { day: "2026-08-05", event: "page_view", surface: "near-you", count: 4 },
+    { day: "2026-08-05", event: "page_view", surface: "following", count: 5 },
+    { day: "2026-08-05", event: "page_view", surface: "browse", count: 6 },
+  ], new Date("2026-08-05T12:00:00Z"));
+
+  assert.equal(snapshot.page_views.by_surface_last30d.home, 9);
+  assert.equal(snapshot.page_views.by_surface_last30d.now, 3);
+  assert.equal(snapshot.page_views.by_surface_last30d["near-you"], 4);
+  assert.equal(snapshot.page_views.by_surface_last30d.following, 5);
+  assert.equal(snapshot.page_views.by_surface_last30d.browse, 6);
+  assert.deepEqual(snapshot.page_views.pre_cutover_home, {
+    label: "home (before primary-document attribution)",
+    through: "2026-08-04",
+    retained: 7,
+    last30d: 7,
+  });
+});
+
+test("accepted action and voluntary outcome rows are exposed only as aggregate counts", () => {
+  const snapshot = buildUsageSnapshot([
+    { day: FIXTURE_DAY, event: "action_opened", detail: "official-handoff", surface: "home", count: 10 },
+    { day: FIXTURE_DAY, event: "outcome_prompted", detail: "official-handoff", surface: "home", count: 8 },
+    { day: FIXTURE_DAY, event: "outcome_dismissed", detail: "official-handoff", surface: "home", count: 2 },
+    { day: FIXTURE_DAY, event: "outcome_recorded", detail: "submitted", surface: "home", count: 3 },
+    { day: FIXTURE_DAY, event: "outcome_recorded", detail: "not-useful", surface: "home", count: 1 },
+  ], FIXTURE_NOW);
+
+  assert.deepEqual(snapshot.action_outcomes, {
+    opened_last7d: 10,
+    opened_last30d: 10,
+    prompted_last7d: 8,
+    prompted_last30d: 8,
+    dismissed_last7d: 2,
+    dismissed_last30d: 2,
+    recorded_last7d: 4,
+    recorded_last30d: 4,
+    by_outcome_last30d: { submitted: 3, attended: 0, bid: 0, won: 0, "not-useful": 1 },
+  });
+  assert.doesNotMatch(JSON.stringify(snapshot.action_outcomes), /visitor|device|query|address|notice|referrer/i);
 });
 
 test("zero-state repro: without usage credentials, /stats reports unavailable usage", async () => {
@@ -348,7 +454,7 @@ test("stats page never success-gates its number panels and stamps each panel", a
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
   for (const page of ["index.html", "stats.html", "about.html", "data.html", "api.html", "changelog.html", "standards.html"]) {
-    assert.match(await readFile(new URL(`../site/${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.2\.0/, page);
+    assert.match(await readFile(new URL(`../site/${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.3\.0/, page);
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     const source = await readFile(new URL(`../site/i18n/lang/${locale}.js`, import.meta.url), "utf8");
