@@ -350,7 +350,7 @@ function sentenceClauses(text) {
 const CARD_WHAT_VARIANTS = Object.freeze(new Map([
   ["The listed products were seized and may be destroyed.", "Seized products may be destroyed"],
   ["The Property Clerk has listed items with no one claiming ownership.", "No one has claimed these items"],
-  ["This is a forest management project.", "This is a forest project"],
+  ["This is a forest management project.", "Timber sale"],
   ["This is a sale of timber and firewood.", "This is a timber and firewood sale"],
   ["This notice asks for proposals about a property lease.", "This asks for property lease proposals"],
   ["This notice asks for proposals.", "This asks for proposals"],
@@ -437,9 +437,15 @@ export function propertyCardPlainSummary(summary) {
     .find(Boolean) || null;
   const facts = [lead, keyFact].filter(Boolean);
   const clauses = facts.flatMap((item) => cardFactClauses(item));
-  const text = clauses
-    .map((clause, index) => (index === 0 ? clause : lowerClauseStart(clause)))
-    .join("; ") + ".";
+  const saleDate = keyFact?.kind === "event_sale"
+    && clauses.length === 2
+    && /\bsale$/i.test(clauses[0])
+    && /^sale\s+/i.test(clauses[1]);
+  const text = saleDate
+    ? `${clauses[0]} on ${clauses[1].replace(/^sale\s+/i, "")}.`
+    : clauses
+      .map((clause, index) => (index === 0 ? clause : lowerClauseStart(clause)))
+      .join("; ") + ".";
   const eventKind = keyFact?.kind?.startsWith("event_")
     ? keyFact.kind.slice("event_".length)
     : null;
