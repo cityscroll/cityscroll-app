@@ -476,7 +476,7 @@ export function bucketFeedLinks(kind, opts = {}) {
  * only when its boundary/build stamps match the containing activity document.
  */
 export function districtBagItemIds(activity, lens, filter = {}) {
-  if (!(lens === "property" || lens === "meetings")) return [];
+  if (!MAP_LENSES.includes(lens) || lens === "all") return [];
   const index = activity?.district_items;
   if (
     index?.schema !== "cityscroll.district_items.v1"

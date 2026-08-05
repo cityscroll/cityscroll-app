@@ -16,7 +16,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SITE_MODULES } from "../test/helpers/site_source.mjs";
+import { ROUTE_ISLAND_MODULES, SITE_MODULES } from "../test/helpers/site_source.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const APP_DIR = path.join(ROOT, "site/app");
@@ -56,7 +56,13 @@ export function validateModuleGraph() {
   if (JSON.stringify(loaderModules) !== JSON.stringify(SITE_MODULES)) {
     throw new Error("site/app/main.mjs and SITE_MODULES disagree on import order");
   }
-  if (JSON.stringify([...loaderModules].sort()) !== JSON.stringify(applicationModules)) {
+  if (new Set(ROUTE_ISLAND_MODULES).size !== ROUTE_ISLAND_MODULES.length) {
+    throw new Error("route-only island registry contains a duplicate module");
+  }
+  if (ROUTE_ISLAND_MODULES.some((name) => loaderModules.includes(name))) {
+    throw new Error("route-only island is also registered on the home loader");
+  }
+  if (JSON.stringify([...loaderModules, ...ROUTE_ISLAND_MODULES].sort()) !== JSON.stringify(applicationModules)) {
     throw new Error("site/app contains an orphan or unregistered module");
   }
 }

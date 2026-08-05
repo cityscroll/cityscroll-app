@@ -71,12 +71,14 @@ test("materialized payload stays under its declared transfer ceiling", () => {
   assert.equal(perf.max_items_per_district, 100);
 });
 
-test("unified alerts and council map expose Follow a district", () => {
+test("unified alerts retain district watches while Near you watches its shared scope", () => {
   const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
-  const map = readFileSync(join(ROOT, "site/app/map.mjs"), "utf8");
+  const nearView = readFileSync(join(ROOT, "site/near_you_view.mjs"), "utf8");
+  const nearPage = readFileSync(join(ROOT, "site/near-you/index.html"), "utf8");
   const boot = readFileSync(join(ROOT, "site/app/boot.mjs"), "utf8");
   assert.match(index, /data-w="district"[^>]*>Follow a district</);
   assert.match(index, /id="adistrict"/);
-  assert.match(map, /districtDigestAlertsHref/);
   assert.match(boot, /targetLens==="district"/);
+  assert.match(nearView, /watchFromScope/);
+  assert.match(nearPage, />Watch this scope</);
 });

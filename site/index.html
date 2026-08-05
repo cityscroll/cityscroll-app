@@ -95,7 +95,7 @@
   .tabbtn:hover{color:var(--ink)}
   .tabpane{display:none;padding:24px 0 10px}
   .tabpane.active{display:block}
-  .now-entry-row{display:flex;justify-content:center;padding:12px 0 4px}
+  .now-entry-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:12px 0 4px}
   .now-entry{display:inline-flex;align-items:baseline;gap:10px;padding:9px 15px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);font:600 13px/1.25 ui-sans-serif,system-ui,sans-serif}
   .now-entry strong{font:800 14px/1 var(--font-display);color:var(--oxblood)}.now-entry:hover{border-color:var(--oxblood)}
   .now-surface{max-width:1180px;margin:0 auto;padding:4px 0 30px}.now-back{margin:0 0 12px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif}.now-back a{text-decoration:none}
@@ -675,7 +675,7 @@
   .lens-method .property-domain-stepper{margin:var(--space-2) 0 var(--space-1)}
   .lens-toolbar{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:flex-end;margin-top:var(--space-4)}
   .lens-toolbar .field.kw{flex:2 1 260px}
-  .lens-toolbar-actions{display:flex;gap:var(--space-2);align-items:flex-end;flex:0 0 auto}
+  .lens-toolbar-actions{display:flex;gap:var(--space-2);align-items:flex-end;flex:0 1 auto;flex-wrap:wrap;min-width:0;max-width:100%}
   .lens-more-filters{position:relative}
   .lens-more-summary{display:inline-flex;align-items:center;gap:var(--space-2);cursor:pointer}
   .lens-more-summary::after{content:"▾";font-size:10px;color:var(--color-text-muted)}
@@ -1489,6 +1489,7 @@
     <div class="cr-rule cr-rule--mid"></div>
     <div class="now-entry-row">
       <a class="now-entry" href="#now"><strong data-i18n="now_title">Now</strong><span data-i18n="now_entry_link">See deadlines and upcoming events</span></a>
+      <a class="now-entry" href="/near-you/lens/money/" data-near-you-link data-lens="current"><strong>Near you</strong><span>Keep this scope and narrow it by place</span></a>
     </div>
     <nav class="tabs">
       <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
@@ -1497,7 +1498,6 @@
       <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
       <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
       <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
-      <button class="tabbtn" data-tab="map" data-i18n="tab_map">Map</button>
       <button class="tabbtn" data-tab="alerts" data-i18n="tab_alerts">Alerts</button>
     </nav>
     <div id="langNotice" class="lang-notice" hidden></div>
@@ -1609,6 +1609,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Watch this search</button>
+        <a class="act mini" href="/near-you/lens/money/" data-near-you-link data-lens="money">Map this scope</a>
       </div>
     </div>
     <div class="money-method-slot">
@@ -1679,6 +1680,7 @@
           </div>
           <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
         </div>
+        <p><a class="act mini" href="https://api.cityscroll.org/near-you?v=0&amp;lens=people" data-near-you-link data-lens="people">Map this scope</a></p>
         <div id="career-area-watches" class="career-area-watches"></div>
         <div class="career-controls">
           <div class="field">
@@ -1891,6 +1893,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button>
+        <a class="act mini" href="/near-you/lens/land/" data-near-you-link data-lens="land">Map this scope</a>
       </div>
     </div>
     <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="active" data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option><option value="all" data-i18n="status_all">All</option></select>
@@ -1978,6 +1981,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button>
+        <a class="act mini" href="/near-you/lens/property/" data-near-you-link data-lens="property">Map this scope</a>
       </div>
     </div>
     <div class="property-rail-label lens-primary-label" data-i18n="property_asset_rail_label">Item type</div>
@@ -2031,7 +2035,7 @@
       <div class="field"><label for="rulesagency" data-i18n="agency_label">Agency</label><select id="rulesagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
       <div class="field"><label for="rulesboro" data-i18n="borough_label">Borough</label><select id="rulesboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide" data-i18n="map_bucket_citywide">Citywide</option></select></div>
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button><a class="act mini" href="/near-you/lens/rules/" data-near-you-link data-lens="rules">Map this scope</a></div>
     </div>
     <div class="exportbar">
       <span class="export-band" id="rules-export-band" hidden>
@@ -2081,6 +2085,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Watch this search</button>
+        <a class="act mini" href="/near-you/" data-near-you-link data-lens="meetings">Map this scope</a>
       </div>
     </div>
     <div class="meetings-rail-label lens-primary-label" id="meetings-process-label" data-i18n="meetings_process_rail_label">Current stage</div>
@@ -2106,54 +2111,6 @@
       </details>
     </div>
     <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
-  </div>
-</section>
-
-<!-- ============ MAP EXPLORATION (cs-geo-04) ============ -->
-<section id="tab-map" class="tabpane">
-  <div class="wrap">
-    <p class="career-kicker" data-i18n="map_kicker">What is happening where</p>
-    <h2 class="property-domain-heading" data-i18n="map_heading">Explore civic activity by district</h2>
-    <p class="map-intro" data-i18n="map_intro">Expand and contract the city map to see density of land actions, property disposition, rules, meetings, and contracts — then open the live feed for that area. District lines are a published layer, not a live geo query.</p>
-    <div class="map-toolbar" role="toolbar" aria-label="Map controls">
-      <div class="map-level-controls" role="group" aria-label="Geography level">
-        <button type="button" data-map-level="borough" data-i18n="map_level_borough">Boroughs</button>
-        <button type="button" data-map-level="community_district" data-i18n="map_level_community">Community districts</button>
-        <button type="button" data-map-level="council_district" data-i18n="map_level_council">Council districts</button>
-      </div>
-      <div class="map-zoom-controls" role="group" aria-label="Zoom and pan">
-        <button type="button" data-map-zoom="in" aria-label="Zoom in" data-i18n-aria="map_zoom_in_aria">+</button>
-        <button type="button" data-map-zoom="out" aria-label="Zoom out" data-i18n-aria="map_zoom_out_aria">−</button>
-        <button type="button" data-map-pan="west" aria-label="Pan map west" data-i18n-aria="map_pan_west">←</button>
-        <button type="button" data-map-pan="north" aria-label="Pan map north" data-i18n-aria="map_pan_north">↑</button>
-        <button type="button" data-map-pan="south" aria-label="Pan map south" data-i18n-aria="map_pan_south">↓</button>
-        <button type="button" data-map-pan="east" aria-label="Pan map east" data-i18n-aria="map_pan_east">→</button>
-        <button type="button" data-map-zoom="reset" data-i18n="map_reset_view">Reset</button>
-      </div>
-    </div>
-    <nav class="map-crumb" id="mapCrumb" aria-label="Map location"></nav>
-    <div class="map-lens-row chiprow" id="mapLensRow" role="group" aria-label="Activity lens"></div>
-    <div class="map-lens-row chiprow" id="mapMoneyBasisRow" role="group" aria-label="Contract location basis" hidden></div>
-    <p class="map-fallback-note" id="mapMoneyBasisNote" hidden></p>
-    <div class="map-explore">
-      <div class="map-explore-main">
-        <div class="map-svg-wrap" id="mapSvgWrap">
-          <svg id="mapSvg" role="img" aria-labelledby="mapSvgTitle mapSvgDesc" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
-            <title id="mapSvgTitle">New York City district map</title>
-            <desc id="mapSvgDesc">Choropleth of civic activity by district. Use the area list for the same data.</desc>
-            <g id="mapPolygons" fill-rule="evenodd"></g>
-          </svg>
-        </div>
-        <div class="map-legend"><span class="map-legend-swatch" aria-hidden="true"></span><span data-i18n="map_legend_label">Fewer → more located events</span></div>
-        <p class="map-vintage" id="mapVintage"></p>
-        <p class="map-fallback-note" data-i18n="map_fallback_note">The map is optional. The district list and live lens filters stay available if the map does not load.</p>
-      </div>
-      <div class="map-explore-side">
-        <h3 class="property-rail-label" id="mapListHeading" data-i18n="map_list_heading">Areas</h3>
-        <ul class="map-area-list" id="mapAreaList" aria-labelledby="mapListHeading"></ul>
-        <div class="map-detail" id="mapDetail" hidden></div>
-      </div>
-    </div>
   </div>
 </section>
 

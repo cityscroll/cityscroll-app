@@ -132,6 +132,9 @@ if [[ "$RUN_READING_LEVEL" == "1" ]]; then
   run_and_fail node tools/now_reading_level.mjs \
     --baseline site/now-reading-level-ratchet.json \
     --format markdown
+  run_and_fail node tools/near_you_reading_level.mjs \
+    --baseline site/near-you-reading-level-ratchet.json \
+    --format markdown
 else
   echo
   echo "Reading-level ratchet check is CI-required but not run by default."

@@ -316,10 +316,14 @@ Materialized views: `er_entity_link`, `er_canonical_entity`, `er_resolution_run`
 
 ## Map exploration surface (cs-geo-04)
 
-Zoomable "what's happening where" browse mode: borough → community district →
-council district, SVG choropleth from the cs-geo-02 boundary layer + precomputed
-per-district per-lens counts. No proprietary map SDK; list views remain the
-fallback. Behavior lives in `site/app/map.mjs` (see `docs/module-map.md`).
+The static-first Near-you surface renders the shared scope, exact records and
+counts, special place bags, SVG choropleth, and equivalent area list before
+JavaScript. `site/app/map.mjs` is a route-only island that adopts those nodes for
+pan, zoom, drill-down, geolocation, and focus synchronization; it must never join
+the home loader or rebuild the page root. Common pages are built by
+`tools/build_near_you_pages.mjs`; uncommon scopes use the same renderer at
+`GET /near-you` on the API Worker. The legacy `#map` route forwards into this
+surface. See `docs/module-map.md`.
 
 **All five map lenses** (land / property / rules / meetings / money) roll through
 `tools/lib/district_activity.mjs` at build time: land uses ZAP publisher CDs +
@@ -385,11 +389,11 @@ python3 tools/capture_map_exploration.py
 
 Artifacts: `site/data/district_activity.json` (stamped with `boundary_vintage`,
 `sources.*.by_method`, `unlocated_reasons`, `citywide`, `virtual`, and exact
-`district_items` request-id bags for Property/Meetings), pure UI helpers
+`district_items` request-id bags for all five map lenses), pure UI helpers
 `site/map_exploration.mjs`, build lib `tools/lib/district_activity.mjs`, gazetteer
-`site/civic_address_geocode.mjs`. Deep links: `#map`,
-`#map?level=community_district&parent=Queens&lens=land`, district tap-through uses
-existing `cd=` / `council=` / `boro=` list grammar. Tax-lien **cycle context**
+`site/civic_address_geocode.mjs`. Canonical links use `/near-you/` and its GET
+scope; legacy `#map` links forward there. District tap-through uses the same
+versioned scope and existing `cd=` / `council=` / `boro=` list grammar. Tax-lien **cycle context**
 inlines on Property Disposition notices/cards whose parcel BBLs appear on a
 published DOF list (ladder + deadline countdown + leave-rate line + action
 rail — pure `site/tax_lien_cycle_context.mjs`). The aggregate tables are
@@ -1968,9 +1972,9 @@ test/action-rail.test.mjs test/action_link_integrity.test.mjs`.
 ## Map drill-through scope (list hash carry)
 
 Map bag and area detail links must land on filtered lists through the canonical
-scope adapter — not bare lens routes. Property and Meetings polygon filters consume
-the stamped `district_activity.district_items` membership, so the number on the map
-and the request IDs admitted to the list share one placement pass. Pure builders:
+scope adapter — not bare lens routes. All five map lenses consume the stamped
+`district_activity.district_items` membership, so the number on the map and the
+request IDs admitted to the list share one placement pass. Pure builders:
 `mapDrillListHash`, `bucketFeedLinks`, `areaFeedLinks`, `districtBagItemIds` in
 `site/map_exploration.mjs`. COUNT-EQUALS-LIST characterization:
 `test/map_exploration.test.mjs`. Capture:
