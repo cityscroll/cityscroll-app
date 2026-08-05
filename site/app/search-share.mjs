@@ -1,4 +1,9 @@
 let nlParserPromise;
+function adaptedScopeHash(lens, hash){
+  if(!hash || !globalThis.CrolScope) return hash;
+  const scope=CrolScope.scopeFromRouteHash(hash,{language:window.LANG||"en"});
+  return CrolScope.routeHashFromScope(scope,{surface:lens});
+}
 function loadNlParser(){
   return nlParserPromise ||= new Promise(resolve=>{
     const script=document.createElement("script");
@@ -53,7 +58,8 @@ function renderNLQPresets(){
       : "";
     box.querySelectorAll(".nlqpreset-run").forEach(btn=>btn.addEventListener("click",()=>{
       const preset=nlqPresetStore()[+btn.dataset.i]; if(!preset) return;
-      if(location.hash===preset.hash) applyHash(); else location.hash=preset.hash;
+      const hash=adaptedScopeHash(presetLens(preset),preset.hash);
+      if(location.hash===hash) applyHash(); else location.hash=hash;
     }));
     box.querySelectorAll(".nlqpreset-remove").forEach(btn=>btn.addEventListener("click",()=>{
       const next=removePreset(nlqPresetStore(), +btn.dataset.i); nlqPresetSet(next); renderNLQPresets();
@@ -84,11 +90,13 @@ function renderLandingShareActions(){
   bindQRShare(root.querySelector("[data-qr-share]"), url);
 }
 function searchActionsHTML(lens, hash){
+  hash=adaptedScopeHash(lens,hash);
   if(!hash) return "";
   const moneyIds=lens==="money";
   return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(currentLanguageURL(canonicalSearchURL(location, hash)))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
 function bindSearchActions(root, label, hash){
+  hash=adaptedScopeHash(presetLens(hash)||document.querySelector(".tabbtn.active")?.dataset.tab,hash);
   if(!root || !hash) return;
   const url=currentLanguageURL(canonicalSearchURL(location, hash));
   const share=root.querySelector("[data-search-share]"); if(share) share.href=url;
@@ -97,7 +105,10 @@ function bindSearchActions(root, label, hash){
   bindQRShare(root.querySelector("[data-qr-share]"), url);
   const save=root.querySelector("[data-search-save]");
   if(save) save.addEventListener("click",()=>{
-    nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
+    const lens=presetLens(hash);
+    const scope=CrolScope.scopeFromPreset({label,hash},{language:window.LANG||"en"});
+    const preset=CrolScope.presetFromScope(scope,{label,lens});
+    nlqPresetSet(savePreset(nlqPresetStore(), preset.label, preset.hash));
     renderNLQPresets();
     save.dataset.i18n="saved_check";
     save.textContent=t("saved_check");
@@ -506,6 +517,8 @@ function nlFeed(key, placeholder){
           $("#meetingsboro").value=f.locationScope;
         } else if(f.borough) $("#meetingsboro").value=f.borough;
         if(f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
+        meetingsCommunityDistrict=f.communityDistrict||"";
+        meetingsCouncilDistrict=f.councilDistrict||"";
         if(f.process && ["scheduled","agenda","held","outcomes","unstaged"].includes(f.process)){
           meetingsProcessSel=f.process;
         }
@@ -522,6 +535,7 @@ function nlFeed(key, placeholder){
           community_districts:f.communityDistrict?[f.communityDistrict]:[],
         }:null;
         propertyCommunityDistrict=f.communityDistrict||"";
+        propertyCouncilDistrict=f.councilDistrict||"";
         if(f.process && ["hearing","auction_or_rfp","award_or_conveyance","unstaged"].includes(f.process)){
           propProcessSel=f.process;
         }
@@ -554,6 +568,7 @@ function nlFeed(key, placeholder){
 }
 
 function searchFilterFromHash(lens, hash){
+  hash=adaptedScopeHash(lens,hash);
   const qi=(hash||"").indexOf("?");
   if(qi<0 || !hash.startsWith("#"+lens+"?")) return null;
   const q=new URLSearchParams(hash.slice(qi+1));
@@ -565,6 +580,8 @@ function searchFilterFromHash(lens, hash){
     filter.when=["week","month","upcoming","past","all"].includes(q.get("when"))?q.get("when"):"week";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
+    filter.communityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):null;
+    filter.councilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):null;
     filter.locationScope=["citywide-unlocated","citywide","virtual","unlocated"].includes(q.get("scope"))?q.get("scope"):null;
     filter.process=q.get("process")||"all";
   }
@@ -578,6 +595,7 @@ function searchFilterFromHash(lens, hash){
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
     filter.communityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):null;
+    filter.councilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):null;
   }
   if(lens==="rules"){
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
@@ -616,6 +634,7 @@ function searchFilterChips(lens, filter){
     if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
     if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
     else if(filter.communityDistrict) chips.push(`<span class="qchip">CD <b>${Number(filter.communityDistrict.slice(1))}</b></span>`);
+    if(filter.councilDistrict) chips.push(`<span class="qchip">${t("council_district_short",{n:filter.councilDistrict})}</span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     return chips;
   } else {
@@ -627,6 +646,8 @@ function searchFilterChips(lens, filter){
       chips.push(`<span class="qchip"><b>${t(whenKey)}</b></span>`);
       if(filter.borough) chips.push(`<span class="qchip">${t("affected_area_label")} <b>${filter.borough}</b></span>`);
       if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
+      if(filter.communityDistrict) chips.push(`<span class="qchip">${t("community_district_short",{n:filter.communityDistrict})}</span>`);
+      if(filter.councilDistrict) chips.push(`<span class="qchip">${t("council_district_short",{n:filter.councilDistrict})}</span>`);
       if(filter.locationScope==="virtual") chips.push(`<span class="qchip">${t("map_bucket_virtual")}</span>`);
       else if(filter.locationScope==="citywide") chips.push(`<span class="qchip">${t("map_bucket_citywide")}</span>`);
       else if(filter.locationScope==="unlocated") chips.push(`<span class="qchip">${t("map_bucket_unlocated")}</span>`);
@@ -676,13 +697,13 @@ function bindClearSearchState(lens, root){
     $("#"+lens+"agency").value="";
     $("#"+lens+"kw").value="";
     const when=$("#"+lens+"when"); if(when) when.value="upcoming";
-    if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; meetingsProcessSel="all"; meetingsPlaceGroupSel="flat"; }
+    if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; meetingsProcessSel="all"; meetingsPlaceGroupSel="flat"; }
     if(lens==="property"){
       propAsset="all"; propStageSel="all"; propProcessSel="all";
       propSaleMethod="all"; propPriceBand="all"; propSort="closing_soon";
       const sortEl=$("#propsort"); if(sortEl) sortEl.value="closing_soon";
       $("#propertyboro").value=""; $("#propertyneighborhood").value="";
-      propertyCommunityDistrict=""; propertyResolvedNeighborhood=null;
+      propertyCommunityDistrict=""; propertyCouncilDistrict=""; propertyResolvedNeighborhood=null;
     }
     if(lens==="rules"){ rulesProcessSel="all"; const rb=$("#rulesboro"); if(rb) rb.value=""; }
     $("#nltrans-"+lens).innerHTML="";

@@ -61,3 +61,13 @@ test("removing automatic widening restores the exact empty search", () => {
   assert.equal(result.widened, false);
   assert.deepEqual(result.rows, []);
 });
+
+test("all-date map drills retain undated members from the stamped corpus", () => {
+  const records = [
+    hearing("dated", "2026-08-20", "Queens"),
+    { ...hearing("undated", null, "Queens"), event_date: null },
+  ];
+  const result = chooseHearingScope(records, { when: "all" }, TODAY);
+  assert.equal(result.scope, "all");
+  assert.deepEqual(result.rows.map((row) => row.request_id), ["dated", "undated"]);
+});

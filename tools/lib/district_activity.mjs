@@ -867,6 +867,7 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
  * @param {object[]} [opts.rulesRows]
  * @param {object[]} [opts.moneyRows]
  * @param {object[]} [opts.contractActionRows]
+ * @param {object} [opts.districtCorpora] — client-readable descriptors for indexed rows
  * @param {string} [opts.builtAt]
  */
 export function buildDistrictActivity(opts = {}) {
@@ -882,6 +883,20 @@ export function buildDistrictActivity(opts = {}) {
   const byBorough = Object.create(null);
   const byCommunity = Object.create(null);
   const byCouncil = Object.create(null);
+  const builtAt = opts.builtAt || new Date().toISOString();
+  // Exact request-id membership for map → list drill-throughs. These sets are
+  // populated at the same moment as the choropleth counters, making the
+  // generated artifact the single place interpretation layer for both.
+  const districtItemSets = {
+    by_level: {
+      borough: Object.create(null),
+      community_district: Object.create(null),
+      council_district: Object.create(null),
+    },
+    citywide: { property: new Set(), meetings: new Set() },
+    virtual: { property: new Set(), meetings: new Set() },
+    unlocated: { property: new Set(), meetings: new Set() },
+  };
   const citywideBag = emptyLensCounts();
   const virtualBag = emptyLensCounts();
   const unlocated = emptyLensCounts();
@@ -910,6 +925,18 @@ export function buildDistrictActivity(opts = {}) {
     unlocatedReasons[lens][key] = (unlocatedReasons[lens][key] || 0) + 1;
   }
 
+  function addDistrictItem(lens, level, id, itemId) {
+    if (!(lens === "property" || lens === "meetings") || !id || !itemId) return;
+    const levelBag = districtItemSets.by_level[level];
+    if (!levelBag[id]) levelBag[id] = { property: new Set(), meetings: new Set() };
+    levelBag[id][lens].add(String(itemId));
+  }
+
+  function addBucketItem(lens, bucket, itemId) {
+    if (!(lens === "property" || lens === "meetings") || !itemId) return;
+    districtItemSets[bucket][lens].add(String(itemId));
+  }
+
   function isCitywideSlot(slot) {
     return slot?.bucket === "citywide"
       || slot?.borough === "Citywide"
@@ -924,7 +951,7 @@ export function buildDistrictActivity(opts = {}) {
       || slot?.method === "virtual_only";
   }
 
-  function place(lens, { borough, community, council, method }) {
+  function place(lens, { borough, community, council, method }, itemId = null) {
     sources[lens].counted += 1;
     let placed = false;
     let resolvedCouncil = council ? normalizeCouncilDistrictId(council) : null;
@@ -932,8 +959,12 @@ export function buildDistrictActivity(opts = {}) {
       const cd = normalizeCommunityDistrictId(community);
       if (cd) {
         bump(byCommunity, cd, lens);
+        addDistrictItem(lens, "community_district", cd, itemId);
         const b = borough || boroughFromCommunityId(cd);
-        if (b && b !== "Citywide" && b !== "Virtual") bump(byBorough, b, lens);
+        if (b && b !== "Citywide" && b !== "Virtual") {
+          bump(byBorough, b, lens);
+          addDistrictItem(lens, "borough", b, itemId);
+        }
         // Council join when publisher field missing: CD centroid → council polygon.
         if (!resolvedCouncil && cdCouncilIndex[cd]) {
           resolvedCouncil = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
@@ -944,18 +975,22 @@ export function buildDistrictActivity(opts = {}) {
     }
     if (resolvedCouncil) {
       bump(byCouncil, resolvedCouncil, lens);
+      addDistrictItem(lens, "council_district", resolvedCouncil, itemId);
       placed = true;
     }
     if (borough === "Citywide" || method === "citywide") {
       citywideBag[lens] = (citywideBag[lens] || 0) + 1;
       bump(byBorough, "Citywide", lens);
+      addBucketItem(lens, "citywide", itemId);
       placed = true;
     } else if (borough === "Virtual" || method === "virtual_only") {
       virtualBag[lens] = (virtualBag[lens] || 0) + 1;
       bump(byBorough, "Virtual", lens);
+      addBucketItem(lens, "virtual", itemId);
       placed = true;
     } else if (!placed && borough) {
       bump(byBorough, borough, lens);
+      addDistrictItem(lens, "borough", borough, itemId);
       placed = true;
     }
     if (placed) {
@@ -963,6 +998,7 @@ export function buildDistrictActivity(opts = {}) {
       if (method) bumpMethod(lens, method);
     } else {
       unlocated[lens] += 1;
+      addBucketItem(lens, "unlocated", itemId);
     }
   }
 
@@ -972,10 +1008,11 @@ export function buildDistrictActivity(opts = {}) {
    * each without inflating sources.counted (unlike multi-CD ZAP, which is
    * multi-row intentional). Citywide / virtual slots go to first-class bags.
    */
-  function placeSlots(lens, slots) {
+  function placeSlots(lens, slots, itemId = null) {
     sources[lens].counted += 1;
     if (!slots.length) {
       unlocated[lens] += 1;
+      addBucketItem(lens, "unlocated", itemId);
       bumpUnlocatedReason(lens, slots.unlocated_reason || "no_place_signal");
       return;
     }
@@ -1001,13 +1038,18 @@ export function buildDistrictActivity(opts = {}) {
         const cd = normalizeCommunityDistrictId(slot.community);
         if (cd) {
           bump(byCommunity, cd, lens);
+          addDistrictItem(lens, "community_district", cd, itemId);
           const b = slot.borough || boroughFromCommunityId(cd);
-          if (b && b !== "Citywide" && b !== "Virtual") bump(byBorough, b, lens);
+          if (b && b !== "Citywide" && b !== "Virtual") {
+            bump(byBorough, b, lens);
+            addDistrictItem(lens, "borough", b, itemId);
+          }
           // Supplement council from CD centroid when the slot has CD but no council.
           if (!slot.council && cdCouncilIndex[cd]) {
             const fromCd = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
             if (fromCd) {
               bump(byCouncil, fromCd, lens);
+              addDistrictItem(lens, "council_district", fromCd, itemId);
               if (!method || method === slot.method) method = method || "cd_centroid_council";
             }
           }
@@ -1018,11 +1060,13 @@ export function buildDistrictActivity(opts = {}) {
         const id = normalizeCouncilDistrictId(slot.council);
         if (id) {
           bump(byCouncil, id, lens);
+          addDistrictItem(lens, "council_district", id, itemId);
           slotPlaced = true;
         }
       }
       if (!slotPlaced && slot.borough && slot.borough !== "Citywide" && slot.borough !== "Virtual") {
         bump(byBorough, slot.borough, lens);
+        addDistrictItem(lens, "borough", slot.borough, itemId);
         slotPlaced = true;
       }
       if (slotPlaced) placed = true;
@@ -1030,12 +1074,14 @@ export function buildDistrictActivity(opts = {}) {
     if (sawCitywide) {
       citywideBag[lens] = (citywideBag[lens] || 0) + 1;
       bump(byBorough, "Citywide", lens);
+      addBucketItem(lens, "citywide", itemId);
       placed = true;
       method = method || "citywide";
     }
     if (sawVirtual) {
       virtualBag[lens] = (virtualBag[lens] || 0) + 1;
       bump(byBorough, "Virtual", lens);
+      addBucketItem(lens, "virtual", itemId);
       placed = true;
       method = method || "virtual_only";
     }
@@ -1044,6 +1090,7 @@ export function buildDistrictActivity(opts = {}) {
       bumpMethod(lens, method);
     } else {
       unlocated[lens] += 1;
+      addBucketItem(lens, "unlocated", itemId);
       bumpUnlocatedReason(lens, slots.unlocated_reason || "no_place_signal");
     }
   }
@@ -1078,15 +1125,15 @@ export function buildDistrictActivity(opts = {}) {
   // Property — geometry → point-in-polygon; else borough-only.
   for (const row of opts.propertyRows || []) {
     const placements = propertyPlacementsFromRow(row, boundaries);
-    if (placements.length) place("property", placements[0]);
-    else place("property", {});
+    if (placements.length) place("property", placements[0], row.request_id);
+    else place("property", {}, row.request_id);
   }
 
   const placeOpts = { cdCouncilIndex };
 
   // Meetings — venue geocode + boundary PIP / CD resolve; virtual → Virtual bag.
   for (const row of opts.meetingsRows || []) {
-    placeSlots("meetings", meetingPlacementsFromRow(row, boundaries, placeOpts));
+    placeSlots("meetings", meetingPlacementsFromRow(row, boundaries, placeOpts), row.request_id);
   }
 
   // Rules — rule-scope / hearing extractors; citywide → Citywide bag.
@@ -1131,10 +1178,74 @@ export function buildDistrictActivity(opts = {}) {
     if (!byCouncil[id]) byCouncil[id] = emptyLensCounts();
   }
 
+  const sortedIds = (set) => [...set].sort();
+  const serializeLevel = (levelBag) => Object.fromEntries(
+    Object.entries(levelBag).map(([id, lenses]) => [id, {
+      property: sortedIds(lenses.property),
+      meetings: sortedIds(lenses.meetings),
+    }]),
+  );
+  const districtItems = {
+    schema: "cityscroll.district_items.v1",
+    boundary_vintage: String(boundaries.boundary_vintage),
+    built_at: builtAt,
+    lenses: ["property", "meetings"],
+    corpora: opts.districtCorpora || {},
+    by_level: {
+      borough: serializeLevel(districtItemSets.by_level.borough),
+      community_district: serializeLevel(districtItemSets.by_level.community_district),
+      council_district: serializeLevel(districtItemSets.by_level.council_district),
+    },
+    citywide: {
+      property: sortedIds(districtItemSets.citywide.property),
+      meetings: sortedIds(districtItemSets.citywide.meetings),
+    },
+    virtual: {
+      property: sortedIds(districtItemSets.virtual.property),
+      meetings: sortedIds(districtItemSets.virtual.meetings),
+    },
+    unlocated: {
+      property: sortedIds(districtItemSets.unlocated.property),
+      meetings: sortedIds(districtItemSets.unlocated.meetings),
+    },
+    note: "Exact list membership stamped by the same placement pass as map counts; no client-side place reinterpretation.",
+  };
+
+  // For indexed lenses, the set cardinality is the authoritative count. This
+  // also prevents a multi-signal row from incrementing one district twice.
+  for (const [level, countBag] of Object.entries({
+    borough: byBorough,
+    community_district: byCommunity,
+    council_district: byCouncil,
+  })) {
+    const itemBag = districtItems.by_level[level];
+    for (const [id, counts] of Object.entries(countBag)) {
+      for (const lens of districtItems.lenses) {
+        const special = level === "borough" && id === "Citywide"
+          ? districtItems.citywide[lens]
+          : level === "borough" && id === "Virtual"
+            ? districtItems.virtual[lens]
+            : null;
+        counts[lens] = special ? special.length : (itemBag[id]?.[lens]?.length || 0);
+      }
+    }
+  }
+  for (const lens of districtItems.lenses) {
+    citywideBag[lens] = districtItems.citywide[lens].length;
+    virtualBag[lens] = districtItems.virtual[lens].length;
+    unlocated[lens] = districtItems.unlocated[lens].length;
+    sources[lens].indexed = new Set([
+      ...Object.values(districtItems.by_level.borough).flatMap((bag) => bag[lens]),
+      ...districtItems.citywide[lens],
+      ...districtItems.virtual[lens],
+      ...districtItems.unlocated[lens],
+    ]).size;
+  }
+
   return {
     schema: DISTRICT_ACTIVITY_SCHEMA,
     boundary_vintage: String(boundaries.boundary_vintage),
-    built_at: opts.builtAt || new Date().toISOString(),
+    built_at: builtAt,
     levels: ["borough", "community_district", "council_district"],
     lenses: LENSES.slice(),
     by_level: {
@@ -1149,6 +1260,7 @@ export function buildDistrictActivity(opts = {}) {
     unlocated: { ...unlocated },
     unlocated_reasons: unlocatedReasons,
     sources,
+    district_items: districtItems,
     basis_layers: {
       contract_action_address: contractActionBasis,
     },

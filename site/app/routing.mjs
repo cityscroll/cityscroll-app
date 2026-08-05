@@ -121,6 +121,8 @@ function serializeState(){
       const place=$("#meetingsboro").value;
       if(place==="citywide-unlocated"||place==="citywide"||place==="virtual"||place==="unlocated") q.set("scope",place);
       else if(place) q.set("boro",place);
+      if(meetingsCommunityDistrict) q.set("cd",meetingsCommunityDistrict);
+      if(meetingsCouncilDistrict) q.set("council",meetingsCouncilDistrict);
       if($("#meetingsneighborhood").value.trim()) q.set("neighborhood",$("#meetingsneighborhood").value.trim());
       if(meetingsProcessSel !== "all") q.set("process", meetingsProcessSel);
       if(meetingsPlaceGroupSel === "place") q.set("group", "place");
@@ -129,6 +131,7 @@ function serializeState(){
       if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propertyCommunityDistrict) q.set("cd", propertyCommunityDistrict);
+      if(propertyCouncilDistrict) q.set("council", propertyCouncilDistrict);
       if(propAsset !== "all") q.set("asset", propAsset);
       if(typeof propSaleMethod !== "undefined" && propSaleMethod !== "all") q.set("method", propSaleMethod);
       if(typeof propPriceBand !== "undefined" && propPriceBand !== "all") q.set("price", propPriceBand);
@@ -154,7 +157,11 @@ function serializeState(){
     if(taxPanel && !taxPanel.hidden) q.set("view", "tax-lien");
   }
   const qs = q.toString();
-  return "#" + tab + (qs ? "?" + qs : "");
+  const rawHash="#" + tab + (qs ? "?" + qs : "");
+  const scope=tab==="map"
+    ?CrolScope.scopeWithMapState(CrolScope.scopeFromRouteHash(location.hash,{language:window.LANG||"en"}),mapState,{language:window.LANG||"en",viewBox:mapViewBox})
+    :CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
+  return CrolScope.routeHashFromScope(scope,{surface:tab});
 }
 function updateHash(){ // filter changes rewrite the current entry
   if(hashLock) return;
@@ -672,6 +679,15 @@ function applyHash(){
   const raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", "#"+raw); }
   if(!raw) return false;
+  const scopeSurface=raw.split("?",1)[0];
+  if(["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)){
+    const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
+    const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
+    if(adapted!=="#"+raw){
+      history.replaceState(routeHistoryState({entry:{hash:adapted,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",adapted);
+      return applyHash();
+    }
+  }
   const collectionHash=bareCollectionHash(raw);
   if(collectionHash&&location.hash!==collectionHash){
     history.replaceState(routeHistoryState({}),"",collectionHash);
@@ -718,8 +734,9 @@ function applyHash(){
     showTaskFirst(parsed.task, parsed.id);
     return true;
   }
-  if(raw === "now"){
-    showNow();
+  if(raw === "now" || raw.startsWith("now?")){
+    const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
+    showNow({scope:CrolScope.scopeHasConstraints(scope)?scope:null});
     return true;
   }
   focusedItemRouteHash="";
@@ -860,6 +877,8 @@ function applyHash(){
           ?scope
           :(DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
         $("#meetingsneighborhood").value=q.get("neighborhood")||"";
+        meetingsCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
+        meetingsCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
         const process=q.get("process")||"all";
         meetingsProcessSel=["scheduled","agenda","held","outcomes","unstaged"].includes(process)?process:"all";
         meetingsPlaceGroupSel=q.get("group")==="place"?"place":"flat";
@@ -868,6 +887,7 @@ function applyHash(){
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
         propertyCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
+        propertyCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
         propertyResolvedNeighborhood=null;
         propAsset = (typeof normalizePropAsset === "function" ? normalizePropAsset(q.get("asset")) : (q.get("asset") || "all"));
         propSaleMethod = (typeof normalizePropSaleMethod === "function" ? normalizePropSaleMethod(q.get("method")) : (q.get("method") || "all"));
@@ -936,13 +956,10 @@ function applyHash(){
           .catch(()=>focusAlertsRollupPanel());
       }
     } else if(tab === "map"){
-      const levelRaw=q.get("level")||"borough";
-      const level=["borough","community_district","council_district"].includes(levelRaw)?levelRaw:"borough";
-      const lensRaw=q.get("lens")||"all";
-      const lens=["all","land","property","rules","meetings","money"].includes(lensRaw)?lensRaw:"all";
-      const basis=lens==="money"&&q.get("basis")==="contract_action_address"?"contract_action_address":"performance";
-      mapState={ level, id:q.get("id")||null, parent:q.get("parent")||null, lens, basis };
-      mapViewBox=null;
+      const mapScope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
+      const adapted=CrolScope.mapStateFromScope(mapScope);
+      mapState={level:adapted.level,id:adapted.id,parent:adapted.parent,lens:adapted.lens,basis:adapted.basis};
+      mapViewBox=adapted.viewBox;
       showTab("map");
     } else {
       showTab(tab);
