@@ -384,6 +384,11 @@ jobs:
       - name: Language switcher gate
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/12_language.py
+      - name: Notice document translation and feature-parity gate
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        env:
+          CROL_BASE: http://127.0.0.1:8000/
+        run: python3 test/functional/24_notice_document_features.py
       - name: Focus-visibility keyboard-walk gate
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/14_focus_visible.py

@@ -65,6 +65,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `docs/url-migration-map.csv` and `docs/url-migration-map.md` with
   `node tools/build_url_migration_map.mjs`. The public Stats document and API are explicit
   exclusions and must retain their current routes and semantics.
+- `test/functional/24_notice_document_features.py` is the required browser parity gate for
+  `/notices/<request_id>` translation, action/watch controls, disclosures, and language-carrying
+  copy links. Notice-document enhancement changes must extend this route-level test.
 
 ## Digest cron deploy safety
 
