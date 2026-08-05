@@ -2372,7 +2372,7 @@
     career_fee_salary_not_yet_ingested_html: "아직 여기 표시되지 않음 — 수수료와 급여는 {source}에 있습니다.",
     career_noe_source_name: "DCAS 시험 공고",
     career_status_open: "지금 열기",
-    staffing_history_summary: "지난 결과: 최근 임용",
+    staffing_history_summary: "임용 기록",
     career_group_open: "지금 지원",
     career_group_upcoming: "곧 접수 시작",
     career_group_continuous: "현장 및 상시 시험",

@@ -2366,7 +2366,7 @@
     career_fee_salary_not_yet_ingested_html: "Aún no se muestra aquí — la tarifa y el salario están en {source}.",
     career_noe_source_name: "el Aviso de Examen de DCAS",
     career_status_open: "Abierto ahora",
-    staffing_history_summary: "Qué ocurrió: nombramientos recientes",
+    staffing_history_summary: "Registro de nombramientos",
     career_group_open: "Solicita ahora",
     career_group_upcoming: "Próximamente",
     career_group_continuous: "Exámenes sin cita y continuos",

@@ -2394,7 +2394,7 @@
     career_fee_salary_not_yet_ingested_html: "Jeszcze nie pokazano tutaj — opłata i pensja są w {source}.",
     career_noe_source_name: "zawiadomieniu o egzaminie DCAS",
     career_status_open: "Otwórz teraz",
-    staffing_history_summary: "Co się wydarzyło: ostatnie nominacje",
+    staffing_history_summary: "Rejestr nominacji",
     career_group_open: "Złóż wniosek teraz",
     career_group_upcoming: "Wkrótce",
     career_group_continuous: "Egzaminy bez zapisów i w trybie ciągłym",
