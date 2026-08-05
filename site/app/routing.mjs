@@ -1031,6 +1031,9 @@ async function showNotice(id, watch){
     if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
     return;
   }
+  // Property deep links keep the loading state until the route module has supplied the parcel
+  // identity used by the action registry. The first rendered action is therefore the final one.
+  if(typeof hydratePropertyActionMatter==="function") await hydratePropertyActionMatter(r);
   // Header "Want email updates?" and Watch CTAs read this for notice-scoped #alerts entry.
   lastNoticeContext = { row: r };
   if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
@@ -1045,6 +1048,7 @@ async function showNotice(id, watch){
   const initialActionsForGlance = window.CrolActions
     ? CrolActions.compileActionRail(noticeActionMatter(r), { today: todayISO() })
     : [];
+  const initialActionRail = window.CrolActions ? actionRailHTML(initialActionsForGlance) : "";
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
@@ -1052,7 +1056,7 @@ async function showNotice(id, watch){
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
-      <div id="nplain"></div><div id="ncontext"></div><div id="nactions"></div>
+      <div id="nplain"></div><div id="ncontext"></div><div id="nactions">${initialActionRail}</div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r, actionRailGuideCoverage(initialActionsForGlance))}
       <div id="naddr"></div><div id="nmwbe"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="nregdwell"></div><div id="nsuboutreach"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="naboaward"></div><div id="ncommercial"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="ntaxlien"></div><div id="nfranchise"></div><div id="nland"></div><div id="nmeet"></div><div id="nexternal"></div>

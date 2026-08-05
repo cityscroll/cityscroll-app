@@ -1,6 +1,31 @@
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
    Detail timeline remains site/rules_phase_spine.mjs. ===== */
+function propertyPlaceChips(location){
+  if(!location) return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
+  if(location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
+  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
+  const values=[
+    ...(location.addresses||[]).slice(0,3).map(address=>address.label),
+    ...(location.boroughs||[]),
+    ...(location.tax_lots||[]).slice(0,2).map(lot=>lot.label),
+    ...(location.bbls||[]).slice(0,2).map(bbl=>`BBL ${bbl}`),
+  ];
+  return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
+}
+
+function rulePlaceChips(location){
+  if(!location||location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
+  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("rule_stage_unstaged")}</span></div>`;
+  const values=[
+    ...(location.districts||[]),
+    ...(location.neighborhoods||[]),
+    ...(location.boroughs||[]),
+    ...(location.addresses||[]).map(address=>address.label),
+  ].filter(Boolean);
+  return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
+}
+
 let rulesAll=[], rulesViewCache=null, rulesProcessSel="all";
 let rulesExplorerToolsPromise=null;
 function rulesExplorerTools(){
@@ -953,6 +978,7 @@ globalThis.feedCardHTML = feedCardHTML;
 globalThis.loadRuleLifecycle = loadRuleLifecycle;
 globalThis.loadRulesAdoptionLagModel = loadRulesAdoptionLagModel;
 globalThis.loadSectionAgencies = loadSectionAgencies;
+globalThis.propertyPlaceChips = propertyPlaceChips;
 globalThis.renderFeed = renderFeed;
 globalThis.renderRulesExplorer = renderRulesExplorer;
 globalThis.ruleParticipationHTML = ruleParticipationHTML;
@@ -973,6 +999,7 @@ globalThis.rulePhaseLabel = rulePhaseLabel;
 globalThis.rulePhaseLeadHTML = rulePhaseLeadHTML;
 globalThis.rulePhasePanelHTML = rulePhasePanelHTML;
 globalThis.rulePhaseStepperHTML = rulePhaseStepperHTML;
+globalThis.rulePlaceChips = rulePlaceChips;
 globalThis.ruleSiblingRoleLabel = ruleSiblingRoleLabel;
 globalThis.ruleSiblingsHTML = ruleSiblingsHTML;
 globalThis.ruleStageChip = ruleStageChip;
