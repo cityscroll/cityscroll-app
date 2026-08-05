@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://cityscroll.org/</loc></url>
+  <url><loc>https://cityscroll.org/now/</loc></url>
+  <url><loc>https://cityscroll.org/near-you/</loc></url>
+  <url><loc>https://cityscroll.org/following/</loc></url>
+  <url><loc>https://cityscroll.org/browse/</loc></url>
+  <url><loc>https://cityscroll.org/browse/contracts/</loc></url>
+  <url><loc>https://cityscroll.org/browse/staffing/</loc></url>
+  <url><loc>https://cityscroll.org/browse/zoning/</loc></url>
+  <url><loc>https://cityscroll.org/browse/property/</loc></url>
+  <url><loc>https://cityscroll.org/browse/rules/</loc></url>
+  <url><loc>https://cityscroll.org/browse/meetings/</loc></url>
   <url><loc>https://cityscroll.org/about.html</loc></url>
   <url><loc>https://cityscroll.org/api.html</loc></url>
   <url><loc>https://cityscroll.org/standards.html</loc></url>

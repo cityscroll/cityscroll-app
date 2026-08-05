@@ -13,6 +13,7 @@ import {
   summarizeNumbers,
   timedGet,
   DEFAULT_HOSTS,
+  DEFAULT_PATHS,
   METRICS_SCHEMA,
   measureDualHost,
 } from "../tools/measure_hosting_baseline.mjs";
@@ -300,17 +301,12 @@ test("measureDualHost with fixtures produces receipt without network", async () 
     "https://www.cityscroll.org",
     "https://cityscroll.pages.dev",
   ];
-  const paths = [
-    ["/", body],
-    ["/about.html", body],
-    ["/api.html", body],
-    ["/changelog.html", body],
-    ["/data.html", body],
-    ["/standards.html", body],
-    ["/stats.html", body],
-    ["/robots.txt", robots],
-    ["/sitemap.xml", sitemap],
-  ];
+  const paths = DEFAULT_PATHS
+    .filter(({ kind }) => kind !== "binary")
+    .map(({ path, kind }) => [
+      path,
+      kind === "text" ? robots : kind === "xml" ? sitemap : body,
+    ]);
   for (const origin of docHosts) {
     for (const [path, text] of paths) {
       map[`${origin}${path}`] = hop(200, text, {

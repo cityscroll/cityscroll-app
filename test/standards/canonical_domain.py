@@ -20,6 +20,18 @@ PAGES = [
     ("stats.html", "https://cityscroll.org/stats.html"),
 ]
 SITEMAP_PAGES = [page for page in PAGES if page[0] not in {"changelog.html", "data.html"}]
+PROMOTED_DOCUMENTS = [
+    "https://cityscroll.org/now/",
+    "https://cityscroll.org/near-you/",
+    "https://cityscroll.org/following/",
+    "https://cityscroll.org/browse/",
+    "https://cityscroll.org/browse/contracts/",
+    "https://cityscroll.org/browse/staffing/",
+    "https://cityscroll.org/browse/zoning/",
+    "https://cityscroll.org/browse/property/",
+    "https://cityscroll.org/browse/rules/",
+    "https://cityscroll.org/browse/meetings/",
+]
 RETIRED_DESTINATIONS = {
     "changelog.html": "https://cityscroll.org/about.html",
     "data.html": "https://cityscroll.org/about.html#data",
@@ -64,7 +76,7 @@ def main() -> None:
     except ElementTree.ParseError as error:
         failures.append(f"sitemap.xml: invalid XML ({error})")
         locations = []
-    expected_locations = [expected for _, expected in SITEMAP_PAGES]  # Source: canonical PAGES contract above.
+    expected_locations = [SITEMAP_PAGES[0][1], *PROMOTED_DOCUMENTS, *[expected for _, expected in SITEMAP_PAGES[1:]]]  # Source: canonical page contracts above.
     if locations != expected_locations:
         failures.append("sitemap.xml: page set or ordering differs from the canonical page contract")
     if any(not location.startswith("https://cityscroll.org") for location in locations):
@@ -125,7 +137,7 @@ def main() -> None:
         failures.append("mirror: stamped site failover must follow same-origin pretty-URL redirects")
 
     feed = (ROOT / "worker/src/lib/feed.mjs").read_text()
-    if "https://cityscroll.org/#notice/" not in feed:
+    if "https://cityscroll.org/notices/" not in feed:
         failures.append("feeds: new item links must use cityscroll.org")
     if "UID:${escIcs(it.id)}@crol-list" not in feed:
         failures.append("calendar: persistent UID namespace changed")

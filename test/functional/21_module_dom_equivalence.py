@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Compare the modular site with a reconstructed pre-split inline-script build."""
+"""Compare retained SPA routes with a reconstructed pre-split inline-script build.
+
+Now, Browse defaults, and notice documents have response-HTML/no-JS contracts in
+primary_document_routes.test.mjs, so DOM equivalence no longer owns those renderers.
+"""
 
 from __future__ import annotations
 
@@ -167,13 +171,7 @@ def capture(page, base: str, route: str, ready: str, root: str, action=None) -> 
 
 
 SURFACES = [
-    ("home", "#money?mode=open&closing=week", "#list .row", "#tab-money", None),
-    ("rules-lens", "#rules", "#rulesfeed .fcard", "#tab-rules", None),
-    ("notice-money", "#notice/20260701099", "#noticeview .rolename", "#noticeview", None),
-    ("notice-land", "#notice/20230912001", "#noticeview .rolename", "#noticeview", None),
-    ("notice-property", "#notice/20241112003", "#noticeview .rolename", "#noticeview", None),
-    ("notice-rules", "#notice/20260714029", "#noticeview .rolename", "#noticeview", None),
-    ("notice-meetings", f"#notice/{HEARING_ROW['request_id']}", "#noticeview .rolename", "#noticeview", None),
+    ("retained-task", "#task/can-i-bid", "#taskview .task-card", "#taskview", None),
 ]
 
 

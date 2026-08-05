@@ -7,6 +7,9 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/main.mjs` | Ordered module loading and the route-activation registry; read for boot-order or module-registration changes. Property is fetched for Property/notice routes, not the default Money landing. |
 | `site/app/core.mjs` | API clients, shared formatting, skeletons, tabs, and common DOM helpers. |
 | `site/scope_v0.mjs` | Pure scope v0 narrow-waist adapter across routes, filters, map/Now state, presets, sharing, watches, and the Near-you GET encoding; owns no mutable state. `scope_now_adapter.mjs` keeps the Now matcher on that surface's lazy graph; `near_you_scope.mjs` adds place mutation and GET parsing for the static/edge renderer. |
+| `site/route_migration.mjs` | Finite legacy-fragment grammar, clean document targets, bounded parameter allowlists, and the URL migration-map contract. `site/legacy_hash_forward.mjs` is the root-document bridge that applies it. |
+| `site/primary_document_view.mjs` | Shared document shell for build-rendered Now and Browse defaults. `site/browse_view.mjs` owns bounded facet view models and HTML; `tools/build_primary_documents.mjs` materializes them. |
+| `site/pages_edge.mjs` | Pages request router for edge-rendered Browse queries and notice permalinks. `site/_worker.js` is the deployment entry; Stats routes are explicitly excluded. |
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
 | `site/app/money-history.mjs` | Notice-detail shell, prior cycles, external awards, paper trail, and response actions. |
 | `site/app/search-share.mjs` | Natural-language search, suggestions, share/export/print actions, and search-state rendering. |
@@ -40,7 +43,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/entities.mjs` | Official, agency, and vendor profiles; vendor phase timeline and forecasts. |
 | `site/app/workspace.mjs` | Investigation storage/sync/share and matter timeline. |
 | `site/app/map.mjs` | Route-only Near-you island: adopts the server SVG/list for pan, zoom, drill-down, geolocation, and focus sync; it is not part of the home loader. |
-| `site/app/now.mjs` | Tiny route-lazy `#now` entry shim; keeps the Now renderer and its read models off the home cold path. |
+| `site/app/now.mjs` | Tiny route-lazy Now enhancement island; keeps live Now read models off the home cold path while adopting the build-rendered document. |
 | `site/now_view.mjs` | Additive Now loader and renderer; compiles existing read models into Act by and Happening soon without owning lens navigation. |
 | `site/now_surface.mjs` | Pure cross-domain Now compiler, temporal ordering, source coverage, and opaque future-scope predicate seam. |
 | `site/app/routing.mjs` | Permalinks, URL/filter state, route history, and item-route dispatch. |

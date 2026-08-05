@@ -712,9 +712,21 @@ function searchLabelFromHash(lens, hash){
   return parts.join(" · ") || t("tab_"+lens);
 }
 
+function documentSearchHash(lens){
+  const facets={money:"contracts",people:"staffing",land:"zoning",property:"property",rules:"rules",meetings:"meetings"};
+  const expected=facets[lens];
+  const match=location.pathname.replace(/\/+$/,"").match(/^\/browse(?:\/([^/]+))?$/);
+  const facet=match?(match[1]||"contracts"):null;
+  if(!expected || facet!==expected) return null;
+  const params=new URLSearchParams(location.search);
+  params.delete("lang");
+  params.delete("legacy");
+  return "#"+lens+(params.size?"?"+params.toString():"");
+}
+
 function renderSearchComponents(lens, options){
   if(!["people","land","property","rules","meetings"].includes(lens)) return;
-  const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():null;
+  const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():documentSearchHash(lens);
   const hash=(options&&options.hash)||serialized;
   const safeHash=hash&&hash.startsWith("#"+lens+"?")?hash:null;
   const filter=(options&&options.filter)||searchFilterFromHash(lens, safeHash);

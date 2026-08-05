@@ -1,9 +1,40 @@
 /* ===================== PERMALINKS & URL STATE =====================
-   #<tab>?<filters> mirrors the active lens (shareable, bookmarkable, back-button-safe);
-   #notice/<request_id> and #land/<project_id> are canonical addresses for individual records.
-   The router reads/writes the same control values the NL layer and hand-set filters use —
-   three spellings of one state. */
-const noticeLink = id => currentLanguageURL(location.origin + location.pathname + "#notice/" + encodeURIComponent(id));
+   Document routes are canonical for Now, Browse facets, and notices. The same finite
+   hash grammar remains as an internal adapter for controls and retained item routes. */
+const DOCUMENT_FACET_HASHES=Object.freeze({
+  contracts:"money",staffing:"people",zoning:"land",property:"property",rules:"rules",meetings:"meetings",
+});
+function documentRouteRaw(){
+  const path=location.pathname.replace(/\/+$/,"")||"/";
+  const notice=path.match(/^\/notices\/([A-Za-z0-9_-]{1,80})$/);
+  if(notice){
+    const params=new URLSearchParams(location.search);
+    const bounded=new URLSearchParams();
+    for(const key of ["w","focus"]) if(params.has(key)) bounded.set(key,params.get(key));
+    return `notice/${notice[1]}${bounded.size?`?${bounded}`:""}`;
+  }
+  if(path==="/now"){
+    const params=new URLSearchParams(location.search); params.delete("lang");
+    return `now${params.size?`?${params}`:""}`;
+  }
+  const browse=path.match(/^\/browse(?:\/([^/]+))?$/);
+  if(browse){
+    const facet=browse[1]||"contracts";
+    const route=DOCUMENT_FACET_HASHES[facet];
+    if(!route) return "";
+    const params=new URLSearchParams(location.search); params.delete("lang"); params.delete("legacy");
+    return `${route}${params.size?`?${params}`:""}`;
+  }
+  return "";
+}
+function documentUrlForHash(hash){
+  const language=new URLSearchParams(location.search).get("lang");
+  const input=`/${language?`?lang=${encodeURIComponent(language)}`:""}${hash}`;
+  const mapped=CrolRouteMigration.migrateLegacyUrl(input);
+  return mapped.migrated?mapped.target:null;
+}
+function routeUrlForHash(hash){ return documentUrlForHash(hash)||hash; }
+const noticeLink = id => currentLanguageURL(location.origin + "/notices/" + encodeURIComponent(id));
 const landLink = id => currentLanguageURL(location.origin + location.pathname + "#land/" + encodeURIComponent(id));
 let hashLock = false;
 let focusedItemRouteHash = "";
@@ -14,14 +45,14 @@ let focusedItemRouteHash = "";
 // yank the reader to the item top and erase "where you came from."
 function focusItemRouteTarget(target){
   if(!target) return;
-  const routeHash=location.hash;
+  const routeKey=location.hash||`${location.pathname}${location.search}`;
   requestAnimationFrame(()=>{
-    if(location.hash!==routeHash || focusedItemRouteHash===routeHash ||
+    if((location.hash||`${location.pathname}${location.search}`)!==routeKey || focusedItemRouteHash===routeKey ||
        !target.isConnected || !target.closest(".tabpane.active")) return;
     const restoring=isRestoringHistoryRouteScroll();
     if(!restoring) target.scrollIntoView({block:"start"});
     target.focus({preventScroll:true});
-    focusedItemRouteHash=routeHash;
+    focusedItemRouteHash=routeKey;
     if(restoring) applyActiveHistoryRouteScroll();
   });
 }
@@ -176,22 +207,24 @@ function syncNearYouLinks(currentHash){
 function updateHash(){ // filter changes rewrite the current entry
   if(hashLock) return;
   const h = serializeState();
-  if(!location.hash && h === "#money") return; // don't decorate a fresh default load
-  if(location.hash !== h){
+  if(!location.hash && !documentRouteRaw() && h === "#money") return; // don't decorate a fresh default load
+  const url=routeUrlForHash(h);
+  if(`${location.pathname}${location.search}${location.hash}` !== url){
     // Preserve cityscrollRoute (referrer/back + scroll entry). replaceState(null) used to
     // wipe it, so native Back after a filter tweak could not restore place.
     const entry={hash:h,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)};
-    history.replaceState(routeHistoryState({entry}), "", h);
+    history.replaceState(routeHistoryState({entry}), "", url);
   }
   syncNearYouLinks(h);
 }
 function pushHash(){ // tab changes create a history entry (back returns to the prior tab)
   if(hashLock) return;
   const h = serializeState();
-  if(location.hash !== h){
+  const url=routeUrlForHash(h);
+  if(`${location.pathname}${location.search}${location.hash}` !== url){
     const entry={hash:h,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)};
     // New tab entries do not inherit an item-route back target.
-    history.pushState(routeHistoryState({entry, back:null}), "", h);
+    history.pushState(routeHistoryState({entry, back:null}), "", url);
   }
   syncNearYouLinks(h);
 }
@@ -327,7 +360,7 @@ function parseNoticeHashSegment(rest){
 let pendingNoticeFocus = null;
 function scrollToLifecycleFocus(){
   const focus = pendingNoticeFocus || (() => {
-    const raw = location.hash.slice(1);
+    const raw = location.hash.slice(1)||documentRouteRaw();
     if(!raw.startsWith("notice/")) return null;
     return parseNoticeHashSegment(raw.slice(7)).focus;
   })();
@@ -451,7 +484,8 @@ function routeBackLabel(context, fallbackLabel){
 }
 function routeBackHTML(fallbackHash,fallbackLabel,className){
   const context=routeReturnContext(history.state);
-  const href=context?context.hash:(safeHistoryHash(fallbackHash)||"#money");
+  const fallback=safeHistoryHash(fallbackHash)||"#money";
+  const href=context?context.hash:routeUrlForHash(fallback);
   const label=routeBackLabel(context, fallbackLabel);
   const classAttr=className?' class="'+escUiHtml(className)+'"':"";
   const styleAttr=className?"":' style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none"';
@@ -695,16 +729,16 @@ async function showTaskFirst(task, id){
 
 function applyHash(){
   setNoticeCompactCta(false);
-  const incoming = location.hash.slice(1);
+  const incoming = location.hash.slice(1)||documentRouteRaw();
   const slashPos = incoming.indexOf("/");
   let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
-  if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", "#"+raw); }
+  if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", routeUrlForHash("#"+raw)); }
   if(!raw) return false;
   const canonicalRaw=canonicalInputRoute(raw);
   const normalizedInputAlias=canonicalRaw!==raw;
   if(normalizedInputAlias){
     raw=canonicalRaw;
-    history.replaceState(routeHistoryState({entry:{hash:"#"+raw,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"","#"+raw);
+    history.replaceState(routeHistoryState({entry:{hash:"#"+raw,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash("#"+raw));
   }
   if(raw==="alerts"||raw.startsWith("alerts" + "?")) return forwardLegacyAlertsToFollowing(raw);
   if(raw==="map"||raw.startsWith("map" + "?")) return forwardLegacyMapToNearYou(raw);
@@ -714,12 +748,12 @@ function applyHash(){
   if(scope){
     const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
     if(adapted!=="#"+raw){
-      history.replaceState(routeHistoryState({entry:{hash:adapted,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",adapted);
+      history.replaceState(routeHistoryState({entry:{hash:adapted,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash(adapted));
       return applyHash();
     }
   }
   const collectionHash=bareCollectionHash(raw);
-  if(collectionHash&&location.hash!==collectionHash){
+  if(collectionHash&&location.hash&&location.hash!==collectionHash){
     history.replaceState(routeHistoryState({}),"",collectionHash);
     return applyHash();
   }

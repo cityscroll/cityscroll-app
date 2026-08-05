@@ -54,20 +54,19 @@ test("parseRedirect rejects junk: no URL smuggling, no odd chars, no empty parts
 });
 
 test("noticeUrl always targets cityscroll.org (never an attacker-supplied URL)", () => {
-  assert.equal(noticeUrl("20260701123"), "https://cityscroll.org/#notice/20260701123");
-  assert.ok(noticeUrl("a&b=c").startsWith("https://cityscroll.org/#notice/"));
+  assert.equal(noticeUrl("20260701123"), "https://cityscroll.org/notices/20260701123");
+  assert.ok(noticeUrl("a&b=c").startsWith("https://cityscroll.org/notices/"));
 });
 
-// w12-12: noticeUrl's second arg carries the originating watch's filter as a second hash
-// query segment, same "?tab=" idiom the site's own agencyHref()/vendorHref() already use.
-test("noticeUrl appends the watch filter as a ?w= query on the notice's own hash segment", () => {
+// w12-12: noticeUrl's second arg carries the originating watch's filter as a bounded query.
+test("noticeUrl appends the watch filter as a ?w= query on the notice document", () => {
   const url = noticeUrl("20260701123", '{"lens":"money","filter":{"keywords":["education"]}}');
-  assert.equal(url, "https://cityscroll.org/#notice/20260701123?w=" +
+  assert.equal(url, "https://cityscroll.org/notices/20260701123?w=" +
     encodeURIComponent('{"lens":"money","filter":{"keywords":["education"]}}'));
 });
 
 test("noticeUrl omits ?w= entirely when there's nothing to carry", () => {
-  assert.equal(noticeUrl("20260701123", null), "https://cityscroll.org/#notice/20260701123");
+  assert.equal(noticeUrl("20260701123", null), "https://cityscroll.org/notices/20260701123");
 });
 
 test("validWatchParam accepts a well-formed watch payload and rejects junk", () => {
@@ -108,17 +107,17 @@ test("handleRedirect 302s to the permalink and counts total + per-kind", async (
     { ALERT_STATE: kv }, { waitUntil: (p) => waits.push(p) }, "/r/money/20260701123",
   );
   assert.equal(res.status, 302);
-  assert.equal(res.headers.get("Location"), "https://cityscroll.org/#notice/20260701123");
+  assert.equal(res.headers.get("Location"), "https://cityscroll.org/notices/20260701123");
   await Promise.all(waits);
   assert.equal(kv.store.get(`stats:click:${dayStr(new Date())}`), "1");
   assert.equal(kv.store.get(`stats:click.money:${dayStr(new Date())}`), "1");
 });
 
 // w12-12: before, a digest link's ?w= filter param had nowhere to go — handleRedirect only
-// ever built a bare #notice/<id> target, so a click from a filtered digest landed on the plain
+// ever built a bare notice target, so a click from a filtered digest landed on the plain
 // notice view with no Matched evidence or interpretation echo. After, the encoded watch filter
-// rides through the redirect and lands on the target's own hash query.
-test("handleRedirect carries a well-formed ?w= filter through to the notice's hash fragment", async () => {
+// rides through the redirect and lands on the target's document query.
+test("handleRedirect carries a well-formed ?w= filter through to the notice document", async () => {
   const kv = fakeKV();
   const w = encodeURIComponent('{"lens":"money","filter":{"keywords":["education"]}}');
   const res = await handleRedirect(
@@ -126,7 +125,7 @@ test("handleRedirect carries a well-formed ?w= filter through to the notice's ha
     { ALERT_STATE: kv }, { waitUntil() {} }, "/r/rfp/20260701123",
   );
   assert.equal(res.status, 302);
-  assert.equal(res.headers.get("Location"), `https://cityscroll.org/#notice/20260701123?w=${w}`);
+  assert.equal(res.headers.get("Location"), `https://cityscroll.org/notices/20260701123?w=${w}`);
 });
 
 test("handleRedirect drops an oversized/garbled ?w= rather than relay it — plain notice link, not a broken redirect", async () => {
@@ -135,7 +134,7 @@ test("handleRedirect drops an oversized/garbled ?w= rather than relay it — pla
     new Request(`https://api.cityscroll.org/r/rfp/20260701123?w=${"x".repeat(3000)}`),
     { ALERT_STATE: kv }, { waitUntil() {} }, "/r/rfp/20260701123",
   );
-  assert.equal(res.headers.get("Location"), "https://cityscroll.org/#notice/20260701123");
+  assert.equal(res.headers.get("Location"), "https://cityscroll.org/notices/20260701123");
 });
 
 test("handleRedirect falls back to the homepage uncounted on junk paths", async () => {

@@ -19,8 +19,8 @@ test("digestDayLogKey: stable prefix", () => {
   assert.equal(digestDayLogKey("2026-07-30"), "digest:daylog:2026-07-30");
 });
 
-test("noticeDeepLink: public site hash route", () => {
-  assert.equal(noticeDeepLink("20260730001"), "https://cityscroll.org/#notice/20260730001");
+test("noticeDeepLink: public notice document route", () => {
+  assert.equal(noticeDeepLink("20260730001"), "https://cityscroll.org/notices/20260730001");
 });
 
 test("toDayLogEntry: redacts email, keeps notice ids, marks zero match", () => {
@@ -58,7 +58,7 @@ test("toDayLogEntry: sent digest carries deep links for each notice", () => {
   // noticeCount follows `new` (the full send count); ids may be a capped sample.
   assert.equal(e.noticeCount, 12);
   assert.equal(e.noticeLinks.length, 2);
-  assert.ok(e.noticeLinks[0].includes("#notice/20260730001"));
+  assert.ok(e.noticeLinks[0].includes("/notices/20260730001"));
 });
 
 test("buildDayLog: keeps zero-match rows (absence visible)", () => {

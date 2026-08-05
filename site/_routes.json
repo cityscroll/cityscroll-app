@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "include": [
+    "/notices/*",
+    "/browse",
+    "/browse/*"
+  ],
+  "exclude": [
+    "/stats.html"
+  ]
+}

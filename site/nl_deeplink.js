@@ -187,12 +187,20 @@ function moneyActiveFilterItems(filter) {
 function canonicalSearchURL(locationValue, hash) {
   var loc = locationValue && typeof locationValue === "object" ? locationValue : {};
   var origin = compactText(loc.origin, 2048).replace(/\/+$/, "");
-  var pathname = compactText(loc.pathname, 2048) || "/";
-  if (pathname.charAt(0) !== "/") pathname = "/" + pathname;
   var safeHash = /^#(?:money|people|land|property|rules|meetings)(?:\?[^#]*)?$/.test(hash || "")
     ? hash
     : "#money";
-  return origin + pathname + safeHash;
+  var match = /^#(money|people|land|property|rules|meetings)(?:\?([^#]*))?$/.exec(safeHash);
+  var facets = {
+    money: "contracts",
+    people: "staffing",
+    land: "zoning",
+    property: "property",
+    rules: "rules",
+    meetings: "meetings",
+  };
+  var query = match && match[2] ? "?" + match[2] : "";
+  return origin + "/browse/" + facets[match ? match[1] : "money"] + "/" + query;
 }
 
 function presetLens(value) {

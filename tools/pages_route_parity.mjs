@@ -22,6 +22,16 @@ import {
 /** Public static routes that must match between hosts after a parallel deploy. */
 export const ROUTE_INVENTORY = Object.freeze([
   { path: "/", id: "home", kind: "html", marker: CONTENT_MARKER },
+  { path: "/now/", id: "now", kind: "html", marker: CONTENT_MARKER },
+  { path: "/near-you/", id: "near-you", kind: "html", marker: CONTENT_MARKER },
+  { path: "/following/", id: "following", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/", id: "browse", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/contracts/", id: "browse-contracts", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/staffing/", id: "browse-staffing", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/zoning/", id: "browse-zoning", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/property/", id: "browse-property", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/rules/", id: "browse-rules", kind: "html", marker: CONTENT_MARKER },
+  { path: "/browse/meetings/", id: "browse-meetings", kind: "html", marker: CONTENT_MARKER },
   { path: "/about.html", id: "about", kind: "html", marker: CONTENT_MARKER },
   { path: "/api.html", id: "api", kind: "html", marker: CONTENT_MARKER },
   { path: "/changelog.html", id: "changelog-redirect", kind: "html", marker: CONTENT_MARKER, retired: true },

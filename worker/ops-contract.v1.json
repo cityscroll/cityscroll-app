@@ -188,7 +188,7 @@
       {
         "name": "noticeLinks",
         "type": "string[]",
-        "description": "cityscroll.org/#notice/<id> deep links."
+        "description": "cityscroll.org/notices/<id> deep links."
       },
       {
         "name": "action",

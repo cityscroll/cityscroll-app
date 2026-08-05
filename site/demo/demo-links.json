@@ -412,9 +412,8 @@
       "id": "staffing-route-alias",
       "url": "#staffing?lang=es&view=guide&role=Engineer%20Civil&window=open",
       "feature": "staffing-route-alias",
-      "description": "Accept the former Staffing route name while keeping People as the canonical permalink.",
+      "description": "Forward the legacy Staffing fragment while preserving its guide filters.",
       "expectations": {
-        "hash": "#people?lang=es&view=guide&role=Engineer%20Civil&window=open",
         "visible": [
           {
             "selector": "#career-guide"
