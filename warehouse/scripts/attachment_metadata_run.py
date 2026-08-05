@@ -82,6 +82,7 @@ def main(argv: list[str] | None = None) -> int:
             return process.returncode
         materialize(jsonl)
         payload = json.loads(receipt.read_text(encoding="utf-8"))
+        payload["inventory"] = str(jsonl.relative_to(REPO_ROOT))
         payload["warehouse"] = {
             "table": "attachment_metadata",
             "materialized_view": "attachment_metadata_by_notice",

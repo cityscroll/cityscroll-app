@@ -21,6 +21,18 @@ from cpu_guard import IngestLock, check_headroom, run_capped
 from paths import REPO_ROOT, duckdb_path, raw_dir, receipts_dir
 
 
+def latest_t0_inventory() -> Path:
+    receipt = receipts_dir() / "attachment_metadata_latest.json"
+    try:
+        payload = json.loads(receipt.read_text(encoding="utf-8"))
+        inventory = payload.get("inventory")
+        if inventory:
+            return REPO_ROOT / inventory
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+    return REPO_ROOT / "warehouse/raw/attachment-metadata/attachments.jsonl"
+
+
 def materialize(jsonl: Path) -> dict:
     """Optional DuckDB mirror of the JSONL — inspection only, not public serve."""
     try:
@@ -100,8 +112,8 @@ def main(argv: list[str] | None = None) -> int:
         ]
         if args.from_fixture:
             command.append("--from-fixture")
-        if args.inventory:
-            command.extend(["--inventory", args.inventory])
+        inventory = Path(args.inventory) if args.inventory else latest_t0_inventory()
+        command.extend(["--inventory", str(inventory)])
         if args.push_url:
             command.extend(["--push-url", args.push_url])
         if args.from_fixture and args.limit <= 25:

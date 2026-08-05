@@ -1,33 +1,38 @@
 {
   "schema": "cityscroll.attachment_metadata.receipt.v1",
-  "run_id": "att-t0-2026-08-02-49d0977e-a264-47d8-a046-ec934498675c",
-  "started_at": "2026-08-03T15:09:02.227Z",
-  "finished_at": "2026-08-03T15:09:02.230Z",
-  "window_start": "2026-08-02",
-  "window_end": "2026-08-02",
-  "mode": "fixture",
-  "notices_seen": 3,
-  "notices_materialized": 2,
-  "notices_scraped": 1,
-  "personnel_skipped": 1,
-  "attachments_found": 2,
+  "run_id": "att-t0-2026-08-05-6d70411e-72c3-4958-84e3-91d3271cc9c2",
+  "started_at": "2026-08-05T14:01:26.755Z",
+  "finished_at": "2026-08-05T14:02:36.847Z",
+  "window_start": "2026-08-05",
+  "window_end": "2026-08-05",
+  "mode": "live",
+  "notices_seen": 37,
+  "notices_materialized": 37,
+  "notices_scraped": 37,
+  "personnel_skipped": 0,
+  "attachments_found": 6,
+  "attempted": 37,
+  "extracted": 6,
+  "skipped": 0,
+  "failed": 0,
   "source_counts": {
     "dataset": 0,
-    "portal": 2
+    "portal": 6
   },
   "source_cliff_policy": "dataset_pre_2025_portal_2025_plus",
-  "polite_delay_s": 0,
+  "polite_delay_s": 1.2,
   "checkpoint": true,
   "binaries_stored": false,
   "upload": {
     "pushed": false,
     "batches": 0
   },
+  "inventory": "warehouse/raw/attachment-metadata/snapshot_date=2026-08-05/attachments.jsonl",
   "warehouse": {
     "table": "attachment_metadata",
     "materialized_view": "attachment_metadata_by_notice",
     "single_job_lock": true,
     "headroom_gate": true,
-    "taskpolicy_or_nice_wrap": false
+    "taskpolicy_or_nice_wrap": true
   }
 }
