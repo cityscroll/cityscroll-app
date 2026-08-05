@@ -68,6 +68,17 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _format: str, *_args: object) -> None:
         pass
 
+    def do_GET(self) -> None:
+        route = self.path.split("?", 1)[0].rstrip("/")
+        if (
+            route.startswith("/notices/")
+            or route == "/now"
+            or route == "/browse"
+            or route.startswith("/browse/")
+        ):
+            self.path = "/index.html"
+        super().do_GET()
+
 
 class StaticServer:
     def __init__(self, directory: Path):
