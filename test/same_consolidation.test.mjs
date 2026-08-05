@@ -140,6 +140,6 @@ test("the People renderer uses the shared grouping utility and keeps exports on 
   assert.match(consolidation, /members = \[\.\.\.entry\.members\]\.sort/);
   assert.match(consolidation, /createStaffingConsolidationUI/);
   assert.match(consolidation, /staffingAppointmentGroupHTML/);
-  assert.match(exports, /if\(lens==="people"\) return \{rows:staffingVisibleItems\(\)/);
+  assert.match(exports, /if\(lens==="people"\) return withEnrichedExportSpec\(lens,\{rows:staffingVisibleItems\(\)/);
   assert.deepEqual(auditUnconsolidatedRepeatedRows(), []);
 });
