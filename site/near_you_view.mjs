@@ -451,6 +451,7 @@ export function renderNearYouDocument(view, options = {}) {
 ${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, surfaceClass: "near-mast" })}
 ${renderNearYouBody(view)}
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
+<script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
 <script type="module" src="${esc(prefix)}app/map.mjs"></script></body></html>`;
   return html.replace(/[ \t]+$/gm, "");
 }

@@ -1,9 +1,10 @@
 # CityScroll aggregate event taxonomy
 
-Version: **1.2.0**
+Version: **1.3.0**
 Dataset: **`crol_usage_events_v1`**
 Retention: **90 days**
 Initial measured-since boundary: **2026-07-27**
+Primary-document attribution cutover: **2026-08-05**
 
 This is the precise inventory for first-party usage events. It is deliberately an aggregate
 measurement system, not a visitor analytics system: there is no visitor or device identifier, no
@@ -19,8 +20,8 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `blob2` | lens | `money`, `people`, `land`, `property`, `rules`, `meetings`, `alerts`, or `none` |
 | `blob3` | detail | Event-specific small enumeration below, or `none` |
 | `blob4` | geography of interest | NYC borough selected in a search, or `none`; never inferred visitor location |
-| `blob5` | surface | `home`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `digest`, or `email` as allowed per event |
-| `blob6` | taxonomy version | `1.1.0` (the reader also accepts compatible `1.0.0` rows) |
+| `blob5` | surface | `home`, `now`, `near-you`, `following`, `browse`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `digest`, or `email` as allowed per event |
+| `blob6` | taxonomy version | `1.3.0` (the reader also accepts compatible `1.0.0`, `1.1.0`, and `1.2.0` rows) |
 | `blob7` | traffic class | `production` (default) or `developer`; omitted on pre-traffic_class rows |
 | `double1` | count | Always `1` |
 | `index1` | sampling key | Event name |
@@ -63,6 +64,12 @@ watches. Aggregate routing research publishes denominators and category totals.
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
 
+Clean `/now/`, `/near-you/`, `/following/`, and `/browse/` routes receive distinct page-view
+surfaces beginning with the 2026-08-05 taxonomy cutover. Nested document routes keep their parent
+surface. Earlier page views remain readable as `home (before primary-document attribution)`;
+CityScroll does not infer how many of those historical `home` rows belonged to the homepage or to
+one of the four documents.
+
 Outcome-loop completion is characterized only in aggregate: `outcome_recorded` divided by
 `outcome_prompted` for the same rolling window. Aggregate abandonment is prompted minus recorded;
 `outcome_dismissed` identifies the explicit “Not now” subset. These are unlinked counts, not a
@@ -100,8 +107,8 @@ null, empty, or `production`, so pre-traffic_class history stays continuous.
 The public Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
 builds the public cuts in `GET /stats`: 7- and 30-day activity, lens interest, search
 activity, scenario interest, deep links, exports, confirmed watches, selected borough interest,
-and daily growth. Version 1.2.0 is additive; queries include compatible 1.0.0 and 1.1.0 rows so the
-existing rolling window remains continuous.
+daily growth, and aggregate action/outcome totals. Version 1.3.0 is additive; queries include
+compatible 1.0.0, 1.1.0, and 1.2.0 rows so the existing rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
 The public response is edge-cached for about 15 minutes — that is the documented latency from an
 accepted `POST /events` until `/stats` is expected to reflect it.
@@ -135,7 +142,7 @@ about 2,880 SQL reads in a 30-day month, far below the included million. One acc
 uses one write.
 
 Platform constraints applied here: at most 20 blobs, 20 doubles, one index, 16 KiB of blob data,
-and 250 data points per Worker invocation. CityScroll uses six short blobs, one double, one index,
+and 250 data points per Worker invocation. CityScroll uses seven short blobs, one double, one index,
 and one point per invocation.
 
 Sources:
