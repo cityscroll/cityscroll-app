@@ -381,7 +381,8 @@ python3 tools/capture_map_exploration.py
 ```
 
 Artifacts: `site/data/district_activity.json` (stamped with `boundary_vintage`,
-`sources.*.by_method`, `unlocated_reasons`, `citywide`, `virtual`), pure UI helpers
+`sources.*.by_method`, `unlocated_reasons`, `citywide`, `virtual`, and exact
+`district_items` request-id bags for Property/Meetings), pure UI helpers
 `site/map_exploration.mjs`, build lib `tools/lib/district_activity.mjs`, gazetteer
 `site/civic_address_geocode.mjs`. Deep links: `#map`,
 `#map?level=community_district&parent=Queens&lens=land`, district tap-through uses
@@ -1963,11 +1964,13 @@ test/action-rail.test.mjs test/action_link_integrity.test.mjs`.
 
 ## Map drill-through scope (list hash carry)
 
-Map bag and area detail links must land on filtered lists via the existing hash
-grammar (`#meetings?scope=virtual&when=all`, `#rules?boro=Brooklyn`, etc.) —
-not bare `#meetings` / `#rules`. Pure builders: `mapDrillListHash`,
-`bucketFeedLinks`, `areaFeedLinks` in `site/map_exploration.mjs`. COUNT-EQUALS-LIST
-characterization: `test/map_exploration.test.mjs`. Capture:
+Map bag and area detail links must land on filtered lists through the canonical
+scope adapter — not bare lens routes. Property and Meetings polygon filters consume
+the stamped `district_activity.district_items` membership, so the number on the map
+and the request IDs admitted to the list share one placement pass. Pure builders:
+`mapDrillListHash`, `bucketFeedLinks`, `areaFeedLinks`, `districtBagItemIds` in
+`site/map_exploration.mjs`. COUNT-EQUALS-LIST characterization:
+`test/map_exploration.test.mjs`. Capture:
 `python3 tools/capture_map_drill_context.py`.
 
 ## Lens filter template (Property is the reference instance)

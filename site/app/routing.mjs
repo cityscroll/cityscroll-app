@@ -121,6 +121,8 @@ function serializeState(){
       const place=$("#meetingsboro").value;
       if(place==="citywide-unlocated"||place==="citywide"||place==="virtual"||place==="unlocated") q.set("scope",place);
       else if(place) q.set("boro",place);
+      if(meetingsCommunityDistrict) q.set("cd",meetingsCommunityDistrict);
+      if(meetingsCouncilDistrict) q.set("council",meetingsCouncilDistrict);
       if($("#meetingsneighborhood").value.trim()) q.set("neighborhood",$("#meetingsneighborhood").value.trim());
       if(meetingsProcessSel !== "all") q.set("process", meetingsProcessSel);
       if(meetingsPlaceGroupSel === "place") q.set("group", "place");
@@ -129,6 +131,7 @@ function serializeState(){
       if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propertyCommunityDistrict) q.set("cd", propertyCommunityDistrict);
+      if(propertyCouncilDistrict) q.set("council", propertyCouncilDistrict);
       if(propAsset !== "all") q.set("asset", propAsset);
       if(typeof propSaleMethod !== "undefined" && propSaleMethod !== "all") q.set("method", propSaleMethod);
       if(typeof propPriceBand !== "undefined" && propPriceBand !== "all") q.set("price", propPriceBand);
@@ -874,6 +877,8 @@ function applyHash(){
           ?scope
           :(DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
         $("#meetingsneighborhood").value=q.get("neighborhood")||"";
+        meetingsCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
+        meetingsCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
         const process=q.get("process")||"all";
         meetingsProcessSel=["scheduled","agenda","held","outcomes","unstaged"].includes(process)?process:"all";
         meetingsPlaceGroupSel=q.get("group")==="place"?"place":"flat";
@@ -882,6 +887,7 @@ function applyHash(){
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
         propertyCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
+        propertyCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
         propertyResolvedNeighborhood=null;
         propAsset = (typeof normalizePropAsset === "function" ? normalizePropAsset(q.get("asset")) : (q.get("asset") || "all"));
         propSaleMethod = (typeof normalizePropSaleMethod === "function" ? normalizePropSaleMethod(q.get("method")) : (q.get("method") || "all"));

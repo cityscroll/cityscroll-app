@@ -46,6 +46,13 @@ test("map drill-throughs carry scope into list hashes (not bare lens tabs)", () 
   const pure = readFileSync(new URL("../site/map_exploration.mjs", import.meta.url), "utf8");
   assert.match(pure, /export function mapDrillListHash/);
   assert.match(pure, /export function bucketFeedLinks/);
+  assert.match(pure, /export function districtBagItemIds/);
+  assert.match(pure, /export function materializeDistrictBagRows/);
+  assert.match(pure, /export async function materializeDistrictBagRowsFromFiles/);
+  assert.match(source, /filterFeedRowsToDistrictBag\("property",rows\)/);
+  assert.match(source, /filterFeedRowsToDistrictBag\("meetings",/);
+  assert.match(source, /setMeetingsResultCount\(uniqueRows\.length\)/);
+  assert.match(source, /const totalCount=feedVisible\.property\.length/);
   assert.match(pure, /scope=virtual|locationScope === "virtual"/);
 });
 
@@ -71,6 +78,14 @@ test("precomputed district_activity artifact is present and loadable", () => {
   assert.ok(doc.boundary_vintage);
   assert.ok(doc.by_level.borough.Queens);
   assert.ok(Object.keys(doc.by_level.council_district).length >= 51);
+  assert.equal(doc.district_items.boundary_vintage, doc.boundary_vintage);
+  assert.equal(doc.district_items.built_at, doc.built_at);
+  assert.equal(doc.district_items.corpora.property.collection, "property_rows");
+  assert.equal(doc.district_items.corpora.meetings.collection, "rows");
+  for (const lens of ["property", "meetings"]) {
+    const ids = doc.district_items.by_level.council_district["1"]?.[lens] || [];
+    assert.equal(ids.length, doc.by_level.council_district["1"][lens]);
+  }
 });
 
 test("Row 4 retirements: tax-lien panel is archive-only, not the property list masthead", () => {

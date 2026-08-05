@@ -17,6 +17,40 @@ function ruleLocationTools(){
   if(!ruleLocationToolsPromise) ruleLocationToolsPromise=import("../rule_location.mjs");
   return ruleLocationToolsPromise;
 }
+let districtBagToolsPromise=null;
+function districtBagTools(){
+  if(!districtBagToolsPromise) districtBagToolsPromise=import("../map_exploration.mjs").catch(()=>null);
+  return districtBagToolsPromise;
+}
+function feedDistrictFilter(key){
+  if(key==="property") return {
+    borough:$("#propertyboro")?.value||null,
+    communityDistrict:globalThis.propertyCommunityDistrict||null,
+    councilDistrict:globalThis.propertyCouncilDistrict||null,
+  };
+  if(key==="meetings"){
+    const place=$("#meetingsboro")?.value||"";
+    const locationScope=["citywide-unlocated","citywide","virtual","unlocated"].includes(place)?place:null;
+    return {
+      borough:locationScope?null:(place||null),
+      communityDistrict:meetingsCommunityDistrict||null,
+      councilDistrict:meetingsCouncilDistrict||null,
+      locationScope,
+    };
+  }
+  return {};
+}
+function hasFeedDistrictFilter(filter){
+  return !!(filter?.borough||filter?.communityDistrict||filter?.councilDistrict||filter?.locationScope);
+}
+async function filterFeedRowsToDistrictBag(key,rows){
+  const filter=feedDistrictFilter(key);
+  if(!hasFeedDistrictFilter(filter)) return rows;
+  const tools=await districtBagTools();
+  if(!tools?.materializeDistrictBagRowsFromFiles) return [];
+  const materialized=await tools.materializeDistrictBagRowsFromFiles(key,rows,filter);
+  return key==="meetings"?materialized.map(normalizeHearingRow):materialized;
+}
 // Precompute-first rule-lifecycle enrichment: the /rules read model (KV key
 // rules:materialized:v2) joins City Record notices to NYC Rules official comment/adoption
 // pages and classifies a lifecycle stage. We consume it here — no live upstream NYC Rules
@@ -110,6 +144,8 @@ async function loadSection(key){
     if(key==="property"){
       const tools=await propertyLocationTools();
       rows.forEach(r=>{ r._location=r.property_location||tools.propertyLocationFromRow(r); });
+      rows=await filterFeedRowsToDistrictBag("property",rows);
+      rows.forEach(r=>{ r._location=r.property_location||tools.propertyLocationFromRow(r); });
       if(stale()) return;
       propAll=rows; renderPropExplorer();
     } else if(key==="rules"){
@@ -124,6 +160,7 @@ const hearingPastCache=new Map();
 let hearingRenderSeq=0;
 let hearingWideningDismissed="";
 let meetingsProcessSel="all";
+let meetingsCommunityDistrict="", meetingsCouncilDistrict="";
 // Place grouping is opt-in (default flat). Affected-area / near-me filters own place navigation.
 let meetingsPlaceGroupSel="flat";
 let meetingsExplorerToolsPromise=null;
@@ -1118,6 +1155,8 @@ function updateMeetingsMoreFiltersState(){
   if(!badge) return;
   const active=Number(($("#meetingswhen")?.value||"week")!=="week")
     +Number(!!$("#meetingsboro")?.value)
+    +Number(!!meetingsCommunityDistrict)
+    +Number(!!meetingsCouncilDistrict)
     +Number(!!$("#meetingsneighborhood")?.value.trim())
     +Number(!!$("#meetingsagency")?.value)
     +Number(meetingsPlaceGroupSel==="place");
@@ -1132,7 +1171,7 @@ async function renderHearingExplorer(){
   const seq=++hearingRenderSeq;
   const filter=hearingViewFilter(), key=hearingFilterKey(filter);
   const allowWidening=hearingWideningDismissed!==key && filter.when!=="all";
-  let records=hearingAll||[];
+  let records=await filterFeedRowsToDistrictBag("meetings",hearingAll||[]);
   let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
   // when=all (map drill) and past / empty-widen need the past SODA slice.
   const needsPast=filter.when==="all" || filter.when==="past" || (allowWidening && !selection.rows.length);
@@ -1140,7 +1179,7 @@ async function renderHearingExplorer(){
     try{
       const past=await loadPastHearings(filter);
       if(seq!==hearingRenderSeq) return;
-      records=records.concat(past);
+      records=await filterFeedRowsToDistrictBag("meetings",records.concat(past));
       selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
     }catch(e){ /* the exact zero state remains actionable below */ }
   }
@@ -1234,7 +1273,10 @@ async function renderHearingExplorer(){
   });
   feedVisible.meetings=uniqueRows.map(hearingEventRow);
   updateMeetingsMoreFiltersState();
-  setMeetingsResultCount(entries.length);
+  // District map counts are request-id counts. Collapsed event/matter cards still
+  // represent every member notice, so the list counter must use the same identity
+  // cardinality as district_items rather than the number of rendered cards.
+  setMeetingsResultCount(uniqueRows.length);
   const el=$("#meetingsfeed");
   if(!entries.length){
     widening.innerHTML="";
@@ -1258,7 +1300,7 @@ async function renderHearingExplorer(){
   el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>copyText(noticeLink(button.dataset.link),button)));
   el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>downloadEventICS(feedRows.meetings[button.dataset.ev.split(":")[1]])));
   el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
-  announce(t("meetings_entries_announce",{n:entries.length}));
+  announce(t("meetings_entries_announce",{n:uniqueRows.length}));
 }
 async function loadHearings(){
   if(hearingAll){ await renderHearingExplorer(); return; }
@@ -1336,6 +1378,8 @@ Object.defineProperty(globalThis, "hearingAll", { configurable: true, get: () =>
 Object.defineProperty(globalThis, "hearingRenderSeq", { configurable: true, get: () => hearingRenderSeq, set: value => { hearingRenderSeq = value; } });
 Object.defineProperty(globalThis, "hearingWideningDismissed", { configurable: true, get: () => hearingWideningDismissed, set: value => { hearingWideningDismissed = value; } });
 Object.defineProperty(globalThis, "meetingsExplorerToolsPromise", { configurable: true, get: () => meetingsExplorerToolsPromise, set: value => { meetingsExplorerToolsPromise = value; } });
+Object.defineProperty(globalThis, "meetingsCommunityDistrict", { configurable: true, get: () => meetingsCommunityDistrict, set: value => { meetingsCommunityDistrict = value || ""; } });
+Object.defineProperty(globalThis, "meetingsCouncilDistrict", { configurable: true, get: () => meetingsCouncilDistrict, set: value => { meetingsCouncilDistrict = value || ""; } });
 Object.defineProperty(globalThis, "meetingsPlaceGroupSel", { configurable: true, get: () => meetingsPlaceGroupSel, set: value => { meetingsPlaceGroupSel = value; } });
 Object.defineProperty(globalThis, "meetingsProcessSel", { configurable: true, get: () => meetingsProcessSel, set: value => { meetingsProcessSel = value; } });
 Object.defineProperty(globalThis, "propertyLocationToolsPromise", { configurable: true, get: () => propertyLocationToolsPromise, set: value => { propertyLocationToolsPromise = value; } });

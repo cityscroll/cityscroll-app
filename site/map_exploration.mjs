@@ -9,6 +9,8 @@
  * contracted zip boundary layer exists.
  */
 
+import { routeHashFromScope, scopeFromLensState } from "./scope_v0.mjs";
+
 export const MAP_EXPLORATION_SCHEMA = "cityscroll.map_exploration.v1";
 export const DISTRICT_ACTIVITY_SCHEMA = "cityscroll.district_activity.v1";
 
@@ -287,20 +289,20 @@ export function mapDrillListHash(lens, scope = {}) {
     : null;
   const q = new URLSearchParams();
 
+  const scopedHash = (state) => routeHashFromScope(
+    scopeFromLensState(L, state),
+    { surface: L },
+  );
+
   if (L === "land") {
-    if (boro) q.set("boro", boro);
-    if (cd) q.set("cd", cd);
-    if (council) q.set("council", council);
     // Land has no citywide/virtual bag grammar — refuse empty scopes.
-    if (![...q.keys()].length) return null;
-    return `#land?${q.toString()}`;
+    if (!boro && !cd && !council) return null;
+    return scopedHash({ boro, communityDistrict: cd, councilDistrict: council });
   }
 
   if (L === "property") {
-    if (boro) q.set("boro", boro);
-    if (cd) q.set("cd", cd);
-    if (![...q.keys()].length) return null;
-    return `#property?${q.toString()}`;
+    if (!boro && !cd && !council) return null;
+    return scopedHash({ borough: boro, communityDistrict: cd, councilDistrict: council });
   }
 
   if (L === "meetings") {
@@ -310,25 +312,26 @@ export function mapDrillListHash(lens, scope = {}) {
       || locationScope === "unlocated"
       || locationScope === "citywide-unlocated"
     ) {
-      q.set("scope", locationScope);
-    } else if (boro) {
-      q.set("boro", boro);
+      // handled by the canonical scope adapter below
     }
     // Map counts span the full domain window; show past + upcoming so
     // count-equals-list holds for the Virtual bag (often past event dates).
     const when = ["week", "month", "upcoming", "past", "all"].includes(scope.when)
       ? scope.when
       : "all";
-    if (when !== "week") q.set("when", when);
-    if (![...q.keys()].length || (!locationScope && !boro)) return null;
-    return `#meetings?${q.toString()}`;
+    if (!locationScope && !boro && !cd && !council) return null;
+    return scopedHash({
+      borough: boro,
+      communityDistrict: cd,
+      councilDistrict: council,
+      locationScope,
+      when,
+    });
   }
 
   if (L === "rules") {
-    if (locationScope === "citywide") q.set("scope", "citywide");
-    else if (boro) q.set("boro", boro);
-    if (![...q.keys()].length) return null;
-    return `#rules?${q.toString()}`;
+    if (locationScope !== "citywide" && !boro) return null;
+    return scopedHash({ borough: boro, locationScope });
   }
 
   if (L === "money") {
@@ -398,12 +401,10 @@ export function areaFeedLinks(level, id, opts = {}) {
   if (level === "community_district" && /^(?:M|X|K|Q|R)\d{2}$/.test(id || "")) {
     const boro = boroughFromCommunityId(id);
     const scope = { boro, communityDistrict: id };
-    // Land and Property share the committed CD boundary lookup; other lenses
-    // still fall back to their supported parent-borough grammar.
     push("land", scope, "district");
     push("property", scope, "district");
+    push("meetings", scope, "district");
     if (boro) {
-      push("meetings", { boro }, "borough", "map_feed_borough_meetings");
       push("rules", { boro }, "borough", "map_feed_borough_rules");
     }
     if (opts.basis === "contract_action_address") {
@@ -412,9 +413,9 @@ export function areaFeedLinks(level, id, opts = {}) {
     return links;
   }
   if (level === "council_district" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(String(id || ""))) {
-    // Council district is first-class on Land only today — omit other lenses rather than
-    // emitting a citywide lobby under a district count.
     push("land", { councilDistrict: String(id) }, "district");
+    push("property", { councilDistrict: String(id) }, "district");
+    push("meetings", { councilDistrict: String(id) }, "district");
     if (opts.basis === "contract_action_address") {
       push("money", {
         councilDistrict: String(id),
@@ -468,6 +469,105 @@ export function bucketFeedLinks(kind, opts = {}) {
     return links;
   }
   return links;
+}
+
+/**
+ * Exact request ids for a Property or Meetings map bag. The index is accepted
+ * only when its boundary/build stamps match the containing activity document.
+ */
+export function districtBagItemIds(activity, lens, filter = {}) {
+  if (!(lens === "property" || lens === "meetings")) return [];
+  const index = activity?.district_items;
+  if (
+    index?.schema !== "cityscroll.district_items.v1"
+    || index.boundary_vintage !== activity?.boundary_vintage
+    || index.built_at !== activity?.built_at
+  ) return [];
+
+  const council = String(filter.councilDistrict || filter.council || "").trim();
+  const community = String(filter.communityDistrict || filter.cd || "").trim().toUpperCase();
+  const borough = filter.borough || filter.boro || null;
+  const locationScope = filter.locationScope || filter.scope || null;
+  let ids = [];
+  if (/^(?:[1-9]|[1-4]\d|5[01])$/.test(council)) {
+    ids = index.by_level?.council_district?.[council]?.[lens] || [];
+  } else if (/^(?:M|X|K|Q|R)\d{2}$/.test(community)) {
+    ids = index.by_level?.community_district?.[community]?.[lens] || [];
+  } else if (borough && BOROUGH_META[borough]) {
+    ids = index.by_level?.borough?.[borough]?.[lens] || [];
+  } else if (locationScope === "citywide-unlocated") {
+    ids = [...(index.citywide?.[lens] || []), ...(index.unlocated?.[lens] || [])];
+  } else if (["citywide", "virtual", "unlocated"].includes(locationScope)) {
+    ids = index[locationScope]?.[lens] || [];
+  }
+  return [...new Set(ids.map(String))].sort();
+}
+
+/** Filter fetched display rows by the generated map bag, never by re-geocoding. */
+export function filterRowsByDistrictBag(activity, lens, rows, filter = {}) {
+  const ids = new Set(districtBagItemIds(activity, lens, filter));
+  if (!ids.size) return [];
+  return (Array.isArray(rows) ? rows : []).filter((row) => ids.has(String(row?.request_id || "")));
+}
+
+/**
+ * Materialize an exact map bag from its stamped domain corpus. A live row with
+ * the same request id may replace the compact snapshot row, but it can never
+ * add or remove membership. Missing live slices therefore cannot make the list
+ * cardinality drift below the map count.
+ */
+export function materializeDistrictBagRows(
+  activity,
+  lens,
+  corpusRows,
+  liveRows,
+  filter = {},
+) {
+  const ids = districtBagItemIds(activity, lens, filter);
+  if (!ids.length) return [];
+  const corpusById = new Map(
+    (Array.isArray(corpusRows) ? corpusRows : [])
+      .filter((row) => row?.request_id)
+      .map((row) => [String(row.request_id), row]),
+  );
+  const liveById = new Map(
+    (Array.isArray(liveRows) ? liveRows : [])
+      .filter((row) => row?.request_id)
+      .map((row) => [String(row.request_id), row]),
+  );
+  return ids.map((requestId) => liveById.get(requestId) || corpusById.get(requestId)).filter(Boolean);
+}
+
+let districtActivityPromise = null;
+const districtCorpusPromises = new Map();
+
+/** Load a stamped district bag behind the map module's existing lazy boundary. */
+export async function materializeDistrictBagRowsFromFiles(lens, liveRows, filter = {}) {
+  if (!districtActivityPromise) {
+    districtActivityPromise = fetch("data/district_activity.json", { cache: "no-cache" })
+      .then((response) => (response.ok ? response.json() : null))
+      .catch(() => null);
+  }
+  const activity = await districtActivityPromise;
+  const descriptor = activity?.district_items?.corpora?.[lens];
+  if (!activity || !descriptor?.path || !descriptor?.collection) return [];
+  const cacheKey = `${lens}:${descriptor.path}:${descriptor.stamp_value || ""}`;
+  if (!districtCorpusPromises.has(cacheKey)) {
+    districtCorpusPromises.set(cacheKey, fetch(descriptor.path, { cache: "no-cache" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((doc) => {
+        if (!doc) return [];
+        if (
+          descriptor.stamp_field
+          && descriptor.stamp_value
+          && doc[descriptor.stamp_field] !== descriptor.stamp_value
+        ) return [];
+        return Array.isArray(doc[descriptor.collection]) ? doc[descriptor.collection] : [];
+      })
+      .catch(() => []));
+  }
+  const corpusRows = await districtCorpusPromises.get(cacheKey);
+  return materializeDistrictBagRows(activity, lens, corpusRows, liveRows, filter);
 }
 
 /**

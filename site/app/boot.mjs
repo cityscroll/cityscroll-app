@@ -346,6 +346,8 @@ function currentLensFilterState(tab){
         state.when = $("#meetingswhen").value;
         state.dateWindow = $("#meetingswhen").value;
       }
+      if(typeof meetingsCommunityDistrict!=="undefined" && meetingsCommunityDistrict) state.communityDistrict=meetingsCommunityDistrict;
+      if(typeof meetingsCouncilDistrict!=="undefined" && meetingsCouncilDistrict) state.councilDistrict=meetingsCouncilDistrict;
     }
     if(tab === "property"){
       if(typeof propAsset !== "undefined" && propAsset && propAsset !== "all") state.asset = propAsset;
@@ -361,6 +363,9 @@ function currentLensFilterState(tab){
       }
       if(typeof propertyCommunityDistrict!=="undefined" && propertyCommunityDistrict){
         state.communityDistrict=propertyCommunityDistrict;
+      }
+      if(typeof propertyCouncilDistrict!=="undefined" && propertyCouncilDistrict){
+        state.councilDistrict=propertyCouncilDistrict;
       }
     }
     return adapt(state);
@@ -542,6 +547,7 @@ bindLocationControl($("#propertylocation"), {
   fetchImpl:fetch,
   mapPlutoEndpoint:MAPPLUTO_QUERY,
   onResolved:area=>{
+    propertyCouncilDistrict="";
     $("#propertyboro").value=area.borough||"";
     $("#propertyneighborhood").value=area.neighbourhood||"";
     renderPropExplorer();
@@ -554,6 +560,8 @@ bindLocationControl($("#meetingslocation"), {
   fetchImpl:fetch,
   mapPlutoEndpoint:MAPPLUTO_QUERY,
   onResolved:area=>{
+    meetingsCommunityDistrict="";
+    meetingsCouncilDistrict="";
     $("#meetingsboro").value=area.borough||"";
     $("#meetingsneighborhood").value=area.neighbourhood||"";
     loadSection("meetings");
@@ -566,10 +574,10 @@ bindLocationControl($("#meetingslocation"), {
   const w=$("#"+k+"when"); if(w) w.addEventListener("change",()=>loadSection(k));
   const ag=$("#"+k+"agency"); if(ag) ag.addEventListener("change",()=>loadSection(k));
 });
-$("#meetingsboro").addEventListener("change",()=>loadSection("meetings"));
+$("#meetingsboro").addEventListener("change",()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
-$("#meetingsneighborhood").addEventListener("input",debounce(()=>loadSection("meetings"),500));
-$("#propertyboro").addEventListener("change",()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); });
+$("#meetingsneighborhood").addEventListener("input",debounce(()=>{ meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; loadSection("meetings"); },500));
+$("#propertyboro").addEventListener("change",()=>{ propertyCommunityDistrict=""; propertyCouncilDistrict=""; renderPropExplorer(); updateHash(); renderSearchComponents("property"); });
 const rulesBoroSel=$("#rulesboro");
 if(rulesBoroSel) rulesBoroSel.addEventListener("change",()=>{
   if(typeof renderRulesExplorer==="function") renderRulesExplorer();
@@ -578,7 +586,7 @@ if(rulesBoroSel) rulesBoroSel.addEventListener("change",()=>{
   renderSearchComponents("rules");
 });
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
-$("#propertyneighborhood").addEventListener("input",debounce(()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
+$("#propertyneighborhood").addEventListener("input",debounce(()=>{ propertyCouncilDistrict=""; renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
 loadAgencies();
 document.addEventListener("click",rememberItemRouteContext);
 window.addEventListener("popstate",event=>prepareHistoryRouteScroll(event.state));

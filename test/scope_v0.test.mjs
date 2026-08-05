@@ -61,7 +61,9 @@ test("every current browse lens preserves its existing route grammar", () => {
     "#people?view=guide&interest=technology&eligibility=promotion&window=open&format=mixed&salary=80k_plus&fee=none&experience=yes",
     "#land?boro=Queens&cd=Q04&council=25&q=rezoning&status=hearings&attendance=in_person",
     "#property?agency=DCAS&q=auction&boro=Bronx&neighborhood=Morrisania&cd=X03&asset=vehicle&method=online_auction&price=priced&sort=price_desc&process=auction_or_rfp&stage=open&view=tax-lien",
+    "#property?council=25",
     "#rules?agency=Buildings&q=energy&process=public_process&scope=citywide",
+    "#meetings?when=all&council=25",
   ];
   for (const hash of routes) {
     const surface = hash.slice(1).split("?", 1)[0];
