@@ -387,6 +387,17 @@ def run_index_states(pw, lang, viewport, failures):
         )
         run_focus_exposure(page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures)
 
+    # Additive time-and-action entry surface. Worker fixtures intentionally leave some
+    # sources unavailable so this also covers its honest partial-coverage state.
+    page.evaluate("location.hash = '#now'")
+    page.wait_for_selector(".now-surface", timeout=15000)
+    page.wait_for_timeout(400)
+    run_axe(
+        page, f"index.html [{lang}] [{viewport_name}] [now]", failures,
+        restore_url=BASE, restore_hash="#now",
+    )
+    run_focus_exposure(page, f"index.html [{lang}] [{viewport_name}] [now]", failures)
+
     browser.close()
 
 

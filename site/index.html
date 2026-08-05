@@ -95,6 +95,21 @@
   .tabbtn:hover{color:var(--ink)}
   .tabpane{display:none;padding:24px 0 10px}
   .tabpane.active{display:block}
+  .now-entry-row{display:flex;justify-content:center;padding:12px 0 4px}
+  .now-entry{display:inline-flex;align-items:baseline;gap:10px;padding:9px 15px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);color:var(--ink);text-decoration:none;box-shadow:var(--shadow);font:600 13px/1.25 ui-sans-serif,system-ui,sans-serif}
+  .now-entry strong{font:800 14px/1 var(--font-display);color:var(--oxblood)}.now-entry:hover{border-color:var(--oxblood)}
+  .now-surface{max-width:1180px;margin:0 auto;padding:4px 0 30px}.now-back{margin:0 0 12px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif}.now-back a{text-decoration:none}
+  .now-head{max-width:760px;margin-bottom:22px}.now-head h2{font:700 clamp(2rem,5vw,3.3rem)/1 var(--font-display);margin:0 0 8px;color:var(--ink)}.now-head>p{margin:0;color:var(--ink-soft);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.now-head .now-bounded-note{margin-top:7px;color:var(--muted);font-size:12.5px}.now-kicker{margin:0 0 5px!important;color:var(--oxblood)!important;font:800 11px/1.2 ui-sans-serif,system-ui,sans-serif!important;letter-spacing:.12em;text-transform:uppercase}
+  .now-lanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}.now-lane{min-width:0}.now-lane-head{display:flex;justify-content:space-between;gap:12px;align-items:start;padding:0 0 10px;border-bottom:3px solid var(--ink)}
+  .now-lane-head h3{font:700 23px/1.1 var(--font-display);margin:0;color:var(--ink)}.now-lane-head p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:5px 0 0;max-width:38em}.now-count{white-space:nowrap;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding-top:4px}
+  .now-list{display:grid;gap:10px;margin-top:12px;min-width:0}.now-card{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;box-shadow:var(--shadow)}.now-card-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:9px}.now-source-badge{font:650 10px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .now-card-when{display:flex;flex-wrap:wrap;gap:5px 10px;align-items:baseline;margin:0 0 7px}.now-card-when b{font:750 16px/1.2 var(--font-display);color:var(--oxblood)}.now-card-when>span{font:600 10.5px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}.now-basis-field{margin-inline-start:5px;padding-inline-start:5px;border-inline-start:1px solid var(--rule)}
+  .now-card h3{font:700 16px/1.35 var(--font-body);margin:0 0 5px;overflow-wrap:anywhere}.now-card h3 a{color:var(--ink);text-decoration:none}.now-card h3 a:hover{text-decoration:underline}.now-card-agency{font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 10px}.now-card .actions{margin-top:10px}
+  .now-undated{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule)}.now-undated h4{font:700 16px/1.2 var(--font-display);margin:0}.now-undated>p{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:4px 0}
+  @media(max-width:680px){
+    .now-lanes{grid-template-columns:minmax(0,1fr);gap:28px}
+    .now-entry{max-width:100%;flex-wrap:wrap;justify-content:center;text-align:center}
+  }
   /* Task-first entry experiment: additive routes (#task/…), not a lens redesign. */
   .task-first{max-width:920px;margin:0 auto;padding:8px 0 28px}
   .task-first-head{margin:0 0 16px}
@@ -1369,6 +1384,8 @@
     header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions,.money-row-action,.home-cta,.lang-switcher,.lens-toolbar,.lens-resultbar,.lens-search-state,.lens-method{display:none!important}
     .tabpane:not(.active){display:none!important}
     .tabpane.active{display:block!important;padding:0}
+    .now-lanes{grid-template-columns:minmax(0,1fr)}
+    .now-entry{max-width:100%;flex-wrap:wrap;justify-content:center;text-align:center}
     main,.wrap{max-width:none!important;margin:0!important;padding:0!important}
     .panel,.fcard,.scope,.apply,.agencybar{background:#fff!important;box-shadow:none!important;break-inside:avoid}
     .list{max-height:none!important;overflow:visible!important}
@@ -1440,6 +1457,9 @@
       <div id="homeCtaMsg" class="home-cta-msg" role="status" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
+    <div class="now-entry-row">
+      <a class="now-entry" href="#now"><strong data-i18n="now_title">Now</strong><span data-i18n="now_entry_link">See deadlines and upcoming events</span></a>
+    </div>
     <nav class="tabs">
       <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
       <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
@@ -1461,6 +1481,13 @@
   </div>
 </header>
 <main id="main" tabindex="-1">
+
+<!-- ============ NOW (additive time-and-action entry; current lens navigation stays authoritative) ============ -->
+<section id="tab-now" class="tabpane">
+  <div class="wrap">
+    <div id="nowview"><div class="empty"><span class="loading"></span> <span data-i18n="now_loading">Loading current deadlines and events…</span></div></div>
+  </div>
+</section>
 
 <!-- ============ MONEY ============ -->
 <section id="tab-money" class="tabpane active">

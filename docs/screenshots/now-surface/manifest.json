@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "reference_day": "2026-08-04",
+  "source_models": [
+    "money",
+    "staffing",
+    "rules",
+    "property",
+    "meetings",
+    "land"
+  ],
+  "captures": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "lists": [
+        {
+          "name": "act-by",
+          "declared": 4,
+          "rendered": 4
+        },
+        {
+          "name": "happening-soon",
+          "declared": 4,
+          "rendered": 4
+        }
+      ],
+      "current_lens_tabs": 8,
+      "now_owns_lens_tab": false,
+      "horizontal_overflow_pixels": 0,
+      "file": "after-1440.png",
+      "sha256": "a8e630676282ada08d357add85b1ca55e3b3719feacd7c91c985d6f8be806cbe"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "lists": [
+        {
+          "name": "act-by",
+          "declared": 4,
+          "rendered": 4
+        },
+        {
+          "name": "happening-soon",
+          "declared": 4,
+          "rendered": 4
+        }
+      ],
+      "current_lens_tabs": 8,
+      "now_owns_lens_tab": false,
+      "horizontal_overflow_pixels": 0,
+      "file": "after-390.png",
+      "sha256": "c666d285274f4f306767794d1e49db8d157d649231ae0ab6359c62713055cf8a"
+    }
+  ],
+  "pass": true
+}
