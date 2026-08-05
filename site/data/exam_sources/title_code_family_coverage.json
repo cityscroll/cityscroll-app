@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-05",
+  "method": {
+    "family_key": "exact publisher-supplied title_code",
+    "exam_revision_key": "exact normalized exam_number",
+    "title_text_matching": false,
+    "confidence": "strong only when title_code is present in the source row"
+  },
+  "sources": {
+    "historical_exams": "annual_schedule_history.json",
+    "appointments": "../staffing_default_hires.json",
+    "title_names": "../title_crosswalk.json"
+  },
+  "historical_exams": {
+    "cohort": 1271,
+    "exact_title_code": 367,
+    "exact_title_code_rate": 0.2887,
+    "missing_title_code": 904,
+    "unique_exact_families": 216,
+    "crosswalk_named": 166
+  },
+  "appointments": {
+    "cohort": 80,
+    "exact_title_code": 80,
+    "exact_title_code_rate": 1,
+    "unique_exact_families": 19,
+    "crosswalk_named": 78,
+    "crosswalk_named_rate": 0.975
+  },
+  "constellation": {
+    "shared_exact_families": 9,
+    "shared_title_codes": [
+      "10104",
+      "12158",
+      "12200",
+      "51274",
+      "52287",
+      "52408",
+      "70210",
+      "70810",
+      "92510"
+    ]
+  },
+  "precision_audit": {
+    "reviewed": 0,
+    "correct": 0,
+    "precision": null,
+    "status": "not_run_below_coverage_floor",
+    "note": "The exact-key coverage gate failed, so no title-text candidate audit was used to promote a family surface."
+  },
+  "promotion": {
+    "historical_exam_coverage_floor": 0.3,
+    "audit_precision_floor": 0.95,
+    "coverage_passed": false,
+    "precision_passed": false,
+    "passed": false,
+    "publish_family_ui": false,
+    "publish_entity_pivots": false,
+    "verdict": "STOP — exact historical exam coverage is below the 30% floor; title-code family UI and pivots remain disabled."
+  }
+}
