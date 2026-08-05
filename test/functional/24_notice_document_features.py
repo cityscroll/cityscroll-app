@@ -26,6 +26,22 @@ NOTICE = {
     "section_name": "Procurement",
     "additional_description_1": "Submit a response for the playground reconstruction at 1 Centre Street.",
 }
+PROPERTY_NOTICE = {
+    "request_id": "20170130106",
+    "start_date": "2017-01-30T00:00:00.000",
+    "event_date": "2017-02-28T10:00:00.000",
+    "agency_name": "Housing Preservation and Development",
+    "type_of_notice_description": "Public Hearing",
+    "section_name": "Property Disposition",
+    "short_title": "Disposition",
+    "additional_description_1": "Public hearing concerning Block 2026, Lot 15 in Manhattan.",
+    "property_location": {
+        "scope": "local",
+        "bbls": ["1020260015"],
+        "tax_lots": [{"borough_code": "1", "block": "2026", "lot": "15", "bbl": "1020260015"}],
+    },
+    "disposition_stage": "hearing",
+}
 TRANSLATION = {
     "ok": True,
     "id": NOTICE_ID,
@@ -40,10 +56,15 @@ def fulfill_json(route: Route, payload: object) -> None:
     route.fulfill(status=200, content_type="application/json", body=json.dumps(payload))
 
 
-def install_notice_routes(page: Page, translation_calls: list[str]) -> None:
+def install_notice_routes(
+    page: Page,
+    translation_calls: list[str],
+    *,
+    notice: dict[str, object] = NOTICE,
+) -> None:
     page.route(
         "https://data.cityofnewyork.us/resource/dg92-zbpx.json*",
-        lambda route: fulfill_json(route, [NOTICE]),
+        lambda route: fulfill_json(route, [notice]),
     )
     page.route(
         "**/attachment-metadata*",
@@ -56,6 +77,16 @@ def install_notice_routes(page: Page, translation_calls: list[str]) -> None:
 
     page.route("https://api.cityscroll.org/translate/**", translate)
     page.route("https://crol-worker.crol-worker.workers.dev/translate/**", translate)
+    page.route(
+        "**/property-locations*",
+        lambda route: fulfill_json(
+            route,
+            {
+                "properties": [notice] if notice.get("section_name") == "Property Disposition" else [],
+                "disposition_spines": [],
+            },
+        ),
+    )
 
 
 def context_with_clipboard(browser: Browser, *, saved_language: str | None = None) -> BrowserContext:
@@ -133,9 +164,42 @@ def main() -> None:
         assert len(click_calls) == 1 and "lang=es" in click_calls[0]
         click_context.close()
 
+        property_context = context_with_clipboard(browser)
+        property_page = property_context.new_page()
+        property_calls: list[str] = list()
+        install_notice_routes(property_page, property_calls, notice=PROPERTY_NOTICE)
+        property_page.goto(
+            f"{BASE}/notices/{PROPERTY_NOTICE['request_id']}",
+            wait_until="load",
+            timeout=30000,
+        )
+
+        biography = property_page.locator("#npropertyxd [data-parcel-biography='1']")
+        biography.wait_for(state="visible", timeout=10000)
+        assert "observed parcel biography" in biography.inner_text().lower()
+        assert biography.locator("[data-parcel-biography-domain]").count() == 3
+        assert biography.locator("[data-parcel-biography-domain='property'] a[href^='#notice/']").count() >= 1
+        assert biography.locator("[data-parcel-biography-domain='land'] a[href^='#land?project=']").count() >= 1
+        assert biography.locator("[data-parcel-biography-domain='tax_lien'][data-status='observed']").count() == 1
+        assert biography.locator("[data-parcel-coverage]").count() == 3
+        assert biography.locator(".parcel-biography-item-meta").count() >= 3
+        assert biography.locator(".parcel-biography-relation").count() >= 3
+        assert biography.locator(".property-xd-owners").count() == 0
+        assert "complete parcel history" not in biography.inner_text().lower()
+        parcel_pivot = biography.locator("a[data-entity-ref='bbl:1020260015']").first
+        assert parcel_pivot.is_visible()
+        assert "entity_refs_all" in (parcel_pivot.get_attribute("href") or "")
+        parcel_pivot.click()
+        scoped_biography = property_page.locator(
+            "#parcel-biography-panel [data-parcel-biography='1'][data-parcel-ref='bbl:1020260015']"
+        )
+        scoped_biography.wait_for(state="visible", timeout=10000)
+        assert "entity_refs_all" in property_page.url
+        property_context.close()
+
         browser.close()
 
-    print("OK notice document translation, actions, watch, disclosure, and language-carrying copy link")
+    print("OK notice document translation, actions, disclosure, copy link, and observed parcel biography")
 
 
 if __name__ == "__main__":

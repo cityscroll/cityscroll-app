@@ -85,6 +85,7 @@ function routableEntityRef(value) {
   if (/^agency:[^:]+:.+$/.test(ref)) return ref;
   if (/^vendor:stem:.+$/.test(ref)) return ref;
   if (/^entity:official:.+$/.test(ref)) return ref;
+  if (/^bbl:\d{10}$/.test(ref)) return ref;
   return null;
 }
 

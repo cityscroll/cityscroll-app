@@ -633,9 +633,49 @@ async function hydratePropertyActionMatter(r){
   return r;
 }
 
+let propertyParcelScopeBbl=null, parcelScopeToolsPromise=null;
+function parcelScopeTools(){
+  if(!parcelScopeToolsPromise) parcelScopeToolsPromise=import("../parcel_scope.mjs").catch(()=>null);
+  return parcelScopeToolsPromise;
+}
+function propertyCurrentScope(){
+  try{return CrolScope.scopeFromRouteHash(location.hash,{language:window.LANG||"en"});}
+  catch(_e){return CrolScope.emptyScope(window.LANG||"en");}
+}
+function parcelPivotHTML(bbl,label){
+  const id=String(bbl||"");
+  const text=label||t("property_list_bbl_chip",{bbl:id});
+  if(!/^\d{10}$/.test(id)||!globalThis.CrolEntityPivots?.entityChipHTML) return escUiHtml(text);
+  return CrolEntityPivots.entityChipHTML({
+    ref:`bbl:${id}`,
+    label:text,
+    link_confidence:"strong",
+    relation:"sits_on_parcel",
+  },{scope:propertyCurrentScope(),surface:"property",className:"parcel-pivot"});
+}
+async function observedParcelBiographyHTML(bbl,crossDomain,taxLien){
+  const tools=await parcelScopeTools();
+  const view=tools?.buildObservedParcelBiography?.({bbl,crossDomain,taxLien});
+  if(!view?.ok) return `<div class="chain-h">${t("property_xd_heading")}</div>
+    <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bbl)})}</div>
+    <div class="note">${t("property_xd_provenance_html")}</div>`;
+  const ui=await import("../parcel_biography_ui.mjs").catch(()=>null);
+  if(!ui?.observedParcelBiographyHTML) return "";
+  return ui.observedParcelBiographyHTML(view,{
+    href:tools.parcelBiographyHref(bbl,{scope:propertyCurrentScope()}),
+    t,
+    escape:escUiHtml,
+    pivot:pivotA,
+    parcelPivot:parcelPivotHTML,
+    formatDate:fdate,
+    stageLabel:taxLienStageLabel,
+    outcomeLabel:taxLienOutcomeLabel,
+  });
+}
+
 /**
- * Cross-domain property panel: BBL → ZAP land projects, labeled owner → money awards.
- * Materialized lookup only (no live multi-source fan-out). Honest empty when no join.
+ * Observed parcel biography from committed exact-BBL materializations only.
+ * No live multi-source fan-out and no zero-coverage owner/counterparty block.
  */
 async function loadPropertyCrossDomain(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
@@ -652,82 +692,35 @@ async function loadPropertyCrossDomain(r, el){
       <div class="note">${t("property_xd_no_bbl_html")}</div>`;
     return;
   }
-  let demo = null;
+  let crossDomain = null, taxLien = null;
   try{
-    const res = await fetch(`data/property_cross_domain_lookup.json`, {cache:"force-cache"});
-    if(res && res.ok){
-      const doc = await res.json();
-      demo = (doc.demos && doc.demos[bbl]) || null;
-      if(!demo && doc.by_bbl && doc.by_bbl[bbl]){
-        const bucket = doc.by_bbl[bbl];
-        demo = {
-          ok: true,
-          bbl,
-          land: {
-            status: (bucket.land_projects||[]).length ? "matched" : "empty",
-            projects: bucket.land_projects || [],
-            count: (bucket.land_projects||[]).length,
-            note: (bucket.land_projects||[]).length ? null : t("property_xd_land_empty"),
-          },
-          owners: { status: "empty", items: [], count: 0 },
-          property: { status: "matched", notices: bucket.property_notices||[], count: (bucket.property_notices||[]).length },
-        };
-      }
-    }
+    const [crossRes,lienRes]=await Promise.all([
+      fetch(`data/property_cross_domain_lookup.json`,{cache:"force-cache"}),
+      fetch(`data/tax_lien_sale_bbl.json`,{cache:"force-cache"}),
+    ]);
+    if(crossRes?.ok) crossDomain=await crossRes.json();
+    if(lienRes?.ok) taxLien=await lienRes.json();
   }catch(_e){}
   if(!document.contains(el)) return;
-  if(!demo || !demo.ok){
-    el.innerHTML = `<div class="chain-h">${t("property_xd_heading")}</div>
-      <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bbl)})}</div>
-      <div class="note">${t("property_xd_provenance_html")}</div>`;
-    return;
+  el.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien);
+}
+async function paintParcelBiographyPanel(bbl){
+  const panel=$("#parcel-biography-panel"); if(!panel) return;
+  if(!/^\d{10}$/.test(String(bbl||""))){panel.hidden=true;panel.innerHTML="";return;}
+  panel.hidden=false;
+  panel.innerHTML=`<div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span></div>`;
+  try{
+    const [crossRes,lienRes]=await Promise.all([
+      fetch("data/property_cross_domain_lookup.json",{cache:"force-cache"}),
+      fetch("data/tax_lien_sale_bbl.json",{cache:"force-cache"}),
+    ]);
+    const crossDomain=crossRes?.ok?await crossRes.json():null;
+    const taxLien=lienRes?.ok?await lienRes.json():null;
+    if(propertyParcelScopeBbl!==bbl||!document.contains(panel)) return;
+    panel.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien);
+  }catch(_e){
+    if(document.contains(panel)) panel.innerHTML=`<div class="empty">${t("could_not_reach")}</div>`;
   }
-  const land = demo.land || {};
-  const owners = demo.owners || {};
-  let landHtml = "";
-  if(land.status === "matched" && (land.projects||[]).length){
-    landHtml = `<ul class="ei-list">${(land.projects||[]).map(p=>{
-      const href = (p.href && String(p.href).startsWith("#"))
-        ? p.href
-        : (p.project_id ? "#land?project="+encodeURIComponent(p.project_id) : null);
-      const label = escUiHtml(p.label||p.project_id||"—");
-      const link = href ? pivotA(href, label) : label;
-      return `<li><span class="ei-obj-main">${link}</span>
-        <span class="muted">${escUiHtml(p.public_status||"")}</span>
-        <span class="muted"> · ${t("property_xd_via_bbl",{bbl:escUiHtml(bbl)})}</span></li>`;
-    }).join("")}</ul>`;
-  } else {
-    landHtml = `<div class="note">${escUiHtml(land.note||t("property_xd_land_empty"))}</div>`;
-  }
-  let ownerHtml = "";
-  if(owners.status === "matched" && (owners.items||[]).length){
-    ownerHtml = (owners.items||[]).map(o=>{
-      const contracts = (o.contracts||[]).length
-        ? `<ul class="ei-list">${o.contracts.map(c=>{
-            const label = escUiHtml(c.label||c.request_id||"—");
-            const link = (c.href && String(c.href).startsWith("#")) ? pivotA(c.href, label) : label;
-            return `<li><span class="ei-obj-main">${link}</span>
-              ${c.pin?`<span class="muted"> · PIN ${escUiHtml(c.pin)}</span>`:""}</li>`;
-          }).join("")}</ul>`
-        : `<div class="note">${t("property_xd_owner_no_contracts")}</div>`;
-      r._property_owner = r._property_owner || o.name;
-      return `<div class="property-xd-owner"><div class="lc-pct" lang="en" dir="ltr"><strong>${escUiHtml(o.name)}</strong>
-        <span class="muted"> · ${escUiHtml(o.basis||"owner")}</span></div>${contracts}</div>`;
-    }).join("");
-  } else {
-    ownerHtml = `<div class="note">${t("property_xd_owner_empty")}</div>`;
-  }
-  el.innerHTML = `<div class="chain-h">${t("property_xd_heading")}</div>
-    <div class="note">${t("property_xd_bbl_label",{bbl:escUiHtml(bbl)})}</div>
-    <section class="property-xd-land" data-status="${escUiHtml(land.status||"")}">
-      <h3 class="ei-domain-h">${t("property_xd_land_heading")}</h3>
-      ${landHtml}
-    </section>
-    <section class="property-xd-owners" data-status="${escUiHtml(owners.status||"")}">
-      <h3 class="ei-domain-h">${t("property_xd_owner_heading")}</h3>
-      ${ownerHtml}
-    </section>
-    <div class="note">${t("property_xd_provenance_html")}</div>`;
 }
 
 /* ===== Property explorer: surplus-buyer commercial glance + process-stage rail.
@@ -983,7 +976,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const processLine=`<div class="property-process-line">
     <span class="${processChipClass}">${escUiHtml(closed?t("stage_past"):processLabel)}</span>
     ${entry.notice_count>1?`<span class="tag asset">${escUiHtml(t("property_chain_notice_count",{n:String(entry.notice_count)}))}</span>`:""}
-    ${entry.bbl?`<span class="tag place">${escUiHtml(t("property_list_bbl_chip",{bbl:entry.bbl}))}</span>`:``}
+    ${entry.bbl?`<span class="tag place">${parcelPivotHTML(entry.bbl)}</span>`:``}
   </div>`;
   const primaryActionKey=!closed&&cardCopy?.action_kind?"property_action_open_notice":actionKey;
   const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title||t("untitled")}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
@@ -1262,9 +1255,12 @@ async function renderPropExplorer(){
       .map(r=>allEntries.find(entry=>entry.primary===r)||null)
       .filter(Boolean);
   };
-  const scopedEntries=(overrides={})=>tools?.filterPropertyExplorerEntries
+  const parcelScopedEntries=(rows)=>propertyParcelScopeBbl
+    ?rows.filter(entry=>String(entry?.bbl||"")===propertyParcelScopeBbl)
+    :rows;
+  const scopedEntries=(overrides={})=>parcelScopedEntries(tools?.filterPropertyExplorerEntries
     ?tools.filterPropertyExplorerEntries(allEntries,{...filterOptions,...overrides})
-    :fallbackEntriesFor(overrides);
+    :fallbackEntriesFor(overrides));
   const partitionEntries=(scoped)=>tools?.partitionPropertyExplorerEntries
     ?tools.partitionPropertyExplorerEntries(scoped,{today:todayISO()})
     :{
@@ -1716,6 +1712,8 @@ globalThis.loadTaxLienForNotice = loadTaxLienForNotice;
 globalThis.loadTaxLienLookup = loadTaxLienLookup;
 globalThis.loadTaxLienSummary = loadTaxLienSummary;
 globalThis.paintTaxLienSalePanel = paintTaxLienSalePanel;
+globalThis.paintParcelBiographyPanel = paintParcelBiographyPanel;
+globalThis.parcelPivotHTML = parcelPivotHTML;
 globalThis.propStage = propStage;
 globalThis.propertyDispositionSpineHTML = propertyDispositionSpineHTML;
 globalThis.propertyDispositionTimingHTML = propertyDispositionTimingHTML;
@@ -1747,6 +1745,7 @@ Object.defineProperty(globalThis, "propSort", { configurable: true, get: () => p
 Object.defineProperty(globalThis, "propSpines", { configurable: true, get: () => propSpines, set: value => { propSpines = value; } });
 Object.defineProperty(globalThis, "propStageSel", { configurable: true, get: () => propStageSel, set: value => { propStageSel = value; } });
 Object.defineProperty(globalThis, "propertyView", { configurable: true, get: () => propertyView, set: value => { propertyView = value === "archive" ? "archive" : "default"; } });
+Object.defineProperty(globalThis, "propertyParcelScopeBbl", { configurable: true, get: () => propertyParcelScopeBbl, set: value => { propertyParcelScopeBbl = /^\d{10}$/.test(String(value||"")) ? String(value) : null; } });
 globalThis.normalizePropSaleMethod = normalizePropSaleMethod;
 globalThis.normalizePropPriceBand = normalizePropPriceBand;
 globalThis.normalizePropSort = normalizePropSort;
