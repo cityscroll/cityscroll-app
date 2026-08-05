@@ -79,13 +79,10 @@ test("PASSPort field case: predicted high-risk vs realized 78%, EPIN in graph", 
   // Contracts side keeps its own all_notices_to_contracts rate
   assert.equal(contracts.join_coverage?.realized?.rate, 0.74);
 
-  // Ranked list still carries PASSPort with realized either-source rate
-  // (package-document gap closed as class-b; pending/registered remain)
+  // PASSPort is retained in the source graph, but its landed collector is no
+  // longer presented as future acquisition work.
   const passportRank = registry.ranked_ingest_list.find((r) => /PASSPort/i.test(r.source));
-  assert.ok(passportRank, "PASSPort still on ranked ingest list");
-  assert.equal(passportRank.realized_join_rate, 0.78);
-  assert.equal(passportRank.predicted_join_grade, "high-risk");
-  assert.ok(passportRank.rank <= 3, `PASSPort near top, got rank ${passportRank.rank}`);
+  assert.equal(passportRank, undefined);
 });
 
 test("newly-feasible pair: passport contract_id × checkbook is enumerated", () => {
@@ -134,6 +131,14 @@ test("re-derivation is deterministic and --check passes on committed registry", 
 
   const check = checkDepotFreshness(registry, sourceContracts, { observedOn: "2026-07-30" });
   assert.equal(check.ok, true, check.mismatches?.join("; "));
+});
+
+test("re-derivation preserves partnership-blocked wishlist sources", () => {
+  const registry = loadGapTaxonomy();
+  const sourceContracts = loadSourceContracts();
+  const { registry: next } = rederiveDepot(registry, sourceContracts, { observedOn: "2026-08-05" });
+  assert.deepEqual(next.partnership_blocked_sources, registry.partnership_blocked_sources);
+  assert.ok(next.partnership_blocked_sources.some((source) => source.wishlist_gap_id === "money-location-residual"));
 });
 
 test("drift gate fails when realized coverage is stripped from a landed source", () => {
