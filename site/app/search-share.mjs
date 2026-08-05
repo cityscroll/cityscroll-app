@@ -454,7 +454,7 @@ async function resolveMoneyNarrow(){
   if(!text) return false;
   if(typeof isLiteralKeyword!=="function" && !await loadNlParser()) return false;
   if(isLiteralKeyword(text)) return false;
-  const buttons=[$("#quizgo")].filter(Boolean);
+  const buttons=[$("#apreview")].filter(Boolean);
   buttons.forEach(b=>b.disabled=true);
   const parsed = await nlResolve(text, "alerts");
   buttons.forEach(b=>b.disabled=false);

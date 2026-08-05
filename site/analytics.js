@@ -99,10 +99,10 @@
       record("search_run", { lens, detail: "preset", geography: currentArea(), surface: "home" });
       return;
     }
-    if (target.matches("#quizgo,#asubscribe,#landalert,.watchbtn")) {
+    if (target.matches("#apreview,#asubscribe,#landalert,.watchbtn")) {
       record("alert_start", {
         lens,
-        detail: target.id === "quizgo" ? "preview" : "subscribe",
+        detail: target.id === "apreview" ? "preview" : "subscribe",
         surface: "home",
       });
       return;

@@ -82,7 +82,7 @@ def main():
                     page.click(f'.tabbtn[data-tab="{tab}"]')
                     page.wait_for_timeout(400)
                     census(page, f"{name} [tab:{tab}]", failures)
-                page.click("#quizgo")
+                page.click("#apreview")
                 page.wait_for_timeout(600)
                 census(page, f"{name} [alerts:digest-preview]", failures)
 

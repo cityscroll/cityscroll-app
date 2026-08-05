@@ -8,7 +8,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // interpretations of the same typed text.
 //
 // resolveMoneyNarrow() (index.html) is the one place both entry points that share the
-// rfpkw watch type — the single #quizgo preview control — now resolves a non-literal query:
+// rfpkw watch type — the single #apreview preview control — now resolves a non-literal query:
 // promote it to the "moneynl" shape via NL.alerts.apply(),
 // the SAME function the Ask box's apply step already calls, so preview and a saved alert are
 // built from ONE interpreted filter. A literal single word or quoted phrase is left alone.
@@ -43,7 +43,7 @@ function makeResolver({ watch, aparam }) {
   const fields = {
     "#awatch": { value: watch },
     "#aparam": { value: aparam },
-    "#quizgo": { disabled: false },
+    "#apreview": { disabled: false },
     "#nltrans-alerts": { innerHTML: "" },
   };
   const $ = (sel) => fields[sel];

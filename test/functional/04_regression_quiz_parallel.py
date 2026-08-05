@@ -23,7 +23,7 @@ with sync_playwright() as pw:
     # 1) rezonings first (this used to plant "79 Rivington"), then rules, no narrowing
     page.click('#quizwhat .chip[data-w="rezone"]')
     page.click('#quizwhat .chip[data-w="rules"]')
-    page.click("#quizgo")
+    page.click("#apreview")
     page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     st = page.evaluate("({param:document.getElementById('aparam').value, subj:document.querySelector('#apreviewbox .esubj').textContent})")
     leak = "rivington" in (st["param"] + st["subj"]).lower()
@@ -33,14 +33,14 @@ with sync_playwright() as pw:
     for w in ["property", "meetings"]:
         page.click('#quizwhat .chip[data-w="rezone"]')
         page.click(f'#quizwhat .chip[data-w="{w}"]')
-        page.click("#quizgo")
+        page.click("#apreview")
         page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
         st = page.evaluate("({param:document.getElementById('aparam').value, subj:document.querySelector('#apreviewbox .esubj').textContent})")
         step("rivington" not in (st["param"] + st["subj"]).lower(), f"{w} after rezone: no leak", str(st))
 
     # 3) parallel default: rezone itself with NO narrowing = citywide, not a hardcoded address
     page.click('#quizwhat .chip[data-w="rezone"]')
-    page.click("#quizgo")
+    page.click("#apreview")
     page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     st = page.evaluate("({param:document.getElementById('aparam').value, subj:document.querySelector('#apreviewbox .esubj').textContent})")
     step("rivington" not in (st["param"] + st["subj"]).lower(), "rezone with no narrowing: citywide default, no hardcoded address", str(st))
@@ -54,7 +54,7 @@ with sync_playwright() as pw:
     # 5) typing a narrowing still works
     page.click('#quizwhat .chip[data-w="rules"]')
     page.fill("#quiznarrow", "sidewalk")
-    page.click("#quizgo")
+    page.click("#apreview")
     page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     subj = page.locator("#apreviewbox .esubj").inner_text()
     step("sidewalk" in subj, "explicit narrowing still applies", subj)

@@ -137,7 +137,7 @@ SURFACES = [
     ("notice-property", "#notice/20241112003", "#noticeview .rolename", "#noticeview", None),
     ("notice-rules", "#notice/20260714029", "#noticeview .rolename", "#noticeview", None),
     ("notice-meetings", f"#notice/{HEARING_ROW['request_id']}", "#noticeview .rolename", "#noticeview", None),
-    ("digest", "#alerts", "#quizgo", "#apreviewbox", "#quizgo"),
+    ("digest", "#alerts", "#apreview", "#apreviewbox", "#apreview"),
 ]
 
 

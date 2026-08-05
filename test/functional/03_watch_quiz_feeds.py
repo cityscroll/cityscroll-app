@@ -68,7 +68,7 @@ with sync_playwright() as pw:
     on = p2.evaluate("document.querySelector('#quizwhat .chip.on')?.dataset.w")
     p2.fill("#quiznarrow", "community board")
     p2.click('#quizfreq .chip[data-f="Weekly"]')
-    p2.click("#quizgo")
+    p2.click("#apreview")
     p2.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     st = p2.evaluate("""({watch:document.getElementById('awatch').value, param:document.getElementById('aparam').value,
         freq:document.getElementById('afreq').value, subj:document.querySelector('#apreviewbox .esubj').textContent})""")
@@ -86,30 +86,30 @@ with sync_playwright() as pw:
     p3.wait_for_selector("#quizpanel", timeout=15000)
     p3.click('#quizwhat .chip[data-w="bigaward"]')
     dis = p3.evaluate("document.getElementById('quiznarrow').disabled")
-    p3.click("#quizgo")
+    p3.click("#apreview")
     p3.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     subj = p3.locator("#apreviewbox .esubj").inner_text()
     step("PROBE" if dis and "awards over" in subj else "FAIL", "quiz bigaward path", f"narrow disabled={dis}, subj={subj!r}")
-    # probe: quizgo with nothing selected → nudge, no crash
+    # probe: apreview with nothing selected → nudge, no crash
     p4 = ctx.new_page()
     p4.goto(BASE + "#alerts", timeout=30000)
-    p4.wait_for_selector("#quizgo", timeout=15000)
-    p4.click("#quizgo")
+    p4.wait_for_selector("#apreview", timeout=15000)
+    p4.click("#apreview")
     ph = p4.evaluate("document.getElementById('quiznarrow').placeholder")
     step("PROBE" if "pick a topic" in ph else "FAIL", "quiz CTA without topic → nudge", ph)
     p4.close()
 
     # regression (site-owner field report, 2026-07-15): typing straight into "(2) Narrow by
-    # keyword" without first clicking a step-1 topic chip used to hard no-op — #quizgo's
+    # keyword" without first clicking a step-1 topic chip used to hard no-op — #apreview's
     # handler returned before doing anything but swap a placeholder the typed text was
     # already hiding, so the click looked like it did nothing at all. Same text into the
     # Ask box worked fine, so the fix now routes this path through the same
     # nlResolve()/NL.alerts.apply() the Ask box already uses (see nlTranslateLens()).
     p5 = ctx.new_page()
     p5.goto(BASE + "#alerts", timeout=30000)
-    p5.wait_for_selector("#quizgo", timeout=15000)
+    p5.wait_for_selector("#apreview", timeout=15000)
     p5.fill("#quiznarrow", "education contracts over $200k due in 3 months")
-    p5.click("#quizgo")
+    p5.click("#apreview")
     p5.wait_for_function("document.getElementById('awatch').value === 'moneynl'", timeout=15000)
     p5.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     st = p5.evaluate("""({watch: document.getElementById('awatch').value,

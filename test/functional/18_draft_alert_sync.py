@@ -60,7 +60,7 @@ with sync_playwright() as pw:
 
     # 4) Preview from the BUILDER's own button -- must reflect BOTH the quiz's topic pick
     #    (bigaward) AND the builder's own amount edit ($10M+), not a stale mix of the two.
-    page.click("#quizgo")
+    page.click("#apreview")
     page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     subj = page.locator("#apreviewbox .esubj").inner_text()
     step("$10.00M" in subj and "award" in subj.lower(),
@@ -68,7 +68,7 @@ with sync_playwright() as pw:
 
     # 5) Repeating the one Preview action must produce the identical description; no hidden
     #    parallel control may compile a different draft.
-    page.click("#quizgo")
+    page.click("#apreview")
     page.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
     subj2 = page.locator("#apreviewbox .esubj").inner_text()
     step(subj2 == subj, "quiz's own Preview button previews the SAME draft as the builder's button",

@@ -505,7 +505,7 @@ $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",(
   if($("#afreq").value !== b.dataset.f){ $("#afreq").value = b.dataset.f; updateAWhen(); }
   announce(t("sync_freq_announce", {freq: b.textContent.trim()}));
 }));
-$("#quizgo").addEventListener("click", async ()=>{
+$("#apreview").addEventListener("click", async ()=>{
   if(!quizW){
     // Field report (2026-07-15): typing straight into step 2 without clicking a step-1
     // topic chip first used to silently no-op — the swapped placeholder is invisible once
@@ -514,9 +514,9 @@ $("#quizgo").addEventListener("click", async ()=>{
     // than requiring the redundant chip click.
     const text=$("#quiznarrow").value.trim();
     if(!text){ $("#quiznarrow").placeholder=t("pick_topic_first"); return; }
-    $("#quizgo").disabled=true;
+    $("#apreview").disabled=true;
     await nlTranslateLens("alerts", {text, inputSel:"#quiznarrow"});
-    $("#quizgo").disabled=false;
+    $("#apreview").disabled=false;
     $("#apreviewbox").scrollIntoView({behavior:"smooth", block:"start"});
     return;
   }
