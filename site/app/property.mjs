@@ -816,6 +816,9 @@ function dcasFleetInventoryHTML(snapshot,tools){
   if(surface.status==="open" && freshness.status==="fresh") status=t("dcas_fleet_open",{n:surface.count});
   else if(surface.status==="open" && freshness.status!=="fresh") status=t("dcas_fleet_stale",{date:sourceAsOf});
   else if(surface.status==="closed") status=t("dcas_fleet_closed",{date:fdt(surface.latest_close_date,{dateOnly:true})});
+  const isClosedSurface = surface.status==="closed";
+  const closeLabelKey = isClosedSurface ? "dcas_fleet_auction_closed" : "dcas_fleet_auction_end";
+  const summaryLabelKey = isClosedSurface ? "dcas_fleet_batch_summary_closed" : "dcas_fleet_batch_summary";
   const batches=(surface.batches||[]).map(batch=>{
     const vehicles=(batch.vehicles||[]).map(vehicle=>{
       const event=Array.isArray(vehicle.timed_events)
@@ -825,19 +828,26 @@ function dcasFleetInventoryHTML(snapshot,tools){
       const prices=[];
       if(vehicle.current_bid!=null) prices.push(`<span class="tag amt">${escUiHtml(t("dcas_fleet_current_bid",{amount:dcasFleetMoney(vehicle.current_bid)}))}</span>`);
       if(vehicle.starting_price!=null) prices.push(`<span class="tag amt">${escUiHtml(t("dcas_fleet_starting_price",{amount:dcasFleetMoney(vehicle.starting_price)}))}</span>`);
-      const lotUrl=vehicle.lot_url||snapshot?.source?.marketplace;
-      const actionKey=vehicle.lot_url?"dcas_fleet_open_lot":"dcas_fleet_open_marketplace";
       return `<article class="dcas-fleet-lot" data-auction-end="${escUiHtml(endDate||"")}" data-temporal-status="${freshness.status==="fresh"?"open":"as-of"}" lang="en" dir="ltr">
         <div class="dcas-fleet-lot-title"><strong>${escUiHtml(dcasFleetVehicleLabel(vehicle))}</strong>${vehicle.vin?` <span class="muted">· ${escUiHtml(t("dcas_fleet_vin",{vin:vehicle.vin}))}</span>`:""}</div>
         ${vehicle.description?`<p class="dcas-fleet-description">${escUiHtml(vehicle.description)}</p>`:""}
-        <div class="dcas-fleet-lot-facts"><time class="tag ${freshness.status==="fresh"?"open":"closed"}" datetime="${escUiHtml(endDate||"")}" data-date-chip="1" data-auction-end="1">${escUiHtml(t("dcas_fleet_auction_end",{date:fdt(endDate,{dateOnly:true})}))}</time>${prices.join("")}</div>
-        <div class="factions"><a class="act primary" href="${escUiHtml(lotUrl)}" ${EXT_ATTRS}>${escUiHtml(t(actionKey))}${extSR()}</a></div>
+        <div class="dcas-fleet-lot-facts"><time class="tag ${freshness.status==="fresh"?"open":"closed"}" datetime="${escUiHtml(endDate||"")}" data-date-chip="1" data-auction-end="1">${escUiHtml(t(closeLabelKey,{date:fdt(endDate,{dateOnly:true})}))}</time>${prices.join("")}</div>
       </article>`;
     }).join("");
-    return `<section class="dcas-fleet-batch" data-auction-batch="${escUiHtml(batch.close_date)}"><h3>${escUiHtml(t("dcas_fleet_batch_summary",{n:batch.count,date:fdt(batch.close_date,{dateOnly:true})}))}</h3><div class="dcas-fleet-lots">${vehicles}</div></section>`;
+    return `<section class="dcas-fleet-batch" data-auction-batch="${escUiHtml(batch.close_date)}"><h3>${escUiHtml(t(summaryLabelKey,{n:batch.count,date:fdt(batch.close_date,{dateOnly:true})}))}</h3><div class="dcas-fleet-lots">${vehicles}</div></section>`;
   }).join("");
   const sourceUpdated=snapshot?.vintage?.source_updated_at
     ? `<br><span class="muted">${escUiHtml(t("dcas_fleet_source_updated",{date:fdt(snapshot.vintage.source_updated_at)}))}</span>`
+    : "";
+  const sourceStalenessMessage = freshness.status === "fresh" ? ""
+    : `<br><span class="muted">${escUiHtml(t(
+      "dcas_fleet_source_stale",
+      {
+        days: Number.isFinite(Number(freshness.age_days)) ? Math.trunc(Number(freshness.age_days)) : "unknown",
+      },
+    ))}</span>`;
+  const cadenceLine = isClosedSurface
+    ? `<br><span class="muted">${escUiHtml(t("dcas_fleet_batch_cadence"))}</span>`
     : "";
   const provenance=snapshot?.source?.provenance_notice_url
     ? `<a class="act" href="#notice/${encodeURIComponent(snapshot.source.provenance_notice_id||"")}">${escUiHtml(t("dcas_fleet_provenance_notice"))}</a>`
@@ -847,7 +857,7 @@ function dcasFleetInventoryHTML(snapshot,tools){
     <h3>${escUiHtml(status)}</h3>
     <p>${escUiHtml(t("dcas_fleet_basis"))}</p>
     ${batches}
-    <p class="note">${escUiHtml(t("dcas_fleet_source_note"))}${sourceAsOf?`<br>${escUiHtml(t("dcas_fleet_as_of",{date:sourceAsOf}))}`:""}${sourceUpdated}</p>
+    <p class="note">${escUiHtml(t("dcas_fleet_source_note"))}${sourceAsOf?`<br>${escUiHtml(t("dcas_fleet_as_of",{date:sourceAsOf}))}`:""}${sourceUpdated}${sourceStalenessMessage}${cadenceLine}</p>
     <div class="factions">${compactCardActions(
       `<a class="act primary" href="${escUiHtml(snapshot.source.official_guide)}" ${EXT_ATTRS}>${escUiHtml(t("dcas_fleet_open_guide"))}${extSR()}</a>`,
       [`<a class="act" href="${escUiHtml(snapshot.source.marketplace)}" ${EXT_ATTRS}>${escUiHtml(t("dcas_fleet_open_marketplace"))}${extSR()}</a>`, provenance]

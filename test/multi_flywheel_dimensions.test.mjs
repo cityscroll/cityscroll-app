@@ -32,6 +32,8 @@ import {
 import {
   findCurrencyLeakedDateChips,
   findPastDeadlinesInDefaultView,
+  findTenseParityViolations,
+  findRepeatedIdenticalButtonActions,
 } from "../site/property_list_sanity.mjs";
 import { DIMENSION_IDS, DIMENSION_EVALUATORS } from "../ontology/dimensions/index.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
@@ -248,6 +250,69 @@ test("surface-load flags currency-leaked date chips and past closes in default h
   assert.equal(result.metrics.temporal_sanity_flags, 1);
   assert.ok(result.cards.length >= 1);
   assert.match(result.cards[0].lesson_class, /temporal-sanity|chip-format/);
+});
+
+test("surface-load flags repeated identical CTAs and past-tense mismatch in visible text", () => {
+  const tenseBad = findTenseParityViolations(
+    "Current auction closes July 23, 2026 and another closes 2026-01-01",
+    { today: "2026-08-05" },
+  );
+  assert.equal(tenseBad.ok, false);
+  assert.equal(tenseBad.findings.length, 2);
+
+  const ctaBad = findRepeatedIdenticalButtonActions([
+    { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+    { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+    { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+    { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+  ]);
+  assert.equal(ctaBad.ok, false);
+  assert.equal(ctaBad.findings.length, 1);
+  assert.equal(ctaBad.findings[0].count, 4);
+
+  const surface = {
+    id: "property-list",
+    label: "Property list",
+    route: "#property",
+    status: "ok",
+    action_required: true,
+    budgets: {
+      words: 5000,
+      links: 500,
+      buttons: 100,
+      max_verbatim_repeat: 149,
+      max_first_action_y: 900,
+    },
+    measured: {
+      words: 500,
+      links: 120,
+      buttons: 80,
+      max_verbatim_repeat: 1,
+      verbatim_duplicates: [],
+      first_action_y: 120,
+      today: "2026-08-05",
+      visible_text: "Auction closes July 23, 2026 for city fleet listings.",
+      action_links: [
+        { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+        { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+        { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+        { section: "property-list", label: "Browse GovDeals fleet", href: "https://govdeals.example" },
+      ],
+    },
+  };
+  const breaches = surfaceLoadBreaches(surface);
+  assert.ok(breaches.some((b) => b.kind === "tense-parity-active-past"));
+  assert.ok(breaches.some((b) => b.kind === "repeated-identical-cta"));
+  const result = evaluateSurfaceLoad({
+    surface_load: {
+      measured_at: "2026-08-05T12:00:00Z",
+      surfaces: [surface],
+    },
+  });
+  assert.equal(result.metrics.tense_parity_flags, 1);
+  assert.equal(result.metrics.repeated_cta_flags, 1);
+  assert.equal(result.metrics.surfaces_over_budget, 1);
+  assert.ok(result.cards.length >= 1);
 });
 
 test("surface-load flags the same semantic fact repeated within one card", () => {
