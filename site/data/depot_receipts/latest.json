@@ -154,6 +154,36 @@
       ]
     },
     {
+      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 4,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 4,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
       "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
       "worth_materializing": "yes",
       "score": 3,
@@ -191,6 +221,71 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "city-record-x-dob-now-job-filings-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-zap-bbl-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-zap-projects-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
       ]
     },
     {
@@ -259,29 +354,27 @@
       ]
     },
     {
-      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
-      "worth_materializing": "maybe",
+      "id": "city-record-x-legacy-dob-job-filings-via-BBL",
+      "worth_materializing": "yes",
       "score": 2,
       "key_path": [
-        "PIN",
-        "request_id"
+        "BBL"
       ],
       "gaps_would_close": [
-        "city-record-attachment-export-cliff",
-        "procurement-ocp-recent-awards"
+        "meetings-location-residual",
+        "property-parcel-key-residual"
       ]
     },
     {
-      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
-      "worth_materializing": "maybe",
+      "id": "city-record-x-mappluto-via-BBL",
+      "worth_materializing": "yes",
       "score": 2,
       "key_path": [
-        "PIN",
-        "request_id"
+        "BBL"
       ],
       "gaps_would_close": [
-        "city-record-attachment-export-cliff",
-        "procurement-ocp-recent-awards"
+        "meetings-location-residual",
+        "property-parcel-key-residual"
       ]
     },
     {
@@ -616,34 +709,16 @@
   "ranked_ingest_top": [
     {
       "rank": 1,
-      "source": "Legistar agenda/vote materialization depth",
-      "value_score": 53,
-      "realized_join_rate": 1
-    },
-    {
-      "rank": 2,
-      "source": "PASSPort Public contracts + solicitations",
-      "value_score": 45.6,
-      "realized_join_rate": 0.78
-    },
-    {
-      "rank": 3,
-      "source": "ZAP decision docs + DOB NOW outcome stitch",
-      "value_score": 35,
-      "realized_join_rate": 1
-    },
-    {
-      "rank": 4,
-      "source": "DCAS annual exam outcomes → exam card join",
+      "source": "Official board and agency meeting pages for the location residual",
       "value_score": 15,
       "realized_join_rate": null
     },
     {
-      "rank": 5,
-      "source": "Recent Contract Awards Open Data qyyg-4tf5",
+      "rank": 2,
+      "source": "Property notice parcel-key residual",
       "value_score": 15,
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "af23491bc374db43e8c142b65865f64ce3eb73f78ed0efaccb930a56400d12b2"
+  "registry_sha256": "9468bacef1f2f93179124295c218b1e9d091f3a0a41e1144a3ee19576cf33116"
 }

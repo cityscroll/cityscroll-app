@@ -17,36 +17,39 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 
 ## Inventory summary
 
-| Gap | Class | Public home or “would appear in” |
-|---|---|---|
-| notice detail · attachment metadata | a | City Record Online file attachments |
-| contract lifecycle · pending stage | a | Checkbook NYC Contracts |
-| contract lifecycle · registered stage | a | Checkbook NYC Contracts |
-| contract lifecycle · payment stage | a | Checkbook NYC Spending |
-| contract lifecycle · provenance when PIN missing | b | Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID |
-| contract lifecycle · tender / package documents **CLASS CHANGE** | b | City Record Online file attachments (GetFile on a856-cityrecord.nyc.gov) if the notice published package documents |
-| OCDS tender/numberOfTenderers · contestability package | a | Bid Tabulations (Historical) |
-| award detail enrichment beyond City Record | a | Recent Contract Awards (OCP) |
-| OCDS planning/budget and planning/rationale | b | the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data |
-| award notice · prime-win sub-outreach (data wishlist only) | b | agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id — https://comptroller.nyc.gov/reports/nyc-contracts/ |
-| subsidy lifecycle · per-stage empty slot | a | NYCIDA/Build NYC public documents |
-| subsidy lifecycle · stage outcome | b | Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released |
-| subsidy lifecycle · no project join | b | NYCIDA/Build NYC financial public documents page if a project record is released for the notice |
-| subsidy lifecycle · company / place / money fields | b | the linked Build NYC project record if those fields are filled on publication |
-| subsidy lifecycle · company / place / money when only City Record hearing is joined | a | NYCIDA/Build NYC public documents |
-| Council meeting outcomes · no event join | a | NYC Council Legistar API |
-| Council meeting outcomes · matter without roll-call detail | a | NYC Council Legistar votes |
-| Council meeting outcomes · event without agenda matters | a | NYC Council Legistar agenda items |
-| non-Council hearings · votes | b | borough president websites and community board minutes / vote pages if released as a citywide machine-readable open data feed (not only member rosters) |
-| Agency Rules notice detail · lifecycle event slots without an NYC Rules join | a | NYC Rules RSS feed |
-| Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule | b | the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date |
-| staffing exam cards · post-cycle outcomes | a | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts |
-| per-applicant exam results | b | DCAS candidate portals only if individual results were released as public open data (they are not) |
-| staffing exam card · fee or salary null **CLASS CHANGE** | a | DCAS open-competitive exam schedule and Notices of Examination |
-| agency awards empty state · verified absent | b | NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset |
-| notice external-award empty after ABO check | a | NYS Authorities Budget Office procurement datasets |
-| Property commercial watch · non-fleet surplus goods | b | a DCAS-hosted item-level feed or an authorized GovDeals client API/export if DCAS and GovDeals release one |
-| land / ZAP · final decision documents beyond status | a | Zoning Application Portal projects |
+| Gap | Class | Disposition | Public home or “would appear in” | Closure receipt |
+|---|---|---|---|---|
+| notice detail · attachment metadata | a | landed | City Record Online file attachments | [receipt](https://github.com/cityscroll/crol-list/pull/411) |
+| contract lifecycle · pending stage | a | landed | Checkbook NYC Contracts | [receipt](https://github.com/cityscroll/crol-list/pull/141) |
+| contract lifecycle · registered stage | a | landed | Checkbook NYC Contracts | [receipt](https://github.com/cityscroll/crol-list/pull/141) |
+| contract lifecycle · payment stage | a | landed | Checkbook NYC Spending | [receipt](https://github.com/cityscroll/crol-list/pull/141) |
+| contract lifecycle · provenance when PIN missing | b | publication_blocked | Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID | — |
+| contract lifecycle · tender / package documents **CLASS CHANGE** | b | measured_stop | City Record Online file attachments (GetFile on a856-cityrecord.nyc.gov) if the notice published package documents | — |
+| OCDS tender/numberOfTenderers · contestability package | a | measured_stop | Bid Tabulations (Historical) | — |
+| award detail enrichment beyond City Record | a | landed | Recent Contract Awards (OCP) | [receipt](https://github.com/cityscroll/crol-list/pull/176) |
+| OCDS planning/budget and planning/rationale | b | measured_stop | the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data | — |
+| award notice · prime-win sub-outreach (data wishlist only) | b | publication_blocked | agency or Comptroller subcontract-utilization / M/WBE goal reports if released as a joinable public feed keyed by PIN or contract id — https://comptroller.nyc.gov/reports/nyc-contracts/ | — |
+| subsidy lifecycle · per-stage empty slot | a | open | NYCIDA/Build NYC public documents | — |
+| subsidy lifecycle · stage outcome | b | publication_blocked | Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released | — |
+| subsidy lifecycle · no project join | b | open | NYCIDA/Build NYC financial public documents page if a project record is released for the notice | — |
+| subsidy lifecycle · company / place / money fields | b | publication_blocked | the linked Build NYC project record if those fields are filled on publication | — |
+| subsidy lifecycle · company / place / money when only City Record hearing is joined | a | open | NYCIDA/Build NYC public documents | — |
+| Council meeting outcomes · no event join | a | landed | NYC Council Legistar API | [receipt](https://github.com/cityscroll/crol-list/pull/191) |
+| Council meeting outcomes · matter without roll-call detail | a | timing | NYC Council Legistar votes | — |
+| Council meeting outcomes · event without agenda matters | a | timing | NYC Council Legistar agenda items | — |
+| non-Council hearings · votes | b | publication_blocked | borough president websites and community board minutes / vote pages if released as a citywide machine-readable open data feed (not only member rosters) | — |
+| Agency Rules notice detail · lifecycle event slots without an NYC Rules join | a | landed | NYC Rules RSS feed | [receipt](https://github.com/cityscroll/crol-list/pull/252) |
+| Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule | b | publication_blocked | the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date | — |
+| staffing exam cards · post-cycle outcomes | a | landed | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts | [receipt](https://github.com/cityscroll/crol-list/pull/175) |
+| per-applicant exam results | b | publication_blocked | DCAS candidate portals only if individual results were released as public open data (they are not) | — |
+| staffing exam card · fee or salary null **CLASS CHANGE** | a | landed | DCAS open-competitive exam schedule and Notices of Examination | [receipt](https://github.com/cityscroll/crol-list/pull/366) |
+| agency awards empty state · verified absent | b | publication_blocked | NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset | — |
+| notice external-award empty after ABO check | a | measured_stop | NYS Authorities Budget Office procurement datasets | — |
+| Property commercial watch · non-fleet surplus goods | b | publication_blocked | a DCAS-hosted item-level feed or an authorized GovDeals client API/export if DCAS and GovDeals release one | — |
+| land / ZAP · final decision documents beyond status | a | landed | Zoning Application Portal projects | [receipt](https://github.com/cityscroll/crol-list/pull/188) |
+| Money map · place-of-performance coverage | b | publication_blocked | a contract-keyed public place-of-performance or service-area field released by the procuring agency or PASSPort | — |
+| Meetings map · unresolved matter or venue geography | a | open | City Record Online | — |
+| Property · parcel-linked notice context | a | open | City Record Online | — |
 
 ## Join graph (sources)
 
@@ -61,7 +64,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
-| `city-record` | live-only | PIN, request_id, agency, document_id | — | — |
+| `city-record` | live-only | PIN, request_id, agency, document_id, event_date, BBL | — | — |
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `dcas-annual-exam-outcomes` | landed | exam_number, exam_no | medium | — |
 | `dcas-exam-notices` | landed | exam_number | — | — |
@@ -110,20 +113,20 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-spending-x-passport-public-rfx-via-PIN` | `checkbook-spending` × `passport-public-rfx` | PIN | yes | 5 |
 | `checkbook-contracts-x-recent-contract-awards-ocp-via-PIN` | `checkbook-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
 | `checkbook-spending-x-recent-contract-awards-ocp-via-PIN` | `checkbook-spending` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
+| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 4 |
+| `city-record-x-recent-contract-awards-ocp-via-PIN+request_id` | `city-record` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 4 |
 | `checkbook-contracts-x-checkbook-spending-via-PIN+contract_id` | `checkbook-contracts` × `checkbook-spending` | PIN · contract_id | yes | 3 |
 | `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 3 |
+| `city-record-x-dob-now-job-filings-via-BBL` | `city-record` × `dob-now-job-filings` | BBL | yes | 3 |
+| `city-record-x-unregistered-zoning-application-portal-projects-via-BBL` | `city-record` × `unregistered-zoning-application-portal-projects` | BBL | maybe | 3 |
+| `city-record-x-zap-api-outcomes-via-BBL` | `city-record` × `zap-api-outcomes` | BBL | yes | 3 |
+| `city-record-x-zap-bbl-via-BBL` | `city-record` × `zap-bbl` | BBL | yes | 3 |
+| `city-record-x-zap-projects-via-BBL` | `city-record` × `zap-projects` | BBL | yes | 3 |
 | `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 3 |
 | `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 3 |
 | `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 3 |
 | `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 3 |
-| `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 3 |
-| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 2 |
-| `city-record-x-recent-contract-awards-ocp-via-PIN+request_id` | `city-record` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 2 |
-| `current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id` | `current-solicitations-ocp` × `nycida-build-nyc-projects` | request_id | maybe | 2 |
-| `passport-public-contracts-x-recent-contract-awards-ocp-via-PIN` | `passport-public-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 2 |
-| `abo-local-authorities-x-doing-business-entities-via-vendor_name` | `abo-local-authorities` × `doing-business-entities` | vendor_name | maybe | 1 |
-| `active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no` | `active-civil-service-list` × `dcas-annual-exam-outcomes` | exam_no | maybe | 1 |
 
 ## Graph view
 
@@ -145,9 +148,9 @@ graph LR
   checkbook_spending-.->|PIN/contract_id candidate| passport_public_contracts
   checkbook_spending-.->|PIN candidate| passport_public_rfx
   checkbook_contracts-.->|PIN/contract_id candidate| checkbook_spending
-  nycida_build_nyc_projects-.->|project_id candidate| zap_api_outcomes
-  nycida_build_nyc_projects-.->|project_id candidate| zap_bbl
-  nycida_build_nyc_projects-.->|project_id candidate| zap_projects
+  city_record-.->|BBL candidate| dob_now_job_filings
+  city_record-.->|BBL candidate| zap_api_outcomes
+  city_record-.->|BBL candidate| zap_bbl
 ```
 
 ## Ranked class-(a) ingest list
@@ -155,14 +158,8 @@ graph LR
 Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 `site/data/gap_taxonomy.json` → `ranked_ingest_list`.
 
-1. **Legistar agenda/vote materialization depth** — meeting-outcomes-unmatched, meeting-votes-absent, meeting-matters-absent. Measured join **100%**. Predicted grade: **medium**. Measured 100% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).
-2. **PASSPort Public contracts + solicitations** — procurement-pending-unmatched, procurement-registered-unmatched. Measured join **78%**. Predicted grade: **high-risk**. Measured 78% either-source EPIN↔PIN on PIN-bearing Procurement notices since 2025-01-01 (predicted pre-landing grade: high-risk). Medium — stable dataJs machine path; strict EPIN↔PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.
-3. **ZAP decision docs + DOB NOW outcome stitch** — land-outcome-detail. Measured join **100%**.
-4. **DCAS annual exam outcomes → exam card join** — exam-outcome-aggregate.
-5. **Recent Contract Awards Open Data qyyg-4tf5** — procurement-ocp-recent-awards.
-6. **Doing Business Search Entities 72mk-a8z7** — secondary enrichment. Measured join **70.4%**. Predicted grade: **medium**. Measured 70.4% modern award notice-level vendor_stem join (predicted pre-landing grade: medium). Measured — stem join above usefulness; edge-materialized onto vendor profiles.
-7. **Current Solicitations Open Data 3khw-qi8f** — secondary enrichment. Measured modern document_links fill 0% (0/1550 for start_date ≥ 2025-01-01). PIN/request_id join for due dates may still work; package docs are not a modern fill. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. Measured stop — do not treat OCP as modern package-doc source; enrichment for due dates/contacts remains.
-8. **Bid Tabulations Historical 9k82-ys7w** — procurement-bid-counts. Measured join **0%**. Predicted grade: **high-risk**. High — measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical). Measured — recon complete; materialization stopped below usefulness threshold.
+1. **Official board and agency meeting pages for the location residual** — meetings-location-residual.
+2. **Property notice parcel-key residual** — property-parcel-key-residual.
 
 ## Class changes (loud)
 
@@ -170,7 +167,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - **CLASS CHANGE** `exam-salary-fee-not-published`: not_published → not_yet_ingested — Open-competitive NOE path is a landed public source; schedule-only nulls are never-ingested, not withheld
 
 
-## Verification notes (2026-08-04)
+## Verification notes (2026-08-05)
 
 - Open Data views 3khw-qi8f, qyyg-4tf5, 9k82-ys7w, 72mk-a8z7 returned live metadata.
 - PASSPort Public contracts and rfx pages returned HTTP 200.
@@ -181,6 +178,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.
 - Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.
 - ABO residual join (2026-08-04): 1/50 labeled matches (2%), 50% fuzzy precision, five false positives, and four ambiguous groups; no notice-level edge materialization below the 30% usefulness and 95% precision gates.
+- August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 11/119 Meetings after PR #500, and 1/139 Property parcel keys.
 
 ## UI copy keys (two registers)
 
@@ -197,4 +195,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `23ee16a57688…` · materialized 11 · candidates 44 · class changes 0.
+Last refresh fingerprint: `23ee16a57688…` · materialized 11 · candidates 51 · class changes 0.
