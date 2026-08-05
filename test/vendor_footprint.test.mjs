@@ -38,7 +38,7 @@ function fixtureDoc() {
   };
 }
 
-test("build derives award coverage from the full known set and excludes weak candidates", () => {
+test("build derives award coverage from the full snapshot aggregate, not the bounded graph", () => {
   const coverage = buildVendorFootprintCoverage(fixtureDoc(), {
     dataset_id: "awards",
     materialized_at: "2026-08-05T00:00:00Z",
@@ -47,6 +47,7 @@ test("build derives award coverage from the full known set and excludes weak can
       { request_id: "1", vendor_name: "Acme Inc." },
       { request_id: "2", vendor_name: "ACME LLC" },
       { request_id: "3", vendor_name: "Elsewhere Corp." },
+      { request_id: "4", vendor_name: null },
     ],
   }, {
     quality_review: {
@@ -57,12 +58,29 @@ test("build derives award coverage from the full known set and excludes weak can
   });
 
   assert.deepEqual(coverage.awards_by_ref[REF], {
-    linked: 1,
+    linked: 2,
     eligible: 2,
-    rate: 0.5,
-    label: "showing 1 of 2 known awards linked so far (50%)",
+    rate: 1,
+    label: "showing 2 of 2 known awards linked so far (100%)",
   });
-  assert.equal(coverage.summary.linked_awards, 1);
+  assert.equal(coverage.summary.known_awards, 4);
+  assert.equal(coverage.summary.named_awards, 3);
+  assert.equal(coverage.summary.linked_awards, 3);
+  assert.equal(coverage.summary.award_linkage_rate, 0.75);
+  assert.equal(coverage.summary.vendor_roots, 2);
+  assert.deepEqual(coverage.census.survival, {
+    observed: 4,
+    normalized: 3,
+    blocked: 1,
+    scored: 3,
+    published: 3,
+  });
+  assert.deepEqual(coverage.census.blockers, {
+    missing_vendor_name: 1,
+    empty_vendor_stem: 0,
+    missing_request_id: 0,
+  });
+  assert.equal(coverage.census.no_name_floor.label, "25.00% of snapshot rows have no vendor name");
   assert.equal(coverage.qualifier_required, true);
   assert.equal(coverage.promotion.gates.precision_review.passed, false);
   assert.deepEqual(coverage.excluded_confidence, ["tentative", "review_only", "not_scored"]);
