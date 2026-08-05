@@ -32,6 +32,10 @@ import {
   rowToSodaShape,
 } from "../warehouse/lib/ocp_lookup.mjs";
 import { queryWarehouse } from "../warehouse/lib/query.mjs";
+import {
+  publicPayloadFindings,
+  publicRecords,
+} from "./lib/public_payload_integrity.mjs";
 
 const ROOT = REPO_ROOT;
 const OUT_SITE = path.join(ROOT, "site", "data", "ocp_awards_warehouse_lookup.json");
@@ -147,18 +151,25 @@ function collectRows({ fixture, limit }) {
     }
     const seed = loadProductSeedRows();
     const sample = loadSampleCsvRows();
-    // Prefer warehouse rows when present; always include product seed demos.
+    const cleanWarehouseRows = publicRecords(fromWh, "ocp warehouse export");
+    const cleanRows = publicRecords(
+      [...fromWh, ...seed, ...sample],
+      "ocp public materialization",
+    );
     return {
-      rows: dedupeRows([...fromWh, ...seed, ...sample]),
-      mode: catalogExists() ? "fixture_warehouse" : "fixture_csv",
+      rows: dedupeRows(cleanRows),
+      mode: cleanWarehouseRows.length ? "warehouse" : "verified_seed",
     };
   }
 
-  const rows = exportOcpRowsFromWarehouse({ limit });
+  const rows = publicRecords(
+    exportOcpRowsFromWarehouse({ limit }),
+    "ocp warehouse export",
+  );
   // Keep product demos even if bulk snapshot is older than those request_ids.
   const seed = loadProductSeedRows();
   return {
-    rows: dedupeRows([...rows, ...seed]),
+    rows: dedupeRows(publicRecords([...rows, ...seed], "ocp public materialization")),
     mode: rows.length > 1000 ? "bulk_warehouse" : "warehouse",
   };
 }
@@ -177,9 +188,9 @@ function statsMs(samples, digits = 3) {
 }
 
 async function bench(rows) {
-  // Edge demo id lives in product_seed; DuckDB fixture catalog uses FIX001.
+  // Edge demo id lives in the verified product seed.
   const edgeDemo = rows.find((r) => r.request_id === "20260723031") || rows[0];
-  const duckDemo = rows.find((r) => r.request_id === "FIX001") || edgeDemo;
+  const duckDemo = edgeDemo;
   if (!edgeDemo) return { error: "no rows to bench" };
 
   const edgeNotice = { request_id: edgeDemo.request_id, pin: edgeDemo.pin };
@@ -347,6 +358,11 @@ async function main() {
     String(a.request_id || "").localeCompare(String(b.request_id || ""))
   );
   doc.row_count = doc.rows.length;
+  assert.deepEqual(
+    publicPayloadFindings(doc, { source: "site/data/ocp_awards_warehouse_lookup.json" }),
+    [],
+    "OCP public materialization contains test-only records",
+  );
 
   const result = writeOutputs(doc, args.check);
   console.log(JSON.stringify(result, null, 2));
