@@ -303,9 +303,7 @@ export function alertsHref(scope, opts) {
       return "#alerts";
     }
   }
-  const canonical = scopeFromWatch(scope, { language: o.language || scope.language || "en" });
-  const adapted = watchFromScope(canonical, { lens });
-  const filter = compactFilter(adapted.filter);
+  const filter = watchFromScope(scopeFromWatch(scope, { language: o.language || scope.language || "en" })).filter;
   const params = new URLSearchParams();
   params.set("lens", lens);
   params.set("filter", JSON.stringify(filter));
@@ -343,10 +341,10 @@ export function parseAlertsEntryParams(hashOrQuery) {
   try { filter = JSON.parse(q.get("filter") || "{}") || {}; } catch (_e) { filter = {}; }
   if (typeof filter !== "object" || Array.isArray(filter)) filter = {};
   const lens = q.get("lens") || null;
-  const adapted = lens ? watchFromScope(scopeFromWatch({ lens, filter }), { lens }) : { filter };
+  if (lens) filter = watchFromScope(scopeFromWatch({ lens, filter })).filter;
   return {
     lens,
-    filter: adapted.filter,
+    filter,
     freq: q.get("freq") || null,
     noticeId: cleanId(q.get("notice")),
     projectId: cleanId(q.get("project")),
