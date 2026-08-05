@@ -16,6 +16,8 @@
   ]);
 
   function surface() {
+    const documentRoute = location.pathname.match(/^\/(now|near-you|following|browse)(?:\/|$)/)?.[1];
+    if (documentRoute) return documentRoute;
     const page = location.pathname.split("/").pop() || "index.html";
     return ({
       "index.html": "home", "stats.html": "stats", "about.html": "about",
