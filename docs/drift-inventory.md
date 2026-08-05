@@ -41,6 +41,7 @@ candidate; see "The floor vs. the remainder" below for how judgment-shaped drift
 | 12 | Suggestion-chip static fallback set (which live-validated example queries show per lens when the worker's daily `/suggestions` result is unreachable) | `index.html` `NL_SUGGESTIONS_FALLBACK` | `worker/src/lib/suggestions.mjs` `FALLBACK_INDICES` (+ `SUGGESTION_POOL`) | `tools/validate_presets.mjs` generates both copies from `data/preset-validation.json`; `test/contract/suggestion_fallback.test.mjs` checks their exact parity. |
 | 17 | `?w=` deep-link param length ceiling (2000 chars) | `index.html:4225` | `worker/src/lib/stats.mjs:50-52` | Not yet a dedicated contract test — both values read identically today; flagged for a fast-follow if this constant ever needs to change. |
 | 20 | Hearing normalization: affected geography, venue mode/address, participation details, audience clues, and citywide/unlocated classification | `hearing_location.js` (static-site fallback) | `worker/src/lib/hearings.mjs` (daily materialized view and alert matching) | `test/contract/hearing_location.test.mjs` runs shared City Record fixtures through both copies and separately proves that a Manhattan venue does not turn a Queens matter into a Manhattan match. |
+| 21 | Full-dollar currency variants, feed field inclusion, and current permalink forms (including `?lang=` before the hash) | `site/app/core.mjs` `money()` intentionally abbreviates; entity routes clean source text; shared URL owners add the language query | Worker digest/feed/confirmation closures, MCP output, feed serializers, and batch vendor links | `test/contract/deterministic_variants.test.mjs` runs the named fixture matrix in `test/fixtures/deterministic-drift/contracts.json`. Valid positive amounts agree across five current worker closures and MCP; on-page abbreviation and feed/card density remain intentional differences. |
 
 ## Not true duplication (one implementation only, or intentionally divergent)
 
@@ -52,27 +53,23 @@ candidate; see "The floor vs. the remainder" below for how judgment-shaped drift
 | — | Feed generation | `worker/src/lib/feed.mjs` reuses the worker's own `sanitize()`/`compileSub()` rather than reimplementing `index.html` logic. Row-summary formatting (`feedItems()` vs. `landRowHTML()`/`feedCardHTML()`) is a loose, unconfirmed parallel — flagged below as needing a deeper look. |
 | — | `search_health.mjs` | Pure server-side digest-cadence bookkeeping (`QUIET_THRESHOLD_DAYS`, `nextSearchHealth()`); nothing for the client to mirror. |
 
-## Needs deeper look (flagged by the inventory pass, not yet fully verified)
+## Characterized deterministic variants
 
-These are candidates for a future pass, not confirmed bugs — listed here so they aren't lost:
+The focused fixture pass found one permalink defect and no currency or feed/card defect:
 
-1. **Currency-formatting proliferation.** The worker has 4 separate non-abbreviating `usd()`
-   closures (`worker/src/alerts.mjs:307`, `alerts.mjs:585`, `worker/src/lib/feed.mjs:10`,
-   `worker/src/lib/confirm_email.mjs:15`), each with a slightly different null/zero guard, none
-   tested against each other or against the site's abbreviating `money()` (`index.html:871`,
-   which is a deliberately different, abbreviating format for on-page density — not meant to
-   match byte-for-byte). Worth confirming the 4 worker closures haven't silently diverged from
-   *each other*.
-2. **`worker/src/lib/feed.mjs`'s `feedItems()`** vs. `index.html`'s `landRowHTML()`/
-   `feedCardHTML()` — bodies not fully diffed; there may be a tighter field-inclusion rule
-   worth its own contract test.
-3. **`worker/src/mcp.mjs`'s `previewText()`/`fmtRecord()`** currency formatting — likely a 5th
-   `usd()`-style variant, not compared against the other 4.
-4. **Vendor/agency permalink slug construction.** `index.html`'s `agencyHref()`/`vendorHref()`
-   (`index.html:3561-3562`) run `cleanText()` before encoding; `worker/src/batch.mjs:66` encodes
-   the raw name with no cleaning step. Currently benign — resolution re-derives via
-   `vendorStem()` rather than string-comparing the raw slug — but fragile if a future call site
-   starts comparing slugs directly.
+1. **Currency.** Five worker `usd()` closures currently produce identical full-dollar output for
+   valid positive contract amounts, and MCP preview/record output agrees. Null/zero guards remain
+   surface-owned because upstream validity and conditional-field rules differ. The site's
+   `money()` remains deliberately abbreviated for on-page density; the fixture records both forms.
+2. **Feed/card fields.** `feedItems()` intentionally carries a portable text summary (agency,
+   full dollars, vendor, due/event dates, and a usable address). `landRowHTML()` and
+   `feedCardHTML()` instead carry lens-specific interactive context. Existing card tests retain
+   ownership of those richer shapes; the deterministic fixture pins the neutral item and Atom,
+   JSON Feed, and calendar outputs without inventing byte parity.
+3. **Permalinks.** Batch vendor links did diverge for tagged or entity-encoded names because the
+   worker encoded raw input. Batch now uses the same plain-text cleaning contract as site vendor
+   and agency routes. The fixture pins notice/vendor/agency hashes and their `?lang=es` absolute
+   forms. Existing language/share tests remain the owners for picker precedence and copy/QR wiring.
 
 ## The floor vs. the remainder
 
