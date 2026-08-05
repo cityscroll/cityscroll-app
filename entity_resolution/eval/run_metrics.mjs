@@ -9,14 +9,15 @@
  *
  * Usage:
  *   node entity_resolution/eval/run_metrics.mjs \
- *     --gold entity_resolution/eval/gold_v0.jsonl --dry-run
+ *     --gold entity_resolution/eval/gold_v1.jsonl --dry-run
  *
  *   node entity_resolution/eval/run_metrics.mjs \
- *     --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
+ *     --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0
  *
  * Optional:
  *   --predictions <path.jsonl>   predicted pairs {id|left,right, decision}
  *   --blocker <name>             token_v0 | none  (candidate generation)
+ *   --pipeline                   run matcher + conservative policy predictions
  *
  * Exit codes:
  *   0  gold valid; metrics printed
@@ -29,6 +30,7 @@ import { resolve } from "node:path";
 import { applyTokenV0, BLOCKER_ID as TOKEN_V0_ID } from "./blockers/token_v0.mjs";
 import { extractFeatures } from "../features/index.mjs";
 import { MATCHERS_VERSION, scorePair } from "../matchers/index.mjs";
+import { POLICIES_VERSION, routeDecision } from "../policies/index.mjs";
 
 const METRIC_KEYS = [
   "precision",
@@ -46,8 +48,9 @@ const KNOWN_BLOCKERS = new Set(["token_v0", "none"]);
 
 function usage(msg) {
   if (msg) console.error(`error: ${msg}`);
-  console.error(`Usage: node entity_resolution/eval/run_metrics.mjs --gold <path.jsonl> [--dry-run]
+  console.error(`  Usage: node entity_resolution/eval/run_metrics.mjs --gold <path.jsonl> [--dry-run]
        [--predictions <path.jsonl>] [--blocker token_v0|none] [--json]
+       [--pipeline]  run matcher + conservative policy predictions
        [--examples N]   (blocked-in/out true-match examples; default 5 with blocker)`);
   process.exit(1);
 }
@@ -60,6 +63,7 @@ function parseArgs(argv) {
     blocker: null,
     json: false,
     examples: null,
+    pipeline: false,
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
@@ -68,6 +72,7 @@ function parseArgs(argv) {
     else if (a === "--predictions") out.predictions = argv[++i];
     else if (a === "--blocker") out.blocker = argv[++i];
     else if (a === "--json") out.json = true;
+    else if (a === "--pipeline") out.pipeline = true;
     else if (a === "--examples") {
       const n = Number(argv[++i]);
       if (!Number.isFinite(n) || n < 0) usage("--examples requires a non-negative number");
@@ -110,6 +115,32 @@ export function predictWithMatcher(cases, candidateIds = null) {
     });
     const score = scorePair(row.left, row.right, features);
     predictions.set(row.id, score.decision);
+  }
+  return predictions;
+}
+
+/**
+ * Run matcher + conservative policy over gold rows. The policy layer adds
+ * alias-registry-backed same-decisions for unresolved matcher pairs. When
+ * candidateIds is supplied, blocked-out rows stay unresolved.
+ */
+export function predictWithPipeline(cases, candidateIds = null) {
+  const predictions = new Map();
+  for (const row of cases) {
+    if (candidateIds && !candidateIds.has(row.id)) {
+      predictions.set(row.id, "unresolved");
+      continue;
+    }
+    const features = extractFeatures(row.left, row.right, {
+      entityType: row.entity_type,
+    });
+    const score = scorePair(row.left, row.right, features);
+    const routed = routeDecision(score, {
+      left: row.left,
+      right: row.right,
+      entityType: row.entity_type,
+    });
+    predictions.set(row.id, routed.decision);
   }
   return predictions;
 }
@@ -415,6 +446,9 @@ function main() {
     const pText = readFileSync(resolve(args.predictions), "utf8");
     predictions = loadPredictions(pText);
     predictionsSource = args.predictions;
+  } else if (args.pipeline) {
+    predictions = predictWithPipeline(cases, candidates);
+    predictionsSource = `pipeline:${POLICIES_VERSION}`;
   } else {
     predictions = predictWithMatcher(cases, candidates);
     predictionsSource = MATCHERS_VERSION;

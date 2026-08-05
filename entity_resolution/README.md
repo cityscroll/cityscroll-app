@@ -12,12 +12,12 @@ surface. **Not an HTTP microservice.**
 | `authority_keys/` | Scoped identifier registry (`scheme`, issuer, value, scope) |
 | `officials/` | Official person-level type family + `votes_on` edges from Legistar votes |
 | `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
-| `features/` | Deterministic family-aware pair features (`pair_features_v1`) |
-| `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v1`) |
-| `policies/` | Auto-link thresholds / decision routing (stub) |
+| `features/` | Deterministic family-aware pair features (`pair_features_v2`) |
+| `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v2`) |
+| `policies/` | Conservative auto-link routing + alias-registry (`conservative_v1`) |
 | `evaluation/` | Re-exports gold, authority metrics, and clerical-audit helpers |
 | `eval/` | Versioned gold, metrics CLIs, authority fixtures, and audit receipts (keep paths stable) |
-| `review/` | Human review queue shaping (stub) |
+| `review/` | Human review queue shaping + reviewed alias registry |
 | `publication/` | Allowlist serializers that enforce the public sensitivity boundary |
 | `index.mjs` | Package root public exports |
 
@@ -159,8 +159,9 @@ Existing normalize + gold harnesses stay green:
 node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs
 node --test worker/test/entity_resolution_matcher.test.mjs
 node --test test/entity_resolution_clerical_audit.test.mjs
-node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --dry-run
-node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
+node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --dry-run
+node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0
+node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0 --pipeline
 node entity_resolution/eval/run_authority.mjs --source-records entity_resolution/eval/fixtures/source_records_authority_v0.jsonl
 ```
 

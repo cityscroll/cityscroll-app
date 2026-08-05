@@ -105,9 +105,9 @@ test("package root re-exports match normalizers and worker shim", () => {
 
 test("candidate generation and conventional matcher stay non-linking", () => {
   assert.equal(CANDIDATE_GENERATION_VERSION, "token_v0_v0");
-  assert.equal(FEATURES_VERSION, "pair_features_v1");
-  assert.equal(MATCHERS_VERSION, "conventional_v1");
-  assert.equal(POLICIES_VERSION, "stub");
+  assert.equal(FEATURES_VERSION, "pair_features_v2");
+  assert.equal(MATCHERS_VERSION, "conventional_v2");
+  assert.equal(POLICIES_VERSION, "conservative_v1");
   assert.equal(REVIEW_VERSION, "possibly_same_v1");
   assert.equal(INVESTIGATION_WORKSPACE_VERSION, "private_evidence_workspace_v1");
   assert.equal(PUBLICATION_VERSION, "public_er_v1");
