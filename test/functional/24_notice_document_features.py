@@ -20,6 +20,14 @@ ROOT = Path(__file__).parents[2]
 DRIFT_CONTRACTS = json.loads((ROOT / "test/fixtures/deterministic-drift/contracts.json").read_text())
 DRIFT_NOTICE = next(item for item in DRIFT_CONTRACTS["permalinks"] if item["kind"] == "notice")
 NOTICE_ID = DRIFT_NOTICE["id"]
+PROPERTY_GOLDEN = json.loads(
+    (ROOT / "test/contract/fixtures/property_location_golden.json").read_text()
+)
+PROPERTY_SOURCE = next(
+    item["row"]
+    for item in PROPERTY_GOLDEN["notices"]
+    if item.get("row", {}).get("request_id") == "20170130106"
+)
 NOTICE = {
     **DRIFT_CONTRACTS["feed"]["row"],
     "type_of_notice_description": "Solicitation",
@@ -27,14 +35,7 @@ NOTICE = {
     "additional_description_1": "Submit a response for the playground reconstruction at 1 Centre Street.",
 }
 PROPERTY_NOTICE = {
-    "request_id": "20170130106",
-    "start_date": "2017-01-30T00:00:00.000",
-    "event_date": "2017-02-28T10:00:00.000",
-    "agency_name": "Housing Preservation and Development",
-    "type_of_notice_description": "Public Hearing",
-    "section_name": "Property Disposition",
-    "short_title": "Disposition",
-    "additional_description_1": "Public hearing concerning Block 2026, Lot 15 in Manhattan.",
+    **PROPERTY_SOURCE,
     "property_location": {
         "scope": "local",
         "bbls": ["1020260015"],
@@ -122,6 +123,92 @@ def assert_document_feature_parity(page: Page) -> None:
         assert disclosure.get_attribute("open") is not None, f"{label} disclosure did not reopen"
 
 
+def assert_structured_property_sections(page: Page) -> dict[str, object]:
+    commercial = page.locator("#ncommercial [data-commercial-detail='1']")
+    commercial.wait_for(state="visible", timeout=10000)
+    rows = commercial.locator(".property-commercial-facts > .property-commercial-row")
+    assert rows.count() >= 3, "commercial facts collapsed instead of rendering labeled rows"
+    for index in range(rows.count()):
+        row = rows.nth(index)
+        assert row.locator(":scope > dt.property-commercial-label").count() == 1
+        assert row.locator(":scope > dd.property-commercial-value").count() == 1
+    assert commercial.locator(".stage-name").count() == 0, "legacy bare sub-heading template survived"
+
+    quotes = commercial.locator("blockquote.property-commercial-evidence")
+    assert quotes.count() >= 2
+    for index in range(quotes.count()):
+        quote = quotes.nth(index)
+        assert quote.locator("cite").count() == 1
+        copy = quote.locator("q").inner_text().strip()
+        assert not copy.startswith("…") and not copy.endswith("…"), (
+            f"clipped evidence fragment leaked into rendered copy: {copy!r}"
+        )
+    rendered = commercial.inner_text()
+    assert "not an auction price" in rendered
+    assert "Call the public-hearings office at (212) 788-7490" in rendered
+    assert commercial.locator(".property-commercial-timed-events time").count() >= 2
+
+    rail = page.locator("#nactions .next-action-rail")
+    rail.locator("[data-action-current]").wait_for(state="visible", timeout=10000)
+    assert rail.locator("details.bid-guide > .property-action-sections").count() == 1
+    assert rail.locator("details.bid-guide > ol").count() == 0
+    assert rail.locator("[data-action-current]").count() == 1
+    assert rail.locator("[data-action-history]").count() == 1
+    history = rail.locator("[data-action-history-event]")
+    assert history.count() == 2, "past hearing and accommodation should share one history subsection"
+    assert len(set(history.get_attribute("data-action-kind") for history in history.all())) == 2
+    rail_text = rail.inner_text()
+    rail_text_lower = rail_text.lower()
+    assert "review published records" in rail_text_lower
+    assert "what already happened" in rail_text_lower
+    assert "This action is closed. Read the City Record notice." not in rail_text
+    assert "The notice does not say when or where to view it." not in rail_text
+    non_answers = page.locator("#nactions dl dt + dd").all_inner_texts()
+    assert not any(
+        any(marker in value.lower() for marker in ("does not say", "not listed", "unknown", "action is closed"))
+        for value in non_answers
+    )
+
+    ellipsis_findings = page.evaluate(
+        """
+        () => [
+          '#ncommercial [data-commercial-detail] q',
+          '#ncommercial [data-commercial-detail] p',
+          '#nactions [data-action-current] p',
+          '#nactions [data-action-current] dd',
+          '#nactions [data-action-history-event]',
+          '#npropertyxd [data-parcel-biography] li'
+        ].flatMap(selector => [...document.querySelectorAll(selector)]
+          .map(node => ({ selector, text: node.textContent.trim() }))
+          .filter(item => /^(?:…|\\.{3})|(?:…|\\.{3})$/.test(item.text)))
+        """
+    )
+    assert ellipsis_findings == [], f"raw clipped fragments leaked into notice sections: {ellipsis_findings}"
+
+    bare_text_findings = page.evaluate(
+        """
+        () => [
+          '#ncommercial .property-commercial-facts',
+          '#ncommercial .property-commercial-row',
+          '#nactions [data-action-current]',
+          '#nactions [data-action-history]',
+          '#npropertyxd [data-parcel-biography]'
+        ].flatMap(selector => [...document.querySelectorAll(selector)].flatMap(node =>
+          [...node.childNodes]
+            .filter(child => child.nodeType === Node.TEXT_NODE && child.textContent.trim())
+            .map(child => ({ selector, text: child.textContent.trim() }))
+        ))
+        """
+    )
+    assert bare_text_findings == [], f"structured notice sections contain bare text nodes: {bare_text_findings}"
+    return {
+        "labels": rows.locator("dt").all_inner_texts(),
+        "history_kinds": history.evaluate_all(
+            "nodes => nodes.map(node => node.dataset.actionKind)"
+        ),
+    }
+
+
 def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -176,6 +263,7 @@ def main() -> None:
 
         biography = property_page.locator("#npropertyxd [data-parcel-biography='1']")
         biography.wait_for(state="visible", timeout=10000)
+        document_structure = assert_structured_property_sections(property_page)
         assert "observed parcel biography" in biography.inner_text().lower()
         assert biography.locator("[data-parcel-biography-domain]").count() == 3
         assert biography.locator("[data-parcel-biography-domain='property'] a[href^='#notice/']").count() >= 1
@@ -196,6 +284,21 @@ def main() -> None:
         scoped_biography.wait_for(state="visible", timeout=10000)
         assert "entity_refs_all" in property_page.url
         property_context.close()
+
+        hash_context = context_with_clipboard(browser)
+        hash_page = hash_context.new_page()
+        hash_calls: list[str] = list()
+        install_notice_routes(hash_page, hash_calls, notice=PROPERTY_NOTICE)
+        hash_page.goto(
+            f"{BASE}/#notice/{PROPERTY_NOTICE['request_id']}",
+            wait_until="load",
+            timeout=30000,
+        )
+        hash_structure = assert_structured_property_sections(hash_page)
+        assert hash_structure == document_structure, (
+            "document and legacy client entry paths rendered different structured-card contracts"
+        )
+        hash_context.close()
 
         browser.close()
 

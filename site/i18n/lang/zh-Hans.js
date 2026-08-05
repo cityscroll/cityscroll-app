@@ -1834,6 +1834,8 @@
     property_commercial_price_lbl: "价格",
     property_commercial_deal_lbl: "是否划算？",
     property_commercial_bid_lbl: "何时 / 如何出价",
+    property_commercial_call_accommodation_html: "致电公共听证办公室 {phone}，申请手语翻译或无障碍便利。",
+    property_commercial_call_participation_html: "致电办公室 {phone}，咨询如何参与。",
     property_asset_rail_label: '物品类型',
     property_sale_method_rail_label: '出售方式',
     property_price_rail_label: '价格',

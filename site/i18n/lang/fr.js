@@ -1926,6 +1926,8 @@
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "Appelez le bureau des audiences publiques au {phone} pour demander un interprète en langue des signes ou un aménagement.",
+    property_commercial_call_participation_html: "Appelez le bureau au {phone} pour savoir comment participer.",
     property_asset_rail_label: 'Type d’article',
     property_sale_method_rail_label: 'Mode de vente',
     property_price_rail_label: 'Prix',

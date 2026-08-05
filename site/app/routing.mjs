@@ -1215,7 +1215,7 @@ async function showNotice(id, watch){
   import("./authority-award.mjs").then(()=>loadAboAuthorityAward(r,$("#naboaward"))).then((released)=>{
     if(!released) externalAwardForNotice(r, $("#nexternal"));
   }).catch(()=>externalAwardForNotice(r, $("#nexternal")));
-  Promise.all([
+  Promise.allSettled([
     typeof loadPropertyPlainSummary === "function"
       ? loadPropertyPlainSummary(r, $("#nplain"))
       : Promise.resolve(),
@@ -1229,7 +1229,7 @@ async function showNotice(id, watch){
     // Re-mount action rail once BBL / disposition stage / commercial bid steps are stamped.
     if(isPropertyDispositionEligible(r) && $("#nactions")) mountNoticeActionRail($("#nactions"), r);
     loadTaxLienForNotice(r,$("#ntaxlien"));
-  }).catch(()=>{});
+  });
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
   loadNoticeLandSpine(r, $("#nland"));
   loadMeetingOutcomes(r, $("#nmeet"));

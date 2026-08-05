@@ -762,7 +762,10 @@ function actionRailGuideHTML(actions){
   if(guide.upstream_unavailable_note_key){
     steps.unshift(`<span class="guide-warning">${t(guide.upstream_unavailable_note_key)}</span>`);
   }
-  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>${guideExtra}</details>`;
+  const renderedSteps=guide.system==="property_reader_actions"
+    ? `<div class="property-action-sections">${steps.filter(Boolean).join("")}</div>`
+    : `<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>`;
+  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}${renderedSteps}${guideExtra}</details>`;
 }
 function actionRailHTML(actions){
   let primaryUsed=false;

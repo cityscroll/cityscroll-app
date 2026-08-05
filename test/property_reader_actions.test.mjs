@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -7,9 +8,16 @@ import {
   propertyActionEnablingInfoHTML,
   propertyReaderActionStepsHTML,
 } from "../site/property_reader_actions.mjs";
+import { extractPropertyCommercial } from "../site/property_commercial.mjs";
 import { compileActionRail, validateAction } from "../worker/src/lib/action_registry.mjs";
 
 const future = { today: "2026-08-04" };
+const propertyGolden = JSON.parse(
+  readFileSync(new URL("./contract/fixtures/property_location_golden.json", import.meta.url)),
+);
+const nominalDispositionRow = propertyGolden.notices.find(
+  (notice) => notice.row?.request_id === "20170130106",
+)?.row;
 
 function kinds(row, options = future) {
   return extractPropertyReaderActions(row, options).actions.map((action) => action.kind);
@@ -256,7 +264,7 @@ test("action entries carry decision-enabling item, price, contact, venue, and in
   assert.match(html, /public showing/i);
 });
 
-test("a live action always renders an act-here channel or an honest absence", () => {
+test("a live action omits an unanswered method slot instead of filling it with a non-answer", () => {
   const result = extractPropertyReaderActions({
     short_title: "Notice of Public Sale of Residential Property",
     start_date: "2026-08-01",
@@ -267,7 +275,8 @@ test("a live action always renders an act-here channel or an honest absence", ()
   });
   assert.equal(result.actions[0].status, "current");
   const html = propertyReaderActionStepsHTML(result.actions, { t: (key) => key }).join("");
-  assert.match(html, /The notice does not say how to act\./);
+  assert.doesNotMatch(html, /<dt>Method<\/dt>/);
+  assert.doesNotMatch(html, /The notice does not say how to act\./);
 });
 
 test("an actionless archive card still renders the record's decision-enabling facts", () => {
@@ -289,8 +298,9 @@ test("an actionless archive card still renders the record's decision-enabling fa
     today: "2026-08-04",
   });
   assert.match(html, /Hardwood timber/);
-  assert.match(html, /did not list a price/i);
-  assert.match(html, /This action is closed/i);
+  assert.doesNotMatch(html, /Asking price/);
+  assert.doesNotMatch(html, /How to act/);
+  assert.doesNotMatch(html, /Viewing \/ inspection/);
   assert.match(html, /data-lifecycle="closed"/);
 });
 
@@ -376,4 +386,39 @@ test("historical property actions are context, not a live attend or bid call", (
   assert.equal(actions[0].type, "document");
   assert.equal(actions[0].label_key, "read_official_notice");
   assert.equal(actions.some((action) => action.type === "attend" || action.type === "official_application"), false);
+});
+
+test("nominal-disposition actions separate current record review from consolidated history", () => {
+  assert.ok(nominalDispositionRow, "exact nominal-disposition field case is present");
+  const commercial = extractPropertyCommercial(nominalDispositionRow);
+  const row = { ...nominalDispositionRow, commercial };
+  const result = extractPropertyReaderActions(row, {
+    today: "2026-08-05",
+    events: commercial.timed_events,
+  });
+
+  assert.deepEqual(result.actionable.map((action) => action.kind), ["review_documents"]);
+  assert.deepEqual(
+    result.historical.map((action) => action.kind),
+    ["attend", "request_accommodation"],
+  );
+  assert.equal(result.rail.mode, "current");
+  assert.equal(result.rail.primary_kind, "review_documents");
+
+  const html = propertyReaderActionStepsHTML(result.actions, {
+    t: (key) => key,
+    formatDate: (value, options = {}) => `${String(value).slice(0, 10)}${options.dateOnly ? ":date" : ""}`,
+  }).join("");
+  assert.match(html, /data-action-current/);
+  assert.match(html, /Review published records/);
+  assert.match(html, /available for public examination/i);
+  assert.match(html, /data-action-history/);
+  assert.equal((html.match(/data-action-history-event/g) || []).length, 2);
+  assert.match(html, /Public hearing/);
+  assert.match(html, /Accommodation request deadline/);
+  assert.doesNotMatch(html, /This action is closed\. Read the City Record notice\./);
+  assert.doesNotMatch(html, /The notice does not say when or where to view it\./);
+  assert.doesNotMatch(html, /<dt>Method<\/dt><dd>[^<]*(?:does not|closed)/i);
+  assert.match(html, /Nominal consideration/);
+  assert.match(html, /not an auction price/i);
 });

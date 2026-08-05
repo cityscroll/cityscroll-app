@@ -2375,6 +2375,8 @@ const STRINGS = {
     property_commercial_price_lbl: "How much",
     property_commercial_deal_lbl: "Is it a deal?",
     property_commercial_bid_lbl: "When / how to bid",
+    property_commercial_call_accommodation_html: "Call the public-hearings office at {phone} to request a sign-language interpreter or accommodation.",
+    property_commercial_call_participation_html: "Call the office at {phone} about participating.",
     property_commercial_method_lbl: "Sale method",
     property_commercial_price_none_html: "No labeled minimum bid, upset price, or appraisal dollar is stated in this notice.",
     property_commercial_deal_insufficient_html: "A discount signal needs both a stated appraisal/assessed value and a minimum bid (or upset price) in the notice. This notice does not publish both.",
