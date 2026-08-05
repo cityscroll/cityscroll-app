@@ -62,7 +62,7 @@ def revision_snapshot(revision: str, destination: Path) -> None:
 
 
 def capture_tree(browser, tree: Path, phase: str) -> list[dict]:
-    records: list[dict] = []
+    records: list[dict] = list()
     with StaticServer(tree / "site") as base:
         for width, height in VIEWPORTS:
             context = browser.new_context(
@@ -97,7 +97,10 @@ def capture_tree(browser, tree: Path, phase: str) -> list[dict]:
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     generated = (ROOT / "site" / "now", ROOT / "site" / "browse")
-    existed = {path: (path / "index.html").exists() for path in generated}
+    existed = {
+        path: (path / "index.html").exists()
+        for path in generated
+    }
     with tempfile.TemporaryDirectory(prefix="crol-nav-before-") as tmp:
         before = Path(tmp)
         revision_snapshot("HEAD", before)
@@ -120,7 +123,7 @@ def main() -> None:
     manifest = {
         "schema_version": 1,
         "before_revision": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+            ["git", "rev-parse", "--short=12", "HEAD"], cwd=ROOT, text=True
         ).strip(),
         "javascript": "disabled (no-JS document parity)",
         "viewports": [list(viewport) for viewport in VIEWPORTS],
