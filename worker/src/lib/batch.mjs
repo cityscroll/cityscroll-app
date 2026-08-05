@@ -1,8 +1,14 @@
 // Pure helpers for POST /batch — the Datashare-style watchlist cross-reference.
 // Caps are the denial-of-wallet posture: bounded names per request, bounded name length.
 
+import { cleanNoticeText } from "../../../site/text_clean.mjs";
+
 export const MAX_NAMES = 10;
 export const MAX_NAME_LEN = 80;
+
+export function vendorEntityPermalink(name, origin = "https://cityscroll.org") {
+  return `${String(origin).replace(/\/$/, "")}/#vendor/${encodeURIComponent(cleanNoticeText(name))}`;
+}
 
 export function parseNames(input) {
   const arr = Array.isArray(input) ? input : [];
