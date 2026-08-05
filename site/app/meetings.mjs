@@ -178,7 +178,7 @@ function officialHref(personId, ctx){
   if(ctx && ctx.eventId) q.set("event", String(ctx.eventId));
   if(ctx && ctx.noticeId) q.set("notice", String(ctx.noticeId));
   const qs = q.toString();
-  return `#official/${encodeURIComponent(id)}${qs ? `?${qs}` : ""}`;
+  return `/officials/${encodeURIComponent(id)}/${qs ? `?${qs}` : ""}`;
 }
 
 function collectRollCallPeople(votes){

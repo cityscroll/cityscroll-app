@@ -18,10 +18,23 @@ function buildMoneyDeepLink(filter) {
   // Agency/vendor forecast and profile routes leave the money list for entity pages.
   if (f.route === "agency" && compactText(f.name, 160)) {
     var agencyName = compactText(f.name, 160);
-    return "#agency/" + encodeURIComponent(agencyName) + (f.tab === "forecast" ? "?tab=forecast" : "");
+    if (typeof globalThis !== "undefined" && globalThis.CrolEntityPivots) {
+      return globalThis.CrolEntityPivots.entityHref({
+        ref: globalThis.CrolEntityPivots.entityRouteRef("agency", agencyName),
+        label: agencyName,
+      }, { tab: f.tab === "forecast" ? "forecast" : "" });
+    }
+    return "/agencies/" + encodeURIComponent(agencyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")) + "/" + (f.tab === "forecast" ? "?tab=forecast" : "");
   }
   if (f.route === "vendor" && compactText(f.name, 160)) {
-    return "#vendor/" + encodeURIComponent(compactText(f.name, 160));
+    var vendorName = compactText(f.name, 160);
+    if (typeof globalThis !== "undefined" && globalThis.CrolEntityPivots) {
+      return globalThis.CrolEntityPivots.entityHref({
+        ref: globalThis.CrolEntityPivots.entityRouteRef("vendor", vendorName),
+        label: vendorName,
+      });
+    }
+    return "/vendors/" + encodeURIComponent(vendorName.toUpperCase()) + "/";
   }
   var keywords = Array.isArray(f.keywords)
     ? f.keywords.map(function (word) { return compactText(word, 80).toLowerCase(); }).filter(Boolean).slice(0, 4)

@@ -19,7 +19,15 @@ class QuietHandler(SimpleHTTPRequestHandler):
         # gates exercise the enhancement island against that shell; response HTML is tested
         # separately against the edge renderer.
         route = self.path.split("?", 1)[0].rstrip("/")
-        if route.startswith("/notices/") or route == "/now" or route == "/browse" or route.startswith("/browse/"):
+        if (
+            route.startswith("/notices/")
+            or route.startswith("/agencies/")
+            or route.startswith("/vendors/")
+            or route.startswith("/officials/")
+            or route == "/now"
+            or route == "/browse"
+            or route.startswith("/browse/")
+        ):
             self.path = "/index.html"
         super().do_GET()
 

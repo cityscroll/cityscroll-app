@@ -28,10 +28,16 @@ function browseFacet(pathname) {
   return Object.hasOwn(BROWSE_FACETS, facet) ? facet : null;
 }
 
+function entityDocument(pathname) {
+  const match = pathname.match(/^\/(agencies|vendors|officials)\/([^/]{1,320})\/?$/);
+  return match ? { family: match[1], id: match[2] } : null;
+}
+
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (safeId(url.pathname)) return "notice";
   if (browseFacet(url.pathname)) return "browse";
+  if (entityDocument(url.pathname)) return "entity";
   return "asset";
 }
 
@@ -156,6 +162,20 @@ async function handleBrowse(request, env, facet) {
   }
 }
 
+async function handleEntity(request, env, entity) {
+  const asset = await staticAsset(env, request, "/");
+  let id = entity.id;
+  try { id = decodeURIComponent(entity.id); } catch (_error) { return new Response("Invalid entity id", { status: 400 }); }
+  const canonical = `https://cityscroll.org/${entity.family}/${encodeURIComponent(id)}/`;
+  const response = rewrittenResponse(asset, 200, "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
+  const transformed = new HTMLRewriter()
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
+    .transform(response);
+  if (request.method === "HEAD") return new Response(null, { status: 200, headers: transformed.headers });
+  return transformed;
+}
+
 export default {
   async fetch(request, env) {
     if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
@@ -165,6 +185,8 @@ export default {
     if (id) return handleNotice(request, env, id);
     const facet = browseFacet(url.pathname);
     if (facet) return handleBrowse(request, env, facet);
+    const entity = entityDocument(url.pathname);
+    if (entity) return handleEntity(request, env, entity);
     return env.ASSETS.fetch(request);
   },
 };

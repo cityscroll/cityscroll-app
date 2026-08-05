@@ -324,7 +324,7 @@ test("roll-call chip surfaces on matter card when by_person is retained", () => 
   assert.match(html, /data-vote-identity="roll_call"/);
   assert.match(html, /data-official-count="2"/);
   // Names deep-link to event-scoped official skim
-  assert.match(html, /#official\/7801/);
+  assert.match(html, /\/officials\/7801\//);
   assert.match(html, /notice=20260706036/);
   assert.match(html, /event=22526/);
   assert.match(html, /Christopher Marte/);
@@ -369,7 +369,7 @@ test("tally_only votes do not invent a roll-call chip", () => {
 test("officialHref builds event-scoped deep link", () => {
   assert.equal(
     officialHref("7801", { eventId: "22526", noticeId: "20260706036" }),
-    "#official/7801?event=22526&notice=20260706036",
+    "/officials/7801/?event=22526&notice=20260706036",
   );
   assert.equal(officialHref("", { eventId: "1" }), "");
 });

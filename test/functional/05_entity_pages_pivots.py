@@ -77,7 +77,7 @@ with sync_playwright() as pw:
     page.wait_for_selector("#list .row", timeout=30000)
     page.select_option("#mode", "award")
     page.wait_for_function("currentRows.length && currentRows[0].type_of_notice_description==='Award'", timeout=30000)
-    ent = page.evaluate("(()=>{const r=currentRows.find(r=>r.vendor_name&&r.agency_name)||currentRows[0]; return {agency:r.agency_name, vendor:r.vendor_name};})()")
+    ent = page.evaluate("(()=>{const r=currentRows.find(r=>r.vendor_name&&r.agency_name)||currentRows[0]; return {request_id:r.request_id, agency:r.agency_name, vendor:r.vendor_name};})()")
     print("   sample entities:", ent, flush=True)
 
     # ---------- method facet ----------
@@ -100,13 +100,20 @@ with sync_playwright() as pw:
     piv = page.evaluate("""[...document.querySelectorAll('#detail .glance a.pivot')].map(a=>({
       href:a.getAttribute('href'), ref:a.dataset.entityRef, confidence:a.dataset.linkConfidence
     }))""")
-    typed_agency = [p for p in piv if p["href"].startswith("#agency/")]
+    typed_agency = [p for p in piv if p["href"].startswith("/agencies/")]
     step("OK" if typed_agency and typed_agency[0]["ref"].startswith("agency:") and typed_agency[0]["confidence"]=="strong" else "FAIL", "N4 glance typed agency pivot", str(piv[:2]))
 
-    # ---------- agency page ----------
-    p2 = ctx.new_page()
-    p2.goto(BASE + "#agency/" + ent["agency"].replace(" ", "%20"), timeout=30000)
+    # ---------- pivot round trip: click the rendered agency link ----------
+    rendered_agency_pivot = page.locator("#detail .glance a.pivot[href^='/agencies/']").first
+    rendered_agency_pivot.evaluate("a=>a.target='_blank'")
+    with ctx.expect_page() as opened:
+        rendered_agency_pivot.click()
+    p2 = opened.value
+    p2.wait_for_url("**/agencies/**", timeout=10000)
     p2.wait_for_selector("#entityview .agencybar", timeout=45000)
+    agency_scope = p2.locator("#entityview [data-agency-id]").evaluate("el=>({id:el.dataset.agencyId,name:el.dataset.agencyName,variants:JSON.parse(el.dataset.agencyVariants)})")
+    round_trip_ok = ent["agency"] in agency_scope["variants"] and p2.locator("#entityview .empty").count() == 0
+    step("OK" if round_trip_ok else "FAIL", "agency pivot round trip contains origin record identity", json.dumps({"origin":ent["request_id"],"agency":ent["agency"],"scope":agency_scope}))
     txt = p2.locator("#entityview").inner_text()
     has = {"total": "TOTAL AWARDED" in txt.upper(), "sections": p2.locator("#entityview .chiprow .chip").count() > 0,
            "vendors": p2.locator("#entityview .ladder .lrow").count()}
@@ -118,11 +125,11 @@ with sync_playwright() as pw:
       const q=new URLSearchParams(location.search), f=JSON.parse(q.get('filter')||'{}');
       return {lens:q.get('lens'), agency:f.agency};
     })()""")
-    step("OK" if ag["lens"]=="rules" and ag["agency"]==ent["agency"] else "FAIL", "N2 agency watch prefill", json.dumps(ag))
+    step("OK" if ag["lens"]=="rules" and ag["agency"]==agency_scope["name"] else "FAIL", "N2 agency watch prefill", json.dumps(ag))
     p2.screenshot(path=SHOT + "agency.png", full_page=True)
 
     # pivot chain: agency page -> top vendor -> vendor page
-    p2.goto(BASE + "#agency/" + ent["agency"].replace(" ", "%20"), timeout=30000)
+    p2.goto(typed_agency[0]["href"] if typed_agency[0]["href"].startswith("http") else BASE.rstrip("/") + typed_agency[0]["href"], timeout=30000)
     p2.wait_for_selector("#entityview .agencybar", timeout=45000)
     if p2.locator("#entityview .ladder a.pivot").count():
         vendor_pivot = p2.locator("#entityview .ladder a.pivot").first
@@ -130,7 +137,7 @@ with sync_playwright() as pw:
         vtyped = vendor_pivot.evaluate("a=>({ref:a.dataset.entityRef, confidence:a.dataset.linkConfidence})")
         step("OK" if vtyped["ref"].startswith("vendor:stem:") and vtyped["confidence"]=="strong" else "FAIL", "N1 typed vendor pivot metadata", json.dumps(vtyped))
         vendor_pivot.click()
-        p2.wait_for_function("location.hash.startsWith('#vendor/')", timeout=10000)
+        p2.wait_for_function("location.pathname.startsWith('/vendors/')", timeout=10000)
         p2.wait_for_function("document.querySelector('#entityview .ftype')?.textContent.includes('Vendor profile') || (document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading'))", timeout=45000)
         vtxt = p2.locator("#entityview").inner_text()
         step("OK" if "VENDOR PROFILE" in vtxt.upper() else "FAIL",
@@ -226,6 +233,7 @@ with sync_playwright() as pw:
     # ---------- vendor page direct, with variant resolution ----------
     p3 = ctx.new_page()
     p3.goto(BASE + "#vendor/" + ent["vendor"].replace(" ", "%20"), timeout=30000)
+    p3.wait_for_url("**/vendors/**", timeout=10000)
     p3.wait_for_selector("#entityview .agencybar, #entityview .empty:not(:has(.loading))", timeout=45000)
     p3.wait_for_function("document.querySelector('#entityview .ftype')?.textContent.includes('Vendor profile') || (document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading'))", timeout=45000)
     vt = p3.locator("#entityview").inner_text()
@@ -233,14 +241,14 @@ with sync_playwright() as pw:
     step("OK" if ok else "FAIL", "N1 vendor page resolves + renders", vt[:120].replace("\n"," | "))
     # agencies-they-win-from chips pivot back
     backs = p3.evaluate("[...document.querySelectorAll('#entityview a.chip')].map(a=>a.getAttribute('href'))")
-    step("OK" if backs and all(h.startswith('#agency/') for h in backs) else "WARN", "N1 vendor→agency pivot chips", str(len(backs)))
+    step("OK" if backs and all(h.startswith('/agencies/') for h in backs) else "WARN", "N1 vendor→agency pivot chips", str(len(backs)))
     p3.screenshot(path=SHOT + "vendor.png", full_page=True)
     # probe: garbage vendor
-    p3.goto(BASE + "#vendor/ZZZXQJ%20NONEXISTENT%20LLC", timeout=30000)
+    p3.goto(BASE + "vendors/ZZZXQJ%20NONEXISTENT/", timeout=30000)
     p3.wait_for_function("document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading')", timeout=45000)
     step("PROBE", "vendor not-found path", p3.locator("#entityview .empty").inner_text()[:80])
     # probe: too-short vendor
-    p3.goto(BASE + "#vendor/AB", timeout=30000)
+    p3.goto(BASE + "vendors/AB/", timeout=30000)
     p3.wait_for_function("document.querySelector('#entityview .empty') && document.querySelector('#entityview .empty').textContent.includes('too short')", timeout=15000)
     step("PROBE", "too-short vendor stem", "clean message")
     p3.close()
@@ -250,10 +258,22 @@ with sync_playwright() as pw:
     p4.goto(BASE + "browse/rules/", timeout=30000)
     p4.wait_for_selector("#rulesfeed .fcard", timeout=30000)
     p4.locator("#rulesfeed .fcard .ftype a.pivot").first.click()
-    p4.wait_for_function("location.hash.startsWith('#agency/')", timeout=10000)
+    p4.wait_for_function("location.pathname.startsWith('/agencies/')", timeout=10000)
     p4.wait_for_selector("#entityview .agencybar, #entityview .empty:not(:has(.loading))", timeout=45000)
-    step("OK" if p4.locator("#entityview .agencybar").count() else "FAIL", "N4 feed-card agency pivot", p4.evaluate("location.hash")[:60])
+    step("OK" if p4.locator("#entityview .agencybar").count() else "FAIL", "N4 feed-card agency pivot", p4.evaluate("location.pathname")[:60])
     p4.close()
+
+    # ---------- legacy display-name arrival resolves instead of dead-ending ----------
+    p5 = ctx.new_page()
+    p5.goto(BASE + "#agency/Design%20and%20Construction%20(DDC)", timeout=30000)
+    p5.wait_for_url("**/agencies/design-and-construction/", timeout=10000)
+    p5.wait_for_selector("#entityview [data-agency-id='design-and-construction'] .agencybar", timeout=45000)
+    step("OK" if p5.locator("#entityview .empty").count() == 0 else "FAIL", "legacy DDC display route recovers", p5.evaluate("location.pathname"))
+    p5.goto(BASE + "agencies/zzzxqj-nonexistent-agency/", timeout=30000)
+    p5.wait_for_function("document.querySelector('#entityview .empty') && !document.querySelector('#entityview .loading')", timeout=45000)
+    fallback = p5.locator("#entityview .empty a[href^='/browse/contracts/?q=']")
+    step("OK" if fallback.count() == 1 else "FAIL", "unknown agency offers honest search recovery", p5.locator("#entityview .empty").inner_text()[:100])
+    p5.close()
 
     # ---------- regressions ----------
     page.select_option("#mode", "open")

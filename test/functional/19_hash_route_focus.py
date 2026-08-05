@@ -1,4 +1,4 @@
-"""Hash item routes move both the viewport and programmatic focus to the exact record."""
+"""Legacy item routes preserve viewport and focus across document forwarding."""
 import functools
 import pathlib
 import sys
@@ -19,7 +19,8 @@ class QuietHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         # The edge response supplies this shell in production. This browser test owns only
         # the enhancement island's focus behavior; response semantics have a separate gate.
-        if self.path.split("?", 1)[0].startswith("/notices/"):
+        path = self.path.split("?", 1)[0]
+        if path.startswith(("/notices/", "/agencies/", "/vendors/", "/officials/")):
             self.path = "/index.html"
         super().do_GET()
 
@@ -78,11 +79,15 @@ def main():
             )
             for route, selector in in_page_routes:
                 page.evaluate("route => { location.hash = route; }", route)
+                if route.startswith("#agency/"):
+                    page.wait_for_url(
+                        "**/agencies/housing-preservation-and-development/"
+                    )
                 assert_item_landing(page, selector)
 
             page.go_back()
-            page.wait_for_function(
-                "() => location.hash.startsWith('#agency/')"
+            page.wait_for_url(
+                "**/agencies/housing-preservation-and-development/"
             )
             assert_item_landing(page, "#entityview .route-item")
             page.go_forward()
@@ -124,7 +129,7 @@ def main():
     finally:
         server.shutdown()
 
-    print("Item hashes focus and reveal exact records; bare routes and history navigation passed.")
+    print("Legacy item routes preserve focus through document forwarding and history navigation.")
 
 
 if __name__ == "__main__":

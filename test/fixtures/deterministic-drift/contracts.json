@@ -34,14 +34,14 @@
     {
       "kind": "vendor",
       "raw_name": "  <b>Acme &amp; Sons LLC</b>  ",
-      "hash": "#vendor/Acme%20%26%20Sons%20LLC",
-      "spanish": "https://cityscroll.org/?lang=es#vendor/Acme%20%26%20Sons%20LLC"
+      "path": "/vendors/ACME%20SONS/",
+      "spanish": "https://cityscroll.org/vendors/ACME%20SONS/?lang=es"
     },
     {
       "kind": "agency",
       "raw_name": "  Parks &amp; Recreation  ",
-      "hash": "#agency/Parks%20%26%20Recreation",
-      "spanish": "https://cityscroll.org/?lang=es#agency/Parks%20%26%20Recreation"
+      "path": "/agencies/parks-and-recreation/",
+      "spanish": "https://cityscroll.org/agencies/parks-and-recreation/?lang=es"
     },
     {
       "kind": "notice",

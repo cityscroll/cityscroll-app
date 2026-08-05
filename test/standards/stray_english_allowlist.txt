@@ -116,7 +116,7 @@ type_of_notice_description='Solicitation'
 <div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">
 <div class="emailmock"> <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; →
 <div class="empty"><span class="loading"></span> building profile:
-<div class="empty">No City Record notices found for agency “
+agency_name in(
 <div class="empty">No awards on record for “
 Due:
 award to this vendor at this agency in 90 days
