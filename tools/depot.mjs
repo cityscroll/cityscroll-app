@@ -18,6 +18,8 @@ export const DEPOT_RECEIPT_DIR = fileURLToPath(new URL("../site/data/depot_recei
 
 export const SCHEMA_VERSION = 2;
 
+export const FUTURE_WORK_DISPOSITIONS = new Set(["open"]);
+
 /** Canonical join-key aliases used for graph edges (case-insensitive match). */
 export const KEY_ALIASES = {
   pin: "PIN",
@@ -773,7 +775,14 @@ export function reclassifyGaps(registry, sources, crosswalks) {
  * Re-rank the un-ingested queue using updated value evidence.
  */
 export function rerankIngestList(registry, sources, candidates) {
-  const prior = registry.ranked_ingest_list || [];
+  const gapById = new Map((registry.gaps || []).map((gap) => [gap.id, gap]));
+  // The ranked list is a forward queue, not a history of successful or stopped
+  // collectors. Historical gaps remain in `gaps` with their receipts.
+  const prior = (registry.ranked_ingest_list || []).filter((row) => {
+    const linked = (row.gaps_filled || []).map((id) => gapById.get(id)).filter(Boolean);
+    return linked.length > 0
+      && linked.every((gap) => FUTURE_WORK_DISPOSITIONS.has(gap.disposition));
+  });
   // Build candidate score index by source id
   const candScore = new Map();
   for (const c of candidates) {
@@ -953,6 +962,7 @@ export function rederiveDepot(registry, sourceContracts, options = {}) {
     schema_version: SCHEMA_VERSION,
     generated_document: registry.generated_document || "docs/gap-taxonomy.md",
     doctrine: registry.doctrine,
+    partnership_blocked_sources: registry.partnership_blocked_sources || [],
     sources,
     crosswalks: allCrosswalks,
     gaps,
@@ -1141,7 +1151,10 @@ export function renderGapTaxonomyDocument(registry) {
       : (g.would_appear_in || "—");
     const cls = g.class === "not_yet_ingested" ? "a" : "b";
     const flag = g.class_change ? " **CLASS CHANGE**" : "";
-    return `| ${mdCell(g.surface || g.id)}${flag} | ${cls} | ${mdCell(home)} |`;
+    const receipt = g.closure_receipt
+      ? `[receipt](${g.closure_receipt})`
+      : "—";
+    return `| ${mdCell(g.surface || g.id)}${flag} | ${cls} | ${mdCell(g.disposition || "open")} | ${mdCell(home)} | ${receipt} |`;
   });
 
   const sourceRows = sources
@@ -1222,8 +1235,8 @@ export function renderGapTaxonomyDocument(registry) {
     "",
     "## Inventory summary",
     "",
-    "| Gap | Class | Public home or “would appear in” |",
-    "|---|---|---|",
+    "| Gap | Class | Disposition | Public home or “would appear in” | Closure receipt |",
+    "|---|---|---|---|---|",
     ...inventoryRows,
     "",
     "## Join graph (sources)",
