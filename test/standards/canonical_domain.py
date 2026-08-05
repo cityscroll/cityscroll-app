@@ -36,6 +36,16 @@ RETIRED_DESTINATIONS = {
     "changelog.html": "https://cityscroll.org/about.html",
     "data.html": "https://cityscroll.org/about.html#data",
 }
+CANONICAL_DYNAMIC_PATH_ROUTES = (
+    "cityscroll.org/near-you*",
+    "cityscroll.org/following*",
+    "cityscroll.org/prefs*",
+)
+API_DOCUMENT_URL = re.compile(
+    r"https://api\.cityscroll\.org/"
+    r"(?:near-you(?=[?/\"'#]|$)|prefs(?=[?/\"'#]|$)|"
+    r"following(?!/personal(?:[?/\"'#]|$))(?=[?/\"'#]|$))"
+)
 
 
 def attribute(source: str, tag_pattern: str, name: str) -> str | None:
@@ -82,6 +92,26 @@ def main() -> None:
     if any(not location.startswith("https://cityscroll.org") for location in locations):
         failures.append("sitemap.xml: every URL must use cityscroll.org")
 
+    for path in sorted(SITE_ROOT.rglob("*.html")):
+        source = path.read_text(encoding="utf-8")
+        for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"', source, re.I):
+            if API_DOCUMENT_URL.search(href):
+                failures.append(
+                    f"{path.relative_to(ROOT)}: reader document link exposes api.cityscroll.org ({href})"
+                )
+
+    # Runtime link builders can bypass committed HTML, so reject literal API-host
+    # document destinations in the public site source too. The personal endpoint
+    # remains a background data request, not a reader navigation destination.
+    for path in sorted(SITE_ROOT.rglob("*")):
+        if path.suffix not in {".html", ".js", ".mjs"}:
+            continue
+        source = path.read_text(encoding="utf-8")
+        if API_DOCUMENT_URL.search(source):
+            failures.append(
+                f"{path.relative_to(ROOT)}: public source mints an API-host document URL"
+            )
+
     if (SITE_ROOT / "CNAME").read_text().strip() != "crol-list.org":
         failures.append("CNAME: must remain the GitHub Pages origin used by the CityScroll mirror")
 
@@ -105,6 +135,9 @@ def main() -> None:
     ):
         if hostname not in wrangler:
             failures.append(f"worker routes: missing {hostname}")
+    for route in CANONICAL_DYNAMIC_PATH_ROUTES:
+        if route not in wrangler:
+            failures.append(f"worker routes: missing bounded canonical route {route}")
     if 'CONFIRM_BASE = "https://api-beta.cityscroll.org"' not in wrangler:
         failures.append("worker routes: beta confirmation links must mint on cityscroll.org")
     if 'CONFIRM_BASE = "https://api.cityscroll.org"' not in wrangler:

@@ -674,7 +674,7 @@ function sessionShowBanner(session){
     if(txt && window.t) txt.textContent = t("session_signed_in", { email: String(session.email || "") });
     const manage = document.getElementById("sessionManage");
     if(manage){
-      manage.href = session.prefsUrl || ((API || "https://api.cityscroll.org").replace(/\/+$/, "") + "/prefs");
+      manage.href = session.prefsUrl || "https://cityscroll.org/prefs";
       if(window.t) manage.textContent = t("session_manage_watches");
     }
     // Keep the Alerts-tab manage link in lockstep with the session banner prefs URL.

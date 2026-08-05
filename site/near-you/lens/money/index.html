@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active scope.">
-<link rel="canonical" href="https://api.cityscroll.org/near-you?v=0&amp;lens=money"><link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
+<link rel="canonical" href="https://cityscroll.org/near-you?v=0&amp;lens=money"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/brand.css">
@@ -15,8 +15,8 @@
     <nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a aria-current="page" href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav>
   </div></header>
 <main id="main" data-near-you-root data-lens="money" data-level="borough"
-    data-message-updating="Updating this scope…"
-    data-message-updated="Scope updated. Map and list counts match."
+    data-message-updating="Updating the map…"
+    data-message-updated="Map updated. Map and list counts match."
     data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
     data-message-location-finding="Finding your district…"
     data-message-location-matched="Location matched {district}."
@@ -25,18 +25,18 @@
     <section class="near-hero">
       <p class="near-kicker">Place-first civic records</p>
       <h1>Near you</h1>
-      <p>Keep one scope for the list, map, search, share link, and watch. A place makes the scope smaller. It does not remove your other filters.</p>
-      <ul class="near-scope" aria-label="Active scope"><li data-scope-axis="lens">Contracts</li></ul>
-      <nav class="near-actions" aria-label="Scope actions">
+      <p>Keep the same filters in the list, map, search, share link, and watch. Choosing a place narrows the results without removing your other filters.</p>
+      <ul class="near-scope" aria-label="Active filters"><li data-scope-axis="lens">Contracts</li></ul>
+      <nav class="near-actions" aria-label="Map actions">
         <a href="/browse/contracts/">Open as a list</a>
-        <a href="https://api.cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;count=86">Watch this scope</a>
-        <a href="https://api.cityscroll.org/near-you?v=0&amp;lens=money">Share this scope</a>
+        <a href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;count=86">Watch these filters</a>
+        <a href="https://cityscroll.org/near-you?v=0&amp;lens=money">Share this map</a>
       </nav>
     </section>
     <section class="near-place-guide" aria-labelledby="near-place-heading">
       <p class="near-kicker">Start here</p>
       <h2 id="near-place-heading">Set what “near you” means</h2>
-      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser and are not saved or sent with the scope.</p>
+      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser; CityScroll does not save them.</p>
       <div class="near-place-actions">
         <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
         <a href="#near-place-fields">Choose a place</a>
@@ -44,7 +44,7 @@
       </div>
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
-    <form class="near-form" id="near-place-fields" method="get" action="https://api.cityscroll.org/near-you">
+    <form class="near-form" id="near-place-fields" method="get" action="https://cityscroll.org/near-you">
       <input type="hidden" name="v" value="0">
       <label>Lens<select name="lens"><option value="meetings">Meetings</option><option value="land">Zoning</option><option value="property">Property</option><option value="rules">Rules</option><option value="money" selected>Contracts</option><option value="people">Staffing</option></select></label>
       <label>Agency<input name="agency" value="" placeholder="Any agency"></label>
@@ -55,12 +55,12 @@
       <label>Council district<input name="council" value="" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
       <label>Location basis<select name="basis"><option value="performance" selected>Where work may affect an area</option>
     <option value="contract_action_address">Contract response address</option></select></label>
-      <button type="submit">Apply scope</button>
+      <button type="submit">Apply filters</button>
     </form>
 
 
     <section class="near-map-section" aria-labelledby="near-map-heading">
-      <div class="near-section-heading"><div><p class="near-kicker">Map facet</p><h2 id="near-map-heading">Contracts by area</h2></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">Contracts by area</h2></div>
         <div class="map-controls js-only" hidden>
           <button type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
           <button type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
@@ -110,17 +110,16 @@
       text-anchor="middle" dominant-baseline="central" aria-label="Staten Island">Staten Island</text></g>
           </svg>
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
-          <p class="near-vintage">Boundary layer: 2026-05-26</p>
+          <p class="near-vintage">Map boundaries: 2026-05-26</p>
         </div>
         <div class="near-area-panel" id="near-area-list">
           <h3>Equivalent area list</h3>
-          <p>These links work without JavaScript. They keep the active scope.</p>
           <ol class="near-area-list"><li><a data-map-area="Bronx" data-count="26" href="/near-you/borough/bronx/money/"><span>Bronx</span><strong>26</strong></a></li><li><a data-map-area="Manhattan" data-count="26" href="/near-you/borough/manhattan/money/"><span>Manhattan</span><strong>26</strong></a></li><li><a data-map-area="Queens" data-count="21" href="/near-you/borough/queens/money/"><span>Queens</span><strong>21</strong></a></li><li><a data-map-area="Brooklyn" data-count="14" href="/near-you/borough/brooklyn/money/"><span>Brooklyn</span><strong>14</strong></a></li><li><a data-map-area="Staten Island" data-count="5" href="/near-you/borough/staten-island/money/"><span>Staten Island</span><strong>5</strong></a></li></ol>
         </div>
       </div>
     </section>
     <section class="near-results" aria-labelledby="near-results-heading" data-results-count="86">
-      <div class="near-section-heading"><div><p class="near-kicker">Qualifying records</p><h2 id="near-results-heading" tabindex="-1">86 Contracts records in this place scope</h2></div></div>
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">86 Contracts records for these filters</h2></div></div>
       <ol class="near-records"><li class="near-record" data-record-id="20260728012">
     <a class="near-record-title" href="/notices/20260728012">Award 07125P0010007</a>
     <div class="near-record-meta">
@@ -812,7 +811,7 @@
   </li></ol>
     </section>
     <section class="near-bags" aria-labelledby="near-bags-heading">
-      <p class="near-kicker">Place-basis bags</p><h2 id="near-bags-heading">Records outside district polygons</h2>
+      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
       <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
       <details class="near-bag" data-bag="citywide">
     <summary><span>Citywide</span><strong>42</strong></summary>
@@ -1157,7 +1156,7 @@
   </details><details class="near-bag" data-bag="virtual">
     <summary><span>Virtual / online only</span><strong>0</strong></summary>
     <p>These records are online only and have no physical place.</p>
-    <p class="near-empty">No virtual / online only records match this scope.</p>
+    <p class="near-empty">No virtual / online only records match these filters.</p>
   </details><details class="near-bag" data-bag="unlocated">
     <summary><span>No place signal</span><strong>212</strong></summary>
     <p>The source does not give enough place detail to map these records.</p>
@@ -2861,5 +2860,5 @@
   </details>
     </section>
   </main>
-<footer class="near-footer">Counts and place labels come from the built district data. Check each record with the linked official source.</footer>
+<footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script type="module" src="/app/map.mjs"></script></body></html>

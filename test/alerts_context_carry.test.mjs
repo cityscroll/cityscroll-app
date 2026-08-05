@@ -46,7 +46,7 @@ test("exemplar notice scopes to meetings + agency, digKind meetings", () => {
 
 test("alertsHref for exemplar opens the server Following preview", () => {
   const href = alertsHref(alertScopeFromNotice(DINING_OUT));
-  assert.match(href, /^https:\/\/api\.cityscroll\.org\/following\?/);
+  assert.match(href, /^https:\/\/cityscroll\.org\/following\?/);
   const p = parseAlertsEntryParams(href);
   assert.equal(p.lens, "meetings");
   assert.equal(p.filter.agency, "Transportation");

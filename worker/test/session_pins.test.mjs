@@ -211,7 +211,7 @@ test("GET /session names the recognized account and exposes its watch manager", 
     ok: true,
     recognized: true,
     email: fixtureEmail,
-    prefsUrl: "https://api.cityscroll.org/prefs",
+    prefsUrl: "https://cityscroll.org/prefs",
   });
 });
 

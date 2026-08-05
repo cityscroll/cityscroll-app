@@ -3,12 +3,16 @@ main = "src/worker.mjs"
 compatibility_date = "2026-07-27"
 # No nodejs_compat needed — the Worker uses only fetch + Web APIs (no npm runtime deps).
 
-# New API URLs use api.cityscroll.org. api.crol-list.org remains a compatibility
-# alias for existing clients and in-flight confirmation links. The public apex and
-# www hostnames are owned by Cloudflare Pages and must not be redeclared here.
+# API URLs use api.cityscroll.org. api.crol-list.org remains a compatibility
+# alias for existing clients and in-flight confirmation links. Bounded path routes
+# put reader-facing dynamic documents on the canonical site without reclaiming the
+# rest of the Pages hostname.
 routes = [
   { pattern = "api.cityscroll.org", custom_domain = true },
   { pattern = "api.crol-list.org", custom_domain = true },
+  { pattern = "cityscroll.org/near-you*", zone_name = "cityscroll.org" },
+  { pattern = "cityscroll.org/following*", zone_name = "cityscroll.org" },
+  { pattern = "cityscroll.org/prefs*", zone_name = "cityscroll.org" },
 ]
 # Adding routes implicitly DISABLES workers.dev unless this is explicit — keep the alias alive
 # so older cached pages and any in-flight confirm links (24h TTL) don't break.

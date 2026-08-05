@@ -1,0 +1,12 @@
+{
+  "feature": "near-you-surface-polish",
+  "route": "/near-you/borough/bronx/",
+  "viewport": {
+    "width": 1440,
+    "height": 1000,
+    "javascript_enabled": false
+  },
+  "before": "before-map-copy-1440.png",
+  "after": "after-map-copy-1440.png",
+  "url_contract": "Canonical dynamic links use https://cityscroll.org/near-you?v=0&...; v=0 remains the documented shared URL version parameter."
+}
