@@ -227,7 +227,21 @@ conditioning belongs in a separate model.
   `soda_bulk`), headroom snapshots, and catalog registration.
 - `--resume` skips stages whose outputs already exist for that snapshot.
 - Full `rows.csv?accessType=DOWNLOAD` is the WH-02 path (`--bulk --ack-large`).
-  Dated re-exports / `$where` cursors for deltas remain follow-up work.
+- The one-source delta proof is City Record only. It uses the source-specific
+  exclusive `(start_date, request_id)` cursor and writes deterministic UTF-8 CSV
+  under `raw/city-record/delta_date=YYYY-MM-DD/`, with a
+  checkpoint and receipt beside `rows.csv`. A fixture proof, including an
+  interrupted resume and an independent final-snapshot equivalence check, runs as:
+
+  ```bash
+  node --test test/warehouse_delta_export.test.mjs
+  ```
+
+  Live bounded runs use `warehouse/scripts/city_record_delta.py` with an immutable
+  `--snapshot`, UTC `--export-date`, `--output-root warehouse/raw`,
+  and a deliberate `--max-rows`; re-run incomplete or completed partitions with
+  `--resume`. Other sources retain their existing snapshot/collector behavior until
+  their cursor semantics are proved separately.
 - City Record uses checkpointed 50,000-row SODA pages with a stable
   `start_date, request_id` order. An interrupted pull resumes at the first
   unfinished offset:
