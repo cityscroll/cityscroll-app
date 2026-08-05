@@ -9,6 +9,10 @@
 export const DCAS_VEHICLE_AUCTION_SCHEMA = "cityscroll.dcas_vehicle_auctions.v1";
 export const DCAS_VEHICLE_AUCTION_DATASET = "ynic-uz5i";
 export const DCAS_VEHICLE_AUCTION_MAX_ROWS = 500;
+// The publisher describes this feed as weekly. One missed weekly publication is
+// still usable with an explicit as-of label; after that, do not call the rows live.
+export const DCAS_VEHICLE_AUCTION_MAX_STALE_DAYS = 8;
+export const DCAS_VEHICLE_AUCTION_PROVENANCE_NOTICE_ID = "20251106024";
 export const DCAS_VEHICLE_AUCTION_BASIS = Object.freeze({
   domain: "goods_surplus",
   asset_class: "goods",
@@ -36,13 +40,30 @@ function safeYear(value) {
   return Number.isInteger(year) && year >= 1900 && year <= 2200 ? year : null;
 }
 
+function safeAmount(value) {
+  if (value == null || value === "") return null;
+  const amount = Number(String(value).replace(/[$,\s]/g, ""));
+  return Number.isFinite(amount) && amount >= 0 ? amount : null;
+}
+
+function safeUrl(value) {
+  const raw = clean(value);
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    return /^https?:$/.test(url.protocol) ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 export function normalizeDcasVehicleAuction(row = {}) {
   const closeDate = isoDay(row.auction_close_date);
   const make = clean(row.make);
   const model = clean(row.model);
   const vin = clean(row.vin);
   if (!closeDate || (!make && !model && !vin)) return null;
-  return {
+  const normalized = {
     close_date: closeDate,
     year: safeYear(row.year),
     make,
@@ -51,7 +72,23 @@ export function normalizeDcasVehicleAuction(row = {}) {
     basis: "goods_surplus",
     commercial_category: "vehicle",
     real_property: false,
+    timed_events: [{
+      kind: "auction_end",
+      date: closeDate,
+      start: closeDate,
+      end: closeDate,
+      source: "dcas_vehicle_auction",
+    }],
   };
+  const description = clean(row.description || row.vehicle_description || row.item_description);
+  const lotUrl = safeUrl(row.lot_url || row.auction_url || row.item_url || row.govdeals_url);
+  const currentBid = safeAmount(row.current_bid ?? row.current_bid_amount ?? row.high_bid);
+  const startingPrice = safeAmount(row.starting_price ?? row.starting_bid ?? row.minimum_bid);
+  if (description) normalized.description = description;
+  if (lotUrl) normalized.lot_url = lotUrl;
+  if (currentBid != null) normalized.current_bid = currentBid;
+  if (startingPrice != null) normalized.starting_price = startingPrice;
+  return normalized;
 }
 
 export function groupDcasVehicleAuctionRows(rows = []) {
@@ -98,6 +135,8 @@ export function buildDcasVehicleAuctionSnapshot(rows, options = {}) {
       landing_page: `https://data.cityofnewyork.us/d/${DCAS_VEHICLE_AUCTION_DATASET}`,
       official_guide: "https://www.nyc.gov/site/dcas/business/vehicle-auction.page",
       marketplace: "https://www.govdeals.com/en/nyc-dcas-fleet",
+      provenance_notice_id: DCAS_VEHICLE_AUCTION_PROVENANCE_NOTICE_ID,
+      provenance_notice_url: `https://a856-cityrecord.nyc.gov/RequestDetail/${DCAS_VEHICLE_AUCTION_PROVENANCE_NOTICE_ID}`,
     },
     taxonomy: { ...DCAS_VEHICLE_AUCTION_BASIS },
     vintage: {
@@ -148,6 +187,34 @@ export function selectDcasVehicleAuctionSurface(snapshot, options = {}) {
     batches: latest ? [latest] : [],
     count: latest ? Number(latest.count || 0) : 0,
     latest_close_date: latest?.close_date || null,
+  };
+}
+
+function dayDistance(start, end) {
+  const a = Date.parse(`${start}T00:00:00Z`);
+  const b = Date.parse(`${end}T00:00:00Z`);
+  return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.round((b - a) / 86400000)) : null;
+}
+
+/**
+ * The feed is weekly, but a committed artifact can outlive a successful build.
+ * Keep this check beside the pure source contract so every delivery surface can
+ * distinguish "latest known" from "current" without guessing.
+ */
+export function dcasVehicleAuctionFreshness(snapshot, options = {}) {
+  const today = isoDay(options.today) || new Date().toISOString().slice(0, 10);
+  const observed = isoDay(snapshot?.vintage?.source_updated_at)
+    || isoDay(snapshot?.vintage?.observed_at)
+    || isoDay(snapshot?.vintage?.as_of);
+  const maxStaleDays = Number.isFinite(Number(options.maxStaleDays))
+    ? Number(options.maxStaleDays)
+    : DCAS_VEHICLE_AUCTION_MAX_STALE_DAYS;
+  const ageDays = observed ? dayDistance(observed, today) : null;
+  return {
+    status: observed && ageDays != null && ageDays <= maxStaleDays ? "fresh" : "stale",
+    observed_date: observed,
+    age_days: ageDays,
+    max_stale_days: maxStaleDays,
   };
 }
 

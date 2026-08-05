@@ -310,9 +310,9 @@ test("default Property qualification follows live typed events and exposed parti
 
   assert.deepEqual(ids(partition.default_entries).sort(), [
     "20200128107", // evergreen Property Clerk claim route
-    "20251106024", // recurring weekly auto auction remains open through source end date
     "20260526003", // seized-products inquiry route
   ]);
+  assert.ok(ids(partition.archive_entries).includes("20251106024"), "fleet pointer is provenance, not an open bid");
   assert.ok(ids(partition.archive_entries).includes("20240108007"), "Public Hearing pointer is archived");
   assert.ok(ids(partition.archive_entries).includes("20140403113"), "closed medallion result is archived");
   assert.ok(ids(partition.archive_entries).includes("20170512106"), "closed UDAAP hearing is archived");

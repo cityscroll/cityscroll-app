@@ -9,6 +9,11 @@ import {
   applyPropertyGeocodes,
   propertyLocationFromRow,
 } from "../../site/property_location.mjs";
+import {
+  DCAS_VEHICLE_AUCTION_DATASET,
+  DCAS_VEHICLE_AUCTION_MAX_ROWS,
+  buildDcasVehicleAuctionSnapshot,
+} from "../../site/dcas_vehicle_auctions.mjs";
 import { attachDispositionSpines } from "./lib/property_disposition_spine.mjs";
 import { attachPropertyCommercial } from "./lib/property_commercial.mjs";
 import { slimPropertyListView } from "./lib/property_list.mjs";
@@ -16,6 +21,7 @@ import { slimPropertyListView } from "./lib/property_list.mjs";
 export const PROPERTY_KV_KEY = "property:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
+const DCAS_SODA = `https://data.cityofnewyork.us/resource/${DCAS_VEHICLE_AUCTION_DATASET}.json`;
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const SELECT = [
   "request_id", "start_date", "end_date", "agency_name", "type_of_notice_description", "section_name",
@@ -37,6 +43,44 @@ async function fetchRows(fetchImpl) {
   const rows = await response.json();
   if (!Array.isArray(rows)) throw new Error("Property SODA returned a non-array response");
   return rows;
+}
+
+async function fetchDcasVehicleAuctionSnapshot(fetchImpl, now) {
+  const params = new URLSearchParams({
+    "$select": "auction_close_date,year,make,model,vin",
+    "$order": "auction_close_date DESC,make,model,vin",
+    "$limit": String(DCAS_VEHICLE_AUCTION_MAX_ROWS),
+  });
+  const response = await fetchImpl(`${DCAS_SODA}?${params}`);
+  if (!response.ok) throw new Error(`DCAS vehicle auction SODA ${response.status}`);
+  const rows = await response.json();
+  if (!Array.isArray(rows)) throw new Error("DCAS vehicle auction SODA returned a non-array response");
+  let sourceUpdatedAt = null;
+  try {
+    const metadataResponse = await fetchImpl(`https://data.cityofnewyork.us/api/views/${DCAS_VEHICLE_AUCTION_DATASET}`);
+    if (metadataResponse.ok) {
+      const metadata = await metadataResponse.json();
+      const epochSeconds = Number(metadata?.rowsUpdatedAt || metadata?.publicationDate);
+      if (Number.isFinite(epochSeconds)) sourceUpdatedAt = new Date(epochSeconds * 1000).toISOString();
+    }
+  } catch {
+    // The row snapshot remains useful when the catalog metadata endpoint is unavailable.
+  }
+  const asOf = now.toISOString().slice(0, 10);
+  return buildDcasVehicleAuctionSnapshot(rows, {
+    asOf,
+    observedAt: now.toISOString(),
+    sourceUpdatedAt,
+    sourceTotal: rows.length,
+    query: {
+      select: "auction_close_date,year,make,model,vin",
+      order: "auction_close_date DESC,make,model,vin",
+      limit: DCAS_VEHICLE_AUCTION_MAX_ROWS,
+    },
+    pages: 1,
+    limit: DCAS_VEHICLE_AUCTION_MAX_ROWS,
+    truncated: rows.length >= DCAS_VEHICLE_AUCTION_MAX_ROWS,
+  });
 }
 
 async function geocodeAddress(fetchImpl, address) {
@@ -77,7 +121,10 @@ async function geocodeAll(fetchImpl, addresses) {
 }
 
 export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
-  const rows = await fetchRows(fetchImpl);
+  const [rows, dcasVehicleAuctions] = await Promise.all([
+    fetchRows(fetchImpl),
+    fetchDcasVehicleAuctionSnapshot(fetchImpl, now).catch(() => null),
+  ]);
   const normalized = rows.map((row) => ({
     ...row,
     property_location: propertyLocationFromRow(row),
@@ -104,6 +151,9 @@ export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
       unlocated: properties.filter((row) => row.property_location.scope === "unlocated").length,
       geometry: properties.filter((row) => row.property_location.geometry).length,
     },
+    // Goods-surplus sidecar: refreshed with Property, but never a City Record
+    // property row or parcel object.
+    dcas_vehicle_auctions: dcasVehicleAuctions,
     properties,
   };
   // Disposition spines first (join keys), then commercial payload for surplus-buyer glance.
