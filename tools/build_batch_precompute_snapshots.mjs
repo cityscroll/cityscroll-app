@@ -22,6 +22,7 @@ import {
   buildStaffingHiresSnapshot,
   fetchDataPageCharts,
   fetchLandDefaultProjects,
+  fetchLandOutcomeSnapshots,
   fetchMoneyAgencies,
   fetchMoneyDefaultOpen,
   fetchStaffingHires,
@@ -109,12 +110,33 @@ export async function buildAll({
   }
   if (wants(args, "land")) {
     let projects;
+    let outcomesByProject;
     if (fixture) {
       projects = await loadFixture("land_default_projects.json");
+      outcomesByProject = Object.fromEntries(projects.map((project, index) => [
+        project.project_id,
+        {
+          project_id: project.project_id,
+          public_status: project.public_status,
+          portal_url: `https://zap.planning.nyc.gov/projects/${project.project_id}`,
+          join: index === 0
+            ? { matched: true, method: "exact_project_id" }
+            : { matched: false, reason: "No published outcome joined." },
+          filled: index === 0,
+          approved_actions: index === 0 ? [{ status: "Approved", action: "ZM" }] : [],
+          dispositions: [],
+          documents: index === 0
+            ? [{ name: "Decision", url: "https://example.invalid/decision.pdf" }]
+            : [],
+          n_documents: index === 0 ? 1 : 0,
+          spine: { events: [] },
+        },
+      ]));
     } else {
       projects = await fetchLandDefaultProjects(fetchImpl);
+      outcomesByProject = await fetchLandOutcomeSnapshots(projects, fetchImpl);
     }
-    results.land_default = buildLandDefaultSnapshot(projects, { now });
+    results.land_default = buildLandDefaultSnapshot(projects, { now, outcomesByProject });
   }
   if (wants(args, "money")) {
     let openRows;

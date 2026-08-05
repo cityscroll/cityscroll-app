@@ -652,13 +652,14 @@ async function loadMeetingOutcomes(r, el){
   const panelHTML = await panelHTMLPromise;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    if(panelHTML) el.innerHTML = panelHTML;
+    if(panelHTML) el.insertAdjacentHTML("beforeend",panelHTML);
     return;
   }
   if(!eligible && !(data.record.join && data.record.join.matched)) return;
   const phaseTools = await ensureMeetingPhaseSpineTools();
   if(!document.contains(el)) return;
-  el.innerHTML = [meetingOutcomesHTML(data.record, r, phaseTools), panelHTML].filter(Boolean).join("");
+  const liveHTML=meetingOutcomesHTML(data.record, r, phaseTools);
+  if(liveHTML || panelHTML) el.innerHTML = [liveHTML, panelHTML].filter(Boolean).join("");
   bindMeetingPhaseUI(el);
 }
 

@@ -48,7 +48,7 @@ test("Zoning keeps review view visible while place controls stay in one disclosu
   assert.match(zoningSection, /id="lkw"[\s\S]*?id="land-more-filters"/);
   assert.match(zoningSection, /id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"/);
   assert.match(zoningSection, /id="lstatus"[^>]*><option value="all"/);
-  assert.match(zoningSection, /data-land-status="all" aria-pressed="true"/);
+  assert.match(zoningSection, /data-land-status="active" aria-pressed="true"/);
 });
 
 test("Zoning paints an exact count and gives empty scopes a prominent widen action", () => {

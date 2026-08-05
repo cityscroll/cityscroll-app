@@ -138,6 +138,8 @@ def fulfill_json(route: Route, value: object, delay_ms: int = 0) -> None:
 
 
 def soda_response(url: str, fixture: dict[str, Any]) -> object:
+    if urlparse(url).path.endswith("/hgx4-8ukb.json"):
+        return fixture.get("landProjects", [])
     query = parse_qs(urlparse(url).query)
     select = query.get("$select", [""])[0]
     where = query.get("$where", [""])[0]
@@ -425,6 +427,88 @@ def measure_contracts(
     }, unexpected
 
 
+def measure_land_outcomes(
+    browser: Browser,
+    base_url: str,
+    viewport: dict[str, int],
+    fixture: dict[str, Any],
+) -> tuple[dict[str, Any], list[str]]:
+    unexpected: list[str] = list()
+    context = browser.new_context(viewport=viewport)
+    page = context.new_page()
+    install_routes(page, fixture, unexpected)
+    page.route(
+        "https://services5.arcgis.com/**",
+        lambda route: fulfill_json(route, {"features": []}),
+    )
+    page.route(
+        "https://geosearch.planninglabs.nyc/**",
+        lambda route: fulfill_json(route, {"features": []}),
+    )
+    page.goto(base_url, wait_until="domcontentloaded")
+    page.wait_for_selector('.tabbtn[data-tab="land"]')
+    # Start from an interaction-ready page. The tab markup is static, but the
+    # route-lazy handlers arrive with the application module graph.
+    page.wait_for_function(
+        "() => typeof window.showTab === 'function' && typeof window.landSearch === 'function'"
+    )
+    page.wait_for_function(
+        """() => {
+          const count = document.querySelector('#rescount')?.textContent?.trim();
+          const list = document.querySelector('#list');
+          return !!count && !!list && !list.querySelector('.loading');
+        }"""
+    )
+    started_at = page.evaluate(
+        """() => {
+          window.__landOutcomeFirstPaintAt = null;
+          const mark = () => {
+            if (window.__landOutcomeFirstPaintAt != null) return;
+            const panel = document.querySelector('#land-outcomes');
+            if (panel?.querySelector('[data-zap-outcomes-first-paint]') &&
+                panel.querySelector('[data-zap-outcomes-state="present"], [data-zap-outcomes-state="absent"]')) {
+              window.__landOutcomeFirstPaintAt = performance.now();
+              observer.disconnect();
+            }
+          };
+          const observer = new MutationObserver(mark);
+          observer.observe(document.querySelector('#ldetail'), {childList: true, subtree: true});
+          const started = performance.now();
+          document.querySelector('.tabbtn[data-tab="land"]').click();
+          mark();
+          return started;
+        }"""
+    )
+    page.wait_for_function(
+        """() => {
+          const panel = document.querySelector('#land-outcomes');
+          return !!panel?.querySelector('[data-zap-outcomes-first-paint]')
+            && !!panel.querySelector('[data-zap-outcomes-state="present"], [data-zap-outcomes-state="absent"]');
+        }"""
+    )
+    settled_ms = page.evaluate("window.__landOutcomeFirstPaintAt") - started_at
+    state = page.evaluate(
+        """() => {
+          const panel = document.querySelector('#land-outcomes');
+          return {
+            spinnerCount: panel?.querySelectorAll('.loading').length || 0,
+            state: panel?.querySelector('[data-zap-outcomes-state]')?.dataset.zapOutcomesState || null,
+            firstPaint: panel?.querySelector('[data-zap-outcomes-first-paint]')?.dataset.zapOutcomesFirstPaint || null
+          };
+        }"""
+    )
+    context.close()
+    return {
+        "settledMs": settled_ms,
+        "invariant": int(
+            state["spinnerCount"] == 0
+            and state["state"] in ("present", "absent")
+            and state["firstPaint"] == "1"
+        ),
+        "state": state,
+    }, unexpected
+
+
 def measure(
     browser: Browser,
     fixture_name: str,
@@ -439,6 +523,8 @@ def measure(
         return measure_home(browser, base_url, viewport, fixture, site_root, warm=True)
     if fixture_name == "contracts.keyword-housing":
         return measure_contracts(browser, base_url, viewport, fixture)
+    if fixture_name == "land.outcomes-first-paint":
+        return measure_land_outcomes(browser, base_url, viewport, fixture)
     raise SystemExit(f"no runner exists for fixture {fixture_name}")
 
 
