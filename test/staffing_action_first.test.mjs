@@ -23,6 +23,15 @@ test("staffing landing follows act now, coming up, then history", () => {
   assert.doesNotMatch(html, /id="staffing-upcoming-list"/, "the duplicate exam teaser is removed");
 });
 
+test("the secondary personnel archive has a positive, durable label", () => {
+  const ledgerStart = html.indexOf('<details class="staffing-ledger" id="staffing-ledger">');
+  const ledgerEnd = html.indexOf("</details>", ledgerStart);
+  const ledger = html.slice(ledgerStart, ledgerEnd);
+
+  assert.match(ledger, /<summary[^>]*>Appointment record<\/summary>/);
+  assert.doesNotMatch(ledger, /What happened|no action|not actionable/i);
+});
+
 test("action cards expose resident next steps before optional detail", () => {
   const start = html.indexOf("function careerCardHTML(exam)");
   const end = html.indexOf("function careerFilters()", start);

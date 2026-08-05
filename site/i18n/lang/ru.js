@@ -2386,7 +2386,7 @@
     career_fee_salary_not_yet_ingested_html: "Пока не показано здесь — плата и зарплата есть в {source}.",
     career_noe_source_name: "уведомлении DCAS об экзамене",
     career_status_open: "Открыть сейчас",
-    staffing_history_summary: "Что произошло: недавние назначения",
+    staffing_history_summary: "Реестр назначений",
     career_group_open: "Подать заявку сейчас",
     career_group_upcoming: "Скоро откроются",
     career_group_continuous: "Экзамены без записи и с постоянным приемом",
