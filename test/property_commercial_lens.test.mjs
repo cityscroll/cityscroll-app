@@ -138,7 +138,8 @@ test("explorer filter + sort: closing soon and price order", () => {
     assert.notEqual(e.primary.commercial.sale_eligible, false);
   }
 
-  // Destruction must not survive a commercial asset filter on the explorer list.
+  // Item type is a domain facet, not a sales-only gate: non-sale classes remain
+  // available for the current/archive qualification pass that follows filtering.
   const withDestruction = [
     ...entries,
     {
@@ -169,8 +170,8 @@ test("explorer filter + sort: closing soon and price order", () => {
   });
   assert.equal(
     otherOnly.some((e) => e.primary.request_id === "destruction-list"),
-    false,
-    "non-sale destruction stays out of commercial-filtered views",
+    true,
+    "non-sale destruction remains in its item-type scope",
   );
 
   const byPrice = sortPropertyExplorerEntries(entries, "price_desc", (r) => r.commercial);

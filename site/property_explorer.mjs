@@ -270,8 +270,9 @@ export function buildPropertyExplorerEntries(properties, spines) {
 /**
  * Filter explorer entries by process stage, asset type, commercial fields, and temporal key.
  * Temporal classifier is injected so this module stays free of DOM date helpers.
- * Commercial filter matching is pure (commercialMatchesFilters) — non-sales drop out
- * of commercial-filtered views but remain on the unfiltered general list.
+ * Commercial filter matching is pure (commercialMatchesFilters) — sale-method and
+ * price filters drop non-sales, while item type remains a domain facet that can
+ * intentionally select non-sale classes such as seized / unclaimed property.
  *
  * @param {object[]} entries
  * @param {object} opts
@@ -305,7 +306,7 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
       .map((value) => String(value || "").toUpperCase())
       .filter((value) => /^(?:M|X|K|Q|R)\d{2}$/.test(value)),
   );
-  const commercialActive = asset !== "all" || saleMethod !== "all" || priceBand !== "all";
+  const commercialActive = saleMethod !== "all" || priceBand !== "all";
 
   return (entries || []).filter((entry) => {
     if (!entry || !entry.primary) return false;
