@@ -11,6 +11,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   pre-push hook once per clone with `make install-hooks` (`core.hooksPath=tools/git-hooks`);
   the hook rejects pushes that fail the fast preflight and runs `--full` when the
   push range touches `site/**`. Bypass only with `git push --no-verify` (CI still must pass).
+- Full browser preflight starts `tools/local_site_server.py` on an OS-assigned port
+  (`CROL_TEST_PORT=0` by default) and exports `CROL_BASE`. Set `CROL_TEST_PORT` only
+  for local debugging; checks must not reclaim a shared fixed port.
 - Module-graph fingerprint: after intentional `site/app/` edits, validate with
   `node tools/site_module_architecture.mjs --check` (or `make module-graph-digest`).
   The digest is derived at check time rather than committed; one-time token_reduction /
