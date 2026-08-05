@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.non_council_outcomes.collection_receipt.v1",
-  "run_id": "non-council-7521ecf9-df38-47f9-a76e-befd05a69821",
-  "started_at": "2026-08-04T11:36:51.334Z",
-  "finished_at": "2026-08-04T11:36:51.345Z",
+  "run_id": "non-council-fixture-deterministic",
+  "started_at": "2026-08-05T12:00:00.000Z",
+  "finished_at": "2026-08-05T12:00:00.000Z",
   "mode": "fixture",
   "sources_seen": 8,
   "pages_fetched": 0,
@@ -12,14 +12,15 @@
   "documents_with_text": 7,
   "notices_seen": 10,
   "notices_matched": 0,
-  "candidate_matches_with_bridge_disabled": 4,
+  "candidate_matches_with_bridge_disabled": 2,
   "join_bridge_enabled": false,
+  "join_method": "exact_body_date_publisher_ulurp",
   "candidate_measurement": {
-    "joined": 4,
+    "joined": 2,
     "total": 10,
-    "rate": 0.4,
+    "rate": 0.2,
     "threshold": 0.3,
-    "above_threshold": true,
+    "above_threshold": false,
     "sample_by_borough": {
       "Bronx": 2,
       "Brooklyn": 2,
@@ -29,17 +30,58 @@
     },
     "false_positive_review": {
       "reviewed_pairs": 7,
-      "accepted": 4,
-      "rejected": 3,
+      "accepted": 2,
+      "rejected": 5,
       "rejection_reasons": {
-        "matter_token_mismatch": 2,
+        "publisher_matter_token_absent": 3,
+        "matter_token_mismatch": 1,
         "date_mismatch": 1
-      }
+      },
+      "true_positives": 2,
+      "false_positives": 0,
+      "precision": 1,
+      "precision_promotion_bar": 1,
+      "clears_precision_bar": true
+    },
+    "precision_review": {
+      "body_matched_pairs": 7,
+      "join_accepted": 2,
+      "true_positives": 2,
+      "false_positives": 0,
+      "true_rejects": 5,
+      "false_rejects": 0,
+      "unresolved": 0,
+      "reviewed_proposed_joins": 2,
+      "precision": 1,
+      "precision_promotion_bar": 1,
+      "clears_precision_bar": true
     }
+  },
+  "precision_review": {
+    "body_matched_pairs": 7,
+    "join_accepted": 2,
+    "true_positives": 2,
+    "false_positives": 0,
+    "true_rejects": 5,
+    "false_rejects": 0,
+    "unresolved": 0,
+    "reviewed_proposed_joins": 2,
+    "precision": 1,
+    "precision_promotion_bar": 1,
+    "clears_precision_bar": true,
+    "prior_reported_precision": 0.5714,
+    "measured_precision": 1
   },
   "authoritative_join_gate": {
     "enabled": false,
-    "receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json"
+    "policy_join_bridge_enabled": false,
+    "usefulness_threshold": 0.3,
+    "precision_promotion_bar": 1,
+    "usefulness_ok": false,
+    "precision_ok": true,
+    "reason": "policy_join_bridge_disabled",
+    "receipt": "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json",
+    "precision_receipt": "warehouse/receipts/proof/rc3_non_council_outcome_precision_2026-08-05.json"
   },
   "coverage_scope": "board_level_not_citywide",
   "polite_delay_s": 0,

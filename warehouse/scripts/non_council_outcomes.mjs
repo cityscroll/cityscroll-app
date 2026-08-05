@@ -9,7 +9,11 @@ import { spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, extname, resolve } from "node:path";
 
+import { extractUlurpKeys } from "../../site/ulurp_tokens.mjs";
 import {
+  JOIN_METHOD,
+  buildPrecisionReviewReceipt,
+  joinBridgePromotionDecision,
   materializeOutcomeLookup,
   measureJoinBridge,
   parseSourceIndex,
@@ -115,9 +119,14 @@ function bodyIdForNotice(row) {
 }
 
 function matterTokensForNotice(row) {
-  const explicit = Array.isArray(row?.ulurp_keys) ? row.ulurp_keys : [];
-  const titleKeys = String(row?.short_title || "").match(/\b(?:[A-Z]?\d{6}[A-Z]{2,4}|C\s+\d{6}\s+[A-Z]{3})\b/gi) || [];
-  return [...new Set([...explicit, ...titleKeys].map((value) => String(value).replace(/\s+/g, "").toUpperCase()))];
+  // Publisher ULURP identifiers only — never promote free-text name/slug tokens.
+  const keys = new Set();
+  for (const key of Array.isArray(row?.ulurp_keys) ? row.ulurp_keys : []) {
+    for (const token of extractUlurpKeys(String(key))) keys.add(token);
+  }
+  for (const token of extractUlurpKeys(String(row?.short_title || ""))) keys.add(token);
+  for (const token of extractUlurpKeys(String(row?.title || ""))) keys.add(token);
+  return [...keys].sort();
 }
 
 function normalizeNotices(document) {
@@ -243,9 +252,18 @@ export async function main(argv = process.argv.slice(2)) {
     notices = normalizeNotices(await readJson(args.notices, { rows: [] }));
   }
 
-  const candidatePayload = materializeOutcomeLookup(notices, documents, { generatedAt: args.fixture ? "2026-08-04T12:00:00.000Z" : new Date().toISOString() });
+  const fixtureStamp = "2026-08-05T12:00:00.000Z";
+  const candidatePayload = materializeOutcomeLookup(notices, documents, {
+    generatedAt: args.fixture ? fixtureStamp : new Date().toISOString(),
+  });
   const candidateMatches = Object.values(candidatePayload.notices);
-  const joinBridgeEnabled = registry.policy?.join_bridge_enabled === true;
+  const measurement = measureJoinBridge(notices, documents);
+  const policyEnabled = registry.policy?.join_bridge_enabled === true;
+  const promotion = joinBridgePromotionDecision(measurement, {
+    // Registry remains the hard policy switch; both measurement bars must also clear.
+    joinBridgeEnabledOverride: policyEnabled ? null : false,
+  });
+  const joinBridgeEnabled = policyEnabled && promotion.usefulness_ok && promotion.precision_ok;
   const payload = joinBridgeEnabled
     ? { ...candidatePayload, coverage: { ...candidatePayload.coverage, join_bridge_enabled: true } }
     : {
@@ -259,17 +277,27 @@ export async function main(argv = process.argv.slice(2)) {
         notices: {},
       };
   const matches = Object.values(payload.notices);
-  const measurement = measureJoinBridge(notices, documents);
   await writeJsonl(args.sourcesJsonl, sources);
   await writeJsonl(args.documentsJsonl, documents);
   await writeJsonl(args.matchesJsonl, matches);
   await writeJson(args.payload, payload);
 
+  const precisionReceipt = buildPrecisionReviewReceipt({
+    notices,
+    documents,
+    observedOn: args.fixture ? "2026-08-05" : new Date().toISOString().slice(0, 10),
+    joinBridgeEnabled: false, // promotion is gated; do not enable from collector alone
+  });
+  if (args.fixture) {
+    const proofDir = resolve(REPO, "warehouse/receipts/proof");
+    await writeJson(resolve(proofDir, "rc3_non_council_outcome_precision_2026-08-05.json"), precisionReceipt);
+  }
+
   const receipt = {
     schema: "cityscroll.non_council_outcomes.collection_receipt.v1",
-    run_id: `non-council-${randomUUID()}`,
-    started_at: startedAt,
-    finished_at: new Date().toISOString(),
+    run_id: args.fixture ? "non-council-fixture-deterministic" : `non-council-${randomUUID()}`,
+    started_at: args.fixture ? fixtureStamp : startedAt,
+    finished_at: args.fixture ? fixtureStamp : new Date().toISOString(),
     mode: args.fixture ? "fixture" : "live",
     sources_seen: sources.length,
     pages_fetched: pageFetches,
@@ -281,10 +309,25 @@ export async function main(argv = process.argv.slice(2)) {
     notices_matched: matches.length,
     candidate_matches_with_bridge_disabled: joinBridgeEnabled ? 0 : candidateMatches.length,
     join_bridge_enabled: joinBridgeEnabled,
+    join_method: JOIN_METHOD,
     candidate_measurement: measurement,
+    precision_review: precisionReceipt.precision_review,
     authoritative_join_gate: {
       enabled: joinBridgeEnabled,
+      policy_join_bridge_enabled: policyEnabled,
+      usefulness_threshold: promotion.usefulness_threshold,
+      precision_promotion_bar: promotion.precision_promotion_bar,
+      usefulness_ok: promotion.usefulness_ok,
+      precision_ok: promotion.precision_ok,
+      reason: joinBridgeEnabled
+        ? "policy_enabled_and_promotion_bars_cleared"
+        : !policyEnabled
+          ? "policy_join_bridge_disabled"
+          : promotion.reason,
       receipt: "site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json",
+      precision_receipt: args.fixture
+        ? "warehouse/receipts/proof/rc3_non_council_outcome_precision_2026-08-05.json"
+        : null,
     },
     coverage_scope: "board_level_not_citywide",
     polite_delay_s: args.fixture ? 0 : args.delayMs / 1000,
