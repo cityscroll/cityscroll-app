@@ -184,8 +184,7 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
   const noticeId = opts.noticeId || filter.requestId || null;
   const projectId = opts.projectId || null;
 
-  // PR 524's pure adapter is optional on this branch. When present, consume its scope object;
-  // existing controls remain authoritative and the direct URL-filter path stays the fallback.
+  // Prefer the shared scope adapter when present; direct URL filters remain the fallback.
   if(lens && globalThis.CrolScope){
     try{
       const scope=CrolScope.scopeFromWatch({lens,filter},{language:window.LANG||"en"});
@@ -198,8 +197,7 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
   function applyAlertScopeToBuilder(targetLens,targetFilter){
     const f=targetFilter||{};
     if(targetLens==="money"){
-      // Cold hash routing runs before the const-backed quiz model initializes. Reuse the
-      // Ask-path state adapter, but defer that presentation repaint until the common tail.
+      // Cold hash routing precedes quiz initialization, so defer its repaint.
       NL.alerts.apply(f,{skipQuizSync:true});
       return true;
     }
@@ -260,8 +258,7 @@ async function prefillAlertFromLink(lens, filter, freq, opts){
     return false;
   }
 
-  // Apply known scope synchronously. A slow/failed optional notice lookup must never leave the
-  // reader looking at the default builder while their agency/type filters sit in the URL.
+  // Apply URL scope before the optional notice lookup.
   let filled=lens?applyAlertScopeToBuilder(lens,filter):false;
   if(filled) paintAlertContextLead({});
 
