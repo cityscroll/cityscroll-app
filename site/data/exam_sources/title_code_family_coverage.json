@@ -61,6 +61,11 @@
         "id": "dcas-annual-closed-list-depth",
         "source": "list_depth_closed_exams.json",
         "matches": 0
+      },
+      {
+        "id": "dcas-noe-notice-body",
+        "source": "fixtures/noe_text",
+        "matches": 0
       }
     ],
     "backfill_rows": [],
