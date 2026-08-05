@@ -515,7 +515,7 @@ export async function handleAdminDigestRollup(req, env) {
  * Machine-readable 06:00 rehearsal summary. A redlined run deliberately returns 503 so
  * scheduled monitoring can wake on HTTP status while still consuming structured evidence.
  */
-export async function handleAdminDigestShadow(req, env) {
+export async function handleAdminDigestShadow(req, env, { now = new Date() } = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
   if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
@@ -540,6 +540,7 @@ export async function handleAdminDigestShadow(req, env) {
             day: body.day,
             digestIds: body.digest_ids,
             reason: body.reason,
+            now,
           });
           return json({ hold }, 200);
         } catch (error) {
