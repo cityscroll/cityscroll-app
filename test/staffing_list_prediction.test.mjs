@@ -27,6 +27,7 @@ const aggregates = JSON.parse(readFileSync(
 const artifact = JSON.parse(readFileSync(join(ROOT, "site/data/staffing_exams.json"), "utf8"));
 const indexHtml = SITE_SOURCE;
 const aboutHtml = readFileSync(join(ROOT, "site/about.html"), "utf8");
+const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
 
 const built = buildScheduleListPairs(history.records, aggregates.records);
 const model = buildStaffingLagModel(built.pairs);
@@ -52,6 +53,15 @@ test("nearest-rank ECDF cohorts honor the n>=20 floor and citywide back-off", ()
     assert.ok(cohort.p10_days <= cohort.p50_days);
     assert.ok(cohort.p50_days <= cohort.p90_days);
   }
+  assert.equal(model.cohorts.open_competitive.n, 307);
+  assert.equal(model.cohorts.open_competitive.median_months, 8);
+  assert.equal(model.cohorts.promotion.n, 135);
+  assert.equal(model.cohorts.promotion.median_months, 12);
+  assert.notEqual(
+    model.cohorts.open_competitive.median_months,
+    model.cohorts.promotion.median_months,
+    "cards must use their exam-type cohort rather than one global median",
+  );
 });
 
 test("strict 2025 time-split uses the shared scorecard and withholds undercoverage", () => {
@@ -96,6 +106,10 @@ test("exam phase spine links to the compact eligible-list timing explainer", () 
   assert.match(indexHtml, /data-staffing-list-prediction="1"/);
   assert.match(indexHtml, /data-staffing-list-law-context="1"/);
   assert.match(indexHtml, /staffing-list-establishment-formula/);
+  assert.match(indexHtml, /data-prediction-subject="eligible-list-establishment"/);
+  assert.match(indexHtml, /data-prediction-value=/);
+  assert.match(i18n, /If you apply, expect the eligible list for exams like this/);
+  assert.doesNotMatch(i18n, /exam_list_prediction_cohort_html:\s*"Predicted based on/);
   assert.match(aboutHtml, /id="staffing-list-establishment-formula"/);
   assert.match(aboutHtml, /never uses applicant names, scores, or ranks/);
   assert.match(aboutHtml, /match exams by exam number and measure from the filing deadline to the date the list was set up/);

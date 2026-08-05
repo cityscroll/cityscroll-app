@@ -443,9 +443,9 @@ export function dispositionTimingPatternLine(citywide, options = {}) {
   if (w1 == null || w2 == null) return null;
   const pairKind = citywide.pair_kind || options.pairKind || "auction_notice_to_event";
   if (pairKind === "multi_stage_hearing_to_auction") {
-    return `Predicted based on ${n} dispositions since ${year} — auctions typically follow the hearing by ${w1}–${w2} weeks.`;
+    return `An auction typically follows the hearing by ${w1}–${w2} weeks (${n} past dispositions since ${year}).`;
   }
-  return `Predicted based on ${n} Property Disposition auction notices since ${year} — when a sale date is published, it typically falls ${w1}–${w2} weeks after the auction notice.`;
+  return `A published sale date typically falls ${w1}–${w2} weeks after the auction notice (${n} past Property Disposition notices since ${year}).`;
 }
 
 /**
