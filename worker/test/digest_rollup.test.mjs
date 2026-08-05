@@ -500,6 +500,53 @@ test("queue consumer acknowledges a newly held digest without rendering or sendi
   });
 });
 
+test("dark-period hold blocks every producer job and an already-enqueued consumer job", async () => {
+  const key = "sub:dark-period";
+  const queueJobs = [];
+  const sentEmails = [];
+  const env = {
+    ALERT_STATE: kv({}),
+    SUBS: kv({
+      [key]: JSON.stringify({
+        email: "dark" + "@example.com",
+        lens: "money",
+        filter: { keywords: ["construction"] },
+        freq: "daily",
+        channel: "email",
+        createdAt: FIXTURE_TODAY,
+      }),
+    }),
+    ALERTS_LIVE: "true",
+    QUEUE_DIGESTS: "true",
+    DIGEST_QUEUE: { send: async (job) => { queueJobs.push(job); } },
+    RESEND_API_KEY: "re-test",
+    TOKEN_SECRET: "s".repeat(32),
+  };
+  const shadowHoldState = buildDigestShadowHoldState({
+    summary: null,
+    lastReadyRunDay: "2026-08-01",
+    now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+  });
+
+  const summary = await runAlerts(env, [], {
+    now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+    shadowHoldState,
+  });
+  assert.deepEqual(queueJobs, []);
+  assert.equal(summary.shadowHold.hold_all, true);
+  assert.equal(summary.results.filter((result) => result.skipped === "shadow-hold").length, 1);
+  assert.equal(summary.receipt.skipped_reason, "shadow_hold");
+
+  await withMockFetch(sentEmails, null, async () => {
+    const result = await consumeDigestJob(env, { type: "sub", key }, {
+      now: `${FIXTURE_TODAY}T13:00:00.000Z`,
+      shadowHoldState,
+    });
+    assert.equal(result.skipped, "shadow-hold");
+    assert.equal(sentEmails.length, 0);
+  });
+});
+
 test("buildDigestJobs: production-shaped multi-watch account is one rollup job", () => {
   const jobs = buildDigestJobs([
     { key: "sub:a", email: "owner@example.com", paused: false },

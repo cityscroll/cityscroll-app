@@ -218,10 +218,21 @@ function readDb(summaryJson, preview = null) {
       const query = { sql, args: [] };
       query.bind = (...args) => { query.args = args; return query; };
       query.first = async () => {
+        if (sql.includes("status = 'READY'")) return { run_day: summaryJson.run_day };
         if (sql.includes("digest_shadow_runs")) return { summary_json: JSON.stringify(summaryJson) };
         return preview;
       };
+      query.all = async () => ({ results: [] });
       return query;
+    },
+  };
+}
+
+function receiptKv(receipt) {
+  return {
+    async get(key) {
+      if (key === `digest:shadow:degraded:${receipt.run_day}`) return JSON.stringify(receipt);
+      return null;
     },
   };
 }
@@ -271,6 +282,23 @@ test("admin shadow endpoint fails closed and returns non-ok HTTP for machine pol
   assert.equal(body.summary.redlines[0].digest_id, "sub:er***");
 });
 
+test("shadow status exposes an open degraded-path receipt and wakes machine pollers", async () => {
+  const clean = summary([result()]);
+  const receipt = {
+    contract: "digest-shadow-degraded-decision.v1",
+    run_day: clean.run_day,
+    decision: "SEND_FAIL_OPEN",
+    attention_status: "open",
+  };
+  const response = await handleAdminDigestShadow(
+    new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer secret" } }),
+    { ADMIN_KEY: "secret", DB: readDb(clean), ALERT_STATE: receiptKv(receipt) },
+    { now: NOW },
+  );
+  assert.equal(response.status, 503);
+  assert.equal((await response.json()).degraded_receipt.decision, "SEND_FAIL_OPEN");
+});
+
 test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rejects it", async () => {
   const clean = summary([result()]);
   const env = (extra = {}) => ({ ADMIN_KEY: "admin-key", SHADOW_STATUS_KEY: "shadow-key", DB: readDb(clean), ...extra });
@@ -278,6 +306,7 @@ test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rej
   const getWithShadow = await handleAdminDigestShadow(
     new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer shadow-key" } }),
     env(),
+    { now: NOW },
   );
   assert.equal(getWithShadow.status, 200);
 
@@ -285,6 +314,7 @@ test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rej
   const getWithAdmin = await handleAdminDigestShadow(
     new Request("https://w/admin/digest-shadow", { headers: { authorization: "Bearer admin-key" } }),
     env(),
+    { now: NOW },
   );
   assert.equal(getWithAdmin.status, 200);
 
@@ -292,6 +322,7 @@ test("GET /admin/digest-shadow accepts the read-only SHADOW_STATUS_KEY; POST rej
   const getWithShadowQuery = await handleAdminDigestShadow(
     new Request("https://w/admin/digest-shadow?key=shadow-key"),
     env(),
+    { now: NOW },
   );
   assert.equal(getWithShadowQuery.status, 200);
 
@@ -378,6 +409,8 @@ test("cron, D1 migration, and scheduled wake monitor are wired", () => {
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_states/);
+  assert.match(workflow, /cron: "10 13 \* \* \*"/);
+  assert.match(workflow, /degraded_receipt/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_overrides/);
   assert.match(workflow, /cron: "10 10 \* \* \*"/);
   assert.match(workflow, /Wake the repair loop/);

@@ -118,7 +118,9 @@ test("buildDayLog envelope fields are declared on the contract", () => {
     results: [
       { sub: "sub:ab***", new: 1, found: 1, noticeIds: ["1"], action: "match", sent: true },
     ],
+    shadowHoldDecision: { decision: "SEND_ON_LAST_KNOWN_STATE" },
   });
+  assert.equal(log.shadowHoldDecision.decision, "SEND_ON_LAST_KNOWN_STATE");
   const fieldNames = new Set(buildOpsContract().daylog.envelope_fields.map((f) => f.name));
   for (const key of Object.keys(log)) {
     assert.ok(fieldNames.has(key), `envelope field ${key} missing from contract`);
