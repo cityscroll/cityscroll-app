@@ -9,7 +9,9 @@ import {
   readDigestDayLog,
   isMultiDayLagRecovery,
   processOneSub,
+  runDigestShadowRecoveryCatchUp,
 } from "../src/alerts.mjs";
+import { readDigestShadowDegradedReceipt } from "../src/digest_shadow_hold.mjs";
 import { toDayLogEntry, correctnessCheck, buildDayLog } from "../src/lib/digest_ops.mjs";
 import { toRollupDayLogEntry } from "../src/lib/rollup.mjs";
 
@@ -17,6 +19,7 @@ class MockKV {
   constructor() { this.store = new Map(); }
   async get(k) { return this.store.has(k) ? this.store.get(k) : null; }
   async put(k, v) { this.store.set(k, String(v)); }
+  async delete(k) { this.store.delete(k); }
   async list({ prefix = "" } = {}) {
     return { keys: [...this.store.keys()].filter(k => k.startsWith(prefix)).map(name => ({ name })), list_complete: true };
   }
@@ -38,6 +41,37 @@ function mockFetch(notices) {
     throw new Error("unexpected fetch: " + u);
   };
 }
+
+test("a recovered READY rehearsal runs catch-up and closes the dark-period receipt", async () => {
+  const ALERT_STATE = new MockKV();
+  const pending = {
+    contract: "digest-shadow-degraded-decision.v1",
+    decision_id: "2026-08-01:HOLD_ALL_DARK_PERIOD",
+    run_day: "2026-08-01",
+    decision: "HOLD_ALL_DARK_PERIOD",
+    attention_status: "open",
+    catch_up_required: true,
+  };
+  await ALERT_STATE.put("digest:shadow:dark-hold:pending", JSON.stringify(pending));
+  const calls = [];
+  const out = await runDigestShadowRecoveryCatchUp(
+    { ALERT_STATE },
+    { catch_up_required: true, recovery_of: pending },
+    {
+      now: "2026-08-04T13:00:00.000Z",
+      runCatchUpFn: async (_env, options) => {
+        calls.push(options);
+        return { live: true, candidates: 2, sentThisRun: 2, results: [{ sent: true }, { sent: true }] };
+      },
+    },
+  );
+  assert.deepEqual(calls, [{ minLagDays: 1 }]);
+  assert.equal(out.receipt.decision, "CATCH_UP_SENT_ON_RECOVERY");
+  assert.equal(out.receipt.recovery_of, pending.decision_id);
+  assert.equal(out.receipt.catch_up.sent, 2);
+  assert.equal(await ALERT_STATE.get("digest:shadow:dark-hold:pending"), null);
+  assert.equal((await readDigestShadowDegradedReceipt(ALERT_STATE)).attention_status, "closed");
+});
 
 test("catch-up selection: sub with lastsent >= minLagDays is targeted", async () => {
   const SUBS = new MockKV(), ALERT_STATE = new MockKV();

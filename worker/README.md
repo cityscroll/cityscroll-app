@@ -84,8 +84,9 @@ digest/watch id, reason, evidence). Render failures, historically-active watches
 aggregate collapse/explosion, count/list mismatch, and malformed unsubscribe/context links all
 produce `NEEDS_ATTENTION` and HTTP 503.
 
-The scheduled `digest-shadow-monitor.yml` poll runs after the rehearsal and opens or updates a
-repair issue when the run is redlined, missing, or stale. Shadow failures never send operator
+The scheduled `digest-shadow-monitor.yml` polls after both rehearsal and delivery, and opens or
+updates a repair issue when the run is redlined, missing, stale, or has an open degraded-path
+receipt. Shadow failures never send operator
 email; the authenticated admin endpoint remains the canonical machine-readable status surface.
 The repair protocol is to diagnose the listed `affected_digest_ids`, apply the repair, then use
 authenticated `POST /admin/digest-shadow` to re-render the full set before 09:00. At 12:45 UTC
@@ -95,11 +96,17 @@ configured 13:00 UTC delivery cron), any digest IDs still named by a redlined ru
 unrelated digests remain eligible. A `READY` rerun releases all leases and clears overrides.
 
 The failure boundary is deliberately narrow: a redline is fail-closed only for its
-`affected_digest_ids`. A missing run, unavailable hold store, or run-level redline with no named
-digest scope is fail-open and recorded distinctly rather than becoming a global email stop. Holds
-expire at 14:00 UTC; a queue message found held is acknowledged as `skipped:shadow-hold`, never
-retried into an accidental later send. The authenticated override body above requires a reason and
-can release only IDs named by that day's run.
+`affected_digest_ids`. Hold-store reads get three bounded attempts (250 ms then 1 s backoff), then
+use that day's last persisted hold state when one is usable. Without a last-known state, a missing
+or unavailable run stays fail-open with a loud `digest-shadow-degraded-decision.v1` receipt while
+the latest `READY` rehearsal is less than three calendar days old. At the three-day boundary the
+policy holds every digest; the next `READY` rehearsal runs watermark catch-up before normal
+delivery and closes the receipt. `/admin/digest-shadow` exposes the receipt and returns HTTP 503
+while attention is open; the daylog carries the same collapsed decision for the operations line.
+Run-level redlines without named digest scope remain fail-open. Named holds expire at 14:00 UTC; a
+queue message found held is acknowledged as `skipped:shadow-hold`, never retried into an accidental
+later send. The authenticated override body above requires a reason and can release only IDs named
+by that day's run.
 
 Before the digest run, the same cron refreshes the D1 notices mirror from Socrata
 (`ingest.mjs`, cursored, fail-soft) and pre-warms prior-cycle match sets for the
