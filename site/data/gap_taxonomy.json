@@ -786,7 +786,11 @@
       "name": "Recent Contract Awards (OCP)",
       "source_contract_id": "ocp-recent-contract-awards",
       "status": "landed",
-      "join_keys": [],
+      "join_keys": [
+        "PIN",
+        "request_id",
+        "agency"
+      ],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
       "delivery_tier": "edge-materialized"
@@ -852,19 +856,6 @@
       },
       "landing_page": "https://a0333-passportpublic.nyc.gov/rfx.html",
       "delivery_tier": "edge-materialized"
-    },
-    {
-      "id": "recent-contract-awards-ocp",
-      "name": "Recent Contract Awards (OCP)",
-      "source_contract_id": null,
-      "status": "not_ingested",
-      "join_keys": [
-        "PIN",
-        "request_id",
-        "agency"
-      ],
-      "join_coverage": {},
-      "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5"
     },
     {
       "id": "ulurp-recommendation-pdfs",
@@ -965,20 +956,20 @@
       "id": "zap-bbl",
       "name": "Zoning Application Portal — tax lots",
       "source_contract_id": "zap-bbl",
-      "status": "live-only",
+      "status": "landed",
       "join_keys": [
         "BBL",
         "project_id"
       ],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/2iga-a6mk",
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "zap-projects",
       "name": "Zoning Application Portal — projects",
       "source_contract_id": "zap-projects",
-      "status": "live-only",
+      "status": "landed",
       "join_keys": [
         "project_id",
         "BBL",
@@ -986,7 +977,7 @@
       ],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized"
     }
   ],
   "crosswalks": [
@@ -1373,15 +1364,15 @@
       "evidence": "Shared keys PIN; 5 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-contracts-x-recent-contract-awards-ocp-via-PIN",
+      "id": "checkbook-contracts-x-ocp-recent-contract-awards-via-PIN",
       "source_a": "checkbook-contracts",
-      "source_b": "recent-contract-awards-ocp",
+      "source_b": "ocp-recent-contract-awards",
       "key_path": [
         "PIN"
       ],
       "status": "candidate",
       "realized_coverage": null,
-      "worth_materializing": "maybe",
+      "worth_materializing": "yes",
       "gaps_would_close": [
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
@@ -1392,15 +1383,15 @@
       "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-spending-x-recent-contract-awards-ocp-via-PIN",
+      "id": "checkbook-spending-x-ocp-recent-contract-awards-via-PIN",
       "source_a": "checkbook-spending",
-      "source_b": "recent-contract-awards-ocp",
+      "source_b": "ocp-recent-contract-awards",
       "key_path": [
         "PIN"
       ],
       "status": "candidate",
       "realized_coverage": null,
-      "worth_materializing": "maybe",
+      "worth_materializing": "yes",
       "gaps_would_close": [
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
@@ -1431,16 +1422,16 @@
       "evidence": "Shared keys PIN, request_id; 4 taxonomy gap(s) could close."
     },
     {
-      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "id": "city-record-x-ocp-recent-contract-awards-via-PIN+request_id",
       "source_a": "city-record",
-      "source_b": "recent-contract-awards-ocp",
+      "source_b": "ocp-recent-contract-awards",
       "key_path": [
         "PIN",
         "request_id"
       ],
       "status": "candidate",
       "realized_coverage": null,
-      "worth_materializing": "maybe",
+      "worth_materializing": "yes",
       "gaps_would_close": [
         "city-record-attachment-export-cliff",
         "procurement-ocp-recent-awards",
@@ -1596,15 +1587,15 @@
       "evidence": "Shared keys BBL; 3 taxonomy gap(s) could close."
     },
     {
-      "id": "nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id",
+      "id": "nycida-build-nyc-projects-x-ocp-recent-contract-awards-via-request_id",
       "source_a": "nycida-build-nyc-projects",
-      "source_b": "recent-contract-awards-ocp",
+      "source_b": "ocp-recent-contract-awards",
       "key_path": [
         "request_id"
       ],
       "status": "candidate",
       "realized_coverage": null,
-      "worth_materializing": "maybe",
+      "worth_materializing": "yes",
       "gaps_would_close": [
         "procurement-ocp-recent-awards",
         "subsidy-stage-unmatched",
@@ -1737,15 +1728,15 @@
       "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
     },
     {
-      "id": "passport-public-contracts-x-recent-contract-awards-ocp-via-PIN",
-      "source_a": "passport-public-contracts",
-      "source_b": "recent-contract-awards-ocp",
+      "id": "ocp-recent-contract-awards-x-passport-public-contracts-via-PIN",
+      "source_a": "ocp-recent-contract-awards",
+      "source_b": "passport-public-contracts",
       "key_path": [
         "PIN"
       ],
       "status": "candidate",
       "realized_coverage": null,
-      "worth_materializing": "maybe",
+      "worth_materializing": "yes",
       "gaps_would_close": [
         "procurement-registered-unmatched",
         "procurement-ocp-recent-awards"
@@ -1786,6 +1777,23 @@
       "evidence": "Shared keys exam_no; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "current-solicitations-ocp-x-ocp-recent-contract-awards-via-PIN+request_id",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "ocp-recent-contract-awards",
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 1,
+      "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
       "source_a": "current-solicitations-ocp",
       "source_b": "passport-public-contracts",
@@ -1800,23 +1808,6 @@
       ],
       "score": 1,
       "evidence": "Shared keys PIN; 1 taxonomy gap(s) could close."
-    },
-    {
-      "id": "current-solicitations-ocp-x-recent-contract-awards-ocp-via-PIN+request_id",
-      "source_a": "current-solicitations-ocp",
-      "source_b": "recent-contract-awards-ocp",
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards"
-      ],
-      "score": 1,
-      "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
     },
     {
       "id": "dob-now-job-filings-x-legacy-dob-job-filings-via-BBL+BIN+job_number",
@@ -2029,6 +2020,22 @@
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "ocp-recent-contract-awards-x-passport-public-rfx-via-PIN",
+      "source_a": "ocp-recent-contract-awards",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 1,
+      "evidence": "Shared keys PIN; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "passport-public-contracts-x-passport-public-rfx-via-EPIN+PIN",
       "source_a": "passport-public-contracts",
       "source_b": "passport-public-rfx",
@@ -2044,22 +2051,6 @@
       ],
       "score": 1,
       "evidence": "Shared keys EPIN, PIN; 1 taxonomy gap(s) could close."
-    },
-    {
-      "id": "passport-public-rfx-x-recent-contract-awards-ocp-via-PIN",
-      "source_a": "passport-public-rfx",
-      "source_b": "recent-contract-awards-ocp",
-      "key_path": [
-        "PIN"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "procurement-ocp-recent-awards"
-      ],
-      "score": 1,
-      "evidence": "Shared keys PIN; 1 taxonomy gap(s) could close."
     },
     {
       "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
