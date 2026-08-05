@@ -22,6 +22,9 @@ export function describeFilter(lens, filter) {
   if (lens === "district") {
     return `Council District ${f.councilDistrict || "?"} — weekly civic actions`;
   }
+  if (lens === "people" && f.view === "guide" && f.examNumber) {
+    return `civil-service exam ${f.examNumber} — exact exam updates`;
+  }
   if (lens === "people" && f.view === "guide" && f.interestArea) {
     return `civil-service exams — ${f.interestLabel || f.interestArea}`;
   }

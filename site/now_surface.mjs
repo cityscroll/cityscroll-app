@@ -139,7 +139,7 @@ function staffingActions(payload, options) {
     const start = isoDay(exam.application_start);
     const deadline = isoDay(exam.application_end);
     if (!start || !deadline || start > options.today || !withinHorizon(options.today, deadline, options.actionHorizonDays)) continue;
-    const route = exam.exam_number ? `/#exam/${encodeURIComponent(exam.exam_number)}` : null;
+    const route = exam.exam_number ? `/exams/${encodeURIComponent(exam.exam_number)}/` : null;
     if (!route) continue;
     const matter = {
       kind: "exam",

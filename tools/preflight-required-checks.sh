@@ -106,6 +106,7 @@ run_and_fail node tools/data_source_graph.mjs
 run_and_fail node tools/data_source_graph.mjs --check
 run_and_fail node tools/build_url_migration_map.mjs --check
 run_and_fail node tools/build_primary_documents.mjs --check
+run_and_fail node tools/build_exam_documents.mjs --check
 run_and_fail node tools/build_near_you_pages.mjs --check
 run_and_fail node tools/build_following_page.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check

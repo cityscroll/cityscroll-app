@@ -131,6 +131,18 @@ export function migrateLegacyUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
     };
   }
 
+  const exam = route.match(/^exam\/(\d{4})$/);
+  if (exam) {
+    const mapped = targetUrl(`/exams/${exam[1]}/`, url, params, new Set());
+    return {
+      linkClass: "exam permalink",
+      ...mapped,
+      parameterRule: "Preserve validated language only.",
+      forwardingBehavior: "Forward to the canonical exam document.",
+      migrated: true,
+    };
+  }
+
   if (Object.hasOwn(LEGACY_LENS_FACETS, route)) {
     const facet = LEGACY_LENS_FACETS[route];
     const mapped = targetUrl(`/browse/${facet}/`, url, params, LEGACY_ROUTE_PARAMETERS[route]);

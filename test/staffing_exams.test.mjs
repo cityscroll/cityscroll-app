@@ -30,7 +30,7 @@ test("every exam has a unique shareable identity and official provenance", () =>
     assert.match(exam.exam_number, /^\d{4}$/);
     assert.ok(exam.title);
     assert.ok(exam.sources.length);
-    assert.match(Staffing.examUrl(exam.exam_number), new RegExp(`#exam/${exam.exam_number}$`));
+    assert.match(Staffing.examUrl(exam.exam_number), new RegExp(`/exams/${exam.exam_number}/$`));
   }
 });
 
@@ -160,7 +160,7 @@ test("actionable exam titles connect Staffing role rows to exact exam details", 
   assert.equal(Staffing.examForTitle(artifact.exams, "CASEWORKER", today)?.exam_number, "7016");
   assert.equal(Staffing.examForTitle(artifact.exams, "Emergency Medical Specialist - EMT", today)?.exam_number, "6125");
   assert.equal(Staffing.examForTitle(artifact.exams, "Unrelated title", today), null);
-  assert.match(html, /class="staffing-exam-link" href="#exam\//);
+  assert.match(html, /class="staffing-exam-link" href="\$\{CrolStaffing\.examUrl\(/);
   assert.match(html, /staffing_view_exam_detail/);
 });
 

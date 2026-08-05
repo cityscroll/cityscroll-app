@@ -117,6 +117,7 @@ function scopeSummary(lens, filter) {
     ["stage", filter.process || filter.stage],
     ["time", filter.dateWindow || filter.when],
     ["name", filter.name],
+    ["exam number", filter.examNumber],
   ];
   for (const [axis, label] of values) if (label) chips.push({ axis, label: String(label) });
   return chips;

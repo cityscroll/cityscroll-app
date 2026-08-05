@@ -24,6 +24,7 @@ export const SUBJECT_LINK_METHOD_VERSION = "1.0.0";
 /** Closed subject kind registry (prefix of subject_ref). */
 export const SUBJECT_KINDS = Object.freeze({
   notice: { description: "City Record notice (request_id)" },
+  exam: { description: "DCAS civil-service exam number" },
   contract: { description: "Checkbook / PASSPort contract id" },
   project: { description: "ZAP land-use project" },
   parcel: { description: "NYC tax lot (10-digit BBL)" },
@@ -65,7 +66,7 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
   },
   published_by_agency: {
     description: "Notice or record published by an agency subject",
-    from_kinds: Object.freeze(["notice", "contract", "award"]),
+    from_kinds: Object.freeze(["notice", "contract", "award", "exam"]),
     to_kinds: Object.freeze(["agency"]),
   },
   named_vendor: {

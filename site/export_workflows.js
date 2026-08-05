@@ -232,7 +232,7 @@
   const itemUrl=(kind,id)=>{
     if(!id) return "";
     if(kind==="land") return `https://cityscroll.org/#land?project=${encodeURIComponent(id)}`;
-    if(kind==="exam") return `https://cityscroll.org/#exam/${encodeURIComponent(id)}`;
+    if(kind==="exam") return `https://cityscroll.org/exams/${encodeURIComponent(id)}/`;
     return `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
   };
   function locationFor(row){
