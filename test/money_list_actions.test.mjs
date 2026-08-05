@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import actionRegistry from "../site/action_registry.js";
+import { noticeDisplayTitle } from "../site/display_title.mjs";
 
 const source = readFileSync(new URL("../site/app/money-list.mjs", import.meta.url), "utf8");
 const openSnapshot = JSON.parse(readFileSync(new URL("../site/data/money_default_open.json", import.meta.url), "utf8"));
@@ -24,7 +25,7 @@ function extractFunction(name) {
 }
 
 const { moneyListPrimaryAction, moneyListPrimaryActionHTML } = new Function(
-  "t", "todayISO", "cleanText", "escUiHtml", "EXT_ATTRS", "extSR",
+  "t", "todayISO", "cleanText", "escUiHtml", "EXT_ATTRS", "extSR", "noticeDisplayTitle",
   `${extractFunction("moneyListPrimaryAction")}
    ${extractFunction("moneyListPrimaryActionHTML")}
    return { moneyListPrimaryAction, moneyListPrimaryActionHTML };`,
@@ -35,6 +36,7 @@ const { moneyListPrimaryAction, moneyListPrimaryActionHTML } = new Function(
   (value) => String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"),
   'target="_blank" rel="noopener noreferrer"',
   () => '<span class="sr-only"> (opens in new tab)</span>',
+  noticeDisplayTitle,
 );
 
 const priorActions = globalThis.CrolActions;

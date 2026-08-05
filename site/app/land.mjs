@@ -1,3 +1,5 @@
+import { landProjectDisplayTitle } from "../display_title.mjs";
+
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
 const GEO = "https://geosearch.planninglabs.nyc/v2/search";
@@ -154,6 +156,7 @@ function filterLandHearingRows(rows, {boro, mode, kw, today}={}){
   });
 }
 function landHearingRowHTML(row, i){
+  const title=landProjectDisplayTitle(row);
   const when=row.hearing_at||row.hearing_date||"";
   const whenLabel=fdt(when,{dateOnly:row.parse_status==="published_date_only"});
   const modes=(row.attendance_modes||[]).map(mode=>{
@@ -173,7 +176,7 @@ function landHearingRowHTML(row, i){
     ? `<a class="act" href="#land/${encodeURIComponent(row.project_id)}">${t("land_hearings_open_project")}</a>`
     : "";
   return `<div class="row land-hearing-row" data-i="${i}" data-project-id="${escUiHtml(row.project_id||"")}" tabindex="0" role="button">
-    <p class="rtitle">${escUiHtml(row.project_name||row.project_id||t("unnamed_project"))}</p>
+    <p class="rtitle">${escUiHtml(title)}</p>
     <p class="rmeta"><span class="ragency">${escUiHtml(row.borough||"")}${row.representing?` · ${escUiHtml(row.representing)}`:""}</span>
       · ${t("land_hearings_card_when",{date:whenLabel})}${modeTxt?` · ${escUiHtml(modeTxt)}`:""}
       ${venue?`<br>${venue}`:""}
@@ -353,9 +356,9 @@ async function landNearby(geo,status){
 // deliberately skips ZAP rows for that reason, but matchEvidence()/digTitleHTML()/
 // digEvidenceHTML() are generic text-in/HTML-out and work on any title+description pair.
 function landRowHTML(r, i, terms, contextTerms){
-  const title = r.project_name || "", ev = matchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
+  const title = landProjectDisplayTitle(r), ev = matchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
   return `<div class="row" data-i="${i}" tabindex="0" role="button">
-    <p class="rtitle">${title ? digTitleHTML(title, ev) : t("unnamed_project")}</p>
+    <p class="rtitle">${digTitleHTML(title, ev)}</p>
     <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
     ${digEvidenceHTML(ev)}
@@ -401,12 +404,13 @@ async function landSelect(i, el){
   document.querySelectorAll("#llist .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const r=lRows[i];
+  const displayTitle=landProjectDisplayTitle(r);
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
   const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
   let html=(location.hash.startsWith("#land/")
     ? `<p style="margin:4px 0 12px">${routeBackHTML("#land")}</p>`
-    : "")+`<h2 class="rolename" lang="en" dir="ltr">${r.project_name||t("unnamed")}</h2>
+    : "")+`<h2 class="rolename" lang="en" dir="ltr">${escUiHtml(displayTitle)}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}

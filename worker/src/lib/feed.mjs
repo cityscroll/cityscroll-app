@@ -4,6 +4,7 @@
 // /notices/<id> permalinks.
 
 import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
+import { landProjectDisplayTitle, noticeDisplayTitle } from "../../../site/display_title.mjs";
 
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"']/g, (c) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -30,7 +31,7 @@ export function feedItems(kind, rows) {
       return {
         id: String(r.project_id || ""),
         url: `https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id || "")}`,
-        title: stripHtml(r.project_name) || "(unnamed rezoning)",
+        title: landProjectDisplayTitle(r),
         date: r.current_milestone_date || null,
         summary: [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant]
           .filter(Boolean).join(" · "),
@@ -40,7 +41,7 @@ export function feedItems(kind, rows) {
     return {
       id: String(r.request_id || ""),
       url: `https://cityscroll.org/notices/${encodeURIComponent(r.request_id || "")}`,
-      title: stripHtml(r.short_title) || "(untitled notice)",
+      title: noticeDisplayTitle(r),
       date: r.start_date || null,
       summary: [
         r.agency_name, usd(r.contract_amount), r.vendor_name ? "→ " + stripHtml(r.vendor_name) : "",

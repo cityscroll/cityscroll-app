@@ -44,6 +44,11 @@ test("feedItems: ZAP rows → ZAP project links", () => {
   assert.match(items[0].summary, /Brooklyn/);
 });
 
+test("feedItems: identifier fallbacks replace placeholder titles", () => {
+  assert.equal(feedItems("rezone", [{ project_id: "P1985Q9999" }])[0].title, "Project P1985Q9999");
+  assert.equal(feedItems("rules", [{ request_id: "20260805001", short_title: "(untitled)" }])[0].title, "Notice 20260805001");
+});
+
 test("atomFeed: well-formed, escaped, one entry per item", () => {
   const xml = atomFeed({
     title: 'CityScroll — rules & notices — about "scaffold"',

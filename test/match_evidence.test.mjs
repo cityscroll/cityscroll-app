@@ -75,8 +75,8 @@ test("digTitleHTML: a title-field match wraps only the hit in <mark>, rest of th
   assert.match(html, /<span lang="en" dir="ltr">NOS - <mark>Equity<\/mark> Index Investment Management Products<\/span>/);
 });
 
-test("digTitleHTML: empty title still falls back to the untitled string", () => {
-  assert.equal(digTitleHTML("", null), t("untitled"));
+test("digTitleHTML: empty title uses a non-placeholder record label", () => {
+  assert.equal(digTitleHTML("", null), t("rule_sibling_role_notice"));
 });
 
 test("digEvidenceHTML: title-field match renders nothing extra -- the highlighted title already shows it", () => {

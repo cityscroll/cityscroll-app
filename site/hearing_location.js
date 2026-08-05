@@ -223,7 +223,7 @@ function normalizeHearingRow(row) {
   return {
     request_id: String(row.request_id || ""), source_section: row.section_name || null,
     agency: row.agency_name || null, notice_type: row.type_of_notice_description || null,
-    title: hearingPlainText(row.short_title) || "Untitled hearing", event_date: row.event_date || null,
+    title: hearingPlainText(row.short_title) || "Hearing " + String(row.request_id || "").trim(), event_date: row.event_date || null,
     published_at: row.start_date || null, decides: hearingDecision(row, body),
     affects: audience ? [audience[1]] : [], affected_area: row.affected_area || hearingAffectedArea(row),
     venue: row.venue || hearingVenue(row),
