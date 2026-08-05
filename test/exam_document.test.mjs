@@ -70,7 +70,7 @@ test("exam URL grammar forwards legacy hashes and carries validated language", (
   assert.equal(migrateLegacyUrl("/#exam/70").migrated, false);
   assert.equal(edgeRequestKind("https://cityscroll.org/exams/7016/"), "exam");
   assert.match(examWatchUrl("7016"), /lens=people/);
-  assert.match(examWatchUrl("7016"), /examNumber/);
+  assert.match(examWatchUrl("7016"), /subject_refs_all/);
 });
 
 test("exact exam watches survive worker sanitization and compile to one exam", () => {
