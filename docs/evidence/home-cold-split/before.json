@@ -1,7 +1,7 @@
 {
   "version": 1,
   "measurementContext": {
-    "revision": "639bf8c5a9f0c64d9a1c4aab9fdccefdfb0f9691",
+    "revision": "639bf8c5",
     "siteRoot": "site",
     "readinessTimeoutMs": 90000,
     "headroomAtLaunch": "OK; load 2.3/4 cores; CPU 13%; run queue 1; memory 47%",
