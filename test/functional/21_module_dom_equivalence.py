@@ -50,7 +50,7 @@ def flatten_helper(path: pathlib.Path, stack: tuple[pathlib.Path, ...] = ()) -> 
     """Inline a pure helper's local named-import graph for the pre-split fixture."""
     assert path not in stack, f"circular inline helper import: {path.name}"
     source = path.read_text()
-    dependencies = []
+    nested_sources = []
     for helper_name in STATIC_LOCAL_IMPORT.findall(source):
         helper_path = path.parent / helper_name
         assert helper_path.is_file(), f"nested helper import missing: {helper_name}"
@@ -60,8 +60,8 @@ def flatten_helper(path: pathlib.Path, stack: tuple[pathlib.Path, ...] = ()) -> 
         assert not re.search(r"\bexport\s", dependency), (
             f"inline reconstruction cannot flatten this export in {helper_name}"
         )
-        dependencies.append(dependency)
-    return "\n".join([*dependencies, STATIC_LOCAL_IMPORT.sub("", source)])
+        nested_sources.append(dependency)
+    return "\n".join([*nested_sources, STATIC_LOCAL_IMPORT.sub("", source)])
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
