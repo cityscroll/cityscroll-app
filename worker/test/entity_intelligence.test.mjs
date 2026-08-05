@@ -74,6 +74,31 @@ describe("GET /entity-intelligence", () => {
     assert.equal(a.root.ref, "agency:id:parks-and-recreation");
   });
 
+  it("serves confidence-safe connection metadata and materialization coverage framing", async () => {
+    const res = await handleEntityIntelligence(
+      req("/entity-intelligence?kind=agency&name=Housing%20Preservation%20and%20Development"),
+    );
+    assert.equal(res.status, 200);
+    const body = await res.json();
+
+    assert.equal(body.root.ref, "agency:id:housing-preservation-and-development");
+    assert.equal(body.metrics.domains_matched, 5);
+    assert.equal(body.coverage.eligible, null);
+    assert.equal(body.coverage.linked, 18);
+    assert.equal(body.coverage.rate, null);
+    assert.match(body.coverage.vintage, /^\d{4}-\d{2}-\d{2}T/);
+    assert.equal(body.domains.land.strong_count, 0);
+    assert.equal(body.domains.land.tentative_count, 2);
+    assert.ok(body.domains.money.strong_count > 0);
+
+    const connections = Object.values(body.domains)
+      .flatMap((domain) => domain.objects || [])
+      .flatMap((object) => object.connected_entities || []);
+    assert.ok(connections.some((connection) => connection.entity_ref.startsWith("vendor:stem:")));
+    assert.ok(connections.every((connection) => ["strong", "tentative"].includes(connection.confidence)));
+    assert.ok(connections.every((connection) => connection.confidence !== "weak"));
+  });
+
   it("lists multi-domain entities", async () => {
     const res = await handleEntityIntelligence(req("/entity-intelligence?list=1"));
     assert.equal(res.status, 200);
