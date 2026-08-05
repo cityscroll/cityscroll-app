@@ -260,7 +260,19 @@ function syncTabAria(){
   btns.forEach(b=>{ const on=b.classList.contains("active"); b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; if(on) any=true; });
   if(!any && btns[0]) btns[0].tabIndex = 0; // notice view: no tab selected — keep the tablist reachable
 }
+let pendingRouteModuleTab=null;
 function showTab(name, push){
+  const routeModules=globalThis.CrolRouteModules;
+  if(routeModules && !routeModules.isReady(name)){
+    pendingRouteModuleTab=name;
+    routeModules.ensure(name).then(()=>{
+      if(pendingRouteModuleTab!==name) return;
+      pendingRouteModuleTab=null;
+      showTab(name,push);
+    }).catch(()=>{});
+    return;
+  }
+  pendingRouteModuleTab=null;
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));

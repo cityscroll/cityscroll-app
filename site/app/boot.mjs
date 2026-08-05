@@ -615,7 +615,10 @@ $("#propertyneighborhood").addEventListener("input",debounce(()=>{ propertyCounc
 loadAgencies();
 document.addEventListener("click",rememberItemRouteContext);
 window.addEventListener("popstate",event=>prepareHistoryRouteScroll(event.state));
-window.addEventListener("hashchange", ()=>{
+window.addEventListener("hashchange", async ()=>{
+  const targetHash=location.hash;
+  await globalThis.CrolRouteModules?.ensureForHash(targetHash);
+  if(location.hash!==targetHash) return;
   commitPendingItemRouteContext();
   if(!hashLock && !applyHash()) showTab("money");
   restoreHistoryRouteScroll();

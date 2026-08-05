@@ -43,7 +43,7 @@ export function computeModuleGraphDigest() {
 
 export function validateModuleGraph() {
   const loader = readFileSync(LOADER_PATH, "utf8");
-  const loaderModules = [...loader.matchAll(/await import\("\.\/(.+?)"\);/g)].map(
+  const loaderModules = [...loader.matchAll(/import\("\.\/(.+?)"\)/g)].map(
     (match) => match[1],
   );
   const applicationModules = readdirSync(APP_DIR)

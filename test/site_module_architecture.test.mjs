@@ -11,7 +11,7 @@ const evidence = JSON.parse(
 );
 const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const loader = readFileSync(new URL("../site/app/main.mjs", import.meta.url), "utf8");
-const loaderModules = [...loader.matchAll(/await import\("\.\/(.+?)"\);/g)].map(
+const loaderModules = [...loader.matchAll(/import\("\.\/(.+?)"\)/g)].map(
   (match) => match[1],
 );
 const applicationModules = readdirSync(new URL("../site/app/", import.meta.url))
@@ -37,6 +37,22 @@ test("index.html delegates application behavior to the ordered ES-module loader"
 test("every application module is registered exactly once in the import graph", () => {
   assert.equal(new Set(loaderModules).size, loaderModules.length, "duplicate loader imports");
   assert.deepEqual([...loaderModules].sort(), applicationModules);
+});
+
+test("Property stays behind route activation while routing state remains eager", () => {
+  assert.match(loader, /property:\s*\(\)\s*=>\s*import\("\.\/property\.mjs"\)/);
+  assert.match(loader, /await ensureRouteModulesForHash\(location\.hash\)/);
+  assert.match(loader, /await import\("\.\/routing\.mjs"\)/);
+  assert.ok(
+    loader.indexOf("await ensureRouteModulesForHash(location.hash)")
+      < loader.indexOf('await import("./routing.mjs")'),
+    "initial deep links must load their route module before eager routing runs",
+  );
+  assert.match(moduleSource("core.mjs"), /routeModules\.ensure\(name\)/);
+  assert.match(
+    moduleSource("boot.mjs"),
+    /await globalThis\.CrolRouteModules\?\.ensureForHash\(targetHash\)/,
+  );
 });
 
 test("every application module stays below the short-context working bar", () => {

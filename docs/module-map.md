@@ -4,7 +4,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 
 | Module | Owns / read for |
 |---|---|
-| `site/app/main.mjs` | Ordered module loading; read for boot-order or module-registration changes. |
+| `site/app/main.mjs` | Ordered module loading and the route-activation registry; read for boot-order or module-registration changes. Property is fetched for Property/notice routes, not the default Money landing. |
 | `site/app/core.mjs` | API clients, shared formatting, skeletons, tabs, and common DOM helpers. |
 | `site/scope_v0.mjs` | Pure scope v0 narrow-waist adapter across routes, filters, map/Now state, presets, sharing, and watches; owns no mutable state. `scope_now_adapter.mjs` keeps the Now matcher on that surface's lazy graph. |
 | `site/app/money-list.mjs` | Money-list queries, filters, rows, selection, and lineage badges. |
@@ -13,6 +13,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/app/people.mjs` | Staffing feed, civil-service exam guide/detail, roles, and personnel search. |
 | `site/app/land.mjs` | Land search/detail/map, ZAP outcomes, ULURP timeline, and notice-to-ZAP joins. |
 | `site/app/feed-actions.mjs` | Shared Property/Rules/Meetings loading, stamped district-bag filtering, hearing explorer, and notice/land action rails. |
+| `site/franchise_notice.mjs` | Route-independent franchise eligibility and stage classification shared by the Money action rail and Property renderer. |
 | `site/action_outcome_prompt.mjs` | Optional post-handoff/passed-action self-report UI over the registered outcome vocabulary; aggregate analytics only, with no matter identifier or free text. |
 | `site/app/property.mjs` | Franchise and property-disposition spines, surplus-buyer commercial glance, property explorer, and tax-lien context. |
 | `site/property_commercial.mjs` | Pure Property commercial extraction (item/qty/price/deal/participation) for list + detail. |
