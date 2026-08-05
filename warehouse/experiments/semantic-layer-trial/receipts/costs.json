@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.semantic_layer_trial.costs.v1",
+  "observed_on": "2026-08-04",
+  "mode": "offline_cpu_build_and_local_sqlite_query",
+  "model": {
+    "id": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision_parts": [
+      "1110a243fdf4706b3f48",
+      "f1d95db1a4f5529b4d41"
+    ],
+    "sentence_transformers_version": "5.5.1",
+    "dimensions_measured": 384,
+    "max_sequence_length_measured": 256,
+    "cache_bytes_measured": 91578415
+  },
+  "build": {
+    "documents": 122,
+    "chunks": 238,
+    "model_load_ms": 115.07,
+    "document_embedding_ms": 1470.88,
+    "sqlite_index_build_ms": 10.85,
+    "process_cpu_seconds_total": 3.969,
+    "metered_api_calls": 0,
+    "metered_cost_usd": 0
+  },
+  "storage": {
+    "corpus_bytes": 257376,
+    "float32_vector_payload_bytes": 365568,
+    "sqlite_index_bytes": 1613824
+  },
+  "warm_query_latency": {
+    "query_embedding_ms": {
+      "samples": 90,
+      "p50_ms": 2.827,
+      "p95_ms": 3.018
+    },
+    "vector_knn_ms": {
+      "samples": 90,
+      "p50_ms": 0.395,
+      "p95_ms": 0.423
+    },
+    "bm25_ms": {
+      "samples": 90,
+      "p50_ms": 0.058,
+      "p95_ms": 0.089
+    },
+    "hybrid_total_ms": {
+      "samples": 90,
+      "p50_ms": 3.298,
+      "p95_ms": 3.506
+    }
+  },
+  "single_chunk_refresh": {
+    "embedding_ms": 3.546,
+    "delete_insert_commit_ms": 0.528,
+    "mechanic": "Re-embed changed chunks and replace their rows; unchanged vectors remain intact."
+  },
+  "not_measured": [
+    "Cloudflare Vectorize query latency",
+    "Workers AI embedding latency or billing",
+    "production corpus growth",
+    "cross-encoder reranking"
+  ]
+}
