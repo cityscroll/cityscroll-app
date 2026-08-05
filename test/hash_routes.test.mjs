@@ -16,9 +16,23 @@ function extractFn(name) {
   throw new Error(`unbalanced braces extracting ${name}`);
 }
 
-const { bareCollectionHash } = new Function(
-  `${extractFn("bareCollectionHash")}; return { bareCollectionHash };`,
+const { bareCollectionHash, canonicalInputRoute } = new Function(
+  `${extractFn("bareCollectionHash")}; ${extractFn("canonicalInputRoute")}; return { bareCollectionHash, canonicalInputRoute };`,
 )();
+
+test("staffing input routes normalize to People without changing query parameters", () => {
+  assert.equal(
+    canonicalInputRoute("staffing?lang=es&view=guide&role=Engineer%20Civil&window=open"),
+    "people?lang=es&view=guide&role=Engineer%20Civil&window=open",
+  );
+  assert.equal(canonicalInputRoute("staffing"), "people");
+  assert.equal(canonicalInputRoute("people?lang=zh&q=planner"), "people?lang=zh&q=planner");
+  assert.equal(canonicalInputRoute("staffing/legacy"), "staffing/legacy");
+
+  const applyHash = extractFn("applyHash");
+  assert.match(applyHash, /canonicalInputRoute\(raw\)/);
+  assert.match(applyHash, /history\.replaceState[\s\S]*"#"\+raw/);
+});
 
 test("every item route has an intentional bare collection destination", () => {
   assert.deepEqual(
