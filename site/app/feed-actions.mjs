@@ -1168,7 +1168,7 @@ function updateMeetingsMoreFiltersState(){
 }
 function setMeetingsResultCount(count){
   const element=$("#meetings-count");
-  if(element) element.textContent=t("results_count",{n:fmtNumber(count)});
+  if(element) element.textContent=t("results_count",{n:fmtNumber(countWithScopeReceipt(count))});
 }
 async function renderHearingExplorer(){
   const seq=++hearingRenderSeq;

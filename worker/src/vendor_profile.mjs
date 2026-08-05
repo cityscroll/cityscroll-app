@@ -16,6 +16,7 @@ import {
   joinVendorToDoingBusiness,
 } from "./lib/doing_business_join.mjs";
 import { attachDoingBusinessFromWarehouse } from "./lib/doing_business_warehouse_lookup.mjs";
+import { precomputedVendorFootprint } from "./entity_intelligence.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MONEY_HONESTY_CAP = 10_000_000_000;
@@ -372,6 +373,7 @@ export async function refreshVendorProfiles(env, options = {}) {
   const buckets = new Map();
 
   for (const profile of Object.values(profiles)) {
+    profile.footprint = precomputedVendorFootprint(profile.stem, profile.display);
     const bucket = vendorProfileBucket(profile.stem);
     if (!buckets.has(bucket)) buckets.set(bucket, {});
     buckets.get(bucket)[profile.stem] = profile;
@@ -398,7 +400,7 @@ export async function refreshVendorProfiles(env, options = {}) {
     JSON.stringify({
       generated,
       version,
-      schema: 2,
+      schema: 3,
       profileCount: Object.keys(profiles).length,
     }),
     { expirationTtl: RECORD_TTL_SECONDS },
@@ -427,6 +429,7 @@ export async function refreshVendorProfiles(env, options = {}) {
       recentNotices: recent.rowsStored,
       forecasts: forecast.recordsStored,
       doingBusiness: doingBusiness.matched,
+      vendorFootprints: Object.values(profiles).filter((profile) => profile.footprint).length,
       mentions: false,
     },
   };

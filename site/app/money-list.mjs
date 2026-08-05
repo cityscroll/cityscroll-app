@@ -221,7 +221,9 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   currentRows = rows;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
   unbusy("#list");
-  const countText=currentRows.length===1?t("one_result"):t(currentRows.length===40?"or_more_results":"results_count",{n:currentRows.length});
+  const receiptCount=countWithScopeReceipt(currentRows.length);
+  const hasReceipt=receiptCount!==currentRows.length;
+  const countText=receiptCount===1?t("one_result"):t(!hasReceipt&&currentRows.length===40?"or_more_results":"results_count",{n:receiptCount});
   $("#rescount").textContent = countText;
   announce(countText + ` — ${$("#reshead").textContent}`);
   renderList(autoSelect);

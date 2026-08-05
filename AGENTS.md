@@ -51,6 +51,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
   its summary, preview count, results, and `/subscribe` form. Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
+- Vendor profiles receive their city-footprint read model inside the daily
+  `refreshVendorProfiles` KV bucket. The section header, destination link, and destination result
+  label share `result_count_receipt`; keep parity covered by
+  `test/functional/26_vendor_footprint_scope_count.py`. Confirmed identity links and name mentions
+  are separate reader tiers, and an absent footprint must render as unavailable without a second
+  profile-blocking request.
 - Static-first standalone documents load `site/brand.css` plus `site/civic-documents.css` through
   `site/civic_document_chrome.mjs`; do not inline a page-local palette or type stack. Run
   `python3 test/standards/civic_token_contract.py` after adding or generating a shipped document.

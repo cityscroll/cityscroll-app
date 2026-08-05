@@ -333,6 +333,7 @@
   .vendor-footprint{margin-top:18px}
   .vendor-footprint-coverage{margin:0 0 6px;color:var(--muted);font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   .vendor-footprint-coverage[data-coverage-kind="measured"]{color:var(--oxblood)}
+  .vendor-footprint-match-summary{margin:0 0 6px;color:var(--ink);font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif}
   .vendor-footprint-scope{display:inline-block;margin-top:6px;font:700 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   .agencybar .lbl{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
   .agencybar.sub{margin-top:16px;margin-bottom:0}
@@ -2107,6 +2108,7 @@
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button><a class="act mini" href="/near-you/lens/rules/" data-near-you-link data-lens="rules" data-i18n="near_you_map_scope">See on map</a></div>
     </div>
+    <div class="lens-resultbar"><span class="lens-count" id="rules-count" aria-hidden="true"></span></div>
     <div class="exportbar">
       <span class="export-band" id="rules-export-band" hidden>
         <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>

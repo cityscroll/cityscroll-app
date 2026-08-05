@@ -73,3 +73,33 @@ for value in good:
   const result = spawnSync("python3", ["-c", code], { encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
+
+test("public-surface vocabulary detector rejects vendor-footprint implementation language", () => {
+  const code = String.raw`
+import importlib.util
+from pathlib import Path
+path = Path("test/standards/public_surface_vocab.py")
+spec = importlib.util.spec_from_file_location("public_surface_vocab", path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+bad = [
+    "No strongly linked records in this build.",
+    "coverage not measured for this section",
+    "showing strong links only",
+    "View this vendor as a awards scope",
+    "Connection strength: strong",
+]
+for value in bad:
+    assert any(pattern.search(value) for _, pattern in module.VENDOR_FOOTPRINT_JARGON_PATTERNS), value
+good = [
+    "2 links we’ve confirmed",
+    "12 records mention this name",
+    "We haven’t measured how complete this section is yet",
+    "See CAMBA's awards (12)",
+]
+for value in good:
+    assert not any(pattern.search(value) for _, pattern in module.VENDOR_FOOTPRINT_JARGON_PATTERNS), value
+`;
+  const result = spawnSync("python3", ["-c", code], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});

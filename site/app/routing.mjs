@@ -756,8 +756,11 @@ function applyHash(){
   const slashPos = incoming.indexOf("/");
   let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", routeUrlForHash("#"+raw)); }
-  if(!raw){ activeRouteFacetValues={}; return false; }
+  if(!raw){ activeRouteFacetValues={}; globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=null; return false; }
   activeRouteFacetValues=facetValuesFromRouteRaw(raw);
+  const resultCountReceipt=Number(activeRouteFacetValues.result_count_receipt);
+  globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=Number.isInteger(resultCountReceipt)&&resultCountReceipt>=0
+    ?resultCountReceipt:null;
   const canonicalRaw=canonicalInputRoute(raw);
   const normalizedInputAlias=canonicalRaw!==raw;
   if(normalizedInputAlias){

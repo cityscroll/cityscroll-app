@@ -218,7 +218,10 @@ async function renderRulesExplorer(){
       }));
   }
 
-  announce(t("rules_entries_announce",{n:entries.length}));
+  const displayedCount=countWithScopeReceipt(entries.length);
+  announce(t("rules_entries_announce",{n:displayedCount}));
+  const countEl=$("#rules-count");
+  if(countEl) countEl.textContent=t("results_count",{n:fmtNumber(displayedCount)});
   setExportBandVisibility(entries.length, "rules-export-band", "rules-export-overflow");
   const feedEl=$("#rulesfeed");
   if(!feedEl) return;

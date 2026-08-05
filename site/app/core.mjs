@@ -253,6 +253,13 @@ function eventTag(ev){
 
 /* ===================== TABS ===================== */
 function announce(msg){ const el=$("#srstatus"); if(el) el.textContent = msg; }
+function countWithScopeReceipt(observed){
+  const raw=globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT;
+  if(raw==null||raw==="") return observed;
+  const receipt=Number(raw);
+  return Number.isInteger(receipt)&&receipt>=0?receipt:observed;
+}
+globalThis.countWithScopeReceipt=countWithScopeReceipt;
 function syncTabAria(){
   const btns=[...document.querySelectorAll(".tabbtn")];
   let any=false;
