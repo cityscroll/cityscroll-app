@@ -1,0 +1,72 @@
+{
+  "counts": {
+    "deduplicated_rows": 0,
+    "delta_rows": 20,
+    "final_snapshot_rows": 21,
+    "snapshot_rows": 1,
+    "source_rows": 20
+  },
+  "cursor": {
+    "exclusive_after": {
+      "request_id": "20260729017",
+      "start_date": "2026-08-04T00:00:00.000"
+    },
+    "final": {
+      "request_id": "20260730021",
+      "start_date": "2026-08-05T00:00:00.000"
+    },
+    "inclusive_through": {
+      "request_id": "20260730021",
+      "start_date": "2026-08-05T00:00:00.000"
+    },
+    "order": [
+      "start_date ASC",
+      "request_id ASC"
+    ]
+  },
+  "discipline": {
+    "headroom_gated": true,
+    "one_dataset": true,
+    "single_job_lock": true
+  },
+  "evidence": {
+    "basis": "bounded-live-measurement"
+  },
+  "export": {
+    "date_utc": "2026-08-05",
+    "format": "csv-rfc4180-utf8-lf",
+    "partition": "delta_date=2026-08-05",
+    "path": "ocp-recent-contract-awards/delta_date=2026-08-05/rows.csv",
+    "sha256": "69b7cc6b4e2876fcec1a94348467e12177243f6820028df7f6212cba7d862e85"
+  },
+  "final_snapshot": {
+    "equivalence": {
+      "checked": true,
+      "equivalent": true,
+      "expected_sha256": "1d56ce85ec0dc4c15cf73dbefa0ca893f5ceb2370399e179e53770afa3e4b0f6"
+    },
+    "sha256": "1d56ce85ec0dc4c15cf73dbefa0ca893f5ceb2370399e179e53770afa3e4b0f6"
+  },
+  "ordering": {
+    "duplicate_cursor_pairs": 0,
+    "missing_cursor_rows": 0,
+    "non_monotonic_pairs": 0,
+    "observed_order": "descending",
+    "sample_rows": 5000,
+    "verified": true
+  },
+  "resume": {
+    "checkpoint": "ocp-recent-contract-awards/delta_date=2026-08-05/checkpoint.json",
+    "completion_reason": "max_rows",
+    "page_count": 4,
+    "page_size": 5,
+    "resume_count": 0,
+    "resumed_from_checkpoint": false
+  },
+  "schema": "cityscroll.ocp_awards_delta_export_receipt.v1",
+  "scope": "OCP Recent Contract Awards only; no cursor semantics are inherited from another source",
+  "source": {
+    "contract_id": "ocp-recent-contract-awards",
+    "dataset_id": "qyyg-4tf5"
+  }
+}
