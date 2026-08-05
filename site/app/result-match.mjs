@@ -1,3 +1,5 @@
+import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
+
 // Shared result and digest-preview presentation. This stays on reading routes; the
 // much larger watch builder in alerts.mjs is a Following-only legacy island.
 function locateAnyTerm(text, terms){
@@ -51,7 +53,7 @@ function matchAttachmentText(r){
   return [...textParts, ...tableParts].join(" ");
 }
 function digTitleHTML(title, ev){
-  if(!title) return t("untitled");
+  if(!title) return t("rule_sibling_role_notice");
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
   if(!ev || ev.field!=="title") return enTitle(esc(title));
   const before=title.slice(0,ev.index), hit=title.slice(ev.index, ev.index+ev.term.length), after=title.slice(ev.index+ev.term.length);
@@ -103,17 +105,17 @@ function digItemHTML(kind, r, keywords, awarenessTools){
   }
   const aw=digAwarenessHTML(kind,r,awarenessTools);
   if(kind==="award"){
-    const title=cleanText(r.short_title), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
+    const title=noticeDisplayTitle(r), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div><div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name?" · "+escUiHtml(cleanText(r.vendor_name)):""}</div>${aw}${digEvidenceHTML(ev)}<div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
   if(kind==="notice"){
-    const title=cleanText(r.short_title), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
+    const title=noticeDisplayTitle(r), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
     const meta=[r.agency_name,r.type_of_notice_description,fdate(r.start_date),r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
     return `<div class="digitem"><div class="dt">${digTitleHTML(title,ev)}</div><div class="dm">${meta}</div>${aw}${digEvidenceHTML(ev)}<div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){
     const dl=daysLeft(r.due_date), rolling=isRollingDeadline(r.due_date);
-    const title=cleanText(r.short_title), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
+    const title=noticeDisplayTitle(r), ev=matchEvidence(title,matchText(r),keywords,null,matchAttachmentText(r));
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
     if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>${t("respond_lbl")}</b></a>`,`<a href="mailto:${r.email}">${r.email}</a>`);
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
@@ -122,7 +124,7 @@ function digItemHTML(kind, r, keywords, awarenessTools){
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title,ev)}</a></div><div class="dm">${r.agency_name} · ${when}</div>${aw}${digEvidenceHTML(ev)}${dc}</div>`;
   }
   const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
-  return `<div class="digitem"><div class="dt"><a href="${landHref}">${r.project_name?enTitle(r.project_name):t("unnamed_rezoning")}</a></div><div class="dm">${r.borough||""}${r.community_district?" · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant?" · "+r.primary_applicant:""}${mihOn(r.mih_flag)?" · "+t("affordable_housing_tag"):""}</div>${aw}<div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
+  return `<div class="digitem"><div class="dt"><a href="${landHref}">${enTitle(landProjectDisplayTitle(r))}</a></div><div class="dm">${r.borough||""}${r.community_district?" · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant?" · "+r.primary_applicant:""}${mihOn(r.mih_flag)?" · "+t("affordable_housing_tag"):""}</div>${aw}<div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;
 }
 
 Object.assign(globalThis,{locateAnyTerm,matchEvidence,matchText,matchAttachmentText,digTitleHTML,digEvidenceHTML,digContact,ensureDigAwarenessTools,digAwarenessKind,digAwarenessHTML,digItemHTML});

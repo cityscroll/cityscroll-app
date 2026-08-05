@@ -61,6 +61,7 @@ import { RULES_KV_KEY } from "./rules.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 import { evaluatePropertyWatch, propertyWatchStageLabel } from "./lib/property_saved_watch.mjs";
 import { groupDistrictDigestRows } from "../../site/district_weekly_digest.mjs";
+import { landProjectDisplayTitle } from "../../site/display_title.mjs";
 import {
   forecastSentIdentity,
   forecastIsDeliverableOn,
@@ -2006,7 +2007,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
       // itemAwarenessHtml (View/comment on ZAP + phase status when published).
       const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant, /^[ty1]/i.test(String(r.mih_flag || "")) ? "affordable housing" : ""]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
+      return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(landProjectDisplayTitle(r))}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
@@ -2224,7 +2225,7 @@ function rollupDigestHtml({
       if (itemKind === "rezone") {
         const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
           .filter(Boolean).map(esc).join(" · ");
-        return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
+        return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(landProjectDisplayTitle(r))}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
           ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}</li>`;
       }

@@ -1,4 +1,5 @@
 import { noticeDocumentUrl } from "../notice_permalink.mjs";
+import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, and notices. The same finite
@@ -646,7 +647,7 @@ function taskCanIBidCardHTML(presentation, focused){
   const sourceHref = (presentation.source && presentation.source.url) || (f.request_id ? REQ_URL(f.request_id) : "#money");
   return `<article class="task-card${focused?" route-item":""}"${focused?' tabindex="-1"':""} data-task-id="${taskEsc(presentation.id||"")}">
     <p class="task-card-answer">${taskEsc(taskBidAnswerHTML(presentation))}</p>
-    <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(f.title||t("untitled_notice"))}</h3>
+    <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(noticeDisplayTitle({short_title:f.title,request_id:f.request_id}))}</h3>
     <dl class="task-lead">${leadRows.map(([k,v])=>`<div><dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd></div>`).join("")}</dl>
     <dl class="task-facts">${more.map(([k,v])=>`<dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd>`).join("")}</dl>
     ${desc}
@@ -681,7 +682,7 @@ function taskWhatWillChangeCardHTML(presentation, focused){
   const sourceHref = (presentation.source && presentation.source.url) || (f.project_id ? `https://zap.planning.nyc.gov/projects/${encodeURIComponent(f.project_id)}` : "#land");
   return `<article class="task-card${focused?" route-item":""}"${focused?' tabindex="-1"':""} data-task-id="${taskEsc(presentation.id||"")}">
     <p class="task-card-answer">${taskEsc(f.place ? t("task_change_place_lead",{place:f.place}) : t("task_change_place_unknown"))}</p>
-    <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(f.title||t("unnamed_rezoning"))}</h3>
+    <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(landProjectDisplayTitle({project_name:f.title,project_id:f.project_id,project_brief:f["bri"+"ef"],borough:f.borough,community_district:f.community_district}))}</h3>
     <dl class="task-lead">${leadRows.map(([k,v])=>`<div><dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd></div>`).join("")}</dl>
     ${brief}
     <dl class="task-facts">${more.map(([k,v])=>`<dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd>`).join("")}</dl>
@@ -1150,7 +1151,7 @@ async function showNotice(id, watch){
   if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
   const link = noticeLink(r.request_id);
   const scope = cleanText(r.additional_description_1);
-  const title = cleanText(r.short_title) || t("untitled_notice");
+  const title = noticeDisplayTitle(r);
   const ev = watch ? matchEvidence(title, matchText(r), watch.filter.keywords||[], null, matchAttachmentText(r)) : null;
   const titleInner = (ev && ev.field==="title")
     ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`

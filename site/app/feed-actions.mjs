@@ -2,6 +2,7 @@ import {
   inferFranchiseStageFromNotice,
   isFranchiseConcessionNoticeEligible,
 } from "../franchise_notice.mjs";
+import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -984,7 +985,7 @@ function paintLandActionRail(el, projectRow, outcomeRecord, phaseTools){
     if(!when) return;
     const synthetic={
       request_id:guide&&guide.next_hearing&&guide.next_hearing.request_id||projectRow.project_id||"land",
-      short_title:projectRow.project_name||t("unnamed_rezoning"),
+      short_title:landProjectDisplayTitle(projectRow),
       event_date:when,
       agency_name:guide&&guide.next_hearing&&guide.next_hearing.agency||"",
       section_name:"Public Hearings and Meetings",
@@ -1122,7 +1123,7 @@ function meetingsExplorerCardHTML(entry){
     }).filter(Boolean).join(" · ");
     if(chips) siblingsHtml=`<div class="meetings-siblings">${t("meetings_siblings_label")}: ${chips}</div>`;
   }
-  const title=entry.title||record.decides||record.title||t("untitled");
+  const title=noticeDisplayTitle({title:entry.title||record.decides||record.title,request_id:record.request_id},t("now_event_meeting"));
   const areaText=hearingAreaText(record);
   const venueText=hearingVenueText(record);
   const areaFact=areaText

@@ -1,3 +1,5 @@
+import { landProjectDisplayTitle } from "../display_title.mjs";
+
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
 // Values are i18n keys — render with t(SECTION_WATCH_LABEL[w]); truthiness still gates the lens routing.
@@ -336,7 +338,7 @@ function matchAttachmentText(r){
 // ev.index is an offset into the cleaned (decoded) title. Escape text slices once so a notice
 // that carried &lt;script&gt; cannot inject after cleanText decodes entities.
 function digTitleHTML(title, ev){
-  if(!title) return t("untitled");
+  if(!title) return t("rule_sibling_role_notice");
   const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
   if(!ev || ev.field!=="title") return enTitle(esc(title));
   const before=title.slice(0,ev.index), hit=title.slice(ev.index, ev.index+ev.term.length), after=title.slice(ev.index+ev.term.length);
@@ -430,7 +432,7 @@ function digItemHTML(kind, r, keywords, awarenessTools){
   // Rezoning dig: deep-link into Land detail (action rail + ULURP timeline), not only ZAP.
   // Scope decision: match evidence highlighting is out of scope for ZAP rows (different shape).
   const landHref=r.project_id?`#land/${encodeURIComponent(r.project_id)}`:"#land";
-  return `<div class="digitem"><div class="dt"><a href="${landHref}">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</a></div>
+  return `<div class="digitem"><div class="dt"><a href="${landHref}">${enTitle(landProjectDisplayTitle(r))}</a></div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
     ${aw}
     <div class="dc"><a href="${landHref}">${t("land_dig_open_detail")}</a> · <a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a></div></div>`;

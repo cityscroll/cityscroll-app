@@ -14,6 +14,7 @@ import {
   unique,
 } from "../../../site/location_extract.mjs";
 import { placeFromDerivations } from "../../../site/location_derivation.mjs";
+import { noticeDisplayTitle } from "../../../site/display_title.mjs";
 
 export { plainText };
 
@@ -322,7 +323,7 @@ export function normalizeHearing(row) {
     source_section: row.section_name || null,
     agency: row.agency_name || null,
     notice_type: row.type_of_notice_description || null,
-    title: plainText(row.short_title) || "Untitled hearing",
+    title: noticeDisplayTitle(row, "Hearing"),
     event_date: row.event_date || null,
     published_at: row.start_date || null,
     decides: decisionSummary(row, body),

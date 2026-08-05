@@ -261,7 +261,7 @@ function sourceUpdatedHTML(refreshed){
 // Fuzzy ABO awards render as a "possible" timeline (distinct from the exact NYCHA box below).
 function aboAwardsTimelineHTML(awards, source){
   const rows = awards.map(a=>{
-    const vendor = a.vendor ? `<b lang="en" dir="ltr">${escUiHtml(a.vendor)}</b>` : `<b>${t("untitled_name")}</b>`;
+    const vendor = a.vendor ? `<b lang="en" dir="ltr">${escUiHtml(a.vendor)}</b>` : `<b>${t("past_winners_vendor_unlisted")}</b>`;
     const description = a.description ? `<span lang="en" dir="ltr"> — ${escUiHtml(a.description)}</span>` : "";
     const meta = [money(a.amount), a.process ? `<span lang="en" dir="ltr">${escUiHtml(a.process)}</span>` : ""].filter(Boolean).join(" · ");
     return `<div class="tl">
@@ -281,7 +281,7 @@ function nychaAwardBoxHTML(c, pin){
   return `<div class="chain-h">${t("external_awards_heading")}</div><div class="chain">
     <div class="stage"><div class="box award">
       <div class="stage-name">${t("mode_award")}</div><div class="when">${fdate(c.approved||c.start)}</div>
-      ${c.purpose?`<div class="bt" lang="en" dir="ltr">${escUiHtml(c.purpose)}</div>`:`<div class="bt">${t("untitled")}</div>`}
+      <div class="bt" lang="en" dir="ltr">${escUiHtml(c.purpose||`${t("lifecycle_dollars_contract_lbl")} ${c.id||pin}`)}</div>
       ${money(c.amount)?`<div class="amt">${money(c.amount)}</div>`:""}
       ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(c.vendor)}</b></div>`:""}
       ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
@@ -785,12 +785,15 @@ function paperTrailAggregateHTML(agg, phaseId, idx, opened){
   if(!agg) return "";
   if(agg.count === 1){
     const c = agg.members[0] || {};
+    const sourceTitle=cleanText(c.short_title);
+    const displayTitle=sourceTitle&&!/^(?:null|none|n\/?a|unknown|untitled|unnamed|\((?:untitled|unnamed)(?:\s+[^)]*)?\))$/i.test(sourceTitle)
+      ?sourceTitle:`Notice ${c.request_id||""}`.trim();
     const amt = money(c.contract_amount);
     const renewed = c.pin && opened && opened.pin && c.pin !== opened.pin;
     return `<div class="lc-phase-agg paper-trail-row">
       <div class="lc-phase-agg-title" lang="en" dir="ltr">${escUiHtml(agg.type)}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</div>
       <div class="lc-phase-agg-meta">${agg.first?fdate(agg.first):"—"}${c.vendor_name?` · → ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}`:""}${amt?` · ${amt}`:""}</div>
-      <div class="lc-phase-agg-meta" lang="en" dir="ltr">${escUiHtml(cleanText(c.short_title)||t("untitled"))}</div>
+      <div class="lc-phase-agg-meta" lang="en" dir="ltr">${escUiHtml(displayTitle)}</div>
       ${c.request_id?`<button type="button" class="lc-phase-toggle" data-pt-dates="pt-agg-${escUiHtml(phaseId)}-${idx}" aria-expanded="false">${t("paper_trail_show_notices",{n:"1"})}</button>
       <ul class="lc-phase-dates" id="pt-agg-${escUiHtml(phaseId)}-${idx}">${paperTrailMemberRowHTML(c, opened)}</ul>`:""}
     </div>`;
@@ -965,6 +968,9 @@ function chainHTMLFlat(r, chain){
   let html = `<div class="chain-h">${t("paper_trail_heading")}${tlink}</div>${portal}<div class="chain">`;
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
+    const sourceTitle=cleanText(c.short_title);
+    const displayTitle=sourceTitle&&!/^(?:null|none|n\/?a|unknown|untitled|unnamed|\((?:untitled|unnamed)(?:\s+[^)]*)?\))$/i.test(sourceTitle)
+      ?sourceTitle:`Notice ${c.request_id||""}`.trim();
     // A chain entry pulled in by the renewal-suffix prefix widening (pinBase()) carries a
     // DIFFERENT literal PIN than the notice we opened -- badge it so it reads as "linked via
     // renewal", distinct from a same-PIN duplicate stage (no badge, same literal PIN as r.pin).
@@ -973,7 +979,7 @@ function chainHTMLFlat(r, chain){
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
         <div class="stage-name">${c.type_of_notice_description||t("notice_fallback")}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</div>
         <div class="when">${fdate(c.start_date)}</div>
-        <div class="bt">${escUiHtml(cleanText(c.short_title))||t("untitled")}</div>
+        <div class="bt">${escUiHtml(displayTitle)}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
         ${c.vendor_name? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>`:""}
         ${showCr && c.request_id?`<a class="view" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>`:""}

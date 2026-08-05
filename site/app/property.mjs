@@ -2,6 +2,7 @@ import {
   inferFranchiseStageFromNotice,
   isFranchiseConcessionNoticeEligible,
 } from "../franchise_notice.mjs";
+import { noticeDisplayTitle } from "../display_title.mjs";
 
 /* ===== Franchise / concession review process spine (FCRC multi-notice chain).
    Reconstructs solicitation → public hearing → committee meeting → award for one
@@ -933,7 +934,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
     || (closeDate && daysLeft(closeDate)!==null && daysLeft(closeDate)<0);
   const propertyAddress=r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
-  const title=cleanText(r.short_title), displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
+  const title=noticeDisplayTitle(r, t("tab_property")+" "+t("rule_sibling_role_notice")), displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
   const mev=matchEvidence(title, matchText(r), terms);
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
@@ -979,7 +980,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
     ${entry.bbl?`<span class="tag place">${parcelPivotHTML(entry.bbl)}</span>`:``}
   </div>`;
   const primaryActionKey=!closed&&cardCopy?.action_kind?"property_action_open_notice":actionKey;
-  const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title||t("untitled")}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
+  const primaryAction=`<a class="act${closed?"":" primary"}" aria-label="${escUiHtml(`${t(primaryActionKey)}: ${title}`)}" href="${noticeHref}">${t(primaryActionKey)}</a>`;
   const secondaryActions=[`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`];
   if(entry.bbl && parcelLinks){
     const links=parcelLinks(entry.bbl);
@@ -1000,8 +1001,8 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   if(closed) secondaryActions.push(`<a class="act" href="/browse/property/">${t("property_related_current_sales")}</a>`);
   const titleBlock=cardCopy
     ? `<div class="ftitle property-card-summary" data-card-fact="${escUiHtml(cardCopy.fact_key||"")}" lang="en" dir="ltr"><a href="${noticeHref}">${escUiHtml(cardCopy.text)}</a></div>
-      ${plainTools.propertyCardTitleDisclosureHTML({display_title_html:displayTitle?digTitleHTML(displayTitle,mev):t("untitled"),original_title:title,open:mev?.field==="title"},{escape:escUiHtml})}`
-    : `<div class="ftitle"><a href="${noticeHref}">${title?digTitleHTML(title,mev):t("untitled")}</a></div>`;
+      ${plainTools.propertyCardTitleDisclosureHTML({display_title_html:digTitleHTML(displayTitle,mev),original_title:title,open:mev?.field==="title"},{escape:escUiHtml})}`
+    : `<div class="ftitle"><a href="${noticeHref}">${digTitleHTML(title,mev)}</a></div>`;
   const enablingInfo=readerTools?.propertyActionEnablingInfoHTML
     ?readerTools.propertyActionEnablingInfoHTML(r.property_reader_actions,{row:r,today:todayISO(),escape:escUiHtml,extAttrs:EXT_ATTRS,extSr:extSR})
     :"";
@@ -1040,7 +1041,7 @@ function propertyClusterCardHTML(cluster,plainTools){
   const description=cleanText(cluster.description)||cleanText(rep.agency_name)||cleanText(rep.type_of_notice_description)||t("property_cluster_fallback");
   const items=(cluster.members||[]).map(m=>{
     const r=m.primary; if(!r) return "";
-    const title=cleanText(r.short_title)||t("untitled");
+    const title=noticeDisplayTitle(r, t("tab_property")+" "+t("rule_sibling_role_notice"));
     const cardCopy=plainTools?.ensurePropertyCardPlainSummary?.(r,{today:todayISO(),events:r.commercial?.timed_events||undefined,readerActions:r.property_reader_actions||undefined})||null;
     const displayTitle=cardCopy?plainTools.deShoutPropertyTitle(title):title;
     const href=`#notice/${encodeURIComponent(r.request_id)}`;

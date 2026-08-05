@@ -90,7 +90,7 @@ function toolError(t) {
 
 function fmtRecord(r, i) {
   const meta = [r.section, r.notice_type, r.category, r.contract_amount_display, r.vendor].filter(Boolean).join(" · ");
-  const lines = [`${i + 1}. ${r.date || "—"} · ${r.agency || "—"} · ${r.title || "(untitled)"}`];
+  const lines = [`${i + 1}. ${r.date || "—"} · ${r.agency || "—"} · ${r.title || `Notice ${r.request_id}`}`];
   if (meta) lines.push(`   ${meta}`);
   if (r.due_date) lines.push(`   bid due ${r.due_date}`);
   else if (r.deadline_note) lines.push(`   ${r.deadline_note}`);
