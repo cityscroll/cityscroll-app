@@ -2494,7 +2494,7 @@ const STRINGS = {
 
     // about.html
     about_h_what: "What this is",
-    about_p_what_html: "CityScroll helps you find what is happening in New York City government and what you can do next. Start with <b>Now</b> for urgent dates, <b>Near you</b> for local changes, <b>Following</b> for saved watches, or <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. It is built from official city publications. CityScroll is independent and is not part of New York City government.",
+    about_p_what_html: "CityScroll shows what New York City government is doing and what you can do next. Use <b>Now</b> for urgent dates. Use <b>Near you</b> for local changes. Use <b>Following</b> for saved watches. Use <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. The site uses official city publications. CityScroll is independent. It is not part of city government.",
     about_h_content: "About our content",
     about_p_content_html: "CityScroll uses generative artificial intelligence (AI) to draft headings and plain-language explanations. A human reviews and edits this content before it goes live. AI does not create or change the official records shown on the site.",
     about_h_flags: "Flags and context, explained",
