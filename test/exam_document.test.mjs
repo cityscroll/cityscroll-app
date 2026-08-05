@@ -77,6 +77,7 @@ test("exact exam watches survive worker sanitization and compile to one exam", (
   const filter = sanitize("people", { view: "guide", examNumber: "7016", interestArea: "public-safety" });
   assert.deepEqual(filter, {
     keywords: [], lookupType: null, view: "guide", interestArea: "public-safety", interestLabel: null, examNumber: "7016",
+    subject_refs_all: [],
   });
   assert.match(describeFilter("people", filter), /exact exam updates/);
   const compiled = compileSub({ lens: "people", filter }, "2026-08-05");
