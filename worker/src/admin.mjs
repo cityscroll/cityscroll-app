@@ -31,6 +31,7 @@ import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
 import {
   DigestShadowHoldInputError,
   overrideDigestShadowHold,
+  readDigestShadowDegradedReceipt,
   resolveDigestShadowHold,
 } from "./digest_shadow_hold.mjs";
 
@@ -587,10 +588,20 @@ export async function handleAdminDigestShadow(req, env, { now = new Date() } = {
   const digestId = url.searchParams.get("digest");
   try {
     const out = await readDigestShadow(env.DB, { day, digestId });
-    if (!out) return json({ error: "not-run" }, 404);
+    const statusDay = day || new Date(now).toISOString().slice(0, 10);
+    const degradedReceipt = await readDigestShadowDegradedReceipt(env.ALERT_STATE, { day: statusDay });
+    if (!out) {
+      return json({ error: "not-run", degraded_receipt: degradedReceipt },
+        degradedReceipt?.attention_status === "open" ? 503 : 404);
+    }
     if (digestId && !out.preview) return json({ ...out, error: "preview-not-found" }, 404);
-    const hold = day ? null : await resolveDigestShadowHold(env.DB);
-    return json({ ...out, hold }, out.summary?.ok === false ? 503 : 200);
+    const hold = day ? null : await resolveDigestShadowHold(env.DB, {
+      now,
+      receiptStore: env.ALERT_STATE,
+    });
+    const receipt = hold?.degraded_receipt || degradedReceipt;
+    const attention = out.summary?.ok === false || receipt?.attention_status === "open";
+    return json({ ...out, hold, degraded_receipt: receipt || null }, attention ? 503 : 200);
   } catch (error) {
     return json({ error: "shadow-read-failed", detail: String(error?.message || error) }, 503);
   }

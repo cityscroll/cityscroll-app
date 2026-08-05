@@ -4,6 +4,8 @@ on:
   schedule:
     # The Worker builds previews at 10:00 UTC; allow ten minutes for the full live-data pass.
     - cron: "10 10 * * *"
+    # Re-read after the 13:00 UTC send so degraded send-time receipts wake the same repair loop.
+    - cron: "10 13 * * *"
   workflow_dispatch:
     inputs:
       build:
@@ -94,8 +96,13 @@ jobs:
             const publicRedlines = redlines.map(({ code, digest_id, watch_id, reason, evidence }) => ({
               code, digest_id, watch_id, reason, evidence: sanitize(evidence),
             }));
+            const degradedReceipt = sanitize(report.degraded_receipt || null);
+            const attention = degradedReceipt?.attention_status === "open"
+              ? `The send-time safety policy used its ${degradedReceipt.decision || "degraded"} path.`
+              : "The digest rehearsal reported a redline or unavailable status.";
             const body = [
-              "The 06:00 ET digest rehearsal reported a redline. The repair loop should diagnose, fix, and re-run the affected digest build before the 09:00 ET send.",
+              attention,
+              "Review the structured status, repair the underlying condition, and re-run the digest rehearsal when needed.",
               "",
               `Workflow: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
               "",
@@ -106,6 +113,7 @@ jobs:
                 status: summary.status || "UNAVAILABLE",
                 affected_digest_ids: summary.affected_digest_ids || [],
                 redlines: publicRedlines,
+                degraded_receipt: degradedReceipt,
               }, null, 2).slice(0, 18000),
               "```",
             ].join("\n");
