@@ -95,7 +95,7 @@ def label_contract(page, expected: bool) -> dict:
 
 def capture(site: Path, label: str, expect_labels: bool) -> list[dict]:
     server, base = serve(site)
-    receipts = []
+    receipts: list[dict] = list()
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True)
