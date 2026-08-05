@@ -1,11 +1,8 @@
-// GET /stats — the public outcome counters (round three, R·B tier 2).
+// GET /stats — public corpus and coverage facts only.
 //
-// "Open by default, closed by exception" applied to our own operations: a transparency tool
-// should publish its own usage. Everything here is an aggregate count — active subscriptions
-// (a number, not a list), digests sent, digest links followed, feed/batch/share activity, NL
-// calls against the daily ceiling. No personal data is read, stored, or returned.
-//
-// Edge-cached 15 minutes (same pattern as /feed.*): the SUBS list scan is the only real work.
+// Product-use telemetry belongs behind the authenticated desk boundary. The public route says
+// what CityScroll knows: corpus size and dates, primary source coverage, and language coverage.
+// The former operational response remains available to the desk through GET /admin/stats.
 
 import {
   dayStr, sumStat, readStatAllTime, readAllCategoryStats, readAllCategoryStatsWindow,
@@ -21,6 +18,89 @@ import {
 // full alerts module (cron + Resend path) on every public read.
 const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
 const CATCHUP_RUN_LATEST_KEY = "digest:catchup:run:latest";
+
+const CITY_RECORD_DATASET_ID = "dg92-zbpx";
+const CITY_RECORD_STATS_URL = `https://data.cityofnewyork.us/resource/${CITY_RECORD_DATASET_ID}.json`;
+const PUBLIC_SOURCE_SYSTEMS = Object.freeze([
+  "City Record Online",
+  "Citywide Payroll",
+  "Civil Service List",
+  "Zoning Application Portal",
+  "PASSPort Public",
+  "Checkbook NYC",
+]);
+const SITE_LANGUAGE_COUNT = 11;
+const NOTICE_TRANSLATION_LANGUAGE_COUNT = 10;
+
+function isoDay(value) {
+  const match = /^(\d{4}-\d{2}-\d{2})/.exec(String(value || ""));
+  return match ? match[1] : null;
+}
+
+function nonnegativeInt(value) {
+  const parsed = Number.parseInt(String(value ?? ""), 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+}
+
+export async function readPublicCorpusStats(options = {}) {
+  const fetchImpl = options.fetchImpl || fetch;
+  const url = new URL(CITY_RECORD_STATS_URL);
+  url.searchParams.set(
+    "$select",
+    "count(*) as notice_count,min(start_date) as first_notice_date,max(start_date) as latest_notice_date",
+  );
+  url.searchParams.set("$limit", "1");
+  try {
+    const response = await fetchImpl(url.toString(), {
+      headers: { accept: "application/json" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) throw new Error(`City Record aggregate returned ${response.status}`);
+    const [row] = await response.json();
+    const noticeCount = nonnegativeInt(row?.notice_count);
+    if (noticeCount == null) throw new Error("City Record aggregate omitted notice_count");
+    return {
+      available: true,
+      notice_count: noticeCount,
+      first_notice_date: isoDay(row?.first_notice_date),
+      latest_notice_date: isoDay(row?.latest_notice_date),
+    };
+  } catch {
+    return {
+      available: false,
+      notice_count: null,
+      first_notice_date: null,
+      latest_notice_date: null,
+    };
+  }
+}
+
+export function buildPublicStatsBody(corpus, now = new Date()) {
+  return {
+    schema: "public-stats.v2",
+    generated_at: new Date(now).toISOString(),
+    scope: "Corpus and coverage aggregates only. Product usage and delivery operations are private.",
+    city_record: {
+      ...corpus,
+      source: {
+        name: "NYC Open Data — City Record Online",
+        dataset_id: CITY_RECORD_DATASET_ID,
+        url: `https://data.cityofnewyork.us/d/${CITY_RECORD_DATASET_ID}`,
+      },
+    },
+    sources: {
+      primary_system_count: PUBLIC_SOURCE_SYSTEMS.length,
+      systems: [...PUBLIC_SOURCE_SYSTEMS],
+    },
+    language_coverage: {
+      site_languages: SITE_LANGUAGE_COUNT,
+      translated_interface_languages: NOTICE_TRANSLATION_LANGUAGE_COUNT,
+      notice_translation_languages: NOTICE_TRANSLATION_LANGUAGE_COUNT,
+      notice_translation_mode: "on_demand",
+      official_notice_language: "English",
+    },
+  };
+}
 
 async function readDigestRunReceipt(env) {
   if (!env?.ALERT_STATE) return null;
@@ -137,16 +217,16 @@ function growthFromHistories(nlHist = {}, digestHist = {}, pageViewHist = {}) {
 
 /** Cache key for the public /stats edge snapshot (shared by handleStats + cron prewarm). */
 export function statsEdgeCacheKey(baseUrl = "https://api.cityscroll.org") {
-  // Version the cache key when the usage reconciliation shape changes so a deploy cannot
-  // keep serving a pre-flip empty usage block for the full max-age window.
-  return new Request(new URL("/stats?edge=r2-adoption-v1", baseUrl).toString(), {
+  // Versioned away from the former usage response so a deploy cannot serve private fields
+  // from a warm pre-change cache entry.
+  return new Request(new URL("/stats?edge=public-corpus-v2", baseUrl).toString(), {
     method: "GET",
   });
 }
 
 /**
- * Write-ahead prewarm for public /stats. Cold assembly fans out across many KV keys and can
- * take multi-second TTFB; warm edge cache hits are sub-second. Called from daily cron.
+ * Write-ahead prewarm for public /stats. This primes the official corpus aggregate after the
+ * daily scheduled run; later cache expiries refresh it on demand. Called from daily cron.
  * Fail-soft: returns { warmed:false, reason } on missing caches API.
  */
 export async function prewarmStats(env, options = {}) {
@@ -177,6 +257,30 @@ export async function handleStats(req, env, ctx, options = {}) {
   if (cache && !options.skipCacheRead) {
     const hit = await cache.match(cacheKey).catch(() => null);
     if (hit) return hit;
+  }
+
+  const now = options.now == null ? new Date() : new Date(options.now);
+  const corpus = await readPublicCorpusStats(options);
+  const body = buildPublicStatsBody(corpus, now);
+  const res = new Response(JSON.stringify(body, null, 2), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "public, max-age=900",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+  if (cache) {
+    const put = cache.put(cacheKey, res.clone());
+    if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+  }
+  return res;
+}
+
+/** Build the former public operational response for the authenticated desk route. */
+export async function handlePrivateStats(req, env, options = {}) {
+  if (req.method !== "GET") {
+    return new Response("Method not allowed", { status: 405 });
   }
 
   const now = options.now == null ? new Date() : new Date(options.now);
@@ -232,9 +336,8 @@ export async function handleStats(req, env, ctx, options = {}) {
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
   // cityscroll.org canonical flip. Analytics Engine may be empty or unreadable
-  // (not-configured); never let the Site totals panel restart at zero while these stores
-  // still hold pre-flip history. Documented latency for a fresh event is the 15-minute
-  // edge cache below.
+  // (not-configured); never let the private desk totals restart at zero while these stores
+  // still hold pre-flip history.
   const usageReconciled = reconcileUsageWithDurableStores(usage, {
     pageViewsLast7d: pageViewsFallback?.last7d || 0,
     pageViewsLast30d: pageViewsFallback?.last30d || 0,
@@ -253,7 +356,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     growthByDay: growthFromHistories(nlHist, digestHist),
   }, { measuredSince: env?.ANALYTICS_MEASURED_SINCE || usage?.measured_since || null });
   // Replace rather than Object.assign: reconciliation may delete unavailable_reason.
-  const usagePublic = usageReconciled;
+  const usageForOperations = usageReconciled;
 
   // w12-14: the live all-time accumulators only count sends/searches from the moment they
   // shipped (digestEra/nlEra) forward. Recovered pre-era days (backfilled from an older,
@@ -299,21 +402,16 @@ export async function handleStats(req, env, ctx, options = {}) {
       nl_search: { by_day: nlHist, live_from: nlEra },
       watches_active: { by_day: watchesHist, live_from: watchesEra },
     },
-    usage: usagePublic,
+    usage: usageForOperations,
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {
     status: 200,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "public, max-age=900",
-      "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "private, no-store",
     },
   });
-  if (cache) {
-    const put = cache.put(cacheKey, res.clone());
-    if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
-  }
   return res;
 }
 
@@ -336,7 +434,7 @@ export async function countSubscriptionMetrics(env) {
           if (!email) continue;
           active++;
           accounts.add(email);
-        } catch { /* malformed records do not become confident public counts */ }
+        } catch { /* malformed records do not become confident operational counts */ }
       }
       cursor = res.list_complete ? null : res.cursor;
     } while (cursor);

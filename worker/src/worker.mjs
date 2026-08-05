@@ -22,6 +22,7 @@ import {
   handleAdminFeedback,
   handleAdminPossiblySame,
   handleAdminOpsContract,
+  handleAdminStats,
   handleAdminDigestRollup,
   handleAdminDigestShadow,
   handleAdminDigestSendTest,
@@ -130,6 +131,7 @@ export default {
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);
+    if (pathname === "/admin/stats") return handleAdminStats(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
     if (pathname === "/admin/digest-shadow") return handleAdminDigestShadow(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
@@ -327,8 +329,7 @@ export default {
     } catch (e) {
       console.error("watches_active snapshot failed (digest already ran):", String(e?.message || e));
     }
-    // Public /stats: write-ahead edge prewarm so the first visitor after cache expiry does
-    // not pay the multi-second KV fan-out (measured cold ~3–4s; warm ~0.05s). Fail-soft.
+    // Public /stats: refresh and edge-cache the official corpus aggregate. Fail-soft.
     try {
       const r = await prewarmStats(env);
       console.log("stats prewarm:", JSON.stringify(r));

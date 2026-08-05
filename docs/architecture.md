@@ -9,7 +9,7 @@ summary: >-
   and labels separately sourced public-authority awards on agency profiles.
   The core site works without the worker; the worker adds Checkbook lookups,
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
-  identity headers, resilient public stats, aggregate first-party usage
+  identity headers, resilient public coverage stats, private aggregate first-party usage
   analytics, and a Wave-4 process-spine layer (`process_id` / `project_id` /
   `event_id`) for contract-lifecycle joins with confidence checks.
   A D1 mirror of
@@ -138,7 +138,8 @@ Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
         ├──  /inv[/<id>]        investigation snapshots + entity forecast metadata
         ├──  /priorcycle/<id>   precomputed prior-cycle + near-match sets (D1-cached, compute-on-miss)
         ├──  /translate/<id>    informal notice translation (on-demand, D1+edge cached, invariant-checked)
-        ├──  /stats /usage      public aggregate counters / keyed usage report
+        ├──  /stats             public corpus and coverage aggregates
+        ├──  /admin/stats /usage authenticated product activity / keyed model-spend report
         ├──  /events            bounded aggregate usage events (no visitor identifiers)
         ├──  /r/<kind>/<id>     count-only digest click-through → 302
         └──  /admin/subs /admin/feedback        keyed operator views
@@ -185,7 +186,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **Wave-4 process-spine contracts** — required process-spine fixtures and matching code live in `test/fixtures/wave4/generated/` and `worker/src/lib/process_spine.mjs`; PR and CI tests validate confidence gates and required fields via `test/process-spine.test.mjs`.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), rebuildable external-content `notices_fts` (FTS5/BM25 over `notices.haystack`, initially limited to MCP notice search, with structured filters before rank/limit and the prior `LIKE` query as a missing-index fallback), `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of `site/index.html`'s matchers), and `notice_translations` (informal per-`(request_id, lang)` translations behind `GET /translate/<id>?lang=`; compute-on-miss, edge-cached, invariant-checked so amounts/dates/PINs/agencies/addresses survive verbatim or the translation is not shown). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth. D1 export drops the virtual index and its triggers, exports ordinary tables, then replays migration `0016_notice_fts.sql` on live and restored databases. English notice text remains the official record.
 - **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.
-- **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, investigation, and optional post-action prompt events. The prompt records shown/dismissed/completed counts separately from official receipt-backed outcomes and carries no matter id or free text. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
+- **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, investigation, and optional post-action prompt events. The prompt records shown/dismissed/completed counts separately from official receipt-backed outcomes and carries no matter id or free text. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. Authenticated `/admin/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API; public `/stats` never reads or returns product-use telemetry.
 - **`site/data/`** — committed product data, including Staffing role chips and `staffing_exams.json`,
   a build-time view of current DCAS exam schedules, notices, and active-list totals. Wave 4
   transforms use deterministic test datasets under `test/fixtures/wave4/`; joined production
