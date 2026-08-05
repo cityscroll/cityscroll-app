@@ -40,6 +40,25 @@ const noticeLink = id => currentLanguageURL(noticeDocumentUrl(id, location.origi
 const landLink = id => currentLanguageURL(location.origin + location.pathname + "#land/" + encodeURIComponent(id));
 let hashLock = false;
 let focusedItemRouteHash = "";
+let activeRouteFacetValues = {};
+
+// `facet` is the scope-v0 escape hatch for typed constraints that do not own a
+// visible control. Keep those values while serializeState() rebuilds the rest
+// of the route from the active lens controls; otherwise canonical document
+// hydration silently drops entity intersections on its first rewrite.
+function facetValuesFromRouteRaw(raw){
+  const queryAt=String(raw||"").indexOf("?");
+  if(queryAt<0) return {};
+  const encoded=new URLSearchParams(String(raw).slice(queryAt+1)).get("facet");
+  if(!encoded || encoded.length>2000) return {};
+  try{
+    const parsed=JSON.parse(encoded);
+    if(!parsed || typeof parsed!=="object" || Array.isArray(parsed)) return {};
+    const probe=CrolScope.emptyScope(window.LANG||"en");
+    probe.facets.values=parsed;
+    return CrolScope.normalizeScope(probe,{language:window.LANG||"en"}).facets.values;
+  }catch(e){ return {}; }
+}
 
 // Hash navigation changes both the visual viewport and the assistive-technology reading point.
 // The active-pane guard prevents a slow route from reclaiming focus after navigation moved on.
@@ -188,6 +207,7 @@ function serializeState(){
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
   const scope=CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
+  scope.facets.values={...scope.facets.values,...activeRouteFacetValues};
   return CrolScope.routeHashFromScope(scope,{surface:tab});
 }
 function nearYouHref(scope){
@@ -736,7 +756,8 @@ function applyHash(){
   const slashPos = incoming.indexOf("/");
   let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", routeUrlForHash("#"+raw)); }
-  if(!raw) return false;
+  if(!raw){ activeRouteFacetValues={}; return false; }
+  activeRouteFacetValues=facetValuesFromRouteRaw(raw);
   const canonicalRaw=canonicalInputRoute(raw);
   const normalizedInputAlias=canonicalRaw!==raw;
   if(normalizedInputAlias){
