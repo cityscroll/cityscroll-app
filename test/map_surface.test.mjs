@@ -36,7 +36,7 @@ test("legacy map hashes forward and no-JavaScript area paths stay keyboard nativ
   assert.match(island, /path\.setAttribute\("role", "link"\)/);
   assert.match(island, /path\.tabIndex = 0/);
   assert.match(island, /svg\.setAttribute\("role", "group"\)/);
-  assert.match(near, /<form class="near-form" method="get"/);
+  assert.match(near, /<form class="near-form"[^>]+method="get"/);
   assert.match(near, /<a data-map-area=/);
 });
 

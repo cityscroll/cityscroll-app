@@ -139,7 +139,7 @@ function serializeState(){
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
     if(landCouncilDistrict) q.set("council", landCouncilDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
-    if($("#lstatus").value !== "active") q.set("status", $("#lstatus").value);
+    if($("#lstatus").value !== "all") q.set("status", $("#lstatus").value);
     const hm=$("#lhearingmode");
     if(hm && $("#lstatus").value==="hearings" && hm.value) q.set("attendance", hm.value);
   } else if(SECTIONS[tab]){
@@ -905,7 +905,7 @@ function applyHash(){
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
       const landStatus=q.get("status");
-      $("#lstatus").value = landStatus==="all"||landStatus==="hearings"?landStatus:"active";
+      $("#lstatus").value = landStatus==="active"||landStatus==="hearings"?landStatus:"all";
       const hm=$("#lhearingmode");
       if(hm){
         const att=q.get("attendance");

@@ -190,6 +190,13 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.doesNotMatch(html, /<style>/);
   assert.doesNotMatch(html, /#f5f0e6|#7a1f1f|Georgia/);
   assert.match(html, /class="document-brand brand-lockup home"/);
+  assert.match(html, /what “near you” means/);
+  assert.match(html, /data-use-location/);
+  assert.match(html, /coordinates stay in this browser/i);
+  assert.match(html, /name="neighborhood"/);
+  assert.match(html, /name="cd"/);
+  assert.match(html, /name="council"/);
+  assert.match(html, /id="near-area-list"/);
 });
 
 test("the map island adopts server markup and is absent from unrelated routes", () => {

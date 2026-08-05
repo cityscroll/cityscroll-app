@@ -235,6 +235,9 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     href: urlForScope(scopeForFeature(scope, feature)),
   }));
   const resultIds = mapped ? intersection(itemIdsForPlace(activityRoot, lens, scope), allowed) : [];
+  const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
+    || scope.place.council_districts.length || scope.place.neighborhood
+    || scope.place.location_scope);
   const linkedRecord = (record) => ({ ...record, route: migratedSiteHref(record.route) });
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
   const bags = Object.fromEntries(["citywide", "virtual", "unlocated"].map((kind) => {
@@ -255,6 +258,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     mapped,
     basis,
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
+    hasPlace,
     lensLabel: LENS_LABELS[lens] || lens,
     scopeSummary: scopeSummary(scope, lens),
     results: { ids: resultIds, count: resultIds.length, records: resultRecords },
@@ -362,16 +366,28 @@ export function renderNearYouBody(view) {
         <a href="${esc(view.shareHref)}">Share this scope</a>
       </nav>
     </section>
-    <form class="near-form" method="get" action="${esc(view.canonicalBase)}">
-      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "scope", "id", "parent", "basis"]))}
+    <section class="near-place-guide${view.hasPlace ? " is-set" : ""}" aria-labelledby="near-place-heading">
+      <p class="near-kicker">${view.hasPlace ? "Place set" : "Start here"}</p>
+      <h2 id="near-place-heading">${view.hasPlace ? "Change what “near you” means" : "Set what “near you” means"}</h2>
+      <p>Choose a borough, neighborhood, community district, or council district. Or use your location once to match your district. Your coordinates stay in this browser and are not saved or sent with the scope.</p>
+      <div class="near-place-actions">
+        <button type="button" class="js-only near-location-action" data-use-location hidden>Use my location</button>
+        <a href="#near-place-fields">Choose a place</a>
+        <a href="#near-area-list">Browse the area list</a>
+      </div>
+      <p class="near-map-status" data-map-status aria-live="polite"></p>
+    </section>
+    <form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
+      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "neighborhood", "scope", "id", "parent", "basis"]))}
       <label>Lens<select name="lens">${lensOptions(view.lens)}</select></label>
       <label>Agency<input name="agency" value="${esc(first(view.scope.facets.agencies) || "")}" placeholder="Any agency"></label>
       <label>Type<input name="type" value="${esc(view.scope.facets.values?.type || "")}" placeholder="Any record type"></label>
       <label>Borough<select name="boro">${boroughOptions(currentBorough)}</select></label>
+      <label>Neighborhood<input name="neighborhood" value="${esc(view.scope.place.neighborhood || "")}" placeholder="e.g. Elmhurst"></label>
+      <label>Community district<input name="cd" value="${esc(first(view.scope.place.community_districts) || "")}" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
+      <label>Council district<input name="council" value="${esc(first(view.scope.place.council_districts) || "")}" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
       ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
       <button type="submit">Apply scope</button>
-      <button type="button" class="js-only" data-use-location hidden>Use my location</button>
-      <p class="near-map-status" data-map-status aria-live="polite"></p>
     </form>
     ${view.mapped ? "" : `<aside class="near-coverage" role="note"><strong>${esc(view.lensLabel)} place data is not available.</strong> The lens stays in the shared scope. The page does not switch to a different set of records.</aside>`}
     ${view.basis === "contract_action_address" ? `<aside class="near-coverage" role="note"><strong>${esc(view.basisLabel)}.</strong> This shows where to submit a bid, attend a pre-bid event, or pick up a file. It does not say where the contract work will happen.</aside>` : ""}
@@ -397,7 +413,7 @@ export function renderNearYouBody(view) {
           <p class="map-legend"><span></span> Fewer to more qualifying records</p>
           <p class="near-vintage">Boundary layer: ${esc(view.activity?.boundary_vintage || "not published")}</p>
         </div>
-        <div class="near-area-panel">
+        <div class="near-area-panel" id="near-area-list">
           <h3>Equivalent area list</h3>
           <p>These links work without JavaScript. They keep the active scope.</p>
           <ol class="near-area-list">${areas || "<li>No areas match this scope.</li>"}</ol>

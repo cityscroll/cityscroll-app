@@ -209,6 +209,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   fi
   echo "preflight: local site ready at ${CROL_BASE}"
   run_and_fail python3 test/functional/23_mobile_viewport.py
+  run_and_fail python3 test/functional/24_geolocation_gesture_gate.py
   run_and_fail python3 test/functional/11_accessibility.py
   run_and_fail python3 test/standards/rendered_schema_vocabulary.py
   run_and_fail python3 test/functional/12_language.py
