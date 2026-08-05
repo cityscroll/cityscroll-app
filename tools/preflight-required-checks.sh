@@ -129,6 +129,9 @@ if [[ "$RUN_READING_LEVEL" == "1" ]]; then
     --limit 50000 \
     --ratchet-baseline site/property-a11y-ratchet.json \
     --format markdown
+  run_and_fail node tools/now_reading_level.mjs \
+    --baseline site/now-reading-level-ratchet.json \
+    --format markdown
 else
   echo
   echo "Reading-level ratchet check is CI-required but not run by default."
@@ -190,6 +193,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   fi
   run_and_fail python3 test/functional/23_mobile_viewport.py
   run_and_fail python3 test/functional/11_accessibility.py
+  run_and_fail python3 test/standards/rendered_schema_vocabulary.py
   run_and_fail python3 test/functional/12_language.py
   run_and_fail python3 test/functional/14_focus_visible.py
   run_and_fail python3 test/functional/16_external_links.py

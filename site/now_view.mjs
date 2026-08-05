@@ -47,22 +47,45 @@ const ACTION_KEYS = Object.freeze({
 });
 const EVENT_KEYS = Object.freeze({
   hearing: "disposition_stage_hearing", auction: "property_event_auction",
-  effective: "rule_event_effective", decision: "rule_event_adoption",
+  meeting: "now_event_meeting", effective: "rule_event_effective", decision: "rule_event_adoption",
 });
+const DATE_KEYS = Object.freeze({
+  bid: "now_date_responses_due", apply: "now_date_apply_by",
+  comment: "now_date_comment_by", object: "now_date_object_by",
+  request_accommodation: "now_date_request_by", hearing: "now_date_hearing",
+  meeting: "now_date_meeting", auction: "now_date_auction",
+  effective: "now_date_effective", decision: "now_date_decision",
+});
+const DATE_KIND_IS_CARD_KIND = new Set(["hearing", "meeting", "auction", "effective"]);
 
 function nowEsc(value) {
   return String(value == null ? "" : value)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function nowBasis(item) {
-  if (!item.time?.value) return t("now_basis_no_date");
-  return item.time.verified ? t("now_basis_published") : t("now_basis_derived");
-}
-
 function nowKindLabel(item) {
   const key = item.lane === "act_by" ? ACTION_KEYS[item.kind] : EVENT_KEYS[item.kind];
   return key ? t(key) : item.kind;
+}
+
+function comparableFact(value) {
+  return String(value || "").toLocaleLowerCase().replace(/\bdate\b/g, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
+export function nowDateLabel(item) {
+  if (!item.time?.value) return t("now_basis_no_date");
+  const key = DATE_KEYS[item.kind];
+  if (!key) return "";
+  if (DATE_KIND_IS_CARD_KIND.has(item.kind)) return "";
+  const label = t(key);
+  return comparableFact(label) === comparableFact(nowKindLabel(item)) ? "" : label;
+}
+
+function nowDateProvenance(item) {
+  const parts = [];
+  if (item.time?.source_field) parts.push(t("now_date_source_field", { field: item.time.source_field }));
+  if (item.time?.verified === false) parts.push(t("now_basis_derived"));
+  return parts.join(" · ");
 }
 
 function nowActionHTML(item) {
@@ -77,16 +100,17 @@ function nowActionHTML(item) {
 }
 
 function nowCardHTML(item) {
-  const evidence = item.time?.source_field
-    ? `<span class="now-basis-field" lang="en" dir="ltr">${nowEsc(item.time.source_field)}</span>` : "";
   const when = item.time?.value ? fdt(item.time.value) : t("now_open_without_date_title");
+  const dateLabel = nowDateLabel(item);
+  const provenance = nowDateProvenance(item);
+  const provenanceTitle = provenance ? ` title="${nowEsc(provenance)}"` : "";
   return `<article class="now-card" data-now-item="${nowEsc(item.id)}" data-now-lane="${nowEsc(item.lane)}">
     <div class="now-card-tags">
       <span class="tag ${item.lane === "act_by" ? "urgency" : "open"}">${nowEsc(nowKindLabel(item))}</span>
       <span class="tag asset">${t(DOMAIN_KEYS[item.domain])}</span>
       <span class="now-source-badge">${t("now_source", { source: nowEsc(item.source.label) })}</span>
     </div>
-    <p class="now-card-when"><b>${nowEsc(when)}</b><span>${nowEsc(nowBasis(item))}${evidence}</span></p>
+    <p class="now-card-when"${provenanceTitle}><b>${nowEsc(when)}</b>${dateLabel ? `<span>${nowEsc(dateLabel)}</span>` : ""}</p>
     <h3><a href="${nowEsc(item.route)}" lang="en" dir="ltr">${nowEsc(item.title)}</a></h3>
     ${item.agency ? `<p class="now-card-agency" lang="en" dir="ltr">${nowEsc(item.agency)}</p>` : ""}
     <div class="actions">${nowActionHTML(item)}</div>

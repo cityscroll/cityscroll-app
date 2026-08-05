@@ -8,6 +8,7 @@ import {
   buildNowSurface,
   countNowSurfaceItems,
 } from "../site/now_surface.mjs";
+import { nowDateLabel } from "../site/now_view.mjs";
 
 const require = createRequire(import.meta.url);
 const CrolActions = require("../site/action_registry.js");
@@ -259,6 +260,36 @@ test("unavailable source models are disclosed and do not become confident empty 
   assert.equal(surface.coverage.sources.rules.status, "unavailable");
   assert.equal(surface.coverage.sources.land.reason, "source_not_loaded");
   assert.equal(surface.act_by.dated.some((item) => item.domain === "rules"), false);
+});
+
+test("Now date labels describe the date and suppress a fact already named by the kind chip", () => {
+  const strings = {
+    now_basis_no_date: "No fixed date published",
+    now_date_responses_due: "Responses due",
+    now_date_comment_by: "Comment by",
+    now_date_hearing: "Hearing",
+    next_action_response_instructions: "Follow the response steps below",
+    rule_comment_btn: "Comment",
+    disposition_stage_hearing: "Hearing",
+  };
+  globalThis.t = (key) => strings[key] || key;
+
+  assert.equal(nowDateLabel({ lane: "act_by", kind: "bid", time: { value: "2026-08-04" } }), "Responses due");
+  assert.equal(nowDateLabel({ lane: "act_by", kind: "comment", time: { value: "2026-08-04" } }), "Comment by");
+  assert.equal(nowDateLabel({ lane: "happening_soon", kind: "hearing", time: { value: "2026-08-04" } }), "");
+  assert.equal(nowDateLabel({ lane: "act_by", kind: "bid", time: { value: null } }), "No fixed date published");
+});
+
+test("meeting records that are not hearings carry the Meeting event kind", () => {
+  const sources = fixtureSources();
+  sources.meetings.hearings.push({
+    request_id: "meeting-next",
+    agency: "Community Board 1",
+    title: "Monthly community board meeting",
+    event_date: "2026-08-06T18:00:00",
+  });
+  const surface = buildNowSurface(sources, { today: TODAY, compileActionRail: CrolActions.compileActionRail });
+  assert.equal(surface.happening_soon.items.find((item) => item.id === "meetings:meeting-next")?.kind, "meeting");
 });
 
 test("#now is an additive entry route and does not take ownership from current lens navigation", () => {

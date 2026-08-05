@@ -339,11 +339,14 @@ function meetingEvents(payload, options) {
     if (!withinHorizon(options.today, row.event_date, options.eventHorizonDays)) continue;
     const route = officialNoticeRoute(row.request_id);
     if (!route) continue;
+    const kind = /\bhearing\b/i.test(`${row.type_of_notice_description || ""} ${row.title || ""}`)
+      ? "hearing"
+      : "meeting";
     out.push({
       id: `meetings:${row.request_id}`,
       lane: "happening_soon",
-      kind: "hearing",
-      title: row.title || "Untitled hearing",
+      kind,
+      title: row.title || (kind === "hearing" ? "Untitled hearing" : "Untitled meeting"),
       agency: row.agency || null,
       domain: "meetings",
       source: source("meetings"),
