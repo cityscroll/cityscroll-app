@@ -139,6 +139,7 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(result.included.forecasts, 1);
   assert.equal(result.included.doingBusiness, 1);
   assert.equal(result.included.mentions, false);
+  assert.equal(result.included.vendorFootprints, 1);
   assert.ok(result.storage.averageBytesAfter > result.storage.averageBytesBefore);
   assert.equal(store.writes.at(-1), "vp:manifest:v1");
   assert.match(store.writes[0], /^vp:v1:20260727130000:/);
@@ -152,6 +153,9 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   // The injected SODA response keeps its source-shaped phone value.
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "5550100");
   assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
+  assert.equal(bucket.profiles.CAMBA.footprint.root.ref, "vendor:stem:CAMBA");
+  assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.scope_count, 273);
+  assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.confirmed_count, 0);
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
-  assert.equal(manifest.schema, 2);
+  assert.equal(manifest.schema, 3);
 });

@@ -76,6 +76,17 @@ PUBLIC_COPY_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("mechanics narration: static-first", re.compile(r"\bstatic[- ]first\b", re.I)),
 ]
 
+VENDOR_FOOTPRINT_JARGON_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("vendor footprint: strong linkage", re.compile(r"\b(?:strong(?:ly)?\s+linked|strong\s+links?)\b", re.I)),
+    ("vendor footprint: build narration", re.compile(r"\bin\s+this\s+build\b", re.I)),
+    ("vendor footprint: coverage not measured", re.compile(r"\bcoverage\s+not\s+measured\b", re.I)),
+    (
+        "vendor footprint: scope link",
+        re.compile(r"\bview\s+this\s+vendor\s+as\s+(?:an?\s+)?[^.\n]+\s+scope\b", re.I),
+    ),
+    ("vendor footprint: connection strength", re.compile(r"\b(?:connection\s+strength|strength\s+of\s+(?:the\s+)?connection)\b", re.I)),
+]
+
 # Join provenance belongs in a disclosure, expressed in reader language. These
 # patterns guard every locale catalog because untranslated fallbacks can otherwise
 # leak the same implementation copy outside the English catalog.
@@ -267,7 +278,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # Hits against the public catalogs (source, key, term, excerpt). Empty until scan.
     hits = []  # source: site/i18n.js STRINGS.en + INTERNAL_PATTERNS
-    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS)]  # source: public i18n catalogs
+    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS)]  # source: public i18n catalogs
     for path in sorted(LOCALE_DIR.glob("*.js")):
         catalogs.append(
             (
@@ -307,7 +318,7 @@ def main(argv: list[str] | None = None) -> int:
     ]
     for path in public_render_files:
         for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-            for term, pattern in DIRECT_RENDER_PATTERNS:
+            for term, pattern in DIRECT_RENDER_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS:
                 if not pattern.search(line):
                     continue
                 hits.append(
