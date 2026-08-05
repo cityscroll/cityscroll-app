@@ -31,7 +31,8 @@ function documentRouteRaw(){
   }
   const browse=path.match(/^\/browse(?:\/([^/]+))?$/);
   if(browse){
-    const facet=browse[1]||"contracts";
+    const facet=browse[1];
+    if(!facet) return "browse";
     const route=DOCUMENT_FACET_HASHES[facet];
     if(!route) return "";
     const params=new URLSearchParams(location.search); params.delete("lang"); params.delete("legacy");
@@ -1197,7 +1198,7 @@ async function showNotice(id, watch){
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
-        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — The City Record, searchable.")}">${t("notice_email_btn")}</a>
+        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — NYC’s public record, linked.")}">${t("notice_email_btn")}</a>
         <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
         <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}

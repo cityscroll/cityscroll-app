@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta property="og:image:alt" content="CityScroll — NYC’s public record, linked">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1b3a8f">
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
@@ -101,11 +101,20 @@
   .now-entry{display:flex;min-width:0;align-items:center;justify-content:center;gap:8px;padding:9px 12px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);color:var(--ink);text-align:center;text-decoration:none;box-shadow:var(--shadow);font:600 13px/1.25 ui-sans-serif,system-ui,sans-serif}
   .now-entry strong{font:800 14px/1 var(--font-display);color:var(--oxblood)}.now-entry:hover{border-color:var(--oxblood)}
   .now-entry[aria-current=page]{border-color:var(--oxblood);box-shadow:0 0 0 2px color-mix(in srgb,var(--oxblood),transparent 82%)}
-  .browse-facet-label{margin:12px 0 0;color:var(--muted);font:750 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .browse-child-nav{width:min(100%,920px);margin:7px auto 0;padding:8px 10px 9px;border-top:1px solid var(--rule);background:var(--paper-2);border-radius:9px 9px 0 0}
+  [data-primary-context="now"] .browse-child-nav:empty{display:none}
+  .browse-facet-label{margin:0 0 3px;color:var(--muted);font:750 9px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+  .browse-child-tabs{margin:0;gap:2px}
+  .browse-child-tabs .tabbtn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 13px;font-size:11px;letter-spacing:.1em;text-decoration:none;border-radius:7px 7px 0 0}
+  .browse-child-tabs .tabbtn.active{background:var(--card)}
   .browse-build-view{display:grid;gap:10px}.browse-static-summary{margin:0 0 4px;color:var(--muted);font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   .browse-static-record{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:13px 15px;box-shadow:var(--shadow)}
   .browse-static-record h3{margin:0;font:700 16px/1.35 var(--font-body);overflow-wrap:anywhere}.browse-static-record h3 a{color:var(--ink);text-decoration:none}.browse-static-record h3 a:hover{text-decoration:underline}
   .browse-static-meta{margin:5px 0 0;color:var(--muted);font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
+  .browse-landing{max-width:1120px;margin:0 auto;padding:6px 0 36px}.browse-landing-head{max-width:780px;margin-bottom:22px}.browse-landing-head h2{font:700 clamp(2rem,5vw,3.3rem)/1 var(--font-display);margin:0 0 9px;color:var(--ink)}.browse-landing-head>p:not(.now-kicker){margin:0 0 8px;color:var(--ink-soft);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}
+  .browse-landing-head .browse-landing-disclosure{padding:10px 12px;border-inline-start:3px solid var(--rule-strong);background:var(--paper-2);color:var(--muted);font-size:12.5px}
+  .browse-source-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.browse-source-card{display:flex;min-width:0;flex-direction:column;padding:17px 18px;background:var(--card);border:1px solid var(--rule);border-radius:10px;box-shadow:var(--shadow)}
+  .browse-source-card h3{margin:3px 0 7px;font:700 22px/1.1 var(--font-display)}.browse-source-card h3 a{color:var(--ink);text-decoration:none}.browse-source-card h3 a:hover{text-decoration:underline}.browse-source-count{margin:0;color:var(--oxblood);font:750 11px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase}.browse-source-description{margin:0 0 10px;color:var(--ink-soft);font:14px/1.45 ui-sans-serif,system-ui,sans-serif}.browse-source-systems{margin:auto 0 0;padding-top:10px;border-top:1px solid var(--rule);color:var(--muted);font:650 11px/1.4 ui-sans-serif,system-ui,sans-serif}.browse-source-asof{margin:4px 0 10px;color:var(--muted);font:11px/1.35 ui-sans-serif,system-ui,sans-serif}.browse-source-action{align-self:flex-start;font:700 12px/1.3 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
   .now-surface{max-width:1180px;margin:0 auto;padding:4px 0 30px}.now-back{margin:0 0 12px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif}.now-back a{text-decoration:none}
   .now-head{max-width:760px;margin-bottom:22px}.now-head h2{font:700 clamp(2rem,5vw,3.3rem)/1 var(--font-display);margin:0 0 8px;color:var(--ink)}.now-head>p{margin:0;color:var(--ink-soft);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.now-head .now-bounded-note{margin-top:7px;color:var(--muted);font-size:12.5px}.now-kicker{margin:0 0 5px!important;color:var(--oxblood)!important;font:800 11px/1.2 ui-sans-serif,system-ui,sans-serif!important;letter-spacing:.12em;text-transform:uppercase}
   .now-lanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}.now-lane{min-width:0}.now-lane-head{display:flex;justify-content:space-between;gap:12px;align-items:start;padding:0 0 10px;border-bottom:3px solid var(--ink)}
@@ -118,6 +127,8 @@
     .now-lanes{grid-template-columns:minmax(0,1fr);gap:28px}
     .now-entry-row{grid-template-columns:repeat(2,minmax(0,1fr))}
     .now-entry{max-width:100%;flex-direction:column;gap:4px}
+    .browse-child-nav{padding-inline:4px}.browse-child-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px}.browse-child-tabs .tabbtn{min-width:0;padding-inline:4px;letter-spacing:.04em}
+    .browse-source-grid{grid-template-columns:minmax(0,1fr)}
   }
   /* Task-first entry experiment: additive routes (#task/…), not a lens redesign. */
   .task-first{max-width:920px;margin:0 auto;padding:8px 0 28px}
@@ -1551,7 +1562,7 @@
 <script src="action_registry.js"></script>
 <script src="task_first.js"></script>
 </head>
-<body>
+<body data-primary-context="browse">
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
 <header class="masthead">
@@ -1600,15 +1611,17 @@
       <a class="now-entry" href="/following/"><strong>Following</strong><span>Preview and manage saved scopes</span></a>
       <a class="now-entry" href="/browse/"><strong>Browse</strong><span>Explore every public source</span></a>
     </nav>
-    <p class="browse-facet-label">Browse by source</p>
-    <nav class="tabs" aria-label="Browse by source">
-      <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
-      <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
-      <button class="tabbtn" data-tab="land" data-i18n="tab_land">Zoning</button>
-      <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
-      <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
-      <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
-    </nav>
+    <div class="browse-child-nav" id="browse-child-nav">
+      <p class="browse-facet-label">Browse sources</p>
+      <nav class="tabs browse-child-tabs" aria-label="Browse sources">
+        <a class="tabbtn active" href="/browse/contracts/" data-tab="money" data-i18n="tab_money">Contracts</a>
+        <a class="tabbtn" href="/browse/staffing/" data-tab="people" data-i18n="tab_people">Staffing</a>
+        <a class="tabbtn" href="/browse/zoning/" data-tab="land" data-i18n="tab_land">Zoning</a>
+        <a class="tabbtn" href="/browse/property/" data-tab="property" data-i18n="tab_property">Property</a>
+        <a class="tabbtn" href="/browse/rules/" data-tab="rules" data-i18n="tab_rules">Rules</a>
+        <a class="tabbtn" href="/browse/meetings/" data-tab="meetings" data-i18n="tab_meetings">Meetings</a>
+      </nav>
+    </div>
     <div id="langNotice" class="lang-notice" hidden></div>
     <div id="sessionBanner" class="session-banner" role="status" aria-live="polite" data-open="false" hidden>
       <span id="sessionBannerText" dir="auto">Signed in as your email — pins follow you on this device.</span>
@@ -1620,6 +1633,13 @@
   </div>
 </header>
 <main id="main" tabindex="-1">
+
+<!-- ============ BROWSE (parent landing; source facets remain the child documents) ============ -->
+<section id="tab-browse" class="tabpane">
+  <div class="wrap">
+    <div id="browseview"></div>
+  </div>
+</section>
 
 <!-- ============ NOW (additive time-and-action entry; current lens navigation stays authoritative) ============ -->
 <section id="tab-now" class="tabpane">
@@ -2416,7 +2436,7 @@
 
 <footer>
   <div class="wrap">
-    <p style="margin:0"><span data-i18n="footer_lede">CityScroll searches the City Record Open Data</span> — <b><span id="editionspan">2003 to present</span></b>, <span data-i18n="footer_notices">1M+ notices</span>. <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="mailto:feedback%40cityscroll.org" style="color:var(--oxblood)" data-i18n="footer_feedback">Feedback</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API and feeds</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a></p>
+    <p style="margin:0"><span data-i18n="footer_lede">CityScroll links NYC’s public record — 1,099,194 City Record notices + 228 civil-service exams, linked with records from 4 other main public systems, through August 5, 2026.</span> <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="mailto:feedback%40cityscroll.org" style="color:var(--oxblood)" data-i18n="footer_feedback">Feedback</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API and feeds</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a></p>
   </div>
 </footer>
 

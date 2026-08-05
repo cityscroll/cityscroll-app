@@ -70,11 +70,12 @@ const {
   "location",
   "t",
   "qrButtonHTML",
+  "currentLanguageURL",
   extractDecl("landLink")
     + extractFn("parseLandHashSegment")
     + extractFn("landPermalinkActionHTML")
     + "\nreturn { landLink, parseLandHashSegment, landPermalinkActionHTML };",
-)(locationStub, (key) => ({ copy_link: "Copy link" })[key] || key, () => "");
+)(locationStub, (key) => ({ copy_link: "Copy link" })[key] || key, () => "", (url) => url);
 
 test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(parseLandHashSegment(ALLEN_STREET.project_id), ALLEN_STREET.project_id);
@@ -82,7 +83,7 @@ test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
 });
 
 test("#land/<project_id> continues to resolve and lands on the renamed Zoning tab label", () => {
-  const landMatch = src.match(/<button class="tabbtn"[^>]*data-tab="land"[^>]*>(.*?)<\/button>/);
+  const landMatch = src.match(/<a class="tabbtn"[^>]*data-tab="land"[^>]*>(.*?)<\/a>/);
   assert.equal(landMatch?.[1], "Zoning");
   const applyHash = extractFn("applyHash");
   assert.match(applyHash, /raw\.startsWith\("land\/"\)/);

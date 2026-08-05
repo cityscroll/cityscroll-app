@@ -863,7 +863,7 @@
     still_standing_btn:     "Toujours debout ?",
 
     // Footer
-    footer_lede:       "CityScroll effectue des recherches dans les données ouvertes du Registre municipal",
+    footer_lede:       "CityScroll relie les archives publiques de NYC : 1 099 194 avis du City Record + 228 concours de la fonction publique, reliés aux données de 4 autres grands systèmes publics ; au 5 août 2026.",
     footer_about:      "À propos",
     footer_feedback: "Commentaires",
     footer_investigation: "Mon enquête",
@@ -2110,7 +2110,7 @@
     invnote_aria: "Note pour cet élément épinglé",
 
     // ---- Subpage chrome + content (about/data/stats/api/changelog) ----
-    site_kicker: "Le Registre municipal, consultable",
+    site_kicker: "Les archives publiques de NYC, reliées",
     back_home_aria: "Retour à l'accueil de CityScroll",
     back_to_crol: "← Retour à CityScroll",
     home_link: "Accueil",
@@ -2151,7 +2151,7 @@
     about_reason_badcategory: "Choisissez une catégorie — Bogue, Idée de fonctionnalité, ou Général.",
     about_reason_notconfigured: "Les commentaires ne sont pas encore activés.",
     about_reason_sendfailed: "Impossible d'enregistrer cela pour l'instant — réessayez dans un instant.",
-    about_foot_html: "CityScroll · une interface de recherche pour <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (s'ouvre dans un nouvel onglet)</span></a> · <a href=\"stats.html\">Statistiques</a> · <a href=\"mailto:feedback%40cityscroll.org\">Commentaires</a> · <a href=\"index.html\">Accueil</a>",
+    about_foot_html: "CityScroll · les archives publiques de NYC, reliées · <a href=\"stats.html\">Statistiques</a> · <a href=\"mailto:feedback%40cityscroll.org\">Commentaires</a> · <a href=\"index.html\">Accueil</a>",
     session_signed_in: "Connecté comme {email} — vos épingles vous suivent sur cet appareil.",
     session_manage_watches: "Gérer les veilles",
     session_not_you: "Ce n'est pas vous ?",

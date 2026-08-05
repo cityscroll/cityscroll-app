@@ -1259,7 +1259,7 @@ const STRINGS = {
     still_standing_btn:     "Still standing?",
 
     // Footer
-    footer_lede:       "CityScroll searches the City Record Open Data",
+    footer_lede:       "CityScroll links NYC’s public record — 1,099,194 City Record notices + 228 civil-service exams, linked with records from 4 other main public systems, through August 5, 2026.",
     footer_about:      "About",
     footer_feedback:   "Feedback",
     footer_investigation: "My investigation",
@@ -2549,7 +2549,7 @@ const STRINGS = {
     invnote_aria: "Note for this pinned item",
 
     // ---- Subpage chrome + content (about/data/stats/api/changelog) ----
-    site_kicker: "The City Record, searchable",
+    site_kicker: "NYC’s public record, linked",
     back_home_aria: "Back to CityScroll home",
     back_to_crol: "← Back to CityScroll",
     home_link: "Home",
@@ -2592,7 +2592,7 @@ const STRINGS = {
     about_reason_badcategory: "Pick a category — Bug, Feature idea, or General.",
     about_reason_notconfigured: "Feedback isn't switched on yet.",
     about_reason_sendfailed: "Couldn't record that just now — try again in a moment.",
-    about_foot_html: "CityScroll · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"stats.html\">Stats</a> · <a href=\"mailto:feedback%40cityscroll.org\">Feedback</a> · <a href=\"index.html\">Home</a>",
+    about_foot_html: "CityScroll · NYC’s public record, linked · <a href=\"stats.html\">Stats</a> · <a href=\"mailto:feedback%40cityscroll.org\">Feedback</a> · <a href=\"index.html\">Home</a>",
     session_signed_in: "Signed in as {email} — pins follow you on this device.",
     session_manage_watches: "Manage watches",
     session_not_you: "Not you?",

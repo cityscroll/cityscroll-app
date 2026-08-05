@@ -79,7 +79,7 @@ Thank you,n[Your name — firm — phone]
 This is a letter of intent in response to the following City of New York solicitation, as published in The City Record:nn
 [One-line capability statement about your firm.]nn
 nWe intend to respond and would appreciate confirmation of (1) how to obtain the full solicitation package and (2) whether responses are submitted via PASSPort or directly to your office.nn
-nnVia CityScroll — The City Record, searchable.
+nnVia CityScroll — NYC’s public record, linked.
 
 # ── NL ask-layer: sample queries, device-parser placeholders, translate-chips (queued: language wave)
 <span class="qchip">about <b>
