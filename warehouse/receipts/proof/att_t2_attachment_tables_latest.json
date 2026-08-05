@@ -1,17 +1,21 @@
 {
   "schema": "cityscroll.attachment_tables.receipt.v1",
-  "run_id": "att-t2-2026-08-04-5b472053-84c8-4cf9-8c29-7d7decb4c412",
-  "started_at": "2026-08-04T01:00:30.411Z",
-  "finished_at": "2026-08-04T01:00:30.484Z",
-  "mode": "fixture",
+  "run_id": "att-t2-2026-08-05-f4950545-7fea-4ed9-acf2-bad9ac0ffb5b",
+  "started_at": "2026-08-05T13:59:19.322Z",
+  "finished_at": "2026-08-05T13:59:19.330Z",
+  "mode": "live",
   "tier": "t2_structured_tables",
-  "inventory_seen": 2,
-  "docs_attempted": 1,
-  "docs_with_tables": 1,
-  "docs_skipped": 1,
+  "inventory_seen": 6,
+  "docs_attempted": 0,
+  "docs_with_tables": 0,
+  "docs_skipped": 6,
   "docs_failed": 0,
-  "total_tables": 2,
-  "total_cells": 58,
+  "attempted": 0,
+  "extracted": 0,
+  "skipped": 6,
+  "failed": 0,
+  "total_tables": 0,
+  "total_cells": 0,
   "max_docs_per_run": 25,
   "max_extract_bytes": 5000000,
   "binaries_stored": false,
@@ -26,10 +30,10 @@
       "avoid_ci_parquet_toolchain"
     ],
     "scale": {
-      "docsWithTables": 1,
-      "totalTables": 2,
-      "totalCells": 58,
-      "payloadBytes": 1930
+      "docsWithTables": 0,
+      "totalTables": 0,
+      "totalCells": 0,
+      "payloadBytes": 2811
     },
     "parquet_threshold": {
       "docs_with_tables": 500,
@@ -39,7 +43,7 @@
     }
   },
   "storage_adr": "docs/adr/attachment-tables-storage.md",
-  "polite_delay_s": 0,
+  "polite_delay_s": 1.2,
   "checkpoint": true,
   "parallel_lane": {
     "t3": "att-t3-embeddings",
@@ -50,9 +54,13 @@
     "batches": 0
   },
   "warehouse": {
-    "skipped": true,
-    "reason": "duckdb_unavailable",
-    "format": "json",
-    "taskpolicy_or_nice_wrap": false
+    "table": "attachment_tables",
+    "materialized_view": "attachment_tables_by_notice",
+    "format": "json_jsonl",
+    "parquet": false,
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "storage_adr": "docs/adr/attachment-tables-storage.md",
+    "taskpolicy_or_nice_wrap": true
   }
 }

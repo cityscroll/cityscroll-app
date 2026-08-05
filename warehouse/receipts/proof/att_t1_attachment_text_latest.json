@@ -1,20 +1,24 @@
 {
   "schema": "cityscroll.attachment_text.receipt.v1",
-  "run_id": "att-t1-2026-08-03-9916c148-66fa-4960-8435-817c3d049adc",
-  "started_at": "2026-08-03T20:28:34.841Z",
-  "finished_at": "2026-08-03T20:28:34.891Z",
-  "mode": "fixture",
+  "run_id": "att-t1-2026-08-05-403c7da2-47a5-4681-ab6d-12c343ae2594",
+  "started_at": "2026-08-05T13:59:18.827Z",
+  "finished_at": "2026-08-05T13:59:18.834Z",
+  "mode": "live",
   "tier": "t1_inline_text",
-  "inventory_seen": 2,
-  "docs_attempted": 1,
-  "docs_extracted": 1,
-  "docs_skipped": 1,
+  "inventory_seen": 6,
+  "docs_attempted": 0,
+  "docs_extracted": 0,
+  "docs_skipped": 6,
   "docs_failed": 0,
+  "attempted": 0,
+  "extracted": 0,
+  "skipped": 6,
+  "failed": 0,
   "max_docs_per_run": 25,
   "max_extract_bytes": 5000000,
   "binaries_stored": false,
   "images_ocr": false,
-  "polite_delay_s": 0,
+  "polite_delay_s": 1.2,
   "checkpoint": true,
   "later_tiers": {
     "t2": "att-t2-structured",
@@ -29,6 +33,6 @@
     "materialized_view": "attachment_text_by_notice",
     "single_job_lock": true,
     "headroom_gate": true,
-    "taskpolicy_or_nice_wrap": false
+    "taskpolicy_or_nice_wrap": true
   }
 }
