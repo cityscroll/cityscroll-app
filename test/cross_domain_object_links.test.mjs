@@ -17,7 +17,10 @@ import {
   resolveAgencySubject,
   resolveVendorSubject,
   observationFromMoneyRow,
+  observationFromPassportContractRow,
+  observationFromCheckbookContractRow,
   observationFromPaymentRow,
+  procurementContractLinksForObservations,
   observationFromLandRow,
   observationFromRulesRow,
   observationFromMeetingsRow,
@@ -72,6 +75,69 @@ describe("cross-domain identity roots", () => {
 });
 
 describe("observation → links with provenance", () => {
+  it("materializes PASSPort contracts as evidence-bearing contract subjects", () => {
+    const obs = observationFromPassportContractRow({
+      ctr_id: "5755276",
+      epin: "81626W0043001",
+      contract_id: "CT1-816-20278801775",
+      agency: "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+      vendor: "MAKE IT ZESTY LLC",
+      status: "Registered",
+    });
+    assert.equal(obs.object_kind, "contract");
+    assert.equal(obs.subject_ref, "contract:CT1-816-20278801775");
+    const { links } = linkObservation(obs);
+    assert.ok(links.some((link) => link.type === "named_vendor"));
+    const epin = links.find((link) => link.type === "shares_authority_key");
+    assert.equal(epin?.to, "pin:81626W0043001");
+    assert.equal(epin?.provenance.source_fields[0], "epin");
+    assert.equal(links.some((link) => link.type === "references_contract"), false);
+  });
+
+  it("materializes Checkbook contracts and payments without key-based vendor merges", () => {
+    const contract = observationFromCheckbookContractRow({
+      prime_contract_id: "CT81626W0043001",
+      prime_vendor: "Make it Zesty LLC",
+      agency: "Health and Mental Hygiene",
+      pin: "81626W0043001",
+    });
+    assert.equal(contract.subject_ref, "contract:CT81626W0043001");
+    const payment = observationFromPaymentRow({
+      document_id: "CHK-Zesty-001",
+      payee_name: "Make it Zesty LLC",
+      contract_id: "CT81626W0043001",
+      check_amount: "12000",
+      agency: "Health and Mental Hygiene",
+    }, { sourceSystem: "checkbook-spending" });
+    const paymentLinks = linkObservation(payment).links;
+    assert.ok(paymentLinks.some((link) => link.type === "payment_on_contract"));
+    assert.equal(paymentLinks.some((link) => link.type === "shares_authority_key"), false);
+  });
+
+  it("joins an award to a PASSPort contract through strict PIN/EPIN evidence", () => {
+    const award = observationFromMoneyRow({
+      request_id: "20260723031",
+      pin: "81626W0043001",
+      agency_name: "Health and Mental Hygiene",
+      vendor_name: "MAKE IT ZESTY LLC",
+      type_of_notice_description: "Award",
+    });
+    const contract = observationFromPassportContractRow({
+      ctr_id: "5755276",
+      epin: "81626W0043001",
+      contract_id: "CT1-816-20278801775",
+      agency: "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+      vendor: "MAKE IT ZESTY LLC",
+    });
+    const links = procurementContractLinksForObservations([award, contract])
+      .get(award.source_record_id) || [];
+    assert.equal(links.length, 1);
+    assert.equal(links[0].type, "references_contract");
+    assert.equal(links[0].from, "notice:20260723031");
+    assert.equal(links[0].to, "contract:CT1-816-20278801775");
+    assert.equal(links[0].provenance.related_source_system, "ocp-recent-contract-awards");
+  });
+
   it("links a money award to agency and vendor with source provenance", () => {
     const obs = observationFromMoneyRow({
       request_id: "FIX005",
@@ -351,6 +417,14 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.ok(observations.length > 10, "expected warehouse + seed observations");
     const payments = observations.filter((o) => o.object_kind === "payment");
     assert.ok(payments.length >= 1, "expected checkbook payment fixtures");
+    const passportContracts = observations.filter(
+      (o) => o.source_system === "passport-public-contracts" && o.object_kind === "contract",
+    );
+    const checkbookContracts = observations.filter(
+      (o) => o.source_system === "checkbook-contracts" && o.object_kind === "contract",
+    );
+    assert.ok(passportContracts.length >= 1, "expected PASSPort contract observations");
+    assert.ok(checkbookContracts.length >= 1, "expected Checkbook contract observations");
     const rulesObs = observations.filter((o) => o.domain === "rules");
     const meetingsObs = observations.filter((o) => o.domain === "meetings");
     const peopleObs = observations.filter((o) => o.domain === "people");
@@ -379,6 +453,9 @@ describe("entity intelligence view — Parks multi-domain", () => {
     );
 
     const doc = buildEntityIntelligenceDoc(ROOT);
+    assert.equal(doc.procurement_spine.coverage.passport_contracts.modern_awards.rate, 0.886);
+    assert.equal(doc.procurement_spine.coverage.checkbook_contracts.modern_awards.rate, null);
+    assert.equal(doc.procurement_spine.coverage.checkbook_spending.modern_awards.rate, null);
     assert.ok(doc.multi_domain_count >= 1);
     // Demo prefers an entity with people matched when available (City Council).
     assert.ok(doc.verified_demo?.ref);

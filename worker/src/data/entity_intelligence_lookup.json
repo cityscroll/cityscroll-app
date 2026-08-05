@@ -3,8 +3,8 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-05T18:59:58.871Z",
-  "observation_count": 1331,
+  "generated_at": "2026-08-05T20:11:08.263Z",
+  "observation_count": 1334,
   "entity_count": 200,
   "multi_domain_count": 29,
   "domains": [
@@ -10461,6 +10461,70 @@
       },
       "links": [
         {
+          "type": "published_by_agency",
+          "from": "contract:CT1-816-20278801775",
+          "to": "agency:id:health-and-mental-hygiene",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "09/01/2026",
+            "input_value": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "09/01/2026",
+            "input_value": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-816-20278801775",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "contract_published_by_agency",
           "from": "contract:CT81626W0043001",
           "to": "agency:id:health-and-mental-hygiene",
@@ -10478,6 +10542,66 @@
             "basis": "money_contract_agency",
             "observed_at": "2026-07-30T00:00:00.000",
             "input_value": "Health and Mental Hygiene"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "contract:CT81626W0043001",
+          "to": "agency:id:health-and-mental-hygiene",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Health and Mental Hygiene",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "Health and Mental Hygiene"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT81626W0043001",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "81626W0043001"
           },
           "layer": "cross_domain_object_link_v2"
         },
@@ -11156,6 +11280,44 @@
         {
           "type": "references_contract",
           "from": "notice:20260723031",
+          "to": "contract:CT1-816-20278801775",
+          "method": "passport_contract_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001",
+            "related_source_system": "ocp-recent-contract-awards",
+            "related_source_record_id": "ocp-recent-contract-awards:20260723031",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001",
+            "related_source_system": "ocp-recent-contract-awards",
+            "related_source_record_id": "ocp-recent-contract-awards:20260723031"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260723031",
           "to": "contract:CT81626W0043001",
           "method": "contract_id_join_v1",
           "method_version": "1",
@@ -11225,8 +11387,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 14,
-        "link_count": 27,
-        "join_key_link_count": 10,
+        "link_count": 32,
+        "join_key_link_count": 13,
         "coverage_rate": 0.42857142857142855
       }
     },
@@ -58010,6 +58172,534 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:MAKE%20IT%20ZESTY": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:MAKE%20IT%20ZESTY",
+        "id": "stem:MAKE%20IT%20ZESTY",
+        "stem": "MAKE IT ZESTY",
+        "display_name": "MAKE IT ZESTY LLC"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "entity:spending:CHK-Zesty-001",
+              "domain": "money",
+              "object_kind": "payment",
+              "label": "Make it Zesty LLC · CT81626W0043001",
+              "when": "2026-08-01",
+              "amount": 12000,
+              "public_status": null,
+              "pin": "81626W0043001",
+              "contract_id": "CT81626W0043001",
+              "document_id": "CHK-Zesty-001",
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-spending",
+                "source_record_id": "checkbook-spending:CHK-Zesty-001",
+                "source_fields": [
+                  "payee_name"
+                ],
+                "basis": "money_payee_name",
+                "observed_at": "2026-08-01",
+                "input_value": "Make it Zesty LLC"
+              },
+              "link_type": "paid_to_vendor",
+              "confidence": "strong",
+              "method": "checkbook_payment_v1"
+            },
+            {
+              "subject_ref": "notice:20260723031",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Catering Services",
+              "when": "2026-07-30T00:00:00.000",
+              "amount": 250000,
+              "public_status": null,
+              "pin": "81626W0043001",
+              "contract_id": "CT81626W0043001",
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260723031",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": "#notice/20260723031",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:20260723031",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-07-30T00:00:00.000",
+                "input_value": "Make it Zesty LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT1-816-20278801775",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "MAKE IT ZESTY LLC",
+              "when": "09/01/2026",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "CT1-816-20278801775",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "09/01/2026",
+                "input_value": "MAKE IT ZESTY LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:CT81626W0043001",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "Make it Zesty LLC",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": "81626W0043001",
+              "contract_id": "CT81626W0043001",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-contracts",
+                "source_record_id": "checkbook-contracts:pin:81626W0043001",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "input_value": "Make it Zesty LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 4
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:CT1-816-20278801775",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "09/01/2026",
+            "input_value": "MAKE IT ZESTY LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "09/01/2026",
+            "input_value": "MAKE IT ZESTY LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT1-816-20278801775",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT81626W0043001",
+          "to": "agency:id:health-and-mental-hygiene",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Health and Mental Hygiene"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "contract:CT81626W0043001",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "input_value": "Make it Zesty LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "input_value": "Make it Zesty LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:CT81626W0043001",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "input_value": "81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "paid_to_vendor",
+          "from": "entity:spending:CHK-Zesty-001",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-Zesty-001",
+            "source_fields": [
+              "payee_name"
+            ],
+            "basis": "money_payee_name",
+            "observed_at": "2026-08-01",
+            "input_value": "Make it Zesty LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "payment_on_contract",
+          "from": "entity:spending:CHK-Zesty-001",
+          "to": "contract:CT81626W0043001",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-Zesty-001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_payment_contract",
+            "observed_at": "2026-08-01",
+            "input_value": "CT81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:20260723031",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Make it Zesty LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Make it Zesty LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260723031",
+          "to": "contract:CT1-816-20278801775",
+          "method": "passport_contract_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001",
+            "related_source_system": "ocp-recent-contract-awards",
+            "related_source_record_id": "ocp-recent-contract-awards:20260723031",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:CT1-816-20278801775",
+            "source_fields": [
+              "epin",
+              "pin"
+            ],
+            "basis": "procurement_pin_exact",
+            "observed_at": "09/01/2026",
+            "input_value": "81626W0043001",
+            "related_source_system": "ocp-recent-contract-awards",
+            "related_source_record_id": "ocp-recent-contract-awards:20260723031"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260723031",
+          "to": "contract:CT81626W0043001",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20260723031",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 4,
+        "link_count": 11,
+        "join_key_link_count": 8,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "agency:id:board-of-education-retirement-system": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -59218,6 +59908,424 @@
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
+    "agency:id:youth-and-community-development": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:youth-and-community-development",
+        "id": "id:youth-and-community-development",
+        "canonical_id": "youth-and-community-development",
+        "canonical_name": "Youth and Community Development",
+        "display_name": "Youth and Community Development"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260724015",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Summer Youth Employment Program NAQ: Career Ready",
+              "when": "2026-07-30T00:00:00.000",
+              "amount": 2540261,
+              "public_status": null,
+              "pin": "26026N0011014",
+              "contract_id": "CT26026N0011014",
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260724015",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:youth-and-community-development",
+              "root_kind": "agency",
+              "href": "#notice/20260724015",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:20260724015",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-07-30T00:00:00.000",
+                "input_value": "Youth and Community Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20030303026",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "PUBLIC NOTICE OF INTENT TO RENEW CLIENT SERVICES CONTRACTS",
+              "when": "2003-03-05",
+              "amount": 0,
+              "public_status": null,
+              "pin": "n/a",
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20030303026",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:youth-and-community-development",
+              "root_kind": "agency",
+              "href": "#notice/20030303026",
+              "provenance": {
+                "source_system": "warehouse",
+                "source_record_id": "warehouse:20030303026",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2003-03-05",
+                "input_value": "Youth and Community Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "contract:5790163",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "DELL MARKETING LP",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "5790163",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:youth-and-community-development",
+              "root_kind": "agency",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:5790163",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "input_value": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 3
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "contract:5790163",
+          "to": "agency:id:youth-and-community-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "input_value": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:5790163",
+          "to": "pin:26026O0002001R001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "input_value": "26026O0002001R001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "input_value": "26026O0002001R001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT26026N0011014",
+          "to": "agency:id:youth-and-community-development",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Youth and Community Development"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:20030303026",
+          "to": "agency:id:youth-and-community-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030303026",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2003-03-05",
+            "input_value": "Youth and Community Development",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030303026",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2003-03-05",
+            "input_value": "Youth and Community Development"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20030303026",
+          "to": "pin:n/a",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030303026",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2003-03-05",
+            "input_value": "n/a",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030303026",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2003-03-05",
+            "input_value": "n/a"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:20260724015",
+          "to": "agency:id:youth-and-community-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Youth and Community Development",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Youth and Community Development"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260724015",
+          "to": "contract:CT26026N0011014",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT26026N0011014",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT26026N0011014"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20260724015",
+          "to": "pin:26026N0011014",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "26026N0011014",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "26026N0011014"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 3,
+        "link_count": 8,
+        "join_key_link_count": 5,
         "coverage_rate": 0.14285714285714285
       }
     },
@@ -64057,332 +65165,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "agency:id:youth-and-community-development": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:youth-and-community-development",
-        "id": "id:youth-and-community-development",
-        "canonical_id": "youth-and-community-development",
-        "canonical_name": "Youth and Community Development",
-        "display_name": "Youth and Community Development"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260724015",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "Summer Youth Employment Program NAQ: Career Ready",
-              "when": "2026-07-30T00:00:00.000",
-              "amount": 2540261,
-              "public_status": null,
-              "pin": "26026N0011014",
-              "contract_id": "CT26026N0011014",
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260724015",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:youth-and-community-development",
-              "root_kind": "agency",
-              "href": "#notice/20260724015",
-              "provenance": {
-                "source_system": "ocp-recent-contract-awards",
-                "source_record_id": "ocp-recent-contract-awards:20260724015",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2026-07-30T00:00:00.000",
-                "input_value": "Youth and Community Development"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20030303026",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "PUBLIC NOTICE OF INTENT TO RENEW CLIENT SERVICES CONTRACTS",
-              "when": "2003-03-05",
-              "amount": 0,
-              "public_status": null,
-              "pin": "n/a",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20030303026",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:youth-and-community-development",
-              "root_kind": "agency",
-              "href": "#notice/20030303026",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20030303026",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2003-03-05",
-                "input_value": "Youth and Community Development"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 2
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "contract_published_by_agency",
-          "from": "contract:CT26026N0011014",
-          "to": "agency:id:youth-and-community-development",
-          "domain": "money",
-          "confidence": "strong",
-          "method": "contract_id_join_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "agency_name",
-              "contract_id"
-            ],
-            "basis": "money_contract_agency",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Youth and Community Development"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "notice:20030303026",
-          "to": "agency:id:youth-and-community-development",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20030303026",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2003-03-05",
-            "input_value": "Youth and Community Development",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20030303026",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2003-03-05",
-            "input_value": "Youth and Community Development"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "notice:20030303026",
-          "to": "pin:n/a",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20030303026",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2003-03-05",
-            "input_value": "n/a",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20030303026",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2003-03-05",
-            "input_value": "n/a"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "notice:20260724015",
-          "to": "agency:id:youth-and-community-development",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Youth and Community Development",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Youth and Community Development"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "references_contract",
-          "from": "notice:20260724015",
-          "to": "contract:CT26026N0011014",
-          "method": "contract_id_join_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "contract_id"
-            ],
-            "basis": "money_contract_id",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "CT26026N0011014",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "contract_id"
-            ],
-            "basis": "money_contract_id",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "CT26026N0011014"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "notice:20260724015",
-          "to": "pin:26026N0011014",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "26026N0011014",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724015",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "26026N0011014"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 2,
-        "link_count": 6,
-        "join_key_link_count": 4,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "vendor:stem:A%20RUSSO%20WRECKING": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -67285,6 +68067,273 @@
         "coverage_rate": 0.14285714285714285
       }
     },
+    "vendor:stem:DELL%20MARKETING": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:DELL%20MARKETING",
+        "id": "stem:DELL%20MARKETING",
+        "stem": "DELL MARKETING",
+        "display_name": "DELL MARKETING LP"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20030218011",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "COMPUTER EQUIPMENT",
+              "when": "2003-02-25",
+              "amount": 212020,
+              "public_status": null,
+              "pin": "857350459",
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20030218011",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:DELL%20MARKETING",
+              "root_kind": "vendor",
+              "href": "#notice/20030218011",
+              "provenance": {
+                "source_system": "warehouse",
+                "source_record_id": "warehouse:20030218011",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2003-02-25",
+                "input_value": "Dell Marketing"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "contract:5790163",
+              "domain": "money",
+              "object_kind": "contract",
+              "label": "DELL MARKETING LP",
+              "when": null,
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": "5790163",
+              "document_id": null,
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:DELL%20MARKETING",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "passport-public-contracts",
+                "source_record_id": "passport-public-contracts:ct:5790163",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "input_value": "DELL MARKETING LP"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 2
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "named_vendor",
+          "from": "contract:5790163",
+          "to": "vendor:stem:DELL%20MARKETING",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "input_value": "DELL MARKETING LP",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "input_value": "DELL MARKETING LP"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "contract:5790163",
+          "to": "pin:26026O0002001R001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "input_value": "26026O0002001R001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "passport-public-contracts",
+            "source_record_id": "passport-public-contracts:ct:5790163",
+            "source_fields": [
+              "epin"
+            ],
+            "basis": "money_epin",
+            "input_value": "26026O0002001R001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:20030218011",
+          "to": "vendor:stem:DELL%20MARKETING",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030218011",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2003-02-25",
+            "input_value": "Dell Marketing",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030218011",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2003-02-25",
+            "input_value": "Dell Marketing"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20030218011",
+          "to": "pin:857350459",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030218011",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2003-02-25",
+            "input_value": "857350459",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "warehouse",
+            "source_record_id": "warehouse:20030218011",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2003-02-25",
+            "input_value": "857350459"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 2,
+        "link_count": 4,
+        "join_key_link_count": 2,
+        "coverage_rate": 0.14285714285714285
+      }
+    },
     "vendor:stem:DOBLER%20CHEVROLET": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -70098,307 +71147,6 @@
         "total_linked_objects": 2,
         "link_count": 4,
         "join_key_link_count": 2,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
-    "vendor:stem:MAKE%20IT%20ZESTY": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:MAKE%20IT%20ZESTY",
-        "id": "stem:MAKE%20IT%20ZESTY",
-        "stem": "MAKE IT ZESTY",
-        "display_name": "Make it Zesty LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "entity:spending:CHK-Zesty-001",
-              "domain": "money",
-              "object_kind": "payment",
-              "label": "Catering draw on OCP award",
-              "when": "2026-08-01T00:00:00.000",
-              "amount": 12000,
-              "public_status": null,
-              "pin": "81626W0043001",
-              "contract_id": "CT81626W0043001",
-              "document_id": "CHK-Zesty-001",
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-spending",
-                "source_record_id": "checkbook-spending:CHK-Zesty-001",
-                "source_fields": [
-                  "payee_name"
-                ],
-                "basis": "money_payee_name",
-                "observed_at": "2026-08-01T00:00:00.000",
-                "input_value": "Make it Zesty LLC"
-              },
-              "link_type": "paid_to_vendor",
-              "confidence": "strong",
-              "method": "checkbook_payment_v1"
-            },
-            {
-              "subject_ref": "notice:20260723031",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "Catering Services",
-              "when": "2026-07-30T00:00:00.000",
-              "amount": 250000,
-              "public_status": null,
-              "pin": "81626W0043001",
-              "contract_id": "CT81626W0043001",
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260723031",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
-              "root_kind": "vendor",
-              "href": "#notice/20260723031",
-              "provenance": {
-                "source_system": "ocp-recent-contract-awards",
-                "source_record_id": "ocp-recent-contract-awards:20260723031",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2026-07-30T00:00:00.000",
-                "input_value": "Make it Zesty LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 2
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "contract_published_by_agency",
-          "from": "contract:CT81626W0043001",
-          "to": "agency:id:health-and-mental-hygiene",
-          "domain": "money",
-          "confidence": "strong",
-          "method": "contract_id_join_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "agency_name",
-              "contract_id"
-            ],
-            "basis": "money_contract_agency",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Health and Mental Hygiene"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "paid_to_vendor",
-          "from": "entity:spending:CHK-Zesty-001",
-          "to": "vendor:stem:MAKE%20IT%20ZESTY",
-          "domain": "money",
-          "confidence": "strong",
-          "method": "checkbook_payment_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "checkbook-spending",
-            "source_record_id": "checkbook-spending:CHK-Zesty-001",
-            "source_fields": [
-              "payee_name"
-            ],
-            "basis": "money_payee_name",
-            "observed_at": "2026-08-01T00:00:00.000",
-            "input_value": "Make it Zesty LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "payment_on_contract",
-          "from": "entity:spending:CHK-Zesty-001",
-          "to": "contract:CT81626W0043001",
-          "domain": "money",
-          "confidence": "strong",
-          "method": "checkbook_payment_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "checkbook-spending",
-            "source_record_id": "checkbook-spending:CHK-Zesty-001",
-            "source_fields": [
-              "contract_id"
-            ],
-            "basis": "money_payment_contract",
-            "observed_at": "2026-08-01T00:00:00.000",
-            "input_value": "CT81626W0043001"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "notice:20260723031",
-          "to": "vendor:stem:MAKE%20IT%20ZESTY",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Make it Zesty LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Make it Zesty LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "references_contract",
-          "from": "notice:20260723031",
-          "to": "contract:CT81626W0043001",
-          "method": "contract_id_join_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "contract_id"
-            ],
-            "basis": "money_contract_id",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "CT81626W0043001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "contract_id"
-            ],
-            "basis": "money_contract_id",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "CT81626W0043001"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "notice:20260723031",
-          "to": "pin:81626W0043001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "81626W0043001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260723031",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "81626W0043001"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 2,
-        "link_count": 6,
-        "join_key_link_count": 5,
         "coverage_rate": 0.14285714285714285
       }
     },
@@ -88685,140 +89433,33 @@
         "join_key_link_count": 0,
         "coverage_rate": 0.14285714285714285
       }
-    },
-    "vendor:stem:ALEXIA%20LANDESMAN": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:ALEXIA%20LANDESMAN",
-        "id": "stem:ALEXIA%20LANDESMAN",
-        "stem": "ALEXIA LANDESMAN",
-        "display_name": "Alexia Landesman"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2026M0206",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "41-47 West 57th Street/ 50 West 58th Street",
-              "when": "2025-10-27",
-              "amount": null,
-              "public_status": "Filed",
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": "2026M0206",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:ALEXIA%20LANDESMAN",
-              "root_kind": "vendor",
-              "href": "#land?project=2026M0206",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:2026M0206",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2025-10-27",
-                "input_value": "Alexia Landesman"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2026M0206",
-          "to": "vendor:stem:ALEXIA%20LANDESMAN",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:2026M0206",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2025-10-27",
-            "input_value": "Alexia Landesman"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 1,
-        "link_count": 1,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
     }
   },
   "by_subject_ref": {
+    "contract:5790163": [
+      {
+        "entity_ref": "agency:id:youth-and-community-development",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:DELL%20MARKETING",
+        "relation": "named_vendor",
+        "confidence": "strong"
+      }
+    ],
+    "contract:CT1-816-20278801775": [
+      {
+        "entity_ref": "agency:id:health-and-mental-hygiene",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+        "relation": "named_vendor",
+        "confidence": "strong"
+      }
+    ],
     "contract:CT26026N0011014": [
       {
         "entity_ref": "agency:id:youth-and-community-development",
@@ -88830,6 +89471,16 @@
       {
         "entity_ref": "agency:id:health-and-mental-hygiene",
         "relation": "contract_published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "agency:id:health-and-mental-hygiene",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -91571,6 +92222,11 @@
       {
         "entity_ref": "agency:id:citywide-administrative-services",
         "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:DELL%20MARKETING",
+        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -96148,13 +96804,6 @@
         "confidence": "tentative"
       }
     ],
-    "project:2026M0206": [
-      {
-        "entity_ref": "vendor:stem:ALEXIA%20LANDESMAN",
-        "relation": "applicant_vendor",
-        "confidence": "tentative"
-      }
-    ],
     "project:2026M0211": [
       {
         "entity_ref": "vendor:stem:BP%20347%20MADISON%20ASSOCIATES",
@@ -96369,6 +97018,48 @@
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json"
     }
+  },
+  "procurement_spine": {
+    "schema_version": 1,
+    "observed_on": "2026-07-30",
+    "coverage": {
+      "passport_contracts": {
+        "source_system": "passport-public-contracts",
+        "coverage_status": "measured",
+        "modern_awards": {
+          "joined": 4581,
+          "total": 5170,
+          "rate": 0.886,
+          "basis": "City Record Procurement awards with PIN, start_date >= 2025-01-01"
+        }
+      },
+      "checkbook_contracts": {
+        "source_system": "checkbook-contracts",
+        "coverage_status": "unknown",
+        "modern_awards": {
+          "joined": null,
+          "total": null,
+          "rate": null,
+          "basis": "Population denominator not materialized"
+        }
+      },
+      "checkbook_spending": {
+        "source_system": "checkbook-spending",
+        "coverage_status": "unknown",
+        "modern_awards": {
+          "joined": null,
+          "total": null,
+          "rate": null,
+          "basis": "Population denominator not materialized"
+        }
+      }
+    },
+    "row_counts": {
+      "passport_contracts": 2,
+      "checkbook_contracts": 1,
+      "checkbook_spending": 1
+    },
+    "note": "Procurement keys attach contract and payment evidence; they do not assert legal-vendor identity."
   },
   "entity_index": [
     {
@@ -96764,6 +97455,14 @@
       "coverage_rate": 0.14285714285714285
     },
     {
+      "ref": "vendor:stem:MAKE%20IT%20ZESTY",
+      "kind": "vendor",
+      "display_name": "MAKE IT ZESTY LLC",
+      "domains_matched": 1,
+      "total_linked_objects": 4,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
       "ref": "agency:id:board-of-education-retirement-system",
       "kind": "agency",
       "display_name": "Board of Education Retirement System",
@@ -96799,6 +97498,14 @@
       "ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
       "kind": "agency",
       "display_name": "LPC - NYC Landmarks Preservation Commission",
+      "domains_matched": 1,
+      "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "agency:id:youth-and-community-development",
+      "kind": "agency",
+      "display_name": "Youth and Community Development",
       "domains_matched": 1,
       "total_linked_objects": 3,
       "coverage_rate": 0.14285714285714285
@@ -96948,14 +97655,6 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "agency:id:youth-and-community-development",
-      "kind": "agency",
-      "display_name": "Youth and Community Development",
-      "domains_matched": 1,
-      "total_linked_objects": 2,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
       "ref": "vendor:stem:A%20RUSSO%20WRECKING",
       "kind": "vendor",
       "display_name": "A. Russo Wrecking Inc.",
@@ -97044,6 +97743,14 @@
       "coverage_rate": 0.14285714285714285
     },
     {
+      "ref": "vendor:stem:DELL%20MARKETING",
+      "kind": "vendor",
+      "display_name": "DELL MARKETING LP",
+      "domains_matched": 1,
+      "total_linked_objects": 2,
+      "coverage_rate": 0.14285714285714285
+    },
+    {
       "ref": "vendor:stem:DOBLER%20CHEVROLET",
       "kind": "vendor",
       "display_name": "Dobler Chevrolet Inc.",
@@ -97127,14 +97834,6 @@
       "ref": "vendor:stem:LOUIS%20FOOD%20SERVICE",
       "kind": "vendor",
       "display_name": "Louis Food Service Corp.",
-      "domains_matched": 1,
-      "total_linked_objects": 2,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
-      "ref": "vendor:stem:MAKE%20IT%20ZESTY",
-      "kind": "vendor",
-      "display_name": "Make it Zesty LLC",
       "domains_matched": 1,
       "total_linked_objects": 2,
       "coverage_rate": 0.14285714285714285
@@ -97962,14 +98661,6 @@
       "domains_matched": 1,
       "total_linked_objects": 1,
       "coverage_rate": 0.14285714285714285
-    },
-    {
-      "ref": "vendor:stem:ALEXIA%20LANDESMAN",
-      "kind": "vendor",
-      "display_name": "Alexia Landesman",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.14285714285714285
     }
   ],
   "provenance": {
@@ -97979,6 +98670,7 @@
       "warehouse/fixtures/zap-projects/product_seed.csv",
       "warehouse/fixtures/zap-bbl/product_seed.csv",
       "site/data/ocp_awards_warehouse_lookup.json",
+      "site/data/procurement_spine_sources.json",
       "site/data/zap_projects_warehouse_lookup.json",
       "site/data/zap_bbl_warehouse_lookup.json",
       "site/data/land_default_ulurp.json",
