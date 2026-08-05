@@ -629,11 +629,11 @@ function renderCareerGuide(){
     areaWatches.innerHTML=careerAreaWatchesHTML();
     areaWatches.querySelectorAll("[data-follow-exam-area]").forEach(button=>button.addEventListener("click",async()=>{
       const carry=await import("../alerts_context_carry.mjs");
-      location.hash=carry.alertsHref({lens:"people",filter:{
+      location.assign(carry.alertsHref({lens:"people",filter:{
         view:"guide",
         interestArea:button.dataset.followExamArea,
         interestLabel:button.dataset.followExamLabel,
-      },freq:"daily"});
+      },freq:"daily"}));
     }));
   }
   let exams;

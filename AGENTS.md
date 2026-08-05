@@ -45,6 +45,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Property is route-lazy through `site/app/main.mjs`'s activation registry. Keep routing state
   eager; initial Property/notice deep links load the lens before `routing.mjs`, and later hash or
   tab activation passes through the existing router/tab owner rather than adding another store.
+- Following is static-first at `site/following/index.html` and edge-rendered at `GET /following`
+  through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
+  its summary, preview count, results, and `/subscribe` form. Personal watches load only through
+  `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
 
 ## Digest cron deploy safety
 

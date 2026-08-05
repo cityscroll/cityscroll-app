@@ -706,6 +706,7 @@ function applyHash(){
     raw=canonicalRaw;
     history.replaceState(routeHistoryState({entry:{hash:"#"+raw,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"","#"+raw);
   }
+  if(raw==="alerts"||raw.startsWith("alerts" + "?")) return forwardLegacyAlertsToFollowing(raw);
   if(raw==="map"||raw.startsWith("map" + "?")) return forwardLegacyMapToNearYou(raw);
   const scopeSurface=raw.split("?",1)[0];
   const scope=!normalizedInputAlias&&["money","people","land","property","rules","meetings","map","now"].includes(scopeSurface)
@@ -997,6 +998,15 @@ function applyHash(){
 function forwardLegacyMapToNearYou(raw){
   const scope=CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"});
   const target=raw==="map"?"/near-you/":nearYouHref(scope);
+  location.replace(target);
+  return true;
+}
+
+function forwardLegacyAlertsToFollowing(raw){
+  const query=raw.includes("?")?raw.slice(raw.indexOf("?")+1):"";
+  const target=query
+    ? "https://api.cityscroll.org/following?"+query
+    : "/following/";
   location.replace(target);
   return true;
 }

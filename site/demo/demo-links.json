@@ -541,27 +541,28 @@
     },
     {
       "id": "alerts-watch-templates",
-      "url": "#alerts?template=restaurants",
+      "url": "following/",
       "feature": "association-monitor-packs",
-      "description": "Open Alerts with the association monitor pack registry on the single subscribe flow.",
+      "description": "Open Following with monitor packs beside the single saved-scope flow.",
       "expectations": {
         "visible": [
           {
-            "selector": "#watch-templates",
-            "text": "Association monitor packs"
+            "selector": "[data-following-root]"
           },
           {
-            "selector": "#watch-template-list button[data-tpl-id]"
+            "selector": "#packs",
+            "text": "Monitor packs"
           },
           {
-            "selector": "#adest"
+            "selector": ".following-pack"
           }
         ],
         "notVisible": [
           {
-            "selector": "#watch-template-list .loading"
+            "selector": ".following-pack .loading"
           }
-        ]
+        ],
+        "pathname": "/following/"
       }
     },
     {
@@ -750,72 +751,55 @@
     },
     {
       "id": "alerts-builder",
-      "url": "#alerts",
+      "url": "following/",
       "feature": "alert-builder",
-      "description": "Open the single alert subscribe flow with topic chips, email step, schedule, and preview ready.",
+      "description": "Open Following with one saved-scope form, cadence choices, public preview, and personal boundary.",
       "expectations": {
         "visible": [
           {
-            "selector": "#quizwhat"
+            "selector": "[data-following-preview-form]"
           },
           {
-            "selector": "#adest"
+            "selector": "[data-following-scope-panel]"
           },
           {
-            "selector": "#quizfreq"
-          },
-          {
-            "selector": "#apreview"
+            "selector": "[data-personal-watch-list]"
           }
         ],
         "notVisible": [
           {
-            "selector": "#tab-alerts .loading"
-          },
-          {
-            "selector": "#tab-alerts",
-            "text": "Could not reach"
+            "selector": "[data-following-root] .loading"
           }
-        ]
+        ],
+        "pathname": "/following/"
       }
     },
     {
       "id": "alerts-rollup-prefs",
-      "url": "#alerts?view=rollup",
+      "url": "following/",
       "feature": "alerts-rollup-prefs",
       "localOnly": true,
-      "description": "Show multi-watch digest rollup grouped by topic plus the preference-center manage path.",
+      "description": "Show the public digest explanation and the personal management boundary in Following.",
       "expectations": {
         "visible": [
           {
-            "selector": "#alerts-rollup-prefs",
-            "text": "multi-watch digests"
+            "selector": ".following-explainer",
+            "text": "One digest"
           },
           {
-            "selector": "#rollupgroupby"
+            "selector": "#your-following",
+            "text": "Your following"
           },
           {
-            "selector": "#alerts-rollup-emailmock",
-            "text": "watches"
-          },
-          {
-            "selector": "#alertsPrefsManage"
-          },
-          {
-            "selector": "#alerts-rollup-prefs-box",
-            "text": "9am Eastern"
+            "selector": "[data-personal-watch-list] a[href*='/prefs']"
           }
         ],
         "notVisible": [
           {
-            "selector": "#tab-alerts .loading"
-          },
-          {
-            "selector": "#alerts-rollup-emailmock",
-            "text": "Could not reach"
+            "selector": "#your-following .loading"
           }
         ],
-        "focus": "#alerts-rollup-prefs"
+        "pathname": "/following/"
       }
     },
     {
@@ -978,30 +962,27 @@
     },
     {
       "id": "alerts-context-carry-notice",
-      "url": "#alerts?lens=meetings&filter=%7B%22agency%22%3A%22Transportation%22%7D&notice=20260716009",
+      "url": "following/",
       "feature": "alerts-context-carry",
-      "description": "Pre-scoped alert setup for the Dining Out NYC public hearing notice, with natural meetings/Transportation scope and a real digItemHTML email-template preview.",
+      "description": "Show the public saved-scope summary and preview boundary used by contextual watch links.",
       "expectations": {
         "visible": [
           {
-            "selector": "#acontextlead"
+            "selector": "[data-following-scope-panel]"
           },
           {
-            "selector": "#apreviewbox .emailmock"
+            "selector": "[data-following-preview-panel]"
           },
           {
-            "selector": "#apreviewbox .digitem"
-          },
-          {
-            "selector": "#adest"
+            "selector": "[data-following-preview-form]"
           }
         ],
         "notVisible": [
           {
-            "selector": "#acontextlead[hidden]"
+            "selector": "[data-following-preview-panel] .loading"
           }
         ],
-        "focus": "#adest"
+        "pathname": "/following/"
       },
       "postDeployOnly": true
     },

@@ -7,6 +7,7 @@ import { buildSubscription, subCanonical } from "./lib/subscriptions.mjs";
 import { describeFilter, htmlPage } from "./lib/confirm_email.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { appendActionLog } from "./lib/action_log.mjs";
+import { prefsLink } from "./prefs.mjs";
 
 export async function handleConfirm(req, env) {
   if (!env.TOKEN_SECRET || !env.SUBS) return page("Unavailable", "This link isn't available right now.", 503);
@@ -37,9 +38,13 @@ export async function handleConfirm(req, env) {
   });
 
   const desc = escHtml(describeFilter(sub.lens, sub.filter));
+  const manageUrl = await prefsLink(env, sub.email);
+  const manage = manageUrl
+    ? `<br><br><a href="${escAttr(manageUrl)}">Manage or unsubscribe from this watch</a>`
+    : "";
   return page(
     "You're subscribed ✅",
-    `You'll get <b>${desc}</b> the moment there's a new notice — and nothing on quiet days. Every email has a one-click unsubscribe.`,
+    `You'll get <b>${desc}</b> the moment there's a new notice — and nothing on quiet days. Every email has a one-click unsubscribe.${manage}`,
     200
   );
 }
@@ -53,6 +58,9 @@ async function subId(sub) {
 
 function escHtml(s) {
   return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+}
+function escAttr(s) {
+  return String(s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
 }
 function page(title, message, status) {
   return new Response(htmlPage(title, message), { status, headers: { "Content-Type": "text/html; charset=utf-8" } });
