@@ -207,7 +207,11 @@ function evidenceClauseAt(text, hitStart, hitLength) {
   const startIndex = Math.max(0, Number(hitStart) || 0);
   const hitEnd = Math.min(body.length, startIndex + Math.max(1, Number(hitLength) || 1));
   const before = body.slice(0, startIndex);
-  const boundary = Math.max(before.lastIndexOf("."), before.lastIndexOf("!"), before.lastIndexOf("?"));
+  // A period inside an email address (for example, mocs.nyc.gov) is not a
+  // sentence boundary. Require whitespace/end after clause punctuation so
+  // role receipts keep the surrounding sentence intact.
+  const boundaries = [...before.matchAll(/[.!?](?=\s|$)/g)];
+  const boundary = boundaries.length ? boundaries[boundaries.length - 1].index : -1;
   const start = boundary >= 0 ? boundary + 1 : 0;
   const after = body.slice(hitEnd);
   const nextMatch = /[.!?](?=\s|$)/.exec(after);
@@ -1063,18 +1067,37 @@ function extractEmails(text) {
   ).slice(0, 6);
 }
 
-function extractPhones(text) {
+export function extractPhones(text) {
   const body = String(text || "");
+  const phonePattern = /(?<!\d)(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}(?!\d)/g;
   return uniqueBy(
-    Array.from(body.matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)).map((m) => {
+    Array.from(body.matchAll(phonePattern)).map((m) => {
       const context = evidenceClauseAt(body, m.index, m[0].length);
+      const after = body.slice(m.index + m[0].length, m.index + m[0].length + 120);
+      const accessCodeMatch = /,?\s*access\s+code\s*[:#]?\s*([0-9][0-9 -]{5,})/i.exec(after);
+      const role = /interpreter|accommodation|disability affairs|relay/i.test(context)
+        ? "accommodation"
+        : /schedule\s+(?:an?\s+)?inspection|inspection[^.]{0,40}(?:contact|call)/i.test(context)
+          ? "inspection_scheduling"
+          : /call[- ]?in|conference\s+call|public\s+hearing/i.test(context)
+            ? "hearing_call_in"
+            : "participation";
       return {
         value: m[0],
         source: "notice_body",
         confidence: "medium",
         evidence: evidence(m[0]),
         context,
-        purpose: /interpreter|accommodation/i.test(context) ? "accommodation" : "participation",
+        purpose: role === "accommodation" ? "accommodation" : role === "inspection_scheduling" ? "inspection_scheduling" : role === "hearing_call_in" ? "hearing_call_in" : "participation",
+        role,
+        role_receipt: {
+          method: "context_pattern_v1",
+          evidence: context,
+        },
+        access_code: accessCodeMatch?.[1]?.trim().replace(/[.,;:]+$/, "") || null,
+        access_code_receipt: accessCodeMatch
+          ? { method: "call_in_access_code_pattern_v1", evidence: evidence(accessCodeMatch[0]) }
+          : null,
       };
     }),
     (e) => e.value.replace(/\D/g, ""),

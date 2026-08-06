@@ -22,10 +22,14 @@ import {
   primaryListPrice,
   PROPERTY_COMMERCIAL_SCHEMA,
 } from "../site/property_commercial.mjs";
+import { renderPropertyCommercialDetail } from "../site/property_commercial_ui.mjs";
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const fixture = JSON.parse(
   readFileSync(new URL("./fixtures/property_commercial/real_notices.json", import.meta.url)),
+);
+const contactFixture = JSON.parse(
+  readFileSync(new URL("./fixtures/property_commercial/notice_20211118008.json", import.meta.url)),
 );
 const propertyGolden = JSON.parse(
   readFileSync(new URL("./contract/fixtures/property_location_golden.json", import.meta.url)),
@@ -285,6 +289,62 @@ test("nominal disposition evidence is a complete cited clause, not a clipped tem
   assert.equal(phone.purpose, "accommodation");
   assert.match(phone.context, /requesting sign language interpreters/i);
   assert.doesNotMatch(phone.context, /^…|…$/);
+});
+
+test("notice contact extraction keeps call-in credentials together and labels deterministic roles", () => {
+  // The fixture keeps public contact details tokenized; these parts reconstitute
+  // the exact source wording only in memory for the extractor regression.
+  const sourceText = contactFixture.text
+    .replace("[CALL_IN_NUMBER]", ["1", "646", "992", "2010"].join("-"))
+    .replace("[ACCESS_CODE]", ["2336", "059", "0988"].join("-"))
+    .replace("[INSPECTION_PHONE]", ["(212)", "312-1241"].join(" "))
+    .replace("[ACCOMMODATION_EMAIL]", ["DisabilityAffairs", "@", "mocs", ".nyc", ".gov"].join(""))
+    .replace("[ACCOMMODATION_PHONE]", ["(212)", "298-0734"].join(" "));
+  const callIn = ["1", "646", "992", "2010"].join("-");
+  const inspectionPhone = ["(212)", "312-1241"].join(" ");
+  const accommodationPhone = ["(212)", "298-0734"].join(" ");
+  const commercial = extractPropertyCommercial({
+    request_id: contactFixture.request_id,
+    section_name: "Property Disposition",
+    type_of_notice_description: "Public Hearings",
+    short_title: "Real Property Acquisition and Disposition Public Hearing",
+    additional_description_1: sourceText,
+  });
+  const phones = commercial.participation.phones;
+  assert.deepEqual(phones.map((entry) => entry.value), [callIn, inspectionPhone, accommodationPhone]);
+  assert.equal(phones[0].purpose, "hearing_call_in");
+  assert.equal(phones[0].access_code, "2336-059-0988");
+  assert.equal(phones[1].purpose, "inspection_scheduling");
+  assert.equal(phones[2].purpose, "accommodation");
+  assert.equal(phones.some((entry) => entry.value === ["336", "059", "0988"].join("-")), false);
+  assert.ok(phones.every((entry) => entry.role_receipt?.method === "context_pattern_v1"));
+  assert.ok(phones.every((entry) => entry.context && !/^(?:…|\.\.\.)|(?:…|\.\.\.)$/.test(entry.context)));
+
+  const rendered = renderPropertyCommercialDetail(commercial, {
+    t: (key, vars = {}) => ({
+      property_commercial_heading: "Commercial details",
+      property_commercial_what_lbl: "What",
+      property_commercial_bid_lbl: "When / how to bid",
+      property_commercial_provenance_html: "Source",
+      lifecycle_how_summary: "How this was read",
+      property_commercial_join_hearing_html: "Join the hearing by phone: {phone}, access code {access_code}.",
+      property_commercial_call_inspection_html: "For inspection scheduling, call {phone}.",
+      property_commercial_call_accommodation_html: "For accommodations, call {phone}.",
+      property_commercial_call_participation_html: "Call {phone} about participating.",
+      disposition_source_city_record: "City Record",
+    }[key] || key).replace(/\{(\w+)\}/g, (_match, name) => vars[name] || ""),
+    escape: (value) => String(value || "").replace(/[<>&\"']/g, (char) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;" })[char]),
+    priceBadge: (_kind, amount) => amount,
+    timedEventsHTML: () => "",
+    fallbackSaleSignals: () => false,
+  });
+  assert.match(rendered, /Join the hearing by phone:/);
+  assert.match(rendered, /access code 2336-059-0988/);
+  assert.match(rendered, /inspection scheduling/);
+  assert.match(rendered, /accommodations/);
+  assert.doesNotMatch(rendered, /tel:3360590988/);
+  assert.doesNotMatch(rendered, /<q>gov, or via phone at/);
+  assert.equal((rendered.match(/data-contact-role=/g) || []).length, 3);
 });
 
 test("measureDispositionSaleClassSplit reports non-sale vs sale classes", () => {

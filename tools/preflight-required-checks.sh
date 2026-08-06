@@ -70,7 +70,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 run_banner "Unit tests (site + worker)" "Syntax + i18n + static lint" \
-  "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
+  "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
 run_and_fail python3 test/standards/js_syntax.py
 run_and_fail python3 test/standards/i18n_keys.py
 run_and_fail python3 test/standards/i18n_refs.py

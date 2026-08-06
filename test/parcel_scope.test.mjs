@@ -86,7 +86,7 @@ test("matched observed biography separates disposition, ZAP, and lien-list evide
   assert.ok(view.sections.land.items.every((item) => (
     item.source === "ZAP / zap-bbl"
       && item.relation === "sits_on_parcel"
-      && item.href.startsWith("#land?project=")
+      && /^#land\/[A-Za-z0-9_-]+$/.test(item.href)
   )));
 
   assert.equal(view.sections.tax_lien.status, "observed");

@@ -201,6 +201,23 @@ def assert_structured_property_sections(page: Page) -> dict[str, object]:
         """
     )
     assert bare_text_findings == [], f"structured notice sections contain bare text nodes: {bare_text_findings}"
+    raw_i18n_keys = page.evaluate(
+        """
+        () => {
+          const root = document.querySelector('#npropertyxd [data-parcel-biography]');
+          if (!root) return [];
+          const out = [];
+          const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+          const pattern = /\\b[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+\\b/g;
+          while (walker.nextNode()) {
+            const text = walker.currentNode.textContent.trim();
+            if (text) out.push(...[...text.matchAll(pattern)].map(match => match[0]));
+          }
+          return [...new Set(out)].sort();
+        }
+        """
+    )
+    assert raw_i18n_keys == [], f"parcel biography rendered raw i18n keys: {raw_i18n_keys}"
     return {
         "labels": rows.locator("dt").all_inner_texts(),
         "history_kinds": history.evaluate_all(
@@ -267,7 +284,13 @@ def main() -> None:
         assert "observed parcel biography" in biography.inner_text().lower()
         assert biography.locator("[data-parcel-biography-domain]").count() == 5
         assert biography.locator("[data-parcel-biography-domain='property'] a[href^='#notice/']").count() >= 1
-        assert biography.locator("[data-parcel-biography-domain='land'] a[href^='#land?project=']").count() >= 1
+        land_links = biography.locator("[data-parcel-biography-domain='land'] a")
+        assert land_links.count() >= 1
+        for index in range(land_links.count()):
+            href = land_links.nth(index).get_attribute("href") or ""
+            assert href.startswith("#land/") and "unsupported-filter" not in href, (
+                f"parcel land pivot must use the supported project document route: {href}"
+            )
         assert biography.locator("[data-parcel-biography-domain='tax_lien'][data-status='observed']").count() == 1
         assert biography.locator("[data-parcel-coverage]").count() == 0
         assert biography.locator(".parcel-biography-item-meta").count() >= 3
