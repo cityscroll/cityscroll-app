@@ -225,6 +225,31 @@
       ],
       "notes": "WH-06 third bulk pack + fetchBbls materialization. ~132k rows; project_id ↔ BBL."
     },
+    "dob-certificate-of-occupancy": {
+      "id": "dob-certificate-of-occupancy",
+      "source_contract_id": "dob-certificate-of-occupancy",
+      "name": "DOB Certificate Of Occupancy",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "bs8b-p36w",
+      "table_name": "dob_certificate_of_occupancy",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": false,
+      "required_fields": [
+        "job_number",
+        "job_type",
+        "c_o_issue_date",
+        "borough",
+        "house_number",
+        "street_name",
+        "bbl",
+        "issue_type",
+        "application_status_raw",
+        "filing_status_raw"
+      ],
+      "notes": "Bulk source remains upstream-side. The committed product artifact is the exact-BBL graph slice in site/data/dob_cofo_lookup.json."
+    },
     "capital-projects-dashboard": {
       "id": "capital-projects-dashboard",
       "source_contract_id": "capital-projects-dashboard",

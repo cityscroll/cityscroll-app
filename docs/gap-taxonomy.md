@@ -69,6 +69,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `dcas-annual-exam-outcomes` | landed | exam_number, exam_no | medium | — |
 | `dcas-exam-notices` | landed | exam_number | — | — |
+| `dob-certificate-of-occupancy` | landed | BBL | — | — |
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `doing-business-entities` | landed | organization_name, vendor_name | medium | 70.4% (modern_awards_stem_notices) |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
@@ -119,6 +120,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-contracts-x-checkbook-spending-via-PIN+contract_id` | `checkbook-contracts` × `checkbook-spending` | PIN · contract_id | yes | 3 |
 | `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 3 |
+| `city-record-x-dob-certificate-of-occupancy-via-BBL` | `city-record` × `dob-certificate-of-occupancy` | BBL | yes | 3 |
 | `city-record-x-dob-now-job-filings-via-BBL` | `city-record` × `dob-now-job-filings` | BBL | yes | 3 |
 | `city-record-x-unregistered-zoning-application-portal-projects-via-BBL` | `city-record` × `unregistered-zoning-application-portal-projects` | BBL | maybe | 3 |
 | `city-record-x-zap-api-outcomes-via-BBL` | `city-record` × `zap-api-outcomes` | BBL | yes | 3 |
@@ -127,7 +129,6 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `nycida-build-nyc-projects-x-ocp-recent-contract-awards-via-request_id` | `nycida-build-nyc-projects` × `ocp-recent-contract-awards` | request_id | yes | 3 |
 | `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 3 |
 | `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 3 |
-| `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 3 |
 
 ## Graph view
 
@@ -195,4 +196,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `63663cf56cba…` · materialized 11 · candidates 51 · class changes 0.
+Last refresh fingerprint: `5b97ceb8a19a…` · materialized 11 · candidates 59 · class changes 0.

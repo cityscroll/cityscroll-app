@@ -265,11 +265,11 @@ def main() -> None:
         biography.wait_for(state="visible", timeout=10000)
         document_structure = assert_structured_property_sections(property_page)
         assert "observed parcel biography" in biography.inner_text().lower()
-        assert biography.locator("[data-parcel-biography-domain]").count() == 3
+        assert biography.locator("[data-parcel-biography-domain]").count() == 4
         assert biography.locator("[data-parcel-biography-domain='property'] a[href^='#notice/']").count() >= 1
         assert biography.locator("[data-parcel-biography-domain='land'] a[href^='#land?project=']").count() >= 1
         assert biography.locator("[data-parcel-biography-domain='tax_lien'][data-status='observed']").count() == 1
-        assert biography.locator("[data-parcel-coverage]").count() == 3
+        assert biography.locator("[data-parcel-coverage]").count() == 4
         assert biography.locator(".parcel-biography-item-meta").count() >= 3
         assert biography.locator(".parcel-biography-relation").count() >= 3
         assert biography.locator(".property-xd-owners").count() == 0

@@ -44,7 +44,9 @@ function itemHTML(item, kind, h) {
     property: "property_xd_relation_property",
     land: "property_xd_relation_land",
     tax_lien: "property_xd_relation_tax_lien",
+    cofo: "property_xd_relation_cofo",
   }[kind];
+  const conflicts = (item.conflicts || []).map((conflict) => `<span class="note parcel-biography-conflict">${h.escape(conflict.note || "Conflicting source values retained")}: ${conflict.values.map((value) => `${h.escape(value.source)} = ${h.escape(value.value)}`).join(" · ")}</span>`).join("");
   return `<li data-parcel-biography-item="${h.escape(kind)}" data-link-confidence="strong">
     <span class="ei-obj-main" lang="en" dir="ltr">${label}</span>
     <span class="muted parcel-biography-item-meta">${h.t("property_xd_source_date", {
@@ -52,6 +54,7 @@ function itemHTML(item, kind, h) {
       date: h.escape(biographyDate(item.date, h)),
     })}</span>
     <span class="muted parcel-biography-relation">${h.t(relationKey)}</span>
+    ${conflicts}
   </li>`;
 }
 
@@ -63,12 +66,14 @@ export function parcelBiographySectionHTML(view, kind, helpers = {}) {
     property: "property_xd_property_heading",
     land: "property_xd_land_heading",
     tax_lien: "property_xd_tax_lien_heading",
+    cofo: "property_xd_cofo_heading",
   }[kind];
   const items = (section.items || []).map((item) => itemHTML(item, kind, h)).join("");
   const emptyKey = {
     property: "property_xd_property_empty",
     land: "property_xd_land_empty",
     tax_lien: "property_xd_tax_lien_empty",
+    cofo: "property_xd_cofo_empty",
   }[kind];
   return `<section class="parcel-biography-domain property-xd-${h.escape(kind)}" data-parcel-biography-domain="${h.escape(kind)}" data-status="${h.escape(section.status || "")}">
     <h3 class="ei-domain-h">${h.t(headingKey)}</h3>
@@ -88,6 +93,7 @@ export function observedParcelBiographyHTML(view, { href = "", ...helpers } = {}
       ${parcelBiographySectionHTML(view, "property", h)}
       ${parcelBiographySectionHTML(view, "land", h)}
       ${parcelBiographySectionHTML(view, "tax_lien", h)}
+      ${parcelBiographySectionHTML(view, "cofo", h)}
     </div>
     <div class="factions"><a class="act" href="${h.escape(href)}">${h.t("property_xd_view_scope")}</a></div>
     <div class="note parcel-biography-method">${h.t("property_xd_provenance_html")}</div>
