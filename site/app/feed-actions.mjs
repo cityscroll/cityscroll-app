@@ -767,6 +767,10 @@ function actionRailGuideHTML(actions){
     : `<ol>${steps.map((stepItem)=>stepItem?`<li>${stepItem}</li>`:"").join("")}</ol>`;
   return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}${renderedSteps}${guideExtra}</details>`;
 }
+// Deliberately dormant until there is a concrete, decision-useful question for the
+// aggregate. Flip this one flag to re-enable the existing component and analytics.
+const ACTION_OUTCOME_PROMPT_ENABLED = false;
+
 function actionRailHTML(actions){
   let primaryUsed=false;
   const items=actions.map((action,index)=>{
@@ -787,9 +791,11 @@ function actionRailHTML(actions){
     const href = action.destination || "/following/";
     return `<a class="act" href="${escUiHtml(href)}">${label}</a>`;
   }).join("");
-  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}<div data-action-outcome-slot></div></section>`;
+  const outcomeSlot = ACTION_OUTCOME_PROMPT_ENABLED ? `<div data-action-outcome-slot></div>` : "";
+  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}${outcomeSlot}</section>`;
 }
 function bindActionOutcomePrompt(el,actions,contextKey){
+  if(!ACTION_OUTCOME_PROMPT_ENABLED) return;
   const options={registry:window.CrolActions,analytics:window.crolAnalytics,t,escape:escUiHtml,today:todayISO(),contextKey};
   const load=(selected,officialClicked=false)=>import("../action_outcome_prompt.mjs").then(module=>{
     if(document.contains(el)) module.bindActionOutcomePrompt(el,selected,{...options,officialClicked});
