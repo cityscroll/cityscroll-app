@@ -1,5 +1,4 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
-import { landStatusFacetOptions, landStatusFacetWhere } from "../land_status_facets.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -15,8 +14,15 @@ const mihOn = v => v===true || v==="true";
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
 const ZAP_SELECT="project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,cc_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers";
 let landBanner="";
+let landStatusFacetToolsPromise=null;
+let landStatusFacetToolsModule=null;
+function landStatusFacetTools(){
+  return landStatusFacetToolsPromise ||= import("../land_status_facets.mjs")
+    .then(tools=>{ landStatusFacetToolsModule=tools; return tools; })
+    .catch(()=>null);
+}
 function zapWhere(status){
-  const facetWhere=landStatusFacetWhere(status);
+  const facetWhere=landStatusFacetToolsModule?.landStatusFacetWhere?.(status);
   return "ulurp_non='ULURP'"+(status==="active"?" AND project_status='Active'":facetWhere?` AND ${facetWhere}`:"");
 }
 function zapDistrictWhere(communityDistrict){
@@ -79,11 +85,12 @@ function landHearingModeFieldSync(){
   const status=$("#lstatus")?$("#lstatus").value:"";
   if(field) field.hidden=status!=="hearings";
 }
-function syncLandLensControls(){
+async function syncLandLensControls(){
+  const tools=await landStatusFacetTools();
   const status=$("#lstatus")?.value||"all";
   const rail=$("#land-status-rail");
   const select=$("#lstatus");
-  const options=landStatusFacetOptions(lRows);
+  const options=tools?.landStatusFacetOptions?.(lRows)||[];
   if(rail && options.length){
     const buttons=[
       { id:"all", label:t("status_all") },
@@ -256,6 +263,9 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
   lRows=Array.isArray(rows)?rows:[]; landBanner=banner||"";
+  // The facet module is lazy so non-Land routes keep their cold path small; now
+  // that the inventory exists, repaint the status rail with its real options.
+  syncLandLensControls();
   setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
   setLandStatus();
@@ -291,7 +301,7 @@ async function landSearch(){
       }
     }catch(_e){}
   }
-  syncLandLensControls();
+  await syncLandLensControls();
   clearLandDetail();
   setLandStatus();
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
@@ -530,7 +540,7 @@ async function showLandEntry(id){
   $("#lboro").value="";
   $("#lkw").value="";
   $("#lstatus").value="all";
-  syncLandLensControls();
+  await syncLandLensControls();
   $("#lreshead").textContent=t("rezonings_heading");
   $("#lrescount").textContent="";
   setLandStatus();
