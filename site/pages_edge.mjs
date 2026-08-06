@@ -28,6 +28,16 @@ function safeExamNumber(pathname) {
   return match ? match[1] : null;
 }
 
+function safeMonitorPack(pathname) {
+  const match = pathname.match(/^\/following\/packs\/([a-z0-9][a-z0-9-]{0,79})\/?$/);
+  return match ? match[1] : null;
+}
+
+function safeDistrictDigest(pathname) {
+  const match = pathname.match(/^\/districts\/council\/((?:[1-9]|[1-4]\d|5[01]))\/digest\/?$/);
+  return match ? match[1] : null;
+}
+
 function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
@@ -45,6 +55,8 @@ export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (safeId(url.pathname)) return "notice";
   if (safeExamNumber(url.pathname)) return "exam";
+  if (safeMonitorPack(url.pathname)) return "monitor-pack";
+  if (safeDistrictDigest(url.pathname)) return "district-digest";
   if (browseFacet(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   return "asset";
@@ -59,6 +71,19 @@ async function handleExam(request, env, examNumber) {
   const language = DOCUMENT_LANGS.has(url.searchParams.get("lang")) && url.searchParams.get("lang") !== "en"
     ? url.searchParams.get("lang") : null;
   const canonical = `https://cityscroll.org/exams/${examNumber}/${language ? `?lang=${encodeURIComponent(language)}` : ""}`;
+  const response = rewrittenResponse(asset, 200, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  const transformed = new HTMLRewriter()
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
+    .transform(response);
+  if (request.method === "HEAD") return new Response(null, { status: 200, headers: transformed.headers });
+  return transformed;
+}
+
+async function handleComposedObject(request, env, pathname, canonicalPath) {
+  const asset = await staticAsset(env, request, pathname);
+  if (!asset.ok) return asset;
+  const canonical = `https://cityscroll.org${canonicalPath}`;
   const response = rewrittenResponse(asset, 200, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
   const transformed = new HTMLRewriter()
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
@@ -227,6 +252,10 @@ export default {
     if (id) return handleNotice(request, env, id);
     const examNumber = safeExamNumber(url.pathname);
     if (examNumber) return handleExam(request, env, examNumber);
+    const pack = safeMonitorPack(url.pathname);
+    if (pack) return handleComposedObject(request, env, `/following/packs/${pack}/`, `/following/packs/${pack}/`);
+    const district = safeDistrictDigest(url.pathname);
+    if (district) return handleComposedObject(request, env, `/districts/council/${district}/digest/`, `/districts/council/${district}/digest/`);
     const facet = browseFacet(url.pathname);
     if (facet) return handleBrowse(request, env, facet);
     const entity = entityDocument(url.pathname);
