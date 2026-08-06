@@ -4,6 +4,7 @@ import {
 } from "../franchise_notice.mjs";
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderPropertyCommercialDetail } from "../property_commercial_ui.mjs";
+import { bblReaderLabel } from "../bbl_reader.mjs";
 
 /* ===== Franchise / concession review process spine (FCRC multi-notice chain).
    Reconstructs solicitation → public hearing → committee meeting → award for one
@@ -29,7 +30,7 @@ function lifecycleJoinReference(join){
   const kind=parts.shift().toLowerCase();
   const value=parts.join(":");
   if(kind==="solicitation"||kind==="concession") return t("join_reference_solicitation",{value:escUiHtml(value.toUpperCase())});
-  if(kind==="bbl") return t("join_reference_bbl",{value:escUiHtml(value)});
+  if(kind==="bbl") return t("join_reference_bbl",{value:escUiHtml(bblReaderLabel(value)||value)});
   if(kind==="taxlot") return t("join_reference_taxlot",{value:escUiHtml(value.replace(/:/g," / "))});
   if(kind==="party") return t("join_reference_party",{value:escUiHtml(value.replace(/[-_]+/g," "))});
   if(kind==="plan") return t("join_reference_plan",{value:escUiHtml(value.toUpperCase())});
@@ -589,7 +590,7 @@ function propertyCurrentScope(){
 }
 function parcelPivotHTML(bbl,label){
   const id=String(bbl||"");
-  const text=label||t("property_list_bbl_chip",{bbl:id});
+  const text=bblReaderLabel(id)||label||t("property_list_bbl_chip",{bbl:id});
   if(!/^\d{10}$/.test(id)||!globalThis.CrolEntityPivots?.entityChipHTML) return escUiHtml(text);
   return CrolEntityPivots.entityChipHTML({
     ref:`bbl:${id}`,
@@ -602,7 +603,7 @@ async function observedParcelBiographyHTML(bbl,crossDomain,taxLien,cofo){
   const tools=await parcelScopeTools();
   const view=tools?.buildObservedParcelBiography?.({bbl,crossDomain,taxLien,cofo});
   if(!view?.ok) return `<div class="chain-h">${t("property_xd_heading")}</div>
-    <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bbl)})}</div>
+    <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bblReaderLabel(bbl)||bbl)})}</div>
     <div class="note">${t("property_xd_provenance_html")}</div>`;
   const ui=await import("../parcel_biography_ui.mjs").catch(()=>null);
   if(!ui?.observedParcelBiographyHTML) return "";
@@ -1490,10 +1491,11 @@ function taxLienDecode(lookup,bbl){
 }
 function taxLienBblResultHTML(summary,lookup,bbl){
   const row=taxLienDecode(lookup,bbl);
-  if(!row) return `<div class="tax-lien-result-card">${t("tax_lien_bbl_not_found",{bbl:escUiHtml(bbl),date:taxLienDate(summary.latest_cycle.data_vintage)})}</div>`;
+  const label=bblReaderLabel(bbl)||`BBL ${bbl}`;
+  if(!row) return `<div class="tax-lien-result-card">${t("tax_lien_bbl_not_found",{bbl:escUiHtml(label),date:taxLienDate(summary.latest_cycle.data_vintage)})}</div>`;
   const cohort=summary.training.boroughs?.[row.borough_code]?.notice_90||summary.training.citywide.notice_90;
   return `<div class="tax-lien-result-card">
-    <strong>BBL ${escUiHtml(bbl)}</strong> · ${escUiHtml(row.nta_name||row.nta_code||t("tax_lien_nta_unmapped"))}<br>
+    <strong>${escUiHtml(label)}</strong> · ${escUiHtml(row.nta_name||row.nta_code||t("tax_lien_nta_unmapped"))}<br>
     ${t("tax_lien_bbl_observed_html",{stage:`<b>${escUiHtml(taxLienStageLabel(row.stage))}</b>`,outcome:`<b>${escUiHtml(taxLienOutcomeLabel(row.outcome))}</b>`})}
     <div class="tax-lien-meta">${t("tax_lien_attribution",{n:String(summary.training.cycle_count)})} · ${t("tax_lien_borough_pattern",{p:taxLienPct(cohort.probability_leave_before_sale)})}</div>
   </div>`;
@@ -1557,7 +1559,7 @@ function taxLienNoticeCycleHTML(ctx){
     ?`<p class="tax-lien-lead" data-tax-lien-historical="1">${escUiHtml(hist.line)}</p>`
     :"";
   const parcels=(ctx.parcels||[]).map(p=>
-    `<li><strong>BBL ${escUiHtml(p.bbl)}</strong> · ${escUiHtml(taxLienStageLabel(p.stage))} · ${escUiHtml(taxLienOutcomeLabel(p.outcome))}${p.nta_name?` · ${escUiHtml(p.nta_name)}`:""}</li>`
+    `<li><strong>${escUiHtml(bblReaderLabel(p.bbl)||`BBL ${p.bbl}`)}</strong> · ${escUiHtml(taxLienStageLabel(p.stage))} · ${escUiHtml(taxLienOutcomeLabel(p.outcome))}${p.nta_name?` · ${escUiHtml(p.nta_name)}`:""}</li>`
   ).join("");
   const parcelBlock=parcels
     ?`<ul class="tax-lien-parcel-list" data-tax-lien-parcels="1">${parcels}</ul>`

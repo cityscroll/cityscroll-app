@@ -269,10 +269,13 @@ def main() -> None:
         assert biography.locator("[data-parcel-biography-domain='property'] a[href^='#notice/']").count() >= 1
         assert biography.locator("[data-parcel-biography-domain='land'] a[href^='#land?project=']").count() >= 1
         assert biography.locator("[data-parcel-biography-domain='tax_lien'][data-status='observed']").count() == 1
-        assert biography.locator("[data-parcel-coverage]").count() == 5
+        assert biography.locator("[data-parcel-coverage]").count() == 0
         assert biography.locator(".parcel-biography-item-meta").count() >= 3
         assert biography.locator(".parcel-biography-relation").count() >= 3
         assert biography.locator(".property-xd-owners").count() == 0
+        biography_text = biography.inner_text().lower()
+        assert "coverage:" not in biography_text
+        assert "snapshot" not in biography_text
         assert "complete parcel history" not in biography.inner_text().lower()
         parcel_pivot = biography.locator("a[data-entity-ref='bbl:1020260015']").first
         assert parcel_pivot.is_visible()

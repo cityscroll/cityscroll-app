@@ -74,6 +74,31 @@ PUBLIC_COPY_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("mechanics narration: scope object", re.compile(r"\bscope\s+object\b", re.I)),
     ("mechanics narration: server-rendered", re.compile(r"\bserver[- ]rendered\b", re.I)),
     ("mechanics narration: static-first", re.compile(r"\bstatic[- ]first\b", re.I)),
+    (
+        "architecture jargon: constellation action noun",
+        re.compile(r"\b(?:view|see|use|apply|filter|click)\b[^.\n]{0,48}\b(?:scope|facet|entity|ref|pivot)\b", re.I),
+    ),
+]
+
+INTERNAL_RECEIPT_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (
+        "internal receipt: equal snapshot coverage",
+        re.compile(
+            r"\b(?:coverage\s*:\s*)?(?:\d[\d,]*|\{[A-Za-z0-9_]+\}|\$\{[^}]+\})\s+of\s+"
+            r"(?:\d[\d,]*|\{[A-Za-z0-9_]+\}|\$\{[^}]+\})\s+in\s+the\s+"
+            r"(?:\d[\d,]*|\{[A-Za-z0-9_]+\}|\$\{[^}]+\})[- ]project(?:s)?\s+"
+            r"(?:current\s+)?snapshot\b",
+            re.I,
+        ),
+    ),
+    (
+        "internal receipt: ISO snapshot date",
+        re.compile(
+            r"\b(?:data\s+)?snapshot\s+(?:\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)?|"
+            r"\{(?:date|vintage|built_at)\}|\$\{[^}]+\})",
+            re.I,
+        ),
+    ),
 ]
 
 # Product copy explicitly retired after reader review. These phrases turn simple
@@ -298,13 +323,13 @@ def main(argv: list[str] | None = None) -> int:
 
     # Hits against the public catalogs (source, key, term, excerpt). Empty until scan.
     hits = []  # source: site/i18n.js STRINGS.en + INTERNAL_PATTERNS
-    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS + DIDACTIC_COPY_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS)]  # source: public i18n catalogs
+    catalogs = [("site/i18n.js:en", en, INTERNAL_PATTERNS + JOIN_MECHANICS_PATTERNS + PUBLIC_COPY_PATTERNS + INTERNAL_RECEIPT_PATTERNS + DIDACTIC_COPY_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS)]  # source: public i18n catalogs
     for path in sorted(LOCALE_DIR.glob("*.js")):
         catalogs.append(
             (
                 str(path.relative_to(REPO)),
                 extract_catalog_strings(path.read_text(encoding="utf-8")),
-                JOIN_MECHANICS_PATTERNS,
+                JOIN_MECHANICS_PATTERNS + INTERNAL_RECEIPT_PATTERNS,
             )
         )
     for source, catalog, patterns in catalogs:
@@ -338,7 +363,7 @@ def main(argv: list[str] | None = None) -> int:
     ]
     for path in public_render_files:
         for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-            for term, pattern in DIRECT_RENDER_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS:
+            for term, pattern in DIRECT_RENDER_PATTERNS + VENDOR_FOOTPRINT_JARGON_PATTERNS + INTERNAL_RECEIPT_PATTERNS:
                 if not pattern.search(line):
                     continue
                 hits.append(

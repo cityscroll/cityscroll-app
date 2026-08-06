@@ -79,7 +79,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   }
 });
 
-test("Browse landing counts are labeled bounded source snapshots", () => {
+test("Browse landing counts are labeled with current source dates", () => {
   const landing = buildBrowseLanding({
     contracts: { open_as_of: "2026-08-03", notices: Array.from({ length: 3 }, (_, i) => ({ request_id: String(i) })) },
     staffing: { generated_at: "2026-08-02T12:00:00Z", notices: Array.from({ length: 4 }, (_, i) => ({ request_id: String(i) })) },
@@ -92,9 +92,9 @@ test("Browse landing counts are labeled bounded source snapshots", () => {
   assert.equal(landing.cards[0].count, 3);
   assert.equal(landing.cards[1].secondaryCount, 228);
   const html = renderBrowseLanding(landing);
-  assert.match(html, /Current public snapshots/);
-  assert.match(html, /Counts describe the bounded records shown here, not each source’s full historical corpus\./);
-  assert.match(html, /source snapshot 2026-08-03/);
+  assert.match(html, /Current public records/);
+  assert.match(html, /Counts describe the records shown here, not each source’s full historical history\./);
+  assert.match(html, /Updated 2026-08-03/);
 });
 
 test("public identity copy describes a linked multi-source record", () => {

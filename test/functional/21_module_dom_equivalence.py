@@ -46,17 +46,30 @@ EXPORTED_NAME = re.compile(
 )
 
 
-def flatten_helper(path: pathlib.Path, stack: tuple[pathlib.Path, ...] = ()) -> str:
+def flatten_helper(
+    path: pathlib.Path,
+    stack: tuple[pathlib.Path, ...] = (),
+    flattened: set[pathlib.Path] | None = None,
+) -> str:
     """Inline a pure helper's local named-import graph for the pre-split fixture."""
+    if flattened is None:
+        flattened = set()
     assert path not in stack, f"circular inline helper import: {path.name}"
+    if path in flattened:
+        return ""
+    flattened.add(path)
     source = path.read_text()
     nested_sources = []  # Source: local helper imports matched by STATIC_LOCAL_IMPORT.
     for helper_name in STATIC_LOCAL_IMPORT.findall(source):
         helper_path = path.parent / helper_name
         assert helper_path.is_file(), f"nested helper import missing: {helper_name}"
-        dependency = flatten_helper(helper_path, (*stack, path))
+        dependency = flatten_helper(helper_path, (*stack, path), flattened)
         dependency = EXPORTED_DECLARATION.sub("", dependency)
-        dependency = re.sub(r"\bexport\s*\{[^}]+\}\s*;?", "", dependency)
+        dependency = re.sub(
+            r"\bexport\s*\{[^}]+\}\s*(?:from\s+[\"'][^\"']+[\"'])?\s*;?",
+            "",
+            dependency,
+        )
         assert not re.search(r"\bexport\s", dependency), (
             f"inline reconstruction cannot flatten this export in {helper_name}"
         )
@@ -84,20 +97,28 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
     chunks = []
     helpers = []
     seen_helpers = set()
+    flattened_static_helpers: set[pathlib.Path] = set()
     for namespace, helper_name in NAMESPACE_PARENT_IMPORT.findall(loader):
         helper_path = SITE / helper_name
         assert helper_path.is_file(), f"namespace helper import missing: {helper_name}"
+        # Namespace helpers are wrapped in their own IIFE, so each one needs
+        # its transitive dependencies available inside that closure.
         helper_source = flatten_helper(helper_path)
-        exports = []  # Source: export declarations parsed from helper_source.
-        for name in EXPORTED_NAME.findall(helper_source):
+        export_source = helper_path.read_text()
+        exports = []  # Source: export declarations parsed from the helper's own module.
+        for name in EXPORTED_NAME.findall(export_source):
             exports.append((name, name))
-        for export_list in re.findall(r"\bexport\s*\{([^}]+)\}\s*;?", helper_source):
+        for export_list in re.findall(r"\bexport\s*\{([^}]+)\}\s*;?", export_source):
             for item in export_list.split(","):
                 aliases = re.split(r"\s+as\s+", item.strip())
                 exports.append((aliases[0], aliases[-1]))
         assert exports, f"namespace helper has no named exports: {helper_name}"
         helper_source = EXPORTED_DECLARATION.sub("", helper_source)
-        helper_source = re.sub(r"\bexport\s*\{[^}]+\}\s*;?", "", helper_source)
+        helper_source = re.sub(
+            r"\bexport\s*\{[^}]+\}\s*(?:from\s+[\"'][^\"']+[\"'])?\s*;?",
+            "",
+            helper_source,
+        )
         assert not re.search(r"\bexport\s", helper_source), (
             f"inline reconstruction cannot flatten this export in {helper_name}"
         )
@@ -117,7 +138,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
                 continue
             helper_path = SITE / helper_name
             assert helper_path.is_file(), f"static helper import missing: {helper_name}"
-            helper_source = flatten_helper(helper_path)
+            helper_source = flatten_helper(helper_path, flattened=flattened_static_helpers)
             helper_source = EXPORTED_DECLARATION.sub("", helper_source)
             assert not re.search(r"^\s*export\s", helper_source, re.MULTILINE), (
                 f"inline reconstruction cannot flatten this export in {helper_name}"
