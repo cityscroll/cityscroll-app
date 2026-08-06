@@ -5,6 +5,8 @@
  * from tentative observations and composes canonical scope-v0 links.
  */
 
+import { canonicalizeBrowseUrl } from "./route_migration.mjs";
+
 export const AGENCY_CONNECTION_DOMAINS = Object.freeze([
   { domain: "money", relation: "published_by_agency", role_key: "entity_intel_role_bought" },
   { domain: "land", relation: "applicant_agency", role_key: "entity_intel_role_land" },
@@ -53,6 +55,12 @@ function relationForDomain(response, domain) {
     || "";
 }
 
+function browseHref(hash, domain) {
+  const facet = { money: "contracts", people: "staffing", land: "zoning", property: "property", rules: "rules", meetings: "meetings" }[domain];
+  if (!facet || !String(hash).startsWith("#")) return hash;
+  return canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
+}
+
 /** Compose one populated relation/domain into a canonical, reload-safe scope. */
 export function connectionScopeHash(response, domain, { language = "en", scope: providedScopeApi } = {}) {
   const { normalizeScope, routeHashFromScope } = scopeApi(providedScopeApi);
@@ -67,7 +75,7 @@ export function connectionScopeHash(response, domain, { language = "en", scope: 
   if (domain === "money" && (domainBlock.objects || []).some((object) => object.object_kind === "award")) {
     scoped.facets.values.mode = "award";
   }
-  return routeHashFromScope(normalizeScope(scoped, { language }), { surface: domain });
+  return browseHref(routeHashFromScope(normalizeScope(scoped, { language }), { surface: domain }), domain);
 }
 
 /** Intersect this agency with the view that opened its profile. */
@@ -81,7 +89,7 @@ export function agencyApplyScopeHash(
   const agency = agencyConstraint(response, language, providedScopeApi);
   const composed = intersectScopes(current, agency);
   const surface = current.facets.domains?.[0] || "money";
-  return routeHashFromScope(composed, { surface });
+  return browseHref(routeHashFromScope(composed, { surface }), surface);
 }
 
 /** Build bounded role groups while keeping weak/review-only candidates out. */

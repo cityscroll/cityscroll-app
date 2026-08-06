@@ -138,8 +138,8 @@ test("vendor footprint renders load-bearing coverage copy and strong objects onl
 
 test("view-all links compose a typed vendor constraint through scope v0", () => {
   const href = vendorFootprintScopeHref(REF, "awards", { query: "Acme & Co.", resultCount: 2 });
-  assert.match(href, /^#money\?mode=award&/);
-  const params = new URLSearchParams(href.split("?")[1]);
+  assert.match(href, /^\/browse\/contracts\/\?mode=award&/);
+  const params = new URLSearchParams(new URL(href, "https://cityscroll.org").search);
   assert.equal(params.get("q"), "Acme & Co.");
   assert.deepEqual(JSON.parse(params.get("facet")), {
     entity_refs_all: [REF],
@@ -236,11 +236,11 @@ test("PASSPort/Checkbook contract corroboration (VI-02) gets its own section, di
 
 test("vendorAgencyIntersectionHref composes a typed vendor ∩ named-agency scope", () => {
   const href = vendorAgencyIntersectionHref(REF, "Health and Mental Hygiene", { query: "MAKE IT ZESTY" });
-  assert.match(href, /^#money\?/);
-  const params = new URLSearchParams(href.split("?")[1]);
-  assert.equal(params.get("agency"), "Health and Mental Hygiene");
+  assert.match(href, /^\/browse\/contracts\/\?/);
+  const params = new URLSearchParams(new URL(href, "https://cityscroll.org").search);
+  assert.equal(params.has("agency"), false);
   assert.equal(params.get("q"), "MAKE IT ZESTY");
-  assert.deepEqual(JSON.parse(params.get("facet")), { entity_refs_all: [REF] });
+  assert.deepEqual(JSON.parse(params.get("facet")), { entity_refs_all: ["agency:id:health-and-mental-hygiene", REF] });
   assert.equal(vendorAgencyIntersectionHref(REF, ""), "");
   assert.equal(vendorAgencyIntersectionHref("", "Health and Mental Hygiene"), "");
 });

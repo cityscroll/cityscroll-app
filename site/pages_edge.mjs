@@ -1,5 +1,6 @@
 import { BROWSE_FACETS, buildBrowseView, renderBrowseView } from "./browse_view.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
+import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_FIELDS = [
@@ -179,6 +180,10 @@ function hasBrowseFilters(url) {
 
 async function handleBrowse(request, env, facet) {
   const url = new URL(request.url);
+  const canonical = canonicalizeBrowseUrl(url.href);
+  if (canonical !== `${url.pathname}${url.search}`) {
+    return Response.redirect(new URL(canonical, url.origin), 302);
+  }
   const asset = await staticAsset(env, request, browseAssetPath(facet, url.pathname));
   if (!hasBrowseFilters(url) || request.method === "HEAD") return asset;
   try {
