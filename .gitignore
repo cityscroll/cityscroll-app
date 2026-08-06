@@ -44,3 +44,8 @@ warehouse/**/__pycache__/
 
 # Generated WH-02 bulk samples (may contain public notice fields; not committed)
 warehouse/fixtures/**/bulk_sample.csv
+# Independent enacted-law mandate pipeline: raw statute caches and private
+# comparison artifacts must never enter the public repository.
+tools/law_mandates/cache/
+tools/law_mandates/output/
+tools/law_mandates/private/
