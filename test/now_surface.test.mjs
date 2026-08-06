@@ -9,6 +9,7 @@ import {
   countNowSurfaceItems,
 } from "../site/now_surface.mjs";
 import { nowDateLabel } from "../site/now_view.mjs";
+import { propertyProjectionScope, projectPropertyRecord } from "../site/property_action_projection.mjs";
 
 const require = createRequire(import.meta.url);
 const CrolActions = require("../site/action_registry.js");
@@ -222,6 +223,31 @@ test("closed actions never enter Act by and every item retains route, domain, so
   assert.equal(surface.counts.total, all.length);
   assert.equal(surface.counts.act_by, surface.act_by.dated.length + surface.act_by.open_without_date.length);
   assert.equal(surface.counts.happening_soon, surface.happening_soon.items.length);
+});
+
+test("Property action characters project into destination scopes without changing source identity", () => {
+  const surface = buildNowSurface(fixtureSources(), {
+    today: TODAY,
+    compileActionRail: CrolActions.compileActionRail,
+  });
+  const property = [...surface.act_by.dated, ...surface.happening_soon.items]
+    .find((item) => item.id.startsWith("property:"));
+  assert.equal(property.domain, "property");
+  assert.deepEqual(property.scope_domains, ["property", "money"]);
+  assert.equal(property.projection.canonical_route, property.route);
+  assert.equal(property.projection.canonical_id, "property-actions");
+  assert.equal(property.action_character, "marketplace");
+
+  const marketplace = projectPropertyRecord({
+    request_id: "auction-1",
+    route: "/notices/auction-1",
+    action_character: "marketplace",
+  });
+  assert.deepEqual(marketplace.scope_domains, ["property", "money"]);
+  assert.equal(propertyProjectionScope("marketplace", { surface: "money" }).facets.domains[0], "money");
+  assert.equal(marketplace.projection.canonical_route, "/notices/auction-1");
+  const participation = projectPropertyRecord({ request_id: "hearing-1", action_character: "participation" });
+  assert.deepEqual(participation.scope_domains, ["property", "meetings"]);
 });
 
 test("an opaque future scope can filter both lanes without changing their compiler contract", () => {
