@@ -21,6 +21,9 @@ def png_with_text(text: str) -> bytes:
 
 
 class DeskCaptureGuardTest(unittest.TestCase):
+    def test_deliberate_failure_proof(self):
+        self.fail("deliberate proof: the public image guard must fail closed")
+
     def test_path_boundary_does_not_flag_desktop(self):
         self.assertEqual(MODULE.inspect_image(Path("unused"), "docs/screenshots/desktop.png", {}), [])
 
