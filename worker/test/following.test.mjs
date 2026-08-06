@@ -83,11 +83,13 @@ test("the personal island endpoint stays anonymous without a recognized session"
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("cache-control") || "", /no-store/);
-  assert.match(html, /Manage from a CityScroll email/);
+  assert.match(html, /data-session-recognized="false"/);
+  assert.match(html, /Open a CityScroll email to see your watches/);
+  assert.doesNotMatch(html, /href="[^"]*prefs/);
   assert.doesNotMatch(html, /data-watch-key=/);
 });
 
-test("the recognized-session island renders existing watches without owning submission", async () => {
+test("the recognized-session island renders inline cadence, pause, and unsubscribe controls", async () => {
   const store = kv();
   await store.put("sub:meetings-queens", JSON.stringify({
     email: TEST_EMAIL,
@@ -104,10 +106,17 @@ test("the recognized-session island renders existing watches without owning subm
   const html = await response.text();
 
   assert.match(html, /data-watch-key="sub:meetings-queens"/);
+  assert.match(html, /data-session-recognized="true"/);
   assert.match(html, /data-watch-lens="meetings"/);
   assert.match(html, /Transportation/);
-  assert.match(html, /Change cadence, pause, or unsubscribe/);
-  assert.doesNotMatch(html, /<form/);
+  assert.match(html, /name="freq"/);
+  assert.match(html, /name="action" value="update"/);
+  assert.match(html, /name="action" value="pause"/);
+  assert.match(html, /name="action" value="delete"/);
+  assert.match(html, /action="https:\/\/cityscroll\.org\/prefs"/);
+  assert.match(html, /name="token" value="[^"]+"/);
+  assert.doesNotMatch(html, /href="[^"]*prefs\?token=/);
+  assert.doesNotMatch(html, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
 test("a no-JavaScript form can submit, confirm, then reach management and unsubscribe controls", async () => {

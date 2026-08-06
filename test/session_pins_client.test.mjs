@@ -30,6 +30,17 @@ test("anonymous invSave still writes localStorage only (server push gated)", () 
   assert.match(INDEX, /if\(invSessionRecognized\) invScheduleServerSave\(s\)/);
 });
 
+test("credentialed account calls never fail over to a host that cannot share the session", () => {
+  assert.match(INDEX, /if\(needsCreds\) return attempt\(API\)/);
+});
+
+test("session recognition starts after the first Money paint", () => {
+  const firstPaint = INDEX.indexOf("if(!applyHash()) search()");
+  const sessionInit = INDEX.indexOf("(function initSessionUi()");
+  assert.ok(firstPaint >= 0, "initial Money search is missing");
+  assert.ok(sessionInit > firstPaint, `session init ${sessionInit} must follow first paint ${firstPaint}`);
+});
+
 test("session banner is dismissible and has a not-you affordance", () => {
   assert.match(INDEX, /id="sessionNotYou"/);
   assert.match(INDEX, /id="sessionDismiss"/);

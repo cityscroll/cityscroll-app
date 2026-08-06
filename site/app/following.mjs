@@ -55,23 +55,55 @@ async function loadPersonal() {
     const response = await fetch(root.dataset.personalUrl, { credentials: "include", headers: { Accept: "text/html" } });
     if (!response.ok) return;
     host.innerHTML = await response.text();
+    wirePersonalForms();
     duplicateWarning();
   } catch { /* public page and management link remain complete */ }
 }
 
 function adoptFollowingDocument(html) {
   const next = new DOMParser().parseFromString(html, "text/html");
-  for (const selector of [
-    "[data-following-scope-panel]",
-    "[data-following-preview-panel]",
-    "[data-following-subscribe-panel]",
-  ]) {
-    const current = root.querySelector(selector);
-    const replacement = next.querySelector(selector);
-    if (current && replacement) current.replaceWith(replacement);
-  }
+  const current = root.querySelector("[data-following-workspace]");
+  const replacement = next.querySelector("[data-following-workspace]");
+  if (current && replacement) current.replaceWith(replacement);
   wireSubscribe();
   duplicateWarning();
+}
+
+function wirePersonalForms() {
+  const host = root?.querySelector("[data-personal-watch-list]");
+  const status = root?.querySelector("[data-personal-status]");
+  if (!host) return;
+  for (const form of host.querySelectorAll("form" + "[data-watch-action]")) {
+    if (form.dataset.enhanced === "true") continue;
+    if (new URL(form.action, location.href).origin !== location.origin) continue;
+    form.dataset.enhanced = "true";
+    form.addEventListener("submit", async (event) => {
+      if (form.dataset.confirm && !globalThis.confirm(form.dataset.confirm)) {
+        event.preventDefault();
+        return;
+      }
+      event.preventDefault();
+      const button = form.querySelector("button" + "[type=submit]");
+      if (button) button.disabled = true;
+      if (status) status.textContent = msg("msgPersonalSaving");
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          headers: { Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded" },
+          credentials: "include",
+          body: new URLSearchParams(new FormData(form)),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) throw new Error("watch-action");
+        if (status) status.textContent = result.flash?.message || msg("msgPersonalSaved");
+        await loadPersonal();
+      } catch {
+        if (status) status.textContent = msg("msgPersonalError");
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  }
 }
 
 async function preview(event) {

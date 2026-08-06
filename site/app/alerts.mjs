@@ -779,7 +779,7 @@ function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 function subscribeErrorWhy(reason){
   return {"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error")}[reason]||t("generic_error");
 }
-/* ===================== WATCH TEMPLATES (association monitor packs) =====================
+/* ===================== WATCH TEMPLATES (ready-made watch sets) =====================
    Registry: site/data/watch_templates.json — pure helpers in site/watch_templates.mjs.
    Subscribing instantiates each watch through the existing /subscribe path (one confirm per watch). */
 let watchTemplateToolsPromise=null;
