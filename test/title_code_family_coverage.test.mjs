@@ -34,17 +34,47 @@ test("measurement joins exams and appointments only through exact title codes", 
   assert.equal(measured.method.title_text_matching, false);
 });
 
+test("reviewed confirmations add measured coverage without hand-flipping promotion", () => {
+  const measured = measureTitleCodeFamilyCoverage({
+    historyRecords: [
+      { exam_number: "0001", title_code: "10026", exam_title: "Analyst" },
+      { exam_number: "0002", title_code: null, exam_title: "Police Officer" },
+      { exam_number: "0003", title_code: null, exam_title: "Correction Officer" },
+    ],
+    titleCrosswalk: [],
+    reviewedRegistry: {
+      confirmations: [{ exam_number: "0002", title_code: "70210" }],
+      rejections: [{ exam_number: "0003", title_code: "70210" }],
+    },
+    generatedAt: "2026-08-05",
+  });
+  assert.equal(measured.historical_exams.exact_plus_confirmed, 2);
+  assert.equal(measured.historical_exams.exact_plus_confirmed_rate, 0.6667);
+  assert.equal(measured.precision_audit.reviewed, 2);
+  assert.equal(measured.precision_audit.precision, 0.5);
+  assert.equal(measured.promotion.coverage_passed, true);
+  assert.equal(measured.promotion.precision_passed, false);
+  assert.equal(measured.promotion.passed, false);
+  assert.equal(measured.promotion.publish_family_ui, false);
+  assert.equal(measured.promotion.publish_entity_pivots, false);
+});
+
 test("committed trial stops below the standing promotion bars", () => {
   assert.equal(coverage.historical_exams.cohort, 1271);
   assert.equal(coverage.historical_exams.exact_title_code, 367);
   assert.equal(coverage.historical_exams.exact_title_code_rate, 0.2887);
+  assert.equal(coverage.historical_exams.reviewed_confirmed, 5);
+  assert.equal(coverage.historical_exams.exact_plus_confirmed, 372);
+  assert.equal(coverage.historical_exams.exact_plus_confirmed_rate, 0.2927);
   assert.equal(coverage.appointments.exact_title_code_rate, 1);
   assert.equal(coverage.promotion.historical_exam_coverage_floor, 0.3);
   assert.equal(coverage.promotion.audit_precision_floor, 0.95);
   assert.equal(coverage.promotion.coverage_passed, false);
   assert.equal(coverage.promotion.publish_family_ui, false);
   assert.equal(coverage.promotion.publish_entity_pivots, false);
-  assert.equal(coverage.precision_audit.precision, null);
+  assert.equal(coverage.precision_audit.reviewed, 18);
+  assert.equal(coverage.precision_audit.correct, 5);
+  assert.equal(coverage.precision_audit.precision, 0.2778);
 });
 
 test("closed trial does not widen the public entity-ref allowlist", () => {
