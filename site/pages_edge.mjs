@@ -38,6 +38,11 @@ function safeDistrictDigest(pathname) {
   return match ? match[1] : null;
 }
 
+function safeParcel(pathname) {
+  const match = pathname.match(/^\/parcels\/(\d{10})\/?$/);
+  return match ? match[1] : null;
+}
+
 function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
@@ -57,6 +62,7 @@ export function edgeRequestKind(urlValue) {
   if (safeExamNumber(url.pathname)) return "exam";
   if (safeMonitorPack(url.pathname)) return "monitor-pack";
   if (safeDistrictDigest(url.pathname)) return "district-digest";
+  if (safeParcel(url.pathname)) return "parcel";
   if (browseFacet(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   return "asset";
@@ -256,6 +262,8 @@ export default {
     if (pack) return handleComposedObject(request, env, `/following/packs/${pack}/`, `/following/packs/${pack}/`);
     const district = safeDistrictDigest(url.pathname);
     if (district) return handleComposedObject(request, env, `/districts/council/${district}/digest/`, `/districts/council/${district}/digest/`);
+    const parcel = safeParcel(url.pathname);
+    if (parcel) return handleComposedObject(request, env, `/parcels/${parcel}/`, `/parcels/${parcel}/`);
     const facet = browseFacet(url.pathname);
     if (facet) return handleBrowse(request, env, facet);
     const entity = entityDocument(url.pathname);
