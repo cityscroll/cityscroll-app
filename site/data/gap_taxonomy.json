@@ -761,6 +761,7 @@
       "source_contract_id": "nyc-council-legistar",
       "status": "landed",
       "join_keys": [
+        "body_id",
         "matter_id",
         "event_id",
         "event_item_id",
@@ -3242,7 +3243,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-06",
-    "source_contracts_fingerprint": "a1be58e3d9049fed7dc3f26c37979f310351839215b1e175226afc4beaea2117",
+    "source_contracts_fingerprint": "9f12136ed34866acb16cdcc87ce01b4690946fda62c784d583b19d7735bbcd40",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 75,
     "class_changes": 0,

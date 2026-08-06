@@ -1619,6 +1619,7 @@
       "endpoint": "https://webapi.legistar.com/v1/nyc/Bodies",
       "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
       "join_keys": [
+        "body_id",
         "matter_id",
         "event_id",
         "event_item_id",

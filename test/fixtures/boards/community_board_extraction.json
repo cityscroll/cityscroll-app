@@ -1,0 +1,23 @@
+{
+  "fixture_id": "community-board-borough-number-v1",
+  "positive": [
+    { "text": "Public hearing before Community Board 1, Brooklyn.", "body_id": "brooklyn-cb-01" },
+    { "text": "Brooklyn Community Board 18 will meet on June 17.", "body_id": "brooklyn-cb-18" },
+    { "text": "The matter was referred to Community Board No. 6 (Bronx).", "body_id": "bronx-cb-06" },
+    { "text": "Manhattan Community Board 3 issued its recommendation.", "body_id": "manhattan-cb-03" },
+    { "text": "Community Board #8, Queens, will hold a hearing.", "body_id": "queens-cb-08" },
+    { "text": "Staten Island Community Board 1 agenda.", "body_id": "staten-island-cb-01" },
+    { "text": "Community Board 14 in Queens reviewed the application.", "body_id": "queens-cb-14" },
+    { "text": "Community Board 12 - Bronx meeting notice.", "body_id": "bronx-cb-12" }
+  ],
+  "negative": [
+    { "text": "Community District 1, Brooklyn." },
+    { "text": "Board 1, Brooklyn." },
+    { "text": "Community Board 2." },
+    { "text": "Community Board 99, Brooklyn." },
+    { "text": "Community Board 1, Albany." },
+    { "text": "CB 1, Brooklyn." },
+    { "text": "Community Boardroom 1, Brooklyn." },
+    { "text": "Community Board 1, Brooklyn and Community Board 2, Queens." }
+  ]
+}

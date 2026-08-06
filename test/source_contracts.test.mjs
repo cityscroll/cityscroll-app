@@ -316,6 +316,7 @@ test("live workflow wires optional LEGISTAR_API_TOKEN for the auth probe", () =>
     "utf8",
   );
   assert.match(live, /LEGISTAR_API_TOKEN:\s*\$\{\{\s*secrets\.LEGISTAR_API_TOKEN\s*\}\}/);
+  assert.match(live, /node tools\/build_boards_wall_receipt\.mjs --live/);
 });
 
 test("bot-blocked machine endpoint 403 on CI is not drift for egress_class sources", async (t) => {
