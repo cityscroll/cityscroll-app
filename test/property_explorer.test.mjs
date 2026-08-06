@@ -27,6 +27,7 @@ import {
   propertyProcessFilterKey,
   propertyProcessStage,
   spineCurrentProcessStage,
+  stampPropertyExplorerTemporal,
 } from "../site/property_explorer.mjs";
 import { extractPropertyCommercial } from "../site/property_commercial.mjs";
 import { extractPropertyReaderActions } from "../site/property_reader_actions.mjs";
@@ -60,6 +61,13 @@ function censusEntries(rows, today = "2026-08-04") {
     return row;
   });
   return buildPropertyExplorerEntries(prepared, []);
+}
+
+function realNoticeCase(id) {
+  const detail = censusFixture.cases.find((entry) => entry.id === id)?.row;
+  assert.ok(detail, `missing real-notice detail fixture: ${id}`);
+  const history = historyFixture.notices.find((row) => row.request_id === detail.request_id) || {};
+  return { ...history, ...structuredClone(detail) };
 }
 
 test("PROP_PROCESS_STAGES is the ops-ontology rail (not temporal proposed/soon)", () => {
@@ -489,6 +497,46 @@ test("future sales and hearings remain in the default feed; actionless destructi
   assert.deepEqual(ids(partition.archive_entries), ["destruction-no-contact", "honest-fallback"]);
   assert.equal(propertyExplorerCensusCount(partition.default_entries), 2);
   assert.equal(propertyExplorerCensusCount(partition.archive_entries), 2);
+});
+
+test("real Property notices preserve the default-feed action/time boundary by class", () => {
+  const cases = [
+    ["forest-timber-sale", "2023-11-03", "default"],
+    ["lease-auction", "2022-11-14", "default"],
+    ["udaap", "2017-05-19", "default"],
+    ["acquisition", "2021-11-26", "default"],
+    ["disposition-hearing", "2024-11-15", "default"],
+    ["pending-destruction", "2026-08-04", "default"],
+    ["public-hearing-section-pointer", "2024-01-16", "archive"],
+    ["medallion-result", "2026-08-04", "archive"],
+  ];
+
+  for (const [id, today, expected] of cases) {
+    const row = realNoticeCase(id);
+    const partition = partitionPropertyExplorerEntries(censusEntries([row], today), { today });
+    assert.equal(partition.default_count, expected === "default" ? 1 : 0, `${id}: default count`);
+    assert.equal(partition.archive_count, expected === "archive" ? 1 : 0, `${id}: archive count`);
+    assert.equal(partition.census_total, 1, `${id}: notice remains conserved`);
+    if (id === "pending-destruction") {
+      const [stamped] = stampPropertyExplorerTemporal(partition.default_entries, { today });
+      assert.equal(stamped.temporal_status, "undated");
+      assert.notEqual(stamped.action_key, "property_action_closed");
+    }
+  }
+
+  const actionlessDestruction = historyFixture.notices.find(
+    (row) => row.request_id === "20240904014",
+  );
+  assert.ok(actionlessDestruction, "missing real pending-destruction history fixture");
+  const destructionPartition = partitionPropertyExplorerEntries(
+    censusEntries([actionlessDestruction], "2024-09-16"),
+    { today: "2024-09-16" },
+  );
+  assert.equal(destructionPartition.default_count, 0);
+  assert.equal(destructionPartition.archive_count, 1);
+
+  const result = realNoticeCase("medallion-result");
+  assert.equal(result.disposition_stage, "award_or_conveyance");
 });
 
 test("archive safety detector rejects a record with a live typed event or exposed action", () => {
