@@ -9,6 +9,8 @@ import {
   vendorFootprintModel,
   vendorFootprintScopeHref,
 } from "../site/vendor_footprint.mjs";
+import { pivotDestinationCompatibility } from "../site/pivot_destination_compatibility.mjs";
+import { scopeFromRouteHash } from "../site/scope_v0.mjs";
 
 const REF = "vendor:stem:ACME";
 
@@ -236,11 +238,23 @@ test("PASSPort/Checkbook contract corroboration (VI-02) gets its own section, di
 
 test("vendorAgencyIntersectionHref composes a typed vendor ∩ named-agency scope", () => {
   const href = vendorAgencyIntersectionHref(REF, "Health and Mental Hygiene", { query: "MAKE IT ZESTY" });
-  assert.match(href, /^\/browse\/contracts\/\?/);
+  assert.match(href, /^\/browse\/contracts\/\?mode=award&/);
   const params = new URLSearchParams(new URL(href, "https://cityscroll.org").search);
+  assert.equal(params.get("mode"), "award");
   assert.equal(params.has("agency"), false);
   assert.equal(params.get("q"), "MAKE IT ZESTY");
   assert.deepEqual(JSON.parse(params.get("facet")), { entity_refs_all: ["agency:id:health-and-mental-hygiene", REF] });
   assert.equal(vendorAgencyIntersectionHref(REF, ""), "");
   assert.equal(vendorAgencyIntersectionHref("", "Health and Mental Hygiene"), "");
+});
+
+test("pivot round-trip detector rejects a destination that cannot contain the origin record", () => {
+  const award = scopeFromRouteHash("#money?mode=award");
+  const open = scopeFromRouteHash("#money?mode=open");
+  assert.equal(pivotDestinationCompatibility({
+    destinationSurface: "money", destinationScope: award, originRecordType: "award",
+  }).compatible, true);
+  assert.equal(pivotDestinationCompatibility({
+    destinationSurface: "money", destinationScope: open, originRecordType: "award",
+  }).compatible, false);
 });

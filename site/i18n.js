@@ -1356,6 +1356,9 @@ const STRINGS = {
     no_linkable_pin: "no linkable PIN",
     method_facet_label: "Method:",
     narrowed_note: "Full-history search was slow — showing <b>recent editions only</b> (since {date}). Add an agency or keyword to search all years faster.",
+    narrowed_scope_note: "<b>{n} matches</b> — all matches are older than {date}. <button type=\"button\" class=\"linklike\" data-money-full-history>Search full history</button>",
+    narrowed_scope_partial_note: "<b>{n} matches</b> — {shown} shown since {date}, with {older} older matches outside this window. <button type=\"button\" class=\"linklike\" data-money-full-history>Search full history</button>",
+    scoped_history_gap_note: "<b>{n} matches</b> are outside this result window. <button type=\"button\" class=\"linklike\" data-money-full-history>Search full history</button>",
 
     // Money detail / chain / glance / how-to-respond
     copy_link_notice: "Copy notice link",
