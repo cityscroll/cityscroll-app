@@ -1,0 +1,4 @@
+# Optional, eval-only dependencies. Never install these in the site/Worker build.
+splink>=4,<5
+duckdb>=1,<2
+dedupe>=3,<4
