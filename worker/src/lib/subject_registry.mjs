@@ -25,6 +25,8 @@ export const SUBJECT_LINK_METHOD_VERSION = "1.0.0";
 export const SUBJECT_KINDS = Object.freeze({
   notice: { description: "City Record notice (request_id)" },
   exam: { description: "DCAS civil-service exam number" },
+  "monitor-pack": { description: "Curated multi-watch monitor pack" },
+  "district-digest": { description: "Council-district weekly digest" },
   contract: { description: "Checkbook / PASSPort contract id" },
   project: { description: "ZAP land-use project" },
   parcel: { description: "NYC tax lot (10-digit BBL)" },
