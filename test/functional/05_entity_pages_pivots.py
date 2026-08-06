@@ -169,7 +169,7 @@ with sync_playwright() as pw:
       confidence:a.dataset.linkConfidence,relation:a.dataset.relation}))""")
     step(
         "OK" if matched_domains == 5 and "18" in summary and "2" in summary and tentative_bands == 2
-        and connected_pivots and connected_pivots[0]["href"].startswith("#vendor/")
+        and connected_pivots and connected_pivots[0]["href"].startswith(("/vendors/", "#vendor/"))
         and connected_pivots[0]["ref"].startswith("vendor:stem:")
         and connected_pivots[0]["confidence"] == "strong"
         and connected_pivots[0]["relation"] == "named_vendor" else "FAIL",

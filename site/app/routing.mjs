@@ -286,7 +286,7 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
-  people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber"],
+  people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
   rules:    ["keywords", "agency", "process"],

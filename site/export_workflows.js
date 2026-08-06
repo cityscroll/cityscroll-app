@@ -214,6 +214,14 @@
     agency_forecast:{sheets:["Lifecycle","Rendered context"]},
     official_notice_text:{sheets:["Rendered context"]},
     unofficial_translation:{excluded:"Unofficial translations are intentionally omitted; the official English record remains in the export."},
+    exam_identity:{sheets:["Exam"]},
+    exam_actions:{sheets:["Exam"]},
+    exam_facts:{sheets:["Exam"]},
+    exam_disclaimer:{sheets:["Exam"]},
+    exam_prediction:{sheets:["Exam"]},
+    exam_process:{sheets:["Exam"]},
+    exam_outcomes:{sheets:["Exam"]},
+    exam_provenance:{sheets:["Exam"]},
   });
 
   const asArray=value=>Array.isArray(value)?value:(value==null||value===""?[]:[value]);

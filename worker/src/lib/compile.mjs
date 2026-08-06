@@ -81,6 +81,27 @@ export function compileSub(sub, todayISO) {
     };
   }
 
+  if (sub.lens === "people" && f.view === "guide" && f.subject_refs_all && Array.isArray(f.subject_refs_all) && f.subject_refs_all.length) {
+    const refs = new Set(f.subject_refs_all.map((candidate)=>String(candidate || "").trim()).filter((candidate)=>/^exam:\d{4}$/.test(candidate)));
+    if (refs.size === 0) return null;
+    return {
+      url: STAFFING_EXAMS,
+      params: {},
+      idField: "alert_id",
+      kind: "exam",
+      transformRows: (payload) => {
+        const wanted = new Set([...(refs)].map((ref) => ref.slice("exam:".length)));
+        return (Array.isArray(payload?.exams) ? payload.exams : [])
+          .filter((exam) => wanted.has(String(exam?.exam_number || "")))
+          .map((exam) => ({
+            ...exam,
+            open_window_band: examOpenWindowBand(exam, todayISO),
+            alert_id: `exam:${exam.exam_number}:${exam.notice_url ? "noe-posted" : exam.application_start || "scheduled"}`,
+          }));
+      },
+    };
+  }
+
   if (sub.lens === "people" && f.view === "guide" && f.examNumber) {
     const examNumber = String(f.examNumber);
     return {
