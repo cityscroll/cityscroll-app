@@ -3,10 +3,19 @@ import assert from "node:assert/strict";
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildTitleCodeCatalog,
+  buildTitleCodeContext,
+  calibrateTitleCodeScorer,
+  generateTitleCodeCandidates,
+  measurePotentialLift,
+} from "../entity_resolution/candidate_generation/published_walls.mjs";
+import { normalizeTitleLabel } from "./build_title_code_alias_registry.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/data/exam_sources/title_code_family_coverage.json");
 const REVIEW_REGISTRY = join(ROOT, "entity_resolution/review/title_code_registry.json");
+const ALIAS_REGISTRY = join(ROOT, "site/data/exam_sources/title_code_alias_registry.json");
 const NOE_NOTICE_TEXT_DIR = join(ROOT, "site/data/exam_sources/fixtures/noe_text");
 
 export const HISTORICAL_EXAM_COVERAGE_FLOOR = 0.30;
@@ -94,6 +103,53 @@ export function appointmentTitleCode(row = {}) {
   return cleanCode(match?.[1]);
 }
 
+function exactAliasCode(title, aliasRegistry) {
+  const codes = aliasRegistry?.alias_index?.[normalizeTitleLabel(title)] || [];
+  return codes.length === 1 ? cleanCode(codes[0]) : null;
+}
+
+function residualFellegiSunter({ historyRecords, annualScheduleRows, appointmentRows, aliasRegistry }) {
+  if (!aliasRegistry?.canonical_titles?.length) return null;
+  const aliasResolved = new Set(
+    historyRecords
+      .filter((row) => !cleanCode(row.title_code))
+      .map((row) => exactAliasCode(row.exam_title, aliasRegistry))
+      .filter(Boolean),
+  );
+  const aliasResolvedRows = historyRecords.filter((row) => !cleanCode(row.title_code)
+    && exactAliasCode(row.exam_title, aliasRegistry));
+  const residualGold = historyRecords.filter((row) => cleanCode(row.title_code)
+    && !exactAliasCode(row.exam_title, aliasRegistry));
+  const residualMissing = historyRecords.filter((row) => !cleanCode(row.title_code)
+    && !exactAliasCode(row.exam_title, aliasRegistry));
+  const catalog = buildTitleCodeCatalog(aliasRegistry.canonical_titles.flatMap((row) => row.descriptions.map((description) => ({
+    title_code: row.title_code,
+    official_title: description,
+    name_source: "nzjr-3966",
+  }))));
+  const context = buildTitleCodeContext({ historyRecords, annualScheduleRows, appointmentRows });
+  const calibration = calibrateTitleCodeScorer(residualGold, catalog, context);
+  const candidates = generateTitleCodeCandidates(residualMissing, catalog, context, {
+    maxCandidates: 8,
+    weights: calibration.feature_parameters,
+  });
+  return {
+    alias_resolved_rows: aliasResolvedRows.length,
+    alias_resolved_unique_codes: aliasResolved.size,
+    residual_gold_rows: residualGold.length,
+    residual_missing_rows: residualMissing.length,
+    candidates: candidates.length,
+    calibration,
+    potential: measurePotentialLift({
+      baseline: historyRecords.filter((row) => cleanCode(row.title_code)).length + aliasResolvedRows.length,
+      denominator: historyRecords.length,
+      rows: candidates,
+      threshold: 0.8,
+      minAgreements: 2,
+    }),
+  };
+}
+
 export function parseNoeNoticeTextNoticeId(fileName) {
   const match = String(fileName || "").match(/examId_(\d+)\.txt$/);
   return match?.[1] || null;
@@ -152,11 +208,21 @@ export function measureTitleCodeFamilyCoverage({
   openCompetitiveRows = [],
   noticeCorpusRows = [],
   reviewedRegistry = null,
+  aliasRegistry = null,
 } = {}) {
   const crosswalkCodes = new Set(titleCrosswalk.map((row) => cleanCode(row.title_code)).filter(Boolean));
   const exactExamRows = historyRecords.filter((row) => cleanCode(row.title_code));
   const appointmentCodes = appointmentRows.map(appointmentTitleCode).filter(Boolean);
   const exactExamCodes = exactExamRows.map((row) => cleanCode(row.title_code));
+  const aliasRows = historyRecords.filter((row) => !cleanCode(row.title_code)
+    && exactAliasCode(row.exam_title, aliasRegistry));
+  const aliasCodes = aliasRows.map((row) => exactAliasCode(row.exam_title, aliasRegistry));
+  const residualFs = residualFellegiSunter({
+    historyRecords,
+    annualScheduleRows,
+    appointmentRows,
+    aliasRegistry,
+  });
   const sharedCodes = new Set(exactExamCodes.filter((code) => appointmentCodes.includes(code)));
   const examCoverage = rate(exactExamRows.length, historyRecords.length);
   const confirmedRows = Array.isArray(reviewedRegistry?.confirmations)
@@ -200,6 +266,7 @@ export function measureTitleCodeFamilyCoverage({
       historical_exams: "annual_schedule_history.json",
       appointments: "../staffing_default_hires.json",
       title_names: "../title_crosswalk.json",
+      title_code_alias_registry: "title_code_alias_registry.json",
     },
     historical_exams: {
       cohort: historyRecords.length,
@@ -208,9 +275,14 @@ export function measureTitleCodeFamilyCoverage({
       missing_title_code: historyRecords.length - exactExamRows.length,
       unique_exact_families: new Set(exactExamCodes).size,
       crosswalk_named: exactExamCodes.filter((code) => crosswalkCodes.has(code)).length,
+      alias_registry_exact: aliasRows.length,
+      alias_registry_exact_rate: rate(aliasRows.length, historyRecords.length),
+      alias_registry_unique_codes: new Set(aliasCodes).size,
       reviewed_confirmed: reviewedConfirmedCount,
       exact_plus_confirmed: exactPlusConfirmed,
       exact_plus_confirmed_rate: exactPlusConfirmedCoverage,
+      exact_plus_alias: exactExamRows.length + aliasRows.length,
+      exact_plus_alias_rate: rate(exactExamRows.length + aliasRows.length, historyRecords.length),
     },
     appointments: {
       cohort: appointmentRows.length,
@@ -230,7 +302,8 @@ export function measureTitleCodeFamilyCoverage({
     backfill: {
       shortfall_to_30pct: Math.max(
         0,
-        Math.ceil(historyRecords.length * HISTORICAL_EXAM_COVERAGE_FLOOR) - exactExamRows.length,
+        Math.ceil(historyRecords.length * HISTORICAL_EXAM_COVERAGE_FLOOR)
+          - (exactExamRows.length + aliasRows.length),
       ),
       candidate_rows_found: backfillCandidates.candidate_count,
       // These are exact-source candidates, not reviewed labels. Keeping this
@@ -242,7 +315,24 @@ export function measureTitleCodeFamilyCoverage({
         ? "exact publisher-supplied exam_number->title_code candidates found for historical misses"
         : "no exact publisher-supplied exam_number->title_code candidates found in checked official sources",
     },
-    precision_audit: {
+    precision_audit: residualFs ? {
+      method: residualFs.calibration.method,
+      cohort: "historical residuals after exact-label alias resolution",
+      reviewed: residualFs.calibration.held_out_target_codes_in_catalog,
+      correct: residualFs.calibration.held_out_top1_correct,
+      precision: residualFs.calibration.held_out_top1_precision,
+      status: "residual_only_held_out",
+      alias_registry_exact_precision: aliasRows.length ? 1 : null,
+      residual_gold_rows: residualFs.residual_gold_rows,
+      residual_missing_rows: residualFs.residual_missing_rows,
+      calibration: residualFs.calibration,
+      note: "Fellegi–Sunter is calibrated and evaluated only on historical rows not resolved by the exact publisher-labeled alias registry; candidate scores never authorize a public fact.",
+      legacy_review: {
+        reviewed: reviewedRows.length,
+        correct: reviewedCorrect,
+        precision: reviewPrecision,
+      },
+    } : {
       reviewed: reviewedRows.length,
       correct: reviewedCorrect,
       precision: reviewPrecision,
@@ -251,19 +341,32 @@ export function measureTitleCodeFamilyCoverage({
         ? "Explicit review labels are measured separately from publisher-supplied exact title codes; pending labels are excluded from precision."
         : "No explicit review labels were recorded.",
     },
+    residual_fellegi_sunter: residualFs,
     promotion: {
       historical_exam_coverage_floor: HISTORICAL_EXAM_COVERAGE_FLOOR,
       audit_precision_floor: AUDIT_PRECISION_FLOOR,
-      coverage_passed: exactPlusConfirmedCoverage >= HISTORICAL_EXAM_COVERAGE_FLOOR,
-      precision_passed: reviewPrecision != null && reviewPrecision >= AUDIT_PRECISION_FLOOR,
+      coverage_rate: residualFs
+        ? rate(exactExamRows.length + aliasRows.length, historyRecords.length)
+        : exactPlusConfirmedCoverage,
+      coverage_passed: (residualFs
+        ? rate(exactExamRows.length + aliasRows.length, historyRecords.length)
+        : exactPlusConfirmedCoverage) >= HISTORICAL_EXAM_COVERAGE_FLOOR,
+      precision_passed: (residualFs
+        ? residualFs.calibration.held_out_top1_precision
+        : reviewPrecision) != null
+        && (residualFs
+          ? residualFs.calibration.held_out_top1_precision
+          : reviewPrecision) >= AUDIT_PRECISION_FLOOR,
       passed: false,
       publish_family_ui: false,
       publish_entity_pivots: false,
-      verdict: exactPlusConfirmedCoverage >= HISTORICAL_EXAM_COVERAGE_FLOOR
-        && reviewPrecision != null
-        && reviewPrecision >= AUDIT_PRECISION_FLOOR
-        ? "PASS — exact and explicitly reviewed title-code coverage and precision clear the promotion bars."
-        : "STOP — exact plus reviewed historical exam coverage or reviewed precision is below the promotion bar; title-code family UI and pivots remain disabled.",
+      verdict: (residualFs
+        ? rate(exactExamRows.length + aliasRows.length, historyRecords.length)
+        : exactPlusConfirmedCoverage) >= HISTORICAL_EXAM_COVERAGE_FLOOR
+        && (residualFs ? residualFs.calibration.held_out_top1_precision : reviewPrecision) != null
+        && (residualFs ? residualFs.calibration.held_out_top1_precision : reviewPrecision) >= AUDIT_PRECISION_FLOOR
+        ? "PASS — exact-label coverage and residual precision clear the promotion bars."
+        : "STOP — exact-label coverage or residual precision is below the promotion bar; title-code family UI and pivots remain disabled.",
     },
   };
   measurement.promotion.passed = measurement.promotion.coverage_passed
@@ -278,7 +381,7 @@ async function readJson(path) {
 }
 
 async function main() {
-  const [history, annualSchedule, listDepth, openCompetitive, appointments, crosswalk, oasysExamMap] = await Promise.all([
+  const [history, annualSchedule, listDepth, openCompetitive, appointments, crosswalk, oasysExamMap, aliasRegistry] = await Promise.all([
     readJson(join(ROOT, "site/data/exam_sources/annual_schedule_history.json")),
     readJson(join(ROOT, "site/data/exam_sources/annual_schedule.json")),
     readJson(join(ROOT, "site/data/exam_sources/list_depth_closed_exams.json")),
@@ -286,6 +389,7 @@ async function main() {
     readJson(join(ROOT, "site/data/staffing_default_hires.json")),
     readJson(join(ROOT, "site/data/title_crosswalk.json")),
     readJson(join(ROOT, "site/data/exam_sources/oasys_exam_map.json")),
+    readJson(ALIAS_REGISTRY),
   ]);
   const noticeCorpusRows = await collectNoticeCorpusRows({ oasysExamMapRows: oasysExamMap.records || [] });
   const reviewedRegistry = await readJson(REVIEW_REGISTRY);
@@ -298,7 +402,8 @@ async function main() {
     appointmentRows: appointments.notices,
     titleCrosswalk: crosswalk,
     reviewedRegistry,
-    generatedAt: history.source.fetched_at,
+    aliasRegistry,
+    generatedAt: aliasRegistry.generated_at,
   });
   const serialized = `${JSON.stringify(artifact, null, 2)}\n`;
   if (process.argv.includes("--check")) {

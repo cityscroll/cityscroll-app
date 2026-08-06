@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { parseEntityRef } from "../site/entity_pivot.mjs";
+import { buildTitleCodeAliasRegistry } from "../tools/build_title_code_alias_registry.mjs";
 import {
   appointmentTitleCode,
   measureTitleCodeFamilyCoverage,
@@ -82,6 +83,56 @@ test("publisher candidates do not become reviewed audit labels", () => {
   assert.equal(measured.promotion.passed, false);
 });
 
+test("alias registry accepts only exact labels with one canonical identity", () => {
+  const registry = buildTitleCodeAliasRegistry({
+    jobsRows: [
+      { job_id: "1", agency: "AGENCY A", civil_service_title: "Project Manager", title_code_no: "22426" },
+      { job_id: "2", agency: "AGENCY B", civil_service_title: "Project Manager", title_code_no: "22426" },
+      { job_id: "3", agency: "AGENCY C", civil_service_title: "Shared Title", title_code_no: "10001" },
+      { job_id: "4", agency: "AGENCY D", civil_service_title: "Shared Title", title_code_no: "10002" },
+      { job_id: "5", agency: "AGENCY E", civil_service_title: "Uncanonical", title_code_no: "99999" },
+    ],
+    canonicalRows: [
+      { title: "22426", descr: "PROJECT MANAGER", asg_lvl: "00", std_hrs: "35" },
+      { title: "10001", descr: "SHARED TITLE", asg_lvl: "00", std_hrs: "35" },
+      { title: "10002", descr: "SHARED TITLE", asg_lvl: "00", std_hrs: "35" },
+    ],
+    generatedAt: "2026-08-06",
+  });
+  assert.equal(registry.measures.exact_alias_pairs, 1);
+  assert.deepEqual(registry.alias_index["PROJECT MANAGER"], ["22426"]);
+  assert.equal(registry.alias_index["SHARED TITLE"], undefined);
+  assert.equal(registry.alias_index.UNCANONICAL, undefined);
+});
+
+test("source aliases add coverage while residual FS remains the precision gate", () => {
+  const aliasRegistry = buildTitleCodeAliasRegistry({
+    jobsRows: [
+      { job_id: "1", agency: "AGENCY A", civil_service_title: "Project Manager", title_code_no: "22426" },
+    ],
+    canonicalRows: [
+      { title: "22426", descr: "PROJECT MANAGER", asg_lvl: "00", std_hrs: "35" },
+      { title: "70210", descr: "POLICE OFFICER", asg_lvl: "00", std_hrs: "35" },
+    ],
+    generatedAt: "2026-08-06",
+  });
+  const measured = measureTitleCodeFamilyCoverage({
+    historyRecords: [
+      { exam_number: "0001", title_code: null, exam_title: "Project Manager" },
+      { exam_number: "0002", title_code: "70210", exam_title: "Police Officer" },
+    ],
+    titleCrosswalk: [],
+    aliasRegistry,
+    generatedAt: "2026-08-06",
+  });
+  assert.equal(measured.historical_exams.alias_registry_exact, 1);
+  assert.equal(measured.historical_exams.exact_plus_alias, 2);
+  assert.equal(measured.residual_fellegi_sunter.residual_missing_rows, 0);
+  assert.equal(measured.promotion.coverage_passed, true);
+  assert.equal(measured.promotion.precision_passed, false);
+  assert.equal(measured.promotion.publish_family_ui, false);
+});
+
 test("committed trial stops below the standing promotion bars", () => {
   assert.equal(coverage.historical_exams.cohort, 1271);
   assert.equal(coverage.historical_exams.exact_title_code, 367);
@@ -89,15 +140,22 @@ test("committed trial stops below the standing promotion bars", () => {
   assert.equal(coverage.historical_exams.reviewed_confirmed, 5);
   assert.equal(coverage.historical_exams.exact_plus_confirmed, 372);
   assert.equal(coverage.historical_exams.exact_plus_confirmed_rate, 0.2927);
+  assert.equal(coverage.historical_exams.alias_registry_exact, 137);
+  assert.equal(coverage.historical_exams.exact_plus_alias, 504);
+  assert.equal(coverage.historical_exams.exact_plus_alias_rate, 0.3965);
   assert.equal(coverage.appointments.exact_title_code_rate, 1);
   assert.equal(coverage.promotion.historical_exam_coverage_floor, 0.3);
   assert.equal(coverage.promotion.audit_precision_floor, 0.95);
-  assert.equal(coverage.promotion.coverage_passed, false);
+  assert.equal(coverage.promotion.coverage_passed, true);
   assert.equal(coverage.promotion.publish_family_ui, false);
   assert.equal(coverage.promotion.publish_entity_pivots, false);
-  assert.equal(coverage.precision_audit.reviewed, 18);
-  assert.equal(coverage.precision_audit.correct, 5);
-  assert.equal(coverage.precision_audit.precision, 0.2778);
+  assert.equal(coverage.precision_audit.status, "residual_only_held_out");
+  assert.equal(coverage.precision_audit.reviewed, 55);
+  assert.equal(coverage.precision_audit.correct, 45);
+  assert.equal(coverage.precision_audit.precision, 0.8182);
+  assert.equal(coverage.promotion.coverage_rate, 0.3965);
+  assert.equal(coverage.promotion.coverage_passed, true);
+  assert.equal(coverage.promotion.precision_passed, false);
 });
 
 test("closed trial does not widen the public entity-ref allowlist", () => {
