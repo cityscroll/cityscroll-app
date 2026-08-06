@@ -4,6 +4,8 @@ import {
   routeHashFromScope,
   scopeWithEntity,
 } from "./scope_v0.mjs";
+import { canonicalizeBrowseUrl } from "./route_migration.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
 
 const GROUPS = Object.freeze([
   { id: "awards", label: "Awards", domain: "money", kind: "award", surface: "money", mode: "award" },
@@ -18,6 +20,12 @@ const GROUPS = Object.freeze([
   { id: "meetings", label: "Meetings", domain: "meetings", surface: "meetings" },
   { id: "franchise", label: "Franchises and concessions", domain: "franchise", surface: null },
 ]);
+
+function browseHref(hash, surface) {
+  const facet = { money: "contracts", land: "zoning", property: "property", rules: "rules", meetings: "meetings" }[surface];
+  if (!facet || !String(hash).startsWith("#")) return hash;
+  return canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
+}
 
 const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;",
@@ -54,7 +62,7 @@ export function vendorFootprintScopeHref(
   if (Number.isInteger(count) && count >= 0) {
     composed.facets.values.result_count_receipt = count;
   }
-  return routeHashFromScope(composed, { surface: group.surface });
+  return browseHref(routeHashFromScope(composed, { surface: group.surface }), group.surface);
 }
 
 /**
@@ -72,14 +80,16 @@ export function vendorAgencyIntersectionHref(
   if (!ref || !name) return "";
   const domainScope = emptyScope(language);
   domainScope.facets.domains = ["money"];
-  domainScope.facets.agencies = [name];
+  const agency = resolveAgencyIdentity(name);
+  domainScope.facets.agencies = [agency.canonical_name];
   if (query) {
     domainScope.topic.query = String(query);
     domainScope.topic.keywords = [String(query)];
   }
   const entityScope = scopeWithEntity(emptyScope(language), ref);
-  const composed = intersectScopes(domainScope, entityScope);
-  return routeHashFromScope(composed, { surface: "money" });
+  const agencyScope = scopeWithEntity(emptyScope(language), `agency:id:${agency.canonical_id}`);
+  const composed = intersectScopes(intersectScopes(domainScope, agencyScope), entityScope);
+  return browseHref(routeHashFromScope(composed, { surface: "money" }), "money");
 }
 
 export function vendorFootprintModel(response = {}) {
