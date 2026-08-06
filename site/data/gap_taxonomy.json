@@ -650,6 +650,30 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "mandatory-inclusionary-housing",
+      "name": "Mandatory Inclusionary Housing",
+      "source_contract_id": "mandatory-inclusionary-housing",
+      "status": "landed",
+      "join_keys": [
+        "project_id"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.9781818182,
+          "joined": 269,
+          "total": 275,
+          "metric": "exact_project_id",
+          "observed_on": "2026-08-05",
+          "universe": "All rows in Socrata m79g-k9r4",
+          "strategy": "exact_project_id against the full ZAP project source; title, address, and ULURP-only joins rejected",
+          "verdict": "Materialize only exact project_id matches; six unmatched rows remain a named gap.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/m79g-k9r4",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "mappluto",
       "name": "MapPLUTO",
       "source_contract_id": "mappluto",
@@ -1811,6 +1835,23 @@
       "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
     },
     {
+      "id": "mandatory-inclusionary-housing-x-nycida-build-nyc-projects-via-project_id",
+      "source_a": "mandatory-inclusionary-housing",
+      "source_b": "nycida-build-nyc-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ],
+      "score": 2,
+      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+    },
+    {
       "id": "ocp-recent-contract-awards-x-passport-public-contracts-via-PIN",
       "source_a": "ocp-recent-contract-awards",
       "source_b": "passport-public-contracts",
@@ -2181,6 +2222,70 @@
       ],
       "score": 1,
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-unregistered-zoning-application-portal-projects-via-project_id",
+      "source_a": "mandatory-inclusionary-housing",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-api-outcomes-via-project_id",
+      "source_a": "mandatory-inclusionary-housing",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-bbl-via-project_id",
+      "source_a": "mandatory-inclusionary-housing",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-projects-via-project_id",
+      "source_a": "mandatory-inclusionary-housing",
+      "source_b": "zap-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id; 1 taxonomy gap(s) could close."
     },
     {
       "id": "mappluto-x-unregistered-zoning-application-portal-projects-via-BBL",
@@ -3093,9 +3198,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-06",
-    "source_contracts_fingerprint": "7caedac59fa8bfee9b22cc4c9a86514da85ca7c2c93ee8a93da8cf80791e5e42",
+    "source_contracts_fingerprint": "25bc1eb052421d40cda41a6adeee290ffa11dd6b3e4a38cd1ec499bc564d80db",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 68,
+    "candidate_crosswalks": 73,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

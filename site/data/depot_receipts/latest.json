@@ -4,7 +4,7 @@
   "observed_on": "2026-08-06",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 48,
+  "sources_count": 49,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -415,6 +415,18 @@
       ]
     },
     {
+      "id": "mandatory-inclusionary-housing-x-nycida-build-nyc-projects-via-project_id",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ]
+    },
+    {
       "id": "ocp-recent-contract-awards-x-passport-public-contracts-via-PIN",
       "worth_materializing": "yes",
       "score": 2,
@@ -672,6 +684,50 @@
       ]
     },
     {
+      "id": "mandatory-inclusionary-housing-x-unregistered-zoning-application-portal-projects-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-api-outcomes-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-bbl-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-projects-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "mappluto-x-unregistered-zoning-application-portal-projects-via-BBL",
       "worth_materializing": "maybe",
       "score": 1,
@@ -900,5 +956,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "93dab22a069eba2f6f295a0d65f5a9f5c15d02062fda8afa57fdb26359ff2117"
+  "registry_sha256": "66dfea2364f09b674e097c6e0df588cb826aa1aeb9d447d26fb2d98fae07b726"
 }
