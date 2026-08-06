@@ -484,6 +484,32 @@ function careerOutcomeHTML(exam, options={}){
     })}</p>
   </section>`;
 }
+function careerUtilizationHTML(exam){
+  const summary=exam?.eligible_list_utilization;
+  const slice=careerData?.eligible_list_utilization;
+  if(!summary || summary.status !== "linked" || !slice) return "";
+  const rows=(slice.records||[]).filter(row=>row.exam_number===String(exam.exam_number));
+  if(!rows.length) return "";
+  const count=(field)=>rows.reduce((total,row)=>total+Number(row.source_row?.[field]||0),0);
+  const removalFields=["aac_cnt","aol_cnt","dce_cnt","dea_cnt","dlx_cnt","fra_cnt","frh_cnt","fri_cnt","frm_cnt","frp_cnt","ftr_cnt","nfp_cnt","nle_cnt","ova_cnt","rli_cnt","tin_cnt","unf_cnt"];
+  const removed=rows.reduce((total,row)=>total+removalFields.reduce((sum,field)=>sum+Number(row.source_row?.[field]||0),0),0);
+  const agencies=new Set(rows.map(row=>row.source_row?.agency_desc).filter(Boolean));
+  const sourceName=t("career_utilization_source_name");
+  return `<section class="career-utilization" data-evidence-group="eligible-list-utilization" aria-label="${escUiHtml(t("career_utilization_heading"))}">
+    <h3 class="career-outcomes-heading">${t("career_utilization_heading")}</h3>
+    <div class="career-outcomes-metrics">
+      <div class="career-metric"><b>${fmtNumber(count("appt_cnt"))}</b><span>${t("career_utilization_appointed")}</span></div>
+      <div class="career-metric"><b>${fmtNumber(removed)}</b><span>${t("career_utilization_removed")}</span></div>
+      <div class="career-metric"><b>${fmtNumber(count("cns_cnt"))}</b><span>${t("career_utilization_not_selected")}</span></div>
+      <div class="career-metric"><b>${fmtNumber(rows.length)}</b><span>${t("career_utilization_rows")}</span></div>
+    </div>
+    <p class="career-outcomes-note">${t("career_utilization_note",{
+      agencies:fmtNumber(agencies.size),
+      date:careerDate(summary.vintage),
+      source:sourceName,
+    })}</p>
+  </section>`;
+}
 function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
   const openBand=CrolStaffing.openWindowBand(exam,careerToday());
@@ -552,7 +578,7 @@ function careerCardHTML(exam){
       const phaseView=phaseTools&&typeof phaseTools.buildExamPhaseView==="function"&&spine
         ? phaseTools.buildExamPhaseView(spine)
         : null;
-      return examProcessSpineHTML(spine, exam, phaseView)+careerOutcomeHTML(exam,{spineMounted:!!spine});
+      return examProcessSpineHTML(spine, exam, phaseView)+careerOutcomeHTML(exam,{spineMounted:!!spine})+careerUtilizationHTML(exam);
     })():""}
     <div class="actions">${apply}${notice}
       ${expanded?`<button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>`:""}

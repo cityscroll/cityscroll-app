@@ -4,7 +4,7 @@
   "observed_on": "2026-08-06",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 49,
+  "sources_count": 50,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -461,6 +461,17 @@
       ]
     },
     {
+      "id": "active-civil-service-list-x-dcas-eligible-list-utilization-via-exam_no",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "exam_no"
+      ],
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ]
+    },
+    {
       "id": "current-solicitations-ocp-x-ocp-recent-contract-awards-via-PIN+request_id",
       "worth_materializing": "maybe",
       "score": 1,
@@ -481,6 +492,17 @@
       ],
       "gaps_would_close": [
         "procurement-registered-unmatched"
+      ]
+    },
+    {
+      "id": "dcas-annual-exam-outcomes-x-dcas-eligible-list-utilization-via-exam_no",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "exam_no"
+      ],
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
       ]
     },
     {
@@ -956,5 +978,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "66dfea2364f09b674e097c6e0df588cb826aa1aeb9d447d26fb2d98fae07b726"
+  "registry_sha256": "dfdc823ea65e5631bbd542f9887b2525545eeff03fd8e5562a098a6b806959a5"
 }
