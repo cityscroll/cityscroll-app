@@ -14,7 +14,17 @@ const mihOn = v => v===true || v==="true";
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
 const ZAP_SELECT="project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,cc_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers";
 let landBanner="";
-function zapWhere(status){ return "ulurp_non='ULURP'"+(status==="active"?" AND project_status='Active'":""); }
+let landStatusFacetToolsPromise=null;
+let landStatusFacetToolsModule=null;
+function landStatusFacetTools(){
+  return landStatusFacetToolsPromise ||= import("../land_status_facets.mjs")
+    .then(tools=>{ landStatusFacetToolsModule=tools; return tools; })
+    .catch(()=>null);
+}
+function zapWhere(status){
+  const facetWhere=landStatusFacetToolsModule?.landStatusFacetWhere?.(status);
+  return "ulurp_non='ULURP'"+(status==="active"?" AND project_status='Active'":facetWhere?` AND ${facetWhere}`:"");
+}
 function zapDistrictWhere(communityDistrict){
   return /^(?:M|X|K|Q|R)\d{2}$/.test(communityDistrict||"")
     ? ` AND community_district like '%${communityDistrict}%'`
@@ -75,10 +85,29 @@ function landHearingModeFieldSync(){
   const status=$("#lstatus")?$("#lstatus").value:"";
   if(field) field.hidden=status!=="hearings";
 }
-function syncLandLensControls(){
+async function syncLandLensControls(){
+  const tools=await landStatusFacetTools();
   const status=$("#lstatus")?.value||"all";
-  $("#land-status-rail").querySelectorAll("[data-land-status]").forEach(button=>{
-    button.setAttribute("aria-pressed",String(button.dataset.landStatus===status));
+  const rail=$("#land-status-rail");
+  const select=$("#lstatus");
+  const options=tools?.landStatusFacetOptions?.(lRows)||[];
+  if(rail && options.length){
+    const buttons=[
+      { id:"all", label:t("status_all") },
+      ...options,
+      { id:"hearings", label:t("land_status_upcoming_hearings") },
+    ];
+    if(select){
+      const selectOptions=[buttons[0], { id:"active", label:t("status_active") }, ...buttons.slice(1)];
+      select.innerHTML=selectOptions.map(option=>`<option value="${escUiHtml(option.id)}">${escUiHtml(option.label)}</option>`).join("");
+    }
+    const selectedId=status==="active"?["project","Active"].join(":"):status;
+    rail.innerHTML=buttons.map(option=>`<button type="button" class="chip" data-land-status="${escUiHtml(option.id)}" aria-pressed="${option.id===selectedId?"true":"false"}">${escUiHtml(option.label)}${option.count?` <span class="ct">${fmtNumber(option.count)}</span>`:""}</button>`).join("");
+    if(select) select.value=status;
+  }
+  const selectedId=status==="active"?["project","Active"].join(":"):status;
+  rail?.querySelectorAll("[data-land-status]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.landStatus===selectedId));
   });
   landHearingModeFieldSync();
   const active=[
@@ -237,6 +266,9 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
   lRows=Array.isArray(rows)?rows:[]; landBanner=banner||"";
+  // The facet module is lazy so non-Land routes keep their cold path small; now
+  // that the inventory exists, repaint the status rail with its real options.
+  syncLandLensControls();
   setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
   setLandStatus();
@@ -272,7 +304,7 @@ async function landSearch(){
       }
     }catch(_e){}
   }
-  syncLandLensControls();
+  await syncLandLensControls();
   clearLandDetail();
   setLandStatus();
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
@@ -510,8 +542,10 @@ async function showLandEntry(id){
   showTab("land");
   $("#lboro").value="";
   $("#lkw").value="";
-  $("#lstatus").value="all";
-  syncLandLensControls();
+  // A project deep link is still part of the default review view; retain the
+  // lens default so the surrounding route state remains stable while detail loads.
+  $("#lstatus").value="active";
+  await syncLandLensControls();
   $("#lreshead").textContent=t("rezonings_heading");
   $("#lrescount").textContent="";
   setLandStatus();
