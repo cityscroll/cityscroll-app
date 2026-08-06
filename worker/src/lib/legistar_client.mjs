@@ -18,6 +18,8 @@ export const LEGISTAR_API_BASE = "https://webapi.legistar.com/v1/nyc";
 export const LEGISTAR_LOOKBACK_DAYS = 180;
 export const EVENTS_PAGE_SIZE = 200;
 export const EVENTS_MAX_PAGES = 4;
+export const BODIES_PAGE_SIZE = 500;
+export const BODIES_MAX_PAGES = 4;
 export const EVENT_ITEMS_TOP = 500;
 export const VOTES_TOP = 200;
 // Bound the best-effort roll-call fan-out so a single materialization run stays
@@ -58,6 +60,29 @@ async function fetchJson(fetchImpl, url, timeoutMs = 15000) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+/**
+ * Fetch publisher-issued governing-body identities. BodyId is the stable key;
+ * names are descriptive and must not be promoted to an identity on their own.
+ */
+export async function fetchLegistarBodies({ token, fetchImpl = fetch } = {}) {
+  if (!token) return [];
+  const rows = [];
+  for (let page = 0; page < BODIES_MAX_PAGES; page += 1) {
+    const batch = await fetchJson(
+      fetchImpl,
+      authedUrl("Bodies", token, {
+        $top: String(BODIES_PAGE_SIZE),
+        $skip: String(page * BODIES_PAGE_SIZE),
+        $orderby: "BodyName asc",
+      }),
+    );
+    if (!batch.length) break;
+    rows.push(...batch);
+    if (batch.length < BODIES_PAGE_SIZE) break;
+  }
+  return rows;
 }
 
 /**

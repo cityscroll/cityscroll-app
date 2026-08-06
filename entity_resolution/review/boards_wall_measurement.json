@@ -1,0 +1,170 @@
+{
+  "schema": "cityscroll.published_walls.boards.v1",
+  "observed_on": "2026-08-06",
+  "status": "stratified_review_receipt",
+  "contract": {
+    "populations_are_disjoint": true,
+    "candidates_or_inferences_are_not_public_facts": true,
+    "canonical_identities_required": true,
+    "operative_links_enabled": false
+  },
+  "scope_exclusions": {
+    "borough_presidents": {
+      "count": 5,
+      "reason": "Borough-president offices remain in the source inventory but are not one of the three board identity strata."
+    }
+  },
+  "detectors": {
+    "unknown_source_body_types": [],
+    "fail_closed_on_new_population": true,
+    "community_board_fixture_id": "community-board-borough-number-v1",
+    "registry_schema": "cityscroll.review.mayoral_board_registry.v1"
+  },
+  "strata": {
+    "council_adjacent": {
+      "status": "convertible",
+      "identity": "publisher_body_id",
+      "source": {
+        "endpoint": "https://webapi.legistar.com/v1/nyc/Bodies",
+        "token_env": "LEGISTAR_API_TOKEN",
+        "acquisition_path": "CI secret-backed authenticated request",
+        "mode": "fixture"
+      },
+      "bodies_observed": 3,
+      "body_ids": [
+        "1",
+        "2",
+        "3"
+      ],
+      "body_names": [
+        "Committee on Housing and Buildings",
+        "Committee on Land Use",
+        "New York City Council"
+      ],
+      "coverage": {
+        "source_contract_observed_on": "2026-07-30",
+        "modern_notices_strict": {
+          "joined": 59,
+          "total": 59,
+          "rate": 1
+        },
+        "modern_joined_with_event_items": {
+          "joined": 59,
+          "total": 59,
+          "rate": 1
+        },
+        "auth_token_env": "LEGISTAR_API_TOKEN"
+      },
+      "operative_links_enabled": false
+    },
+    "community_boards": {
+      "status": "convertible",
+      "identity": "exact_borough_plus_number",
+      "inventory": {
+        "observed": 59,
+        "expected": 59,
+        "rate": 1,
+        "by_borough": {
+          "Bronx": 12,
+          "Brooklyn": 18,
+          "Manhattan": 12,
+          "Queens": 14,
+          "Staten Island": 3
+        }
+      },
+      "extraction": {
+        "fixture_id": "community-board-borough-number-v1",
+        "positive_cases": 8,
+        "negative_cases": 8,
+        "true_positives": 8,
+        "false_negatives": 0,
+        "false_positives": 0,
+        "precision": 1,
+        "recall": 1,
+        "fixture_proven_precision": true,
+        "results": {
+          "positives": [
+            {
+              "expected": "brooklyn-cb-01",
+              "actual": "brooklyn-cb-01"
+            },
+            {
+              "expected": "brooklyn-cb-18",
+              "actual": "brooklyn-cb-18"
+            },
+            {
+              "expected": "bronx-cb-06",
+              "actual": "bronx-cb-06"
+            },
+            {
+              "expected": "manhattan-cb-03",
+              "actual": "manhattan-cb-03"
+            },
+            {
+              "expected": "queens-cb-08",
+              "actual": "queens-cb-08"
+            },
+            {
+              "expected": "staten-island-cb-01",
+              "actual": "staten-island-cb-01"
+            },
+            {
+              "expected": "queens-cb-14",
+              "actual": "queens-cb-14"
+            },
+            {
+              "expected": "bronx-cb-12",
+              "actual": "bronx-cb-12"
+            }
+          ],
+          "negatives": [
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            },
+            {
+              "expected": null,
+              "actual": null
+            }
+          ]
+        }
+      },
+      "coverage_block": "Fixture precision is 100%; production promotion still requires the same exact parser and a dated source receipt.",
+      "operative_links_enabled": false
+    },
+    "mayoral_commissions": {
+      "status": "reviewed_registry_pending_operative_use",
+      "identity": "reviewed_minted_agency_slug",
+      "registry_schema": "cityscroll.review.mayoral_board_registry.v1",
+      "entries": 11,
+      "publisher_identifiers_observed": 0,
+      "review_status": "reviewed_seed_entries",
+      "coverage_block": "The city-published source does not provide a board identifier; minted slugs remain local reviewed registry identities and do not authorize an operative join.",
+      "operative_links_enabled": false
+    }
+  }
+}

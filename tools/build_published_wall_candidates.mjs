@@ -71,13 +71,14 @@ function serialize(value) {
 }
 
 async function build() {
-  const [history, annual, crosswalk, hires, wallReceipt, fixture] = await Promise.all([
+  const [history, annual, crosswalk, hires, wallReceipt, fixture, boardsWall] = await Promise.all([
     json("site/data/exam_sources/annual_schedule_history.json"),
     json("site/data/exam_sources/annual_schedule.json"),
     json("site/data/title_crosswalk.json"),
     json("site/data/staffing_default_hires.json"),
     json("site/data/non_council_outcome_sources/verification_receipts/non_council_minutes_votes_2026-08-04.json"),
     json("warehouse/fixtures/non_council_outcomes.json"),
+    json("entity_resolution/review/boards_wall_measurement.json"),
   ]);
 
   const catalog = buildTitleCodeCatalog(crosswalk);
@@ -221,6 +222,7 @@ async function build() {
         candidate_pairs: minutesCandidates.length,
         potential: minutesPotential,
       },
+      boards: boardsWall.strata,
     },
   };
 
