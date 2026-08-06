@@ -63,6 +63,25 @@ test("the edge Following renderer previews the same saved scope and preserves th
   assert.match(html, /name="freq"[^>]+value="weekly"/);
 });
 
+test("the edge Following renderer preserves typed route facets in the watch form", async () => {
+  const filter = encodeURIComponent(JSON.stringify({
+    agency: "Housing Preservation and Development",
+    noticeType: "award",
+    entity_refs_all: ["agency:id:housing-preservation-and-development"],
+    connection_relation: "published_by_agency",
+  }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=money&filter=${filter}`,
+  ), {}, {}, { fetchImpl: previewFetch });
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /entity_refs_all/);
+  assert.match(html, /housing-preservation-and-development/);
+  assert.match(html, /connection_relation/);
+  assert.match(html, /published_by_agency/);
+});
+
 test("shared API-host Following documents permanently recover to the canonical host", async () => {
   const response = await handleFollowing(new Request(
     "https://api.cityscroll.org/following?lens=meetings&freq=weekly",

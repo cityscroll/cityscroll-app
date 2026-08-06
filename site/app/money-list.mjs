@@ -1,4 +1,5 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
+import { resolveAgencyIdentity } from "../agency_identity.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -88,6 +89,19 @@ function moneyActiveFilterChip(item){
   if(item.kind==="months") return `<span class="qchip">${t("nl_filter_months",{n:value})}</span>`;
   return `<span class="qchip"><b>${t("nl_filter_standard_only")}</b></span>`;
 }
+function routeScopeFacetChip(){
+  const values=globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES||{};
+  const refs=Array.isArray(values.entity_refs_all)?values.entity_refs_all.filter(Boolean):[];
+  const relation=String(values.connection_relation||"");
+  if(!refs.length && !relation) return "";
+  const ref=String(refs[0]||"");
+  const agencyId=ref.match(/^agency:(?:id:)?(.+)$/)?.[1]||"";
+  const agency=agencyId?resolveAgencyIdentity(agencyId).canonical_name:"";
+  const relationLabel=relation==="published_by_agency"?t("scope_relation_published_by"):t("scope_relation_connection");
+  const label=agency?`${relationLabel} ${agency}`:relationLabel;
+  const raw=escUiHtml(JSON.stringify(values));
+  return `<span class="qchip active-scope-chip" data-active-scope-chip="true" data-scope-facet="${raw}">scope <b>${escUiHtml(label)}</b></span>`;
+}
 function renderMoneyActiveFilters(){
   const box=$("#moneyactivefilters"); if(!box) return;
   const filter={
@@ -102,6 +116,8 @@ function renderMoneyActiveFilters(){
     minAmount:filter.minAmount, ...moneyNlResolved,
   });
   box.innerHTML=interpretedSearchRowHTML("money", filter, items.map(moneyActiveFilterChip));
+  const scopeChip=routeScopeFacetChip();
+  if(scopeChip) box.insertAdjacentHTML("beforeend",`<div class="active-scope-state" role="status">${scopeChip}</div>`);
   const locationSummary=globalThis.MoneyActionLocations?.moneyLocationFilterSummaryHTML?.(moneyLocationFilter,{t,esc:escUiHtml});
   if(locationSummary) box.insertAdjacentHTML("beforeend",locationSummary);
   bindClearSearchState("money", box);

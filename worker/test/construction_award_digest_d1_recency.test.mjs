@@ -104,6 +104,7 @@ function filterRows(allRows, opts) {
   // Apply the same predicates the SQL would — keep this in lockstep with notices.mjs.
   if (opts.category) list = list.filter((r) => r.category === opts.category);
   if (opts.noticeType) list = list.filter((r) => r.type_of_notice === opts.noticeType);
+  if (opts.agency) list = list.filter((r) => r.agency === opts.agency);
   if (opts.minAmount != null) {
     list = list.filter((r) => r.contract_amount_valid === 1 && r.contract_amount >= opts.minAmount);
   }
@@ -169,6 +170,33 @@ test("after: start_date order surfaces Jul 27 20260721018 (and Jul 24 2026072000
   assert.ok(ids.includes("20260720004"), "Jul 24 Courthouse renovation must still match");
   // Newest first
   assert.ok(ids.indexOf("20260721018") < ids.indexOf("20260720004"));
+});
+
+test("typed agency scope matches only the scoped fixture rows and still feeds the digest diff", () => {
+  const scopeFilter = {
+    agency: "Housing Preservation and Development",
+    noticeType: "award",
+    entity_refs_all: ["agency:id:housing-preservation-and-development"],
+    connection_relation: "published_by_agency",
+  };
+  const scoped = {
+    request_id: "HPD20260805001",
+    start_date: "2026-08-05",
+    agency: "Housing Preservation and Development",
+    short_title: "HPD affordable housing rehabilitation award",
+    contract_amount: 2500000,
+    contract_amount_valid: 1,
+    category: "Services (other than human services)",
+    type_of_notice: "Award",
+    haystack: "hpd affordable housing rehabilitation award",
+  };
+  const otherAgency = { ...scoped, request_id: "OTHER20260805001", agency: "Department of Transportation" };
+  const opts = subToD1Opts({ lens: "money", filter: scopeFilter }, "2026-08-05");
+  const { rows } = filterRows([otherAgency, scoped], opts);
+  assert.deepEqual(rows.map((row) => row.request_id), ["HPD20260805001"]);
+  assert.deepEqual(opts.agency, "Housing Preservation and Development");
+  assert.equal(scopeFilter.entity_refs_all[0], "agency:id:housing-preservation-and-development");
+  assert.equal(scopeFilter.connection_relation, "published_by_agency");
 });
 
 test("day-by-day evidence: which days the owner filter SHOULD have matched (Jul 25–30)", () => {

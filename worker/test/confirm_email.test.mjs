@@ -53,6 +53,18 @@ test("describeFilter: noticeType alone (no amount) still renders — closes the 
   );
 });
 
+test("describeFilter names a typed agency scope carried by the watch", () => {
+  assert.match(
+    describeFilter("money", {
+      agency: "Housing Preservation and Development",
+      noticeType: "award",
+      entity_refs_all: ["agency:id:housing-preservation-and-development"],
+      connection_relation: "published_by_agency",
+    }),
+    /published by this agency/,
+  );
+});
+
 test("subCanonical is stable regardless of email case/whitespace", () => {
   const a = subCanonical({ email: " A@B.com ", lens: "money", filter: { minAmount: 1000000 } });
   const b = subCanonical({ email: "a@b.com", lens: "money", filter: { minAmount: 1000000 } });
