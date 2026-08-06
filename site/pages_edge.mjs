@@ -257,12 +257,21 @@ function unavailableBrowseResponse(facet) {
 async function handleEntity(request, env, entity) {
   let id = entity.id;
   try { id = decodeURIComponent(entity.id); } catch (_error) { return new Response("Invalid entity id", { status: 400 }); }
-  const noun = entity.family.slice(0, -1);
-  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${noun} record unavailable · CityScroll</title></head><body><main><h1>${noun} record unavailable</h1><p>This entity page is not available as a standalone public document yet.</p><p><a href="/browse/">Browse the public record</a></p></main></body></html>`;
-  return new Response(request.method === "HEAD" ? null : body, {
-    status: 404,
-    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
-  });
+  const asset = await staticAsset(env, request, "/");
+  if (!asset.ok) return asset;
+  const canonical = `https://cityscroll.org/${entity.family}/${encodeURIComponent(id)}/`;
+  const response = rewrittenResponse(asset, 200, "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
+  // Node unit tests do not provide the Workers HTMLRewriter runtime. The route
+  // contract is still testable there; production applies the metadata rewrite.
+  if (typeof HTMLRewriter === "undefined") return request.method === "HEAD"
+    ? new Response(null, { status: 200, headers: response.headers })
+    : response;
+  const transformed = new HTMLRewriter()
+    .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
+    .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
+    .transform(response);
+  if (request.method === "HEAD") return new Response(null, { status: 200, headers: transformed.headers });
+  return transformed;
 }
 
 export default {

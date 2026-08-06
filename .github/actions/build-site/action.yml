@@ -127,6 +127,14 @@ runs:
         set -euo pipefail
         node "$SOURCE_DIR/tools/build_exam_documents.mjs"
         node "$SOURCE_DIR/tools/build_exam_documents.mjs" --check
+    - name: Build agency index
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        set -euo pipefail
+        node "$SOURCE_DIR/tools/build_agency_documents.mjs"
+        node "$SOURCE_DIR/tools/build_agency_documents.mjs" --check
     - name: Check civic token contract for built documents
       shell: bash
       env:
