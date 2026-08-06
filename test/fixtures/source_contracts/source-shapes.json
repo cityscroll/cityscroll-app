@@ -3,6 +3,14 @@
   "observed_on": "2026-08-03",
   "sources": [
     {
+      "id": "mandatory-inclusionary-housing",
+      "kind": "socrata",
+      "identifier": "m79g-k9r4",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["project_id", "status", "project_nam", "date_adopte", "zr_ulurpno", "mih_option", "cd"]
+    },
+    {
       "id": "city-record",
       "kind": "socrata",
       "identifier": "dg92-zbpx",
