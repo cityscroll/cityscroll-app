@@ -8,6 +8,7 @@ import {
 } from "../site/browse_view.mjs";
 import {
   buildContextualSuggestions,
+  productionDestinationCheck,
   renderContextualSuggestions,
 } from "../site/contextual_suggestions.mjs";
 import { scopeFromRouteHash } from "../site/scope_v0.mjs";
@@ -79,5 +80,24 @@ test("destination approval is fail-closed for broken pivots", () => {
     destinationCheck: (suggestion) => suggestion.kind !== "pivot",
   });
   assert.doesNotMatch(renderContextualSuggestions(suggestions), /data-suggestion-kind="pivot"/);
+  assert.ok(suggestions.every((suggestion) => suggestion.kind !== "pivot"));
+});
+
+test("production destination approval suppresses entity routes until they are documents", () => {
+  assert.equal(productionDestinationCheck({ kind: "pivot", href: "/agencies/hpd/" }), false);
+  assert.equal(productionDestinationCheck({ kind: "pivot", href: "/vendors/hntb/" }), false);
+  assert.equal(productionDestinationCheck({ kind: "pivot", href: "/officials/7801/" }), false);
+  assert.equal(productionDestinationCheck({ kind: "pivot", href: "/browse/contracts/?facet=%7B%7D" }), true);
+  assert.equal(productionDestinationCheck({ kind: "intersect", href: "/agencies/hpd/" }), true);
+});
+
+test("the production default destination check is applied without a test-only callback", () => {
+  const suggestions = buildContextualSuggestions({
+    scope: scopeFromRouteHash("#money?q=school"),
+    surface: "money",
+    route: "/browse/contracts/",
+    resultCount: 4,
+    edgeInventory: [{ ref: "agency:id:broken", kind: "agency", count: 4, pivotHref: "/agencies/broken/" }],
+  });
   assert.ok(suggestions.every((suggestion) => suggestion.kind !== "pivot"));
 });
