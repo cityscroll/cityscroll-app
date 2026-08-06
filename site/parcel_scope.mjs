@@ -107,6 +107,24 @@ function landItems(source = []) {
   });
 }
 
+function ll48Items(source = []) {
+  return (Array.isArray(source) ? source : []).flatMap((item) => item?.bbl ? [{
+    id: clean(item.id || item.bbl, 80),
+    subject_ref: `bbl:${item.bbl}`,
+    label: clean(item.label || item.parcel_name || item.address || item.bbl),
+    date: clean(item.observed_at, 40) || null,
+    date_basis: "LL48 source observation",
+    source: "NYC Open Data · LL48 suitability",
+    relation: "suitability_record_for_exact_bbl",
+    confidence: "strong",
+    method: "exact_bbl_v1",
+    href: parcelBiographyHref(item.bbl),
+    agency: clean(item.agency) || null,
+    current_uses: clean(item.current_uses) || null,
+    potential_urban_ag: clean(item.potential_urban_ag) || null,
+  }] : []);
+}
+
 function coverageBlock({ eligible = null, linked = null, rate = null, vintage = null, gaps }) {
   return {
     eligible: finiteOrNull(eligible),
@@ -156,6 +174,7 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo }
 
   const propertySource = demo?.property?.notices || bucket?.property_notices || [];
   const landSource = demo?.land?.projects || bucket?.land_projects || [];
+  const ll48Source = demo?.ll48?.items || bucket?.ll48?.items || [];
   const property = noticeItems(propertySource);
   const land = landItems(landSource);
   const lien = decodeTaxLienBbl(taxLien, bbl);
@@ -190,6 +209,20 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo }
         rate: coverage.zap_matched_fraction,
         vintage: generatedAt,
         gaps: "Only projects represented in the current zap-bbl catalog can join; address and name similarity are excluded.",
+      }),
+    },
+    ll48: {
+      status: ll48Source.length ? "observed" : "not_observed",
+      items: ll48Items(ll48Source),
+      note: ll48Source.length
+        ? null
+        : "No LL48 suitability row in the current exact-BBL graph slice.",
+      coverage: coverageBlock({
+        eligible: coverage.ll48_eligible_bbl_count,
+        linked: coverage.ll48_linked_bbl_count,
+        rate: coverage.ll48_bbl_join_rate,
+        vintage: coverage.ll48_vintage || generatedAt,
+        gaps: "Only exact BBLs in the current Property Disposition graph slice are eligible; absence is not proof of no LL48 record citywide.",
       }),
     },
     tax_lien: {

@@ -38,13 +38,14 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   const view = buildParcelBiographyView({ bbl, crossDomain, taxLien, cofo });
   assert.equal(parcelPath(bbl), `/parcels/${bbl}/`);
   assert.equal(view.kind, "parcel");
-  assert.deepEqual(view.sections && Object.keys(view.sections), ["property", "land", "tax_lien", "cofo"]);
+  assert.deepEqual(view.sections && Object.keys(view.sections), ["property", "land", "ll48", "tax_lien", "cofo"]);
   const html = renderComposedObjectDocument(view);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/parcels\/\d{10}\//);
   assert.match(html, /lens=property/);
   assert.match(html, new RegExp(`subject_refs_all.*bbl:${bbl}`));
   assert.match(html, /not a complete municipal history/);
   assert.match(html, /new record attaches to this exact BBL/);
+  assert.match(html, /city-owned or leased property suitability/);
   assert.match(html, /data-export-class="object_identity"/);
   assert.match(html, /data-export-class="object_actions"/);
   assert.match(html, /data-export-class="object_members"/);

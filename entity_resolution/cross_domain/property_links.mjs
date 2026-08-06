@@ -35,6 +35,7 @@ export const BBL_JOIN_METHOD = "exact_bbl_v1";
 export const BBL_JOIN_METHOD_VERSION = "1.0.0";
 export const OWNER_EXTRACT_METHOD = "disposition_owner_label_v1";
 export const OWNER_EXTRACT_METHOD_VERSION = "1.0.0";
+export const LL48_JOIN_METHOD = "exact_bbl_v1";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
@@ -609,6 +610,53 @@ export function joinPropertyOwnerToContracts(propertyObservations = [], moneyRow
   };
 }
 
+function ll48EvidenceItem(row, bbl) {
+  const sourceRecordId = `4e2n-s75z:bbl:${bbl}`;
+  return {
+    id: sourceRecordId,
+    bbl,
+    label: clean(row.parcel_name || row.address || bbl),
+    address: clean(row.address) || null,
+    agency: clean(row.agency) || null,
+    current_uses: clean(row.current_uses) || null,
+    potential_urban_ag: clean(row.potential_urban_ag) || null,
+    source: "NYC Open Data · LL48 suitability",
+    source_url: "https://data.cityofnewyork.us/d/4e2n-s75z",
+    observed_at: row._source_observed_at || null,
+    confidence: "strong",
+    method: LL48_JOIN_METHOD,
+    provenance: {
+      source_system: "socrata:4e2n-s75z",
+      source_record_id: sourceRecordId,
+      source_fields: ["bbl"],
+      basis: "exact_bbl",
+      input_value: bbl,
+    },
+  };
+}
+
+/** Exact BBL graph-slice join for LL48 suitability rows. */
+export function joinPropertyToLl48ByBbl(eligibleBbls = [], ll48Rows = []) {
+  const eligible = new Set((eligibleBbls || []).map(normalizeBbl).filter(Boolean));
+  const by_bbl = {};
+  for (const row of ll48Rows || []) {
+    const bbl = normalizeBbl(row?.bbl);
+    if (!bbl || !eligible.has(bbl)) continue;
+    if (!by_bbl[bbl]) by_bbl[bbl] = { bbl, items: [], status: "matched" };
+    by_bbl[bbl].items.push(ll48EvidenceItem(row, bbl));
+  }
+  const linked = Object.keys(by_bbl).length;
+  return {
+    by_bbl,
+    metrics: {
+      eligible: eligible.size,
+      linked,
+      rate: eligible.size ? Number((linked / eligible.size).toFixed(4)) : 0,
+      method: LL48_JOIN_METHOD,
+    },
+  };
+}
+
 /**
  * Assemble a parcel-centric property intelligence view for one BBL.
  * Grounded only in supplied rows — never invents ZAP/contract hits.
@@ -640,6 +688,7 @@ export function buildParcelIntelligence(bbl, corpus = {}) {
     corpus.zapProjects || [],
   );
   const ownerJoin = joinPropertyOwnerToContracts(propertyObs, corpus.moneyRows || []);
+  const ll48Rows = (corpus.ll48Rows || []).filter((row) => normalizeBbl(row?.bbl) === id);
   const bucket = zapJoin.by_bbl[id] || {
     bbl: id,
     parcel_ref: bblSubjectRef(id),
@@ -718,6 +767,11 @@ export function buildParcelIntelligence(bbl, corpus = {}) {
       items: owners,
       count: owners.length,
     },
+    ll48: {
+      status: ll48Rows.length ? "matched" : "empty",
+      items: ll48Rows.map((row) => ll48EvidenceItem(row, id)),
+      count: ll48Rows.length,
+    },
     agencies,
     links: [
       ...zapJoin.links.filter((l) => l.bbl === id || l.provenance?.input_value === id
@@ -771,6 +825,10 @@ export function buildPropertyCrossDomainDoc(corpus = {}) {
     corpus.zapProjects || [],
   );
   const ownerJoin = joinPropertyOwnerToContracts(propertyObs, corpus.moneyRows || []);
+  const ll48Join = joinPropertyToLl48ByBbl(Object.keys(zapJoin.by_bbl), corpus.ll48Rows || []);
+  for (const [bbl, evidence] of Object.entries(ll48Join.by_bbl)) {
+    if (zapJoin.by_bbl[bbl]) zapJoin.by_bbl[bbl].ll48 = evidence;
+  }
 
   // Agency-rooted property objects for entity intelligence merge
   const agencyObjects = [];
@@ -803,6 +861,10 @@ export function buildPropertyCrossDomainDoc(corpus = {}) {
     parcel_link_count: parcelLinkCount,
     owner_count: ownerJoin.metrics.owner_count,
     owners_with_contracts: ownerJoin.metrics.owners_with_contracts,
+    ll48_eligible_bbl_count: ll48Join.metrics.eligible,
+    ll48_linked_bbl_count: ll48Join.metrics.linked,
+    ll48_bbl_join_rate: ll48Join.metrics.rate,
+    ll48_vintage: (corpus.ll48Rows || [])[0]?._source_observed_at || null,
   };
 
   return {
@@ -820,6 +882,9 @@ export function buildPropertyCrossDomainDoc(corpus = {}) {
       matched_bbl_count: matchedBblCount,
       bbl_link_pair_count: zapJoin.metrics.link_pair_count,
       property_owner_contract_join_rate: ownerJoin.metrics.property_owner_contract_join_rate,
+      ll48_bbl_join_rate: ll48Join.metrics.rate,
+      ll48_eligible_bbl_count: ll48Join.metrics.eligible,
+      ll48_linked_bbl_count: ll48Join.metrics.linked,
       owner_count: ownerJoin.metrics.owner_count,
       owners_with_contracts: ownerJoin.metrics.owners_with_contracts,
       owner_contract_link_count: ownerJoin.metrics.link_count,
@@ -836,11 +901,12 @@ export function buildPropertyCrossDomainDoc(corpus = {}) {
         "property-locations materialization / property_domain_observations",
         "zap-bbl (2iga-a6mk)",
         "ocp-recent-contract-awards",
+        "suitability-city-owned-leased-property-ll48 (4e2n-s75z)",
       ],
       methods: [BBL_JOIN_METHOD, OWNER_EXTRACT_METHOD, VENDOR_STEM_METHOD, "agency_canonical_v1"],
       coverage,
       note:
-        "BBL→ZAP is exact tax-lot only; ZAP edges stay sparse until the full zap-bbl lookup is densified. Owner→contract is vendorStem only when a labeled winning bidder exists. Agency + parcel edges densify from every disposition row with a BBL. No fuzzy address geocode invents land links.",
+        "BBL→ZAP and BBL→LL48 are exact tax-lot joins only; suitability rows are a graph-BBL slice. Owner→contract is vendorStem only when a labeled winning bidder exists. Agency + parcel edges densify from every disposition row with a BBL. No fuzzy address geocode invents land links.",
     },
   };
 }

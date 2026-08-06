@@ -4,7 +4,7 @@
   "observed_on": "2026-08-06",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 47,
+  "sources_count": 48,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -391,6 +391,18 @@
       ]
     },
     {
+      "id": "city-record-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
       "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
       "worth_materializing": "maybe",
       "score": 2,
@@ -493,6 +505,17 @@
       ]
     },
     {
+      "id": "dob-certificate-of-occupancy-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "dob-certificate-of-occupancy-x-unregistered-zoning-application-portal-projects-via-BBL",
       "worth_materializing": "maybe",
       "score": 1,
@@ -551,6 +574,17 @@
     },
     {
       "id": "dob-now-job-filings-x-mappluto-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-suitability-city-owned-leased-property-ll48-via-BBL",
       "worth_materializing": "maybe",
       "score": 1,
       "key_path": [
@@ -705,6 +739,50 @@
       ]
     },
     {
+      "id": "suitability-city-owned-leased-property-ll48-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-bbl-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
       "worth_materializing": "maybe",
       "score": 1,
@@ -773,6 +851,24 @@
       "gaps_would_close": []
     },
     {
+      "id": "legacy-dob-job-filings-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "mappluto-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": []
+    },
+    {
       "id": "mocs-ll1-plans-x-mocs-ll63-plans-via-agency_+_description_+_term_(reviewed_candidate_only)+published_PIN/EPIN_when_present",
       "worth_materializing": "no",
       "score": 0,
@@ -804,5 +900,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "ce715398386ee6cb7ddcece9f574b6e4bd45599538a0192bb0c8fb8d5e12f406"
+  "registry_sha256": "93dab22a069eba2f6f295a0d65f5a9f5c15d02062fda8afa57fdb26359ff2117"
 }

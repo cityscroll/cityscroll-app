@@ -267,6 +267,21 @@
       ]
     },
     {
+      "id": "suitability-city-owned-leased-property-ll48",
+      "kind": "socrata",
+      "identifier": "4e2n-s75z",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "bbl",
+        "address",
+        "parcel_name",
+        "agency",
+        "potential_urban_ag",
+        "date_created"
+      ]
+    },
+    {
       "id": "mappluto",
       "kind": "arcgis",
       "identifier": "MAPPLUTO/FeatureServer/0",

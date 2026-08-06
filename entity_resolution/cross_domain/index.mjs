@@ -80,6 +80,7 @@ export {
   linkPropertyObservation,
   joinPropertyToZapByBbl,
   joinPropertyOwnerToContracts,
+  joinPropertyToLl48ByBbl,
   buildParcelIntelligence,
   buildPropertyCrossDomainDoc,
 } from "./property_links.mjs";
