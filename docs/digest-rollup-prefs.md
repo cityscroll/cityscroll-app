@@ -7,7 +7,7 @@
 | **Watch** | One filter + lens row in `SUBS` KV (`sub:<id>`). |
 | **Account** | An email identity that may own many watches. |
 | **Digest rollup** | One email per recipient per day when that email has more than one active watch; HTML sections per watch that had content (or a quiet summary). |
-| **Preference center** | Magic-link page (`GET/POST /prefs`) to list, edit, pause, or delete watches for that email. |
+| **Preference center** | Canonical account page (`GET/POST /prefs`) to list, edit, pause, or delete watches for that email. |
 
 No passwords or full login accounts. Identity is the confirmed email, same as magic-link sessions and pins.
 
@@ -33,8 +33,9 @@ Edits write to `SUBS` immediately. The daily digest always reads current `SUBS` 
 
 ## Preference center
 
-- **URL:** `https://api.cityscroll.org/prefs?token=…`
-- **Token:** purpose-scoped optin-token `{ sc: "prefs", e: email }` (~60 days), issued from digest footers (`Manage watches`).
+- **URL:** `https://cityscroll.org/prefs`; email links may carry a purpose token for readers without a recognized session.
+- **Session bootstrap:** the HttpOnly `cs_session` cookie is scoped to `cityscroll.org`, so both the API and canonical document routes recognize the same identity. A valid session recovers from a missing or stale URL token.
+- **Token:** purpose-scoped optin-token `{ sc: "prefs", e: email }` (~60 days), issued from digest footers or minted into the inline forms on `/following/#your-following`. Session-authenticated management does not put this token in a URL.
 - **Actions:** list, update keywords/freq, pause/unpause, delete one watch, unsubscribe all.
 - **Cannot:** change email, invent a new lens without the normal double-opt-in signup flow.
 

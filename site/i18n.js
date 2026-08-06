@@ -484,7 +484,6 @@ const STRINGS = {
     freq_weekly:        "Weekly",
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe",
-    subscribe_confirm_note: "We'll email a link to confirm.",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
     home_cta_prompt:    "Want email updates?",
     // Context-carrying alert entry (notice/lens → pre-scoped #alerts + real email preview)
@@ -726,8 +725,8 @@ const STRINGS = {
     rule_member_blurb_lead: "A ready paragraph for a newsletter or group message. It includes this notice’s specifics — edit freely before sending.",
     rule_member_blurb_copy: "Copy blurb",
     rule_member_blurb_copied: "Copied",
-    // Watch templates — association monitor packs (registry-driven)
-    watch_tpl_heading: "Association monitor packs",
+    // Watch templates — registry-driven watch sets
+    watch_tpl_heading: "Ready-made watch sets",
     watch_tpl_lead: "One-tap multi-watch bundles for industry associations. Each pack creates separate email watches through the usual confirm-link path.",
     watch_tpl_creates_watches: "Creates {n} watches",
     watch_tpl_serves_label: "Who it serves",

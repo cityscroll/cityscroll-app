@@ -41,7 +41,8 @@ export async function prefsLink(env, email) {
   return url.toString();
 }
 
-async function issuePrefsCredential(env, email) {
+export async function issuePrefsCredential(env, email) {
+  if (!env.TOKEN_SECRET || !email) return null;
   return signToken(env.TOKEN_SECRET, prefsPayload(email), {
     ttlSeconds: PREFS_TOKEN_TTL_SECONDS,
   });
@@ -67,7 +68,7 @@ export async function handlePrefs(req, env) {
     // A recognized email-link session may enter the preference center without a
     // second magic link. Mint the existing narrower prefs token into the forms;
     // POST authorization below remains prefs-token-only.
-    if (!credential && !email) {
+    if (!email) {
       email = normalizeEmail(await emailFromRequest(req, env));
       if (email) credential = await issuePrefsCredential(env, email);
     }

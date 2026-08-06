@@ -1374,7 +1374,8 @@ shows a fixture-backed consolidated digest mock plus the prefs cutover copy.
 
 - Pure helpers: `site/alerts_rollup_prefs.mjs`
 - Deep link: `#alerts?view=rollup` (demo id `alerts-rollup-prefs`)
-- Manage watches uses session `prefsUrl` when recognized, else `/prefs`
+- Manage watches sends recognized readers to `/following/#your-following`; that
+  surface mints purpose-scoped form credentials without putting tokens in URLs
 - Verify: `node --test test/alerts_rollup_prefs.test.mjs` and existing
   `cd worker && node --test test/rollup.test.mjs test/prefs_lib.test.mjs test/prefs.test.mjs test/digest_rollup.test.mjs`
 
@@ -1391,19 +1392,28 @@ dry-run: `GET /admin/digest-rollup?key=&email=`. Design:
 ## Magic-link session + server pins
 
 Digest notice links carry a pins-scoped optin-token (`sc: "pins"`, ~30d) as `?s=`
-on `/r/...`. Exchange sets HttpOnly `cs_session` cookie (~14d); token never
-forwards to the final cityscroll.org URL. Scope is READ + pin sync +
-preference-center bootstrap. Recognized `GET /session` returns the account email
-and clean `/prefs` URL; cookie-authenticated `GET /prefs` mints the narrower prefs
-token used by its forms. Watch mutations, unsubscribe, and confirm keep purpose
-tokens and never accept the session directly.
+on `/r/...`. Exchange sets the HttpOnly `cs_session` cookie (~14d) on the
+`cityscroll.org` parent domain so API endpoints and canonical documents share one
+recognized-session truth; token never forwards to the final cityscroll.org URL.
+Scope is READ + pin sync + preference-center bootstrap. Recognized `GET /session`
+returns the account email plus clean `/following/#your-following` and `/prefs`
+destinations. `/following/personal` renders the account watches first and mints a
+narrower prefs token into inline cadence, pause, and unsubscribe forms;
+cookie-authenticated `GET /prefs` uses the same bootstrap even when a stale URL
+token is present. Watch mutations, unsubscribe, and confirm keep purpose tokens
+and never accept the session directly. Compatibility Worker hosts cannot set the
+canonical parent-domain cookie, so credentialed client calls never fail over to
+them and their session endpoints must report anonymous rather than split identity.
 
 - Worker: `session.mjs`, `pins.mjs`, pure helpers `lib/session.mjs`
 - KV pin store: `pins:<opaqueActorId(email)>` in SUBS (alongside subscriptions)
 - Client: `invStore`/`invSave` still localStorage; recognized sessions merge
   (union, dedupe by type+id) then read/write `/pins` with `credentials:include`
 - Banner: `#sessionBanner` ("Not you?" → `/session/logout`)
-- Characterization: `node --test worker/test/session_pins.test.mjs test/session_pins_client.test.mjs`
+- Characterization: `node --test worker/test/session_pins.test.mjs
+  worker/test/prefs.test.mjs worker/test/following.test.mjs
+  test/session_pins_client.test.mjs test/homepage_cta.test.mjs` and
+  `python3 test/functional/28_session_coherence.py`
 
 ## Microsoft Clarity (optional heatmaps)
 
