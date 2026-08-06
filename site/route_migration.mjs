@@ -21,6 +21,34 @@ const COMMON_FILTERS = [
   "months", "action", "facet",
 ];
 
+/** Normalize the legacy human-readable agency query into the typed scope facet.
+ *
+ * Browse documents accept both forms, but publish one address-bar representation.
+ */
+export function canonicalizeBrowseUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
+  const url = safeUrl(value, origin);
+  const match = url.pathname.match(/^\/browse\/(contracts|staffing|zoning|property|rules|meetings)\/?$/);
+  if (!match) return `${url.pathname}${url.search}`;
+  const agency = String(url.searchParams.get("agency") || "").trim();
+  if (!agency) return `${url.pathname}${url.search}`;
+  const facet = url.searchParams.get("facet");
+  let values = {};
+  if (facet && facet.length <= 2000) {
+    try {
+      const parsed = JSON.parse(facet);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) values = { ...parsed };
+    } catch {}
+  }
+  const ref = entityRouteRef("agency", agency);
+  if (ref) {
+    const refs = Array.isArray(values.entity_refs_all) ? values.entity_refs_all : [];
+    values.entity_refs_all = [...new Set([ref, ...refs])];
+    url.searchParams.delete("agency");
+    url.searchParams.set("facet", JSON.stringify(values));
+  }
+  return `${url.pathname}${url.search}`;
+}
+
 export const LEGACY_ROUTE_PARAMETERS = Object.freeze({
   money: new Set([...COMMON_FILTERS, "mode", "sort", "min", "max", "category", "standard", "closing", "m", "basis", "actionBasis"]),
   people: new Set([...COMMON_FILTERS, "type", "mode", "role", "view", "interest", "eligibility", "window", "format", "salary", "fee", "experience"]),
@@ -149,6 +177,7 @@ export function migrateLegacyUrl(value, { origin = CANONICAL_ORIGIN } = {}) {
     return {
       linkClass: "lens view",
       ...mapped,
+      target: canonicalizeBrowseUrl(mapped.target),
       parameterRule: "Forward the lens allowlist byte-for-byte, move a validated lang value into the document query, and mark obsolete keys with legacy=unsupported-filter.",
       forwardingBehavior: "The legacy root shim calls location.replace(); obsolete filters open the disclosed Browse fallback.",
       migrated: true,

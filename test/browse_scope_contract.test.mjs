@@ -147,3 +147,18 @@ test("unsupported facet kinds stay honest and do not claim active filtering", ()
   assert.match(html, /does not support this scope filter/);
   assert.ok(!/Filtered to/.test(html));
 });
+
+test("legacy agency URLs normalize to the same filtered view as canonical facet URLs", () => {
+  const payload = readPayload("contracts");
+  const rows = rowsForFacet(payload, "contracts");
+  const agency = String(rows[0].agency_name);
+  const id = resolveAgencyIdentity(agency).canonical_id;
+  const legacy = new URLSearchParams({ agency });
+  const canonical = new URLSearchParams({ facet: JSON.stringify({ entity_refs_all: [`agency:id:${id}`] }) });
+  const legacyView = buildBrowseView("contracts", payload, legacy, { limit: 1000 });
+  const canonicalView = buildBrowseView("contracts", payload, canonical, { limit: 1000 });
+  assert.equal(legacyView.total, canonicalView.total);
+  assert.deepEqual(legacyView.rows.map((row) => row.request_id), canonicalView.rows.map((row) => row.request_id));
+  assert.equal(legacyView.scope.mode, "applied");
+  assert.equal(canonicalView.scope.mode, "applied");
+});
