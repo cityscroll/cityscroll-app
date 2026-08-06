@@ -1,0 +1,19 @@
+.scorecard { max-width: 1120px; margin: 0 auto; padding: 0 24px 72px; }
+.scorecard-hero { padding: 64px 0 32px; max-width: 780px; }
+.scorecard-kicker { color: #7a321d; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.scorecard h1 { font-family: "Space Grotesk", sans-serif; font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: .98; margin: 12px 0 20px; }
+.scorecard-dek { font-size: 1.2rem; line-height: 1.55; max-width: 700px; }
+.scorecard-asof, .scorecard-muted { color: #586174; font-size: .9rem; }
+.scorecard-legal, .scorecard-method { border-top: 1px solid #d8dce5; padding: 24px 0; max-width: 850px; }
+.scorecard h2 { font-family: "Space Grotesk", sans-serif; margin: 0 0 10px; }
+.scorecard p { line-height: 1.55; }
+.scorecard-heading { align-items: end; border-top: 2px solid #1b3a8f; display: flex; justify-content: space-between; gap: 20px; margin-top: 32px; padding-top: 20px; }
+.scorecard-json { white-space: nowrap; }
+.scorecard-table-wrap { overflow-x: auto; margin-top: 14px; }
+.scorecard table { border-collapse: collapse; min-width: 760px; width: 100%; }
+.scorecard th, .scorecard td { border-bottom: 1px solid #d8dce5; padding: 15px 12px; text-align: left; vertical-align: top; }
+.scorecard thead th { background: #f2f4f8; color: #30394d; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+.scorecard tbody th { font-weight: 700; width: 31%; }
+.scorecard tbody th span, .scorecard td small { color: #586174; display: block; font-size: .86rem; font-weight: 400; margin-top: 5px; }
+.scorecard a { color: #1646a0; }
+@media (max-width: 640px) { .scorecard { padding: 0 16px 48px; } .scorecard-hero { padding-top: 42px; } .scorecard-heading { align-items: start; flex-direction: column; gap: 8px; } }
