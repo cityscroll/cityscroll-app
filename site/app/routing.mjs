@@ -975,7 +975,7 @@ function applyHash(){
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
       const landStatus=q.get("status");
-      $("#lstatus").value = landStatus==="all"||landStatus==="hearings"?landStatus:"active";
+      $("#lstatus").value = landStatus==="all"||landStatus==="hearings"||/^(?:project|public):.+$/.test(landStatus||"") ? landStatus : "active";
       const hm=$("#lhearingmode");
       if(hm){
         const att=q.get("attendance");

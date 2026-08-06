@@ -489,10 +489,12 @@ const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — 
 $("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; debouncedLandSearch(); });
 $("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; landSearch(); });
 $("#lstatus").addEventListener("change", landSearch);
-$("#land-status-rail").querySelectorAll("[data-land-status]").forEach(button=>button.addEventListener("click",()=>{
+$("#land-status-rail").addEventListener("click",event=>{
+  const button=event.target.closest("[data-land-status]");
+  if(!button) return;
   $("#lstatus").value=button.dataset.landStatus||"all";
   landSearch();
-}));
+});
 const lhearingmode=$("#lhearingmode");
 if(lhearingmode) lhearingmode.addEventListener("change", landSearch);
 const landLocationOptions={
