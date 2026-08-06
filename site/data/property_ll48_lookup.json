@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "version": "property_ll48_lookup_v1",
+  "source": {
+    "id": "suitability-city-owned-leased-property-ll48",
+    "dataset_id": "4e2n-s75z",
+    "url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+    "observed_at": "2025-09-17",
+    "join_key": "bbl"
+  },
+  "eligible_bbl_count": 320,
+  "linked_bbl_count": 23,
+  "rows": [
+    {
+      "bbl": "1000730008",
+      "parcel_name": "PIER 16",
+      "address": "PIER-16 SOUTH STREET",
+      "agency": "DSBS",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;IN USE-TENANTED;WATERFRONT PROPERTY",
+      "potential_urban_ag": null,
+      "total_area": "146025",
+      "land_use_category": "7",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1000730008",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1000740001",
+      "parcel_name": "S ST. CPORT/BURLING SLIP/PLGRD",
+      "address": "89 SOUTH STREET",
+      "agency": "HPD;PARKS",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK",
+      "potential_urban_ag": null,
+      "total_area": "47539",
+      "land_use_category": "5",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1000740001",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1000740020",
+      "parcel_name": "S ST. CPORT/BURLING SLIP/PLGRD",
+      "address": "2 FULTON STREET",
+      "agency": "HPD;PARKS",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK;PUBLIC PLACE/PLAZA;FINAL COMMITMNT-DISP",
+      "potential_urban_ag": "Not Suitable",
+      "total_area": "22533",
+      "land_use_category": null,
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1000740020",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1000940025",
+      "parcel_name": "OFFICE BLDG",
+      "address": "100 GOLD STREET",
+      "agency": "DCAS",
+      "current_uses": "AGCY EXECUTVE OFFICE;INDOOR MAINT/STORAGE;OFFICE",
+      "potential_urban_ag": null,
+      "total_area": "95255",
+      "land_use_category": "5",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1000940025",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1000950101",
+      "parcel_name": "SEAPORT PARK",
+      "address": "206 WATER STREET",
+      "agency": "HPD",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PUBLIC PLACE/PLAZA;FINAL COMMITMNT-DISP;PUBLIC PLACE/PLAZA;LONG-TERM AGREEMENT",
+      "potential_urban_ag": null,
+      "total_area": "5361",
+      "land_use_category": "9",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1000950101",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1000960001",
+      "parcel_name": "SOUTH ST SEAPORT (MKT BLDG)",
+      "address": "11 FULTON STREET",
+      "agency": "HPD",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT",
+      "potential_urban_ag": null,
+      "total_area": "33348",
+      "land_use_category": "5",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1000960001",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1003527501",
+      "parcel_name": null,
+      "address": "125 DELANCEY STREET",
+      "agency": "DSBS",
+      "current_uses": null,
+      "potential_urban_ag": null,
+      "total_area": "43206",
+      "land_use_category": "4",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1003527501",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1006440001",
+      "parcel_name": "THE HIGH LINE",
+      "address": "555 WEST STREET",
+      "agency": "DSBS;PARKS",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK;SHORT-TERM AGREEMENT",
+      "potential_urban_ag": null,
+      "total_area": "94394",
+      "land_use_category": "4",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1006440001",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1010810080",
+      "parcel_name": "HPD UR SITE #7",
+      "address": "549 WEST 52 STREET",
+      "agency": "HPD",
+      "current_uses": "IN USE-TENANTED;SHORT-TERM AGREEMENT",
+      "potential_urban_ag": null,
+      "total_area": "12552",
+      "land_use_category": "5",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1010810080",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1018080008",
+      "parcel_name": "EAST HARLEM MULTI-SERVICE CNTR",
+      "address": "413 EAST 120 STREET",
+      "agency": "HRA",
+      "current_uses": "COMMUNITY CENTER",
+      "potential_urban_ag": null,
+      "total_area": "34848",
+      "land_use_category": "8",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1018080008",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "1020970020",
+      "parcel_name": null,
+      "address": "615 WEST 150 STREET",
+      "agency": "HPD",
+      "current_uses": "IN USE-RES STRUCTURE;FINAL COMMITMNT-DISP",
+      "potential_urban_ag": null,
+      "total_area": "14988",
+      "land_use_category": "3",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:1020970020",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "2027240042",
+      "parcel_name": "SIMPSON ST CUL-DE-SAC",
+      "address": "SIMPSON STREET",
+      "agency": "DOT",
+      "current_uses": "ROAD/HIGHWAY",
+      "potential_urban_ag": "Not Suitable",
+      "total_area": "572",
+      "land_use_category": "11",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:2027240042",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "2027810500",
+      "parcel_name": "HUNTS PT MARKET WHOLESALE",
+      "address": "400 FOOD CENTER DRIVE",
+      "agency": "DSBS",
+      "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;WASTEWATER PUMPING",
+      "potential_urban_ag": null,
+      "total_area": "2524984",
+      "land_use_category": "6",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:2027810500",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "3001460016",
+      "parcel_name": "ABOLITIONIST PLACE",
+      "address": "225 DUFFIELD STREET",
+      "agency": "DCAS",
+      "current_uses": "IN USE-TENANTED;LONG-TERM AGREEMENT;NO USE",
+      "potential_urban_ag": null,
+      "total_area": "50125",
+      "land_use_category": "9",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:3001460016",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "3001460043",
+      "parcel_name": null,
+      "address": "420 ALBEE SQUARE",
+      "agency": null,
+      "current_uses": null,
+      "potential_urban_ag": null,
+      "total_area": "18600",
+      "land_use_category": "5",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:3001460043",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "3007987501",
+      "parcel_name": null,
+      "address": "5108 4TH AVENUE",
+      "agency": "BPL",
+      "current_uses": null,
+      "potential_urban_ag": null,
+      "total_area": "10017",
+      "land_use_category": "4",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:3007987501",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "3021070033",
+      "parcel_name": null,
+      "address": "262 ASHLAND PLACE",
+      "agency": "HPD",
+      "current_uses": "PUBLIC PLACE/PLAZA;FINAL COMMITMENT;SHORT-TERM AGREEMENT",
+      "potential_urban_ag": null,
+      "total_area": "8021",
+      "land_use_category": "9",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:3021070033",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "3036750008",
+      "parcel_name": null,
+      "address": "249 MOTHER GASTON BLVD",
+      "agency": "HPD",
+      "current_uses": "IN USE-RES STRUCTURE;FINAL COMMITMNT-DISP",
+      "potential_urban_ag": null,
+      "total_area": "2500",
+      "land_use_category": "2",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:3036750008",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "3044480001",
+      "parcel_name": null,
+      "address": "1070 ELTON STREET",
+      "agency": "HPD",
+      "current_uses": "NO USE-VACANT LAND;FINAL COMMITMNT-DISP",
+      "potential_urban_ag": "Not Suitable",
+      "total_area": "23818",
+      "land_use_category": "11",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:3044480001",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "4158500006",
+      "parcel_name": "EDGEMERE URA, SITE #31",
+      "address": "BEACH 41 STREET",
+      "agency": "HPD",
+      "current_uses": "NO USE-VACANT LAND;FINAL COMMITMNT-DISP",
+      "potential_urban_ag": "Not Suitable",
+      "total_area": "19100",
+      "land_use_category": "11",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:4158500006",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "4159050001",
+      "parcel_name": null,
+      "address": "190 BEACH 67 STREET",
+      "agency": "HPD",
+      "current_uses": null,
+      "potential_urban_ag": null,
+      "total_area": "65073",
+      "land_use_category": "8",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:4159050001",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "4159690060",
+      "parcel_name": "EDGEMERE URA, SITE #79",
+      "address": "431 BEACH 46 STREET",
+      "agency": "HPD",
+      "current_uses": "NO USE-VACANT LAND;FINAL COMMITMNT-DISP",
+      "potential_urban_ag": "Not Suitable",
+      "total_area": "2852",
+      "land_use_category": "11",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:4159690060",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    },
+    {
+      "bbl": "5018010170",
+      "parcel_name": "SAW MILL CREEK PARK  R-130",
+      "address": "INDUSTRY ROAD",
+      "agency": "EDC;PARKS",
+      "current_uses": "NATURAL AREA/ETC;NO USE-WFT (ANY AGY);FINAL COMMITMNT-DISP",
+      "potential_urban_ag": null,
+      "total_area": "827720",
+      "land_use_category": "11",
+      "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "_source_observed_at": "2025-09-17",
+      "provenance": {
+        "source_system": "socrata:4e2n-s75z",
+        "source_record_id": "4e2n-s75z:bbl:5018010170",
+        "source_fields": [
+          "bbl"
+        ],
+        "basis": "exact_bbl"
+      }
+    }
+  ]
+}

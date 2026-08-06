@@ -33,6 +33,7 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_SITE = join(ROOT, "site/data/property_cross_domain_lookup.json");
 const OUT_WORKER = join(ROOT, "worker/src/data/property_cross_domain_lookup.json");
+const LL48_PATH = join(ROOT, "site/data/property_ll48_lookup.json");
 const PROPERTY_OBS_PATH = join(ROOT, "site/data/property_domain_observations.json");
 const DEFAULT_LIVE_URL =
   process.env.PROPERTY_LOCATIONS_URL || "https://api.cityscroll.org/property-locations";
@@ -210,6 +211,7 @@ function collectCorpus(root, propertyObsDoc) {
   const zapBblRows = [];
   const zapProjects = [];
   const moneyRows = [];
+  const ll48Rows = [];
 
   // Live / committed property materialization (main densify source)
   if (propertyObsDoc?.property_rows?.length) {
@@ -241,6 +243,9 @@ function collectCorpus(root, propertyObsDoc) {
     for (const row of ocpLookup.rows.slice(0, 200)) moneyRows.push(row);
   }
 
+  const ll48Lookup = loadJsonIfExists(LL48_PATH);
+  if (Array.isArray(ll48Lookup?.rows)) ll48Rows.push(...ll48Lookup.rows);
+
   for (const p of [join(root, "warehouse/fixtures/zap-projects/product_seed.csv")]) {
     for (const row of loadCsvIfExists(p)) zapProjects.push(row);
   }
@@ -256,6 +261,7 @@ function collectCorpus(root, propertyObsDoc) {
     zapBblRows: publicRecords(zapBblRows, "property cross-domain ZAP BBL rows"),
     zapProjects: publicRecords(zapProjects, "property cross-domain ZAP projects"),
     moneyRows: publicRecords(moneyRows, "property cross-domain money rows"),
+    ll48Rows: publicRecords(ll48Rows, "property cross-domain LL48 rows"),
     property_source: propertyObsDoc
       ? {
           path: "site/data/property_domain_observations.json",
