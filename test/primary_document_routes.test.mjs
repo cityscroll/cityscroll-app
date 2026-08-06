@@ -10,7 +10,7 @@ import {
   renderBrowseView,
 } from "../site/browse_view.mjs";
 import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
-import { edgeRequestKind, renderEdgeNotice } from "../site/pages_edge.mjs";
+import edgeWorker, { edgeRequestKind, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 
@@ -47,6 +47,34 @@ test("primary navigation is four real document links on every promoted shell", (
   for (const [facet, route] of Object.entries(routes)) {
     assert.match(root, new RegExp(`href="${route.replaceAll("/", "\\/")}"[^>]+data-tab="${facet}"`), `${facet} is a real Browse child link`);
   }
+});
+
+test("Browse route matrix rejects retired and unknown facets instead of treating them as the home asset", () => {
+  for (const [facet, config] of Object.entries(BROWSE_FACETS)) {
+    assert.deepEqual(browseRoute(config.route), { kind: "facet", facet });
+  }
+  assert.equal(browseRoute("/browse/contracts/").kind, "facet");
+  assert.deepEqual(browseRoute("/browse/land/"), { kind: "unknown", facet: "land" });
+  assert.deepEqual(browseRoute("/browse/unknown/"), { kind: "unknown", facet: "unknown" });
+  assert.deepEqual(browseRoute("/browse/"), { kind: "landing", facet: null });
+});
+
+test("entity and unknown Browse routes never serve the home shell", async () => {
+  const home = new Response("<title>CityScroll · track RFPs, rezonings, meetings</title>", {
+    headers: { "Content-Type": "text/html" },
+  });
+  const env = { ASSETS: { fetch: async () => home.clone() } };
+  const entity = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/"), env);
+  assert.equal(entity.status, 404);
+  assert.doesNotMatch(await entity.text(), /track RFPs, rezonings, meetings/);
+
+  const land = await edgeWorker.fetch(new Request("https://cityscroll.org/browse/land/"), env);
+  assert.equal(land.status, 302);
+  assert.equal(land.headers.get("Location"), "https://cityscroll.org/browse/zoning/");
+
+  const unknown = await edgeWorker.fetch(new Request("https://cityscroll.org/browse/unknown/"), env);
+  assert.equal(unknown.status, 404);
+  assert.doesNotMatch(await unknown.text(), /track RFPs, rezonings, meetings/);
 });
 
 test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {

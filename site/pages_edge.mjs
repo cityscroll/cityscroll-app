@@ -43,12 +43,20 @@ function safeParcel(pathname) {
   return match ? match[1] : null;
 }
 
-function browseFacet(pathname) {
+export function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
   const facet = match[1];
   if (!facet) return null;
   return Object.hasOwn(BROWSE_FACETS, facet) ? facet : null;
+}
+
+export function browseRoute(pathname) {
+  const match = String(pathname || "").match(/^\/browse(?:\/([^/]+))?\/?$/);
+  if (!match) return { kind: "other", facet: null };
+  if (!match[1]) return { kind: "landing", facet: null };
+  const facet = browseFacet(pathname);
+  return facet ? { kind: "facet", facet } : { kind: "unknown", facet: match[1] };
 }
 
 function entityDocument(pathname) {
@@ -235,18 +243,26 @@ async function handleBrowse(request, env, facet) {
   }
 }
 
+function unavailableBrowseResponse(facet) {
+  const canonical = facet === "land" ? "/browse/zoning/" : "/browse/";
+  const label = facet === "land" ? "Land is now Browse → Zoning" : "That Browse section is unavailable";
+  const linkLabel = canonical === "/browse/zoning/" ? "Open Zoning" : "Back to Browse";
+  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${label} · CityScroll</title></head><body><main><h1>${label}</h1><p>Choose a current Browse section to continue.</p><p><a href="${canonical}">${linkLabel}</a></p></main></body></html>`;
+  return new Response(body, {
+    status: 404,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
+  });
+}
+
 async function handleEntity(request, env, entity) {
-  const asset = await staticAsset(env, request, "/");
   let id = entity.id;
   try { id = decodeURIComponent(entity.id); } catch (_error) { return new Response("Invalid entity id", { status: 400 }); }
-  const canonical = `https://cityscroll.org/${entity.family}/${encodeURIComponent(id)}/`;
-  const response = rewrittenResponse(asset, 200, "public, max-age=120, s-maxage=300, stale-while-revalidate=3600");
-  const transformed = new HTMLRewriter()
-    .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
-    .on('meta[property="og:url"]', { element(element) { element.setAttribute("content", canonical); } })
-    .transform(response);
-  if (request.method === "HEAD") return new Response(null, { status: 200, headers: transformed.headers });
-  return transformed;
+  const noun = entity.family.slice(0, -1);
+  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${noun} record unavailable · CityScroll</title></head><body><main><h1>${noun} record unavailable</h1><p>This entity page is not available as a standalone public document yet.</p><p><a href="/browse/">Browse the public record</a></p></main></body></html>`;
+  return new Response(request.method === "HEAD" ? null : body, {
+    status: 404,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
+  });
 }
 
 export default {
@@ -264,8 +280,12 @@ export default {
     if (district) return handleComposedObject(request, env, `/districts/council/${district}/digest/`, `/districts/council/${district}/digest/`);
     const parcel = safeParcel(url.pathname);
     if (parcel) return handleComposedObject(request, env, `/parcels/${parcel}/`, `/parcels/${parcel}/`);
-    const facet = browseFacet(url.pathname);
-    if (facet) return handleBrowse(request, env, facet);
+    const browse = browseRoute(url.pathname);
+    if (browse.kind === "facet") return handleBrowse(request, env, browse.facet);
+    if (browse.kind === "unknown") {
+      if (browse.facet === "land") return Response.redirect(new URL("/browse/zoning/", request.url), 302);
+      return unavailableBrowseResponse(browse.facet);
+    }
     const entity = entityDocument(url.pathname);
     if (entity) return handleEntity(request, env, entity);
     return env.ASSETS.fetch(request);
