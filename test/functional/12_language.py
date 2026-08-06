@@ -63,6 +63,25 @@ with sync_playwright() as pw:
     # the static i18n_refs gate can't see. Notice content (translate="no") is excluded
     # because real City Record PINs are key-shaped.
     import re as _re
+    def assert_no_raw_i18n_keys(page_obj, label):
+        rendered = page_obj.evaluate("""() => {
+          const out = [];
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          while (walker.nextNode()) {
+            const node = walker.currentNode;
+            const parent = node.parentElement;
+            if (!parent || parent.closest('[translate="no"],script,style')) continue;
+            const style = window.getComputedStyle(parent);
+            if (style.display === 'none' || style.visibility === 'hidden') continue;
+            const text = node.textContent.trim();
+            if (text) out.push(text);
+          }
+          return out;
+        }""")
+        raw = sorted({match.group(0) for text in rendered for match in _re.finditer(
+            r"\b[A-Z]+(?:_[A-Z]+)+\b", text)})
+        assert not raw, f"raw i18n keys visible in {label}: {raw}"
+
     for tag in ("es", "en"):
         page.select_option("#langSelect", tag)
         page.wait_for_timeout(400)
@@ -79,6 +98,7 @@ with sync_playwright() as pw:
         }""")
         raw = sorted({t.strip() for t in chrome_text if _re.fullmatch(r"[a-z][a-z0-9]*(?:_[a-z0-9]+)+", t.strip(), _re.I)})
         assert not raw, f"raw i18n keys visible in {tag} mode: {raw}"
+        assert_no_raw_i18n_keys(page, f"{tag} mode")
         step("OK", f"no raw keys visible ({tag})")
 
     # And back to English.

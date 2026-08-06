@@ -1,5 +1,6 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
+import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -73,6 +74,8 @@ async function loadAgencies(){
 }
 
 let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
+let currentMoneyNarrowed = false;
+let forceFullHistorySearch = false;
 let moneyNlResolved = {};
 const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
 function moneyActiveFilterChip(item){
@@ -143,7 +146,40 @@ function updateMoneyMoreFiltersState(){
   badge.hidden=active===0;
   badge.textContent=active?t("property_filters_active",{n:active}):"";
 }
+function hasScopedMoneyReceipt(){
+  const values = globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES || {};
+  const receipt = globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT;
+  return (receipt != null && receipt !== ""
+    && Number.isInteger(Number(receipt)) && Number(receipt) >= 0)
+    || (Array.isArray(values.entity_refs_all) && values.entity_refs_all.length > 0);
+}
+function scopedHistoryGap(rows){
+  return hasScopedHistoryGap({
+    observed: (rows || []).length,
+    receipt: globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT,
+    scoped: hasScopedMoneyReceipt(),
+  });
+}
+function scopedHistoryNoteHTML(count, observed = 0, narrowed = false){
+  const key = !narrowed
+    ? "scoped_history_gap_note"
+    : observed > 0 ? "narrowed_scope_partial_note" : "narrowed_scope_note";
+  return `<div class="note warn scoped-history-note" role="status">${t(key, {
+    n: Number(count).toLocaleString(), shown: Number(observed).toLocaleString(),
+    older: Number(count - observed).toLocaleString(), date: recentCutLabel(),
+  })}</div>`;
+}
+function bindFullHistorySearch(){
+  document.querySelectorAll("[data-money-full-history]").forEach((button) => {
+    button.addEventListener("click", () => {
+      forceFullHistorySearch = true;
+      search();
+    }, { once: true });
+  });
+}
 async function search(){
+  const forceFullHistory = forceFullHistorySearch;
+  forceFullHistorySearch = false;
   moneyLoaded = true;
   mode = $("#mode").value;
   const agency = $("#agency").value, kw = $("#kw").value.trim();
@@ -217,7 +253,7 @@ async function search(){
   let narrowed = false, rows;
   try{
     try{
-      rows = await soda(p, SLOW_MS);
+      rows = await soda(p, forceFullHistory ? SLOW_MS * 3 : SLOW_MS);
     }catch(err){
       if(err.name !== "AbortError") throw err;
       narrowed = true;
@@ -237,6 +273,7 @@ async function search(){
 }
 function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   currentRows = rows;
+  currentMoneyNarrowed = narrowed;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
   unbusy("#list");
   const receiptCount=countWithScopeReceipt(currentRows.length);
@@ -245,8 +282,15 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false}={}){
   $("#rescount").textContent = countText;
   announce(countText + ` — ${$("#reshead").textContent}`);
   renderList(autoSelect);
-  if(narrowed) $("#list").insertAdjacentHTML("afterbegin",
-    `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
+  if(scopedHistoryGap(currentRows)){
+    const note = scopedHistoryNoteHTML(receiptCount, currentRows.length, narrowed);
+    if(currentRows.length) $("#list").insertAdjacentHTML("afterbegin", note);
+    else $("#list").innerHTML = note;
+    bindFullHistorySearch();
+  }else if(narrowed){
+    $("#list").insertAdjacentHTML("afterbegin",
+      `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
+  }
 }
 
 async function loadMethodFacet(where, kw){
@@ -380,9 +424,12 @@ function partitionMoneyRows(rows, today=todayISO()){
 }
 function renderList(autoSelect){
   if(!currentRows.length){
-    $("#list").innerHTML = '<div class="empty">' + t("nothing_found") + '</div>';
+    $("#list").innerHTML = scopedHistoryGap(currentRows)
+      ? scopedHistoryNoteHTML(countWithScopeReceipt(0), 0, currentMoneyNarrowed)
+      : '<div class="empty">' + t("nothing_found") + '</div>';
     $("#detail").innerHTML = "";
     selectedRFP=null;
+    if(scopedHistoryGap(currentRows)) bindFullHistorySearch();
     return;
   }
   const kw = ($("#kw").value||"").trim(), terms = kw ? [kw] : [];

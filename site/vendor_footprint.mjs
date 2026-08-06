@@ -80,6 +80,9 @@ export function vendorAgencyIntersectionHref(
   if (!ref || !name) return "";
   const domainScope = emptyScope(language);
   domainScope.facets.domains = ["money"];
+  // Vendor/agency intersections are award-backed edges. The default money
+  // route is open RFPs, whose records cannot carry a vendor ref.
+  domainScope.facets.values.mode = "award";
   const agency = resolveAgencyIdentity(name);
   domainScope.facets.agencies = [agency.canonical_name];
   if (query) {
