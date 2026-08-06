@@ -769,7 +769,7 @@ function actionRailGuideHTML(actions){
 }
 // Deliberately dormant until there is a concrete, decision-useful question for the
 // aggregate. Flip this one flag to re-enable the existing component and analytics.
-export const ACTION_OUTCOME_PROMPT_ENABLED = false;
+const ACTION_OUTCOME_PROMPT_ENABLED = false;
 
 function actionRailHTML(actions){
   let primaryUsed=false;
