@@ -301,7 +301,12 @@ export function projectApplyScopeHash(
   const api = scopeApi(providedScopeApi);
   const current = api.scopeFromRouteHash(currentHash, { language });
   const project = api.scopeWithEntity(api.emptyScope(language), evidence?.project_ref);
-  project.facets.domains = ["land"];
+  // Keep a cross-domain composed view on the lens that opened it. A project
+  // pivot adds a required entity edge; it must not turn money ∩ project into
+  // a contradictory money ∩ land domain scope.
+  project.facets.domains = current.facets.domains?.length
+    ? [...current.facets.domains]
+    : ["land"];
   const composed = api.intersectScopes(current, project);
   return api.routeHashFromScope(composed, { surface: current.facets.domains?.[0] || "land" });
 }

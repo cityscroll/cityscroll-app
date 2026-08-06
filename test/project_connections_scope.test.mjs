@@ -5,10 +5,12 @@ import {
   buildProjectConnectionEvidence,
   buildProjectConnectionView,
   normalizeProjectConnectionsPayload,
+  projectApplyScopeHash,
   projectConnectionsPayloadState,
   projectConnectionScopeHash,
 } from "../site/project_connections.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
+import { vendorAgencyIntersectionHref } from "../site/vendor_footprint.mjs";
 
 const PROJECT_ID = "2022M0258";
 const PROJECT_REF = `project:${PROJECT_ID}`;
@@ -204,4 +206,25 @@ test("project scope links round-trip the typed project id and relation", () => {
     projectConnectionScopeHash(result, "parcels", { scope: CrolScope }),
     parcels.view_all_href,
   );
+});
+
+test("project pivot adds a third typed ref without changing the opened money lens", () => {
+  const twoWayHref = vendorAgencyIntersectionHref(
+    "vendor:stem:MAKE%20IT%20ZESTY",
+    "Housing Preservation and Development",
+  );
+  const twoWayUrl = new URL(twoWayHref, "https://cityscroll.org");
+  const composed = projectApplyScopeHash(
+    evidence(),
+    `#money${twoWayUrl.search}`,
+    { scope: CrolScope },
+  );
+  const parsed = CrolScope.scopeFromRouteHash(composed);
+  assert.deepEqual(parsed.facets.domains, ["money"]);
+  assert.deepEqual(parsed.facets.values.entity_refs_all, [
+    "agency:id:housing-preservation-and-development",
+    "project:2022M0258",
+    "vendor:stem:MAKE%20IT%20ZESTY",
+  ]);
+  assert.deepEqual(CrolScope.watchFromScope(parsed, { lens: "money" }).filter.entity_refs_all, parsed.facets.values.entity_refs_all);
 });

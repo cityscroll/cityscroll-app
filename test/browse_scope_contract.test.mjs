@@ -106,6 +106,74 @@ test("browse scope conformance: every registered lens filters when given fixture
   }
 });
 
+test("contracts conformance: a three-way typed scope is an all-ref intersection with removable chips", () => {
+  const payload = {
+    open_as_of: "2026-08-05",
+    notices: [
+      {
+        request_id: "triple",
+        agency_name: "Housing Preservation and Development",
+        short_title: "Timbale Terrace services",
+        entity_refs_all: [
+          "project:2022M0258",
+          "agency:id:housing-preservation-and-development",
+          "vendor:stem:MAKE%20IT%20ZESTY",
+        ],
+      },
+      {
+        request_id: "agency-vendor",
+        agency_name: "Housing Preservation and Development",
+        short_title: "Vendor contract under the agency",
+        entity_refs_all: [
+          "agency:id:housing-preservation-and-development",
+          "vendor:stem:MAKE%20IT%20ZESTY",
+        ],
+      },
+      {
+        request_id: "agency-project",
+        agency_name: "Housing Preservation and Development",
+        short_title: "Project record under the agency",
+        entity_refs_all: [
+          "project:2022M0258",
+          "agency:id:housing-preservation-and-development",
+        ],
+      },
+      {
+        request_id: "project-vendor",
+        agency_name: "Other agency",
+        short_title: "Vendor work on the project",
+        entity_refs_all: [
+          "project:2022M0258",
+          "vendor:stem:MAKE%20IT%20ZESTY",
+        ],
+      },
+    ],
+  };
+  const refs = [
+    "project:2022M0258",
+    "agency:id:housing-preservation-and-development",
+    "vendor:stem:MAKE%20IT%20ZESTY",
+  ];
+  const params = new URLSearchParams({ facet: JSON.stringify({ entity_refs_all: refs }) });
+  const view = buildBrowseView("contracts", payload, params, { limit: 1000 });
+
+  assert.equal(view.total, 1, "only the row carrying all three edges matches");
+  assert.equal(view.scope.mode, "applied");
+  assert.deepEqual(view.scope.refs.map((item) => item.ref).sort(), refs.sort());
+
+  const html = renderBrowseView(view);
+  const chips = [...html.matchAll(/href="([^"]+)" class="x-remove-scope"/g)];
+  assert.equal(chips.length, 3, "each typed constraint gets its own removable chip");
+  for (const [, href] of chips) {
+    const removed = new URLSearchParams(new URL(href, "https://cityscroll.org").search);
+    const remaining = JSON.parse(removed.get("facet")).entity_refs_all;
+    assert.equal(remaining.length, 2, "removing one chip leaves a valid two-way scope");
+    const roundTrip = buildBrowseView("contracts", payload, removed, { limit: 1000 });
+    assert.equal(roundTrip.scope.mode, "applied");
+    assert.equal(roundTrip.total, 2);
+  }
+});
+
 test("captain six scope URLs with DCWP exhibit explicit scope/empty state by lens", () => {
   const target = "consumer-and-worker-protection";
   const targetName = resolveAgencyIdentity(target).canonical_name;
