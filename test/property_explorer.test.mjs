@@ -345,7 +345,7 @@ test("default qualification consumes the same closed lifecycle as card tense", (
   assert.equal(partition.archive_count, 1);
 });
 
-test("source lifecycle end keeps a recurring sale current in the route payload", () => {
+test("standing-program validity keeps a recurring sale current without an instance deadline", () => {
   const row = {
     request_id: "recurring-auto-auction",
     short_title: "AUTO AUCTION",
@@ -364,6 +364,10 @@ test("source lifecycle end keeps a recurring sale current in the route payload",
   const partition = partitionPropertyExplorerEntries([entry], { today: "2026-08-04" });
 
   assert.equal(row.property_reader_actions.lifecycle.state, "open");
+  assert.equal(row.property_reader_actions.lifecycle.program_state, "active");
+  assert.equal(row.property_reader_actions.lifecycle.program_valid_through, "2027-05-03");
+  assert.equal(row.property_reader_actions.lifecycle.instance_state, "undated");
+  assert.equal(row.property_reader_actions.lifecycle.action_by, null);
   assert.equal(qualification.lifecycle_state, "open");
   assert.equal(qualification.qualified, true);
   assert.equal(partition.default_count, 1);

@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  assertPropertyProgramInstanceParity,
+  detectPropertyProgramInstanceParity,
   extractPropertyReaderActions,
   PROPERTY_ACTION_KINDS,
   propertyActionEnablingInfoHTML,
@@ -209,9 +211,62 @@ test("a recurring sale uses the source lifecycle end instead of an old example a
   }, future);
 
   assert.equal(result.lifecycle.state, "open");
-  assert.equal(result.lifecycle.action_by, "2027-05-03");
-  assert.equal(result.lifecycle.basis, "source_end_date");
+  assert.equal(result.lifecycle.action_by, null);
+  assert.equal(result.lifecycle.basis, "standing_program");
+  assert.equal(result.lifecycle.program_state, "active");
+  assert.equal(result.lifecycle.program_valid_through, "2027-05-03");
+  assert.equal(result.lifecycle.instance_state, "undated");
+  assert.deepEqual(detectPropertyProgramInstanceParity({
+    request_id: "recurring-auto-auction",
+    short_title: "AUTO AUCTION",
+    agency_name: "Citywide Administrative Services",
+    end_date: "2027-05-03",
+    additional_description_1: "Auctions are held every week at https://example.gov/auction.",
+  }, future).findings, []);
+  assertPropertyProgramInstanceParity({
+    request_id: "recurring-auto-auction",
+    short_title: "AUTO AUCTION",
+    agency_name: "Citywide Administrative Services",
+    end_date: "2027-05-03",
+    additional_description_1: "Auctions are held every week at https://example.gov/auction.",
+  }, future);
   assert.ok(result.actions.some((action) => action.status !== "historical"));
+});
+
+test("standing programs keep a dated auction instance on the instance clock", () => {
+  const result = extractPropertyReaderActions({
+    request_id: "standing-with-instance",
+    agency_name: "Citywide Administrative Services",
+    short_title: "AUTO AUCTION",
+    end_date: "2027-05-03",
+    additional_description_1: "Auctions are held every week. All bids must be submitted by September 3, 2026.",
+  }, {
+    today: "2026-08-04",
+    events: [{
+      kind: "bid_deadline",
+      deadline: "2026-09-03",
+      evidence: { field: "additional_description_1", start: 0, end: 86, text: "Auctions are held every week. All bids must be submitted by September 3, 2026." },
+    }],
+  });
+  assert.equal(result.lifecycle.program_state, "active");
+  assert.equal(result.lifecycle.program_valid_through, "2027-05-03");
+  assert.equal(result.lifecycle.instance_state, "current");
+  assert.equal(result.lifecycle.action_by, "2026-09-03");
+  assert.equal(result.actions[0].instance_state, "current");
+  assert.equal(result.actions[0].action_by, "2026-09-03");
+});
+
+test("a superseded standing-program edition is not a closed auction instance", () => {
+  const result = extractPropertyReaderActions({
+    request_id: "20241021015",
+    agency_name: "Citywide Administrative Services",
+    short_title: "AUTO AUCTION",
+    end_date: "2025-02-19",
+  }, future);
+  assert.equal(result.lifecycle.program_state, "superseded");
+  assert.equal(result.lifecycle.state, "superseded");
+  assert.equal(result.lifecycle.instance_state, "undated");
+  assert.equal(result.lifecycle.action_by, null);
 });
 
 test("action entries carry decision-enabling item, price, contact, venue, and inspection fields", () => {
