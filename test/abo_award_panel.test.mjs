@@ -59,16 +59,12 @@ test("unresolved and below-threshold notices are honestly absent", () => {
   assert.equal(releasedAboAward(lowPrecision, EDGE.request_id), null);
 });
 
-test("source link resolves the released row through its exact published fields", () => {
+test("source link resolves to the human-readable published dataset page", () => {
   const match = releasedAboAward(payload(), EDGE.request_id);
   const url = new URL(aboAwardSourceUrl(match));
   assert.equal(url.origin, "https://data.ny.gov");
-  assert.equal(url.pathname, "/resource/d84c-dk28.json");
-  const where = url.searchParams.get("$where");
-  assert.match(where, /authority_name='Governors Island Corporation'/);
-  assert.match(where, /vendor_name='BRYAN CAVE LEIGHTON PAISNER LLP'/);
-  assert.match(where, /award_date='2023-07-11T00:00:00.000'/);
-  assert.match(where, /procurement_description='Zoning and land use counsel services'/);
+  assert.equal(url.pathname, "/d/d84c-dk28");
+  assert.equal(url.search, "");
 });
 
 test("malformed released rows do not create incomplete public cards", () => {
@@ -123,7 +119,7 @@ test("public card names vendor, amount, date, authority, and the exact source", 
   assert.match(html, /2023-07-11/);
   assert.match(html, /Governors Island Corporation/);
   assert.match(html, /data-abo-award-source="1"/);
-  assert.match(html, /data\.ny\.gov\/resource\/d84c-dk28\.json/);
+  assert.match(html, /data\.ny\.gov\/d\/d84c-dk28/);
   assert.doesNotMatch(html, /possible|fuzzy|candidate/i);
 });
 

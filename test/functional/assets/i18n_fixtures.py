@@ -915,7 +915,8 @@ EXTERNAL_AWARD = {
         "process": "Authority Contract - Competitive Bid",
         "date": "2024-05-06T00:00:00.000", "amount": 5000000, "source": "nys-abo",
     }],
-    "source": {"kind": "abo", "dataset": "8w5p-k45m", "refreshed": "2025-12-01"},
+   "source": {"kind": "abo", "dataset": "8w5p-k45m", "refreshed": "2025-12-01"},
+    "source": {"kind": "abo", "dataset": "8w5p-k45m", "authority": "New York City School Construction Authority", "refreshed": "2025-12-01"},
     "ok": True,
 }
 
@@ -1021,6 +1022,9 @@ def install_routes(page):
     page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", fixed(ZAP_ROWS))
     page.route("https://data.cityofnewyork.us/resource/2iga-a6mk.json*", fixed([]))
     page.route("https://data.ny.gov/**", fixed([]))
+    page.route("https://data.ny.gov/d/**",
+               lambda r: r.fulfill(status=200, content_type="text/html",
+                                   body="<html><title>ABO dataset</title></html>"))
     page.route("https://data.ny.gov/resource/8w5p-k45m.json*", fixed(AUTHORITY_AWARDS))
     page.route("https://data.ny.gov/resource/d84c-dk28.json*", fixed(AUTHORITY_AWARDS))
     page.route("https://geosearch.planninglabs.nyc/**", fixed({"features": []}))
