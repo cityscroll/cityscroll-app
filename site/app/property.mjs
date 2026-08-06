@@ -942,9 +942,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
   const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   const processStage=entry.process_stage;
   const processLabel=processStage?dispositionStageLabel(processStage):t("disposition_stage_unstaged");
-  // Honesty: no live bid/attend CTA on a past-dated closed sale.
   const actionKey=closed ? "property_action_open_notice" : (entry.action_key||"property_action_open_notice");
-  // Surplus-buyer prime position: ITEM + $ + method + close-date (lens organize fields).
   const itemLabel=glance && glance.item
     ? glance.item
     : (ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):"");
@@ -962,9 +960,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
       })[methodKey]||"sale_method_unknown")
     : "";
   const closeLabel=closeDate ? fdt(closeDate,{dateOnly:true}) : "";
-  // Date chips use {date} only — never the price-fact `$` prefix template.
   const closeChipKey=closed ? "property_commercial_closed" : "property_commercial_close";
-  // Keep status chips on checked tag tokens.
   const closeChipClass=["tag", closed?"closed":"open"].join(" ");
   const processChipClass=["tag", (closed||superseded)?"closed":"open"].join(" ");
   const programStatus=activeProgram
@@ -992,7 +988,6 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
     const links=parcelLinks(entry.bbl);
     if(links?.zola_url) secondaryActions.push(`<a class="act" href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("property_action_lookup_zola")}${extSR()}</a>`);
   }
-  // Live marketplace / RFP package is only honest while the sale is still open.
   if(!closed && !superseded && commercial && commercial.participation && commercial.participation.package_url){
     secondaryActions.push(`<a class="act" href="${escUiHtml(commercial.participation.package_url)}" ${EXT_ATTRS}>${t("property_action_open_rfp")}${extSR()}</a>`);
   }
@@ -1025,7 +1020,6 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
       <div class="factions">${compactCardActions(primaryAction, secondaryActions)}</div>
     </div>`;
 }
-/** Format a cluster date range for the small-multiples card ("start – end", or one date). */
 function propClusterRange(range){
   if(!range) return "";
   const a=range.start?fdt(range.start):"", b=range.end?fdt(range.end):"";
