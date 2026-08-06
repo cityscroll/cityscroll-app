@@ -2,12 +2,13 @@
   "schema_version": 2,
   "title": "Person-level Legistar roll-call votes by official",
   "description": "Precomputed index of retained by_person votes for the #official/{id} surface. Built from people_domain_observations (meeting-outcomes roll_call densify). Never invents tallies.",
-  "retrieved_at": "2026-08-02T20:52:19.896Z",
+  "retrieved_at": "2026-08-05T21:48:27.663Z",
   "source": {
     "system": "legistar",
-    "read_model": "meeting-outcomes:materialized:v2",
+    "read_model": "meeting-outcomes:materialized:v3",
     "via": "by_person",
-    "densify": "meeting_outcomes_list_roll_call",
+    "densify": "meeting_outcomes_live_roll_call",
+    "eligible_event_filter": "city_council_roll_call_events_with_vote_rows",
     "seed_notices": [
       "20260304007",
       "20260331028",
@@ -17,6 +18,14 @@
       "20260706036"
     ],
     "event_ids": [
+      "22300",
+      "22342",
+      "22365",
+      "22375",
+      "22526",
+      "22567"
+    ],
+    "eligible_event_ids": [
       "22300",
       "22342",
       "22365",
@@ -43,14 +52,14 @@
     "distinct_notice_count": 6,
     "observed_person_vote_rows": 194,
     "retention_audit": {
-      "eligible_vote_rows": 49,
-      "retained_person_id_rows": 49,
+      "eligible_vote_rows": 388,
+      "retained_person_id_rows": 388,
       "rate": 1,
-      "measured_at": "2026-08-02",
+      "measured_at": "2026-08-05",
       "sample_event_id": "22526",
       "basis": "dated_live_legistar_audit"
     },
-    "vintage": "2026-08-02T20:52:19.896Z",
+    "vintage": "2026-08-05T21:48:27.663Z",
     "gate": {
       "minimum_retention_rate": 0.95,
       "minimum_distinct_events": 30,

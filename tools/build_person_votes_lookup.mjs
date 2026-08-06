@@ -13,7 +13,7 @@
  *   --fixture use worker test people domain fixture instead of site data
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -29,10 +29,20 @@ const FIXTURE = path.join(
   ROOT,
   "worker/test/fixtures/entity-intelligence/people_domain_observations.json",
 );
-const RETENTION_RECEIPT = path.join(
-  ROOT,
-  "site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
-);
+const RECEIPT_DIR = path.join(ROOT, "site/data/legistar_sources/verification_receipts");
+const OFFICIAL_RETENTION_RECEIPT = (() => {
+  const fallback = path.join(RECEIPT_DIR, "official_person_vote_retention_2026-08-02.json");
+  try {
+    const latest = readdirSync(RECEIPT_DIR)
+      .filter((name) => name.startsWith("official_person_vote_retention_"))
+      .filter((name) => name.endsWith(".json"))
+      .sort()
+      .pop();
+    return latest ? path.join(RECEIPT_DIR, latest) : fallback;
+  } catch {
+    return fallback;
+  }
+})();
 
 function parseArgs(argv) {
   const out = { check: false, fixture: false };
@@ -64,7 +74,7 @@ function main() {
       process.exit(1);
     }
     const expectedCoverage = buildPersonVotesLookup(loadPeople(false), {
-      retentionReceipt: JSON.parse(readFileSync(RETENTION_RECEIPT, "utf8")),
+      retentionReceipt: JSON.parse(readFileSync(OFFICIAL_RETENTION_RECEIPT, "utf8")),
     }).coverage;
     if (JSON.stringify(doc.coverage) !== JSON.stringify(expectedCoverage)) {
       console.error("person_votes_lookup: coverage block is stale — rebuild the lookup");
@@ -86,7 +96,7 @@ function main() {
   const people = loadPeople(args.fixture);
   const retentionReceipt = args.fixture
     ? null
-    : JSON.parse(readFileSync(RETENTION_RECEIPT, "utf8"));
+    : JSON.parse(readFileSync(OFFICIAL_RETENTION_RECEIPT, "utf8"));
   const lookup = buildPersonVotesLookup(people, { retentionReceipt });
   mkdirSync(path.dirname(OUT), { recursive: true });
   writeFileSync(OUT, `${JSON.stringify(lookup, null, 2)}\n`);
