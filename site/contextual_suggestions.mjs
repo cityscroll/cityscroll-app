@@ -86,6 +86,13 @@ function approved(suggestion, destinationCheck) {
   return typeof destinationCheck !== "function" || destinationCheck(suggestion) !== false;
 }
 
+/** Production guard for pivots whose URL is currently only a route claim. */
+export function productionDestinationCheck(suggestion) {
+  if (suggestion?.kind !== "pivot") return true;
+  const href = String(suggestion.href || "");
+  return !/^\/(?:agencies|vendors|officials)\/[^/?#]+\/?(?:\?.*)?$/.test(href);
+}
+
 /**
  * Build the small set of valid next moves for a rendered scope.
  *
@@ -109,6 +116,7 @@ export function buildContextualSuggestions({
   const currentRefs = uniqueRefs(scope.facets.values?.entity_refs_all);
   const safeSurface = clean(surface, 40) || scope.facets.domains[0] || "money";
   const safeRoute = clean(route, 160) || "/browse/";
+  const checkDestination = typeof destinationCheck === "function" ? destinationCheck : productionDestinationCheck;
   const suggestions = [];
   const positiveCount = Number.isInteger(Number(resultCount)) && Number(resultCount) > 0
     ? Number(resultCount) : 0;
@@ -131,7 +139,7 @@ export function buildContextualSuggestions({
       count: positiveCount,
       refs: currentRefs,
     };
-    if (approved(follow, destinationCheck)) suggestions.push(follow);
+    if (approved(follow, checkDestination)) suggestions.push(follow);
   }
 
   const intersect = inventory[0];
@@ -143,7 +151,7 @@ export function buildContextualSuggestions({
       count: intersect.count,
       refs: [...currentRefs, intersect.ref],
     };
-    if (approved(suggestion, destinationCheck)) suggestions.push(suggestion);
+    if (approved(suggestion, checkDestination)) suggestions.push(suggestion);
   }
 
   const pivot = inventory.find((edge) => clean(edge.pivotHref, 500));
@@ -156,7 +164,7 @@ export function buildContextualSuggestions({
       refs: [...currentRefs, pivot.ref],
       pivot: true,
     };
-    if (approved(suggestion, destinationCheck)) suggestions.push(suggestion);
+    if (approved(suggestion, checkDestination)) suggestions.push(suggestion);
   }
 
   const pair = (Array.isArray(edgePairs) ? edgePairs : [])
@@ -177,7 +185,7 @@ export function buildContextualSuggestions({
       count: pair.count,
       refs: [...currentRefs, ...pair.refs],
     };
-    if (approved(suggestion, destinationCheck)) suggestions.push(suggestion);
+    if (approved(suggestion, checkDestination)) suggestions.push(suggestion);
   }
 
   return suggestions.slice(0, Math.max(0, Math.min(CONTEXTUAL_SUGGESTION_LIMIT, Number(max) || CONTEXTUAL_SUGGESTION_LIMIT)));
