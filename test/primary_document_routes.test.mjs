@@ -67,6 +67,9 @@ test("entity and unknown Browse routes never serve the home shell", async () => 
   const entity = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/"), env);
   assert.equal(entity.status, 404);
   assert.doesNotMatch(await entity.text(), /track RFPs, rezonings, meetings/);
+  const entityHead = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/", { method: "HEAD" }), env);
+  assert.equal(entityHead.status, 404);
+  assert.equal(await entityHead.text(), "");
 
   const land = await edgeWorker.fetch(new Request("https://cityscroll.org/browse/land/"), env);
   assert.equal(land.status, 302);
