@@ -97,7 +97,10 @@ async function syncLandLensControls(){
       ...options,
       { id:"hearings", label:t("land_status_upcoming_hearings") },
     ];
-    if(select) select.innerHTML=buttons.map(option=>`<option value="${escUiHtml(option.id)}">${escUiHtml(option.label)}</option>`).join("");
+    if(select){
+      const selectOptions=[buttons[0], { id:"active", label:t("status_active") }, ...buttons.slice(1)];
+      select.innerHTML=selectOptions.map(option=>`<option value="${escUiHtml(option.id)}">${escUiHtml(option.label)}</option>`).join("");
+    }
     const selectedId=status==="active"?["project","Active"].join(":"):status;
     rail.innerHTML=buttons.map(option=>`<button type="button" class="chip" data-land-status="${escUiHtml(option.id)}" aria-pressed="${option.id===selectedId?"true":"false"}">${escUiHtml(option.label)}${option.count?` <span class="ct">${fmtNumber(option.count)}</span>`:""}</button>`).join("");
     if(select) select.value=status;
@@ -539,7 +542,9 @@ async function showLandEntry(id){
   showTab("land");
   $("#lboro").value="";
   $("#lkw").value="";
-  $("#lstatus").value="all";
+  // A project deep link is still part of the default review view; retain the
+  // lens default so the surrounding route state remains stable while detail loads.
+  $("#lstatus").value="active";
   await syncLandLensControls();
   $("#lreshead").textContent=t("rezonings_heading");
   $("#lrescount").textContent="";
