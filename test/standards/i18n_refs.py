@@ -45,6 +45,12 @@ args = parser.parse_args()
 ROOT = args.root.resolve()
 pages = {p: (ROOT / p).read_text() for p in PAGES}
 lib = (ROOT / "i18n.js").read_text()
+RUNTIME_SURFACES = ["parcel_biography_ui.mjs", "app/property.mjs"]  # source: parcel biography route call sites
+runtime_sources = {
+    path: (ROOT / path).read_text()
+    for path in RUNTIME_SURFACES
+    if (ROOT / path).exists()
+}
 
 en_block = re.search(r"en:\s*{(.*?)\n  },", lib, re.S)
 if not en_block:
@@ -58,6 +64,8 @@ for src in pages.values():
 # and (?!n) keeps tn("...") calls (handled separately below) from matching this pattern too.
 for src in list(pages.values()) + [lib]:
     refs |= set(re.findall(r"""(?<![A-Za-z0-9_$.])t\(\s*['"]([A-Za-z0-9_.]+)['"]\s*[,)]""", src))
+for src in runtime_sources.values():
+    refs |= set(re.findall(r'"(property_xd_[A-Za-z0-9_]+)"', src))
 
 missing = sorted(r for r in refs if r not in dict_keys)
 dynamic = sorted(set(re.findall(
@@ -70,7 +78,7 @@ tn_bases = sorted(set(re.findall(
     r"""(?<![A-Za-z0-9_$.])tn\(\s*['"]([A-Za-z0-9_.]+)['"]\s*,""", pages["index.html"])))
 tn_missing = sorted(b for b in tn_bases if (b + "_other") not in dict_keys)
 
-print(f"dictionary: {len(dict_keys)} keys · static references: {len(refs)} (across {len(PAGES)} pages)")
+print(f"dictionary: {len(dict_keys)} keys · static references: {len(refs)} (across {len(PAGES)} pages + {len(runtime_sources)} route surfaces)")
 if dynamic:
     print(f"note: {len(dynamic)} dynamically-constructed key prefix(es) — runtime-checked only: {dynamic}")
 if tn_bases:

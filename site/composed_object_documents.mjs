@@ -119,8 +119,8 @@ function actionMarkup(view, watchHref) {
   return `<nav class="civic-object-actions" aria-label="Document actions" data-export-class="object_actions"><a class="civic-object-action primary" href="${esc(watchHref)}">Watch this ${noun}</a><button class="civic-object-action" type="button" data-object-copy>Copy link</button><button class="civic-object-action" type="button" data-object-print>Print / save PDF</button><button class="civic-object-action" type="button" data-object-export="json">Download JSON</button><button class="civic-object-action" type="button" data-object-export="xlsx">Download XLSX</button></nav>`;
 }
 
-function subjectLink(ref) {
-  const href = subjectHref(ref);
+function subjectLink(ref, hrefOverride = null) {
+  const href = hrefOverride || subjectHref(ref);
   const value = clean(ref);
   const match = value.match(/^([a-z-]+):(.+)$/);
   const label = match?.[1] === "bbl"
@@ -139,7 +139,7 @@ export function renderComposedObjectDocument(view, options = {}) {
   const isParcel = view.kind === "parcel";
   const title = isPack ? view.title : isParcel ? bblReaderLabel(view.bbl) || `Parcel ${view.bbl}` : `Council District ${view.council_district} weekly digest`;
   const watchHref = isPack ? followingUrlFromWatch(view.watches[0] || { lens: "money", filter: {} }, { frequency: "weekly" }) : isParcel ? followingUrlFromWatch({ lens: "property", filter: { subject_refs_all: [view.parcel_ref] } }, { frequency: "weekly" }) : followingUrlFromWatch({ lens: "district", filter: { councilDistrict: view.council_district } }, { frequency: "weekly" });
-  const parcelSections = isParcel ? Object.entries(view.sections).map(([kind, section]) => `<section class="civic-object-section" data-parcel-biography-domain="${esc(kind)}"><h2>${esc(kind === "cofo" ? "Certificates of Occupancy" : kind === "tax_lien" ? "Tax-lien lists" : kind === "property" ? "Property dispositions" : "Land projects")}</h2>${section.items.length ? `<ul>${section.items.map(item => `<li>${subjectLink(item.subject_ref)} — ${esc(item.label || item.id)} <span class="muted">${esc(item.source)} · ${esc(item.date || "date not published")}</span></li>`).join("")}</ul>` : `<p>${esc(section.note || "No linked record is listed for this parcel.")}</p>`}</section>`).join("") : "";
+  const parcelSections = isParcel ? Object.entries(view.sections).map(([kind, section]) => `<section class="civic-object-section" data-parcel-biography-domain="${esc(kind)}"><h2>${esc(kind === "cofo" ? "Certificates of Occupancy" : kind === "tax_lien" ? "Tax-lien lists" : kind === "property" ? "Property dispositions" : "Land projects")}</h2>${section.items.length ? `<ul>${section.items.map(item => `<li>${subjectLink(item.subject_ref, item.href)} — ${esc(item.label || item.id)} <span class="muted">${esc(item.source)} · ${esc(item.date || "date not published")}</span></li>`).join("")}</ul>` : `<p>${esc(section.note || "No linked record is listed for this parcel.")}</p>`}</section>`).join("") : "";
   const members = isParcel
     ? parcelSections
     : isPack

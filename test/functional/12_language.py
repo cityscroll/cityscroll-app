@@ -5,6 +5,7 @@ shows the "notices remain in English" banner, flips document lang, persists via 
 across reload; notice-content containers keep translate="no"; switching back restores English.
 """
 import os
+import re
 from playwright.sync_api import sync_playwright
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
@@ -62,7 +63,7 @@ with sync_playwright() as pw:
     # bare snake_case key — catches missing keys AND dynamically-constructed t() names
     # the static i18n_refs gate can't see. Notice content (translate="no") is excluded
     # because real City Record PINs are key-shaped.
-    import re as _re
+    raw_key_re = re.compile(r"\b[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+\b")
     def assert_no_raw_i18n_keys(page_obj, label):
         rendered = page_obj.evaluate("""() => {
           const out = [];
@@ -78,8 +79,7 @@ with sync_playwright() as pw:
           }
           return out;
         }""")
-        raw = sorted({match.group(0) for text in rendered for match in _re.finditer(
-            r"\b[A-Z]+(?:_[A-Z]+)+\b", text)})
+        raw = sorted({match.group(0) for text in rendered for match in raw_key_re.finditer(text)})
         assert not raw, f"raw i18n keys visible in {label}: {raw}"
 
     for tag in ("es", "en"):
@@ -96,7 +96,7 @@ with sync_playwright() as pw:
           }
           return out;
         }""")
-        raw = sorted({t.strip() for t in chrome_text if _re.fullmatch(r"[a-z][a-z0-9]*(?:_[a-z0-9]+)+", t.strip(), _re.I)})
+        raw = sorted({match.group(0) for text in chrome_text for match in raw_key_re.finditer(text)})
         assert not raw, f"raw i18n keys visible in {tag} mode: {raw}"
         assert_no_raw_i18n_keys(page, f"{tag} mode")
         step("OK", f"no raw keys visible ({tag})")

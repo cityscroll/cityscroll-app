@@ -102,7 +102,10 @@ function landItems(source = []) {
       confidence: "strong",
       method: EXACT_BBL_METHOD,
       status: clean(project.public_status, 100) || null,
-      href: `#land?project=${encodeURIComponent(projectId)}`,
+      // Project constraints are not a Browse/zoning facet. The in-app land
+      // document route owns this exact project identity and keeps the pivot
+      // actionable instead of forwarding into legacy=unsupported-filter.
+      href: `#land/${encodeURIComponent(projectId)}`,
     }];
   });
 }
