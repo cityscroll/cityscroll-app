@@ -11,6 +11,7 @@ export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "meetings", relation: "decides_land_project", surface: "land" },
   { id: "decisions", relation: "project_disposition", surface: "land" },
   { id: "notices", relation: "references_project", surface: "land" },
+  { id: "mih", relation: "has_mih_area", surface: "land" },
 ]);
 
 export const PROJECT_CONNECTIONS_SCHEMA_VERSION = 1;
@@ -143,6 +144,7 @@ export function buildProjectConnectionEvidence({
   entityLinks = [],
   graphLinks = [],
   outcome = null,
+  mihRows = [],
   coverage = {},
 } = {}) {
   const id = projectId(rawProjectId);
@@ -265,6 +267,26 @@ export function buildProjectConnectionEvidence({
   })), (item) => item.ref);
   notices.status = notices.items.length ? "matched" : "not_observed";
   notices.gap = notices.items.length ? null : noticeGap(joinedOutcome);
+
+  const mih = groups.find((group) => group.id === "mih");
+  const exactMihRows = (Array.isArray(mihRows) ? mihRows : [])
+    .filter((row) => projectId(row?.project_id) === id);
+  mih.items = exactMihRows.map((row) => ({
+    ref: `project:${id}`,
+    label: clean(row?.mih?.project_name || row?.project_name) || "Mandatory Inclusionary Housing area",
+    outcome: [clean(row?.mih?.status), clean(row?.mih?.mih_option)].filter(Boolean).join(" · ") || null,
+    when: clean(row?.mih?.date_adopted, 40) || null,
+    relation: "has_mih_area",
+    confidence: clean(row?.join?.confidence, 24) === "strong" ? "strong" : null,
+    evidence: "exact project_id",
+    source_summary: "Mandatory Inclusionary Housing + Zoning Application Portal",
+    source_values: {
+      mih: row?.mih || null,
+      zap: row?.zap || null,
+    },
+  }));
+  mih.status = mih.items.length ? "matched" : "not_observed";
+  mih.gap = mih.items.length ? null : "no_exact_mih_edge_in_bounded_corpus";
 
   return result;
 }

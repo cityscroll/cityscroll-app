@@ -4,6 +4,7 @@ import entityLookup from "./data/entity_intelligence_lookup.json" with { type: "
 import projectLookup from "./data/zap_projects_warehouse_lookup.json" with { type: "json" };
 import bblLookup from "./data/zap_bbl_warehouse_lookup.json" with { type: "json" };
 import outcomeReceipt from "../../site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json" with { type: "json" };
+import mihLookup from "../../site/data/mih_project_lookup.json" with { type: "json" };
 import {
   buildProjectConnectionEvidence,
   PROJECT_CONNECTIONS_SCHEMA_VERSION,
@@ -55,6 +56,7 @@ const currentBblProjectCount = new Set(
 ).size;
 const applicantCount = projectRows.filter((row) => clean(row?.primary_applicant)).length;
 const outcomeRates = outcomeReceipt?.join_measurement?.rates || {};
+const mihRows = Array.isArray(mihLookup?.rows) ? mihLookup.rows : [];
 
 export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
   applicant: {
@@ -93,6 +95,14 @@ export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
     scope: "this_project",
     vintage: entityLookup?.generated_at || null,
     gap: "eligible_denominator_not_measured",
+  },
+  mih: {
+    eligible: mihLookup?.join_measurement?.eligible ?? null,
+    linked: mihLookup?.join_measurement?.linked ?? null,
+    rate: mihLookup?.join_measurement?.rate ?? null,
+    scope: "mih_rows_to_zap_project_id",
+    vintage: mihLookup?.materialized_at || null,
+    gap: mihLookup?.join_measurement?.gap || null,
   },
 });
 
@@ -139,6 +149,7 @@ export function attachProjectConnections(record) {
       entityLinks: entityLinksForProject(id),
       graphLinks: graphLinksForProject(id),
       outcome: record,
+      mihRows,
       coverage: PROJECT_CONNECTION_COVERAGE,
     }),
   };

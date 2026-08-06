@@ -16,7 +16,7 @@ const availableBody = {
       schema_version: 1,
       status: "bounded",
       project_ref: "project:2022M0258",
-      groups: ["applicant", "parcels", "meetings", "decisions", "notices"].map((id) => ({ id })),
+      groups: ["applicant", "parcels", "meetings", "decisions", "notices", "mih"].map((id) => ({ id })),
     },
   },
 };

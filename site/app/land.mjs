@@ -1166,13 +1166,15 @@ function projectConnectionsHTML(evidence, tools){
     not_published:"project_connections_gap_notices",
     source_unavailable:"project_connections_gap_source",
     no_exact_notice_edge_in_bounded_corpus:"project_connections_gap_notices",
+    no_exact_mih_edge_in_bounded_corpus:"project_connections_gap_mih",
   };
   const groups=view.groups.map(group=>{
     const itemRows=(group.items||[]).slice(0,12).map(item=>{
       const label=projectConnectionItemHTML(item,projectScope);
       const outcome=item.outcome?` <span class="pc-outcome">${escUiHtml(item.outcome)}</span>`:"";
       const when=item.when?` <span class="pc-when">${fdate(item.when)}</span>`:"";
-      return `<li>${label}${outcome}${when}</li>`;
+      const sources=item.source_summary?` <span class="pc-source">${escUiHtml(item.source_summary)}</span>`:"";
+      return `<li>${label}${outcome}${when}${sources}</li>`;
     }).join("");
     const docs=(group.documents||[]).filter(doc=>doc.href).slice(0,6).map(doc=>
       `<a class="view" href="${escUiHtml(doc.href)}" ${EXT_ATTRS}>${escUiHtml(doc.label)}${extSR()}</a>`
