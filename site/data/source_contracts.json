@@ -1457,6 +1457,43 @@
       "landing_probe": "require"
     },
     {
+      "id": "city-council-committee-membership",
+      "name": "City Council Committee Membership (1999 to 2025)",
+      "owner": "NYC Council",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "aabe-yfm9",
+      "landing_page": "https://data.cityofnewyork.us/d/aabe-yfm9",
+      "required_fields": ["member_id", "full_name", "committee", "appointment_type", "start_date", "end_date", "committee_id", "id"],
+      "max_stale_days": 365,
+      "publisher_cadence": "Historical export updated when committee membership records are revised",
+      "product_freshness": "Bulk rows stay in the warehouse. The official profile uses a committed exact-member_id join slice and displays its source vintage and measured gaps.",
+      "used_for": "Exact-key committee membership evidence on official profiles.",
+      "code_references": [
+        {"path": "warehouse/datasets.v0.json", "contains": "aabe-yfm9"},
+        {"path": "tools/build_committee_memberships_lookup.mjs", "contains": "member_id"},
+        {"path": "site/committee_memberships_build.mjs", "contains": "exact_member_id_join"},
+        {"path": "site/app/entities.mjs", "contains": "official_committee_memberships_lookup.json"}
+      ],
+      "join_keys": ["member_id"],
+      "join_measurement": {
+        "observed_on": "2026-08-05",
+        "universe": "5,358 source rows and 15 committed exact person IDs in the people-domain corpus",
+        "strategy": "exact member_id to person_id; no name fallback",
+        "rates": {"linked_rows": {"joined": 308, "total": 5358, "rate": 0.0575}, "linked_people": {"joined": 12, "total": 15, "rate": 0.8}},
+        "verdict": "Publish the 308 exact-key rows for 12 people; leave three people as an explicit gap."
+      },
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/official_committee_memberships_lookup.json",
+        "materialized_at": "2026-08-05T00:00:00.000Z",
+        "row_count": 308
+      },
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "passport-public-contracts",
       "name": "PASSPort Public contracts",
       "owner": "NYC Mayor's Office of Contract Services",

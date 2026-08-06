@@ -63,6 +63,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
 | `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
+| `city-council-committee-membership` | landed | member_id | — | 5.8% (linked_rows) |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
 | `city-record` | live-only | PIN, request_id, agency, document_id, event_date, BBL | — | — |
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
@@ -194,4 +195,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `23ee16a57688…` · materialized 11 · candidates 51 · class changes 0.
+Last refresh fingerprint: `63663cf56cba…` · materialized 11 · candidates 51 · class changes 0.
