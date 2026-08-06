@@ -26,6 +26,18 @@ test("money + agency → agency_name clause applied to both the award and solici
   assert.match(rfp.params["$where"], /agency_name='Buildings'/);
 });
 
+test("money + typed agency scope compiles the same agency predicate used by the scope", () => {
+  const q = compileSub({ lens: "money", filter: {
+    agency: "Housing Preservation and Development",
+    noticeType: "award",
+    entity_refs_all: ["agency:id:housing-preservation-and-development"],
+    connection_relation: "published_by_agency",
+  } }, "2026-08-05");
+  assert.equal(q.kind, "award");
+  assert.match(q.params["$where"], /agency_name='Housing Preservation and Development'/);
+  assert.match(q.params["$where"], /type_of_notice_description='Award'/);
+});
+
 test("money + noticeType='award' with NO amount → still the award branch (closes the old amount-implies-type gap)", () => {
   const q = compileSub({ lens: "money", filter: { noticeType: "award", agency: "Sanitation" } }, "2026-06-30");
   assert.equal(q.kind, "award");

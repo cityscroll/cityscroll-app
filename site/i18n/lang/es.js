@@ -236,6 +236,8 @@
     mode_award: "Adjudicaciones recientes ($)",
     agency_label: "Agencia",
     all_agencies: "Todas las agencias",
+    scope_relation_published_by: "publicado por",
+    scope_relation_connection: "conexión",
     keyword_label: "Palabra clave",
     sort_label: "Ordenar por",
     sort_deadline: "Fecha límite: más próxima",

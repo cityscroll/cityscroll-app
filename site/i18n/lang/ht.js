@@ -234,6 +234,8 @@
     mode_allrfp: "Tout RFP yo",
     mode_award: "Akòdman resan yo ($)",
     agency_label: "Ajans",
+    scope_relation_published_by: "pibliye pa",
+    scope_relation_connection: "koneksyon",
     all_agencies: "Tout ajans",
     keyword_label: "Mo kle",
     sort_label: "Klase pa",

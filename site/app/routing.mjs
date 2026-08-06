@@ -1,5 +1,6 @@
 import { noticeDocumentUrl } from "../notice_permalink.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
+import { resolveAgencyIdentity } from "../agency_identity.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -69,6 +70,17 @@ function facetValuesFromRouteRaw(raw){
     probe.facets.values=parsed;
     return CrolScope.normalizeScope(probe,{language:window.LANG||"en"}).facets.values;
   }catch(e){ return {}; }
+}
+
+function agencyFromRouteFacet(values){
+  const refs = Array.isArray(values?.entity_refs_all) ? values.entity_refs_all : [];
+  for(const ref of refs){
+    const match = String(ref || "").match(/^agency:(?:id:)?(.+)$/);
+    if(!match) continue;
+    const resolved = resolveAgencyIdentity(match[1]);
+    if(resolved?.canonical_name) return resolved.canonical_name;
+  }
+  return "";
 }
 
 // Hash navigation changes both the visual viewport and the assistive-technology reading point.
@@ -285,7 +297,7 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 // rather than break rendering.
 const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
@@ -293,7 +305,7 @@ const DEEPLINK_LENSES = {
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   award:    ["requestId", "agency"],
 };
 const DEEPLINK_CATEGORIES = ["Goods", "Goods and Services", "Services (other than human services)",
@@ -326,6 +338,8 @@ function deeplinkClampField(name, v){
     case "watchType": return v==="rezone" ? "rezone" : null;
     case "place": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "requestId": return typeof v==="string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
+    case "entity_refs_all": return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>/^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0,20) : [];
+    case "connection_relation": return typeof v==="string" && ["published_by_agency","named_vendor","sited_on_parcel","votes_on","references_contract","registered_as","shares_authority_key","about_notice","parcel_links_project","named_owner","same_rulemaking"].includes(v) ? v : null;
     case "closingWeek": return !!v;
     case "route": return v==="agency" || v==="vendor" ? v : null;
     case "tab": return v==="forecast" || v==="overview" ? v : null;
@@ -773,8 +787,14 @@ function applyHash(){
   const slashPos = incoming.indexOf("/");
   let raw = slashPos >= 0 && incoming.slice(0, slashPos) === "alerts" ? "alerts" : incoming;
   if(incoming !== raw){ history.replaceState(routeHistoryState({}), "", routeUrlForHash("#"+raw)); }
-  if(!raw){ activeRouteFacetValues={}; globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=null; return false; }
+  if(!raw){
+    activeRouteFacetValues={};
+    globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES={};
+    globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=null;
+    return false;
+  }
   activeRouteFacetValues=facetValuesFromRouteRaw(raw);
+  globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES={...activeRouteFacetValues};
   const resultCountReceipt=Number(activeRouteFacetValues.result_count_receipt);
   globalThis.CROL_SCOPE_RESULT_COUNT_RECEIPT=Number.isInteger(resultCountReceipt)&&resultCountReceipt>=0
     ?resultCountReceipt:null;
@@ -856,7 +876,8 @@ function applyHash(){
     if(tab === "money"){
       // Reset first: a shared hash must produce the same filter from any prior in-page state.
       $("#mode").value = ["open","allrfp","award"].includes(q.get("mode")) ? q.get("mode") : "open";
-      $("#agency").value = ""; forceSelect("#agency", q.get("agency"));
+      $("#agency").value = "";
+      forceSelect("#agency", q.get("agency") || agencyFromRouteFacet(activeRouteFacetValues));
       $("#kw").value = q.get("q") || "";
       $("#sort").value = ["deadline","newest","amount"].includes(q.get("sort")) ? q.get("sort") : "deadline";
       forceAmountSelect(q.get("min"));

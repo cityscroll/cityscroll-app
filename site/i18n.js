@@ -398,6 +398,8 @@ const STRINGS = {
     mode_award:       "Recent Awards ($)",
     agency_label:     "Agency",
     all_agencies:     "All agencies",
+    scope_relation_published_by: "published by",
+    scope_relation_connection: "connection",
     keyword_label:    "Keyword",
     sort_label:       "Sort by",
     sort_deadline:    "Deadline: soonest",

@@ -237,6 +237,8 @@
     mode_allrfp: "تمام RFP",
     mode_award: "حالیہ ایوارڈز ($)",
     agency_label: "ادارہ",
+    scope_relation_published_by: "ادارے کی جانب سے شائع شدہ",
+    scope_relation_connection: "رابطہ",
     all_agencies: "تمام ادارے",
     keyword_label: "کلیدی لفظ",
     sort_label: "ترتیب دیں بلحاظ",

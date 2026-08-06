@@ -17,6 +17,16 @@ export const CATEGORIES = [
   "Construction Related Services",
 ];
 
+// Typed route facets are part of a saved scope, not merely display metadata. Keep the
+// closed relation vocabulary here so /subscribe, /following, and /prefs all preserve the
+// same scope contract while compileSub continues to use the ordinary agency predicate for
+// the City Record query.
+const CONNECTION_RELATIONS = new Set([
+  "published_by_agency", "named_vendor", "sited_on_parcel", "votes_on",
+  "references_contract", "registered_as", "shares_authority_key", "about_notice",
+  "parcel_links_project", "named_owner", "same_rulemaking",
+]);
+
 export const LENSES = {
   // money's field list IS the general procurement-notice filter schema — additive: a new
   // field is a new array entry + clampField case, nothing else. It's keyed to what
@@ -26,7 +36,7 @@ export const LENSES = {
   // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
@@ -39,7 +49,7 @@ export const LENSES = {
   // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
   // happened to pick. watchType/place survive only to mark the one genuinely different
   // shape: a rezoning watch, which has a place instead of a dollar amount or a due date.
-  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   // award: "tell me when THIS notice's award registers" — the delivery wrapper the same
   // (email,lens,filter) idempotent-subscribe key already gives every other lens for free, just
   // scoped to one notice instead of a standing query. See alerts.mjs's processAwardSub() for
@@ -107,6 +117,13 @@ function clampField(name, v) {
       return v
         .map((item) => String(item || "").trim())
         .filter((item) => /^exam:\d{4}$/.test(item));
+    case "entity_refs_all":
+      if (!Array.isArray(v)) return [];
+      return [...new Set(v
+        .map((item) => String(item || "").trim())
+        .filter((item) => /^(?:agency:[^:\s]+:[^:\s]+|vendor:stem:[^:\s]+|entity:official:[^:\s]+|project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}|exam:\d{4}|bbl:\d{10})$/.test(item)))].slice(0, 20);
+    case "connection_relation":
+      return typeof v === "string" && CONNECTION_RELATIONS.has(v) ? v : null;
     case "name":
       return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 120) : null;
     case "kind":

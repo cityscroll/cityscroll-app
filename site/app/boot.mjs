@@ -301,7 +301,11 @@ async function applyNoticeWatchSeed({ noticeId, projectId, lens, filter }){
  * Neutral surfaces (home, about-style) stay bare #alerts.
  */
 function currentLensFilterState(tab){
-    const adapt=state=>CrolScope.lensStateFromScope(CrolScope.scopeFromLensState(tab,state,{language:window.LANG||"en"}),tab);
+    const adapt=state=>{
+      const scope=CrolScope.scopeFromLensState(tab,state,{language:window.LANG||"en"});
+      scope.facets.values={...scope.facets.values,...(globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES||{})};
+      return CrolScope.lensStateFromScope(scope,tab);
+    };
   if(tab === "money"){
     return adapt({
       agency: $("#agency") && $("#agency").value || "",

@@ -243,6 +243,8 @@
     mode_allrfp: "Wszystkie RFP",
     mode_award: "Ostatnie przyznania (USD)",
     agency_label: "Agencja",
+    scope_relation_published_by: "opublikowane przez",
+    scope_relation_connection: "połączenie",
     all_agencies: "Wszystkie agencje",
     keyword_label: "Słowo kluczowe",
     sort_label: "Sortuj według",

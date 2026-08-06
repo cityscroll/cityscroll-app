@@ -89,3 +89,9 @@ test("source-list result count travels as a receipt and is exposed by the previe
   assert.match(SITE_SOURCE, /alertEntryMatchCount/);
   assert.match(SITE_SOURCE, /data-scope-count/);
 });
+
+test("browse route facets remain visible in the active scope chip and watch handoff", () => {
+  assert.match(SITE_SOURCE, /CROL_ACTIVE_SCOPE_FACET_VALUES/);
+  assert.match(SITE_SOURCE, /active-scope-chip/);
+  assert.match(SITE_SOURCE, /agencyFromRouteFacet/);
+});
