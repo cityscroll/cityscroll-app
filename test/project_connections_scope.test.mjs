@@ -115,7 +115,7 @@ test("Timbale Terrace composes five reader-verb groups with confidence and cover
   const result = evidence();
   assert.equal(result.project_ref, PROJECT_REF);
   assert.deepEqual(result.groups.map((group) => group.id), [
-    "applicant", "parcels", "meetings", "decisions", "notices",
+    "applicant", "parcels", "meetings", "decisions", "notices", "mih",
   ]);
 
   const applicant = result.groups.find((group) => group.id === "applicant");
@@ -137,6 +137,26 @@ test("Timbale Terrace composes five reader-verb groups with confidence and cover
   assert.equal(decisions.coverage.scope, "fixed_completed_project_sample");
   assert.equal(decisions.coverage.rate, 0.9);
   assert.equal(decisions.documents.length, 1);
+
+  const mih = result.groups.find((group) => group.id === "mih");
+  assert.equal(mih.status, "not_observed");
+  assert.equal(mih.gap, "no_exact_mih_edge_in_bounded_corpus");
+});
+
+test("MIH evidence uses exact project_id and keeps both source records", () => {
+  const result = evidence({
+    mihRows: [{
+      project_id: PROJECT_ID,
+      join: { confidence: "strong" },
+      mih: { project_name: "MIH source name", status: "Adopted", mih_option: "Option 1", date_adopted: "2024-01-02" },
+      zap: { project_name: "ZAP source name" },
+    }],
+  });
+  const mih = result.groups.find((group) => group.id === "mih");
+  assert.equal(mih.status, "matched");
+  assert.equal(mih.items[0].confidence, "strong");
+  assert.equal(mih.items[0].source_values.mih.project_name, "MIH source name");
+  assert.equal(mih.items[0].source_values.zap.project_name, "ZAP source name");
 });
 
 test("exact project and BBL joins reject same-title and address-only candidates", () => {

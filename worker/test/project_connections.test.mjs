@@ -66,7 +66,7 @@ test("cached outcome responses receive current project connections at serve time
   const body = await response.json();
   assert.equal(body.cached, true);
   assert.equal(body.record.project_connections.project_ref, "project:2022M0258");
-  assert.equal(body.record.project_connections.groups.length, 5);
+  assert.equal(body.record.project_connections.groups.length, 6);
   assert.deepEqual(body.sections.project_connections, {
     schema_version: 1,
     status: "available",

@@ -706,6 +706,50 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "mandatory-inclusionary-housing",
+      "name": "Mandatory Inclusionary Housing",
+      "owner": "NYC Department of City Planning",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "m79g-k9r4",
+      "landing_page": "https://data.cityofnewyork.us/d/m79g-k9r4",
+      "required_fields": [
+        "project_id",
+        "status",
+        "project_nam",
+        "date_adopte",
+        "zr_ulurpno",
+        "mih_option",
+        "cd"
+      ],
+      "max_stale_days": 45,
+      "publisher_cadence": "Monthly (Open Data metadata)",
+      "product_freshness": "The exact project_id join is materialized into the land project constellation; unmatched source rows remain excluded from the public read model.",
+      "used_for": "Exact ZAP project evidence for Mandatory Inclusionary Housing status, adoption date, map, community district, and affordability option.",
+      "join_keys": ["project_id"],
+      "join_measurement": {
+        "observed_on": "2026-08-05",
+        "universe": "All rows in Socrata m79g-k9r4",
+        "strategy": "exact_project_id against the full ZAP project source; title, address, and ULURP-only joins rejected",
+        "rates": { "exact_project_id": { "joined": 269, "total": 275, "rate": 0.9781818182 } },
+        "verdict": "Materialize only exact project_id matches; six unmatched rows remain a named gap."
+      },
+      "code_references": [
+        { "path": "tools/build_mih_project_lookup.mjs", "contains": "m79g-k9r4" },
+        { "path": "site/project_connections.mjs", "contains": "has_mih_area" },
+        { "path": "site/data/mih_project_lookup.json", "contains": "cityscroll.mih_project_lookup.v1" }
+      ],
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/mih_project_lookup.json",
+        "materialized_at": "2026-08-05T00:00:00.000Z",
+        "row_count": 269
+      }
+    },
+    {
       "id": "zap-projects",
       "name": "Zoning Application Portal \u2014 projects",
       "owner": "NYC Department of City Planning",
