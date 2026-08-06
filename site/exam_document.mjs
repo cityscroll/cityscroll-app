@@ -1,7 +1,10 @@
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { renderCivicDocumentAssets, renderCivicDocumentMast } from "./civic_document_chrome.mjs";
+import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 
-const DCAS_AGENCY_HREF = "/agencies/citywide-administrative-services/";
+const DCAS_AGENCY_NAME = "Citywide Administrative Services";
+const DCAS_AGENCY_REF = entityRouteRef("agency", DCAS_AGENCY_NAME);
+const DCAS_AGENCY_HREF = entityHref({ ref: DCAS_AGENCY_REF, label: DCAS_AGENCY_NAME });
 const DCAS_SCHEDULE_URL = "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page";
 const OASYS_URL = "https://www.nyc.gov/examsforjobs";
 
@@ -149,7 +152,7 @@ export function renderExamDocument(exam, options = {}) {
   <p class="exam-back"><a href="/browse/staffing/">Back to Staffing and exams</a></p>
   <header class="exam-hero" data-export-class="exam_identity">
     <p class="exam-kicker">Civil-service exam</p><h1>${esc(title)}</h1>
-    <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · <a href="${DCAS_AGENCY_HREF}" data-subject-ref="agency:id:citywide-administrative-services">Published by DCAS</a></p>
+    <p class="exam-subject-line"><span class="exam-number">Exam ${esc(id)}</span> · ${DCAS_AGENCY_HREF ? `<a href="${esc(DCAS_AGENCY_HREF)}" data-subject-ref="${esc(DCAS_AGENCY_REF)}">Published by DCAS</a>` : "Published by DCAS"}</p>
     <div class="exam-status-row"><span class="exam-status exam-status-${esc(status.toLowerCase())}" data-exam-status="${esc(status.toLowerCase())}">${esc(status)}</span><span>Application window: ${esc(exam.application_start && exam.application_end ? `${date(exam.application_start)}–${date(exam.application_end)}` : "Not published")}</span></div>
   </header>
   <nav class="exam-actions" aria-label="Exam actions" data-export-class="exam_actions">

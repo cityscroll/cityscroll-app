@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
+import { join } from "node:path";
 
 import {
   BROWSE_FACETS,
@@ -13,6 +14,7 @@ import { forwardLegacyFragment } from "../site/legacy_hash_forward.mjs";
 import edgeWorker, { edgeRequestKind, renderEdgeNotice, browseRoute } from "../site/pages_edge.mjs";
 import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
+import { renderAgencyIndex } from "../tools/build_agency_documents.mjs";
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
 
@@ -59,17 +61,27 @@ test("Browse route matrix rejects retired and unknown facets instead of treating
   assert.deepEqual(browseRoute("/browse/"), { kind: "landing", facet: null });
 });
 
-test("entity and unknown Browse routes never serve the home shell", async () => {
-  const home = new Response("<title>CityScroll · track RFPs, rezonings, meetings</title>", {
+test("entity routes serve the real application shell and the agency index has resolving links", async () => {
+  const home = new Response("<title>CityScroll · track RFPs, rezonings, meetings</title><div id=\"entityview\">Agency profile</div>", {
     headers: { "Content-Type": "text/html" },
   });
   const env = { ASSETS: { fetch: async () => home.clone() } };
   const entity = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/"), env);
-  assert.equal(entity.status, 404);
-  assert.doesNotMatch(await entity.text(), /track RFPs, rezonings, meetings/);
+  assert.equal(entity.status, 200);
+  assert.match(await entity.text(), /id="entityview"/);
   const entityHead = await edgeWorker.fetch(new Request("https://cityscroll.org/agencies/hpd/", { method: "HEAD" }), env);
-  assert.equal(entityHead.status, 404);
+  assert.equal(entityHead.status, 200);
   assert.equal(await entityHead.text(), "");
+
+  const agencyIndex = read("../site/agencies/index.html");
+  assert.equal(agencyIndex, renderAgencyIndex());
+  const links = [...agencyIndex.matchAll(/href="(\/agencies\/[^\"]+\/?)"/g)].map((match) => match[1]);
+  assert.ok(links.length > 0, "agency index must not be hollow");
+  for (const href of links.slice(0, 5)) {
+    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
+    assert.equal(response.status, 200, href);
+    assert.match(await response.text(), /id="entityview"/, href);
+  }
 
   const land = await edgeWorker.fetch(new Request("https://cityscroll.org/browse/land/"), env);
   assert.equal(land.status, 302);
@@ -78,6 +90,26 @@ test("entity and unknown Browse routes never serve the home shell", async () => 
   const unknown = await edgeWorker.fetch(new Request("https://cityscroll.org/browse/unknown/"), env);
   assert.equal(unknown.status, 404);
   assert.doesNotMatch(await unknown.text(), /track RFPs, rezonings, meetings/);
+});
+
+test("generated agency pivots round-trip to content-bearing entity routes", async () => {
+  const htmlFiles = readdirSync(new URL("../site/", import.meta.url), { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".html"))
+    .map((entry) => join(entry.parentPath || entry.path, entry.name));
+  const hrefs = new Map();
+  for (const path of htmlFiles) {
+    const html = readFileSync(path, "utf8");
+    for (const match of html.matchAll(/href="(\/agencies\/[^\"?#]+\/?)(?:\?[^\"]*)?"/g)) hrefs.set(match[1], path);
+  }
+  assert.ok(hrefs.size > 0, "generated surfaces must emit agency pivots");
+  const env = { ASSETS: { fetch: async () => new Response("<main id=\"entityview\">Agency profile</main>", {
+    headers: { "Content-Type": "text/html" },
+  }) } };
+  for (const [href, source] of hrefs) {
+    const response = await edgeWorker.fetch(new Request(`https://cityscroll.org${href}`), env);
+    assert.equal(response.status, 200, `${source}: ${href}`);
+    assert.match(await response.text(), /id="entityview"/, `${source}: ${href}`);
+  }
 });
 
 test("Browse landing and every bounded child are exact build outputs with useful no-JS HTML", () => {
