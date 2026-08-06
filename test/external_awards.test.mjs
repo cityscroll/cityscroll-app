@@ -61,8 +61,9 @@ const T = (key, vars) => {
     external_awards_heading: "Awards published elsewhere",
     external_awards_abo_source: "NYS Authorities Budget Office",
     external_awards_checkbook_source: "Checkbook NYC",
-    external_awards_abo_note: "Official annual filing.",
-    external_awards_possible_note: "Possible awards, matched by vendor and award date — not a confirmed City Record match.",
+    external_awards_abo_note: "Likely the same award, reported in the state authorities' annual filings (which can run up to a year behind).",
+    external_awards_possible_note: "Matched by vendor and award date — not a confirmed City Record match.",
+    lifecycle_how_summary: "How this was matched",
     external_awards_updated: "Source updated {date}.",
     external_award_none_note_html: "Not yet shown here — matching awards live in {source}.",
     external_award_nycha_none_note_html: "Not yet shown here — Housing Authority registrations live in {link}.",
@@ -90,6 +91,7 @@ function buildExternalAwardHTML() {
     extractFn("checkbookNychaLink"),
     extractFn("checkbookNychaContractsLink"),
     extractFn("sourceUpdatedHTML"),
+    extractFn("aboEvidenceHTML"),
     extractFn("aboAwardsTimelineHTML"),
     extractFn("nychaAwardBoxHTML"),
     extractFn("awardWatchOfferHTML"),
@@ -188,7 +190,7 @@ test("agencyAwardsNote: registry-backed empty state — before, every branch nam
   // Fuzzy ABO agency: source name links to the authority-filtered SODA view (real dataset id).
   const sca = agencyAwardsNote("School Construction Authority");
   assert.match(sca, /files its contract awards with/);
-  assert.match(sca, /<a href="https:\/\/data\.ny\.gov\/resource\/8w5p-k45m\.json\?\$order=award_date%20DESC&authority_name=New%20York%20City%20School%20Construction%20Authority"[^>]*>NYS Authorities Budget Office/);
+  assert.match(sca, /<a href="https:\/\/data\.ny\.gov\/d\/8w5p-k45m"[^>]*>NYS Authorities Budget Office/);
 
   // Exact NYCHA agency, agency-level (no single notice/PIN in scope): links to NYCHA's whole
   // Checkbook contracts view — the agency-scoped fallback (verified live 2026-07-17).
@@ -209,14 +211,10 @@ test("agencyAwardsNote: registry-backed empty state — before, every branch nam
   assert.match(unknown, /<a href="api\.html#upstream">/);
 });
 
-test("agencyAwardsNote: an authority name that needs URL-encoding still produces a valid, correctly-scoped href", () => {
+test("agencyAwardsNote: an authority name still resolves to a valid dataset page", () => {
   const agencyAwardsNote = buildAgencyAwardsNote();
-  // "The Mayor's Fund to Advance New York City" — encodeURIComponent leaves the apostrophe
-  // bare (it's in its unreserved set) rather than percent-encoding it; verified live
-  // 2026-07-17 that Socrata's authority_name= filter matches correctly either way, with a
-  // literal apostrophe in the query string.
   const html = agencyAwardsNote("Mayor's Fund to Advance New York City");
-  assert.match(html, /authority_name=The%20Mayor's%20Fund%20to%20Advance%20New%20York%20City/);
+  assert.match(html, /href="https:\/\/data\.ny\.gov\/d\/d84c-dk28"/);
 });
 
 test("externalAwardHTML: exact NYCHA match renders a confident award box with the PIN, linked to the exact matched contract", () => {
@@ -252,8 +250,10 @@ test("externalAwardHTML: fuzzy ABO awards (real SCA fixture) render as a 'possib
   const html = externalAwardHTML(resp, null);
   assert.match(html, /class="timeline"/, "fuzzy reads as a list, not a confident chain box");
   assert.doesNotMatch(html, /class="box award"/);
-  assert.match(html, /Possible awards/, "fuzzy result is verbally hedged as possible");
-  assert.match(html, /<a href="https:\/\/data\.ny\.gov\/resource\/8w5p-k45m\.json\?\$order=award_date%20DESC&authority_name=New%20York%20City%20School%20Construction%20Authority"[^>]*>NYS Authorities Budget Office/);
+  assert.match(html, /Likely the same award, reported in the state authorities' annual filings/);
+  assert.match(html, /<a href="https:\/\/data\.ny\.gov\/d\/8w5p-k45m"[^>]*>NYS Authorities Budget Office/);
+  assert.match(html, /<details class="inline-disclose lc-how"><summary>How this was matched<\/summary>/);
+  assert.match(html, /Matched by vendor and award date/);
   assert.match(html, /Source updated 2025-12-01/);
 });
 
@@ -262,8 +262,8 @@ test("externalAwardHTML: covered ABO source with zero rows uses not-yet-ingested
   const resp = { coverage: "fuzzy", agencyAwards: [], source: { kind: "abo", dataset: "d84c-dk28", authority: "New York City Economic Development Corporation", refreshed: "2025-12-01" } };
   const html = externalAwardHTML(resp, null);
   assert.match(html, /Not yet shown here — matching awards live in/);
-  assert.match(html, /<a href="https:\/\/data\.ny\.gov\/resource\/d84c-dk28\.json\?\$order=award_date%20DESC&authority_name=New%20York%20City%20Economic%20Development%20Corporation"[^>]*>NYS Authorities Budget Office/);
-  assert.match(html, /Source updated 2025-12-01/, "the precomputed source-refresh date is reused, so \"nothing yet\" reads as a live process");
+  assert.match(html, /<a href="https:\/\/data\.ny\.gov\/d\/d84c-dk28"[^>]*>NYS Authorities Budget Office/);
+  assert.match(html, /Source updated 2025-12-01/, "the precomputed source-refresh date remains available in the evidence disclosure");
 });
 
 test("externalAwardHTML: NYCHA with no match, but a usable PIN, uses not-yet-ingested register — linked to NYCHA's contracts view", () => {

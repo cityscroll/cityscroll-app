@@ -70,6 +70,31 @@ with sync_playwright() as pw:
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
 
+    # Reader-facing ABO links must land on the human-readable dataset page, not a raw JSON
+    # endpoint. Keep this check on the rendered agency surface so new source links cannot
+    # quietly regress while the unit tests continue to exercise the pure render helpers.
+    page.goto(f"{BASE}#agency/School%20Construction%20Authority", timeout=30000)
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1500)
+    abo_link = page.locator('#external-awards-content a[href*="data.ny.gov"]').first
+    if abo_link.count() != 1:
+        failures.append("Awards published elsewhere: expected one ABO source link on the agency surface")
+    else:
+        href = abo_link.get_attribute("href") or ""
+        content_type = page.evaluate("""async href => {
+            const response = await fetch(href);
+            return response.headers.get("content-type") || "";
+        }""", href)
+        if "/resource/" in href or not content_type.lower().startswith("text/html"):
+            failures.append(f"Awards published elsewhere: reader source is not an HTML page "
+                            f"(href={href!r}, content-type={content_type!r})")
+        else:
+            step("OK", "ABO source link lands on a human-readable page", href)
+
+    page.goto(f"{BASE}#notice/{NOTICE_ID}", timeout=30000)
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1500)
+
     # --- Reported link 1: "View in City Record" -------------------------------------------
     info = link_info(page, '#noticeview a.act[href*="a856-cityrecord.nyc.gov"]')
     if info["target"] != "_blank":

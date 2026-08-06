@@ -216,12 +216,13 @@ async function loadExternalAward(params){
 // dataset's SODA endpoint accepts a plain `authority_name=` filter param) before shipping.
 const CHECKBOOK_NYCHA_AGENCY_ID = "162"; // NYCHA's fixed agency id on checkbooknyc.com
 
-// A link to the ABO source dataset on data.ny.gov, filtered to one authority. Malformed/missing
-// registry data (no dataset or authority) fails soft to unlinked source-name text, never a
-// broken href.
+// A link to the human-readable ABO dataset page on data.ny.gov. There is no stable public
+// per-record page for these filings, so reader-facing links must not land on the raw JSON API.
+// Malformed/missing registry data (no dataset or authority) fails soft to unlinked source-name
+// text, never a broken href.
 function aboSourceLink(dataset, authority){
   if(!dataset || !authority) return t("external_awards_abo_source");
-  return `<a href="https://data.ny.gov/resource/${dataset}.json?$order=award_date%20DESC&authority_name=${encodeURIComponent(authority || '')}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>`;
+  return `<a href="https://data.ny.gov/d/${encodeURIComponent(dataset)}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>`;
 }
 // A link to Checkbook NYC's NYCHA contracts, scoped to one matched contract when we have it
 // (the most specific view we can construct) or NYCHA's whole contracts list otherwise.
@@ -260,6 +261,10 @@ function sourceUpdatedHTML(refreshed){
   return refreshed ? ` <span class="rmeta" style="margin:0">${t("external_awards_updated",{date:refreshed})}</span>` : "";
 }
 
+function aboEvidenceHTML(source){
+  return `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${t("external_awards_possible_note")} ${t("external_awards_abo_note")}${sourceUpdatedHTML(source?.refreshed)}</div></details>`;
+}
+
 // Fuzzy ABO awards render as a "possible" timeline (distinct from the exact NYCHA box below).
 function aboAwardsTimelineHTML(awards, source){
   const rows = awards.map(a=>{
@@ -274,7 +279,7 @@ function aboAwardsTimelineHTML(awards, source){
   }).join("");
   return `<div id="external-awards-content"><div class="chain-h">${t("external_awards_heading")}</div>
     <div class="timeline">${rows}</div>
-    <div class="pnote">${t("external_awards_possible_note")} ${t("external_awards_abo_note")} ${aboSourceLink(source.dataset, source.authority)}.${sourceUpdatedHTML(source.refreshed)}</div></div>`;
+    <div class="pnote">${t("external_awards_abo_note")} ${aboSourceLink(source.dataset, source.authority)}</div>${aboEvidenceHTML(source)}</div>`;
 }
 
 // Exact NYCHA award (matched by PIN) renders as a confident chain box, linked to the exact
@@ -310,7 +315,7 @@ function externalAwardHTML(resp, notice){
     const source = resp.source||{};
     if(awards.length) return aboAwardsTimelineHTML(awards, source);
     // Covered by an ABO source but nothing on file there — name + link + date the source checked.
-    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset, source.authority)})}${sourceUpdatedHTML(source.refreshed)}</div>${awardWatchOfferHTML(notice)}`;
+    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset, source.authority)})}</div>${aboEvidenceHTML(source)}${awardWatchOfferHTML(notice)}`;
   }
   return "";
 }

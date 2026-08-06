@@ -61,24 +61,7 @@ export function releasedAboAward(payload, requestId) {
   };
 }
 
-function sodaQuote(value) {
-  return String(value).replaceAll("'", "''");
-}
-
 export function aboAwardSourceUrl(match) {
   if (!match || !/^[a-z0-9]{4}-[a-z0-9]{4}$/i.test(match.dataset || "")) return null;
-  if (!match.authority || !match.vendor || !match.award_date) return null;
-  const predicates = [
-    `authority_name='${sodaQuote(match.authority)}'`,
-    `vendor_name='${sodaQuote(match.vendor)}'`,
-    `award_date='${sodaQuote(match.award_date)}T00:00:00.000'`,
-  ];
-  if (match.description) {
-    predicates.push(`procurement_description='${sodaQuote(match.description)}'`);
-  }
-  const query = new URLSearchParams({
-    "$where": predicates.join(" AND "),
-    "$limit": "10",
-  });
-  return `https://data.ny.gov/resource/${match.dataset}.json?${query}`;
+  return `https://data.ny.gov/d/${encodeURIComponent(match.dataset)}`;
 }
