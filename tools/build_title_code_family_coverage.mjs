@@ -16,6 +16,18 @@ const cleanCode = (value) => String(value || "").trim().toUpperCase();
 const rate = (numerator, denominator) => denominator ? Number((numerator / denominator).toFixed(4)) : 0;
 const normalizeExamNumber = (value) => String(Number(value || 0)).replace(/^0+/, "") || "0";
 
+export function publisherTitleCode(row = {}) {
+  return cleanCode(
+    row.title_code
+      || row.titleCode
+      || row.appointmentTitleCode
+      || row.list_title_code
+      || row.listTitleCode
+      || row.title_code_no
+      || row.titleCodeNo,
+  );
+}
+
 function collectBackfillCandidates({
   historyRecords = [],
   annualScheduleRows = [],
@@ -37,7 +49,7 @@ function collectBackfillCandidates({
     for (const row of rows) {
       const exam = normalizeExamNumber(row.exam_number || row.examNumber || row.exam_no || row.examNo);
       if (!exam || !missingSet.has(exam)) continue;
-      const code = cleanCode(row.title_code || row.titleCode || row.appointmentTitleCode);
+      const code = publisherTitleCode(row);
       if (!code) continue;
       sourceScan[source].matches += 1;
       backfillRows.push({
@@ -221,7 +233,9 @@ export function measureTitleCodeFamilyCoverage({
         Math.ceil(historyRecords.length * HISTORICAL_EXAM_COVERAGE_FLOOR) - exactExamRows.length,
       ),
       candidate_rows_found: backfillCandidates.candidate_count,
-      reviewed_rows: backfillCandidates.candidate_count,
+      // These are exact-source candidates, not reviewed labels. Keeping this
+      // at zero prevents candidate discovery from inflating the audit scope.
+      reviewed_rows: 0,
       source_scan: backfillCandidates.sources,
       backfill_rows: backfillCandidates.candidates,
       note: backfillCandidates.candidate_count
