@@ -65,6 +65,10 @@ Brooklyn + Canarsie in [Browse](https://cityscroll.org/browse/property/?q=auctio
 [Near you](https://cityscroll.org/near-you/?v=0&lens=property&q=auction&boro=Brooklyn&neighborhood=Canarsie&lang=es),
 and [Following](https://cityscroll.org/following/?lens=property&filter=%7B%22keywords%22%3A%5B%22auction%22%5D%2C%22borough%22%3A%22Brooklyn%22%2C%22neighborhood%22%3A%22Canarsie%22%7D&lang=es).
 
+### Compose a trail
+
+The links on a record can be combined instead of starting a new search. Try an [HPD contract scope](https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D), a [Timbale Terrace project constellation](https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%2C%22project%3A2022M0258%22%5D%7D), or [follow that HPD scope](https://cityscroll.org/following/?lens=money&filter=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-preservation-and-development%22%5D%7D). Each link keeps the typed connection in the URL so the next view can use it.
+
 ### Honest about missing data
 
 Empty lifecycle slots say **which kind of gap** they are: not yet joined from a public
