@@ -641,13 +641,19 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
   };
 }
 
-async function buildNoticeRows(fetchImpl, now = new Date()) {
-  const since = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+async function buildNoticeRows(
+  fetchImpl,
+  now = new Date(),
+  { lookbackDays = 180, noticeLimit = NOTICE_LIMIT } = {},
+) {
+  const boundedLookbackDays = Math.max(1, Math.min(3660, Number.parseInt(String(lookbackDays), 10) || 180));
+  const boundedNoticeLimit = Math.max(1, Math.min(5000, Number.parseInt(String(noticeLimit), 10) || NOTICE_LIMIT));
+  const since = new Date(now.getTime() - boundedLookbackDays * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const params = new URLSearchParams({
     $select: NOTICE_SELECT,
     $where: `(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND event_date >= '${since}T00:00:00'`,
     $order: "event_date DESC",
-    $limit: String(NOTICE_LIMIT),
+    $limit: String(boundedNoticeLimit),
   });
   const response = await fetchImpl(`${SODA}?${params}`);
   if (!response.ok) throw new Error(`City Record notices ${response.status}`);
@@ -759,14 +765,16 @@ export async function buildMeetingOutcomesView({
   fetchImpl = fetch,
   now = new Date(),
   env = null,
+  lookbackDays = 180,
+  noticeLimit = NOTICE_LIMIT,
 } = {}) {
-  const noticeRows = await buildNoticeRows(fetchImpl, now);
+  const noticeRows = await buildNoticeRows(fetchImpl, now, { lookbackDays, noticeLimit });
 
   if (!token) {
     return buildMeetingOutcomes(noticeRows, [], [], []);
   }
 
-  const eventRows = await fetchLegistarEvents({ token, fetchImpl, now });
+  const eventRows = await fetchLegistarEvents({ token, fetchImpl, now, lookbackDays });
 
   // Strict join first so EventItems are fetched ONLY for matched events.
   const byDate = buildMeetingDateIndex(eventRows);
