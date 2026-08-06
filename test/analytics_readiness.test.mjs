@@ -291,6 +291,7 @@ test("accepted action and voluntary outcome rows are exposed only as aggregate c
   ], FIXTURE_NOW);
 
   assert.deepEqual(snapshot.action_outcomes, {
+    prompt_status: "retired-2026-08-06",
     opened_last7d: 10,
     opened_last30d: 10,
     prompted_last7d: 8,
