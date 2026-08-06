@@ -116,6 +116,8 @@ test("completion and abandonment stay separate aggregate events", () => {
 
 test("notice and land rails bind the shared optional prompt instead of collecting outcomes inline", () => {
   const source = readFileSync(new URL("../site/app/feed-actions.mjs", import.meta.url), "utf8");
+  assert.match(source, /const ACTION_OUTCOME_PROMPT_ENABLED = false/);
+  assert.doesNotMatch(source, /export const ACTION_OUTCOME_PROMPT_ENABLED/);
   assert.match(source, /import\("\.\.\/action_outcome_prompt\.mjs"\)/);
   assert.match(source, /bindActionOutcomePrompt/);
   assert.match(source, /data-action-outcome-slot/);
