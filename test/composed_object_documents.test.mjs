@@ -49,4 +49,6 @@ test("parcel biographies are complete civic-object documents with exact-BBL watc
   assert.match(html, /data-export-class="object_actions"/);
   assert.match(html, /data-export-class="object_members"/);
   assert.match(html, /data-export-class="object_provenance"/);
+  assert.match(html, /href="#land\/[A-Za-z0-9_-]+"/);
+  assert.doesNotMatch(html, /#land\?project=/);
 });
