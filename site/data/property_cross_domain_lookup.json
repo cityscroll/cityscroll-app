@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "property_cross_domain_v1",
-  "generated_at": "2026-08-05T16:41:43.124Z",
+  "generated_at": "2026-08-06T00:05:16.576Z",
   "property_observation_count": 133,
   "by_bbl": {
     "1000730008": {
@@ -90,7 +90,36 @@
           "href": "#land?project=P1998M0106"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1000730008",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000730008",
+            "bbl": "1000730008",
+            "label": "PIER 16",
+            "address": "PIER-16 SOUTH STREET",
+            "agency": "DSBS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;IN USE-TENANTED;WATERFRONT PROPERTY",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000730008",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000730008"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1000740001": {
       "bbl": "1000740001",
@@ -154,7 +183,36 @@
           "href": "#land?project=2021M0422"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1000740001",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000740001",
+            "bbl": "1000740001",
+            "label": "S ST. CPORT/BURLING SLIP/PLGRD",
+            "address": "89 SOUTH STREET",
+            "agency": "HPD;PARKS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000740001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000740001"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1000740020": {
       "bbl": "1000740020",
@@ -190,7 +248,36 @@
           "href": "#land?project=2021M0422"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1000740020",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000740020",
+            "bbl": "1000740020",
+            "label": "S ST. CPORT/BURLING SLIP/PLGRD",
+            "address": "2 FULTON STREET",
+            "agency": "HPD;PARKS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK;PUBLIC PLACE/PLAZA;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": "Not Suitable",
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000740020",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000740020"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1000940025": {
       "bbl": "1000940025",
@@ -323,7 +410,36 @@
           "href": "#land?project=P1996M0130"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1000940025",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000940025",
+            "bbl": "1000940025",
+            "label": "OFFICE BLDG",
+            "address": "100 GOLD STREET",
+            "agency": "DCAS",
+            "current_uses": "AGCY EXECUTVE OFFICE;INDOOR MAINT/STORAGE;OFFICE",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000940025",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000940025"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1000950101": {
       "bbl": "1000950101",
@@ -359,7 +475,36 @@
           "href": "#land?project=2021M0422"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1000950101",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000950101",
+            "bbl": "1000950101",
+            "label": "SEAPORT PARK",
+            "address": "206 WATER STREET",
+            "agency": "HPD",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PUBLIC PLACE/PLAZA;FINAL COMMITMNT-DISP;PUBLIC PLACE/PLAZA;LONG-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000950101",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000950101"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1000960001": {
       "bbl": "1000960001",
@@ -395,7 +540,36 @@
           "href": "#land?project=2021M0422"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1000960001",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000960001",
+            "bbl": "1000960001",
+            "label": "SOUTH ST SEAPORT (MKT BLDG)",
+            "address": "11 FULTON STREET",
+            "agency": "HPD",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000960001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000960001"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1002880080": {
       "bbl": "1002880080",
@@ -697,7 +871,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "1003527501",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1003527501",
+            "bbl": "1003527501",
+            "label": "125 DELANCEY STREET",
+            "address": "125 DELANCEY STREET",
+            "agency": "DSBS",
+            "current_uses": null,
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1003527501",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1003527501"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1003540001": {
       "bbl": "1003540001",
@@ -906,7 +1109,36 @@
           "href": "#land?project=P2011M0154"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1006440001",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1006440001",
+            "bbl": "1006440001",
+            "label": "THE HIGH LINE",
+            "address": "555 WEST STREET",
+            "agency": "DSBS;PARKS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK;SHORT-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1006440001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1006440001"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1008190037": {
       "bbl": "1008190037",
@@ -1211,7 +1443,36 @@
           "href": "#land?project=P2011M0066"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1010810080",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1010810080",
+            "bbl": "1010810080",
+            "label": "HPD UR SITE #7",
+            "address": "549 WEST 52 STREET",
+            "agency": "HPD",
+            "current_uses": "IN USE-TENANTED;SHORT-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1010810080",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1010810080"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1010817503": {
       "bbl": "1010817503",
@@ -1567,7 +1828,36 @@
           "href": "#land?project=P2012M0281"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "1018080008",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1018080008",
+            "bbl": "1018080008",
+            "label": "EAST HARLEM MULTI-SERVICE CNTR",
+            "address": "413 EAST 120 STREET",
+            "agency": "HRA",
+            "current_uses": "COMMUNITY CENTER",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1018080008",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1018080008"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1018600027": {
       "bbl": "1018600027",
@@ -2667,7 +2957,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "1020970020",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1020970020",
+            "bbl": "1020970020",
+            "label": "615 WEST 150 STREET",
+            "address": "615 WEST 150 STREET",
+            "agency": "HPD",
+            "current_uses": "IN USE-RES STRUCTURE;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1020970020",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1020970020"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "1021190028": {
       "bbl": "1021190028",
@@ -4308,7 +4627,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "2027240042",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:2027240042",
+            "bbl": "2027240042",
+            "label": "SIMPSON ST CUL-DE-SAC",
+            "address": "SIMPSON STREET",
+            "agency": "DOT",
+            "current_uses": "ROAD/HIGHWAY",
+            "potential_urban_ag": "Not Suitable",
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:2027240042",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "2027240042"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "2027240103": {
       "bbl": "2027240103",
@@ -4366,7 +4714,36 @@
           "href": "#land?project=P2007X0412"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "2027810500",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:2027810500",
+            "bbl": "2027810500",
+            "label": "HUNTS PT MARKET WHOLESALE",
+            "address": "400 FOOD CENTER DRIVE",
+            "agency": "DSBS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;WASTEWATER PUMPING",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:2027810500",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "2027810500"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "2028000013": {
       "bbl": "2028000013",
@@ -5198,7 +5575,36 @@
           "href": "#land?project=P2016K0185"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "3001460016",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:3001460016",
+            "bbl": "3001460016",
+            "label": "ABOLITIONIST PLACE",
+            "address": "225 DUFFIELD STREET",
+            "agency": "DCAS",
+            "current_uses": "IN USE-TENANTED;LONG-TERM AGREEMENT;NO USE",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:3001460016",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "3001460016"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "3001460017": {
       "bbl": "3001460017",
@@ -5761,7 +6167,36 @@
           "href": "#land?project=P2016K0185"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "3001460043",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:3001460043",
+            "bbl": "3001460043",
+            "label": "420 ALBEE SQUARE",
+            "address": "420 ALBEE SQUARE",
+            "agency": null,
+            "current_uses": null,
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:3001460043",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "3001460043"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "3001460046": {
       "bbl": "3001460046",
@@ -5999,7 +6434,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "3007987501",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:3007987501",
+            "bbl": "3007987501",
+            "label": "5108 4TH AVENUE",
+            "address": "5108 4TH AVENUE",
+            "agency": "BPL",
+            "current_uses": null,
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:3007987501",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "3007987501"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "3009400016": {
       "bbl": "3009400016",
@@ -6829,7 +7293,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "3021070033",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:3021070033",
+            "bbl": "3021070033",
+            "label": "262 ASHLAND PLACE",
+            "address": "262 ASHLAND PLACE",
+            "agency": "HPD",
+            "current_uses": "PUBLIC PLACE/PLAZA;FINAL COMMITMENT;SHORT-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:3021070033",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "3021070033"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "3021070036": {
       "bbl": "3021070036",
@@ -7629,7 +8122,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "3036750008",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:3036750008",
+            "bbl": "3036750008",
+            "label": "249 MOTHER GASTON BLVD",
+            "address": "249 MOTHER GASTON BLVD",
+            "agency": "HPD",
+            "current_uses": "IN USE-RES STRUCTURE;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:3036750008",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "3036750008"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "3037670010": {
       "bbl": "3037670010",
@@ -9254,7 +9776,36 @@
           "href": "#land?project=P2018K0122"
         }
       ],
-      "status": "matched"
+      "status": "matched",
+      "ll48": {
+        "bbl": "3044480001",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:3044480001",
+            "bbl": "3044480001",
+            "label": "1070 ELTON STREET",
+            "address": "1070 ELTON STREET",
+            "agency": "HPD",
+            "current_uses": "NO USE-VACANT LAND;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": "Not Suitable",
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:3044480001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "3044480001"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "3044520208": {
       "bbl": "3044520208",
@@ -11167,7 +11718,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "4158500006",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:4158500006",
+            "bbl": "4158500006",
+            "label": "EDGEMERE URA, SITE #31",
+            "address": "BEACH 41 STREET",
+            "agency": "HPD",
+            "current_uses": "NO USE-VACANT LAND;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": "Not Suitable",
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:4158500006",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "4158500006"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "4158510035": {
       "bbl": "4158510035",
@@ -11255,7 +11835,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "4159050001",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:4159050001",
+            "bbl": "4159050001",
+            "label": "190 BEACH 67 STREET",
+            "address": "190 BEACH 67 STREET",
+            "agency": "HPD",
+            "current_uses": null,
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:4159050001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "4159050001"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "4159260001": {
       "bbl": "4159260001",
@@ -11484,7 +12093,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "4159690060",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:4159690060",
+            "bbl": "4159690060",
+            "label": "EDGEMERE URA, SITE #79",
+            "address": "431 BEACH 46 STREET",
+            "agency": "HPD",
+            "current_uses": "NO USE-VACANT LAND;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": "Not Suitable",
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:4159690060",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "4159690060"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "5006840261": {
       "bbl": "5006840261",
@@ -11542,7 +12180,36 @@
         }
       ],
       "land_projects": [],
-      "status": "no_zap_match"
+      "status": "no_zap_match",
+      "ll48": {
+        "bbl": "5018010170",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:5018010170",
+            "bbl": "5018010170",
+            "label": "SAW MILL CREEK PARK R-130",
+            "address": "INDUSTRY ROAD",
+            "agency": "EDC;PARKS",
+            "current_uses": "NATURAL AREA/ETC;NO USE-WFT (ANY AGY);FINAL COMMITMNT-DISP",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:5018010170",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "5018010170"
+            }
+          }
+        ],
+        "status": "matched"
+      }
     },
     "5012540008": {
       "bbl": "5012540008",
@@ -40746,6 +41413,9 @@
     "matched_bbl_count": 152,
     "bbl_link_pair_count": 301,
     "property_owner_contract_join_rate": 0,
+    "ll48_bbl_join_rate": 0.0719,
+    "ll48_eligible_bbl_count": 320,
+    "ll48_linked_bbl_count": 23,
     "owner_count": 0,
     "owners_with_contracts": 0,
     "owner_contract_link_count": 0,
@@ -40766,14 +41436,19 @@
     "owner_link_count": 0,
     "parcel_link_count": 426,
     "owner_count": 0,
-    "owners_with_contracts": 0
+    "owners_with_contracts": 0,
+    "ll48_eligible_bbl_count": 320,
+    "ll48_linked_bbl_count": 23,
+    "ll48_bbl_join_rate": 0.0719,
+    "ll48_vintage": "2025-09-17"
   },
   "provenance": {
     "sources": [
       "city_record Property Disposition",
       "property-locations materialization / property_domain_observations",
       "zap-bbl (2iga-a6mk)",
-      "ocp-recent-contract-awards"
+      "ocp-recent-contract-awards",
+      "suitability-city-owned-leased-property-ll48 (4e2n-s75z)"
     ],
     "methods": [
       "exact_bbl_v1",
@@ -40792,9 +41467,13 @@
       "owner_link_count": 0,
       "parcel_link_count": 426,
       "owner_count": 0,
-      "owners_with_contracts": 0
+      "owners_with_contracts": 0,
+      "ll48_eligible_bbl_count": 320,
+      "ll48_linked_bbl_count": 23,
+      "ll48_bbl_join_rate": 0.0719,
+      "ll48_vintage": "2025-09-17"
     },
-    "note": "BBL→ZAP is exact tax-lot only; ZAP edges stay sparse until the full zap-bbl lookup is densified. Owner→contract is vendorStem only when a labeled winning bidder exists. Agency + parcel edges densify from every disposition row with a BBL. No fuzzy address geocode invents land links.",
+    "note": "BBL→ZAP and BBL→LL48 are exact tax-lot joins only; suitability rows are a graph-BBL slice. Owner→contract is vendorStem only when a labeled winning bidder exists. Agency + parcel edges densify from every disposition row with a BBL. No fuzzy address geocode invents land links.",
     "property_feed": {
       "path": "site/data/property_domain_observations.json",
       "bbl_count": 320,
@@ -40903,6 +41582,35 @@
         "note": "No labeled winning-bidder / sold-to owner in these disposition notices.",
         "items": [],
         "count": 0
+      },
+      "ll48": {
+        "status": "matched",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000730008",
+            "bbl": "1000730008",
+            "label": "PIER 16",
+            "address": "PIER-16 SOUTH STREET",
+            "agency": "DSBS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;IN USE-TENANTED;WATERFRONT PROPERTY",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000730008",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000730008"
+            }
+          }
+        ],
+        "count": 1
       },
       "agencies": [
         {
@@ -41216,6 +41924,35 @@
         "items": [],
         "count": 0
       },
+      "ll48": {
+        "status": "matched",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000740001",
+            "bbl": "1000740001",
+            "label": "S ST. CPORT/BURLING SLIP/PLGRD",
+            "address": "89 SOUTH STREET",
+            "agency": "HPD;PARKS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000740001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000740001"
+            }
+          }
+        ],
+        "count": 1
+      },
       "agencies": [
         {
           "ref": "agency:id:economic-development-corporation",
@@ -41424,6 +42161,35 @@
         "items": [],
         "count": 0
       },
+      "ll48": {
+        "status": "matched",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000740020",
+            "bbl": "1000740020",
+            "label": "S ST. CPORT/BURLING SLIP/PLGRD",
+            "address": "2 FULTON STREET",
+            "agency": "HPD;PARKS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK;PUBLIC PLACE/PLAZA;FINAL COMMITMNT-DISP",
+            "potential_urban_ag": "Not Suitable",
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000740020",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000740020"
+            }
+          }
+        ],
+        "count": 1
+      },
       "agencies": [
         {
           "ref": "agency:id:economic-development-corporation",
@@ -41604,6 +42370,35 @@
         "note": "No labeled winning-bidder / sold-to owner in these disposition notices.",
         "items": [],
         "count": 0
+      },
+      "ll48": {
+        "status": "matched",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000940025",
+            "bbl": "1000940025",
+            "label": "OFFICE BLDG",
+            "address": "100 GOLD STREET",
+            "agency": "DCAS",
+            "current_uses": "AGCY EXECUTVE OFFICE;INDOOR MAINT/STORAGE;OFFICE",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000940025",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000940025"
+            }
+          }
+        ],
+        "count": 1
       },
       "agencies": [
         {
@@ -42304,6 +43099,35 @@
         "items": [],
         "count": 0
       },
+      "ll48": {
+        "status": "matched",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1000950101",
+            "bbl": "1000950101",
+            "label": "SEAPORT PARK",
+            "address": "206 WATER STREET",
+            "agency": "HPD",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PUBLIC PLACE/PLAZA;FINAL COMMITMNT-DISP;PUBLIC PLACE/PLAZA;LONG-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1000950101",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1000950101"
+            }
+          }
+        ],
+        "count": 1
+      },
       "agencies": [
         {
           "ref": "agency:id:economic-development-corporation",
@@ -42430,6 +43254,35 @@
         "note": "No labeled winning-bidder / sold-to owner in these disposition notices.",
         "items": [],
         "count": 0
+      },
+      "ll48": {
+        "status": "matched",
+        "items": [
+          {
+            "id": "4e2n-s75z:bbl:1006440001",
+            "bbl": "1006440001",
+            "label": "THE HIGH LINE",
+            "address": "555 WEST STREET",
+            "agency": "DSBS;PARKS",
+            "current_uses": "IN USE-TENANTED;FINAL COMMITMNT-DISP;IN USE-TENANTED;FINAL COMMITMNT-DISP;LONG-TERM AGREEMENT;PARK;SHORT-TERM AGREEMENT",
+            "potential_urban_ag": null,
+            "source": "NYC Open Data · LL48 suitability",
+            "source_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+            "observed_at": "2025-09-17",
+            "confidence": "strong",
+            "method": "exact_bbl_v1",
+            "provenance": {
+              "source_system": "socrata:4e2n-s75z",
+              "source_record_id": "4e2n-s75z:bbl:1006440001",
+              "source_fields": [
+                "bbl"
+              ],
+              "basis": "exact_bbl",
+              "input_value": "1006440001"
+            }
+          }
+        ],
+        "count": 1
       },
       "agencies": [
         {
@@ -42573,6 +43426,11 @@
       "owners": {
         "status": "empty",
         "note": "No labeled winning-bidder / sold-to owner in these disposition notices.",
+        "items": [],
+        "count": 0
+      },
+      "ll48": {
+        "status": "empty",
         "items": [],
         "count": 0
       },

@@ -894,6 +894,18 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "suitability-city-owned-leased-property-ll48",
+      "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
+      "source_contract_id": "suitability-city-owned-leased-property-ll48",
+      "status": "landed",
+      "join_keys": [
+        "BBL"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "ulurp-recommendation-pdfs",
       "name": "ULURP Recommendation PDFs",
       "source_contract_id": "ulurp-recommendation-pdfs",
@@ -1765,6 +1777,23 @@
       "evidence": "Shared keys BBL; 2 taxonomy gap(s) could close."
     },
     {
+      "id": "city-record-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "source_a": "city-record",
+      "source_b": "suitability-city-owned-leased-property-ll48",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ],
+      "score": 2,
+      "evidence": "Shared keys BBL; 2 taxonomy gap(s) could close."
+    },
+    {
       "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
       "source_a": "current-solicitations-ocp",
       "source_b": "nycida-build-nyc-projects",
@@ -1912,6 +1941,22 @@
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "dob-certificate-of-occupancy-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "suitability-city-owned-leased-property-ll48",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "dob-certificate-of-occupancy-x-unregistered-zoning-application-portal-projects-via-BBL",
       "source_a": "dob-certificate-of-occupancy",
       "source_b": "unregistered-zoning-application-portal-projects",
@@ -1997,6 +2042,22 @@
       "id": "dob-now-job-filings-x-mappluto-via-BBL",
       "source_a": "dob-now-job-filings",
       "source_b": "mappluto",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-now-job-filings-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "source_a": "dob-now-job-filings",
+      "source_b": "suitability-city-owned-leased-property-ll48",
       "key_path": [
         "BBL"
       ],
@@ -2219,6 +2280,70 @@
       "evidence": "Shared keys EPIN, PIN; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "suitability-city-owned-leased-property-ll48-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "source_a": "suitability-city-owned-leased-property-ll48",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-api-outcomes-via-BBL",
+      "source_a": "suitability-city-owned-leased-property-ll48",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-bbl-via-BBL",
+      "source_a": "suitability-city-owned-leased-property-ll48",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-projects-via-BBL",
+      "source_a": "suitability-city-owned-leased-property-ll48",
+      "source_b": "zap-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
       "source_a": "unregistered-zoning-application-portal-projects",
       "source_b": "zap-api-outcomes",
@@ -2306,6 +2431,34 @@
       "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
       "source_a": "legacy-dob-job-filings",
       "source_b": "mappluto",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys BBL; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "legacy-dob-job-filings-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "source_a": "legacy-dob-job-filings",
+      "source_b": "suitability-city-owned-leased-property-ll48",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys BBL; 0 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mappluto-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "source_a": "mappluto",
+      "source_b": "suitability-city-owned-leased-property-ll48",
       "key_path": [
         "BBL"
       ],
@@ -2940,9 +3093,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-06",
-    "source_contracts_fingerprint": "5b97ceb8a19a511f60b4cba7b1148e39d5a8d295935a9da94fde0f50e105d845",
+    "source_contracts_fingerprint": "7caedac59fa8bfee9b22cc4c9a86514da85ca7c2c93ee8a93da8cf80791e5e42",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 59,
+    "candidate_crosswalks": 68,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

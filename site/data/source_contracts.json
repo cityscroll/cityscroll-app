@@ -777,6 +777,59 @@
       }
     },
     {
+      "id": "suitability-city-owned-leased-property-ll48",
+      "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "4e2n-s75z",
+      "landing_page": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "required_fields": [
+        "bbl",
+        "address",
+        "parcel_name",
+        "agency",
+        "potential_urban_ag",
+        "date_created"
+      ],
+      "max_stale_days": 365,
+      "publisher_cadence": "Periodic civic-data updates",
+      "product_freshness": "Bulk rows remain warehouse-side; the public property view serves only exact-BBL rows attached to the committed disposition graph slice.",
+      "used_for": "Exact-BBL city-owned and leased property suitability evidence on Property parcel biographies.",
+      "code_references": [
+        {
+          "path": "tools/build_property_ll48_lookup.mjs",
+          "contains": "4e2n-s75z"
+        },
+        {
+          "path": "entity_resolution/cross_domain/property_links.mjs",
+          "contains": "joinPropertyToLl48ByBbl"
+        }
+      ],
+      "join_keys": ["bbl"],
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/property_ll48_lookup.json",
+        "materialized_at": "2026-08-05T00:00:00.000Z",
+        "row_count": 23
+      },
+      "join_measurement": {
+        "observed_on": "2026-08-05",
+        "universe": "320 exact BBLs in the committed Property Disposition graph slice",
+        "key": "bbl",
+        "eligible": 320,
+        "linked": 23,
+        "rate": 0.0719,
+        "method": "exact_bbl_v1",
+        "verdict": "Materialize the attached graph slice; do not publish unattached bulk rows or infer address joins.",
+        "source_rows": 13818,
+        "source_updated_at": "2025-09-17"
+      }
+    },
+    {
       "id": "zap-api-outcomes",
       "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
       "owner": "NYC Department of City Planning",
