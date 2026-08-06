@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/data/exam_sources/title_code_family_coverage.json");
+const REVIEW_REGISTRY = join(ROOT, "entity_resolution/review/title_code_registry.json");
 const NOE_NOTICE_TEXT_DIR = join(ROOT, "site/data/exam_sources/fixtures/noe_text");
 
 export const HISTORICAL_EXAM_COVERAGE_FLOOR = 0.30;
@@ -138,6 +139,7 @@ export function measureTitleCodeFamilyCoverage({
   listDepthRows = [],
   openCompetitiveRows = [],
   noticeCorpusRows = [],
+  reviewedRegistry = null,
 } = {}) {
   const crosswalkCodes = new Set(titleCrosswalk.map((row) => cleanCode(row.title_code)).filter(Boolean));
   const exactExamRows = historyRecords.filter((row) => cleanCode(row.title_code));
@@ -145,6 +147,26 @@ export function measureTitleCodeFamilyCoverage({
   const exactExamCodes = exactExamRows.map((row) => cleanCode(row.title_code));
   const sharedCodes = new Set(exactExamCodes.filter((code) => appointmentCodes.includes(code)));
   const examCoverage = rate(exactExamRows.length, historyRecords.length);
+  const confirmedRows = Array.isArray(reviewedRegistry?.confirmations)
+    ? reviewedRegistry.confirmations
+    : [];
+  const exactExamNumbers = new Set(exactExamRows.map((row) => normalizeExamNumber(row.exam_number)));
+  const confirmedExamNumbers = new Set(
+    confirmedRows
+      .map((row) => normalizeExamNumber(row.exam_number))
+      .filter((exam) => exam && !exactExamNumbers.has(exam)),
+  );
+  const reviewedConfirmedCount = confirmedExamNumbers.size;
+  const exactPlusConfirmed = exactExamRows.length + reviewedConfirmedCount;
+  const exactPlusConfirmedCoverage = rate(exactPlusConfirmed, historyRecords.length);
+  const reviewedRows = [
+    ...(Array.isArray(reviewedRegistry?.confirmations) ? reviewedRegistry.confirmations : []),
+    ...(Array.isArray(reviewedRegistry?.rejections) ? reviewedRegistry.rejections : []),
+  ];
+  const reviewedCorrect = Array.isArray(reviewedRegistry?.confirmations)
+    ? reviewedRegistry.confirmations.length
+    : 0;
+  const reviewPrecision = reviewedRows.length ? rate(reviewedCorrect, reviewedRows.length) : null;
   const backfillCandidates = collectBackfillCandidates({
     historyRecords,
     annualScheduleRows,
@@ -174,6 +196,9 @@ export function measureTitleCodeFamilyCoverage({
       missing_title_code: historyRecords.length - exactExamRows.length,
       unique_exact_families: new Set(exactExamCodes).size,
       crosswalk_named: exactExamCodes.filter((code) => crosswalkCodes.has(code)).length,
+      reviewed_confirmed: reviewedConfirmedCount,
+      exact_plus_confirmed: exactPlusConfirmed,
+      exact_plus_confirmed_rate: exactPlusConfirmedCoverage,
     },
     appointments: {
       cohort: appointmentRows.length,
@@ -204,25 +229,33 @@ export function measureTitleCodeFamilyCoverage({
         : "no exact publisher-supplied exam_number->title_code candidates found in checked official sources",
     },
     precision_audit: {
-      reviewed: 0,
-      correct: 0,
-      precision: null,
-      status: "not_run_below_coverage_floor",
-      note: "The exact-key coverage gate failed, so no title-text candidate audit was used to promote a family surface.",
+      reviewed: reviewedRows.length,
+      correct: reviewedCorrect,
+      precision: reviewPrecision,
+      status: reviewedRows.length ? "reviewed_labels_recorded" : "not_run",
+      note: reviewedRows.length
+        ? "Explicit review labels are measured separately from publisher-supplied exact title codes; pending labels are excluded from precision."
+        : "No explicit review labels were recorded.",
     },
     promotion: {
       historical_exam_coverage_floor: HISTORICAL_EXAM_COVERAGE_FLOOR,
       audit_precision_floor: AUDIT_PRECISION_FLOOR,
-      coverage_passed: examCoverage >= HISTORICAL_EXAM_COVERAGE_FLOOR,
-      precision_passed: false,
+      coverage_passed: exactPlusConfirmedCoverage >= HISTORICAL_EXAM_COVERAGE_FLOOR,
+      precision_passed: reviewPrecision != null && reviewPrecision >= AUDIT_PRECISION_FLOOR,
       passed: false,
       publish_family_ui: false,
       publish_entity_pivots: false,
-      verdict: "STOP — exact historical exam coverage is below the 30% floor; title-code family UI and pivots remain disabled.",
+      verdict: exactPlusConfirmedCoverage >= HISTORICAL_EXAM_COVERAGE_FLOOR
+        && reviewPrecision != null
+        && reviewPrecision >= AUDIT_PRECISION_FLOOR
+        ? "PASS — exact and explicitly reviewed title-code coverage and precision clear the promotion bars."
+        : "STOP — exact plus reviewed historical exam coverage or reviewed precision is below the promotion bar; title-code family UI and pivots remain disabled.",
     },
   };
   measurement.promotion.passed = measurement.promotion.coverage_passed
     && measurement.promotion.precision_passed;
+  measurement.promotion.publish_family_ui = measurement.promotion.passed;
+  measurement.promotion.publish_entity_pivots = measurement.promotion.passed;
   return measurement;
 }
 
@@ -241,6 +274,7 @@ async function main() {
     readJson(join(ROOT, "site/data/exam_sources/oasys_exam_map.json")),
   ]);
   const noticeCorpusRows = await collectNoticeCorpusRows({ oasysExamMapRows: oasysExamMap.records || [] });
+  const reviewedRegistry = await readJson(REVIEW_REGISTRY);
   const artifact = measureTitleCodeFamilyCoverage({
     historyRecords: history.records,
     annualScheduleRows: annualSchedule.records || [],
@@ -249,6 +283,7 @@ async function main() {
     noticeCorpusRows,
     appointmentRows: appointments.notices,
     titleCrosswalk: crosswalk,
+    reviewedRegistry,
     generatedAt: history.source.fetched_at,
   });
   const serialized = `${JSON.stringify(artifact, null, 2)}\n`;
