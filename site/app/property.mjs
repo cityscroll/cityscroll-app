@@ -914,7 +914,7 @@ function propertyReaderActionsTools(){
   }
   return propertyReaderActionsToolsPromise;
 }
-function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerTools){
+function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerTools, c){
   const r=entry.primary;
   if(!r) return "";
   const commercial=r.commercial||null;
@@ -970,6 +970,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
     ${programStatus}
     ${Array.isArray(commercial?.event_views)&&commercial.event_views.length?propertyTimedEventChipsHTML(commercial,cardCopy?.event_kind?[cardCopy.event_kind]:[]):(closeLabel&&!cardCopy?.event_kind?`<span class="${closeChipClass}" data-close-chip="1">${escUiHtml(t(closeChipKey,{date:closeLabel}))}${closed?"":eventTag(closeDate)}</span>`:"")}
   </div>`;
+  const lead=c.propertyActionCharacterLead(entry,r,{escape:escUiHtml,translate:t,formatDate:fdt});
   const dealLine=(!closed && !superseded && glance && glance.deal)
     ? `<p class="property-deal-signal" data-deal-status="derived">${escUiHtml(glance.deal)}</p>`
     : "";
@@ -1006,6 +1007,7 @@ function propertyExplorerCardHTML(entry, terms, parcelLinks, plainTools, readerT
     :"";
   return `<div class="fcard property-fcard${closed?" is-closed":""}${superseded?" is-superseded":""}" data-request-id="${escUiHtml(r.request_id||"")}" data-disposition-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-commercial-category="${escUiHtml(r._asset||"other")}" data-sale-method="${escUiHtml(methodKey||"")}" data-sale-eligible="${commercial&&commercial.sale_eligible===false?"0":"1"}" data-temporal-status="${superseded?"superseded":(closed?"closed":(entry.temporal_status||"open"))}" data-closed="${closed?"1":"0"}">
       ${commercialLead}
+      ${lead}
       ${dealLine}
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       ${processLine}
@@ -1197,6 +1199,7 @@ async function renderPropExplorer(){
     $("#propertyneighborhood").value=propertyResolvedNeighborhood.name;
   }
   const tools=await propertyExplorerTools();
+  const coverage=tools?.stampPropertyActionCharacters?.(propAll).coverage;
   const processRail=$("#processrail");
   const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
   const filterOptions={
@@ -1297,6 +1300,9 @@ async function renderPropExplorer(){
   if(tools?.stampPropertyExplorerTemporal){
     entries=tools.stampPropertyExplorerTemporal(entries,{commercialOf:(r)=>r.commercial||null});
   }
+  const cover=coverage
+    ? `<p>${escUiHtml(t("property_action_character_coverage",coverage))}</p>`
+    : "";
   if(tools?.sortPropertyExplorerEntries){
     entries=tools.sortPropertyExplorerEntries(entries,propSort,(r)=>r.commercial||null);
   }
@@ -1394,6 +1400,7 @@ async function renderPropExplorer(){
     feedEl.innerHTML=`<div class="empty property-scope-empty" data-property-scope-empty="1">
       <p><strong>${escUiHtml(scopeLabel)}</strong></p>
       ${defaultEmptyMessage}
+      ${cover}
       <p><span>${escUiHtml(t("rule_phase_current"))} <b data-property-scope-current-count>${partition.default_count}</b></span> · <span>${escUiHtml(t("property_closed_section"))} <b data-property-scope-archive-count>${partition.archive_count}</b></span></p>
       <div class="factions">${alternateAction}${alertAction}${clearAction}${followAction}</div>
     </div>`;
@@ -1436,8 +1443,8 @@ async function renderPropExplorer(){
   }catch(_e){}
   const cardFor=(e)=> e.kind==="cluster"
     ? propertyClusterCardHTML(e,plainTools)
-    : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools,readerTools);
-  feedEl.innerHTML=entries.map(cardFor).join("");
+    : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools,readerTools,tools);
+  feedEl.innerHTML=`${cover}${entries.map(cardFor).join("")}`;
   const followResolved=feedEl.querySelector("[data-follow-resolved-neighborhood]");
   if(followResolved) followResolved.addEventListener("click",()=>watchFromFilters("property"));
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
