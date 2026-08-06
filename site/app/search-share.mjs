@@ -528,6 +528,7 @@ function nlFeed(key, placeholder){
         }
       }
       if(key==='property'){
+        if(f.agency) propAgency=f.agency;
         if(f.borough) $("#propertyboro").value=f.borough;
         if(f.neighborhood) $("#propertyneighborhood").value=f.neighborhood;
         propertyResolvedNeighborhood=f.neighborhood?{
@@ -699,7 +700,7 @@ function bindClearSearchState(lens, root){
     const when=$("#"+lens+"when"); if(when) when.value="upcoming";
     if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; meetingsCommunityDistrict=""; meetingsCouncilDistrict=""; meetingsProcessSel="all"; meetingsPlaceGroupSel="flat"; }
     if(lens==="property"){
-      propAsset="all"; propStageSel="all"; propProcessSel="all";
+      propAsset="all"; propStageSel="all"; propProcessSel="all"; propAgency="";
       propSaleMethod="all"; propPriceBand="all"; propSort="closing_soon";
       const sortEl=$("#propsort"); if(sortEl) sortEl.value="closing_soon";
       $("#propertyboro").value=""; $("#propertyneighborhood").value="";
