@@ -34,6 +34,11 @@ const RETENTION_GATE = Object.freeze({
   minimum_distinct_events: 30,
 });
 const PEOPLE_EXTRACT_LIMIT = 30_000;
+// The daily meeting-outcomes read model stays bounded at six months. This
+// authenticated backfill deliberately reaches farther into the current
+// Legistar archive so the promotion cohort can accrue distinct events.
+const ROLL_CALL_LOOKBACK_DAYS = 730;
+const ROLL_CALL_NOTICE_LIMIT = 2_000;
 
 const CLEAN = (value) =>
   typeof value === "string"
@@ -256,7 +261,12 @@ async function main() {
   }
 
   const measuredAt = DATE_STAMP();
-  const view = await buildMeetingOutcomesView({ token, env: process.env });
+  const view = await buildMeetingOutcomesView({
+    token,
+    env: process.env,
+    lookbackDays: ROLL_CALL_LOOKBACK_DAYS,
+    noticeLimit: ROLL_CALL_NOTICE_LIMIT,
+  });
 
   const receipt = buildLiveRollCallReceipt(view, measuredAt);
   const receiptPath = receiptPathFor(measuredAt);
