@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   issues: write
 
 concurrency:
@@ -73,3 +73,37 @@ jobs:
       - name: Fail on upstream drift
         if: always() && steps.live.outcome == 'failure'
         run: exit 1
+
+  acquire_official_roll_call_tranche:
+    name: Acquire authenticated official roll-call tranche
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Refresh official roll-call cohort
+        env:
+          LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
+        run: |
+          set -o pipefail
+          node tools/build_official_roll_call_tranche.mjs
+      - name: Commit refreshed tranche artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          if ! git diff --quiet -- site/data/people_domain_observations.json site/data/person_votes_lookup.json site/data/legistar_sources/verification_receipts; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add site/data/people_domain_observations.json site/data/person_votes_lookup.json site/data/legistar_sources/verification_receipts
+            git commit -m "data: refresh official roll-call live tranche"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" \
+              "HEAD:${{ github.ref_name }}"
+          else
+            echo "No tranche artifact changes."
+          fi

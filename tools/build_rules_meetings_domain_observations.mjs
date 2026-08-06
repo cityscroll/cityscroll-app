@@ -20,7 +20,7 @@
  *   --residual-only  re-stamp only IDs in the dated Meetings location receipt
  */
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -40,10 +40,27 @@ const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
 const OUT_PEOPLE = path.join(ROOT, "site/data/people_domain_observations.json");
 const OUT_PERSON_VOTES = path.join(ROOT, "site/data/person_votes_lookup.json");
-const OFFICIAL_RETENTION_RECEIPT = JSON.parse(readFileSync(path.join(
+const OFFICIAL_RETENTION_RECEIPTS = path.join(
   ROOT,
-  "site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
-), "utf8"));
+  "site/data/legistar_sources/verification_receipts",
+);
+function loadLatestOfficialRetentionReceipt() {
+  const base = "official_person_vote_retention_";
+  const fallback = path.join(
+    OFFICIAL_RETENTION_RECEIPTS,
+    "official_person_vote_retention_2026-08-02.json",
+  );
+  try {
+    const candidates = readdirSync(OFFICIAL_RETENTION_RECEIPTS)
+      .filter((name) => name.startsWith(base) && name.endsWith(".json"))
+      .sort();
+    const latest = candidates.length ? path.join(OFFICIAL_RETENTION_RECEIPTS, candidates.at(-1)) : fallback;
+    return JSON.parse(readFileSync(latest, "utf8"));
+  } catch {
+    return JSON.parse(readFileSync(fallback, "utf8"));
+  }
+}
+const OFFICIAL_RETENTION_RECEIPT = loadLatestOfficialRetentionReceipt();
 const MEETINGS_RESIDUAL_SOURCES = JSON.parse(
   readFileSync(path.join(ROOT, "site/data/meetings_location_residual_sources.json"), "utf8"),
 );
@@ -115,8 +132,9 @@ function parseArgs(argv) {
  * @param {object[]} peopleRows
  * @param {string[]} seedNotices
  * @param {string} retrievedAt
+ * @param {string[]} [eligibleEventIds]
  */
-function writePeopleDoc(peopleRows, seedNotices, retrievedAt) {
+function writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds = []) {
   const eventIds = [
     ...new Set(peopleRows.map((r) => r.event_id).filter(Boolean).map(String)),
   ].sort();
@@ -132,8 +150,10 @@ function writePeopleDoc(peopleRows, seedNotices, retrievedAt) {
       read_model: "meeting-outcomes:materialized:v2",
       via: "by_person",
       densify: "meeting_outcomes_list_roll_call",
+      eligible_event_filter: "city_council_roll_call_events_with_vote_rows",
       seed_notices: seedNotices,
       event_ids: eventIds,
+      eligible_event_ids: [...new Set((eligibleEventIds || eventIds).map((id) => String(id)).filter(Boolean))].sort(),
       demo_notices: [...PEOPLE_DEMO_NOTICE_IDS],
     },
     row_count: peopleRows.length,
@@ -382,6 +402,24 @@ function compactPeopleRow(obs) {
   };
 }
 
+function hasRollCallVotes(record) {
+  if (!record || typeof record !== "object") return false;
+  const agendaItems = Array.isArray(record.agenda_items) ? record.agenda_items : [];
+  return agendaItems.some((item) => Array.isArray(item?.matters) && item.matters.some(
+    (matter) => Array.isArray(matter?.votes) && matter.votes.length > 0,
+  ));
+}
+
+function extractEligibleRollCallEventIds(records) {
+  const out = new Set();
+  for (const rec of records || []) {
+    if (!hasRollCallVotes(rec)) continue;
+    const rawEventId = String(rec?.council_event?.event_id || rec?.event_id || "").trim();
+    if (rawEventId) out.add(rawEventId);
+  }
+  return out;
+}
+
 /**
  * Append observationsFromPeopleMaterialization output into the densify bags.
  * Honest limits: only roll_call rows with person_id + person_name (library skips
@@ -449,11 +487,13 @@ async function fetchPeopleRows(meetingRows = []) {
     rows: [],
     seen: new Set(),
     seedNotices: new Set(),
+    eligibleEventIds: new Set(),
   };
 
   // --- Primary densify: every list record with retained by_person ---
   try {
     const records = await fetchMeetingOutcomesRecords();
+    for (const id of extractEligibleRollCallEventIds(records)) bags.eligibleEventIds.add(id);
     absorbPeopleObservations({ records }, bags, PEOPLE_EXTRACT_LIMIT);
     console.log(
       `people densify from list: records=${records.length} person_votes=${bags.rows.length} notices=${bags.seedNotices.size}`,
@@ -483,12 +523,17 @@ async function fetchPeopleRows(meetingRows = []) {
       const record = body?.record || body;
       if (!record) continue;
       absorbPeopleObservations(record, bags, PEOPLE_EXTRACT_LIMIT);
+      if (hasRollCallVotes(record)) {
+        const rawEventId = String(record?.council_event?.event_id || record?.event_id || "").trim();
+        if (rawEventId) bags.eligibleEventIds.add(rawEventId);
+      }
     } catch (err) {
       console.warn(`meeting-outcomes fetch failed for ${id}:`, err?.message || err);
     }
   }
 
   const seedNotices = [...bags.seedNotices].sort();
+  const eligibleEventIds = [...bags.eligibleEventIds].sort();
   // Always surface the demo field-case id in metadata when present in rows, even
   // if densify found a superset (stable documentation anchor).
   for (const id of PEOPLE_DEMO_NOTICE_IDS) {
@@ -497,7 +542,7 @@ async function fetchPeopleRows(meetingRows = []) {
       seedNotices.sort();
     }
   }
-  return { rows: bags.rows, seedNotices };
+  return { rows: bags.rows, seedNotices, eligibleEventIds };
 }
 
 async function main() {
@@ -533,8 +578,8 @@ async function main() {
         meetingRows = [];
       }
     }
-    const { rows: peopleRows, seedNotices } = await fetchPeopleRows(meetingRows);
-    writePeopleDoc(peopleRows, seedNotices, retrievedAt);
+    const { rows: peopleRows, seedNotices, eligibleEventIds } = await fetchPeopleRows(meetingRows);
+    writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds);
     return;
   }
 
@@ -651,8 +696,8 @@ async function main() {
   );
 
   if (!args.skipPeople) {
-    const { rows: peopleRows, seedNotices } = await fetchPeopleRows(meetings);
-    writePeopleDoc(peopleRows, seedNotices, retrievedAt);
+    const { rows: peopleRows, seedNotices, eligibleEventIds } = await fetchPeopleRows(meetings);
+    writePeopleDoc(peopleRows, seedNotices, retrievedAt, eligibleEventIds);
   }
 }
 

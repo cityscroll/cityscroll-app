@@ -384,7 +384,7 @@ with sync_playwright() as pw:
         relation:s.facets.values.connection_relation};
     })()""")
     step(
-        "OK" if "6 of 30" in coverage["text"] and "49 of 49" in coverage["text"]
+        "OK" if "6 of 30" in coverage["text"] and "388 of 388" in coverage["text"]
         and coverage["events"] >= 1 and coverage["confidence"]
         and coverage["href"].startswith("#meetings?")
         and scoped == {"domains":["meetings"], "refs":["entity:official:7801"],
