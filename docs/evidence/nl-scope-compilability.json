@@ -1,0 +1,1088 @@
+{
+  "schema_version": 1,
+  "title": "NL-to-scope compilability measurement",
+  "corpus": {
+    "kind": "synthetic",
+    "query_count": 37,
+    "source": "worker/src/lib/suggestions.mjs:SUGGESTION_POOL",
+    "rationale": "Production search text is not retained; analytics records aggregate lens/detail/area dimensions only."
+  },
+  "definition": {
+    "pure_scope": "At least one typed non-keyword field and no keyword residue",
+    "partially_compilable": "At least one typed field plus keyword residue",
+    "free_text_only": "No typed field, or keywords are the only narrowing signal"
+  },
+  "parser": {
+    "implementation": "site/app/search-share.mjs:deviceParse plus site/nl_parse.js:parseNL",
+    "measured_mode": "offline device parser",
+    "date_independent": true
+  },
+  "by_lens": {
+    "money": {
+      "queries": 8,
+      "counts": {
+        "fully-compilable": 1,
+        "partially-compilable": 3,
+        "free-text-only": 4
+      },
+      "fractions": {
+        "fully-compilable": 0.125,
+        "partially-compilable": 0.375,
+        "free-text-only": 0.5
+      },
+      "residual_entity_types": [
+        "procurement_topic"
+      ]
+    },
+    "people": {
+      "queries": 4,
+      "counts": {
+        "fully-compilable": 1,
+        "partially-compilable": 3,
+        "free-text-only": 0
+      },
+      "fractions": {
+        "fully-compilable": 0.25,
+        "partially-compilable": 0.75,
+        "free-text-only": 0
+      },
+      "residual_entity_types": [
+        "person",
+        "procurement_topic"
+      ]
+    },
+    "land": {
+      "queries": 5,
+      "counts": {
+        "fully-compilable": 0,
+        "partially-compilable": 4,
+        "free-text-only": 1
+      },
+      "fractions": {
+        "fully-compilable": 0,
+        "partially-compilable": 0.8,
+        "free-text-only": 0.2
+      },
+      "residual_entity_types": [
+        "land_project_topic",
+        "parcel_or_neighborhood"
+      ]
+    },
+    "property": {
+      "queries": 5,
+      "counts": {
+        "fully-compilable": 0,
+        "partially-compilable": 5,
+        "free-text-only": 0
+      },
+      "fractions": {
+        "fully-compilable": 0,
+        "partially-compilable": 1,
+        "free-text-only": 0
+      },
+      "residual_entity_types": [
+        "property_asset_or_topic"
+      ]
+    },
+    "rules": {
+      "queries": 5,
+      "counts": {
+        "fully-compilable": 0,
+        "partially-compilable": 4,
+        "free-text-only": 1
+      },
+      "fractions": {
+        "fully-compilable": 0,
+        "partially-compilable": 0.8,
+        "free-text-only": 0.2
+      },
+      "residual_entity_types": [
+        "rule_topic"
+      ]
+    },
+    "meetings": {
+      "queries": 6,
+      "counts": {
+        "fully-compilable": 2,
+        "partially-compilable": 4,
+        "free-text-only": 0
+      },
+      "fractions": {
+        "fully-compilable": 0.3333,
+        "partially-compilable": 0.6667,
+        "free-text-only": 0
+      },
+      "residual_entity_types": [
+        "meeting_subject"
+      ]
+    },
+    "alerts": {
+      "queries": 4,
+      "counts": {
+        "fully-compilable": 2,
+        "partially-compilable": 2,
+        "free-text-only": 0
+      },
+      "fractions": {
+        "fully-compilable": 0.5,
+        "partially-compilable": 0.5,
+        "free-text-only": 0
+      },
+      "residual_entity_types": [
+        "procurement_topic"
+      ]
+    }
+  },
+  "closest_to_keyword_retirement": [
+    "alerts",
+    "meetings",
+    "people",
+    "money",
+    "property",
+    "land",
+    "rules"
+  ],
+  "rows": [
+    {
+      "idx": 0,
+      "lens": "money",
+      "text": "construction contracts over $500k",
+      "filter": {
+        "keywords": [
+          "construction"
+        ],
+        "agency": null,
+        "minAmount": 500000,
+        "maxAmount": null,
+        "category": "Construction/Construction Services",
+        "months": null,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [
+        "minAmount",
+        "category"
+      ],
+      "residual_keywords": [
+        "construction"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "money",
+      "text": "IT consulting RFPs",
+      "filter": {
+        "keywords": [
+          "consulting"
+        ],
+        "agency": null,
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": "solicitation",
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [
+        "noticeType"
+      ],
+      "residual_keywords": [
+        "consulting"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "money",
+      "text": "shelter services contracts",
+      "filter": {
+        "keywords": [
+          "shelter"
+        ],
+        "agency": null,
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [],
+      "residual_keywords": [
+        "shelter"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "free-text-only"
+    },
+    {
+      "idx": 3,
+      "lens": "money",
+      "text": "park maintenance contracts",
+      "filter": {
+        "keywords": [
+          "maintenance"
+        ],
+        "agency": null,
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [],
+      "residual_keywords": [
+        "maintenance"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "free-text-only"
+    },
+    {
+      "idx": 4,
+      "lens": "money",
+      "text": "school food service contracts",
+      "filter": {
+        "keywords": [
+          "food"
+        ],
+        "agency": null,
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [],
+      "residual_keywords": [
+        "food"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "free-text-only"
+    },
+    {
+      "idx": 5,
+      "lens": "money",
+      "text": "senior center contracts",
+      "filter": {
+        "keywords": [],
+        "agency": null,
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "free-text-only"
+    },
+    {
+      "idx": 6,
+      "lens": "money",
+      "text": "contracts closing this week",
+      "filter": {
+        "keywords": [],
+        "agency": null,
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": "solicitation",
+        "excludeSpecial": false,
+        "closingWeek": true,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [
+        "noticeType",
+        "closingWeek"
+      ],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "fully-compilable"
+    },
+    {
+      "idx": 7,
+      "lens": "money",
+      "text": "Parks contract forecast",
+      "filter": {
+        "keywords": [
+          "parks"
+        ],
+        "agency": "Parks and Recreation",
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": "agency",
+        "name": "Parks and Recreation",
+        "tab": "forecast"
+      },
+      "typed_fields": [
+        "agency",
+        "route",
+        "name",
+        "tab"
+      ],
+      "residual_keywords": [
+        "parks"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 0,
+      "lens": "people",
+      "text": "paramedic roles",
+      "filter": {
+        "keywords": [
+          "paramedic",
+          "roles"
+        ],
+        "lookupType": "role"
+      },
+      "typed_fields": [
+        "lookupType"
+      ],
+      "residual_keywords": [
+        "paramedic",
+        "roles"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "people",
+      "text": "look up someone named Rodriguez",
+      "filter": {
+        "keywords": [
+          "Rodriguez"
+        ],
+        "lookupType": "person"
+      },
+      "typed_fields": [
+        "lookupType"
+      ],
+      "residual_keywords": [
+        "Rodriguez"
+      ],
+      "residual_entity_types": [
+        "person"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "people",
+      "text": "attorney titles",
+      "filter": {
+        "keywords": [
+          "attorney",
+          "titles"
+        ],
+        "lookupType": "role"
+      },
+      "typed_fields": [
+        "lookupType"
+      ],
+      "residual_keywords": [
+        "attorney",
+        "titles"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 3,
+      "lens": "people",
+      "text": "open competitive exams",
+      "filter": {
+        "keywords": [],
+        "view": "guide",
+        "lookupType": "role"
+      },
+      "typed_fields": [
+        "view",
+        "lookupType"
+      ],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "fully-compilable"
+    },
+    {
+      "idx": 0,
+      "lens": "land",
+      "text": "rezonings in Brooklyn",
+      "filter": {
+        "keywords": [
+          "rezonings"
+        ],
+        "boro": "Brooklyn",
+        "councilDistrict": null,
+        "communityDistrict": null,
+        "nearMe": false
+      },
+      "typed_fields": [
+        "boro"
+      ],
+      "residual_keywords": [
+        "rezonings"
+      ],
+      "residual_entity_types": [
+        "land_project_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "land",
+      "text": "rezonings in Queens",
+      "filter": {
+        "keywords": [
+          "rezonings"
+        ],
+        "boro": "Queens",
+        "councilDistrict": null,
+        "communityDistrict": null,
+        "nearMe": false
+      },
+      "typed_fields": [
+        "boro"
+      ],
+      "residual_keywords": [
+        "rezonings"
+      ],
+      "residual_entity_types": [
+        "land_project_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "land",
+      "text": "79 Rivington",
+      "filter": {
+        "keywords": [
+          "rivington"
+        ],
+        "boro": null,
+        "councilDistrict": null,
+        "communityDistrict": null,
+        "nearMe": false
+      },
+      "typed_fields": [],
+      "residual_keywords": [
+        "rivington"
+      ],
+      "residual_entity_types": [
+        "parcel_or_neighborhood"
+      ],
+      "classification": "free-text-only"
+    },
+    {
+      "idx": 3,
+      "lens": "land",
+      "text": "rezonings in the Bronx",
+      "filter": {
+        "keywords": [
+          "rezonings"
+        ],
+        "boro": "Bronx",
+        "councilDistrict": null,
+        "communityDistrict": null,
+        "nearMe": false
+      },
+      "typed_fields": [
+        "boro"
+      ],
+      "residual_keywords": [
+        "rezonings"
+      ],
+      "residual_entity_types": [
+        "land_project_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 4,
+      "lens": "land",
+      "text": "rezonings in council district 33",
+      "filter": {
+        "keywords": [
+          "rezonings"
+        ],
+        "boro": null,
+        "councilDistrict": "33",
+        "communityDistrict": null,
+        "nearMe": false
+      },
+      "typed_fields": [
+        "councilDistrict"
+      ],
+      "residual_keywords": [
+        "rezonings"
+      ],
+      "residual_entity_types": [
+        "parcel_or_neighborhood"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 0,
+      "lens": "property",
+      "text": "HPD property sales",
+      "filter": {
+        "keywords": [
+          "property",
+          "sales"
+        ],
+        "process": "auction_or_rfp",
+        "agency": "Housing Preservation and Development",
+        "nearMe": false,
+        "borough": null
+      },
+      "typed_fields": [
+        "process",
+        "agency"
+      ],
+      "residual_keywords": [
+        "property",
+        "sales"
+      ],
+      "residual_entity_types": [
+        "property_asset_or_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "property",
+      "text": "environmental protection land",
+      "filter": {
+        "keywords": [
+          "environmental",
+          "protection",
+          "land"
+        ],
+        "process": null,
+        "agency": "Environmental Protection",
+        "nearMe": false,
+        "borough": null
+      },
+      "typed_fields": [
+        "agency"
+      ],
+      "residual_keywords": [
+        "environmental",
+        "protection",
+        "land"
+      ],
+      "residual_entity_types": [
+        "property_asset_or_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "property",
+      "text": "police department property",
+      "filter": {
+        "keywords": [
+          "police",
+          "department",
+          "property"
+        ],
+        "process": null,
+        "agency": "Police Department",
+        "nearMe": false,
+        "borough": null
+      },
+      "typed_fields": [
+        "agency"
+      ],
+      "residual_keywords": [
+        "police",
+        "department",
+        "property"
+      ],
+      "residual_entity_types": [
+        "property_asset_or_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 3,
+      "lens": "property",
+      "text": "parks department property",
+      "filter": {
+        "keywords": [
+          "parks",
+          "department",
+          "property"
+        ],
+        "process": null,
+        "agency": "Parks and Recreation",
+        "nearMe": false,
+        "borough": null
+      },
+      "typed_fields": [
+        "agency"
+      ],
+      "residual_keywords": [
+        "parks",
+        "department",
+        "property"
+      ],
+      "residual_entity_types": [
+        "property_asset_or_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 4,
+      "lens": "property",
+      "text": "property disposition hearings",
+      "filter": {
+        "keywords": [
+          "property"
+        ],
+        "process": "hearing",
+        "agency": null,
+        "nearMe": false,
+        "borough": null
+      },
+      "typed_fields": [
+        "process"
+      ],
+      "residual_keywords": [
+        "property"
+      ],
+      "residual_entity_types": [
+        "property_asset_or_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 0,
+      "lens": "rules",
+      "text": "buildings rules",
+      "filter": {
+        "keywords": [
+          "buildings",
+          "rules"
+        ],
+        "process": null,
+        "agency": "Buildings"
+      },
+      "typed_fields": [
+        "agency"
+      ],
+      "residual_keywords": [
+        "buildings",
+        "rules"
+      ],
+      "residual_entity_types": [
+        "rule_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "rules",
+      "text": "sanitation rules",
+      "filter": {
+        "keywords": [
+          "sanitation",
+          "rules"
+        ],
+        "process": null,
+        "agency": "Sanitation"
+      },
+      "typed_fields": [
+        "agency"
+      ],
+      "residual_keywords": [
+        "sanitation",
+        "rules"
+      ],
+      "residual_entity_types": [
+        "rule_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "rules",
+      "text": "taxi rules",
+      "filter": {
+        "keywords": [
+          "taxi",
+          "rules"
+        ],
+        "process": null,
+        "agency": null
+      },
+      "typed_fields": [],
+      "residual_keywords": [
+        "taxi",
+        "rules"
+      ],
+      "residual_entity_types": [
+        "rule_topic"
+      ],
+      "classification": "free-text-only"
+    },
+    {
+      "idx": 3,
+      "lens": "rules",
+      "text": "health department rules",
+      "filter": {
+        "keywords": [
+          "health",
+          "department",
+          "rules"
+        ],
+        "process": null,
+        "agency": "Health and Mental Hygiene"
+      },
+      "typed_fields": [
+        "agency"
+      ],
+      "residual_keywords": [
+        "health",
+        "department",
+        "rules"
+      ],
+      "residual_entity_types": [
+        "rule_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 4,
+      "lens": "rules",
+      "text": "rules open for comment",
+      "filter": {
+        "keywords": [
+          "rules"
+        ],
+        "process": "public_process",
+        "agency": null
+      },
+      "typed_fields": [
+        "process"
+      ],
+      "residual_keywords": [
+        "rules"
+      ],
+      "residual_entity_types": [
+        "rule_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 0,
+      "lens": "meetings",
+      "text": "recent landmarks hearings",
+      "filter": {
+        "keywords": [
+          "recent",
+          "landmarks"
+        ],
+        "when": "past",
+        "process": null,
+        "nearMe": false,
+        "agency": null,
+        "borough": null
+      },
+      "typed_fields": [
+        "when"
+      ],
+      "residual_keywords": [
+        "recent",
+        "landmarks"
+      ],
+      "residual_entity_types": [
+        "meeting_subject"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "meetings",
+      "text": "recent city council hearings",
+      "filter": {
+        "keywords": [
+          "recent"
+        ],
+        "when": "past",
+        "process": null,
+        "nearMe": false,
+        "agency": null,
+        "borough": null
+      },
+      "typed_fields": [
+        "when"
+      ],
+      "residual_keywords": [
+        "recent"
+      ],
+      "residual_entity_types": [
+        "meeting_subject"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "meetings",
+      "text": "recent community board meetings",
+      "filter": {
+        "keywords": [
+          "recent",
+          "meetings"
+        ],
+        "when": "past",
+        "process": null,
+        "nearMe": false,
+        "agency": null,
+        "borough": null
+      },
+      "typed_fields": [
+        "when"
+      ],
+      "residual_keywords": [
+        "recent",
+        "meetings"
+      ],
+      "residual_entity_types": [
+        "meeting_subject"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 3,
+      "lens": "meetings",
+      "text": "recent taxi and limousine hearings",
+      "filter": {
+        "keywords": [
+          "recent",
+          "taxi",
+          "limousine"
+        ],
+        "when": "past",
+        "process": null,
+        "nearMe": false,
+        "agency": null,
+        "borough": null
+      },
+      "typed_fields": [
+        "when"
+      ],
+      "residual_keywords": [
+        "recent",
+        "taxi",
+        "limousine"
+      ],
+      "residual_entity_types": [
+        "meeting_subject"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 4,
+      "lens": "meetings",
+      "text": "hearings this week",
+      "filter": {
+        "keywords": [],
+        "when": "week",
+        "process": null,
+        "nearMe": false,
+        "agency": null,
+        "borough": null
+      },
+      "typed_fields": [
+        "when"
+      ],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "fully-compilable"
+    },
+    {
+      "idx": 5,
+      "lens": "meetings",
+      "text": "what can I comment on this week",
+      "filter": {
+        "keywords": [],
+        "when": "week",
+        "process": null,
+        "nearMe": false,
+        "agency": null,
+        "borough": null
+      },
+      "typed_fields": [
+        "when"
+      ],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "fully-compilable"
+    },
+    {
+      "idx": 0,
+      "lens": "alerts",
+      "text": "awards over $1M",
+      "filter": {
+        "keywords": [],
+        "agency": null,
+        "minAmount": 1000000,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": "award",
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [
+        "minAmount",
+        "noticeType"
+      ],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "fully-compilable"
+    },
+    {
+      "idx": 1,
+      "lens": "alerts",
+      "text": "education contracts over $200K due in 3 months",
+      "filter": {
+        "keywords": [
+          "education"
+        ],
+        "agency": "Education",
+        "minAmount": 200000,
+        "maxAmount": null,
+        "category": null,
+        "months": 3,
+        "noticeType": null,
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [
+        "agency",
+        "minAmount",
+        "months"
+      ],
+      "residual_keywords": [
+        "education"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    },
+    {
+      "idx": 2,
+      "lens": "alerts",
+      "text": "rezonings near 79 Rivington",
+      "filter": {
+        "watchType": "rezone",
+        "place": "79 Rivington"
+      },
+      "typed_fields": [
+        "watchType",
+        "place"
+      ],
+      "residual_keywords": [],
+      "residual_entity_types": [],
+      "classification": "fully-compilable"
+    },
+    {
+      "idx": 3,
+      "lens": "alerts",
+      "text": "sanitation contract awards",
+      "filter": {
+        "keywords": [
+          "sanitation"
+        ],
+        "agency": "Sanitation",
+        "minAmount": null,
+        "maxAmount": null,
+        "category": null,
+        "months": null,
+        "noticeType": "award",
+        "excludeSpecial": false,
+        "closingWeek": false,
+        "route": null,
+        "name": null,
+        "tab": null
+      },
+      "typed_fields": [
+        "agency",
+        "noticeType"
+      ],
+      "residual_keywords": [
+        "sanitation"
+      ],
+      "residual_entity_types": [
+        "procurement_topic"
+      ],
+      "classification": "partially-compilable"
+    }
+  ]
+}
