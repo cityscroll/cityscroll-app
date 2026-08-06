@@ -294,9 +294,12 @@
       "sample_type": "array<object>",
       "fields": [
         "exam_no",
+        "list_agency_code",
+        "list_agency_desc",
         "list_title_desc",
         "cert_date",
         "no_certified",
+        "no_requested",
         "no_vacancies"
       ]
     },
