@@ -21,13 +21,17 @@ export function renderPropertyCommercialDetail(commercial, helpers = {}) {
   const fallbackSaleSignals = helpers.fallbackSaleSignals || (() => false);
   const extAttrs = helpers.extAttrs || "";
   const extSr = helpers.extSr || (() => "");
+  const seenEvidence = new Set();
   const eligible = commercial.sale_eligible === true
     || (commercial.sale_eligible == null && fallbackSaleSignals(commercial));
   if (!eligible) return "";
 
   const evidenceHTML = (value, source = "notice_body") => {
     const copy = String(value || "").trim();
-    if (!copy || /^…|…$/.test(copy)) return "";
+    if (!copy || /^(?:…|\.\.\.)|(?:…|\.\.\.)$/.test(copy)) return "";
+    const evidenceKey = copy.replace(/\s+/g, " ").trim();
+    if (seenEvidence.has(evidenceKey)) return "";
+    seenEvidence.add(evidenceKey);
     const citation = source === "attachment_text"
       ? t("notice_attachment_title_fallback")
       : t("disposition_source_city_record");
@@ -41,10 +45,16 @@ export function renderPropertyCommercialDetail(commercial, helpers = {}) {
       return `<div class="property-commercial-contact"><a href="mailto:${value}">${value}</a>${evidence}</div>`;
     }
     const phone = `<a href="tel:${esc(entry.value.replace(/[^\d+]/g, ""))}" lang="en" dir="ltr">${value}</a>`;
-    const line = entry.purpose === "accommodation"
+    const line = entry.access_code
+      ? t("property_commercial_join_hearing_html", { phone, access_code: esc(entry.access_code) })
+      : entry.purpose === "hearing_call_in"
+        ? t("property_commercial_call_participation_html", { phone })
+        : entry.purpose === "inspection_scheduling"
+          ? t("property_commercial_call_inspection_html", { phone })
+          : entry.purpose === "accommodation"
       ? t("property_commercial_call_accommodation_html", { phone })
       : t("property_commercial_call_participation_html", { phone });
-    return `<div class="property-commercial-contact"><p>${line}</p>${evidence}</div>`;
+    return `<div class="property-commercial-contact" data-contact-role="${esc(entry.role || entry.purpose || "participation")}"><p>${line}</p>${evidence}</div>`;
   };
 
   const item = commercial.item;
