@@ -75,6 +75,21 @@
       ],
       "notes": "Largest Socrata surface (~1.1M rows). WH-02 queue last; prefer Mini overnight."
     },
+    "city-council-committee-membership": {
+      "id": "city-council-committee-membership",
+      "source_contract_id": "city-council-committee-membership",
+      "name": "City Council Committee Membership",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "aabe-yfm9",
+      "table_name": "city_council_committee_membership",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "soda_order": "member_id ASC, committee_id ASC, start_date ASC",
+      "required_fields": ["member_id", "full_name", "committee", "appointment_type", "start_date", "end_date", "committee_id", "id"],
+      "notes": "Bulk-side historical committee membership. Publish only exact member_id rows attached to the committed people-domain corpus."
+    },
     "abo-local-authorities": {
       "id": "abo-local-authorities",
       "source_contract_id": "abo-local-authorities",

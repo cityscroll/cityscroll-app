@@ -30,6 +30,15 @@ function loadPersonVotesLookup(){
   }
   return personVotesLookupPromise;
 }
+let committeeMembershipLookupPromise = null;
+function loadCommitteeMembershipLookup(){
+  if(!committeeMembershipLookupPromise){
+    committeeMembershipLookupPromise = fetch("data/official_committee_memberships_lookup.json", { cache: "force-cache", credentials: "omit" })
+      .then(r => (r && r.ok ? r.json() : null))
+      .catch(() => null);
+  }
+  return committeeMembershipLookupPromise;
+}
 
 /**
  * Accessible table of one official's votes (matter · hearing · vote).
@@ -188,6 +197,13 @@ async function showOfficial(personId, opts){
     (await loadPersonVotesLookup())?.coverage || {},
     { currentHash:"#meetings", scope:globalThis.CrolScope },
   ) || null;
+  const committeeModule = await import("../committee_memberships.mjs");
+  const committeeLookup = await loadCommitteeMembershipLookup();
+  const committeeBag = committeeLookup?.by_member_id?.[id] ? {
+    ...committeeLookup.by_member_id[id],
+    coverage: { eligible_rows: committeeLookup.eligible_row_count, linked_rows: committeeLookup.linked_row_count, row_rate: committeeLookup.row_rate },
+    vintage: committeeLookup.vintage,
+  } : { rows: [], coverage: {}, vintage: committeeLookup?.vintage };
   const event = (record && record.council_event) || {};
   const resolvedEventId = eventId || event.event_id || (scopedVotes[0] && scopedVotes[0].event_id) || "";
   const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#meetings";
@@ -247,6 +263,7 @@ async function showOfficial(personId, opts){
       <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(name)}</h2>
       ${eventLine}
       ${officialConnections.renderOfficialCoverageHTML(officialView, { translate:t, escapeHtml:escUiHtml })}
+      ${committeeModule.renderCommitteeMembershipsHTML(committeeBag, { translate:t, escapeHtml:escUiHtml })}
       ${body}
       <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
         ${noticeLink}
