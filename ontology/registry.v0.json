@@ -392,6 +392,16 @@
       "label": "Published by agency"
     },
     {
+      "id": "certified_to_agency",
+      "status": "registered",
+      "from": "exam",
+      "to": "agency",
+      "backing": [
+        "exam_certification_constellation"
+      ],
+      "label": "Certified to agency"
+    },
+    {
       "id": "references_contract",
       "status": "registered",
       "from": "award",
