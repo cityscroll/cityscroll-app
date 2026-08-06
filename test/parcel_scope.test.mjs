@@ -22,6 +22,10 @@ const taxLien = JSON.parse(readFileSync(
   new URL("../site/data/tax_lien_sale_bbl.json", import.meta.url),
   "utf8",
 ));
+const cofo = JSON.parse(readFileSync(
+  new URL("../site/data/dob_cofo_lookup.json", import.meta.url),
+  "utf8",
+));
 
 test("parcel refs and scopes accept only exact ten-digit BBLs", () => {
   assert.equal(parcelRef("1020260015"), "bbl:1020260015");
@@ -100,6 +104,23 @@ test("matched observed biography separates disposition, ZAP, and lien-list evide
   }
   assert.equal("owners" in view.sections, false, "zero-coverage owner blocks stay omitted");
   assert.doesNotMatch(JSON.stringify(view), /complete(?: parcel)? history|every event/i);
+});
+
+test("CofO evidence is an exact-BBL graph slice with row provenance", () => {
+  const bbl = Object.keys(cofo.by_bbl).find((id) => crossDomain.by_bbl?.[id]);
+  assert.ok(bbl, "fixture graph should have one BBL in both read models");
+  const view = buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo });
+  assert.equal(view.sections.cofo.status, "observed");
+  assert.ok(view.sections.cofo.items.length >= 1);
+  assert.ok(view.sections.cofo.items.every((item) => (
+    item.source === "NYC Department of Buildings"
+      && item.relation === "legal_occupancy_on_parcel"
+      && item.confidence === "strong"
+      && item.method === "exact_bbl_v1"
+  )));
+  assert.equal(view.sections.cofo.coverage.eligible, cofo.coverage.eligible);
+  assert.equal(view.sections.cofo.coverage.linked, cofo.coverage.linked);
+  assert.ok(Object.values(cofo.by_bbl).flat().every((row) => row.provenance?.source_record_id));
 });
 
 test("unmatched ZAP section is an explicit corpus gap, not a citywide claim", () => {

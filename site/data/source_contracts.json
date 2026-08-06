@@ -1003,6 +1003,58 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "dob-certificate-of-occupancy",
+      "name": "DOB Certificate Of Occupancy",
+      "owner": "NYC Department of Buildings",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "bs8b-p36w",
+      "landing_page": "https://data.cityofnewyork.us/d/bs8b-p36w",
+      "required_fields": [
+        "job_number",
+        "job_type",
+        "c_o_issue_date",
+        "borough",
+        "house_number",
+        "street_name",
+        "bbl",
+        "issue_type",
+        "application_status_raw",
+        "filing_status_raw"
+      ],
+      "max_stale_days": 30,
+      "publisher_cadence": "Ongoing DOB certificate and issue updates",
+      "product_freshness": "A guarded build refreshes the bulk source and publishes only exact-BBL rows attached to the committed parcel graph; each row carries source provenance and the artifact carries its source vintage.",
+      "used_for": "Certificate of Occupancy evidence in the observed parcel biography.",
+      "join_keys": ["bbl"],
+      "join_measurement": {
+        "observed_on": "2026-08-05",
+        "universe": "Distinct exact ten-digit BBLs in the committed parcel graph",
+        "strategy": "Exact bbl equality only; raw bulk rows are not published unless their BBL is already in the graph.",
+        "eligible": 35745,
+        "linked": 4440,
+        "denominator": "distinct graph BBLs",
+        "rate": 0.1242
+      },
+      "code_references": [
+        {
+          "path": "tools/build_dob_cofo_lookup.mjs",
+          "contains": "bs8b-p36w"
+        },
+        {
+          "path": "site/parcel_scope.mjs",
+          "contains": "cofoItems"
+        },
+        {
+          "path": "site/data/dob_cofo_lookup.json",
+          "contains": "dob_cofo_lookup_v1"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "dob-now-job-filings",
       "name": "DOB NOW job application filings",
       "owner": "NYC Department of Buildings",

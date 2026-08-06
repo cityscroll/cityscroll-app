@@ -117,12 +117,30 @@ function coverageBlock({ eligible = null, linked = null, rate = null, vintage = 
   };
 }
 
+function cofoItems(cofo, bbl) {
+  return (cofo?.by_bbl?.[bbl] || []).map((row) => ({
+    id: clean(row.job_number),
+    label: clean(row.issue_type || row.job_type || row.job_number),
+    date: clean(row.c_o_issue_date, 40) || null,
+    date_basis: "CofO issue date",
+    source: "NYC Department of Buildings",
+    relation: "legal_occupancy_on_parcel",
+    confidence: "strong",
+    method: cofo.method || "exact_bbl_v1",
+    issue_type: clean(row.issue_type, 80) || null,
+    application_status: clean(row.application_status_raw, 80) || null,
+    filing_status: clean(row.filing_status_raw, 80) || null,
+    conflicts: Array.isArray(row.conflicts) ? row.conflicts : [],
+    href: parcelBiographyHref(bbl),
+  }));
+}
+
 /**
  * Assemble one bounded observed biography from committed materializations.
  * Owner/counterparty candidates are intentionally absent: current measured
  * public coverage is zero, and tentative ER output cannot render as fact.
  */
-export function buildObservedParcelBiography({ bbl, crossDomain, taxLien } = {}) {
+export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo } = {}) {
   const ref = parcelRef(bbl);
   if (!ref) return { ok: false, reason: "invalid_bbl" };
   if (!exactMaterialization(crossDomain)) {
@@ -200,6 +218,20 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien } = {})
         rate: null,
         vintage: taxLien?.data_vintage,
         gaps: "This is one published cycle snapshot; it does not track the parcel between lists or across every cycle.",
+      }),
+    },
+    cofo: {
+      status: cofoItems(cofo, bbl).length ? "observed" : "not_observed",
+      items: cofoItems(cofo, bbl),
+      note: cofoItems(cofo, bbl).length
+        ? null
+        : "No Certificate Of Occupancy row for this exact BBL is in the committed graph slice — not proof no record exists.",
+      coverage: coverageBlock({
+        eligible: cofo?.coverage?.eligible,
+        linked: cofo?.coverage?.linked,
+        rate: cofo?.coverage?.rate,
+        vintage: cofo?.source_generated_at,
+        gaps: cofo?.coverage?.gap || "Only exact BBLs already present in the committed parcel graph are eligible.",
       }),
     },
   };

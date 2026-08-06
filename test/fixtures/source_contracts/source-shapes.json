@@ -314,6 +314,25 @@
       ]
     },
     {
+      "id": "dob-certificate-of-occupancy",
+      "kind": "socrata",
+      "identifier": "bs8b-p36w",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "job_number",
+        "job_type",
+        "c_o_issue_date",
+        "borough",
+        "house_number",
+        "street_name",
+        "bbl",
+        "issue_type",
+        "application_status_raw",
+        "filing_status_raw"
+      ]
+    },
+    {
       "id": "dob-now-job-filings",
       "kind": "socrata",
       "identifier": "w9ak-ipjd",
