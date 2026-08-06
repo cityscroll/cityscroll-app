@@ -20,6 +20,155 @@ export const SCHEMA_VERSION = 2;
 
 export const FUTURE_WORK_DISPOSITIONS = new Set(["open"]);
 
+/**
+ * Key spaces a public catalog can make obtainable before a source is admitted
+ * to the depot.  These are deliberately broader than the current source
+ * declarations: a bootstrap ranking must be able to reward a dataset for
+ * introducing a canonical key that no committed source has declared yet.
+ */
+export const OBTAINABLE_KEY_SPACES = [
+  {
+    id: "exam_number",
+    entity_type: "exam",
+    fields: ["exam_no", "exam_number", "exam_number_code"],
+    canonical_keys: ["exam_number", "exam_no"],
+    weight: 8,
+  },
+  {
+    id: "civil_service_title_code",
+    entity_type: "civil_service_title",
+    fields: ["title_code", "title_code_no", "list_title_code", "civil_service_title_code"],
+    canonical_keys: ["title_code", "title_code_no", "list_title_code"],
+    weight: 8,
+  },
+  {
+    id: "civil_service_title",
+    entity_type: "civil_service_title",
+    fields: ["civil_service_title", "list_title_desc", "civil_service_title_description"],
+    canonical_keys: ["civil_service_title", "list_title_desc"],
+    weight: 5,
+  },
+  {
+    id: "agency",
+    entity_type: "agency",
+    fields: ["agency", "agency_name", "list_agency_code", "list_agency_desc"],
+    canonical_keys: ["agency", "agency_name", "list_agency_code", "list_agency_desc"],
+    weight: 3,
+  },
+  {
+    id: "request_id",
+    entity_type: "notice",
+    fields: ["request_id", "request_number", "record_id"],
+    canonical_keys: ["request_id"],
+    weight: 5,
+  },
+  {
+    id: "contract_id",
+    entity_type: "contract",
+    fields: ["contract_id", "prime_contract_id", "ct_contract_id"],
+    canonical_keys: ["contract_id"],
+    weight: 6,
+  },
+  {
+    id: "pin",
+    entity_type: "procurement",
+    fields: ["pin", "prime_pin", "procurement_id"],
+    canonical_keys: ["PIN"],
+    weight: 6,
+  },
+  {
+    id: "bbl",
+    entity_type: "parcel",
+    fields: ["bbl", "borough_block_lot"],
+    canonical_keys: ["BBL"],
+    weight: 6,
+  },
+];
+
+function normalizeCatalogField(raw) {
+  return String(raw || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
+function catalogResource(row) {
+  return row?.resource || row || {};
+}
+
+/**
+ * Infer candidate-only key spaces from catalog metadata.  This uses field
+ * names, not row values, so it can rank an obtainable source without implying
+ * that any row-level join has been measured.
+ */
+export function inferObtainableKeySpaces(row) {
+  const resource = catalogResource(row);
+  const fields = new Set([
+    ...(resource.columns_field_name || []),
+    ...(resource.columns_name || []),
+  ].map(normalizeCatalogField));
+
+  return OBTAINABLE_KEY_SPACES
+    .map((space) => {
+      const matched_fields = space.fields.filter((field) => fields.has(normalizeCatalogField(field)));
+      if (!matched_fields.length) return null;
+      return {
+        id: space.id,
+        entity_type: space.entity_type,
+        matched_fields,
+        canonical_keys: [...space.canonical_keys],
+      };
+    })
+    .filter(Boolean);
+}
+
+function obtainableBundleScore(keySpaces) {
+  const ids = new Set(keySpaces.map((space) => space.id));
+  let score = 0;
+  if (ids.has("exam_number") && ids.has("agency")) score += 7;
+  if (ids.has("civil_service_title_code") && ids.has("civil_service_title") && ids.has("agency")) score += 10;
+  return score;
+}
+
+/**
+ * Rank public catalog resources using obtainable key spaces first.  Committed
+ * source overlap is reported as supporting evidence only; it cannot be the
+ * condition that makes a candidate visible.
+ */
+export function rankObtainableCatalogCandidates(rows = [], { sources = [] } = {}) {
+  const committedKeys = new Set(sources.flatMap((source) => source.join_keys || []));
+  return rows.map((row) => {
+    const resource = catalogResource(row);
+    const key_spaces = inferObtainableKeySpaces(resource);
+    const obtainable_key_space_score = key_spaces.reduce((sum, space) => {
+      const definition = OBTAINABLE_KEY_SPACES.find((candidate) => candidate.id === space.id);
+      return sum + (definition?.weight || 0);
+    }, 0) + obtainableBundleScore(key_spaces);
+    const committed_key_overlap = key_spaces.flatMap((space) => (
+      space.canonical_keys.filter((key) => committedKeys.has(key))
+    ));
+    const score = obtainable_key_space_score + Math.min(committed_key_overlap.length, 2);
+
+    return {
+      dataset_id: resource.id || null,
+      name: resource.name || null,
+      score,
+      obtainable_key_space_score,
+      committed_key_overlap,
+      key_spaces,
+      candidate_status: "candidate",
+      coverage_status: "unknown_until_reviewed",
+      evidence: "Socrata catalog column metadata only; no row-level join coverage measured.",
+      landing_page: resource.id ? `https://data.cityofnewyork.us/d/${resource.id}` : null,
+    };
+  })
+    .filter((candidate) => candidate.key_spaces.length > 0)
+    .sort((a, b) => (b.score - a.score)
+      || (b.obtainable_key_space_score - a.obtainable_key_space_score)
+      || String(a.dataset_id).localeCompare(String(b.dataset_id)));
+}
+
 /** Canonical join-key aliases used for graph edges (case-insensitive match). */
 export const KEY_ALIASES = {
   pin: "PIN",
