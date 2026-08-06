@@ -342,6 +342,7 @@ function currentLensFilterState(tab){
       if(typeof meetingsCouncilDistrict!=="undefined" && meetingsCouncilDistrict) state.councilDistrict=meetingsCouncilDistrict;
     }
     if(tab === "property"){
+      if(typeof propAgency !== "undefined" && propAgency) state.agency = propAgency;
       if(typeof propAsset !== "undefined" && propAsset && propAsset !== "all") state.asset = propAsset;
       if(typeof propSaleMethod !== "undefined" && propSaleMethod && propSaleMethod !== "all") state.saleMethod = propSaleMethod;
       if(typeof propPriceBand !== "undefined" && propPriceBand && propPriceBand !== "all") state.priceBand = propPriceBand;

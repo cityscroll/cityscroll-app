@@ -212,6 +212,7 @@ function serializeState(){
       if(meetingsPlaceGroupSel === "place") q.set("group", "place");
     }
     if(tab === "property"){
+      if(propAgency) q.set("agency", propAgency);
       if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propertyCommunityDistrict) q.set("cd", propertyCommunityDistrict);
@@ -1024,6 +1025,7 @@ function applyHash(){
         meetingsPlaceGroupSel=q.get("group")==="place"?"place":"flat";
       }
       if(tab === "property"){
+        propAgency = q.get("agency") || "";
         $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
         propertyCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";

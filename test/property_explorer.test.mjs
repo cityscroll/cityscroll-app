@@ -19,6 +19,8 @@ import {
   groupPropertyArchiveEntries,
   partitionPropertyExplorerEntries,
   parcelLookupUrls,
+  propertyAgencyIdentity,
+  propertyAgencyOptions,
   propertyEntryDefaultQualification,
   propertyExplorerCensusCount,
   propertyProcessActionKey,
@@ -132,6 +134,33 @@ test("filterPropertyExplorerEntries respects process stage", () => {
   const counts = countPropertyProcessStages(all);
   assert.equal(counts.all, all.length);
   assert.ok(typeof counts.hearing === "number");
+});
+
+test("property agency facet uses canonical identities and changes the admitted notice ids", () => {
+  const entries = buildPropertyExplorerEntries([
+    { request_id: "hpd-1", agency_name: "HOUSING PRESERVATION & DVLPMNT" },
+    { request_id: "dcas-1", agency_name: "Department of Citywide Administrative Services" },
+  ], []);
+  const options = propertyAgencyOptions(entries);
+  assert.deepEqual(options.map(({ id, name, count }) => ({ id, name, count })), [
+    { id: "citywide-administrative-services", name: "Citywide Administrative Services", count: 1 },
+    { id: "housing-preservation-and-development", name: "Housing Preservation and Development", count: 1 },
+  ]);
+  assert.equal(propertyAgencyIdentity(entries[0].primary).canonical_id, "housing-preservation-and-development");
+  const filtered = filterPropertyExplorerEntries(entries, { agency: options[1].id });
+  assert.deepEqual(filtered.flatMap((entry) => entry.members.map((row) => row.request_id)), ["hpd-1"]);
+});
+
+test("property agency options count grouped entries once per agency", () => {
+  const entries = buildPropertyExplorerEntries([
+    { request_id: "hpd-1", disposition_subject_ref: "subject-1", agency_name: "Housing Preservation and Development" },
+    { request_id: "hpd-2", disposition_subject_ref: "subject-1", agency_name: "HOUSING PRESERVATION & DVLPMNT" },
+  ], []);
+  assert.deepEqual(propertyAgencyOptions(entries), [{
+    id: "housing-preservation-and-development",
+    name: "Housing Preservation and Development",
+    count: 1,
+  }]);
 });
 
 test("asset facets retain action-bearing non-sale records before current/archive partitioning", () => {

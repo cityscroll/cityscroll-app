@@ -5,6 +5,7 @@ import {
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderPropertyCommercialDetail } from "../property_commercial_ui.mjs";
 import { bblReaderLabel } from "../bbl_reader.mjs";
+import { renderPropertyAgencySelect, propertyAgencySelectionChanges } from "../property_agency_ui.mjs";
 
 /* ===== Franchise / concession review process spine (FCRC multi-notice chain).
    Reconstructs solicitation → public hearing → committee meeting → award for one
@@ -276,10 +277,6 @@ async function loadFranchiseConcessionSpine(r, el){
   }catch(_e){}
 }
 
-/* ===== Property disposition process spine (multi-notice chain by BBL / block-lot).
-   Distinct from the explorer "lifecycle rail" below (propStage/PROP_STAGES = temporal list
-   filters: proposed/soon/upcoming/past). This spine reconstructs hearing → auction/RFP →
-   award/conveyance for one asset from City Record Property Disposition notices. ===== */
 function isPropertyDispositionEligible(r){
   return (r && r.section_name === "Property Disposition");
 }
@@ -336,8 +333,6 @@ function propertyDispositionSpineHTML(spine, notice, phaseView){
         return `<li><span class="lc-step lc-step-help ${cls}" tabindex="0" aria-label="${escUiHtml(label)}"${aria} title="${escUiHtml(label)}">${escUiHtml(p.short||label)}</span>${arrow}</li>`;
       }).join("")
     }</ol>`;
-    // Detail cards only for matched phases — empty stages stay stepper chips only
-    // (absent means absent; no per-stage "not yet shown" explainer).
     const matchedPhases=phaseView.phases.filter(p=>p.matched);
     const cards=matchedPhases.map(p=>{
       return `<div class="stage"><div class="box matched">
@@ -767,7 +762,8 @@ function propertyTimedEventChipsHTML(commercial,omitSourceKinds=[]){
   const chips=(commercial?.event_views||[]).filter(v=>v.date&&v.label_key&&!omitted.has(v.source_kind)).map(v=>`<time class="tag ${v.chip_class}" datetime="${escUiHtml(v.date)}" data-date-chip="1" data-card-fact="event:${escUiHtml(v.kind)}:${escUiHtml(v.date)}"${v.band?` data-open-window-band="${v.band}"`:""}>${escUiHtml(t(v.label_key))} · ${escUiHtml(fdt(v.fmt))}${v.band?` · <span lang="en" dir="ltr">${v.band}</span>`:""}</time>`);
   return chips.length?`<div>${chips.join("")}</div>`:"";
 }
-let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all";
+let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all", propAgency="";
+let propertyAgencyChangesResults=false;
 let propertyView="default";
 let propertyCommunityDistrict="", propertyCouncilDistrict="", propertyResolvedNeighborhood=null;
 let propertyAuctionExportVisible=[];
@@ -1076,7 +1072,7 @@ function updatePropertyMoreFiltersState(){
     !!propertyCommunityDistrict,
     !!propertyCouncilDistrict,
     !!(($("#propertyneighborhood")?.value||"").trim()),
-    !!($("#propertyagency")?.value),
+    propertyAgencyChangesResults,
   ].filter(Boolean).length;
   const badge=$("#property-filter-badge");
   if(badge){
@@ -1151,8 +1147,6 @@ async function renderPropExplorer(){
   ]);
   const {attachmentLookup,lifecycleHistory}=decisionData;
   propAll.forEach(r=>{
-    // Bridge materializations produced before end_date joined the slim Worker
-    // payload; refreshed payloads carry the same source field directly.
     if(!r.end_date&&lifecycleHistory?.[r.request_id]) r.end_date=lifecycleHistory[r.request_id];
     const attachments=Array.isArray(attachmentLookup?.[r.request_id])?attachmentLookup[r.request_id]:[];
     if(attachments.length&&commercialTools?.extractPropertyCommercial){
@@ -1203,6 +1197,7 @@ async function renderPropExplorer(){
   const processRail=$("#processrail");
   const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
   const filterOptions={
+    agency: propAgency || null,
     process: propProcessSel,
     asset: propAsset,
     saleMethod: propSaleMethod,
@@ -1228,6 +1223,8 @@ async function renderPropExplorer(){
       bbl:null,
       matched_phases:r.disposition_stage?[r.disposition_stage]:[],
     }));
+  propAgency=renderPropertyAgencySelect($("#propertyagency"),tools?.propertyAgencyOptions?.(allEntries)||[],propAgency,{label:t("all_agencies"),escape:escUiHtml,onChange:value=>{propAgency=value;propertyView="default";renderPropExplorer();updateHash();renderSearchComponents("property");}});
+  filterOptions.agency=propAgency || null;
   const fallbackEntriesFor=(overrides={})=>{
     const filters={...filterOptions,...overrides};
     return propAll
@@ -1273,6 +1270,7 @@ async function renderPropExplorer(){
     };
   const partitionFor=(overrides={})=>partitionEntries(scopedEntries(overrides));
   const currentCountFor=(overrides={})=>partitionFor(overrides).default_count;
+  propertyAgencyChangesResults=propertyAgencySelectionChanges(scopedEntries,propAgency);
   const selectPropertyFacet=(apply)=>{
     apply();
     propertyView="default";
@@ -1743,6 +1741,7 @@ globalThis.taxLienStepperHTML = taxLienStepperHTML;
 Object.defineProperty(globalThis, "franchisePhaseSpineToolsPromise", { configurable: true, get: () => franchisePhaseSpineToolsPromise, set: value => { franchisePhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "propAll", { configurable: true, get: () => propAll, set: value => { propAll = value; } });
 Object.defineProperty(globalThis, "propAsset", { configurable: true, get: () => propAsset, set: value => { propAsset = value; } });
+Object.defineProperty(globalThis, "propAgency", { configurable: true, get: () => propAgency, set: value => { propAgency = value || ""; } });
 Object.defineProperty(globalThis, "propProcessSel", { configurable: true, get: () => propProcessSel, set: value => { propProcessSel = value; } });
 Object.defineProperty(globalThis, "propSaleMethod", { configurable: true, get: () => propSaleMethod, set: value => { propSaleMethod = value; } });
 Object.defineProperty(globalThis, "propPriceBand", { configurable: true, get: () => propPriceBand, set: value => { propPriceBand = value; } });
