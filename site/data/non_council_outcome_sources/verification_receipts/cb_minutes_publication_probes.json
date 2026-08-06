@@ -1,0 +1,2045 @@
+{
+  "schema": "cityscroll.cb_minutes_publication_probe_receipt.v1",
+  "generated_at": "2026-08-06T18:06:08.713Z",
+  "as_of": "2026-08-06",
+  "expected_window": "trailing_12_months",
+  "mandate_source": "https://comptroller.nyc.gov/reports/audit-report-on-the-twelve-manhattan-community-boards-compliance-with-new-york-city-charter-and-new-york-city-administrative-code-requirements-for-public-meetings-and-hearings-and-for-web/",
+  "probes": [
+    {
+      "body_id": "bronx-cb-01",
+      "url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "31aa4f37ecec309bda4c5a5a1a8e4fc13b144185f4688f819f246fb3d78e40e5",
+      "observations": [
+        {
+          "meeting_date": "2025-11-20",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/November-25-Official-Minutes-General-Board-Meeting.pdf",
+          "title": "November 20, 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-09-18",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/September-25-Official-Minutes-General-Board-Meeting.pdf",
+          "title": "September 18, 2025"
+        },
+        {
+          "meeting_date": "2025-06-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/June-25-Official-Minutes-General-Board-Meeting-Committee.pdf",
+          "title": "June 27, 2025"
+        },
+        {
+          "meeting_date": "2025-05-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/May-25-Official-Minutes-General-Board-Meeting.pdf",
+          "title": "May 29, 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-03-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/March-25-Official-Minutes-General-Board.pdf",
+          "title": "March 27, 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-02-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/February-25-Official-Minutes-General-Board.pdf",
+          "title": "February 27, 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-01-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/January-25-Official-Minutes-General-Board.pdf",
+          "title": "January 30, 2025 Minutes"
+        },
+        {
+          "meeting_date": "2024-10-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/October-24-Official-Minutes-General-Board.pdf",
+          "title": "October 24, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-09-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/September-24-Official-Minutes-General-Board.pdf",
+          "title": "September 26, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-06-20",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/June-24-Official-Minutes-General-Board.pdf",
+          "title": "June 20, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-05-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/May-24-Official-Minutes-General-Board.pdf",
+          "title": "May 30, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-04-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/April-24-Official-Minutes-General-Board.pdf",
+          "title": "April 30, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-03-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/March-24-Official-Minutes-General-Board-Meeting.pdf",
+          "title": "March 28, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-02-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/February-24-Official-Minutes-General-Board.pdf",
+          "title": "February 29, 2024 Minutes"
+        },
+        {
+          "meeting_date": "2023-11-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/November-23-Minutes.pdf",
+          "title": "November 30, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-10-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/October-23-Minutes.pdf",
+          "title": "October 26, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-09-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/September-23-Minutes.pdf",
+          "title": "September 28, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-05-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting5-25-23.pdf",
+          "title": "May 25, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-04-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting4-27-23.pdf",
+          "title": "April 27, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-03-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting3-30-23.pdf",
+          "title": "March 30, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-02-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting2-23-23.pdf",
+          "title": "February 23, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-01-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting1-26-23.pdf",
+          "title": "January 26, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-01-19",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeetingSpecial1-19-23.pdf",
+          "title": "January 19, 2023 Minutes"
+        },
+        {
+          "meeting_date": "2022-12-15",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting12-15-22.pdf",
+          "title": "December 15, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2022-11-17",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting11-17-22.pdf",
+          "title": "November 17, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2022-10-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/Full-Board-Minutes-10-17-22.pdf",
+          "title": "October 27, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2022-09-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoard9.29.22.pdf",
+          "title": "September 29, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2022-04-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/Full-Board-Apr-2022-Minutes.pdf",
+          "title": "April 28, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2022-03-31",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/Full-Board-3-31-22.pdf",
+          "title": "March 31, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2022-01-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoard-1-27-22.pdf",
+          "title": "January 27, 2022 Minutes"
+        },
+        {
+          "meeting_date": "2021-12-16",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting12-16-21.pdf",
+          "title": "December 16, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-11-18",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeeting11-18-21.pdf",
+          "title": "November 18, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-10-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-202110.pdf",
+          "title": "October 28, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-09-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-202109.pdf",
+          "title": "September 30, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-07-14",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-202107.pdf",
+          "title": "July 14, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-06-24",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-202106.pdf",
+          "title": "June 24, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-05-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMay2021.pdf",
+          "title": "May 27, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-04-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardApr2021.pdf",
+          "title": "April 29, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-02-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/fullboardmeeting2_25_21.pdf",
+          "title": "February 25, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2021-01-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/FullBoardMeeting1.28.21.pdf",
+          "title": "January 28, 2021 Minutes"
+        },
+        {
+          "meeting_date": "2020-12-17",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeetingMinutesJan2021.pdf",
+          "title": "December 17, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-11-19",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeetingMinutesNov2020.pdf",
+          "title": "November 19, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-10-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FullBoardMeetingMinutesOct2020.pdf",
+          "title": "October 29, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2019-10-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/1FBOct2019.pdf",
+          "title": "October 30, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-06-20",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/Binder11343423424.pdf",
+          "title": "June 20, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-05-23",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/board_minutes2019.pdf",
+          "title": "May 23, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-03-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/fbminutes3_28_19.pdf",
+          "title": "March 28, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-02-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/fbfeb2019_minutes.pdf",
+          "title": "February 28, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-01-31",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/Binder1.pdf",
+          "title": "January 31 2019 Minutes"
+        },
+        {
+          "meeting_date": "2018-06-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/FBJune2018_full.pdf",
+          "title": "June 27, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2017-10-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-oct2017.pdf",
+          "title": "October 26, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-09-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-sep2017.pdf",
+          "title": "September 28, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-06-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-jun2017.pdf",
+          "title": "June 29, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-04-27",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-apr2017.pdf",
+          "title": "April 27, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-03-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-mar2017.pdf",
+          "title": "March 30, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-01-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-jan2017.pdf",
+          "title": "January 26, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2016-02-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-feb2016.pdf",
+          "title": "February 25, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-01-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-jan2016.pdf",
+          "title": "January 28, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2015-12-17",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-dec2015.pdf",
+          "title": "December 17, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-10-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-oct2015.pdf",
+          "title": "October 29, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2014-06-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-jun2014.pdf",
+          "title": "June 26, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-05-29",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-may2014.pdf",
+          "title": "May 29, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-02-26",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-feb2014.pdf",
+          "title": "February 26, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-01-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-jan2014.pdf",
+          "title": "January 30, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2013-12-19",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-dec2013.pdf",
+          "title": "December 19, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-11-21",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-nov2013.pdf",
+          "title": "November 21, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-05-30",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-may2013.pdf",
+          "title": "May 30, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-04-25",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-apr2013.pdf",
+          "title": "April 25, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-02-28",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-feb2013.pdf",
+          "title": "February 28, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-01-31",
+          "document_url": "https://www.nyc.gov/assets/bronxcb1/pdf/minutes/minutes-jan2013.pdf",
+          "title": "January 31, 2013 Minutes"
+        }
+      ],
+      "status": "ok"
+    },
+    {
+      "body_id": "bronx-cb-02",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-03",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-04",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-05",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-06",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-07",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-08",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-09",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-10",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-11",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "bronx-cb-12",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-01",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-02",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-03",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-04",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-05",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-06",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-07",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-08",
+      "url": "https://www.brooklyncb8.org/downloads/minutes/",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "127373edded047ecc53e92a08244ed04fca397082d619b08594b0c08e44e1be1",
+      "observations": [],
+      "status": "ok"
+    },
+    {
+      "body_id": "brooklyn-cb-09",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-10",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-11",
+      "url": "https://www.brooklyncb11.org/minutes/",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "4eaa7da4d28821c96c0ce91e481cf9bbd44645a5b3ddb3452403d955ecaedb5a",
+      "observations": [
+        {
+          "meeting_date": "2026-06-05",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2026/06/5-14-2026-Minutes2.docx",
+          "title": "May 14th, 2026"
+        },
+        {
+          "meeting_date": "2026-05-03",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2026/05/3-12-2026.docx",
+          "title": "March 12th, 2026"
+        },
+        {
+          "meeting_date": "2026-03-02",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2026/03/2-12-2026-Minutes-2.docx",
+          "title": "February 12th, 2026"
+        },
+        {
+          "meeting_date": "2026-02-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2026/02/1-8-2026-Minutes.docx",
+          "title": "January 8th, 2026"
+        },
+        {
+          "meeting_date": "2026-01-11",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2026/01/11-13-2025.docx",
+          "title": "November 13th, 2025"
+        },
+        {
+          "meeting_date": "2025-11-10",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2025/11/10-9-2025-minutes.docx",
+          "title": "October 9th, 2025"
+        },
+        {
+          "meeting_date": "2025-06-05",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2025/06/5-8-2025-2.docx",
+          "title": "May 8th, 2025"
+        },
+        {
+          "meeting_date": "2025-05-03",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2025/05/3-12-2025-minutes.docx",
+          "title": "March 12th, 2025"
+        },
+        {
+          "meeting_date": "2025-03-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2025/03/1-9-2025-Minutes-2.docx",
+          "title": "January 9th, 2025"
+        },
+        {
+          "meeting_date": "2024-08-06",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2024/08/6-20-2024-minutes.docx",
+          "title": "June 20th, 2024"
+        },
+        {
+          "meeting_date": "2024-05-04",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2024/05/4-11-2024-minutes-2.docx",
+          "title": "April 11th, 2024"
+        },
+        {
+          "meeting_date": "2024-03-02",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2024/03/2-8-2024-minutes.docx",
+          "title": "February 8th, 2024"
+        },
+        {
+          "meeting_date": "2023-09-06",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2023/09/6-8-2023.docx",
+          "title": "June 8th, 2023"
+        },
+        {
+          "meeting_date": "2023-05-04",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2023/05/4-3-2023-General-Board-Minutes.docx",
+          "title": "April 3rd, 2023"
+        },
+        {
+          "meeting_date": "2023-02-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2023/02/1-12-2023-General-Board-Meeting.docx",
+          "title": "January 12th, 2023"
+        },
+        {
+          "meeting_date": "2023-01-12",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2023/01/12-13-2022.docx",
+          "title": "December 13th, 2022"
+        },
+        {
+          "meeting_date": "2022-12-11",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/12/11-10-2022-minutes-General-Board-Meeting.docx",
+          "title": "November 10th, 2022"
+        },
+        {
+          "meeting_date": "2022-11-10",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/11/10-13-2022-General-Board-Meeting.docx",
+          "title": "October 13th, 2022"
+        },
+        {
+          "meeting_date": "2022-08-06",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/08/6-9-2022.docx",
+          "title": "June 6th, 2022"
+        },
+        {
+          "meeting_date": "2022-06-05",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/06/5-12-2022-minutes.docx",
+          "title": "May 12th, 2022"
+        },
+        {
+          "meeting_date": "2022-05-04",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/05/4-12-2022.docx",
+          "title": "April 12th, 2022"
+        },
+        {
+          "meeting_date": "2022-04-03",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/04/3-10-2022.docx",
+          "title": "March 10th, 2022"
+        },
+        {
+          "meeting_date": "2022-03-02",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/03/2-10-2022.docx",
+          "title": "February 10th, 2022"
+        },
+        {
+          "meeting_date": "2022-02-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/02/1-13-2022-minutes.docx",
+          "title": "January 13th, 2022"
+        },
+        {
+          "meeting_date": "2022-01-12",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2022/01/12-9-2021.pdf",
+          "title": "December 9th, 2021"
+        },
+        {
+          "meeting_date": "2021-12-11",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/12/11-9-2021-minutes.docx",
+          "title": "November 9th, 2021"
+        },
+        {
+          "meeting_date": "2021-11-10",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/11/10-14-2021-minutes.docx",
+          "title": "October 14th, 2021"
+        },
+        {
+          "meeting_date": "2021-11-09",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/11/9-8-2021.docx",
+          "title": "September 8th, 2021"
+        },
+        {
+          "meeting_date": "2021-11-06",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/11/6-10-2021-minutes.docx",
+          "title": "June 10th, 2021"
+        },
+        {
+          "meeting_date": "2021-07-05",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/07/5-13-2021-minutes-.pdf",
+          "title": "May 13th, 2021"
+        },
+        {
+          "meeting_date": "2021-07-04",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/07/4-8-2021.pdf",
+          "title": "April 8th, 2021"
+        },
+        {
+          "meeting_date": "2021-04-03",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/04/3-11-2021-minutes.pdf",
+          "title": "March 11th, 2021"
+        },
+        {
+          "meeting_date": "2021-03-12",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/03/12-14-2020-minutes.pdf",
+          "title": "December 14th, 2020"
+        },
+        {
+          "meeting_date": "2021-03-02",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/03/2-11-2021-minutes.pdf",
+          "title": "February 11th, 2021"
+        },
+        {
+          "meeting_date": "2021-03-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/03/1-14-2021-minutes.pdf",
+          "title": "January 14th, 2021"
+        },
+        {
+          "meeting_date": "2021-01-11",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2021/01/11-12-2020-minutes.pdf",
+          "title": "November 12th, 2020"
+        },
+        {
+          "meeting_date": "2020-11-10",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2020/11/10-15-2020-minutes.pdf",
+          "title": "October 15th, 2020"
+        },
+        {
+          "meeting_date": "2020-10-09",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2020/10/9-10-2020-minutes.pdf",
+          "title": "September 10th, 2020"
+        },
+        {
+          "meeting_date": "2020-10-06",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2020/10/6-11-2020-minutes.pdf",
+          "title": "June 11th, 2020"
+        },
+        {
+          "meeting_date": "2020-08-02",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2020/08/2-13-2020-minutes.pdf",
+          "title": "February 13th, 2020"
+        },
+        {
+          "meeting_date": "2020-08-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2020/08/1-9-2020-minutes.pdf",
+          "title": "January 9th, 2020"
+        },
+        {
+          "meeting_date": "2020-01-12",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2020/01/12-12-2019.pdf",
+          "title": "December 12th, 2019"
+        },
+        {
+          "meeting_date": "2019-12-11",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/12/11-14-2019.pdf",
+          "title": "November 14th, 2019"
+        },
+        {
+          "meeting_date": "2019-11-10",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/11/10-10-2019.pdf",
+          "title": "October 10th, 2019"
+        },
+        {
+          "meeting_date": "2019-10-09",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/10/9-12-2019.pdf",
+          "title": "September 12th, 2019"
+        },
+        {
+          "meeting_date": "2019-09-06",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/09/6-13-19.docx",
+          "title": "June 13th, 2019"
+        },
+        {
+          "meeting_date": "2019-07-05",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/07/5-9-19.pdf",
+          "title": "May 9th, 2019"
+        },
+        {
+          "meeting_date": "2019-06-04",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/06/4-11-19.docx",
+          "title": "April 11th, 2019"
+        },
+        {
+          "meeting_date": "2019-04-03",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/04/3-14-2019.docx",
+          "title": "March 14th, 2019"
+        },
+        {
+          "meeting_date": "2019-03-02",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/03/2-13-2019.docx",
+          "title": "February 13th, 2019"
+        },
+        {
+          "meeting_date": "2019-02-01",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/02/1-10-2019.docx",
+          "title": "January 10th, 2019"
+        },
+        {
+          "meeting_date": "2019-01-12",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2019/01/12-13-18-minutes.docx",
+          "title": "December 13th, 2018"
+        },
+        {
+          "meeting_date": "2018-12-11",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2018/12/11-7-18.docx",
+          "title": "November 7th, 2018"
+        },
+        {
+          "meeting_date": "2018-11-10",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2018/11/10-11-18.docx",
+          "title": "October 11th, 2018"
+        },
+        {
+          "meeting_date": "2018-10-09",
+          "document_url": "https://www.brooklyncb11.org/wp-content/uploads/2018/10/9-13-18-ph-and-board-meeting.docx",
+          "title": "September 13th, 2018"
+        }
+      ],
+      "status": "ok"
+    },
+    {
+      "body_id": "brooklyn-cb-12",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-13",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-14",
+      "url": "https://cb14brooklyn.com/board-meeting-minutes/",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "e338975b996a47dc98f28d7cf56b4ff93d5131d99d15b851c74d0ed07cb62e5a",
+      "observations": [],
+      "status": "ok"
+    },
+    {
+      "body_id": "brooklyn-cb-15",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-16",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-17",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "brooklyn-cb-18",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-01",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-02",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-03",
+      "url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "710458aa075a00cd5f1e3a7a2c75618f353c5c1461bd2c8eb88386fc1bb45411",
+      "observations": [],
+      "status": "ok"
+    },
+    {
+      "body_id": "manhattan-cb-04",
+      "url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "fbf930b951daebf47f357fa6b5a316793941ff139be94d092428938ad0e08159",
+      "observations": [],
+      "status": "ok"
+    },
+    {
+      "body_id": "manhattan-cb-05",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-06",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-07",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-08",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-09",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-10",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-11",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "manhattan-cb-12",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-01",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-02",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-03",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-04",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-05",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-06",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-07",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-08",
+      "url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "1efa93c9865b15213eb7ed141972746246787dd9c3c29e9badc3f77547be91f7",
+      "observations": [
+        {
+          "meeting_date": "2026-06-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-10-2026.pdf",
+          "title": "June 10, 2026"
+        },
+        {
+          "meeting_date": "2026-05-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/minutes-20260513.pdf",
+          "title": "May 13, 2026"
+        },
+        {
+          "meeting_date": "2026-04-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-April-15-2026.pdf",
+          "title": "April 15, 2026"
+        },
+        {
+          "meeting_date": "2026-03-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-March-11-2026.pdf",
+          "title": "March 11, 2026"
+        },
+        {
+          "meeting_date": "2026-02-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-February-11-2026.pdf",
+          "title": "February 11, 2026"
+        },
+        {
+          "meeting_date": "2026-01-07",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2026/Minutes-of-Community-Board-8-Board-Meeting-held-on-January-7-2026.pdf",
+          "title": "January 7, 2026"
+        },
+        {
+          "meeting_date": "2025-12-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-December-10-2025.pdf",
+          "title": "December 10, 2025"
+        },
+        {
+          "meeting_date": "2025-11-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-November-12-2025.pdf",
+          "title": "November 12, 2025"
+        },
+        {
+          "meeting_date": "2025-10-22",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-October-22-2025.pdf",
+          "title": "October 22, 2025"
+        },
+        {
+          "meeting_date": "2025-09-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-September-10-2025.pdf",
+          "title": "September 10, 2025"
+        },
+        {
+          "meeting_date": "2025-06-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-11-2025.pdf",
+          "title": "June 11, 2025"
+        },
+        {
+          "meeting_date": "2025-05-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Board-8-Board-Meeting-Minutes-May-14-2025.pdf",
+          "title": "May 14, 2025"
+        },
+        {
+          "meeting_date": "2025-04-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-April-9-2025.pdf",
+          "title": "April 9, 2025"
+        },
+        {
+          "meeting_date": "2025-03-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-March-19-2025.pdf",
+          "title": "March 19, 2025"
+        },
+        {
+          "meeting_date": "2025-01-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2025/Minutes-of-Community-Board-8-Board-Meeting-held-on-January-15-2025.pdf",
+          "title": "January 15, 2025"
+        },
+        {
+          "meeting_date": "2024-12-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes-of-community-board-8-board-meeting-held-on-december-11-2024.pdf",
+          "title": "December 11, 2024"
+        },
+        {
+          "meeting_date": "2024-11-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-Community-Board-8-Board-Meeting-November-13-2024.pdf",
+          "title": "November 13, 2024"
+        },
+        {
+          "meeting_date": "2024-10-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2024/Minutes-of-Community-Board-8-Board-Meeting-held-on-October-9-2024.pdf",
+          "title": "October 9, 2024"
+        },
+        {
+          "meeting_date": "2024-09-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2024/Minutes-of-Community-Board-8-Board-Meeting-held-on-September-11-2024.pdf",
+          "title": "September 11, 2024"
+        },
+        {
+          "meeting_date": "2024-06-26",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2024/Minutes-of-Community-Board-8-Board-Meeting-held-on-June-26-2024.pdf",
+          "title": "June 26, 2024"
+        },
+        {
+          "meeting_date": "2024-05-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-May-8-2024.pdf",
+          "title": "May 8, 2024"
+        },
+        {
+          "meeting_date": "2024-04-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/April-10-2024-Minutes.pdf",
+          "title": "April 10, 2024"
+        },
+        {
+          "meeting_date": "2024-03-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2024/Minutes-of-Community-Board-8-Board-Meeting-held-on-March-13-2024.pdf",
+          "title": "March 13, 2024"
+        },
+        {
+          "meeting_date": "2024-01-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2024/Minutes-of-Community-Board-8-Board-Meeting-held-on-January-10-2024.pdf",
+          "title": "January 10, 2024"
+        },
+        {
+          "meeting_date": "2023-12-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2023/Minutes-of-Community-Board-8-Board-Meeting-held-on-December-13-2023.pdf",
+          "title": "December 13, 2023"
+        },
+        {
+          "meeting_date": "2023-11-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2023/minutes-20231115.pdf",
+          "title": "November 15, 2023"
+        },
+        {
+          "meeting_date": "2023-10-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2023/minutes-20231011.pdf",
+          "title": "October 11, 2023"
+        },
+        {
+          "meeting_date": "2023-09-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-September-13-2023.pdf",
+          "title": "September 13, 2023"
+        },
+        {
+          "meeting_date": "2023-06-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-June-14-2023.pdf",
+          "title": "June 14, 2023"
+        },
+        {
+          "meeting_date": "2023-05-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-Board-Meeting-May-10-2023.pdf",
+          "title": "May 10, 2023"
+        },
+        {
+          "meeting_date": "2023-04-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-Board-Meeting-April-19-2023.pdf",
+          "title": "April 19, 2023"
+        },
+        {
+          "meeting_date": "2023-03-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-Board-Meeting-March-15-2023.pdf",
+          "title": "March 15, 2023"
+        },
+        {
+          "meeting_date": "2023-02-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-Board-Meeting-February-8-2023.pdf",
+          "title": "February 8, 2023"
+        },
+        {
+          "meeting_date": "2023-01-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-held-on-January-11-2023.pdf",
+          "title": "January 11, 2023"
+        },
+        {
+          "meeting_date": "2022-12-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-December-14-2022.pdf",
+          "title": "December 14, 2022"
+        },
+        {
+          "meeting_date": "2022-11-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-November-9-2022.pdf",
+          "title": "November 9, 2022"
+        },
+        {
+          "meeting_date": "2022-10-26",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-October-26-2022.pdf",
+          "title": "October 26, 2022"
+        },
+        {
+          "meeting_date": "2022-09-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-September-14-2022.pdf",
+          "title": "September 14, 2022"
+        },
+        {
+          "meeting_date": "2022-06-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2022/minutes-20220608.pdf",
+          "title": "June 8, 2022"
+        },
+        {
+          "meeting_date": "2022-05-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes-of-community-board-8-board-meeting-held-on-may-11-2022.pdf",
+          "title": "May 11, 2022"
+        },
+        {
+          "meeting_date": "2022-04-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-April-13-2022.pdf",
+          "title": "April 13, 2022"
+        },
+        {
+          "meeting_date": "2022-03-23",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/public-hearing-board-meeting-ulurp-no-210128zmq-77-39-vleigh-place-march-23-2022.pdf",
+          "title": "March 23, 2022"
+        },
+        {
+          "meeting_date": "2021-12-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_board-meeting-12-15-2021.pdf",
+          "title": "December 15, 2021"
+        },
+        {
+          "meeting_date": "2021-11-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2021/minutes-board-meeting-november-10-2021.pdf",
+          "title": "November 10, 2021"
+        },
+        {
+          "meeting_date": "2021-10-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2021/minutes-20211013-rev.pdf",
+          "title": "October 13, 2021"
+        },
+        {
+          "meeting_date": "2021-09-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes-community-board-meeting-september-9-2021.pdf",
+          "title": "September 14, 2021"
+        },
+        {
+          "meeting_date": "2021-06-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes-community-board-meeting-june-9-2021.pdf",
+          "title": "June 9, 2021"
+        },
+        {
+          "meeting_date": "2021-05-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/agendas/meeting-notice-agenda-june-23%202021-revised-final.pdf",
+          "title": "May 19, 2021"
+        },
+        {
+          "meeting_date": "2021-04-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-Community-Board-8-Board-Meeting-held-on-April-14-2021.pdf",
+          "title": "April 14, 2021"
+        },
+        {
+          "meeting_date": "2021-03-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_march_10_2021.pdf",
+          "title": "March 10, 2021"
+        },
+        {
+          "meeting_date": "2021-02-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_february_10__2021.pdf",
+          "title": "February 10, 2021"
+        },
+        {
+          "meeting_date": "2021-01-20",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_january_20_2021.pdf",
+          "title": "January 20, 2021"
+        },
+        {
+          "meeting_date": "2020-12-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-December-9-2020.pdf",
+          "title": "December 9, 2020"
+        },
+        {
+          "meeting_date": "2020-11-18",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_novemebr_18_2020.pdf",
+          "title": "November 18, 2020"
+        },
+        {
+          "meeting_date": "2020-10-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-October-14-2020.pdf",
+          "title": "October 14, 2020"
+        },
+        {
+          "meeting_date": "2020-09-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_september_9_2020.pdf",
+          "title": "September 9, 2020"
+        },
+        {
+          "meeting_date": "2020-06-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2020/minutes_of_community_board_8_board_meeting_held_on_june_10_2020.pdf",
+          "title": "June 10, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-05-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_may_13_2020_edited.pdf",
+          "title": "May 13, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-04-22",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_april_22_2020.pdf",
+          "title": "April 22, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-03-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_ommunity_board_8_board_meeting_held_on_march_11_2020.pdf",
+          "title": "March 11, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-02-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2020/minutes_of_community_board_8_board_meeting_held_on_february_12_2020.pdf",
+          "title": "February 12, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2020-01-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/2020/minutes_of_community_board_8_board_meeting_held_on_january_15_2020.pdf",
+          "title": "January 15, 2020 Minutes"
+        },
+        {
+          "meeting_date": "2019-12-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/board-meeting-minutes-dec-11-2019.pdf",
+          "title": "December 11, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-11-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/board-meeting-minutes-nov-13-2019.pdf",
+          "title": "November 13, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-10-30",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_october_30_2019.pdf",
+          "title": "October 30, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-09-18",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_september_18_2019.pdf",
+          "title": "September 18, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-06-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_june_19_2019.pdf",
+          "title": "June 19, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-05-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/meeting_notice_and_agenda_june_24_2019.pdf",
+          "title": "May 8, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-04-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-April-10-2019%20.pdf",
+          "title": "April 10, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-03-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_march_13_2019.pdf",
+          "title": "March 13, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-02-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_february_13,_2019.pdf",
+          "title": "February 13, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2019-01-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_january_9_2019.pdf",
+          "title": "January 9, 2019 Minutes"
+        },
+        {
+          "meeting_date": "2018-12-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/Minutes-of-Community-Board-8-Board-Meeting-held-on-December-12-2018.pdf",
+          "title": "December 12, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-11-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/Minutes_of_Community_Board_8_Board_Meeting_held_on_November_14_2018.pdf",
+          "title": "November 14, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-10-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_october_10_2018.pdf",
+          "title": "October 10, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-09-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_september_12_2018.pdf",
+          "title": "September 12, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-06-20",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes-20180620.pdf",
+          "title": "June 20, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-05-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_may_9_2018.pdf",
+          "title": "May 9, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-04-18",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_april_18,_2018.pdf",
+          "title": "April 18, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-03-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_march_14_2018.pdf",
+          "title": "March 14, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-02-21",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes-of-cb8-board-meeting-february-21-2018.pdf",
+          "title": "February 21, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2018-01-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_of_community_board_8_board_meeting_held_on_january_10_2018.pdf",
+          "title": "January 10, 2018 Minutes"
+        },
+        {
+          "meeting_date": "2017-12-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/board-meeting-minutes-dec2017.pdf",
+          "title": "December 13, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-11-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/board-meeting-minutes-nov2017.pdf",
+          "title": "November 8, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-10-18",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/board-meeting-minutes-oct2017.pdf",
+          "title": "October 18, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-09-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes-sep2017.pdf",
+          "title": "September 13, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-06-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes-june-14-2017.pdf",
+          "title": "June 14, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-05-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_board_may2017.pdf",
+          "title": "May 10, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-04-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_apr2017.pdf",
+          "title": "April 19, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-02-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_feb2017.pdf",
+          "title": "February 8, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2017-01-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes-jan2017.pdf",
+          "title": "January 11, 2017 Minutes"
+        },
+        {
+          "meeting_date": "2016-12-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes-dec2016.pdf",
+          "title": "December 14, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-11-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_board_nov_9_2016.pdf",
+          "title": "November 9, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-10-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_board_oct_19_2016.pdf",
+          "title": "October 19, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-09-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes-board-sep2016.pdf",
+          "title": "September 14, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-06-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_board_jun2016.pdf",
+          "title": "June 8, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-05-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/minutes_may2016.pdf",
+          "title": "May 11, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-04-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_april2016.pdf",
+          "title": "April 13, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-03-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_mar2016.pdf",
+          "title": "March 9, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-02-17",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_feb2016.pdf",
+          "title": "February 17, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2016-01-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_jan2016.pdf",
+          "title": "January 13, 2016 Minutes"
+        },
+        {
+          "meeting_date": "2015-12-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board-meeting-minutes/board-meeting-minutes-dec2015.pdf",
+          "title": "December 9, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-11-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/dec-2015/minutes_board_nov2015.pdf",
+          "title": "November 12, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-10-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/nov-2015/minutes_board_oct2015.pdf",
+          "title": "October 14, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-09-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/sept-2015/minutes-september-9-2015.pdf",
+          "title": "September 9, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-06-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_jun2015.pdf",
+          "title": "June 10, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-05-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes/minutes_may2015.pdf",
+          "title": "May 13, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-04-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/may-2015/minutes_apr2015.pdf",
+          "title": "April 15, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-03-18",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/april-2015/minutes_board_mar2015.pdf",
+          "title": "March 18, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-02-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_feb2015.pdf",
+          "title": "February 11, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2015-01-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_jan2015.pdf",
+          "title": "January 14, 2015 Minutes"
+        },
+        {
+          "meeting_date": "2014-12-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_dec-10-2014.pdf",
+          "title": "December 10, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-11-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_nov-12-2014.pdf",
+          "title": "November 12, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-10-22",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_oct2014.pdf",
+          "title": "October 22, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-09-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_sep2014.pdf",
+          "title": "September 10, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-06-18",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/min_cb8_june_18_2014.pdf",
+          "title": "June 18, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-05-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/Minutes_of_Community_Board_8_held_on_May_14_2014.pdf",
+          "title": "May 14, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-04-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/Minutes_of_Community_Board_8_held_on_April%209_2014.pdf",
+          "title": "April 9, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-03-19",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/Minutes_of_Community_Board_8_held_on_March_19_2014.pdf",
+          "title": "March 19, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-02-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/Minutes-of-Community-Board-8-held-on-February-12-2014.pdf",
+          "title": "February 12, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2014-01-15",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_01152014.pdf",
+          "title": "January 15, 2014 Minutes"
+        },
+        {
+          "meeting_date": "2013-12-11",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_121113.pdf",
+          "title": "December 11, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-11-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_111313.pdf",
+          "title": "November 13, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-10-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_100913.pdf",
+          "title": "October 9, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-09-17",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board_minutes_09172013.pdf",
+          "title": "September 17, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-06-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_061213.pdf",
+          "title": "June 12, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-05-08",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_050813.pdf",
+          "title": "May 8, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-04-10",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_041013.pdf",
+          "title": "April 10, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-03-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_031313.pdf",
+          "title": "March 13, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-02-13",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/board_minutes_february_2013.pdf",
+          "title": "February 13, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2013-01-09",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_010913.pdf",
+          "title": "January 9, 2013 Minutes"
+        },
+        {
+          "meeting_date": "2012-12-12",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_121212.pdf",
+          "title": "December 12, 2012 Minutes"
+        },
+        {
+          "meeting_date": "2012-11-14",
+          "document_url": "https://www.nyc.gov/assets/queenscb8/downloads/pdf/minutes_111412.pdf",
+          "title": "November 14, 2012 Minutes"
+        }
+      ],
+      "status": "ok"
+    },
+    {
+      "body_id": "queens-cb-09",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-10",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-11",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-12",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-13",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "queens-cb-14",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "staten-island-cb-01",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "staten-island-cb-02",
+      "url": null,
+      "fetched_at": null,
+      "http_status": null,
+      "content_sha256": null,
+      "observations": [],
+      "status": "empty",
+      "reason": "no_known_url"
+    },
+    {
+      "body_id": "staten-island-cb-03",
+      "url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
+      "fetched_at": "2026-08-06T18:06:08.713Z",
+      "http_status": 200,
+      "content_sha256": "e278cb555a2e148a5f0bc0fa14c79f3f523d139202e2f8f8b0550ce8275445be",
+      "observations": [
+        {
+          "meeting_date": "2026-05-26",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2026/2026.05.26-GB-MINUTES.pdf",
+          "title": "May 26, 2026 Minutes"
+        },
+        {
+          "meeting_date": "2026-04-28",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2026/20260428-GB-MINUTES.pdf",
+          "title": "April 28, 2026 Minutes"
+        },
+        {
+          "meeting_date": "2026-03-24",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2026/20260324-GB-MINUTES.pdf",
+          "title": "March 24, 2026 Minutes"
+        },
+        {
+          "meeting_date": "2025-12-09",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2026/2025.12.09-GB-MINUTES.pdf",
+          "title": "December 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-11-25",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.11.25-GB-MINUTES.pdf",
+          "title": "November 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-10-21",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.10.21-GB-MINUTES.pdf",
+          "title": "October 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-09-16",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.09.16-GB-MINUTES.pdf",
+          "title": "September 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-06-24",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.06.24-GB-MINUTES.pdf",
+          "title": "June 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-04-22",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.04.22-GB-MINUTES.pdf",
+          "title": "April 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-03-25",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025-03-25-GB-MINUTES.pdf",
+          "title": "March 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-02-25",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.02.25-GB-MINUTES.pdf",
+          "title": "February 2025 Minutes"
+        },
+        {
+          "meeting_date": "2025-01-28",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2025/2025.01.28-GB-MINUTES.pdf",
+          "title": "January 2025 Minutes"
+        },
+        {
+          "meeting_date": "2024-12-10",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024-12-10-GB-MINUTES.pdf",
+          "title": "December 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-11-26",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024-11-26-GB-MINUTES.pdf",
+          "title": "November 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-10-29",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024.10.29-GB-MINUTES.pdf",
+          "title": "October 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-09-24",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024.09.24-GB-MINUTES.pdf",
+          "title": "September 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-06-25",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024.06.25-GB-MINUTES.pdf",
+          "title": "June 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-05-28",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024.05.28-General-Board.pdf",
+          "title": "May 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-04-23",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024.04.23-GB-MINUTES.pdf",
+          "title": "April 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-03-26",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024.03.26-GB-MINUTES.pdf",
+          "title": "March 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-02-27",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024-02-27-General-Board-MINUTES.pdf",
+          "title": "February 2024 Minutes"
+        },
+        {
+          "meeting_date": "2024-01-23",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2024-01-23-GB-MINUTES.pdf",
+          "title": "January 2024 Minutes"
+        },
+        {
+          "meeting_date": "2023-12-06",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2024/2023-12-06-General-Board-Minutes.pdf",
+          "title": "December 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-11-28",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023-11-28-General-Board-Minutes.pdf",
+          "title": "November 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-10-24",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023-10-24-General-Board-Minutes.pdf",
+          "title": "October 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-09-26",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023.09.26-General-Board-Minutes.pdf",
+          "title": "September 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-06-27",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023.06.27-General-Board-Minutes.pdf",
+          "title": "June 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-05-23",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023.05.23-General-Board-Minutes.pdf",
+          "title": "May 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-04-25",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023.04.25-General-Board-Minutes.pdf",
+          "title": "April 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-03-28",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023-03-28-General-Board-Minutes-DRAFT.pdf",
+          "title": "March 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-02-28",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023-02-28-General-Board-Minutes.pdf",
+          "title": "February 2023 Minutes"
+        },
+        {
+          "meeting_date": "2023-01-24",
+          "document_url": "https://www.nyc.gov/assets/statenislandcb3/downloads/pdf/2023/2023.01.24-General-Board-Minutes-DRAFT.pdf",
+          "title": "January 2023 Minutes"
+        }
+      ],
+      "status": "ok"
+    }
+  ]
+}
