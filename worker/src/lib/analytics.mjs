@@ -39,6 +39,7 @@ const SURFACES = Object.freeze([
 ]);
 
 const ACTION_OUTCOMES = Object.freeze(["submitted", "attended", "bid", "won", "not-useful"]);
+export const ACTION_OUTCOME_PROMPT_STATUS = "retired-2026-08-06";
 
 const EVENT_SPECS = Object.freeze({
   page_view: {
@@ -279,6 +280,7 @@ function blankUsage(measuredSince = null) {
     exports: { last7d: 0, last30d: 0, by_format_last30d: {} },
     alerts: { starts_last30d: 0, confirmed_last7d: 0, confirmed_last30d: 0 },
     action_outcomes: {
+      prompt_status: ACTION_OUTCOME_PROMPT_STATUS,
       opened_last7d: 0,
       opened_last30d: 0,
       prompted_last7d: 0,

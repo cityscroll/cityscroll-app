@@ -75,6 +75,11 @@ Outcome-loop completion is characterized only in aggregate: `outcome_recorded` d
 `outcome_dismissed` identifies the explicit “Not now” subset. These are unlinked counts, not a
 funnel keyed to a visitor or notice, so they cannot attribute a response to an official record.
 
+The reader self-report prompt is retired as of 2026-08-06. The event definitions and aggregate
+fields remain dormant for a future purposeful re-enable. Re-enable only when current traffic makes
+it possible to answer a concrete question, such as: “Among readers who open an official action,
+what share report submitting, attending, bidding, or winning?”
+
 ## Development and preview traffic
 
 Analytics writes are fail-closed behind the `ANALYTICS_ENVIRONMENT` runtime binding. The shared
