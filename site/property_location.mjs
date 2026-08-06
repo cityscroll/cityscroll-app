@@ -9,6 +9,10 @@ import {
   plainText,
   unique,
 } from "./location_extract.mjs";
+import { bblReaderLabel as sharedBblReaderLabel } from "./bbl_reader.mjs";
+export function bblReaderLabel(bbl) {
+  return sharedBblReaderLabel(bbl);
+}
 
 const PROPERTY_ADDRESS_RE = /\b\d{1,5}[A-Z]?(?:-\d{1,5}[A-Z]?)?(?!\s*(?:feet|foot|ft\.?|square|sf)\b)\s+[A-Z0-9][A-Z0-9.'’ -]{1,70}?\b(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway|Terrace|Court|Way|Highway|Turnpike)\b(?:\s*,?\s*(?:Apt\.?|Apartment|Unit)\s+[A-Z0-9-]+)?/gi;
 const BODY_FIELDS = [

@@ -148,7 +148,8 @@ test("unmatched ZAP section is an explicit corpus gap, not a citywide claim", ()
   assert.equal(view.sections.property.status, "observed");
   assert.equal(view.sections.land.status, "not_observed");
   assert.equal(view.sections.land.items.length, 0);
-  assert.match(view.sections.land.note, /not proof/i);
+  assert.match(view.sections.land.note, /available records/i);
+  assert.doesNotMatch(view.sections.land.note, /citywide|not proof/i);
 });
 
 test("address and name candidates cannot enter the biography through lookup keys", () => {

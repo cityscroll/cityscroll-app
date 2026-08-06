@@ -1083,13 +1083,13 @@ async function awardContext(r){
 /* Address / parcel cross-links: street-address geocode first; for Property Disposition,
    fall back to BBL resolved from notice body tax-lot text (same extractor as the list).
    The Datasette lesson — cheap outbound joins deliver most of a warehouse's value. */
-function parcelLinksHTML(links, provenanceKey){
+function parcelLinksHTML(links, provenanceKey, displayBbl = links.bbl){
   if(!links) return "";
   return `<div class="rmeta2 property-parcel-links" style="margin:8px 0">${t("parcel_elsewhere_label")}
     <a href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("parcel_link_zola")}${extSR()}</a> ·
     <a href="${escUiHtml(links.acris_url)}" ${EXT_ATTRS}>${t("parcel_link_acris")}${extSR()}</a> ·
     <a href="${escUiHtml(links.who_owns_what_url)}" ${EXT_ATTRS}>${t("parcel_link_wow")}${extSR()}</a>
-    <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:links.bbl})}</span></div>`;
+    <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;
 }
 async function fillAddressLinks(r, el){
   if(!el || !r) return;
@@ -1103,7 +1103,7 @@ async function fillAddressLinks(r, el){
     const tools = await propertyLocationTools();
     if(!document.contains(el)) return;
     const links = tools.parcelLinksFromBbl(geo.bbl);
-    if(links){ el.innerHTML = parcelLinksHTML(links, "parcel_via_geosearch"); return; }
+    if(links){ el.innerHTML = parcelLinksHTML(links, "parcel_via_geosearch", tools.bblReaderLabel(geo.bbl)); return; }
   }
   // BBL fallback: Property notices often name the site as Block/Lot in the body with no
   // usable street_address_1. Resolve the parcel from extracted tax-lot evidence only —
@@ -1115,7 +1115,7 @@ async function fillAddressLinks(r, el){
   const bbl = tools.primaryPropertyBbl(location);
   const links = tools.parcelLinksFromBbl(bbl);
   if(!links || location.scope !== "local") return;
-  el.innerHTML = `${propertyPlaceChips(location)}${parcelLinksHTML(links, "parcel_via_notice_tax_lot")}`;
+  el.innerHTML = `${propertyPlaceChips(location)}${parcelLinksHTML(links, "parcel_via_notice_tax_lot", tools.bblReaderLabel(bbl))}`;
 }
 
 function attachmentExtractHTML(attachment){

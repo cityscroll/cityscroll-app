@@ -3,7 +3,7 @@
 
 import { plainText as cleanPlainText } from "./text_clean.mjs";
 
-// Re-export the shared notice-text cleaner so location callers keep importing plainText from here.
+// Keep the shared notice-text cleaner available here so location callers can import plainText.
 export { plainText, cleanNoticeText, decodeHtmlEntities, excerptPlain, excerptHtml, escapeHtml } from "./text_clean.mjs";
 
 export const BOROUGHS = [

@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import {
   parcelLinksFromBbl,
+  bblReaderLabel,
   parseBbl,
   primaryPropertyBbl,
   propertyLocationFromRow,
@@ -86,6 +87,14 @@ test("parseBbl and parcelLinksFromBbl share ZoLa/ACRIS/Who Owns What targets", (
     "https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=1&block=644&lot=1",
   );
   assert.equal(links.who_owns_what_url, "https://whoownswhat.justfix.org/bbl/1006440001");
+});
+
+test("bblReaderLabel explains the borough, block, and lot while retaining the identifier", () => {
+  assert.equal(
+    bblReaderLabel("4018200001"),
+    "Queens — Block 1820, Lot 1 (BBL 4018200001)",
+  );
+  assert.equal(bblReaderLabel("not-a-bbl"), "");
 });
 
 test("body-fallback location yields a primary BBL for parcel-link resolution", () => {

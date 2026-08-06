@@ -188,7 +188,7 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo }
       items: property,
       note: property.length
         ? null
-        : "No Property Disposition notice in the current catalog carries this exact BBL.",
+        : "No Property Disposition notice lists this parcel in the available records.",
       coverage: coverageBlock({
         eligible: coverage.property_observation_count,
         linked: coverage.property_rows_with_bbl,
@@ -202,7 +202,7 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo }
       items: land,
       note: land.length
         ? null
-        : "No ZAP project in the linked corpus shares this exact BBL — not proof no land-use application exists citywide.",
+        : "No ZAP project is listed for this parcel in the available records.",
       coverage: coverageBlock({
         eligible: coverage.by_bbl_count,
         linked: coverage.zap_matched_bbl_count,
@@ -244,7 +244,7 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo }
       }] : [],
       note: lien
         ? null
-        : "This exact BBL was not observed in the published cycle snapshot — not proof it never appeared on another list.",
+        : "This parcel is not listed in the available tax-lien record for this cycle.",
       coverage: coverageBlock({
         eligible: Object.keys(taxLien?.rows || {}).length,
         linked: lien ? 1 : 0,
@@ -258,7 +258,7 @@ export function buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo }
       items: cofoItems(cofo, bbl),
       note: cofoItems(cofo, bbl).length
         ? null
-        : "No Certificate Of Occupancy row for this exact BBL is in the committed graph slice — not proof no record exists.",
+        : "No Certificate of Occupancy is listed for this parcel in the available records.",
       coverage: coverageBlock({
         eligible: cofo?.coverage?.eligible,
         linked: cofo?.coverage?.linked,

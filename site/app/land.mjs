@@ -1110,28 +1110,10 @@ function ensureProjectConnectionsTools(){
   return projectConnectionsToolsPromise;
 }
 function projectConnectionsCoverageHTML(coverage){
-  if(!coverage) return "";
-  const scopeKey={
-    current_zap_snapshot:"project_connections_scope_current",
-    fixed_completed_project_sample:"project_connections_scope_sample",
-    bounded_entity_materialization:"project_connections_scope_bounded",
-    this_project:"project_connections_scope_project",
-  }[coverage.scope];
-  const scope=scopeKey?t(scopeKey):coverage.scope||"";
-  let statement="";
-  if(coverage.eligible!=null&&coverage.linked!=null){
-    statement=t("project_connections_coverage_measured",{
-      linked:fmtNumber(coverage.linked), eligible:fmtNumber(coverage.eligible), scope:escUiHtml(scope)
-    });
-  }else if(coverage.linked!=null){
-    statement=t("project_connections_coverage_bounded",{
-      linked:fmtNumber(coverage.linked), scope:escUiHtml(scope)
-    });
-  }else{
-    statement=t("project_connections_coverage_unknown",{scope:escUiHtml(scope)});
-  }
-  const vintage=coverage.vintage?t("project_connections_vintage",{date:escUiHtml(fdate(coverage.vintage))}):"";
-  return `<p class="pc-coverage">${statement}${vintage?` <span>${vintage}</span>`:""}</p>`;
+  // Coverage receipts remain available in the evidence payload, not in the
+  // reader-facing constellation. Counts such as “231 of 231” describe the
+  // build rather than helping someone understand the project.
+  return "";
 }
 function projectConnectionItemHTML(item, projectScope){
   if(item.ref&&/^(?:agency:|vendor:stem:|entity:official:|bbl:)/.test(item.ref)){
@@ -1168,7 +1150,7 @@ function projectConnectionsHTML(evidence, tools){
     no_exact_notice_edge_in_bounded_corpus:"project_connections_gap_notices",
     no_exact_mih_edge_in_bounded_corpus:"project_connections_gap_mih",
   };
-  const groups=view.groups.map(group=>{
+  const groups=view.groups.filter(group=>group.status==="matched").map(group=>{
     const itemRows=(group.items||[]).slice(0,12).map(item=>{
       const label=projectConnectionItemHTML(item,projectScope);
       const outcome=item.outcome?` <span class="pc-outcome">${escUiHtml(item.outcome)}</span>`:"";
@@ -1195,7 +1177,6 @@ function projectConnectionsHTML(evidence, tools){
     <div class="ei-heading-row"><div class="chain-h">${t("project_connections_heading")}</div>
       <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("project_connections_apply_scope")}</a></div>
     <p class="ei-lead">${t("project_connections_lead")}</p><div class="pc-groups">${groups}</div>
-    <p class="aidprov ei-method">${t("project_connections_method")}</p>
   </div>`;
 }
 async function paintProjectConnections(record,selection){
