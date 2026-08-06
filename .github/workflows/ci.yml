@@ -126,6 +126,35 @@ jobs:
             echo "unit_full=${unit_full}"
           } >> "$GITHUB_OUTPUT"
 
+  public-image-guard:
+    name: Public image capture guard
+    if: github.event.repository.visibility == 'public' && (github.event_name == 'pull_request' || github.event_name == 'merge_group')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Collect added images from the diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+              --paginate -q '.[] | select(.status == "added") | .filename' > "$RUNNER_TEMP/added-images.txt"
+          else
+            git diff --name-only --diff-filter=A "${{ github.event.merge_group.base_sha }}" "${{ github.event.merge_group.head_sha }}" > "$RUNNER_TEMP/added-images.txt"
+          fi
+          echo "Added paths:"; sed 's/^/  /' "$RUNNER_TEMP/added-images.txt" || true
+      - name: Run focused guard tests
+        run: python3 -m unittest discover -s test -p 'desk_capture_guard_test.py'
+      - name: Check added images
+        run: python3 tools/check_public_image_captures.py --paths-file "$RUNNER_TEMP/added-images.txt"
+
   unit:
     name: Unit tests (site + worker)
     needs: changes
