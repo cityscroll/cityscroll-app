@@ -237,6 +237,8 @@
     mode_allrfp: "كل طلبات تقديم العروض",
     mode_award: "الترسيات الأخيرة ($)",
     agency_label: "الجهة",
+    scope_relation_published_by: "نشرته الجهة",
+    scope_relation_connection: "صلة",
     all_agencies: "كل الجهات",
     keyword_label: "كلمة مفتاحية",
     sort_label: "ترتيب حسب",

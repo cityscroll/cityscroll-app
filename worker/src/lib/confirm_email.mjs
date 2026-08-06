@@ -53,6 +53,10 @@ export function describeFilter(lens, filter) {
   if (f.stage) parts.push(`when “${f.stage}”`);
   if (f.months) parts.push(`due within ${f.months} mo`);
   if (f.status === "all") parts.push("including closed");
+  if (f.connection_relation === "published_by_agency"
+      && Array.isArray(f.entity_refs_all) && f.entity_refs_all.length) {
+    parts.push("published by this agency");
+  }
   const detail = parts.length ? parts.join(" · ") : "all notices";
   return `${LENS_LABEL[lens] || lens} — ${detail}`;
 }

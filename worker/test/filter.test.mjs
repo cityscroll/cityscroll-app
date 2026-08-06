@@ -77,7 +77,7 @@ test("unknown lens falls back to money shape", () => {
   // money's field list is the general procurement-notice filter schema (see AGENTS.md's
   // "Alerts NL query" section for the inventory) — additive, so this list only ever grows.
   assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(),
-    ["agency", "category", "closingWeek", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "route", "tab"]);
+    ["agency", "category", "closingWeek", "connection_relation", "entity_refs_all", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "route", "tab"]);
 });
 
 test("money: noticeType constrained to award|solicitation|null", () => {
@@ -87,6 +87,21 @@ test("money: noticeType constrained to award|solicitation|null", () => {
   assert.equal(sanitize("money", {}).noticeType, null);
 });
 
+test("money: typed route facets survive the saved-watch sanitizer", () => {
+  const out = sanitize("money", {
+    entity_refs_all: [
+      "agency:id:housing-preservation-and-development",
+      "agency:id:housing-preservation-and-development",
+      "not-a-ref",
+      "agency:id:bad ref",
+    ],
+    connection_relation: "published_by_agency",
+  });
+  assert.deepEqual(out.entity_refs_all, ["agency:id:housing-preservation-and-development"]);
+  assert.equal(out.connection_relation, "published_by_agency");
+  assert.equal(sanitize("money", { connection_relation: "unknown" }).connection_relation, null);
+});
+
 test("alerts: reuses money's full general schema, plus watchType/place for rezone watches", () => {
   const out = sanitize("alerts", {
     watchType: "rezone", place: "79 Rivington",
@@ -94,7 +109,7 @@ test("alerts: reuses money's full general schema, plus watchType/place for rezon
     category: "Goods", months: 3, noticeType: "award", excludeSpecial: true,
   });
   assert.deepEqual(Object.keys(out).sort(),
-    ["agency", "category", "closingWeek", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "place", "route", "tab", "watchType"]);
+    ["agency", "category", "closingWeek", "connection_relation", "entity_refs_all", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "place", "route", "tab", "watchType"]);
   assert.equal(out.watchType, "rezone");
   assert.equal(out.place, "79 Rivington");
   // A rezone watch has no dollar amount, agency, or deadline, but sanitize() clamps each

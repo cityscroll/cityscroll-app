@@ -235,6 +235,8 @@
     mode_allrfp: "모든 RFP",
     mode_award: "최근 낙찰 ($)",
     agency_label: "기관",
+    scope_relation_published_by: "게시 기관",
+    scope_relation_connection: "연결",
     all_agencies: "모든 기관",
     keyword_label: "키워드",
     sort_label: "정렬 기준",

@@ -235,6 +235,8 @@
     mode_allrfp: "সব RFP",
     mode_award: "সাম্প্রতিক প্রদান ($)",
     agency_label: "সংস্থা",
+    scope_relation_published_by: "প্রকাশ করেছে",
+    scope_relation_connection: "সংযোগ",
     all_agencies: "সব সংস্থা",
     keyword_label: "মূল শব্দ",
     sort_label: "যেভাবে সাজাবেন",
