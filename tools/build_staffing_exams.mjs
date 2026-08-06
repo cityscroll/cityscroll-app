@@ -8,6 +8,9 @@ import {
   buildListAggregateIndex,
   joinExamToListAggregate,
 } from "../worker/src/lib/civil_service_list_join.mjs";
+import {
+  utilizationRowsForExam,
+} from "../worker/src/lib/eligible_list_utilization.mjs";
 import { applyNoeFeeSalaryFromBody } from "../worker/src/lib/noe_fee_salary.mjs";
 import {
   attachStaffingListForecast,
@@ -610,6 +613,7 @@ export function buildArtifact({
   cityRecord,
   outcomes,
   listAggregates,
+  eligibleListUtilization,
   annualHistory,
   listDepthClosed,
   noeDensify,
@@ -772,6 +776,22 @@ export function buildArtifact({
     publicProjection: lagBacktest.scorecard.public_projection,
     generatedAt: generatedInstant,
   }));
+  const utilizationRecords = eligibleListUtilization?.records || [];
+  for (let i = 0; i < records.length; i += 1) {
+    const rows = utilizationRowsForExam(eligibleListUtilization, records[i].exam_number);
+    if (rows.length) {
+      records[i] = {
+        ...records[i],
+        eligible_list_utilization: {
+          status: "linked",
+          row_count: rows.length,
+          source_id: eligibleListUtilization.source?.id || "dcas-eligible-list-utilization",
+          dataset_id: eligibleListUtilization.source?.dataset_id || "qjzt-ytn9",
+          vintage: eligibleListUtilization.source?.observed_on || null,
+        },
+      };
+    }
+  }
   // Final interest-area stamp from the mapping file (overrides retained prior tags).
   for (let i = 0; i < records.length; i += 1) {
     const exam = records[i];
@@ -800,6 +820,7 @@ export function buildArtifact({
   if (noeDensify?.source) sources.push(noeDensify.source);
   if (noeDifferentiators?.source) sources.push(noeDifferentiators.source);
   if (oasysMap?.source) sources.push(oasysMap.source);
+  if (eligibleListUtilization?.source) sources.push(eligibleListUtilization.source);
 
   return {
     schema_version: STAFFING_EXAMS_SCHEMA_VERSION,
@@ -845,6 +866,15 @@ export function buildArtifact({
         tagged_non_other: interestTaxonomyIndex.summary.tagged_non_other,
         exam_count: interestTaxonomyIndex.summary.exam_count,
       },
+      eligible_list_utilization: {
+        eligible: eligibleListUtilization?.coverage?.eligible ?? records.length,
+        linked: eligibleListUtilization?.coverage?.linked ?? 0,
+        rate: eligibleListUtilization?.coverage?.rate ?? 0,
+        rows: utilizationRecords.length,
+        source_id: eligibleListUtilization?.source?.id || "dcas-eligible-list-utilization",
+        dataset_id: eligibleListUtilization?.source?.dataset_id || "qjzt-ytn9",
+        vintage: eligibleListUtilization?.source?.observed_on || null,
+      },
     },
     outcomes: buildOutcomes({ outcomes }),
     exam_cycle_coherence: {
@@ -883,6 +913,12 @@ export function buildArtifact({
       privacy: "Per-exam aggregates only; no applicant rows, names, scores, or list ranks.",
     },
     list_establishment_predictions: emittedPredictions,
+    eligible_list_utilization: eligibleListUtilization || {
+      schema_version: 1,
+      source: { id: "dcas-eligible-list-utilization", dataset_id: "qjzt-ytn9" },
+      coverage: { eligible: records.length, linked: 0, rate: 0 },
+      records: [],
+    },
     exams: records,
   };
 }
@@ -1105,13 +1141,14 @@ async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
   if (process.argv.includes("--refresh-prediction-history")) await refreshAnnualScheduleHistory();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, annualHistory, listDepthClosed, noeDensify, noeDifferentiators, oasysMap, interestTaxonomy, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, eligibleListUtilization, annualHistory, listDepthClosed, noeDensify, noeDifferentiators, oasysMap, interestTaxonomy, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
     readJson("city_record_check.json"),
     readJson("dcas_exam_outcomes.json"),
     readJsonOptional(LIST_AGGREGATES_FILE),
+    readJsonOptional("eligible_list_utilization.json"),
     readJsonOptional(ANNUAL_HISTORY_FILE),
     readJsonOptional(LIST_DEPTH_CLOSED_FILE),
     readJsonOptional(NOE_DENSIFY_FILE),
@@ -1172,6 +1209,7 @@ async function main() {
     cityRecord,
     outcomes,
     listAggregates,
+    eligibleListUtilization,
     annualHistory,
     listDepthClosed,
     noeDensify,

@@ -68,6 +68,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `city-record` | live-only | PIN, request_id, agency, document_id, event_date, BBL | — | — |
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `dcas-annual-exam-outcomes` | landed | exam_number, exam_no | medium | — |
+| `dcas-eligible-list-utilization` | landed | exam_no | — | — |
 | `dcas-exam-notices` | landed | exam_number | — | — |
 | `dob-certificate-of-occupancy` | landed | BBL | — | — |
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
@@ -198,4 +199,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `25bc1eb05242…` · materialized 11 · candidates 73 · class changes 0.
+Last refresh fingerprint: `a1be58e3d904…` · materialized 11 · candidates 75 · class changes 0.

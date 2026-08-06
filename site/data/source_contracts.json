@@ -644,6 +644,83 @@
       }
     },
     {
+      "id": "dcas-eligible-list-utilization",
+      "name": "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "qjzt-ytn9",
+      "landing_page": "https://data.cityofnewyork.us/d/qjzt-ytn9",
+      "required_fields": [
+        "title_description",
+        "o_c_or_prom",
+        "list_title_code",
+        "exam_no",
+        "list_agency_code",
+        "agency_desc",
+        "list_div_code",
+        "list_est_date",
+        "aac_cnt",
+        "aol_cnt",
+        "dce_cnt",
+        "dea_cnt",
+        "dlx_cnt",
+        "fra_cnt",
+        "frh_cnt",
+        "fri_cnt",
+        "frm_cnt",
+        "frp_cnt",
+        "ftr_cnt",
+        "nfp_cnt",
+        "nle_cnt",
+        "ova_cnt",
+        "rli_cnt",
+        "tin_cnt",
+        "unf_cnt",
+        "appt_cnt",
+        "cns_cnt",
+        "cns_restored_cnt",
+        "elig_restored_cnt"
+      ],
+      "max_stale_days": 400,
+      "publisher_cadence": "Annual Local Law 50 report with corrections or refreshed publication rows as DCAS updates the report",
+      "product_freshness": "A committed graph slice is labeled with its observed vintage. Only rows joined by exact exam_no to the committed staffing exam corpus are published; source rows without an exact exam card remain bulk-side and are not rendered.",
+      "used_for": "Agency/list utilization evidence on staffing exam cards and exam documents, including appointed, certified, and removal counts.",
+      "join_keys": ["exam_no"],
+      "join_measurement": {
+        "observed_on": "2026-08-05",
+        "eligible": 228,
+        "linked": 98,
+        "denominator": "distinct exam_number values in the committed staffing exam artifact",
+        "rate": 0.4298,
+        "source_rows_available": 22737,
+        "attached_rows": 656,
+        "strategy": "exact exam_no ↔ exam_number; no title, agency, or zero-padding inference",
+        "verdict": "Publish only the 656 rows attached to 98 exam cards; keep the remaining source rows bulk-side."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/eligible_list_utilization.mjs",
+          "contains": "qjzt-ytn9"
+        },
+        {
+          "path": "site/data/exam_sources/eligible_list_utilization.json",
+          "contains": "qjzt-ytn9"
+        },
+        {
+          "path": "tools/build_staffing_exams.mjs",
+          "contains": "eligibleListUtilization"
+        },
+        {
+          "path": "site/app/people.mjs",
+          "contains": "eligible_list_utilization"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "annual-examination-schedule",
       "name": "Annual Examination Schedule",
       "owner": "NYC Department of Citywide Administrative Services",

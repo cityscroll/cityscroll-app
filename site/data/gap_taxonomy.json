@@ -539,6 +539,18 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "dcas-eligible-list-utilization",
+      "name": "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+      "source_contract_id": "dcas-eligible-list-utilization",
+      "status": "landed",
+      "join_keys": [
+        "exam_no"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/qjzt-ytn9",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "dcas-exam-notices",
       "name": "DCAS open-competitive exam schedule and Notices of Examination",
       "source_contract_id": "dcas-exam-notices",
@@ -1901,6 +1913,22 @@
       "evidence": "Shared keys exam_no; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "active-civil-service-list-x-dcas-eligible-list-utilization-via-exam_no",
+      "source_a": "active-civil-service-list",
+      "source_b": "dcas-eligible-list-utilization",
+      "key_path": [
+        "exam_no"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ],
+      "score": 1,
+      "evidence": "Shared keys exam_no; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "current-solicitations-ocp-x-ocp-recent-contract-awards-via-PIN+request_id",
       "source_a": "current-solicitations-ocp",
       "source_b": "ocp-recent-contract-awards",
@@ -1932,6 +1960,22 @@
       ],
       "score": 1,
       "evidence": "Shared keys PIN; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dcas-annual-exam-outcomes-x-dcas-eligible-list-utilization-via-exam_no",
+      "source_a": "dcas-annual-exam-outcomes",
+      "source_b": "dcas-eligible-list-utilization",
+      "key_path": [
+        "exam_no"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ],
+      "score": 1,
+      "evidence": "Shared keys exam_no; 1 taxonomy gap(s) could close."
     },
     {
       "id": "dob-certificate-of-occupancy-x-dob-now-job-filings-via-BBL",
@@ -3198,9 +3242,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-06",
-    "source_contracts_fingerprint": "25bc1eb052421d40cda41a6adeee290ffa11dd6b3e4a38cd1ec499bc564d80db",
+    "source_contracts_fingerprint": "a1be58e3d9049fed7dc3f26c37979f310351839215b1e175226afc4beaea2117",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 73,
+    "candidate_crosswalks": 75,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }
