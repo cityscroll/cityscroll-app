@@ -1,6 +1,10 @@
-import { parseEntityRef } from "./entity_pivot.mjs";
+import { entityHref, parseEntityRef } from "./entity_pivot.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { scopeFromRouteHash, emptyScope } from "./scope_v0.mjs";
+import {
+  buildContextualSuggestions,
+  renderContextualSuggestions,
+} from "./contextual_suggestions.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -383,6 +387,80 @@ function rowMatchesScopeRefs(row, facet, requestedRefs, applicableKinds) {
   ));
 }
 
+function suggestionEdgeLabel(item) {
+  if (item.kind === "agency") {
+    const identity = resolveAgencyIdentity(item.id);
+    if (identity.matched) return identity.canonical_name;
+    return String(identity.canonical_name || item.id).replaceAll("-", " ").replace(/\b[a-z]/g, (char) => char.toUpperCase());
+  }
+  if (item.kind === "project") return `project ${item.id}`;
+  if (item.kind === "parcel") return `parcel ${item.id}`;
+  if (item.kind === "vendor") {
+    const raw = String(item.id || "").replace(/^stem:/, "");
+    try { return decodeURIComponent(raw) || "this vendor"; } catch { return raw || "this vendor"; }
+  }
+  if (item.kind === "official") return `official ${item.id}`;
+  return scopeLabelFromRef(item);
+}
+
+function browseEdgeInventory(facet, rows, currentRefs) {
+  const requested = (currentRefs || []).map((ref) => {
+    const parsed = parseEntityRef(ref);
+    if (!parsed) return null;
+    return parsed.kind === "agency"
+      ? { ...parsed, id: parsed.id.replace(/^id:/, "") }
+      : parsed;
+  }).filter(Boolean);
+  const requestedKeys = new Set(requested.map(scopeKeyFromKindAndRef));
+  const candidateByRef = new Map();
+  const pairByKey = new Map();
+  const baseMatches = (rows || []).filter((row) => {
+    if (!requested.length) return true;
+    return rowMatchesScopeRefs(row, facet, requested, requested.map((item) => item.kind));
+  });
+
+  for (const row of baseMatches) {
+    const rowEdges = [...rowReferenceSet(row, facet).values()] // Source: current Browse payload's typed rowReferenceSet; no new data is fetched here.
+      .filter((item) => parseEntityRef(item.ref))
+      .filter((item) => item.ref && !requestedKeys.has(scopeKeyFromKindAndRef(item)));
+    for (const item of rowEdges) {
+      const key = item.ref;
+      const existing = candidateByRef.get(key) || {
+        ref: item.ref,
+        kind: item.kind,
+        id: item.id,
+        label: suggestionEdgeLabel(item),
+        count: 0,
+        pivotHref: "",
+      };
+      existing.count += 1;
+      if (!existing.pivotHref) {
+        existing.pivotHref = entityHref({ ref: item.ref, label: existing.label, confidence: "strong" }) || "";
+      }
+      candidateByRef.set(key, existing);
+    }
+    for (let left = 0; left < rowEdges.length; left += 1) {
+      for (let right = left + 1; right < rowEdges.length; right += 1) {
+        const pair = [rowEdges[left], rowEdges[right]].sort((a, b) => a.ref.localeCompare(b.ref));
+        const key = pair.map((item) => item.ref).join("|");
+        const existing = pairByKey.get(key) || {
+          refs: pair.map((item) => item.ref),
+          labels: pair.map(suggestionEdgeLabel),
+          count: 0,
+        };
+        existing.count += 1;
+        pairByKey.set(key, existing);
+      }
+    }
+  }
+  return {
+    edgeInventory: [...candidateByRef.values()],
+    edgePairs: [...pairByKey.values()],
+  };
+}
+
+export { browseEdgeInventory };
+
 export function buildBrowseView(facet, payload = {}, params = new URLSearchParams(), options = {}) {
   const config = BROWSE_FACETS[facet];
   if (!config) return null;
@@ -434,6 +512,17 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     emptyReason,
     preFilterTotal: matchedBase.length,
   };
+  const edgeInventory = scopeState.hasScopeFacet && !applicability.canApplyScope
+    ? { edgeInventory: [], edgePairs: [] }
+    : browseEdgeInventory(facet, matchedBase, scopeState.refs.map((item) => item.ref));
+  const contextualSuggestions = buildContextualSuggestions({
+    scope: scopeState.parsed,
+    surface: config.tab,
+    route: config.route,
+    search,
+    resultCount: matched.length,
+    ...edgeInventory,
+  });
   return {
     facet,
     config,
@@ -445,6 +534,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     scopeSearch: search.toString(),
     liveOnlyFilters: liveOnlyFilters(search),
     hasQuery: [...search].some(([key]) => !DOCUMENT_FILTERS.has(key)),
+    contextualSuggestions,
   };
 }
 
@@ -510,6 +600,7 @@ export function renderBrowseView(view) {
     ? `<p class="note warn browse-filter-disclosure" role="status">These filters need the live Browse controls: ${esc(view.liveOnlyFilters.join(", "))}. The bounded default is shown until the page is enhanced.</p>`
     : "";
   const scopeChip = renderScopeChip(view.scope, view.config, view.scopeSearch);
+  const contextualSuggestions = renderContextualSuggestions(view.contextualSuggestions);
   const cards = view.rows.map((row) => {
     const href = rowHref(view.facet, row);
     const title = rowTitle(view.facet, row) || "Untitled record";
@@ -521,8 +612,8 @@ export function renderBrowseView(view) {
       <p class="browse-static-meta">${[agency && esc(agency), date, place && esc(place)].filter(Boolean).join(" · ")}</p>
     </article>`;
   }).join("");
-  const summary = `<p class="browse-static-summary" data-build-summary>${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${scopeChip}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
+  const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${scopeChip}${contextualSuggestions}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
 }
 
 export function browseAssetPath(facet) {
