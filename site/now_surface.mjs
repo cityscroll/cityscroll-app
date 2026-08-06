@@ -1,4 +1,6 @@
 import { propertyReaderActionsFromTimedEvents } from "./property_reader_actions.mjs";
+import { classifyPropertyActionCharacter } from "./property_action_character.mjs";
+import { projectPropertyRecord } from "./property_action_projection.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "./display_title.mjs";
 
 export const NOW_SURFACE_SCHEMA_VERSION = 1;
@@ -240,8 +242,12 @@ function propertyActions(payload, options) {
       if (!action) continue;
       const eventKind = String(event.kind || "deadline");
       const verified = event.date_source !== "derived_from_relative_rule" && event.confidence !== "low";
-      out.push({
+      const character = classifyPropertyActionCharacter(row).action_character
+        || (row.disposition_stage === "hearing" ? "participation" : null)
+        || (row.disposition_stage === "auction_or_rfp" ? "marketplace" : null);
+      const item = {
         id: `property:${row.request_id}:${eventKind}:${isoDay(deadline)}`,
+        request_id: row.request_id,
         lane: "act_by",
         kind: readerActions.actionable[0].kind,
         title: row.short_title || "Untitled property notice",
@@ -258,7 +264,9 @@ function propertyActions(payload, options) {
           evidence: event.source_span?.text || null,
         }),
         place: placeFrom(row.property_location),
-      });
+        ...(character ? { action_character: character } : {}),
+      };
+      out.push(character ? projectPropertyRecord(item) : item);
     }
   }
   return out;
@@ -311,8 +319,12 @@ function propertyEvents(payload, options) {
       const route = officialNoticeRoute(row.request_id);
       if (!route) continue;
       const verified = event.date_source !== "derived_from_relative_rule" && event.confidence !== "low";
-      out.push({
+      const character = classifyPropertyActionCharacter(row).action_character
+        || (event.kind === "hearing" ? "participation" : null)
+        || (["auction_window", "auction", "sale"].includes(event.kind) ? "marketplace" : null);
+      const item = {
         id: `property:${row.request_id}:${event.kind}:${isoDay(value)}`,
+        request_id: row.request_id,
         lane: "happening_soon",
         kind,
         title: row.short_title || "Untitled property notice",
@@ -328,7 +340,9 @@ function propertyEvents(payload, options) {
           evidence: event.source_span?.text || null,
         }),
         place: placeFrom(row.property_location),
-      });
+        ...(character ? { action_character: character } : {}),
+      };
+      out.push(character ? projectPropertyRecord(item) : item);
     }
   }
   return out;
