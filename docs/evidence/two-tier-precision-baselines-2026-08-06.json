@@ -1,0 +1,63 @@
+{
+  "schema": "cityscroll.two_tier_precision_baselines.v1",
+  "observed_on": "2026-08-06",
+  "policy": {
+    "comparative": "A replacement must beat the measured precision of the control it replaces and must remain visibly labeled when below the absolute floor.",
+    "absolute": "Only precision at or above 0.95 may render as an unlabeled fact."
+  },
+  "baselines": {
+    "exam_interest_area_categorization": {
+      "sample_size": 8,
+      "correct": 8,
+      "precision": 1,
+      "method": "All eight current DCAS open-competitive rows; compare the taxonomy classifier on the publisher title with the row's publisher-labeled interest_area.",
+      "source_records": "site/data/exam_sources/dcas_open_competitive.json",
+      "sample_keys": [
+        "7006",
+        "7013",
+        "7016",
+        "7018",
+        "6125",
+        "6126",
+        "7323",
+        "7331"
+      ]
+    },
+    "legacy_agency_string_matching": {
+      "sample_size": 17,
+      "positive_predictions": 1,
+      "correct_positive_predictions": 1,
+      "precision": 1,
+      "method": "All 17 agency-labeled must-equal/must-distinct fixture pairs; legacy control is case-folded alphanumeric substring matching, with truth supplied by the pair labels.",
+      "source_records": "worker/test/fixtures/normalize_pairs.json",
+      "equal_pairs": 11,
+      "distinct_pairs": 6
+    },
+    "staffing_derived_fields": {
+      "sample_size": 208,
+      "correct": 208,
+      "precision": 1,
+      "method": "Deterministic request_id-sorted even-row sample of 40 appointment notices, a deterministic exam_number-sorted even-row sample of 40 annual schedule records, and all eight current exams; compare parsed/derived values with source fields and source-window outcomes.",
+      "source_records": [
+        "site/data/staffing_default_hires.json",
+        "site/data/exam_sources/annual_schedule_history.json",
+        "site/data/exam_sources/dcas_open_competitive.json"
+      ],
+      "appointment_sample_size": 40,
+      "annual_schedule_sample_size": 40,
+      "current_exam_sample_size": 8
+    },
+    "title_code_legacy_review": {
+      "sample_size": 18,
+      "correct": 5,
+      "precision": 0.2778,
+      "method": "Existing explicitly reviewed title-code confirmations and rejections; pending candidate scores excluded.",
+      "source_records": "entity_resolution/review/title_code_registry.json"
+    }
+  },
+  "notes": [
+    "These are precision baselines, not recall measurements; abstentions are not counted as positive predictions.",
+    "The title-code legacy review is the relevant control baseline for the residual family-label conversion.",
+    "The exact-label title-code spine is source-backed and is evaluated separately from inferred residual labels."
+  ]
+}

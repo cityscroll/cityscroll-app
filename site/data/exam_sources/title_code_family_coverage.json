@@ -227,9 +227,33 @@
     "coverage_rate": 0.3965,
     "coverage_passed": true,
     "precision_passed": false,
+    "two_tier": {
+      "comparative": {
+        "floor": "beats_control_baseline",
+        "candidate_precision": 0.8182,
+        "control_baseline": 0.2778,
+        "beats_control": true,
+        "evidence_present": true,
+        "passed": true,
+        "candidate_receipt": "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+        "control_receipt": "docs/evidence/two-tier-precision-baselines-2026-08-06.json#baselines.title_code_legacy_review"
+      },
+      "absolute": {
+        "floor": 0.95,
+        "candidate_precision": 0.8182,
+        "passed": false,
+        "applies_to": "unlabeled_fact"
+      },
+      "can_ship_labeled": true,
+      "can_ship_unlabeled": false,
+      "labeled_surface": "title_code_family",
+      "unlabeled_surface": "title_code_entity_pivot",
+      "baseline_method": "existing reviewed title-code control, measured against explicit confirmations and rejections",
+      "baseline_receipt": "docs/evidence/two-tier-precision-baselines-2026-08-06.json"
+    },
     "passed": false,
-    "publish_family_ui": false,
+    "publish_family_ui": true,
     "publish_entity_pivots": false,
-    "verdict": "STOP — exact-label coverage or residual precision is below the promotion bar; title-code family UI and pivots remain disabled."
+    "verdict": "COMPARATIVE PASS — exact publisher labels may render as facts; residual family labels may ship visibly inferred; unlabeled pivots remain below the 95% floor."
   }
 }

@@ -514,6 +514,9 @@ function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
   const openBand=CrolStaffing.openWindowBand(exam,careerToday());
   const title=escUiHtml(exam.title);
+  const titleFamily=CrolStaffing.titleCodeFamilyView
+    ? CrolStaffing.titleCodeFamilyView(exam)
+    : null;
   const selected=careerSelected===exam.exam_number;
   const countdown=careerCountdownText(exam,status);
   const feeSalary=CrolStaffing.examFeeSalaryView(exam);
@@ -566,6 +569,7 @@ function careerCardHTML(exam){
       <p class="career-card-title"><a href="${escUiHtml(CrolStaffing.examUrl(exam.exam_number, location.origin))}" lang="en" dir="ltr">${title}</a></p>
       <span class="career-exam-number">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
     </div>
+    ${titleFamily?`<p class="career-title-code-family" data-title-code-confidence="${escUiHtml(titleFamily.confidence)}" lang="en" dir="ltr"><span>${escUiHtml(titleFamily.label)}</span>: <code>${escUiHtml(titleFamily.code)}</code></p>`:""}
     ${actionFacts}
     ${expanded&&exam.summary?`<p class="career-summary" lang="en" dir="ltr">${escUiHtml(exam.summary)}</p>`:""}
     ${expanded?details:""}

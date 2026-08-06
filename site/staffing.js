@@ -81,6 +81,18 @@
     return "high";
   }
 
+  // The source-backed spine is an unlabeled fact only when the publisher put
+  // the code on the row. Future residual candidates can use the same view,
+  // but must carry an explicit inference label.
+  function titleCodeFamilyView(exam) {
+    if (!exam) return null;
+    const code = String(exam.title_code || "").trim();
+    if (code) return { code, confidence: "publisher", label: "Publisher-issued title code" };
+    const inferred = String(exam.title_code_family || "").trim();
+    if (inferred) return { code: inferred, confidence: "inferred", label: "Likely title family — inferred" };
+    return null;
+  }
+
   /**
    * Differentiator facets for card leads / filters (precomputed on the exam row).
    * @param {object} exam
@@ -380,6 +392,7 @@
     examOutcomeView,
     salaryBandFor,
     feeLevelFor,
+    titleCodeFamilyView,
     examDifferentiatorView,
     examMatchesDifferentiatorFilters,
   };

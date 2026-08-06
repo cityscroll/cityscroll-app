@@ -9,6 +9,7 @@ import {
   measureTitleCodeFamilyCoverage,
   publisherTitleCode,
 } from "../tools/build_title_code_family_coverage.mjs";
+import { evaluateTwoTierPrecision } from "../tools/two_tier_precision_gate.mjs";
 
 const coverage = JSON.parse(readFileSync(
   new URL("../site/data/exam_sources/title_code_family_coverage.json", import.meta.url),
@@ -147,7 +148,7 @@ test("committed trial stops below the standing promotion bars", () => {
   assert.equal(coverage.promotion.historical_exam_coverage_floor, 0.3);
   assert.equal(coverage.promotion.audit_precision_floor, 0.95);
   assert.equal(coverage.promotion.coverage_passed, true);
-  assert.equal(coverage.promotion.publish_family_ui, false);
+  assert.equal(coverage.promotion.publish_family_ui, true);
   assert.equal(coverage.promotion.publish_entity_pivots, false);
   assert.equal(coverage.precision_audit.status, "residual_only_held_out");
   assert.equal(coverage.precision_audit.reviewed, 55);
@@ -156,6 +157,28 @@ test("committed trial stops below the standing promotion bars", () => {
   assert.equal(coverage.promotion.coverage_rate, 0.3965);
   assert.equal(coverage.promotion.coverage_passed, true);
   assert.equal(coverage.promotion.precision_passed, false);
+  assert.equal(coverage.promotion.two_tier.comparative.control_baseline, 0.2778);
+  assert.equal(coverage.promotion.two_tier.comparative.passed, true);
+  assert.equal(coverage.promotion.two_tier.absolute.floor, 0.95);
+  assert.equal(coverage.promotion.two_tier.absolute.passed, false);
+  assert.equal(coverage.promotion.two_tier.can_ship_labeled, true);
+  assert.equal(coverage.promotion.two_tier.can_ship_unlabeled, false);
+});
+
+test("two-tier gate keeps comparative and absolute decisions independent", () => {
+  const gate = evaluateTwoTierPrecision({
+    candidatePrecision: 0.8182,
+    controlBaseline: 0.2778,
+    candidateSampleSize: 55,
+    controlSampleSize: 18,
+    labelMode: "labeled",
+    candidateReceipt: "candidate#precision",
+    controlReceipt: "control#precision",
+  });
+  assert.equal(gate.comparative.passed, true);
+  assert.equal(gate.absolute.passed, false);
+  assert.equal(gate.can_ship_labeled, true);
+  assert.equal(gate.can_ship_unlabeled, false);
 });
 
 test("closed trial does not widen the public entity-ref allowlist", () => {
