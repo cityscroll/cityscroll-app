@@ -206,7 +206,7 @@ function subscribeHtml(view) {
 function templateHtml(template) {
   const watches = template.watches.map((watch) => `<li>${esc(watch.label)}.</li>`).join("");
   const href = `/following/packs/${encodeURIComponent(template.id)}/`;
-  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This set has ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">Open this monitor pack</a></article>`;
+  return `<article class="following-pack"><h3>${esc(template.title)}</h3><p>This pack has ${template.watches.length} watches.</p><details><summary>Show watches</summary><ul>${watches}</ul></details><a href="${esc(href)}">Open this pack</a></article>`;
 }
 
 function controlsHtml(view) {

@@ -6,9 +6,9 @@
   "templates": [
     {
       "id": "restaurants",
-      "title": "Restaurant & food-service rules",
-      "description": "Health-code and food-service rule changes from the Department of Health and Mental Hygiene, plus keyword matches for restaurant and food-service language in Agency Rules.",
-      "serves": "Restaurant operators, hospitality associations, and food-service managers tracking DOHMH health-code and food-service rules.",
+      "title": "Restaurant rules",
+      "description": "Health and food rules from the Health Department. Plus rules with restaurant and food terms.",
+      "serves": "For restaurants, food groups, and food-service staff.",
       "watches": [
         {
           "label": "DOHMH Agency Rules",
@@ -29,9 +29,9 @@
     },
     {
       "id": "for-hire-vehicles",
-      "title": "For-hire vehicles (TLC)",
-      "description": "Rule changes from the Taxi and Limousine Commission, plus keyword coverage for for-hire vehicle, medallion, and driver rules.",
-      "serves": "For-hire vehicle fleets, TLC licensee associations, and driver-service organizations.",
+      "title": "Taxi and for-hire car rules",
+      "description": "Rules from the Taxi and Limousine Commission. Plus rules about for-hire cars, medallions, and drivers.",
+      "serves": "For taxi fleets, taxi groups, and drivers.",
       "watches": [
         {
           "label": "TLC Agency Rules",
@@ -52,9 +52,9 @@
     },
     {
       "id": "construction-safety",
-      "title": "Construction safety (Buildings)",
-      "description": "Department of Buildings rule changes and construction-safety keyword matches across Agency Rules.",
-      "serves": "General contractors, construction trade associations, and site-safety managers following DOB rules.",
+      "title": "Construction safety",
+      "description": "Rules from Buildings. Plus rules about construction safety.",
+      "serves": "For contractors, trade groups, and site-safety staff.",
       "watches": [
         {
           "label": "Buildings Agency Rules",
@@ -75,9 +75,9 @@
     },
     {
       "id": "child-care",
-      "title": "Child care (ACS / DOHMH)",
-      "description": "Child-care and early-childhood rule changes from the Administration for Children's Services and the Department of Health and Mental Hygiene.",
-      "serves": "Child-care providers, early-childhood associations, and parent-organization staff tracking ACS and DOHMH child-care rules.",
+      "title": "Child care rules",
+      "description": "Child-care rules from ACS and the Health Department. Plus early-childhood rules.",
+      "serves": "For child-care providers, child-care groups, and parents.",
       "watches": [
         {
           "label": "ACS Agency Rules",
