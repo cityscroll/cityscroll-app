@@ -25,6 +25,7 @@ import {
 import { propertyEventState } from "./property_timed_events.mjs";
 import { resolvePropertyActionLifecycle } from "./property_reader_actions.mjs";
 import { classifyPropertyActionCharacter, stampPropertyActionCharacters } from "./property_action_character.mjs";
+import { resolveAgencyIdentity } from "./agency_identity.mjs";
 export { stampPropertyActionCharacters, propertyActionCharacterLead } from "./property_action_character.mjs";
 
 export const PROPERTY_EXPLORER_SCHEMA_VERSION = 1;
@@ -59,6 +60,44 @@ function clean(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
   return s || null;
+}
+
+/**
+ * Resolve the canonical agency pivot carried by a disposition row.
+ * Materialized edge fields win; the City Record name is the bounded fallback.
+ * @param {object} row
+ * @returns {{ canonical_id: string, canonical_name: string }|null}
+ */
+export function propertyAgencyIdentity(row) {
+  const direct = row?.agency_identity || row?.agency || null;
+  const canonicalId = clean(row?.agency_ref || row?.agency_id || direct?.canonical_id);
+  const canonicalName = clean(row?.agency_canonical_name || direct?.canonical_name);
+  if (canonicalId) return { canonical_id: canonicalId, canonical_name: canonicalName || clean(row?.agency_name) || canonicalId };
+  const raw = clean(row?.agency_name);
+  return raw ? resolveAgencyIdentity(raw) : null;
+}
+
+/**
+ * Derive the current property's agency facet from its disposition entries.
+ * Counts are entry counts, matching the grouped explorer scope rather than raw notices.
+ * @param {object[]} entries
+ * @returns {Array<{id: string, name: string, count: number}>}
+ */
+export function propertyAgencyOptions(entries = []) {
+  const options = new Map();
+  for (const entry of entries) {
+    const identities = new Map();
+    for (const row of entry?.members || [entry?.primary]) {
+      const identity = propertyAgencyIdentity(row);
+      if (identity?.canonical_id) identities.set(identity.canonical_id, identity);
+    }
+    for (const identity of identities.values()) {
+      const option = options.get(identity.canonical_id) || { id: identity.canonical_id, name: identity.canonical_name, count: 0 };
+      option.count += 1;
+      options.set(identity.canonical_id, option);
+    }
+  }
+  return [...options.values()].sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
 }
 
 function isoDate(value) {
@@ -290,6 +329,7 @@ export function buildPropertyExplorerEntries(properties, spines) {
  * @param {string|null} [opts.borough]
  * @param {string|null} [opts.neighborhood]
  * @param {string[]} [opts.communityDistricts]
+ * @param {string|null} [opts.agency]
  */
 export function filterPropertyExplorerEntries(entries, opts = {}) {
   const process = opts.process || "all";
@@ -304,6 +344,7 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
     : (row) => row?.commercial || null;
   const borough = clean(opts.borough);
   const neighborhood = clean(opts.neighborhood)?.toLowerCase() || null;
+  const agency = clean(opts.agency);
   const communityDistricts = new Set(
     (Array.isArray(opts.communityDistricts) ? opts.communityDistricts : [])
       .map((value) => String(value || "").toUpperCase())
@@ -313,6 +354,11 @@ export function filterPropertyExplorerEntries(entries, opts = {}) {
 
   return (entries || []).filter((entry) => {
     if (!entry || !entry.primary) return false;
+    if (agency) {
+      const hit = (entry.members || [entry.primary]).some((member) =>
+        propertyAgencyIdentity(member)?.canonical_id === agency);
+      if (!hit) return false;
+    }
     if (process !== "all") {
       // Match current process stage OR any member notice still tagged with that stage
       // so multi-notice chains remain findable under earlier phases.
