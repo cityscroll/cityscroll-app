@@ -72,7 +72,18 @@ export const BROWSE_FACETS = Object.freeze({
 });
 
 const BROWSE_SCOPE_POLICY = Object.freeze({
-  contracts: { agencyField: "agency_name", entityRefFields: [] },
+  contracts: {
+    agencyField: "agency_name",
+    entityRefFields: [
+      "entity_refs_all",
+      "entity_refs",
+      "scope_entity_refs",
+      "subject_entity_refs",
+      "vendor_entity_ref",
+      "project_entity_ref",
+      "agency_entity_ref",
+    ],
+  },
   staffing: { agencyField: "agency_name", entityRefFields: [] },
   zoning: { agencyField: "primary_applicant", entityRefFields: [] },
   property: { agencyField: "agency_name", entityRefFields: ["disposition_subject_ref", "disposition_join_keys"] },
@@ -100,8 +111,9 @@ function collectEntityRefsFromCell(value) {
   const cells = Array.isArray(value) ? value : [value];
   return cells.flatMap((raw) => {
     if (raw == null || raw === "") return [];
-    if (typeof raw !== "string") return [];
-    const parsed = parseEntityRef(raw) || parseDispositionRef(raw);
+    const candidate = typeof raw === "string" ? raw : raw?.ref || raw?.entity_ref;
+    if (typeof candidate !== "string") return [];
+    const parsed = parseEntityRef(candidate) || parseDispositionRef(candidate);
     if (!parsed) return [];
     if (parsed.kind === "agency") parsed.id = normalizeAgencyIdFromRef(parsed.id);
     return [parsed];
@@ -194,17 +206,41 @@ function readRowEntityRefs(row, facet) {
 
 function renderScopeChip(scopeState, config, scopeSearch) {
   if (!scopeState.hasScopeFacet) return "";
-  const label = scopeState.labels.length ? scopeState.labels.join(", ") : "Scope constraints";
   const raw = new URLSearchParams(scopeSearch instanceof URLSearchParams ? scopeSearch : new URLSearchParams(scopeSearch));
-  raw.delete("facet");
-  const removeHref = `${config.route}${raw.toString() ? `?${raw}` : ""}`;
   const status = scopeState.mode;
+  const label = scopeState.labels.length ? scopeState.labels.join(", ") : "Scope constraints";
   const details = status === "unsupported"
     ? `This lens does not support this scope filter; showing all matched records for this view.`
     : status === "empty"
       ? `No records in this lens match ${label}.`
       : `Filtered to ${label}.`;
-  return `<p class="scope" data-browse-scope="${esc(status)}" role="status"><span class="lbl">Scope</span><a href="${esc(removeHref)}" class="x-remove-scope">${esc(label)} ×</a> ${esc(details)}</p>`;
+  const chips = scopeState.refs.map((item) => {
+    const removeParams = new URLSearchParams(raw);
+    const facetRaw = removeParams.get("facet");
+    let removed = false;
+    if (facetRaw) {
+      try {
+        const facet = JSON.parse(facetRaw);
+        const refs = Array.isArray(facet?.entity_refs_all) ? facet.entity_refs_all : [];
+        const remaining = refs.filter((ref) => String(ref) !== String(item.ref));
+        if (remaining.length < refs.length) {
+          removed = true;
+          delete facet.result_count_receipt;
+          if (remaining.length) {
+            removeParams.set("facet", JSON.stringify({ ...facet, entity_refs_all: remaining }));
+          } else {
+            removeParams.delete("facet");
+          }
+        }
+      } catch (_error) {
+        removeParams.delete("facet");
+      }
+    }
+    if (!removed && item.kind === "agency") removeParams.delete("agency");
+    const removeHref = `${config.route}${removeParams.toString() ? `?${removeParams}` : ""}`;
+    return `<a href="${esc(removeHref)}" class="x-remove-scope">${esc(item.label)} ×</a>`;
+  }).join(" ");
+  return `<p class="scope" data-browse-scope="${esc(status)}" role="status"><span class="lbl">Scope</span> ${chips || `<span>${esc(label)}</span>`} ${esc(details)}</p>`;
 }
 
 function esc(value) {
@@ -301,7 +337,7 @@ function scopeApplicability(facet, rows, scopeState) {
     supportedKinds: supported,
     supportedRequestedKinds: supportedRequested,
     unsupportedKinds: unsupported,
-    canApplyScope: supportedRequested.length > 0,
+    canApplyScope: requested.size > 0 && unsupported.length === 0,
   };
 }
 
@@ -339,13 +375,12 @@ function rowAgencyFilterMatches(row, facet, filter) {
 }
 
 function rowMatchesScopeRefs(row, facet, requestedRefs, applicableKinds) {
-  if (!applicableKinds.length) return true;
+  if (!applicableKinds.length) return false;
   const rowRefs = rowReferenceSet(row, facet);
-  for (const item of requestedRefs) {
-    if (!applicableKinds.includes(item.kind)) continue;
-    if (rowRefs.has(scopeKeyFromKindAndRef(item))) return true;
-  }
-  return false;
+  return requestedRefs.every((item) => (
+    applicableKinds.includes(item.kind)
+      && rowRefs.has(scopeKeyFromKindAndRef(item))
+  ));
 }
 
 export function buildBrowseView(facet, payload = {}, params = new URLSearchParams(), options = {}) {
