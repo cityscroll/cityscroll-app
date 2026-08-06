@@ -2,13 +2,14 @@
   "schema_version": 2,
   "domain": "people",
   "title": "People domain observations for entity intelligence",
-  "description": "Person-level Legistar votes retained on meeting-outcomes (by_person). Densified from every list record that already carries roll-call names — never tallies alone, never fabricated officials. Field case: notice 20260706036 / event 22526 / official 7801 Christopher Marte.",
-  "retrieved_at": "2026-08-02T20:52:19.896Z",
+  "description": "Person-level Legistar votes retained on live authenticated meeting-outcomes materialization. This snapshot is filtered to exact numeric person ids only, and excludes fuzzy/name-only identity rows.",
+  "retrieved_at": "2026-08-05T21:48:27.663Z",
   "source": {
     "system": "legistar",
-    "read_model": "meeting-outcomes:materialized:v2",
+    "read_model": "meeting-outcomes:materialized:v3",
     "via": "by_person",
-    "densify": "meeting_outcomes_list_roll_call",
+    "densify": "meeting_outcomes_live_roll_call",
+    "eligible_event_filter": "city_council_roll_call_events_with_vote_rows",
     "seed_notices": [
       "20260304007",
       "20260331028",
@@ -18,6 +19,14 @@
       "20260706036"
     ],
     "event_ids": [
+      "22300",
+      "22342",
+      "22365",
+      "22375",
+      "22526",
+      "22567"
+    ],
+    "eligible_event_ids": [
       "22300",
       "22342",
       "22365",

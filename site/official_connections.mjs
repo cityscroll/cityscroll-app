@@ -34,14 +34,30 @@ function retainedRow(row) {
 }
 
 function auditCounts(receipt) {
-  const audit = receipt?.after_live_audit_2026_08_02 || receipt?.after_live_audit || {};
+  const afterLiveAuditEntries = Object.entries(receipt || {}).filter(([key]) =>
+    /^after_live_audit(?:_\d{4}_\d{2}_\d{2})?$/.test(key),
+  );
+  afterLiveAuditEntries.sort(([a], [b]) => String(a).localeCompare(String(b)));
+  const afterLiveAudit = afterLiveAuditEntries.length > 0
+    ? afterLiveAuditEntries[afterLiveAuditEntries.length - 1][1]
+    : receipt?.after_live_audit || {};
+  const audit = afterLiveAudit && typeof afterLiveAudit === "object" ? afterLiveAudit : {};
+
   let eligible = Number(audit.eligible_vote_rows);
   let retained = Number(audit.retained_person_id_rows);
   if (!Number.isFinite(eligible) || !Number.isFinite(retained)) {
-    const match = clean(audit.sample, 1_000).match(/(\d+)\s*\/\s*(\d+)\s+vote rows retained/i);
+    const sampleText = clean(audit.sample, 1_000);
+    const sampleVoteRetentionMatch = sampleText.match(/(\d+)\s*\/\s*(\d+)\s+vote rows retained/i);
+    const compactSampleMatch = sampleText.match(/eligible_rows\s*=\s*(\d+)\s*,\s*retained_rows\s*=\s*(\d+)/i);
+    const match = sampleVoteRetentionMatch || compactSampleMatch;
     if (match) {
-      retained = Number(match[1]);
-      eligible = Number(match[2]);
+      if (sampleVoteRetentionMatch) {
+        retained = Number(sampleVoteRetentionMatch[1]);
+        eligible = Number(sampleVoteRetentionMatch[2]);
+      } else {
+        eligible = Number(compactSampleMatch[1]);
+        retained = Number(compactSampleMatch[2]);
+      }
     }
   }
   const statedRate = Number(audit.person_vote_retention_rate);
@@ -61,8 +77,11 @@ function auditCounts(receipt) {
 /** Measure only the declared committed cohort plus the dated independent audit. */
 export function measureOfficialCoverage(peopleDoc = {}, retentionReceipt = null) {
   const rows = Array.isArray(peopleDoc?.rows) ? peopleDoc.rows : [];
+  const sourceEligibleEventIds = Array.isArray(peopleDoc?.source?.eligible_event_ids)
+    ? peopleDoc.source.eligible_event_ids
+    : null;
   const eligibleEventIds = [...new Set(
-    (peopleDoc?.source?.event_ids || rows.map((row) => row?.event_id))
+    (sourceEligibleEventIds || peopleDoc?.source?.event_ids || rows.map((row) => row?.event_id))
       .map((value) => clean(value))
       .filter(Boolean),
   )].sort();

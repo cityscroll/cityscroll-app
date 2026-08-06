@@ -3,7 +3,7 @@
   "domain": "rules",
   "title": "Rules domain observations for entity intelligence",
   "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Mirrors the city_record side of rules:materialized:v2; no invented contract/vendor joins.",
-  "retrieved_at": "2026-08-03T16:37:07.180Z",
+  "retrieved_at": "2026-08-05T20:50:48.662Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -15,6 +15,84 @@
   "row_count": 100,
   "agency_count": 33,
   "rows": [
+    {
+      "request_id": "20260804030",
+      "agency_name": "Finance",
+      "short_title": "Amendment of Rule Relating to Surcharge on Certain Non-Primary Residences - Extension of Time to File and Expansion of Processes - Emergency Rule",
+      "start_date": "2026-08-05T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260728026",
+      "agency_name": "Buildings",
+      "short_title": "Proposed Rule - Rule relating to Incomplete Inspections",
+      "start_date": "2026-08-04T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
     {
       "request_id": "20260715005",
       "agency_name": "Rent Guidelines Board",
@@ -377,6 +455,45 @@
       }
     },
     {
+      "request_id": "20260710033",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "start_date": "2026-07-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
       "request_id": "20260707025",
       "agency_name": "Buildings",
       "short_title": "Final Rule - Amendment of Rules relating to Sidewalk Sheds",
@@ -419,45 +536,6 @@
       "request_id": "20260706041",
       "agency_name": "Transportation",
       "short_title": "Notice of Adoption: City-Owned Bicycle Racks",
-      "start_date": "2026-07-14T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260710033",
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
       "start_date": "2026-07-14T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -572,11 +650,11 @@
       }
     },
     {
-      "request_id": "20260626036",
+      "request_id": "20260626035",
       "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Junk Fees",
+      "short_title": "DCWP NOA Cancellation of Subscriptions",
       "start_date": "2026-07-08T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
+      "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
@@ -611,11 +689,11 @@
       }
     },
     {
-      "request_id": "20260626035",
+      "request_id": "20260626036",
       "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOA Cancellation of Subscriptions",
+      "short_title": "DCWP NOH Junk Fees",
       "start_date": "2026-07-08T00:00:00.000",
-      "type_of_notice_description": "Notice",
+      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
@@ -845,9 +923,9 @@
       }
     },
     {
-      "request_id": "20260618004",
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "FY2027 DOHMH Regulatory Agenda",
+      "request_id": "20260617037",
+      "agency_name": "Taxi and Limousine Commission",
+      "short_title": "Taxi and Limousine Commission Regulatory Agenda",
       "start_date": "2026-06-25T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -884,9 +962,9 @@
       }
     },
     {
-      "request_id": "20260617037",
-      "agency_name": "Taxi and Limousine Commission",
-      "short_title": "Taxi and Limousine Commission Regulatory Agenda",
+      "request_id": "20260618004",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "FY2027 DOHMH Regulatory Agenda",
       "start_date": "2026-06-25T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -1126,11 +1204,11 @@
       }
     },
     {
-      "request_id": "20260605058",
-      "agency_name": "Finance",
-      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "request_id": "20260602045",
+      "agency_name": "Small Business Services",
+      "short_title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
       "start_date": "2026-06-09T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
+      "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
@@ -1165,11 +1243,11 @@
       }
     },
     {
-      "request_id": "20260602045",
-      "agency_name": "Small Business Services",
-      "short_title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
+      "request_id": "20260605058",
+      "agency_name": "Finance",
+      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
       "start_date": "2026-06-09T00:00:00.000",
-      "type_of_notice_description": "Notice",
+      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
@@ -1282,48 +1360,9 @@
       }
     },
     {
-      "request_id": "20260521002",
-      "agency_name": "Environmental Protection",
-      "short_title": "FY 27 Regulatory Agenda",
-      "start_date": "2026-05-29T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260522007",
+      "request_id": "20260522008",
       "agency_name": "Health and Mental Hygiene",
-      "short_title": "Further Amendment of Rules Relating to Vital Records",
+      "short_title": "Amendment of Rules Relating to Lead Dust",
       "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
@@ -1399,9 +1438,9 @@
       }
     },
     {
-      "request_id": "20260522008",
+      "request_id": "20260522007",
       "agency_name": "Health and Mental Hygiene",
-      "short_title": "Amendment of Rules Relating to Lead Dust",
+      "short_title": "Further Amendment of Rules Relating to Vital Records",
       "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
@@ -1438,10 +1477,10 @@
       }
     },
     {
-      "request_id": "20260519048",
-      "agency_name": "Health and Mental Hygiene",
-      "short_title": "Amendment of Rules Regarding Termination of Pregnancy",
-      "start_date": "2026-05-27T00:00:00.000",
+      "request_id": "20260521002",
+      "agency_name": "Environmental Protection",
+      "short_title": "FY 27 Regulatory Agenda",
+      "start_date": "2026-05-29T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
@@ -1480,6 +1519,45 @@
       "request_id": "20260519037",
       "agency_name": "City Planning",
       "short_title": "DCP FY2027 Regulatory Agenda",
+      "start_date": "2026-05-27T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260519048",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Regarding Termination of Pregnancy",
       "start_date": "2026-05-27T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -1594,9 +1672,9 @@
       }
     },
     {
-      "request_id": "20260515002",
-      "agency_name": "Procurement Policy Board",
-      "short_title": "PPB FY27 Regulatory Agenda",
+      "request_id": "20260513026",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Home Improvement Contractor Disclosures",
       "start_date": "2026-05-20T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -1672,49 +1750,10 @@
       }
     },
     {
-      "request_id": "20260513026",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOA Home Improvement Contractor Disclosures",
+      "request_id": "20260515002",
+      "agency_name": "Procurement Policy Board",
+      "short_title": "PPB FY27 Regulatory Agenda",
       "start_date": "2026-05-20T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260512047",
-      "agency_name": "Office of the Mayor",
-      "short_title": "Notice of Adoption of Centralized Construction Mentor Program Rules",
-      "start_date": "2026-05-19T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
@@ -1789,9 +1828,87 @@
       }
     },
     {
+      "request_id": "20260512047",
+      "agency_name": "Office of the Mayor",
+      "short_title": "Notice of Adoption of Centralized Construction Mentor Program Rules",
+      "start_date": "2026-05-19T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
       "request_id": "20260512003",
       "agency_name": "Small Business Services",
       "short_title": "SBS Regulatory Agenda FY 2027",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260512040",
+      "agency_name": "Commission on Human Rights",
+      "short_title": "FY 2027 CCHR Regulatory Agenda",
       "start_date": "2026-05-18T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -1906,45 +2023,6 @@
       }
     },
     {
-      "request_id": "20260512040",
-      "agency_name": "Commission on Human Rights",
-      "short_title": "FY 2027 CCHR Regulatory Agenda",
-      "start_date": "2026-05-18T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
       "request_id": "20260512035",
       "agency_name": "Sanitation",
       "short_title": "DSNY Proposed Rule Relating to Containerization Requirements for Buildings Containing 10 or More Dwelling Units",
@@ -2023,9 +2101,9 @@
       }
     },
     {
-      "request_id": "20260507003",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP FY 2027 Regulatory Agenda",
+      "request_id": "20260506027",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
       "start_date": "2026-05-14T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -2062,9 +2140,9 @@
       }
     },
     {
-      "request_id": "20260506027",
-      "agency_name": "Finance",
-      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+      "request_id": "20260507003",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP FY 2027 Regulatory Agenda",
       "start_date": "2026-05-14T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -2335,45 +2413,6 @@
       }
     },
     {
-      "request_id": "20260428027",
-      "agency_name": "Buildings",
-      "short_title": "CAPA Agenda FY'27",
-      "start_date": "2026-05-04T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
       "request_id": "20260417003",
       "agency_name": "Transportation",
       "short_title": "Proposed Amendment of Citywide Truck Routes",
@@ -2413,9 +2452,48 @@
       }
     },
     {
-      "request_id": "20260424028",
-      "agency_name": "Campaign Finance Board",
-      "short_title": "REGULATORY AGENDA FY2027",
+      "request_id": "20260428027",
+      "agency_name": "Buildings",
+      "short_title": "CAPA Agenda FY'27",
+      "start_date": "2026-05-04T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260428036",
+      "agency_name": "Comptroller",
+      "short_title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
       "start_date": "2026-05-01T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -2491,9 +2569,48 @@
       }
     },
     {
-      "request_id": "20260428036",
-      "agency_name": "Comptroller",
-      "short_title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
+      "request_id": "20260324022",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260424028",
+      "agency_name": "Campaign Finance Board",
+      "short_title": "REGULATORY AGENDA FY2027",
       "start_date": "2026-05-01T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -2569,10 +2686,10 @@
       }
     },
     {
-      "request_id": "20260324022",
-      "agency_name": "Sanitation",
-      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
-      "start_date": "2026-05-01T00:00:00.000",
+      "request_id": "20260427026",
+      "agency_name": "Parks and Recreation",
+      "short_title": "DPR - Regulatory Agenda FY 2027",
+      "start_date": "2026-04-30T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
@@ -2647,45 +2764,6 @@
       }
     },
     {
-      "request_id": "20260427026",
-      "agency_name": "Parks and Recreation",
-      "short_title": "DPR - Regulatory Agenda FY 2027",
-      "start_date": "2026-04-30T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
       "request_id": "20260421022",
       "agency_name": "Conflicts of Interest Board",
       "short_title": "Regulatory Agenda",
@@ -2725,9 +2803,9 @@
       }
     },
     {
-      "request_id": "20260421036",
-      "agency_name": "Finance",
-      "short_title": "New York Department of Finance  FY-2027 Regulatory Agenda",
+      "request_id": "20260421020",
+      "agency_name": "City Clerk",
+      "short_title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
       "start_date": "2026-04-28T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -2764,9 +2842,9 @@
       }
     },
     {
-      "request_id": "20260421020",
-      "agency_name": "City Clerk",
-      "short_title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
+      "request_id": "20260421036",
+      "agency_name": "Finance",
+      "short_title": "New York Department of Finance  FY-2027 Regulatory Agenda",
       "start_date": "2026-04-28T00:00:00.000",
       "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
@@ -3037,45 +3115,6 @@
       }
     },
     {
-      "request_id": "20260407013",
-      "agency_name": "Buildings",
-      "short_title": "Final Rule - Rules relating to Safety Standards for Refrigeration",
-      "start_date": "2026-04-15T00:00:00.000",
-      "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
       "request_id": "20260409002",
       "agency_name": "Fire Department",
       "short_title": "Proposed Amendment of Rules Relating to Fees for Ambulance Treatment and Transport Services",
@@ -3115,11 +3154,11 @@
       }
     },
     {
-      "request_id": "20260327026",
-      "agency_name": "Consumer and Worker Protection",
-      "short_title": "DCWP NOH Cancellation of Subscriptions",
-      "start_date": "2026-04-08T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
+      "request_id": "20260407013",
+      "agency_name": "Buildings",
+      "short_title": "Final Rule - Rules relating to Safety Standards for Refrigeration",
+      "start_date": "2026-04-15T00:00:00.000",
+      "type_of_notice_description": "Notice",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
@@ -3159,6 +3198,45 @@
       "short_title": "Amendment of Rules Relating to Reporting Requirements for Cooling Towers",
       "start_date": "2026-04-08T00:00:00.000",
       "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record",
+      "rule_location": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      },
+      "affected_area": {
+        "scope": "citywide",
+        "derivation": {
+          "methods": [
+            "rule_default_citywide"
+          ],
+          "confidence": 0.8,
+          "role": "citywide",
+          "evidence": [
+            "Agency Rules with no local scope phrase"
+          ]
+        },
+        "confidence_tier": "strong",
+        "source": "rule-scope"
+      }
+    },
+    {
+      "request_id": "20260327026",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Cancellation of Subscriptions",
+      "start_date": "2026-04-08T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
@@ -3830,84 +3908,6 @@
       "short_title": "Notice of Adoption of Rules for Amendment of Rules Relating to Childcare Center Tax Abatement",
       "start_date": "2026-03-12T00:00:00.000",
       "type_of_notice_description": "Notice",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260303021",
-      "agency_name": "Finance",
-      "short_title": "DOF Proposed Amendment of Rules Relating to Utility Company Properties",
-      "start_date": "2026-03-11T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
-      "section_name": "Agency Rules",
-      "source_system": "city_record",
-      "rule_location": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      },
-      "affected_area": {
-        "scope": "citywide",
-        "derivation": {
-          "methods": [
-            "rule_default_citywide"
-          ],
-          "confidence": 0.8,
-          "role": "citywide",
-          "evidence": [
-            "Agency Rules with no local scope phrase"
-          ]
-        },
-        "confidence_tier": "strong",
-        "source": "rule-scope"
-      }
-    },
-    {
-      "request_id": "20260302018",
-      "agency_name": "Finance",
-      "short_title": "Proposed Amendment of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
-      "start_date": "2026-03-10T00:00:00.000",
-      "type_of_notice_description": "Public Hearings",
       "section_name": "Agency Rules",
       "source_system": "city_record",
       "rule_location": {
