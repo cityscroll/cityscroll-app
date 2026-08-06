@@ -4,7 +4,7 @@
   "observed_on": "2026-08-06",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 46,
+  "sources_count": 47,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -221,6 +221,19 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "city-record-x-dob-certificate-of-occupancy-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
       ]
     },
     {
@@ -444,6 +457,83 @@
       ],
       "gaps_would_close": [
         "procurement-registered-unmatched"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-dob-now-job-filings-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-legacy-dob-job-filings-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-mappluto-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-bbl-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
       ]
     },
     {
@@ -714,5 +804,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "6e597f3095c63e9b5946a80ceaa3d2b289b856f70f7b6e34abe91ad9d8ebc3fb"
+  "registry_sha256": "ce715398386ee6cb7ddcece9f574b6e4bd45599538a0192bb0c8fb8d5e12f406"
 }

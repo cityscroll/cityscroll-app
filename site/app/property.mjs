@@ -598,9 +598,9 @@ function parcelPivotHTML(bbl,label){
     relation:"sits_on_parcel",
   },{scope:propertyCurrentScope(),surface:"property",className:"parcel-pivot"});
 }
-async function observedParcelBiographyHTML(bbl,crossDomain,taxLien){
+async function observedParcelBiographyHTML(bbl,crossDomain,taxLien,cofo){
   const tools=await parcelScopeTools();
-  const view=tools?.buildObservedParcelBiography?.({bbl,crossDomain,taxLien});
+  const view=tools?.buildObservedParcelBiography?.({bbl,crossDomain,taxLien,cofo});
   if(!view?.ok) return `<div class="chain-h">${t("property_xd_heading")}</div>
     <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bbl)})}</div>
     <div class="note">${t("property_xd_provenance_html")}</div>`;
@@ -618,10 +618,6 @@ async function observedParcelBiographyHTML(bbl,crossDomain,taxLien){
   });
 }
 
-/**
- * Observed parcel biography from committed exact-BBL materializations only.
- * No live multi-source fan-out and no zero-coverage owner/counterparty block.
- */
 async function loadPropertyCrossDomain(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
   let bbl = r._property_bbl || null;
@@ -639,15 +635,19 @@ async function loadPropertyCrossDomain(r, el){
   }
   let crossDomain = null, taxLien = null;
   try{
-    const [crossRes,lienRes]=await Promise.all([
+    const [c,l,o]=await Promise.all([
       fetch(`data/property_cross_domain_lookup.json`,{cache:"force-cache"}),
       fetch(`data/tax_lien_sale_bbl.json`,{cache:"force-cache"}),
+      fetch(`data/dob_cofo_lookup.json`,{cache:"force-cache"}),
     ]);
-    if(crossRes?.ok) crossDomain=await crossRes.json();
-    if(lienRes?.ok) taxLien=await lienRes.json();
+    if(c?.ok) crossDomain=await c.json();
+    if(l?.ok) taxLien=await l.json();
+    const cofo=o?.ok&&await o.json();
+    if(document.contains(el)) el.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien,cofo);
+    return;
   }catch(_e){}
   if(!document.contains(el)) return;
-  el.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien);
+  el.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien,null);
 }
 async function paintParcelBiographyPanel(bbl){
   const panel=$("#parcel-biography-panel"); if(!panel) return;
@@ -655,26 +655,22 @@ async function paintParcelBiographyPanel(bbl){
   panel.hidden=false;
   panel.innerHTML=`<div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span></div>`;
   try{
-    const [crossRes,lienRes]=await Promise.all([
+    const [c,l,o]=await Promise.all([
       fetch("data/property_cross_domain_lookup.json",{cache:"force-cache"}),
       fetch("data/tax_lien_sale_bbl.json",{cache:"force-cache"}),
+      fetch("data/dob_cofo_lookup.json",{cache:"force-cache"}),
     ]);
-    const crossDomain=crossRes?.ok?await crossRes.json():null;
-    const taxLien=lienRes?.ok?await lienRes.json():null;
+    const crossDomain=c?.ok?await c.json():null;
+    const taxLien=l?.ok?await l.json():null;
+    const cofo=o?.ok&&await o.json();
     if(propertyParcelScopeBbl!==bbl||!document.contains(panel)) return;
-    panel.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien);
+    panel.innerHTML=await observedParcelBiographyHTML(bbl,crossDomain,taxLien,cofo);
   }catch(_e){
     if(document.contains(panel)) panel.innerHTML=`<div class="empty">${t("could_not_reach")}</div>`;
   }
 }
 
-/* ===== Property explorer: surplus-buyer commercial glance + process-stage rail.
-   Primary persona: glancing surplus-goods buyer — WHAT / HOW MUCH / DEAL? / when-bid.
-   Process stages (hearing → auction_or_rfp → award_or_conveyance) remain the ops ontology;
-   multi-notice disposition subjects collapse to one list entry (site/property_explorer.mjs).
-   PROP_STAGES remain temporal list filters (proposed/soon/upcoming/past), not process stages.
-   Category vocabulary is persona-grounded (vehicle/timber/equipment/real_property/…);
-   legacy URL keys (vehequip/forest/realty) normalize via normalizeAssetFilter. ===== */
+/* Property explorer: commercial glance + process-stage rail. */
 // Values are i18n keys — render with t() so the explorer chrome follows the active language.
 const ASSET_BUCKETS=[
   ["vehicle","asset_vehicle"],

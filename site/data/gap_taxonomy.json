@@ -561,6 +561,18 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "dob-certificate-of-occupancy",
+      "name": "DOB Certificate Of Occupancy",
+      "source_contract_id": "dob-certificate-of-occupancy",
+      "status": "landed",
+      "join_keys": [
+        "BBL"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/bs8b-p36w",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "dob-now-job-filings",
       "name": "DOB NOW job filings",
       "source_contract_id": "dob-now-job-filings",
@@ -1521,6 +1533,24 @@
       "evidence": "Shared keys PIN; 3 taxonomy gap(s) could close."
     },
     {
+      "id": "city-record-x-dob-certificate-of-occupancy-via-BBL",
+      "source_a": "city-record",
+      "source_b": "dob-certificate-of-occupancy",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ],
+      "score": 3,
+      "evidence": "Shared keys BBL; 3 taxonomy gap(s) could close."
+    },
+    {
       "id": "city-record-x-dob-now-job-filings-via-BBL",
       "source_a": "city-record",
       "source_b": "dob-now-job-filings",
@@ -1832,6 +1862,118 @@
       ],
       "score": 1,
       "evidence": "Shared keys PIN; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-dob-now-job-filings-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "dob-now-job-filings",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-legacy-dob-job-filings-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "legacy-dob-job-filings",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-mappluto-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "mappluto",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-api-outcomes-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-bbl-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-projects-via-BBL",
+      "source_a": "dob-certificate-of-occupancy",
+      "source_b": "zap-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
       "id": "dob-now-job-filings-x-legacy-dob-job-filings-via-BBL+BIN+job_number",
@@ -2798,9 +2940,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-06",
-    "source_contracts_fingerprint": "63663cf56cba3967c153b3344febc708ed77b58575f32c39a23a8d87e375ca90",
+    "source_contracts_fingerprint": "5b97ceb8a19a511f60b4cba7b1148e39d5a8d295935a9da94fde0f50e105d845",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 51,
+    "candidate_crosswalks": 59,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }
