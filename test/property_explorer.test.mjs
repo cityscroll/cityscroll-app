@@ -16,6 +16,7 @@ import {
   countPropertyProcessStages,
   describeCollapsedGroup,
   filterPropertyExplorerEntries,
+  groupPropertyArchiveEntries,
   partitionPropertyExplorerEntries,
   parcelLookupUrls,
   propertyEntryDefaultQualification,
@@ -334,6 +335,23 @@ test("renderPropExplorer keeps the closed archive one tap away instead of append
   // Small-multiples collapse is wired into the feed.
   assert.match(index, /clusterRepeatedEntries/);
   assert.match(index, /propertyClusterCardHTML/);
+  assert.match(index, /groupPropertyArchiveEntries/);
+});
+
+test("archive records group by what they taught and retain honest coverage", () => {
+  const entries = [
+    noticeEntry({ id: "sale", title: "Public auction results", asset: "real_property", close: "2020-05-01" }),
+    { ...noticeEntry({ id: "hearing", title: "Disposition hearing decision", stage: "hearing", close: "2021-06-02" }), primary: {
+      ...noticeEntry({ id: "hearing", title: "Disposition hearing decision", stage: "hearing", close: "2021-06-02" }).primary,
+      additional_description_1: "The public hearing decided the disposition.",
+    } },
+    noticeEntry({ id: "program", title: "Recurring property program edition", close: "2022-07-03" }),
+  ];
+  const groups = groupPropertyArchiveEntries(entries);
+  assert.deepEqual(groups.map((group) => group.key), ["sales_results", "hearings_decisions", "programs_ran"]);
+  assert.deepEqual(groups.map((group) => group.count), [1, 1, 1]);
+  assert.equal(groups[0].date_range.start, "2020-05-01");
+  assert.equal(groups[2].date_range.end, "2022-07-03");
 });
 
 test("default Property qualification follows live typed events and exposed participatory actions", () => {
