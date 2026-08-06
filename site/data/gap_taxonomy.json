@@ -495,7 +495,7 @@
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/a9md-ynri",
-      "delivery_tier": "inline-at-build"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "civil-service-titles",
@@ -3263,7 +3263,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-06",
-    "source_contracts_fingerprint": "d21a47606416c3a9d20cd2034abe99c6624bb51e7a0919947a68f4c0a00a88ed",
+    "source_contracts_fingerprint": "e7971f8ef07a349303d8ee5cadddb2b6fe9dcb860a9635f37021440672e6b5db",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 75,
     "class_changes": 0,

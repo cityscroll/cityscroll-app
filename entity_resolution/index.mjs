@@ -139,6 +139,17 @@ export {
 } from "./cross_domain/index.mjs";
 
 export {
+  CERTIFIED_TO_AGENCY,
+  CERTIFIED_TO_AGENCY_LABEL,
+  CERTIFICATION_METHOD,
+  CERTIFICATION_METHOD_VERSION,
+  CERTIFICATION_SOURCE_DATASET,
+  buildCertificationEdges,
+  examSubjectRef,
+  normalizeExamNumber,
+} from "./exam_certifications/index.mjs";
+
+export {
   PUBLICATION_VERSION,
   PUBLIC_ENTITY_FIELDS,
   PUBLIC_ENTITY_LINK_FIELDS,
