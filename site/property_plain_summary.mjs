@@ -9,7 +9,7 @@
 
 import { cleanNoticeText } from "./text_clean.mjs";
 import { classifyPropertyPattern } from "./property_notice_patterns.mjs";
-import { extractPropertyReaderActions } from "./property_reader_actions.mjs";
+import { extractPropertyReaderActions, isStandingPropertyProgram } from "./property_reader_actions.mjs";
 import { extractPropertyTimedEvents } from "./property_timed_events.mjs";
 
 export const PROPERTY_PLAIN_SUMMARY_SCHEMA = "cityscroll.property_plain_summary.v1";
@@ -226,6 +226,7 @@ function eventText(event, today) {
 
 function actionText(action, pattern, lifecycle) {
   if (action.status === "historical") {
+    if (lifecycle?.program_state === "superseded") return "This program edition was superseded.";
     const closed = displayDate(action.by_when?.value || lifecycle?.closed_at);
     if (action.kind === "bid") return closed ? `Bids closed ${closed}.` : "The bid or proposal period closed.";
     if (action.kind === "inspect") return closed ? `Inspection ended ${closed}.` : "The inspection or showing ended.";
@@ -258,6 +259,38 @@ function actionText(action, pattern, lifecycle) {
   if (action.kind === "review_documents") return "You can review the records listed in the notice.";
   if (action.kind === "review_result") return "You can review the auction results.";
   return null;
+}
+
+function programFact(row, lifecycle) {
+  if (!lifecycle?.program_state || !isStandingPropertyProgram(row)) return null;
+  const sources = readerSources(row);
+  const findReceipt = (pattern) => sources
+    .map((source) => {
+      pattern.lastIndex = 0;
+      const match = pattern.exec(source.text);
+      return match ? cleanReceipt(source, match.index, match.index + match[0].length) : null;
+    })
+    .find(Boolean);
+  if (lifecycle.program_state === "superseded") {
+    const receipt = findReceipt(/auto auction|auction|program/i);
+    return receipt
+      ? fact("program_state", "This program edition was superseded.", [receipt], "reader_action")
+      : null;
+  }
+  const hasGovDeals = sources.some((source) => /govdeals/i.test(source.text));
+  const receipt = findReceipt(hasGovDeals
+    ? /(?:every week|weekly|ongoing|standing program)[^.]{0,160}(?:govdeals|https?:\/\/)/i
+    : /(?:every week|weekly|ongoing|standing program|govdeals)/i);
+  return receipt
+    ? fact(
+      "program_state",
+      hasGovDeals
+        ? "This is the current program edition; weekly auctions run at GovDeals."
+        : "This is the current program edition; weekly auctions run through the marketplace.",
+      [receipt],
+      "reader_action",
+    )
+    : null;
 }
 
 const TERM_DEFINITIONS = Object.freeze([
@@ -311,7 +344,7 @@ export function buildPropertyPlainSummary(row = {}, options = {}) {
   const readerActions = suppliedReaderActions(options, visibleRow, events);
   const lifecycle = readerActions?.lifecycle || null;
   const actions = (readerActions?.actions || []).filter((action) => actionReceipt(visibleRow, action));
-  const facts = [lead];
+  const facts = [lead, programFact(visibleRow, lifecycle)].filter(Boolean);
   const eventKeys = new Set();
   for (const event of events) {
     const text = eventText(event, String(options?.today || new Date().toISOString().slice(0, 10)).slice(0, 10));
@@ -357,6 +390,7 @@ const CARD_KEY_FACT_PRIORITY = Object.freeze([
   "event_inspection_showing",
   "event_result_award",
   "event_accommodation_deadline",
+  "program_state",
   "action_bid",
   "action_attend",
   "action_comment",

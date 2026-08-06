@@ -99,6 +99,35 @@ test("closed lifecycle copy uses past framing and never emits a present-tense ac
   assert.ok(summary.reader_actions.actions.every((action) => action.status === "historical"));
 });
 
+test("two-clock summaries label the current GovDeals edition as a program, not a closed auction", () => {
+  const current = {
+    request_id: "20251106024",
+    agency_name: "Citywide Administrative Services",
+    short_title: "AUTO AUCTION",
+    start_date: "2025-11-14",
+    end_date: "2027-05-03",
+    additional_description_1: "The City posts vehicle and heavy machinery auctions online every week at https://www.govdeals.com/en/nyc-dcas-fleet.",
+  };
+  const summary = buildPropertyPlainSummary(current, { today: "2026-08-05" });
+  assert.match(summary.text, /current program edition/i);
+  assert.match(summary.text, /weekly auctions run at GovDeals/i);
+  assert.doesNotMatch(summary.text, /bids closed|deadline|closes/i);
+  assert.equal(summary.reader_actions.lifecycle.program_state, "active");
+  assert.equal(summary.reader_actions.lifecycle.program_valid_through, "2027-05-03");
+  assert.equal(summary.reader_actions.lifecycle.action_by, null);
+
+  const superseded = buildPropertyPlainSummary({
+    request_id: "20241021015",
+    agency_name: "Citywide Administrative Services",
+    short_title: "AUTO AUCTION",
+    end_date: "2025-02-19",
+  }, { today: "2026-08-05" });
+  assert.match(superseded.text, /program edition was superseded/i);
+  assert.doesNotMatch(superseded.text, /bids closed|auction closed/i);
+  assert.equal(superseded.reader_actions.lifecycle.program_state, "superseded");
+  assert.equal(superseded.reader_actions.lifecycle.action_by, null);
+});
+
 test("tense-parity detector covers every closed Property notice class and action template", () => {
   const liveVerb = /\bYou can\b|\bcan (?:send|attend|ask|inspect|review|submit|object|comment|request)\b/i;
   let checkedActions = 0;
@@ -110,6 +139,18 @@ test("tense-parity detector covers every closed Property notice class and action
       close_date: "2026-01-31",
       glance: { ...(row.commercial?.glance || {}), close_date: "2026-01-31" },
       timed_events: row.commercial?.timed_events || [],
+    };
+    // This census pass deliberately supplies a closed instance lifecycle so the
+    // tense detector can exercise every action template independently of the
+    // standing-program publication clock.
+    row.property_action_lifecycle = {
+      schema_version: 2,
+      state: "closed",
+      closed_at: "2026-01-31",
+      action_by: "2026-01-31",
+      instance_state: "closed",
+      program_state: null,
+      program_valid_through: null,
     };
     const summary = buildPropertyPlainSummary(row, { today: "2026-08-04" });
     checkedPatterns.add(summary.pattern);

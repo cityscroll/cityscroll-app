@@ -419,7 +419,11 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
       today,
       commercial: getCommercial(row),
     }));
-    const closed = lifecycles.length > 0 && lifecycles.every((lifecycle) => lifecycle.state === "closed");
+    const superseded = lifecycles.length > 0
+      && lifecycles.every((lifecycle) => lifecycle.program_state === "superseded");
+    const closed = !superseded
+      && lifecycles.length > 0
+      && lifecycles.every((lifecycle) => lifecycle.state === "closed");
     const open = lifecycles.some((lifecycle) => lifecycle.state === "open");
     const close = lifecycles.map((lifecycle) => lifecycle.action_by).filter(Boolean).sort().at(-1)
       || entryCloseDate(entry, getCommercial);
@@ -429,9 +433,16 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
     return {
       ...entry,
       close_date: close,
-      temporal_status: closed ? "closed" : (open ? "open" : "undated"),
+      temporal_status: superseded ? "superseded" : (closed ? "closed" : (open ? "open" : "undated")),
       // Honesty: closed sales never keep a live bid/attend CTA.
       action_key: closed ? "property_action_closed" : openAction,
+      program_state: lifecycles.length && lifecycles.every((lifecycle) => lifecycle.program_state === "active")
+        ? "active"
+        : (superseded ? "superseded" : null),
+      program_valid_through: lifecycles.map((lifecycle) => lifecycle.program_valid_through).filter(Boolean).sort().at(-1) || null,
+      instance_state: lifecycles.length && lifecycles.every((lifecycle) => lifecycle.instance_state === "closed")
+        ? "closed"
+        : (lifecycles.some((lifecycle) => lifecycle.instance_state === "current") ? "current" : "undated"),
     };
   });
 }
@@ -499,7 +510,7 @@ export function propertyEntryDefaultQualification(entry, opts = {}) {
     // The recurring City Record announcement is provenance for the live fleet
     // stream, not evidence that this old notice is itself an open bid.
     if (row?.commercial?.source_role === "provenance_pointer") continue;
-    if (lifecycles[index]?.state === "closed") continue;
+    if (lifecycles[index]?.state === "closed" || lifecycles[index]?.program_state === "superseded") continue;
     for (const event of rowTimedEvents(row, opts)) {
       if (livePropertyEvent(event, today)) {
         liveEvents.push({ request_id: row?.request_id || null, kind: event?.kind || null });
@@ -513,7 +524,9 @@ export function propertyEntryDefaultQualification(entry, opts = {}) {
   }
   return {
     qualified: liveEvents.length > 0 || exposedActions.length > 0,
-    lifecycle_state: lifecycles.length && lifecycles.every((lifecycle) => lifecycle.state === "closed")
+    lifecycle_state: lifecycles.length && lifecycles.every((lifecycle) => lifecycle.program_state === "superseded")
+      ? "superseded"
+      : lifecycles.length && lifecycles.every((lifecycle) => lifecycle.state === "closed")
       ? "closed"
       : lifecycles.some((lifecycle) => lifecycle.state === "open") ? "open" : "undated",
     lifecycles,

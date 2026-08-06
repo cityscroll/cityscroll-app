@@ -1827,6 +1827,8 @@
     badge_min_annual_bid: "mín. anual ${amt}",
     property_commercial_close: "cierra {date}",
     property_commercial_closed: "cerrado {date}",
+    property_program_active: "Active program",
+    property_program_superseded: "Superseded program edition",
     property_event_hearing: "Fecha de la audiencia",
     property_event_auction_start: "Inicio de la subasta",
     property_event_auction_end: "Cierre de la subasta",
