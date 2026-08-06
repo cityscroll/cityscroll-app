@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "registry_kind": "title_code_confirmations",
+  "observed_on": "2026-08-05",
+  "status": "review_only",
+  "confirmations": [],
+  "rejections": [],
+  "operative_links_enabled": false,
+  "policy": "Only a later explicit review may add a confirmation; candidate scores never authorize a public fact or operative link."
+}

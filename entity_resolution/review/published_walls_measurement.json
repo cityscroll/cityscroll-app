@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "schema": "cityscroll.published_walls.measurement.v1",
+  "generated_at": "2026-08-05",
+  "contract": {
+    "candidate_compilation_only": true,
+    "public_surfaces_changed": false,
+    "operative_links_enabled": false,
+    "reviewed_confirmations_required": true
+  },
+  "walls": {
+    "title_codes": {
+      "exact_coverage": 0.2887,
+      "held_out_precision": 0.8108,
+      "candidate_pairs": 7232,
+      "potential": {
+        "threshold": 0.8,
+        "minimum_agreements": 2,
+        "eligible_pairs": 21,
+        "eligible_left_entities": 18,
+        "baseline_confirmed": 367,
+        "denominator": 1271,
+        "if_confirmed_count": 385,
+        "if_confirmed_coverage": 0.3029,
+        "note": "Potential only: candidates are not confirmations and are not used by operative joins."
+      }
+    },
+    "non_council_minutes": {
+      "strict_coverage": 0,
+      "labeled_fixture_precision": 1,
+      "candidate_pairs": 42,
+      "potential": {
+        "threshold": 0.7,
+        "minimum_agreements": 3,
+        "eligible_pairs": 0,
+        "eligible_left_entities": 0,
+        "baseline_confirmed": 0,
+        "denominator": 10,
+        "if_confirmed_count": 0,
+        "if_confirmed_coverage": 0,
+        "note": "Potential only: candidates are not confirmations and are not used by operative joins."
+      }
+    }
+  }
+}
