@@ -1,0 +1,3677 @@
+{
+  "schema_version": 1,
+  "schema": "cityscroll.published_wall.non_council_minutes_candidates.v1",
+  "generated_at": "2026-08-05",
+  "status": "candidate_compilation_for_future_review",
+  "public_surfaces_changed": false,
+  "operative_links_enabled": false,
+  "source_wall": {
+    "published_minutes_items": 10,
+    "notices": 10,
+    "strict_joined": 0,
+    "wall": "The published sample has no publisher identifiers that support an operative minutes-to-notice join."
+  },
+  "method": {
+    "scorer": "Fellegi-Sunter-style agreement weights calibrated against two confirmed strict ULURP fixture joins and labeled fixture rejects.",
+    "features": [
+      "body_id",
+      "date_proximity",
+      "body_text",
+      "address_or_bbl",
+      "applicant_name",
+      "docket_fragment"
+    ],
+    "candidate_limit_per_minutes_item": 6,
+    "candidates_are_facts": false,
+    "bridge_remains_disabled": true
+  },
+  "calibration": {
+    "method": "fellegi_sunter_style_empirical_m_u",
+    "confirmed_pairs": 2,
+    "hand_reviewed_rejects": 4,
+    "feature_parameters": {
+      "body_match": {
+        "m": 0.75,
+        "u": 0.8333
+      },
+      "date_proximity": {
+        "m": 0.75,
+        "u": 0.8333
+      },
+      "body_text": {
+        "m": 0.5,
+        "u": 0.5
+      },
+      "address_bbl": {
+        "m": 0.25,
+        "u": 0.1667
+      },
+      "applicant_name": {
+        "m": 0.25,
+        "u": 0.1667
+      },
+      "docket_fragment": {
+        "m": 0.75,
+        "u": 0.1667
+      }
+    },
+    "held_out_note": "Two confirmed fixture joins are retained as the calibration gold; the published wall has no confirmed joins. Review labels are not operative links.",
+    "proposed_review_pairs": 2,
+    "proposed_precision_on_labeled_fixture": 1
+  },
+  "score_bands": [
+    {
+      "min_inclusive": 0,
+      "max_exclusive": 0.5,
+      "pairs": 10,
+      "left_entities": 10
+    },
+    {
+      "min_inclusive": 0.5,
+      "max_exclusive": 0.65,
+      "pairs": 32,
+      "left_entities": 10
+    },
+    {
+      "min_inclusive": 0.65,
+      "max_exclusive": 0.8,
+      "pairs": 0,
+      "left_entities": 0
+    },
+    {
+      "min_inclusive": 0.8,
+      "max_exclusive": 0.9,
+      "pairs": 0,
+      "left_entities": 0
+    },
+    {
+      "min_inclusive": 0.9,
+      "max_exclusive": 1.0001,
+      "pairs": 0,
+      "left_entities": 0
+    }
+  ],
+  "potential_lift": {
+    "threshold": 0.7,
+    "minimum_agreements": 3,
+    "eligible_pairs": 0,
+    "eligible_left_entities": 0,
+    "baseline_confirmed": 0,
+    "denominator": 10,
+    "if_confirmed_count": 0,
+    "if_confirmed_coverage": 0,
+    "note": "Potential only: candidates are not confirmations and are not used by operative joins."
+  },
+  "candidates": [
+    {
+      "pair_id": "minutes:published:bronx-cb-01:2026-06-25::notice:20260527036",
+      "left": {
+        "minutes_id": "published:bronx-cb-01:2026-06-25",
+        "body_id": "bronx-cb-01",
+        "meeting_date": "2026-06-25"
+      },
+      "right": {
+        "notice_id": "20260527036",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 15,
+          "detail": "15 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-01:2026-06-25::notice:20260528031",
+      "left": {
+        "minutes_id": "published:bronx-cb-01:2026-06-25",
+        "body_id": "bronx-cb-01",
+        "meeting_date": "2026-06-25"
+      },
+      "right": {
+        "notice_id": "20260528031",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 10,
+          "detail": "10 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-01:2026-06-25::notice:20260603044",
+      "left": {
+        "minutes_id": "published:bronx-cb-01:2026-06-25",
+        "body_id": "bronx-cb-01",
+        "meeting_date": "2026-06-25"
+      },
+      "right": {
+        "notice_id": "20260603044",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 16,
+          "detail": "16 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 3,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-01:2026-06-25::notice:20260610003",
+      "left": {
+        "minutes_id": "published:bronx-cb-01:2026-06-25",
+        "body_id": "bronx-cb-01",
+        "meeting_date": "2026-06-25"
+      },
+      "right": {
+        "notice_id": "20260610003",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 8,
+          "detail": "8 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 4,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-01:2026-06-25::notice:20260618032",
+      "left": {
+        "minutes_id": "published:bronx-cb-01:2026-06-25",
+        "body_id": "bronx-cb-01",
+        "meeting_date": "2026-06-25"
+      },
+      "right": {
+        "notice_id": "20260618032",
+        "body_id": "bronx-cb-01",
+        "event_date": "2026-06-25"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 5,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-18:2026-06-17::notice:20260429022",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-18:2026-06-17",
+        "body_id": "brooklyn-cb-18",
+        "meeting_date": "2026-06-17"
+      },
+      "right": {
+        "notice_id": "20260429022",
+        "body_id": "queens-cb-11",
+        "event_date": "2026-05-04"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 44,
+          "detail": "44 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-18:2026-06-17::notice:20260527036",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-18:2026-06-17",
+        "body_id": "brooklyn-cb-18",
+        "meeting_date": "2026-06-17"
+      },
+      "right": {
+        "notice_id": "20260527036",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 7,
+          "detail": "7 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-18:2026-06-17::notice:20260528031",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-18:2026-06-17",
+        "body_id": "brooklyn-cb-18",
+        "meeting_date": "2026-06-17"
+      },
+      "right": {
+        "notice_id": "20260528031",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 2,
+          "detail": "2 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 3,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-18:2026-06-17::notice:20260603044",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-18:2026-06-17",
+        "body_id": "brooklyn-cb-18",
+        "meeting_date": "2026-06-17"
+      },
+      "right": {
+        "notice_id": "20260603044",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 8,
+          "detail": "8 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 4,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-18:2026-06-17::notice:20260618032",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-18:2026-06-17",
+        "body_id": "brooklyn-cb-18",
+        "meeting_date": "2026-06-17"
+      },
+      "right": {
+        "notice_id": "20260618032",
+        "body_id": "bronx-cb-01",
+        "event_date": "2026-06-25"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 8,
+          "detail": "8 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 5,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-18:2026-06-17::notice:20260610003",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-18:2026-06-17",
+        "body_id": "brooklyn-cb-18",
+        "meeting_date": "2026-06-17"
+      },
+      "right": {
+        "notice_id": "20260610003",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 6,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-10:2026-06-15::notice:20260429022",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-10:2026-06-15",
+        "body_id": "brooklyn-cb-10",
+        "meeting_date": "2026-06-15"
+      },
+      "right": {
+        "notice_id": "20260429022",
+        "body_id": "queens-cb-11",
+        "event_date": "2026-05-04"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 42,
+          "detail": "42 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-10:2026-06-15::notice:20260527036",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-10:2026-06-15",
+        "body_id": "brooklyn-cb-10",
+        "meeting_date": "2026-06-15"
+      },
+      "right": {
+        "notice_id": "20260527036",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 5,
+          "detail": "5 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-10:2026-06-15::notice:20260603044",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-10:2026-06-15",
+        "body_id": "brooklyn-cb-10",
+        "meeting_date": "2026-06-15"
+      },
+      "right": {
+        "notice_id": "20260603044",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 6,
+          "detail": "6 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 3,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-10:2026-06-15::notice:20260610003",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-10:2026-06-15",
+        "body_id": "brooklyn-cb-10",
+        "meeting_date": "2026-06-15"
+      },
+      "right": {
+        "notice_id": "20260610003",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 2,
+          "detail": "2 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 4,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-10:2026-06-15::notice:20260618032",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-10:2026-06-15",
+        "body_id": "brooklyn-cb-10",
+        "meeting_date": "2026-06-15"
+      },
+      "right": {
+        "notice_id": "20260618032",
+        "body_id": "bronx-cb-01",
+        "event_date": "2026-06-25"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 10,
+          "detail": "10 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 5,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:brooklyn-cb-10:2026-06-15::notice:20260528031",
+      "left": {
+        "minutes_id": "published:brooklyn-cb-10:2026-06-15",
+        "body_id": "brooklyn-cb-10",
+        "meeting_date": "2026-06-15"
+      },
+      "right": {
+        "notice_id": "20260528031",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 6,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-06:2026-06-09::notice:20260429022",
+      "left": {
+        "minutes_id": "published:bronx-cb-06:2026-06-09",
+        "body_id": "bronx-cb-06",
+        "meeting_date": "2026-06-09"
+      },
+      "right": {
+        "notice_id": "20260429022",
+        "body_id": "queens-cb-11",
+        "event_date": "2026-05-04"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 36,
+          "detail": "36 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-06:2026-06-09::notice:20260528031",
+      "left": {
+        "minutes_id": "published:bronx-cb-06:2026-06-09",
+        "body_id": "bronx-cb-06",
+        "meeting_date": "2026-06-09"
+      },
+      "right": {
+        "notice_id": "20260528031",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 6,
+          "detail": "6 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-06:2026-06-09::notice:20260610003",
+      "left": {
+        "minutes_id": "published:bronx-cb-06:2026-06-09",
+        "body_id": "bronx-cb-06",
+        "meeting_date": "2026-06-09"
+      },
+      "right": {
+        "notice_id": "20260610003",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 8,
+          "detail": "8 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 3,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-06:2026-06-09::notice:20260618032",
+      "left": {
+        "minutes_id": "published:bronx-cb-06:2026-06-09",
+        "body_id": "bronx-cb-06",
+        "meeting_date": "2026-06-09"
+      },
+      "right": {
+        "notice_id": "20260618032",
+        "body_id": "bronx-cb-01",
+        "event_date": "2026-06-25"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 16,
+          "detail": "16 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 4,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-06:2026-06-09::notice:20260527036",
+      "left": {
+        "minutes_id": "published:bronx-cb-06:2026-06-09",
+        "body_id": "bronx-cb-06",
+        "meeting_date": "2026-06-09"
+      },
+      "right": {
+        "notice_id": "20260527036",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10"
+      },
+      "score": 0.5539,
+      "raw_score": 0.432729,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 1,
+          "detail": "1 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 1,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 5,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:bronx-cb-06:2026-06-09::notice:20260603044",
+      "left": {
+        "minutes_id": "published:bronx-cb-06:2026-06-09",
+        "body_id": "bronx-cb-06",
+        "meeting_date": "2026-06-09"
+      },
+      "right": {
+        "notice_id": "20260603044",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 6,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-08:2026-06-10::notice:20260429022",
+      "left": {
+        "minutes_id": "published:queens-cb-08:2026-06-10",
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10"
+      },
+      "right": {
+        "notice_id": "20260429022",
+        "body_id": "queens-cb-11",
+        "event_date": "2026-05-04"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 37,
+          "detail": "37 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-08:2026-06-10::notice:20260528031",
+      "left": {
+        "minutes_id": "published:queens-cb-08:2026-06-10",
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10"
+      },
+      "right": {
+        "notice_id": "20260528031",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 5,
+          "detail": "5 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-08:2026-06-10::notice:20260610003",
+      "left": {
+        "minutes_id": "published:queens-cb-08:2026-06-10",
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10"
+      },
+      "right": {
+        "notice_id": "20260610003",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 7,
+          "detail": "7 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 3,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-08:2026-06-10::notice:20260618032",
+      "left": {
+        "minutes_id": "published:queens-cb-08:2026-06-10",
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10"
+      },
+      "right": {
+        "notice_id": "20260618032",
+        "body_id": "bronx-cb-01",
+        "event_date": "2026-06-25"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 15,
+          "detail": "15 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 4,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-08:2026-06-10::notice:20260603044",
+      "left": {
+        "minutes_id": "published:queens-cb-08:2026-06-10",
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10"
+      },
+      "right": {
+        "notice_id": "20260603044",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09"
+      },
+      "score": 0.5539,
+      "raw_score": 0.432729,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 1,
+          "detail": "1 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 1,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 5,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-08:2026-06-10::notice:20260527036",
+      "left": {
+        "minutes_id": "published:queens-cb-08:2026-06-10",
+        "body_id": "queens-cb-08",
+        "meeting_date": "2026-06-10"
+      },
+      "right": {
+        "notice_id": "20260527036",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 6,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-11:2026-05-04::notice:20260527036",
+      "left": {
+        "minutes_id": "published:queens-cb-11:2026-05-04",
+        "body_id": "queens-cb-11",
+        "meeting_date": "2026-05-04"
+      },
+      "right": {
+        "notice_id": "20260527036",
+        "body_id": "queens-cb-08",
+        "event_date": "2026-06-10"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 37,
+          "detail": "37 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-11:2026-05-04::notice:20260528031",
+      "left": {
+        "minutes_id": "published:queens-cb-11:2026-05-04",
+        "body_id": "queens-cb-11",
+        "meeting_date": "2026-05-04"
+      },
+      "right": {
+        "notice_id": "20260528031",
+        "body_id": "brooklyn-cb-10",
+        "event_date": "2026-06-15"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 42,
+          "detail": "42 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-11:2026-05-04::notice:20260603044",
+      "left": {
+        "minutes_id": "published:queens-cb-11:2026-05-04",
+        "body_id": "queens-cb-11",
+        "meeting_date": "2026-05-04"
+      },
+      "right": {
+        "notice_id": "20260603044",
+        "body_id": "bronx-cb-06",
+        "event_date": "2026-06-09"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 36,
+          "detail": "36 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 3,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-11:2026-05-04::notice:20260610003",
+      "left": {
+        "minutes_id": "published:queens-cb-11:2026-05-04",
+        "body_id": "queens-cb-11",
+        "meeting_date": "2026-05-04"
+      },
+      "right": {
+        "notice_id": "20260610003",
+        "body_id": "brooklyn-cb-18",
+        "event_date": "2026-06-17"
+      },
+      "score": 0.6421,
+      "raw_score": 1.169348,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "disagreement",
+          "agreement": false,
+          "value": false,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 44,
+          "detail": "44 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 0,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 4,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:queens-cb-11:2026-05-04::notice:20260429022",
+      "left": {
+        "minutes_id": "published:queens-cb-11:2026-05-04",
+        "body_id": "queens-cb-11",
+        "meeting_date": "2026-05-04"
+      },
+      "right": {
+        "notice_id": "20260429022",
+        "body_id": "queens-cb-11",
+        "event_date": "2026-05-04"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 5,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:manhattan-cb-06:2025-09-30::notice:20250328003",
+      "left": {
+        "minutes_id": "published:manhattan-cb-06:2025-09-30",
+        "body_id": "manhattan-cb-06",
+        "meeting_date": "2025-09-30"
+      },
+      "right": {
+        "notice_id": "20250328003",
+        "body_id": "manhattan-cb-06",
+        "event_date": "2025-04-09"
+      },
+      "score": 0.5539,
+      "raw_score": 0.432729,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 174,
+          "detail": "174 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 1,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:manhattan-cb-06:2025-09-30::notice:20250909023",
+      "left": {
+        "minutes_id": "published:manhattan-cb-06:2025-09-30",
+        "body_id": "manhattan-cb-06",
+        "meeting_date": "2025-09-30"
+      },
+      "right": {
+        "notice_id": "20250909023",
+        "body_id": "manhattan-cb-06",
+        "event_date": "2025-09-30"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:manhattan-cb-06:2025-04-09::notice:20250909023",
+      "left": {
+        "minutes_id": "published:manhattan-cb-06:2025-04-09",
+        "body_id": "manhattan-cb-06",
+        "meeting_date": "2025-04-09"
+      },
+      "right": {
+        "notice_id": "20250909023",
+        "body_id": "manhattan-cb-06",
+        "event_date": "2025-09-30"
+      },
+      "score": 0.5539,
+      "raw_score": 0.432729,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 174,
+          "detail": "174 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 1,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:manhattan-cb-06:2025-04-09::notice:20250328003",
+      "left": {
+        "minutes_id": "published:manhattan-cb-06:2025-04-09",
+        "body_id": "manhattan-cb-06",
+        "meeting_date": "2025-04-09"
+      },
+      "right": {
+        "notice_id": "20250328003",
+        "body_id": "manhattan-cb-06",
+        "event_date": "2025-04-09"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:staten-island-cb-01:2018-10-09::notice:20150714108",
+      "left": {
+        "minutes_id": "published:staten-island-cb-01:2018-10-09",
+        "body_id": "staten-island-cb-01",
+        "meeting_date": "2018-10-09"
+      },
+      "right": {
+        "notice_id": "20150714108",
+        "body_id": "staten-island-cb-01",
+        "event_date": "2015-07-21"
+      },
+      "score": 0.5539,
+      "raw_score": 0.432729,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 1176,
+          "detail": "1176 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 1,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:staten-island-cb-01:2018-10-09::notice:20180926111",
+      "left": {
+        "minutes_id": "published:staten-island-cb-01:2018-10-09",
+        "body_id": "staten-island-cb-01",
+        "meeting_date": "2018-10-09"
+      },
+      "right": {
+        "notice_id": "20180926111",
+        "body_id": "staten-island-cb-01",
+        "event_date": "2018-10-09"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:staten-island-cb-01:2015-07-21::notice:20180926111",
+      "left": {
+        "minutes_id": "published:staten-island-cb-01:2015-07-21",
+        "body_id": "staten-island-cb-01",
+        "meeting_date": "2015-07-21"
+      },
+      "right": {
+        "notice_id": "20180926111",
+        "body_id": "staten-island-cb-01",
+        "event_date": "2018-10-09"
+      },
+      "score": 0.5539,
+      "raw_score": 0.432729,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 1176,
+          "detail": "1176 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": 0.584674
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 1,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 1,
+      "review_eligible": false
+    },
+    {
+      "pair_id": "minutes:published:staten-island-cb-01:2015-07-21::notice:20150714108",
+      "left": {
+        "minutes_id": "published:staten-island-cb-01:2015-07-21",
+        "body_id": "staten-island-cb-01",
+        "meeting_date": "2015-07-21"
+      },
+      "right": {
+        "notice_id": "20150714108",
+        "body_id": "staten-island-cb-01",
+        "event_date": "2015-07-21"
+      },
+      "score": 0.4621,
+      "raw_score": -0.30389,
+      "evidence": [
+        {
+          "feature": "body_match",
+          "state": "agreement",
+          "agreement": true,
+          "value": true,
+          "detail": "Exact publisher body identifier comparison.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "date_proximity",
+          "state": "agreement",
+          "agreement": true,
+          "value": 0,
+          "detail": "0 day(s) apart.",
+          "m_probability": 0.75,
+          "u_probability": 0.8333,
+          "weight": -0.151945
+        },
+        {
+          "feature": "body_text",
+          "state": "disagreement",
+          "agreement": false,
+          "value": 0,
+          "detail": "Text token similarity 0.",
+          "m_probability": 0.5,
+          "u_probability": 0.5,
+          "weight": 0
+        },
+        {
+          "feature": "address_bbl",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No shared address or BBL evidence published.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "applicant_name",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No applicant name on both sides.",
+          "m_probability": 0.25,
+          "u_probability": 0.1667,
+          "weight": 0
+        },
+        {
+          "feature": "docket_fragment",
+          "state": "unavailable",
+          "agreement": null,
+          "value": null,
+          "detail": "No docket fragments on both sides.",
+          "m_probability": 0.75,
+          "u_probability": 0.1667,
+          "weight": 0
+        }
+      ],
+      "agreements": 2,
+      "available_features": 3,
+      "candidate_status": "candidate",
+      "operative_link_authorized": false,
+      "review_status": "pending",
+      "review_decision": null,
+      "rank": 2,
+      "review_eligible": false
+    }
+  ]
+}
