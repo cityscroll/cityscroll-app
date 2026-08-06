@@ -6,6 +6,7 @@ import { parseEntityRef } from "../site/entity_pivot.mjs";
 import {
   appointmentTitleCode,
   measureTitleCodeFamilyCoverage,
+  publisherTitleCode,
 } from "../tools/build_title_code_family_coverage.mjs";
 
 const coverage = JSON.parse(readFileSync(
@@ -27,6 +28,7 @@ test("measurement joins exams and appointments only through exact title codes", 
     generatedAt: "2026-08-05",
   });
   assert.equal(appointmentTitleCode({ additional_description_1: "Title Code: 10026; X" }), "10026");
+  assert.equal(publisherTitleCode({ list_title_code: " 10026 " }), "10026");
   assert.equal(measured.historical_exams.exact_title_code, 1);
   assert.equal(measured.historical_exams.exact_title_code_rate, 0.5);
   assert.equal(measured.appointments.exact_title_code, 1);
@@ -57,6 +59,27 @@ test("reviewed confirmations add measured coverage without hand-flipping promoti
   assert.equal(measured.promotion.passed, false);
   assert.equal(measured.promotion.publish_family_ui, false);
   assert.equal(measured.promotion.publish_entity_pivots, false);
+});
+
+test("publisher candidates do not become reviewed audit labels", () => {
+  const measured = measureTitleCodeFamilyCoverage({
+    historyRecords: [
+      { exam_number: "0001", title_code: null, exam_title: "Command Officer" },
+    ],
+    annualScheduleRows: [
+      { exam_number: "0001", list_title_code: "53054" },
+    ],
+    reviewedRegistry: {
+      confirmations: [],
+      rejections: [],
+    },
+    generatedAt: "2026-08-05",
+  });
+  assert.equal(measured.backfill.candidate_rows_found, 1);
+  assert.equal(measured.backfill.reviewed_rows, 0);
+  assert.equal(measured.precision_audit.reviewed, 0);
+  assert.equal(measured.historical_exams.exact_plus_confirmed, 0);
+  assert.equal(measured.promotion.passed, false);
 });
 
 test("committed trial stops below the standing promotion bars", () => {
