@@ -45,6 +45,7 @@ function itemHTML(item, kind, h) {
     land: "property_xd_relation_land",
     tax_lien: "property_xd_relation_tax_lien",
     cofo: "property_xd_relation_cofo",
+    ll48: "property_xd_relation_ll48",
   }[kind];
   const conflicts = (item.conflicts || []).map((conflict) => `<span class="note parcel-biography-conflict">${h.escape(conflict.note || "Conflicting source values retained")}: ${conflict.values.map((value) => `${h.escape(value.source)} = ${h.escape(value.value)}`).join(" · ")}</span>`).join("");
   return `<li data-parcel-biography-item="${h.escape(kind)}" data-link-confidence="strong">
@@ -67,6 +68,7 @@ export function parcelBiographySectionHTML(view, kind, helpers = {}) {
     land: "property_xd_land_heading",
     tax_lien: "property_xd_tax_lien_heading",
     cofo: "property_xd_cofo_heading",
+    ll48: "property_xd_ll48_heading",
   }[kind];
   const items = (section.items || []).map((item) => itemHTML(item, kind, h)).join("");
   const emptyKey = {
@@ -74,6 +76,7 @@ export function parcelBiographySectionHTML(view, kind, helpers = {}) {
     land: "property_xd_land_empty",
     tax_lien: "property_xd_tax_lien_empty",
     cofo: "property_xd_cofo_empty",
+    ll48: "property_xd_ll48_empty",
   }[kind];
   return `<section class="parcel-biography-domain property-xd-${h.escape(kind)}" data-parcel-biography-domain="${h.escape(kind)}" data-status="${h.escape(section.status || "")}">
     <h3 class="ei-domain-h">${h.t(headingKey)}</h3>
@@ -92,6 +95,7 @@ export function observedParcelBiographyHTML(view, { href = "", ...helpers } = {}
     <div class="parcel-biography-domains">
       ${parcelBiographySectionHTML(view, "property", h)}
       ${parcelBiographySectionHTML(view, "land", h)}
+      ${parcelBiographySectionHTML(view, "ll48", h)}
       ${parcelBiographySectionHTML(view, "tax_lien", h)}
       ${parcelBiographySectionHTML(view, "cofo", h)}
     </div>

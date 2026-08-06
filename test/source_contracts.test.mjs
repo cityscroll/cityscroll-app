@@ -55,6 +55,17 @@ test("OCP and ZAP contracts record their warehouse product snapshots", () => {
   }
 });
 
+test("LL48 contract records the exact-BBL graph-slice measurement", () => {
+  const registry = loadSourceContracts();
+  const contract = registry.contracts.find((entry) => entry.id === "suitability-city-owned-leased-property-ll48");
+  assert.equal(contract.dataset_id, "4e2n-s75z");
+  assert.deepEqual(contract.required_fields, ["bbl", "address", "parcel_name", "agency", "potential_urban_ag", "date_created"]);
+  assert.equal(contract.join_measurement.eligible, 320);
+  assert.equal(contract.join_measurement.linked, 23);
+  assert.equal(contract.join_measurement.rate, 0.0719);
+  assert.equal(contract.warehouse_snapshot.artifact, "site/data/property_ll48_lookup.json");
+});
+
 test("recorded fixtures reject missing fields and non-tabular source shapes", () => {
   const registry = loadSourceContracts();
   const missingField = structuredClone(loadSourceContractFixtures());

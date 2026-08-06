@@ -82,6 +82,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `ocp-recent-contract-awards` | landed | PIN, request_id, agency | — | — |
 | `passport-public-contracts` | landed | EPIN, PIN, contract_id, agency | high-risk | 74% (all_notices_to_contracts) |
 | `passport-public-rfx` | landed | EPIN, PIN, procurement_name, agency | high-risk | 78% (either_contracts_or_rfx) |
+| `suitability-city-owned-leased-property-ll48` | landed | BBL | — | — |
 | `ulurp-recommendation-pdfs` | disabled | ulurp_numbers | high-risk | 0.5% (zap_ulurp_numbered_either) |
 | `ulurp-recommendations` | disabled | ulurp_numbers | high-risk | 0.5% (zap_ulurp_numbered_either) |
 | `unregistered-zoning-application-portal-projects` | not_ingested | project_id, BBL, ulurp_numbers | — | — |
@@ -196,4 +197,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `5b97ceb8a19a…` · materialized 11 · candidates 59 · class changes 0.
+Last refresh fingerprint: `7caedac59fa8…` · materialized 11 · candidates 68 · class changes 0.

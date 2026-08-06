@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_at": "2026-08-05",
+  "observed_at": "2026-08-06",
   "artifact": "site/data/property_disposition_cohort.json",
   "join_method": "exact_normalized_bbl",
   "text_match_used": false,

@@ -123,6 +123,21 @@ test("CofO evidence is an exact-BBL graph slice with row provenance", () => {
   assert.ok(Object.values(cofo.by_bbl).flat().every((row) => row.provenance?.source_record_id));
 });
 
+test("LL48 suitability is an exact-BBL evidence group with measured coverage", () => {
+  const view = buildObservedParcelBiography({
+    bbl: "1000730008",
+    crossDomain,
+    taxLien,
+  });
+  assert.equal(view.sections.ll48.status, "observed");
+  assert.equal(view.sections.ll48.items[0].source, "NYC Open Data · LL48 suitability");
+  assert.equal(view.sections.ll48.items[0].method, "exact_bbl_v1");
+  assert.equal(view.sections.ll48.coverage.eligible, 320);
+  assert.equal(view.sections.ll48.coverage.linked, 23);
+  assert.equal(view.sections.ll48.coverage.rate, 0.0719);
+  assert.match(view.sections.ll48.note || "", /^$/);
+});
+
 test("unmatched ZAP section is an explicit corpus gap, not a citywide claim", () => {
   const view = buildObservedParcelBiography({
     bbl: "5006840261",

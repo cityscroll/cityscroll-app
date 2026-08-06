@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "property_disposition_exact_bbl_v1",
-  "generated_at": "2026-08-05T16:41:43.124Z",
+  "generated_at": "2026-08-06T00:05:16.576Z",
   "sources": {
     "observations": {
       "artifact": "site/data/property_domain_observations.json",
@@ -12,7 +12,7 @@
     "cross_domain": {
       "artifact": "site/data/property_cross_domain_lookup.json",
       "version": "property_cross_domain_v1",
-      "generated_at": "2026-08-05T16:41:43.124Z"
+      "generated_at": "2026-08-06T00:05:16.576Z"
     }
   },
   "cohort": {
