@@ -561,11 +561,11 @@ async function loadSolicitationMwbe(r, el){
 
 // Prime-win sub-outreach card: pure helpers in site/sub_outreach.mjs.
 // Consumes lifecycle.award_prime_goal only; never invents goal % or apology empties.
-let subOutreachToolsPromise = null;
+// The home landing auto-selects its first procurement row, so start this small
+// pure helper with the existing eager phase graph. That keeps the measured shell
+// inventory stable while the card itself remains detail-only.
+let subOutreachToolsPromise = import("../sub_outreach.mjs").catch(() => null);
 function ensureSubOutreachTools(){
-  if(!subOutreachToolsPromise){
-    subOutreachToolsPromise = import("../sub_outreach.mjs").catch(() => null);
-  }
   return subOutreachToolsPromise;
 }
 

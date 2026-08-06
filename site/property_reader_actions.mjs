@@ -29,6 +29,9 @@ export const PROPERTY_ACTION_ORDER = Object.freeze([
   "request_accommodation", "review_documents", "review_result",
 ]);
 
+export const PROPERTY_PROGRAM_STATES = Object.freeze(["active", "superseded"]);
+export const PROPERTY_INSTANCE_STATES = Object.freeze(["current", "closed", "undated"]);
+
 const ACTION_RAIL_META = Object.freeze({
   bid: ["disposition_phase_action_bid", "Bid or submit a proposal", "bid_checklist"],
   inspect: ["property_action_open_notice", "Inspect the site or sale item", "document"],
@@ -88,6 +91,21 @@ function sourceFields(row) {
   return ["short_title", ...BODY_FIELDS]
     .map((field) => ({ field, text: cleanNoticeText(row?.[field]) }))
     .filter((entry) => entry.text);
+}
+
+/**
+ * A standing program is a publication about a recurring offering, not one
+ * dated auction. Its publication window may expire while the underlying
+ * program continues elsewhere, so it uses the program clock below.
+ */
+export function isStandingPropertyProgram(row = {}) {
+  if (row?.program_state || row?.program_valid_through) return true;
+  const text = sourceFields(row).map((entry) => entry.text).join(" ");
+  const recurring = /\b(?:every week|weekly|ongoing|standing program)\b/i.test(text);
+  const marketplace = /\b(?:auction|govdeals|nyc-dcas-fleet|fleet)\b/i.test(text);
+  const dcasAuto = /\bauto auction\b/i.test(text)
+    && /citywide administrative services|dcas/i.test(`${row?.agency_name || ""} ${text}`);
+  return (recurring && marketplace) || dcasAuto;
 }
 
 function boundedSpan(text, match) {
@@ -238,6 +256,27 @@ function isoDay(value) {
   return Number.isFinite(parsed) ? new Date(parsed).toISOString().slice(0, 10) : null;
 }
 
+function typedInstanceActionBy(events) {
+  const accepted = new Set([
+    "bid_deadline", "proposal_deadline", "auction_window", "auction_window_end",
+    "sale", "auction", "hearing", "hearing_start", "event_date", "result_award",
+  ]);
+  for (const event of Array.isArray(events) ? events : []) {
+    if (!accepted.has(eventKind(event))) continue;
+    const value = eventDate(event);
+    if (value) return isoDay(value);
+  }
+  return null;
+}
+
+function resolveProgramState(row, today, standing) {
+  if (!standing) return null;
+  const supplied = String(row?.program_state || "").toLowerCase();
+  if (PROPERTY_PROGRAM_STATES.includes(supplied)) return supplied;
+  const validThrough = isoDay(row?.program_valid_through || row?.end_date);
+  return validThrough && validThrough < today ? "superseded" : "active";
+}
+
 /**
  * One lifecycle decision shared by action tense, default-feed qualification, and
  * card state. Typed action dates lead when present; otherwise the City Record
@@ -248,20 +287,56 @@ export function resolvePropertyActionLifecycle(row = {}, options = {}) {
   if (supplied?.state) return supplied;
   const today = isoDay(options.today) || new Date().toISOString().slice(0, 10);
   const commercial = options.commercial || row?.commercial || null;
+  const events = candidateEvents(row, options);
+  const standing = isStandingPropertyProgram(row);
+  const programState = resolveProgramState(row, today, standing);
+  const programValidThrough = standing
+    ? isoDay(row?.program_valid_through || row?.end_date)
+    : null;
   const sourceEnd = isoDay(row?.end_date);
   const commercialClose = commercial ? commercialCloseDate(row, commercial) : null;
   const hasTypedCommercialEvent = Array.isArray(commercial?.timed_events)
     && commercial.timed_events.length > 0;
+  // A precomputed commercial close without a typed event can be the old example
+  // date from a standing-program edition. Only a dated event earns the instance
+  // clock; the publication window stays on program_valid_through.
+  const typedEventClose = hasTypedCommercialEvent ? commercialClose : typedInstanceActionBy(events);
+
+  if (standing) {
+    const instanceClose = typedEventClose;
+    const instanceState = instanceClose
+      ? (instanceClose < today ? "closed" : "current")
+      : "undated";
+    const state = programState === "superseded"
+      ? "superseded"
+      : (instanceState === "closed" ? "closed" : "open");
+    return {
+      schema_version: 2,
+      state,
+      closed_at: instanceState === "closed" ? instanceClose : null,
+      action_by: instanceClose,
+      basis: instanceClose
+        ? (hasTypedCommercialEvent ? "typed_commercial_event" : "typed_instance_event")
+        : "standing_program",
+      program_state: programState,
+      program_valid_through: programValidThrough,
+      instance_state: instanceState,
+      today,
+    };
+  }
   // A typed bid/hearing event is the action boundary. Otherwise City Record's
   // publication end is the lifecycle boundary (important for recurring sales,
   // whose title/body can retain an older example auction date).
   const close = hasTypedCommercialEvent ? commercialClose : (sourceEnd || commercialClose);
   if (close) {
     return {
-      schema_version: 1,
+      schema_version: 2,
       state: close < today ? "closed" : "open",
       closed_at: close < today ? close : null,
       action_by: close,
+      program_state: null,
+      program_valid_through: null,
+      instance_state: close < today ? "closed" : "current",
       basis: hasTypedCommercialEvent
         ? "typed_commercial_event"
         : (sourceEnd ? "source_end_date" : "commercial_close_date"),
@@ -269,17 +344,49 @@ export function resolvePropertyActionLifecycle(row = {}, options = {}) {
     };
   }
   return {
-    schema_version: 1,
+    schema_version: 2,
     state: "undated",
     closed_at: null,
     action_by: null,
+    program_state: null,
+    program_valid_through: null,
+    instance_state: "undated",
     basis: "no_close_date",
     today,
   };
 }
 
+/**
+ * Mechanical guard for the two clocks: a standing publication end may never
+ * become an instance deadline. Dated instances must carry the instance clock.
+ */
+export function detectPropertyProgramInstanceParity(row = {}, options = {}) {
+  const lifecycle = resolvePropertyActionLifecycle(row, options);
+  const findings = [];
+  if (isStandingPropertyProgram(row)
+    && lifecycle.instance_state === "undated"
+    && lifecycle.action_by
+    && lifecycle.action_by === lifecycle.program_valid_through) {
+    findings.push({
+      code: "standing_program_publication_end_as_instance_deadline",
+      action_by: lifecycle.action_by,
+      program_valid_through: lifecycle.program_valid_through,
+    });
+  }
+  return { ok: findings.length === 0, findings, lifecycle };
+}
+
+export function assertPropertyProgramInstanceParity(row = {}, options = {}) {
+  const result = detectPropertyProgramInstanceParity(row, options);
+  if (!result.ok) {
+    throw new Error(`Property two-clock violation: ${result.findings.map((finding) => finding.code).join(", ")}`);
+  }
+  return true;
+}
+
 function actionStatus(kind, row, byWhen, today, lifecycle) {
   if (kind === "review_result") return "historical";
+  if (lifecycle?.program_state === "superseded") return "historical";
   // Published records can remain useful after a hearing or sale closes.
   if (kind === "review_documents" && !isoDay(byWhen?.value)) return "undated";
   if (lifecycle?.state === "closed") return "historical";
@@ -347,6 +454,8 @@ export function propertyReaderActionsFromTimedEvents(row = {}, options = {}) {
       methods: [],
       by_when: byWhen,
       timed_event: event,
+      instance_state: isoDay(value) < today ? "closed" : "current",
+      action_by: isoDay(value),
     };
     action.enabling_info = propertyActionEnablingInfo(row, action);
     return action;
@@ -485,6 +594,10 @@ function makeAction(kind, pattern, row, options, lifecycle) {
     how: evidence,
     methods: statedMethods(row, evidence, kind),
     by_when: byWhen,
+    instance_state: isoDay(byWhen?.value)
+      ? (isoDay(byWhen.value) < today ? "closed" : "current")
+      : "undated",
+    action_by: isoDay(byWhen?.value),
   };
   action.enabling_info = propertyActionEnablingInfo(row, action);
   return action;
