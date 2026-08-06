@@ -13,6 +13,9 @@ civic-content-gates/civic_content_gates/reading_level.py
 civic-content-gates/civic_content_gates/suite.py
 civic-content-gates/pyproject.toml
 site/app/money-history.mjs
+site/data/procurement_spine_sources.json
+site/data/entity_intelligence_lookup.json
+worker/src/data/entity_intelligence_lookup.json
 test/functional/01_permalinks_deadlines_people.py
 test/functional/02_glance_today_property_a11y.py
 test/functional/03_watch_quiz_feeds.py

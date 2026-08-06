@@ -68,7 +68,6 @@ export function flattenIndexToEdges(index, opts = {}) {
         input_value: link.provenance?.input_value || null,
         observed_at: link.provenance?.observed_at || null,
       });
-      if (edges.length >= maxEdges) return edges;
     }
   }
   // Stable order for snapshots
@@ -78,7 +77,7 @@ export function flattenIndexToEdges(index, opts = {}) {
     || String(a.from_ref).localeCompare(String(b.from_ref))
     || String(a.to_ref).localeCompare(String(b.to_ref)),
   );
-  return edges;
+  return edges.slice(0, maxEdges);
 }
 
 /**
