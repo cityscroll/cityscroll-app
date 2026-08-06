@@ -72,7 +72,12 @@ function vendorRef(stem) {
  * a strong, non-fuzzy profile attachment; tentative and review-only candidates
  * do not contribute.
  */
-export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt = {}) {
+export function buildVendorFootprintCoverage(
+  doc = {},
+  ocpLookup = {},
+  erReceipt = {},
+  procurementSpine = {},
+) {
   const rows = Array.isArray(ocpLookup?.rows) ? ocpLookup.rows : [];
   const knownByRef = new Map();
   const blockers = {
@@ -123,17 +128,37 @@ export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt
 
   const vendorEntities = (doc?.entities || []).filter((entity) => entity?.root?.kind === "vendor");
   const vendorRoots = knownByRef.size;
-  const multiDomainVendors = vendorEntities.filter((entity) =>
+  const crossDomainVendors = vendorEntities.filter((entity) =>
     knownByRef.has(entity?.root?.ref) && (entity?.metrics?.domains_matched || 0) >= 2).length;
+  const spineCoverage = procurementSpine?.coverage?.passport_contracts || {};
+  const multiKindVendors = Number(spineCoverage?.award_corroboration?.vendor_roots) || 0;
+  const multiKindVendorRate = Number.isFinite(spineCoverage?.award_corroboration?.rate)
+    ? spineCoverage.award_corroboration.rate
+    : (vendorRoots ? multiKindVendors / vendorRoots : null);
   const snapshotRows = rows.length;
   const linkedAwards = publishedRows;
   const awardLinkageRate = snapshotRows ? linkedAwards / snapshotRows : null;
-  const multiDomainVendorRate = vendorRoots ? multiDomainVendors / vendorRoots : null;
   const noNameRate = snapshotRows ? blockers.missing_vendor_name / snapshotRows : null;
   const blockedRows = Object.values(blockers).reduce((total, count) => total + count, 0);
-  // Awards have a full materialized denominator. The other shipped sections
-  // remain bounded observations and therefore retain explicit unknown coverage.
-  const sectionsWithMeasuredDenominator = 1;
+  // Awards and exact, population-backed contract corroboration have measured
+  // denominators. Payments and civic domains remain explicitly unknown until
+  // their own population snapshots exist.
+  const sectionDenominators = {
+    awards: { status: "measured", rows: snapshotRows, basis: "full OCP award census" },
+    contracts: spineCoverage.section_denominator || {
+      status: "unknown",
+      rows: null,
+      basis: "Population denominator not materialized",
+    },
+    payments: { status: "unknown", rows: null, basis: "Population denominator not materialized" },
+    land: { status: "unknown", rows: null, basis: "Vendor footprint denominator not materialized" },
+    property: { status: "unknown", rows: null, basis: "Vendor footprint denominator not materialized" },
+    rules: { status: "unknown", rows: null, basis: "Vendor footprint denominator not materialized" },
+    meetings: { status: "unknown", rows: null, basis: "Vendor footprint denominator not materialized" },
+    franchise: { status: "unknown", rows: null, basis: "Vendor footprint denominator not materialized" },
+  };
+  const sectionsWithMeasuredDenominator = Object.values(sectionDenominators)
+    .filter((section) => section.status === "measured").length;
   const sectionDenominatorRate = sectionsWithMeasuredDenominator / VENDOR_FOOTPRINT_SECTIONS.length;
   const review = erReceipt?.quality_review || {};
   const reviewedLinks = Number(review.accepted_pair_candidates_reviewed) || 0;
@@ -152,9 +177,9 @@ export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt
     },
     multi_domain_vendor_rate: {
       threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.multi_domain_vendor_rate,
-      actual: roundRate(multiDomainVendorRate),
-      passed: Number.isFinite(multiDomainVendorRate)
-        && multiDomainVendorRate >= VENDOR_FOOTPRINT_PROMOTION_GATES.multi_domain_vendor_rate,
+      actual: roundRate(vendorRoots ? crossDomainVendors / vendorRoots : null),
+      passed: Number.isFinite(vendorRoots ? crossDomainVendors / vendorRoots : null)
+        && (crossDomainVendors / vendorRoots) >= VENDOR_FOOTPRINT_PROMOTION_GATES.multi_domain_vendor_rate,
     },
     section_denominator_rate: {
       threshold: VENDOR_FOOTPRINT_PROMOTION_GATES.section_denominator_rate,
@@ -192,8 +217,11 @@ export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt
       no_name_awards: blockers.missing_vendor_name,
       normalization_blocked_awards: blockers.empty_vendor_stem,
       vendor_roots: vendorRoots,
-      multi_domain_vendor_roots: multiDomainVendors,
-      multi_domain_vendor_rate: roundRate(multiDomainVendorRate),
+      multi_domain_vendor_roots: crossDomainVendors,
+      multi_domain_vendor_rate: roundRate(vendorRoots ? crossDomainVendors / vendorRoots : null),
+      multi_kind_vendor_roots: multiKindVendors,
+      multi_kind_vendor_rate: roundRate(multiKindVendorRate),
+      section_denominators: sectionDenominators,
     },
     promotion: { eligible: promoted, gates },
     census: {
@@ -222,6 +250,8 @@ export function buildVendorFootprintCoverage(doc = {}, ocpLookup = {}, erReceipt
       denominator_row_count: snapshotRows,
       numerator: "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       precision_receipt: "warehouse/receipts/proof/wh04_er_batch_latest.json",
+      procurement_spine: "site/data/procurement_spine_sources.json",
+      procurement_spine_observed_on: procurementSpine?.observed_on || null,
     },
   };
 }
@@ -343,7 +373,7 @@ export function loadJsonIfExists(filePath) {
 export function collectProcurementSpineObservations(root) {
   const doc = loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"));
   if (!doc?.rows || typeof doc.rows !== "object") {
-    return { observations: [], coverage: {}, row_counts: {} };
+    return { observations: [], coverage: {}, row_counts: {}, observed_on: null };
   }
 
   const observations = [];
@@ -353,13 +383,21 @@ export function collectProcurementSpineObservations(root) {
       if (observation) observations.push(observation);
     }
   };
-  add(doc.rows.passport_contracts, observationFromPassportContractRow, "passport-public-contracts");
+  // The source is population-backed, but the public entity graph is an
+  // intentionally bounded materialization. Keep the census in the receipt and
+  // feed only a deterministic prefix into the graph so one large source cannot
+  // evict the other domains or their join-key examples from the 200-root cap.
+  const passportRows = Array.isArray(doc.rows.passport_contracts)
+    ? doc.rows.passport_contracts.slice(0, 500)
+    : [];
+  add(passportRows, observationFromPassportContractRow, "passport-public-contracts");
   add(doc.rows.checkbook_contracts, observationFromCheckbookContractRow, "checkbook-contracts");
   add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
 
   return {
     observations,
     coverage: doc.sources || {},
+    observed_on: doc.observed_on || null,
     row_counts: Object.fromEntries(
       Object.entries(doc.rows).map(([name, rows]) => [name, Array.isArray(rows) ? rows.length : 0]),
     ),
@@ -709,6 +747,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     corpus,
     loadJsonIfExists(path.join(root, "site/data/ocp_awards_warehouse_lookup.json")) || {},
     loadJsonIfExists(path.join(root, "warehouse/receipts/proof/wh04_er_batch_latest.json")) || {},
+    procurementSpine,
   );
 
   // Prefer a multi-domain demo that includes live people when present; else Parks;
@@ -752,7 +791,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     vendor_footprint: vendorFootprint,
     procurement_spine: {
       schema_version: 1,
-      observed_on: loadJsonIfExists(path.join(root, "site/data/procurement_spine_sources.json"))?.observed_on || null,
+      observed_on: procurementSpine.observed_on || null,
       coverage: procurementSpine.coverage,
       row_counts: procurementSpine.row_counts,
       note: "Procurement keys attach contract and payment evidence; they do not assert legal-vendor identity.",
