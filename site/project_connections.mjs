@@ -5,6 +5,8 @@
  * display evidence only and never join projects or tax lots.
  */
 
+import { bblReaderLabel } from "./bbl_reader.mjs";
+
 export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "applicant", relation: "applicant_agency", surface: "land" },
   { id: "parcels", relation: "sited_on_parcel", surface: "land" },
@@ -190,7 +192,7 @@ export function buildProjectConnectionEvidence({
   const parcels = groups.find((group) => group.id === "parcels");
   parcels.items = bbls.map((bbl) => ({
     ref: `bbl:${bbl}`,
-    label: `BBL ${bbl}`,
+    label: bblReaderLabel(bbl),
     relation: "sited_on_parcel",
     confidence: "strong",
     evidence: "exact ZAP project_id → BBL",

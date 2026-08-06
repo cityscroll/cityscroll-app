@@ -248,3 +248,11 @@ test("project pivot adds a third typed ref without changing the opened money len
   ]);
   assert.deepEqual(CrolScope.watchFromScope(parsed, { lens: "money" }).filter.entity_refs_all, parsed.facets.values.entity_refs_all);
 });
+
+test("project parcels carry a reader-friendly BBL label", () => {
+  const parcels = evidence().groups.find((group) => group.id === "parcels");
+  assert.deepEqual(parcels.items.map((item) => item.label), [
+    "Manhattan — Block 1767, Lot 1 (BBL 1017670001)",
+    "Manhattan — Block 1767, Lot 2 (BBL 1017670002)",
+  ]);
+});

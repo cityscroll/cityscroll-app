@@ -287,7 +287,7 @@ function typedPivotHTML(href, text){
     link_confidence: "strong",
   }, typed.options);
 }
-const pivotA = (href, text) => globalThis.CrolEntityPivots?.entityFromHref(href,cleanText(text)) ? typedPivotHTML(href,text) : `<a class="pivot" href="${href}">${escUiHtml(text)}</a>`;
+const pivotA = (href, text) => !href ? escUiHtml(text) : globalThis.CrolEntityPivots?.entityFromHref(href,cleanText(text)) ? typedPivotHTML(href,text) : `<a class="pivot" href="${href}">${escUiHtml(text)}</a>`;
 
 const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
 function vendorStem(name){

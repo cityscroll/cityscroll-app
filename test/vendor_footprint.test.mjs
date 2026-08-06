@@ -89,7 +89,7 @@ test("build derives award coverage from the full snapshot aggregate, not the bou
   assert.deepEqual(coverage.excluded_confidence, ["tentative", "review_only", "not_scored"]);
 });
 
-test("vendor footprint renders load-bearing coverage copy and strong objects only", () => {
+test("vendor footprint renders populated groups and strong objects only", () => {
   const response = {
     ok: true,
     root: { kind: "vendor", ref: REF, display_name: "Acme & Co." },
@@ -130,7 +130,8 @@ test("vendor footprint renders load-bearing coverage copy and strong objects onl
   assert.match(html, /Awards <span class="ct">2<\/span>/);
   assert.match(html, /1 link we’ve confirmed/);
   assert.match(html, /2 records mention this name/);
-  assert.match(html, /We haven’t measured how complete this section is yet/);
+  assert.doesNotMatch(html, /We haven’t measured how complete this section is yet/);
+  assert.doesNotMatch(html, /snapshot|source_record_id/i);
   assert.match(html, /See Acme &amp; Co\.&#39;s awards \(2\)/);
   assert.match(html, /Strong award/);
   assert.doesNotMatch(html, /Weak candidate/);
@@ -186,7 +187,7 @@ test("promotion removes qualifier labels but never admits tentative rows", () =>
   assert.doesNotMatch(html, /showing 1 of 1/);
   assert.doesNotMatch(html, /coverage not measured/);
   assert.doesNotMatch(html, /Maybe/);
-  assert.match(html, /links we’ve confirmed/);
+  assert.match(html, /link we’ve confirmed/);
 });
 
 test("PASSPort/Checkbook contract corroboration (VI-02) gets its own section, distinct from award and payment", () => {

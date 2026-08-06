@@ -95,6 +95,44 @@ test("entity chips link accepted refs, band tentative matches, and suppress revi
   assert.doesNotMatch(review, /href=/);
 });
 
+test("tentative evidence never renders an empty affordance", () => {
+  const withoutEvidence = entityChipHTML({
+    ref: CAMBA,
+    label: "CAMBA",
+    link_confidence: "tentative",
+  });
+  assert.doesNotMatch(withoutEvidence, /Evidence/);
+  assert.doesNotMatch(withoutEvidence, /title=""/);
+
+  const withFeatures = entityChipHTML({
+    ref: CAMBA,
+    label: "CAMBA",
+    link_confidence: "tentative",
+    evidence: { comparison_features: { stem_equal: true, shared_tokens: ["CAMBA"] } },
+  });
+  assert.match(withFeatures, /Evidence/);
+  assert.match(withFeatures, /Names reduce to the same name/);
+  assert.match(withFeatures, /Names share key terms/);
+});
+
+test("unmatched agency identities fail closed instead of creating dead profile pivots", () => {
+  assert.equal(
+    entityHref({
+      ref: "agency:id:edc-economic-development-corporation-for-nyc",
+      label: "EDC - Economic Development Corporation for NYC",
+    }),
+    "",
+  );
+  const text = entityChipHTML({
+    ref: "agency:id:edc-economic-development-corporation-for-nyc",
+    label: "EDC - Economic Development Corporation for NYC",
+    link_confidence: "tentative",
+    evidence: "land_primary_applicant",
+  });
+  assert.doesNotMatch(text, /href=/);
+  assert.match(text, /organization/);
+});
+
 test("agency display aliases resolve to the same canonical identity and never enter the href", () => {
   for (const arrival of [
     "Design and Construction",

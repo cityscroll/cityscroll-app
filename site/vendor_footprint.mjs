@@ -148,20 +148,14 @@ function objectHTML(object, formatDate) {
     ? `<a class="pivot" href="${escapeHTML(href)}">${label}</a>`
     : label;
   const when = object?.when ? `<span class="ei-when">${escapeHTML(formatDate(object.when))}</span>` : "";
-  const provenance = object?.provenance
-    ? `<span class="ei-prov">${escapeHTML(object.provenance.source_system || "")} · ${escapeHTML(object.provenance.source_record_id || "")}</span>`
-    : "";
-  return `<li class="ei-obj"><span class="ei-obj-main">${linkedLabel}${when}</span>${provenance}</li>`;
+  return `<li class="ei-obj"><span class="ei-obj-main">${linkedLabel}${when}</span></li>`;
 }
 
 export function renderVendorFootprintHTML(response = {}, { formatDate = (value) => value } = {}) {
   const model = vendorFootprintModel(response);
   if (!model) return "";
   const displayName = model.root.display_name || model.root.stem || "this vendor";
-  const sections = model.groups.map((group) => {
-    const coverage = model.qualifier_required && group.coverage_kind === "unknown"
-      ? `<p class="vendor-footprint-coverage" data-coverage-kind="unknown">We haven’t measured how complete this section is yet.</p>`
-      : "";
+  const sections = model.groups.filter((group) => group.scope_count > 0).map((group) => {
     const confirmed = group.confirmed_count;
     const mentions = group.mention_count;
     let identitySummary = "";
@@ -183,19 +177,15 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
       : "";
     return `<section class="ei-domain vendor-footprint-section" data-footprint-section="${group.id}">
       <h3 class="ei-domain-h">${escapeHTML(group.label)} <span class="ct">${group.scope_count.toLocaleString("en-US")}</span></h3>
-      ${coverage}
       <p class="vendor-footprint-match-summary">${escapeHTML(identitySummary)}</p>
       ${body}
       ${viewAll}
     </section>`;
   }).join("");
-  const asOf = model.provenance?.denominator_materialized_at
-    ? ` Awards last counted ${escapeHTML(formatDate(model.provenance.denominator_materialized_at))}.`
-    : "";
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
     <div class="ei-domains">${sections}</div>
-    <p class="aidprov ei-method">This summary separates links we’ve confirmed from records that mention the name.${asOf}</p>
+    <p class="aidprov ei-method">This summary groups the public records connected with this name.</p>
   </div>`;
 }

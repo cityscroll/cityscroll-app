@@ -382,9 +382,9 @@ function agencyIdentityHTML(resp){
   const byId = {}; (prov.sources||[]).forEach(s => { byId[s.id] = s; });
   const srcLink = (sid, textKey) => {
     const s = byId[sid];
-    if(!s || !s.url) return `${t(textKey)} (${sid})`;
+    if(!s || !s.url) return t(textKey);
     const surl = escUiHtml(s.url);
-    return `<a href="${surl}" ${EXT_ATTRS}>${t(textKey)} (${escUiHtml(sid)})${extSR()}</a>`;
+    return `<a href="${surl}" ${EXT_ATTRS}>${t(textKey)}${extSR()}</a>`;
   };
   const provLine = t("agency_identity_provenance_html", {
     roster: srcLink("t3jq-9nkf", "agency_identity_source_roster"),
@@ -422,7 +422,9 @@ function entityIntelligenceHTML(resp){
     return t("entity_intel_status_empty");
   };
 
-  const domainBlocks = view.groups.map((group) => {
+  const domainBlocks = view.groups.filter((group) =>
+    group.status === "matched" && (group.objects || []).length > 0
+  ).map((group) => {
     const key = group.domain;
     const objs = [...group.objects] // Source: receipt-backed /entity-intelligence response.
       .sort((a,b)=>(a.confidence==="strong"?0:1)-(b.confidence==="strong"?0:1))
@@ -448,15 +450,12 @@ function entityIntelligenceHTML(resp){
       const connectionLine = connections
         ? `<span class="ei-connections"><span aria-hidden="true">↳</span> ${connections}</span>`
         : "";
-      const prov = o.provenance
-        ? `<span class="ei-prov">${escUiHtml(o.provenance.source_system||"")} · ${escUiHtml(o.provenance.source_record_id||"")}</span>`
-        : "";
-      return `<li class="ei-obj" data-link-confidence="${escUiHtml(o.confidence||"")}"><span class="ei-obj-main">${href}${when}${conf}</span>${connectionLine}${prov}</li>`;
+      return `<li class="ei-obj" data-link-confidence="${escUiHtml(o.confidence||"")}"><span class="ei-obj-main">${href}${when}${conf}</span>${connectionLine}</li>`;
     }).join("");
     const list = items
       ? `<ul class="ei-list">${items}</ul>`
       : `<p class="ei-empty">${statusLabel(group.status)}</p>`;
-    const count = group.strong_count ? ` <span class="ct">${fmtNumber(group.strong_count)}</span>` : "";
+    const count = "";
     const possible = group.tentative_count
       ? `<span class="ei-possible">${t("entity_intel_summary_possible",{n:fmtNumber(group.tentative_count)})}</span>`
       : "";
@@ -473,29 +472,11 @@ function entityIntelligenceHTML(resp){
   }).join("");
 
   const rootName = escUiHtml(resp.root.display_name || resp.root.ref || "");
-  const summary = view.summary;
-  const vintage = summary.vintage
-    ? `<span>${t("entity_intel_vintage",{date:escUiHtml(fdate(summary.vintage))})}</span>`
-    : "";
-  const coverage = summary.coverage_eligible != null && summary.coverage_rate != null
-    ? t("entity_intel_coverage_measured",{
-        linked:fmtNumber(summary.coverage_linked),
-        eligible:fmtNumber(summary.coverage_eligible),
-      })
-    : t("entity_intel_coverage_unknown");
-
   return `<div class="eicard" id="entity-intelligence" data-root="${escUiHtml(resp.root.ref||"")}">
       <div class="ei-heading-row"><div class="chain-h">${t("entity_intel_heading")}</div>
         <a class="act ei-apply" href="${escUiHtml(view.apply_scope_href)}">${t("entity_intel_apply_scope")}</a></div>
       <p class="ei-lead">${t("entity_intel_lead", {name: rootName})}</p>
-      <div class="ei-summary" aria-label="${escUiHtml(t("entity_intel_heading"))}">
-        <span><b>${fmtNumber(summary.observed_domains)}</b> ${t("entity_intel_summary_domains")}</span>
-        <span><b>${fmtNumber(summary.strong_count)}</b> ${t("entity_intel_summary_verified")}</span>
-        ${summary.tentative_count?`<span>${t("entity_intel_summary_possible",{n:fmtNumber(summary.tentative_count)})}</span>`:""}
-        ${vintage}
-      </div>
       <div class="ei-domains">${domainBlocks}</div>
-      <p class="aidprov ei-method">${coverage} ${t("entity_intel_method_note")}</p>
     </div>`;
 }
 

@@ -9,6 +9,7 @@
 
 import { reconcileAgencyIdentity, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { cleanNoticeText } from "./text_clean.mjs";
+import { bblReaderLabel } from "./bbl_reader.mjs";
 export { reconcileAgencyIdentity, resolveAgencyIdentity };
 
 const clean = (value, max = 320) =>
@@ -62,7 +63,10 @@ export function parseEntityRef(value) {
 export function entityRouteRef(kind, value) {
   const label = cleanNoticeText(value).slice(0, 320);
   if (!label) return "";
-  if (kind === "agency") return `agency:id:${resolveAgencyIdentity(label).canonical_id}`;
+  if (kind === "agency") {
+    const identity = resolveAgencyIdentity(label);
+    return identity.matched ? `agency:id:${identity.canonical_id}` : "";
+  }
   if (kind === "vendor") return `vendor:stem:${encodeURIComponent(vendorStem(label))}`;
   if (kind === "official") return `entity:official:${encodeURIComponent(label)}`;
   if (kind === "project" && /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(label)) {
@@ -89,6 +93,14 @@ export function entityHref(entity = {}, options = {}) {
     return scopeTools.routeHashFromScope(composed, { surface: options.surface || "property" });
   }
   if (parsed.kind === "project") return `#land/${encodeURIComponent(parsed.id)}`;
+  if (parsed.kind === "agency") {
+    const canonicalId = parsed.id.replace(/^id:/, "");
+    const identity = resolveAgencyIdentity(canonicalId);
+    // A generated agency id is routable only when it belongs to the reviewed
+    // City Record agency crosswalk. Other named organizations stay readable
+    // text instead of becoming dead profiles.
+    if (!identity.matched || identity.canonical_id !== canonicalId) return "";
+  }
   const query = new URLSearchParams();
   let route = "";
   if (parsed.kind === "official") {
@@ -154,14 +166,20 @@ function vendorStem(value) {
  * review-only/unknown candidates remain escaped text.
  */
 export function entityChipHTML(entity = {}, options = {}) {
-  const label = escapeHTML(entity.label || "");
+  const parsed = parseEntityRef(entity.ref);
+  const displayLabel = parsed?.kind === "parcel"
+    ? bblReaderLabel(parsed.id) || entity.label || ""
+    : parsed?.kind === "agency" && !resolveAgencyIdentity(parsed.id.replace(/^id:/, "")).matched
+      ? `${entity.label || ""} (organization)`
+      : entity.label || "";
+  const label = escapeHTML(displayLabel);
   const confidence = clean(entity.link_confidence || entity.confidence).toLowerCase();
   if (!label || !["strong", "tentative"].includes(confidence)) return label;
   const href = entityHref(entity, options);
   if (!href) return label;
 
   const relation = clean(entity.relation, 80);
-  const evidence = clean(entity.evidence, 240);
+  const evidence = readerEvidenceText(entity.evidence);
   const relationAttr = relation ? ` data-relation="${escapeAttr(relation)}"` : "";
   const extraClass = clean(options.className, 80).replace(/[^a-zA-Z0-9 _-]/g, "");
   const classes = ["pivot", "entity-pivot", extraClass].filter(Boolean).join(" ");
@@ -172,4 +190,36 @@ export function entityChipHTML(entity = {}, options = {}) {
     ? ` <span class="entity-pivot-evidence" title="${escapeAttr(evidence)}">Evidence</span>`
     : "";
   return `<span class="entity-pivot-tentative" data-link-confidence="tentative">${link} <span class="entity-pivot-band">Possible match</span>${evidenceHTML}</span>`;
+}
+
+function readerEvidenceText(value) {
+  if (typeof value === "string") {
+    const labels = {
+      land_primary_applicant: "Listed as the project applicant",
+      exact_project_id: "Uses the same project ID",
+      exact_ulurp_token: "Uses the same ULURP number",
+      exact_bbl: "Uses the same BBL",
+      agency_canonical_v1: "Uses the same agency name",
+    };
+    return clean(labels[value] || value, 240);
+  }
+  if (!value || typeof value !== "object") return "";
+  const features = value.comparison_features || value.features || value;
+  const labels = {
+    stem_equal: "Names reduce to the same name",
+    name_containment: "One name contains the other",
+    token_jaccard: "Names share key terms",
+    shared_tokens: "Names share key terms",
+    contract_id_equal: "Contract IDs match",
+    pin_equal: "PINs match",
+  };
+  const fired = Object.entries(labels)
+    .filter(([key]) => {
+      const candidate = features[key];
+      return candidate === true
+        || (Array.isArray(candidate) && candidate.length)
+        || (key === "token_jaccard" && Number(candidate) > 0);
+    })
+    .map(([, label]) => label);
+  return [...new Set(fired)].join(" · ").slice(0, 240);
 }
