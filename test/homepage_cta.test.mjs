@@ -54,7 +54,10 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
   assert.match(index, /lens:\s*"money"/);
   assert.match(index, /filter:\s*\{\}/);
   assert.match(index, /freq:\s*"weekly"/);
-  assert.match(index, /data-i18n="subscribe_confirm_note"/);
+  assert.match(index, /id="homeCtaManage"/);
+  assert.doesNotMatch(index, /We'll email a link to confirm\./);
+  assert.doesNotMatch(index, /data-i18n="subscribe_confirm_note"/);
+  assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
 });
 
 test("signup surfaces have no Turnstile widget or client token gate", () => {
@@ -79,7 +82,8 @@ test("about feedback form has no Turnstile and exposes public feedback inbox", (
 });
 
 test("subscribe confirmation copy is short (no double-opt-in ceremony on the form)", () => {
-  assert.match(i18n, /subscribe_confirm_note:\s*"We'll email a link to confirm\."/);
+  assert.doesNotMatch(i18n, /subscribe_confirm_note:/);
+  assert.doesNotMatch(index, /We'll email a link to confirm\./);
   assert.match(i18n, /check_inbox:\s*"Check your inbox to confirm\."/);
   assert.match(i18n, /sent_confirm_to:\s*"Sent to \{email\}\."/);
   assert.doesNotMatch(i18n, /no one can sign you up but you/);

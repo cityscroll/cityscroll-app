@@ -21,6 +21,7 @@ import {
   isPinsSessionPayload,
   sessionPayload,
   sessionCookieHeader,
+  canIssueSharedSessionCookie,
   SESSION_COOKIE_TTL_SECONDS,
   MAX_SESSION_ATTEMPTS_PER_IP_DAY,
 } from "./lib/session.mjs";
@@ -61,7 +62,7 @@ export async function handleRedirect(req, env, ctx, pathname) {
 }
 
 async function exchangeSessionCookie(req, env, token) {
-  if (!env.TOKEN_SECRET || !token) return null;
+  if (!env.TOKEN_SECRET || !token || !canIssueSharedSessionCookie(req.url)) return null;
   try {
     const ip = req.headers.get("CF-Connecting-IP") || "";
     if (ip && env.SUBS && await overActorLimit(env.SUBS, "session", ip, MAX_SESSION_ATTEMPTS_PER_IP_DAY)) {

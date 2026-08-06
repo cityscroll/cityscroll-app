@@ -541,8 +541,8 @@
     {
       "id": "alerts-watch-templates",
       "url": "following/",
-      "feature": "association-monitor-packs",
-      "description": "Open Following with monitor packs beside the single saved-scope flow.",
+      "feature": "ready-made-watch-sets",
+      "description": "Open Following with ready-made watch sets below the personal controls.",
       "expectations": {
         "visible": [
           {
@@ -550,7 +550,7 @@
           },
           {
             "selector": "#packs",
-            "text": "Monitor packs"
+            "text": "Watch sets"
           },
           {
             "selector": ".following-pack"
@@ -752,14 +752,15 @@
       "id": "alerts-builder",
       "url": "following/",
       "feature": "alert-builder",
-      "description": "Open Following with one saved-scope form, cadence choices, public preview, and personal boundary.",
+      "description": "Open Following with saved-watch management first and watch-creation controls below.",
       "expectations": {
         "visible": [
           {
             "selector": "[data-following-preview-form]"
           },
           {
-            "selector": "[data-following-scope-panel]"
+            "selector": "[data-following-subscribe-panel]",
+            "text": "Pick filters to see matches."
           },
           {
             "selector": "[data-personal-watch-list]"
@@ -778,19 +779,15 @@
       "url": "following/",
       "feature": "alerts-rollup-prefs",
       "localOnly": true,
-      "description": "Show the public digest explanation and the personal management boundary in Following.",
+      "description": "Show the saved-watch management surface at the top of Following.",
       "expectations": {
         "visible": [
           {
-            "selector": ".following-explainer",
-            "text": "One digest"
-          },
-          {
             "selector": "#your-following",
-            "text": "Your following"
+            "text": "Your watches"
           },
           {
-            "selector": "[data-personal-watch-list] a[href*='/prefs']"
+            "selector": "[data-personal-watch-list]"
           }
         ],
         "notVisible": [
@@ -963,14 +960,16 @@
       "id": "alerts-context-carry-notice",
       "url": "following/",
       "feature": "alerts-context-carry",
-      "description": "Show the public saved-scope summary and preview boundary used by contextual watch links.",
+      "description": "Show the watch-creation boundary used by contextual watch links.",
       "expectations": {
         "visible": [
           {
-            "selector": "[data-following-scope-panel]"
+            "selector": "#create",
+            "text": "Pick a topic or place"
           },
           {
-            "selector": "[data-following-preview-panel]"
+            "selector": "[data-following-subscribe-panel]",
+            "text": "Pick filters to see matches."
           },
           {
             "selector": "[data-following-preview-form]"

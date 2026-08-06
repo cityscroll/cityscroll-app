@@ -13,6 +13,8 @@ export const EMAIL_SESSION_TTL_SECONDS = 30 * 24 * 3600;
 /** Session cookie lifetime after a successful exchange (~14 days). */
 export const SESSION_COOKIE_TTL_SECONDS = 14 * 24 * 3600;
 export const SESSION_COOKIE_NAME = "cs_session";
+export const SESSION_COOKIE_DOMAIN = "cityscroll.org";
+export const SESSION_COOKIE_ISSUER_HOST = "api.cityscroll.org";
 export const SESSION_SCOPE = "pins";
 export const MAX_SESSION_ATTEMPTS_PER_IP_DAY = 60;
 
@@ -83,26 +85,47 @@ export function safeNextUrl(raw, fallback = "https://cityscroll.org/") {
   }
 }
 
-export function sessionCookieHeader(token, { maxAge = SESSION_COOKIE_TTL_SECONDS, clear = false } = {}) {
+export function sessionCookieHeader(token, {
+  maxAge = SESSION_COOKIE_TTL_SECONDS,
+  clear = false,
+  domain = SESSION_COOKIE_DOMAIN,
+} = {}) {
+  const domainAttr = domain ? `; Domain=${domain}` : "";
   if (clear) {
-    return `${SESSION_COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`;
+    return `${SESSION_COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/${domainAttr}; Max-Age=0`;
   }
-  return `${SESSION_COOKIE_NAME}=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`;
+  return `${SESSION_COOKIE_NAME}=${token}; HttpOnly; Secure; SameSite=Lax; Path=/${domainAttr}; Max-Age=${maxAge}`;
 }
 
-/** Parse Cookie header for our session cookie value (or null). */
-export function readSessionCookie(cookieHeader) {
+/** True only where a response can set a cookie shared with canonical documents. */
+export function canIssueSharedSessionCookie(requestUrl) {
+  try {
+    const url = new URL(requestUrl);
+    return url.protocol === "https:" && url.hostname === SESSION_COOKIE_ISSUER_HOST;
+  } catch {
+    return false;
+  }
+}
+
+/** Parse every value for our session cookie (legacy host-only + shared domain). */
+export function readSessionCookies(cookieHeader) {
   if (typeof cookieHeader !== "string" || !cookieHeader) return null;
+  const values = [];
   for (const part of cookieHeader.split(";")) {
     const i = part.indexOf("=");
     if (i < 0) continue;
     const name = part.slice(0, i).trim();
     if (name === SESSION_COOKIE_NAME) {
       const v = part.slice(i + 1).trim();
-      return v || null;
+      if (v) values.push(v);
     }
   }
-  return null;
+  return values;
+}
+
+/** Parse the first session cookie value for legacy callers and simple fixtures. */
+export function readSessionCookie(cookieHeader) {
+  return readSessionCookies(cookieHeader)?.[0] || null;
 }
 
 // ---- pin store merge (union, dedupe by type+id) ----------------------------

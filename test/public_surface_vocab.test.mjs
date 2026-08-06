@@ -74,6 +74,45 @@ for value in good:
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
 
+test("public-surface vocabulary detector rejects the retired watch curriculum", () => {
+  const code = String.raw`
+import importlib.util
+from pathlib import Path
+path = Path("test/standards/public_surface_vocab.py")
+spec = importlib.util.spec_from_file_location("public_surface_vocab", path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+bad = [
+    "We'll email a link to confirm.",
+    "Email and privacy",
+    "Confirm first",
+    "This is called double opt-in.",
+    "All your watches",
+    "Save a set of filters once.",
+    "Monitor packs",
+    "District digests",
+    "One digest",
+    "Saved filters",
+    "What this watch follows",
+    "The preview and each email use these same terms.",
+    "Choose a topic or place",
+    "Preview your filters first.",
+]
+for value in bad:
+    assert any(pattern.search(value) for _, pattern in module.DIDACTIC_COPY_PATTERNS), value
+good = [
+    "Manage your watches",
+    "Watch sets",
+    "Pick filters to see matches.",
+    "Each email includes a link to stop a watch.",
+]
+for value in good:
+    assert not any(pattern.search(value) for _, pattern in module.DIDACTIC_COPY_PATTERNS), value
+`;
+  const result = spawnSync("python3", ["-c", code], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
 test("public-surface vocabulary detector rejects vendor-footprint implementation language", () => {
   const code = String.raw`
 import importlib.util
