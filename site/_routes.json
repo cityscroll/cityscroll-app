@@ -7,6 +7,8 @@
     "/officials/*",
     "/browse",
     "/exams/*",
+    "/following/packs/*",
+    "/districts/council/*",
     "/browse/*"
   ],
   "exclude": [

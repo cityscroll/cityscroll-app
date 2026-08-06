@@ -222,6 +222,10 @@
     exam_process:{sheets:["Exam"]},
     exam_outcomes:{sheets:["Exam"]},
     exam_provenance:{sheets:["Exam"]},
+    object_identity:{sheets:["Object"]},
+    object_actions:{sheets:["Object"]},
+    object_members:{sheets:["Object","Records"]},
+    object_provenance:{sheets:["Object","Sources"]},
   });
 
   const asArray=value=>Array.isArray(value)?value:(value==null||value===""?[]:[value]);
