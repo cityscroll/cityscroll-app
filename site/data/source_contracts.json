@@ -754,6 +754,67 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "nyc-jobs-postings",
+      "name": "Jobs NYC Postings",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "kpav-sd4t",
+      "landing_page": "https://data.cityofnewyork.us/d/kpav-sd4t",
+      "required_fields": [
+        "agency",
+        "civil_service_title",
+        "title_code_no"
+      ],
+      "max_stale_days": 14,
+      "publisher_cadence": "Ongoing job-posting updates",
+      "product_freshness": "A bounded build-time snapshot supplies exact publisher labels for the title-code alias registry; job descriptions and applicant data are not copied into the public artifact.",
+      "used_for": "Exact-label title-code aliases and agency observations for title-family coverage measurement.",
+      "code_references": [
+        {
+          "path": "tools/build_title_code_alias_registry.mjs",
+          "contains": "kpav-sd4t"
+        },
+        {
+          "path": "site/data/exam_sources/title_code_alias_registry.json",
+          "contains": "kpav-sd4t"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "civil-service-titles",
+      "name": "NYC Civil Service Titles",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "nzjr-3966",
+      "landing_page": "https://data.cityofnewyork.us/d/nzjr-3966",
+      "required_fields": [
+        "title",
+        "descr"
+      ],
+      "max_stale_days": 90,
+      "publisher_cadence": "Periodic DCAS title-table updates",
+      "product_freshness": "The canonical title table is materialized with the exact-label registry and is used to reject aliases whose publisher code has no canonical identity or whose label differs from the canonical description.",
+      "used_for": "Canonical civil-service title-code identities backing the exact-label alias registry.",
+      "code_references": [
+        {
+          "path": "tools/build_title_code_alias_registry.mjs",
+          "contains": "nzjr-3966"
+        },
+        {
+          "path": "site/data/exam_sources/title_code_alias_registry.json",
+          "contains": "nzjr-3966"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "civil-service-list-certification",
       "name": "Civil Service List Certification",
       "owner": "NYC Department of Citywide Administrative Services",

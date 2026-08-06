@@ -219,6 +219,22 @@
       ]
     },
     {
+      "id": "nyc-jobs-postings",
+      "kind": "socrata",
+      "identifier": "kpav-sd4t",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["agency", "civil_service_title", "title_code_no"]
+    },
+    {
+      "id": "civil-service-titles",
+      "kind": "socrata",
+      "identifier": "nzjr-3966",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["title", "descr"]
+    },
+    {
       "id": "dcas-eligible-list-utilization",
       "kind": "socrata",
       "identifier": "qjzt-ytn9",

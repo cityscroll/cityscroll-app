@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-05",
+  "generated_at": "2026-08-06",
   "method": {
     "family_key": "exact publisher-supplied title_code",
     "exam_revision_key": "exact normalized exam_number",
@@ -10,7 +10,8 @@
   "sources": {
     "historical_exams": "annual_schedule_history.json",
     "appointments": "../staffing_default_hires.json",
-    "title_names": "../title_crosswalk.json"
+    "title_names": "../title_crosswalk.json",
+    "title_code_alias_registry": "title_code_alias_registry.json"
   },
   "historical_exams": {
     "cohort": 1271,
@@ -19,9 +20,14 @@
     "missing_title_code": 904,
     "unique_exact_families": 216,
     "crosswalk_named": 166,
+    "alias_registry_exact": 137,
+    "alias_registry_exact_rate": 0.1078,
+    "alias_registry_unique_codes": 80,
     "reviewed_confirmed": 5,
     "exact_plus_confirmed": 372,
-    "exact_plus_confirmed_rate": 0.2927
+    "exact_plus_confirmed_rate": 0.2927,
+    "exact_plus_alias": 504,
+    "exact_plus_alias_rate": 0.3965
   },
   "appointments": {
     "cohort": 80,
@@ -46,7 +52,7 @@
     ]
   },
   "backfill": {
-    "shortfall_to_30pct": 15,
+    "shortfall_to_30pct": 0,
     "candidate_rows_found": 0,
     "reviewed_rows": 0,
     "source_scan": [
@@ -75,20 +81,155 @@
     "note": "no exact publisher-supplied exam_number->title_code candidates found in checked official sources"
   },
   "precision_audit": {
-    "reviewed": 18,
-    "correct": 5,
-    "precision": 0.2778,
-    "status": "reviewed_labels_recorded",
-    "note": "Explicit review labels are measured separately from publisher-supplied exact title codes; pending labels are excluded from precision."
+    "method": "fellegi_sunter_style_empirical_m_u",
+    "cohort": "historical residuals after exact-label alias resolution",
+    "reviewed": 55,
+    "correct": 45,
+    "precision": 0.8182,
+    "status": "residual_only_held_out",
+    "alias_registry_exact_precision": 1,
+    "residual_gold_rows": 312,
+    "residual_missing_rows": 767,
+    "calibration": {
+      "method": "fellegi_sunter_style_empirical_m_u",
+      "gold_pairs": 312,
+      "train_pairs": 253,
+      "held_out_pairs": 59,
+      "held_out_target_codes_in_catalog": 55,
+      "held_out_top1_correct": 45,
+      "held_out_top1_precision": 0.8182,
+      "feature_parameters": {
+        "title_text": {
+          "m": 0.9617,
+          "u": 0.0039
+        },
+        "agency_cooccurrence": {
+          "m": 0.0043,
+          "u": 0.0039
+        },
+        "salary_overlap": {
+          "m": 0.9957,
+          "u": 0.9961
+        },
+        "temporal_consistency": {
+          "m": 0.9404,
+          "u": 0.0039
+        },
+        "sibling_schedule": {
+          "m": 0.9404,
+          "u": 0.0039
+        }
+      },
+      "threshold_metrics": [
+        {
+          "threshold": 0.7,
+          "reviewed": 55,
+          "correct": 45,
+          "precision": 0.8182
+        },
+        {
+          "threshold": 0.8,
+          "reviewed": 55,
+          "correct": 45,
+          "precision": 0.8182
+        },
+        {
+          "threshold": 0.9,
+          "reviewed": 55,
+          "correct": 45,
+          "precision": 0.8182
+        }
+      ],
+      "excluded_from_calibration": 4,
+      "note": "Gold code labels are used only to fit feature m/u rates and evaluate holdout precision; no confirmation is written."
+    },
+    "note": "Fellegi–Sunter is calibrated and evaluated only on historical rows not resolved by the exact publisher-labeled alias registry; candidate scores never authorize a public fact.",
+    "legacy_review": {
+      "reviewed": 18,
+      "correct": 5,
+      "precision": 0.2778
+    }
+  },
+  "residual_fellegi_sunter": {
+    "alias_resolved_rows": 137,
+    "alias_resolved_unique_codes": 80,
+    "residual_gold_rows": 312,
+    "residual_missing_rows": 767,
+    "candidates": 6136,
+    "calibration": {
+      "method": "fellegi_sunter_style_empirical_m_u",
+      "gold_pairs": 312,
+      "train_pairs": 253,
+      "held_out_pairs": 59,
+      "held_out_target_codes_in_catalog": 55,
+      "held_out_top1_correct": 45,
+      "held_out_top1_precision": 0.8182,
+      "feature_parameters": {
+        "title_text": {
+          "m": 0.9617,
+          "u": 0.0039
+        },
+        "agency_cooccurrence": {
+          "m": 0.0043,
+          "u": 0.0039
+        },
+        "salary_overlap": {
+          "m": 0.9957,
+          "u": 0.9961
+        },
+        "temporal_consistency": {
+          "m": 0.9404,
+          "u": 0.0039
+        },
+        "sibling_schedule": {
+          "m": 0.9404,
+          "u": 0.0039
+        }
+      },
+      "threshold_metrics": [
+        {
+          "threshold": 0.7,
+          "reviewed": 55,
+          "correct": 45,
+          "precision": 0.8182
+        },
+        {
+          "threshold": 0.8,
+          "reviewed": 55,
+          "correct": 45,
+          "precision": 0.8182
+        },
+        {
+          "threshold": 0.9,
+          "reviewed": 55,
+          "correct": 45,
+          "precision": 0.8182
+        }
+      ],
+      "excluded_from_calibration": 4,
+      "note": "Gold code labels are used only to fit feature m/u rates and evaluate holdout precision; no confirmation is written."
+    },
+    "potential": {
+      "threshold": 0.8,
+      "minimum_agreements": 2,
+      "eligible_pairs": 2648,
+      "eligible_left_entities": 666,
+      "baseline_confirmed": 504,
+      "denominator": 1271,
+      "if_confirmed_count": 1170,
+      "if_confirmed_coverage": 0.9205,
+      "note": "Potential only: candidates are not confirmations and are not used by operative joins."
+    }
   },
   "promotion": {
     "historical_exam_coverage_floor": 0.3,
     "audit_precision_floor": 0.95,
-    "coverage_passed": false,
+    "coverage_rate": 0.3965,
+    "coverage_passed": true,
     "precision_passed": false,
     "passed": false,
     "publish_family_ui": false,
     "publish_entity_pivots": false,
-    "verdict": "STOP — exact plus reviewed historical exam coverage or reviewed precision is below the promotion bar; title-code family UI and pivots remain disabled."
+    "verdict": "STOP — exact-label coverage or residual precision is below the promotion bar; title-code family UI and pivots remain disabled."
   }
 }
