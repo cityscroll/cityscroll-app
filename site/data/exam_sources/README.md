@@ -37,6 +37,18 @@ Sources and refresh rules:
 - `annual_schedule.json` — DCAS/NYC Open Data dataset `4ptz-hmtc`. DCAS says the
   public schedule is updated monthly; the dataset metadata currently says annual
   updates and quarterly data changes. Refresh monthly and record both claims.
+- `title_code_alias_registry.json` — exact-label spine built from the official
+  Jobs NYC Postings dataset `kpav-sd4t` and canonical NYC Civil Service Titles
+  dataset `nzjr-3966`. A row enters the registry only when the publisher's
+  `civil_service_title` and `title_code_no` exactly normalize to the canonical
+  title description and `title` code. The registry is used for coverage
+  measurement; unmatched historical rows remain residuals for the
+  Fellegi–Sunter candidate scorer and are not public facts.
+
+  Refresh with `node tools/build_title_code_alias_registry.mjs`, then rebuild
+  coverage with `node tools/build_title_code_family_coverage.mjs`. The committed
+  artifact records source row counts, dataset update times, accepted aliases,
+  canonical identities, and ambiguity counts.
 - `annual_schedule_history.json` — one canonical row per exam from historical
   revisions in that same `4ptz-hmtc` dataset. Exact normalized `exam_number` is
   the join key; the latest `data_current_as_of` revision wins, with application

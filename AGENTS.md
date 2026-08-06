@@ -1205,6 +1205,17 @@ future alerts surface; that surface is a **separate gated card** (not shipped
 here). Rebuild after mapping edits: `node tools/build_staffing_exams.mjs`.
 Verify: `node --test test/exam_interest_taxonomy.test.mjs`.
 
+## Title-code alias spine
+
+`site/data/exam_sources/title_code_alias_registry.json` is the exact-label
+alias registry built from Jobs NYC Postings (`kpav-sd4t`) and the canonical NYC
+Civil Service Titles table (`nzjr-3966`). It accepts only a unique normalized
+label with one canonical code; ambiguous labels are excluded. Rebuild the
+registry with `node tools/build_title_code_alias_registry.mjs`, then run
+`node tools/build_title_code_family_coverage.mjs` to measure historical
+coverage and residual-only Fellegi–Sunter precision. Candidate scores remain
+review-only; the family UI promotion flags are owned by that coverage artifact.
+
 ## Digest watermark recovery (catch-up digests)
 
 **markSeen policy (hard rule):** `markSeen` advances the delivery-adjacent seen set
