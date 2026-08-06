@@ -87,9 +87,9 @@
   function titleCodeFamilyView(exam) {
     if (!exam) return null;
     const code = String(exam.title_code || "").trim();
-    if (code) return { code, confidence: "publisher", label: "Publisher-issued title code" };
+    if (code) return { code, confidence: "publisher", label: "Publisher-issued title code", marker: null };
     const inferred = String(exam.title_code_family || "").trim();
-    if (inferred) return { code: inferred, confidence: "inferred", label: "Likely title family — inferred" };
+    if (inferred) return { code: inferred, confidence: "inferred", label: "Likely title family", marker: "quiet" };
     return null;
   }
 

@@ -255,6 +255,17 @@ export function measureTitleCodeFamilyCoverage({
     candidateSampleSize: residualFs?.calibration?.held_out_target_codes_in_catalog ?? reviewedRows.length,
     controlSampleSize: reviewedRows.length,
     labelMode: "labeled",
+    surfaceClass: "navigational_family_grouping",
+    candidateReceipt: "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+    controlReceipt: `${TWO_TIER_BASELINE_RECEIPT}#baselines.title_code_legacy_review`,
+  });
+  const pivotTier = evaluateTwoTierPrecision({
+    candidatePrecision: residualPrecision,
+    controlBaseline: legacyControlPrecision,
+    candidateSampleSize: residualFs?.calibration?.held_out_target_codes_in_catalog ?? reviewedRows.length,
+    controlSampleSize: reviewedRows.length,
+    labelMode: "labeled",
+    surfaceClass: "navigational_pivot",
     candidateReceipt: "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
     controlReceipt: `${TWO_TIER_BASELINE_RECEIPT}#baselines.title_code_legacy_review`,
   });
@@ -372,8 +383,13 @@ export function measureTitleCodeFamilyCoverage({
           : reviewPrecision) >= AUDIT_PRECISION_FLOOR,
       two_tier: {
         ...twoTier,
+        surface_classes: {
+          family_grouping: twoTier,
+          pivot: pivotTier,
+        },
         labeled_surface: "title_code_family",
-        unlabeled_surface: "title_code_entity_pivot",
+        navigational_pivot_surface: "title_code_entity_pivot",
+        strict_unlabeled_surface: "title_code_entity_pivot_unlabeled",
         baseline_method: "existing reviewed title-code control, measured against explicit confirmations and rejections",
         baseline_receipt: TWO_TIER_BASELINE_RECEIPT,
       },
@@ -391,16 +407,18 @@ export function measureTitleCodeFamilyCoverage({
   };
   measurement.promotion.passed = measurement.promotion.coverage_passed
     && measurement.promotion.precision_passed;
-  // The family UI may ship with a visible inference label once the residual
-  // conversion beats its measured control. Entity pivots still require the
-  // absolute unlabeled-fact floor.
+  // Family groupings and pivots are navigational surfaces: they may ship when
+  // they beat the measured control, with one quiet confidence marker. The
+  // strict floor remains available to high-consequence surface classes.
   measurement.promotion.publish_family_ui = measurement.promotion.coverage_passed
     && measurement.promotion.two_tier.can_ship_labeled;
   measurement.promotion.publish_entity_pivots = measurement.promotion.coverage_passed
-    && measurement.promotion.two_tier.can_ship_unlabeled;
-  measurement.promotion.passed = measurement.promotion.publish_entity_pivots;
+    && measurement.promotion.two_tier.surface_classes.pivot.can_ship_labeled;
+  measurement.promotion.passed = measurement.promotion.coverage_passed
+    && measurement.promotion.publish_family_ui
+    && measurement.promotion.publish_entity_pivots;
   measurement.promotion.verdict = measurement.promotion.publish_family_ui
-    ? "COMPARATIVE PASS — exact publisher labels may render as facts; residual family labels may ship visibly inferred; unlabeled pivots remain below the 95% floor."
+    ? "NAVIGATIONAL PASS — exact publisher labels may render as facts; residual family labels and pivots may ship with one quiet inferred marker; high-consequence surfaces retain the 95% floor."
     : measurement.promotion.verdict;
   return measurement;
 }

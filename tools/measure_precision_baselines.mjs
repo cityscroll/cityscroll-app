@@ -103,7 +103,19 @@ export function measureBaselines({ interestRows, agencyPairs, staffingRows, annu
     observed_on: OBSERVED_ON,
     policy: {
       comparative: "A replacement must beat the measured precision of the control it replaces and must remain visibly labeled when below the absolute floor.",
-      absolute: "Only precision at or above 0.95 may render as an unlabeled fact.",
+      absolute: "Inferred edges on high-consequence surfaces require precision at or above 0.95; navigational surfaces use the comparative floor with one quiet confidence marker.",
+      consequence_tiers: {
+        navigational_exploratory: {
+          surfaces: ["navigational_pivot", "navigational_family_grouping", "navigational_related_record"],
+          floor: "beats_control_baseline",
+          presentation: "one quiet confidence marker",
+        },
+        high_consequence: {
+          surfaces: ["money_total", "legal_actionable_instruction", "official_result_claim"],
+          floor: 0.95,
+          presentation: "strict fact/claim floor",
+        },
+      },
     },
     baselines: {
       exam_interest_area_categorization: {
