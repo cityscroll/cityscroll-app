@@ -467,6 +467,8 @@ export function emptyReviewedRegistry(kind, observedOn) {
     status: "review_only",
     confirmations: [],
     rejections: [],
+    pending: [],
+    review_batches: [],
     operative_links_enabled: false,
     policy: "Only a later explicit review may add a confirmation; candidate scores never authorize a public fact or operative link.",
   };

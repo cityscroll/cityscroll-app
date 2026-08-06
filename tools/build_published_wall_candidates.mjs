@@ -33,6 +33,34 @@ async function json(relative) {
   return JSON.parse(await readFile(path.join(ROOT, relative), "utf8"));
 }
 
+async function reviewedRegistry(file, kind) {
+  try {
+    return JSON.parse(await readFile(file, "utf8"));
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+    return emptyReviewedRegistry(kind, OBSERVED_ON);
+  }
+}
+
+function validateReviewedRegistry(registry, candidates, kind) {
+  assert.equal(registry.schema_version, 1, `${kind} registry schema version changed`);
+  assert.equal(registry.registry_kind, kind, `${kind} registry kind changed`);
+  assert.equal(registry.operative_links_enabled, false, `${kind} review cannot enable operative links`);
+  const rows = [
+    ...(registry.confirmations || []),
+    ...(registry.rejections || []),
+    ...(registry.pending || []),
+  ];
+  const candidateIds = new Set(candidates.map((row) => row.pair_id));
+  const seen = new Set();
+  for (const row of rows) {
+    assert.ok(candidateIds.has(row.pair_id), `${kind} review references unknown candidate ${row.pair_id}`);
+    assert.ok(!seen.has(row.pair_id), `${kind} review repeats ${row.pair_id}`);
+    assert.ok(row.reviewer && row.reviewed_at && row.reason, `${kind} review row is incomplete for ${row.pair_id}`);
+    seen.add(row.pair_id);
+  }
+}
+
 function serialize(value) {
   // Preserve source-derived job titles after JSON parsing while avoiding a
   // false-positive public-surface hit on a source-title keyword.
@@ -165,6 +193,11 @@ async function build() {
     candidates: minutesCandidates,
   };
 
+  const titleRegistry = await reviewedRegistry(OUTPUTS.titleRegistry, "title_code_confirmations");
+  const minutesRegistry = await reviewedRegistry(OUTPUTS.minutesRegistry, "non_council_minutes_confirmations");
+  validateReviewedRegistry(titleRegistry, titleCandidates, "title_code_confirmations");
+  validateReviewedRegistry(minutesRegistry, minutesCandidates, "non_council_minutes_confirmations");
+
   const measurement = {
     schema_version: 1,
     schema: "cityscroll.published_walls.measurement.v1",
@@ -194,9 +227,9 @@ async function build() {
   await mkdir(OUTPUT_DIR, { recursive: true });
   const files = {
     [OUTPUTS.titleCandidates]: titleArtifact,
-    [OUTPUTS.titleRegistry]: emptyReviewedRegistry("title_code_confirmations", OBSERVED_ON),
+    [OUTPUTS.titleRegistry]: titleRegistry,
     [OUTPUTS.minutesCandidates]: minutesArtifact,
-    [OUTPUTS.minutesRegistry]: emptyReviewedRegistry("non_council_minutes_confirmations", OBSERVED_ON),
+    [OUTPUTS.minutesRegistry]: minutesRegistry,
     [OUTPUTS.measurement]: measurement,
   };
   for (const [file, value] of Object.entries(files)) {

@@ -18,7 +18,10 @@
     "exact_title_code_rate": 0.2887,
     "missing_title_code": 904,
     "unique_exact_families": 216,
-    "crosswalk_named": 166
+    "crosswalk_named": 166,
+    "reviewed_confirmed": 5,
+    "exact_plus_confirmed": 372,
+    "exact_plus_confirmed_rate": 0.2927
   },
   "appointments": {
     "cohort": 80,
@@ -72,11 +75,11 @@
     "note": "no exact publisher-supplied exam_number->title_code candidates found in checked official sources"
   },
   "precision_audit": {
-    "reviewed": 0,
-    "correct": 0,
-    "precision": null,
-    "status": "not_run_below_coverage_floor",
-    "note": "The exact-key coverage gate failed, so no title-text candidate audit was used to promote a family surface."
+    "reviewed": 18,
+    "correct": 5,
+    "precision": 0.2778,
+    "status": "reviewed_labels_recorded",
+    "note": "Explicit review labels are measured separately from publisher-supplied exact title codes; pending labels are excluded from precision."
   },
   "promotion": {
     "historical_exam_coverage_floor": 0.3,
@@ -86,6 +89,6 @@
     "passed": false,
     "publish_family_ui": false,
     "publish_entity_pivots": false,
-    "verdict": "STOP — exact historical exam coverage is below the 30% floor; title-code family UI and pivots remain disabled."
+    "verdict": "STOP — exact plus reviewed historical exam coverage or reviewed precision is below the promotion bar; title-code family UI and pivots remain disabled."
   }
 }
