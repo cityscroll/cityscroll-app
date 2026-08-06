@@ -396,6 +396,30 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "city-council-committee-membership",
+      "name": "City Council Committee Membership (1999 to 2025)",
+      "source_contract_id": "city-council-committee-membership",
+      "status": "landed",
+      "join_keys": [
+        "member_id"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.0575,
+          "joined": 308,
+          "total": 5358,
+          "metric": "linked_rows",
+          "observed_on": "2026-08-05",
+          "universe": "5,358 source rows and 15 committed exact person IDs in the people-domain corpus",
+          "strategy": "exact member_id to person_id; no name fallback",
+          "verdict": "Publish the 308 exact-key rows for 12 people; leave three people as an explicit gap.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/aabe-yfm9",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "city-council-district-boundaries",
       "name": "City Council Districts",
       "source_contract_id": "city-council-district-boundaries",
@@ -2773,8 +2797,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-05",
-    "source_contracts_fingerprint": "23ee16a5768863dc85538e8ffaaade5268680267e0fb791d8d8fa9a2724cbc54",
+    "observed_on": "2026-08-06",
+    "source_contracts_fingerprint": "63663cf56cba3967c153b3344febc708ed77b58575f32c39a23a8d87e375ca90",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 51,
     "class_changes": 0,

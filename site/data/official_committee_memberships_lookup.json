@@ -1,0 +1,5333 @@
+{
+  "schema_version": 1,
+  "title": "City Council committee memberships by exact Legistar member ID",
+  "source_contract": "aabe-yfm9",
+  "generated_at": "2026-08-06T00:03:31.348Z",
+  "vintage": "2026-08-05",
+  "join": {
+    "key": "member_id",
+    "source": "aabe-yfm9",
+    "corpus": "people_domain_observations"
+  },
+  "eligible_row_count": 5358,
+  "linked_row_count": 308,
+  "row_rate": 0.0575,
+  "eligible_person_count": 15,
+  "linked_person_count": 12,
+  "person_rate": 0.8,
+  "gap": "Some committed officials have no exact-key membership rows in this source.",
+  "by_member_id": {
+    "5289": {
+      "member_id": "5289",
+      "person_name": "Simcha Felder",
+      "rows": [
+        {
+          "member_id": "5289",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2010-01-01",
+          "end_date": "2010-01-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2785",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2006-01-18",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2214",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2006-01-18",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2264",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Mental Health, Developmental Disability, Alcoholism, Substance Abuse and Disability Services",
+          "committee_id": "5109",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2006-01-18",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2326",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2006-01-01",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2742",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2006-01-18",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2766",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "CHAIR",
+          "start_date": "2009-02-26",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2504",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Governmental Operations",
+          "committee_id": "13",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2009-02-26",
+          "end_date": "2009-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2508",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Governmental Operations",
+          "committee_id": "13",
+          "appointment_type": "CHAIR",
+          "start_date": "2006-01-18",
+          "end_date": "2009-02-25",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2289",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2004-01-01",
+          "end_date": "2005-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1731",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2004-01-21",
+          "end_date": "2005-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1860",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2004-01-21",
+          "end_date": "2005-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1932",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Small Business",
+          "committee_id": "5120",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2004-01-21",
+          "end_date": "2005-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1984",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Youth Services",
+          "committee_id": "24",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2004-01-21",
+          "end_date": "2005-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2043",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Subcommittee on Landmarks, Public Siting and Maritime Uses",
+          "committee_id": "32",
+          "appointment_type": "CHAIR",
+          "start_date": "2004-01-21",
+          "end_date": "2005-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "2049",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2002-01-01",
+          "end_date": "2003-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1376",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Subcommittee on Landmarks, Public Siting and Maritime Uses",
+          "committee_id": "32",
+          "appointment_type": "CHAIR",
+          "start_date": "2002-01-16",
+          "end_date": "2003-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1395",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2002-01-16",
+          "end_date": "2003-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1414",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Youth Services",
+          "committee_id": "24",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2002-01-16",
+          "end_date": "2003-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1591",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2003-02-13",
+          "end_date": "2003-12-31",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1684",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2002-04-11",
+          "end_date": "2003-04-09",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1668",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Parks and Recreation",
+          "committee_id": "5106",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2002-01-16",
+          "end_date": "2002-04-11",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1610",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "5289",
+          "committee": "Committee on Consumer Affairs",
+          "committee_id": "5",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2002-01-16",
+          "end_date": "2002-04-10",
+          "modified_date": "2015-08-25",
+          "source_row_id": "1442",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Simcha Felder",
+            "corpus_name": "Simcha Felder",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7785": {
+      "member_id": "7785",
+      "person_name": "Farah N. Louis",
+      "rows": [
+        {
+          "member_id": "7785",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5236",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5291",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5409",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5429",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5451",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Mental Health, Disabilities and Addiction",
+          "committee_id": "5243",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5527",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Transportation and Infrastructure",
+          "committee_id": "5268",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5613",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Women and Gender Equity",
+          "committee_id": "5244",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5622",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5678",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5741",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4501",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4561",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4617",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4663",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4685",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4707",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4780",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Transportation and Infrastructure",
+          "committee_id": "5268",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4885",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4918",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4998",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5037",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Caucus - Women's Caucus",
+          "committee_id": "5286",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5041",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5098",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-09",
+          "source_row_id": "5196",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Fire and Emergency Management",
+          "committee_id": "5239",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2022-02-24",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4716",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Rules, Privileges and Elections",
+          "committee_id": "20",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2022-01-20",
+          "modified_date": "2022-01-05",
+          "source_row_id": "4589",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-04",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-05-15",
+          "source_row_id": "4260",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4261",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Economic Development",
+          "committee_id": "7",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4262",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4263",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4264",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Housing and Buildings",
+          "committee_id": "16",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4266",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Youth Services",
+          "committee_id": "24",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4280",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2021-12-31",
+          "modified_date": "2020-02-27",
+          "source_row_id": "4318",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-03",
+          "end_date": "2021-12-31",
+          "modified_date": "2020-04-14",
+          "source_row_id": "4349",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Mental Health, Disabilities and Addiction",
+          "committee_id": "5243",
+          "appointment_type": "CHAIR",
+          "start_date": "2021-01-06",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-01-06",
+          "source_row_id": "4403",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Women and Gender Equity",
+          "committee_id": "5244",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-05-12",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-05-12",
+          "source_row_id": "4464",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7785",
+          "committee": "Committee on Justice System",
+          "committee_id": "5242",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2019-06-13",
+          "end_date": "2020-11-19",
+          "modified_date": "2019-06-13",
+          "source_row_id": "4268",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Farah N. Louis",
+            "corpus_name": "Farah N. Louis",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7798": {
+      "member_id": "7798",
+      "person_name": "Oswald J. Feliz",
+      "rows": [
+        {
+          "member_id": "7798",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5226",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5281",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5336",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5379",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Fire and Emergency Management",
+          "committee_id": "5239",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5462",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Health",
+          "committee_id": "14",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5489",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Higher Education",
+          "committee_id": "15",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5499",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Housing and Buildings",
+          "committee_id": "16",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5512",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Small Business",
+          "committee_id": "5120",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5591",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Bronx Delegation of the New York City Council",
+          "committee_id": "5292",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5649",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5712",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4488",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4549",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4627",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4678",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Fire and Emergency Management",
+          "committee_id": "5239",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4713",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Health",
+          "committee_id": "14",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4739",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Higher Education",
+          "committee_id": "15",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4747",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Housing and Buildings",
+          "committee_id": "16",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4761",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4920",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Special Committee on Twin Parks Citywide Taskforce on Fire Prevention",
+          "committee_id": "5274",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4931",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4971",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5086",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Bronx Delegation of the New York City Council",
+          "committee_id": "5292",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-20",
+          "source_row_id": "5206",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-15",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-19",
+          "source_row_id": "4437",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-23",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4442",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Health",
+          "committee_id": "14",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-23",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4447",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Immigration",
+          "committee_id": "5119",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4448",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4449",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Public Housing",
+          "committee_id": "5212",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4453",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4454",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Youth Services",
+          "committee_id": "24",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4457",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-15",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-04-28",
+          "source_row_id": "4460",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-05-12",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4444",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7798",
+          "committee": "Committee on General Welfare",
+          "committee_id": "12",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-04-22",
+          "end_date": "2021-05-12",
+          "modified_date": "2021-04-22",
+          "source_row_id": "4446",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Oswald J. Feliz",
+            "corpus_name": "Oswald J. Feliz",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7801": {
+      "member_id": "7801",
+      "person_name": "Christopher Marte",
+      "rows": [
+        {
+          "member_id": "7801",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5238",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5292",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5337",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Subcommittee on Senior Centers and Food Insecurity",
+          "committee_id": "5272",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5369",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Civil and Human Rights",
+          "committee_id": "5235",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5371",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Criminal Justice",
+          "committee_id": "5237",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5401",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Higher Education",
+          "committee_id": "15",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5500",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Public Safety",
+          "committee_id": "19",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5563",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Manhattan Delegation of the New York City Council",
+          "committee_id": "5288",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5654",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5699",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4469",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4562",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Aging",
+          "committee_id": "3",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4597",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Civil and Human Rights",
+          "committee_id": "5235",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4603",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Parks and Recreation",
+          "committee_id": "5106",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4809",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4922",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Subcommittee on Senior Centers and Food Insecurity",
+          "committee_id": "5272",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4930",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4976",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5010",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5099",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Manhattan Delegation of the New York City Council",
+          "committee_id": "5288",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-01-27",
+          "source_row_id": "5133",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on State and Federal Legislation",
+          "committee_id": "22",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-02-24",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-02-23",
+          "source_row_id": "4942",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Resiliency and Waterfronts",
+          "committee_id": "5258",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-03-02",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4839",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7801",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2022-02-24",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4686",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Christopher Marte",
+            "corpus_name": "Christopher Marte",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7810": {
+      "member_id": "7810",
+      "person_name": "Amanda C. Farías",
+      "rows": [
+        {
+          "member_id": "7810",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5225",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5280",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5335",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5351",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Consumer and Worker Protection",
+          "committee_id": "5269",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5387",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Economic Development",
+          "committee_id": "7",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5414",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5448",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Rules, Privileges and Elections",
+          "committee_id": "20",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-19",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5575",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Transportation and Infrastructure",
+          "committee_id": "5268",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5612",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Bronx Delegation of the New York City Council",
+          "committee_id": "5292",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5648",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5715",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "By the Committee on Rules, Privileges & Elections",
+          "committee_id": "5127",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2025-10-08",
+          "source_row_id": "5769",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4487",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4548",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4613",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Consumer and Worker Protection",
+          "committee_id": "5269",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4638",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4660",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Economic Development",
+          "committee_id": "7",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4666",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4849",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee on Transportation and Infrastructure",
+          "committee_id": "5268",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4882",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Special Committee on Twin Parks Citywide Taskforce on Fire Prevention",
+          "committee_id": "5274",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4934",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4983",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5022",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Caucus - Women's Caucus",
+          "committee_id": "5286",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5040",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5085",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7810",
+          "committee": "Bronx Delegation of the New York City Council",
+          "committee_id": "5292",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-20",
+          "source_row_id": "5209",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Amanda C. Farías",
+            "corpus_name": "Amanda C. Farías",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7818": {
+      "member_id": "7818",
+      "person_name": "Lynn C. Schulman",
+      "rows": [
+        {
+          "member_id": "7818",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5253",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5306",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5346",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Aging",
+          "committee_id": "3",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5363",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5432",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Fire and Emergency Management",
+          "committee_id": "5239",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5465",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Governmental Operations, State & Federal Legislation",
+          "committee_id": "5293",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5484",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Health",
+          "committee_id": "14",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5486",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Subcommittee on COVID & Infectious Diseases",
+          "committee_id": "5295",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5638",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Queens Delegation of the New York City Council",
+          "committee_id": "5289",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5674",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5725",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4514",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4575",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Aging",
+          "committee_id": "3",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4596",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Criminal Justice",
+          "committee_id": "5237",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4656",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4691",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4709",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Fire and Emergency Management",
+          "committee_id": "5239",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4718",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Governmental Operations",
+          "committee_id": "13",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4735",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee on Health",
+          "committee_id": "14",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4736",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Caucus - Jewish Caucus",
+          "committee_id": "5283",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4956",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Caucus - Lesbian, Gay, Bi-sexual, Transgender, Queer, Intersex, Asexual Caucus",
+          "committee_id": "5284",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4964",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5027",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Caucus - Women's Caucus",
+          "committee_id": "5286",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5057",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5113",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7818",
+          "committee": "Queens Delegation of the New York City Council",
+          "committee_id": "5289",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-01-27",
+          "source_row_id": "5153",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Lynn C. Schulman",
+            "corpus_name": "Lynn C. Schulman",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7823": {
+      "member_id": "7823",
+      "person_name": "Chi A. Ossé",
+      "rows": [
+        {
+          "member_id": "7823",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5244",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5298",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Consumer and Worker Protection",
+          "committee_id": "5269",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5389",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5410",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5453",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on General Welfare",
+          "committee_id": "12",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5472",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Public Housing",
+          "committee_id": "5212",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5552",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Public Safety",
+          "committee_id": "19",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5564",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Children and Youth",
+          "committee_id": "5294",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5631",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5679",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5732",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4507",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4568",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4618",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Consumer and Worker Protection",
+          "committee_id": "5269",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4641",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4658",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on General Welfare",
+          "committee_id": "12",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4724",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Public Housing",
+          "committee_id": "5212",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4820",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4852",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee on Youth Services",
+          "committee_id": "24",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4907",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Caucus - Lesbian, Gay, Bi-sexual, Transgender, Queer, Intersex, Asexual Caucus",
+          "committee_id": "5284",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4965",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4991",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5030",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5105",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7823",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-09",
+          "source_row_id": "5187",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Chi A. Ossé",
+            "corpus_name": "Chi A. Ossé",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7824": {
+      "member_id": "7824",
+      "person_name": "Sandy Nurse",
+      "rows": [
+        {
+          "member_id": "7824",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5243",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5297",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5338",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Contracts",
+          "committee_id": "6",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5393",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Criminal Justice",
+          "committee_id": "5237",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5396",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Environmental Protection, Resiliency and Waterfronts",
+          "committee_id": "5290",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5439",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5584",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Veterans",
+          "committee_id": "5122",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5620",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5683",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5733",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4506",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4567",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4632",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Contracts",
+          "committee_id": "6",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4648",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4847",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Veterans",
+          "committee_id": "5122",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4896",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4923",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4992",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5031",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Caucus - Women's Caucus",
+          "committee_id": "5286",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5062",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5104",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-09",
+          "source_row_id": "5188",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Environmental Protection, Resiliency and Waterfronts",
+          "committee_id": "5290",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2023-03-02",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-01",
+          "source_row_id": "5173",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Environmental Protection",
+          "committee_id": "10",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-03-02",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4700",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7824",
+          "committee": "Committee on Resiliency and Waterfronts",
+          "committee_id": "5258",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-03-02",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4840",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Sandy Nurse",
+            "corpus_name": "Sandy Nurse",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7825": {
+      "member_id": "7825",
+      "person_name": "Alexa Avilés",
+      "rows": [
+        {
+          "member_id": "7825",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5214",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5270",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Economic Development",
+          "committee_id": "7",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5416",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Environmental Protection, Resiliency and Waterfronts",
+          "committee_id": "5290",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5435",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on General Welfare",
+          "committee_id": "12",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5469",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Housing and Buildings",
+          "committee_id": "16",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5510",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Immigration",
+          "committee_id": "5119",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5515",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Public Housing",
+          "committee_id": "5212",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5548",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Task Force to Combat Hate",
+          "committee_id": "5296",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5641",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5684",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5734",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4476",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4538",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Economic Development",
+          "committee_id": "7",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4667",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4675",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Housing and Buildings",
+          "committee_id": "16",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4757",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Public Housing",
+          "committee_id": "5212",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4815",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee on Youth Services",
+          "committee_id": "24",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4906",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Special Committee on Twin Parks Citywide Taskforce on Fire Prevention",
+          "committee_id": "5274",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4933",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4993",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Caucus - Progressive Caucus",
+          "committee_id": "5285",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5032",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Caucus - Women's Caucus",
+          "committee_id": "5286",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5063",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5073",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7825",
+          "committee": "Brooklyn Delegation of the New York City Council",
+          "committee_id": "5291",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-09",
+          "source_row_id": "5189",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Alexa Avilés",
+            "corpus_name": "Alexa Avilés",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7832": {
+      "member_id": "7832",
+      "person_name": "Kamillah Hanks",
+      "rows": [
+        {
+          "member_id": "7832",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5230",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5285",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5333",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5343",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5352",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5380",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5411",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5426",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5449",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Staten Island Delegation of the New York City Council",
+          "committee_id": "5297",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5695",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5745",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4493",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4553",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4614",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4628",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Education",
+          "committee_id": "9",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4682",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4706",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Land Use",
+          "committee_id": "17",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4777",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Public Safety",
+          "committee_id": "19",
+          "appointment_type": "CHAIR",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4825",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Caucus - Black, Latino and Asian Caucus",
+          "committee_id": "5281",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "5000",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Caucus - Women's Caucus",
+          "committee_id": "5286",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-06",
+          "source_row_id": "5069",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5090",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Environmental Protection, Resiliency and Waterfronts",
+          "committee_id": "5290",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2023-03-02",
+          "end_date": "2023-12-31",
+          "modified_date": "2023-03-01",
+          "source_row_id": "5170",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Environmental Protection",
+          "committee_id": "10",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-03-02",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4696",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7832",
+          "committee": "Committee on Rules, Privileges and Elections",
+          "committee_id": "20",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2022-01-20",
+          "modified_date": "2022-01-05",
+          "source_row_id": "4585",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Kamillah Hanks",
+            "corpus_name": "Kamillah Hanks",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7833": {
+      "member_id": "7833",
+      "person_name": "David M. Carr",
+      "rows": [
+        {
+          "member_id": "7833",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5222",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Minority (Republican) Conference of the Council of the City of New York",
+          "committee_id": "5264",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-12-31",
+          "source_row_id": "5264",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Caucus - Common-Sense Caucus",
+          "committee_id": "5280",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-03",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-03",
+          "source_row_id": "5327",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5342",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Cultural Affairs, Libraries and International Intergroup Relations",
+          "committee_id": "5105",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5406",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5447",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Governmental Operations, State & Federal Legislation",
+          "committee_id": "5293",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5479",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Parks and Recreation",
+          "committee_id": "5106",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5540",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Sanitation and Solid Waste Management",
+          "committee_id": "5108",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5581",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Standards and Ethics",
+          "committee_id": "21",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5600",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Staten Island Delegation of the New York City Council",
+          "committee_id": "5297",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5696",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5746",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-11-03",
+          "source_row_id": "4484",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Minority (Republican) Conference of the Council of the City of New York",
+          "committee_id": "5264",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2021-12-15",
+          "source_row_id": "4533",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4612",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Criminal Justice",
+          "committee_id": "5237",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4652",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4705",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Fire and Emergency Management",
+          "committee_id": "5239",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-20",
+          "source_row_id": "4711",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Parks and Recreation",
+          "committee_id": "5106",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4805",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Transportation and Infrastructure",
+          "committee_id": "5268",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-20",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-01-21",
+          "source_row_id": "4881",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Caucus - Common-Sense Caucus",
+          "committee_id": "5280",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-01",
+          "source_row_id": "4947",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Caucus - Lesbian, Gay, Bi-sexual, Transgender, Queer, Intersex, Asexual Caucus",
+          "committee_id": "5284",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-01",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-04-05",
+          "source_row_id": "4966",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-01-05",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-11-14",
+          "source_row_id": "5082",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Committee on Housing and Buildings",
+          "committee_id": "16",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2022-02-24",
+          "end_date": "2023-12-31",
+          "modified_date": "2022-02-23",
+          "source_row_id": "4939",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-11-30",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-12-01",
+          "source_row_id": "4526",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "Minority (Republican) Conference of the Council of the City of New York",
+          "committee_id": "5264",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-11-30",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-12-05",
+          "source_row_id": "4529",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7833",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2021-12-09",
+          "end_date": "2021-12-31",
+          "modified_date": "2021-11-26",
+          "source_row_id": "4523",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "David M. Carr",
+            "corpus_name": "David M. Carr",
+            "name_conflict": false
+          }
+        }
+      ]
+    },
+    "7866": {
+      "member_id": "7866",
+      "person_name": "Yusef Salaam",
+      "rows": [
+        {
+          "member_id": "7866",
+          "committee": "City Council",
+          "committee_id": "1",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2023-11-08",
+          "source_row_id": "5250",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Democratic Conference of the Council of the City of New York",
+          "committee_id": "5257",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-01",
+          "source_row_id": "5303",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "committee_id": "5261",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5339",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Subcommittee on Zoning and Franchises",
+          "committee_id": "34",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5345",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Committee on Aging",
+          "committee_id": "3",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5362",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Committee on Civil Service and Labor",
+          "committee_id": "4",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5382",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Committee on Finance",
+          "committee_id": "11",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-18",
+          "source_row_id": "5455",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Committee on Public Safety",
+          "committee_id": "19",
+          "appointment_type": "CHAIR",
+          "start_date": "2024-01-18",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-19",
+          "source_row_id": "5556",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Manhattan Delegation of the New York City Council",
+          "committee_id": "5288",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5662",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        },
+        {
+          "member_id": "7866",
+          "committee": "Committee of the Whole",
+          "committee_id": "5224",
+          "appointment_type": "PRIMARY COUNCIL MEMBERS",
+          "start_date": "2024-01-01",
+          "end_date": "2025-12-31",
+          "modified_date": "2024-01-22",
+          "source_row_id": "5706",
+          "provenance": {
+            "source": "aabe-yfm9",
+            "join_key": "member_id",
+            "source_name": "Yusef Salaam",
+            "corpus_name": "Yusef Salaam",
+            "name_conflict": false
+          }
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "method": "exact_member_id_join",
+    "weak_joins_rendered": false
+  }
+}

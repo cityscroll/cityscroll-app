@@ -18,6 +18,26 @@
       ]
     },
     {
+      "id": "city-council-committee-membership",
+      "kind": "socrata",
+      "identifier": "aabe-yfm9",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "member_id",
+        "first_name",
+        "last_name",
+        "full_name",
+        "committee",
+        "appointment_type",
+        "start_date",
+        "end_date",
+        "modified_date",
+        "committee_id",
+        "id"
+      ]
+    },
+    {
       "id": "dof-tax-lien-sale-lists",
       "kind": "socrata",
       "identifier": "9rz4-mjek",
