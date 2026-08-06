@@ -15,10 +15,12 @@ import {
   checkDepotFreshness,
   loadGapTaxonomy,
   loadSourceContracts,
+  rankObtainableCatalogCandidates,
   rederiveDepot,
   renderGapTaxonomyDocument,
   resolveSourceId,
 } from "../tools/depot.mjs";
+import { buildCatalogSweepReceipt } from "../tools/depot_catalog_sweep.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -251,4 +253,47 @@ test("resolveSourceId maps PASSPort and Checkbook names", () => {
   ]);
   assert.equal(resolveSourceId("PASSPort Public contracts", contracts), "passport-public-contracts");
   assert.equal(resolveSourceId("Checkbook NYC Contracts", contracts), "checkbook-contracts");
+});
+
+test("catalog ranking surfaces obtainable key spaces without committed source rows", () => {
+  const rows = [
+    {
+      resource: {
+        id: "a9md-ynri",
+        name: "Civil Service List Certification",
+        columns_field_name: ["exam_no", "list_title_code", "list_title_desc", "list_agency_code"],
+      },
+    },
+    {
+      resource: {
+        id: "kpav-sd4t",
+        name: "Jobs NYC Postings",
+        columns_field_name: ["agency", "civil_service_title", "title_classification", "title_code_no"],
+      },
+    },
+  ];
+  const registry = loadGapTaxonomy();
+  const ranked = rankObtainableCatalogCandidates(rows, { sources: registry.sources });
+  assert.deepEqual(ranked.map((row) => row.dataset_id), ["a9md-ynri", "kpav-sd4t"]);
+  assert.ok(ranked.every((row) => row.candidate_status === "candidate"));
+  assert.ok(ranked.every((row) => row.coverage_status === "unknown_until_reviewed"));
+  assert.ok(ranked[0].key_spaces.some((space) => space.id === "exam_number"));
+  assert.ok(ranked[1].key_spaces.some((space) => space.id === "civil_service_title_code"));
+  assert.ok(ranked[0].obtainable_key_space_score > 0);
+  assert.ok(ranked[1].obtainable_key_space_score > 0);
+});
+
+test("catalog sweep receipt labels validation datasets as candidates, not facts", () => {
+  const receipt = buildCatalogSweepReceipt({
+    resultSetSize: 2,
+    results: [
+      { resource: { id: "a9md-ynri", name: "Civil Service List Certification", columns_field_name: ["exam_no", "list_agency_code"] } },
+      { resource: { id: "kpav-sd4t", name: "Jobs NYC Postings", columns_field_name: ["agency", "civil_service_title", "title_code_no"] } },
+    ],
+  }, { sources: [] }, { observedOn: "2026-08-06" });
+  assert.equal(receipt.observed_on, "2026-08-06");
+  assert.deepEqual(receipt.validation.map((row) => row.surfaced), [true, true]);
+  assert.match(receipt.ranking.coverage_policy, /unknown until reviewed/i);
+  assert.ok(receipt.top_candidates.every((row) => row.candidate_status === "candidate"));
+  assert.ok(receipt.top_candidates.every((row) => /metadata only/i.test(row.evidence)));
 });
