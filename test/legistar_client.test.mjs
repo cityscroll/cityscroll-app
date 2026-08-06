@@ -279,6 +279,32 @@ test("buildMeetingOutcomesView strict-joins notices to events and materializes m
   assert.equal(matter.votes[0].person_vote_retention_rate, 1);
 });
 
+test("buildMeetingOutcomesView supports a bounded historical tranche window", async () => {
+  const requested = [];
+  const composed = async (url) => {
+    requested.push(new URL(url));
+    const u = new URL(url);
+    if (u.pathname === "/v1/nyc/Events") {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  };
+
+  await buildMeetingOutcomesView({
+    token: TOKEN,
+    fetchImpl: composed,
+    now: new Date("2026-08-01"),
+    lookbackDays: 730,
+    noticeLimit: 2_000,
+  });
+
+  const notices = requested.find((url) => url.pathname === "/resource/dg92-zbpx.json");
+  const events = requested.find((url) => url.pathname === "/v1/nyc/Events");
+  assert.equal(notices.searchParams.get("$limit"), "2000");
+  assert.match(notices.searchParams.get("$where"), /event_date >= '2024-08-01T00:00:00'/);
+  assert.match(events.searchParams.get("$filter"), /2024-08-01T00:00:00Z/);
+});
+
 test("buildMeetingOutcomesView degrades to notices-only gaps without a token", async () => {
   const fetchImpl = mockFetch([
     ["/resource/dg92-zbpx.json", [NOTICE]],
