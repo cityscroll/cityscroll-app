@@ -4,10 +4,12 @@ import { nearYouUrlFromScope, scopeFromLensState } from "./scope_v0.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { normalizeWatchTemplateRegistry } from "./watch_templates.mjs";
 import { renderCivicDocumentAssets, renderCivicDocumentMast } from "./civic_document_chrome.mjs";
+import { buildObservedParcelBiography, parcelBiographyHref, parcelRef } from "./parcel_scope.mjs";
 
 export const CIVIC_OBJECT_EXPORT_REGISTRY = Object.freeze({
   "monitor-pack": Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
   "district-digest": Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
+  parcel: Object.freeze({ classes: Object.freeze(["object_identity", "object_actions", "object_members", "object_provenance"]) }),
 });
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;" }[char]));
@@ -43,6 +45,20 @@ export function districtDigestSubjectRef(id) {
   return normalized ? `district-digest:council-${normalized}` : null;
 }
 
+export function parcelPath(bbl) {
+  return /^\d{10}$/.test(clean(bbl)) ? `/parcels/${encodeURIComponent(clean(bbl))}/` : "/parcels/";
+}
+
+export function parcelSubjectRef(bbl) {
+  return parcelRef(bbl) || null;
+}
+
+export function buildParcelBiographyView({ bbl, crossDomain, taxLien, cofo } = {}) {
+  const view = buildObservedParcelBiography({ bbl, crossDomain, taxLien, cofo });
+  if (!view.ok) return null;
+  return { ...view, kind: "parcel", id: view.bbl, path: parcelPath(view.bbl), subject_ref: view.parcel_ref };
+}
+
 export function districtPivotHref(id) {
   const normalized = normalizeCouncilDistrict(id);
   if (!normalized) return "/near-you/";
@@ -57,7 +73,7 @@ function subjectHref(ref) {
   if (kind === "exam" && /^\d{4}$/.test(id)) return `/exams/${encodeURIComponent(id)}/`;
   if (kind === "notice" && /^[A-Za-z0-9_-]{1,80}$/.test(id)) return `/notices/${encodeURIComponent(id)}`;
   if (kind === "project" && /^[A-Za-z0-9_-]{3,30}$/.test(id)) return `/#land?project=${encodeURIComponent(id)}`;
-  if (kind === "bbl" && /^\d{10}$/.test(id)) return `/#property?bbl=${encodeURIComponent(id)}`;
+  if (kind === "bbl" && /^\d{10}$/.test(id)) return parcelPath(id);
   return null;
 }
 
@@ -86,7 +102,8 @@ export function buildDistrictDigestView(payload, id) {
 }
 
 function actionMarkup(view, watchHref) {
-  return `<nav class="civic-object-actions" aria-label="Document actions" data-export-class="object_actions"><a class="civic-object-action primary" href="${esc(watchHref)}">Watch this ${view.kind === "monitor-pack" ? "pack" : "digest"}</a><button class="civic-object-action" type="button" data-object-copy>Copy link</button><button class="civic-object-action" type="button" data-object-print>Print / save PDF</button><button class="civic-object-action" type="button" data-object-export="json">Download JSON</button><button class="civic-object-action" type="button" data-object-export="xlsx">Download XLSX</button></nav>`;
+  const noun = view.kind === "monitor-pack" ? "pack" : view.kind === "district-digest" ? "digest" : "parcel";
+  return `<nav class="civic-object-actions" aria-label="Document actions" data-export-class="object_actions"><a class="civic-object-action primary" href="${esc(watchHref)}">Watch this ${noun}</a><button class="civic-object-action" type="button" data-object-copy>Copy link</button><button class="civic-object-action" type="button" data-object-print>Print / save PDF</button><button class="civic-object-action" type="button" data-object-export="json">Download JSON</button><button class="civic-object-action" type="button" data-object-export="xlsx">Download XLSX</button></nav>`;
 }
 
 function subjectLink(ref) {
@@ -97,15 +114,19 @@ function subjectLink(ref) {
 export function renderComposedObjectDocument(view, options = {}) {
   if (!view || !CIVIC_OBJECT_EXPORT_REGISTRY[view.kind]) throw new Error("Unknown composed object");
   const isPack = view.kind === "monitor-pack";
-  const title = isPack ? view.title : `Council District ${view.council_district} weekly digest`;
-  const watchHref = isPack ? followingUrlFromWatch(view.watches[0] || { lens: "money", filter: {} }, { frequency: "weekly" }) : followingUrlFromWatch({ lens: "district", filter: { councilDistrict: view.council_district } }, { frequency: "weekly" });
-  const members = isPack
+  const isParcel = view.kind === "parcel";
+  const title = isPack ? view.title : isParcel ? `Parcel ${view.bbl}` : `Council District ${view.council_district} weekly digest`;
+  const watchHref = isPack ? followingUrlFromWatch(view.watches[0] || { lens: "money", filter: {} }, { frequency: "weekly" }) : isParcel ? followingUrlFromWatch({ lens: "property", filter: { subject_refs_all: [view.parcel_ref] } }, { frequency: "weekly" }) : followingUrlFromWatch({ lens: "district", filter: { councilDistrict: view.council_district } }, { frequency: "weekly" });
+  const parcelSections = isParcel ? Object.entries(view.sections).map(([kind, section]) => `<section class="civic-object-section" data-parcel-biography-domain="${esc(kind)}"><h2>${esc(kind === "cofo" ? "Certificates of Occupancy" : kind === "tax_lien" ? "Tax-lien lists" : kind === "property" ? "Property dispositions" : "Land projects")}</h2>${section.items.length ? `<ul>${section.items.map(item => `<li>${subjectLink(item.subject_ref)} — ${esc(item.label || item.id)} <span class="muted">${esc(item.source)} · ${esc(item.date || "date not published")}</span></li>`).join("")}</ul>` : `<p>${esc(section.note || "No linked record in this snapshot.")}</p>`}<p class="parcel-biography-coverage"><strong>Coverage:</strong> eligible ${esc(section.coverage.eligible ?? "not measured")} · linked ${esc(section.coverage.linked ?? "not measured")} · vintage ${esc(section.coverage.vintage || "not published")} · gap ${esc(section.coverage.gaps)}</p></section>`).join("") : "";
+  const members = isParcel
+    ? parcelSections
+    : isPack
     ? view.watches.map((watch) => `<li><a href="${esc(followingUrlFromWatch(watch, { frequency: "weekly" }))}">${esc(watch.label)}</a>${watch.subject_refs.length ? `<ul>${watch.subject_refs.map(subjectLink).map((link) => `<li>${link}</li>`).join("")}</ul>` : ""}</li>`).join("")
     : view.sections.map((section) => `<section class="civic-object-section"><h2>${esc(section.label)}</h2><ul>${section.items.map((item) => { const ref = item.request_id ? `notice:${item.request_id}` : item.project_id ? `project:${item.project_id}` : null; return `<li>${ref ? subjectLink(ref) : esc(item.short_title || item.project_name || item.district_item_id)}</li>`; }).join("")}</ul></section>`).join("");
-  const pivot = isPack ? "" : `<p class="civic-object-pivot"><a data-subject-ref="district:council-${esc(view.council_district)}" href="${esc(view.pivot_href)}">Explore Council District ${esc(view.council_district)} on Near you</a></p>`;
+  const pivot = isPack ? "" : isParcel ? `<p class="civic-object-pivot"><a data-subject-ref="${esc(view.parcel_ref)}" href="${esc(parcelBiographyHref(view.bbl))}">Open this parcel in Property</a></p>` : `<p class="civic-object-pivot"><a data-subject-ref="district:council-${esc(view.council_district)}" href="${esc(view.pivot_href)}">Explore Council District ${esc(view.council_district)} on Near you</a></p>`;
   const canonical = `https://cityscroll.org${view.path}`;
   const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(isPack ? view.description : `A weekly public-data digest for Council District ${view.council_district}.`)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "following", surfaceClass: "civic-object-mast" })}<main id="main" class="civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}"><p><a href="/following/">Back to Following</a></p><header class="civic-object-hero" data-export-class="object_identity"><p class="civic-object-kicker">${isPack ? "Monitor pack" : "District digest"}</p><h1>${esc(title)}</h1><p>${esc(isPack ? view.serves || view.description : `This digest has ${view.total} current public records for this council district.`)}</p>${pivot}</header>${actionMarkup(view, watchHref)}<section class="civic-object-section" data-export-class="object_members"><h2>${isPack ? "Watches in this pack" : "This week’s sections"}</h2><ul>${members}</ul></section><section class="civic-object-section" data-export-class="object_provenance"><h2>Sources and limits</h2><p>CityScroll groups public records into one reading aid. Source documents remain the official record.</p>${view.boundary_vintage ? `<p>District boundary: <code>${esc(view.boundary_vintage)}</code>. Snapshot: <code>${esc(view.built_at)}</code>.</p>` : ""}</section></main><footer class="civic-object-footer">CityScroll is an unofficial reading aid. <a href="/about.html">About the data</a>.</footer><script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} · CityScroll</title><meta name="description" content="${esc(isPack ? view.description : isParcel ? "An observed, bounded parcel biography with exact-BBL evidence." : `A weekly public-data digest for Council District ${view.council_district}.`)}"><link rel="canonical" href="${esc(canonical)}"><meta property="og:url" content="${esc(canonical)}">${renderCivicDocumentAssets(options.assetPrefix || "/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: isParcel ? "property" : "following", surfaceClass: "civic-object-mast" })}<main id="main" class="civic-object-document" data-civic-object-kind="${esc(view.kind)}" data-subject-ref="${esc(view.subject_ref)}"><p><a href="${isParcel ? "/browse/property/" : "/following/"}">Back to ${isParcel ? "Property" : "Following"}</a></p><header class="civic-object-hero" data-export-class="object_identity"><p class="civic-object-kicker">${isPack ? "Monitor pack" : isParcel ? "Observed parcel biography" : "District digest"}</p><h1>${esc(title)}</h1><p>${esc(isPack ? view.serves || view.description : isParcel ? "Exact-BBL records observed in the current public-data corpus. This is a bounded evidence view, not a complete municipal history." : `This digest has ${view.total} current public records for this council district.`)}</p>${pivot}</header>${actionMarkup(view, watchHref)}<section class="civic-object-section" data-export-class="object_members"><h2>${isPack ? "Watches in this pack" : isParcel ? "Evidence by source" : "This week’s sections"}</h2>${isParcel ? members : `<ul>${members}</ul>`}</section><section class="civic-object-section" data-export-class="object_provenance"><h2>Sources and limits</h2><p>${isParcel ? "A watch fires when a new record attaches to this exact BBL and would appear in this biography: notices, dispositions, certificates of occupancy, violations where acquired, and other rendered records. No inferred value-change events are created." : "CityScroll groups public records into one reading aid. Source documents remain the official record."}</p>${view.boundary_vintage ? `<p>District boundary: <code>${esc(view.boundary_vintage)}</code>. Snapshot: <code>${esc(view.built_at)}</code>.</p>` : ""}</section></main><footer class="civic-object-footer">CityScroll is an unofficial reading aid. <a href="/about.html">About the data</a>.</footer><script id="civic-object-payload" type="application/json">${payload}</script><script defer src="/export_workflows.js"></script><script type="module" src="/composed_object_documents.mjs"></script></body></html>`;
 }
 
 if (typeof window !== "undefined") {
