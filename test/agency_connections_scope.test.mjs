@@ -53,20 +53,21 @@ test("connection and apply links round-trip as canonical typed scopes", () => {
     currentHash: "#money?mode=award&min=100000",
     scope: CrolScope,
   });
-  const applied = scopeFromRouteHash(view.apply_scope_href);
+  const applied = scopeFromRouteHash("#money?" + new URL(view.apply_scope_href, "https://cityscroll.org").search.slice(1));
   assert.deepEqual(applied.facets.domains, ["money"]);
-  assert.deepEqual(applied.facets.agencies, ["Housing Preservation and Development"]);
+  assert.deepEqual(applied.facets.agencies, []);
   assert.deepEqual(applied.facets.values.entity_refs_all, [HPD_REF]);
   assert.equal(applied.facets.values.mode, "award");
   assert.equal(applied.facets.values.minAmount, 100000);
 
   const money = view.groups.find((group) => group.domain === "money");
-  const roundTripped = scopeFromRouteHash(money.view_all_href);
+  const roundTripped = scopeFromRouteHash("#money?" + new URL(money.view_all_href, "https://cityscroll.org").search.slice(1));
   assert.deepEqual(roundTripped.facets.domains, ["money"]);
-  assert.deepEqual(roundTripped.facets.agencies, ["Housing Preservation and Development"]);
+  assert.deepEqual(roundTripped.facets.agencies, []);
   assert.deepEqual(roundTripped.facets.values.entity_refs_all, [HPD_REF]);
   assert.equal(roundTripped.facets.values.connection_relation, "published_by_agency");
   assert.equal(roundTripped.facets.values.mode, "award");
+  assert.equal(new URL(money.view_all_href, "https://cityscroll.org").searchParams.has("agency"), false);
   assert.equal(connectionScopeHash(hpd, "money", { scope: CrolScope }), money.view_all_href);
 });
 

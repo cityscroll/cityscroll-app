@@ -36,7 +36,11 @@ function documentRouteRaw(){
     const route=DOCUMENT_FACET_HASHES[facet];
     if(!route) return "";
     const params=new URLSearchParams(location.search); params.delete("lang"); params.delete("legacy");
-    return `${route}${params.size?`?${params}`:""}`;
+    const canonical = globalThis.CrolRouteMigration?.canonicalizeBrowseUrl?.(`${path}${params.size?`?${params}`:""}`) || `${path}${params.size?`?${params}`:""}`;
+    if (canonical !== `${path}${params.size?`?${params}`:""}`) history.replaceState(null, "", canonical);
+    const canonicalUrl = new URL(canonical, location.origin);
+    const canonicalParams = new URLSearchParams(canonicalUrl.search);
+    return `${route}${canonicalParams.size?`?${canonicalParams}`:""}`;
   }
   return "";
 }
