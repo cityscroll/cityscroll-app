@@ -959,6 +959,9 @@
     no_linkable_pin: "aucun PIN pouvant être lié",
     method_facet_label: "Méthode :",
     narrowed_note: "La recherche sur l'historique complet était lente — affichage des <b>éditions récentes seulement</b> (depuis le {date}). Ajoutez une agence ou un mot-clé pour rechercher toutes les années plus rapidement.",
+    narrowed_scope_note: "<b>{n} résultats</b> — ils sont tous antérieurs au {date}. <button type=\"button\" class=\"linklike\" data-money-full-history>Rechercher tout l’historique</button>",
+    narrowed_scope_partial_note: "<b>{n} résultats</b> — {shown} affichés depuis le {date} ; {older} résultats plus anciens sont hors de cette période. <button type=\"button\" class=\"linklike\" data-money-full-history>Rechercher tout l’historique</button>",
+    scoped_history_gap_note: "Les <b>{n} résultats</b> sont hors de cette période de résultats. <button type=\"button\" class=\"linklike\" data-money-full-history>Rechercher tout l’historique</button>",
 
     // Money detail / chain / glance / how-to-respond
     copy_link_notice: "Copier le lien vers cet avis",
