@@ -70,13 +70,14 @@ test("exam URL grammar forwards legacy hashes and carries validated language", (
   assert.equal(migrateLegacyUrl("/#exam/70").migrated, false);
   assert.equal(edgeRequestKind("https://cityscroll.org/exams/7016/"), "exam");
   assert.match(examWatchUrl("7016"), /lens=people/);
-  assert.match(examWatchUrl("7016"), /examNumber/);
+  assert.match(examWatchUrl("7016"), /subject_refs_all/);
 });
 
 test("exact exam watches survive worker sanitization and compile to one exam", () => {
   const filter = sanitize("people", { view: "guide", examNumber: "7016", interestArea: "public-safety" });
   assert.deepEqual(filter, {
     keywords: [], lookupType: null, view: "guide", interestArea: "public-safety", interestLabel: null, examNumber: "7016",
+    subject_refs_all: [],
   });
   assert.match(describeFilter("people", filter), /exact exam updates/);
   const compiled = compileSub({ lens: "people", filter }, "2026-08-05");

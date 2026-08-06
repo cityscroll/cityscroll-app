@@ -48,7 +48,7 @@ test("land: a neighborhood is not a borough -> null", () => {
 test("people: lookupType constrained to role|person", () => {
   assert.equal(sanitize("people", { lookupType: "person" }).lookupType, "person");
   assert.equal(sanitize("people", { lookupType: "banana" }).lookupType, null);
-  assert.deepEqual(Object.keys(sanitize("people", {})).sort(), ["examNumber", "interestArea", "interestLabel", "keywords", "lookupType", "view"]);
+  assert.deepEqual(Object.keys(sanitize("people", {})).sort(), ["examNumber", "interestArea", "interestLabel", "keywords", "lookupType", "subject_refs_all", "view"]);
   assert.equal(sanitize("people", { view: "guide" }).view, "guide");
   const area=sanitize("people", { view:"guide", interestArea:"public-safety", interestLabel:" Public  safety " });
   assert.equal(area.interestArea,"public-safety");
