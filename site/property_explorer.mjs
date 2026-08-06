@@ -24,6 +24,8 @@ import {
 } from "./property_commercial.mjs";
 import { propertyEventState } from "./property_timed_events.mjs";
 import { resolvePropertyActionLifecycle } from "./property_reader_actions.mjs";
+import { stampPropertyActionCharacters } from "./property_action_character.mjs";
+export { stampPropertyActionCharacters, propertyActionCharacterLead } from "./property_action_character.mjs";
 
 export const PROPERTY_EXPLORER_SCHEMA_VERSION = 1;
 
@@ -412,7 +414,8 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
   const getCommercial = typeof opts.commercialOf === "function"
     ? opts.commercialOf
     : (row) => row?.commercial || null;
-  return (Array.isArray(entries) ? entries : []).map((entry) => {
+  const characterStamp = stampPropertyActionCharacters(entries);
+  return characterStamp.entries.map((entry) => {
     if (!entry || typeof entry !== "object") return entry;
     const rows = rowsForPropertyEntry(entry);
     const lifecycles = rows.map((row) => resolvePropertyActionLifecycle(row, {
@@ -443,6 +446,8 @@ export function stampPropertyExplorerTemporal(entries, opts = {}) {
       instance_state: lifecycles.length && lifecycles.every((lifecycle) => lifecycle.instance_state === "closed")
         ? "closed"
         : (lifecycles.some((lifecycle) => lifecycle.instance_state === "current") ? "current" : "undated"),
+      action_character: entry.action_character || null,
+      action_character_receipt: entry.action_character_receipt || null,
     };
   });
 }

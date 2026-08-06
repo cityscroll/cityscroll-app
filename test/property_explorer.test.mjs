@@ -27,6 +27,7 @@ import {
 } from "../site/property_explorer.mjs";
 import { extractPropertyCommercial } from "../site/property_commercial.mjs";
 import { extractPropertyReaderActions } from "../site/property_reader_actions.mjs";
+import { classifyPropertyActionCharacter, stampPropertyActionCharacters } from "../site/property_action_character.mjs";
 import {
   aggregatePhaseEvents,
   buildPropertyPhaseView,
@@ -40,6 +41,9 @@ const fixture = JSON.parse(
 );
 const censusFixture = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/property_plain_summary/real_notices.json"), "utf8"),
+);
+const historyFixture = JSON.parse(
+  readFileSync(join(ROOT, "site/data/property_sources/property_disposition_history.json"), "utf8"),
 );
 
 function censusEntries(rows, today = "2026-08-04") {
@@ -68,6 +72,36 @@ test("PROP_PROCESS_STAGES is the ops-ontology rail (not temporal proposed/soon)"
   assert.equal(propertyProcessActionKey("auction_or_rfp"), "disposition_phase_action_bid");
   assert.equal(propertyProcessActionKey("award_or_conveyance"), "disposition_phase_action_conveyance");
   assert.equal(propertyProcessActionKey(null), "property_action_open_notice");
+});
+
+test("action character is a receipt-backed deterministic projection", () => {
+  const marketplace = classifyPropertyActionCharacter({ short_title: "PUBLIC AUTO AUCTION" });
+  assert.equal(marketplace.action_character, "marketplace");
+  assert.equal(marketplace.action_character_receipt.basis, "mutually_exclusive_property_pattern");
+  const result = classifyPropertyActionCharacter({ short_title: "AUCTION RESULTS", additional_description_1: "Winning bidders are listed below." });
+  assert.equal(result.action_character, "historical_result");
+  assert.equal(result.action_character_receipt.basis, "explicit_result_phrase");
+  const unknown = classifyPropertyActionCharacter({ short_title: "Property notice" });
+  assert.equal(unknown.action_character, null);
+  const stamped = stampPropertyActionCharacters([
+    { kind: "notice", primary: { short_title: "PUBLIC AUTO AUCTION" }, members: [] },
+    { kind: "notice", primary: { short_title: "Property notice" }, members: [] },
+  ]);
+  assert.deepEqual(stamped.coverage.distribution, { marketplace: 1, participation: 0, relief: 0, historical_result: 0 });
+  assert.equal(stamped.coverage.stamped, 1);
+  assert.equal(stamped.coverage.unstamped, 1);
+});
+
+test("action-character coverage receipt is stable for the committed Property census", () => {
+  const result = stampPropertyActionCharacters(historyFixture.notices);
+  assert.deepEqual(result.coverage, {
+    schema_version: 1,
+    total: 243,
+    stamped: 228,
+    unstamped: 15,
+    distribution: { marketplace: 64, participation: 116, relief: 17, historical_result: 31 },
+    basis: "property_record_pattern_projection",
+  });
 });
 
 test("buildPropertyExplorerEntries collapses multi-notice subjects to one disposition card", () => {
