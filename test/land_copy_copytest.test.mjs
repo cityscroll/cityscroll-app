@@ -31,7 +31,7 @@ const langCopies = Object.fromEntries(shippingLangs.map((lang) => [lang, loadLan
 
 // Site-owner-approved Land methodology note (verbatim ceiling).
 const methodology =
-  "Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot (BBL) → MapPLUTO join ZAP Search describes. When lots cannot be matched, the map is approximate — confirm on ZoLa.";
+  "Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot boundaries shown in ZAP Search. When a lot cannot be matched, confirm the location on ZoLa.";
 
 const methodologyLocalized = {
   es: "Los datos de rezonificación provienen del Portal de Solicitudes de Zonificación (ZAP) de NYC a través de NYC Open Data, que la ciudad actualiza aproximadamente cada mes. Un cambio en el sitio ZAP en vivo puede tardar semanas en aparecer aquí. Los contornos de lotes usan el mismo emparejamiento de lote fiscal (BBL) → MapPLUTO que describe ZAP Search. Cuando no se pueden emparejar lotes, el mapa es aproximado — confirme en ZoLa.",
