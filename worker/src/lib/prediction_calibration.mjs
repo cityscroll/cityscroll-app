@@ -135,14 +135,26 @@ function assertBacktestShape(backtest) {
   if (!Array.isArray(backtest.open_event_kinds) || !backtest.open_event_kinds.length) {
     throw new TypeError("open_event_kinds must be a non-empty array");
   }
+  const openKinds = new Set(backtest.open_event_kinds);
+  if (openKinds.size !== backtest.open_event_kinds.length) {
+    throw new TypeError("open_event_kinds must not contain duplicates");
+  }
   for (const kind of backtest.open_event_kinds) {
     if (!isRegisteredEventKind(kind)) throw new TypeError(`unknown open_event_kind: ${kind}`);
   }
   if (!Array.isArray(backtest.terminal_event_kinds) || !backtest.terminal_event_kinds.length) {
     throw new TypeError("terminal_event_kinds must be a non-empty array");
   }
+  const terminalKinds = new Set(backtest.terminal_event_kinds);
+  if (terminalKinds.size !== backtest.terminal_event_kinds.length) {
+    throw new TypeError("terminal_event_kinds must not contain duplicates");
+  }
   for (const kind of backtest.terminal_event_kinds) {
     if (!isRegisteredEventKind(kind)) throw new TypeError(`unknown terminal_event_kind: ${kind}`);
+  }
+  const overlap = backtest.open_event_kinds.filter((kind) => terminalKinds.has(kind));
+  if (overlap.length) {
+    throw new TypeError(`open_event_kinds and terminal_event_kinds overlap: ${overlap.join(", ")}`);
   }
   if (!Array.isArray(backtest.predictions) || !backtest.predictions.length) {
     throw new TypeError("predictions must be a non-empty array");
