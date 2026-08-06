@@ -448,6 +448,16 @@ def _write_receipt(ds, snap, limit, raw_meta, pq_meta, register_meta, *, headroo
         phase = ds.get("bulk_phase") or "WH-02"
     else:
         phase = "WH-01"
+    profile = raw_meta.get("snapshot_profile") or {}
+    row_count = register_meta.get("row_count")
+    if row_count is None:
+        row_count = pq_meta.get("row_count")
+    source_summary = {
+        "row_count": row_count,
+        "start_date_min": profile.get("start_date_min"),
+        "start_date_max": profile.get("start_date_max"),
+        "section_counts": profile.get("section_counts") or {},
+    }
     receipt = {
         "schema_version": 1,
         "phase": phase,
@@ -465,6 +475,7 @@ def _write_receipt(ds, snap, limit, raw_meta, pq_meta, register_meta, *, headroo
         "register": register_meta,
         "headroom": headroom,
         "snapshot_profile": raw_meta.get("snapshot_profile"),
+        "source_summary": source_summary,
         "cpu_discipline": {
             "single_job_lock": True,
             "duckdb_threads": 1,
