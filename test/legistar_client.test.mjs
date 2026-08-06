@@ -7,6 +7,7 @@ import { test } from "node:test";
 
 import {
   fetchLegistarEvents,
+  fetchLegistarBodies,
   fetchLegistarEventItems,
   fetchLegistarItemVotes,
   fetchLegistarItemAttachments,
@@ -119,6 +120,28 @@ test("fetchLegistarEvents paginates Events with the token query and date filter"
 test("fetchLegistarEvents returns [] without a token", async () => {
   const rows = await fetchLegistarEvents({ token: null, fetchImpl: async () => new Response("[]") });
   assert.deepEqual(rows, []);
+});
+
+test("fetchLegistarBodies uses the authenticated Bodies endpoint and preserves publisher rows", async () => {
+  const calls = [];
+  const rows = [{ BodyId: 1, BodyName: "New York City Council" }];
+  const result = await fetchLegistarBodies({
+    token: TOKEN,
+    fetchImpl: async (url) => {
+      calls.push(String(url));
+      return new Response(JSON.stringify(rows), { status: 200, headers: { "content-type": "application/json" } });
+    },
+  });
+  assert.deepEqual(result, rows);
+  assert.equal(calls.length, 1);
+  assert.match(calls[0], /\/Bodies\?/);
+  assert.match(calls[0], /token=/);
+  assert.match(calls[0], /%24top=500/);
+});
+
+test("fetchLegistarBodies returns [] without a token", async () => {
+  const result = await fetchLegistarBodies({ token: null, fetchImpl: async () => new Response("[]") });
+  assert.deepEqual(result, []);
 });
 
 test("fetchLegistarEventItems hits the nested Events/{id}/EventItems route", async () => {

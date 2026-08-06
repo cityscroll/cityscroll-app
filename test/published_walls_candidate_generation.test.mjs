@@ -14,6 +14,7 @@ import {
 } from "../entity_resolution/candidate_generation/published_walls.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("../warehouse/fixtures/non_council_outcomes.json", import.meta.url), "utf8"));
+const boardsWall = JSON.parse(readFileSync(new URL("../entity_resolution/review/boards_wall_measurement.json", import.meta.url), "utf8"));
 
 test("title-code candidates carry every feature receipt and remain non-operative", () => {
   const catalog = buildTitleCodeCatalog([
@@ -81,4 +82,13 @@ test("published fixture contains the two strict ULURP calibration positives", ()
   assert.equal(fixture.documents.length, 7);
   assert.ok(fixture.documents.some((row) => row.extracted_text.includes("260190ZSX")));
   assert.ok(fixture.documents.some((row) => row.extracted_text.includes("C240001ZMM")));
+});
+
+test("boards wall receipt is stratified instead of treating 0/10 as citywide", () => {
+  assert.deepEqual(Object.keys(boardsWall.strata), ["council_adjacent", "community_boards", "mayoral_commissions"]);
+  assert.equal(boardsWall.strata.council_adjacent.identity, "publisher_body_id");
+  assert.equal(boardsWall.strata.community_boards.identity, "exact_borough_plus_number");
+  assert.equal(boardsWall.strata.mayoral_commissions.identity, "reviewed_minted_agency_slug");
+  assert.equal(boardsWall.strata.mayoral_commissions.publisher_identifiers_observed, 0);
+  assert.equal(boardsWall.contract.operative_links_enabled, false);
 });
