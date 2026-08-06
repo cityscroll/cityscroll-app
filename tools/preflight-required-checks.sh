@@ -6,10 +6,11 @@ cd "$PROJECT_ROOT"
 
 RUN_READING_LEVEL=0
 RUN_FULL=0
+RECEIPT_PATH="${PREFLIGHT_RECEIPT:-$PROJECT_ROOT/.artifacts/preflight-required-checks.json}"
 
 usage() {
   cat <<'EOF'
-Usage: ./tools/preflight-required-checks.sh [--with-reading-level] [--full] [--help]
+Usage: ./tools/preflight-required-checks.sh [--with-reading-level] [--full] [--receipt PATH] [--help]
 
 Runs the local, offline-first gates matching CI's Unit job and required check mapping:
   - Unit tests (site + worker)
@@ -21,11 +22,12 @@ Runs the local, offline-first gates matching CI's Unit job and required check ma
 Options:
   --with-reading-level  Run readable-or-else locally (same pages/arguments as CI reading-level job).
   --full                Run CI-equivalent heavy gates locally (requires browser tooling).
+  --receipt PATH        Write the full-run JSON receipt to PATH (default: .artifacts/preflight-required-checks.json).
   --help                Show this help text.
 
 Notes:
   - --full enables Playwright-based local validation for axe + runtime stray-English.
-  - CI still runs axe/runtime/i18n guard and reading-level jobs after Unit in CI.
+  - A full run emits a JSON receipt with commands, versions, statuses, timestamps, and git head.
 EOF
 }
 
@@ -42,7 +44,18 @@ run_banner() {
 }
 
 run_and_fail() {
-  if ! "$@"; then
+  local command="$*"
+  local started_at finished_at status
+  started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  status=0
+  if "$@"; then
+    status=0
+  else
+    status=$?
+  fi
+  finished_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  record_command "$command" "$started_at" "$finished_at" "$status"
+  if [[ "$status" != "0" ]]; then
     echo "do not open PR yet: failed preflight command: $*"
     exit 1
   fi
@@ -56,6 +69,15 @@ while [[ $# -gt 0 ]]; do
     --full)
       RUN_FULL=1
       ;;
+    --receipt)
+      shift
+      if [[ $# -eq 0 || -z "$1" ]]; then
+        echo "--receipt requires a path" >&2
+        usage
+        exit 1
+      fi
+      RECEIPT_PATH="$1"
+      ;;
     -h|--help)
       usage
       exit 0
@@ -68,6 +90,123 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+# Keep the receipt writer in the contract runner so a failing command still leaves a
+# durable, machine-readable explanation of what ran. Commands are JSONL during the run
+# to avoid shell escaping problems, then wrapped in the final receipt below.
+COMMAND_LOG="$(mktemp "${TMPDIR:-/tmp}/crol-preflight-commands.XXXXXX")"
+LOCAL_EVENT_PATH=""
+SERVER_PID=""
+SERVER_READY_FILE=""
+RECEIPT_WRITTEN=0
+PREFLIGHT_STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+version_or_unavailable() {
+  local value
+  value="$("$@" 2>/dev/null | head -1 || true)"
+  if [[ -n "$value" ]]; then
+    printf '%s' "$value"
+  else
+    printf 'unavailable'
+  fi
+}
+
+record_command() {
+  local command="$1"
+  local started_at="$2"
+  local finished_at="$3"
+  local status="$4"
+  python3 - "$COMMAND_LOG" "$command" "$started_at" "$finished_at" "$status" "$PWD" <<'PY'
+import json
+import sys
+
+path, command, started_at, finished_at, status, cwd = sys.argv[1:]
+with open(path, "a", encoding="utf-8") as handle:
+    handle.write(json.dumps({
+        "command": command,
+        "cwd": cwd,
+        "started_at": started_at,
+        "finished_at": finished_at,
+        "exit_status": int(status),
+    }, sort_keys=True) + "\n")
+PY
+}
+
+cleanup_local_resources() {
+  if [[ -n "${SERVER_PID:-}" ]]; then
+    kill "$SERVER_PID" 2>/dev/null || true
+  fi
+  if [[ -n "${SERVER_READY_FILE:-}" ]]; then
+    rm -f "$SERVER_READY_FILE"
+  fi
+  if [[ -n "${LOCAL_EVENT_PATH:-}" ]]; then
+    rm -f "$LOCAL_EVENT_PATH"
+  fi
+}
+
+write_receipt() {
+  local exit_status="$1"
+  [[ "$RUN_FULL" == "1" ]] || return 0
+  [[ "$RECEIPT_WRITTEN" == "1" ]] && return 0
+  RECEIPT_WRITTEN=1
+  local finished_at
+  finished_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  mkdir -p "$(dirname "$RECEIPT_PATH")"
+  python3 - "$COMMAND_LOG" "$RECEIPT_PATH" "$PREFLIGHT_STARTED_AT" "$finished_at" "$exit_status" \
+    "$RUN_FULL" "$RUN_READING_LEVEL" \
+    "$(git rev-parse HEAD 2>/dev/null || printf 'unknown')" \
+    "$(version_or_unavailable node --version)" \
+    "$(version_or_unavailable python3 --version)" \
+    "$(version_or_unavailable bash --version | head -1)" \
+    "$(version_or_unavailable git --version)" <<'PY'
+import json
+import sys
+
+(
+    log_path, receipt_path, started_at, finished_at, exit_status,
+    full, reading_level, git_head, node_version, python_version,
+    bash_version, git_version,
+) = sys.argv[1:]
+with open(log_path, encoding="utf-8") as handle:
+    commands = [json.loads(line) for line in handle if line.strip()]  # source: command JSONL emitted during this preflight run
+receipt = {
+    "schema": "crol.preflight.required-checks-receipt.v1",
+    "started_at": started_at,
+    "finished_at": finished_at,
+    "exit_status": int(exit_status),
+    "mode": {"full": full == "1", "reading_level": reading_level == "1"},
+    "git_head": git_head,
+    "versions": {
+        "node": node_version,
+        "python3": python_version,
+        "bash": bash_version,
+        "git": git_version,
+    },
+    "commands": commands,
+}
+with open(receipt_path, "w", encoding="utf-8") as handle:
+    json.dump(receipt, handle, indent=2, sort_keys=True)
+    handle.write("\n")
+PY
+  rm -f "$COMMAND_LOG"
+  echo "preflight receipt: $RECEIPT_PATH"
+}
+
+finish_preflight() {
+  local status="$?"
+  cleanup_local_resources
+  write_receipt "$status"
+  exit "$status"
+}
+trap finish_preflight EXIT
+
+# The beta contract normally receives GitHub's event payload. A deterministic draft
+# payload keeps the same validator executable locally without depending on GitHub.
+if [[ -z "${GITHUB_EVENT_PATH:-}" ]]; then
+  LOCAL_EVENT_PATH="$(mktemp "${TMPDIR:-/tmp}/crol-beta-review-event.XXXXXX")"
+  printf '%s\n' '{"pull_request":{"number":0,"draft":true,"labels":[],"body":""}}' > "$LOCAL_EVENT_PATH"
+  export GITHUB_EVENT_PATH="$LOCAL_EVENT_PATH"
+fi
 
 run_banner "Unit tests (site + worker)" "Syntax + i18n + static lint" \
   "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
@@ -99,6 +238,10 @@ run_and_fail python3 test/standards/genai_disclosure.py
 run_and_fail python3 test/standards/nl_input_clarity.py
 run_and_fail python3 test/standards/demo_links.py
 
+run_banner "Unit tests (site + worker)" "Beta preview alias contract" \
+  "node tools/check_beta_review_contract.mjs"
+run_and_fail node tools/check_beta_review_contract.mjs
+
 run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + joins" \
   "node tools/generate_source_docs.mjs --check"
 run_and_fail node tools/generate_source_docs.mjs --check
@@ -113,6 +256,9 @@ run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
 run_and_fail node --test test/*.test.mjs
+run_banner "Unit tests (site + worker)" "Preset shortcuts and rotating suggestions resolve to live results" \
+  "node tools/validate_presets.mjs --check"
+run_and_fail node tools/validate_presets.mjs --check
 run_and_fail node --test test/contract/*.test.mjs
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
@@ -184,11 +330,6 @@ if [[ "$RUN_FULL" == "1" ]]; then
     --port "${CROL_TEST_PORT:-0}" \
     --ready-file "${SERVER_READY_FILE}" &
   SERVER_PID=$!
-  cleanup_local_server() {
-    kill "${SERVER_PID:-}" 2>/dev/null || true
-    rm -f "${SERVER_READY_FILE:-}"
-  }
-  trap cleanup_local_server EXIT
   server_up=0
   for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
     if [[ -s "${SERVER_READY_FILE}" ]]; then
@@ -218,6 +359,12 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/24_notice_document_features.py
   run_and_fail python3 test/functional/14_focus_visible.py
   run_and_fail python3 test/functional/16_external_links.py
+  run_banner "Accessibility + language gate (axe on every PR)" "Label-coverage census" \
+    "python3 test/standards/label_coverage.py"
+  run_and_fail python3 test/standards/label_coverage.py
+  run_banner "Accessibility + language gate (axe on every PR)" "Heading-uniqueness + landmark check" \
+    "python3 test/standards/heading_uniqueness.py"
+  run_and_fail python3 test/standards/heading_uniqueness.py
   # Runtime multi-locale stray-English is not a CI required gate (static lint is).
   # Optional full walk: bash test/functional/run_stray_english_shards.sh
   run_and_fail python3 test/functional/15_rtl.py
