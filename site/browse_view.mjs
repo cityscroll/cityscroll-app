@@ -480,19 +480,19 @@ export function renderBrowseLanding(landing) {
       <h3><a href="${esc(card.route)}">${esc(card.label)}</a></h3>
       <p class="browse-source-description">${esc(card.description)}</p>
       <p class="browse-source-systems">${esc(card.sources)}</p>
-      <p class="browse-source-asof">${card.asOf ? `source snapshot ${esc(card.asOf)}` : "snapshot date unavailable"}</p>
+      <p class="browse-source-asof">${card.asOf ? `Updated ${esc(card.asOf)}` : "Update date unavailable"}</p>
       <a class="browse-source-action" href="${esc(card.route)}">Browse ${esc(card.label.toLowerCase())} <span aria-hidden="true">→</span></a>
     </article>`;
   }).join("");
   const range = landing?.oldestSnapshot && landing?.newestSnapshot
-    ? `Snapshots dated ${esc(landing.oldestSnapshot)} through ${esc(landing.newestSnapshot)}.`
-    : "Snapshot dates are shown on each source.";
+    ? `Records updated between ${esc(landing.oldestSnapshot)} and ${esc(landing.newestSnapshot)}.`
+    : "Update dates are shown for each source.";
   return `<div class="browse-landing" data-build-rendered="browse-landing">
     <header class="browse-landing-head">
       <p class="now-kicker">Browse</p>
       <h2>Browse NYC’s public record</h2>
       <p>Choose a source view, then narrow it by agency, place, status, date, or keyword.</p>
-      <p class="browse-landing-disclosure"><strong>Current public snapshots.</strong> Counts describe the bounded records shown here, not each source’s full historical corpus. ${range}</p>
+      <p class="browse-landing-disclosure"><strong>Current public records.</strong> Counts describe the records shown here, not each source’s full historical history. ${range}</p>
     </header>
     <div class="browse-source-grid">${cards}</div>
   </div>`;
@@ -521,7 +521,7 @@ export function renderBrowseView(view) {
       <p class="browse-static-meta">${[agency && esc(agency), date, place && esc(place)].filter(Boolean).join(" · ")}</p>
     </article>`;
   }).join("");
-  const summary = `<p class="browse-static-summary" data-build-summary>${esc(view.config.label)} · ${view.total} bounded ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · source snapshot ${esc(view.asOf)}` : ""}</p>`;
+  const summary = `<p class="browse-static-summary" data-build-summary>${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
   return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${summary}${scopeChip}${disclosure}${cards || `<div class="empty">${esc(view.scope.emptyReason || "No records match this bounded view.")}</div>`}</div>`;
 }
 

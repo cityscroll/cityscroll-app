@@ -74,6 +74,36 @@ for value in good:
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
 
+test("public-surface vocabulary detector rejects constellation receipts and internal nouns", () => {
+  const code = String.raw`
+import importlib.util
+from pathlib import Path
+path = Path("test/standards/public_surface_vocab.py")
+spec = importlib.util.spec_from_file_location("public_surface_vocab", path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+bad = [
+    "Coverage: 231 of 231 in the 231-project current snapshot. Snapshot 2026-08-02",
+    "Coverage: {linked} of {eligible} in the {scope}-project current snapshot",
+    "Snapshot " + "$" + "{built_at}",
+    "Data snapshot 2026-08-02T10:22:34.003Z",
+    "View all as scope",
+    "Click to pivot to this entity ref",
+]
+for value in bad:
+    assert any(pattern.search(value) for _, pattern in module.INTERNAL_RECEIPT_PATTERNS + module.PUBLIC_COPY_PATTERNS), value
+good = [
+    "See all connected records",
+    "Filter by this project",
+    "Queens — Block 1820, Lot 1 (BBL 4018200001)",
+]
+for value in good:
+    assert not any(pattern.search(value) for _, pattern in module.INTERNAL_RECEIPT_PATTERNS + module.PUBLIC_COPY_PATTERNS), value
+`;
+  const result = spawnSync("python3", ["-c", code], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
 test("public-surface vocabulary detector rejects the retired watch curriculum", () => {
   const code = String.raw`
 import importlib.util

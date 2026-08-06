@@ -157,9 +157,9 @@ with sync_playwright() as pw:
         ),
     )
     p5.goto(BASE + "#agency/Housing%20Preservation%20and%20Development", timeout=30000)
-    p5.wait_for_selector("#entity-intelligence .ei-summary", timeout=45000)
+    p5.wait_for_selector("#entity-intelligence .ei-heading-row", timeout=45000)
     matched_domains = p5.locator('#entity-intelligence .ei-domain[data-status="matched"]').count()
-    summary = p5.locator("#entity-intelligence .ei-summary").inner_text()
+    summary = p5.locator("#entity-intelligence").inner_text()
     tentative_bands = p5.locator(
         '#entity-intelligence .ei-domain[data-domain="land"] .entity-pivot-band'
     ).count()
@@ -168,7 +168,7 @@ with sync_playwright() as pw:
     )].map(a=>({href:a.getAttribute('href'),ref:a.dataset.entityRef,
       confidence:a.dataset.linkConfidence,relation:a.dataset.relation}))""")
     step(
-        "OK" if matched_domains == 5 and "18" in summary and "2" in summary and tentative_bands == 2
+        "OK" if matched_domains == 5 and "possible match" in summary.lower() and tentative_bands == 2
         and connected_pivots and connected_pivots[0]["href"].startswith(("/vendors/", "#vendor/"))
         and connected_pivots[0]["ref"].startswith("vendor:stem:")
         and connected_pivots[0]["confidence"] == "strong"
@@ -217,7 +217,7 @@ with sync_playwright() as pw:
     })()""")
     step(
         "OK" if scope_state == reloaded_scope
-        and legacy_scope_href.startswith("#money?")
+        and legacy_scope_href.startswith(("#money?", "/browse/contracts/?"))
         and canonical_route["pathname"] == "/browse/contracts/"
         and canonical_route["hash"] == ""
         and scope_state["agency"] == "Housing Preservation and Development"
@@ -282,6 +282,9 @@ with sync_playwright() as pw:
          "items": [{"ref": "notice:20240101001", "href": "#notice/20240101001",
                     "label": "City Planning Commission hearing", "when": "2024-01-09",
                     "relation": "references_project", "confidence": "strong"}]},
+        {"id": "mih", "relation": "has_mih_area", "surface": "land",
+         "status": "not_observed", "gap": "no_exact_mih_edge_in_bounded_corpus",
+         "documents": [], "items": []},
     ]
     connection_record = {
         "project_id": "2022M0258", "project_name": "Timbale Terrace",
@@ -342,7 +345,9 @@ with sync_playwright() as pw:
         and set(project_view["parcelRefs"]) == {expected_project_ref, expected_parcel_ref}
         and project_view["allRefs"] == [expected_project_ref]
         and project_view["meetingHref"] == "#notice/20240101001"
-        and "231" in project_view["text"] and "50" in project_view["text"]
+        and "Manhattan" in project_view["text"]
+        and "coverage:" not in project_view["text"].lower()
+        and "snapshot" not in project_view["text"].lower()
         and len(connection_requests) >= 2
         and connection_requests[0] == "primary"
         and connection_requests[1] == "fallback"

@@ -1,5 +1,7 @@
 /** Pure HTML renderer for the observed parcel biography view model. */
 
+import { bblReaderLabel } from "./bbl_reader.mjs";
+
 function safeHelpers(helpers = {}) {
   const escape = typeof helpers.escape === "function"
     ? helpers.escape
@@ -19,19 +21,6 @@ function safeHelpers(helpers = {}) {
 
 function biographyDate(value, h) {
   return value ? h.formatDate(value) : h.t("property_xd_date_unknown");
-}
-
-function coverageHTML(kind, coverage, h) {
-  if (!coverage) return "";
-  const params = {
-    eligible: Number(coverage.eligible || 0).toLocaleString(),
-    linked: Number(coverage.linked || 0).toLocaleString(),
-    rate: coverage.rate == null
-      ? h.t("property_xd_rate_unmeasured")
-      : `${Math.round(Number(coverage.rate) * 1_000) / 10}%`,
-    date: biographyDate(coverage.vintage, h),
-  };
-  return `<p class="parcel-biography-coverage" data-parcel-coverage="${h.escape(kind)}">${h.t(`property_xd_${kind}_coverage`, params)}</p>`;
 }
 
 function itemHTML(item, kind, h) {
@@ -81,7 +70,6 @@ export function parcelBiographySectionHTML(view, kind, helpers = {}) {
   return `<section class="parcel-biography-domain property-xd-${h.escape(kind)}" data-parcel-biography-domain="${h.escape(kind)}" data-status="${h.escape(section.status || "")}">
     <h3 class="ei-domain-h">${h.t(headingKey)}</h3>
     ${items ? `<ul class="ei-list">${items}</ul>` : `<div class="note">${h.t(emptyKey)}</div>`}
-    ${coverageHTML(kind, section.coverage, h)}
   </section>`;
 }
 
@@ -90,7 +78,7 @@ export function observedParcelBiographyHTML(view, { href = "", ...helpers } = {}
   if (!view?.ok) return "";
   return `<section class="parcel-biography" data-parcel-biography="1" data-parcel-ref="${h.escape(view.parcel_ref)}">
     <div class="chain-h">${h.t("property_xd_heading")}</div>
-    <p class="parcel-biography-bbl">${h.parcelPivot(view.bbl, h.t("property_xd_bbl_label", { bbl: view.bbl }))}</p>
+    <p class="parcel-biography-bbl">${h.parcelPivot(view.bbl, bblReaderLabel(view.bbl) || h.t("property_xd_bbl_label", { bbl: view.bbl }))}</p>
     <p class="note">${h.t("property_xd_deck")}</p>
     <div class="parcel-biography-domains">
       ${parcelBiographySectionHTML(view, "property", h)}
@@ -100,6 +88,5 @@ export function observedParcelBiographyHTML(view, { href = "", ...helpers } = {}
       ${parcelBiographySectionHTML(view, "cofo", h)}
     </div>
     <div class="factions"><a class="act" href="${h.escape(href)}">${h.t("property_xd_view_scope")}</a></div>
-    <div class="note parcel-biography-method">${h.t("property_xd_provenance_html")}</div>
   </section>`;
 }
