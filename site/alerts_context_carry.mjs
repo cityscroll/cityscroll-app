@@ -48,6 +48,23 @@ function cleanAgency(value) {
   return s || null;
 }
 
+// Keep typed route-facet values (such as entity references and connection
+// relations) when a visible lens state becomes a standing watch.
+const WATCH_SCOPE_VALUE_KEYS = new Set([
+  "keywords", "q", "agency", "borough", "boro", "communityDistrict", "cd",
+  "councilDistrict", "council", "neighborhood", "locationScope", "dateWindow", "when",
+  "months", "action", "actions", "minAmount", "maxAmount", "category", "mode",
+  "noticeType", "excludeSpecial", "nearMe", "asset", "saleMethod", "method", "priceBand",
+  "sort", "process", "stage", "status", "group", "result_count_receipt",
+]);
+
+function scopeValuesFromLensState(state) {
+  return Object.fromEntries(Object.entries(state || {}).filter(([key, value]) => {
+    if (WATCH_SCOPE_VALUE_KEYS.has(key) || value == null || value === "") return false;
+    return !Array.isArray(value) || value.length > 0;
+  }));
+}
+
 function cleanId(value) {
   const s = String(value || "").trim();
   return /^[A-Za-z0-9_-]{4,40}$/.test(s) ? s : null;
@@ -212,6 +229,7 @@ export function alertScopeFromLensState(lens, state) {
     const filter = {
       keywords: s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []),
       agency: cleanAgency(s.agency),
+      ...scopeValuesFromLensState(s),
     };
     if (s.minAmount != null && Number(s.minAmount) >= 1000) filter.minAmount = Number(s.minAmount);
     if (s.noticeType === "award" || s.noticeType === "solicitation") filter.noticeType = s.noticeType;
@@ -225,6 +243,7 @@ export function alertScopeFromLensState(lens, state) {
       filter: {
         keywords: kw,
         status: s.status === "all" ? "all" : "active",
+        ...scopeValuesFromLensState(s),
         ...(s.boro ? { boro: s.boro } : {}),
       },
       digKind: "rezone",
@@ -236,6 +255,7 @@ export function alertScopeFromLensState(lens, state) {
     const filter = {
       keywords: s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []),
       agency: cleanAgency(s.agency),
+      ...scopeValuesFromLensState(s),
     };
     if (s.borough) filter.borough = s.borough;
     if (s.neighborhood) filter.neighborhood = s.neighborhood;
@@ -250,6 +270,7 @@ export function alertScopeFromLensState(lens, state) {
     const filter = {
       keywords: s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []),
       agency: cleanAgency(s.agency),
+      ...scopeValuesFromLensState(s),
     };
     // Commercial organize fields (asset / method / price / sort / stage / place).
     const asset = s.asset && s.asset !== "all" ? String(s.asset) : null;
@@ -281,6 +302,7 @@ export function alertScopeFromLensState(lens, state) {
       filter: {
         keywords: s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []),
         agency: cleanAgency(s.agency),
+        ...scopeValuesFromLensState(s),
       },
       digKind: "rules",
       noticeId: null,

@@ -235,6 +235,8 @@
     mode_allrfp: "Все RFP",
     mode_award: "Недавние присуждения контрактов ($)",
     agency_label: "Ведомство",
+    scope_relation_published_by: "опубликовано ведомством",
+    scope_relation_connection: "связь",
     all_agencies: "Все ведомства",
     keyword_label: "Ключевое слово",
     sort_label: "Сортировать по",

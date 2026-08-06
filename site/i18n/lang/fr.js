@@ -242,6 +242,8 @@
     mode_allrfp:      "Toutes les RFP",
     mode_award:       "Attributions récentes ($)",
     agency_label:     "Agence",
+    scope_relation_published_by: "publié par",
+    scope_relation_connection: "connexion",
     all_agencies:     "Toutes les agences",
     keyword_label:    "Mot-clé",
     sort_label:       "Trier par",

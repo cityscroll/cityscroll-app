@@ -107,6 +107,24 @@ test("lens list state → matching filter prefill (meetings with boro)", () => {
   assert.deepEqual(scope.filter.keywords, ["dining"]);
 });
 
+test("lens list state preserves typed route facets in the standing watch", () => {
+  const facet = {
+    entity_refs_all: ["agency:id:housing-preservation-and-development"],
+    connection_relation: "published_by_agency",
+  };
+  const scope = alertScopeFromLensState("money", {
+    agency: "Housing Preservation and Development",
+    mode: "award",
+    noticeType: "award",
+    ...facet,
+  });
+  assert.deepEqual(scope.filter.entity_refs_all, facet.entity_refs_all);
+  assert.equal(scope.filter.connection_relation, facet.connection_relation);
+  const parsed = parseAlertsEntryParams(alertsHref(scope));
+  assert.deepEqual(parsed.filter.entity_refs_all, facet.entity_refs_all);
+  assert.equal(parsed.filter.connection_relation, facet.connection_relation);
+});
+
 test("descriptor exposes seed title for plain-language lead", () => {
   const scope = alertScopeFromNotice(DINING_OUT);
   const d = alertScopeDescriptor(scope, DINING_OUT);

@@ -235,6 +235,8 @@
     mode_allrfp: "所有 RFP",
     mode_award: "近期中标（授予合同）($)",
     agency_label: "机构",
+    scope_relation_published_by: "发布方",
+    scope_relation_connection: "连接",
     all_agencies: "所有机构",
     keyword_label: "关键词",
     sort_label: "排序方式",
