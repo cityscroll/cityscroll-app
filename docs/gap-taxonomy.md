@@ -78,7 +78,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `mappluto` | live-only | BBL | — | — |
 | `mocs-ll1-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
 | `mocs-ll63-plans` | landed | published_PIN/EPIN_when_present, agency_+_description_+_term_(reviewed_candidate_only) | — | — |
-| `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
+| `nyc-council-legistar` | landed | body_id, matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
 | `nyc-rules-rss` | landed | agency, publication_date, title_tokens | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present | — | — |
 | `ocp-recent-contract-awards` | landed | PIN, request_id, agency | — | — |
@@ -199,4 +199,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `a1be58e3d904…` · materialized 11 · candidates 75 · class changes 0.
+Last refresh fingerprint: `9f12136ed348…` · materialized 11 · candidates 75 · class changes 0.

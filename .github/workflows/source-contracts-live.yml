@@ -92,15 +92,18 @@ jobs:
         run: |
           set -o pipefail
           node tools/build_official_roll_call_tranche.mjs
+          node tools/build_boards_wall_receipt.mjs --live
+          node tools/build_published_wall_candidates.mjs
       - name: Commit refreshed tranche artifacts
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -o pipefail
-          if ! git diff --quiet -- site/data/people_domain_observations.json site/data/person_votes_lookup.json site/data/legistar_sources/verification_receipts; then
+          if ! git diff --quiet -- site/data/people_domain_observations.json site/data/person_votes_lookup.json site/data/legistar_sources/verification_receipts entity_resolution/review/boards_wall_measurement.json entity_resolution/review/published_walls_measurement.json; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add site/data/people_domain_observations.json site/data/person_votes_lookup.json site/data/legistar_sources/verification_receipts
+            git add entity_resolution/review/boards_wall_measurement.json entity_resolution/review/published_walls_measurement.json
             git commit -m "data: refresh official roll-call live tranche"
             git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" \
               "HEAD:${{ github.ref_name }}"
