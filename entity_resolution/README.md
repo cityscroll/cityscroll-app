@@ -11,6 +11,7 @@ surface. **Not an HTTP microservice.**
 | `normalizers/` | Pure string identity (`vendorStem`, agency alias helpers) |
 | `authority_keys/` | Scoped identifier registry (`scheme`, issuer, value, scope) |
 | `officials/` | Official person-level type family + `votes_on` edges from Legistar votes |
+| `exam_certifications/` | Publisher-backed `certified_to_agency` exam/list edges with aggregate counts |
 | `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
 | `features/` | Deterministic family-aware pair features (`pair_features_v2`) |
 | `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v2`) |

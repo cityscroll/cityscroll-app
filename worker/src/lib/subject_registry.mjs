@@ -71,6 +71,11 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
     from_kinds: Object.freeze(["notice", "contract", "award", "exam"]),
     to_kinds: Object.freeze(["agency"]),
   },
+  certified_to_agency: {
+    description: "Civil-service exam list certification names an agency recipient",
+    from_kinds: Object.freeze(["exam"]),
+    to_kinds: Object.freeze(["agency"]),
+  },
   named_vendor: {
     description: "Procurement subject names a vendor subject",
     from_kinds: Object.freeze(["notice", "contract"]),

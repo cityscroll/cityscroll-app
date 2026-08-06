@@ -818,7 +818,7 @@
       "id": "civil-service-list-certification",
       "name": "Civil Service List Certification",
       "owner": "NYC Department of Citywide Administrative Services",
-      "status": "build-time",
+      "status": "live",
       "scope": "build-time",
       "kind": "socrata",
       "domain": "https://data.cityofnewyork.us",
@@ -826,22 +826,33 @@
       "landing_page": "https://data.cityofnewyork.us/d/a9md-ynri",
       "required_fields": [
         "exam_no",
+        "list_agency_code",
+        "list_agency_desc",
         "list_title_desc",
         "cert_date",
         "no_certified",
+        "no_requested",
         "no_vacancies"
       ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent certification updates",
-      "product_freshness": "Used in operator-built title and Staffing research artifacts.",
-      "used_for": "Civil-service title cross-checking.",
+      "product_freshness": "The grouped materialization is refreshed from the publisher feed and carries its observed date; missing agency labels remain an explicit coverage block.",
+      "used_for": "Publisher-issued certified_to_agency edges between civil-service exams and canonical agency identities, with aggregate certification, request, vacancy, and source-record counts. This relation is distinct from appointing_agency.",
       "code_references": [
         {
-          "path": "data/TITLE_MAPPING.md",
+          "path": "tools/build_exam_certification_constellation.mjs",
           "contains": "a9md-ynri"
+        },
+        {
+          "path": "entity_resolution/exam_certifications/index.mjs",
+          "contains": "certified_to_agency"
+        },
+        {
+          "path": "site/data/exam_certification_constellation.json",
+          "contains": "certified_to_agency"
         }
       ],
-      "delivery_tier": "inline-at-build"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "mandatory-inclusionary-housing",
