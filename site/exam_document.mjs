@@ -104,9 +104,16 @@ export function examDocumentPath(examNumber) {
 }
 
 export function examWatchUrl(examNumber) {
+  const cleanedExamNumber = clean(examNumber);
+  const subjectRef = examSubjectRef(cleanedExamNumber);
+  const subjectRefs = subjectRef ? [subjectRef] : [];
   return followingUrlFromWatch({
     lens: "people",
-    filter: { view: "guide", examNumber: clean(examNumber) },
+    filter: {
+      view: "guide",
+      subject_refs_all: subjectRefs,
+      examNumber: subjectRefs.length ? null : cleanedExamNumber,
+    },
     freq: "daily",
   }, { base: "/following" });
 }
