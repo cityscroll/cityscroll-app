@@ -66,6 +66,15 @@ test("LL48 contract records the exact-BBL graph-slice measurement", () => {
   assert.equal(contract.warehouse_snapshot.artifact, "site/data/property_ll48_lookup.json");
 });
 
+test("MIH freshness limit records its metadata-based cadence derivation", () => {
+  const registry = loadSourceContracts();
+  const mih = registry.contracts.find((entry) => entry.id === "mandatory-inclusionary-housing");
+  assert.equal(mih.max_stale_days, 120);
+  assert.equal(mih.freshness_policy.limit_days, 120);
+  assert.match(mih.freshness_policy.derivation, /31-day monthly cadence \+ 48-day observed metadata lag \+ 41-day margin/);
+  assert.match(mih.freshness_policy.evidence, /revision endpoint exposes only the current revision/);
+});
+
 test("recorded fixtures reject missing fields and non-tabular source shapes", () => {
   const registry = loadSourceContracts();
   const missingField = structuredClone(loadSourceContractFixtures());

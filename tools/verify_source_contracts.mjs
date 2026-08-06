@@ -20,6 +20,10 @@ const LIVE_CONCURRENCY = 4;
 const NETWORK_RETRY = 1;
 const DEFAULT_UA = "CityScrollSourceContracts/1.0 (+https://cityscroll.org; source-contract monitor)";
 
+export function freshnessLimit(contract) {
+  return Number(contract.freshness_policy?.limit_days || contract.max_stale_days || 0);
+}
+
 function ageDays(epochMs) {
   return (Date.now() - epochMs) / DAY_MS;
 }
@@ -111,8 +115,9 @@ export async function verifySocrata(contract) {
   const pointerClass = contract.contract_class === "pointer"
     || contract.stale_policy === "skip"
     || (contract.status === "disabled" && contract.contract_class === "pointer");
-  if (!pointerClass && age > contract.max_stale_days) {
-    throw new Error(`${contract.id}: source is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+  const limit = freshnessLimit(contract);
+  if (!pointerClass && age > limit) {
+    throw new Error(`${contract.id}: source is stale (${Math.floor(age)} days; limit ${limit})`);
   }
 
   const sampleUrl = new URL(`${contract.domain}/resource/${contract.dataset_id}.json`);
