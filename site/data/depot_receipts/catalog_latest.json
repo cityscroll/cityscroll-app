@@ -1,0 +1,1235 @@
+{
+  "schema_version": 1,
+  "kind": "depot_catalog_sweep",
+  "observed_on": "2026-08-06",
+  "catalog": {
+    "domain": "data.cityofnewyork.us",
+    "result_set_size": 3014,
+    "returned": 3014,
+    "source": "Socrata catalog API"
+  },
+  "ranking": {
+    "method": "obtainable_key_spaces_v1",
+    "coverage_policy": "Catalog column metadata identifies candidates only; row-level join coverage remains unknown until reviewed.",
+    "candidate_count": 523
+  },
+  "validation": [
+    {
+      "dataset_id": "a9md-ynri",
+      "surfaced": true,
+      "rank": 1,
+      "score": 43,
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_no"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "civil_service_title",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_desc"
+          ],
+          "canonical_keys": [
+            "civil_service_title",
+            "list_title_desc"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "list_agency_code",
+            "list_agency_desc"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate"
+    },
+    {
+      "dataset_id": "kpav-sd4t",
+      "surfaced": true,
+      "rank": 5,
+      "score": 27,
+      "key_spaces": [
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "title_code_no"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "civil_service_title",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "civil_service_title"
+          ],
+          "canonical_keys": [
+            "civil_service_title",
+            "list_title_desc"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate"
+    }
+  ],
+  "top_candidates": [
+    {
+      "dataset_id": "a9md-ynri",
+      "name": "Civil Service List Certification",
+      "score": 43,
+      "obtainable_key_space_score": 41,
+      "committed_key_overlap": [
+        "exam_number",
+        "exam_no",
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_no"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "civil_service_title",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_desc"
+          ],
+          "canonical_keys": [
+            "civil_service_title",
+            "list_title_desc"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "list_agency_code",
+            "list_agency_desc"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/a9md-ynri"
+    },
+    {
+      "dataset_id": "qu8g-sxqf",
+      "name": "Civil Service List (Terminated)",
+      "score": 43,
+      "obtainable_key_space_score": 41,
+      "committed_key_overlap": [
+        "exam_number",
+        "exam_no",
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_no"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "civil_service_title",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_desc"
+          ],
+          "canonical_keys": [
+            "civil_service_title",
+            "list_title_desc"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "list_agency_code",
+            "list_agency_desc"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/qu8g-sxqf"
+    },
+    {
+      "dataset_id": "vx8i-nprf",
+      "name": "Civil Service List (Active)",
+      "score": 43,
+      "obtainable_key_space_score": 41,
+      "committed_key_overlap": [
+        "exam_number",
+        "exam_no",
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_no"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "civil_service_title",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_desc"
+          ],
+          "canonical_keys": [
+            "civil_service_title",
+            "list_title_desc"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "list_agency_code",
+            "list_agency_desc"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf"
+    },
+    {
+      "dataset_id": "qjzt-ytn9",
+      "name": "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+      "score": 28,
+      "obtainable_key_space_score": 26,
+      "committed_key_overlap": [
+        "exam_number",
+        "exam_no",
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_no"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "list_title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "list_agency_code"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/qjzt-ytn9"
+    },
+    {
+      "dataset_id": "kpav-sd4t",
+      "name": "Jobs NYC Postings",
+      "score": 27,
+      "obtainable_key_space_score": 26,
+      "committed_key_overlap": [
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "title_code_no"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "civil_service_title",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "civil_service_title"
+          ],
+          "canonical_keys": [
+            "civil_service_title",
+            "list_title_desc"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/kpav-sd4t"
+    },
+    {
+      "dataset_id": "axvu-zc97",
+      "name": "CSC Appeals Filed in Calendar Year",
+      "score": 20,
+      "obtainable_key_space_score": 18,
+      "committed_key_overlap": [
+        "exam_number",
+        "exam_no",
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_no"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/axvu-zc97"
+    },
+    {
+      "dataset_id": "4ptz-hmtc",
+      "name": "Annual Examination Schedule of Each Fiscal Year",
+      "score": 18,
+      "obtainable_key_space_score": 16,
+      "committed_key_overlap": [
+        "exam_number",
+        "exam_no"
+      ],
+      "key_spaces": [
+        {
+          "id": "exam_number",
+          "entity_type": "exam",
+          "matched_fields": [
+            "exam_number"
+          ],
+          "canonical_keys": [
+            "exam_number",
+            "exam_no"
+          ]
+        },
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc"
+    },
+    {
+      "dataset_id": "y9si-s7ab",
+      "name": "Verified Locations for NYC City-Funded Social Service Contracts - Sites",
+      "score": 17,
+      "obtainable_key_space_score": 15,
+      "committed_key_overlap": [
+        "agency",
+        "contract_id",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "contract_id",
+          "entity_type": "contract",
+          "matched_fields": [
+            "contract_id"
+          ],
+          "canonical_keys": [
+            "contract_id"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/y9si-s7ab"
+    },
+    {
+      "dataset_id": "3khw-qi8f",
+      "name": "Current Solicitations",
+      "score": 16,
+      "obtainable_key_space_score": 14,
+      "committed_key_overlap": [
+        "agency",
+        "request_id",
+        "PIN"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "request_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "pin",
+          "entity_type": "procurement",
+          "matched_fields": [
+            "pin"
+          ],
+          "canonical_keys": [
+            "PIN"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/3khw-qi8f"
+    },
+    {
+      "dataset_id": "dg92-zbpx",
+      "name": "City Record Online",
+      "score": 16,
+      "obtainable_key_space_score": 14,
+      "committed_key_overlap": [
+        "agency",
+        "request_id",
+        "PIN"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "request_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "pin",
+          "entity_type": "procurement",
+          "matched_fields": [
+            "pin"
+          ],
+          "canonical_keys": [
+            "PIN"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx"
+    },
+    {
+      "dataset_id": "qyyg-4tf5",
+      "name": "Recent Contract Awards",
+      "score": 16,
+      "obtainable_key_space_score": 14,
+      "committed_key_overlap": [
+        "agency",
+        "request_id",
+        "PIN"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "request_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "pin",
+          "entity_type": "procurement",
+          "matched_fields": [
+            "pin"
+          ],
+          "canonical_keys": [
+            "PIN"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5"
+    },
+    {
+      "dataset_id": "5ery-qagt",
+      "name": "DOHMH School Cafeteria Inspections (2020-Present)",
+      "score": 13,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "request_id",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "record_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/5ery-qagt"
+    },
+    {
+      "dataset_id": "9hxz-c2kj",
+      "name": "DOHMH School Cafeteria Inspections (Historical)",
+      "score": 13,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "request_id",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "record_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/9hxz-c2kj"
+    },
+    {
+      "dataset_id": "kwss-yksz",
+      "name": "Archived DCWP Inspections",
+      "score": 13,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "request_id",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "record_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/kwss-yksz"
+    },
+    {
+      "dataset_id": "nre2-6m2s",
+      "name": "DCWP Consumer Complaints",
+      "score": 13,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "request_id",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "record_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/nre2-6m2s"
+    },
+    {
+      "dataset_id": "wyj6-frpa",
+      "name": "Archived DCWP Charges",
+      "score": 13,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "request_id",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "request_id",
+          "entity_type": "notice",
+          "matched_fields": [
+            "record_id"
+          ],
+          "canonical_keys": [
+            "request_id"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/wyj6-frpa"
+    },
+    {
+      "dataset_id": "f4wx-5ve6",
+      "name": "Position Schedule",
+      "score": 12,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/f4wx-5ve6"
+    },
+    {
+      "dataset_id": "ye3c-m4ga",
+      "name": "Civil List",
+      "score": 12,
+      "obtainable_key_space_score": 11,
+      "committed_key_overlap": [
+        "agency"
+      ],
+      "key_spaces": [
+        {
+          "id": "civil_service_title_code",
+          "entity_type": "civil_service_title",
+          "matched_fields": [
+            "title_code"
+          ],
+          "canonical_keys": [
+            "title_code",
+            "title_code_no",
+            "list_title_code"
+          ]
+        },
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/ye3c-m4ga"
+    },
+    {
+      "dataset_id": "2bvn-ky2h",
+      "name": "Verified Locations for NYC City-Funded Social Service Contracts - Contracts",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "contract_id"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "contract_id",
+          "entity_type": "contract",
+          "matched_fields": [
+            "contract_id"
+          ],
+          "canonical_keys": [
+            "contract_id"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/2bvn-ky2h"
+    },
+    {
+      "dataset_id": "3m3d-zzwn",
+      "name": "Language Access Secret Shopper (LASS) Ratings",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/3m3d-zzwn"
+    },
+    {
+      "dataset_id": "4d7f-74pe",
+      "name": "City Council Discretionary Funding",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/4d7f-74pe"
+    },
+    {
+      "dataset_id": "4e2n-s75z",
+      "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL 48 of 2011)",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/4e2n-s75z"
+    },
+    {
+      "dataset_id": "76ig-c548",
+      "name": "311 Service Requests from 2010 to 2019",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency",
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/76ig-c548"
+    },
+    {
+      "dataset_id": "9cgq-8a58",
+      "name": "Building Auditing Report",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/9cgq-8a58"
+    },
+    {
+      "dataset_id": "9hyh-zkx9",
+      "name": "ACS Community Partners",
+      "score": 11,
+      "obtainable_key_space_score": 9,
+      "committed_key_overlap": [
+        "agency",
+        "BBL"
+      ],
+      "key_spaces": [
+        {
+          "id": "agency",
+          "entity_type": "agency",
+          "matched_fields": [
+            "agency_name"
+          ],
+          "canonical_keys": [
+            "agency",
+            "agency_name",
+            "list_agency_code",
+            "list_agency_desc"
+          ]
+        },
+        {
+          "id": "bbl",
+          "entity_type": "parcel",
+          "matched_fields": [
+            "bbl"
+          ],
+          "canonical_keys": [
+            "BBL"
+          ]
+        }
+      ],
+      "candidate_status": "candidate",
+      "coverage_status": "unknown_until_reviewed",
+      "evidence": "Socrata catalog column metadata only; no row-level join coverage measured.",
+      "landing_page": "https://data.cityofnewyork.us/d/9hyh-zkx9"
+    }
+  ]
+}
