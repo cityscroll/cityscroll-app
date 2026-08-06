@@ -15,6 +15,7 @@ import {
   normId,
 } from "./passport_join.mjs";
 import { CONTRACTS_PORTAL, RFX_PORTAL, passportRfxHandoffUrl } from "./passport_parse.mjs";
+import { buildRfxPackageDocumentSurface } from "./rfx_documents_join.mjs";
 import { recoverPaymentFromRegisteredJoin } from "./checkbook_lifecycle.mjs";
 import {
   attachLifecycleCoherence,
@@ -159,6 +160,7 @@ export function injectSolicitationFromRfx(timeline, rfxRow, join) {
       portal: passportRfxHandoffUrl(r.rfp_id),
       join_method: join?.method || null,
       detail: slimRfx(r),
+      package_documents: buildRfxPackageDocumentSurface(r, { requestId: null }),
     },
   };
   const rest = Array.isArray(timeline) ? timeline.slice() : [];
@@ -187,6 +189,11 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
         status: "unavailable",
         source: "passport-public-rfx",
         portal: RFX_PORTAL,
+        package_documents: {
+          status: "unavailable",
+          source: "passport-public-rfx",
+          reason: "passport_lookup_failed",
+        },
       },
       passport_lookup: "unavailable",
     };
@@ -206,6 +213,9 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
         portal: passportRfxHandoffUrl(r.rfp_id),
         join_method: join?.method || null,
         detail: slimRfx(r),
+        package_documents: buildRfxPackageDocumentSurface(r, {
+          requestId: entry.detail?.request_id || null,
+        }),
       },
     };
   }
@@ -218,6 +228,11 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
         portal: RFX_PORTAL,
         join_method: join?.method || null,
         candidates: matchedRfx.map(slimRfx),
+        package_documents: {
+          status: "ambiguous",
+          source: "passport-public-rfx",
+          reason: "multiple_rfx_candidates",
+        },
       },
     };
   }
@@ -229,6 +244,13 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
       source: "passport-public-rfx",
       portal: RFX_PORTAL,
       reason: join ? "epin_joined_no_row" : "no_epin_pin_join",
+      package_documents: {
+        status: "not_published",
+        source: "city-record-getfile",
+        urls: [],
+        count: 0,
+        reason: "no_rfx_row_joined",
+      },
     },
   };
 }

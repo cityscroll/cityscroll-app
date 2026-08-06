@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-06T12:47:04.409Z",
+  "generated_at": "2026-08-06T19:05:45.517Z",
   "observation_count": 1334,
   "entity_count": 200,
   "multi_domain_count": 29,
@@ -9339,6 +9339,27 @@
           "layer": "cross_domain_object_link_v2"
         },
         {
+          "type": "corroborates_contract",
+          "from": "contract:CT81626W0043001",
+          "to": "contract:CT1-816-20278801775",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "passport_checkbook_crosswalk_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "procurement_pin_epin_exact",
+            "input_value": "81626W0043001",
+            "related_source_system": "passport-public-contracts",
+            "related_source_record_id": "passport-public-contracts:ct:CT1-816-20278801775"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "published_by_agency",
           "from": "contract:CT81626W0043001",
           "to": "agency:id:health-and-mental-hygiene",
@@ -10180,7 +10201,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 4,
         "total_linked_objects": 14,
-        "link_count": 32,
+        "link_count": 33,
         "join_key_link_count": 13,
         "coverage_rate": 0.42857142857142855
       }
@@ -58428,6 +58449,27 @@
           "layer": "cross_domain_object_link_v2"
         },
         {
+          "type": "corroborates_contract",
+          "from": "contract:CT81626W0043001",
+          "to": "contract:CT1-816-20278801775",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "passport_checkbook_crosswalk_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-contracts",
+            "source_record_id": "checkbook-contracts:pin:81626W0043001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "procurement_pin_epin_exact",
+            "input_value": "81626W0043001",
+            "related_source_system": "passport-public-contracts",
+            "related_source_record_id": "passport-public-contracts:ct:CT1-816-20278801775"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "named_vendor",
           "from": "contract:CT81626W0043001",
           "to": "vendor:stem:MAKE%20IT%20ZESTY",
@@ -58669,7 +58711,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 4,
-        "link_count": 11,
+        "link_count": 12,
         "join_key_link_count": 8,
         "coverage_rate": 0.14285714285714285
       }

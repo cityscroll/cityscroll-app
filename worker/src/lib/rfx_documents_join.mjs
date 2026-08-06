@@ -45,6 +45,7 @@ export const RFX_PUBLIC_COLUMNS = Object.freeze([
 
 export const CITY_RECORD_GETFILE_HOST = "a856-cityrecord.nyc.gov";
 export const CITY_RECORD_GETFILE_PATH = "/Search/GetFile";
+export const CITY_RECORD_GETFILE_URL = `https://${CITY_RECORD_GETFILE_HOST}${CITY_RECORD_GETFILE_PATH}`;
 export const USEFULNESS_THRESHOLD = 0.3;
 
 /**
@@ -70,6 +71,37 @@ export function extractRfxDocumentUrls(row) {
  */
 export function rfxRowHasPackageDocuments(row) {
   return extractRfxDocumentUrls(row).length > 0;
+}
+
+/**
+ * Build the package-document contract for one RFx row.
+ *
+ * The public RFx dump currently contains metadata but no package-document
+ * columns. That is a meaningful not-published result, not an empty success:
+ * callers get a stable status plus the historical City Record attachment home
+ * without inventing a document URL. A future URL-bearing dump automatically
+ * takes the matched branch and remains covered by the same contract.
+ */
+export function buildRfxPackageDocumentSurface(row, { requestId = null } = {}) {
+  const urls = extractRfxDocumentUrls(row);
+  if (urls.length) {
+    return {
+      status: "matched",
+      source: "passport-public-rfx",
+      urls,
+      count: urls.length,
+      city_record_getfile: CITY_RECORD_GETFILE_URL,
+    };
+  }
+  return {
+    status: "not_published",
+    source: "city-record-getfile",
+    urls: [],
+    count: 0,
+    reason: "public_rfx_data_has_no_document_urls",
+    city_record_getfile: CITY_RECORD_GETFILE_URL,
+    request_id: requestId ? String(requestId) : null,
+  };
 }
 
 /**

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "title": "Bounded Checkbook Contracts ↔ PASSPort Public crosswalk",
+  "observed_on": "2026-08-06",
+  "generated_at": "2026-08-06T11:15:02.789Z",
+  "sources": {
+    "passport": "site/data/procurement_spine_sources.json#rows.passport_contracts_materialization",
+    "checkbook": "site/data/procurement_spine_sources.json#rows.checkbook_contracts"
+  },
+  "metrics": {
+    "version": "passport_checkbook_crosswalk_v1",
+    "checkbook_contracts": 1,
+    "matched": 1,
+    "ambiguous": 0,
+    "unmatched": 0,
+    "coverage_rate": 1,
+    "denominator": "materialized Checkbook Contracts rows with contract_id or PIN",
+    "acceptance_rule": "exact contract_id or strict PIN↔EPIN only; ambiguous candidates excluded"
+  },
+  "rows": [
+    {
+      "status": "matched",
+      "join_method": "pin_epin_exact",
+      "checkbook_source_record_id": "checkbook:contract:CT81626W0043001",
+      "checkbook_subject_ref": "contract:CT81626W0043001",
+      "checkbook_contract_id": "CT81626W0043001",
+      "checkbook_pin": "81626W0043001",
+      "passport_source_record_id": "passport:contract:CT1-816-20278801775",
+      "passport_subject_ref": "contract:CT1-816-20278801775",
+      "passport_contract_id": "CT1-816-20278801775",
+      "passport_epin": "81626W0043001",
+      "input_value": "81626W0043001",
+      "candidate_subject_refs": [
+        "contract:CT1-816-20278801775"
+      ],
+      "provenance": {
+        "method": "passport_checkbook_crosswalk_v1",
+        "source_fields": [
+          "pin",
+          "epin"
+        ]
+      }
+    }
+  ]
+}

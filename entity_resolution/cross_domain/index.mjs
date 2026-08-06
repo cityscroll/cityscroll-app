@@ -66,6 +66,12 @@ export {
   lookupEntityIntelligence,
 } from "./object_links.mjs";
 
+export {
+  PROCUREMENT_CROSSWALK_VERSION,
+  PROCUREMENT_CROSSWALK_METHOD,
+  buildPassportCheckbookCrosswalk,
+} from "./procurement_crosswalk.mjs";
+
 // Property-domain helpers (normalizeBbl / observationFromZapBblRow live on object_links
 // to avoid duplicate package exports; property_links keeps local copies for its joins).
 export {
