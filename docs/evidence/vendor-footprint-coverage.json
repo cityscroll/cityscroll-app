@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Vendor footprint coverage and promotion receipt",
-  "generated_at": "2026-08-05T22:38:47.894Z",
+  "generated_at": "2026-08-06T11:23:28.333Z",
   "status": "qualified",
   "qualifier_required": true,
   "sections": [
@@ -28,7 +28,53 @@
     "normalization_blocked_awards": 4,
     "vendor_roots": 14463,
     "multi_domain_vendor_roots": 0,
-    "multi_domain_vendor_rate": 0
+    "multi_domain_vendor_rate": 0,
+    "multi_kind_vendor_roots": 3683,
+    "multi_kind_vendor_rate": 0.2546,
+    "section_denominators": {
+      "awards": {
+        "status": "measured",
+        "rows": 53245,
+        "basis": "full OCP award census"
+      },
+      "contracts": {
+        "status": "measured",
+        "denominator": "population-backed PASSPort contracts corroborating OCP awards",
+        "rows": 13057,
+        "vendor_roots": 3683,
+        "source_population": 61054
+      },
+      "payments": {
+        "status": "unknown",
+        "rows": null,
+        "basis": "Population denominator not materialized"
+      },
+      "land": {
+        "status": "unknown",
+        "rows": null,
+        "basis": "Vendor footprint denominator not materialized"
+      },
+      "property": {
+        "status": "unknown",
+        "rows": null,
+        "basis": "Vendor footprint denominator not materialized"
+      },
+      "rules": {
+        "status": "unknown",
+        "rows": null,
+        "basis": "Vendor footprint denominator not materialized"
+      },
+      "meetings": {
+        "status": "unknown",
+        "rows": null,
+        "basis": "Vendor footprint denominator not materialized"
+      },
+      "franchise": {
+        "status": "unknown",
+        "rows": null,
+        "basis": "Vendor footprint denominator not materialized"
+      }
+    }
   },
   "census": {
     "strategy": "full_corpus_vendor_profile_aggregate",
@@ -65,17 +111,17 @@
       },
       "section_denominator_rate": {
         "threshold": 1,
-        "actual": 0.125,
-        "measured_sections": 1,
+        "actual": 0.25,
+        "measured_sections": 2,
         "total_sections": 8,
         "passed": false
       },
       "precision_review": {
         "reviewed_links_threshold": 200,
-        "reviewed_links_actual": 45,
+        "reviewed_links_actual": 0,
         "false_positive_rate_threshold": 0.01,
-        "false_positive_rate_actual": 0,
-        "full_corpus": false,
+        "false_positive_rate_actual": null,
+        "full_corpus": true,
         "passed": false
       }
     }
@@ -86,6 +132,8 @@
     "denominator_materialized_at": "2026-08-05T10:40:50.286Z",
     "denominator_row_count": 53245,
     "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
-    "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json"
+    "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
+    "procurement_spine": "site/data/procurement_spine_sources.json",
+    "procurement_spine_observed_on": "2026-08-06"
   }
 }

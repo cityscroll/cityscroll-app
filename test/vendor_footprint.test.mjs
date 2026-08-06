@@ -89,6 +89,29 @@ test("build derives award coverage from the full snapshot aggregate, not the bou
   assert.deepEqual(coverage.excluded_confidence, ["tentative", "review_only", "not_scored"]);
 });
 
+test("population-backed procurement spine publishes a separate multi-kind census", () => {
+  const coverage = buildVendorFootprintCoverage(
+    fixtureDoc(),
+    { row_count: 4, rows: [{ request_id: "1", vendor_name: "Acme Inc." }] },
+    {},
+    {
+      observed_on: "2026-08-06",
+      coverage: {
+        passport_contracts: {
+          award_corroboration: { vendor_roots: 1, rate: 0.5 },
+          section_denominator: { status: "measured", rows: 2, source_population: 10 },
+        },
+      },
+    },
+  );
+
+  assert.equal(coverage.summary.multi_kind_vendor_roots, 1);
+  assert.equal(coverage.summary.multi_kind_vendor_rate, 0.5);
+  assert.equal(coverage.summary.section_denominators.contracts.status, "measured");
+  assert.equal(coverage.promotion.gates.section_denominator_rate.actual, 0.25);
+  assert.equal(coverage.provenance.procurement_spine_observed_on, "2026-08-06");
+});
+
 test("vendor footprint renders populated groups and strong objects only", () => {
   const response = {
     ok: true,
