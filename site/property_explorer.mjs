@@ -24,7 +24,7 @@ import {
 } from "./property_commercial.mjs";
 import { propertyEventState } from "./property_timed_events.mjs";
 import { resolvePropertyActionLifecycle } from "./property_reader_actions.mjs";
-import { stampPropertyActionCharacters } from "./property_action_character.mjs";
+import { classifyPropertyActionCharacter, stampPropertyActionCharacters } from "./property_action_character.mjs";
 export { stampPropertyActionCharacters, propertyActionCharacterLead } from "./property_action_character.mjs";
 
 export const PROPERTY_EXPLORER_SCHEMA_VERSION = 1;
@@ -582,6 +582,66 @@ export function partitionPropertyExplorerEntries(entries, opts = {}) {
     archive_count: archiveCount,
     census_total: censusTotal,
   };
+}
+
+const PROPERTY_ARCHIVE_GROUPS = Object.freeze([
+  ["sales_results", "property_archive_sales_results"],
+  ["hearings_decisions", "property_archive_hearings_decisions"],
+  ["programs_ran", "property_archive_programs_ran"],
+]);
+
+function archiveRows(entry) { return rowsForPropertyEntry(entry); }
+
+function archiveGroupForEntry(entry) {
+  const rows = archiveRows(entry);
+  const characters = rows.map((row) => row?.action_character || classifyPropertyActionCharacter(row).action_character || entry?.action_character).filter(Boolean);
+  if (characters.includes("participation")) return "hearings_decisions";
+  if (characters.includes("marketplace") || characters.includes("historical_result")) return "sales_results";
+  return "programs_ran";
+}
+
+function archiveDate(entry) {
+  const dates = archiveRows(entry).flatMap((row) => [
+    row?.event_date, row?.start_date, row?.end_date,
+    row?.commercial?.close_date, row?.property_reader_actions?.lifecycle?.closed_at,
+  ]).map(isoDate).filter(Boolean).sort();
+  return dates.length ? { start: dates[0], end: dates[dates.length - 1] } : null;
+}
+
+/** Historical presentation projection; entries and canonical URLs stay intact. */
+export function groupPropertyArchiveEntries(entries = []) {
+  const byKey = new Map(PROPERTY_ARCHIVE_GROUPS.map(([key, label]) => [key, {
+    key, label, entries: [], count: 0, date_range: null,
+  }]));
+  for (const entry of entries || []) {
+    const group = byKey.get(archiveGroupForEntry(entry));
+    if (!group) continue;
+    group.entries.push(entry);
+    group.count += propertyExplorerCensusCount([entry]);
+    const range = archiveDate(entry);
+    if (range) group.date_range = {
+      start: !group.date_range || range.start < group.date_range.start ? range.start : group.date_range.start,
+      end: !group.date_range || range.end > group.date_range.end ? range.end : group.date_range.end,
+    };
+  }
+  return PROPERTY_ARCHIVE_GROUPS.map(([key]) => byKey.get(key))
+    .filter((group) => group.entries.length > 0);
+}
+
+/** Render only the archive's group chrome; card rendering stays with the app. */
+export function propertyArchiveGroupsHTML(groups, cardFor, helpers) {
+  const t = helpers.translate, esc = helpers.escape, date = helpers.formatDate;
+  const coverage = (group) => {
+    if (!group.date_range) return t("property_archive_coverage_unknown");
+    const start = date(group.date_range.start, { dateOnly: true });
+    const end = date(group.date_range.end, { dateOnly: true });
+    return t("property_archive_coverage", { range: start === end ? start : `${start} – ${end}` });
+  };
+  return groups.map((group) => `<section class="property-archive-group" data-archive-group="${esc(group.key)}">
+    <header class="property-archive-group-head"><h2>${esc(t(group.label))}</h2>
+      <p>${esc(t(`${group.label}_dek`))}</p><span class="property-archive-coverage">${esc(coverage(group))} · ${esc(t("property_archive_record_count", { n: group.count }))}</span>
+    </header><div class="property-archive-group-list">${group.entries.map(cardFor).join("")}</div>
+  </section>`).join("");
 }
 
 /**

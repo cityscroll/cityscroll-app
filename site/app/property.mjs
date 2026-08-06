@@ -1323,11 +1323,10 @@ async function renderPropExplorer(){
     }));
   }
 
-  // Small-multiples collapse (Tufte): runs of near-identical single notices → one card
-  // carrying the count + date range. Applied within the selected current/archive view.
   if(tools && tools.clusterRepeatedEntries){
     entries=tools.clusterRepeatedEntries(entries);
   }
+  const ag=propertyView==="archive"?tools.groupPropertyArchiveEntries(entries):[];
   try{
     const savedSearchTools=await import("../property_saved_search.mjs");
     propertyAuctionExportVisible=savedSearchTools.propertyAuctionExportRows(entries);
@@ -1341,9 +1340,6 @@ async function renderPropExplorer(){
   const feedEl=$("#propertyfeed");
   if(!feedEl) return;
   const kwEl=$("#propertykw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
-  // Export, print, and the result counter use request-id membership. Both
-  // disposition cards and repeated-notice clusters expand back to every notice,
-  // preserving the same cardinality as the stamped district bag.
   const visibleRows=[];
   entries.forEach(e=>{
     if(e.kind==="cluster"){
@@ -1444,7 +1440,9 @@ async function renderPropExplorer(){
   const cardFor=(e)=> e.kind==="cluster"
     ? propertyClusterCardHTML(e,plainTools)
     : propertyExplorerCardHTML(e,terms,parcelLinks,plainTools,readerTools,tools);
-  feedEl.innerHTML=`${cover}${entries.map(cardFor).join("")}`;
+  feedEl.innerHTML=ag.length
+    ?`${cover}${tools.propertyArchiveGroupsHTML(ag,cardFor,{translate:t,escape:escUiHtml,formatDate:fdt})}`
+    :`${cover}${entries.map(cardFor).join("")}`;
   const followResolved=feedEl.querySelector("[data-follow-resolved-neighborhood]");
   if(followResolved) followResolved.addEventListener("click",()=>watchFromFilters("property"));
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));

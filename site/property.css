@@ -25,6 +25,13 @@
 .property-cluster-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
 .property-cluster-list li{font:13px/1.4 ui-sans-serif,system-ui,sans-serif}
 .property-cluster-list .cl-date{color:var(--muted);margin-inline-start:6px}
+.property-archive-group{margin:var(--space-4) 0 0;padding-top:var(--space-3);border-top:2px solid var(--color-border)}
+.property-archive-group:first-of-type{margin-top:var(--space-2)}
+.property-archive-group-head{margin:0 0 var(--space-2);max-width:70ch}
+.property-archive-group-head h2{margin:0;font:700 20px/1.15 var(--font-display);color:var(--color-text)}
+.property-archive-group-head p{margin:4px 0;font:14px/1.45 var(--font-interface);color:var(--color-text-soft)}
+.property-archive-coverage{display:block;font:12px/1.4 var(--font-interface);color:var(--color-text-soft)}
+.property-archive-group-list{display:grid;gap:var(--space-2)}
 .property-empty-current{grid-column:1/-1;margin:var(--space-2) 0 var(--space-1);padding:var(--space-3) var(--space-4);background:var(--color-canvas-subtle);border:1px solid var(--color-border);border-radius:var(--radius-md);font:14px/1.45 var(--font-interface);color:var(--color-text-soft)}
 .property-fleet-source{grid-column:1/-1;margin:var(--space-3) 0 var(--space-2)}
 .property-fleet-source .fcard{margin:0;border-inline-start:5px solid var(--green);background:var(--color-surface)}
