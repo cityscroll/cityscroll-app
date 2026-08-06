@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Vendor footprint coverage and promotion receipt",
-  "generated_at": "2026-08-06T11:23:28.333Z",
+  "generated_at": "2026-08-06T12:47:04.409Z",
   "status": "qualified",
   "qualifier_required": true,
   "sections": [
@@ -118,10 +118,10 @@
       },
       "precision_review": {
         "reviewed_links_threshold": 200,
-        "reviewed_links_actual": 0,
+        "reviewed_links_actual": 45,
         "false_positive_rate_threshold": 0.01,
-        "false_positive_rate_actual": null,
-        "full_corpus": true,
+        "false_positive_rate_actual": 0,
+        "full_corpus": false,
         "passed": false
       }
     }

@@ -385,11 +385,13 @@ export function collectProcurementSpineObservations(root) {
   };
   // The source is population-backed, but the public entity graph is an
   // intentionally bounded materialization. Keep the census in the receipt and
-  // feed only a deterministic prefix into the graph so one large source cannot
-  // evict the other domains or their join-key examples from the 200-root cap.
-  const passportRows = Array.isArray(doc.rows.passport_contracts)
-    ? doc.rows.passport_contracts.slice(0, 500)
-    : [];
+  // feed only the explicit bounded compatibility slice into the graph so one
+  // large source cannot evict the other domains from the 200-root cap.
+  const passportRows = Array.isArray(doc.rows.passport_contracts_materialization)
+    ? doc.rows.passport_contracts_materialization
+    : (Array.isArray(doc.rows.passport_contracts)
+      ? doc.rows.passport_contracts.slice(0, 500)
+      : []);
   add(passportRows, observationFromPassportContractRow, "passport-public-contracts");
   add(doc.rows.checkbook_contracts, observationFromCheckbookContractRow, "checkbook-contracts");
   add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
