@@ -358,7 +358,7 @@ test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the
   const html = renderLifecycle(FULL_LIFECYCLE, notice);
   // Methodology is demoted to a disclosure — names sources without duplicating outbound links
   assert.match(html, /Explain timeline/);
-  assert.match(html, /This timeline joins/);
+  assert.match(html, /This timeline brings together/);
   assert.match(html, /City Record/);
   assert.match(html, /Checkbook NYC/);
   assert.match(html, /PASSPort Public/);
