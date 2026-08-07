@@ -1,11 +1,6 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
-import {
-  procurementLocationHref,
-  procurementModeHref,
-  PROCUREMENT_MODE_KEYS,
-} from "../procurement_facet_links.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -15,17 +10,17 @@ function moneyActionLocationTools(){
   return moneyActionLocationToolsPromise||=import("../money_action_location_ui.mjs").then(module=>(globalThis.MoneyActionLocations=module)).catch(()=>null);
 }
 function syncProcurementFacetRails(){
-  const activeMode = PROCUREMENT_MODE_KEYS.includes(String($("#mode")?.value || ""))
+  const activeMode = ["open", "allrfp", "award"].includes(String($("#mode")?.value || ""))
     ? String($("#mode").value)
     : "open";
   const modeRail = document.getElementById(["money", "mode", "rail"].join("-"));
   modeRail?.querySelectorAll("a").forEach((link) => {
     const modeKey = link.dataset.moneyMode;
     if (!modeKey) return;
-    link.href = procurementModeHref(modeKey);
     const active = modeKey === activeMode;
     link.classList.toggle("on", active);
-    link.setAttribute("aria-current", active ? "page" : "false");
+    if (active) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
   });
   const activeBasis = moneyLocationFilter.layer === "contract_action_address"
     ? (moneyLocationFilter.basis || "contract_action_address")
@@ -34,10 +29,10 @@ function syncProcurementFacetRails(){
   locationRail?.querySelectorAll("a").forEach((link) => {
     const basis = link.dataset.moneyLocationBasis;
     if (!basis) return;
-    link.href = procurementLocationHref(basis);
     const active = basis === activeBasis;
     link.classList.toggle("on", active);
-    link.setAttribute("aria-current", active ? "page" : "false");
+    if (active) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
   });
 }
 async function initializeMoneyLocationFilters(){

@@ -49,6 +49,9 @@ test("Contracts keeps keyword, mode, and response-location facets visible while 
   }
   assert.match(moneySection, /id="money-mode-rail"[\s\S]*?data-scope-edge="money\.mode\.award"/);
   assert.match(moneySection, /id="money-location-rail"[\s\S]*?data-scope-edge="money\.location\.submission_address"/);
+  assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-mode-label"[\s\S]*?id="money-mode-rail"[^>]*aria-labelledby="money-mode-label"/);
+  assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-location-label"[\s\S]*?id="money-location-rail"[^>]*aria-labelledby="money-location-label"/);
+  assert.doesNotMatch(moneySection, /class="money-facet-rails" aria-label=/);
   assert.doesNotMatch(disclosure, /<select[^>]+id="mode"|<select[^>]+id="moneylocationbasis"/);
   assert.doesNotMatch(disclosure, /id="sort"|id="methodfacet"/);
   assert.ok(moneySection.indexOf('id="methodfacet"') > disclosureEnd);

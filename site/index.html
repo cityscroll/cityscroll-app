@@ -1645,18 +1645,18 @@
     </div>
     <input type="hidden" id="mode" value="open">
     <input type="hidden" id="moneylocationbasis" value="">
-    <div class="money-facet-rails" aria-label="Contract scope facets">
-      <div class="money-facet-rail">
-        <div class="property-rail-label lens-primary-label" data-i18n="show_label">Show</div>
-        <nav class="chiprow lens-primary-rail" id="money-mode-rail" aria-label="Contract status">
+    <div class="money-facet-rails">
+      <div class="money-facet-rail" role="group" aria-labelledby="money-mode-label">
+        <div class="property-rail-label lens-primary-label" id="money-mode-label" data-i18n="show_label">Show</div>
+        <nav class="chiprow lens-primary-rail" id="money-mode-rail" aria-labelledby="money-mode-label">
           <a class="chip" data-money-mode="open" data-scope-edge="money.mode.open" href="/browse/contracts/?mode=open" data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</a>
           <a class="chip" data-money-mode="allrfp" data-scope-edge="money.mode.allrfp" href="/browse/contracts/?mode=allrfp" data-i18n="mode_allrfp">All RFPs</a>
           <a class="chip" data-money-mode="award" data-scope-edge="money.mode.award" href="/browse/contracts/?mode=award" data-i18n="mode_award">Recent Awards ($)</a>
         </nav>
       </div>
-      <div class="money-facet-rail">
-        <div class="property-rail-label lens-primary-label" data-i18n="money_location_basis_label">Response location basis</div>
-        <nav class="chiprow lens-primary-rail" id="money-location-rail" aria-label="Response location basis">
+      <div class="money-facet-rail" role="group" aria-labelledby="money-location-label">
+        <div class="property-rail-label lens-primary-label" id="money-location-label" data-i18n="money_location_basis_label">Response location basis</div>
+        <nav class="chiprow lens-primary-rail" id="money-location-rail" aria-labelledby="money-location-label">
           <a class="chip" data-money-location-basis="contract_action_address" data-scope-edge="money.location.contract_action_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%7D" data-i18n="money_location_basis_response">Any response address</a>
           <a class="chip" data-money-location-basis="submission_address" data-scope-edge="money.location.submission_address" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22submission_address%22%7D" data-i18n="money_location_basis_submission">Located by submission address</a>
           <a class="chip" data-money-location-basis="pre_bid_venue" data-scope-edge="money.location.pre_bid_venue" href="/near-you/?v=0&amp;lens=money&amp;basis=contract_action_address&amp;facet=%7B%22mode%22%3A%22allrfp%22%2C%22actionBasis%22%3A%22pre_bid_venue%22%7D" data-i18n="money_location_basis_prebid">Located by pre-bid venue</a>
