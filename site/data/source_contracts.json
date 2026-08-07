@@ -873,8 +873,18 @@
         "mih_option",
         "cd"
       ],
-      "max_stale_days": 45,
-      "publisher_cadence": "Monthly (Open Data metadata)",
+      "max_stale_days": 120,
+      "freshness_policy": {
+        "limit_days": 120,
+        "method": "Socrata metadata cadence with an observed publication lag and explicit margin",
+        "observed_on": "2026-08-06",
+        "declared_cadence_days": 31,
+        "observed_metadata_lag_days": 48,
+        "margin_days": 41,
+        "evidence": "Socrata metadata declares monthly updates; the current version metadata is dated 2026-03-31 and rowsUpdatedAt is 2026-05-18 (48 days later). Socrata's anonymous revision endpoint exposes only the current revision, so no historical revision intervals are represented as measured facts.",
+        "derivation": "31-day monthly cadence + 48-day observed metadata lag + 41-day margin = 120-day limit"
+      },
+      "publisher_cadence": "Monthly (Open Data metadata; 31-day working cadence)",
       "product_freshness": "The exact project_id join is materialized into the land project constellation; unmatched source rows remain excluded from the public read model.",
       "used_for": "Exact ZAP project evidence for Mandatory Inclusionary Housing status, adoption date, map, community district, and affordability option.",
       "join_keys": ["project_id"],
