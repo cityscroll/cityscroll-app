@@ -36,6 +36,69 @@ export function stageModelName(modelStage) {
   return `${ULURP_STATUTORY_MODEL_NAME}_${modelStage}`;
 }
 
+/**
+ * Validate the complete assertion set for one certified project.
+ *
+ * The phase rows intentionally share land.zap_milestone, so model_name is the
+ * phase identity. Requiring the full one-per-stage set keeps phase-aware
+ * resolution deterministic and prevents a partial materialization from
+ * looking complete to downstream readers.
+ */
+export function validateUlurpStatutoryPredictionSet(predictions, opts = {}) {
+  if (!Array.isArray(predictions)) {
+    throw new TypeError("ULURP statutory predictions must be an array");
+  }
+  const expected = new Map(
+    ULURP_STATUTORY_STAGES.map((stage) => [
+      stageModelName(stage.model_stage || stage.phase_id),
+      "land.zap_milestone",
+    ]),
+  );
+  expected.set(stageModelName("disposition"), "land.zap_disposition");
+  if (predictions.length !== expected.size) {
+    throw new TypeError(
+      `ULURP statutory prediction set must contain exactly ${expected.size} rows`,
+    );
+  }
+
+  const seenModels = new Set();
+  const seenIds = new Set();
+  let subjectRef = opts.subjectRef || null;
+  let generatedAt = null;
+  for (const prediction of predictions) {
+    validatePrediction(prediction);
+    if (seenModels.has(prediction.model_name)) {
+      throw new TypeError(`duplicate ULURP statutory model: ${prediction.model_name}`);
+    }
+    seenModels.add(prediction.model_name);
+    if (seenIds.has(prediction.prediction_id)) {
+      throw new TypeError(`duplicate ULURP statutory prediction id: ${prediction.prediction_id}`);
+    }
+    seenIds.add(prediction.prediction_id);
+    if (subjectRef == null) subjectRef = prediction.subject_ref;
+    if (prediction.subject_ref !== subjectRef) {
+      throw new TypeError("ULURP statutory predictions must share one subject_ref");
+    }
+    if (generatedAt == null) generatedAt = prediction.generated_at;
+    if (prediction.generated_at !== generatedAt) {
+      throw new TypeError("ULURP statutory predictions must share one generated_at");
+    }
+    const expectedKind = expected.get(prediction.model_name);
+    if (!expectedKind) throw new TypeError(`unexpected ULURP statutory model: ${prediction.model_name}`);
+    if (prediction.predicted_event_kind !== expectedKind) {
+      throw new TypeError(
+        `${prediction.model_name} must target ${expectedKind}`,
+      );
+    }
+  }
+  for (const modelName of expected.keys()) {
+    if (!seenModels.has(modelName)) {
+      throw new TypeError(`missing ULURP statutory model: ${modelName}`);
+    }
+  }
+  return predictions;
+}
+
 function subjectRefFor(record) {
   const id = String(record?.project_id || record?.open_data?.project_id || "").trim();
   if (!id) throw new TypeError("ULURP statutory predictions require project_id");
@@ -191,7 +254,7 @@ export function emitUlurpStatutoryPredictions(record = {}, opts = {}) {
     out.push(validatePrediction(prediction));
   }
 
-  return out;
+  return validateUlurpStatutoryPredictionSet(out, { subjectRef });
 }
 
 /**
