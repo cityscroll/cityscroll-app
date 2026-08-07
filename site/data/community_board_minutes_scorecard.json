@@ -1,0 +1,1324 @@
+{
+  "schema": "cityscroll.community_board_minutes_scorecard.v1",
+  "version": 1,
+  "as_of": "2026-08-04",
+  "source_contract": {
+    "detector_schema": "cityscroll.community_board_minutes_gap_detector.v1",
+    "detector_artifact": "site/data/community_board_minutes_gap.json",
+    "registry": "site/data/non_council_outcome_sources/source_registry.json",
+    "rule": "Only explicit minutes URLs and detector receipts may supply a dated observation; no URL is inferred."
+  },
+  "legal_basis": {
+    "label": "Public records expectation",
+    "text": "The City Comptroller has recommended that community boards post minutes from the past 12 months.",
+    "citation_url": "https://comptroller.nyc.gov/reports/audit-report-on-the-twelve-manhattan-community-boards-compliance-with-new-york-city-charter-and-new-york-city-administrative-code-requirements-for-public-meetings-and-hearings-and-for-web/"
+  },
+  "coverage": {
+    "boards": 59,
+    "measured": 0
+  },
+  "rankings": {
+    "leaders": [],
+    "laggards": []
+  },
+  "rows": [
+    {
+      "body_id": "bronx-cb-01",
+      "name": "Bronx Community Board 1",
+      "borough": "Bronx",
+      "district": 1,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb1/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": "https://www.nyc.gov/site/bronxcb1/calendar/board-meeting-minutes.page",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-02",
+      "name": "Bronx Community Board 2",
+      "borough": "Bronx",
+      "district": 2,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb2/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-03",
+      "name": "Bronx Community Board 3",
+      "borough": "Bronx",
+      "district": 3,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb3/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-04",
+      "name": "Bronx Community Board 4",
+      "borough": "Bronx",
+      "district": 4,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb4/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-05",
+      "name": "Bronx Community Board 5",
+      "borough": "Bronx",
+      "district": 5,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb5/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-06",
+      "name": "Bronx Community Board 6",
+      "borough": "Bronx",
+      "district": 6,
+      "homepage_url": "https://cbbronx.cityofnewyork.us/cb6/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-07",
+      "name": "Bronx Community Board 7",
+      "borough": "Bronx",
+      "district": 7,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb7/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-08",
+      "name": "Bronx Community Board 8",
+      "borough": "Bronx",
+      "district": 8,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb8/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-09",
+      "name": "Bronx Community Board 9",
+      "borough": "Bronx",
+      "district": 9,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb9/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-10",
+      "name": "Bronx Community Board 10",
+      "borough": "Bronx",
+      "district": 10,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb10/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-11",
+      "name": "Bronx Community Board 11",
+      "borough": "Bronx",
+      "district": 11,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb11/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "bronx-cb-12",
+      "name": "Bronx Community Board 12",
+      "borough": "Bronx",
+      "district": 12,
+      "homepage_url": "https://www.nyc.gov/site/bronxcb12/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/bronx-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-01",
+      "name": "Brooklyn Community Board 1",
+      "borough": "Brooklyn",
+      "district": 1,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb1/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-02",
+      "name": "Brooklyn Community Board 2",
+      "borough": "Brooklyn",
+      "district": 2,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb2/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-03",
+      "name": "Brooklyn Community Board 3",
+      "borough": "Brooklyn",
+      "district": 3,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb3/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-04",
+      "name": "Brooklyn Community Board 4",
+      "borough": "Brooklyn",
+      "district": 4,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb4/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-05",
+      "name": "Brooklyn Community Board 5",
+      "borough": "Brooklyn",
+      "district": 5,
+      "homepage_url": "https://www.brooklyncb5.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-06",
+      "name": "Brooklyn Community Board 6",
+      "borough": "Brooklyn",
+      "district": 6,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb6/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-07",
+      "name": "Brooklyn Community Board 7",
+      "borough": "Brooklyn",
+      "district": 7,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb7/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-08",
+      "name": "Brooklyn Community Board 8",
+      "borough": "Brooklyn",
+      "district": 8,
+      "homepage_url": "https://www.brooklyncb8.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": "https://www.brooklyncb8.org/downloads/minutes/",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-09",
+      "name": "Brooklyn Community Board 9",
+      "borough": "Brooklyn",
+      "district": 9,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb9/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-10",
+      "name": "Brooklyn Community Board 10",
+      "borough": "Brooklyn",
+      "district": 10,
+      "homepage_url": "https://cbbrooklyn.cityofnewyork.us/cb10/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-11",
+      "name": "Brooklyn Community Board 11",
+      "borough": "Brooklyn",
+      "district": 11,
+      "homepage_url": "https://www.brooklyncb11.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": "https://www.brooklyncb11.org/minutes/",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-12",
+      "name": "Brooklyn Community Board 12",
+      "borough": "Brooklyn",
+      "district": 12,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb12/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-13",
+      "name": "Brooklyn Community Board 13",
+      "borough": "Brooklyn",
+      "district": 13,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb13/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-14",
+      "name": "Brooklyn Community Board 14",
+      "borough": "Brooklyn",
+      "district": 14,
+      "homepage_url": "https://cb14brooklyn.com/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": "https://cb14brooklyn.com/board-meeting-minutes/",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-15",
+      "name": "Brooklyn Community Board 15",
+      "borough": "Brooklyn",
+      "district": 15,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb15/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-16",
+      "name": "Brooklyn Community Board 16",
+      "borough": "Brooklyn",
+      "district": 16,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb16/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-17",
+      "name": "Brooklyn Community Board 17",
+      "borough": "Brooklyn",
+      "district": 17,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb17/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "brooklyn-cb-18",
+      "name": "Brooklyn Community Board 18",
+      "borough": "Brooklyn",
+      "district": 18,
+      "homepage_url": "https://www.nyc.gov/site/brooklyncb18/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-01",
+      "name": "Manhattan Community Board 1",
+      "borough": "Manhattan",
+      "district": 1,
+      "homepage_url": "https://www.nyc.gov/site/manhattancb1/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-02",
+      "name": "Manhattan Community Board 2",
+      "borough": "Manhattan",
+      "district": 2,
+      "homepage_url": "https://cbmanhattan.cityofnewyork.us/cb2/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-03",
+      "name": "Manhattan Community Board 3",
+      "borough": "Manhattan",
+      "district": 3,
+      "homepage_url": "https://www.nyc.gov/site/manhattancb3/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": "https://www.nyc.gov/site/manhattancb3/minutes/meeting-vote-records.page",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-04",
+      "name": "Manhattan Community Board 4",
+      "borough": "Manhattan",
+      "district": 4,
+      "homepage_url": "https://cbmanhattan.cityofnewyork.us/cb4/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": "https://cbmanhattan.cityofnewyork.us/cb4/archives/",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-05",
+      "name": "Manhattan Community Board 5",
+      "borough": "Manhattan",
+      "district": 5,
+      "homepage_url": "https://www.cb5.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-06",
+      "name": "Manhattan Community Board 6",
+      "borough": "Manhattan",
+      "district": 6,
+      "homepage_url": "https://cbsix.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-07",
+      "name": "Manhattan Community Board 7",
+      "borough": "Manhattan",
+      "district": 7,
+      "homepage_url": "https://www.nyc.gov/site/manhattancb7/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-08",
+      "name": "Manhattan Community Board 8",
+      "borough": "Manhattan",
+      "district": 8,
+      "homepage_url": "https://www.cb8m.com/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-09",
+      "name": "Manhattan Community Board 9",
+      "borough": "Manhattan",
+      "district": 9,
+      "homepage_url": "https://www.cb9m.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-10",
+      "name": "Manhattan Community Board 10",
+      "borough": "Manhattan",
+      "district": 10,
+      "homepage_url": "https://cbmanhattan.cityofnewyork.us/cb10/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-11",
+      "name": "Manhattan Community Board 11",
+      "borough": "Manhattan",
+      "district": 11,
+      "homepage_url": "https://www.cb11m.org/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "manhattan-cb-12",
+      "name": "Manhattan Community Board 12",
+      "borough": "Manhattan",
+      "district": 12,
+      "homepage_url": "https://cbmanhattan.cityofnewyork.us/cb12/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-01",
+      "name": "Queens Community Board 1",
+      "borough": "Queens",
+      "district": 1,
+      "homepage_url": "https://www.nyc.gov/site/queenscb1/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-02",
+      "name": "Queens Community Board 2",
+      "borough": "Queens",
+      "district": 2,
+      "homepage_url": "https://www.nyc.gov/site/queenscb2/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-03",
+      "name": "Queens Community Board 3",
+      "borough": "Queens",
+      "district": 3,
+      "homepage_url": "https://queenscb3.cityofnewyork.us/",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-04",
+      "name": "Queens Community Board 4",
+      "borough": "Queens",
+      "district": 4,
+      "homepage_url": "https://www.nyc.gov/site/queenscb4/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-05",
+      "name": "Queens Community Board 5",
+      "borough": "Queens",
+      "district": 5,
+      "homepage_url": "https://www.nyc.gov/site/queenscb5/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-06",
+      "name": "Queens Community Board 6",
+      "borough": "Queens",
+      "district": 6,
+      "homepage_url": "https://www.nyc.gov/site/queenscb6/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-07",
+      "name": "Queens Community Board 7",
+      "borough": "Queens",
+      "district": 7,
+      "homepage_url": "https://www.nyc.gov/site/queenscb7/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-08",
+      "name": "Queens Community Board 8",
+      "borough": "Queens",
+      "district": 8,
+      "homepage_url": "https://www.nyc.gov/site/queenscb8/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": "https://www.nyc.gov/site/queenscb8/meetings/board-meeting-minutes.page",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-09",
+      "name": "Queens Community Board 9",
+      "borough": "Queens",
+      "district": 9,
+      "homepage_url": "https://www.nyc.gov/site/queenscb9/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-10",
+      "name": "Queens Community Board 10",
+      "borough": "Queens",
+      "district": 10,
+      "homepage_url": "https://www.nyc.gov/site/queenscb10/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-11",
+      "name": "Queens Community Board 11",
+      "borough": "Queens",
+      "district": 11,
+      "homepage_url": "https://www.nyc.gov/site/queenscb11/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-12",
+      "name": "Queens Community Board 12",
+      "borough": "Queens",
+      "district": 12,
+      "homepage_url": "https://www.nyc.gov/site/queenscb12/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-13",
+      "name": "Queens Community Board 13",
+      "borough": "Queens",
+      "district": 13,
+      "homepage_url": "https://www.nyc.gov/site/queenscb13/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "queens-cb-14",
+      "name": "Queens Community Board 14",
+      "borough": "Queens",
+      "district": 14,
+      "homepage_url": "https://www.nyc.gov/site/queenscb14/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/queens-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "staten-island-cb-01",
+      "name": "Staten Island Community Board 1",
+      "borough": "Staten Island",
+      "district": 1,
+      "homepage_url": "https://www.nyc.gov/site/statenislandcb1/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "staten-island-cb-02",
+      "name": "Staten Island Community Board 2",
+      "borough": "Staten Island",
+      "district": 2,
+      "homepage_url": "https://www.nyc.gov/site/statenislandcb2/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
+      "minutes_url": null,
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    },
+    {
+      "body_id": "staten-island-cb-03",
+      "name": "Staten Island Community Board 3",
+      "borough": "Staten Island",
+      "district": 3,
+      "homepage_url": "https://www.nyc.gov/site/statenislandcb3/index.page",
+      "directory_url": "https://www.nyc.gov/site/communityboards/about/staten-island-boards.page",
+      "minutes_url": "https://www.nyc.gov/site/statenislandcb3/meetings/general-board-minutes.page",
+      "last_minutes_date": null,
+      "days_since_last_minutes": null,
+      "notice_completeness": null,
+      "media_completeness": null,
+      "freshness_status": "not_measured",
+      "receipts": [
+        {
+          "kind": "registry",
+          "path": "site/data/non_council_outcome_sources/source_registry.json",
+          "observed_on": "2026-08-04"
+        }
+      ],
+      "rank": null
+    }
+  ]
+}
