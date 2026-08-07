@@ -10,6 +10,7 @@ const notice = {
   short_title: "Materialized notice",
   due_date: "2026-08-20T00:00:00.000",
 };
+const FIXTURE_NOW = Date.parse("2026-08-07T12:00:00.000Z");
 
 function dbFor(record) {
   return {
@@ -23,7 +24,7 @@ function d1Record(overrides = {}) {
   return {
     request_id: notice.request_id,
     raw: JSON.stringify(notice),
-    ingested_at: new Date().toISOString(),
+    ingested_at: "2026-08-07T11:00:00.000Z",
     section: "Procurement",
     agency: notice.agency_name,
     type_of_notice: notice.type_of_notice_description,
@@ -39,6 +40,7 @@ test("notice endpoint serves the materialized raw row without an upstream fetch"
     const response = await handleNotice(
       new Request("https://api.cityscroll.org/notice?id=20260807001"),
       { DB: dbFor(d1Record()) },
+      { nowMs: FIXTURE_NOW },
     );
     assert.equal(response.status, 200);
     const body = await response.json();
@@ -68,6 +70,7 @@ test("an old D1 row remains the last-known-good response", async () => {
     const response = await handleNotice(
       new Request("https://api.cityscroll.org/notice?id=20260807001"),
       { DB: dbFor(d1Record({ ingested_at: "2026-07-01T00:00:00.000Z" })) },
+      { nowMs: FIXTURE_NOW },
     );
     const body = await response.json();
     assert.equal(response.status, 200);

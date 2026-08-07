@@ -69,14 +69,14 @@ function rowFromD1(record) {
   };
 }
 
-async function readMaterialized(env, id) {
+async function readMaterialized(env, id, nowMs = Date.now()) {
   if (!env?.DB) return null;
   const record = await env.DB.prepare(
     "SELECT request_id, section, agency, type_of_notice, category, short_title, selection_method, special_case_reason, pin, vendor_name, description, other_info, printout, contract_amount, start_date, due_date, event_date, event_building, event_addr1, event_city, event_state, event_zip, raw, ingested_at FROM notices WHERE request_id = ?",
   ).bind(id).first();
   if (!record) return null;
   const ingestedAt = record.ingested_at || null;
-  const age = ingestedAt ? Date.now() - new Date(ingestedAt).getTime() : Infinity;
+  const age = ingestedAt ? nowMs - new Date(ingestedAt).getTime() : Infinity;
   return {
     row: rowFromD1(record),
     generated_at: ingestedAt,
@@ -103,7 +103,7 @@ async function putEdgeCache(request, response) {
   try { await cache.put(request, response.clone()); } catch (_error) { /* edge cache is best effort */ }
 }
 
-export async function handleNotice(request, env, { skipCache = false } = {}) {
+export async function handleNotice(request, env, { skipCache = false, nowMs = Date.now() } = {}) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405);
 
@@ -120,7 +120,7 @@ export async function handleNotice(request, env, { skipCache = false } = {}) {
   }
 
   try {
-    const materialized = await readMaterialized(env, id);
+    const materialized = await readMaterialized(env, id, nowMs);
     if (materialized?.row) {
       const response = json({
         ok: true,
