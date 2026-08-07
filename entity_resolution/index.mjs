@@ -119,6 +119,16 @@ export {
   INVESTIGATION_WORKSPACE_VERSION,
   REVIEW_VERSION,
   REVIEW_DECISION,
+  buildInvestigationWorkspace,
+  toReviewItem,
+  toReviewItems,
+} from "./review/index.mjs";
+
+// Node-only alias proposal tooling is part of the package API, but must remain
+// outside the Worker entrypoint graph. Keep this export explicit so a Worker
+// import of the desk review helpers cannot pull filesystem dependencies into
+// the production bundle.
+export {
   ALIAS_ACCEPTED_STATUS,
   ALIAS_PROPOSAL_STATUS,
   ALIAS_PROPOSAL_PROMPT_VERSION,
@@ -126,15 +136,12 @@ export {
   ALIAS_REJECTED_STATUS,
   appendProposedAliases,
   buildAliasProposalPrompt,
-  buildInvestigationWorkspace,
   generateAliasProposals,
   parseAliasProposalResponse,
   promoteAliasProposal,
   readAliasRegistry,
   reviewAliasProposal,
-  toReviewItem,
-  toReviewItems,
-} from "./review/index.mjs";
+} from "./review/llm_alias_proposals.mjs";
 
 export {
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
