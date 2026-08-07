@@ -51,6 +51,9 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 done
 
 args=()
+# Reading-level is one of the three required contexts, so every pre-push run
+# carries it. PREPUSH_EXTRA_ARGS remains available for additional local flags.
+args+=(--with-reading-level)
 if [[ "$needs_full" == "1" ]]; then
   args+=(--full)
   echo "pre-push: site/** changed in push range — running preflight with --full"
@@ -58,7 +61,7 @@ else
   echo "pre-push: running preflight (fast tier; site/** unchanged in push range)"
 fi
 
-# Honor PREPUSH_EXTRA_ARGS for local overrides (e.g. PREPUSH_EXTRA_ARGS=--with-reading-level).
+# Honor PREPUSH_EXTRA_ARGS for additional local overrides.
 # Under `set -u`, empty-array expansion of "${extra[@]}" fails on some bash builds —
 # only append when PREPUSH_EXTRA_ARGS is non-empty.
 if [[ -n "${PREPUSH_EXTRA_ARGS:-}" ]]; then
