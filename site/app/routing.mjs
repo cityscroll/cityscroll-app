@@ -1168,7 +1168,7 @@ async function showNotice(id, watch){
   let r = null;
   try{
     const [rows, attachmentData] = await Promise.all([
-      (async()=>{const response=await workerFetch("/notice?id="+encodeURIComponent(id),{},5000);if(response.ok){const payload=await response.json();if(payload?.row)return[payload.row]}return soda({"$select":NOTICE_SELECT,"$where":`request_id='${String(id).replace(/'/g,"''")}'`,"$limit":"1"})})(),
+      (async()=>{const response=await workerFetch("/notice?id="+encodeURIComponent(id),{},5000),payload=response.ok&&await response.json();return payload?.row?[payload.row]:[]})(),
       noticeAttachmentMetadata(id),
     ]);
     r = rows[0];
