@@ -212,6 +212,12 @@ print("OK")
     assert.ok(proof.snapshot_profile.start_date_max);
     assert.ok(proof.snapshot_profile.section_counts["Agency Rules"] > 0);
     assert.ok(proof.snapshot_profile.section_counts["Property Disposition"] > 0);
+    assert.deepEqual(proof.source_summary, {
+      row_count: proof.register.row_count,
+      start_date_min: proof.snapshot_profile.start_date_min,
+      start_date_max: proof.snapshot_profile.start_date_max,
+      section_counts: proof.snapshot_profile.section_counts,
+    });
     assert.equal(proof.raw.paging.resumable, true);
   });
 });
