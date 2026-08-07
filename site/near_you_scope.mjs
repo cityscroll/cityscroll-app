@@ -6,6 +6,7 @@ import {
   normalizeScope,
   scopeFromRouteHash,
 } from "./scope_v0.mjs";
+import { ACTION_LOCATION_FACET_KEYS } from "./contract_action_location.mjs";
 
 export {
   commonNearYouPath,
@@ -62,6 +63,10 @@ export function scopeFromNearYouUrl(input, { language = "en" } = {}) {
   if (params.get("type")) scope.facets.values.type = String(params.get("type")).trim().slice(0, 120);
   if (params.get("basis") === "contract_action_address" && scope.facets.domains[0] === "money") {
     scope.facets.values.basis = "contract_action_address";
+    const actionBasis = scope.facets.values.actionBasis;
+    if (actionBasis && !ACTION_LOCATION_FACET_KEYS.includes(actionBasis)) {
+      scope.facets.values.actionBasis = "unknown";
+    }
   }
   return normalizeScope(scope, { language });
 }

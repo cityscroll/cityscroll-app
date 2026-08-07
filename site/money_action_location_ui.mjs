@@ -42,12 +42,17 @@ export function moneyLocationFilterSummaryHTML(filter, { t, esc }) {
 }
 
 function selectedLocation(row, filter) {
-  return (row.locations || []).find((item) =>
+  const locations = row.locations || [];
+  const selected = locations.find((item) =>
     (!filter.basis || item.basis === filter.basis) &&
     (!filter.borough || item.borough === filter.borough) &&
     (!filter.communityDistrict || item.community_district === filter.communityDistrict) &&
     (!filter.councilDistrict || String(item.council_district) === String(filter.councilDistrict))
-  ) || row.locations?.[0] || null;
+  );
+  // A requested basis/district is an exact join. Never display a different
+  // address as a fallback when that join is absent.
+  const hasConstraint = Boolean(filter.basis || filter.borough || filter.communityDistrict || filter.councilDistrict);
+  return selected || (hasConstraint ? null : locations[0] || null);
 }
 
 export async function paintMoneyActionLocationResults(filter, deps) {

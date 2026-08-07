@@ -20,6 +20,13 @@ export const ACTION_LOCATION_BASES = Object.freeze({
   DOCUMENT_PICKUP: "document_pickup",
 });
 
+export const ACTION_LOCATION_FACET_KEYS = Object.freeze([
+  "contract_action_address",
+  ACTION_LOCATION_BASES.SUBMISSION,
+  ACTION_LOCATION_BASES.PRE_BID,
+  ACTION_LOCATION_BASES.DOCUMENT_PICKUP,
+]);
+
 export const ACTION_LOCATION_BASIS_LABELS = Object.freeze({
   [ACTION_LOCATION_BASES.SUBMISSION]: "Located by submission address",
   [ACTION_LOCATION_BASES.PRE_BID]: "Located by pre-bid venue",
