@@ -314,12 +314,15 @@ function currentLensFilterState(tab){
       return CrolScope.lensStateFromScope(scope,tab);
     };
   if(tab === "money"){
+    const location = globalThis.moneyLocationFilter || {};
     return adapt({
       agency: $("#agency") && $("#agency").value || "",
       q: $("#kw") && $("#kw").value.trim() || "",
       minAmount: $("#minamt") && $("#minamt").value || null,
       mode: $("#mode") && $("#mode").value || "open",
       noticeType: ($("#mode") && $("#mode").value === "award") ? "award" : null,
+      basis: location.layer || "",
+      actionBasis: location.basis || "",
     });
   }
   if(tab === "land"){

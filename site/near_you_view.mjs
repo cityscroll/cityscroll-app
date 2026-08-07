@@ -11,6 +11,7 @@ import {
   routeHashFromScope,
   watchFromScope,
 } from "./scope_v0.mjs";
+import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
 import {
   nearYouUrlFromScope,
   scopeWithPlace,
@@ -70,6 +71,13 @@ function recordMatches(record, scope, builtAt) {
   if (agency && String(record.agency || "").toLowerCase() !== agency.toLowerCase()) return false;
   const type = scope.facets.values?.type || scope.facets.values?.noticeType;
   if (type && String(record.type || "").toLowerCase() !== String(type).toLowerCase()) return false;
+  const actionBasis = scope.facets.values?.actionBasis;
+  if (actionBasis && actionBasis !== "contract_action_address") {
+    const methods = Array.isArray(record.basis_methods)
+      ? record.basis_methods
+      : [record.basis_method].filter(Boolean);
+    if (!methods.includes(actionBasis)) return false;
+  }
   const query = String(scope.topic.query || first(scope.topic.keywords) || "").trim().toLowerCase();
   if (query) {
     const haystack = [record.id, record.title, record.agency, record.type, record.status] // Source: district_activity.json records.
@@ -177,6 +185,10 @@ function scopeSummary(scope, lens) {
   ];
   if (lens === "money" && (scope.place.viewport?.basis || scope.facets.values?.basis) === "contract_action_address") {
     values.push(["map basis", "Contract response address"]);
+    const actionBasis = scope.facets.values?.actionBasis;
+    if (actionBasis && actionBasis !== "contract_action_address") {
+      values.push(["location basis", ACTION_LOCATION_BASIS_LABELS[actionBasis] || "Unknown location basis"]);
+    }
   }
   for (const [axis, label] of values) if (label) chips.push({ axis, label: String(label) });
   return chips;

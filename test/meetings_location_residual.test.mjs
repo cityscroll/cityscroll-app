@@ -72,11 +72,13 @@ test("fixed-corpus re-stamp advances Meetings coverage without changing corpus w
   assert.equal(meetings.row_count, 119);
   assert.equal(meetings.location_residual.fixed_rows, 24);
   assert.equal(activity.sources.meetings.counted, 119);
-  assert.equal(activity.sources.meetings.located, 110);
-  assert.equal(activity.unlocated.meetings, 9);
+  assert.equal(activity.sources.meetings.located, 106);
+  assert.equal(activity.unlocated.meetings, 13);
   assert.equal(activity.virtual.meetings, 5);
   assert.deepEqual(activity.unlocated_reasons.meetings, {
+    body_place_omitted: 3,
     multi_event_directory: 9,
+    external_board_page_needed: 1,
   });
   assert.ok(activity.district_items.virtual.meetings.includes("20260515001"));
   assert.ok(activity.district_items.virtual.meetings.includes("20260624005"));

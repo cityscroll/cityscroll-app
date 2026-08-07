@@ -930,10 +930,14 @@ export function buildContractActionBasisLayer(rows = [], boundaries = null) {
     const record = compactDistrictRecord("money", row, placements);
     if (record && id) {
       const labels = [...new Set((row.locations || []).map((location) => location?.basis_label).filter(Boolean))];
+      const basisMethods = [...new Set((row.locations || [])
+        .filter((location) => location?.is_place_of_performance === false && location?.basis)
+        .map((location) => location.basis))];
       records[id] = {
         ...record,
         basis: labels.join(" / ") || "Contract response address",
         confidence: "strong",
+        basis_methods: basisMethods,
       };
     }
     if (!boroughs.size && !communities.size && !councils.size) {
