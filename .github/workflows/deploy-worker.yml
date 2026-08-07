@@ -1,14 +1,11 @@
-# Deploys the Cloudflare Worker (api.cityscroll.org) whenever worker/ changes land on main,
-# so the API ships in lockstep with the static site instead of waiting on a manual `wrangler
-# deploy`. Code-only deploy: no secret puts, no [vars] overrides — see worker/README.md's
+# Manual fallback for the Cloudflare Workers Build integration.
+# Workers Builds is canonical for production Worker changes; this workflow is
+# intentionally non-required and does not run on pushes.
+# Code-only deploy: no secret puts, no [vars] overrides — see worker/README.md's
 # "Automatic deploys" section for the vars-vs-secrets gotcha this intentionally avoids.
 name: Deploy worker
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "worker/**"
   workflow_dispatch:
 
 concurrency:

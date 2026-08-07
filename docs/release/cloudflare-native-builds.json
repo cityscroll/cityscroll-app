@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.cloudflare-native-builds.v1",
+  "repository": "cityscroll/crol-list",
+  "source_control": "github",
+  "pages": {
+    "project": "cityscroll",
+    "production_branch": "main",
+    "root_directory": "/",
+    "build_command": "if [ \"$CF_PAGES_BRANCH\" = \"main\" ]; then node tools/build_cloudflare_pages.mjs --site-dir _site --refresh-decision-outcomes; else node tools/build_cloudflare_pages.mjs --site-dir _site; fi",
+    "build_output_directory": "_site",
+    "preview_deployments": true,
+    "path_includes": ["site/**", "tools/**", "test/**", "warehouse/**", "docs/**"],
+    "manual_fallback_workflow": ".github/workflows/deploy-cloudflare-pages.yml"
+  },
+  "worker": {
+    "name": "crol-worker",
+    "root_directory": "worker",
+    "production_branch": "main",
+    "build_command": "npm ci",
+    "deploy_command": "npx wrangler d1 migrations apply crol-notices --remote && npx wrangler deploy",
+    "preview_deploy_command": "npx wrangler versions upload",
+    "path_includes": ["worker/**"],
+    "manual_fallback_workflow": ".github/workflows/deploy-worker.yml"
+  }
+}
