@@ -71,6 +71,16 @@ export function validateSourceContracts(registry) {
         errors.push(`${label}: required_fields must be non-empty`);
       }
       if (!(Number(contract.max_stale_days) > 0)) errors.push(`${label}: max_stale_days must be positive`);
+      if (contract.freshness_policy) {
+        const policy = contract.freshness_policy;
+        if (!(Number(policy.limit_days) > 0)) errors.push(`${label}: freshness_policy.limit_days must be positive`);
+        for (const field of ["method", "observed_on", "derivation", "evidence"]) {
+          if (!policy[field]) errors.push(`${label}: freshness_policy missing ${field}`);
+        }
+        if (Number(policy.limit_days) !== Number(contract.max_stale_days)) {
+          errors.push(`${label}: freshness_policy.limit_days must match max_stale_days`);
+        }
+      }
     }
     if (["checkbook", "arcgis", "geosearch", "rss"].includes(contract.kind) && !contract.endpoint) {
       errors.push(`${label}: missing endpoint`);
@@ -258,6 +268,18 @@ export function renderSourceDocument(registry, coverage) {
     "| Status | Delivery tier | Source | Product use | Publisher and product freshness |",
     "|---|---|---|---|---|",
     ...rows,
+    "",
+    "## Measured freshness policies",
+    "",
+    "Freshness limits are source-specific. The entries below record the publisher metadata",
+    "measurement used to calibrate a limit; sources without a measured entry retain their",
+    "existing contract limit until a cadence measurement is available.",
+    "",
+    "| Source | Limit | Measurement |",
+    "|---|---:|---|",
+    ...registry.contracts
+      .filter((contract) => contract.freshness_policy)
+      .map((contract) => `| ${mdCell(contract.name)} | ${contract.freshness_policy.limit_days} days | ${mdCell(contract.freshness_policy.derivation)} |`),
     "",
     "## External-award coverage",
     "",
