@@ -2,7 +2,7 @@
 // CityScroll; a scorer only proposes a probability and evidence for each
 // already-generated pair.
 
-import { createHash } from "node:crypto";
+import { sha256Hex } from "../hash.mjs";
 
 export const SCORER_CONTRACT_VERSION = "scorer_contract_v1";
 export const SCORE_RESULT_SCHEMA_VERSION = "score_result_v1";
@@ -22,7 +22,7 @@ export function stableJson(value) {
 }
 
 export function sha256(value) {
-  return createHash("sha256").update(String(value)).digest("hex");
+  return sha256Hex(value);
 }
 
 export function hashJson(value) {

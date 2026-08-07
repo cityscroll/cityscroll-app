@@ -1278,6 +1278,25 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
 const CATCHUP_RUN_LATEST_KEY = "digest:catchup:run:latest";
 function catchupRunDayKey(day) { return `digest:catchup:run:${day}`; }
 
+function catchUpOutcome(result) {
+  if (result?.sent) return "sent";
+  if (result?.error) return "error";
+  if (result?.capped) return "capped";
+  if (result?.skipped === "source-stale") return "source_stale";
+  if (result?.skipped === "queue_pending") return "queue_pending";
+  if (result?.zeroMatch || result?.skipped) return "no_matches";
+  return null;
+}
+
+function catchUpOutcomeCounts(results) {
+  const counts = { sent: 0, all_quiet: 0, no_matches: 0, capped: 0, error: 0, queue_pending: 0, source_stale: 0 };
+  for (const result of results) {
+    const outcome = catchUpOutcome(result);
+    if (outcome && counts[outcome] !== undefined) counts[outcome]++;
+  }
+  return counts;
+}
+
 export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, maxPerRun = null } = {}) {
   const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
   const LIVE = env.ALERTS_LIVE === "true";
@@ -1288,7 +1307,10 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
   let sentThisRun = 0;
   const results = [];
 
-  const allSubs = await subWatches(env);
+  // Entitlement is the active-watch set used by the normal cron/queue path.
+  // Paused watches remain in SUBS for preference management but must not receive
+  // recovery mail or consume a catch-up cap.
+  const allSubs = (await subWatches(env)).filter(isWatchActive);
   const today = day;
 
   // Select lagging subs or explicit subKeys.
@@ -1315,7 +1337,7 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
     try {
       results.push(await processCatchUpSub(env, s, ctx));
     } catch (e) {
-      results.push({ sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up" });
+      results.push({ sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up", status: "error" });
     }
   }
 
@@ -1327,7 +1349,15 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
     sentToday,
     candidates: targets.length,
     results,
-    skipped_reason: results.some((r) => r.sent) ? null : (targets.length === 0 ? "no_lagging_subs" : "no_sends"),
+    skipped_reason: results.some((r) => r.sent)
+      ? null
+      : (targets.length === 0
+        ? "no_lagging_subs"
+        : (results.some((r) => r.error) ? "errors" : (results.some((r) => r.capped) ? "capped" : "no_matches"))),
+    status: results.some((r) => r.sent)
+      ? "sent"
+      : (results.some((r) => r.error) ? "error" : (results.some((r) => r.capped) ? "capped" : "no_matches")),
+    outcomes: catchUpOutcomeCounts(results),
   };
   await writeCatchUpReceipt(env, receipt);
   // Always merge catch-up entries into the day log — including QUEUE_DIGESTS mode.
@@ -1394,7 +1424,7 @@ export async function readCatchUpReceipt(env) {
 async function processCatchUpSub(env, s, ctx) {
   try {
     const watermark = await getLastSent(env, s.key) || s.createdAt || null;
-    if (!watermark) return { sub: maskKey(s.key), skipped: "no-watermark", action: "catch_up" };
+    if (!watermark) return { sub: maskKey(s.key), skipped: "no-watermark", action: "catch_up", status: "error" };
 
     // Award watches are per-notice one-shots — catch-up clears their seen set and re-runs
     // normally; the award candidate diff is the same mechanism.
@@ -1406,7 +1436,7 @@ async function processCatchUpSub(env, s, ctx) {
     }
 
     const q = compileSub(s, ctx.today);
-    if (!q) return { sub: maskKey(s.key), skipped: `lens:${s.lens}`, action: "catch_up" };
+    if (!q) return { sub: maskKey(s.key), skipped: `lens:${s.lens}`, action: "catch_up", status: "no_matches" };
 
     // Clear seen so all notices since the watermark are treated as fresh.
     await clearSeen(env, s.key);
@@ -1451,8 +1481,8 @@ async function processCatchUpSub(env, s, ctx) {
     const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField]));
 
     if (fresh.length === 0) {
-      // No missed content — advance the watermark anyway so this sub isn't re-selected.
-      if (ctx.LIVE) await setLastSent(env, s.key, ctx.today);
+      // No send means no watermark advancement. Keeping the last successful
+      // delivery boundary makes a later retry replay the same entitled window.
       return {
         sub: maskKey(s.key), lens: s.lens,
         queryLabel: describeFilter(s.lens, s.filter),
@@ -1460,7 +1490,7 @@ async function processCatchUpSub(env, s, ctx) {
         found: rows.length, new: 0,
         noticeIds: [], forecasts: 0,
         action: "catch_up", zeroMatch: true,
-        sent: false, dryRun: false, capped: false,
+        sent: false, dryRun: false, capped: false, status: "no_matches",
       };
     }
 
@@ -1506,9 +1536,10 @@ async function processCatchUpSub(env, s, ctx) {
       action: "catch_up",
       zeroMatch: fresh.length === 0,
       sent: send, dryRun: underCap && !ctx.LIVE, capped,
+      status: send ? "sent" : (capped ? "capped" : "no_matches"),
     };
   } catch (e) {
-    return { sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up" };
+    return { sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up", status: "error" };
   }
 }
 
