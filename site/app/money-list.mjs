@@ -9,14 +9,37 @@ let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",counc
 function moneyActionLocationTools(){
   return moneyActionLocationToolsPromise||=import("../money_action_location_ui.mjs").then(module=>(globalThis.MoneyActionLocations=module)).catch(()=>null);
 }
+function currentMoneyRouteScope(){
+  const hash = location.hash.startsWith("#money")
+    ? location.hash
+    : `/browse/contracts/`.startsWith(location.pathname)
+      ? `#money${location.search}`
+      : "#money";
+  return CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
+}
+function moneyModeHref(modeKey, scope){
+  if (!["open", "allrfp", "award"].includes(modeKey)) return "";
+  const next = CrolScope.normalizeScope(scope);
+  next.facets.values = { ...next.facets.values, mode: modeKey };
+  const rawHash = CrolScope.routeHashFromScope(next, { surface: "money" });
+  const query = new URLSearchParams(rawHash.split("?", 2)[1] || "");
+  const explicit = new URLSearchParams();
+  explicit.set("mode", modeKey);
+  for (const [key, value] of query) {
+    if (key !== "mode") explicit.append(key, value);
+  }
+  return `/browse/contracts/?${explicit.toString()}`;
+}
 function syncProcurementFacetRails(){
   const activeMode = ["open", "allrfp", "award"].includes(String($("#mode")?.value || ""))
     ? String($("#mode").value)
     : "open";
+  const scope = currentMoneyRouteScope();
   const modeRail = document.getElementById(["money", "mode", "rail"].join("-"));
   modeRail?.querySelectorAll("a").forEach((link) => {
     const modeKey = link.dataset.moneyMode;
     if (!modeKey) return;
+    link.href = moneyModeHref(modeKey, scope);
     const active = modeKey === activeMode;
     link.classList.toggle("on", active);
     if (active) link.setAttribute("aria-current", "page");
@@ -227,6 +250,7 @@ async function search(){
   updateMoneyMoreFiltersState();
   if(locationTools){
     updateHash();
+    syncProcurementFacetRails();
     await locationTools.paintMoneyActionLocationResults(locationFilter,{
       t,agency:$("#agency").value,query:$("#kw").value,paintMoneyRows,
     });
@@ -252,6 +276,7 @@ async function search(){
   else order = mode === "award" ? "start_date DESC" : mode === "allrfp" ? "due_date DESC" : "due_date ASC";
 
   updateHash();
+  syncProcurementFacetRails();
   loadMethodFacet(facetWhere, kw);
   const heads = {open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award")};
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? t("head_closing_this_week") : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
