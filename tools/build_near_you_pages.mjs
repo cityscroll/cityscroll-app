@@ -4,14 +4,14 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
-import { scopeFromLensState } from "../site/scope_v0.mjs";
 import {
   commonNearYouPath,
   nearYouUrlFromScope,
   NEAR_YOU_COMMON_BOROUGHS as BOROUGHS,
   NEAR_YOU_COMMON_LENSES as LENSES,
-  scopeWithPlace,
-} from "../site/near_you_scope.mjs";
+  scopeFromLensState,
+} from "../site/scope_v0.mjs";
+import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
