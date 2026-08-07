@@ -35,17 +35,18 @@ function known(value, values) {
   return values.includes(key) ? key : null;
 }
 
-function moneyScope({ mode = "open", actionBasis = null } = {}) {
+function moneyScope({ mode = "open", actionBasis = null, scope = null } = {}) {
   const safeMode = known(mode, PROCUREMENT_MODE_KEYS) || "open";
   const safeBasis = known(actionBasis, PROCUREMENT_ACTION_LOCATION_KEYS);
-  const scope = scopeFromLensState("money", {
-    mode: safeMode,
-  });
+  const next = scope
+    ? normalizeScope(scope)
+    : scopeFromLensState("money", { mode: safeMode });
+  next.facets.values = { ...next.facets.values, mode: safeMode };
   if (safeBasis) {
-    scope.facets.values.basis = "contract_action_address";
-    if (safeBasis !== "contract_action_address") scope.facets.values.actionBasis = safeBasis;
+    next.facets.values.basis = "contract_action_address";
+    if (safeBasis !== "contract_action_address") next.facets.values.actionBasis = safeBasis;
   }
-  return normalizeScope(scope);
+  return normalizeScope(next);
 }
 
 function browseContractsHref(scope) {
@@ -55,13 +56,20 @@ function browseContractsHref(scope) {
 }
 
 /** Return the canonical browse URL for one exact procurement mode. */
-export function procurementModeHref(mode) {
+export function procurementModeHref(mode, { scope = null } = {}) {
   const safeMode = known(mode, PROCUREMENT_MODE_KEYS);
   if (!safeMode) return "";
-  const href = browseContractsHref(moneyScope({ mode: safeMode }));
-  // Keep the default's explicit mode in the visible link. The route parser
-  // still canonicalizes it to the clean default document after navigation.
-  return href.includes("?") ? href : "/browse/contracts/?mode=open";
+  const href = browseContractsHref(moneyScope({ mode: safeMode, scope }));
+  const source = new URL(href, "https://cityscroll.org");
+  const query = new URLSearchParams();
+  // Keep the mode explicit in the visible link, even for the default. The
+  // route parser still canonicalizes it to the clean default document after
+  // navigation, while the link itself remains an inspectable scope edge.
+  query.set("mode", safeMode);
+  for (const [key, value] of source.searchParams) {
+    if (key !== "mode") query.append(key, value);
+  }
+  return `/browse/contracts/?${query.toString()}`;
 }
 
 /** Return the typed Near-you URL for one exact response-location basis. */

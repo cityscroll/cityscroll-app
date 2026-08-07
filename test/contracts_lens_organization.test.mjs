@@ -39,7 +39,7 @@ test("Contracts follows the shared lens hierarchy with exact search and its prim
   assert.match(moneySection, /class="lens-method money-method"[\s\S]*?class="contract-example-list"/);
 });
 
-test("Contracts keeps keyword, mode, and response-location facets visible while secondary controls stay in one disclosure", () => {
+test("Contracts replaces the Show dropdown with mode scope links while secondary controls stay in one disclosure", () => {
   const disclosureStart = moneySection.indexOf('id="money-more-filters"');
   const disclosureEnd = moneySection.indexOf('</details>', disclosureStart);
   const disclosure = moneySection.slice(disclosureStart, disclosureEnd);
@@ -51,6 +51,10 @@ test("Contracts keeps keyword, mode, and response-location facets visible while 
   assert.match(moneySection, /id="money-location-rail"[\s\S]*?data-scope-edge="money\.location\.submission_address"/);
   assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-mode-label"[\s\S]*?id="money-mode-rail"[^>]*aria-labelledby="money-mode-label"/);
   assert.match(moneySection, /class="money-facet-rail" role="group" aria-labelledby="money-location-label"[\s\S]*?id="money-location-rail"[^>]*aria-labelledby="money-location-label"/);
+  assert.doesNotMatch(moneySection, /<select[^>]+id="mode"/);
+  for (const mode of ["open", "allrfp", "award"]) {
+    assert.match(moneySection, new RegExp(`data-money-mode="${mode}"[^>]+data-scope-edge="money\\.mode\\.${mode}"`));
+  }
   assert.doesNotMatch(moneySection, /class="money-facet-rails" aria-label=/);
   assert.doesNotMatch(disclosure, /<select[^>]+id="mode"|<select[^>]+id="moneylocationbasis"/);
   assert.doesNotMatch(disclosure, /id="sort"|id="methodfacet"/);

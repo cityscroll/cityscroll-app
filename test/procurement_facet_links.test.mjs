@@ -9,6 +9,7 @@ import {
   PROCUREMENT_MODE_KEYS,
 } from "../site/procurement_facet_links.mjs";
 import { scopeFromNearYouUrl } from "../site/near_you_scope_runtime.mjs";
+import { scopeFromRouteHash } from "../site/scope_v0.mjs";
 import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { buildContractActionBasisLayer } from "../tools/lib/district_activity.mjs";
 
@@ -32,6 +33,26 @@ test("procurement mode facets are exact, canonical, and shareable", () => {
     ],
   );
   assert.equal(procurementModeHref("unknown"), "");
+});
+
+test("mode links replace only the mode facet and reopen the preserved scope", () => {
+  const current = scopeFromRouteHash(
+    "#money?mode=award&agency=Buildings&q=bridge&sort=newest&m=Competitive%20Sealed%20Bid",
+  );
+  const href = procurementModeHref("allrfp", { scope: current });
+  const params = new URL(href, "https://cityscroll.org").searchParams;
+  assert.equal(params.get("mode"), "allrfp");
+  assert.equal(params.get("agency"), "Buildings");
+  assert.equal(params.get("q"), "bridge");
+  assert.equal(params.get("sort"), "newest");
+  assert.equal(params.get("m"), "Competitive Sealed Bid");
+
+  const reopened = scopeFromRouteHash(`#money?${params}`);
+  assert.equal(reopened.facets.values.mode, "allrfp");
+  assert.equal(reopened.facets.agencies[0], "Buildings");
+  assert.equal(reopened.topic.query, "bridge");
+  assert.equal(reopened.facets.values.sort, "newest");
+  assert.equal(reopened.facets.values.method, "Competitive Sealed Bid");
 });
 test("response-location facets carry typed Near-you basis edges", () => {
   assert.deepEqual(
