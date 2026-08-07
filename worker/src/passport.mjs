@@ -38,6 +38,11 @@ export const PASSPORT_FETCH_HEADERS = Object.freeze({
 /** Allowed table names for SQL interpolation (never user input). */
 const PASSPORT_TABLES = new Set(["passport_contracts", "passport_rfx"]);
 
+// D1 schema DDL is idempotent, but concurrent lifecycle requests should not all
+// race to run it. A per-binding promise turns the repair into a single-flight
+// operation while still allowing a later request to retry after a failed ensure.
+const passportSchemaEnsures = new WeakMap();
+
 /**
  * Pure staleness guard for passport_ingest_meta.ingested_at.
  * @param {string|null|undefined} ingestedAtIso
@@ -82,7 +87,7 @@ export function classifyPassportDumpBody(text, kind) {
  * missed migration cannot turn every lifecycle lookup into a silent "error".
  * CREATE TABLE IF NOT EXISTS is cheap when tables already exist.
  */
-export async function ensurePassportSchema(env) {
+async function ensurePassportSchemaOnce(env) {
   if (!env?.DB) return { ok: false, reason: "no-db" };
   await env.DB.batch([
     env.DB.prepare(`
@@ -140,6 +145,20 @@ export async function ensurePassportSchema(env) {
       )`),
   ]);
   return { ok: true };
+}
+
+export function ensurePassportSchema(env) {
+  if (!env?.DB) return Promise.resolve({ ok: false, reason: "no-db" });
+  const existing = passportSchemaEnsures.get(env.DB);
+  if (existing) return existing;
+
+  const pending = ensurePassportSchemaOnce(env).catch((error) => {
+    // Do not poison the binding forever after a transient D1 failure.
+    passportSchemaEnsures.delete(env.DB);
+    throw error;
+  });
+  passportSchemaEnsures.set(env.DB, pending);
+  return pending;
 }
 
 async function writePassportMeta(env, pairs) {
@@ -613,6 +632,26 @@ function classifyLookupError(err) {
   return "query_failed";
 }
 
+function isRetryableLookupError(err) {
+  return /database is locked|database busy|busy timeout|temporar|timeout|overloaded/i
+    .test(String(err?.message || err || ""));
+}
+
+async function resolveTableWithRetry(env, table, pin) {
+  let lastError;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      return await resolveTableForPin(env, table, pin);
+    } catch (error) {
+      lastError = error;
+      if (!isRetryableLookupError(error) || attempt === 1) throw error;
+      // Let the D1 scheduler release a transient read lock before retrying.
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+  }
+  throw lastError;
+}
+
 /**
  * Look up PASSPort rows for a City Record PIN using strict EPIN join strategies.
  *
@@ -648,30 +687,35 @@ export async function lookupPassportForPin(env, pin) {
     };
   }
 
-  try {
-    const [ctr, rfx] = await Promise.all([
-      resolveTableForPin(env, "passport_contracts", pin),
-      resolveTableForPin(env, "passport_rfx", pin),
-    ]);
-    return {
-      contracts: ctr.rows,
-      rfx: rfx.rows,
-      contractJoin: ctr.join,
-      rfxJoin: rfx.join,
-      lookupStatus: { contracts: "ok", rfx: "ok" },
-    };
-  } catch (e) {
-    const kind = classifyLookupError(e);
-    console.error("passport lookup failed:", kind, String(e?.message || e));
-    return {
-      contracts: [],
-      rfx: [],
-      contractJoin: null,
-      rfxJoin: null,
-      lookupStatus: { contracts: "error", rfx: "error" },
-      lookupError: kind,
-    };
-  }
+  const [contractResult, rfxResult] = await Promise.allSettled([
+    resolveTableWithRetry(env, "passport_contracts", pin),
+    resolveTableWithRetry(env, "passport_rfx", pin),
+  ]);
+  const failures = {};
+  const read = (result, kind) => {
+    if (result.status === "fulfilled") return result.value;
+    const errorKind = classifyLookupError(result.reason);
+    failures[kind] = errorKind;
+    console.error("passport lookup failed:", kind, errorKind, String(result.reason?.message || result.reason));
+    return { rows: [], join: null };
+  };
+  const ctr = read(contractResult, "contracts");
+  const rfx = read(rfxResult, "rfx");
+  const lookupStatus = {
+    contracts: contractResult.status === "fulfilled" ? "ok" : "error",
+    rfx: rfxResult.status === "fulfilled" ? "ok" : "error",
+  };
+  return {
+    contracts: ctr.rows,
+    rfx: rfx.rows,
+    contractJoin: ctr.join,
+    rfxJoin: rfx.join,
+    lookupStatus,
+    ...(Object.keys(failures).length ? {
+      lookupErrors: failures,
+      lookupError: failures.contracts || failures.rfx,
+    } : {}),
+  };
 }
 
 // Re-export pure join helpers for tests / other modules.

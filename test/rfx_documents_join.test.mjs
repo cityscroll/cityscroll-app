@@ -9,8 +9,10 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   CITY_RECORD_GETFILE_HOST,
+  CITY_RECORD_GETFILE_URL,
   RFX_PUBLIC_COLUMNS,
   USEFULNESS_THRESHOLD,
+  buildRfxPackageDocumentSurface,
   extractRfxDocumentUrls,
   isCityRecordGetFileUrl,
   measureRfxDocumentJoin,
@@ -60,6 +62,29 @@ test("public RFx schema has no document URL columns", () => {
   );
   assert.deepEqual(extractRfxDocumentUrls(SAMPLE_RFX[0]), []);
   assert.equal(rfxRowHasPackageDocuments(SAMPLE_RFX[0]), false);
+});
+
+test("RFx package-document surface is explicit when the dump has no document URLs", () => {
+  const surface = buildRfxPackageDocumentSurface(SAMPLE_RFX[0], { requestId: "20260701001" });
+  assert.equal(surface.status, "not_published");
+  assert.equal(surface.source, "city-record-getfile");
+  assert.equal(surface.count, 0);
+  assert.equal(surface.request_id, "20260701001");
+  assert.equal(surface.city_record_getfile, CITY_RECORD_GETFILE_URL);
+});
+
+test("RFx package-document surface accepts future URL-bearing rows", () => {
+  const surface = buildRfxPackageDocumentSurface({
+    ...SAMPLE_RFX[0],
+    package_url: "https://example.nyc.gov/rfp/package.pdf",
+  });
+  assert.deepEqual(surface, {
+    status: "matched",
+    source: "passport-public-rfx",
+    urls: ["https://example.nyc.gov/rfp/package.pdf"],
+    count: 1,
+    city_record_getfile: CITY_RECORD_GETFILE_URL,
+  });
 });
 
 test("kill-criterion sample: EPIN joins, document URL join is 0%", () => {

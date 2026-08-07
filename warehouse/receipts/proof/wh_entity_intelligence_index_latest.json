@@ -2,12 +2,12 @@
   "schema_version": 1,
   "version": "wh_entity_intelligence_index_v1",
   "object_link_version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-05T23:16:47.530Z",
+  "generated_at": "2026-08-06T19:09:01.231Z",
   "observation_count": 400,
   "root_count": 160,
-  "edge_count": 752,
+  "edge_count": 754,
   "join_key_edge_count": 350,
-  "multi_domain_count": 21,
+  "multi_domain_count": 20,
   "link_type_counts": {
     "issued_rule": 67,
     "published_by_agency": 133,
@@ -19,6 +19,7 @@
     "contract_published_by_agency": 6,
     "references_contract": 8,
     "sited_on_parcel": 203,
+    "corroborates_contract": 2,
     "applicant_vendor": 53,
     "named_vendor": 66,
     "paid_to_vendor": 1,
@@ -27,16 +28,16 @@
   "metrics": {
     "metric": "warehouse_entity_intelligence_index",
     "roots_indexed": 160,
-    "edges_indexed": 752,
+    "edges_indexed": 754,
     "join_key_edge_count": 350,
-    "multi_domain_count": 21,
-    "coverage_hint": 0.525
+    "multi_domain_count": 20,
+    "coverage_hint": 0.5
   },
   "demo_refs": [
     "agency:id:housing-preservation-and-development",
     "agency:id:parks-and-recreation",
-    "agency:id:city-planning",
     "agency:id:city-council",
+    "agency:id:citywide-administrative-services",
     "agency:id:consumer-and-worker-protection"
   ],
   "roots": [
@@ -80,27 +81,10 @@
       ]
     },
     {
-      "root_ref": "agency:id:city-planning",
-      "root_kind": "agency",
-      "object_count": 3,
-      "link_count": 3,
-      "domains_matched": 3,
-      "domains": [
-        "land",
-        "meetings",
-        "rules"
-      ],
-      "link_types": [
-        "applicant_agency",
-        "hosts_meeting",
-        "issued_rule"
-      ]
-    },
-    {
       "root_ref": "agency:id:citywide-administrative-services",
       "root_kind": "agency",
-      "object_count": 46,
-      "link_count": 92,
+      "object_count": 49,
+      "link_count": 95,
       "domains_matched": 2,
       "domains": [
         "meetings",
@@ -132,23 +116,8 @@
     {
       "root_ref": "agency:id:consumer-and-worker-protection",
       "root_kind": "agency",
-      "object_count": 16,
-      "link_count": 16,
-      "domains_matched": 2,
-      "domains": [
-        "meetings",
-        "rules"
-      ],
-      "link_types": [
-        "hosts_meeting",
-        "issued_rule"
-      ]
-    },
-    {
-      "root_ref": "agency:id:transportation",
-      "root_kind": "agency",
-      "object_count": 9,
-      "link_count": 9,
+      "object_count": 14,
+      "link_count": 14,
       "domains_matched": 2,
       "domains": [
         "meetings",
@@ -162,8 +131,8 @@
     {
       "root_ref": "agency:id:finance",
       "root_kind": "agency",
-      "object_count": 8,
-      "link_count": 9,
+      "object_count": 9,
+      "link_count": 10,
       "domains_matched": 2,
       "domains": [
         "money",
@@ -176,10 +145,25 @@
       ]
     },
     {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "object_count": 8,
+      "link_count": 8,
+      "domains_matched": 2,
+      "domains": [
+        "meetings",
+        "rules"
+      ],
+      "link_types": [
+        "hosts_meeting",
+        "issued_rule"
+      ]
+    },
+    {
       "root_ref": "agency:id:health-and-mental-hygiene",
       "root_kind": "agency",
       "object_count": 8,
-      "link_count": 14,
+      "link_count": 15,
       "domains_matched": 2,
       "domains": [
         "money",
@@ -187,10 +171,26 @@
       ],
       "link_types": [
         "contract_published_by_agency",
+        "corroborates_contract",
         "issued_rule",
         "published_by_agency",
         "references_contract",
         "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "agency:id:transportation",
+      "root_kind": "agency",
+      "object_count": 8,
+      "link_count": 8,
+      "domains_matched": 2,
+      "domains": [
+        "meetings",
+        "rules"
+      ],
+      "link_types": [
+        "hosts_meeting",
+        "issued_rule"
       ]
     },
     {
@@ -209,7 +209,7 @@
       ]
     },
     {
-      "root_ref": "agency:id:buildings",
+      "root_ref": "agency:id:landmarks-preservation-commission",
       "root_kind": "agency",
       "object_count": 6,
       "link_count": 6,
@@ -225,21 +225,6 @@
     },
     {
       "root_ref": "agency:id:city-planning-commission",
-      "root_kind": "agency",
-      "object_count": 6,
-      "link_count": 6,
-      "domains_matched": 2,
-      "domains": [
-        "meetings",
-        "rules"
-      ],
-      "link_types": [
-        "hosts_meeting",
-        "issued_rule"
-      ]
-    },
-    {
-      "root_ref": "agency:id:landmarks-preservation-commission",
       "root_kind": "agency",
       "object_count": 5,
       "link_count": 5,
@@ -282,21 +267,6 @@
         "issued_rule",
         "published_by_agency",
         "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:comptroller",
-      "root_kind": "agency",
-      "object_count": 3,
-      "link_count": 3,
-      "domains_matched": 2,
-      "domains": [
-        "meetings",
-        "rules"
-      ],
-      "link_types": [
-        "hosts_meeting",
-        "issued_rule"
       ]
     },
     {
@@ -376,10 +346,25 @@
       ]
     },
     {
+      "root_ref": "agency:id:city-planning",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 2,
+      "domains": [
+        "land",
+        "rules"
+      ],
+      "link_types": [
+        "applicant_agency",
+        "issued_rule"
+      ]
+    },
+    {
       "root_ref": "agency:id:board-meetings",
       "root_kind": "agency",
-      "object_count": 6,
-      "link_count": 6,
+      "object_count": 7,
+      "link_count": 7,
       "domains_matched": 1,
       "domains": [
         "meetings"
@@ -432,13 +417,14 @@
       "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
       "root_kind": "vendor",
       "object_count": 4,
-      "link_count": 11,
+      "link_count": 12,
       "domains_matched": 1,
       "domains": [
         "money"
       ],
       "link_types": [
         "contract_published_by_agency",
+        "corroborates_contract",
         "named_vendor",
         "paid_to_vendor",
         "payment_on_contract",
@@ -474,16 +460,16 @@
       ]
     },
     {
-      "root_ref": "agency:id:community-boards",
+      "root_ref": "agency:id:comptroller",
       "root_kind": "agency",
       "object_count": 2,
       "link_count": 2,
       "domains_matched": 1,
       "domains": [
-        "meetings"
+        "rules"
       ],
       "link_types": [
-        "hosts_meeting"
+        "issued_rule"
       ]
     },
     {
@@ -538,19 +524,6 @@
       "link_types": [
         "published_by_agency",
         "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:public-design-commission",
-      "root_kind": "agency",
-      "object_count": 2,
-      "link_count": 2,
-      "domains_matched": 1,
-      "domains": [
-        "meetings"
-      ],
-      "link_types": [
-        "hosts_meeting"
       ]
     },
     {
@@ -636,6 +609,34 @@
       "link_types": [
         "applicant_vendor",
         "sited_on_parcel"
+      ]
+    },
+    {
+      "root_ref": "vendor:stem:UNIVERSAL%20COFFEE",
+      "root_kind": "vendor",
+      "object_count": 2,
+      "link_count": 4,
+      "domains_matched": 1,
+      "domains": [
+        "money"
+      ],
+      "link_types": [
+        "named_vendor",
+        "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "vendor:stem:XEROX",
+      "root_kind": "vendor",
+      "object_count": 2,
+      "link_count": 4,
+      "domains_matched": 1,
+      "domains": [
+        "money"
+      ],
+      "link_types": [
+        "named_vendor",
+        "shares_authority_key"
       ]
     }
   ],
@@ -810,6 +811,25 @@
       "basis": "meetings_agency_name",
       "input_value": "Board Meetings",
       "observed_at": "2026-07-27T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:board-meetings",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260504040",
+      "to_ref": "agency:id:board-meetings",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260504040",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Board Meetings",
+      "observed_at": "2026-08-03T00:00:00.000"
     },
     {
       "root_ref": "agency:id:board-of-correction",
@@ -1043,6 +1063,25 @@
     {
       "root_ref": "agency:id:buildings",
       "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260728026",
+      "to_ref": "agency:id:buildings",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260728026",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-09-09T11:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
       "link_type": "issued_rule",
       "from_ref": "notice:20260428027",
       "to_ref": "agency:id:buildings",
@@ -1134,6 +1173,25 @@
       "basis": "rules_agency_name",
       "input_value": "Buildings",
       "observed_at": "2026-07-23T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260728026",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260728026",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-08-04T00:00:00.000"
     },
     {
       "root_ref": "agency:id:campaign-finance-board",
@@ -1480,25 +1538,6 @@
     {
       "root_ref": "agency:id:city-planning",
       "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260609065",
-      "to_ref": "agency:id:city-planning",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260609065",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Planning",
-      "observed_at": "2026-07-01T10:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-planning",
-      "root_kind": "agency",
       "link_type": "issued_rule",
       "from_ref": "notice:20260519037",
       "to_ref": "agency:id:city-planning",
@@ -1514,25 +1553,6 @@
       "basis": "rules_agency_name",
       "input_value": "City Planning",
       "observed_at": "2026-05-27T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:city-planning-commission",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260610012",
-      "to_ref": "agency:id:city-planning-commission",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260610012",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Planning Commission",
-      "observed_at": "2026-07-01T10:00:00.000"
     },
     {
       "root_ref": "agency:id:city-planning-commission",
@@ -1743,6 +1763,63 @@
       "basis": "meetings_agency_name",
       "input_value": "Citywide Administrative Services",
       "observed_at": "2026-09-09T10:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:citywide-administrative-services",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260729005",
+      "to_ref": "agency:id:citywide-administrative-services",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260729005",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Citywide Administrative Services",
+      "observed_at": "2026-08-19T10:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:citywide-administrative-services",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260729019",
+      "to_ref": "agency:id:citywide-administrative-services",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260729019",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Citywide Administrative Services",
+      "observed_at": "2026-08-19T22:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:citywide-administrative-services",
+      "root_kind": "agency",
+      "link_type": "hosts_meeting",
+      "from_ref": "notice:20260729020",
+      "to_ref": "agency:id:citywide-administrative-services",
+      "domain": "meetings",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260729020",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "meetings_agency_name",
+      "input_value": "Citywide Administrative Services",
+      "observed_at": "2026-08-19T10:00:00.000"
     },
     {
       "root_ref": "agency:id:citywide-administrative-services",
@@ -2079,82 +2156,6 @@
       "method_version": "1",
       "source_system": "warehouse",
       "source_record_id": "warehouse:20030103007",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Citywide Administrative Services",
-      "observed_at": "2003-01-10"
-    },
-    {
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:20030103008",
-      "to_ref": "agency:id:citywide-administrative-services",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:20030103008",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Citywide Administrative Services",
-      "observed_at": "2003-01-10"
-    },
-    {
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:20030103009",
-      "to_ref": "agency:id:citywide-administrative-services",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:20030103009",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Citywide Administrative Services",
-      "observed_at": "2003-01-10"
-    },
-    {
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:20030103010",
-      "to_ref": "agency:id:citywide-administrative-services",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:20030103010",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Citywide Administrative Services",
-      "observed_at": "2003-01-10"
-    },
-    {
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:20030103011",
-      "to_ref": "agency:id:citywide-administrative-services",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:20030103011",
       "source_fields": [
         "agency_name"
       ],

@@ -41,6 +41,7 @@ import {
   stampMeetingLandLinksOnCorpus,
   MEETING_LAND_ULURP_METHOD,
   MEETING_LAND_ZAP_METHOD,
+  buildPassportCheckbookCrosswalk,
 } from "../entity_resolution/cross_domain/index.mjs";
 import {
   buildEntityIntelligenceDoc,
@@ -136,6 +137,37 @@ describe("observation → links with provenance", () => {
     assert.equal(links[0].from, "notice:20260723031");
     assert.equal(links[0].to, "contract:CT1-816-20278801775");
     assert.equal(links[0].provenance.related_source_system, "ocp-recent-contract-awards");
+  });
+
+  it("crosswalks Checkbook and PASSPort contracts through PIN/EPIN without name fallback", () => {
+    const checkbook = observationFromCheckbookContractRow({
+      source_record_id: "checkbook:contract:CT81626W0043001",
+      prime_contract_id: "CT81626W0043001",
+      prime_vendor: "Different display name is not a join key",
+      pin: "81626W0043001",
+    });
+    const passport = observationFromPassportContractRow({
+      source_record_id: "passport:contract:CT1-816-20278801775",
+      ctr_id: "5755276",
+      epin: "81626W0043001",
+      contract_id: "CT1-816-20278801775",
+      vendor: "MAKE IT ZESTY LLC",
+    });
+    const result = buildPassportCheckbookCrosswalk({
+      checkbookContracts: [checkbook],
+      passportContracts: [passport],
+    });
+    assert.equal(result.metrics.matched, 1);
+    assert.equal(result.rows[0].join_method, "pin_epin_exact");
+    assert.equal(result.rows[0].passport_contract_id, "CT1-816-20278801775");
+
+    const links = procurementContractLinksForObservations([checkbook, passport]);
+    const crosswalkLinks = links.get(checkbook.source_record_id) || [];
+    assert.equal(crosswalkLinks.length, 1);
+    assert.equal(crosswalkLinks[0].type, "corroborates_contract");
+    assert.equal(crosswalkLinks[0].from, "contract:CT81626W0043001");
+    assert.equal(crosswalkLinks[0].to, "contract:CT1-816-20278801775");
+    assert.equal(crosswalkLinks[0].provenance.source_fields[0], "pin");
   });
 
   it("links a money award to agency and vendor with source provenance", () => {
@@ -626,6 +658,28 @@ describe("entity intelligence view — Parks multi-domain", () => {
     const mDoc = JSON.parse(readFileSync(meetingsSnap, "utf8"));
     assert.ok((rDoc.rows || []).length >= 20);
     assert.ok((mDoc.rows || []).length >= 20);
+  });
+
+  it("committed procurement crosswalk preserves the measured strict join", () => {
+    const spine = JSON.parse(readFileSync(
+      join(ROOT, "site/data/procurement_spine_sources.json"),
+      "utf8",
+    ));
+    const crosswalk = JSON.parse(readFileSync(
+      join(ROOT, "site/data/passport_checkbook_crosswalk.json"),
+      "utf8",
+    ));
+    const rebuilt = buildPassportCheckbookCrosswalk({
+      passportContracts: spine.rows?.passport_contracts_materialization || [],
+      checkbookContracts: spine.rows?.checkbook_contracts || [],
+    });
+    assert.equal(crosswalk.schema_version, 1);
+    assert.equal(crosswalk.metrics.version, "passport_checkbook_crosswalk_v1");
+    assert.equal(crosswalk.metrics.matched, 1);
+    assert.equal(crosswalk.rows[0].join_method, "pin_epin_exact");
+    assert.equal(crosswalk.rows[0].provenance.source_fields.includes("pin"), true);
+    assert.deepEqual(crosswalk.metrics, rebuilt.metrics);
+    assert.deepEqual(crosswalk.rows, rebuilt.rows);
   });
 });
 
