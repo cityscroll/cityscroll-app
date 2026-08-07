@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.cityscroll.crol-list.external-schedules</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/env</string>
+    <string>node</string>
+    <string>__CROL_LIST_ROOT__/tools/external_schedule_runner.mjs</string>
+    <string>--due</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>60</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__CROL_EXTERNAL_SCHEDULE_LOG_DIR__/runner.stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>__CROL_EXTERNAL_SCHEDULE_LOG_DIR__/runner.stderr.log</string>
+</dict>
+</plist>
