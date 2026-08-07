@@ -1,0 +1,53 @@
+{
+  "entities": [
+    {
+      "id": "vendor:city_record:acme",
+      "entity_type": "vendor",
+      "display_name": "Acme Environmental Services LLC",
+      "source_system": "city_record",
+      "source_record_id": "cr-acme"
+    },
+    {
+      "id": "vendor:passport:acme",
+      "entity_type": "vendor",
+      "display_name": "Acme Environmental",
+      "source_system": "passport",
+      "source_record_id": "pp-acme"
+    },
+    {
+      "id": "vendor:checkbook:other",
+      "entity_type": "vendor",
+      "display_name": "Acme Security Group",
+      "source_system": "checkbook",
+      "source_record_id": "cb-other"
+    }
+  ],
+  "response": {
+    "proposals": [
+      {
+        "left_entity_id": "vendor:city_record:acme",
+        "right_entity_id": "vendor:passport:acme",
+        "label": "verified_alias",
+        "rationale": "The passport name is a shortened form of the City Record vendor name.",
+        "evidence": [
+          {
+            "source": "city_record",
+            "source_record_id": "cr-acme",
+            "detail": "Full legal name includes Environmental Services LLC."
+          },
+          {
+            "source": "passport",
+            "source_record_id": "pp-acme",
+            "detail": "The same trade name appears without the legal suffix."
+          }
+        ]
+      },
+      {
+        "left_entity_id": "vendor:city_record:acme",
+        "right_entity_id": "vendor:not-in-set:missing",
+        "label": "verified_alias",
+        "rationale": "This candidate is intentionally invalid and must not be persisted."
+      }
+    ]
+  }
+}

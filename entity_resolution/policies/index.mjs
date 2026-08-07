@@ -25,51 +25,62 @@ const ALIAS_REGISTRY_PATH = join(
   "alias_registry.json",
 );
 
-let _aliasIndex = null;
-
 function loadAliasRegistry() {
   const raw = JSON.parse(readFileSync(ALIAS_REGISTRY_PATH, "utf8"));
+  return buildAliasIndex(raw);
+}
+
+/**
+ * Look up a pair in the reviewed alias registry by vendor stem match.
+ * PROPOSED and REJECTED entries are deliberately invisible. Returns the
+ * matching accepted entry or null.
+ */
+export function lookupAlias(leftName, rightName) {
+  // Read on each decision so a clerk promotion takes effect without a stale
+  // process-local index. The registry is a small desk-side artifact.
+  return lookupAliasInRegistry(loadAliasRegistry(), leftName, rightName);
+}
+
+/** A missing status is the legacy form of an already reviewed entry. */
+export function isAcceptedAliasEntry(entry) {
+  if (!entry || !entry.left || !entry.right) return false;
+  if (entry.status == null || entry.status === "") return true;
+  return String(entry.status).toUpperCase() === "ACCEPTED";
+}
+
+/** Build the policy-only index; proposal/rejection records never enter it. */
+export function buildAliasIndex(registry = {}) {
   const index = { byStem: new Map(), byDbaStem: new Map(), entries: [] };
-  for (const entry of raw.entries || []) {
+  for (const entry of registry.entries || []) {
+    if (!isAcceptedAliasEntry(entry)) continue;
     const leftStem = vendorStem(entry.left?.display_name);
     const rightStem = vendorStem(entry.right?.display_name);
+    if (!leftStem || !rightStem) continue;
     const pairKey = [leftStem, rightStem].sort().join("\0");
     index.byStem.set(pairKey, entry);
 
     const leftDba = extractDba(entry.left?.display_name);
     if (leftDba) {
       const dbaStem = vendorStem(leftDba.alias);
-      const rightStem2 = vendorStem(entry.right?.display_name);
-      const dbaKey = [dbaStem, rightStem2].sort().join("\0");
+      const dbaKey = [dbaStem, rightStem].sort().join("\0");
       index.byDbaStem.set(dbaKey, entry);
     }
     const rightDba = extractDba(entry.right?.display_name);
     if (rightDba) {
       const dbaStem = vendorStem(rightDba.alias);
-      const leftStem2 = vendorStem(entry.left?.display_name);
-      const dbaKey = [dbaStem, leftStem2].sort().join("\0");
+      const dbaKey = [dbaStem, leftStem].sort().join("\0");
       index.byDbaStem.set(dbaKey, entry);
     }
-
     index.entries.push(entry);
   }
   return index;
 }
 
-function aliasIndex() {
-  if (!_aliasIndex) _aliasIndex = loadAliasRegistry();
-  return _aliasIndex;
-}
-
-/**
- * Look up a pair in the reviewed alias registry by vendor stem match.
- * Returns the matching entry or null.
- */
-export function lookupAlias(leftName, rightName) {
+export function lookupAliasInRegistry(registry, leftName, rightName) {
   const leftStem = vendorStem(leftName);
   const rightStem = vendorStem(rightName);
   if (!leftStem || !rightStem) return null;
-  const idx = aliasIndex();
+  const idx = registry?.byStem instanceof Map ? registry : buildAliasIndex(registry);
   const pairKey = [leftStem, rightStem].sort().join("\0");
   if (idx.byStem.has(pairKey)) return idx.byStem.get(pairKey);
   const dbaKey = [leftStem, rightStem].sort().join("\0");
