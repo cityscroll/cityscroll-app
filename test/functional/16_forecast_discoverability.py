@@ -30,6 +30,7 @@ import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
 BASE = os.environ.get("CROL_BASE", "")
@@ -63,13 +64,18 @@ def reachable_from_notice_detail(pw):
         href = link.get_attribute("href")
         if "tab=forecast" not in (href or ""):
             failures.append(f"notice permalink: teaser link {href!r} doesn't deep-link to the forecast subtab")
-        link.click()
-        page.wait_for_timeout(1200)
         pane = page.locator("#forecast-content")
-        if pane.count() == 0 or not pane.is_visible():
+        try:
+            # The profile fetches identity, notices, and forecasts concurrently. A fixed
+            # sleep made this gate race the final render on slower CI workers.
+            link.wait_for(state="visible", timeout=10000)
+            link.click()
+            pane.wait_for(state="visible", timeout=10000)
+        except PlaywrightTimeoutError:
             failures.append("notice permalink: following the teaser link did not land on a visible forecast pane")
-        elif "Estimated renewal" not in pane.inner_text() and "Agency plan" not in pane.inner_text():
-            failures.append("notice permalink: forecast pane opened but has no forecast items")
+        else:
+            if "Estimated renewal" not in pane.inner_text() and "Agency plan" not in pane.inner_text():
+                failures.append("notice permalink: forecast pane opened but has no forecast items")
     browser.close()
 
     # (b) the Money tab's split-pane notice detail — renderDetail()'s #dforecast slot,

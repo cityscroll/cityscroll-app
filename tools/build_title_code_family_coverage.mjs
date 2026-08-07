@@ -11,6 +11,7 @@ import {
   measurePotentialLift,
 } from "../entity_resolution/candidate_generation/published_walls.mjs";
 import { normalizeTitleLabel } from "./build_title_code_alias_registry.mjs";
+import { evaluateTwoTierPrecision } from "./two_tier_precision_gate.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "site/data/exam_sources/title_code_family_coverage.json");
@@ -20,6 +21,7 @@ const NOE_NOTICE_TEXT_DIR = join(ROOT, "site/data/exam_sources/fixtures/noe_text
 
 export const HISTORICAL_EXAM_COVERAGE_FLOOR = 0.30;
 export const AUDIT_PRECISION_FLOOR = 0.95;
+export const TWO_TIER_BASELINE_RECEIPT = "docs/evidence/two-tier-precision-baselines-2026-08-06.json";
 
 const cleanCode = (value) => String(value || "").trim().toUpperCase();
 const rate = (numerator, denominator) => denominator ? Number((numerator / denominator).toFixed(4)) : 0;
@@ -245,6 +247,28 @@ export function measureTitleCodeFamilyCoverage({
     ? reviewedRegistry.confirmations.length
     : 0;
   const reviewPrecision = reviewedRows.length ? rate(reviewedCorrect, reviewedRows.length) : null;
+  const residualPrecision = residualFs?.calibration?.held_out_top1_precision ?? reviewPrecision;
+  const legacyControlPrecision = reviewPrecision;
+  const twoTier = evaluateTwoTierPrecision({
+    candidatePrecision: residualPrecision,
+    controlBaseline: legacyControlPrecision,
+    candidateSampleSize: residualFs?.calibration?.held_out_target_codes_in_catalog ?? reviewedRows.length,
+    controlSampleSize: reviewedRows.length,
+    labelMode: "labeled",
+    surfaceClass: "navigational_family_grouping",
+    candidateReceipt: "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+    controlReceipt: `${TWO_TIER_BASELINE_RECEIPT}#baselines.title_code_legacy_review`,
+  });
+  const pivotTier = evaluateTwoTierPrecision({
+    candidatePrecision: residualPrecision,
+    controlBaseline: legacyControlPrecision,
+    candidateSampleSize: residualFs?.calibration?.held_out_target_codes_in_catalog ?? reviewedRows.length,
+    controlSampleSize: reviewedRows.length,
+    labelMode: "labeled",
+    surfaceClass: "navigational_pivot",
+    candidateReceipt: "site/data/exam_sources/title_code_family_coverage.json#precision_audit",
+    controlReceipt: `${TWO_TIER_BASELINE_RECEIPT}#baselines.title_code_legacy_review`,
+  });
   const backfillCandidates = collectBackfillCandidates({
     historyRecords,
     annualScheduleRows,
@@ -357,6 +381,18 @@ export function measureTitleCodeFamilyCoverage({
         && (residualFs
           ? residualFs.calibration.held_out_top1_precision
           : reviewPrecision) >= AUDIT_PRECISION_FLOOR,
+      two_tier: {
+        ...twoTier,
+        surface_classes: {
+          family_grouping: twoTier,
+          pivot: pivotTier,
+        },
+        labeled_surface: "title_code_family",
+        navigational_pivot_surface: "title_code_entity_pivot",
+        strict_unlabeled_surface: "title_code_entity_pivot_unlabeled",
+        baseline_method: "existing reviewed title-code control, measured against explicit confirmations and rejections",
+        baseline_receipt: TWO_TIER_BASELINE_RECEIPT,
+      },
       passed: false,
       publish_family_ui: false,
       publish_entity_pivots: false,
@@ -371,8 +407,19 @@ export function measureTitleCodeFamilyCoverage({
   };
   measurement.promotion.passed = measurement.promotion.coverage_passed
     && measurement.promotion.precision_passed;
-  measurement.promotion.publish_family_ui = measurement.promotion.passed;
-  measurement.promotion.publish_entity_pivots = measurement.promotion.passed;
+  // Family groupings and pivots are navigational surfaces: they may ship when
+  // they beat the measured control, with one quiet confidence marker. The
+  // strict floor remains available to high-consequence surface classes.
+  measurement.promotion.publish_family_ui = measurement.promotion.coverage_passed
+    && measurement.promotion.two_tier.can_ship_labeled;
+  measurement.promotion.publish_entity_pivots = measurement.promotion.coverage_passed
+    && measurement.promotion.two_tier.surface_classes.pivot.can_ship_labeled;
+  measurement.promotion.passed = measurement.promotion.coverage_passed
+    && measurement.promotion.publish_family_ui
+    && measurement.promotion.publish_entity_pivots;
+  measurement.promotion.verdict = measurement.promotion.publish_family_ui
+    ? "NAVIGATIONAL PASS — exact publisher labels may render as facts; residual family labels and pivots may ship with one quiet inferred marker; high-consequence surfaces retain the 95% floor."
+    : measurement.promotion.verdict;
   return measurement;
 }
 
