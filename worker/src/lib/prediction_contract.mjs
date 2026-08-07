@@ -27,7 +27,17 @@ export const PREDICTION_METHODS = Object.freeze([
 ]);
 export const PREDICTION_BANDS = Object.freeze(["far", "approaching", "imminent", "overdue"]);
 
-const SOURCE_CLOCK_FIELDS = new Set(["valid_at", "published_at", "observed_at"]);
+// Predictions own only generated_at. Keep every civic-time source/processing
+// clock on this deny-list so a future assertion cannot become an event-shaped
+// row by adding a range or processing timestamp in a nested object.
+const SOURCE_CLOCK_FIELDS = new Set([
+  "valid_at",
+  "valid_from",
+  "valid_to",
+  "published_at",
+  "observed_at",
+  "processed_at",
+]);
 const TOP_LEVEL_FIELDS = new Set([
   "schema_version",
   "prediction_id",
