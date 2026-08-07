@@ -15,6 +15,10 @@ import {
   scoreGoldWithScorer,
 } from "../evaluation/bakeoff.mjs";
 import { conventionalV2Scorer } from "../scorers/index.mjs";
+import {
+  accountLabelingFunctions,
+  renderLabelingFunctionSummary,
+} from "../evaluation/labeling_functions.mjs";
 
 function usage(message) {
   if (message) console.error(`error: ${message}`);
@@ -90,6 +94,14 @@ function main() {
   writeFileSync(resolve(outDir, "candidate_pairs.jsonl"), `${candidatePairs.map((row) => JSON.stringify(row)).join("\n")}\n`);
   writeFileSync(resolve(outDir, "report.json"), `${JSON.stringify(report, null, 2)}\n`);
   writeFileSync(resolve(outDir, "summary.md"), renderBakeoffSummary(report));
+  const labelingAccounting = accountLabelingFunctions({ rows: candidatePairs, gold: gold.cases });
+  labelingAccounting.gold = {
+    version: gold.meta.gold_version,
+    schema_version: gold.meta.schema_version,
+    case_count: gold.cases.length,
+  };
+  writeFileSync(resolve(outDir, "labeling_function_accounting.json"), `${JSON.stringify(labelingAccounting, null, 2)}\n`);
+  writeFileSync(resolve(outDir, "labeling_function_accounting.md"), renderLabelingFunctionSummary(labelingAccounting));
   console.log(JSON.stringify({ out_dir: options.outDir, report: resolve(outDir, "report.json"), summary: resolve(outDir, "summary.md") }, null, 2));
 }
 

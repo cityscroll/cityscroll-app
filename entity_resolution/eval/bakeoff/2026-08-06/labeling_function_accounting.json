@@ -1,0 +1,558 @@
+{
+  "kind": "entity_resolution_labeling_function_accounting",
+  "accounting_version": "er_labeling_functions_v1",
+  "schema_version": 1,
+  "features_version": "pair_features_v2",
+  "population": {
+    "pair_count": 56,
+    "gold_pair_count": 56,
+    "labeling_function_count": 11,
+    "covered_pair_count": 42,
+    "covered_pair_rate": 0.75,
+    "conflict_pair_count": 2,
+    "conflict_pair_rate": 0.03571428571428571
+  },
+  "definitions": {
+    "coverage": "rows on which the labeling function emits a non-abstain label",
+    "overlap": "covered rows on which at least one other labeling function also emits",
+    "conflict": "covered rows on which at least one other labeling function emits the opposite label",
+    "empirical_accuracy": "correct emitted labels divided by emitted labels on rows present in the supplied gold stratum"
+  },
+  "labeling_functions": [
+    {
+      "name": "scoped_authority_key_equal_v1",
+      "label": "same",
+      "description": "A complete, scoped authority key agrees on both sides.",
+      "metrics": {
+        "labeling_function": "scoped_authority_key_equal_v1",
+        "coverage_count": 6,
+        "coverage_rate": 0.10714285714285714,
+        "overlap_count": 2,
+        "overlap_rate": 0.3333333333333333,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 6,
+        "gold_coverage_rate": 0.10714285714285714,
+        "empirical_accuracy_count": 6,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "contract_id_equal_v0",
+      "label": "same",
+      "description": "A contract identifier agrees on both sides.",
+      "metrics": {
+        "labeling_function": "contract_id_equal_v0",
+        "coverage_count": 0,
+        "coverage_rate": 0,
+        "overlap_count": 0,
+        "overlap_rate": null,
+        "conflict_count": 0,
+        "conflict_rate": null,
+        "gold_coverage_count": 0,
+        "gold_coverage_rate": 0,
+        "empirical_accuracy_count": 0,
+        "empirical_accuracy": null
+      }
+    },
+    {
+      "name": "hard_id_conflict_v0",
+      "label": "different",
+      "description": "Comparable hard identifiers disagree for a procurement pair.",
+      "metrics": {
+        "labeling_function": "hard_id_conflict_v0",
+        "coverage_count": 1,
+        "coverage_rate": 0.017857142857142856,
+        "overlap_count": 0,
+        "overlap_rate": 0,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 1,
+        "gold_coverage_rate": 0.017857142857142856,
+        "empirical_accuracy_count": 1,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "agency_place_conflict_v0",
+      "label": "different",
+      "description": "Agency names identify different places.",
+      "metrics": {
+        "labeling_function": "agency_place_conflict_v0",
+        "coverage_count": 1,
+        "coverage_rate": 0.017857142857142856,
+        "overlap_count": 0,
+        "overlap_rate": 0,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 1,
+        "gold_coverage_rate": 0.017857142857142856,
+        "empirical_accuracy_count": 1,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "vendor_legal_form_conflict_v0",
+      "label": "different",
+      "description": "Vendor identity tokens agree exactly but legal forms disagree.",
+      "metrics": {
+        "labeling_function": "vendor_legal_form_conflict_v0",
+        "coverage_count": 3,
+        "coverage_rate": 0.05357142857142857,
+        "overlap_count": 2,
+        "overlap_rate": 0.6666666666666666,
+        "conflict_count": 2,
+        "conflict_rate": 0.6666666666666666,
+        "gold_coverage_count": 3,
+        "gold_coverage_rate": 0.05357142857142857,
+        "empirical_accuracy_count": 1,
+        "empirical_accuracy": 0.3333333333333333
+      }
+    },
+    {
+      "name": "vendor_stem_equal_v0",
+      "label": "same",
+      "description": "Vendor stems are equal.",
+      "metrics": {
+        "labeling_function": "vendor_stem_equal_v0",
+        "coverage_count": 16,
+        "coverage_rate": 0.2857142857142857,
+        "overlap_count": 15,
+        "overlap_rate": 0.9375,
+        "conflict_count": 2,
+        "conflict_rate": 0.125,
+        "gold_coverage_count": 16,
+        "gold_coverage_rate": 0.2857142857142857,
+        "empirical_accuracy_count": 16,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "agency_stem_equal_v0",
+      "label": "same",
+      "description": "Agency canonical stems are equal.",
+      "metrics": {
+        "labeling_function": "agency_stem_equal_v0",
+        "coverage_count": 9,
+        "coverage_rate": 0.16071428571428573,
+        "overlap_count": 4,
+        "overlap_rate": 0.4444444444444444,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 9,
+        "gold_coverage_rate": 0.16071428571428573,
+        "empirical_accuracy_count": 9,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "token_similarity_v0",
+      "label": "same",
+      "description": "Non-procurement identity tokens have at least 0.9 Jaccard similarity.",
+      "metrics": {
+        "labeling_function": "token_similarity_v0",
+        "coverage_count": 19,
+        "coverage_rate": 0.3392857142857143,
+        "overlap_count": 18,
+        "overlap_rate": 0.9473684210526315,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 19,
+        "gold_coverage_rate": 0.3392857142857143,
+        "empirical_accuracy_count": 19,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "vendor_typo_proximity_v1",
+      "label": "same",
+      "description": "Vendor stems are within the bounded typo distance with token support.",
+      "metrics": {
+        "labeling_function": "vendor_typo_proximity_v1",
+        "coverage_count": 3,
+        "coverage_rate": 0.05357142857142857,
+        "overlap_count": 0,
+        "overlap_rate": 0,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 3,
+        "gold_coverage_rate": 0.05357142857142857,
+        "empirical_accuracy_count": 3,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "vendor_truncation_v1",
+      "label": "same",
+      "description": "One vendor stem is a bounded prefix of the other.",
+      "metrics": {
+        "labeling_function": "vendor_truncation_v1",
+        "coverage_count": 3,
+        "coverage_rate": 0.05357142857142857,
+        "overlap_count": 1,
+        "overlap_rate": 0.3333333333333333,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 3,
+        "gold_coverage_rate": 0.05357142857142857,
+        "empirical_accuracy_count": 3,
+        "empirical_accuracy": 1
+      }
+    },
+    {
+      "name": "vendor_abbreviation_v1",
+      "label": "same",
+      "description": "Known vendor abbreviations explain all unmatched tokens.",
+      "metrics": {
+        "labeling_function": "vendor_abbreviation_v1",
+        "coverage_count": 3,
+        "coverage_rate": 0.05357142857142857,
+        "overlap_count": 0,
+        "overlap_rate": 0,
+        "conflict_count": 0,
+        "conflict_rate": 0,
+        "gold_coverage_count": 3,
+        "gold_coverage_rate": 0.05357142857142857,
+        "empirical_accuracy_count": 3,
+        "empirical_accuracy": 1
+      }
+    }
+  ],
+  "pair_votes": [
+    {
+      "pair_id": "gv0-001",
+      "votes": {
+        "scoped_authority_key_equal_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-002",
+      "votes": {
+        "scoped_authority_key_equal_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-003",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-004",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-005",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-006",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-007",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv0-008",
+      "votes": {
+        "scoped_authority_key_equal_v1": "same",
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-009",
+      "votes": {
+        "scoped_authority_key_equal_v1": "same",
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-010",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-011",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-012",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-013",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-014",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv0-015",
+      "votes": {
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-016",
+      "votes": {
+        "token_similarity_v0": "same",
+        "vendor_truncation_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-017",
+      "votes": {
+        "vendor_legal_form_conflict_v0": "different"
+      }
+    },
+    {
+      "pair_id": "gv0-018",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-019",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv0-020",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-021",
+      "votes": {
+        "vendor_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-022",
+      "votes": {
+        "vendor_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-023",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv0-024",
+      "votes": {
+        "agency_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-025",
+      "votes": {
+        "agency_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-026",
+      "votes": {
+        "agency_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-027",
+      "votes": {
+        "agency_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-028",
+      "votes": {
+        "agency_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-029",
+      "votes": {
+        "agency_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-030",
+      "votes": {
+        "agency_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-031",
+      "votes": {
+        "agency_place_conflict_v0": "different"
+      }
+    },
+    {
+      "pair_id": "gv0-032",
+      "votes": {
+        "agency_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-033",
+      "votes": {
+        "agency_stem_equal_v0": "same",
+        "token_similarity_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-034",
+      "votes": {
+        "scoped_authority_key_equal_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-035",
+      "votes": {
+        "scoped_authority_key_equal_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv0-036",
+      "votes": {
+        "hard_id_conflict_v0": "different"
+      }
+    },
+    {
+      "pair_id": "gv1-037",
+      "votes": {
+        "vendor_typo_proximity_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-038",
+      "votes": {
+        "vendor_typo_proximity_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-039",
+      "votes": {
+        "vendor_typo_proximity_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-040",
+      "votes": {
+        "vendor_truncation_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-041",
+      "votes": {
+        "vendor_truncation_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-042",
+      "votes": {
+        "vendor_abbreviation_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-043",
+      "votes": {
+        "vendor_abbreviation_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-044",
+      "votes": {
+        "vendor_abbreviation_v1": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-045",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-046",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-047",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-048",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-049",
+      "votes": {
+        "vendor_legal_form_conflict_v0": "different",
+        "vendor_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-050",
+      "votes": {
+        "vendor_legal_form_conflict_v0": "different",
+        "vendor_stem_equal_v0": "same"
+      }
+    },
+    {
+      "pair_id": "gv1-051",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-052",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-053",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-054",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-055",
+      "votes": {}
+    },
+    {
+      "pair_id": "gv1-056",
+      "votes": {}
+    }
+  ],
+  "gold": {
+    "version": "v1",
+    "schema_version": 1,
+    "case_count": 56
+  }
+}
