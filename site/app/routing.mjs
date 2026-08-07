@@ -1136,7 +1136,6 @@ function setNoticeCompactCta(isNoticeRoute){
   }
 }
 
-// Extra description/printout fields so participation URL extraction matches the meetings list.
 const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name,additional_description_2,additional_description_3,other_info_2,other_info_3,printout_1,printout_2,printout_3,building_name,city,state,zip_code";
 let attachmentLookupPromise=null;
 async function noticeAttachmentMetadata(id){
@@ -1155,9 +1154,6 @@ async function noticeAttachmentMetadata(id){
   const attachments=lookup && Array.isArray(lookup.notices?.[String(id)])?lookup.notices[String(id)]:[];
   return {request_id:String(id),n_attachments:attachments.length,attachments};
 }
-// watch: the {lens, filter} parseWatchParam() extracted from this link's own "?w=" (w12-12) --
-// null for a plain "#notice/<id>" link (unchanged behavior). When present, the title/evidence/
-// echo below render exactly as they would if the reader had run the watch themselves.
 async function showNotice(id, watch){
   showTab("notice");
   const box = $("#noticeview");
@@ -1168,7 +1164,7 @@ async function showNotice(id, watch){
   let r = null;
   try{
     const [rows, attachmentData] = await Promise.all([
-      soda({"$select":NOTICE_SELECT, "$where":`request_id='${String(id).replace(/'/g,"''")}'`, "$limit":"1"}),
+      import("../notice-read.mjs").then(m=>m.read(id)),
       noticeAttachmentMetadata(id),
     ]);
     r = rows[0];
