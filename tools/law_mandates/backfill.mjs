@@ -8,7 +8,8 @@ import { fetchEnactedLaws } from "./fetch_enacted_laws.mjs";
 
 const DEFAULT_OUTPUT_DIR = "tools/law_mandates/output";
 const DEFAULT_CACHE_DIR = "tools/law_mandates/cache";
-const DEFAULT_MODEL = "kimi-k3-256k";
+const DEFAULT_MODEL = "gpt-5.6-luna";
+const DEFAULT_RAIL = "codex";
 const DEFAULT_ENDPOINT = "http://127.0.0.1:4000/v1/chat/completions";
 const DEFAULT_BATCH_SIZE = 10;
 const DEFAULT_CONCURRENCY = 4;
@@ -37,6 +38,7 @@ function parseArgs(argv) {
     concurrency: Math.max(1, Number(args.concurrency || DEFAULT_CONCURRENCY)),
     maxAttempts: Math.max(1, Number(args.max_attempts || DEFAULT_MAX_ATTEMPTS)),
     model: args.model || DEFAULT_MODEL,
+    rail: args.rail || DEFAULT_RAIL,
     endpoint: args.endpoint || DEFAULT_ENDPOINT,
     journalScript: args.journal_script || JOURNAL_SCRIPT,
   };
@@ -87,7 +89,7 @@ async function journalBatch({ script, what, why, undo }) {
   });
 }
 
-async function postModel({ endpoint, model, prompt }) {
+async function postHttpModel({ endpoint, model, prompt }) {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -98,6 +100,37 @@ async function postModel({ endpoint, model, prompt }) {
   const content = body?.choices?.[0]?.message?.content;
   if (!content) throw new Error("model_empty_content");
   return content;
+}
+
+async function postCodexModel({ model, prompt, repoRoot }) {
+  return new Promise((resolvePromise, reject) => {
+    const child = spawn("codex", ["exec", "-m", model, "--sandbox", "read-only", "--ephemeral", "--skip-git-repo-check", "--json", "-C", repoRoot], {
+      cwd: repoRoot,
+      env: Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "LEGISTAR_API_TOKEN" && key !== "KIMI_API_KEY")),
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    const timeout = setTimeout(() => child.kill("SIGTERM"), 180_000);
+    child.stdout.on("data", (chunk) => { stdout += chunk.toString(); });
+    child.stderr.on("data", (chunk) => { stderr += chunk.toString(); });
+    child.on("error", reject);
+    child.on("close", (code, signal) => {
+      clearTimeout(timeout);
+      const messages = stdout.split("\n").flatMap((line) => {
+        try { return [JSON.parse(line)]; } catch { return []; }
+      }).filter((event) => event?.type === "item.completed" && event?.item?.type === "agent_message").map((event) => event.item.text).filter(Boolean);
+      if (code === 0 && messages.length) return resolvePromise(messages.at(-1));
+      reject(new Error(`codex_${signal || `exit_${code}`}${stderr ? `:${stderr.trim().slice(0, 160)}` : ""}`));
+    });
+    child.stdin.end(prompt, "utf8");
+  });
+}
+
+async function postModel(options, prompt) {
+  return options.rail === "codex"
+    ? postCodexModel({ model: options.model, prompt, repoRoot: options.repoRoot })
+    : postHttpModel({ endpoint: options.endpoint, model: options.model, prompt });
 }
 
 async function settledConcurrent(items, concurrency, fn) {
@@ -119,10 +152,10 @@ async function settledConcurrent(items, concurrency, fn) {
 }
 
 async function probeRail(options) {
-  const content = await postModel({ ...options, prompt: "Return only the JSON object {\"rail_ok\":true}." });
+  const content = await postModel(options, "Return only the JSON object {\"rail_ok\":true} and do not inspect or modify files.");
   const parsed = JSON.parse(String(content).replace(/^```json\s*/iu, "").replace(/\s*```$/u, ""));
   if (parsed?.rail_ok !== true) throw new Error("model_probe_invalid_json");
-  return { model: options.model, endpoint: options.endpoint, checked_at: stamp(), content_nonempty: true };
+  return { model: options.model, rail: options.rail, endpoint: options.rail === "codex" ? "codex-cli" : options.endpoint, checked_at: stamp(), content_nonempty: true };
 }
 
 async function loadLaw(cacheDir, matterId) {
@@ -237,7 +270,7 @@ async function runExtraction(options, manifest, railReceipt, context) {
           state.attempts[matterId] = (state.attempts[matterId] || 0) + 1;
           toExtract.push({ law, matterId });
         }
-        const settled = await settledConcurrent(toExtract, options.concurrency, ({ law }) => extractMandatesForLaw(law, { model: options.model, invokeModel: ({ prompt }) => postModel({ ...options.modelOptions, prompt }), fetchedAt: law.provenance?.fetched_at }));
+        const settled = await settledConcurrent(toExtract, options.concurrency, ({ law }) => extractMandatesForLaw(law, { model: options.model, invokeModel: ({ prompt }) => postModel(options.modelOptions, prompt), fetchedAt: law.provenance?.fetched_at }));
         for (let index = 0; index < settled.length; index += 1) {
           const result = settled[index];
           const { law, matterId } = toExtract[index];
@@ -300,7 +333,7 @@ export async function runBackfill(rawOptions = {}) {
   heartbeatTimer.unref();
   try {
     const railReceipt = options.railReceipt || await probeRail({ endpoint: options.endpoint, model: options.model });
-    options.modelOptions = { endpoint: options.endpoint, model: options.model };
+    options.modelOptions = { endpoint: options.endpoint, model: options.model, rail: options.rail, repoRoot: options.repoRoot };
     await atomicWrite(join(options.outputDir, "rail_receipt.json"), railReceipt);
     const manifest = await ensureManifest(options, context);
     context.phase = "extract";
