@@ -61,8 +61,8 @@ function statuteSource(payload, matterId) {
   const law = (payload?.laws || []).find((row) => [row?.file_number, row?.matter_file, row?.matter_id].some((value) => String(value || "") === matterId));
   const row = rowsFromPayload(payload).find((item) => [item?.file_number, item?.matter_file, item?.matter_id].some((value) => String(value || "") === matterId));
   return {
-    url: clean(law?.provenance?.source_url ?? row?.source?.url ?? row?.source_url, 1000) || null,
-    sha256: clean(law?.provenance?.sha256 ?? row?.source?.sha256, 128) || null,
+    url: clean(law?.provenance?.source_url ?? law?.source?.url ?? row?.source?.url ?? row?.source_url, 1000) || null,
+    sha256: clean(law?.provenance?.sha256 ?? law?.source?.sha256 ?? row?.source?.sha256, 128) || null,
   };
 }
 
