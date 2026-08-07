@@ -76,11 +76,10 @@ test("deploy uses the shared verified build action", () => {
   assert.match(workflow, /secrets\.CLOUDFLARE_API_TOKEN/);
 });
 
-test("same-repository pull requests may deploy the Pages host for validation", () => {
+test("production Pages fallback is manual while native builds own automatic releases", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
-  assert.match(workflow, /pull_request:/);
-  assert.match(workflow, /head\.repo\.full_name == github\.repository/);
-  assert.match(workflow, /branch="pr-\$\{\{\s*github\.event\.pull_request\.number\s*\}\}"/);
-  assert.match(workflow, /--branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
-  assert.match(workflow, /is_preview/);
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /^\s+(?:push|pull_request|schedule):/m);
+  assert.match(workflow, /branch="main"/);
+  assert.match(workflow, /Cloudflare-native Pages builds are canonical/);
 });

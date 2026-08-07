@@ -57,7 +57,9 @@ test("production Worker routes carry API domains and bounded canonical document 
   assert.match(production, /^ANALYTICS_ENVIRONMENT = "production"$/m);
 
   const deploy = read("../../.github/workflows/deploy-worker.yml");
-  assert.match(deploy, /branches: \[main\]/);
+  assert.match(deploy, /workflow_dispatch:/);
+  assert.doesNotMatch(deploy, /^\s+push:/m);
+  assert.match(deploy, /Workers Builds is canonical/);
   assert.doesNotMatch(deploy, /--env beta/);
 });
 

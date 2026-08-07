@@ -89,15 +89,16 @@ test("scheduled cutover-regression owns live production demo-link monitoring", (
   assert.doesNotMatch(fullEnv, /CROL_DEMO_LINK_IDS/);
 });
 
-test("Cloudflare Pages PR path smokes the preview deploy, not production site", () => {
+test("Cloudflare Pages fallback is manual while native builds own preview and production releases", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
-  assert.match(workflow, /pull_request:/);
-  // Numbered preview branch is resolved in bash, then passed to wrangler.
-  assert.match(workflow, /branch="pr-\$\{\{\s*github\.event\.pull_request\.number\s*\}\}"/);
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /^\s+(?:push|pull_request|schedule):/m);
+  // The manual fallback always deploys the production branch.
+  assert.match(workflow, /branch="main"/);
   assert.match(workflow, /--branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
   assert.match(workflow, /is_preview/);
   assert.match(workflow, /deployment_url|deployment-url/);
-  // Production route parity must be gated off for previews.
+  // The fallback still smokes the resolved deploy origin and checks route parity.
   assert.match(
     workflow,
     /Route inventory parity[\s\S]*?if:\s*needs\.deploy\.outputs\.is_preview\s*!=\s*'true'/,
