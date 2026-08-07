@@ -20,7 +20,7 @@ function rowsFromPayload(payload) {
 function mattersFromPayload(payload) {
   const byMatter = new Map();
   for (const row of rowsFromPayload(payload)) {
-    const matterId = clean(row?.matter_id ?? row?.matterId, 120);
+    const matterId = clean(row?.file_number ?? row?.matter_file ?? row?.matter_id ?? row?.matterId, 120);
     if (!matterId) continue;
     if (!byMatter.has(matterId)) byMatter.set(matterId, []);
     byMatter.get(matterId).push(row);
@@ -58,8 +58,8 @@ function publicRow(row) {
 }
 
 function statuteSource(payload, matterId) {
-  const law = (payload?.laws || []).find((row) => String(row?.matter_id) === matterId);
-  const row = rowsFromPayload(payload).find((item) => String(item?.matter_id) === matterId);
+  const law = (payload?.laws || []).find((row) => [row?.file_number, row?.matter_file, row?.matter_id].some((value) => String(value || "") === matterId));
+  const row = rowsFromPayload(payload).find((item) => [item?.file_number, item?.matter_file, item?.matter_id].some((value) => String(value || "") === matterId));
   return {
     url: clean(law?.provenance?.source_url ?? row?.source?.url ?? row?.source_url, 1000) || null,
     sha256: clean(law?.provenance?.sha256 ?? row?.source?.sha256, 128) || null,
@@ -115,7 +115,7 @@ export function compareMandates(ourPayload, referencePayload, { generatedAt = ne
     status: "candidate_compilation_for_future_review",
     public_surfaces_changed: false,
     operative_links_enabled: false,
-    methodology: { keyed_by: "matter_id", compared_fields: ["agency", "deadline", "deliverable_type"], human_review_required: true, trust_rule: TRUST_RULE },
+    methodology: { keyed_by: "file_number_or_matter_id", compared_fields: ["agency", "deadline", "deliverable_type"], human_review_required: true, trust_rule: TRUST_RULE },
     queue,
     candidates: queue,
     receipt: { matter_count: queue.length, agreement_count: queue.filter((item) => item.state === "agreement").length, review_count: queue.filter((item) => item.state === "needs_review").length },

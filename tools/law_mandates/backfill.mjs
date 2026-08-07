@@ -4,7 +4,7 @@ import { join, resolve } from "node:path";
 
 import { compareMandates, assertReferencePathOutsideRepo } from "./compare_mandates.mjs";
 import { extractMandatesForLaw, EXTRACTION_PROMPT_VERSION } from "./extract_mandates.mjs";
-import { fetchEnactedLaws } from "./fetch_enacted_laws.mjs";
+import { fetchEnactedLaws, repairCachedLawTexts } from "./fetch_enacted_laws.mjs";
 
 const DEFAULT_OUTPUT_DIR = "tools/law_mandates/output";
 const DEFAULT_CACHE_DIR = "tools/law_mandates/cache";
@@ -172,6 +172,8 @@ async function writeLawOutput(outputDir, law, envelope, model) {
   }));
   const payload = {
     ...envelope,
+    matter_file: law.matter_file,
+    file_number: law.matter_file,
     extraction: { model, prompt_version: EXTRACTION_PROMPT_VERSION, adapter_version: EXTRACTION_ADAPTER_VERSION, extracted_at: stamp() },
     quote_receipts: quoteReceipts,
   };
@@ -184,7 +186,11 @@ async function buildOurPayload(outputDir, manifest, model, railReceipt) {
     const row = await readJson(join(outputDir, "laws", `${matterId}.json`));
     if (row) laws.push(row);
   }
-  const mandates = laws.flatMap((law) => law.mandates || []);
+  const mandates = laws.flatMap((law) => (law.mandates || []).map((row) => ({
+    ...row,
+    matter_file: row.matter_file || law.matter_file,
+    file_number: row.file_number || law.file_number || law.matter_file,
+  })));
   const quoteReceipts = laws.flatMap((law) => law.quote_receipts || []);
   return {
     schema_version: "cityscroll-mandates-backfill-v1",
@@ -241,6 +247,41 @@ async function ensureManifest(options, context) {
   await atomicWrite(join(options.outputDir, "fetch_receipt.json"), { ...manifest, text_cache_sha256_present: true });
   await journalBatch({ script: options.journalScript, what: `cached enacted-law source batch (${manifest.law_count} laws)`, why: "prepare resumable mandate extraction", undo: `remove ${options.cacheDir} and ${options.outputDir}/manifest.json` });
   return manifest;
+}
+
+async function ensureSubstantiveText(options, manifest, context) {
+  const receiptPath = join(options.outputDir, "text_repair_receipt.json");
+  const existing = await readJson(receiptPath);
+  if (existing?.law_count === manifest.law_count && existing?.failed_count === 0) return existing;
+  context.phase = "repair-text";
+  context.total = manifest.law_count;
+  context.completed = 0;
+  context.failed = 0;
+  console.log(`phase: repairing enacted-law source text from primary attachments (${manifest.law_count} laws)`);
+  const repaired = await repairCachedLawTexts({
+    cacheDir: options.cacheDir,
+    onProgress: async ({ index, total, matter_id: matterId, status }) => {
+      context.total = total;
+      context.completed = index;
+      context.last = `${matterId || "unknown"}:${status}`;
+      if (Date.now() - context.lastHeartbeat >= HEARTBEAT_MS) {
+        context.lastHeartbeat = Date.now();
+        logHeartbeat(context);
+      }
+    },
+  });
+  const receipt = { ...repaired, completed_at: stamp() };
+  await atomicWrite(receiptPath, receipt);
+  await journalBatch({
+    script: options.journalScript,
+    what: `repaired enacted-law text cache (${receipt.repaired} laws)`,
+    why: "replace metadata-only fields with primary law attachment text",
+    undo: `restore ${options.cacheDir}/laws from the prior cache snapshot`,
+  });
+  if (receipt.law_count !== manifest.law_count || receipt.failed_count) {
+    throw new Error(`text_repair_incomplete:laws=${receipt.law_count}/${manifest.law_count},failed=${receipt.failed_count}`);
+  }
+  return receipt;
 }
 
 async function runExtraction(options, manifest, railReceipt, context) {
@@ -343,6 +384,7 @@ export async function runBackfill(rawOptions = {}) {
     options.modelOptions = { endpoint: options.endpoint, model: options.model, rail: options.rail, repoRoot: options.repoRoot };
     await atomicWrite(join(options.outputDir, "rail_receipt.json"), railReceipt);
     const manifest = await ensureManifest(options, context);
+    await ensureSubstantiveText(options, manifest, context);
     context.phase = "extract";
     const extraction = await runExtraction(options, manifest, railReceipt, context);
     if (extraction.our.laws.length !== manifest.law_count || extraction.state.failed?.length) throw new Error(`incomplete_extraction:laws=${extraction.our.laws.length}/${manifest.law_count},failed=${extraction.state.failed?.length || 0}`);
