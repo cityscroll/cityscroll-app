@@ -3,6 +3,7 @@ import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
+const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
 const NOTICE_FIELDS = [
   "request_id", "start_date", "event_date", "due_date", "agency_name",
   "type_of_notice_description", "section_name", "short_title", "pin",
@@ -160,6 +161,23 @@ function rewrittenResponse(asset, status, cacheControl) {
 }
 
 async function noticeRow(id) {
+  // Ordinary document reads use the Worker/D1 projection. Socrata remains an exceptional
+  // degradation path for an older id or an unavailable/partial mirror.
+  try {
+    const readModel = new URL(NOTICE_READ_MODEL);
+    readModel.searchParams.set("id", id);
+    const response = await fetch(readModel, {
+      headers: { Accept: "application/json" },
+      cf: { cacheTtl: 86400, cacheEverything: true },
+    });
+    if (response.ok) {
+      const payload = await response.json();
+      return payload?.row || null;
+    }
+    if (response.status === 404) return null;
+  } catch (_error) {
+    // Fall through to the public-source degradation path.
+  }
   const url = new URL(CITY_RECORD_SODA);
   url.searchParams.set("$select", NOTICE_FIELDS);
   url.searchParams.set("$where", `request_id='${id}'`);
@@ -192,7 +210,7 @@ async function handleNotice(request, env, id) {
   const status = upstreamFailed ? 503 : row ? 200 : 404;
   const title = row?.short_title || `City Record notice ${id}`;
   const canonical = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
-  const response = rewrittenResponse(asset, status, "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400");
+  const response = rewrittenResponse(asset, status, "public, max-age=60, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800");
   const transformed = new HTMLRewriter()
     .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })

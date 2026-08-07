@@ -39,6 +39,7 @@ import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob, runCatchUpDigests } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
+import { handleNotice, prewarmNotices } from "./notice.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
 import { handleExternalAward, refreshAboAwards, prewarmNycha } from "./external_award.mjs";
 import { handleAgency } from "./agency.mjs";
@@ -84,6 +85,7 @@ export default {
     }
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);
+    if (pathname === "/notice") return handleNotice(request, env);
     if (pathname === "/board-hook") return handleBoardHook(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
     if (pathname === "/forecast") return handleForecast(request, env);
@@ -157,6 +159,8 @@ export default {
         try {
           const result = await ingestNotices(env);
           console.log("digest shadow ingest:", JSON.stringify(result));
+          const prewarm = await prewarmNotices(env, result?.noticeRequestIds);
+          console.log("digest shadow notice prewarm:", JSON.stringify(prewarm));
         } catch (error) {
           console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
         }
@@ -175,6 +179,14 @@ export default {
       console.log("ingest:", JSON.stringify(ingestResult));
     } catch (e) {
       console.error("ingest failed (alerts continue):", String(e?.message || e));
+    }
+    // Notice documents are ordinary reads, so the daily D1 snapshot is pushed to the edge
+    // immediately after ingestion. A failed prewarm cannot erase the last-known-good D1 row.
+    try {
+      const r = await prewarmNotices(env, ingestResult?.noticeRequestIds);
+      console.log("notice read-model prewarm:", JSON.stringify(r));
+    } catch (e) {
+      console.error("notice read-model prewarm failed (digest continues):", String(e?.message || e));
     }
     // Pre-warm prior-cycle / near-match sets for freshly-ingested Award notices (bounded, NOT a
     // full-corpus backfill). Its own try/catch, fail-soft like the other cron jobs — a pre-warm
