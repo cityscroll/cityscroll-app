@@ -65,29 +65,53 @@ function attachmentKind(attachment = {}) {
   return null;
 }
 
-export function primaryLawAttachment(attachments = []) {
+function lawAttachmentCandidates(attachments = []) {
   const usable = attachments.filter((attachment) => {
     const name = String(attachment.name || attachment.MatterAttachmentName || "").trim();
     return attachmentKind({
       content_type: attachment.content_type,
       url: attachment.url || attachment.MatterAttachmentHyperlink,
-    }) && /^(?:int\.?\s*no\.?|local law\b|law\b)/iu.test(name);
+    }) && /^(?:int\.?\s*no\.?|local law\s+\d+\b|law\b)/iu.test(name);
   });
-  return usable.find((attachment) => /^int\.?\s*no\.?/iu.test(String(attachment.name || attachment.MatterAttachmentName || "")))
-    || usable.find((attachment) => /^local law\b/iu.test(String(attachment.name || attachment.MatterAttachmentName || "")))
-    || usable.find((attachment) => /^law\b/iu.test(String(attachment.name || attachment.MatterAttachmentName || "")))
-    || null;
+  return [...usable].sort((left, right) => {
+    const leftName = String(left.name || left.MatterAttachmentName || "");
+    const rightName = String(right.name || right.MatterAttachmentName || "");
+    const rank = (name) => /^int\.?\s*no\.?/iu.test(name) ? 0 : /^local law\s+\d+\b/iu.test(name) ? 1 : 2;
+    const formatRank = (attachment) => /\.docx(?:$|\?)/iu.test(String(attachment.url || attachment.MatterAttachmentHyperlink || "")) ? 0 : /\.doc(?:$|\?)/iu.test(String(attachment.url || attachment.MatterAttachmentHyperlink || "")) ? 1 : 2;
+    return rank(leftName) - rank(rightName) || formatRank(left) - formatRank(right);
+  });
+}
+
+export function primaryLawAttachment(attachments = []) {
+  return lawAttachmentCandidates(attachments)[0] || null;
 }
 
 function decodeAttachmentBytes(data, kind) {
-  if (kind === "doc") {
+  const decodeWithTextutil = () => {
     const result = spawnSync("textutil", ["-convert", "txt", "-stdout", "-stdin"], {
+      input: data,
+      encoding: "buffer",
+      maxBuffer: 20_000_000,
+    });
+    if (result.status === 0 && result.stdout.length) return result.stdout.toString("utf8").trim().slice(0, 50_000) || null;
+    return null;
+  };
+  if (kind === "doc") return decodeWithTextutil();
+  if (kind === "docx" && data.length > 5_000_000) return decodeWithTextutil();
+  if (kind === "docx" && data.length <= 5_000_000) {
+    const extractor = resolve(dirname(new URL(import.meta.url).pathname), "../../warehouse/lib/attachment_text_extract.py");
+    const result = spawnSync("python3", [extractor, "--kind", kind], {
       input: data,
       encoding: "buffer",
       maxBuffer: 5_200_000,
     });
-    if (result.status === 0 && result.stdout.length) return result.stdout.toString("utf8").trim() || null;
-    return null;
+    if (result.status !== 0) return null;
+    try {
+      const payload = JSON.parse(result.stdout.toString("utf8"));
+      return payload.status === "ok" && payload.text ? String(payload.text) : null;
+    } catch {
+      return null;
+    }
   }
   const extractor = resolve(dirname(new URL(import.meta.url).pathname), "../../warehouse/lib/attachment_text_extract.py");
   const result = spawnSync("python3", [extractor, "--kind", kind], {
@@ -111,9 +135,10 @@ export async function fetchAttachmentText(attachment, fetchImpl = fetch) {
   const response = await fetchImpl(url, { headers: { Accept: "*/*" } });
   if (!response?.ok) return null;
   const contentLength = Number(response.headers?.get?.("content-length") || 0);
-  if (contentLength > 5_000_000) return null;
+  const maxBytes = kind === "docx" ? 20_000_000 : 5_000_000;
+  if (contentLength > maxBytes) return null;
   const data = Buffer.from(await response.arrayBuffer());
-  if (data.length > 5_000_000) return null;
+  if (data.length > maxBytes) return null;
   return decodeAttachmentBytes(data, kind);
 }
 
@@ -131,12 +156,19 @@ export async function repairCachedLawTexts({ cacheDir = DEFAULT_LAW_CACHE_DIR, o
       if (typeof onProgress === "function") await onProgress({ index: index + 1, total: files.length, matter_id: law.matter_id, status: "already_substantive" });
       continue;
     }
-    const attachment = primaryLawAttachment(law.provenance?.attachments || []);
+    const attachments = lawAttachmentCandidates(law.provenance?.attachments || []);
+    let attachment = attachments[0] || null;
     let text = null;
     let error = null;
-    for (let attempt = 1; attempt <= 3 && !text; attempt += 1) {
-      try { text = await fetchAttachmentText(attachment, fetchImpl); }
-      catch (caught) { error = caught; }
+    for (const candidate of attachments) {
+      for (let attempt = 1; attempt <= 3 && !text; attempt += 1) {
+        try { text = await fetchAttachmentText(candidate, fetchImpl); }
+        catch (caught) { error = caught; }
+      }
+      if (text) {
+        attachment = candidate;
+        break;
+      }
     }
     if (!text) {
       failed.push({ matter_id: law.matter_id, reason: error?.message || (attachment ? "attachment_text_unavailable" : "primary_law_attachment_missing") });
