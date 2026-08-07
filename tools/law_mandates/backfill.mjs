@@ -1,5 +1,6 @@
 import { mkdir, open, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
+import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 
 import { compareMandates, assertReferencePathOutsideRepo } from "./compare_mandates.mjs";
@@ -15,7 +16,7 @@ const DEFAULT_BATCH_SIZE = 10;
 const DEFAULT_CONCURRENCY = 4;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const HEARTBEAT_MS = 180_000;
-const JOURNAL_SCRIPT = "/Users/james/dev/fiduciary-heartbeat/tools/autonomy_journal.py";
+const JOURNAL_SCRIPT = join(homedir(), "dev", "fiduciary-heartbeat", "tools", "autonomy_journal.py");
 const EXTRACTION_ADAPTER_VERSION = "codex-stdin-v1";
 
 function parseArgs(argv) {
