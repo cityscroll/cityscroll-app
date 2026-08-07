@@ -8,7 +8,7 @@ import {
   PROCUREMENT_ACTION_LOCATION_KEYS,
   PROCUREMENT_MODE_KEYS,
 } from "../site/procurement_facet_links.mjs";
-import { scopeFromNearYouUrl } from "../site/near_you_scope.mjs";
+import { scopeFromNearYouUrl } from "../site/near_you_scope_runtime.mjs";
 import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { buildContractActionBasisLayer } from "../tools/lib/district_activity.mjs";
 

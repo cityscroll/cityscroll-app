@@ -9,9 +9,11 @@ import {
 import {
   commonNearYouPath,
   nearYouUrlFromScope,
+} from "../site/scope_v0.mjs";
+import {
   scopeFromNearYouUrl,
   scopeWithPlace,
-} from "../site/near_you_scope.mjs";
+} from "../site/near_you_scope_runtime.mjs";
 import {
   buildNearYouViewModel,
   renderNearYouDocument,
@@ -215,6 +217,13 @@ test("the map island adopts server markup and is absent from unrelated routes", 
   assert.match(island, /querySelector\("\[data-near-you-root\]"\)/);
   assert.match(index, /href="\/near-you\/"[^>]+data-near-you-link/);
   assert.match(routing, /forwardLegacyMapToNearYou/);
+});
+
+test("Near-you scope parsing keeps response-address implementation off the cold link graph", () => {
+  const source = readFileSync(new URL("../site/near_you_scope.mjs", import.meta.url), "utf8");
+  assert.match(source, /scope_v0\.mjs/);
+  assert.doesNotMatch(source, /contract_action_location\.mjs/);
+  assert.doesNotMatch(source, /near_you_scope_runtime\.mjs/);
 });
 
 test("the Near-you cold wire inventory stays below the 455,000-byte ceiling", () => {

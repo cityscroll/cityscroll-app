@@ -7,15 +7,13 @@ import {
   mapFeatures,
 } from "./map_exploration.mjs";
 import {
+  nearYouUrlFromScope,
   normalizeScope,
   routeHashFromScope,
   watchFromScope,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
-import {
-  nearYouUrlFromScope,
-  scopeWithPlace,
-} from "./near_you_scope.mjs";
+import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
 import {

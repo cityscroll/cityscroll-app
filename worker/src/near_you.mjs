@@ -1,6 +1,6 @@
 import activity from "./data/district_activity.json" with { type: "json" };
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
-import { scopeFromNearYouUrl } from "../../site/near_you_scope.mjs";
+import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../../site/near_you_view.mjs";
 
 const SITE_BASE = "https://cityscroll.org";
