@@ -1,5 +1,5 @@
-// entity_resolution/review — read-only, desk-only soft review cards.
-// This module deliberately does not decide identity and does not write review state.
+// entity_resolution/review — desk-only soft review cards and human-gated alias review.
+// This module deliberately does not decide identity; alias promotion is an explicit clerk action.
 
 export const REVIEW_VERSION = "possibly_same_v1";
 export const REVIEW_DECISION = "review";
@@ -10,6 +10,21 @@ export {
   INVESTIGATION_WORKSPACE_VERSION,
   buildInvestigationWorkspace,
 } from "./investigation_workspace.mjs";
+
+export {
+  ALIAS_ACCEPTED_STATUS,
+  ALIAS_PROPOSAL_STATUS,
+  ALIAS_PROPOSAL_PROMPT_VERSION,
+  ALIAS_PROPOSAL_VERSION,
+  ALIAS_REJECTED_STATUS,
+  appendProposedAliases,
+  buildAliasProposalPrompt,
+  generateAliasProposals,
+  parseAliasProposalResponse,
+  promoteAliasProposal,
+  readAliasRegistry,
+  reviewAliasProposal,
+} from "./llm_alias_proposals.mjs";
 
 const clampConfidence = (value) => {
   const n = Number(value);
