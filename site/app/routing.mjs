@@ -1168,16 +1168,7 @@ async function showNotice(id, watch){
   let r = null;
   try{
     const [rows, attachmentData] = await Promise.all([
-      (async()=>{
-        const response = await workerFetch("/notice?id=" + encodeURIComponent(String(id)), {}, 5000,
-          candidate => candidate.status < 500);
-        if(response.ok){
-          const payload = await response.json();
-          if(payload?.row) return [payload.row];
-        }
-        // Exceptional degradation for a missing/older row or an unavailable mirror.
-        return soda({"$select":NOTICE_SELECT, "$where":`request_id='${String(id).replace(/'/g,"''")}'`, "$limit":"1"});
-      })(),
+      (async()=>{const response=await workerFetch("/notice?id="+encodeURIComponent(id),{},5000);if(response.ok){const payload=await response.json();if(payload?.row)return[payload.row]}return soda({"$select":NOTICE_SELECT,"$where":`request_id='${String(id).replace(/'/g,"''")}'`,"$limit":"1"})})(),
       noticeAttachmentMetadata(id),
     ]);
     r = rows[0];
