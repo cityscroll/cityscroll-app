@@ -14,6 +14,7 @@ import {
   priceBandForAmount,
 } from "../property_disposition_facets.mjs";
 import { bindPropertyScopeFacetRail, propertyDispositionFacetRailsHTML } from "../property_disposition_facets_ui.mjs";
+import { boroughScopeLinksHTML } from "../borough_scope_links.mjs";
 
 /* Franchise / concession multi-notice process spine. */
 function franchiseStageLabel(kind){
@@ -769,7 +770,7 @@ function propertyTimedEventChipsHTML(commercial,omitSourceKinds=[]){
   const chips=(commercial?.event_views||[]).filter(v=>v.date&&v.label_key&&!omitted.has(v.source_kind)).map(v=>`<time class="tag ${v.chip_class}" datetime="${escUiHtml(v.date)}" data-date-chip="1" data-card-fact="event:${escUiHtml(v.kind)}:${escUiHtml(v.date)}"${v.band?` data-open-window-band="${v.band}"`:""}>${escUiHtml(t(v.label_key))} · ${escUiHtml(fdt(v.fmt))}${v.band?` · <span lang="en" dir="ltr">${v.band}</span>`:""}</time>`);
   return chips.length?`<div>${chips.join("")}</div>`:"";
 }
-let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all", propAgency="";
+let propAll=[], propSpines=[], propAsset="all", propStageSel="all", propProcessSel="all", propAgency="", propertyBorough="";
 let propertyAgencyChangesResults=false;
 let propertyView="default";
 let propertyCommunityDistrict="", propertyCouncilDistrict="", propertyResolvedNeighborhood=null;
@@ -872,7 +873,7 @@ async function renderDcasFleetInventory(){
     && (propAsset==="all"||propAsset==="vehicle")
     && propSaleMethod==="all" && propPriceBand==="all"
     && propProcessSel==="all" && propStageSel==="all"
-    && !keyword && !$("#propertyboro")?.value && !propertyCommunityDistrict
+    && !keyword && !propertyBorough && !propertyCommunityDistrict
     && !propertyCouncilDistrict && !$("#propertyneighborhood")?.value
     && !propertyParcelScopeBbl;
   if(!scoped){
@@ -1064,18 +1065,13 @@ function propertyClusterCardHTML(cluster,plainTools){
     </details>
   </div>`;
 }
-/**
- * Badge the "More filters" summary with the count of active secondary facets so hidden
- * state stays visible even when the disclosure is collapsed (Norman: knowledge in the
- * world). The selected-filters summary row (data-search-state) carries the detail.
- */
 function updatePropertyMoreFiltersState(){
   const active=[
     propSaleMethod!=="all",
     propPriceBand!=="all",
     propProcessSel!=="all",
     propStageSel!=="all",
-    !!($("#propertyboro")?.value),
+    !!propertyBorough,
     !!propertyCommunityDistrict,
     !!propertyCouncilDistrict,
     !!(($("#propertyneighborhood")?.value||"").trim()),
@@ -1089,6 +1085,7 @@ function updatePropertyMoreFiltersState(){
 }
 const normalizePropSaleMethod=normalizeSaleMethodKey;
 const normalizePropPriceBand=normalizePriceBandKey;
+function renderPropertyBoroughScopeLinks(){const host=$("#property-borough-rail");if(host)host.innerHTML=boroughScopeLinksHTML({selected:propertyBorough,t});}
 function normalizePropSort(raw){
   const key=String(raw||"").trim().toLowerCase().replace(/-/g,"_");
   return ["closing_soon","newest","price_desc","price_asc"].includes(key)?key:"closing_soon";
@@ -1106,6 +1103,7 @@ function propSaleMethodOf(r){
   return key==="all"?null:key;
 }
 async function renderPropExplorer(){
+  renderPropertyBoroughScopeLinks();
   propAsset=normalizePropAsset(propAsset);
   propSaleMethod=normalizePropSaleMethod(propSaleMethod);
   propPriceBand=normalizePropPriceBand(propPriceBand);
@@ -1171,12 +1169,12 @@ async function renderPropExplorer(){
     propertyCommunityDistrict="";
   }
   if(propertyResolvedNeighborhood){
-    $("#propertyboro").value=propertyResolvedNeighborhood.borough||"";
+    propertyBorough=propertyResolvedNeighborhood.borough||"";
     $("#propertyneighborhood").value=propertyResolvedNeighborhood.name;
   }
   const tools=await propertyExplorerTools();
   const coverage=tools?.stampPropertyActionCharacters?.(propAll).coverage;
-  const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
+  const borough=propertyBorough, neighborhood=($("#propertyneighborhood")?.value||"").trim();
   const filterOptions={
     agency: propAgency || null,
     process: propProcessSel,
@@ -1278,7 +1276,7 @@ async function renderPropExplorer(){
       agency:propAgency||null, asset:propAsset!=="all"?propAsset:null,
       saleMethod:propSaleMethod!=="all"?propSaleMethod:null, priceBand:propPriceBand!=="all"?propPriceBand:null,
       process:propProcessSel!=="all"?propProcessSel:null, stage:propStageSel!=="all"?propStageSel:null,
-      sort:propSort!=="closing_soon"?propSort:null, borough:$("#propertyboro")?.value||null,
+      sort:propSort!=="closing_soon"?propSort:null, borough:propertyBorough||null,
       neighborhood:(($("#propertyneighborhood")?.value)||"").trim()||null,
       communityDistrict:propertyCommunityDistrict||null, councilDistrict:propertyCouncilDistrict||null,
       q:(($("#propertykw")?.value)||"").trim()||null, view:propertyView==="archive"?"archive":null,
@@ -1420,7 +1418,7 @@ async function renderPropExplorer(){
       propertyCommunityDistrict="";
       propertyCouncilDistrict="";
       propertyResolvedNeighborhood=null;
-      if($("#propertyboro")) $("#propertyboro").value="";
+      propertyBorough="";
       if($("#propertyneighborhood")) $("#propertyneighborhood").value="";
       if($("#propertykw")) $("#propertykw").value="";
       renderPropExplorer();
@@ -1753,6 +1751,7 @@ Object.defineProperty(globalThis, "propSort", { configurable: true, get: () => p
 Object.defineProperty(globalThis, "propSpines", { configurable: true, get: () => propSpines, set: value => { propSpines = value; } });
 Object.defineProperty(globalThis, "propStageSel", { configurable: true, get: () => propStageSel, set: value => { propStageSel = value; } });
 Object.defineProperty(globalThis, "propertyView", { configurable: true, get: () => propertyView, set: value => { propertyView = value === "archive" ? "archive" : "default"; } });
+Object.defineProperty(globalThis, "propertyBorough", { configurable: true, get: () => propertyBorough, set: value => { propertyBorough = value || ""; } });
 Object.defineProperty(globalThis, "propertyParcelScopeBbl", { configurable: true, get: () => propertyParcelScopeBbl, set: value => { propertyParcelScopeBbl = /^\d{10}$/.test(String(value||"")) ? String(value) : null; } });
 globalThis.normalizePropSaleMethod = normalizePropSaleMethod;
 globalThis.normalizePropPriceBand = normalizePropPriceBand;

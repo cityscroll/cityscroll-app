@@ -393,7 +393,7 @@ const NL = {
     },
     apply:f=>{
       landResolvedArea=null;
-      if(f.boro) $("#lboro").value=f.boro;
+      if(f.boro) landBorough=f.boro;
       if(f.status) $("#lstatus").value=f.status;
       landCommunityDistrict=f.communityDistrict||"";
       landCouncilDistrict=f.councilDistrict||"";
@@ -529,7 +529,7 @@ function nlFeed(key, placeholder){
       }
       if(key==='property'){
         if(f.agency) propAgency=f.agency;
-        if(f.borough) $("#propertyboro").value=f.borough;
+        if(f.borough) propertyBorough=f.borough;
         if(f.neighborhood) $("#propertyneighborhood").value=f.neighborhood;
         propertyResolvedNeighborhood=f.neighborhood?{
           name:f.neighborhood,borough:f.borough||null,
@@ -555,11 +555,8 @@ function nlFeed(key, placeholder){
         if(f.process && ["proposal","public_process","adoption","effective","unstaged"].includes(f.process)){
           rulesProcessSel=f.process;
         }
-        const rb=$("#rulesboro");
-        if(rb){
-          if(f.locationScope==="citywide") rb.value="citywide";
-          else if(f.borough) rb.value=f.borough;
-        }
+        if(f.locationScope==="citywide") rulesBorough="citywide";
+        else if(f.borough) rulesBorough=f.borough;
       }
       forceSelect("#"+key+"agency", f.agency);
       $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
@@ -691,7 +688,7 @@ function bindClearSearchState(lens, root){
       landResolvedArea=null;
       landCommunityDistrict="";
       landCouncilDistrict="";
-      $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="all";
+      landBorough=""; $("#lkw").value=""; $("#lstatus").value="all";
       $("#nltrans-land").innerHTML=""; landSearch(); return;
     }
     forceSelect("#"+lens+"agency", "");
@@ -703,10 +700,10 @@ function bindClearSearchState(lens, root){
       propAsset="all"; propStageSel="all"; propProcessSel="all"; propAgency="";
       propSaleMethod="all"; propPriceBand="all"; propSort="closing_soon";
       const sortEl=$("#propsort"); if(sortEl) sortEl.value="closing_soon";
-      $("#propertyboro").value=""; $("#propertyneighborhood").value="";
+      propertyBorough=""; $("#propertyneighborhood").value="";
       propertyCommunityDistrict=""; propertyCouncilDistrict=""; propertyResolvedNeighborhood=null;
     }
-    if(lens==="rules"){ rulesProcessSel="all"; const rb=$("#rulesboro"); if(rb) rb.value=""; }
+    if(lens==="rules"){ rulesProcessSel="all"; rulesBorough=""; }
     $("#nltrans-"+lens).innerHTML="";
     loadSection(lens);
   });

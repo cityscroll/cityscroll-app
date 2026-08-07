@@ -117,7 +117,7 @@ test("cold-open loader fetches the exact real project and selects it in the exis
     "#ldetail": { innerHTML: "" },
     "#lreshead": { textContent: "" },
     "#lrescount": { textContent: "" },
-    "#lboro": { value: "Brooklyn" },
+    "#land-borough-rail": { innerHTML: "" },
     "#lkw": { value: "prior search" },
     "#lstatus": { value: "all" },
   };
@@ -127,7 +127,7 @@ test("cold-open loader fetches the exact real project and selects it in the exis
   const { showLandEntry } = new Function(
     "fixture",
     `
-      let landLoaded=false, landBanner="", lRows=[], landSelectionSeq=0;
+      let landLoaded=false, landBanner="", landBorough="", lRows=[], landSelectionSeq=0;
       const ZAP="https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
       const ZAP_SELECT="project_id,project_name";
       const t=key => key === "rezonings_heading" ? "Rezonings" : key;
