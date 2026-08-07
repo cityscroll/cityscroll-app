@@ -473,6 +473,11 @@ jobs:
       - name: Vendor footprint scope count parity
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/26_vendor_footprint_scope_count.py
+      - name: Agency scope links survive SPA hydration
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        env:
+          CROL_BASE: http://127.0.0.1:8000/
+        run: python3 test/functional/28_agency_scope_links.py
       - name: External-link new-tab characterization gate (City Record/PASSPort/Checkbook NYC)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/16_external_links.py

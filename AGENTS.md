@@ -4,6 +4,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- Browse document facets are edge-rendered first and then hydrated by the SPA. Agency
+  `entity_refs_all` links must be passed into the live lens agency control before feed
+  loading; see `site/agency_scope_route.mjs` and `test/functional/28_agency_scope_links.py`.
+
 ## PR and CI preflight
 
 - Run `make prepush` (or `./tools/preflight-required-checks.sh`) before creating or
