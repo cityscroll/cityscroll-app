@@ -54,9 +54,9 @@ $("#staffing-query").addEventListener("input",debounce(()=>{
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
-["#career-interest","#career-eligibility"].forEach(selector=>$(selector).addEventListener("change",()=>{
+$("#career-eligibility").addEventListener("change",()=>{
   careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide(); updateHash();
-}));
+});
 $("#career-query").addEventListener("input",debounce(()=>{
   careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide();
 },200));

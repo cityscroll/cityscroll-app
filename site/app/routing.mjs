@@ -166,11 +166,11 @@ function serializeState(){
     const explicitGuideRoute = location.hash.includes(guideRouteMarker)
       || (location.pathname === "/browse/staffing/" && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1]);
     if(explicitGuideRoute){
-      const interest=$("#career-interest")?.value;
+      const facetState=globalThis.careerFacetState || {};
+      const interest=facetState.interest;
       if(interest && interest !== "all" && CrolStaffing.isInterestArea(interest)) q.set("interest", interest);
       const eligibility=$("#career-eligibility")?.value;
       if(eligibility && eligibility !== "open_competitive") q.set("eligibility", eligibility);
-      const facetState=globalThis.careerFacetState || {};
       const windowFilter=facetState.window;
       if(windowFilter && windowFilter !== "actionable") q.set("window", windowFilter);
       const format=facetState.format;
