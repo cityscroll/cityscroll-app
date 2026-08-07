@@ -1,4 +1,5 @@
 import { fillContractActionLocationSelects, rowMatchesContractActionFilter } from "./contract_action_location.mjs";
+import { communityDistrictKey, councilDistrictKey } from "./district_scope_facets.mjs";
 
 const DATA_URL = "data/contract_action_address_locations.json";
 let payloadPromise = null;
@@ -8,17 +9,23 @@ function loadPayload() {
 
 export async function initializeMoneyLocationFilters({ t }) {
   const payload = await loadPayload();
-  fillContractActionLocationSelects(payload, { councilLabel: (value) => t("council_district_short", { n: value }) });
+  fillContractActionLocationSelects(payload, {
+    councilLabel: (value) => t("council_district_short", { n: value }),
+    anyLabel: t("money_district_any"),
+    mapPivotLabel: t("money_district_map_pivot"),
+  });
 }
 
 export function moneyLocationFilterFromControls() {
   let basis = document.querySelector("#moneylocationbasis")?.value || "";
   const borough = document.querySelector("#moneyboro")?.value || "";
-  const communityDistrict = document.querySelector("#moneycd")?.value || "";
-  const councilDistrict = document.querySelector("#moneycouncil")?.value || "";
+  // Fail closed: only registry-resolvable district keys affect the filter.
+  const communityDistrict = communityDistrictKey(document.querySelector("#moneycd")?.value) || "";
+  const councilDistrict = councilDistrictKey(document.querySelector("#moneycouncil")?.value) || "";
   if (!basis && (borough || communityDistrict || councilDistrict)) {
     basis = "contract_action_address";
-    document.querySelector("#moneylocationbasis").value = basis;
+    const basisEl = document.querySelector("#moneylocationbasis");
+    if (basisEl) basisEl.value = basis;
   }
   return {
     layer: basis ? "contract_action_address" : "",

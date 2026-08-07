@@ -38,6 +38,13 @@ $("#moneylocationbasis").addEventListener("change",async()=>{
   if($("#moneylocationbasis").value) await initializeMoneyLocationFilters();
   search();
 });
+// District facet chips are join-backed hypertext (shareable scope hashes). Hash
+// navigation owns selection; map-pivot links leave the Contracts surface.
+$("#moneyboro").addEventListener("change",async()=>{
+  if($("#moneylocationbasis")?.value || $("#moneycd")?.value || $("#moneycouncil")?.value){
+    await initializeMoneyLocationFilters();
+  }
+});
 $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
 
 $("#staffing-query").addEventListener("input",debounce(()=>{

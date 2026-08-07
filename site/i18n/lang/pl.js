@@ -218,6 +218,7 @@
     money_community_district_label: "Okręg społecznościowy",
     money_council_district_label: "Okręg rady miasta",
     money_district_any: "Dowolny okręg",
+    money_district_map_pivot: "Mapa",
     money_location_filter_interpretation: "Pokazano logistykę zamówienia, nie miejsce wykonania:",
     money_response_location_heading: "Kontrakty z ustalonym miejscem odpowiedzi",
     money_response_location_heading_place: "Kontrakty z miejscem odpowiedzi w {place}",

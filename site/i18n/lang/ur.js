@@ -212,6 +212,7 @@
     money_community_district_label: "کمیونٹی ضلع",
     money_council_district_label: "کونسل ضلع",
     money_district_any: "کوئی بھی ضلع",
+    money_district_map_pivot: "نقشہ",
     money_location_filter_interpretation: "خریداری کی کارروائی دکھائی جا رہی ہے، کام کی جگہ نہیں:",
     money_response_location_heading: "متعین کارروائی کے مقام والے معاہدے",
     money_response_location_heading_place: "{place} میں کارروائی کے مقام والے معاہدے",
