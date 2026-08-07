@@ -1,0 +1,191 @@
+{
+    "link_type": "dedupe_only",
+    "probability_two_random_records_match": 0.0001,
+    "retain_matching_columns": true,
+    "retain_intermediate_calculation_columns": true,
+    "additional_columns_to_retain": [],
+    "sql_dialect": "duckdb",
+    "linker_uid": "s2xlu7tg",
+    "em_convergence": 0.0001,
+    "max_iterations": 25,
+    "bayes_factor_column_prefix": "bf_",
+    "term_frequency_adjustment_column_prefix": "tf_",
+    "comparison_vector_value_column_prefix": "gamma_",
+    "unique_id_column_name": "unique_id",
+    "source_dataset_column_name": "source_dataset",
+    "blocking_rules_to_generate_predictions": [
+        {
+            "blocking_rule": "l.\"_pair_id\" = r.\"_pair_id\"",
+            "sql_dialect": "duckdb"
+        }
+    ],
+    "comparisons": [
+        {
+            "output_column_name": "display_name",
+            "comparison_levels": [
+                {
+                    "sql_condition": "\"display_name_l\" IS NULL OR \"display_name_r\" IS NULL",
+                    "label_for_charts": "display_name is NULL",
+                    "fix_m_probability": false,
+                    "fix_u_probability": false,
+                    "is_null_level": true
+                },
+                {
+                    "sql_condition": "\"display_name_l\" = \"display_name_r\"",
+                    "label_for_charts": "Exact match on display_name",
+                    "m_probability": 0.8612500279832723,
+                    "u_probability": 0.005846895720313442,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "jaro_winkler_similarity(\"display_name_l\", \"display_name_r\") >= 0.95",
+                    "label_for_charts": "Jaro-Winkler distance of display_name >= 0.95",
+                    "m_probability": 0.09966827098522381,
+                    "u_probability": 0.0009041591320072332,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "jaro_winkler_similarity(\"display_name_l\", \"display_name_r\") >= 0.85",
+                    "label_for_charts": "Jaro-Winkler distance of display_name >= 0.85",
+                    "m_probability": 0.03140734874079859,
+                    "u_probability": 0.001707856138235885,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "jaro_winkler_similarity(\"display_name_l\", \"display_name_r\") >= 0.7",
+                    "label_for_charts": "Jaro-Winkler distance of display_name >= 0.7",
+                    "m_probability": 0.007673387673373643,
+                    "u_probability": 0.044163150492264415,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "ELSE",
+                    "label_for_charts": "All other comparisons",
+                    "m_probability": 9.646173316591612e-07,
+                    "u_probability": 0.947377938517179,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                }
+            ],
+            "comparison_description": "JaroWinklerAtThresholds"
+        },
+        {
+            "output_column_name": "stem",
+            "comparison_levels": [
+                {
+                    "sql_condition": "\"stem_l\" IS NULL OR \"stem_r\" IS NULL",
+                    "label_for_charts": "stem is NULL",
+                    "fix_m_probability": false,
+                    "fix_u_probability": false,
+                    "is_null_level": true
+                },
+                {
+                    "sql_condition": "\"stem_l\" = \"stem_r\"",
+                    "label_for_charts": "Exact match on stem",
+                    "m_probability": 0.9999999999914243,
+                    "u_probability": 0.007594936708860759,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "ELSE",
+                    "label_for_charts": "All other comparisons",
+                    "m_probability": 8.575601899645792e-12,
+                    "u_probability": 0.9924050632911392,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                }
+            ],
+            "comparison_description": "ExactMatch"
+        },
+        {
+            "output_column_name": "authority_key",
+            "comparison_levels": [
+                {
+                    "sql_condition": "\"authority_key_l\" IS NULL OR \"authority_key_r\" IS NULL",
+                    "label_for_charts": "authority_key is NULL",
+                    "fix_m_probability": false,
+                    "fix_u_probability": false,
+                    "is_null_level": true
+                },
+                {
+                    "sql_condition": "\"authority_key_l\" = \"authority_key_r\"",
+                    "label_for_charts": "Exact match on authority_key",
+                    "m_probability": 0.5754571382025463,
+                    "u_probability": 0.09967852119750854,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "ELSE",
+                    "label_for_charts": "All other comparisons",
+                    "m_probability": 0.4245428617974536,
+                    "u_probability": 0.9003214788024915,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                }
+            ],
+            "comparison_description": "ExactMatch"
+        },
+        {
+            "output_column_name": "contract_id",
+            "comparison_levels": [
+                {
+                    "sql_condition": "\"contract_id_l\" IS NULL OR \"contract_id_r\" IS NULL",
+                    "label_for_charts": "contract_id is NULL",
+                    "fix_m_probability": false,
+                    "fix_u_probability": false,
+                    "is_null_level": true
+                },
+                {
+                    "sql_condition": "\"contract_id_l\" = \"contract_id_r\"",
+                    "label_for_charts": "Exact match on contract_id",
+                    "m_probability": 1.0,
+                    "u_probability": 0.9873819570022102,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "ELSE",
+                    "label_for_charts": "All other comparisons",
+                    "m_probability": 6.963512157245931e-79,
+                    "u_probability": 0.012618042997789833,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                }
+            ],
+            "comparison_description": "ExactMatch"
+        },
+        {
+            "output_column_name": "family",
+            "comparison_levels": [
+                {
+                    "sql_condition": "\"family_l\" IS NULL OR \"family_r\" IS NULL",
+                    "label_for_charts": "family is NULL",
+                    "fix_m_probability": false,
+                    "fix_u_probability": false,
+                    "is_null_level": true
+                },
+                {
+                    "sql_condition": "\"family_l\" = \"family_r\"",
+                    "label_for_charts": "Exact match on family",
+                    "u_probability": 0.8460920233072132,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                },
+                {
+                    "sql_condition": "ELSE",
+                    "label_for_charts": "All other comparisons",
+                    "u_probability": 0.15390797669278683,
+                    "fix_m_probability": false,
+                    "fix_u_probability": false
+                }
+            ],
+            "comparison_description": "ExactMatch"
+        }
+    ]
+}

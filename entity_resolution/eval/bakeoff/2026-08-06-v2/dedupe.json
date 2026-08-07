@@ -1,0 +1,1754 @@
+{
+  "incremental_consistency": {
+    "mismatch_count": 0,
+    "mismatches": [],
+    "pairs_compared": 158,
+    "status": "measured",
+    "supported": true
+  },
+  "scorer": {
+    "artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+    "config_hash": "463dd8bcbb5c8768331d252c854e54adc970af8894f9b93979456a9fc59b7580",
+    "contract_version": "scorer_contract_v1",
+    "name": "dedupe_gazetteer",
+    "supports_incremental": true,
+    "version": "dedupe"
+  },
+  "scores": [
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-014",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-001",
+      "probability": 0.16577836871147156
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-034",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-002",
+      "probability": 0.6339820027351379
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-003",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-003",
+      "probability": 0.6284996867179871
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-003",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-004",
+      "probability": 0.6724036335945129
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-006",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-005",
+      "probability": 0.6666247248649597
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-005",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-006",
+      "probability": 0.6230156421661377
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-006",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-007",
+      "probability": 0.6415236592292786
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-035",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-008",
+      "probability": 0.27917057275772095
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-035",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-009",
+      "probability": 0.27917057275772095
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-010",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-010",
+      "probability": 0.6464306712150574
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-011",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-011",
+      "probability": 0.6426228284835815
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-012",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-012",
+      "probability": 0.6622617840766907
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-013",
+      "probability": 0.6423893570899963
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-014",
+      "probability": 0.5815842151641846
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-015",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-015",
+      "probability": 0.4826359152793884
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-049",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-016",
+      "probability": 0.51332026720047
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-049",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-017",
+      "probability": 0.4626849591732025
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-018",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-018",
+      "probability": 0.738439679145813
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-019",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-019",
+      "probability": 0.5045241117477417
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-020",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-020",
+      "probability": 0.6427425146102905
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-021",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-021",
+      "probability": 0.6743528842926025
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-022",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-022",
+      "probability": 0.7501153349876404
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-023",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-023",
+      "probability": 0.6810144186019897
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-024",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-024",
+      "probability": 0.6336008310317993
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-025",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-025",
+      "probability": 0.6617457270622253
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-026",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-026",
+      "probability": 0.6323208212852478
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-027",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-027",
+      "probability": 0.6136463284492493
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-027",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-028",
+      "probability": 0.6136463284492493
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-029",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-029",
+      "probability": 0.6213546991348267
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-030",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-030",
+      "probability": 0.6582396030426025
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-030",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-031",
+      "probability": 0.5515050292015076
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-032",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-032",
+      "probability": 0.7329888939857483
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-033",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-033",
+      "probability": 0.6970334649085999
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-034",
+      "probability": 0.26363664865493774
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-035",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-035",
+      "probability": 0.1905481219291687
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv0-036",
+      "probability": 0.36474892497062683
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-037",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-037",
+      "probability": 0.7313085198402405
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-038",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-038",
+      "probability": 0.7058671116828918
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-039",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-039",
+      "probability": 0.7120776772499084
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-040",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-040",
+      "probability": 0.7492027878761292
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-080",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-041",
+      "probability": 0.7134048342704773
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-042",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-042",
+      "probability": 0.6608527302742004
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-043",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-043",
+      "probability": 0.6255701184272766
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-044",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-044",
+      "probability": 0.6110895872116089
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-052",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-045",
+      "probability": 0.4435805678367615
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-046",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-046",
+      "probability": 0.5843164324760437
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-047",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-047",
+      "probability": 0.7432514429092407
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-048",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-048",
+      "probability": 0.48344844579696655
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-016",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-049",
+      "probability": 0.5999916195869446
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-050",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-050",
+      "probability": 0.7382955551147461
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-051",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-051",
+      "probability": 0.6074802279472351
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-045",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-052",
+      "probability": 0.4423333704471588
+    },
+    {
+      "evidence": {
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d"
+      },
+      "pair_id": "gv1-053",
+      "probability": 0.0
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-043",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-054",
+      "probability": 0.6080741286277771
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-042",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-055",
+      "probability": 0.5292536020278931
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-044",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv1-056",
+      "probability": 0.5453911423683167
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-067",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-001",
+      "probability": 0.3481607139110565
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-014",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-002",
+      "probability": 0.15454505383968353
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-003",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-003",
+      "probability": 0.5836024284362793
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-004",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-004",
+      "probability": 0.4093809127807617
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-065",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-005",
+      "probability": 0.21550291776657104
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-009",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-006",
+      "probability": 0.4832417070865631
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-007",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-007",
+      "probability": 0.6323233842849731
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-008",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-008",
+      "probability": 0.5517057776451111
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-009",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-009",
+      "probability": 0.49930626153945923
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-010",
+      "probability": 0.5609079599380493
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-011",
+      "probability": 0.2641192674636841
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-012",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-013",
+      "probability": 0.2641192674636841
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-014",
+      "probability": 0.1448528915643692
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-015",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-016",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-017",
+      "probability": 0.2658512592315674
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-018",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-019",
+      "probability": 0.6417892575263977
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-020",
+      "probability": 0.2658512592315674
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-021",
+      "probability": 0.2658512592315674
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-022",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-023",
+      "probability": 0.3829154968261719
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-024",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-024",
+      "probability": 0.4577561318874359
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-025",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-025",
+      "probability": 0.5045764446258545
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-025",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-026",
+      "probability": 0.4551770091056824
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-027",
+      "probability": 0.2677117586135864
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-048",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-028",
+      "probability": 0.3812476098537445
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv1-045",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-029",
+      "probability": 0.3673539459705353
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-076",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-030",
+      "probability": 0.24737045168876648
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-031",
+      "probability": 0.3086589276790619
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-032",
+      "probability": 0.6417892575263977
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-033",
+      "probability": 0.2641192674636841
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-034",
+      "probability": 0.2658512592315674
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-035",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-036",
+      "probability": 0.38417553901672363
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-037",
+      "probability": 0.3205234408378601
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-038",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-038",
+      "probability": 0.47893407940864563
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-025",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-039",
+      "probability": 0.4551770091056824
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-040",
+      "probability": 0.2641192674636841
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-041",
+      "probability": 0.6417892575263977
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-042",
+      "probability": 0.27217841148376465
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-043",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-043",
+      "probability": 0.5180639028549194
+    },
+    {
+      "evidence": {
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d"
+      },
+      "pair_id": "gv2-044",
+      "probability": 0.0
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-076",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-045",
+      "probability": 0.14692921936511993
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-046",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-046",
+      "probability": 0.4885628819465637
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-047",
+      "probability": 0.38417553901672363
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-048",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-048",
+      "probability": 0.34537461400032043
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-076",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-049",
+      "probability": 0.24737045168876648
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-050",
+      "probability": 0.24463187158107758
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-051",
+      "probability": 0.2658512592315674
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-052",
+      "probability": 0.3205234408378601
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-053",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-053",
+      "probability": 0.5867432355880737
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-076",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-054",
+      "probability": 0.24737045168876648
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-055",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-055",
+      "probability": 0.33369767665863037
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-056",
+      "probability": 0.2641192674636841
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-013",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-057",
+      "probability": 0.6417892575263977
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-058",
+      "probability": 0.27217841148376465
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-065",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-059",
+      "probability": 0.21022482216358185
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-060",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-060",
+      "probability": 0.6785514950752258
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-065",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-061",
+      "probability": 0.24136972427368164
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-075",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-062",
+      "probability": 0.3538326621055603
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-063",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-063",
+      "probability": 0.6077103018760681
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-064",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-064",
+      "probability": 0.5311992168426514
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-061",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-065",
+      "probability": 0.1874597668647766
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-066",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-066",
+      "probability": 0.6945114135742188
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-067",
+      "probability": 0.3594793677330017
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-016",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-068",
+      "probability": 0.2518159747123718
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-076",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-069",
+      "probability": 0.14692921936511993
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-070",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-070",
+      "probability": 0.6785514950752258
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-065",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-071",
+      "probability": 0.3118862807750702
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-065",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-072",
+      "probability": 0.22018717229366302
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-073",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-073",
+      "probability": 0.6898633241653442
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-048",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-074",
+      "probability": 0.3749903440475464
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-062",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-075",
+      "probability": 0.38374853134155273
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-045",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-076",
+      "probability": 0.15501047670841217
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-077",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-077",
+      "probability": 0.645376443862915
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-078",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-078",
+      "probability": 0.5929701924324036
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-093",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-079",
+      "probability": 0.7092571258544922
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-080",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-080",
+      "probability": 0.5727304220199585
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-081",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-081",
+      "probability": 0.6621633768081665
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-082",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-082",
+      "probability": 0.7135976552963257
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-083",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-083",
+      "probability": 0.6393624544143677
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-084",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-084",
+      "probability": 0.6796712279319763
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-085",
+      "probability": 0.16203394532203674
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-086",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-086",
+      "probability": 0.626183271408081
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-087",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-087",
+      "probability": 0.5654544830322266
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-088",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-088",
+      "probability": 0.626183271408081
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-089",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-089",
+      "probability": 0.61281418800354
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-090",
+      "probability": 0.30253568291664124
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-068",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-091",
+      "probability": 0.30253568291664124
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-048",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-092",
+      "probability": 0.25550535321235657
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-079",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-093",
+      "probability": 0.5757720470428467
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-065",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-094",
+      "probability": 0.3101743757724762
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-008",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-095",
+      "probability": 0.3022882342338562
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-096",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-096",
+      "probability": 0.7100175023078918
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv0-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-097",
+      "probability": 0.15308651328086853
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-098",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-098",
+      "probability": 0.7100175023078918
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-099",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-099",
+      "probability": 0.5371975302696228
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-087",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-100",
+      "probability": 0.5495977997779846
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-001",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-101",
+      "probability": 0.36699920892715454
+    },
+    {
+      "evidence": {
+        "canonical_record_id": "gv2-102",
+        "engine": "dedupe",
+        "mode": "gazetteer",
+        "model_artifact_hash": "443320d156fe077a493b999f90345067f8b83b27b35731a72195ee470bd1c44d",
+        "training": "gold_labels_in_input"
+      },
+      "pair_id": "gv2-102",
+      "probability": 0.6945114135742188
+    }
+  ],
+  "training_overlap": true
+}

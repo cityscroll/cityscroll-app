@@ -1,0 +1,51 @@
+{
+  "kind": "er_clerical_label_batch",
+  "schema_version": 1,
+  "batch_version": "er_clerical_label_batch_v1",
+  "observed_on": "2026-08-06",
+  "inputs": [
+    {
+      "path": "entity_resolution/eval/audits/2026-07-31/audit_sample.jsonl",
+      "sample_sha256": "c6d76dfb0dde3747e3721a5dcfa1e52ab5c09826016166903009a9839028c7f6",
+      "rows": 90
+    },
+    {
+      "path": "entity_resolution/eval/audits/2026-08-06-city-record/audit_sample.jsonl",
+      "sample_sha256": "51e8f4445e1511682cf6743187601027670af0600548025a1abf249cb565b60c",
+      "rows": 13
+    }
+  ],
+  "candidate_count": 103,
+  "determinate_count": 102,
+  "verdict_counts": {
+    "same": 45,
+    "different": 57,
+    "undeterminable": 1
+  },
+  "score_bands": {
+    "0.95-0.99": {
+      "total": 41,
+      "same": 41,
+      "different": 0,
+      "undeterminable": 0
+    },
+    "0.75-0.90": {
+      "total": 1,
+      "same": 1,
+      "different": 0,
+      "undeterminable": 0
+    },
+    "0.50-0.75": {
+      "total": 61,
+      "same": 3,
+      "different": 57,
+      "undeterminable": 1
+    }
+  },
+  "evidence_receipt_sha256": "0f05c46d38e792d744fd1dd45f6294f70bf5cb069d8a20220f5519535c08f28e",
+  "artifacts": {
+    "verdicts": "verdicts.jsonl",
+    "label_sheet": "label_sheet.csv",
+    "registry": "entity_resolution/review/clerical_confirmation_registry.json"
+  }
+}

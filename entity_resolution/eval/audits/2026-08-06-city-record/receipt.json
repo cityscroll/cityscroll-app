@@ -1,0 +1,63 @@
+{
+  "kind": "er_clerical_audit",
+  "schema_version": 1,
+  "observed_on": "2026-08-06",
+  "primary_signal": "false_split",
+  "secondary_control": "false_merge",
+  "input_records": 70,
+  "candidate_pairs": 71,
+  "strata": {
+    "auto_link": {
+      "eligible": 10,
+      "sampled": 10
+    },
+    "near_miss": {
+      "eligible": 3,
+      "sampled": 3
+    }
+  },
+  "parameters": {
+    "auto_link_size": 50,
+    "near_miss_size": 150,
+    "near_miss_min_similarity": 0.3
+  },
+  "versions": {
+    "candidate_generation": "token_v0_v0",
+    "features": "pair_features_v2",
+    "matcher": "conventional_v2",
+    "auto_link_method": "vendor_stem_v1",
+    "auto_link_matcher_version": "1"
+  },
+  "sample_sha256": "51e8f4445e1511682cf6743187601027670af0600548025a1abf249cb565b60c",
+  "input": {
+    "kind": "live_d1_read_only",
+    "database": "crol-notices",
+    "input_relation": "source_records",
+    "replay_reason": null,
+    "relation_counts": {
+      "notices": 1603,
+      "vendor_notices": 1011,
+      "source_records": 76728,
+      "entity_links": 70,
+      "stored_auto_links": 70
+    },
+    "selected_rows": 119,
+    "row_limit": 1000,
+    "source_systems": [
+      "city_record"
+    ]
+  },
+  "artifacts": {
+    "sample": {
+      "path": "entity_resolution/eval/audits/2026-08-06-city-record/audit_sample.jsonl",
+      "sha256": "a6101fdb52d828110182ce611ca52ce9b6b173bc95145ac4db6c0bdf98a25b7d"
+    },
+    "label_sheet": {
+      "path": "entity_resolution/eval/audits/2026-08-06-city-record/label_sheet.csv",
+      "sha256": "354fede09193db87ca2214ac1dc723f6f6cb3ec905f04a41cd7a72d22118175f"
+    },
+    "receipt": {
+      "path": "entity_resolution/eval/audits/2026-08-06-city-record/receipt.json"
+    }
+  }
+}
