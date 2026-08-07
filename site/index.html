@@ -687,6 +687,11 @@
   .lens-more-content .lens-controls-grid{display:flex;flex-wrap:wrap;gap:var(--space-3)}
   .lens-more-content .lens-controls-grid .field{flex:1 1 46%}
   .lens-more-content .chiprow{margin-top:0}
+  .borough-scope-field .field-label{display:block;font:600 11px/1.2 var(--font-sc);letter-spacing:.08em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:var(--space-2)}
+  .borough-scope-links{display:flex;flex-wrap:wrap;gap:var(--space-1);align-items:center}
+  .borough-scope-links .chip{display:inline-flex;align-items:center;min-height:40px;text-decoration:none;cursor:pointer}
+  .borough-scope-links .chip[aria-current="page"]{background:var(--color-action);border-color:var(--color-action);color:var(--color-surface)}
+  .borough-map-pivot{display:inline-block;margin-top:var(--space-2)}
   .lens-primary-rail{margin-top:var(--space-2)}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
@@ -1897,12 +1902,9 @@
           <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="land-filter-badge" hidden></span></summary>
           <div class="utility-overflow-content lens-more-content">
             <div class="lens-controls-grid">
-              <div class="field">
-                <label for="lboro" data-i18n="borough_label">Borough</label>
-                <select id="lboro">
-                  <option value="" data-i18n="all_boroughs">All boroughs</option>
-                  <option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option>
-                </select>
+              <div class="field borough-scope-field">
+                <span class="field-label" data-i18n="borough_label">Borough</span>
+                <div id="land-borough-rail"><a class="act mini borough-map-pivot" data-near-you-link data-lens="land" href="/near-you/" data-i18n="near_you_map_scope">See on map</a></div>
               </div>
               <div class="field" id="lhearingmode-field" hidden>
                 <label for="lhearingmode" data-i18n="land_hearings_mode_label">Attendance</label>
@@ -1917,7 +1919,6 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button>
-        <a class="act mini" href="/near-you/lens/land/" data-near-you-link data-lens="land" data-i18n="near_you_map_scope">See on map</a>
       </div>
     </div>
     <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" selected data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
@@ -1990,7 +1991,7 @@
           <summary class="act mini lens-more-summary"><span data-i18n="property_more_filters">More filters</span><span class="lens-filter-badge" id="property-filter-badge" hidden></span></summary>
           <div class="utility-overflow-content lens-more-content">
             <div class="lens-controls-grid">
-              <div class="field"><label for="propertyboro" data-i18n="borough_label">Borough</label><select id="propertyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
+              <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="property-borough-rail"><a class="act mini borough-map-pivot" data-near-you-link data-lens="property" href="/near-you/" data-i18n="near_you_map_scope">See on map</a></div></div>
               <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
               <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="propertylocation" data-i18n="use_my_location">Use my location</button></div>
               <div class="field"><label for="propertyagency" data-i18n="agency_label">Agency</label><select id="propertyagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
@@ -2006,7 +2007,6 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button>
-        <a class="act mini" href="/near-you/lens/property/" data-near-you-link data-lens="property" data-i18n="near_you_map_scope">See on map</a>
       </div>
     </div>
     <div class="property-rail-label lens-primary-label" data-i18n="property_asset_rail_label">Item type</div>
@@ -2058,9 +2058,9 @@
     </div>
     <div class="controls">
       <div class="field"><label for="rulesagency" data-i18n="agency_label">Agency</label><select id="rulesagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
-      <div class="field"><label for="rulesboro" data-i18n="borough_label">Borough</label><select id="rulesboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide" data-i18n="map_bucket_citywide">Citywide</option></select></div>
+      <div class="field borough-scope-field"><span class="field-label" data-i18n="borough_label">Borough</span><div id="rules-borough-rail"><a class="act mini borough-map-pivot" data-near-you-link data-lens="rules" href="/near-you/" data-i18n="near_you_map_scope">See on map</a></div></div>
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button><a class="act mini" href="/near-you/lens/rules/" data-near-you-link data-lens="rules" data-i18n="near_you_map_scope">See on map</a></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="lens-resultbar"><span class="lens-count" id="rules-count" aria-hidden="true"></span></div>
     <div class="exportbar">

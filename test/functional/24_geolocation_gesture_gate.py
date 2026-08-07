@@ -95,7 +95,7 @@ def main() -> None:
             assert widen.is_visible()
             assert widen.bounding_box()["height"] >= 44
             widen.click()
-            page.wait_for_function("document.querySelector('#lboro').value === ''")
+            page.wait_for_function("document.querySelector('#land-borough-rail [data-borough-scope-link=\"all\"]')?.getAttribute('aria-current') === 'page'")
             assert page.locator("#lstatus").input_value() == "all"
             context.close()
             browser.close()

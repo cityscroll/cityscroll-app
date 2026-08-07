@@ -679,9 +679,9 @@
         ],
         "states": [
           {
-            "selector": "#propertyboro",
-            "property": "value",
-            "equals": "Brooklyn"
+            "selector": "#property-borough-rail [data-borough-scope-link='Brooklyn']",
+            "attribute": "aria-current",
+            "equals": "page"
           }
         ]
       }

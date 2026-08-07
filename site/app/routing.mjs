@@ -183,7 +183,7 @@ function serializeState(){
       if(noExp && noExp !== "all") q.set("experience", noExp);
     }
   } else if(tab === "land"){
-    if($("#lboro").value) q.set("boro", $("#lboro").value);
+    if(landBorough) q.set("boro", landBorough);
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
     if(landCouncilDistrict) q.set("council", landCouncilDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
@@ -208,7 +208,7 @@ function serializeState(){
     }
     if(tab === "property"){
       if(propAgency) q.set("agency", propAgency);
-      if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
+      if(propertyBorough) q.set("boro", propertyBorough);
       if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propertyCommunityDistrict) q.set("cd", propertyCommunityDistrict);
       if(propertyCouncilDistrict) q.set("council", propertyCouncilDistrict);
@@ -223,9 +223,8 @@ function serializeState(){
     }
     if(tab === "rules"){
       if(rulesProcessSel !== "all") q.set("process", rulesProcessSel);
-      const rulesBoro=$("#rulesboro");
-      if(rulesBoro && rulesBoro.value==="citywide") q.set("scope","citywide");
-      else if(rulesBoro && rulesBoro.value) q.set("boro", rulesBoro.value);
+      if(rulesBorough==="citywide") q.set("scope","citywide");
+      else if(rulesBorough) q.set("boro", rulesBorough);
     }
   }
   if(tab === "property"){
@@ -965,7 +964,7 @@ function applyHash(){
       if(q.get("view")==="guide" || legacyExamRoute || careerRouteFilters) loadCareerGuide();
     } else if(tab === "land"){
       landResolvedArea=null;
-      $("#lboro").value = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
+      landBorough = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
       landCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
@@ -1021,7 +1020,7 @@ function applyHash(){
       }
       if(tab === "property"){
         propAgency = q.get("agency") || "";
-        $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
+        propertyBorough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#propertyneighborhood").value=q.get("neighborhood")||"";
         propertyCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
         propertyCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
@@ -1055,12 +1054,9 @@ function applyHash(){
       if(tab === "rules"){
         const process=q.get("process")||"all";
         rulesProcessSel=["proposal","public_process","adoption","effective","unstaged"].includes(process)?process:"all";
-        const rulesBoro=$("#rulesboro");
-        if(rulesBoro){
-          const scope=q.get("scope");
-          rulesBoro.value=scope==="citywide"?"citywide"
-            :(DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
-        }
+        const scope=q.get("scope");
+        rulesBorough=scope==="citywide"?"citywide"
+          :(DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"");
       }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
     } else if(tab === "alerts"){

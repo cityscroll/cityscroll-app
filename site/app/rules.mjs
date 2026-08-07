@@ -1,4 +1,5 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
+import { boroughScopeLinksHTML, normalizeBoroughScope } from "../borough_scope_links.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -28,7 +29,7 @@ function rulePlaceChips(location){
   return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
 }
 
-let rulesAll=[], rulesViewCache=null, rulesProcessSel="all";
+let rulesAll=[], rulesViewCache=null, rulesProcessSel="all", rulesBorough="";
 let rulesExplorerToolsPromise=null;
 function rulesExplorerTools(){
   if(!rulesExplorerToolsPromise){
@@ -161,8 +162,21 @@ function rulesProcessControlHTML(model){
     ${model.unstaged?button(model.unstaged,["chip","rules-stage-unmatched"].join(" ")):""}
   </div>`;
 }
+function renderRulesBoroughScopeLinks(){
+  const host=$("#rules-borough-rail");
+  if(!host) return;
+  host.innerHTML=boroughScopeLinksHTML({
+    surface:"rules",
+    selected:rulesBorough,
+    currentHash:location.hash,
+    includeCitywide:true,
+    t,
+    escape:escUiHtml,
+  });
+}
 
 async function renderRulesExplorer(){
+  renderRulesBoroughScopeLinks();
   const tools=await rulesExplorerTools();
   const bandTools=await rulesActionBandTools();
   const processRail=$("#rulesprocessrail");
@@ -171,7 +185,7 @@ async function renderRulesExplorer(){
   let entries=[];
   if(tools && tools.buildRulesExplorerEntries){
     entries=tools.buildRulesExplorerEntries(rulesAll, rulesViewCache);
-    const rulesPlace=$("#rulesboro")?.value||"";
+    const rulesPlace=rulesBorough;
     entries=tools.filterRulesExplorerEntries(entries,{
       process: rulesProcessSel,
       agency: agency||null,
@@ -1015,6 +1029,7 @@ globalThis.rulesProcessControlHTML = rulesProcessControlHTML;
 globalThis.rulesProcessPhaseLabel = rulesProcessPhaseLabel;
 Object.defineProperty(globalThis, "rulesAdoptionLagModelPromise", { configurable: true, get: () => rulesAdoptionLagModelPromise, set: value => { rulesAdoptionLagModelPromise = value; } });
 Object.defineProperty(globalThis, "rulesAll", { configurable: true, get: () => rulesAll, set: value => { rulesAll = value; } });
+Object.defineProperty(globalThis, "rulesBorough", { configurable: true, get: () => rulesBorough, set: value => { rulesBorough = normalizeBoroughScope(value); } });
 Object.defineProperty(globalThis, "rulesExplorerToolsPromise", { configurable: true, get: () => rulesExplorerToolsPromise, set: value => { rulesExplorerToolsPromise = value; } });
 Object.defineProperty(globalThis, "rulesPhaseSpineToolsPromise", { configurable: true, get: () => rulesPhaseSpineToolsPromise, set: value => { rulesPhaseSpineToolsPromise = value; } });
 Object.defineProperty(globalThis, "rulesProcessSel", { configurable: true, get: () => rulesProcessSel, set: value => { rulesProcessSel = value; } });

@@ -323,7 +323,7 @@ test("markup still hosts the four disposition facet rails under More filters", (
   assert.match(index, /id="pricerail"/);
   assert.match(index, /id="processrail"/);
   assert.match(index, /id="liferail"/);
-  // Do not touch borough / agency controls in this cluster.
-  assert.match(index, /id="propertyboro"/);
+  // The borough scope rail remains adjacent to the landed disposition facets.
+  assert.match(index, /id="property-borough-rail"/);
   assert.match(index, /id="propertyagency"/);
 });
