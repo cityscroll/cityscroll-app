@@ -176,4 +176,6 @@ test("self-contained renderer keeps graph detail and table views available", () 
   assert.match(html, /Access mechanisms/);
   assert.equal((html.match(/data-source-row=/g) || []).length, graph.sources.length);
   assert.doesNotMatch(html, /<script[^>]+src=/);
+  assert.match(html, /wishlist=s\.wishlist\?'<h3>Wishlist<\/h3><p>'\+escapeHtml\(s\.wishlist\.label\)\+'<\/p>':''/);
+  assert.doesNotMatch(html, /wishlist=s\.wishlist\?'<h3>Wishlist<\/h3><p><a href=/);
 });
