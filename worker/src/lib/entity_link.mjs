@@ -13,6 +13,11 @@ import {
   vendorStem,
 } from "./normalize.mjs";
 import { generateCandidates, CANDIDATE_GENERATION_VERSION } from "../../../entity_resolution/candidate_generation/index.mjs";
+import {
+  buildLinkSupersessions,
+  annotateLinkSupersession,
+  buildResolutionRunProvenance,
+} from "../../../entity_resolution/provenance.mjs";
 
 /** Env flag — must be the string "true" (case-insensitive) to enable writes. */
 export const ENTITY_LINK_DUAL_WRITE_FLAG = "ENTITY_LINK_DUAL_WRITE";
@@ -36,6 +41,13 @@ export const RESOLUTION_RUN_COLUMNS = Object.freeze([
   "started_at",
   "finished_at",
   "metrics_json",
+  "model_artifact_hash",
+  "gold_version",
+  "feature_version",
+  "blocking_version",
+  "policy_version",
+  "watermarks_json",
+  "provenance_json",
   "status",
 ]);
 
@@ -51,6 +63,8 @@ export const ENTITY_LINK_COLUMNS = Object.freeze([
   "evidence_json",
   "resolution_run_id",
   "review_status",
+  "supersedes_link_id",
+  "supersession_reason",
   "created_at",
 ]);
 
@@ -62,6 +76,15 @@ export const CANONICAL_ENTITY_COLUMNS = Object.freeze([
   "attrs_json",
   "created_at",
   "updated_at",
+]);
+
+export const ENTITY_LINK_SUPERSESSION_COLUMNS = Object.freeze([
+  "id",
+  "superseding_link_id",
+  "superseded_link_id",
+  "reason",
+  "resolution_run_id",
+  "created_at",
 ]);
 
 /** Exact-stem auto confidence: method policy allows auto when stem is non-empty. */
@@ -146,6 +169,13 @@ export async function ensureEntityLinkSchema(env) {
         started_at       TEXT NOT NULL,
         finished_at      TEXT,
         metrics_json     TEXT,
+        model_artifact_hash TEXT,
+        gold_version     TEXT,
+        feature_version  TEXT,
+        blocking_version TEXT,
+        policy_version   TEXT,
+        watermarks_json  TEXT,
+        provenance_json  TEXT,
         status           TEXT NOT NULL DEFAULT 'running'
       )`,
     `CREATE TABLE IF NOT EXISTS canonical_entity (
@@ -168,6 +198,8 @@ export async function ensureEntityLinkSchema(env) {
         evidence_json       TEXT,
         resolution_run_id   TEXT REFERENCES resolution_run(id),
         review_status       TEXT,
+        supersedes_link_id  TEXT REFERENCES entity_link(id),
+        supersession_reason TEXT,
         created_at          TEXT NOT NULL,
         UNIQUE (source_record_id, method, matcher_version, decision, canonical_entity_id)
       )`,
@@ -175,11 +207,69 @@ export async function ensureEntityLinkSchema(env) {
     "CREATE INDEX IF NOT EXISTS idx_entity_link_decision ON entity_link(decision)",
     "CREATE INDEX IF NOT EXISTS idx_entity_link_run ON entity_link(resolution_run_id)",
     "CREATE INDEX IF NOT EXISTS idx_entity_link_source ON entity_link(source_record_id)",
+    `CREATE TABLE IF NOT EXISTS entity_link_supersession (
+        id                  TEXT PRIMARY KEY,
+        superseding_link_id TEXT NOT NULL REFERENCES entity_link(id),
+        superseded_link_id  TEXT NOT NULL REFERENCES entity_link(id),
+        reason              TEXT NOT NULL,
+        resolution_run_id   TEXT REFERENCES resolution_run(id),
+        created_at          TEXT NOT NULL,
+        UNIQUE (superseding_link_id, superseded_link_id)
+      )`,
+    "CREATE INDEX IF NOT EXISTS idx_entity_link_supersession_new ON entity_link_supersession(superseding_link_id)",
+    "CREATE INDEX IF NOT EXISTS idx_entity_link_supersession_old ON entity_link_supersession(superseded_link_id)",
   ];
   for (const sql of statements) {
-    await env.DB.prepare(sql).run();
+    try {
+      await env.DB.prepare(sql).run();
+    } catch (error) {
+      throw error;
+    }
+  }
+  for (const column of [
+    "model_artifact_hash",
+    "gold_version",
+    "feature_version",
+    "blocking_version",
+    "policy_version",
+    "watermarks_json",
+    "provenance_json",
+  ]) {
+    try {
+      await env.DB.prepare(`ALTER TABLE resolution_run ADD COLUMN ${column} TEXT`).run();
+    } catch {
+      // Column already exists on a migrated database.
+    }
+  }
+  for (const column of ["supersedes_link_id", "supersession_reason"]) {
+    try {
+      await env.DB.prepare(`ALTER TABLE entity_link ADD COLUMN ${column} TEXT`).run();
+    } catch {
+      // Column already exists on a migrated database.
+    }
   }
   return { ok: true };
+}
+
+async function sha256Hex(value) {
+  const bytes = new TextEncoder().encode(String(value));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function priorLinksForSources(env, sourceIds) {
+  const ids = [...new Set(sourceIds.filter(Boolean))];
+  if (!ids.length) return [];
+  try {
+    const placeholders = ids.map(() => "?").join(",");
+    const response = await env.DB.prepare(
+      `SELECT id, source_record_id, canonical_entity_id, decision, method, matcher_version
+         FROM entity_link WHERE source_record_id IN (${placeholders})`
+    ).bind(...ids).all();
+    return response?.results || [];
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -189,7 +279,9 @@ export async function ensureEntityLinkSchema(env) {
  *
  * @param {object} env - Worker env (DB + optional ENTITY_LINK_DUAL_WRITE)
  * @param {Array<{source_record_id: string, vendor_name: string}>} observations
- * @param {{ scope_note?: string, config_hash?: string, now?: string }} [opts]
+ * @param {{ scope_note?: string, config_hash?: string, now?: string,
+ *   model_artifact_hash?: string, gold_version?: string, feature_version?: string,
+ *   blocking_version?: string, policy_version?: string, watermarks?: object }} [opts]
  * @returns {Promise<object>} run metrics
  */
 export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}) {
@@ -218,6 +310,18 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
 
   await ensureEntityLinkSchema(env);
 
+  const modelArtifactHash = opts.model_artifact_hash || opts.modelArtifactHash || await sha256Hex(
+    "cityscroll:entity-link:vendor-stem-auto:v1"
+  );
+  const provenance = buildResolutionRunProvenance({
+    model_artifact_hash: modelArtifactHash,
+    gold_version: opts.gold_version || opts.goldVersion,
+    feature_version: opts.feature_version || opts.featureVersion,
+    blocking_version: opts.blocking_version || opts.blockingVersion || CANDIDATE_GENERATION_VERSION,
+    policy_version: opts.policy_version || opts.policyVersion || "exact_stem_auto_v1",
+    watermarks: opts.watermarks,
+  });
+
   const metrics = {
     considered: list.length,
     eligible: cases.length,
@@ -230,6 +334,12 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
     written: 0,
     method: VENDOR_STEM_METHOD,
     matcher_version: VENDOR_STEM_VERSION,
+    model_artifact_hash: provenance.model_artifact_hash,
+    gold_version: provenance.gold_version,
+    feature_version: provenance.feature_version,
+    blocking_version: provenance.blocking_version,
+    policy_version: provenance.policy_version,
+    watermarks: provenance.watermarks,
     decisions: {
       auto_link: cases.length,
       separate: 0,
@@ -256,8 +366,10 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
   await env.DB.prepare(
     `INSERT OR IGNORE INTO resolution_run
        (id, method, matcher_version, config_hash, entity_type, scope_note,
-        started_at, finished_at, metrics_json, status)
-     VALUES (?,?,?,?,?,?,?,?,?,?)`,
+        started_at, finished_at, metrics_json, model_artifact_hash, gold_version,
+        feature_version, blocking_version, policy_version, watermarks_json,
+        provenance_json, status)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
   )
     .bind(
       runId,
@@ -269,20 +381,42 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
       startedAt,
       null,
       JSON.stringify(metrics),
+      provenance.model_artifact_hash,
+      provenance.gold_version,
+      provenance.feature_version,
+      provenance.blocking_version,
+      provenance.policy_version,
+      JSON.stringify(provenance.watermarks),
+      JSON.stringify(provenance),
       "running",
     )
     .run();
 
-  const stmts = [];
-  for (const c of cases) {
-    const now = startedAt;
-    const linkId = opaqueId("link", [
+  const linkRows = cases.map((c) => ({
+    id: opaqueId("link", [
       c.source_record_id,
       c.method,
       c.matcher_version,
       c.decision,
       c.canonical_entity_id,
-    ]);
+    ]),
+    source_record_id: c.source_record_id,
+    canonical_entity_id: c.canonical_entity_id,
+    decision: c.decision,
+    method: c.method,
+    matcher_version: c.matcher_version,
+  }));
+  const priorLinks = await priorLinksForSources(env, linkRows.map((row) => row.source_record_id));
+  const supersessions = buildLinkSupersessions(linkRows, priorLinks);
+  const annotatedLinkRows = annotateLinkSupersession(linkRows, supersessions);
+  metrics.link_supersessions = supersessions.length;
+
+  const stmts = [];
+  for (let index = 0; index < cases.length; index++) {
+    const c = cases[index];
+    const now = startedAt;
+    const link = annotatedLinkRows[index];
+    const linkId = link.id;
     stmts.push(
       env.DB.prepare(
         `INSERT OR IGNORE INTO canonical_entity
@@ -302,8 +436,8 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
         `INSERT OR IGNORE INTO entity_link
            (id, source_record_id, canonical_entity_id, decision, confidence,
             method, matcher_version, evidence_json, resolution_run_id,
-            review_status, created_at)
-         VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+            review_status, supersedes_link_id, supersession_reason, created_at)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       ).bind(
         linkId,
         c.source_record_id,
@@ -315,8 +449,32 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
         JSON.stringify(c.evidence),
         runId,
         null,
+        link.supersedes_link_id,
+        link.supersession_reason,
         now,
       ),
+    );
+  }
+
+  for (const lineage of supersessions) {
+    const lineageId = opaqueId("sup", [
+      lineage.superseding_link_id,
+      lineage.superseded_link_id,
+      lineage.reason,
+    ]);
+    stmts.push(
+      env.DB.prepare(
+        `INSERT OR IGNORE INTO entity_link_supersession
+           (id, superseding_link_id, superseded_link_id, reason, resolution_run_id, created_at)
+         VALUES (?,?,?,?,?,?)`
+      ).bind(
+        lineageId,
+        lineage.superseding_link_id,
+        lineage.superseded_link_id,
+        lineage.reason,
+        runId,
+        startedAt,
+      )
     );
   }
 
@@ -335,12 +493,13 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
   try {
     await env.DB.prepare(
       `UPDATE resolution_run
-          SET finished_at = ?, metrics_json = ?, status = ?
+        SET finished_at = ?, metrics_json = ?, provenance_json = ?, status = ?
         WHERE id = ?`,
     )
       .bind(
         finishedAt,
         JSON.stringify(metrics),
+        JSON.stringify(provenance),
         metrics.error ? "failed" : "completed",
         runId,
       )
@@ -356,6 +515,8 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
     eligible: metrics.eligible,
     method: VENDOR_STEM_METHOD,
     matcher_version: VENDOR_STEM_VERSION,
+    provenance,
+    link_supersessions: supersessions,
     error: metrics.error || null,
   };
 }

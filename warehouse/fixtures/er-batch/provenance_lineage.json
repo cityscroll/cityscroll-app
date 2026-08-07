@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "request_id": "ER-PROVENANCE-LINEAGE",
+  "prior_vendor_name": "ACME WIDGETS INC",
+  "current_vendor_name": "OTHER WIDGETS INC",
+  "watermarks": {
+    "ocp-recent-contract-awards": {
+      "snapshot_date": "2026-08-03",
+      "source_sha256": "fixture-source-watermark"
+    }
+  },
+  "expected_supersession_reason": "canonical_target_changed"
+}
