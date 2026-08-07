@@ -552,6 +552,8 @@ function bindMatterPhaseUI(root){
 }
 
 async function showMatter(pin){
+  await globalThis.ensureMoneyHistory?.();
+  await globalThis.ensureRules?.();
   showTab("entity");
   const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
   delete box.dataset.vendorStem;

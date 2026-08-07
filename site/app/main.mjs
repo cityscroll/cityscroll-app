@@ -4,7 +4,8 @@ globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
 globalThis.CrolAgencyConnections = await import("../agency_connections.mjs");
 globalThis.CrolRouteMigration = await import("../route_migration.mjs");
 await import("./money-list.mjs");
-await import("./money-history.mjs");
+let moneyHistoryPromise;
+globalThis.ensureMoneyHistory = () => moneyHistoryPromise ||= import("./money-history.mjs");
 await import("./search-share.mjs");
 await import("./people.mjs");
 await import("./land.mjs");
@@ -17,6 +18,7 @@ await import("./notice-context.mjs");
 // eager: the loader is a narrow activation gate, not a second route-state owner.
 const routeModuleLoaders = Object.freeze({
   property: () => import("./property.mjs"),
+  rules: () => import("./rules.mjs"),
 });
 const routeModulePromises = new Map();
 const loadedRouteModules = new Set();
@@ -31,6 +33,8 @@ function ensureRouteStylesheet(path){
 function routeModuleForHash(hash){
   const raw=String(hash||"").replace(/^#/,"").toLowerCase();
   const path=String(location.pathname||"").toLowerCase();
+  if(raw.replace(/\?.*$/,"")==="rules" || path==="/browse/rules/") return "rules";
+  if(raw.replace(/\?.*$/,"")==="meetings" || path==="/browse/meetings/") return "rules";
   return raw.replace(/\?.*$/,"")==="property" || raw.startsWith("notice/") ||
     path.startsWith("/notices/") || path==="/browse/property/"
     ? "property"
@@ -41,7 +45,7 @@ function ensureRouteModule(name){
   if(!loader) return Promise.resolve();
   if(name === "property") ensureRouteStylesheet("property.css");
   if(!routeModulePromises.has(name)){
-    routeModulePromises.set(name,loader().then(module=>{
+    routeModulePromises.set(name,(name === "property" ? ensureRouteModule("rules") : Promise.resolve()).then(()=>loader()).then(module=>{
       loadedRouteModules.add(name);
       return module;
     }));
@@ -57,8 +61,8 @@ globalThis.CrolRouteModules=Object.freeze({
   ensureForHash:ensureRouteModulesForHash,
   isReady:name=>!routeModuleLoaders[name] || loadedRouteModules.has(name),
 });
+globalThis.ensureRules = () => ensureRouteModule("rules");
 await ensureRouteModulesForHash(location.hash);
-await import("./rules.mjs");
 await import("./procurement-lifecycle.mjs");
 await import("./procurement-phase.mjs");
 await import("./subsidy.mjs");
