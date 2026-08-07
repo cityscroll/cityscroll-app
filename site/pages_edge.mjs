@@ -210,7 +210,10 @@ async function handleNotice(request, env, id) {
   const status = upstreamFailed ? 503 : row ? 200 : 404;
   const title = row?.short_title || `City Record notice ${id}`;
   const canonical = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
-  const response = rewrittenResponse(asset, status, "public, max-age=60, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800");
+  const cacheControl = status === 200
+    ? "public, max-age=60, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800"
+    : "public, max-age=60, s-maxage=60, stale-while-revalidate=60, stale-if-error=60";
+  const response = rewrittenResponse(asset, status, cacheControl);
   const transformed = new HTMLRewriter()
     .on("title", { element(element) { element.setInnerContent(`${title} · CityScroll`); } })
     .on('link[rel="canonical"]', { element(element) { element.setAttribute("href", canonical); } })
