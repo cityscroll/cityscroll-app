@@ -32,6 +32,7 @@ function parseArgs(argv) {
     repoRoot: resolve(args.repo_root || process.cwd()),
     cacheDir: resolve(args.cache_dir || DEFAULT_CACHE_DIR),
     outputDir: resolve(args.output_dir || DEFAULT_OUTPUT_DIR),
+    quarantine: resolve(args.quarantine || join(DEFAULT_OUTPUT_DIR, "quarantine.json")),
     reference: args.reference ? resolve(args.reference) : null,
     startYear: Number(args.start_year || 2014),
     endYear: Number(args.end_year || new Date().getUTCFullYear()),
@@ -180,9 +181,10 @@ async function writeLawOutput(outputDir, law, envelope, model) {
   await atomicWrite(join(outputDir, "laws", `${law.matter_id}.json`), payload);
 }
 
-async function buildOurPayload(outputDir, manifest, model, railReceipt) {
+async function buildOurPayload(outputDir, manifest, model, railReceipt, quarantineIds = new Set()) {
   const laws = [];
   for (const matterId of manifest.matter_ids) {
+    if (quarantineIds.has(matterId)) continue;
     const row = await readJson(join(outputDir, "laws", `${matterId}.json`));
     if (row) laws.push(row);
   }
@@ -284,22 +286,47 @@ async function ensureSubstantiveText(options, manifest, context) {
   return receipt;
 }
 
-async function runExtraction(options, manifest, railReceipt, context) {
+async function ensureQuarantine(options) {
+  const existing = await readJson(options.quarantine);
+  if (existing?.entries?.length) return existing;
+  const state = await readJson(join(options.outputDir, "state.json"), { failed: [] });
+  const entries = (state.failed || []).map((row) => ({ matter_id: String(row.matter_id), error: String(row.error || "bounded_attempts_exhausted"), attempts: row.attempts || null, failed_at: row.failed_at || null }));
+  if (!entries.length) return { schema_version: "mandate-backfill-quarantine-v1", entries: [] };
+  const quarantine = {
+    schema_version: "mandate-backfill-quarantine-v1",
+    status: "quarantined_for_separate_retry",
+    card: "obligations-backfill-retry-3laws",
+    filed_at: stamp(),
+    entries,
+  };
+  await atomicWrite(options.quarantine, quarantine);
+  await journalBatch({
+    script: options.journalScript,
+    what: `quarantined exhausted mandate laws (${entries.length} laws)`,
+    why: "continue comparator on the valid extracted corpus while a separate retry card handles bounded failures",
+    undo: `remove ${options.quarantine}`,
+  });
+  return quarantine;
+}
+
+async function runExtraction(options, manifest, railReceipt, context, quarantineIds = new Set()) {
   const statePath = join(options.outputDir, "state.json");
   const state = { schema_version: "cityscroll-mandates-state-v1", started_at: stamp(), completed_ids: [], failed: [], attempts: {}, ...(await readJson(statePath) || {}) };
   state.completed_ids ||= [];
   state.failed ||= [];
   state.attempts ||= {};
   const complete = new Set(state.completed_ids || []);
+  for (const matterId of quarantineIds) complete.delete(matterId);
   const failedById = new Map((state.failed || []).map((row) => [row.matter_id, row]));
   const pending = [];
   for (const matterId of manifest.matter_ids) {
+    if (quarantineIds.has(matterId)) continue;
     const existing = await readJson(join(options.outputDir, "laws", `${matterId}.json`));
     if (complete.has(matterId) && existing?.extraction?.model === options.model && existing?.extraction?.adapter_version === EXTRACTION_ADAPTER_VERSION) continue;
     pending.push(matterId);
   }
   context.total = manifest.matter_ids.length;
-  context.completed = complete.size;
+  context.completed = complete.size + quarantineIds.size;
   context.failed = failedById.size;
   for (let offset = 0; offset < pending.length; offset += options.batchSize) {
     const batch = pending.slice(offset, offset + options.batchSize);
@@ -330,7 +357,7 @@ async function runExtraction(options, manifest, railReceipt, context) {
             await writeLawOutput(options.outputDir, law, result.value, options.model);
             complete.add(matterId);
             failedById.delete(matterId);
-            context.completed = complete.size;
+            context.completed = complete.size + quarantineIds.size;
             context.failed = failedById.size;
           }
         }
@@ -357,7 +384,7 @@ async function runExtraction(options, manifest, railReceipt, context) {
     if (!batchSucceeded) throw new Error(`extraction_batch_failed:completed=${complete.size},failed=${failedById.size}`);
     console.log(`batch-complete: offset=${offset + batch.length} total=${pending.length} completed=${complete.size} failed=${failedById.size}`);
   }
-  const our = await buildOurPayload(options.outputDir, manifest, options.model, railReceipt);
+  const our = await buildOurPayload(options.outputDir, manifest, options.model, railReceipt, quarantineIds);
   await atomicWrite(join(options.outputDir, "our.json"), our);
   return { state, our };
 }
@@ -390,12 +417,16 @@ export async function runBackfill(rawOptions = {}) {
     await atomicWrite(join(options.outputDir, "rail_receipt.json"), railReceipt);
     const manifest = await ensureManifest(options, context);
     await ensureSubstantiveText(options, manifest, context);
+    const quarantine = await ensureQuarantine(options);
+    const quarantineIds = new Set((quarantine.entries || []).map((row) => String(row.matter_id)));
     context.phase = "extract";
-    const extraction = await runExtraction(options, manifest, railReceipt, context);
-    if (extraction.our.laws.length !== manifest.law_count || extraction.state.failed?.length) throw new Error(`incomplete_extraction:laws=${extraction.our.laws.length}/${manifest.law_count},failed=${extraction.state.failed?.length || 0}`);
+    const extraction = await runExtraction(options, manifest, railReceipt, context, quarantineIds);
+    const unexpectedFailures = (extraction.state.failed || []).filter((row) => !quarantineIds.has(String(row.matter_id)));
+    const expectedLawCount = manifest.law_count - quarantineIds.size;
+    if (extraction.our.laws.length !== expectedLawCount || unexpectedFailures.length) throw new Error(`incomplete_extraction:laws=${extraction.our.laws.length}/${expectedLawCount},failed=${unexpectedFailures.length}`);
     context.phase = "compare";
     const comparison = await runComparator(options, manifest, extraction.our);
-    const receipt = { schema_version: "cityscroll-mandates-backfill-receipt-v1", completed_at: stamp(), source: { law_count: manifest.law_count, skipped_count: manifest.skipped_count }, extraction: extraction.our.receipt, model: railReceipt, comparison: comparison.filed.receipt };
+    const receipt = { schema_version: "cityscroll-mandates-backfill-receipt-v1", completed_at: stamp(), source: { law_count: manifest.law_count, skipped_count: manifest.skipped_count }, quarantine: { count: quarantineIds.size, path: options.quarantine }, extraction: extraction.our.receipt, model: railReceipt, comparison: comparison.filed.receipt };
     await atomicWrite(join(options.outputDir, "run_receipt.json"), receipt);
     console.log(`complete: laws=${receipt.extraction.law_count} mandates=${receipt.extraction.mandate_count} verified=${receipt.extraction.verified_count} candidates=${receipt.extraction.candidate_count} disagreements=${receipt.comparison.disagreement_count}`);
     return receipt;
