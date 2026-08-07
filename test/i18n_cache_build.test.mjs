@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { primaryDocumentOutputs } from "../tools/build_primary_documents.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SITE_ROOT = path.join(ROOT, "site");
@@ -54,6 +55,15 @@ function copySiteFiles(source, destination) {
   }
   fs.copyFileSync(path.join(source, "i18n.js"), path.join(destination, "i18n.js"));
   fs.cpSync(path.join(source, "i18n"), path.join(destination, "i18n"), { recursive: true });
+}
+
+function copyPrimaryDocuments(destination) {
+  for (const [sourcePath, html] of primaryDocumentOutputs()) {
+    const relative = path.relative(SITE_ROOT, sourcePath);
+    const target = path.join(destination, relative);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, html);
+  }
 }
 
 function buildIgnoredArtifact(repo) {
@@ -131,6 +141,39 @@ test("the built-artifact gate rejects real skew after a dictionary changes", () 
     );
     assert.notEqual(skew.status, 0);
     assert.match(`${skew.stdout}\n${skew.stderr}`, /built i18n cache skew/);
+  } finally {
+    fs.rmSync(site, { recursive: true, force: true });
+  }
+});
+
+test("the built /now/ and /browse/* pages do not ship the literal i18n asset placeholder", () => {
+  const site = fs.mkdtempSync(path.join(os.tmpdir(), "i18n-primary-routes-"));
+  try {
+    copySiteFiles(SITE_ROOT, site);
+    copyPrimaryDocuments(site);
+
+    const routePages = primaryDocumentOutputs()
+      .map(([sourcePath]) => path.relative(SITE_ROOT, sourcePath))
+      .filter((relative) => relative === "now/index.html" || relative.startsWith("browse/"));
+    assert.equal(routePages.length, 8);
+    for (const relative of routePages) {
+      assert.match(
+        fs.readFileSync(path.join(site, relative), "utf8"),
+        /i18n\.js\?v=__I18N_ASSET_VERSION__/,
+        `${relative} must characterize the observed pre-fix failure`,
+      );
+    }
+
+    run("python3", [path.join(ROOT, "tools", "stamp_i18n_assets.py"), "--site-root", site, "--stamp"], ROOT);
+    const rootHtml = fs.readFileSync(path.join(site, "index.html"), "utf8");
+    const version = rootHtml.match(/i18n\.js\?v=([0-9a-f]{12})/)?.[1];
+    assert.ok(version, "the root page must receive a content-derived asset version");
+    for (const relative of routePages) {
+      const html = fs.readFileSync(path.join(site, relative), "utf8");
+      assert.doesNotMatch(html, /__I18N_ASSET_VERSION__/i, relative);
+      assert.match(html, new RegExp(`i18n\\.js\\?v=${version}`), relative);
+    }
+    run("python3", [path.join(ROOT, "tools", "stamp_i18n_assets.py"), "--site-root", site, "--verify-built"], ROOT);
   } finally {
     fs.rmSync(site, { recursive: true, force: true });
   }
