@@ -23,7 +23,6 @@ function dateStatus(exam, today) {
   return "closed";
 }
 
-/** Return only a publisher-backed or date-derived facet value. Missing facts stay unknown. */
 export function examFacetValue(exam, facet, { today = "", statusFor = null } = {}) {
   if (!exam || !EXAM_FACETS[facet]) return UNKNOWN;
   if (facet === "interest") return String(exam.interest_area || "").trim() || UNKNOWN;
@@ -56,7 +55,6 @@ export function examFacetOptionValues(exams, facet, options = {}) {
   return present;
 }
 
-/** Mint the typed People scope used by both finder chips and exam-detail pivots. */
 export function examFacetHref(filters, facet, value, { language = "en" } = {}) {
   const definition = EXAM_FACETS[facet];
   if (!definition || !value || value === UNKNOWN || (value !== "all" && !definition.values.includes(value))) return "";
