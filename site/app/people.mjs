@@ -12,9 +12,8 @@ function loadSameConsolidation(){
 }
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
-let careerFacetState = {window:"actionable",format:"all",salary_band:"all",fee_level:"all",no_experience:"all"};
+let careerFacetState = {interest:"all",window:"actionable",format:"all",salary_band:"all",fee_level:"all",no_experience:"all"};
 const CAREER_DATA_URL = "data/staffing_exams.json";
-// Built from site/data/staffing_exams.json.
 const CAREER_DATA_SCHEMA_VERSION = 4;
 // One bounded retry bridges transient module/edge races.
 const CAREER_LOAD_ATTEMPTS = 2;
@@ -169,13 +168,13 @@ function careerFormatLabel(format){
 function careerFacetFilters(){
   return {
     ...careerFacetState,
-    interest:$("#career-interest")?.value || "all",
     eligibility:$("#career-eligibility")?.value || "open_competitive",
   };
 }
 function careerFacetLabel(facet,value){
   if(value==="unknown") return t("career_not_published");
-  if(value==="all") return t({window:"career_all_windows_option",format:"career_format_all",salary:"career_salary_band_all",fee:"career_fee_level_all",experience:"career_experience_all"}[facet]);
+  if(value==="all") return t({interest:"career_all_interests",window:"career_all_windows_option",format:"career_format_all",salary:"career_salary_band_all",fee:"career_fee_level_all",experience:"career_experience_all"}[facet]);
+  if(facet==="interest") return t(CAREER_AREA_KEYS[value]||"career_area_other");
   if(facet==="window") return value==="actionable" ? t("career_actionable_option") : careerStatusLabel(value);
   if(facet==="format") return careerFormatLabel(value);
   if(facet==="salary") return t({
@@ -194,7 +193,7 @@ function careerFacetLinkHTML(facet,value,filters,sourceValue=""){
   const href=examFacetHref(filters,facet,value,{language:window.LANG||"en"});
   if(!href) return "";
   const edge=["people",facet,value].join(":");
-  const stateKey={window:"window",format:"format",salary:"salary_band",fee:"fee_level",experience:"no_experience"}[facet];
+  const stateKey={interest:"interest",window:"window",format:"format",salary:"salary_band",fee:"fee_level",experience:"no_experience"}[facet];
   const current=filters[stateKey]===value;
   const source=sourceValue ? ` data-source-value="${escUiHtml(sourceValue)}"` : "";
   return `<a class="career-facet-chip${current?" current":""}" data-career-facet="${escUiHtml(edge)}" data-scope-edge="${escUiHtml(edge)}" href="${escUiHtml(href)}"${current?' aria-current="page"':""}${source}>${escUiHtml(label)}</a>`;
@@ -204,6 +203,7 @@ function careerFacetControlsHTML(){
   const today=careerToday();
   const filters=careerFacetFilters();
   const specs=[
+    ["interest","career-interest-facets"],
     ["window","career-window-facets"], ["format","career-format-facets"],
     ["salary","career-salary-band-facets"], ["fee","career-fee-level-facets"],
     ["experience","career-no-experience-facets"],
@@ -211,7 +211,9 @@ function careerFacetControlsHTML(){
   for(const [facet,id] of specs){
     const box=$("#"+id);
     if(!box) continue;
-    const values=examFacetOptionValues(careerData.exams,facet,{today,statusFor:CrolStaffing.statusFor});
+    const values=facet==="interest"
+      ? careerData.interest_areas.filter(area=>careerData.exams.some(exam=>exam.interest_area===area))
+      : examFacetOptionValues(careerData.exams,facet,{today,statusFor:CrolStaffing.statusFor});
     const all="all";
     const links=[careerFacetLinkHTML(facet,all,filters)];
     if(facet==="window") links.push(careerFacetLinkHTML(facet,"actionable",filters));
@@ -219,7 +221,6 @@ function careerFacetControlsHTML(){
     box.innerHTML=links.filter(Boolean).join("");
   }
 }
-// Lead with exam-specific format, fee, salary, and qualification facts.
 function careerDiffLeadsHTML(exam, feeSalary){
   const view=CrolStaffing.examDifferentiatorView
     ? CrolStaffing.examDifferentiatorView(exam)
@@ -267,7 +268,6 @@ function careerDiffLeadsHTML(exam, feeSalary){
       : t("career_diff_salary",{amount:careerMoney(min)});
     push("salary", amount, exam.salary_band);
   }
-  // Always surface format when present and not already chipped.
   if(view.exam_format && !seen.has("exam_format")) push("exam_format", careerFormatLabel(view.exam_format), view.exam_format);
 
   const quals=exam.qualifications
@@ -667,11 +667,12 @@ function careerAreaWatchesHTML(){
     rows.forEach(exam=>{ const band=CrolStaffing.openWindowBand(exam,today); if(band) bands[band]+=1; });
     const noe=rows.filter(exam=>exam.notice_url).length;
     const label=t(CAREER_AREA_KEYS[area.id]||"career_area_other");
+    const href=examFacetHref(careerFacetFilters(),"interest",area.id,{language:window.LANG||"en"});
     const chips=["far","approaching","imminent"].filter(band=>bands[band]>0)
       .map(band=>`<span class="tag" data-open-window-band="${band}" lang="en" dir="ltr">${band} ${bands[band]}</span>`);
     if(noe>0) chips.push(`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted ${noe}</span>`);
     return `<article class="career-area-watch" data-interest-area="${escUiHtml(area.id)}">
-      <div class="career-area-watch-head"><a class="career-area-watch-title" href="#people?view=guide&interest=${encodeURIComponent(area.id)}">${escUiHtml(label)}</a></div>
+      <div class="career-area-watch-head"><a class="career-area-watch-title" data-scope-edge="people:interest:${escUiHtml(area.id)}" href="${escUiHtml(href)}">${escUiHtml(label)}</a></div>
       <div class="career-area-watch-meta">${chips.join("")}</div>
       <button class="act" type="button" data-follow-exam-area="${escUiHtml(area.id)}" data-follow-exam-label="${escUiHtml(label)}">${t("mini_subscribe_btn")}</button>
     </article>`;
@@ -704,7 +705,6 @@ function careerResultsHTML(exams){
 function careerFilters(){
   return {
     query:$("#career-query")?.value || "",
-    interest:$("#career-interest").value,
     eligibility:$("#career-eligibility").value,
     ...careerFacetState,
   };
@@ -753,20 +753,13 @@ function applyCareerRouteFilters(){
     interest, eligibility, window: windowFilter,
     format, salary_band: salaryBand, fee_level: feeLevel, no_experience: noExperience,
   } = careerRouteFilters;
-  const interestEl=$("#career-interest");
-  if(interestEl){
-    if(interest && CrolStaffing.isInterestArea(interest) && [...interestEl.options].some(option=>option.value===interest)){
-      interestEl.value=interest;
-    } else if(interest===null || interest==="all"){
-      interestEl.value="all";
-    }
-  }
   const eligibilityEl=$("#career-eligibility");
   if(eligibilityEl){
     if(eligibility && ["open_competitive","promotion","all"].includes(eligibility)) eligibilityEl.value=eligibility;
     else if(eligibility===null) eligibilityEl.value="open_competitive";
   }
   careerFacetState={
+    interest:interest && CrolStaffing.isInterestArea(interest) ? interest : "all",
     window:windowFilter && ["actionable","open","upcoming","closed","all"].includes(windowFilter) ? windowFilter : "actionable",
     format:format && ["education_experience","multiple_choice","physical","mixed","written","oral","practical","other","all"].includes(format) ? format : "all",
     salary_band:salaryBand && ["under_45k","45k_60k","60k_80k","80k_plus","all"].includes(salaryBand) ? salaryBand : "all",
@@ -776,10 +769,6 @@ function applyCareerRouteFilters(){
   careerRouteFilters=null;
 }
 function populateCareerInterests(){
-  const select=$("#career-interest"), current=select.value||"all";
-  select.innerHTML=`<option value="all">${t("career_all_interests")}</option>`+careerData.interest_areas
-    .map(area=>`<option value="${area}">${t(CAREER_AREA_KEYS[area]||"career_area_other")}</option>`).join("");
-  select.value=[...select.options].some(option=>option.value===current)?current:"all";
   applyCareerRouteFilters();
 }
 function validCareerData(data){

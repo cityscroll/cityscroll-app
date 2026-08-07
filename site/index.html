@@ -1750,9 +1750,9 @@
             <label for="career-query" data-i18n="career_search_label">Job or exam number</label>
             <input id="career-query" type="text" placeholder="for example, caseworker or 7016" data-i18n-placeholder="career_search_placeholder">
           </div>
-          <div class="field">
-            <label for="career-interest" data-i18n="career_interest_label">Interest area</label>
-            <select id="career-interest"><option value="all" data-i18n="career_all_interests">All interests</option></select>
+          <div class="field career-facet-field">
+            <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
+            <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
           </div>
           <div class="field">
             <label for="career-eligibility" data-i18n="career_eligibility_label">Who can apply</label>
