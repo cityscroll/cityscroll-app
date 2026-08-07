@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { handleAdminPossiblySame, renderPossiblySamePage } from "../src/admin.mjs";
 import { toReviewItem, toReviewItems } from "../../entity_resolution/review/index.mjs";
-import { readPossiblySamePairs, reviewPairsFromDualWriteRows } from "../src/lib/possibly_same.mjs";
+import { orderPossiblySameItems, readPossiblySamePairs, reviewPairsFromDualWriteRows } from "../src/lib/possibly_same.mjs";
 
 const req = (url, headers = {}) => new Request(url, { headers });
 
@@ -62,6 +62,20 @@ test("live dual-write rows produce unresolved token-block candidates", () => {
   assert.equal(pairs[0].method, "token_v0");
   assert.deepEqual(pairs[0].evidence.shared_keys, ["tok:ACME"]);
   assert.equal(pairs[0].left.source_record_id, "city_record:notice-1:hash-1");
+});
+
+test("active review order preserves the old order as a baseline and ranks information gain", () => {
+  const items = toReviewItems([
+    { id: "fifo-first", left: { vendor_name: "Alpha Services LLC" }, right: { vendor_name: "Alpha Services Inc" }, confidence: 0.46, evidence: { comparison_features: { token_jaccard: 0.5 } }, observed_at: "2026-07-30" },
+    { id: "uncertain", left: { vendor_name: "Acme Construction LLC" }, right: { vendor_name: "Acme Builders Inc" }, confidence: 0.84, evidence: { comparison_features: { token_jaccard: 0.5, pin_epin_conflict: true, legal_form_conflict: true } }, observed_at: "2026-07-29" },
+  ]);
+  const ranked = orderPossiblySameItems(items);
+  assert.equal(ranked[0].id, "uncertain");
+  assert.equal(ranked[0].review_order.baseline_rank, 1);
+  assert.equal(ranked[1].review_order.baseline_rank, 0);
+  assert.equal(ranked[0].review_priority.version, "active_information_gain_v1");
+  assert.ok(ranked[0].review_priority.matcher.margin_score > 0);
+  assert.equal(ranked[0].review_priority.feature_conflict.count, 2);
 });
 
 test("records already linked to the same canonical entity are not review leads", () => {
@@ -134,6 +148,8 @@ test("admin route supports a read-only JSON representation", async () => {
   assert.equal(body.count, 1);
   assert.equal(body.items[0].decision, "review");
   assert.equal(body.source, "live_dual_write");
+  assert.equal(body.measured.ordering.strategy, "active_information_gain_v1");
+  assert.equal(body.measured.ordering.baseline, "existing_shared_keys_then_observed_at_order");
 });
 
 test("empty dual-write is a successful empty desk", async () => {
