@@ -14,7 +14,8 @@ surface. **Not an HTTP microservice.**
 | `exam_certifications/` | Publisher-backed `certified_to_agency` exam/list edges with aggregate counts |
 | `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
 | `features/` | Deterministic family-aware pair features (`pair_features_v2`) |
-| `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v2`) |
+| `matchers/` | Backwards-compatible import path for the baseline scorer |
+| `scorers/` | Removable scorer contract plus the `conventional_v2` baseline |
 | `policies/` | Conservative auto-link routing + alias-registry (`conservative_v1`) |
 | `evaluation/` | Re-exports gold, authority metrics, and clerical-audit helpers |
 | `eval/` | Versioned gold, metrics CLIs, authority fixtures, and audit receipts (keep paths stable) |
@@ -44,8 +45,8 @@ import { vendorStem } from "../../entity_resolution/normalizers/index.mjs";
 1. **Normalize** — deterministic key / display per family  
 2. **Candidates** — blocking so scorers never see full cross-product  
 3. **Features** — deterministic pair signals  
-4. **Matchers** — score + method version  
-5. **Policies** — auto-link vs review vs separate  
+4. **Scorers** — candidate pairs + versioned features → probability + evidence
+5. **Policies** — auto-link vs review vs separate; scorers never make durable links
 6. **Evaluation** — gold set + precision/recall/candidate_recall  
 7. **Review** — human queue for middle-band pairs  
 
@@ -164,7 +165,14 @@ node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v1.jsonl --blocker token_v0 --pipeline
 node entity_resolution/eval/run_authority.mjs --source-records entity_resolution/eval/fixtures/source_records_authority_v0.jsonl
+node entity_resolution/eval/run_bakeoff.mjs --gold entity_resolution/eval/gold_v1.jsonl --out-dir entity_resolution/eval/bakeoff/2026-08-06
 ```
+
+The bake-off report records scorer name, model/artifact hash, config hash, feature
+version, calibration by score band, pair metrics, cluster fragmentation, negative
+constraint violations, and incremental-scoring status. Splink/DuckDB and Dedupe
+Gazetteer adapters are optional eval-only tools under `eval/contenders/`; they are
+never part of the site build or production Worker path. See `eval/README.md`.
 
 ## Related cards
 

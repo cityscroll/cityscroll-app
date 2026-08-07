@@ -14,6 +14,20 @@ export {
 } from "../eval/run_metrics.mjs";
 
 export {
+  BAKEOFF_SCHEMA_VERSION,
+  BAKEOFF_VERSION,
+  CALIBRATION_BANDS,
+  buildBakeoffReport,
+  calibrationByBand,
+  candidatePairsForGold,
+  clusterMetrics,
+  evaluateScorer,
+  renderBakeoffSummary,
+  scoreGoldWithScorer,
+  unavailableContender,
+} from "./bakeoff.mjs";
+
+export {
   CLERICAL_AUDIT_SCHEMA_VERSION,
   buildClericalAudit,
   formatAuditJsonl,
