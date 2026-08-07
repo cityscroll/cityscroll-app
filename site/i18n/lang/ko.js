@@ -210,6 +210,7 @@
     money_community_district_label: "커뮤니티 디스트릭트",
     money_council_district_label: "시의회 지역구",
     money_district_any: "모든 지역",
+    money_district_map_pivot: "지도",
     money_location_filter_interpretation: "업무 수행 장소가 아닌 조달 절차 장소를 표시합니다:",
     money_response_location_heading: "확인된 절차 장소가 있는 계약",
     money_response_location_heading_place: "{place}에 절차 장소가 있는 계약",

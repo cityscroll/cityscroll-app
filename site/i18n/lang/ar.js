@@ -212,6 +212,7 @@
     money_community_district_label: "المنطقة المجتمعية",
     money_council_district_label: "دائرة المجلس",
     money_district_any: "أي منطقة",
+    money_district_map_pivot: "خريطة",
     money_location_filter_interpretation: "تُعرض إجراءات الشراء، لا مكان تنفيذ العمل:",
     money_response_location_heading: "عقود لها موقع إجراءات محدد",
     money_response_location_heading_place: "عقود لها موقع إجراءات في {place}",

@@ -362,6 +362,7 @@ const STRINGS = {
     money_community_district_label: "Community district",
     money_council_district_label: "Council district",
     money_district_any: "Any district",
+    money_district_map_pivot: "Map",
     money_location_filter_interpretation: "Showing procurement logistics, not place of performance:",
     money_response_location_heading: "Contracts with a resolved response location",
     money_response_location_heading_place: "Contracts with a response location in {place}",
