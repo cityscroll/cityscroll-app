@@ -66,6 +66,17 @@ test("performance path filter excludes site/data and includes chrome assets", ()
   assert.doesNotMatch(block, /worker\/\*\*/);
 });
 
+test("merge-group path classification evaluates the queued tree against its base", () => {
+  const ci = read(".github/workflows/ci.yml");
+  assert.match(ci, /\n  merge_group:/);
+  assert.match(
+    ci,
+    /base:\s*\$\{\{\s*github\.event_name\s*==\s*'pull_request'[\s\S]*github\.event\.merge_group\.base_sha/,
+  );
+  assert.match(ci, /Inline-to-module rendered DOM equivalence gate/);
+  assert.match(ci, /Run deterministic performance contract/);
+});
+
 test("browser jobs use the Playwright cache composite action", () => {
   const ci = read(".github/workflows/ci.yml");
   assert.match(ci, /\.\/\.github\/actions\/setup-playwright/);
