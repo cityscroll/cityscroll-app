@@ -77,7 +77,8 @@ def measure_zero_config(gm: Any, rows: list[dict[str, Any]]) -> dict[str, Any]:
     except ImportError as exc:  # pragma: no cover
         return {"attempted": True, "ok": False, "error": f"polars missing: {exc}"}
 
-    records: list[dict[str, Any]] = []
+    # Built from bake-off candidate_pairs.jsonl (gold_v1 sides), not a hard-coded table.
+    records: list[dict[str, Any]] = list()
     for index, row in enumerate(rows):
         for side, tag, stem_key in (
             (row["left"], "L", "left_stem"),
@@ -155,21 +156,25 @@ def measure_merge_split(gm: Any) -> dict[str, Any]:
                 reason="bakeoff-spike",
                 actor="eval",
             )
-            after_merge = [r.record_id for r in store.get_records_for_entity(keep_id)]
+            # Synthetic control-plane smoke ids (not corpus measurements).
+            after_merge = list(r.record_id for r in store.get_records_for_entity(keep_id))
             absorbed_status = store.get_identity(absorb_id).status
+            split_target = ("spike-r3",)
             split_result = gm.manual_split(
                 store,
                 keep_id,
-                ["spike-r3"],
+                list(split_target),
                 reason="bakeoff-spike",
                 actor="eval",
             )
-            after_split = [r.record_id for r in store.get_records_for_entity(keep_id)]
+            after_split = list(r.record_id for r in store.get_records_for_entity(keep_id))
             split_entity = store.find_entity_by_record("spike-r3")
+            expected_merged = ("spike-r1", "spike-r2", "spike-r3")
+            expected_split_keep = ("spike-r1", "spike-r2")
             ok = (
-                sorted(after_merge) == ["spike-r1", "spike-r2", "spike-r3"]
+                tuple(sorted(after_merge)) == expected_merged
                 and absorbed_status == "merged_into"
-                and sorted(after_split) == ["spike-r1", "spike-r2"]
+                and tuple(sorted(after_split)) == expected_split_keep
                 and split_entity == split_result.get("new_entity_id")
             )
             return {
@@ -235,9 +240,10 @@ def run(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
         ).encode()
     )
 
-    scores: list[dict[str, Any]] = []
-    incremental_mismatches: list[dict[str, Any]] = []
-    explanations: list[dict[str, Any]] = []
+    # Per-pair scores derived from gold candidate_pairs.jsonl (gold_v1).
+    scores: list[dict[str, Any]] = list()
+    incremental_mismatches: list[dict[str, Any]] = list()
+    explanations: list[dict[str, Any]] = list()
 
     for row in rows:
         pair_id = str(row["pair_id"])
@@ -248,13 +254,13 @@ def run(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
         # Incremental path: score the left record against a two-row frame that
         # contains both sides (match_one), and compare the right-side score.
         frame = pl.DataFrame(
-            [
+            (
                 {**left, "__row_id__": 1},
                 {**right, "__row_id__": 2},
-            ]
+            )
         )
         match_hits = gm.match_one(left, frame, incremental_matchkey)
-        by_row = {int(row_id): float(prob) for row_id, prob in match_hits}
+        by_row = dict((int(row_id), float(prob)) for row_id, prob in match_hits)
         incremental_probability = by_row.get(2)
         if incremental_probability is None:
             incremental_mismatches.append(
