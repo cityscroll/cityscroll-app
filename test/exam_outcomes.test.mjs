@@ -198,7 +198,8 @@ test("exam cards and detail render joined, list_joined, or class-(a) not-yet-ing
   assert.match(html, /CrolStaffing\.examOutcomeView/);
   // Outcome block + process spine are inside the card template (list + detail share careerCardHTML).
   const cardFnStart = html.indexOf("function careerCardHTML(exam)");
-  const cardFn = html.slice(cardFnStart, cardFnStart + 5500);
+  const cardFnEnd = html.indexOf("function careerAreaWatchesHTML", cardFnStart);
+  const cardFn = html.slice(cardFnStart, cardFnEnd);
   assert.ok(cardFn.includes("careerOutcomeHTML(exam"));
   assert.ok(cardFn.includes("examProcessSpineHTML"));
   assert.match(i18n, /career_outcomes_not_yet_ingested_html:/);

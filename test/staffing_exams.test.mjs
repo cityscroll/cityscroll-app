@@ -88,6 +88,20 @@ test("exam cards reuse the approved open-window bands and thresholds", () => {
   assert.match(html,/data-follow-exam-area/);
   assert.doesNotMatch(html,/career_noe_pending/);
   assert.doesNotMatch(html,/no NOE|NOE.*not available/i);
+  assert.deepEqual(Staffing.titleCodeFamilyView({ title_code: "20210" }), {
+    code: "20210",
+    confidence: "publisher",
+    label: "Publisher-issued title code",
+    marker: null,
+  });
+  assert.deepEqual(Staffing.titleCodeFamilyView({ title_code_family: "20210" }), {
+    code: "20210",
+    confidence: "inferred",
+    label: "Likely title family",
+    marker: "quiet",
+  });
+  assert.match(html, /data-title-code-confidence/);
+  assert.match(html, /career-confidence-marker/);
 });
 
 test("new-hire notices parse, sort newest-first, and refine without a gatekeeping search", () => {
