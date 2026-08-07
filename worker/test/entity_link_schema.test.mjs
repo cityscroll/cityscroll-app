@@ -17,6 +17,7 @@ import {
   DECISION,
   ENTITY_LINK_COLUMNS,
   ENTITY_LINK_DUAL_WRITE_FLAG,
+  ENTITY_LINK_SUPERSESSION_COLUMNS,
   EXACT_STEM_AUTO_CONFIDENCE,
   RESOLUTION_RUN_COLUMNS,
   buildExactStemAutoCase,
@@ -33,6 +34,7 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const MIGRATION_PATH = join(__dirname, "../migrations/0009_entity_link.sql");
+const PROVENANCE_MIGRATION_PATH = join(__dirname, "../migrations/0017_resolution_provenance.sql");
 
 function tableColumns(db, table) {
   return db
@@ -94,6 +96,7 @@ test("migration 0009 defines resolution_run, canonical_entity, and entity_link w
 
   const db = new DatabaseSync(":memory:");
   applyMigrationSql(db, sql);
+  applyMigrationSql(db, readFileSync(PROVENANCE_MIGRATION_PATH, "utf8"));
 
   const runCols = tableColumns(db, "resolution_run");
   for (const col of RESOLUTION_RUN_COLUMNS) {
@@ -108,6 +111,10 @@ test("migration 0009 defines resolution_run, canonical_entity, and entity_link w
   const canonCols = tableColumns(db, "canonical_entity");
   for (const col of CANONICAL_ENTITY_COLUMNS) {
     assert.ok(canonCols.includes(col), `canonical_entity missing column ${col}`);
+  }
+  const lineageCols = tableColumns(db, "entity_link_supersession");
+  for (const col of ENTITY_LINK_SUPERSESSION_COLUMNS) {
+    assert.ok(lineageCols.includes(col), `entity_link_supersession missing column ${col}`);
   }
 
   db.close();
@@ -197,6 +204,12 @@ test("shadow writer: flag on writes exact-stem auto_link only (one run, shared c
   assert.equal(runs[0].matcher_version, VENDOR_STEM_VERSION);
   assert.equal(runs[0].status, "completed");
   assert.equal(runs[0].entity_type, "vendor");
+  assert.match(runs[0].model_artifact_hash, /^[a-f0-9]{64}$/);
+  assert.equal(runs[0].gold_version, "not_used");
+  assert.equal(runs[0].feature_version, "not_used");
+  assert.equal(runs[0].blocking_version, "token_v0_v0");
+  assert.equal(runs[0].policy_version, "exact_stem_auto_v1");
+  assert.deepEqual(JSON.parse(runs[0].watermarks_json), {});
   const runMetrics = JSON.parse(runs[0].metrics_json);
   assert.deepEqual(runMetrics.decisions, {
     auto_link: 3,
@@ -243,6 +256,7 @@ test("shadow writer: flag on writes exact-stem auto_link only (one run, shared c
   const entities = db.prepare("SELECT * FROM canonical_entity").all();
   assert.equal(entities.length, 2);
   assert.ok(entities.every((e) => e.entity_type === "vendor"));
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM entity_link_supersession").get().n, 0);
 
   db.close();
 });
@@ -262,6 +276,30 @@ test("shadow writer: repeat call is idempotent under UNIQUE (no duplicate links)
   db.close();
 });
 
+test("shadow writer records which changed link superseded the prior link", async () => {
+  const db = new DatabaseSync(":memory:");
+  applyMigrationSql(db, readFileSync(MIGRATION_PATH, "utf8"));
+  const env = {
+    DB: d1FromSqlite(db),
+    [ENTITY_LINK_DUAL_WRITE_FLAG]: "true",
+  };
+  await shadowWriteExactStemAutoLinks(env, [
+    { source_record_id: "sr-lineage", vendor_name: "Sinergia Inc" },
+  ], { now: "2026-07-31T12:00:00.000Z" });
+  await shadowWriteExactStemAutoLinks(env, [
+    { source_record_id: "sr-lineage", vendor_name: "Acme Construction LLC" },
+  ], { now: "2026-08-01T12:00:00.000Z" });
+  const lineage = db.prepare("SELECT * FROM entity_link_supersession").all();
+  assert.equal(lineage.length, 1);
+  assert.equal(lineage[0].reason, "canonical_target_changed");
+  assert.ok(lineage[0].superseding_link_id);
+  assert.ok(lineage[0].superseded_link_id);
+  const links = db.prepare("SELECT * FROM entity_link ORDER BY created_at").all();
+  assert.equal(links[1].supersedes_link_id, links[0].id);
+  assert.equal(links[1].supersession_reason, "canonical_target_changed");
+  db.close();
+});
+
 test("ensureEntityLinkSchema creates tables when migration was not applied", async () => {
   const db = new DatabaseSync(":memory:");
   const env = { DB: d1FromSqlite(db) };
@@ -272,6 +310,9 @@ test("ensureEntityLinkSchema creates tables when migration was not applied", asy
   }
   for (const col of RESOLUTION_RUN_COLUMNS) {
     assert.ok(tableColumns(db, "resolution_run").includes(col), col);
+  }
+  for (const col of ENTITY_LINK_SUPERSESSION_COLUMNS) {
+    assert.ok(tableColumns(db, "entity_link_supersession").includes(col), col);
   }
   db.close();
 });

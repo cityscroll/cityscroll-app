@@ -265,6 +265,13 @@ export async function ingestNotices(env) {
       try {
         const entityResult = await shadowWriteExactStemAutoLinks(env, entityObservations, {
           scope_note: "city-record ingest",
+          watermarks: {
+            [SOURCE_RECORD_SYSTEM]: {
+              cursor_start: cursor,
+              page_high_watermark: maxStart,
+              observed_at: nowISO,
+            },
+          },
         });
         console.log("entity-link shadow:", JSON.stringify(entityResult));
       } catch {
