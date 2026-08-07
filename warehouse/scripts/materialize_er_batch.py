@@ -22,6 +22,7 @@ TABLES = (
     ("canonical_entity", "er_canonical_entity"),
     ("resolution_run", "er_resolution_run"),
     ("pair_receipt", "er_pair_receipt"),
+    ("entity_link_supersession", "er_entity_link_supersession"),
 )
 
 
@@ -104,7 +105,7 @@ def materialize(stage_dir: Path, snapshot_date: str) -> dict:
 
             con.execute(
                 f"CREATE OR REPLACE VIEW {view} AS "
-                f"SELECT * FROM read_parquet('{glob}')"
+                f"SELECT * FROM read_parquet('{glob}', union_by_name=true)"
             )
             # Prefer repo-relative paths in receipts (scrim / public surface).
             try:
