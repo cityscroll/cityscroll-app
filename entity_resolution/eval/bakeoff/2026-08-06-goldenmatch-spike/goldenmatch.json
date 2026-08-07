@@ -1,0 +1,1738 @@
+{
+  "claims_receipt": "entity_resolution/eval/bakeoff/2026-08-06-goldenmatch-spike/goldenmatch/goldenmatch_claims_receipt.json",
+  "explanation_artifact": "entity_resolution/eval/bakeoff/2026-08-06-goldenmatch-spike/goldenmatch/goldenmatch_explanations.json",
+  "incremental_consistency": {
+    "method": "score_pair_vs_match_one",
+    "mismatch_count": 0,
+    "mismatches": [],
+    "pairs_compared": 56,
+    "status": "measured",
+    "supported": true
+  },
+  "merge_split": {
+    "absorbed_status": "merged_into",
+    "after_merge_record_ids": [
+      "spike-r1",
+      "spike-r2",
+      "spike-r3"
+    ],
+    "after_split_record_ids": [
+      "spike-r1",
+      "spike-r2"
+    ],
+    "merge": {
+      "absorbed": "019fd9ca-7040-7cfa-99ae-ae0bad1045eb",
+      "at": "2026-08-06T21:15:50.722702",
+      "keep": "019fd9ca-7040-7f82-881e-9b0fb4a7665a"
+    },
+    "note": "Control-plane API smoke only. Merge/split does not score gold pairs; accuracy claims still come from pair metrics.",
+    "ok": true,
+    "split": {
+      "at": "2026-08-06T21:15:50.723309",
+      "moved": [
+        "spike-r3"
+      ],
+      "new_entity_id": "019fd9ca-7043-75ed-93fd-7cd7038e47e1"
+    },
+    "status": "measured",
+    "supported": true
+  },
+  "scorer": {
+    "artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+    "config_hash": "64468b342ff036b42772bd4d198933e7335a32e38e62e95c85ad36f516b086b8",
+    "contract_version": "scorer_contract_v1",
+    "name": "goldenmatch",
+    "supports_incremental": true,
+    "version": "goldenmatch@3.12.0/goldenmatch_adapter_v1"
+  },
+  "scores": [
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7509722222222222,
+        "incremental_probability": 0.7509722222222222,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-001",
+      "probability": 0.7509722222222222
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.6472222222222221,
+        "incremental_probability": 0.6472222222222221,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-002",
+      "probability": 0.6472222222222221
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.98,
+        "incremental_probability": 0.98,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-003",
+      "probability": 0.98
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.990909090909091,
+        "incremental_probability": 0.990909090909091,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-004",
+      "probability": 0.990909090909091
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9571428571428571,
+        "incremental_probability": 0.9571428571428571,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-005",
+      "probability": 0.9571428571428571
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9857142857142858,
+        "incremental_probability": 0.9857142857142858,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-006",
+      "probability": 0.9857142857142858
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7440476190476191,
+        "incremental_probability": 0.7440476190476191,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-007",
+      "probability": 0.7440476190476191
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 1.0,
+        "incremental_probability": 1.0,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-008",
+      "probability": 1.0
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 1.0,
+        "incremental_probability": 1.0,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-009",
+      "probability": 1.0
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9888888888888889,
+        "incremental_probability": 0.9888888888888889,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-010",
+      "probability": 0.9888888888888889
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9966666666666668,
+        "incremental_probability": 0.9966666666666668,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-011",
+      "probability": 0.9966666666666668
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 1.0,
+        "incremental_probability": 1.0,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-012",
+      "probability": 1.0
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.991304347826087,
+        "incremental_probability": 0.991304347826087,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-013",
+      "probability": 0.991304347826087
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7586613592805542,
+        "incremental_probability": 0.7586613592805542,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-014",
+      "probability": 0.7586613592805542
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7101790281329924,
+        "incremental_probability": 0.7101790281329924,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-015",
+      "probability": 0.7101790281329924
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.785,
+        "incremental_probability": 0.785,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-016",
+      "probability": 0.785
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7703081232492996,
+        "incremental_probability": 0.7703081232492996,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-017",
+      "probability": 0.7703081232492996
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9436950146627567,
+        "incremental_probability": 0.9436950146627567,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-018",
+      "probability": 0.9436950146627567
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.6459435626102292,
+        "incremental_probability": 0.6459435626102292,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-019",
+      "probability": 0.6459435626102292
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.98,
+        "incremental_probability": 0.98,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-020",
+      "probability": 0.98
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8985507246376812,
+        "incremental_probability": 0.8985507246376812,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-021",
+      "probability": 0.8985507246376812
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9612903225806453,
+        "incremental_probability": 0.9612903225806453,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-022",
+      "probability": 0.9612903225806453
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7238095238095238,
+        "incremental_probability": 0.7238095238095238,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-023",
+      "probability": 0.7238095238095238
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8668376068376069,
+        "incremental_probability": 0.8668376068376069,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-024",
+      "probability": 0.8668376068376069
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7181964573268922,
+        "incremental_probability": 0.7181964573268922,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-025",
+      "probability": 0.7181964573268922
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7912907268170426,
+        "incremental_probability": 0.7912907268170426,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-026",
+      "probability": 0.7912907268170426
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8072258533042846,
+        "incremental_probability": 0.8072258533042846,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-027",
+      "probability": 0.8072258533042846
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8591503267973857,
+        "incremental_probability": 0.8591503267973857,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-028",
+      "probability": 0.8591503267973857
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8764957264957265,
+        "incremental_probability": 0.8764957264957265,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-029",
+      "probability": 0.8764957264957265
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8214550264550264,
+        "incremental_probability": 0.8214550264550264,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-030",
+      "probability": 0.8214550264550264
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.687962962962963,
+        "incremental_probability": 0.687962962962963,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-031",
+      "probability": 0.687962962962963
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9579773321708807,
+        "incremental_probability": 0.9579773321708807,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-032",
+      "probability": 0.9579773321708807
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.8260647454050754,
+        "incremental_probability": 0.8260647454050754,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-033",
+      "probability": 0.8260647454050754
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.5982771970576848,
+        "incremental_probability": 0.5982771970576848,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-034",
+      "probability": 0.5982771970576848
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.5225662194702443,
+        "incremental_probability": 0.5225662194702443,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-035",
+      "probability": 0.5225662194702443
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7,
+        "incremental_probability": 0.7,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv0-036",
+      "probability": 0.7
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7670995670995671,
+        "incremental_probability": 0.7670995670995671,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-037",
+      "probability": 0.7670995670995671
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7952380952380953,
+        "incremental_probability": 0.7952380952380953,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-038",
+      "probability": 0.7952380952380953
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7958333333333334,
+        "incremental_probability": 0.7958333333333334,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-039",
+      "probability": 0.7958333333333334
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7896551724137931,
+        "incremental_probability": 0.7896551724137931,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-040",
+      "probability": 0.7896551724137931
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7862068965517242,
+        "incremental_probability": 0.7862068965517242,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-041",
+      "probability": 0.7862068965517242
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7894736842105263,
+        "incremental_probability": 0.7894736842105263,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-042",
+      "probability": 0.7894736842105263
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7506060606060605,
+        "incremental_probability": 0.7506060606060605,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-043",
+      "probability": 0.7506060606060605
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7739130434782608,
+        "incremental_probability": 0.7739130434782608,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-044",
+      "probability": 0.7739130434782608
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7135981912144702,
+        "incremental_probability": 0.7135981912144702,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-045",
+      "probability": 0.7135981912144702
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.5680260047281324,
+        "incremental_probability": 0.5680260047281324,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-046",
+      "probability": 0.5680260047281324
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.76,
+        "incremental_probability": 0.76,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-047",
+      "probability": 0.76
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.756055900621118,
+        "incremental_probability": 0.756055900621118,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-048",
+      "probability": 0.756055900621118
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9855462184873951,
+        "incremental_probability": 0.9855462184873951,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-049",
+      "probability": 0.9855462184873951
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.9857142857142858,
+        "incremental_probability": 0.9857142857142858,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-050",
+      "probability": 0.9857142857142858
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7446839080459771,
+        "incremental_probability": 0.7446839080459771,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-051",
+      "probability": 0.7446839080459771
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7538082437275986,
+        "incremental_probability": 0.7538082437275986,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-052",
+      "probability": 0.7538082437275986
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7337782805429864,
+        "incremental_probability": 0.7337782805429864,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-053",
+      "probability": 0.7337782805429864
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7486858974358974,
+        "incremental_probability": 0.7486858974358974,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-054",
+      "probability": 0.7486858974358974
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7337958532695374,
+        "incremental_probability": 0.7337958532695374,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-055",
+      "probability": 0.7337958532695374
+    },
+    {
+      "evidence": {
+        "adapter_version": "goldenmatch_adapter_v1",
+        "engine": "goldenmatch",
+        "field_spec": [
+          {
+            "field": "display_name",
+            "scorer": "jaro_winkler",
+            "weight": 0.5
+          },
+          {
+            "field": "stem",
+            "scorer": "exact",
+            "weight": 0.2
+          },
+          {
+            "field": "authority_key",
+            "scorer": "exact",
+            "weight": 0.3
+          }
+        ],
+        "full_probability": 0.7488795986622073,
+        "incremental_probability": 0.7488795986622073,
+        "matchkey": "vendor_pair_weighted",
+        "model_artifact_hash": "c7366cecd754876e30464f34ad0ced351002fd4731ee6391e69b247b5c7dd592",
+        "package_version": "3.12.0"
+      },
+      "pair_id": "gv1-056",
+      "probability": 0.7488795986622073
+    }
+  ],
+  "training_overlap": false,
+  "zero_config": {
+    "attempted": true,
+    "error": "'Field \"__title_key__\" does not exist in schema'",
+    "error_type": "KeyError",
+    "note": "Zero-config auto-configure did not complete on the gold-shaped vendor corpus. Pair scoring uses the explicit FIELD_SPEC matchkey.",
+    "ok": false
+  }
+}

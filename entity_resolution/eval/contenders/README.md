@@ -20,11 +20,16 @@ entity_resolution/eval/.venv/bin/python entity_resolution/eval/contenders/dedupe
   --input entity_resolution/eval/bakeoff/2026-08-06/candidate_pairs.jsonl \
   --out-dir entity_resolution/eval/bakeoff/2026-08-06/dedupe \
   --output entity_resolution/eval/bakeoff/2026-08-06/dedupe.json
+entity_resolution/eval/.venv/bin/python entity_resolution/eval/contenders/goldenmatch_adapter.py \
+  --input entity_resolution/eval/bakeoff/2026-08-06/candidate_pairs.jsonl \
+  --out-dir entity_resolution/eval/bakeoff/2026-08-06/goldenmatch \
+  --output entity_resolution/eval/bakeoff/2026-08-06/goldenmatch.json
 node entity_resolution/eval/run_bakeoff.mjs \
   --gold entity_resolution/eval/gold_v1.jsonl \
   --out-dir entity_resolution/eval/bakeoff/2026-08-06 \
   --splink-output entity_resolution/eval/bakeoff/2026-08-06/splink.json \
-  --dedupe-output entity_resolution/eval/bakeoff/2026-08-06/dedupe.json
+  --dedupe-output entity_resolution/eval/bakeoff/2026-08-06/dedupe.json \
+  --goldenmatch-output entity_resolution/eval/bakeoff/2026-08-06/goldenmatch.json
 ```
 
 The adapters emit the scorer contract envelope: pair probability, evidence,
@@ -32,7 +37,11 @@ scorer version, model/settings artifact hash, and config hash. Splink includes
 its trained model JSON and intermediate comparison columns. Dedupe uses its
 Gazetteer index and records the trained settings hash. The final report marks
 Dedupe's current gold-label training overlap explicitly; it is useful for
-mechanical integration proof, not an out-of-sample winner claim.
+mechanical integration proof, not an out-of-sample winner claim. GoldenMatch
+scores pairs with an explicit vendor-shaped matchkey, measures
+`score_pair` vs `match_one` incremental consistency, and smokes the identity
+merge/split control-plane API; zero-config auto-configure is attempted and
+recorded honestly when it fails on the gold-shaped corpus.
 
 The current gold set is intentionally small and baseline pair metrics are
 saturated. Use the existing clerical audit to label unresolved-band candidates

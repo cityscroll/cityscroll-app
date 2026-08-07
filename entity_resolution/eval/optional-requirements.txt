@@ -2,3 +2,6 @@
 splink>=4,<5
 duckdb>=1,<2
 dedupe>=3,<4
+# GoldenMatch spike (bake-off contender only; never a production scorer).
+goldenmatch>=3,<4
+polars>=1,<2
