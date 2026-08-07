@@ -758,6 +758,7 @@ export async function handleAdminDigestCatchUp(req, env) {
       sub: r.sub, lens: r.lens, action: r.action,
       new: r.new || 0, found: r.found || 0, sent: !!r.sent,
       capped: !!r.capped, error: r.error || null, zeroMatch: !!r.zeroMatch,
+      status: r.status || null,
     })),
   }, 200);
 }
