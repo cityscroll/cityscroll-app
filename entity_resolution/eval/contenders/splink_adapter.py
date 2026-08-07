@@ -79,7 +79,10 @@ def run(rows: list[dict[str, Any]], out_dir: Path) -> dict[str, Any]:
         retain_intermediate_calculation_columns=True,
         retain_matching_columns=True,
     )
-    linker = Linker(records, settings, db_api=DuckDBAPI())
+    # Splink 4 treats the first argument as one or more input tables. A list
+    # of row dicts is otherwise interpreted as a list of scalar tables and
+    # fails during pandas registration.
+    linker = Linker([records], settings, db_api=DuckDBAPI())
     # These are the documented reproducible Splink training stages: random
     # sampling fits u; EM fits m over a broader family block.
     getattr(linker.training, "estim" "ate_u_using_random_sampling")(max_pairs=100000, seed=17)
