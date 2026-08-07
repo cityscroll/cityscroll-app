@@ -13,6 +13,7 @@ creates links.
 | `fixtures/review_actions_v0.json` | Characterization fixture for review-action export |
 | `run_metrics.mjs` | Load gold, run predictions, and print metric keys |
 | `run_bakeoff.mjs` | Run the scorer bake-off and write machine-readable + readable reports |
+| `run_labeling_function_accounting.mjs` | Measure labeling-function coverage, overlap, conflict, and gold-stratum accuracy |
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
 | `contenders/` | Optional Splink/DuckDB and Dedupe/Gazetteer adapters |
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
@@ -177,6 +178,22 @@ router; raw scorer probabilities and evidence remain in the report for
 calibration. The current 56-case gold set saturates the baseline pair metrics,
 so the report deliberately recommends extending the gold set from unresolved
 clerical-review candidates before choosing a production scorer.
+
+Each bake-off run also writes `labeling_function_accounting.json` and
+`labeling_function_accounting.md`. The accounting is versioned separately as
+`er_labeling_functions_v1`, consumes the same candidate-pair feature rows and
+gold stratum, and evaluates each function independently so overlap is not
+hidden by scorer precedence. Coverage is the share of all pairs with a
+non-abstain vote; overlap and conflict are measured among that function's
+covered rows; empirical accuracy is measured only on rows present in gold.
+The standalone runner can reproduce those artifacts:
+
+```bash
+node entity_resolution/eval/run_labeling_function_accounting.mjs \
+  --features entity_resolution/eval/bakeoff/2026-08-06/candidate_pairs.jsonl \
+  --gold entity_resolution/eval/gold_v1.jsonl \
+  --out-dir entity_resolution/eval/bakeoff/2026-08-06
+```
 
 For the two optional adapters and their isolated dependency environment, see
 `eval/contenders/README.md` and `eval/optional-requirements.txt`.
