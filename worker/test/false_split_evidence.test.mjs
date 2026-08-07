@@ -72,7 +72,16 @@ test("fixture tray measures candidates and exposes both source-linked records", 
     const response = await handleAdminPossiblySame(jsonRequest("https://w/admin/possibly-same?key=secret"), env);
     assert.equal(response.status, 200);
     const tray = await response.json();
-    assert.deepEqual(tray.measured, { candidates: 1, disposition_events: 0 });
+    assert.deepEqual(tray.measured, {
+      candidates: 1,
+      disposition_events: 0,
+      ordering: {
+        strategy: "active_information_gain_v1",
+        baseline: "existing_shared_keys_then_observed_at_order",
+        labels_per_hour: {},
+        labels_per_session: {},
+      },
+    });
     assert.equal(tray.reviewVersion, FALSE_SPLIT_EVIDENCE_VERSION);
     assert.equal(tray.items[0].left.source_record_key, "20260730001");
     assert.match(tray.items[0].left.source_url, /RequestDetail\/20260730001$/);
@@ -115,7 +124,7 @@ test("same, different, and defer dispositions append immutable evidence events",
       const response = await handleAdminPossiblySame(jsonRequest(
         "https://w/admin/possibly-same?key=secret",
         "POST",
-        { pair_id: pairId, actor: "desk-actor:fixture-1", decision, note: `review ${index + 1}` },
+        { pair_id: pairId, actor: "desk-actor:fixture-1", review_session: "fixture-session-1", decision, note: `review ${index + 1}` },
       ), env);
       assert.equal(response.status, 201);
     }
@@ -123,7 +132,17 @@ test("same, different, and defer dispositions append immutable evidence events",
     const tray = await (await handleAdminPossiblySame(
       jsonRequest("https://w/admin/possibly-same?key=secret"), env,
     )).json();
-    assert.deepEqual(tray.measured, { candidates: 1, disposition_events: 3 });
+    const eventHour = tray.items[0].dispositions[0].created_at.slice(0, 13);
+    assert.deepEqual(tray.measured, {
+      candidates: 1,
+      disposition_events: 3,
+      ordering: {
+        strategy: "active_information_gain_v1",
+        baseline: "existing_shared_keys_then_observed_at_order",
+        labels_per_hour: { [eventHour]: 3 },
+        labels_per_session: { "fixture-session-1": 3 },
+      },
+    });
     assert.deepEqual(tray.items[0].dispositions.map((event) => event.decision), ["same", "different", "defer"]);
     for (const event of tray.items[0].dispositions) {
       assert.equal(event.actor, "desk-actor:fixture-1");

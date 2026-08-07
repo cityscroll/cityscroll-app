@@ -15,6 +15,7 @@ import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from 
 import {
   INVESTIGATION_WORKSPACE_VERSION,
   buildInvestigationWorkspace,
+  activeReviewItems,
   toReviewItems,
 } from "../../entity_resolution/review/index.mjs";
 import { readPossiblySamePairs } from "./lib/possibly_same.mjs";
@@ -261,6 +262,7 @@ export async function handleAdminPossiblySame(req, env) {
     return json({ error: "review-data-unavailable" }, 503);
   }
   if (req.method === "POST") {
+    const requestUrl = new URL(req.url);
     let body;
     try {
       body = (req.headers.get("content-type") || "").includes("application/json")
@@ -269,6 +271,8 @@ export async function handleAdminPossiblySame(req, env) {
     } catch {
       return json({ error: "invalid-body" }, 400);
     }
+    body.review_session ||= requestUrl.searchParams.get("review_session")
+      || req.headers.get("X-Review-Session") || "";
     const pair = pairs.find((candidate) => candidate.id === String(body?.pair_id || ""));
     let event;
     try {
@@ -288,7 +292,7 @@ export async function handleAdminPossiblySame(req, env) {
     return new Response(null, { status: 303, headers: { Location: target.toString(), "Cache-Control": "no-store" } });
   }
 
-  const items = toReviewItems(pairs);
+  const items = activeReviewItems(toReviewItems(pairs));
   let events;
   try {
     events = await readFalseSplitDispositions(env.DB, items.map((item) => item.id));
@@ -313,11 +317,30 @@ export async function handleAdminPossiblySame(req, env) {
     });
   }
   if ((req.headers.get("accept") || "").includes("application/json")) {
+    const labelsPerSession = {};
+    const labelsPerHour = {};
+    for (const event of events) {
+      const hour = String(event.created_at || "").slice(0, 13);
+      if (hour) labelsPerHour[hour] = (labelsPerHour[hour] || 0) + 1;
+      let snapshot = {};
+      try { snapshot = JSON.parse(event.evidence_json || "{}"); } catch { /* old event */ }
+      const session = String(snapshot.review_session || "").trim();
+      if (session) labelsPerSession[session] = (labelsPerSession[session] || 0) + 1;
+    }
     return json({
       reviewVersion: FALSE_SPLIT_EVIDENCE_VERSION,
       source: "live_dual_write",
       count: items.length,
-      measured: { candidates: items.length, disposition_events: events.length },
+      measured: {
+        candidates: items.length,
+        disposition_events: events.length,
+        ordering: {
+          strategy: "active_information_gain_v1",
+          baseline: "existing_shared_keys_then_observed_at_order",
+          labels_per_hour: labelsPerHour,
+          labels_per_session: labelsPerSession,
+        },
+      },
       items: items.map((item) => ({ ...item, dispositions: eventsByPair[item.id] || [] })),
     }, 200);
   }
@@ -412,10 +435,11 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}, currentUrl
     url.searchParams.set("pair", pairId);
     return `${url.pathname}${url.search}`;
   };
+  const session = new URL(currentUrl).searchParams.get("review_session") || "";
   const cards = items.map((item) => `<article class="pair" data-pair-id="${escapeHtml(item.id)}">
     <p class="eyebrow">${escapeHtml(item.label)}</p>
     <h2>${escapeHtml(item.left.name)} <span aria-hidden="true">↔</span> ${escapeHtml(item.right.name)}</h2>
-    <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)}</p>
+    <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)} · information gain ${escapeHtml(item.review_priority?.information_gain ?? "—")}</p>
     <p><strong>Candidate basis:</strong> ${escapeHtml(candidateBasis(item.evidence))}</p>
     <p><a class="workspace-link" href="${escapeHtml(workspaceHref(item.id))}">Open private evidence workspace</a></p>
     <div class="records">${sourceRecordHtml(item.left, "Record A")}${sourceRecordHtml(item.right, "Record B")}</div>
@@ -423,7 +447,7 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}, currentUrl
     ${comparisonFeaturesHtml(item.evidence)}
     <p class="note">This is a review lead, not a finding. Confirm identity from the underlying records before taking action.</p>
     <section><h3>Disposition history</h3>${dispositionHistoryHtml(eventsByPair[item.id] || [])}</section>
-    <form method="post"><input type="hidden" name="pair_id" value="${escapeHtml(item.id)}">
+    <form method="post"><input type="hidden" name="pair_id" value="${escapeHtml(item.id)}"><input type="hidden" name="review_session" value="${escapeHtml(session)}">
       <label>Operator <input name="actor" required maxlength="120" autocomplete="username"></label>
       <label>Evidence note <textarea name="note" maxlength="2000" aria-label="Evidence note for ${escapeHtml(item.id)}"></textarea></label>
       <fieldset><legend>Append disposition</legend>
