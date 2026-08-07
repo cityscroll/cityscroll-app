@@ -18,6 +18,11 @@ import {
   feeLevelFor,
   examFormatFromOasysParts,
 } from "../worker/src/lib/noe_differentiators.mjs";
+import {
+  examFacetHref,
+  examFacetOptionValues,
+  examFacetValue,
+} from "../site/exam_detail_facets.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
@@ -196,6 +201,39 @@ test("filters: salary band, fee level, format, no-experience", () => {
   assert.equal(feeLevelFor(61), "mid");
   assert.equal(examMatchesDifferentiatorFilters(byExam("7016"), { format: "education_experience" }), true);
   assert.equal(examMatchesDifferentiatorFilters(byExam("7016"), { format: "multiple_choice" }), false);
+  const feeBearing = Staffing.filterExams(all, {
+    query: "", interest: "all", eligibility: "all", window: "all", fee_level: "fee-bearing",
+  }, today);
+  assert.ok(feeBearing.some((e) => e.exam_number === "7013"));
+  assert.ok(feeBearing.every((e) => ["mid", "high"].includes(e.fee_level)));
+  const closed = Staffing.filterExams(all, {
+    query: "", interest: "all", eligibility: "all", window: "closed",
+  }, today);
+  assert.ok(closed.length > 0);
+  assert.ok(closed.every((e) => e.application_end < today));
+});
+
+test("exam facet links use exact record keys and preserve unknowns", () => {
+  const today = "2026-08-03";
+  const auto = byExam("7013");
+  const caseworker = byExam("7016");
+  const police = byExam("7312");
+  assert.equal(examFacetValue(auto, "format"), "education_experience");
+  assert.equal(examFacetValue(police, "fee"), "none");
+  assert.equal(examFacetValue(caseworker, "experience"), "yes");
+  assert.equal(examFacetValue({ application_start: null, application_end: null }, "window", { today }), "unknown");
+  assert.equal(examFacetValue({ salary_band: "unknown" }, "salary"), "unknown");
+  assert.equal(examFacetValue({ fee_level: "unknown" }, "fee"), "unknown");
+  assert.equal(examFacetValue({ no_experience_required: null }, "experience"), "unknown");
+
+  const formatValues = examFacetOptionValues(artifact.exams, "format", { today, statusFor: Staffing.statusFor });
+  assert.deepEqual(formatValues, ["education_experience", "multiple_choice", "unknown"]);
+  assert.ok(examFacetOptionValues(artifact.exams, "fee").includes("fee-bearing"));
+  assert.equal(examFacetHref({}, "format", "unknown"), "");
+  assert.equal(
+    examFacetHref({ window: "open", interest: "all" }, "format", "multiple_choice"),
+    "#people?view=guide&window=open&format=multiple_choice",
+  );
 });
 
 function byExam(n) {
@@ -214,10 +252,16 @@ test("applyNoeDifferentiatorRecord is fill-only for fee/salary", () => {
 });
 
 test("UI: differentiator filters and card lead surface exist", () => {
-  assert.match(SITE_SOURCE, /id="career-format"/);
-  assert.match(SITE_SOURCE, /id="career-salary-band"/);
-  assert.match(SITE_SOURCE, /id="career-fee-level"/);
-  assert.match(SITE_SOURCE, /id="career-no-experience"/);
+  assert.match(SITE_SOURCE, /data-career-facets="window"/);
+  assert.match(SITE_SOURCE, /data-career-facets="format"/);
+  assert.match(SITE_SOURCE, /data-career-facets="salary"/);
+  assert.match(SITE_SOURCE, /data-career-facets="fee"/);
+  assert.match(SITE_SOURCE, /data-career-facets="experience"/);
+  assert.doesNotMatch(SITE_SOURCE, /id="career-format"[^>]*>/);
+  assert.doesNotMatch(SITE_SOURCE, /id="career-salary-band"[^>]*>/);
+  assert.doesNotMatch(SITE_SOURCE, /id="career-fee-level"[^>]*>/);
+  assert.doesNotMatch(SITE_SOURCE, /id="career-no-experience"[^>]*>/);
+  assert.match(SITE_SOURCE, /data-scope-edge/);
   assert.match(SITE_SOURCE, /function careerDiffLeadsHTML/);
   assert.match(SITE_SOURCE, /career-diff-leads/);
   assert.match(SITE_SOURCE, /career-diff-chip/);

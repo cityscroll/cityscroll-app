@@ -171,20 +171,21 @@ function serializeState(){
     const guideRouteMarker = ["view", "guide"].join("=");
     const explicitGuideRoute = location.hash.includes(guideRouteMarker)
       || (location.pathname === "/browse/staffing/" && new URLSearchParams(location.search).get("view") === guideRouteMarker.split("=")[1]);
-    if(globalThis.careerRouteFilters && explicitGuideRoute){
+    if(explicitGuideRoute){
       const interest=$("#career-interest")?.value;
       if(interest && interest !== "all" && CrolStaffing.isInterestArea(interest)) q.set("interest", interest);
       const eligibility=$("#career-eligibility")?.value;
       if(eligibility && eligibility !== "open_competitive") q.set("eligibility", eligibility);
-      const windowFilter=$("#career-window")?.value;
+      const facetState=globalThis.careerFacetState || {};
+      const windowFilter=facetState.window;
       if(windowFilter && windowFilter !== "actionable") q.set("window", windowFilter);
-      const format=$("#career-format")?.value;
+      const format=facetState.format;
       if(format && format !== "all") q.set("format", format);
-      const salaryBand=$("#career-salary-band")?.value;
+      const salaryBand=facetState.salary_band;
       if(salaryBand && salaryBand !== "all") q.set("salary", salaryBand);
-      const feeLevel=$("#career-fee-level")?.value;
+      const feeLevel=facetState.fee_level;
       if(feeLevel && feeLevel !== "all") q.set("fee", feeLevel);
-      const noExp=$("#career-no-experience")?.value;
+      const noExp=facetState.no_experience;
       if(noExp && noExp !== "all") q.set("experience", noExp);
     }
   } else if(tab === "land"){
@@ -935,14 +936,14 @@ function applyHash(){
       const salaryBand=q.get("salary");
       const feeLevel=q.get("fee");
       const noExperience=q.get("experience");
-      const FORMAT_OK=["education_experience","multiple_choice","physical","mixed","all"];
+      const FORMAT_OK=["education_experience","multiple_choice","physical","mixed","written","oral","practical","other","all"];
       const SALARY_OK=["under_45k","45k_60k","60k_80k","80k_plus","all"];
-      const FEE_OK=["none","low","mid","high","all"];
+      const FEE_OK=["none","low","fee-bearing","mid","high","all"];
       const EXP_OK=["yes","no","all"];
       if(
         (interest && CrolStaffing.isInterestArea(interest))
         || (eligibility && ["open_competitive","promotion","all"].includes(eligibility))
-        || (windowFilter && ["actionable","open","upcoming","all"].includes(windowFilter))
+        || (windowFilter && ["actionable","open","upcoming","closed","all"].includes(windowFilter))
         || (format && FORMAT_OK.includes(format))
         || (salaryBand && SALARY_OK.includes(salaryBand))
         || (feeLevel && FEE_OK.includes(feeLevel))
