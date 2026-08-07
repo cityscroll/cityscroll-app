@@ -128,7 +128,7 @@ test("two-clock summaries label the current GovDeals edition as a program, not a
   assert.equal(superseded.reader_actions.lifecycle.action_by, null);
 });
 
-test("tense-parity detector covers every closed Property notice class and action template", () => {
+test("tense-parity detector closes dated participation but preserves undated record and claim actions", () => {
   const liveVerb = /\bYou can\b|\bcan (?:send|attend|ask|inspect|review|submit|object|comment|request)\b/i;
   let checkedActions = 0;
   const checkedPatterns = new Set();
@@ -158,13 +158,15 @@ test("tense-parity detector covers every closed Property notice class and action
       checkedActions += 1;
       assert.equal(
         action.status,
-        action.kind === "review_documents" ? "undated" : "historical",
+        ["review_documents", "inquire_claim"].includes(action.kind) ? "undated" : "historical",
         `${item.id}:${action.kind}`,
       );
     }
     for (const fact of summary.facts.filter((entry) => entry.kind.startsWith("action_"))) {
       if (fact.kind === "action_review_documents") {
         assert.match(fact.text, /review the records/i, `${item.id}:${fact.kind}`);
+      } else if (fact.kind === "action_inquire_claim") {
+        assert.match(fact.text, /You can ask/i, `${item.id}:${fact.kind}`);
       } else {
         assert.doesNotMatch(fact.text, liveVerb, `${item.id}:${fact.kind}`);
       }
