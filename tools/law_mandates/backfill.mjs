@@ -286,27 +286,44 @@ async function ensureSubstantiveText(options, manifest, context) {
   return receipt;
 }
 
-async function ensureQuarantine(options) {
-  const existing = await readJson(options.quarantine);
-  if (existing?.entries?.length) return existing;
-  const state = await readJson(join(options.outputDir, "state.json"), { failed: [] });
-  const entries = (state.failed || []).map((row) => ({ matter_id: String(row.matter_id), error: String(row.error || "bounded_attempts_exhausted"), attempts: row.attempts || null, failed_at: row.failed_at || null }));
-  if (!entries.length) return { schema_version: "mandate-backfill-quarantine-v1", entries: [] };
+function quarantineEntry(row) {
+  return { matter_id: String(row.matter_id), error: String(row.error || "bounded_attempts_exhausted"), attempts: row.attempts || null, failed_at: row.failed_at || null };
+}
+
+async function appendQuarantine(options, rows, why) {
+  const existing = await readJson(options.quarantine, { schema_version: "mandate-backfill-quarantine-v1", entries: [] });
+  const entriesById = new Map((existing.entries || []).map((row) => [String(row.matter_id), row]));
+  const added = [];
+  for (const row of rows) {
+    const entry = quarantineEntry(row);
+    if (!entriesById.has(entry.matter_id)) {
+      entriesById.set(entry.matter_id, entry);
+      added.push(entry);
+    }
+  }
+  if (!added.length) return existing;
   const quarantine = {
+    ...existing,
     schema_version: "mandate-backfill-quarantine-v1",
     status: "quarantined_for_separate_retry",
-    card: "obligations-backfill-retry-3laws",
-    filed_at: stamp(),
-    entries,
+    card: existing.card || "obligations-backfill-retry-3laws",
+    filed_at: existing.filed_at || stamp(),
+    updated_at: stamp(),
+    entries: [...entriesById.values()].sort((left, right) => String(left.matter_id).localeCompare(String(right.matter_id))),
   };
   await atomicWrite(options.quarantine, quarantine);
   await journalBatch({
     script: options.journalScript,
-    what: `quarantined exhausted mandate laws (${entries.length} laws)`,
-    why: "continue comparator on the valid extracted corpus while a separate retry card handles bounded failures",
+    what: `quarantined exhausted mandate laws (${added.length} new laws)`,
+    why,
     undo: `remove ${options.quarantine}`,
   });
   return quarantine;
+}
+
+async function ensureQuarantine(options) {
+  const state = await readJson(join(options.outputDir, "state.json"), { failed: [] });
+  return appendQuarantine(options, state.failed || [], "continue the corpus while separately tracking laws that exhausted bounded extraction attempts");
 }
 
 async function runExtraction(options, manifest, railReceipt, context, quarantineIds = new Set()) {
@@ -381,8 +398,15 @@ async function runExtraction(options, manifest, railReceipt, context, quarantine
     state.updated_at = stamp();
     await atomicWrite(statePath, state);
     await journalBatch({ script: options.journalScript, what: `extracted mandate batch (${batch.length} laws)`, why: `resumable extraction checkpoint; completed=${complete.size}`, undo: `remove ${options.outputDir}/laws for this batch and restore ${statePath}` });
-    if (!batchSucceeded) throw new Error(`extraction_batch_failed:completed=${complete.size},failed=${failedById.size}`);
-    console.log(`batch-complete: offset=${offset + batch.length} total=${pending.length} completed=${complete.size} failed=${failedById.size}`);
+    if (!batchSucceeded) {
+      const batchFailures = [...failedById.values()].filter((row) => batch.includes(String(row.matter_id)));
+      await appendQuarantine(options, batchFailures, "advance to the next law batch after bounded extraction attempts were exhausted");
+      for (const row of batchFailures) quarantineIds.add(String(row.matter_id));
+      context.completed = complete.size + quarantineIds.size;
+      console.log(`batch-quarantined: offset=${offset + batch.length} total=${pending.length} quarantined=${batchFailures.length} completed=${complete.size} failed=${failedById.size}`);
+    } else {
+      console.log(`batch-complete: offset=${offset + batch.length} total=${pending.length} completed=${complete.size} failed=${failedById.size}`);
+    }
   }
   const our = await buildOurPayload(options.outputDir, manifest, options.model, railReceipt, quarantineIds);
   await atomicWrite(join(options.outputDir, "our.json"), our);
