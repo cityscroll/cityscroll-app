@@ -1050,7 +1050,7 @@ function renderDetail(r, chain, stats){
   if(scopeHtml) html += `<div class="scope" data-export-class="official_notice_text" lang="en" dir="ltr"><span class="lbl">${t("what_they_want")}</span>${scopeHtml}</div>`;
   // Optional unofficial translation sits AFTER the original; never replaces it.
   html += `<div class="xlate" id="dxlate" data-export-class="unofficial_translation"></div>`;
-  html += `<div id="dexternal" data-export-class="external_award"></div><div id="dprior" data-export-class="paper_trail"></div><div id="dforecast" data-export-class="agency_forecast"></div>`;
+  html += `<div id="dexternal" data-export-class="external_award"></div><div id="dprior" data-export-class="paper_trail"></div><div id="dforecast" data-export-class="agency_forecast">${pending ? `<div class="chain-h">${t("agency_forecast_heading")}</div><div class="note"><span class="loading"></span></div>` : ""}</div>`;
   // Agency-wide totals are context for this notice, not the headline — rendered last and
   // visually subordinated (smaller figures) so notice-specific facts read first.
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
@@ -1065,7 +1065,7 @@ function renderDetail(r, chain, stats){
   fillContext(r, $("#dcontext"));
   mountNoticeActionRail($("#dactions"),r);
   if(typeof loadSolicitationMwbe === "function") loadSolicitationMwbe(r, $("#dmwbe"));
-  loadRuleLifecycle(r, $("#drules"));
+  if(typeof globalThis.loadRuleLifecycle === "function") loadRuleLifecycle(r, $("#drules"));
   loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"), $("#dsuboutreach"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));

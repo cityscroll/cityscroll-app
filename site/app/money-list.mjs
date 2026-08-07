@@ -1,6 +1,7 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { scopedHistoryGap as hasScopedHistoryGap } from "../money_scope_consistency.mjs";
+import { moneyClosingWeekHash, moneyLocationBasisHref } from "../money_scope_links.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -30,6 +31,13 @@ function moneyModeHref(modeKey, scope){
   }
   return `/browse/contracts/?${explicit.toString()}`;
 }
+function setClosingWeekState(active){
+  const link = document.getElementById("closingweek");
+  if(!link) return;
+  link.classList.toggle("on", !!active);
+  if(active) link.setAttribute("aria-current", "page");
+  else link.removeAttribute("aria-current");
+}
 function syncProcurementFacetRails(){
   const activeMode = ["open", "allrfp", "award"].includes(String($("#mode")?.value || ""))
     ? String($("#mode").value)
@@ -52,15 +60,21 @@ function syncProcurementFacetRails(){
   locationRail?.querySelectorAll("a").forEach((link) => {
     const basis = link.dataset.moneyLocationBasis;
     if (!basis) return;
+    link.href = moneyLocationBasisHref(scope, basis);
     const active = basis === activeBasis;
     link.classList.toggle("on", active);
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
   });
+  const closing = document.getElementById("closingweek");
+  if(closing){
+    closing.href = moneyClosingWeekHash(scope, !closingWeek);
+    setClosingWeekState(closingWeek);
+  }
 }
 async function initializeMoneyLocationFilters(){
   const tools=await moneyActionLocationTools();
-  return tools?.initializeMoneyLocationFilters?.({t});
+  return tools?.initializeMoneyLocationFilters?.({t, scope: currentMoneyRouteScope()});
 }
 function loadMoneyDefaultSnapshot(){
   if(!moneyDefaultSnapshotPromise){
@@ -233,7 +247,7 @@ async function search(){
   const sort = $("#sort").value, minamt = $("#minamt").value;
   $("#minwrap").style.display = mode === "award" ? "" : "none";
   $("#minamt").disabled = mode !== "award";
-  if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false"); }
+  if(mode !== "open" && closingWeek){ closingWeek = false; setClosingWeekState(false); }
   $("#moneyquick").style.display = mode === "open" ? "" : "none";
   const hasLocationFilter=!!($("#moneylocationbasis")?.value||$("#moneyboro")?.value||$("#moneycd")?.value||$("#moneycouncil")?.value);
   const locationTools=hasLocationFilter?await moneyActionLocationTools():null;
@@ -527,6 +541,9 @@ function renderList(autoSelect){
 // One post-paint batch marks confirmed histories; the ceiling rejects widened PIN collisions.
 const LINEAGE_MIN_STAGES = 2;
 const LINEAGE_MAX_STAGES = 15;
+function isBlanketChain(chain){
+  return chain.length > 5 && chain.every((item) => item.type_of_notice_description === "Award");
+}
 
 function lineageChainKey(r){
   if(!usablePin(r.pin) || !r.agency_name) return null;
@@ -588,12 +605,23 @@ async function loadLineageBadges(){
 }
 
 async function select(i, el, planningDetailRequested=false){
+  const historyReady = globalThis.ensureMoneyHistory?.();
   document.querySelectorAll("#list .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const r = currentRows[i];
   if(planningDetailRequested) r.planning_detail_requested = true;
   selectedRFP = r;
-  renderDetail(r, null, null);
+  if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null);
+  else {
+    const detail = $("#detail");
+    detail.innerHTML = `<div id="dforecast" data-export-class="agency_forecast"><div class="chain-h">${t("agency_forecast_heading")}</div><div class="note"><span class="loading"></span></div></div>`;
+  }
+  globalThis.agencyForecastTeaser?.(r, $("#dforecast"));
+  await historyReady;
+  if(selectedRFP !== r) return;
+  if(planningDetailRequested) await globalThis.ensureRules?.();
+  if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null);
+  globalThis.agencyForecastTeaser?.(r, $("#dforecast"));
   const [hydrated, chain, stats] = await Promise.all([
     hydrateMoneyActionLocationRow(r),
     loadChain(r),

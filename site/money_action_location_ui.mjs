@@ -7,12 +7,13 @@ function loadPayload() {
   return payloadPromise ||= fetch(DATA_URL).then((response) => response.ok ? response.json() : null).catch(() => null);
 }
 
-export async function initializeMoneyLocationFilters({ t }) {
+export async function initializeMoneyLocationFilters({ t, scope = null }) {
   const payload = await loadPayload();
   fillContractActionLocationSelects(payload, {
     councilLabel: (value) => t("council_district_short", { n: value }),
     anyLabel: t("money_district_any"),
     mapPivotLabel: t("money_district_map_pivot"),
+    scope,
   });
 }
 

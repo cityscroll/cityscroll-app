@@ -889,7 +889,8 @@ function applyHash(){
       };
       closingWeek = q.get("closing") === "week";
       $("#closingweek").classList.toggle("on", closingWeek);
-      $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
+      if(closingWeek) $("#closingweek").setAttribute("aria-current", "page");
+      else $("#closingweek").removeAttribute("aria-current");
       methodSel = q.get("m") || "";
       $("#moneylocationbasis").value="";
       $("#moneyboro").value="";
@@ -1159,6 +1160,8 @@ async function noticeAttachmentMetadata(id){
 // null for a plain "#notice/<id>" link (unchanged behavior). When present, the title/evidence/
 // echo below render exactly as they would if the reader had run the watch themselves.
 async function showNotice(id, watch){
+  await globalThis.ensureMoneyHistory?.();
+  await globalThis.ensureRules?.();
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");

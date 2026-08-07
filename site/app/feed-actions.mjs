@@ -87,6 +87,7 @@ async function resolveFeedNeighborhood(key, query){
 }
 
 async function loadSection(key){
+  if(key === "rules") await globalThis.ensureRules?.();
   const cfg=SECTIONS[key];
   const keepHash=hashLock;
   let kw=($("#"+key+"kw").value||"").trim();
