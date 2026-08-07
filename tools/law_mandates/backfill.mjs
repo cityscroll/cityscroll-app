@@ -11,6 +11,7 @@ const DEFAULT_CACHE_DIR = "tools/law_mandates/cache";
 const DEFAULT_MODEL = "kimi-k3-256k";
 const DEFAULT_ENDPOINT = "http://127.0.0.1:4000/v1/chat/completions";
 const DEFAULT_BATCH_SIZE = 10;
+const DEFAULT_CONCURRENCY = 4;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const HEARTBEAT_MS = 180_000;
 const JOURNAL_SCRIPT = "/Users/james/dev/fiduciary-heartbeat/tools/autonomy_journal.py";
@@ -33,6 +34,7 @@ function parseArgs(argv) {
     startYear: Number(args.start_year || 2014),
     endYear: Number(args.end_year || new Date().getUTCFullYear()),
     batchSize: Math.max(1, Number(args.batch_size || DEFAULT_BATCH_SIZE)),
+    concurrency: Math.max(1, Number(args.concurrency || DEFAULT_CONCURRENCY)),
     maxAttempts: Math.max(1, Number(args.max_attempts || DEFAULT_MAX_ATTEMPTS)),
     model: args.model || DEFAULT_MODEL,
     endpoint: args.endpoint || DEFAULT_ENDPOINT,
@@ -96,6 +98,24 @@ async function postModel({ endpoint, model, prompt }) {
   const content = body?.choices?.[0]?.message?.content;
   if (!content) throw new Error("model_empty_content");
   return content;
+}
+
+async function settledConcurrent(items, concurrency, fn) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  async function worker() {
+    while (cursor < items.length) {
+      const index = cursor;
+      cursor += 1;
+      try {
+        results[index] = { status: "fulfilled", value: await fn(items[index]) };
+      } catch (reason) {
+        results[index] = { status: "rejected", reason };
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, () => worker()));
+  return results;
 }
 
 async function probeRail(options) {
@@ -208,20 +228,30 @@ async function runExtraction(options, manifest, railReceipt, context) {
       state.current_batch = { matter_ids: batch, attempt: batchAttempt, started_at: stamp() };
       await atomicWrite(statePath, state);
       try {
+        const toExtract = [];
         for (const matterId of batch) {
           const outputPath = join(options.outputDir, "laws", `${matterId}.json`);
           if (await readJson(outputPath)) { complete.add(matterId); continue; }
           const law = await loadLaw(options.cacheDir, matterId);
           if (!law?.text) throw new Error(`missing_cached_text:${matterId}`);
           state.attempts[matterId] = (state.attempts[matterId] || 0) + 1;
-          const envelope = await extractMandatesForLaw(law, { model: options.model, invokeModel: ({ prompt }) => postModel({ ...options.modelOptions, prompt }), fetchedAt: law.provenance?.fetched_at });
-          await writeLawOutput(options.outputDir, law, envelope, options.model);
-          complete.add(matterId);
-          failedById.delete(matterId);
-          context.completed = complete.size;
-          context.failed = failedById.size;
-          if (Date.now() - context.lastHeartbeat >= HEARTBEAT_MS) { context.lastHeartbeat = Date.now(); logHeartbeat(context); }
+          toExtract.push({ law, matterId });
         }
+        const settled = await settledConcurrent(toExtract, options.concurrency, ({ law }) => extractMandatesForLaw(law, { model: options.model, invokeModel: ({ prompt }) => postModel({ ...options.modelOptions, prompt }), fetchedAt: law.provenance?.fetched_at }));
+        for (let index = 0; index < settled.length; index += 1) {
+          const result = settled[index];
+          const { law, matterId } = toExtract[index];
+          if (result.status === "fulfilled") {
+            await writeLawOutput(options.outputDir, law, result.value, options.model);
+            complete.add(matterId);
+            failedById.delete(matterId);
+            context.completed = complete.size;
+            context.failed = failedById.size;
+          }
+        }
+        const rejected = settled.filter((result) => result.status === "rejected");
+        if (rejected.length) throw rejected[0].reason;
+        if (Date.now() - context.lastHeartbeat >= HEARTBEAT_MS) { context.lastHeartbeat = Date.now(); logHeartbeat(context); }
         batchSucceeded = true;
       } catch (error) {
         const message = safeModelError(error);
