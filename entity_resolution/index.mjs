@@ -76,7 +76,10 @@ export {
 
 export {
   POLICIES_VERSION,
+  buildAliasIndex,
+  isAcceptedAliasEntry,
   lookupAlias,
+  lookupAliasInRegistry,
   routeDecision,
 } from "./policies/index.mjs";
 
@@ -116,7 +119,19 @@ export {
   INVESTIGATION_WORKSPACE_VERSION,
   REVIEW_VERSION,
   REVIEW_DECISION,
+  ALIAS_ACCEPTED_STATUS,
+  ALIAS_PROPOSAL_STATUS,
+  ALIAS_PROPOSAL_PROMPT_VERSION,
+  ALIAS_PROPOSAL_VERSION,
+  ALIAS_REJECTED_STATUS,
+  appendProposedAliases,
+  buildAliasProposalPrompt,
   buildInvestigationWorkspace,
+  generateAliasProposals,
+  parseAliasProposalResponse,
+  promoteAliasProposal,
+  readAliasRegistry,
+  reviewAliasProposal,
   toReviewItem,
   toReviewItems,
 } from "./review/index.mjs";

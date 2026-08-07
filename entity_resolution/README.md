@@ -19,7 +19,7 @@ surface. **Not an HTTP microservice.**
 | `policies/` | Conservative auto-link routing + alias-registry (`conservative_v1`) |
 | `evaluation/` | Re-exports gold, authority metrics, and clerical-audit helpers |
 | `eval/` | Versioned gold, metrics CLIs, authority fixtures, and audit receipts (keep paths stable) |
-| `review/` | Human review queue shaping + reviewed alias registry |
+| `review/` | Human review queue shaping + reviewed alias registry; LLM alias proposals remain PROPOSED until clerk review |
 | `publication/` | Allowlist serializers that enforce the public sensitivity boundary |
 | `index.mjs` | Package root public exports |
 
@@ -73,8 +73,10 @@ not distributed cosplay for a single-maintainer product.
   view; the separately keyed `/admin/possibly-same` desk owns review writes.
 - **No destructive merges** from the shadow path; production dual-write flags capture source
   snapshots and exact-stem links without changing publisher records.
-- **No LLM as primary matcher** — residue adjudicator only after a conventional scorer,
-  with stored prompts/version and human override (future; not this package).
+- **No LLM as primary matcher** — the alias proposal seam in `review/llm_alias_proposals.mjs`
+  may suggest pairs over an injected model adapter, but persists only `PROPOSED` entries with
+  prompt/model provenance and evidence. `reviewAliasProposal()` is the explicit human gate;
+  only `ACCEPTED` entries are visible to `policies/`, and proposals never auto-link.
 - **No destructive merge of source rows** — links only (`entity_link` taxonomy).
 - **No silent gold mutation** — eval gold versioning rules in `eval/README.md`.
 - **Not a published npm package** — monorepo path imports; no separate versioned registry
