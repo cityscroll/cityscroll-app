@@ -8,7 +8,7 @@ creates links.
 
 | Path | Role |
 | --- | --- |
-| `gold_v0.jsonl` | Versioned hard-case gold (pair labels) |
+| `gold_v0.jsonl`, `gold_v1.jsonl`, `gold_v2.jsonl` | Versioned hard-case gold (pair labels) |
 | `review_action_export.mjs` | Pure export of privacy-safe desk/action-log reviews into gold-ready candidates |
 | `fixtures/review_actions_v0.json` | Characterization fixture for review-action export |
 | `run_metrics.mjs` | Load gold, run predictions, and print metric keys |
@@ -21,6 +21,7 @@ creates links.
 | `run_entity_components.mjs` | Sample whole components and score entity-level fragmentation / constraint violations |
 | `entity_audit_sampling.mjs` | Inclusion-probability-aware entity sampler and weighted rate helpers |
 | `clerical_audit.mjs` | Pure stratified sampling, label-sheet, and gold-promotion helpers |
+| `tools/build_clerical_label_batch.mjs` | Append-only verdict receipts and review-only confirmation registry for a labeled tray |
 | `audits/<date>/` | Versioned sample, label sheet, and reproducibility receipt |
 | `entity_audits/<date>/` | Versioned entity sample, review sheet, and sampling receipt |
 | `fixtures/shadow_monitoring_v0.json` | Characterization snapshot for quiet-debt monitoring |
@@ -163,21 +164,22 @@ existing `conventional_v2` implementation is the baseline. The compatibility
 export from `matchers/` remains for existing callers; policy, review,
 link-not-merge, alias-registry, and materialization behavior are unchanged.
 
-Run the baseline-only bake-off (optional contenders are recorded as `not_run`):
+Run the bake-off against the widened gold (optional contenders are recorded as
+`not_run` unless their isolated adapters are supplied):
 
 ```bash
 node entity_resolution/eval/run_bakeoff.mjs \
-  --gold entity_resolution/eval/gold_v1.jsonl \
-  --out-dir entity_resolution/eval/bakeoff/2026-08-06
+  --gold entity_resolution/eval/gold_v2.jsonl \
+  --out-dir entity_resolution/eval/bakeoff/2026-08-06-v2
 ```
 
 The report measures candidate recall, pair precision/recall, false merges and
 splits, cluster fragmentation, negative constraints, calibration bands, and
 incremental-vs-full status. Metrics are evaluated after the unchanged policy
 router; raw scorer probabilities and evidence remain in the report for
-calibration. The current 56-case gold set saturates the baseline pair metrics,
-so the report deliberately recommends extending the gold set from unresolved
-clerical-review candidates before choosing a production scorer.
+calibration. The v2 report includes the unresolved-band clerical stratum, so
+precision, recall, calibration, and incremental behavior can discriminate
+scorers without declaring a production winner.
 
 Each bake-off run also writes `labeling_function_accounting.json` and
 `labeling_function_accounting.md`. The accounting is versioned separately as
@@ -197,6 +199,29 @@ node entity_resolution/eval/run_labeling_function_accounting.mjs \
 
 For the two optional adapters and their isolated dependency environment, see
 `eval/contenders/README.md` and `eval/optional-requirements.txt`.
+
+The 2026-08-06 clerical batch extends the gold to v2 (158 cases) with 102
+determinate labels from 103 ranked candidates. One parent/program case remains
+undeterminable in `entity_resolution/eval/audits/2026-08-06-label-batch/` and is
+not promoted. The confirmation registry is review-only; it cannot authorize an
+operative entity link.
+
+To reproduce the live vendor-bearing tray and its evidence artifacts:
+
+```bash
+node tools/export_er_clerical_audit.mjs --live \
+  --source-systems city_record,checkbook_contracts,checkbook_spending,passport_public_contracts \
+  --out-dir entity_resolution/eval/audits/YYYY-MM-DD \
+  --near-miss-size 150 --auto-link-size 50
+node tools/build_clerical_label_batch.mjs \
+  --out-dir entity_resolution/eval/audits/YYYY-MM-DD-label-batch \
+  --input entity_resolution/eval/audits/YYYY-MM-DD/audit_sample.jsonl
+```
+
+The optional `--source-systems` filter is restricted to vendor-bearing rails
+and records the selected systems in the live receipt. Promote only reviewed
+`same`/`different` rows with the existing promotion CLI; leave
+`undeterminable` rows blank and retain them in the confirmation registry.
 
 ## Silver authority evaluation
 

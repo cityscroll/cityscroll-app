@@ -1,0 +1,2933 @@
+{
+  "schema_version": 1,
+  "registry_kind": "entity_resolution_clerical_confirmations",
+  "batch_version": "er_clerical_label_batch_v1",
+  "observed_on": "2026-08-06",
+  "status": "review_only",
+  "confirmations": [
+    {
+      "receipt_id": "ev-33c6f0dc96b0af19",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-84496331d66fa81b",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.95,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260714010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260714010",
+          "display_name": "Edith & Carl Marks Jewish Community House of Bensonhurst"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260605015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605015",
+          "display_name": "Edith and Carl Marks Jewish Community House of Bensonhurst"
+        }
+      ],
+      "evidence_summary": "Distinctive vendor-name variant with high token overlap and no conflicting hard identifier in the ranked tray. Matcher confidence=0.95; token similarity 1.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-e1abdb81e12652f0",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-977352a0e02a7468",
+      "verdict": "same",
+      "score_band": "0.75-0.90",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.777,
+      "token_jaccard": 0.8333333333333334,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716010",
+          "display_name": "HNTB New York Engineering Architecture and Landscape"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260623008",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623008",
+          "display_name": "HNTB New York Engineering and Architecture, P.C."
+        }
+      ],
+      "evidence_summary": "Distinctive vendor-name variant with high token overlap and no conflicting hard identifier in the ranked tray. Matcher confidence=0.777; token similarity 0.8333333333333334.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-764e101f15c4fbf1",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-ee495dd43ac193f9",
+      "verdict": "same",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.739,
+      "token_jaccard": 0.7142857142857143,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260709015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709015",
+          "display_name": "Neighborhood Association for Inter-Cultural Affair"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260617009",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617009",
+          "display_name": "Neighborhood Association for Inter-Cultural Affairs"
+        }
+      ],
+      "evidence_summary": "Distinctive vendor-name variant with high token overlap and no conflicting hard identifier in the ranked tray. Matcher confidence=0.739; token similarity 0.7142857142857143.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-158ea47a66797540",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-aae3417be8fa5e0f",
+      "verdict": "same",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.693,
+      "token_jaccard": 0.6,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260623014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623014",
+          "display_name": "Southern Queens Park Assoc., Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260612010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612010",
+          "display_name": "Southern Queens Park Association, Inc."
+        }
+      ],
+      "evidence_summary": "Distinctive vendor-name variant with high token overlap and no conflicting hard identifier in the ranked tray. Matcher confidence=0.693; token similarity 0.6.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-81631a8a6f868855",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-75f4e4907109d5f3",
+      "verdict": "same",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.683,
+      "token_jaccard": 0.5714285714285714,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622043",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622043",
+          "display_name": "Child Development Center - Mosholu Montefiore Community Center"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609019",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609019",
+          "display_name": "Child Development Center of the Moshulu-Montefiore"
+        }
+      ],
+      "evidence_summary": "Distinctive vendor-name variant with high token overlap and no conflicting hard identifier in the ranked tray. Matcher confidence=0.683; token similarity 0.5714285714285714.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-7de20e288e1f16d7",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-13a89ac5e4c6a728",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260722015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260722015",
+          "display_name": "Kings Bay YM -YWHA Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260722014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260722014",
+          "display_name": "Kings Bay YM -YWHA Inc."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-0cf4a65716690b1c",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-793f5dc58ca6f830",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260722011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260722011",
+          "display_name": "The Children's Aid Society"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622025",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622025",
+          "display_name": "The Children's Aid Society"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-a722f158cee6ef70",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-ae8baa49eb72716c",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260709014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709014",
+          "display_name": "Commonpoint NY Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260701013",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701013",
+          "display_name": "Commonpoint NY Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-2d48ebdc5f45541f",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-ac4a6ef99e3c7105",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260701012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701012",
+          "display_name": "Riseboro Community Partnership Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260617016",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617016",
+          "display_name": "Riseboro Community Partnership Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-736f61588582da8a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-fa391fd53c8a2b9f",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260713003",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260713003",
+          "display_name": "Compulink Technologies Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260624030",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624030",
+          "display_name": "Compulink Technologies Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-225a2e392358ead3",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-fec55cd54a7360c2",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622056",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622056",
+          "display_name": "Jewish Board of Family and Children's Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611049",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611049",
+          "display_name": "Jewish Board of Family and Children's Services Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-83866750f3847f02",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-120c1fbc181781b6",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260724016",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260724016",
+          "display_name": "Chinese American Planning Council Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622050",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622050",
+          "display_name": "Chinese American Planning Council Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-c1c8530607af5fb4",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-d66af5e51050546b",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260616008",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616008",
+          "display_name": "Queens Community House Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611031",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611031",
+          "display_name": "Queens Community House Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-d68b0f79ebd202c2",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-2bfa24c1945db040",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727012",
+          "display_name": "Vocational Instruction Project Community Services"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260721014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721014",
+          "display_name": "Vocational Instruction Project Community Services"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-86d9a0f26167c087",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-cb9ded4d8be7a2e2",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622060",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622060",
+          "display_name": "New York Foundling"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260610048",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610048",
+          "display_name": "New York Foundling"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-3ca1d58144793a29",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-fc5630f70df1a6e9",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723015",
+          "display_name": "Wingglee LLC"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611069",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611069",
+          "display_name": "Wingglee LLC"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-5572bad5f0c169bd",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-9023c2944d1379c2",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260625013",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625013",
+          "display_name": "The Children's Village"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260616044",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616044",
+          "display_name": "The Children's Village"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-d8772bbce8c0ebda",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-1839a6e7a55532ae",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260630012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630012",
+          "display_name": "Ohel Children's Home and Family Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260615038",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615038",
+          "display_name": "Ohel Children's Home and Family Services Inc."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-5c99903aa226e71a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-6b888d739fb9615d",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260618027",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618027",
+          "display_name": "SCO Family of Services"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611050",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611050",
+          "display_name": "SCO Family of Services"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-925b44b2d96871d4",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-4ad6b4e9e9d6741b",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260616048",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616048",
+          "display_name": "Catholic Charities Neighborhood Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260615025",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615025",
+          "display_name": "Catholic Charities Neighborhood Services Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-0c8326e403973dc4",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-8be222e5830c1933",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260611015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611015",
+          "display_name": "Common Ground Management Corp"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260610044",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610044",
+          "display_name": "Common Ground Management Corp"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-6b725e863d0cf34a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-f5c168b1831695d0",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622042",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622042",
+          "display_name": "YMCA of Greater New York"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260615014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615014",
+          "display_name": "YMCA of Greater New York"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-0d9a7a3ebe22ca34",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-17b33b8a7dc6b5fb",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260629005",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629005",
+          "display_name": "Sienia Construction Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260612042",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612042",
+          "display_name": "Sienia Construction Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-746c10d0e787bb64",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-8c4b9911e92e75b3",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723010",
+          "display_name": "Hebrew Educational Society of Brooklyn"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611014",
+          "display_name": "Hebrew Educational Society of Brooklyn"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-1cb2c5fd63991940",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-f91b0b601d27da22",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260724019",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260724019",
+          "display_name": "Services for the Underserved Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260721013",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721013",
+          "display_name": "Services for the Underserved Inc."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-420ffed20ddda947",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-2faf5b6780849e75",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260717008",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260717008",
+          "display_name": "BronxWorks Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609036",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609036",
+          "display_name": "Bronxworks Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-e26e19e8e59c30b3",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-a5916ca4bca7a528",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260612024",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612024",
+          "display_name": "Atlantic Rolling Steel Door Corp."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611067",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611067",
+          "display_name": "Atlantic Rolling Steel Door Corp."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-321f65841ffa7ea8",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-6544680dcf28edff",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260715043",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715043",
+          "display_name": "Graham-Windham"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622059",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622059",
+          "display_name": "Graham-Windham"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-556a79729187a06a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-95549b0005784a35",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260611040",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611040",
+          "display_name": "Samaritan Daytop Village Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260610040",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610040",
+          "display_name": "Samaritan Daytop Village Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-983fa7f6ba6fbc5f",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-a85d0bc5fde282ac",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260630014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260630014",
+          "display_name": "Rising Ground Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260610045",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610045",
+          "display_name": "Rising Ground Inc."
+        }
+      ],
+      "evidence_summary": "Distinctive vendor-name variant with high token overlap and no conflicting hard identifier in the ranked tray. Matcher confidence=0.985; token similarity 1.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-eefb6277d79865ca",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-db6463f2c698d5f8",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260618020",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618020",
+          "display_name": "Volunteers of America Greater New York Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611044",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611044",
+          "display_name": "Volunteers of America Greater New York Inc."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-163b77a11fd7ba2a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-e8d8b9ba5bb35c39",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260617025",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617025",
+          "display_name": "Bowery Residents' Committee, Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611042",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611042",
+          "display_name": "Bowery Residents' Committee, Inc."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-8f060b5adca6e12f",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-91d8decbda56e9d7",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260701018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701018",
+          "display_name": "CAMBA Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609023",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609023",
+          "display_name": "CAMBA Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-500abd5dc057e6d8",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-0822076d9b87788b",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260615057",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615057",
+          "display_name": "Good Shepherd Services"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260615054",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615054",
+          "display_name": "Good Shepherd Services"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-02e0478ef94f94dc",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-3b604c7bf6bc05b6",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260625017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625017",
+          "display_name": "Cardinal McCloskey School & Home for Children"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622030",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622030",
+          "display_name": "Cardinal McCloskey School & Home for Children"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-af5d4b9243ca0aa2",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-04f6916b9012ed12",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260730015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730015",
+          "display_name": "Services for the Underserved Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260728013",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728013",
+          "display_name": "Services for the Underserved Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-c2605220e5fa7808",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-9b3243cad676e7e9",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260730008",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730008",
+          "display_name": "St. Vincent's Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260728009",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728009",
+          "display_name": "St. Vincent's Services Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-372e9cc7c6940d96",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-adc1392c16798525",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260730009",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730009",
+          "display_name": "Goddard Riverside Community Center"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260729016",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729016",
+          "display_name": "Goddard Riverside Community Center"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-fb869c28e6fb2d10",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-26890a5f84e20adc",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260730021",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730021",
+          "display_name": "Breen Brothers Towing"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260730020",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730020",
+          "display_name": "Breen Brothers Towing"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-3bac607295a15d64",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-f03008c42430b96e",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260729014",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729014",
+          "display_name": "Volunteers of America Greater New York Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260728016",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728016",
+          "display_name": "Volunteers of America Greater New York Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-b137918027bb72b5",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-e16609d714ba1b31",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260729017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729017",
+          "display_name": "Urban Resource Institute"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260728017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728017",
+          "display_name": "Urban Resource Institute"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-5a06738d3824a06a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-b9a4577bef48127a",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260730018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730018",
+          "display_name": "Compulink Technologies Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260727027",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727027",
+          "display_name": "Compulink Technologies Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-dc27162f7293b30a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-b79a7233ca31844e",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260729012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729012",
+          "display_name": "CAMBA Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260728020",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728020",
+          "display_name": "CAMBA Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-07780f50b12b5a6e",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-a362e98e676c3020",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727009",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727009",
+          "display_name": "Queens Community House Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260727008",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727008",
+          "display_name": "Queens Community House Inc"
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-bafff95c30cd7987",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-b05a5f6d268db68d",
+      "verdict": "same",
+      "score_band": "0.95-0.99",
+      "ranked_tray": "auto_link",
+      "matcher_decision": "same",
+      "matcher_confidence": 0.985,
+      "token_jaccard": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727011",
+          "display_name": "Italian American Civil Rights League Canarsie Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260727010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727010",
+          "display_name": "Italian American Civil Rights League Canarsie Inc."
+        }
+      ],
+      "evidence_summary": "Exact vendor display name across distinct source records; differing PINs are procurement-record identifiers, not vendor identity evidence.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    }
+  ],
+  "rejections": [
+    {
+      "receipt_id": "ev-12d1b793ff8166e7",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-c21f24550a684bb1",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.721,
+      "token_jaccard": 0.6666666666666666,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260720009",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260720009",
+          "display_name": "Variety Boys and Girls Club of Queens, Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260707015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260707015",
+          "display_name": "Boys & Girls Club of Metro Queens, Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.721; token similarity 0.6666666666666666.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-f3fa38e00b3fdec3",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-5f279565a0b7094b",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.718,
+      "token_jaccard": 0.6666666666666666,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260617005",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617005",
+          "display_name": "Staten Island Community Job Center Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608016",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608016",
+          "display_name": "Jewish Community Center of Staten Island, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.718; token similarity 0.6666666666666666.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-ab605c6e2b63bf9e",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-85d384030f9c8f8f",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.709,
+      "token_jaccard": 0.625,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260615012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615012",
+          "display_name": "Young Men's and Young Women's Hebrew Association of Boro Park"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260615011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615011",
+          "display_name": "Young Men's and Young Women's Hebrew Association of the Bronx"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.709; token similarity 0.625.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-f7bb4d62c43f02fd",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-5be7bdcc8d8c1f93",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.675,
+      "token_jaccard": 0.5555555555555556,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260721008",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721008",
+          "display_name": "Young Men's and Young Women's Hebrew Association Washington Heights & Inwood"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611022",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611022",
+          "display_name": "Young Men's and Young Women's Hebrew Association of the Bronx"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.675; token similarity 0.5555555555555556.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-ac826db136edafab",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-076efa5fccef053a",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.665,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727007",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727007",
+          "display_name": "Sunnyside Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260616018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616018",
+          "display_name": "Community Mediation Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.665; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-ac1874f0c7c58ab9",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-0e95eec598e6da38",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.665,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727007",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727007",
+          "display_name": "Sunnyside Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.665; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-8ed43df9636d1cff",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-508495284eb3c40b",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.665,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.665; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-d54b39fd2fef176a",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-55bb4fa2f75f8f67",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.665,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260724018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260724018",
+          "display_name": "Community Mediation Services, Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.665; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-e0b6352340acf2cc",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-8558534b8bff155a",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260618022",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618022",
+          "display_name": "Lutheran Social Services of Metropolitan New York"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611036",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611036",
+          "display_name": "Korean Community Services of Metropolitan New York"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-3b9d494565c6b509",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-02abefefa0a129fd",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260617013",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617013",
+          "display_name": "Sunnyside Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-741ec73f5f181c31",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-083373c63a43eadb",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-d7c7a74c2a6479b1",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-1a4c647f77f7f223",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727007",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727007",
+          "display_name": "Sunnyside Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-7be79c47d06a1483",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-41b57c4274262d75",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260724018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260724018",
+          "display_name": "Community Mediation Services, Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-f6d41f553da6c320",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-44b77b0b83549519",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609041",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609041",
+          "display_name": "Community Mediation Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-ab33542d5206d176",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-4e1f753debf2e867",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-8b70b4a15d8ff9aa",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-245cbc037dbd5b13",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260720011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260720011",
+          "display_name": "Lantern Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-c23fc589f0d69fac",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-719ebba7fa7afffe",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622023",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622023",
+          "display_name": "Lantern Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-675241871d5f838b",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-0f1e40d154558084",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260720011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260720011",
+          "display_name": "Lantern Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-338a90442aab3a28",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-62ba665bbb52d0d8",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.664,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260610028",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610028",
+          "display_name": "Presbyterian Senior Services"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608030",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608030",
+          "display_name": "Riverdale Senior Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.664; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-4c562446796042f1",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-a4a82f98a358d540",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.663,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260616034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616034",
+          "display_name": "Hope Senior Center Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260616026",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616026",
+          "display_name": "Stein Senior Center, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.663; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-f8307c67985dba9d",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-10df9ee0d2dd17b8",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.663,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260616034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616034",
+          "display_name": "Hope Senior Center Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608019",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608019",
+          "display_name": "Brookls Senior Center"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.663; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-f44284e73ca749e3",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-68c1fe7210e1f5cf",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.663,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260721027",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260721027",
+          "display_name": "Center for Community Alternatives Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260617024",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617024",
+          "display_name": "Center for Urban Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.663; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-09b7c9e914ed1a4b",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-e856e10eca19876f",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.663,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260617024",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617024",
+          "display_name": "Center for Urban Community Services, Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608012",
+          "display_name": "Center for Community Alternatives, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.663; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-c66d2ed0c19ff4e6",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-fc2cab5c2f3c9c43",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.663,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260617020",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617020",
+          "display_name": "Mid-Bronx Senior Citizens Council Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260617018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617018",
+          "display_name": "Northeast Bronx Senior Citizens Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.663; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-79b4adf43f13119b",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-0aa29c283c9e9d4c",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.663,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260610054",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260610054",
+          "display_name": "New York Foundling"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609021",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609021",
+          "display_name": "New York Edge Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.663; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-690366a552ad29a1",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-22631564885b1057",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727007",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727007",
+          "display_name": "Sunnyside Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622023",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622023",
+          "display_name": "Lantern Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-d29fe6f52ad9abd9",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-392ff34b21a4de79",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622023",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622023",
+          "display_name": "Lantern Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609041",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609041",
+          "display_name": "Community Mediation Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-db5ca6f971b6ce0f",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-68571e772318df3d",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622023",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622023",
+          "display_name": "Lantern Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-73aabc17a4c8826b",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-63d48e1914e3e284",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-65f55e89205aa44e",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-9846d8e7c8ee42d6",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-ec2c4cbc5f692af5",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-18de1348285d1458",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-eb89ea1f3ad200eb",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-fb8f0e1e96505593",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622021",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622021",
+          "display_name": "Encore Community Services"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-02d952736cac6e93",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-809477514dd1b9f0",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622010",
+          "display_name": "Montefiore Medical Center"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609009",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609009",
+          "display_name": "Richmond Medical Center"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-cdee68a964307727",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-e6a023441237cde3",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260616026",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616026",
+          "display_name": "Stein Senior Center, Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608019",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608019",
+          "display_name": "Brookls Senior Center"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-e6da99e1a34b5b21",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-013787003294de6a",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-a61dbb71a4c55104",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-3562bdd95fd9de8e",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609041",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609041",
+          "display_name": "Community Mediation Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-0605904a7e6086c6",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-7090b274122e505d",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260617010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617010",
+          "display_name": "Sunnyside Community Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-c196606864ff498d",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-24e9947d2506744c",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260629041",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629041",
+          "display_name": "Legal Interpreting Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260625057",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625057",
+          "display_name": "LC Interpreting Services LLC"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-0b511604a38958c8",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-054bbf43be7839e4",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260623041",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260623041",
+          "display_name": "University Settlement Society of New York"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608042",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608042",
+          "display_name": "The Horticultural Society of New York"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-bee291e43bd3a3e3",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-1f1ad86deee16184",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260706030",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706030",
+          "display_name": "New York Therapeutic"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611053",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611053",
+          "display_name": "New York Foundling"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-a697b9633efbb3fb",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-35d8eb2628b752e3",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260611025",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611025",
+          "display_name": "Dorchester Senior Citizen Center Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609031",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609031",
+          "display_name": "Peter Cardella Senior Citizen Center Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-afaabe5bb5773477",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-746664c157408aab",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260720011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260720011",
+          "display_name": "Lantern Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-99bf08b9fb8c2bc3",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-1206260e00964bf1",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.661,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622017",
+          "display_name": "Catholic Charities Community Services Archdiocese"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260616048",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616048",
+          "display_name": "Catholic Charities Neighborhood Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.661; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-0016d4426702a9a2",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-a007c6dedfc46dd3",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.66,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260629011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260629011",
+          "display_name": "New York Scores"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609021",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609021",
+          "display_name": "New York Edge Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.66; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-b93483043dca967b",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-2d81199a695e4fc2",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.66,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260608034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260608034",
+          "display_name": "Selfhelp Community Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.66; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-942a5768b1cb7850",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-819d3079f681c8e0",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.66,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260611011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260611011",
+          "display_name": "Risewell Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.66; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-bc5914c2f322d6b7",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-6e70db8209cbe2b1",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260723011",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260723011",
+          "display_name": "Inwood Community Services Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260622021",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622021",
+          "display_name": "Encore Community Services"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-9b79dbe830507c97",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-005a59b955b26396",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260624012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624012",
+          "display_name": "Grand Street Settlement Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260618016",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618016",
+          "display_name": "Henry Street Settlement"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-60c8cb77ac9dd8a9",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-c777b3a59ccefd93",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260706030",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706030",
+          "display_name": "New York Therapeutic"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609021",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609021",
+          "display_name": "New York Edge Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-adb56cd501a53400",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-64f8eb77fb64303c",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260709010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260709010",
+          "display_name": "DIVAS for Social Justice Inc."
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260615030",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615030",
+          "display_name": "Black Veterans for Social Justice"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-45cb8ad8c0982717",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-1b0756d67cb24616",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260618018",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260618018",
+          "display_name": "Homecrest Community Services Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-62fdacd948d658c9",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-30bb304f1866ad37",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260609041",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260609041",
+          "display_name": "Community Mediation Services, Inc."
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-162298d06aa402b0",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-6ff9a416af4cc3bf",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260716017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260716017",
+          "display_name": "Geel Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260617010",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617010",
+          "display_name": "Sunnyside Community Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-4cee70fc58e0aed2",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-106af595cd5fb90a",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.659,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260615034",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260615034",
+          "display_name": "The Legal Aid Society"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260612019",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260612019",
+          "display_name": "The Children's Aid Society"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.659; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-08b93e8c58453fe1",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-37d40d4116c7ddac",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.662,
+      "token_jaccard": 0.5,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260729015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729015",
+          "display_name": "Lantern Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260727007",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727007",
+          "display_name": "Sunnyside Community Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.662; token similarity 0.5.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-07eaa0f0a0484f18",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-fc6422b76c7e68ee",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.593,
+      "token_jaccard": 0.3333333333333333,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260727012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727012",
+          "display_name": "Vocational Instruction Project Community Services"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260727007",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727007",
+          "display_name": "Sunnyside Community Services Inc"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.593; token similarity 0.3333333333333333.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    },
+    {
+      "receipt_id": "ev-f598e736abf934c9",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-018ab0609b31e88b",
+      "verdict": "different",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.591,
+      "token_jaccard": 0.3333333333333333,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260729015",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260729015",
+          "display_name": "Lantern Community Services Inc"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260727012",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260727012",
+          "display_name": "Vocational Instruction Project Community Services"
+        }
+      ],
+      "evidence_summary": "Distinct vendor display names and distinct source-native identifiers provide the majority evidence for separate organizations; no shared hard identifier or reviewed alias is present in this tray. Matcher confidence=0.591; token similarity 0.3333333333333333.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    }
+  ],
+  "pending": [
+    {
+      "receipt_id": "ev-eddbe516a2151dcc",
+      "evidence_version": "er_clerical_evidence_v1",
+      "audit_id": "era-02c808cc53541d86",
+      "verdict": "undeterminable",
+      "score_band": "0.50-0.75",
+      "ranked_tray": "near_miss",
+      "matcher_decision": "unresolved",
+      "matcher_confidence": 0.709,
+      "token_jaccard": 0.6666666666666666,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "native_key": "20260622043",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260622043",
+          "display_name": "Child Development Center - Mosholu Montefiore Community Center"
+        },
+        {
+          "source_system": "city_record",
+          "native_key": "20260605017",
+          "ref": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605017",
+          "display_name": "Mosholu Montefiore Community Center Inc"
+        }
+      ],
+      "evidence_summary": "The names may describe a program or center operated by the other organization, but the available record fields contain no legal-entity relationship or shared hard identifier. No identity verdict is made.",
+      "reviewer": "independent_label_review",
+      "reviewed_at": "2026-08-06"
+    }
+  ],
+  "review_batches": [
+    {
+      "source_audits": [
+        "entity_resolution/eval/audits/2026-07-31/audit_sample.jsonl",
+        "entity_resolution/eval/audits/2026-08-06-city-record/audit_sample.jsonl"
+      ],
+      "candidate_count": 103,
+      "determinate_count": 102,
+      "confirmed_same": 45,
+      "confirmed_different": 57,
+      "undeterminable": 1,
+      "score_bands": {
+        "0.95-0.99": {
+          "total": 41,
+          "same": 41,
+          "different": 0,
+          "undeterminable": 0
+        },
+        "0.75-0.90": {
+          "total": 1,
+          "same": 1,
+          "different": 0,
+          "undeterminable": 0
+        },
+        "0.50-0.75": {
+          "total": 61,
+          "same": 3,
+          "different": 57,
+          "undeterminable": 1
+        }
+      },
+      "majority_rule": "Within each ranked tray, the clerk records same only when identity evidence outweighs shared generic tokens; otherwise distinct names/identifiers support different, and missing legal-entity evidence remains undeterminable."
+    }
+  ],
+  "operative_links_enabled": false,
+  "policy": "These append-only confirmations are evaluation evidence only. Scorer output never authorizes an operative entity link; undeterminable pairs remain outside gold promotion."
+}

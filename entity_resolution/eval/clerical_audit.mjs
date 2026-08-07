@@ -64,7 +64,7 @@ function normalizeObservation(row, index) {
   const snapshot = parseObject(row.normalized_snapshot);
   const sourceSystem = clean(row.source_system || "city_record");
   const nativeKey = clean(row.source_system_id || row.request_id || row.native_key);
-  const displayName = clean(row.vendor_name || row.display_name || snapshot.vendor_name);
+  const displayName = clean(row.vendor_name || row.display_name || snapshot.vendor_name || snapshot.vendor);
   if (!sourceSystem || !nativeKey || !displayName) return null;
   const sourceRecordId = clean(row.source_record_id)
     || [sourceSystem, nativeKey, clean(row.content_hash)].filter(Boolean).join(":");
@@ -78,7 +78,7 @@ function normalizeObservation(row, index) {
     source_record_id: sourceRecordId || `${sourceSystem}:row-${index + 1}`,
     display_name: displayName,
     vendor_name: displayName,
-    pin: clean(row.pin || snapshot.pin),
+    pin: clean(row.pin || snapshot.pin || snapshot.epin),
     ingested_at: clean(row.ingested_at),
     entity_type: "vendor",
     link_state_available: row.link_state_available === true || Number(row.link_state_available) === 1,
