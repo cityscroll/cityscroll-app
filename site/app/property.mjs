@@ -6,11 +6,16 @@ import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderPropertyCommercialDetail } from "../property_commercial_ui.mjs";
 import { bblReaderLabel } from "../bbl_reader.mjs";
 import { renderPropertyAgencySelect, propertyAgencySelectionChanges } from "../property_agency_ui.mjs";
+import {
+  normalizePriceBandKey,
+  normalizePropertyProcess,
+  normalizePropertyTemporal,
+  normalizeSaleMethodKey,
+  priceBandForAmount,
+} from "../property_disposition_facets.mjs";
+import { bindPropertyScopeFacetRail, propertyDispositionFacetRailsHTML } from "../property_disposition_facets_ui.mjs";
 
-/* ===== Franchise / concession review process spine (FCRC multi-notice chain).
-   Reconstructs solicitation → public hearing → committee meeting → award for one
-   franchise/concession agreement or annual plan, joined by counterparty stem,
-   plan year, or FCRC rules subject. Empty stages stay class-(a). ===== */
+/* Franchise / concession multi-notice process spine. */
 function franchiseStageLabel(kind){
   if(kind==="solicitation") return t("franchise_stage_solicitation");
   if(kind==="public_hearing") return t("franchise_stage_public_hearing");
@@ -710,11 +715,13 @@ function classifyAsset(rec){
   if(has("rfp","request for proposal","redevelopment","lease auction","lease","license")) return "real_property";
   return "other";
 }
+// Fail-closed When key (self-contained for unit extractFn).
 function propStage(r){
   const dl=daysLeft(r.event_date);
-  if(dl!==null && dl>=0) return dl<=30 ? "soon" : "upcoming";
+  if(dl!==null&&dl>=0) return dl<=30?"soon":"upcoming";
+  if(dl!==null&&dl<0) return "past";
   if(/hearing/i.test(r.type_of_notice_description||"")) return "proposed";
-  return "past";
+  return null;
 }
 const PROP_STAGES=[["all","stage_all"],["proposed","stage_proposed"],["soon","stage_soon"],["upcoming","stage_upcoming"],["past","stage_past"]];
 function priceKindBadge(kind, amt){
@@ -1080,48 +1087,23 @@ function updatePropertyMoreFiltersState(){
     else { badge.textContent=""; badge.hidden=true; }
   }
 }
-const SALE_METHOD_BUCKETS=[
-  ["online_auction","sale_method_online_auction"],
-  ["public_auction","sale_method_public_auction"],
-  ["sealed_bid","sale_method_sealed_bid"],
-  ["rfp","sale_method_rfp"],
-  ["lease_auction","sale_method_lease_auction"],
-];
-const PRICE_BAND_BUCKETS=[
-  ["all","price_band_all"],
-  ["priced","price_band_priced"],
-  ["under_10k","price_band_under_10k"],
-  ["10k_100k","price_band_10k_100k"],
-  ["100k_plus","price_band_100k_plus"],
-];
-function normalizePropSaleMethod(raw){
-  if(raw==null||raw===""||raw==="all") return "all";
-  const key=String(raw).trim().toLowerCase().replace(/-/g,"_");
-  return SALE_METHOD_BUCKETS.some(([k])=>k===key) ? key : "all";
-}
-function normalizePropPriceBand(raw){
-  if(raw==null||raw===""||raw==="all") return "all";
-  const key=String(raw).trim().toLowerCase().replace(/-/g,"_");
-  return PRICE_BAND_BUCKETS.some(([k])=>k===key) ? key : "all";
-}
+const normalizePropSaleMethod=normalizeSaleMethodKey;
+const normalizePropPriceBand=normalizePriceBandKey;
 function normalizePropSort(raw){
   const key=String(raw||"").trim().toLowerCase().replace(/-/g,"_");
-  return ["closing_soon","newest","price_desc","price_asc"].includes(key) ? key : "closing_soon";
+  return ["closing_soon","newest","price_desc","price_asc"].includes(key)?key:"closing_soon";
 }
 function propPriceBandOf(r){
-  const commercial=r && r.commercial;
-  const amount=commercial && commercial.primary_price && Number.isFinite(Number(commercial.primary_price.amount))
-    ? Number(commercial.primary_price.amount)
-    : (commercial && commercial.glance && commercial.glance.price && Number.isFinite(Number(commercial.glance.price.amount))
-      ? Number(commercial.glance.price.amount) : null);
-  if(amount==null) return null;
-  // Product band thresholds (UX chips; not measured market data).
-  if(amount<10000) return "under_10k"; // product threshold: under $10,000
-  if(amount<100000) return "10k_100k"; // product threshold: $10,000–$99,999.99
-  return "100k_plus"; // product threshold: $100,000+
+  const c=r&&r.commercial;
+  const amount=c?.primary_price&&Number.isFinite(Number(c.primary_price.amount))?Number(c.primary_price.amount)
+    :(c?.glance?.price&&Number.isFinite(Number(c.glance.price.amount))?Number(c.glance.price.amount):null);
+  return priceBandForAmount(amount);
 }
 function propSaleMethodOf(r){
-  return (r && r.commercial && r.commercial.sale_method && r.commercial.sale_method.method) || null;
+  const method=r?.commercial?.sale_method?.method||null;
+  if(!method) return null;
+  const key=normalizeSaleMethodKey(method);
+  return key==="all"?null:key;
 }
 async function renderPropExplorer(){
   propAsset=normalizePropAsset(propAsset);
@@ -1194,7 +1176,6 @@ async function renderPropExplorer(){
   }
   const tools=await propertyExplorerTools();
   const coverage=tools?.stampPropertyActionCharacters?.(propAll).coverage;
-  const processRail=$("#processrail");
   const borough=$("#propertyboro")?.value||"", neighborhood=($("#propertyneighborhood")?.value||"").trim();
   const filterOptions={
     agency: propAgency || null,
@@ -1286,11 +1267,34 @@ async function renderPropExplorer(){
     el.querySelectorAll(".chip").forEach(button=>button.addEventListener("click",()=>selectPropertyFacet(()=>apply(normalize?normalize(button.dataset[dataKey]):button.dataset[dataKey]))));
   };
   renderFacetRail($("#assettabs"),[["all","all_types"],...ASSET_BUCKETS],propAsset,"a","asset",normalizePropAsset,value=>{ propAsset=value; });
-  renderFacetRail($("#salerail"),[["all","sale_method_all"],...SALE_METHOD_BUCKETS],propSaleMethod,"m","saleMethod",normalizePropSaleMethod,value=>{ propSaleMethod=value; });
-  renderFacetRail($("#pricerail"),PRICE_BAND_BUCKETS,propPriceBand,"p","priceBand",normalizePropPriceBand,value=>{ propPriceBand=value; });
-  renderFacetRail($("#liferail"),PROP_STAGES,propStageSel,"s","temporal",null,value=>{ propStageSel=value; });
+
+  // Disposition facets → shareable scope-link chips.
   const processStages=tools?.PROP_PROCESS_STAGES||[["all","stage_all"]];
-  renderFacetRail(processRail,processStages,propProcessSel,"p","process",null,value=>{ propProcessSel=value; });
+  const dispositionRails=propertyDispositionFacetRailsHTML({
+    entries:allEntries, commercialOf:r=>r?.commercial||null, temporalOf:propStage, today:todayISO(),
+    currentCountFor, countProcessStages:tools?.countPropertyProcessStages, t, escape:escUiHtml,
+    saleMethod:propSaleMethod, priceBand:propPriceBand, process:propProcessSel, temporal:propStageSel,
+    baseState:{
+      agency:propAgency||null, asset:propAsset!=="all"?propAsset:null,
+      saleMethod:propSaleMethod!=="all"?propSaleMethod:null, priceBand:propPriceBand!=="all"?propPriceBand:null,
+      process:propProcessSel!=="all"?propProcessSel:null, stage:propStageSel!=="all"?propStageSel:null,
+      sort:propSort!=="closing_soon"?propSort:null, borough:$("#propertyboro")?.value||null,
+      neighborhood:(($("#propertyneighborhood")?.value)||"").trim()||null,
+      communityDistrict:propertyCommunityDistrict||null, councilDistrict:propertyCouncilDistrict||null,
+      q:(($("#propertykw")?.value)||"").trim()||null, view:propertyView==="archive"?"archive":null,
+    },
+  });
+  for(const [id,html,apply] of [
+    ["salerail",dispositionRails.sale,v=>{ propSaleMethod=normalizePropSaleMethod(v); }],
+    ["pricerail",dispositionRails.price,v=>{ propPriceBand=normalizePropPriceBand(v); }],
+    ["processrail",dispositionRails.process,v=>{ propProcessSel=normalizePropertyProcess(v); }],
+    ["liferail",dispositionRails.temporal,v=>{ propStageSel=normalizePropertyTemporal(v); }],
+  ]){
+    const el=$(`#${id}`);
+    if(!el) continue;
+    el.innerHTML=html;
+    bindPropertyScopeFacetRail(el,value=>selectPropertyFacet(()=>apply(value)));
+  }
   await renderDcasFleetInventory();
 
   const partition=partitionFor();
@@ -1365,8 +1369,8 @@ async function renderPropExplorer(){
   if(!entries.length){
     const scopeLabels=[];
     if(propAsset!=="all") scopeLabels.push(t(ASSET_LABEL[propAsset]||"asset_other"));
-    if(propSaleMethod!=="all") scopeLabels.push(t(SALE_METHOD_BUCKETS.find(([key])=>key===propSaleMethod)?.[1]||"sale_method_unknown"));
-    if(propPriceBand!=="all") scopeLabels.push(t(PRICE_BAND_BUCKETS.find(([key])=>key===propPriceBand)?.[1]||"price_band_all"));
+    if(propSaleMethod!=="all") scopeLabels.push(t("sale_method_"+propSaleMethod));
+    if(propPriceBand!=="all") scopeLabels.push(t("price_band_"+propPriceBand));
     if(propStageSel!=="all") scopeLabels.push(t(PROP_STAGES.find(([key])=>key===propStageSel)?.[1]||"stage_all"));
     if(propProcessSel!=="all") scopeLabels.push(t(processStages.find(([key])=>key===propProcessSel)?.[1]||"stage_all"));
     if(propertyResolvedNeighborhood?.name) scopeLabels.push(propertyResolvedNeighborhood.name);
