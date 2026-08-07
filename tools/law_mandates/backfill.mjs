@@ -303,6 +303,10 @@ async function runExtraction(options, manifest, railReceipt, context) {
   context.failed = failedById.size;
   for (let offset = 0; offset < pending.length; offset += options.batchSize) {
     const batch = pending.slice(offset, offset + options.batchSize);
+    for (const matterId of batch) {
+      complete.delete(matterId);
+      failedById.delete(matterId);
+    }
     let batchSucceeded = false;
     for (let batchAttempt = 1; batchAttempt <= options.maxAttempts && !batchSucceeded; batchAttempt += 1) {
       state.current_batch = { matter_ids: batch, attempt: batchAttempt, started_at: stamp() };
@@ -350,6 +354,7 @@ async function runExtraction(options, manifest, railReceipt, context) {
     state.updated_at = stamp();
     await atomicWrite(statePath, state);
     await journalBatch({ script: options.journalScript, what: `extracted mandate batch (${batch.length} laws)`, why: `resumable extraction checkpoint; completed=${complete.size}`, undo: `remove ${options.outputDir}/laws for this batch and restore ${statePath}` });
+    if (!batchSucceeded) throw new Error(`extraction_batch_failed:completed=${complete.size},failed=${failedById.size}`);
     console.log(`batch-complete: offset=${offset + batch.length} total=${pending.length} completed=${complete.size} failed=${failedById.size}`);
   }
   const our = await buildOurPayload(options.outputDir, manifest, options.model, railReceipt);
