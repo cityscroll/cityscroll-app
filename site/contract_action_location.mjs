@@ -8,6 +8,11 @@
 
 import { normalizeAddress, plainText } from "./location_extract.mjs";
 import { resolveDistricts } from "./council_district_lookup.mjs";
+import {
+  communityDistrictKey,
+  councilDistrictKey,
+  paintDistrictFacetRails,
+} from "./district_scope_facets.mjs";
 
 export const ACTION_LOCATION_BASES = Object.freeze({
   SUBMISSION: "submission_address",
@@ -278,26 +283,37 @@ export function rowMatchesContractActionFilter(row, filter = {}) {
   });
 }
 
-/** Populate the optional district controls only after the response layer is opened. */
+/**
+ * Paint join-backed community / council district facet rails (and keep the
+ * hidden selects in registry-key sync for share/routing state).
+ * Unknown location stamps are omitted — fail closed, never inferred.
+ */
 export function fillContractActionLocationSelects(doc, options = {}) {
   const documentRef = options.documentRef || globalThis.document;
-  if (!documentRef) return;
+  if (!documentRef) return paintDistrictFacetRails(doc, options);
+
   const locations = (doc?.rows || []).flatMap((row) => row.locations || []);
-  const fill = (selector, values, label) => {
+  const syncHidden = (selector, resolve) => {
     const select = documentRef.querySelector(selector);
     if (!select) return;
-    const current = select.value;
-    for (const value of [...new Set(values.filter(Boolean).map(String))]
-      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))) {
-      if ([...select.options].some((option) => option.value === value)) continue;
-      const option = documentRef.createElement("option");
-      option.value = value;
-      option.textContent = label(value);
-      select.appendChild(option);
-    }
-    if (current) select.value = current;
+    const current = resolve(select.value) || "";
+    // Rebuild options from exact keys only so forceSelect/route restore stays honest.
+    const keys = [...new Set(locations.map((item) => {
+      if (selector === "#moneycd") return communityDistrictKey(item.community_district);
+      return councilDistrictKey(item.council_district);
+    }).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    select.innerHTML = `<option value=""></option>`
+      + keys.map((value) => `<option value="${value}">${value}</option>`).join("");
+    select.value = keys.includes(current) ? current : "";
   };
-  fill("#moneycd", locations.map((item) => item.community_district), (value) => value);
-  fill("#moneycouncil", locations.map((item) => item.council_district),
-    options.councilLabel || ((value) => `Council District ${value}`));
+  syncHidden("#moneycd", communityDistrictKey);
+  syncHidden("#moneycouncil", councilDistrictKey);
+
+  return paintDistrictFacetRails(doc, {
+    ...options,
+    documentRef,
+    communityDistrict: documentRef.querySelector("#moneycd")?.value || "",
+    councilDistrict: documentRef.querySelector("#moneycouncil")?.value || "",
+  });
 }

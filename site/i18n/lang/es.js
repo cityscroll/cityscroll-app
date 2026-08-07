@@ -210,6 +210,7 @@
     money_community_district_label: "Distrito comunitario",
     money_council_district_label: "Distrito municipal",
     money_district_any: "Cualquier distrito",
+    money_district_map_pivot: "Mapa",
     money_location_filter_interpretation: "Mostrando logística de contratación, no el lugar de ejecución:",
     money_response_location_heading: "Contratos con una ubicación de respuesta resuelta",
     money_response_location_heading_place: "Contratos con una ubicación de respuesta en {place}",

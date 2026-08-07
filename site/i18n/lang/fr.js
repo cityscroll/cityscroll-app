@@ -216,6 +216,7 @@
     money_community_district_label: "District communautaire",
     money_council_district_label: "District municipal",
     money_district_any: "Tout district",
+    money_district_map_pivot: "Carte",
     money_location_filter_interpretation: "Affichage de la logistique du marché, pas du lieu d'exécution :",
     money_response_location_heading: "Contrats avec un lieu de réponse résolu",
     money_response_location_heading_place: "Contrats avec un lieu de réponse à {place}",

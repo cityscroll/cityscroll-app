@@ -210,6 +210,7 @@
     money_community_district_label: "কমিউনিটি জেলা",
     money_council_district_label: "কাউন্সিল জেলা",
     money_district_any: "যেকোনো জেলা",
+    money_district_map_pivot: "মানচিত্র",
     money_location_filter_interpretation: "চুক্তির কাজের স্থান নয়, ক্রয়প্রক্রিয়ার স্থান দেখানো হচ্ছে:",
     money_response_location_heading: "সমাধান করা প্রক্রিয়ার স্থানসহ চুক্তি",
     money_response_location_heading_place: "{place}-এ প্রক্রিয়ার স্থানসহ চুক্তি",

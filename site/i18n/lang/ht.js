@@ -209,6 +209,7 @@
     money_community_district_label: "Distri kominotè",
     money_council_district_label: "Distri konsèy",
     money_district_any: "Nenpòt distri",
+    money_district_map_pivot: "Kat",
     money_location_filter_interpretation: "Sa montre lojistik acha a, pa kote travay la fèt:",
     money_response_location_heading: "Kontra ki gen yon kote repons ki rezoud",
     money_response_location_heading_place: "Kontra ki gen yon kote repons nan {place}",

@@ -210,6 +210,7 @@
     money_community_district_label: "社区区",
     money_council_district_label: "市议会选区",
     money_district_any: "任何地区",
+    money_district_map_pivot: "地图",
     money_location_filter_interpretation: "显示采购办理地点，而非履约地点：",
     money_response_location_heading: "有已解析办理地点的合同",
     money_response_location_heading_place: "办理地点在 {place} 的合同",
